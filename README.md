@@ -1,8 +1,10 @@
 # PostCode
 
-PostCode is a software-development environment for humans understanding, directing, and supervising software built with coding agents, with the goal of enabling them to work at a conceptual level rather than through programming-language source code.
+> *When coding agents do the coding, humans should be able to understand, direct, and supervise software development without ever needing to see programming-language source code.*
 
-PostCode presents task-appropriate views of program structure, behavior, history, rationale, and other evidence. Projections preserve their provenance, epistemological status, and limitations so that derived facts, recorded assertions, observations, and interpretation are not presented as equally authoritative.
+PostCode is an application for software development that aims to make that possible. It presents task-appropriate views of program structure, behavior, history, and rationale.
+
+Those views preserve the provenance, epistemological status, and limitations of their content. They clearly distinguish between derived facts, recorded assertions, observations, and interpretations.
 
 As an initial simplification, PostCode's projections and views are read-only. Humans continue to direct program changes by instructing coding agents in prose.
 
