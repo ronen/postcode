@@ -2,8 +2,6 @@
 
 This document describes the current design hypothesis for PostCode: what the system is and how its concepts fit together.
 
-The research questions motivating the design are described in [`research.md`](research.md).
-
 ## 1. Design Premise
 
 The research goal is a projection-based software-development environment through which a human can understand, direct, and supervise software using task-appropriate, epistemologically qualified representations rather than routinely working through conventional programming-language source.
@@ -663,8 +661,6 @@ PostCode might in turn generate prompt-ready references, expose structured queri
 ### 3.8 Formative Observation Support
 
 PostCode should support formative observation without requiring the developer to maintain a separate research diary.
-
-The methodological use and limitations of these records are described in [Self-Observation and Formative Logging](methodology.md#6-self-observation-and-formative-logging).
 
 #### 3.8.1 Automatic Event Capture
 
