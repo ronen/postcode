@@ -13,9 +13,11 @@ These conventions supplement the adopted [baseline conventions](../foundation/ba
 
 - Put repository-specific scratch files and directories under a descriptively named root-level directory beginning with `_`, such as `_analysis/`, `_investigation/`, or `_rendered/`. The root `.gitignore` reserves this namespace for uncommitted working material.
 - `_work/TASK.md` is a governed task-drafting and handoff artifact, not ordinary scratch material. Handle it only as prescribed by the [task protocol](../foundation/task-protocol.md).
+- Except for the task-intake role of `_work/TASK.md` defined by the governing task protocol, content under a root underscore directory is provisional and non-governing, regardless of any status or approval language it contains. To become durable or governing, content must be moved or incorporated into its appropriate non-underscore repository location and satisfy any applicable approval and commit requirements for that document type.
 - Treat underscore directories as disposable. Do not use them as the sole location of durable project knowledge, implementation, committed generated artifacts, configuration, or documentation. Remove scratch material that you created when it is no longer useful; do not remove pre-existing scratch material without human direction or clear ownership.
 - Do not create project-local `.codex`, `.claude`, or similar tool-specific directories for scratch work.
 - A Git-ignored directory is still inside the observed repository. Do not use underscore directories for information that is required to remain outside that repository.
+- Committed or otherwise durable project material must not depend on content under an underscore directory. Treat such a dependency as an unexpected finding and report it rather than using the underscore content as authoritative.
 
 ## Dependencies and Boundaries
 

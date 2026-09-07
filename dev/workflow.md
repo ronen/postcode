@@ -44,6 +44,10 @@ A useful implementation plan should state:
 
 Keep plans at the level needed to guide work. Do not use planning documents to settle architecture implicitly: record consequential accepted choices under [`docs/decisions/`](../docs/decisions/).
 
+Planning may use a descriptively named root underscore directory, such as `_initial-product-slice/`, to develop and review a coherent set of provisional artifacts before any become durable project documents. Everything in that workspace remains uncommitted, non-governing, local to the checkout, and disposable, as defined by the [temporary-working-material conventions](conventions.md#temporary-working-material).
+
+The human directs which planning-workspace artifacts are promoted. Move or incorporate plans into `docs/plans/`, and move or incorporate only explicitly accepted decisions into `docs/decisions/`. Before removing the workspace, confirm that all context worth preserving has been carried into durable documents.
+
 ## 4. Implementation
 
 - Prefer the smallest coherent change that advances the authorized goal.
