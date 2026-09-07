@@ -18,4 +18,4 @@ Coding agents should begin with [`AGENTS.md`](AGENTS.md). The detailed developme
 
 ## Observability
 
-To support the [PostCode Research Project](https://github.com/ronen/postcode-research), PostCode records and exports observations, including relevant interaction events and contemporaneous user reports, for later analysis.
+PostCode is intended to support the [PostCode Research Project](https://github.com/ronen/postcode-research) by recording and exporting observations, including relevant interaction events and contemporaneous user reports, for later analysis. This capability has not yet been implemented.
