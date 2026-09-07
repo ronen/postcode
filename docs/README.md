@@ -22,6 +22,10 @@ Create architecture documentation under `architecture/` when there is implemente
 
 [`decisions/`](decisions/) preserves consequential choices explicitly accepted by the human, together with their context, rationale, and consequences. Accepted decisions are prescriptive and binding within their stated scope unless superseded; architecture documentation describes the resulting implemented shape.
 
+### Task records
+
+`records/tasks/` contains the durable record of each authorized implementation task, including its request, material follow-ups, outcome, and verification. The governing [task protocol](../foundation/task-protocol.md) creates this directory with the first task; it is not created speculatively.
+
 ### Backlog
 
 [`backlog.md`](backlog.md) records worthwhile work and concerns that are not part of an active plan or authorized task. Backlog entries are candidates rather than commitments. Substantial entries should be promoted into plans before implementation.

@@ -12,6 +12,7 @@ These conventions supplement the adopted [baseline conventions](../foundation/ba
 ## Temporary Working Material
 
 - Put repository-specific scratch files and directories under a descriptively named root-level directory beginning with `_`, such as `_analysis/`, `_investigation/`, or `_rendered/`. The root `.gitignore` reserves this namespace for uncommitted working material.
+- `_work/TASK.md` is a governed task-drafting and handoff artifact, not ordinary scratch material. Handle it only as prescribed by the [task protocol](../foundation/task-protocol.md).
 - Treat underscore directories as disposable. Do not use them as the sole location of durable project knowledge, implementation, committed generated artifacts, configuration, or documentation. Remove scratch material that you created when it is no longer useful; do not remove pre-existing scratch material without human direction or clear ownership.
 - Do not create project-local `.codex`, `.claude`, or similar tool-specific directories for scratch work.
 - A Git-ignored directory is still inside the observed repository. Do not use underscore directories for information that is required to remain outside that repository.
