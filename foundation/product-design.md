@@ -20,7 +20,7 @@ language-aware analysis
 lenses and projections
        │
        ↓
-read-only PostCode workspace
+read-only view
 ```
 
 In addition to projecting information available from repository state, PostCode can display runtime observations produced by external systems. PostCode need not itself become a debugger, profiler, test runner, or execution environment.
@@ -106,7 +106,7 @@ Limitation
 
 #### 2.1.3 Presentation
 
-A **presentation** describes how a projection should be rendered and interacted with.
+A **presentation** describes how a projection should be rendered, interacted with, or exposed through a PostCode interface.
 
 A projection might be presented as:
 
@@ -124,9 +124,11 @@ A presentation may accept presentation-specific parameters such as sorting, grou
 
 Presentations may share common interaction affordances such as hover or focus detail, subject and relationship selection, contextual lens application, expansion and collapse of evidence or qualifications, opening or pinning views, and copying stable references for coding-agent prompts.
 
+Presentations need not be GUI elements; they may be emitted or exported as human-readable text or structured machine-readable data.
+
 #### 2.1.4 View
 
-A **view** is an instantiated presentation of a particular projection in the workspace.
+A **view** is an instantiated presentation of a particular projection through a PostCode interface.
 
 Conceptually:
 
@@ -392,6 +394,8 @@ Language-independent terminology may emerge through use, but PostCode should not
 
 ## 3. Interaction Model
 
+PostCode may expose a command-line interface for requesting and inspecting individual views. This interface uses the same lenses, projections, qualifications, and provenance as the GUI, with presentations that are human-readable or machine-readable. It supports development-time exercise, direct human inspection, coding-agent invocation, and useful operation before the GUI is mature.
+
 ### 3.1 Investigation and Representation Selection
 
 The human can choose a subject, lens, lens parameter values, presentation, presentation parameter values, or any combination of them. PostCode can choose whichever elements the human leaves unspecified, based on the expressed information need and the projections available, and create the resulting view.
@@ -445,7 +449,7 @@ qualified projection
 presentation / presentation-parameter selection
         │
         ↓
-workspace view
+view
 ```
 
 “What calls this?” may map almost directly to a callers lens backed by static analysis. “Why does this exist?” may select evidence, history, and rationale lenses and synthesize several projections. “What behavior do these tests appear to protect?” may combine mechanically established test structure with recorded descriptions and explicitly marked interpretation.
@@ -548,7 +552,7 @@ Source should not be PostCode's default or primary representation. Completely ex
 
 PostCode may therefore provide an explicit **Show Source** escape hatch.
 
-Conceptually, source follows the same model as other workspace content. A source lens produces a projection containing conventional implementation text for a subject and repository state; a source presentation renders that projection; and the resulting source view is the escape hatch exposed to the human.
+Conceptually, source follows the same model as other views. A source lens produces a projection containing conventional implementation text for a subject and repository state; a source presentation renders that projection; and the resulting source view is the escape hatch exposed to the human.
 
 Opening source is a legitimate action, not a failure. It allows the human to obtain implementation detail, verify a projection, or continue an investigation for which PostCode cannot yet provide an adequate representation.
 
@@ -677,7 +681,15 @@ PostCode should also make it easy to record subjective observations and reaction
 
 PostCode must support an explicit evidence boundary between the repository being observed and the records produced by formative investigation. Formative observation records must be stored outside the observed repository; their destination must be configurable. During PostCode-on-PostCode use, this allows observations, subsequent analysis, and withheld reference material to remain outside the application repository and unavailable as input to PostCode or its coding agents.
 
-Each recorded event should include provenance metadata sufficient to identify the version of PostCode that produced it and the observed repository state, including its Git commit and any relevant working-tree changes. The metadata should also associate the event with the current operational task and investigation context where available. PostCode may retain the task directly or preserve a stable reference to the external artifact or conversation that defines it.
+Each recorded event should include provenance and context metadata sufficient to identify:
+
+- the version of PostCode that produced it;
+- the observed repository state, including its Git commit and any relevant working-tree changes;
+- a session identifier, where applicable, allowing related events to be grouped without assuming that a session corresponds to a single investigation or task;
+- the current operational task and relevant contextual information, where available;
+- whether the event arose from genuine use of PostCode for software investigation or development or from testing or debugging PostCode itself.
+
+Events arising from testing or debugging may be suppressed. Where the operational task is formalized, the recorded context may include its definition or a stable reference to the external task artifact or conversation that defines it.
 
 ## 4. Projection Capabilities and Architecture
 
