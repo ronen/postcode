@@ -10,7 +10,9 @@ See [`foundation/product-design.md`](foundation/product-design.md) for the full 
 
 ## Development
 
-PostCode is expected to be implemented primarily by coding agents under human direction and review. Once minimally functional, PostCode will be used to aid its own development so that experience from that use can guide its continued development. The repository uses explicit plans, recorded architectural decisions, and durable task records so that development does not depend on transient agent conversations.
+PostCode is expected to be implemented primarily by coding agents under human direction and review. The repository uses explicit plans, recorded architectural decisions, and durable task records so that development does not depend on transient agent conversations.
+
+Once PostCode is minimally functional, the human directing the project will use it to understand and supervise further development of PostCode itself. Experience from that use will guide its continued development.
 
 For the current project state, see [`STATUS.md`](STATUS.md). For plans, architecture, decisions, and the backlog, see the [documentation guide](docs/README.md).
 
