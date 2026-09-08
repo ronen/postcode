@@ -550,9 +550,13 @@ PostCode should not assume that there is one uniquely correct conceptual hierarc
 
 Source should not be PostCode's default or primary representation. Completely excluding it, however, would hide the cases in which projections are insufficient and add artificial friction to investigation.
 
-PostCode may therefore provide an explicit **Show Source** escape hatch.
+PostCode may therefore provide an explicit escape-hatch mechanism through which the human can access conventional source when needed.
 
-Conceptually, source follows the same model as other views. A source lens produces a projection containing conventional implementation text for a subject and repository state; a source presentation renders that projection; and the resulting source view is the escape hatch exposed to the human.
+Primary navigation is organized around program entities and relationships exposed or discovered by PostCode, rather than raw files and directories. Files and filesystem structure remain available through the source escape hatch for traceability, verification, and investigations that the available projections cannot support.
+
+A file reached through the source escape hatch may itself become the subject of a projection, but the resulting investigation remains identifiable as having originated from source-level navigation.
+
+Conceptually, source follows the same model as other views. A source lens produces a projection containing conventional implementation text for a subject and repository state; a source presentation renders that projection; and the resulting source view is provided through the escape-hatch mechanism.
 
 Opening source is a legitimate action, not a failure. It allows the human to obtain implementation detail, verify a projection, or continue an investigation for which PostCode cannot yet provide an adequate representation.
 
@@ -668,7 +672,7 @@ PostCode should support formative observation without requiring the developer to
 
 #### 3.8.1 Automatic Event Capture
 
-PostCode should automatically record relevant interaction events, including prompts and prose requests submitted to PostCode; prompts sent to coding agents, when available; selected lenses, lens parameter values, presentations, presentation parameter values, and resulting views; navigation; source excursions; unavailable or failed projections; workspace changes; and interactions with coding-agent context.
+PostCode should automatically record relevant interaction events, including prompts and prose requests submitted to PostCode; prompts sent to coding agents, when available; selected lenses, lens parameter values, presentations, presentation parameter values, and resulting views; navigation; source escape-hatch use; unavailable or failed projections; workspace changes; and interactions with coding-agent context.
 
 #### 3.8.2 Contemporaneous Subjective Observations
 
