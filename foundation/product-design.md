@@ -546,19 +546,29 @@ Some presentations may emphasize navigation, while others emphasize explanation,
 
 PostCode should not assume that there is one uniquely correct conceptual hierarchy of the program. Containment and decomposition may be hierarchical; many other useful relationships are not. Navigation should follow whichever subjects and relationships the current investigation exposes.
 
-### 3.5 Source as a Secondary View
+### 3.5 Source Escape Hatch
 
-Source should not be PostCode's default or primary representation. Completely excluding it, however, would hide the cases in which projections are insufficient and add artificial friction to investigation.
+Source-level detail and conventional source should not be PostCode's default or primary representations. Completely excluding them, however, would hide cases in which projections are insufficient and add artificial friction to investigation.
 
-PostCode may therefore provide an explicit escape-hatch mechanism through which the human can access conventional source when needed.
+PostCode may therefore provide an explicit escape-hatch mechanism through which the human can access source-level detail or conventional source when needed.
+
+Using the source escape hatch is a legitimate action, not a failure. It allows the human to obtain implementation detail, verify a projection, or continue an investigation for which PostCode cannot yet provide an adequate representation. Its use is recorded as described in [Automatic Event Capture](#381-automatic-event-capture), allowing later analysis to help identify conceptual capabilities that are missing or inadequate.
+
+#### 3.5.1 Supporting Source-Level Detail
+
+PostCode should use conceptual terms rather than source-language details as its default representation where the evidence supports them. A concept such as a build-time dependency may, for example, be backed by a TypeScript-specific definition such as an `import type` declaration without displaying that definition initially.
+
+The conceptual view must still expose enough provenance, epistemological status, guarantees, and limitations for the human to understand what its claims establish. Further supporting detail may be disclosed progressively, including the language-specific definition or analysis rule and the corresponding declaration or source location.
+
+These disclosures are a form of escape-hatch use rather than a silent fallback from conceptual representation. They should remain visible and distinguishable according to the level of detail disclosed.
+
+#### 3.5.2 Conventional Source Views
 
 Primary navigation is organized around program entities and relationships exposed or discovered by PostCode, rather than raw files and directories. Files and filesystem structure remain available through the source escape hatch for traceability, verification, and investigations that the available projections cannot support.
 
 A file reached through the source escape hatch may itself become the subject of a projection, but the resulting investigation remains identifiable as having originated from source-level navigation.
 
 Conceptually, source follows the same model as other views. A source lens produces a projection containing conventional implementation text for a subject and repository state; a source presentation renders that projection; and the resulting source view is provided through the escape-hatch mechanism.
-
-Opening source is a legitimate action, not a failure. It allows the human to obtain implementation detail, verify a projection, or continue an investigation for which PostCode cannot yet provide an adequate representation.
 
 ### 3.6 Revision and Projection Comparison
 
