@@ -609,6 +609,8 @@ or:
 
 > Preserve the behavior represented here, but remove this dependency path.
 
+When a view reports uncertainty or a limitation, the human may use that report as development feedback when directing a coding agent. The shared context should give the agent access to what was reported and any stated cause, allowing the human to refer to it without translating it into source-level terms. A reported limitation in the shared context is not itself an instruction to change the program.
+
 #### 3.7.1 Shared machine-readable context
 
 The initial mechanism can be a machine-readable context artifact that PostCode keeps synchronized with the current workspace. Agent instructions such as `AGENTS.md` or `CLAUDE.md` can direct coding agents to read that artifact when interpreting the human's prompts.
