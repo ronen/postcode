@@ -160,6 +160,20 @@ Presentation requirements such as filtering, ordering, field selection, or pagin
 
 These optimizations must preserve the conceptual distinctions. Lens parameters define the information requested; presentation parameters define how it is shown; pushdown is an execution strategy rather than a reclassification of those choices. Partial or lazy materialization must retain explicit coverage and limitation information, and a change in execution plan must not masquerade as a change in the projected program information.
 
+##### 2.1.5.1 Resource-Bounded Analysis
+
+An analysis may be applicable and supported while its anticipated or accumulating cost in time, computation, money, agent credits, or another limited resource exceeds a threshold. PostCode may describe the expected cost and likely effect of further analysis with appropriate uncertainty, and allow the human to proceed, stop, accept the current qualified result, or choose a less expensive analysis. When analysis is under way, accumulated cost should also be available where practical. Stopping an analysis may preserve a qualified partially materialized result when the analysis method permits it.
+
+A resource budget is an execution constraint rather than a lens parameter: it governs how aggressively PostCode tries to satisfy the request, not what information the lens requests. If the budget leaves requested information unmaterialized, the projection must explicitly indicate its partial materialization rather than silently behaving like a narrower lens. When a less expensive analysis uses a different method or provides different guarantees, those differences must remain visible.
+
+PostCode should distinguish three dimensions:
+
+- **applicability and availability:** whether the analysis is applicable, supported, and currently available;
+- **execution state:** whether it is deferred, running, stopped, failed, or completed;
+- **result materialization:** whether it has produced no result, a partially materialized result, or a fully materialized result relative to the request.
+
+These dimensions can coexist: a stopped or failed analysis may retain usable qualified information, and an unavailable analysis may have an earlier partially materialized result. They are distinct from epistemological status. Additional effort may broaden coverage or select a different analysis method, but does not inherently make a claim truer or more exact.
+
 ### 2.2 Epistemological Contract
 
 The requirement is not that every projection be exact or complete.
@@ -191,13 +205,13 @@ or simply:
 
 The unacceptable result is presenting partial, historical, asserted, observed, or inferred information in a way that implies a stronger claim than the evidence supports.
 
-For mechanically derived information, a projection might be:
+For mechanically derived information that has been produced, a projection's guarantee might be:
 
 - exact;
 - sound but incomplete;
-- complete but over-approximate;
-- observational;
-- unavailable.
+- complete but over-approximate.
+
+A projection may instead report that the requested information or analysis is unavailable. Availability is distinct from the guarantee attached to any result that has been produced. Information derived from observation requires a scope qualification identifying what was observed.
 
 Other kinds of information require different qualifications. PostCode need not finalize a formal terminology immediately; plain-English qualification may initially be clearer.
 
@@ -684,7 +698,7 @@ PostCode should support formative observation without requiring the developer to
 
 #### 3.8.1 Automatic Event Capture
 
-PostCode should automatically record relevant interaction events, including prompts and prose requests submitted to PostCode; prompts sent to coding agents, when available; selected lenses, lens parameter values, presentations, presentation parameter values, and resulting views; navigation; source escape-hatch use; unavailable or failed projections; workspace changes; and interactions with coding-agent context.
+PostCode should automatically record relevant interaction events, including prompts and prose requests submitted to PostCode; prompts sent to coding agents, when available; selected lenses, lens parameter values, presentations, presentation parameter values, and resulting views; navigation; source escape-hatch use; unavailable, refused, or failed projection requests; analysis applicability and availability, execution state, and result materialization; resource estimates, budgets or thresholds, user choices, and actual resource use where available; workspace changes; and interactions with coding-agent context.
 
 #### 3.8.2 Contemporaneous Subjective Observations
 
