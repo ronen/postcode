@@ -4,9 +4,6 @@ Status: accepted
 Decided: 2026-09-10
 Arising from: [Initial module inventory plan](../plans/initial-module-inventory-plan.md)
 Scope: formative observation production in the initial PostCode slice
-Supersedes:
-Superseded in part:
-Superseded by:
 
 ## Context
 
@@ -24,6 +21,8 @@ curating the research archive.
 ## Decisions
 
 ### Record normal view production automatically
+
+#### Decision
 
 Normal CLI view production emits formative observation events automatically. For
 the initial slice, an observation should establish at least:
@@ -52,7 +51,23 @@ qualification, and materialization conditions that shaped the interaction.
 Copying the complete operational store would over-record information the user did
 not encounter and confuse analysis availability with observed experience.
 
+#### Alternatives considered
+
+- Record only the command or semantic projection: rejected because it would omit
+  the exact presentation and qualification the human encountered.
+- Copy the complete operational store: rejected because it would record
+  unpresented information and confuse availability with observation.
+
+#### Consequences
+
+- Observation production is part of normal view behavior rather than an optional
+  research-only export step.
+- Exact rendered and machine-readable view artifacts may contain sensitive
+  repository-derived information and require an explicit sink privacy posture.
+
 ### Submit self-contained, invocation-scoped observation batches
+
+#### Decision
 
 The producer groups the events from one CLI invocation into an observation batch.
 The batch has a UUID and contains or accompanies every shared context record and
@@ -75,7 +90,27 @@ session or a persistent producer-side UUID registry. A batch-level version costs
 little and lets development and research sinks distinguish experimental formats
 without promising support for old ones.
 
+#### Alternatives considered
+
+- Maintain persistent producer-side context UUIDs: deferred because invocation
+  batches capture immediate sharing without creating sessions or a registry.
+- Embed all shared context into every event: rejected because it duplicates
+  potentially large projections, view artifacts, and repository context.
+- Omit format versioning until stabilization: not selected; an explicit zero
+  version is a low-cost guard against silent format confusion.
+- Require permanent compatibility from the first format: rejected because the
+  prerelease producer and observation needs are still evolving.
+
+#### Consequences
+
+- Each submitted batch is self-contained and does not depend on producer state
+  from an earlier invocation.
+- Sinks may encounter mutually incompatible versioned batches and choose their
+  own handling policy.
+
 ### Send to a sink and forget
+
+#### Decision
 
 PostCode produces typed application-level observations through an
 `ObservationSink` boundary. Once a sink accepts a complete batch according to its
@@ -98,6 +133,13 @@ Separating production from sink policy keeps PostCode usable with local,
 development, testing, and future research destinations without embedding one
 archive lifecycle in the application.
 
+#### Alternatives considered
+
+- Make PostCode retain and query its own observation history: rejected because
+  historical storage and research access are sink responsibilities.
+- Automatically send observations to a research service: rejected because the
+  initial producer has no remote-export or consent policy.
+
 #### Consequences
 
 - The producer needs only delivery acknowledgement as defined by the selected
@@ -107,6 +149,8 @@ archive lifecycle in the application.
   and migration policy.
 
 ### Keep observations separate from `ProgramRecordStore`
+
+#### Decision
 
 `ProgramRecordStore` holds ephemeral operational program records used to evaluate
 and construct projections. Observation batches contain durable-or-discardable
@@ -124,7 +168,23 @@ Using the operational store as the observation archive would make ephemeral
 analysis lifecycle determine research evidence retention and could accidentally
 turn observed historical results into current analysis data.
 
+#### Alternatives considered
+
+- Store observations in `ProgramRecordStore`: rejected because operational and
+  observation lifecycles, validity, and ownership differ.
+- Require physically separate storage engines: rejected because logical
+  separation is sufficient and future implementations may benefit from sharing
+  an engine.
+
+#### Consequences
+
+- Observation artifacts serialize or copy everything needed after the ephemeral
+  program store disappears.
+- Observation records are never reused automatically as current analysis claims.
+
 ### Surface observation delivery failure without blocking normal use
+
+#### Decision
 
 Failure to submit an observation batch is visible to the user and is not reported
 as successful recording. It does not by itself convert a successfully constructed
@@ -142,7 +202,22 @@ depend on a research or development sink would confuse observability with the
 program-information result. A later research protocol may choose a stricter sink
 policy without changing view semantics.
 
+#### Alternatives considered
+
+- Block every successfully produced view when observation delivery fails:
+  deferred because it would make ordinary application use depend on sink health.
+- Ignore sink failure: rejected because silent loss would misrepresent formative
+  observation coverage.
+
+#### Consequences
+
+- Users can continue normal investigation with an explicit observation gap.
+- A stricter research environment may later select a sink or operational policy
+  that refuses to continue.
+
 ### Defer contemporaneous note capture
+
+#### Decision
 
 The first slice does not implement a separate subjective-note command. Such a
 command would strengthen the case for durable investigation context because a
@@ -153,22 +228,25 @@ Subjective notes remain part of the adopted product direction. They should be
 introduced with an intentional association mechanism rather than implicitly
 attaching a note to whichever prior invocation seems most likely.
 
-## Alternatives considered
+#### Rationale
 
-- Store observations in `ProgramRecordStore`: rejected because operational and
-  observation lifecycles differ.
-- Maintain persistent producer-side context UUIDs: deferred because invocation
-  batches capture immediate sharing without creating sessions or a registry.
-- Embed all context into every event: rejected because it duplicates potentially
-  large projections, view artifacts, and repository context.
-- Record only semantic projection data: rejected because research may need the
-  exact rendered output the human encountered.
-- Require permanent compatibility from the first event schema: rejected because
-  the prerelease producer and observation needs are still evolving.
-- Omit format versioning until stabilization: not selected; an explicit zero
-  version is a low-cost guard against silent format confusion.
-- Block view delivery whenever observation recording fails: deferred in favor of
-  visible warning and continued normal use.
+Without durable investigation context, a note entered in a later invocation
+cannot reliably identify the view or interaction it describes. Adding that
+context solely for note capture would expand the first slice beyond what its
+module-inventory learning requires.
+
+#### Alternatives considered
+
+- Add a note command without persistence: rejected because it could not reliably
+  identify the prior view being discussed.
+- Add durable session state in this slice: deferred because subjective notes do
+  not justify broadening the initial module-inventory implementation.
+
+#### Consequences
+
+- The initial observation stream contains automatically captured interaction
+  evidence but no separately entered subjective reactions.
+- Note capture returns with an explicit cross-invocation association mechanism.
 
 ## Follow-up
 

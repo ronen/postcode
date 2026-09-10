@@ -4,9 +4,6 @@ Status: accepted
 Decided: 2026-09-10
 Arising from: [Initial module inventory plan](../plans/initial-module-inventory-plan.md)
 Scope: internal boundaries established by the initial PostCode slice
-Supersedes:
-Superseded in part:
-Superseded by:
 
 ## Context
 
@@ -20,6 +17,8 @@ committing all code to an early physical storage engine.
 ## Decisions
 
 ### Use a record-oriented program-information model
+
+#### Decision
 
 Represent analyzed and projected information as qualified, addressable program
 records rather than as a graph object constructed for one view. Records may refer
@@ -41,6 +40,14 @@ The record model matches the qualified, composable nature of PostCode informatio
 and permits later relational analyses without making one graph representation or
 one lens's needs canonical.
 
+#### Alternatives considered
+
+- Pass immutable values directly between every stage without addressable records:
+  viable for one lens but less suited to projections and the relationship-heavy
+  next slice.
+- Make one graph representation canonical: rejected because graph, tree, table,
+  and path structures are view-dependent derivations of shared records.
+
 #### Consequences
 
 - The initial implementation need not materialize every possible record eagerly
@@ -51,6 +58,8 @@ one lens's needs canonical.
   the identity and qualification model.
 
 ### Isolate storage behind `ProgramRecordStore`
+
+#### Decision
 
 Analyses, evaluation, and projection construction communicate through a
 storage-independent `ProgramRecordStore` boundary. Program-domain records and
@@ -74,6 +83,16 @@ into a system-wide commitment. A universal persistence abstraction would be
 equally premature. A narrow domain boundary preserves replaceability while
 remaining grounded in actual slice operations.
 
+#### Alternatives considered
+
+- Use SQLite directly throughout the domain: deferred because it would make a
+  physical engine part of every consumer before its durable requirements exist.
+- Build a universal storage abstraction: rejected as speculative; the store grows
+  only with concrete domain operations.
+- Omit the boundary until a second engine is needed: rejected because storage-
+  native identity and queries would already leak into analysis and projection
+  code.
+
 #### Consequences
 
 - Engine replacement is an architectural aim, not a promise of costless
@@ -85,6 +104,8 @@ remaining grounded in actual slice operations.
   requires a complete applicability and invalidation contract.
 
 ### Separate lens requirements, evaluation, and projection construction
+
+#### Decision
 
 Lenses and presentations do not call language analyzers directly. A lens
 contributes the information requirements inherent in its projection; a composite
@@ -109,6 +130,15 @@ them to TypeScript entry points. It also lets presentation needs influence
 materialization without allowing rendering to perform hidden work or letting a
 presentation silently become an arbitrary lens.
 
+#### Alternatives considered
+
+- Have lenses call analyzers directly: rejected because it couples product
+  semantics to language-specific execution and impedes reuse by composite lenses.
+- Let presentation rendering trigger analysis: rejected because rendering would
+  become stateful, non-reproducible, and capable of concealing cost or failure.
+- Let presentations request arbitrary relationships: rejected because a
+  presentation could silently acquire another lens's semantics.
+
 #### Consequences
 
 - Standard expansion policy belongs to entity-kind/domain presentation semantics,
@@ -119,6 +149,8 @@ presentation silently become an arbitrary lens.
   semantics.
 
 ### Keep the first evaluator eager and implementation-specific
+
+#### Decision
 
 For the initial slice, evaluation may compute all requirements for a requested
 view before projection construction. Do not build a general lazy, incremental,
@@ -136,6 +168,14 @@ The first module and export analysis can be performed together. Specifying a
 general planner before a data-dependent or expensive analysis requires it would
 create framework code based on imagined needs.
 
+#### Alternatives considered
+
+- Build lazy or staged evaluation immediately: rejected because the initial
+  analysis does not demonstrate the need for that framework.
+- Require every lens to return one complete plan object: not adopted because plan
+  representation and declaration direction are implementation choices, and
+  future work may be data-dependent.
+
 #### Consequences
 
 - A temporary orchestration function may exist or not; its name and shape are not
@@ -144,6 +184,8 @@ create framework code based on imagined needs.
   abstraction level should be reconsidered, not a reason to accumulate exceptions.
 
 ### Make projection and evaluation state first-class records
+
+#### Decision
 
 A projection is an addressable program-domain object rather than only a transient
 return value. It identifies its subject, lens and lens parameters, and analysis
@@ -165,7 +207,25 @@ keeps qualification consistent and makes projections addressable for future
 navigation and agent context. Separate attempts are necessary because a logical
 request may be evaluated under different execution conditions.
 
+#### Alternatives considered
+
+- Keep projections as transient return values: rejected because projections need
+  identity, qualification, navigation, and future agent-context references.
+- Attach evaluation state only to produced claims: rejected because an evaluation
+  may fail, defer, stop, or establish an empty result without producing claims.
+- Mutate one evaluation record in place: rejected because later attempts must not
+  erase earlier outcomes.
+
+#### Consequences
+
+- Projections, claims, and relevant evaluation outcomes use one consistent record
+  and relationship model.
+- Projection construction can explain absent content and can exclude unrelated
+  outcomes from a shared evaluation.
+
 ### Use deterministic logical identity independently of persistence
+
+#### Decision
 
 Derive analysis-snapshot identity deterministically from every input and method
 version capable of changing the claims made by the slice. Derive module record
@@ -190,23 +250,21 @@ and testability without using persistence as identity. A knowingly incomplete
 cache-validity check could silently return false claims and is therefore worse
 than recomputation.
 
-## Alternatives considered
+#### Alternatives considered
 
-- Pass immutable values directly between every stage without a store boundary:
-  viable for the first lens but less suited to addressable projections and the
-  relationship-heavy next slice.
-- Use SQLite directly throughout the domain: deferred because it would make a
-  physical engine part of every consumer before its durable requirements exist.
-- Build a universal storage abstraction: rejected as speculative; the store grows
-  only with concrete domain operations.
-- Have lenses call analyzers directly: rejected because it couples product
-  semantics to language-specific execution and impedes reuse by composite lenses.
-- Let presentation rendering trigger analysis: rejected because rendering would
-  become stateful, non-reproducible, and capable of concealing cost or failure.
-- Require a complete one-pass plan object: not adopted; requirements may later be
-  declared, staged, or expanded through implementation-specific mechanisms.
 - Use persistent cache records as entity identity: rejected because eviction and
   lifecycle would determine logical reference stability.
+- Generate new opaque identities on every invocation: rejected because focused
+  CLI use and reproducible structured output require equivalent analyses to
+  reproduce references.
+- Implement cross-process caching immediately: deferred because an incomplete
+  applicability check could silently reuse invalid claims.
+
+#### Consequences
+
+- Equivalent analyses reproduce references without durable storage.
+- Changed inputs create a distinct snapshot rather than implying continuity.
+- Durable caching remains a later performance and lifecycle decision.
 
 ## Follow-up
 
