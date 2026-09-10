@@ -1,8 +1,8 @@
 # Decisions
 
-Decision records preserve consequential accepted choices and the reasoning available when those choices were made. They complement architecture documentation rather than replacing it. Do not create a decision record until the decision has been accepted; keep unresolved choices in plans or discussion.
+Decision records preserve consequential accepted choices and the reasoning available when those choices were made. They complement architecture documentation rather than replacing it. Do not create a decision record until the decision has been accepted; keep unresolved choices in drafts or discussion.
 
-A decision is accepted only through explicit human agreement. Agents may develop and evaluate alternatives in plans or discussion, but must not accept a decision themselves. An accepted decision must conform to governing foundation material; a conflicting choice requires an explicitly authorized foundation revision before it can be accepted. Within its stated scope, an accepted decision is prescriptive and binding on subsequent work until it is superseded.
+A decision is accepted only through explicit human agreement. Agents may develop and evaluate alternatives in drafts or discussion, but must not accept a decision themselves. An accepted decision must conform to governing foundation material; a conflicting choice requires an explicitly authorized foundation revision before it can be accepted. Within its stated scope, an accepted decision is prescriptive and binding on subsequent work until it is superseded.
 
 Use descriptive, unnumbered filenames, such as `keep-analysis-core-independent-of-desktop-ui.md` or `initial-product-slice-architecture.md`. Store decisions globally by subject rather than nesting them under the plan or task where they arose.
 

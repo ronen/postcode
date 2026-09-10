@@ -1,6 +1,6 @@
 # Project Documentation
 
-This is the human-readable map of PostCode's durable project knowledge. It also helps coding agents locate the context governing their work, but the documentation should remain understandable without access to an agent conversation.
+This is the human-readable map of PostCode's canonical project knowledge. It also helps coding agents locate the context governing their work, but the documentation should remain understandable without access to an agent conversation.
 
 Adopted, governing product and development material lives under [`foundation/`](../foundation/). This directory contains evolving plans, accepted decisions, and documentation of the application built from that foundation.
 
@@ -8,9 +8,13 @@ Coding agents begin with [`AGENTS.md`](../AGENTS.md), which directs them to the 
 
 ## Documentation Types
 
+### Drafts
+
+[`drafts/`](../drafts/) contains provisional planning artifacts whose history is worth preserving in Git. Draft artifacts are durable but non-governing: committing them records their development without approving their contents. Ephemeral checkout-local work belongs in ignored root underscore directories instead.
+
 ### Plans
 
-[`plans/`](plans/) contains proposals for future work. Plans may evolve while active and do not authorize implementation by themselves.
+[`plans/`](plans/) contains future-work plans explicitly approved by the human. Plans may evolve while approved or active and do not authorize implementation by themselves. Proposed plans and revisions remain under [`drafts/`](../drafts/) or in ignored underscore workspaces until approved.
 
 ### Architecture
 

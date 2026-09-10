@@ -8,7 +8,7 @@ This document describes how humans and coding agents plan, implement, verify, do
 
 Exploration, discussion, and preliminary planning do not require a task record. This includes investigating alternatives, drafting plans, maintaining development-process documentation, and preparing a proposed implementation task.
 
-Planning must not be treated as authorization to implement. Plans should clearly state their status, and unresolved choices should remain in plans or discussion until they are accepted and recorded as decisions.
+Planning must not be treated as authorization to implement. Unresolved choices should remain in drafts or discussion until the human approves a plan or accepts and records a decision.
 
 ### 1.2 Substantive implementation
 
@@ -30,7 +30,7 @@ Small local corrections may accompany related work when they are obvious, low ri
 
 ## 3. Planning
 
-Plans describe intended work, not established system behavior. Store durable plans under [`docs/plans/`](../docs/plans/) and follow the lifecycle described there.
+Plans describe intended work, not established system behavior. Store human-approved plans under [`docs/plans/`](../docs/plans/) and follow the lifecycle described there.
 
 A useful implementation plan should state:
 
@@ -44,9 +44,11 @@ A useful implementation plan should state:
 
 Keep plans at the level needed to guide work. Do not use planning documents to settle architecture implicitly: record consequential accepted choices under [`docs/decisions/`](../docs/decisions/).
 
-Planning may use a descriptively named root underscore directory, such as `_initial-product-slice/`, to develop and review a coherent set of provisional artifacts before any become durable project documents. Everything in that workspace remains uncommitted, non-governing, local to the checkout, and disposable, as defined by the [temporary-working-material conventions](conventions.md#temporary-working-material).
+Use [`drafts/`](../drafts/) for provisional planning artifacts when their history is worth tracking in Git. Draft artifacts are durable but non-governing; a commit preserves a draft without approving it. Use a descriptively named root underscore directory, such as `_initial-product-slice/`, instead when the artifacts are ephemeral, local to the checkout, and disposable. Both forms of provisional material follow the [provisional-working-material conventions](conventions.md#provisional-working-material).
 
-The human directs which planning-workspace artifacts are promoted. Move or incorporate plans into `docs/plans/`, and move or incorporate only explicitly accepted decisions into `docs/decisions/`. Before removing the workspace, confirm that all context worth preserving has been carried into durable documents.
+The human directs which provisional artifacts are promoted. Move or incorporate only explicitly approved plans into `docs/plans/`, and only explicitly accepted decisions into `docs/decisions/`. Promotion is a change of project role, not merely a file move: review the resulting canonical documents against their destination requirements. Before removing provisional material, confirm that all context worth preserving has been carried into durable documents.
+
+Any commit that adds or modifies draft artifacts under `drafts/` must use a subject beginning `draft: ` followed by a concise description, and must not include changes outside `drafts/`. A promotion commit is the exception: it may add or update approved material at its canonical location while deleting the corresponding draft artifacts, and uses an ordinary descriptive subject. Changes to the directory guidance in `drafts/README.md` are not changes to a draft artifact and follow ordinary commit conventions.
 
 ## 4. Implementation
 

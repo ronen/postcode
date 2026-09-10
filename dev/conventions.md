@@ -9,7 +9,7 @@ These conventions supplement the adopted [baseline conventions](../foundation/ba
 - Create directories when they receive meaningful content; do not use placeholder files to materialize a speculative structure.
 - Keep test fixtures under `fixtures/` when they represent repositories or external inputs rather than unit-local test data.
 
-## Temporary Working Material
+## Provisional Working Material
 
 - Put repository-specific scratch files and directories under a descriptively named root-level directory beginning with `_`, such as `_analysis/`, `_investigation/`, or `_rendered/`. The root `.gitignore` reserves this namespace for uncommitted working material.
 - `_work/TASK.md` is a governed task-drafting and handoff artifact, not ordinary scratch material. Handle it only as prescribed by the [task protocol](../foundation/task-protocol.md).
@@ -18,6 +18,10 @@ These conventions supplement the adopted [baseline conventions](../foundation/ba
 - Do not create project-local `.codex`, `.claude`, or similar tool-specific directories for scratch work.
 - A Git-ignored directory is still inside the observed repository. Do not use underscore directories for information that is required to remain outside that repository.
 - Committed or otherwise durable project material must not depend on content under an underscore directory. Treat such a dependency as an unexpected finding and report it rather than using the underscore content as authoritative.
+
+Use [`drafts/`](../drafts/) when provisional planning material is worth preserving in Git for review, comparison, or continuity across sessions. Draft artifacts are durable but non-governing: neither committing them nor placing approval language within them gives them the role of a plan, decision, or other canonical project document. Agents may use them as planning context, but not as binding requirements.
+
+Keep canonical project material independent of draft artifacts. The human directs when content is moved or incorporated into its canonical location, where it must independently satisfy the approval requirements for that document type. Treat a canonical document that depends on a draft artifact as an unexpected finding.
 
 ## Dependencies and Boundaries
 
