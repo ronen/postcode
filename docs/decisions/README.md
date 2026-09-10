@@ -28,10 +28,9 @@ Status: accepted
 Decided: YYYY-MM-DD
 Arising from:
 Scope:
-Supersedes:
-Superseded in part:
-Superseded by:
 ```
+
+Add `Supersedes`, `Superseded in part`, or `Superseded by` only when the field has a value. Do not include empty supersession fields.
 
 Allowed statuses are:
 
@@ -53,7 +52,7 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 
 ## Suggested Contents
 
-The template below is suitable for a single decision. For a bundled record, replace `## Decision` with a `## Decisions` section containing a unique, descriptive `###` heading for each decision.
+The template below is suitable for a single decision.
 
 ```markdown
 # Decision title
@@ -62,9 +61,6 @@ Status: accepted
 Decided: YYYY-MM-DD
 Arising from:
 Scope:
-Supersedes:
-Superseded in part:
-Superseded by:
 
 ## Context
 
@@ -79,14 +75,40 @@ Superseded by:
 ## Follow-up
 ```
 
-For example, a bundled section begins:
+In a bundled record, keep shared context at file level and give each decision its own unique, descriptive `###` heading. Under that stable heading, record the decision, rationale, alternatives considered, and consequences for that decision. This keeps each choice understandable and independently addressable for later supersession. A genuinely bundle-wide alternative may instead be explained once in the shared context when its scope is clear.
+
+Put follow-up under an individual decision when it applies only to that choice. Put shared follow-up after the complete `## Decisions` section when it applies across the bundle. Use both locations when needed, and omit either when there is no applicable follow-up.
+
+For example, a bundled record uses this structure:
 
 ```markdown
+## Context
+
 ## Decisions
 
 ### Initial interface
 
+#### Decision
+
+#### Rationale
+
+#### Alternatives considered
+
+#### Consequences
+
+#### Follow-up
+
 ### Repository analysis boundary
+
+#### Decision
+
+#### Rationale
+
+#### Alternatives considered
+
+#### Consequences
+
+## Follow-up
 ```
 
 State uncertainty and tradeoffs directly. A decision record should make the choice understandable without relying on the conversation that produced it.
