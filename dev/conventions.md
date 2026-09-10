@@ -21,7 +21,7 @@ These conventions supplement the adopted [baseline conventions](../foundation/ba
 
 Use [`drafts/`](../drafts/) when provisional planning material is worth preserving in Git for review, comparison, or continuity across sessions. Draft artifacts are durable but non-governing: neither committing them nor placing approval language within them gives them the role of a plan, decision, or other canonical project document. Agents may use them as planning context, but not as binding requirements.
 
-Keep canonical project material independent of draft artifacts. The human directs when content is moved or incorporated into its canonical location, where it must independently satisfy the approval requirements for that document type. Treat a canonical document that depends on a draft artifact as an unexpected finding.
+Keep canonical project material independent of draft artifacts. Do not cite a draft artifact as context required to understand canonical project material. When draft artifacts are promoted, carry the necessary context into the resulting canonical documents and link those documents to one another; Git history may preserve their shared drafting provenance. The human directs promotion, and content moved or incorporated into a canonical location must independently satisfy the approval requirements for that document type. Treat a canonical document that depends on a draft artifact as an unexpected finding.
 
 ## Dependencies and Boundaries
 

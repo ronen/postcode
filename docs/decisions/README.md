@@ -39,13 +39,15 @@ Allowed statuses are:
 - `partially superseded` — one or more identified decisions in the record have been superseded while the remainder stay accepted;
 - `superseded` — replaced by a linked later decision.
 
-`Arising from` may link to one or more plans, tasks, experiments, incidents, or discussions. `Scope` says where the decision applies, not where it was discussed.
+`Arising from` identifies durable project context, such as an approved plan, task, experiment, or incident. It may also describe a human discussion even when no durable source exists. Do not link to a draft artifact. When a plan and related decisions are promoted together, link the decisions to the approved plan; Git history preserves their shared drafting provenance. `Scope` says where the decision applies, not where it was discussed.
 
 Once accepted, preserve the record as historical evidence. A later reversal gets a new decision record. Link the records through `Supersedes` and `Superseded by`, and update the earlier record's status without rewriting its original context or rationale.
 
 Supersession may be many-to-many. A later record may supersede one or more complete records, specific headed decisions from one or more bundled records, or any combination of them. Under its `Supersedes` field, list every earlier record or specific heading it replaces.
 
 When a later record supersedes only part of a bundled record, set the earlier record's status to `partially superseded`. Under `Superseded in part`, identify each affected decision by its heading and link to the relevant replacement record or heading. Every affected earlier record must point forward through `Superseded by` or `Superseded in part`, and the replacement record must point back through `Supersedes`. Status alone is not sufficient: the mappings must make clear which decisions remain accepted and what replaced each superseded decision.
+
+When the last remaining accepted decision in a partially superseded record is later superseded, change the record's status to `superseded` and retain the complete forward mappings for all of its decisions.
 
 This directory's `README.md` is also the entry point for decisions. Once decision records exist, maintain a concise list of currently accepted decisions here, linking to their records without duplicating their contents.
 
