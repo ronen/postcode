@@ -33,22 +33,23 @@ opens the configured project, evaluates the information required by
 `modules(project)` and the selected presentation, and emits a qualified conceptual
 inventory of its modules.
 
-The normal CLI presentation is Unicode text. It identifies modules through
-TypeScript-established names or honest anonymity, deterministic mnemonic handles,
-snapshot-scoped opaque identifiers, and conceptual facets. The presentation may
-show the module standard expansions it declared before evaluation: effective
-exported symbols and associated in-source documentation.
+The normal CLI produces a Unicode-text module-inventory view. It identifies
+modules through TypeScript-established names or honest anonymity, deterministic
+mnemonic handles, deterministic snapshot-scoped PostCode Entity IDs, and
+conceptual facets. The view may show the module standard expansions declared by
+its presentation before evaluation: effective exported symbols and associated
+in-source documentation.
 
 The developer can run the CLI again with a previously displayed name, mnemonic
-handle, or opaque identifier to apply `inspect(subjects)` to the matching module
+handle, or Entity ID to apply `inspect(subjects)` to the matching module
 or modules. Selection cardinality is explicit. The resulting view can show the
 standard expansions declared by its presentation. The normal presentation does
 not show source facets or source-level Claim context. An explicit source-detail
 presentation request shows selected source information supported by the relevant
 Claim context and is identifiable as source escape-hatch use.
 
-JSON is an alternative presentation of the same qualified projection model, not
-a dump of compiler or internal-store structures.
+The CLI can produce either a Unicode-text or JSON view of the same qualified
+projection.
 
 ## Intended outcome
 
@@ -89,14 +90,14 @@ application.
   - named ambient-module symbols visible to that configured `Program`.
 - Global scripts are not silently represented as modules. Root files remain
   discovery provenance rather than conceptual entry modules.
-- Each module has a deterministic snapshot-scoped opaque identifier, a simple
+- Each module has a deterministic snapshot-scoped PostCode Entity ID, a simple
   deterministic mnemonic handle, its TypeScript-established name or honest
   anonymity, and established conceptual facets.
 - Repeating an invocation with equivalent analysis inputs and method versions
   reproduces the snapshot identity, module identifiers, handles, ordering, and
   structured output.
 - An `inspect(subjects)` invocation can select modules by exact name, handle, or
-  opaque identifier; zero, one, and multiple matches are represented honestly.
+  Entity ID; zero, one, and multiple matches are represented honestly.
 - `inspect(subjects)` returns the selected module entities and their applicable
   Claim context without redefining them or exposing arbitrary store contents.
 - An explicit source-detail presentation request on an inspection shows only
@@ -282,7 +283,7 @@ diagnostics as explicit limitations rather than guessing.
 ### 4. Assemble and present the module projections
 
 Implement `modules(project)` over the evaluated program records. Assign
-deterministic opaque identifiers and simple deterministic mnemonic handles within
+deterministic PostCode Entity IDs and simple deterministic mnemonic handles within
 the deterministic snapshot context.
 
 Implement `inspect(subjects)` as a qualified projection of selected subjects,

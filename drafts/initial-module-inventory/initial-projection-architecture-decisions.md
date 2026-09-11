@@ -254,7 +254,7 @@ than recomputation.
 
 - Use persistent cache records as entity identity: rejected because eviction and
   lifecycle would determine logical reference stability.
-- Generate new opaque identities on every invocation: rejected because focused
+- Generate new Entity IDs on every invocation: rejected because focused
   CLI use and reproducible structured output require equivalent analyses to
   reproduce references.
 - Implement cross-process caching immediately: deferred because an incomplete

@@ -37,10 +37,9 @@ executable entry point, filesystem root, repository, workspace, or current focus
 The likely operational default is a `tsconfig.json` in the current directory,
 but exact command syntax is not part of this decision.
 
-The normal CLI presentation is Unicode text. JSON is an alternative presentation
-of the same qualified projection model and is explicitly experimental; it is not
-a raw analysis or compiler dump. The CLI exposes lenses and views, not a public
-family of analysis commands.
+The CLI can produce either a Unicode-text or JSON view of the same qualified
+projection. JSON is explicitly experimental. The CLI exposes lenses and views,
+not a public family of analysis commands.
 
 #### Rationale
 
@@ -135,9 +134,9 @@ would create a promise without an operational definition.
 
 `modules(project)` returns a list of module domain entities together with
 lens-wide Claim context and any narrower per-module Claim context. Each module has
-a snapshot-scoped opaque identifier, its TypeScript-established name or honest
-anonymity, a simple deterministic PostCode mnemonic handle, and established
-conceptual facets.
+a deterministic snapshot-scoped PostCode Entity ID, its TypeScript-established
+name or honest anonymity, a simple deterministic PostCode mnemonic handle, and
+established conceptual facets.
 
 Facets are overlapping established characteristics rather than one universal
 enumeration. They may describe such distinctions as project/external,
@@ -320,7 +319,7 @@ that source provenance does not exist would weaken trust and traceability.
 #### Decision
 
 Analysis snapshot identity is deterministic over all analysis-defining inputs and
-method versions. Within an equivalent snapshot, module opaque identifiers,
+method versions. Within an equivalent snapshot, module Entity IDs,
 mnemonic handles, ordering, and structured output are deterministic across
 processes. Changed inputs produce a different snapshot context.
 
@@ -330,7 +329,7 @@ or identifier that does not match the current snapshot produces an honest
 no-current-match result rather than an inferred successor.
 
 The CLI supports applying `inspect(subjects)` to modules selected by an exact
-name, mnemonic handle, or opaque identifier learned from an earlier inventory. A
+name, mnemonic handle, or Entity ID learned from an earlier inventory. A
 referent may resolve to zero, one, or several entities; cardinality and the
 selected subset remain visible. `inspect(subjects)` returns those entities and
 their applicable Claim context; it does not dump arbitrary records from the
