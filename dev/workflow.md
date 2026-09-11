@@ -48,7 +48,7 @@ Use [`drafts/`](../drafts/) for provisional planning artifacts when their histor
 
 ### Suggested planning sequence
 
-This sequence is a convenience, not a required ceremony. Adapt or omit steps when another approach makes the work clearer.
+This sequence is a convenience, not a required ceremony. Feel free to vary it or use an entirely different approach to suit the planning work.
 
 1. Capture initial notes and alternatives in whichever provisional form is useful: for example, `drafts/<planning-name>/` when Git history helps, or `_<planning-name>/` for disposable checkout-local work.
 2. When a coherent package is ready for review, arrange the proposed canonical documents under a tracked directory such as:
@@ -60,7 +60,7 @@ This sequence is a convenience, not a required ceremony. Adapt or omit steps whe
    ```
 
    This mirrors the canonical `docs/plans/` and `docs/decisions/` directories, making the intended role and destination of each proposed document clear.
-3. Give a proposed plan in this review package `Status: in review`. This is a draft-only marker, not a canonical plan status. Proposed decision records likewise remain non-governing and must not be treated as accepted.
+3. For clarity during drafting and review, consider using `Status: in preparation` or `Status: in review`. These are optional draft labels, not canonical plan or decision statuses. Regardless of any status or approval language within a file, material under `drafts/` remains non-governing under the [provisional-working-material conventions](conventions.md#provisional-working-material).
 4. Review the plan and decisions together when their choices are interdependent. Another agent may perform a review when an independent reading would be useful.
 5. Once the human approves the package, change the plan status to `approved`, give accepted decision records their canonical `accepted` status, and move the files into the corresponding canonical directories. Check and correct links after moving the files; relative paths to documents that were already canonical will generally change. Review the moved documents and their links as a whole before committing the promotion.
 
