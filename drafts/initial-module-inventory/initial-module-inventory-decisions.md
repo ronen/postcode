@@ -274,11 +274,16 @@ qualification. They do not show source facets or source-level Claim context such
 as filesystem paths, declaration positions, raw syntax, compiler-node detail, or
 implementation mappings.
 
-Source-level detail is available only through an explicit source expansion and is
-identifiable as source escape-hatch use. Language-specific does not automatically
-mean source-level: TypeScript may mechanically establish a truthful conceptual
-facet while its compiler mechanism and source mapping remain unexpanded
-provenance.
+The initial slice provides source-level detail only through an explicit
+source-detail presentation expansion on inspection. It shows relevant selected
+source snippets identified by the Claim context of the inspected modules and
+displayed expansion records, keeps them visibly separate from conceptual
+information, and identifies their disclosure as source escape-hatch use. It is
+not full-file rendering or arbitrary source browsing.
+
+Language-specific does not automatically mean source-level: TypeScript may
+mechanically establish a truthful conceptual facet while its compiler mechanism
+and source mapping remain unexpanded provenance.
 
 Epistemological status, evaluation materialization, and consequential limitations
 remain visible even when detailed source evidence is not shown.
@@ -295,14 +300,17 @@ that source provenance does not exist would weaken trust and traceability.
   it would make the initial product surface a source-oriented inventory.
 - Hide all provenance and qualification until source expansion: rejected because
   users need conceptual status and limitations to understand the claims shown.
+- Provide full-file rendering or arbitrary source browsing: rejected because the
+  slice needs to validate bounded source escape, not build a source browser.
 
 #### Consequences
 
 - An explicit source expansion requires the source-escape observation behavior
   required by the adopted product design.
-- If source expansion is deferred from the initial implementation, normal
-  presentations still enforce this boundary and the missing escape affordance is
-  explicit plan scope rather than a silent fallback.
+- Claim context can identify source evidence without requiring normal
+  presentations to materialize or display it.
+- Source-snippet selection and any consequential omission remain visible in the
+  expanded presentation and its observation record.
 
 ### Make references repeatable but snapshot-scoped
 

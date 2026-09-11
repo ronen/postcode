@@ -44,8 +44,8 @@ handle, or opaque identifier to apply `inspect(subjects)` to the matching module
 or modules. Selection cardinality is explicit. The resulting view can show the
 standard expansions declared by its presentation. The normal presentation does
 not show source facets or source-level Claim context. An explicit source-detail
-presentation request may disclose those details and is identifiable as source
-escape-hatch use.
+presentation request shows selected source snippets identified by the relevant
+Claim context and is identifiable as source escape-hatch use.
 
 JSON is an alternative presentation of the same qualified projection model, not
 a dump of compiler or internal-store structures.
@@ -99,6 +99,10 @@ application.
   opaque identifier; zero, one, and multiple matches are represented honestly.
 - `inspect(subjects)` returns the selected module entities and their applicable
   Claim context without redefining them or exposing arbitrary store contents.
+- An explicit source-detail presentation request on an inspection shows only
+  relevant selected source snippets identified by the displayed claims' context,
+  keeps them visibly separate from conceptual information, and is recorded as
+  source escape-hatch use.
 - The module standard expansions are available to presentations:
   - effective exported symbols, including re-exports; and
   - compiler-associated documentation for modules and exported symbols.
@@ -195,6 +199,9 @@ application.
 - Implement evaluation, projection construction, `modules(project)`,
   `inspect(subjects)`, Unicode and JSON presentation, and exact module-subject
   selection.
+- Implement an explicit source-detail presentation expansion for inspected
+  modules and their materialized standard expansions, limited to source snippets
+  selected through relevant Claim context.
 - Implement invocation-scoped, version-zero observation batches and an
   `ObservationSink` boundary, including shared context references and visible
   delivery failure.
@@ -231,6 +238,8 @@ application.
 - A stable public JSON schema or a public CLI analysis/debugging API.
 - General presentation-layout optimization. Elision, truncation, pagination, and
   grouping may be refined locally so long as consequential omission stays visible.
+- Full-file source rendering, arbitrary source browsing or navigation, syntax
+  highlighting, and editor integration.
 - The research project's comparative study of conceptual and source-aware
   understanding.
 
@@ -289,8 +298,12 @@ types or one presentation with parameters is an implementation choice; the
 design does not require either a proliferation of special presentations or one
 unbounded presentation option surface.
 
-If an explicit source expansion is included, keep it visibly separate from the
-normal presentation and connect it to the required source-escape observation.
+Implement an explicit source-detail presentation expansion for inspection. It
+materializes only the relevant selected source snippets identified by Claim
+context for the inspected modules and displayed expansion records, keeps those
+snippets visibly separate from conceptual information, and connects their
+disclosure to the required source-escape observation. It does not provide
+full-file rendering or arbitrary source browsing.
 
 For each normal view-producing invocation, construct a self-contained observation
 batch with `formatVersion: 0`, UUID-addressed shared context, the qualified
@@ -362,18 +375,12 @@ details.
   frameworks. Implementation should expose only operations exercised by this
   slice and treat recurring boundary friction as evidence to revisit the design.
 - Observation artifacts may contain repository-derived documentation,
-  qualifications, identifiers, and—if source expansion is implemented—source
-  detail. The selected development sink needs an explicit external location and
-  privacy posture even though long-term retention policy belongs to the sink.
+  qualifications, identifiers, and explicitly expanded source snippets. The
+  selected development sink needs an explicit external location and privacy
+  posture even though long-term retention policy belongs to the sink.
 - Clean-agent responses can be plausible, agreeable, or dependent on prior
   programming knowledge. Structured questions and retained evidence reduce but do
   not remove that limitation; human inspection remains necessary.
-
-## Decision required before approval
-
-- Decide whether the first slice implements an explicit source-detail expansion.
-  If it does not, the default presentations must still enforce the
-  conceptual/source boundary and source expansion remains deferred explicitly.
 
 ## Selections required before execution
 
