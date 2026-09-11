@@ -44,7 +44,7 @@ handle, or opaque identifier to apply `inspect(subjects)` to the matching module
 or modules. Selection cardinality is explicit. The resulting view can show the
 standard expansions declared by its presentation. The normal presentation does
 not show source facets or source-level Claim context. An explicit source-detail
-presentation request shows selected source snippets identified by the relevant
+presentation request shows selected source information supported by the relevant
 Claim context and is identifiable as source escape-hatch use.
 
 JSON is an alternative presentation of the same qualified projection model, not
@@ -100,9 +100,9 @@ application.
 - `inspect(subjects)` returns the selected module entities and their applicable
   Claim context without redefining them or exposing arbitrary store contents.
 - An explicit source-detail presentation request on an inspection shows only
-  relevant selected source snippets identified by the displayed claims' context,
-  keeps them visibly separate from conceptual information, and is recorded as
-  source escape-hatch use.
+  relevant selected source information supported by the displayed claims'
+  context, keeps it visibly separate from conceptual information, and is recorded
+  as source escape-hatch use.
 - The module standard expansions are available to presentations:
   - effective exported symbols, including re-exports; and
   - compiler-associated documentation for modules and exported symbols.
@@ -200,8 +200,8 @@ application.
   `inspect(subjects)`, Unicode and JSON presentation, and exact module-subject
   selection.
 - Implement an explicit source-detail presentation expansion for inspected
-  modules and their materialized standard expansions, limited to source snippets
-  selected through relevant Claim context.
+  modules and their materialized standard expansions, limited to source
+  information selected through relevant Claim context.
 - Implement invocation-scoped, version-zero observation batches and an
   `ObservationSink` boundary, including shared context references and visible
   delivery failure.
@@ -299,11 +299,13 @@ design does not require either a proliferation of special presentations or one
 unbounded presentation option surface.
 
 Implement an explicit source-detail presentation expansion for inspection. It
-materializes only the relevant selected source snippets identified by Claim
-context for the inspected modules and displayed expansion records, keeps those
-snippets visibly separate from conceptual information, and connects their
-disclosure to the required source-escape observation. It does not provide
-full-file rendering or arbitrary source browsing.
+materializes only relevant selected source information supported by Claim context
+for the inspected modules and displayed expansion records, keeps that information
+visibly separate from conceptual information, and connects its disclosure to the
+required source-escape observation. Source facets, source-level Claim context,
+locations, declaration mappings, and snippets may all be represented; their exact
+selection, granularity, and presentation controls remain presentation choices. It
+does not provide full-file rendering or arbitrary source browsing.
 
 For each normal view-producing invocation, construct a self-contained observation
 batch with `formatVersion: 0`, UUID-addressed shared context, the qualified
@@ -375,7 +377,7 @@ details.
   frameworks. Implementation should expose only operations exercised by this
   slice and treat recurring boundary friction as evidence to revisit the design.
 - Observation artifacts may contain repository-derived documentation,
-  qualifications, identifiers, and explicitly expanded source snippets. The
+  qualifications, identifiers, and explicitly expanded source information. The
   selected development sink needs an explicit external location and privacy
   posture even though long-term retention policy belongs to the sink.
 - Clean-agent responses can be plausible, agreeable, or dependent on prior

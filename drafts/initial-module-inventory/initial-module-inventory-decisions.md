@@ -276,10 +276,13 @@ implementation mappings.
 
 The initial slice provides source-level detail only through an explicit
 source-detail presentation expansion on inspection. It shows relevant selected
-source snippets identified by the Claim context of the inspected modules and
-displayed expansion records, keeps them visibly separate from conceptual
-information, and identifies their disclosure as source escape-hatch use. It is
-not full-file rendering or arbitrary source browsing.
+source information supported by the Claim context of the inspected modules and
+displayed expansion records, keeps it visibly separate from conceptual
+information, and identifies its disclosure as source escape-hatch use. Source
+facets, source-level Claim context, locations, declaration mappings, and snippets
+may all be represented; their exact selection, granularity, and presentation
+controls remain presentation choices. The expansion is not full-file rendering
+or arbitrary source browsing.
 
 Language-specific does not automatically mean source-level: TypeScript may
 mechanically establish a truthful conceptual facet while its compiler mechanism
@@ -309,7 +312,7 @@ that source provenance does not exist would weaken trust and traceability.
   required by the adopted product design.
 - Claim context can identify source evidence without requiring normal
   presentations to materialize or display it.
-- Source-snippet selection and any consequential omission remain visible in the
+- Source-detail selection and any consequential omission remain visible in the
   expanded presentation and its observation record.
 
 ### Make references repeatable but snapshot-scoped
