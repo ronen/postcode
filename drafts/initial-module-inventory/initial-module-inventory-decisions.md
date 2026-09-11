@@ -26,7 +26,10 @@ persistent workspaces, and resource-bounded analysis are introduced.
 
 Implement PostCode in TypeScript and support TypeScript and configured JavaScript
 through the TypeScript language environment as the first language integration.
-Implement one primitive lens, `modules(project)`, through a development CLI.
+Implement two primitive lenses through a development CLI: `modules(project)`
+inventories the modules contained by a configured project, and
+`inspect(subjects)` returns selected subjects for qualified detailed inspection.
+The first slice supports modules as CLI-selectable inspection subjects.
 
 `project` is a context-relative PostCode subject denoting the one configured
 TypeScript project opened through operational setup. It does not denote an
@@ -56,6 +59,9 @@ preserves the opportunity to add that pressure later.
   establishes module identity and navigation first.
 - Expose analysis commands directly in the CLI: rejected because analysis is an
   internal means of satisfying lenses, not a parallel product surface.
+- Overload `modules(module)` to inspect a selected module: rejected because it
+  would instead imply a question about modules contained by that module, a
+  concept this slice does not define.
 - Support two languages initially: deferred in favor of faster progress with an
   explicit language-integration boundary.
 
@@ -312,11 +318,13 @@ cross-analysis continuity is a separate qualified relationship. A stale mnemonic
 or identifier that does not match the current snapshot produces an honest
 no-current-match result rather than an inferred successor.
 
-The CLI supports focusing or expanding modules selected by an exact name,
-mnemonic handle, or opaque identifier learned from an earlier inventory. A
+The CLI supports applying `inspect(subjects)` to modules selected by an exact
+name, mnemonic handle, or opaque identifier learned from an earlier inventory. A
 referent may resolve to zero, one, or several entities; cardinality and the
-selected subset remain visible. Wildcard, partial, fuzzy, and list selector syntax
-is deferred and exact lookup does not silently fall back to fuzzy matching.
+selected subset remain visible. `inspect(subjects)` returns those entities and
+their applicable Claim context; it does not dump arbitrary records from the
+store. Wildcard, partial, fuzzy, and list selector syntax is deferred and exact
+lookup does not silently fall back to fuzzy matching.
 
 #### Rationale
 
@@ -338,6 +346,8 @@ encoding from masquerading as durable semantic identity.
 - Equivalent uncached invocations can reproduce usable references.
 - Changed inputs intentionally create a new snapshot namespace and may invalidate
   earlier interactive mnemonics.
+- Detailed module inspection has its own lens semantics rather than overloading
+  `modules(project)` or prescribing a particular presentation implementation.
 
 ### Preserve Claim context and evaluation outcomes distinctly
 

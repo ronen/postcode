@@ -14,10 +14,11 @@ without first selecting a GUI framework or prematurely designing the composite
 `summary` lens.
 
 The slice uses TypeScript as both the implementation language and the first
-language integration. It implements one independently useful primitive lens,
-`modules(project)`, where `project` is the configured TypeScript project opened
-through operational setup and is not an executable entry point, filesystem root,
-workspace, or current focus.
+language integration. It implements two independently useful primitive lenses:
+`modules(project)` inventories the modules in the configured TypeScript project,
+and `inspect(subjects)` returns selected subjects for qualified detailed
+inspection. `project` is opened through operational setup and is not an
+executable entry point, filesystem root, workspace, or current focus.
 
 The plan is governed by these resulting decisions:
 
@@ -39,10 +40,12 @@ show the module standard expansions it declared before evaluation: effective
 exported symbols and associated in-source documentation.
 
 The developer can run the CLI again with a previously displayed name, mnemonic
-handle, or opaque identifier to focus the presentation on the matching module or
-modules. Selection cardinality is explicit. The normal presentation does not
-show source facets or source-level Claim context. An explicit source expansion
-may disclose those details and is identifiable as source escape-hatch use.
+handle, or opaque identifier to apply `inspect(subjects)` to the matching module
+or modules. Selection cardinality is explicit. The resulting view can show the
+standard expansions declared by its presentation. The normal presentation does
+not show source facets or source-level Claim context. An explicit source-detail
+presentation request may disclose those details and is identifiable as source
+escape-hatch use.
 
 JSON is an alternative presentation of the same qualified projection model, not
 a dump of compiler or internal-store structures.
@@ -92,8 +95,10 @@ application.
 - Repeating an invocation with equivalent analysis inputs and method versions
   reproduces the snapshot identity, module identifiers, handles, ordering, and
   structured output.
-- A focused invocation can select modules by exact name, handle, or opaque
-  identifier; zero, one, and multiple matches are represented honestly.
+- An `inspect(subjects)` invocation can select modules by exact name, handle, or
+  opaque identifier; zero, one, and multiple matches are represented honestly.
+- `inspect(subjects)` returns the selected module entities and their applicable
+  Claim context without redefining them or exposing arbitrary store contents.
 - The module standard expansions are available to presentations:
   - effective exported symbols, including re-exports; and
   - compiler-associated documentation for modules and exported symbols.
@@ -127,6 +132,9 @@ application.
   empty established result cannot be confused with absent analysis.
 - `modules(project)` returns module domain entities with lens-wide and narrower
   per-module Claim context. It does not itself require exports or documentation.
+- `inspect(subjects)` returns its selected subject entities with applicable
+  lens-wide and per-subject Claim context. In this slice its CLI-selectable
+  subjects are modules learned from `modules(project)`.
 - Entity kinds define standard expansions independently of individual lenses.
   Presentations declare required expansions before evaluation and cannot trigger
   evaluation while rendering.
@@ -184,8 +192,9 @@ application.
 - Implement TypeScript module discovery for the stated supported population.
 - Discover effective exported symbols and compiler-associated documentation as
   standard expansion data.
-- Implement evaluation, projection construction, Unicode presentation, JSON
-  presentation, and focused exact selection.
+- Implement evaluation, projection construction, `modules(project)`,
+  `inspect(subjects)`, Unicode and JSON presentation, and exact module-subject
+  selection.
 - Implement invocation-scoped, version-zero observation batches and an
   `ObservationSink` boundary, including shared context references and visible
   delivery failure.
@@ -261,16 +270,24 @@ merged declarations, type/value roles, and documentation provenance through
 qualified records. Treat unsupported module categories and encountered
 diagnostics as explicit limitations rather than guessing.
 
-### 4. Assemble and present the module projection
+### 4. Assemble and present the module projections
 
 Implement `modules(project)` over the evaluated program records. Assign
 deterministic opaque identifiers and simple deterministic mnemonic handles within
 the deterministic snapshot context.
 
-Implement the normal Unicode presentation and experimental JSON presentation.
-Both expose conceptual information and qualifications without leaking source
-detail. Implement focused exact selection by name, handle, or identifier, with
-honest zero/one/many results and selected-subset disclosure.
+Implement `inspect(subjects)` as a qualified projection of selected subjects,
+with exact module selection by name, handle, or identifier and honest
+zero/one/many results and selected-subset disclosure. It does not mean “modules
+contained by this module” and does not expose arbitrary records merely because
+they exist in the store.
+
+Implement Unicode and experimental JSON presentation of both projections. They
+expose conceptual information and qualifications without leaking source detail.
+Whether compact inventory and detailed inspection use distinct presentation
+types or one presentation with parameters is an implementation choice; the
+design does not require either a proliferation of special presentations or one
+unbounded presentation option surface.
 
 If an explicit source expansion is included, keep it visibly separate from the
 normal presentation and connect it to the required source-escape observation.
@@ -307,6 +324,8 @@ The fixture set should cover at least:
   documentation, and multiple contributing documentation records;
 - duplicate implementation names or mnemonic handles producing multiple exact
   matches;
+- `inspect(subjects)` selection producing honest zero-, one-, and multiple-module
+  results with applicable qualifications and declared standard expansions;
 - malformed or unusable project configuration as an operational failure;
 - source diagnostics encountered on the requested analysis path;
 - unsupported or unresolved cases that exercise explicit limitation reporting;
@@ -350,11 +369,14 @@ details.
   programming knowledge. Structured questions and retained evidence reduce but do
   not remove that limitation; human inspection remains necessary.
 
-## Decisions required before implementation
+## Decision required before approval
 
 - Decide whether the first slice implements an explicit source-detail expansion.
   If it does not, the default presentations must still enforce the
   conceptual/source boundary and source expansion remains deferred explicitly.
+
+## Selections required before execution
+
 - Select the concrete default development `ObservationSink`, its external local
   destination, and its privacy-visible configuration. This is sink implementation
   policy, not a commitment to retain or read old event formats in PostCode.

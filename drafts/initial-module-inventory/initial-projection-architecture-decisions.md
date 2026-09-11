@@ -142,7 +142,7 @@ presentation silently become an arbitrary lens.
 #### Consequences
 
 - Standard expansion policy belongs to entity-kind/domain presentation semantics,
-  not to `modules(project)` or a TypeScript analyzer.
+  not to `modules(project)`, `inspect(subjects)`, or a TypeScript analyzer.
 - Presentation requirements remain distinct from lens parameters even when they
   affect execution planning.
 - Future evaluation may become lazy, incremental, or staged without changing lens
