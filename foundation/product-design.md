@@ -609,6 +609,24 @@ The two projections may initially be placed side by side. More specialized compa
 
 Projection stability is particularly important here: changes in the projection mechanism must not masquerade as changes in the program.
 
+#### 3.6.1 Conceptual Diffs
+
+A broader change-oriented lens for conceptual diffs takes a revision or commit range as its input and identifies relevant subjects and kinds of change rather than requiring the human to select one lens and subject in advance:
+
+```text
+diff(revision_range, lens_parameters)
+```
+
+Lens parameters may specify a subject or scope; a perspective such as dependencies, behavior, boundaries, tests, or requirements; a focus expressed in prose; breadth, depth, or an information budget; and whether to include interpreted significance as well as mechanically derived changes.
+
+A command-line interface might expose this capability as `postcode diff`, accepting explicit options or descriptive text that asks for a particular perspective or focus. The resulting projection can also use an appropriate presentation in the GUI.
+
+An unfocused conceptual diff may provide a compact, qualified starting view analogous to `summarize(subject)`. It should expose the lenses, evidence, and selection criteria behind its account and allow the human to expand alternative descriptions or lens-specific comparisons. It must not imply that its account is uniquely correct or that omitted changes are unimportant unless those claims are supportable.
+
+A single commit might, for example, be described from different perspectives as moving responsibility across a module boundary, adding a runtime dependency, preserving externally visible behavior while restructuring implementation, satisfying a recorded refactoring requirement, and strengthening a projected boundary guarantee.
+
+These descriptions may coexist while having different epistemological bases: the dependency change may be mechanically derived, movement of responsibility may be interpretation, behavioral preservation may be supported by tests, and correspondence to the requirement may come from recorded development context. Which descriptions are salient generally depends on the current task and investigation.
+
 ### 3.7 Agent Integration
 
 Separating PostCode from the coding agent creates an important interaction question.
@@ -707,9 +725,7 @@ PostCode should also make it easy to record subjective observations and reaction
 - lightweight controls that record an immediate positive or negative reaction—for example, 😁 or 😩—and offer an optional prompt for explanatory text;
 - a **Wish I had lens/projection…** control that records an unmet information need and offers an optional prompt to describe it.
 
-#### 3.8.3 Evidence Boundary and Provenance
-
-PostCode must support an explicit evidence boundary between the repository being observed and the records produced by formative investigation. Formative observation records must be stored outside the observed repository; their destination must be configurable. During PostCode-on-PostCode use, this allows observations, subsequent analysis, and withheld reference material to remain outside the application repository and unavailable as input to PostCode or its coding agents.
+#### 3.8.3 Event Provenance
 
 Each recorded event should include provenance and context metadata sufficient to identify:
 
@@ -719,7 +735,11 @@ Each recorded event should include provenance and context metadata sufficient to
 - the current operational task and relevant contextual information, where available;
 - whether the event arose from genuine use of PostCode for software investigation or development or from testing or debugging PostCode itself.
 
-Events arising from testing or debugging may be suppressed. Where the operational task is formalized, the recorded context may include its definition or a stable reference to the external task artifact or conversation that defines it.
+Where the operational task is formalized, the recorded context may include its definition or a stable reference to the external task artifact or conversation that defines it.
+
+#### 3.8.4 Observation Delivery
+
+Released production builds deliver research-oriented observation events to the designated research observation storage using configuration selected when the build is produced. Development and test builds may suppress observation events or deliver them to another destination convenient for development, including a location within the development repository, subject to the [Generated-Output Evidence Boundary](#5-generated-output-evidence-boundary).
 
 ## 4. Projection Capabilities and Architecture
 
@@ -894,3 +914,11 @@ When adding new languages, the rule is:
 Tests are a particularly useful stress case. A behavioral test may project naturally into a shared concept such as “duplicate identifiers are rejected,” while another test may fundamentally concern a language's type system, ownership rules, macro behavior, linking semantics, runtime scheduling, or memory management.
 
 Shared concepts and language-specific extensions can coexist. Experience across languages should reveal their boundary rather than deciding that boundary in advance.
+
+## 5. Generated-Output Evidence Boundary
+
+Outputs produced by PostCode about a repository—including observation records, CLI output, exported projections or views, cached analysis results, and reports—must not silently become repository evidence in subsequent analysis of that same repository. PostCode may retain, reuse, or compare such outputs as PostCode-produced artifacts with their provenance intact, but must not rediscover them as though they were independent evidence about the program.
+
+PostCode must support keeping generated outputs outside the analyzed repository or explicitly excluding their locations from repository evidence. Markings within the generated data may supplement but must not replace that boundary.
+
+Outputs concerning other subject repositories may remain within the PostCode development repository as development or test artifacts and may provide evidence about PostCode's behavior, provided their provenance is preserved. When PostCode analyzes its own repository for development or testing, locally retained PostCode outputs must be excluded from repository evidence to prevent a feedback loop.
