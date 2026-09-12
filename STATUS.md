@@ -1,23 +1,35 @@
 # Project Status
 
-Last reviewed: 2026-09-10
+Last reviewed: 2026-09-12
 
-PostCode is in preliminary product and architecture planning. The repository contains the adopted product design and development foundation, but there is not yet a runnable application or an active implementation task.
+PostCode has an approved initial module-inventory plan and accepted supporting
+product, architecture, and observation-recording decisions. There is not yet a
+runnable application or an active implementation task.
 
 ## Current Work
 
-The initial development workflow has been established for an application expected to be implemented primarily by coding agents. The product-design foundation and task protocol are adopted, with supporting workflow, conventions, and documentation structure in place.
+The initial development workflow has been established for an application expected
+to be implemented primarily by coding agents. The product-design foundation and
+task protocol are adopted, with supporting workflow, conventions, and
+documentation structure in place.
 
-An initial module-inventory slice and its related architecture decisions are being developed as a provisional review package. They are not yet approved or governing. No initial product slice, application architecture, or technology stack has yet been adopted.
+The approved first slice uses TypeScript to provide qualified
+`modules(project)` and `inspect(subjects)` views through a development CLI,
+including explicit source-detail expansion and formative observation recording.
+Its supporting decisions establish the initial program-record, evaluation,
+presentation, identity, and observation boundaries.
 
 ## Next
 
-The next step is to review and refine the provisional initial-module-inventory package, then decide whether to approve and promote its plan and related decisions. Implementation will still require separate authorization through the task protocol.
+The next step is to select the implementation-time items identified by the plan
+and explicitly authorize implementation through the task protocol. Plan approval
+does not itself authorize implementation.
 
 See:
 
 - [Product design](foundation/product-design.md)
 - [Development workflow](dev/workflow.md)
-- [Plans](docs/plans/)
+- [Initial module inventory plan](docs/plans/initial-module-inventory-plan.md)
+- [Accepted decisions](docs/decisions/)
 - [Backlog](docs/backlog.md)
 - [Task protocol](foundation/task-protocol.md)

@@ -1,8 +1,8 @@
 # Initial module inventory slice
 
-Status: in review
+Status: approved
 Created: 2026-09-10
-Updated: 2026-09-10
+Updated: 2026-09-12
 Superseded by:
 
 ## Context

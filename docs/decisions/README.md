@@ -50,6 +50,12 @@ When the last remaining accepted decision in a partially superseded record is la
 
 This directory's `README.md` is also the entry point for decisions. Once decision records exist, maintain a concise list of currently accepted decisions here, linking to their records without duplicating their contents.
 
+## Accepted decisions
+
+- [Initial module inventory decisions](initial-module-inventory-decisions.md)
+- [Initial projection architecture decisions](initial-projection-architecture-decisions.md)
+- [Initial observation recording decisions](initial-observation-recording-decisions.md)
+
 ## Suggested Contents
 
 The template below is suitable for a single decision.

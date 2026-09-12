@@ -1,7 +1,7 @@
 # Initial observation recording decisions
 
 Status: accepted
-Decided: 2026-09-10
+Decided: 2026-09-12
 Arising from: [Initial module inventory plan](../plans/initial-module-inventory-plan.md)
 Scope: formative observation production in the initial PostCode slice
 

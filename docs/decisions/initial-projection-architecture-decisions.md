@@ -1,7 +1,7 @@
 # Initial projection architecture decisions
 
 Status: accepted
-Decided: 2026-09-10
+Decided: 2026-09-12
 Arising from: [Initial module inventory plan](../plans/initial-module-inventory-plan.md)
 Scope: internal boundaries established by the initial PostCode slice
 
