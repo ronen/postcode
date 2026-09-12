@@ -4,7 +4,7 @@ This document describes the current design hypothesis for PostCode: what the sys
 
 ## 1. Design Premise
 
-The research goal is a projection-based software-development environment through which a human can understand, direct, and supervise software using task-appropriate, epistemologically qualified representations rather than routinely working through conventional programming-language source.
+The goal is a projection-based software-development environment through which a human can understand, direct, and supervise software using task-appropriate, epistemologically qualified representations rather than routinely working through conventional programming-language source.
 
 The first design decision is a simplification: PostCode's projections and views are read-only. The human continues to direct program changes by instructing coding agents in prose. This simplification defers questions about semantics, authority, ambiguity, round-tripping, and implementation conformance that need not be answered to investigate the core projection model. Later versions of PostCode could support bidirectional views without invalidating the projection model described here.
 
@@ -710,9 +710,11 @@ The file-based exchange can later develop into a more interactive protocol. An e
 
 PostCode might in turn generate prompt-ready references, expose structured queries, or eventually contain the agent conversation itself. These mechanisms can build on the same shared context model rather than replacing it.
 
-### 3.8 Formative Observation Support
+### 3.8 Research Observation Support
 
-PostCode should support formative observation without requiring the developer to maintain a separate research diary.
+PostCode is developed and used as part of a research project. To support that work, it should produce research-oriented telemetry and make contemporaneous subjective observations easy to record, without requiring the developer to maintain a separate research diary.
+
+This does not preclude separate operational telemetry, diagnostics, or product analytics. Those serve different purposes and should not silently enter the research evidence stream.
 
 #### 3.8.1 Automatic Event Capture
 
