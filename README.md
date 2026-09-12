@@ -20,6 +20,20 @@ For the current project state, see [`STATUS.md`](STATUS.md). For plans, architec
 
 Coding agents should begin with [`AGENTS.md`](AGENTS.md). The detailed development process is described in [`dev/workflow.md`](dev/workflow.md).
 
+The initial module-inventory implementation is at its first architectural review
+checkpoint. Its internal discovery, record store, evaluation, and projection path
+can be verified with Node.js 22.13 or later:
+
+```sh
+npm ci
+npm test
+npm run check
+```
+
+There is not yet a user-facing CLI. See the [implemented architecture](docs/architecture/README.md)
+for the current boundary and the [active task](records/tasks/2026-09-12-initial-module-inventory.md)
+for the complete authorized outcome and remaining review gates.
+
 ## Observability
 
 PostCode is intended to support the [PostCode Research Project](https://github.com/ronen/postcode-research) by recording and exporting observations, including relevant interaction events and contemporaneous user reports, for later analysis. This capability has not yet been implemented.

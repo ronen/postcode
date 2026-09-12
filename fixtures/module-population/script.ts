@@ -1,0 +1,1 @@
+const globalValue = 1;

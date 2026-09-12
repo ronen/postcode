@@ -2,34 +2,25 @@
 
 Last reviewed: 2026-09-12
 
-PostCode has an approved initial module-inventory plan and accepted supporting
-product, architecture, and observation-recording decisions. There is not yet a
-runnable application or an active implementation task.
+The [initial module-inventory task](records/tasks/2026-09-12-initial-module-inventory.md)
+is active on `codex/initial-module-inventory`. Its opening commit precedes all
+implementation changes. The first architectural checkpoint is ready for the
+human-arranged independent review required by the task.
 
-## Current Work
+The implemented core opens one TypeScript configuration, discovers the specified
+module population, stores qualified program records and evaluation attempts, and
+constructs stored `modules(project)` and exact-selection `inspect(subjects)`
+projections. It has a pinned TypeScript/Node scaffold and 19 passing tests,
+including separate-process determinism and generated-output exclusion.
+See the [architecture overview](docs/architecture/README.md).
 
-The initial development workflow has been established for an application expected
-to be implemented primarily by coding agents. The product-design foundation and
-task protocol are adopted, with supporting workflow, conventions, and
-documentation structure in place.
+There is not yet a user-facing CLI. Exports/documentation expansions, Unicode and
+experimental JSON presentations, source-detail disclosure, and observation
+production remain to be integrated after checkpoint review. The selected local
+development sink and privacy posture are documented in
+[conventions](dev/conventions.md#local-development-observation-sink-selection).
 
-The approved first slice uses TypeScript to provide qualified
-`modules(project)` and `inspect(subjects)` views through a development CLI,
-including explicit source-detail expansion and observation recording.
-Its supporting decisions establish the initial program-record, evaluation,
-presentation, identity, and observation boundaries.
-
-## Next
-
-The next step is to select the implementation-time items identified by the plan
-and explicitly authorize implementation through the task protocol. Plan approval
-does not itself authorize implementation.
-
-See:
-
-- [Product design](foundation/product-design.md)
-- [Development workflow](dev/workflow.md)
-- [Initial module inventory plan](docs/plans/initial-module-inventory-plan.md)
-- [Accepted decisions](docs/decisions/)
-- [Backlog](docs/backlog.md)
-- [Task protocol](foundation/task-protocol.md)
+The [approved plan](docs/plans/initial-module-inventory-plan.md) remains the full
+scope. Later gates include approval of an unfamiliar external validation
+repository, human Unicode inspection, the clean-agent exercise, and final
+independent review. No task closure or full-slice validation is claimed.

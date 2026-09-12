@@ -60,4 +60,59 @@ Keep canonical project material independent of draft artifacts. Do not cite a dr
 
 ## Technology-Specific Conventions
 
-Add language, formatting, naming, testing, and module conventions here when the relevant technology is adopted. Do not infer them from a proposed architecture before that decision is accepted.
+The initial slice uses Node.js 22.13 or later, TypeScript, ECMAScript modules,
+and npm with a committed lockfile. Install with `npm ci`. TypeScript's compiler
+API is also the runtime language analyzer. Version 6.0.3 is pinned because this
+slice targets its documented JavaScript compiler API; compiler upgrades require
+re-running semantic fixtures and checking identity method versions.
+
+- `typescript` provides the analyzer and `tsc` build/type check. It is the only
+  direct runtime dependency. Its upstream is Microsoft's TypeScript project.
+- `@types/node` 22.20.2 provides compile-time declarations for Node APIs.
+  Its transitive `undici-types` dependency supplies HTTP API declarations used
+  by those types; neither adds a runtime observation transport.
+- Node's built-in test runner and assertions provide tests without a separate
+  test framework or transpilation runner. npm is installation/build orchestration.
+
+Use strict checking, explicit type-only imports, `.js` relative import specifiers,
+two-space indentation, single-quoted TypeScript strings, and semicolons. Keep
+compiler imports under the TypeScript integration. Do not expose compiler nodes
+or symbols through program-domain interfaces. Tests use the real compiler with
+small fixtures; synthetic providers are appropriate for evaluation states that
+the eager first provider does not normally produce.
+
+`npm run check` checks types without emitting; `npm test` builds and runs tests.
+Build output lives under Git-ignored `_build/`. Repository-input fixtures live in
+`fixtures/`, outside the application's compile include list. Tests can create
+temporary projects through Node's temporary directory and must clean them up.
+The internal test process probe is not a supported application CLI or JSON schema.
+
+Method versions in the identity module participate in snapshot identity. Bump
+the responsible version when changing analysis, record, handle, or projection
+semantics. Equivalent runs must not include clocks or random observation UUIDs
+in program-record identity or structured projection output.
+
+### Local development observation sink selection
+
+Selected for the remainder of this task, not yet implemented at the first review
+checkpoint: one version-zero invocation batch per local JSON file under the
+PostCode development checkout's `_observations/` directory. The destination is
+the PostCode checkout, independently of the selected project's configuration
+directory. The root underscore rule ignores it in Git. No remote or shared sink
+is selected.
+
+The CLI will disclose the absolute local destination on stderr. Files may contain
+repository context, selection inputs, documentation, qualifications, the qualified
+view artifact, the exact rendered output, and explicitly requested source detail.
+The sink should create its directory with mode `0700` and files with mode `0600`;
+pre-existing directory permissions remain the local owner's responsibility.
+No real-project observations may be committed without human approval.
+
+The caller must explicitly supply the actual observation directory to project
+opening's output-exclusion boundary before any analysis, even when analyzing a
+parent repository or a configuration outside the PostCode checkout. The same
+requirement applies to retained views, reports, and other generated outputs.
+The destination choice does not impose retention, migration, historical-reading,
+or producer-side cache policy. Delivery failure must be visible while preserving
+a successfully produced view. Sink implementation and end-to-end privacy/failure
+checks remain part of the active task after the first checkpoint review.
