@@ -5,6 +5,7 @@
   "type": "module",
   "engines": { "node": ">=22.13.0" },
   "scripts": {
+    "postcode": "node _build/src/cli.js",
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && node --test _build/test/*.test.js",
     "check": "tsc -p tsconfig.json --noEmit"

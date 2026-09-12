@@ -20,23 +20,78 @@ For the current project state, see [`STATUS.md`](STATUS.md). For plans, architec
 
 Coding agents should begin with [`AGENTS.md`](AGENTS.md). The detailed development process is described in [`dev/workflow.md`](dev/workflow.md).
 
-The initial module-inventory implementation is at its first architectural review
-checkpoint. Its internal discovery, record store, evaluation, and projection path
-can be verified with Node.js 22.13 or later:
+The development CLI opens one configured TypeScript project and presents qualified
+`modules(project)` and exact-selection `inspect(subjects)` views. Use Node.js
+22.13 or later:
 
 ```sh
 npm ci
+npm run build
+npm run --silent postcode
+npm run --silent postcode -- --project fixtures/exports/tsconfig.json
+npm run --silent postcode -- inspect documented --project fixtures/exports/tsconfig.json
+npm run --silent postcode -- inspect documented --project fixtures/exports/tsconfig.json --source-detail
+npm run --silent postcode -- --json
 npm test
 npm run check
 ```
 
-There is not yet a user-facing CLI. See the [implemented architecture](docs/architecture/README.md)
-for the current boundary and the [active task](records/tasks/2026-09-12-initial-module-inventory.md)
-for the complete authorized outcome and remaining review gates.
+The default configuration is `tsconfig.json` in the current directory. Inspection
+accepts one exact module name, generated handle, or Entity ID from an inventory.
+One referent can match zero, one, or several modules; it never falls back to fuzzy
+matching. IDs and handles are scoped to the analyzed snapshot. Source-backed
+modules without a compiler-established conceptual name are shown as anonymous,
+with exported symbols and documentation for recognition.
+
+Normal output contains conceptual information and qualifications. Unicode and the
+experimental `postcode-view/0` JSON presentation use the same qualified projection.
+`--source-detail` is available only for inspection and shows supporting source
+locations, separately identified as source escape. It does not show full files.
+
+The default inventory shows up to six exports and one documentation assertion per
+module/export. Inspection shows up to 50 exports and three assertions. Inventory
+assertion excerpts are limited to 400 characters and five tags; inspection uses
+2,000 characters and 20 tags. Tag text is limited to 300 characters. Every omitted
+export, assertion, tag or character is counted. Conceptual documentation excerpts
+omit fenced source examples and source-oriented `@example`/`@see` tags; the full
+assertions remain stored with provenance. Documentation is a recorded
+assertion, not proof of behavior or currency. Type-only forwarding may expose a
+value symbol for type queries without exposing a runtime value; symbol roles and
+export roles remain separate.
+
+Discovery inventories external-module SourceFiles and visible named ambient
+modules in the configured TypeScript Program, including external dependencies.
+Global scripts are not inventorial modules. Diagnostics and unavailable export
+routes qualify results; this command does not run a general type check. Exit code
+0 indicates a produced view, which can contain qualified/partial expansions;
+2 indicates a usage or project-open failure; 1 indicates an internal failure.
+
+See the [architecture overview](docs/architecture/README.md),
+[development conventions](dev/conventions.md), and
+[active task](records/tasks/2026-09-12-initial-module-inventory.md) for implementation
+boundaries and outstanding validation/review gates.
 
 ## Observability
 
-PostCode is intended to support the [PostCode Research Project](https://github.com/ronen/postcode-research) by recording and exporting observations, including relevant interaction events and contemporaneous user reports, for later analysis. This capability has not yet been implemented.
+Normal view-producing invocations automatically submit one experimental
+version-zero observation batch to a local file under this PostCode checkout's
+`_observations/` directory. The CLI discloses that absolute destination on stderr.
+The batch includes the request, analysis context, qualified view, exact output,
+and any source-escape event. It can contain repository-derived documentation and
+explicitly requested source locations. Nothing is sent remotely. The local sink
+creates its directory with mode `0700` and files with mode `0600`.
+
+Observation output is Git-ignored and explicitly excluded from analysis, along
+with PostCode's build output, including when a nested configuration is selected.
+If retaining additional generated views/reports, keep them in `_observations/`
+or outside the repository being analyzed. Git-ignore alone does not exclude
+repository evidence. Sink failures produce a warning while preserving the view.
+PostCode does not read historical observation streams or prescribe sink retention.
+Do not commit real-project observations without explicit human approval.
+
+These observations support later work by the
+[PostCode Research Project](https://github.com/ronen/postcode-research).
+Contemporaneous subjective-note capture and remote research export remain deferred.
 
 ## License
 

@@ -99,17 +99,16 @@ in program-record identity or structured projection output.
 
 ### Local development observation sink selection
 
-Selected for the remainder of this task, not yet implemented at the first review
-checkpoint: one version-zero invocation batch per local JSON file under the
+Implemented for this task: one version-zero invocation batch per local JSON file under the
 PostCode development checkout's `_observations/` directory. The destination is
 the PostCode checkout, independently of the selected project's configuration
 directory. The root underscore rule ignores it in Git. No remote or shared sink
 is selected.
 
-The CLI will disclose the absolute local destination on stderr. Files may contain
+The CLI discloses the absolute local destination on stderr. Files may contain
 repository context, selection inputs, documentation, qualifications, the qualified
 view artifact, the exact rendered output, and explicitly requested source detail.
-The sink should create its directory with mode `0700` and files with mode `0600`;
+The sink creates its directory with mode `0700` and files with mode `0600`;
 pre-existing directory permissions remain the local owner's responsibility.
 No real-project observations may be committed without human approval.
 
@@ -119,5 +118,5 @@ parent repository or a configuration outside the PostCode checkout. The same
 requirement applies to retained views, reports, and other generated outputs.
 The destination choice does not impose retention, migration, historical-reading,
 or producer-side cache policy. Delivery failure must be visible while preserving
-a successfully produced view. Sink implementation and end-to-end privacy/failure
-checks remain part of the active task after the first checkpoint review.
+a successfully produced view. The CLI and sink have automated delivery, privacy-mode, exact-output and nested-configuration
+exclusion checks. The active task still requires its instrument-validation and final review gates.

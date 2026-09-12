@@ -3,26 +3,25 @@
 Last reviewed: 2026-09-13
 
 The [initial module-inventory task](records/tasks/2026-09-12-initial-module-inventory.md)
-is active on `codex/initial-module-inventory`. Its opening commit precedes all
-implementation changes. The first architectural checkpoint passed independent review with no blocking
-findings. The
-[review handoff](records/reviews/2026-09-12-module-inventory-core.md) identifies the
-exact implementation commit and requested review focus.
+is active on `codex/initial-module-inventory`. The first independent architectural
+review reported no blocking findings; its [dispositions](records/reviews/2026-09-12-module-inventory-core.md)
+are recorded and the small corrections are implemented.
 
-The implemented core opens one TypeScript configuration, discovers the specified
-module population, stores qualified program records and evaluation attempts, and
-constructs stored `modules(project)` and exact-selection `inspect(subjects)`
-projections. It has a pinned TypeScript/Node scaffold and 20 passing tests,
-including separate-process determinism and generated-output exclusion.
-See the [architecture overview](docs/architecture/README.md).
+The development CLI now provides Unicode and experimental JSON module inventories
+and exact-selection inspections, effective export and documentation expansions,
+explicit source-location disclosure, and automatic local observation batches.
+Program claims, Claim context, source evidence, documentation assertions, evaluation
+outcomes, projections and observations remain distinct. See [usage](README.md)
+and the [architecture overview](docs/architecture/README.md).
 
-There is not yet a user-facing CLI. Exports/documentation expansions, Unicode and
-experimental JSON presentations, source-detail disclosure, and observation
-production are the next integration milestone. The selected local
-development sink and privacy posture are documented in
-[conventions](dev/conventions.md#local-development-observation-sink-selection).
+All 35 automated tests and type checks pass. Coverage includes semantic fixtures,
+separate-process CLI determinism, changed-input identity, source separation,
+omission disclosure, sink delivery/privacy behavior, and actual checkout output
+exclusion for nested configurations. PostCode self-analysis has run successfully.
+Clean-agent instrument validation is being prepared.
 
-The [approved plan](docs/plans/initial-module-inventory-plan.md) remains the full
-scope. Later gates include approval of an unfamiliar external validation
-repository, human Unicode inspection, the clean-agent exercise, and final
-independent review. No task closure or full-slice validation is claimed.
+Outstanding gates: human approval of an unfamiliar external TypeScript repository
+before acquisition/analysis, its validation exercise, human Unicode-output
+inspection, completion of clean-agent validation, and final independent integrated
+review. The full [approved plan](docs/plans/initial-module-inventory-plan.md) remains
+the task scope; no closure or final acceptance is claimed.

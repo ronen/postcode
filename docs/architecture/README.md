@@ -1,10 +1,11 @@
 # Implemented architecture
 
-The initial module-inventory task is at its first architectural review checkpoint.
-The implemented path opens one configured TypeScript project, materializes module
-records through an ephemeral store, records an evaluation attempt, and constructs
-stored `modules(project)` or exact-selection `inspect(subjects)` projections.
-It is exercised by tests; the user-facing CLI and presentations are not yet built.
+The development CLI opens one configured TypeScript project, evaluates module
+inventory and presentation-declared standard expansions, constructs stored
+`modules(project)` or exact-selection `inspect(subjects)` projections, and presents
+a qualified Unicode or experimental JSON view. Every produced view submits a
+self-contained observation batch to a separate local sink. Instrument validation
+and final independent review remain active-task gates.
 
 The governing choices are the accepted [projection architecture decisions](../decisions/initial-projection-architecture-decisions.md)
 and [module inventory decisions](../decisions/initial-module-inventory-decisions.md).
@@ -18,10 +19,15 @@ application reads programs. Configuration errors and unavailable configured root
 files return project-open failure before a projection exists. Compiler objects
 remain inside that integration; input projects are never executed.
 
-The evaluator requests module discovery through a small language-analysis
-boundary. Discovery writes an atomic batch of snapshot, module entity, module
+The presentation declares module-standard exports and documentation requirements
+before the evaluator requests discovery through a small language-analysis boundary. Discovery writes an atomic batch of snapshot, module entity, module
 claim, Claim context, and source-evidence records through `ProgramRecordStore`.
-The evaluator records an immutable attempt referring to those records. Lens
+Compiler expansion preparation completes before snapshot identity is finalized.
+Expansion materialization adds semantic symbol entities and claims, export
+relationship claims, recorded documentation assertions, and qualified association
+claims. The evaluator records an immutable discovery attempt and separate expansion
+outcomes scoped to each module, so inspection does not inherit unrelated expansion
+failures. Lens
 construction reads stored information, selects relevant subjects and context,
 and writes an addressable projection. It does not call TypeScript.
 
@@ -33,7 +39,8 @@ model, or general scheduling framework exists.
 Module claims carry the information asserted. Claim context separately identifies
 evidence, method, scope, guarantee, limitations, and encountered diagnostic codes.
 Source evidence carries compiler names, file paths, contributing declaration
-ranges, content digests, and configured-root provenance. It is not a conceptual
+ranges, content digests, configured-root provenance, and written module-specifier
+occurrences with established resolution targets or explicit non-establishment. It is not a conceptual
 module label. SourceFile modules without an independently established module name
 are anonymous; their snapshot-scoped generated handles are navigation aids.
 
@@ -66,27 +73,61 @@ and compiler reads. The integration excludes `_observations` and `_build` under
 the selected configuration directory and accepts additional absolute output
 directories from its caller. Exclusion applies to roots, imported files, directory
 listings, and symlink targets, so excluded contents do not enter evidence or its
-identity digest. The eventual CLI must supply its own actual output destinations
-before opening a project, including when its checkout and the selected project
-have different roots. Git-ignore rules alone are not this evidence boundary.
+identity digest. The CLI supplies its actual checkout observation and build directories before
+opening a project, including when the selected configuration is nested elsewhere. Git-ignore rules alone are not this evidence boundary.
 
 Discovery collects syntax diagnostics encountered while examining the configured
 Program, conservatively qualifying the whole population and affected modules.
 It does not invoke unrelated semantic checking. There is no claim that an absence
 of discovery diagnostics establishes a type-correct project.
 
-## Remaining integration
+## Expansions and presentations
 
-Exports, symbols, documentation assertions and associations, presentation-declared
-standard expansions, source-detail disclosure, Unicode/JSON views, the CLI, and
-observation production remain to be integrated after independent checkpoint
-review. The record union will grow when those concrete records are implemented.
-The source-evidence references already preserve contributing declarations; finer
-resolution-occurrence evidence and expansion-specific qualifications still need
-their fixtures and implementation.
+The compiler's effective exports preserve exported names, originating semantic
+symbol identity, independent type/value roles, and direct/aliased/forwarded routes.
+Overloads and merged declarations remain one semantic symbol with separate source
+evidence. Type-only restrictions on routes and alias chains suppress runtime value
+exposure without rewriting the underlying symbol's roles. Unresolved targets,
+conflicting wildcard origins, and unestablished forwarding routes qualify expansion
+outcomes and claims. The integration uses the public compiler API and does not
+perform a whole-project semantic check merely to collect diagnostics.
 
-Observation data will use a separate `ObservationSink` as required by the accepted
-[observation decisions](../decisions/initial-observation-recording-decisions.md).
-It will not be inserted into `ProgramRecordStore` or read back as program truth.
-The implementation-time sink selection and its privacy posture are documented in
+Compiler-associated JSDoc blocks are retained individually, including structured
+tags. Module documentation, originating-symbol documentation and export-alias
+documentation retain distinct association claims. Documentation is a recorded
+assertion: mechanically establishing its association does not establish that the
+text is true, current or complete. Unattached comments are not assigned a subject.
+
+Projection construction selects expansion claims and outcomes relevant to selected
+modules. View construction reads only materialized records and selects documented
+export/documentation limits; omitted exports, assertions, tags and text characters
+remain counted. Rendering receives a qualified view value and cannot query the
+store or trigger analysis. Unicode and JSON use the same selected domain content.
+JSON has an explicitly experimental schema. Normal qualifications omit detailed
+source evidence. Explicit inspection source detail contains only locations backing
+displayed claims and never renders full-file content.
+
+## Observations and runtime boundaries
+
+The [observation decisions](../decisions/initial-observation-recording-decisions.md)
+require a separate `ObservationSink`. Observation batches are never inserted into
+`ProgramRecordStore` or read back as program truth. Each batch has format version
+zero and invocation-local UUIDs. Request context, repository/configuration/snapshot
+context, qualified view artifact and exact rendered output each appear once in the
+batch, referenced by the view-produced and optional source-escape events. They
+remain interpretable after the ephemeral store is discarded.
+
+The CLI discloses the absolute local sink destination on stderr. The sink creates
+one private JSON file per accepted batch under the PostCode checkout's ignored
+`_observations/` directory. It exposes no historical-read API and supplies no
+producer retention or migration policy. Rejection or delivery failure emits a
+warning without changing the successful view or its exit status. No remote/shared
+sink or contemporaneous-note command exists. Privacy and exclusion details are in
 [development conventions](../../dev/conventions.md#local-development-observation-sink-selection).
+
+Expected usage and project-open failures precede view production. Internal defects
+propagate to a distinct CLI failure. Successful views can carry partial expansion
+outcomes; process success is not a claim that every requested fact was established.
+The first independent core review has been received and its findings disposed of.
+The remaining validation and final-review obligations are recorded in the active
+[task](../../records/tasks/2026-09-12-initial-module-inventory.md).
