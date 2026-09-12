@@ -99,7 +99,8 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       candidates.push({
         key: `ambient:${symbol.getName()}`, name: symbol.getName().replace(/^"|"$/g, ''),
         compilerName: symbol.getName(), declarations,
-        facets: ['ambient', ...(declarations.length > 0 && declarations.every(declaration => declaration.getSourceFile().isDeclarationFile)
+        facets: ['ambient', ...(declarations.length > 0 && declarations.every(declaration =>
+          declaration.getSourceFile().isDeclarationFile || (ts.getCombinedModifierFlags(declaration) & ts.ModifierFlags.Ambient) !== 0)
           ? ['declaration-only' as const] : [])],
       });
     }
@@ -126,12 +127,13 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       records.push(detail);
       return detail.id;
     };
-    const qualifications = (sourceFiles: readonly ts.SourceFile[]) => encountered
-      .filter(diagnostic => diagnostic.file === undefined || sourceFiles.includes(diagnostic.file))
+    const qualifications = (sourceFiles: readonly ts.SourceFile[], projectWide: boolean) => encountered
+      // Syntax diagnostics normally have files; a future file-less result belongs only to project context.
+      .filter(diagnostic => diagnostic.file === undefined ? projectWide : sourceFiles.includes(diagnostic.file))
       .map(diagnostic => ({ code: diagnostic.code, category: ts.DiagnosticCategory[diagnostic.category]!.toLowerCase() }))
       .sort((a, b) => a.code - b.code || compare(a.category, b.category));
     const makeContext = (scope: 'configured-project' | RecordId, evidenceIds: readonly RecordId[], sourceFiles: readonly ts.SourceFile[]): RecordId => {
-      const relevant = qualifications(sourceFiles);
+      const relevant = qualifications(sourceFiles, scope === 'configured-project');
       const context: ClaimContextRecord = {
         kind: 'claim-context', id: recordId(snapshot, 'context', scope), snapshot, method,
         scope, evidence: [...new Set(evidenceIds)], status: 'mechanically-derived',

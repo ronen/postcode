@@ -87,6 +87,11 @@ Build output lives under Git-ignored `_build/`. Repository-input fixtures live i
 temporary projects through Node's temporary directory and must clean them up.
 The internal test process probe is not a supported application CLI or JSON schema.
 
+Inspection accepts one exact referent (name, handle, or Entity ID), which can
+resolve to zero, one, or multiple subjects. Multiple input referents and list
+selector syntax remain deferred by the initial plan; this is distinct from
+multiple matches of one referent.
+
 Method versions in the identity module participate in snapshot identity. Bump
 the responsible version when changing analysis, record, handle, or projection
 semantics. Equivalent runs must not include clocks or random observation UUIDs

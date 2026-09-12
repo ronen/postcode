@@ -1,6 +1,6 @@
 # Module inventory core: independent-review handoff
 
-Status: awaiting human-arranged independent review
+Status: reviewed; no blocking findings
 Prepared: 2026-09-12
 Reviewed implementation commit: `da8e7224395b9ac58361339bdc485c14640ad473`
 Feature branch: `codex/initial-module-inventory`
@@ -132,6 +132,25 @@ explicitly accepts a revision of the effective goal.
 
 ## Review result and disposition
 
-Pending. No external review has been received and no findings have been accepted,
-rejected, or resolved. Append the returned review and its material dispositions
-here, and summarize the checkpoint result in task verification.
+Received 2026-09-13: the human supplied an independent review by Claude of the
+specified implementation commit. The [complete returned findings](2026-09-13-module-inventory-core-findings.md)
+are retained separately. The reviewer reproduced all verification commands,
+reported no blocking findings, and concluded that further implementation can proceed.
+The human delegated disposition of the nonblocking findings to the implementer.
+
+1. **Single selector:** retain one exact referent. The approved plan explicitly
+   defers list-selector syntax; plural subjects describes zero/one/multiple matches.
+   The implementation selection is now explicit in development conventions.
+2. **Ambient declarations in ordinary `.ts`:** addressed with a characterization
+   test and declaration-only facet derivation from the ambient modifier, not just
+   the containing filename. Discovery method version advanced.
+3. **File-less diagnostics:** addressed by limiting these to project-wide context;
+   ordinary file-associated syntax diagnostics still qualify affected modules.
+4. **Claim union:** accepted as an integration note. Export and documentation
+   records will add distinct variants when implemented, preserving module claims.
+5. **Actual output destination:** accepted as an integration obligation. The CLI
+   must pass its actual checkout observation/build paths explicitly, with a nested
+   configuration regression check. The existing caller boundary remains suitable.
+
+The first checkpoint is cleared. Final independent integrated review remains
+required; this result does not establish completion of the full task.

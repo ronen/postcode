@@ -36,6 +36,17 @@ test('source-derived compiler names do not become conceptual names', () => {
   assert.equal(JSON.stringify(claims).includes(process.cwd()), false);
 });
 
+test('named ambient declarations in ordinary TypeScript have declaration-only facets', () => {
+  temporary(root => {
+    writeFileSync(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"noLib":true,"types":[]},"files":["ambient.ts"]}');
+    writeFileSync(path.join(root, 'ambient.ts'), 'declare module "ordinary-ambient" { export const value: number; }');
+    const { claims } = discover(path.join(root, 'tsconfig.json'));
+    assert.equal(claims.length, 1);
+    assert.equal(claims[0]!.information.name, 'ordinary-ambient');
+    assert.deepEqual(claims[0]!.information.facets, ['ambient', 'declaration-only']);
+  });
+});
+
 test('TypeScript automatic module detection is honored even without written imports or exports', () => {
   temporary(root => {
     writeFileSync(path.join(root, 'package.json'), '{"type":"module"}');
