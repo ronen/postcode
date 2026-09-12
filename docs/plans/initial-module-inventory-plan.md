@@ -385,16 +385,22 @@ details.
   programming knowledge. Structured questions and retained evidence reduce but do
   not remove that limitation; human inspection remains necessary.
 
-## Selections required before execution
+## Implementation selections and approval gates
 
-- Select the concrete default development `ObservationSink`, its external local
-  destination, and its privacy-visible configuration. This is sink implementation
-  policy, not a commitment to retain or read old event formats in PostCode.
-- Select the implementation toolchain and third-party dependencies needed for the
-  TypeScript CLI and tests, with a stated purpose for each consequential addition.
-- Select the unfamiliar external TypeScript repository used for formative
-  exercise, or define selection criteria that allow the implementation task to
-  choose one without changing scope.
+- At implementation start, the implementing agent selects the TypeScript CLI and
+  test toolchain and states the purpose of each consequential dependency. Routine
+  choices within this plan are delegated; a choice that introduces a durable
+  commitment beyond the plan requires human approval.
+- Before PostCode submits repository-derived observations from a non-fixture
+  project, the human approves the concrete development `ObservationSink`, its
+  external local destination, and its privacy-visible configuration. The sink
+  boundary and fixture-based behavior may be implemented and tested before that
+  approval. This selection is sink implementation policy, not a commitment to
+  retain or read old event formats in PostCode.
+- Before acquiring or analyzing an unfamiliar external TypeScript repository,
+  the human approves the proposed repository unless explicit selection criteria
+  and authority have already been delegated. Repository selection must not
+  change the scope of the formative exercise.
 
 ## Resulting decisions
 
