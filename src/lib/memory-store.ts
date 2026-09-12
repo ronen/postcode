@@ -4,13 +4,18 @@ import type { EvaluationRecord, ProgramRecord, ProgramRecordStore, RecordId, Sna
 function references(record: ProgramRecord): readonly RecordId[] {
   switch (record.kind) {
     case 'snapshot': return [];
-    case 'module': return [record.claim];
-    case 'claim': return [record.subject, record.context];
+    case 'module':
+    case 'symbol': return [record.claim];
+    case 'recorded-assertion': return [record.context];
+    case 'claim': return [record.subject, record.context,
+      ...(record.information.type === 'export' ? [record.information.symbol, record.information.origin,
+        ...record.information.routes.map(route => route.via)].filter((id): id is RecordId => id !== null) : []),
+      ...(record.information.type === 'documentation-association' ? [record.information.assertion] : [])];
     case 'claim-context': return [...record.evidence,
       ...(record.scope === 'configured-project' ? [] : [record.scope])];
-    case 'source-evidence': return [];
-    case 'evaluation': return [...record.modules, ...record.contexts];
-    case 'projection': return [...record.modules, ...record.claims, ...record.contexts, ...record.evaluations];
+    case 'source-evidence': return record.resolution?.target ? [record.resolution.target] : [];
+    case 'evaluation': return [...record.modules, ...record.contexts, ...(record.claims ?? []), ...(record.basis ? [record.basis] : [])];
+    case 'projection': return [...record.modules, ...record.claims, ...record.contexts, ...record.evaluations, ...record.expansions.claims];
   }
 }
 
@@ -48,27 +53,40 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
         }
       };
       switch (record.kind) {
-        case 'module': requireKind(record.claim, 'claim'); break;
+        case 'module':
+        case 'symbol': requireKind(record.claim, 'claim'); break;
+        case 'recorded-assertion': requireKind(record.context, 'claim-context'); break;
         case 'claim':
-          requireKind(record.subject, 'module');
+          if (record.information.type === 'module' || record.information.type === 'export') requireKind(record.subject, 'module');
+          if (record.information.type === 'symbol') requireKind(record.subject, 'symbol');
+          if (record.information.type === 'documentation-association') requireKind(record.information.assertion, 'recorded-assertion');
+          if (record.information.type === 'export') {
+            if (record.information.symbol) requireKind(record.information.symbol, 'symbol');
+            if (record.information.origin) requireKind(record.information.origin, 'module');
+            record.information.routes.forEach(route => { if (route.via) requireKind(route.via, 'module'); });
+          }
           requireKind(record.context, 'claim-context');
           break;
         case 'claim-context':
           record.evidence.forEach(id => requireKind(id, 'source-evidence'));
-          if (record.scope !== 'configured-project') requireKind(record.scope, 'module');
           break;
         case 'evaluation':
           record.modules.forEach(id => requireKind(id, 'module'));
           record.contexts.forEach(id => requireKind(id, 'claim-context'));
+          record.claims?.forEach(id => requireKind(id, 'claim'));
+          if (record.basis) requireKind(record.basis, 'evaluation');
           break;
         case 'projection':
           record.modules.forEach(id => requireKind(id, 'module'));
           record.claims.forEach(id => requireKind(id, 'claim'));
           record.contexts.forEach(id => requireKind(id, 'claim-context'));
           record.evaluations.forEach(id => requireKind(id, 'evaluation'));
+          record.expansions.claims.forEach(id => requireKind(id, 'claim'));
           break;
-        case 'snapshot':
-        case 'source-evidence': break;
+        case 'source-evidence':
+          if (record.resolution?.target) requireKind(record.resolution.target, 'module');
+          break;
+        case 'snapshot': break;
       }
     }
     for (const [id, record] of pending) {

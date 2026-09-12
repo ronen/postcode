@@ -21,13 +21,18 @@ test('enumerates the exact supported population, with merged ambient evidence an
   assert.equal(claims.length, 6);
   assert.deepEqual(claims.map(claim => claim.information.name).filter(name => name !== null), ['ambient-one', 'ambient-two']);
   const sources = contexts.flatMap(context => context.scope === 'configured-project' ? [] : context.evidence)
-    .map(id => store.get(id) as SourceEvidenceRecord);
+    .map(id => store.get(id) as SourceEvidenceRecord).filter(source => !source.resolution);
   assert.deepEqual(sources.map(source => path.basename(source.path)).sort(),
     ['allowed.js', 'ambient.d.ts', 'ambient.d.ts', 'ambient.d.ts', 'external.d.ts', 'root.ts', 'transitive.ts']);
   assert.equal(sources.find(source => source.path.endsWith('/transitive.ts'))!.configuredRoot, false);
   assert.equal(evaluation.materialization, 'full');
   assert.equal(new Set(evaluation.modules).size, 6);
   assert.equal(claims.filter(claim => claim.information.facets.includes('declaration-only')).length, 3);
+  const resolution = contexts.flatMap(context => context.evidence).map(id => store.get(id) as SourceEvidenceRecord)
+    .filter(source => source.resolution);
+  assert.ok(resolution.length >= 2);
+  assert.equal(new Set(resolution.map(source => source.resolution!.target)).size, 1);
+  assert.ok(resolution.every(source => source.resolution!.status === 'established'));
 });
 
 test('source-derived compiler names do not become conceptual names', () => {
@@ -43,7 +48,7 @@ test('named ambient declarations in ordinary TypeScript have declaration-only fa
     const { claims } = discover(path.join(root, 'tsconfig.json'));
     assert.equal(claims.length, 1);
     assert.equal(claims[0]!.information.name, 'ordinary-ambient');
-    assert.deepEqual(claims[0]!.information.facets, ['ambient', 'declaration-only']);
+    assert.deepEqual(claims[0]!.information.facets, ['ambient', 'project', 'declaration-only']);
   });
 });
 
@@ -123,8 +128,8 @@ test('a changed method version produces a new snapshot in an independent process
     const before = invoke();
     const implementation = path.join(root, '_build/src/lib/identity.js');
     const original = readFileSync(implementation, 'utf8');
-    assert.ok(original.includes('postcode/projection@0'));
-    writeFileSync(implementation, original.replace('postcode/projection@0', 'postcode/projection@verification-change'));
+    assert.ok(original.includes('postcode/projection@1'));
+    writeFileSync(implementation, original.replace('postcode/projection@1', 'postcode/projection@verification-change'));
     assert.notEqual(invoke().evaluation.snapshot, before.evaluation.snapshot);
   });
 });

@@ -16,3 +16,10 @@ population reviewable. Invalid source is intentional in `diagnostics`.
 
 Tests create temporary projects for changing-input and generated-output scenarios.
 No third-party repository contents or real-project observations are retained here.
+
+- `exports`: direct/default exports, wildcard and named forwarding, a chained
+  barrel, type-only exports and imported aliases, overloads, declaration merging,
+  a CommonJS export assignment with a namespace member, named ambient documentation,
+  and distinct origin/alias JSDoc assertions. Tests assert concrete surfaces and
+  compiler-associated documentation; no generated text snapshot substitutes for
+  those semantic expectations.

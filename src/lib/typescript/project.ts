@@ -2,8 +2,9 @@ import path from 'node:path';
 import ts from 'typescript';
 import { compare, digest, methods, recordId, snapshotId } from '../identity.js';
 import type { DiscoveryResult, ModuleAnalysis } from '../evaluation.js';
-import type { ClaimContextRecord, ModuleFacet, ProgramRecord, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
+import type { ClaimContextRecord, ModuleExpansion, ModuleFacet, ProgramRecord, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
 import { captureInputs } from './inputs.js';
+import { prepareExpansions } from './expansions.js';
 
 const method = `${methods.discovery};typescript@${ts.version}`;
 const identityMethod = methods.inputs;
@@ -76,19 +77,20 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
   if (diagnostics.length > 0) return failure();
 
   // Compiler state never escapes the language integration. Discovery writes domain records atomically.
-  return { status: 'opened', analysis: { discover: store => discover(store) } };
+  return { status: 'opened', analysis: { discover: (store, expansions) => discover(store, expansions ?? []) } };
 
-  function discover(store: ProgramRecordStore): DiscoveryResult {
+  function discover(store: ProgramRecordStore, requested: readonly ModuleExpansion[]): DiscoveryResult {
     const checker = program.getTypeChecker();
     const files = [...program.getSourceFiles()].sort((a, b) => compare(a.fileName, b.fileName));
     const encountered = program.getSyntacticDiagnostics();
     const roots = new Set(program.getRootFileNames());
-    const candidates: { key: string; name: string | null; compilerName: string | null;
+    const candidates: { key: string; name: string | null; compilerName: string | null; symbol: ts.Symbol | undefined;
       declarations: readonly ts.Declaration[]; facets: ModuleFacet[] }[] = [];
     for (const file of files) {
       if (!ts.isExternalModule(file)) continue;
       candidates.push({
         key: `source:${host.getCanonicalFileName(file.fileName)}`, name: file.moduleName ?? null,
+        symbol: checker.getSymbolAtLocation(file),
         compilerName: checker.getSymbolAtLocation(file)?.getName() ?? null, declarations: [file],
         facets: [program.isSourceFileFromExternalLibrary(file) ? 'external' : 'project',
           file.isDeclarationFile ? 'declaration-only' : 'implementation-available'],
@@ -98,13 +100,32 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       const declarations = symbol.getDeclarations() ?? [];
       candidates.push({
         key: `ambient:${symbol.getName()}`, name: symbol.getName().replace(/^"|"$/g, ''),
+        symbol,
         compilerName: symbol.getName(), declarations,
-        facets: ['ambient', ...(declarations.length > 0 && declarations.every(declaration =>
+        facets: ['ambient',
+          ...(declarations.some(declaration => !program.isSourceFileFromExternalLibrary(declaration.getSourceFile())) ? ['project' as const] : []),
+          ...(declarations.some(declaration => program.isSourceFileFromExternalLibrary(declaration.getSourceFile())) ? ['external' as const] : []),
+          ...(declarations.length > 0 && declarations.every(declaration =>
           declaration.getSourceFile().isDeclarationFile || (ts.getCombinedModifierFlags(declaration) & ts.ModifierFlags.Ambient) !== 0)
           ? ['declaration-only' as const] : [])],
       });
     }
     candidates.sort((a, b) => compare(a.key, b.key));
+    const moduleKeys = new Map(candidates.filter(candidate => candidate.symbol).map(candidate => [candidate.symbol!, candidate.key]));
+    const resolutions: { node: ts.StringLiteralLike; targetKey: string | undefined }[] = [];
+    const visit = (node: ts.Node): void => {
+      const specifier = ts.isImportDeclaration(node) || ts.isExportDeclaration(node) ? node.moduleSpecifier
+        : ts.isImportEqualsDeclaration(node) && ts.isExternalModuleReference(node.moduleReference) ? node.moduleReference.expression
+          : ts.isImportTypeNode(node) && ts.isLiteralTypeNode(node.argument) ? node.argument.literal
+            : ts.isCallExpression(node) && node.expression.kind === ts.SyntaxKind.ImportKeyword ? node.arguments[0] : undefined;
+      if (specifier && ts.isStringLiteralLike(specifier)) {
+        const symbol = checker.getSymbolAtLocation(specifier);
+        resolutions.push({ node: specifier, targetKey: symbol ? moduleKeys.get(symbol) : undefined });
+      }
+      ts.forEachChild(node, visit);
+    };
+    files.forEach(visit);
+    const preparedExpansions = requested.length ? prepareExpansions(checker, candidates, requested) : undefined;
     const snapshot = snapshotId({
       method, methods, configPath, cwd: base, node: process.versions.node,
       platform: process.platform, arch: process.arch, inputs: inputs.identity(),
@@ -116,13 +137,14 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       kind: 'snapshot', id: snapshot, snapshot, method: identityMethod,
       inputDigest: snapshot.slice('snapshot:'.length), methods: [...Object.values(methods), method],
     }];
-    const evidence = (declaration: ts.Declaration, compilerName: string | null): RecordId => {
+    const evidence = (declaration: ts.Node, compilerName: string | null, resolution?: SourceEvidenceRecord['resolution']): RecordId => {
       const file = declaration.getSourceFile();
       const start = ts.isSourceFile(declaration) ? 0 : declaration.getStart(file);
       const detail: SourceEvidenceRecord = {
-        kind: 'source-evidence', id: recordId(snapshot, 'source', [file.fileName, start, declaration.end, compilerName]),
+        kind: 'source-evidence', id: recordId(snapshot, 'source', [file.fileName, start, declaration.end, compilerName, resolution ?? null]),
         snapshot, method, path: file.fileName, contentDigest: digest(file.text),
         start, length: declaration.end - start, configuredRoot: roots.has(file.fileName), compilerName,
+        ...(resolution ? { resolution } : {}),
       };
       records.push(detail);
       return detail.id;
@@ -148,12 +170,18 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       records.push(context);
       return context.id;
     };
-    const globalContext = makeContext('configured-project', files.map(file => evidence(file, null)), files);
+    const resolutionEvidence = resolutions.map(({ node, targetKey }) => ({ node, id: evidence(node, null, {
+      writtenSpecifier: node.text, target: targetKey ? recordId(snapshot, 'module', targetKey) : null,
+      status: targetKey ? 'established' : 'not-established',
+    }) }));
+    const globalContext = makeContext('configured-project', [...files.map(file => evidence(file, null)), ...resolutionEvidence.map(item => item.id)], files);
     const moduleIds: RecordId[] = [];
     for (const [index, candidate] of candidates.entries()) {
       const id = recordId(snapshot, 'module', candidate.key);
       const claim = recordId(snapshot, 'claim', id);
-      const context = makeContext(id, candidate.declarations.map(declaration => evidence(declaration, candidate.compilerName)),
+      const context = makeContext(id, [...candidate.declarations.map(declaration => evidence(declaration, candidate.compilerName)),
+        ...resolutionEvidence.filter(item => candidate.declarations.some(declaration => item.node.getSourceFile() === declaration.getSourceFile()
+          && item.node.pos >= declaration.pos && item.node.end <= declaration.end)).map(item => item.id)],
         candidate.declarations.map(declaration => declaration.getSourceFile()));
       records.push({ kind: 'module', id, snapshot, method, claim }, {
         kind: 'claim', id: claim, snapshot, method, subject: id, context,
@@ -163,10 +191,12 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       });
       moduleIds.push(id);
     }
-    store.put(records);
+    const expansions = preparedExpansions?.(snapshot, evidence);
+    store.put([...records, ...(expansions?.records ?? [])]);
     return {
       snapshot, modules: moduleIds, contexts: [globalContext], applicability: 'applicable', availability: 'available',
       execution: 'completed', materialization: 'full', reason: null, cost: { measure: 'module-count', value: moduleIds.length },
+      ...(expansions ? { expansions: expansions.results } : {}),
     };
   }
 }

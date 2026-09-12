@@ -36,6 +36,70 @@ export interface ModuleClaim extends RecordContext {
   };
 }
 
+export type ModuleExpansion = 'exports' | 'documentation';
+/** Entity-kind policy, independent of the lens used to select modules. */
+export const moduleStandardExpansions: readonly ModuleExpansion[] = ['exports', 'documentation'];
+
+export interface SymbolRecord extends RecordContext {
+  readonly kind: 'symbol';
+  readonly claim: RecordId;
+}
+
+export interface SymbolClaim extends RecordContext {
+  readonly kind: 'claim';
+  readonly subject: RecordId;
+  readonly context: RecordId;
+  readonly information: {
+    readonly type: 'symbol';
+    readonly name: string | null;
+    readonly roles: { readonly type: boolean; readonly value: boolean };
+    readonly declarationCount: number;
+  };
+}
+
+export interface ExportClaim extends RecordContext {
+  readonly kind: 'claim';
+  readonly subject: RecordId;
+  readonly context: RecordId;
+  readonly information: {
+    readonly type: 'export';
+    readonly exportedName: string;
+    readonly symbol: RecordId | null;
+    readonly origin: RecordId | null;
+    readonly roles: { readonly type: boolean; readonly value: boolean } | null;
+    readonly routes: readonly {
+      readonly kind: 'direct' | 'alias' | 'reexport' | 'wildcard' | 'default' | 'export-assignment';
+      readonly typeOnly: boolean;
+      readonly aliased: boolean;
+      readonly via: RecordId | null;
+    }[];
+  };
+}
+
+export interface RecordedAssertion extends RecordContext {
+  readonly kind: 'recorded-assertion';
+  readonly context: RecordId;
+  readonly status: 'recorded-assertion';
+  readonly text: string;
+  readonly tags: readonly { readonly name: string; readonly text: string }[];
+}
+
+export interface DocumentationAssociationClaim extends RecordContext {
+  readonly kind: 'claim';
+  readonly subject: RecordId;
+  readonly context: RecordId;
+  readonly information: {
+    readonly type: 'documentation-association';
+    readonly assertion: RecordId;
+    readonly association: 'module' | 'origin-symbol' | 'export-alias';
+  };
+}
+
+export type Claim = ModuleClaim | SymbolClaim | ExportClaim | DocumentationAssociationClaim;
+export function isModuleClaim(record: ProgramRecord): record is ModuleClaim {
+  return record.kind === 'claim' && record.information.type === 'module';
+}
+
 export interface SourceEvidenceRecord extends RecordContext {
   readonly kind: 'source-evidence';
   readonly path: string;
@@ -44,6 +108,11 @@ export interface SourceEvidenceRecord extends RecordContext {
   readonly length: number;
   readonly configuredRoot: boolean;
   readonly compilerName: string | null;
+  readonly resolution?: {
+    readonly writtenSpecifier: string;
+    readonly target: RecordId | null;
+    readonly status: 'established' | 'not-established';
+  };
 }
 
 export interface ClaimContextRecord extends RecordContext {
@@ -68,7 +137,9 @@ export interface EvaluationState {
 
 export interface EvaluationRecord extends RecordContext, EvaluationState {
   readonly kind: 'evaluation';
-  readonly requirement: 'modules';
+  readonly requirement: 'modules' | ModuleExpansion;
+  readonly basis?: RecordId;
+  readonly claims?: readonly RecordId[];
   readonly attempt: number;
   readonly modules: readonly RecordId[];
   readonly contexts: readonly RecordId[];
@@ -83,6 +154,7 @@ export interface ProjectionRecord extends RecordContext {
   readonly claims: readonly RecordId[];
   readonly contexts: readonly RecordId[];
   readonly evaluations: readonly RecordId[];
+  readonly expansions: { readonly requested: readonly ModuleExpansion[]; readonly claims: readonly RecordId[] };
   readonly selection: {
     readonly matches: number;
     readonly population: number;
@@ -91,7 +163,7 @@ export interface ProjectionRecord extends RecordContext {
   };
 }
 
-export type ProgramRecord = SnapshotRecord | ModuleRecord | ModuleClaim
+export type ProgramRecord = SnapshotRecord | ModuleRecord | SymbolRecord | Claim | RecordedAssertion
   | SourceEvidenceRecord | ClaimContextRecord | EvaluationRecord | ProjectionRecord;
 
 /** Only the domain operations currently used by discovery and lenses. */
