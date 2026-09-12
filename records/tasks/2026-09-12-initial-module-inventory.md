@@ -96,3 +96,18 @@ acceptance has occurred, and this checkpoint does not conclude the task.
   repository approval/exercise, human Unicode inspection, clean-agent validation,
   and final integrated independent review remain outstanding. See the handoff for
   details; no unperformed check is claimed to have passed.
+
+### Independent checkpoint review received — 2026-09-13
+
+The human supplied Claude's independent review of `da8e722`. The reviewer
+reproduced `npm ci`, all 19 original tests, type checking and diff checks, and
+reported no blocking findings. The complete review and item-by-item dispositions
+are retained under [the checkpoint handoff](../reviews/2026-09-12-module-inventory-core.md).
+
+The implementation retains one exact selector, consistent with the plan's
+explicit deferral of list syntax. Ambient declarations in ordinary `.ts` files
+now have characterized declaration-only facets; hypothetical file-less diagnostics
+remain project-wide. All 20 tests pass after these corrections. The other notes
+are recorded obligations for expansion records and actual CLI output exclusions.
+The early review gate is cleared; implementation continues within the same task.
+Final integrated review and remaining validation are still required.
