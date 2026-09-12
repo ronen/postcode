@@ -417,7 +417,7 @@ necessary automated verification conditions. Human inspection must also
 establish that the Unicode output is usable as a starting point rather than a
 compiler-data dump.
 
-As app-local formative validation, give the projection alone to clean AI agents
+As app-local instrument validation, give the projection alone to clean AI agents
 and ask consistent structured questions about what the project contains,
 apparent module roles, a justified next investigation subject, supported
 conclusions, ambiguity, confusing information, and missing conceptual
@@ -446,7 +446,7 @@ responses are objective measures or substitutes for human judgment.
 
 #### Consequences
 
-- Verification includes objective semantic checks and bounded formative
+- Verification includes objective semantic checks and bounded instrument
   evaluation without treating agent impressions as product truth.
 - Validation evidence retains enough context to be inspected and compared.
 

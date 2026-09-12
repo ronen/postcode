@@ -15,7 +15,7 @@ documentation structure in place.
 
 The approved first slice uses TypeScript to provide qualified
 `modules(project)` and `inspect(subjects)` views through a development CLI,
-including explicit source-detail expansion and formative observation recording.
+including explicit source-detail expansion and observation recording.
 Its supporting decisions establish the initial program-record, evaluation,
 presentation, identity, and observation boundaries.
 

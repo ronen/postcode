@@ -74,7 +74,7 @@ qualification, and materialization behavior is not hidden.
 
 The first store is ephemeral. Its engine is an implementation choice; SQLite is
 neither required nor excluded. Durable cache storage, durable investigation state,
-and formative observation storage are separate lifecycle concerns.
+and observation storage are separate lifecycle concerns.
 
 #### Rationale
 
@@ -271,6 +271,6 @@ than recomputation.
 - Reconsider SQLite or another engine when relationship queries or persistence
   provide demonstrated value.
 - Add lazy or staged evaluation only when an implemented analysis requires it.
-- Keep durable investigation/session state and formative observation storage in
+- Keep durable investigation/session state and observation storage in
   explicitly separate lifecycle decisions even if they later share a physical
   engine.

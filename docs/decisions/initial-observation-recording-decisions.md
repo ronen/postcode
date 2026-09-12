@@ -3,11 +3,11 @@
 Status: accepted
 Decided: 2026-09-12
 Arising from: [Initial module inventory plan](../plans/initial-module-inventory-plan.md)
-Scope: formative observation production in the initial PostCode slice
+Scope: automatic observation production in the initial PostCode slice
 
 ## Context
 
-The adopted product design requires PostCode to support formative observation of
+The adopted product design requires PostCode to support automatic observation of
 normal use, including requested lenses and presentations, resulting views,
 navigation, analysis outcomes, failures, and source escape-hatch use. The first
 CLI slice has no durable investigation session or analysis cache, but one
@@ -24,7 +24,7 @@ curating the research archive.
 
 #### Decision
 
-Normal CLI view production emits formative observation events automatically. For
+Normal CLI view production emits observation events automatically. For
 the initial slice, an observation should establish at least:
 
 - repository and analysis-snapshot context;
@@ -124,7 +124,9 @@ producer does not impose a historical-preservation policy on sinks.
 
 Development and tests may provide sinks with behavior appropriate to their
 purpose, including in-memory capture, deterministic fixture output, local file
-output, failure injection, or deliberate discard. No observation data is
+output inside or outside the development repository, failure injection, or
+deliberate discard. Output within a repository must be excluded from repository
+evidence whenever PostCode analyzes that repository. No observation data is
 automatically sent to a research service or other remote destination.
 
 #### Rationale
@@ -147,6 +149,9 @@ archive lifecycle in the application.
 - Experimental old streams are outside the producer's compatibility guarantee.
 - Any research sink that values long-term evidence must choose its own retention
   and migration policy.
+- A development sink may write within the PostCode repository when convenient,
+  provided that output retains its provenance and is excluded when PostCode
+  analyzes itself.
 
 ### Keep observations separate from `ProgramRecordStore`
 
@@ -197,7 +202,7 @@ evidence of that observation gap.
 
 #### Rationale
 
-Silent loss would undermine formative evidence, while making all application use
+Silent loss would undermine observation evidence, while making all application use
 depend on a research or development sink would confuse observability with the
 program-information result. A later research protocol may choose a stricter sink
 policy without changing view semantics.
@@ -206,7 +211,7 @@ policy without changing view semantics.
 
 - Block every successfully produced view when observation delivery fails:
   deferred because it would make ordinary application use depend on sink health.
-- Ignore sink failure: rejected because silent loss would misrepresent formative
+- Ignore sink failure: rejected because silent loss would misrepresent
   observation coverage.
 
 #### Consequences
@@ -250,8 +255,9 @@ module-inventory learning requires.
 
 ## Follow-up
 
-- Choose a concrete default development sink and external location during
-  implementation planning.
+- Choose a concrete default development sink and destination during
+  implementation planning, and exclude its generated output from repository
+  evidence whenever PostCode analyzes the repository containing it.
 - Revisit persistent observation/session association when adding subjective
   notes, a GUI workspace, or navigation across process lifetimes.
 - Let each research or archival sink define its own retention, migration, privacy,

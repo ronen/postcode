@@ -82,6 +82,8 @@ application.
 - Shared observation context and artifacts are included once per invocation batch
   and referenced from events by UUID. The producer does not maintain context UUIDs
   across invocations or read previously submitted event streams.
+- When the selected sink writes within a repository PostCode analyzes, its output
+  location is explicitly excluded from repository evidence.
 - Observation-sink failure is visibly reported but does not reclassify a
   successful projection as failed or prevent its presentation.
 - The supported module population is exactly:
@@ -156,11 +158,14 @@ application.
 - Observation production uses a separate `ObservationSink` boundary. Submitted
   batches remain interpretable without the ephemeral `ProgramRecordStore`, and
   sink retention or migration policy does not become application cache policy.
+- Generated observation output may be stored inside or outside the development
+  repository, but its location is excluded from repository evidence whenever
+  PostCode analyzes the repository that contains it.
 - Implementation details such as plan representation, method names, call
   direction, request flags, batching ownership, and property-versus-service access
   remain local choices unless implementation evidence makes one consequential.
 
-### Verification and formative validation
+### Verification and instrument validation
 
 - Automated fixtures make the expected module, export, documentation,
   qualification, and failure results small enough for a reviewer to verify.
@@ -179,7 +184,7 @@ application.
   a justified next subject to investigate, supported conclusions, ambiguities,
   confusing information, and missing conceptual information. The exact
   projection, questions, model/context conditions, and responses are retained as
-  formative observations where practical.
+  validation evidence where practical.
 - Clean-agent validation evaluates the app-local question of whether the module
   view supplies a useful starting point. Comparative research into conceptual
   versus source-aware understanding remains outside this plan.
@@ -205,9 +210,10 @@ application.
   information selected through relevant Claim context.
 - Implement invocation-scoped, version-zero observation batches and an
   `ObservationSink` boundary, including shared context references and visible
-  delivery failure.
+  delivery failure, with generated-output evidence exclusion when the sink writes
+  within a repository PostCode analyzes.
 - Preserve conceptual/source separation and qualified outcomes end to end.
-- Add reviewable fixtures and perform the verification and formative validation
+- Add reviewable fixtures and perform the verification and instrument validation
   described above.
 - Document how to run and exercise the resulting CLI.
 
@@ -322,7 +328,7 @@ repository. Inspect the Unicode and JSON outputs for conceptual/source separatio
 and qualification integrity.
 
 Run the clean-agent structured-question exercise and retain its inputs and outputs
-as formative evidence. Use findings to correct functional or materially confusing
+as validation evidence. Use findings to correct functional or materially confusing
 behavior; leave broader research questions to the research project.
 
 ## Fixture and test coverage
@@ -345,9 +351,11 @@ The fixture set should cover at least:
 - malformed or unusable project configuration as an operational failure;
 - source diagnostics encountered on the requested analysis path;
 - unsupported or unresolved cases that exercise explicit limitation reporting;
-- deterministic output across equivalent independent invocations; and
+- deterministic output across equivalent independent invocations;
 - changed source, configuration, dependency, or method inputs producing a
-  different snapshot context.
+  different snapshot context; and
+- observation output located within the analyzed repository being excluded from
+  repository evidence.
 
 Prefer several small focused fixtures over one synthetic repository that is hard
 to review. Use public TypeScript compiler behavior through the selected supported
@@ -379,8 +387,9 @@ details.
   slice and treat recurring boundary friction as evidence to revisit the design.
 - Observation artifacts may contain repository-derived documentation,
   qualifications, identifiers, and explicitly expanded source information. The
-  selected development sink needs an explicit external location and privacy
-  posture even though long-term retention policy belongs to the sink.
+  selected development sink needs a documented destination, privacy posture, and
+  evidence-exclusion behavior when its output is located within a repository
+  PostCode analyzes. Long-term retention policy belongs to the sink.
 - Clean-agent responses can be plausible, agreeable, or dependent on prior
   programming knowledge. Structured questions and retained evidence reduce but do
   not remove that limitation; human inspection remains necessary.
@@ -391,16 +400,19 @@ details.
   test toolchain and states the purpose of each consequential dependency. Routine
   choices within this plan are delegated; a choice that introduces a durable
   commitment beyond the plan requires human approval.
-- Before PostCode submits repository-derived observations from a non-fixture
-  project, the human approves the concrete development `ObservationSink`, its
-  external local destination, and its privacy-visible configuration. The sink
-  boundary and fixture-based behavior may be implemented and tested before that
-  approval. This selection is sink implementation policy, not a commitment to
-  retain or read old event formats in PostCode.
+- The implementing agent selects the concrete local development
+  `ObservationSink`, destination, and privacy-visible configuration. Generated
+  output is ignored by Git unless intentionally retained as fixture or validation
+  evidence, and is excluded from repository evidence whenever PostCode analyzes
+  the repository containing it. Human approval is required before using a remote
+  or shared destination, committing observations from a real project, or adopting
+  a destination whose exclusion from analysis cannot be guaranteed. Sink
+  selection is implementation policy, not a commitment to retain or read old
+  event formats in PostCode.
 - Before acquiring or analyzing an unfamiliar external TypeScript repository,
   the human approves the proposed repository unless explicit selection criteria
   and authority have already been delegated. Repository selection must not
-  change the scope of the formative exercise.
+  change the scope of the external-repository validation exercise.
 
 ## Resulting decisions
 
