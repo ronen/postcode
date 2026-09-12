@@ -5,7 +5,9 @@ Last reviewed: 2026-09-12
 The [initial module-inventory task](records/tasks/2026-09-12-initial-module-inventory.md)
 is active on `codex/initial-module-inventory`. Its opening commit precedes all
 implementation changes. The first architectural checkpoint is ready for the
-human-arranged independent review required by the task.
+human-arranged independent review required by the task. The
+[review handoff](records/reviews/2026-09-12-module-inventory-core.md) identifies the
+exact implementation commit and requested review focus.
 
 The implemented core opens one TypeScript configuration, discovers the specified
 module population, stores qualified program records and evaluation attempts, and
