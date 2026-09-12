@@ -46,4 +46,49 @@ Do not close the task merely because the CLI runs or an intermediate milestone p
 
 ## Outcome
 
+### First architectural checkpoint — 2026-09-12
+
+Task remains active. Implemented the configured TypeScript module-discovery core,
+qualified program records, ephemeral store, evaluation attempts, and stored module
+inventory/exact inspection projections in `da8e7224395b9ac58361339bdc485c14640ad473`.
+The dedicated branch is `codex/initial-module-inventory`, based on main `4a8914c`.
+The opening record was committed first as `58971db`; `_work/TASK.md` was then deleted.
+
+The implementing agent selected TypeScript 6.0.3, Node's built-in test runner, npm,
+and Node type declarations. Dependency purposes and the local observation sink
+selection/privacy posture are documented in [conventions](../../dev/conventions.md).
+The sink is selected but not yet implemented. The CLI, expansions, presentations,
+source-detail disclosure, observations and full validation remain within this task.
+
+Implementation is paused at the required early independent-review gate. The
+[committed handoff](../reviews/2026-09-12-module-inventory-core.md) identifies the
+reviewed commit, governing material, requested focus, evidence, and remaining work.
+The human must arrange the external review. No independent review or final
+acceptance has occurred, and this checkpoint does not conclude the task.
+
 ## Verification
+
+### First checkpoint — 2026-09-12
+
+- `npm test`: 19 tests passed on Node 22.13.1 and TypeScript 6.0.3.
+- `npm run check`: passed; staged and unstaged diff whitespace checks passed.
+- Exact fixture module membership, configured/transitive sources, JavaScript,
+  declaration and merged ambient modules, automatic module detection, global
+  scripts, empty results, configuration failures and encountered diagnostics checked.
+- Store immutability, atomic reference validation, multiple snapshots, repeated
+  evaluation attempts, unavailable/deferred/failed/stopped outcomes, and zero/one/
+  multiple exact inspection selection checked at their implemented boundaries.
+- Independent process equivalence and changed method version checked. Changed
+  source, inherited configuration, package metadata, and absent resolution target
+  inputs produce changed snapshot contexts.
+- Generated-output exclusions checked for roots, imports, symlink targets, contents,
+  snapshot identity, and caller-supplied locations. Git-ignore checks confirm build
+  output, dependencies and the selected observation directory are ignored.
+- Reviewed the milestone diff for unrelated, private and generated material. No
+  foundation changes, third-party repository contents or real-project observations
+  were committed.
+- External checkpoint review: pending; no returned findings or dispositions yet.
+- Final CLI, expansion and observation behavior, PostCode self-analysis, unfamiliar
+  repository approval/exercise, human Unicode inspection, clean-agent validation,
+  and final integrated independent review remain outstanding. See the handoff for
+  details; no unperformed check is claimed to have passed.
