@@ -1,0 +1,256 @@
+# Review of Unicode presentation, round 5
+
+Reviewed:
+
+- `_observations/validation/2026-09-13/source-review-5.txt`
+- `_observations/validation/2026-09-13/view-review-5.txt`
+- `_observations/validation/2026-09-13/inspect-review-5.txt`
+- `_observations/validation/2026-09-13/exceptions-review-5.txt`
+- `docs/cli-reference.md`
+
+## Overall assessment
+
+The ordinary module inventory and inspection presentations are now successful.
+The fourth-round issues around ordinary facet noise, zero-match wording,
+documentation wrapping, misleading truncation-fixture prose, and the JSON
+inventory description have been resolved.
+
+Source detail has also moved in the right direction: it is explicit, visually
+separate, bounded to displayed claims, and now contains human-readable line/column
+ranges and excerpts rather than internal claim keys. It still needs one more
+presentation pass. Its current flat list obscures the relationship between an
+export, its defining source, and its documentation, and the section appears after
+the view's “Next” footer as if it were an appendix rather than part of the current
+view.
+
+## 1. Group source and documentation beneath each displayed item
+
+The current source reveal presents sibling sections such as:
+
+    Export Merged · origin (module-147fbfad)
+      ...
+
+    Documentation for Merged · origin (module-147fbfad) [origin-symbol]
+      ...
+
+This is decipherable, but it repeats module context and requires the reader to
+reconstruct the hierarchy. Organize the reveal first by module and then by each
+displayed export, with source and documentation nested beneath that item. For
+example:
+
+    SOURCE DETAIL — explicit source escape
+
+    ◆ origin
+      Entity ID: module-147fbfad
+      Source file: /.../origin.ts
+
+      Exports:
+      ├─ Dual [type+value]
+      │  Source:
+      │    /.../origin.ts:10:1–10:21
+      │      export class Dual {}
+      │  Documentation:
+      │    /.../origin.ts:7:1–9:4
+      │      /** A type and a value.
+      │       * @deprecated Use a newer implementation.
+      │       */
+      ├─ Merged [type]
+      │  Source
+      │    ...
+      │  Documentation [origin-symbol]
+      │    ...
+
+The precise tree glyphs and labels are negotiable. The important relationship is:
+
+    module
+      exports
+        item
+          defining source
+          source documentation
+
+This retains the explicit conceptual/source boundary while making the source
+expansion parallel the conceptual inspection above it. The module name and Entity
+ID need be stated only once.
+
+## 2. Put source detail before the end-of-view footer
+
+The current order is:
+
+1. conceptual inspection;
+2. status and run limitations;
+3. `Next` command;
+4. `More` line; and then
+5. the requested source detail.
+
+“Next” tells the reader the current view is over, so material appearing after it
+looks accidentally appended. Source detail is part of the requested view and
+should appear before status/run limitations and before any next-action footer.
+A coherent order would be:
+
+1. conceptual inspection;
+2. explicit source-detail section, when requested;
+3. qualifications and run limitations; and
+4. next-action command.
+
+The source section should remain visibly marked as an escape hatch even if it is
+placed adjacent to the entities it expands.
+
+## 3. Ensure excerpts visibly support the labelled claim
+
+Most excerpts are effective. One example is questionable:
+
+    Export value · origin (module-147fbfad)
+      .../origin.ts:2:14–2:23
+        value = 1
+
+The excerpt shows a declaration fragment but does not show that `value` is
+exported. Under a heading labelled `Export value`, a reader should see evidence
+that supports the export relationship, such as the whole declaration:
+
+    export const value = 1;
+
+Choose the source span associated with the displayed claim, or enlarge a narrower
+compiler span to enough surrounding syntax to make the evidence intelligible.
+Do not imply that the excerpt alone establishes a claim that it does not visibly
+show.
+
+This should also be validated on the re-export/alias fixture. Source detail for
+`chain` is the useful hard case: it should make the forwarding declaration,
+exported alias, semantic symbol, and origin evidence understandable without
+collapsing them into one undifferentiated source block.
+
+## 4. Remove the `More: --help; ...` line everywhere
+
+The line
+
+    More: --help; command and concepts reference in docs/cli-reference.md.
+
+does not help the immediate investigation and appears in every output, including
+already long exceptional views. The generated next command is useful and should
+remain. General discovery and documentation pointers belong in `--help`, startup
+guidance, or the command reference rather than every view.
+
+Remove this line from inventory, inspection, zero-match, qualified-result, and
+synthetic-state presentations.
+
+## 5. Add punctuation to Entity ID labels
+
+Use:
+
+    Entity ID: module-147fbfad
+
+rather than:
+
+    Entity ID module-147fbfad
+
+The colon makes the label/value relationship immediate and is consistent with
+other labelled detail. Apply it in both conceptual inspection and source detail.
+The tabular inventory heading remains correct without a colon.
+
+## 6. Give exports an explicit container in inspection
+
+The inspection tree currently begins exports immediately beneath the module:
+
+    ◆ origin
+      Entity ID module-147fbfad
+      ├─ Dual [type+value]
+
+Make the relationship explicit and improve the visual transition from module
+identity to module contents:
+
+    ◆ origin
+      Entity ID: module-147fbfad
+
+      Exports:
+      ├─ Dual [type+value]
+
+This also gives established-empty and not-established export states a natural,
+consistent location. Exact whitespace and tree continuation glyphs are not
+important, but `Exports:` should visibly contain the displayed export items.
+
+## 7. State documentation status once; show provenance only when useful
+
+Documentation is, by definition in this model, a recorded assertion. Repeating
+
+    doc [recorded assertion] (origin-symbol):
+
+for every assertion is therefore unnecessary. Consistent epistemological
+presentation requires that the status remain visible and accessible, not that it
+be repeated on every item.
+
+Use a plain local label:
+
+    Documentation:
+      A type and a value.
+
+and retain one view-level qualification such as:
+
+    Documentation is recorded assertion; truth, currency, and completeness are
+    not established.
+
+`origin-symbol` identifies association provenance: the documentation came from
+the original semantic symbol rather than, for example, an export alias. It is
+useful when those sources differ, but repeated machine-style tokens obscure
+ordinary content. Suppress homogeneous ordinary provenance. Where provenance is
+meaningfully mixed, express it locally in human language:
+
+    Documentation from original symbol:
+      A type and a value.
+
+    Documentation from export alias:
+      Alias-specific documentation.
+
+This rule should be applied consistently to conceptual inspection and source
+detail. If a future view mixes epistemological statuses rather than merely
+provenance roles, local status labels may again become necessary.
+
+## 8. Bound documentation by display height as well as characters
+
+The truncation fixture is now clearly synthetic, and the renderer wraps it
+correctly. It nevertheless demonstrates that the current character bound can
+occupy roughly twenty-seven output lines before truncation. That is too much for
+a terminal inspection view and can bury the rest of the module.
+
+Add a practical line bound, or reduce the character bound enough to produce one.
+Something on the order of six to ten wrapped lines per assertion would preserve a
+useful excerpt while keeping the view navigable. Continue to report omitted
+characters truthfully, and retain fuller bounded material in JSON if appropriate.
+
+This is presentation bounding only; it should not change the stored documentation
+or analysis result.
+
+## 9. Keep the successful round-five changes
+
+The following changes work well and should remain:
+
+- ordinary `implementation-available` and redundant `project` facets are
+  suppressed from homogeneous headings;
+- `Selected project modules` now conveys the useful scope directly;
+- documentation wraps with the tree indentation intact;
+- synthetic truncation input is unmistakably test data;
+- zero matches say `no exact match` and offer a relevant recovery action;
+- source detail uses line/column ranges, bounded excerpts, and labelled file
+  associations;
+- source evidence is captured rather than reread during rendering;
+- internal claim record keys are absent from Unicode and retained in structured
+  output;
+- the generated inspection command has a clean `MODULE_HANDLE` placeholder;
+- inventory and inspection retain their concise status/coverage/run-limitation
+  structure; and
+- the command reference now explains the behavior precisely enough for first use.
+
+## Recommended completion threshold
+
+Before accepting source-detail presentation:
+
+1. group source and documentation beneath each module item;
+2. move source detail before qualifications and the next-action footer;
+3. ensure excerpts visibly support their labelled claims; and
+4. validate the hierarchy on a re-export/alias source expansion;
+5. add an explicit `Exports:` container to inspection; and
+6. consolidate repeated documentation status and ordinary provenance.
+
+Remove the repeated `More` line and add the Entity ID colon in the same pass.
+Reducing the documentation display height is also worthwhile before calling the
+Unicode inspection presentation complete; the current test proves wrapping but
+still demonstrates an overly tall single assertion.

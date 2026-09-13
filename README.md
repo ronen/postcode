@@ -73,7 +73,9 @@ up to six exports
 and one documentation assertion per project-associated module/export. Its
 inventory assertion excerpts are limited to 400 characters and five tags.
 Inspection shows up to 50 exports and three assertions, with
-2,000 characters and 20 tags. Tag text is limited to 300 characters. Every omitted
+up to 2,000 characters and 20 tags in JSON. Unicode limits each assertion to
+eight wrapped content lines shared by prose and tags, with extra omissions counted.
+Tag text is limited to 300 characters. Every omitted
 export, assertion, tag or character is counted for displayed subjects; collapsed
 modules' details are collectively disclosed as omitted. Conceptual documentation excerpts
 omit fenced source examples and source-oriented `@example`/`@see` tags; the full

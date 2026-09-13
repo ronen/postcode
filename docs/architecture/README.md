@@ -119,9 +119,13 @@ Detailed inspection exposes exports and recorded assertions; shared qualificatio
 appear once while exceptional provenance stays local. JSON has an explicitly
 experimental schema. Normal qualifications omit detailed
 source evidence. Explicit inspection source detail groups locations and bounded excerpts by displayed
-concepts, retains claim keys in JSON, and never renders full-file content. The compiler
+modules and their exports, separating forwarding, defining source and documentation.
+It precedes closing qualifications/navigation, retains claim keys in JSON, and
+never renders full-file content. The compiler
 boundary captures ranges and excerpts from already observed input. Presentation does
-not reread files; file-level module associations have no excerpt.
+not reread files; file-level module associations have no excerpt. Narrow compiler spans may expand
+to their enclosing declaration statement to expose relevant syntax. Unicode
+documentation has a separate height bound; stored assertions remain unchanged.
 
 Successful capability states and common module anonymity/facets are consolidated.
 Analysis status, aggregate display omissions, and run limitations remain separate;

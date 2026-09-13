@@ -143,3 +143,9 @@ use one-based UTF-16 columns and exclusive ends. Bounded excerpts come from capt
 compiler input, never a presentation-time filesystem read. Source disclosure remains
 an explicit inspection expansion, grouped by conceptual labels, with its actual
 locations-and-excerpts level recorded in the source-escape event.
+
+Source presentation must preserve module/export containment and distinguish
+forwarding from semantic-symbol definition. Enclosing statement evidence may make
+a narrow compiler span intelligible, but excerpts stay bounded and qualified.
+Unicode documentation height limits are presentation policy; preserve stored
+assertions and count the additional omitted characters/tags in the qualified view.

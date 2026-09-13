@@ -99,7 +99,11 @@ collapsed group. A module can contribute to the documentation omission count eve
 when its documented export is outside the small export cue. Inspection discloses assertion, character and tag omissions locally, without
 repeating an aggregate item that could imply all module documentation was absent.
 Unicode wraps documentation to 88-character lines including its indentation; the
-stored text and structured excerpt remain unchanged.
+stored assertion remains unchanged. Each Unicode assertion has at most eight
+wrapped content lines shared by prose and tags, excluding labels and omission
+notices. Additional characters/tags omitted by this height bound are counted.
+JSON inspection retains up to 2,000 prose characters and 20 tags per assertion,
+with up to 300 characters per tag.
 
 ## Supported TypeScript population and qualifications
 
@@ -113,9 +117,10 @@ execute target code or run unrelated semantic checks merely to collect diagnosti
 Encountered diagnostics and unresolved or unsupported analysis paths qualify
 affected results. Inputs are memoized as first observed, not captured atomically.
 
-Compiler-associated documentation is a **recorded assertion**. The local
-`doc [recorded assertion]` marker does not establish its truth, currency or
-completeness. An export relationship describes aliases, origins or forwarding,
+Compiler-associated documentation is a **recorded assertion**. One view-level
+qualification states that truth, currency and completeness are not established.
+Ordinary local labels say `Documentation`; when original-symbol and alias
+contributions differ, human-readable provenance labels distinguish them. An export relationship describes aliases, origins or forwarding,
 not calls or dependencies. Ordinary local provenance may be suppressed; meaningful
 exceptions remain visible in inspection.
 
@@ -123,14 +128,20 @@ exceptions remain visible in inspection.
 
 `--source-detail` is an explicit escape from conceptual information. It displays
 locations and bounded excerpts supporting selected, displayed claims, grouped by
-module, export and documentation labels. Ranges use one-based lines and UTF-16
+module and then export, with defining/forwarding source and documentation beneath
+each item. This section precedes qualifications, run limitations and navigation.
+Ranges use one-based lines and UTF-16
 columns, with exclusive ends. Excerpts retain at most four source lines and 300
 Unicode characters per evidence span; omitted characters are counted. Wrapped
 source lines use `↪` in Unicode. File-level module associations are labeled and
 have no excerpt. Full claim record keys remain in JSON.
 
 Evidence comes from already captured compiler inputs; rendering never rereads the
-filesystem. Shared export/symbol spans are deduplicated within each source item.
+filesystem. Narrow variable, binding and import/export-specifier spans expand to
+their enclosing declaration statement so the snippet includes meaningful syntax.
+Forwarding statements and semantic-symbol definitions remain distinct; shared
+export/symbol spans are shown once within each export. Excerpts remain bounded,
+so they support investigation without replacing the qualified compiler claim.
 This is not full-file rendering or arbitrary source browsing. The invocation
 records source-escape use at the locations-and-excerpts level alongside the view.
 

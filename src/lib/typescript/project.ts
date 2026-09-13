@@ -140,6 +140,17 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
         inputConsistency: 'first-observed', excludedOutputLocations: inputs.excludedLocationCount },
     }];
     const evidence = (declaration: ts.Node, compilerName: string | null, resolution?: SourceEvidenceRecord['resolution']): RecordId => {
+      // Retain enough enclosing syntax to show declaration/export/import relationships.
+      if (ts.isVariableDeclaration(declaration) || ts.isBindingElement(declaration)
+        || ts.isExportSpecifier(declaration) || ts.isImportSpecifier(declaration)) {
+        for (let parent: ts.Node | undefined = declaration.parent; parent && !ts.isSourceFile(parent); parent = parent.parent) {
+          if (ts.isVariableStatement(parent) || ts.isExportDeclaration(parent) || ts.isImportDeclaration(parent)) {
+            declaration = parent;
+            break;
+          }
+          if (ts.isFunctionLike(parent)) break;
+        }
+      }
       const file = declaration.getSourceFile();
       const start = ts.isSourceFile(declaration) ? 0 : declaration.getStart(file);
       const position = (offset: number) => {

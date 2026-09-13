@@ -31,7 +31,7 @@ test('Unicode and experimental JSON use the same qualified projection and automa
   assert.deepEqual(structured.projection, unicodeArtifact.projection);
   assert.deepEqual(structured.modules.map(module => module.id), unicodeArtifact.modules.map(module => module.id));
   assert.equal(structured.schema, 'postcode-view/0-experimental');
-  assert.equal(unicode.stdout.includes('doc [recorded assertion]'), false);
+  assert.equal(unicode.stdout.includes('Documentation is recorded assertion'), false);
   assert.ok(unicode.stdout.includes('documentation for'));
   assert.equal(unicode.stdout.includes('[type]'), false);
   assert.ok(unicode.stdout.includes('Export names'));
@@ -213,9 +213,9 @@ test('inventory counts omitted external documentation while exact inspection mak
     assert.equal(unicode.stdout.split(view.projection.snapshot).length - 1, 1);
     assert.ok(unicode.stdout.includes('Coverage: external-module SourceFiles'));
     const inspectedUnicode = await invoke(['inspect', external.handle, '--snapshot', view.projection.snapshot, '--project', config]);
-    assert.ok(inspectedUnicode.stdout.includes('doc [recorded assertion]'));
+    assert.ok(inspectedUnicode.stdout.includes('Documentation is recorded assertion'));
     assert.ok(inspectedUnicode.stdout.includes('External responsibility.'));
-    assert.ok(inspectedUnicode.stdout.includes(`Entity ID ${external.entityId}`));
+    assert.ok(inspectedUnicode.stdout.includes(`Entity ID: ${external.entityId}`));
     writeFileSync(path.join(root, 'node_modules/dependency/index.d.ts'), 'export * from "./missing.js";');
     const incomplete = await invoke(['--project', config]);
     assert.ok(incomplete.stdout.includes('1 external module collapsed'));
@@ -301,7 +301,7 @@ test('compact inventory consolidates common labels and counts documentation beyo
     assert.equal(result.stdout.split('TypeScript names not established').length - 1, 1);
     assert.equal(result.stdout.includes('(anonymous module)'), false);
     assert.equal(result.stdout.split('implementation-available').length - 1, 0);
-    assert.equal(result.stdout.includes('doc [recorded assertion]'), false);
+    assert.equal(result.stdout.includes('Documentation is recorded assertion'), false);
     assert.equal(result.stdout.includes('not calls or dependencies'), false);
     assert.equal(result.stdout.includes('Not a displayed cue.'), false);
     assert.ok(result.stdout.includes('other compiler module categories are not established'));
@@ -393,9 +393,9 @@ test('exceptional inspections retain forwarding provenance, qualified failures, 
     const inventory = JSON.parse((await invoke(['--project', project, '--json'])).stdout) as QualifiedView;
     const detail = await invoke(['inspect', inventory.modules[0]!.entityId, '--snapshot', inventory.projection.snapshot, '--project', project, '--source-detail']);
     assert.ok(detail.stdout.includes('materialization partial'));
-    assert.ok(detail.stdout.includes('100 assertion character(s) omitted'));
-    assert.ok(detail.stdout.includes('doc [recorded assertion]'));
-    assert.ok(detail.stdout.includes('no established truth, currency or completeness'));
+    assert.ok(detail.stdout.includes('assertion character(s) omitted'));
+    assert.ok(detail.stdout.includes('Documentation is recorded assertion'));
+    assert.ok(detail.stdout.includes('truth, currency, and completeness are not established'));
     assert.ok(detail.stdout.includes('SOURCE DETAIL — explicit source escape'));
     assert.equal(detail.stdout.includes('Module membership and effective exports established'), false);
   } finally { rmSync(root, { recursive: true, force: true }); }
@@ -450,20 +450,75 @@ test('documentation wraps without changing stored text and source excerpts stay 
     const text = renderUnicode(view);
     const documentation = view.modules[0]!.exports[0]!.documentation[0]!;
     assert.equal(documentation.text, prose.slice(0, 2000));
-    assert.ok(text.split('\n').filter(line => line.startsWith('  │  ')).every(line => [...line].length <= 88));
+    assert.ok(text.split('SOURCE DETAIL')[0]!.split('\n').filter(line => line.startsWith('  │  ')).every(line => [...line].length <= 88));
     assert.ok(text.includes('assertion character(s) omitted'));
     assert.equal(text.includes('documentation for 1 listed module'), false);
     assert.equal(text.includes('DO_NOT_DISCLOSE'), false);
     assert.equal(text.includes('Export zzzOmitted'), false);
     assert.ok(text.includes('source character(s) omitted'));
-    const b = view.sourceDetail!.items.find(item => item.label.startsWith('Export b '))!.evidence[0]!.location;
+    const b = view.sourceDetail!.items.find(item => item.label === 'Export b')!.evidence[0]!.location;
     assert.equal(b.association, 'span');
-    if (b.association === 'span') assert.deepEqual(b.from, { line: 2, column: 37 });
+    if (b.association === 'span') assert.deepEqual(b.from, { line: 2, column: 24 });
     for (const evidence of view.sourceDetail!.items.flatMap(item => item.evidence)) {
       if (evidence.location.association === 'span') {
         assert.ok([...evidence.location.excerpt.text].length <= 300);
         assert.ok(evidence.location.excerpt.text.split('\n').length <= 4);
       }
     }
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('source hierarchy preserves forwarding, defining syntax and mixed documentation before the closing sections', async () => {
+  const inventory = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+  for (const handle of ['origin', 'chain']) {
+    const module = inventory.modules.find(item => item.handle === handle)!;
+    const result = await invoke(['inspect', module.entityId, '--snapshot', inventory.projection.snapshot, '--project', config, '--source-detail']);
+    const text = result.stdout;
+    const source = text.slice(text.indexOf('SOURCE DETAIL'), text.indexOf('\nStatus\n'));
+    assert.ok(text.indexOf('SOURCE DETAIL') < text.indexOf('\nStatus\n'));
+    assert.ok(text.indexOf('\nStatus\n') < text.indexOf('\nNext'));
+    assert.equal(text.includes('More:'), false);
+    assert.equal(text.match(/Documentation is recorded assertion/g)?.length, 1);
+    assert.ok(text.includes(`Entity ID: ${module.entityId}\n\n  Exports:`));
+    assert.equal(source.match(new RegExp(`Entity ID: ${module.entityId}`, 'g'))?.length, 1);
+    assert.ok(source.includes('  ├─ value [value]\n'));
+    assert.ok(source.includes('export const value = 1;'));
+    if (handle === 'origin') {
+      assert.equal(text.includes('origin-symbol'), false);
+      assert.ok(source.includes('  ├─ Merged [type]\n  │  Source:'));
+    } else {
+      const renamed = source.slice(source.indexOf('  ├─ Renamed'), source.indexOf('  ├─ overloaded'));
+      assert.ok(renamed.includes('Export/forwarding source:'));
+      assert.ok(renamed.includes("export * from './barrel.js';"));
+      assert.ok(renamed.includes('Dual as Renamed'));
+      assert.ok(renamed.includes('Defining source · Dual in origin'));
+      assert.ok(renamed.includes('export class Dual {}'));
+      assert.ok(renamed.includes('Documentation from original symbol:'));
+      assert.ok(renamed.includes('Documentation from export alias:'));
+    }
+  }
+});
+
+test('Unicode bounds each assertion to eight wrapped content lines with exact character and tag omissions', async () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-doc-height-'));
+  try {
+    const project = path.join(root, 'tsconfig.json');
+    writeFileSync(project, '{"compilerOptions":{"noLib":true,"types":[]},"files":["height.ts"]}');
+    const prose = Array.from({ length: 100 }, (_, index) => `TEST_SEGMENT_${index} 😀`).join('\n');
+    writeFileSync(path.join(root, 'height.ts'), `/** ${prose.replace(/\n/g, '\n * ')}\n * @deprecated ${'tag '.repeat(100)}\n */\nexport const a=1;`);
+    const inventory = JSON.parse((await invoke(['--project', project, '--json'])).stdout) as QualifiedView;
+    const args = ['inspect', inventory.modules[0]!.entityId, '--snapshot', inventory.projection.snapshot, '--project', project];
+    const unicode = await invoke(args);
+    const view = unicode.batches[0]!.records.find(record => record.kind === 'qualified-view')!.value as QualifiedView;
+    const doc = view.modules[0]!.exports[0]!.documentation[0]!;
+    assert.ok(doc.text.split('\n').length <= 8);
+    assert.equal([...doc.text].length + doc.omittedTextCharacters, [...prose].length);
+    assert.equal(doc.omittedTags, 1);
+    assert.ok(unicode.stdout.includes(`${doc.omittedTextCharacters} assertion character(s) omitted`));
+    assert.ok(unicode.stdout.includes('1 structured tag(s) omitted'));
+    const json = JSON.parse((await invoke([...args, '--json'])).stdout) as QualifiedView;
+    assert.ok(json.modules[0]!.exports[0]!.documentation[0]!.text.length > doc.text.length);
+    const missing = await invoke(['inspect', 'not-here', '--project', project]);
+    assert.equal(missing.stdout.includes('More:'), false);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
