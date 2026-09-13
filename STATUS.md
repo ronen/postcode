@@ -32,7 +32,7 @@ The human's [conditional presentation approval](records/reviews/2026-09-13-prese
 is satisfied: tests pass and regenerated JSON lists each requested expansion kind
 once while retaining per-module evaluation records. Presentation review is complete.
 
-The remaining gate is final independent integrated implementation review against
-the [approved plan](docs/plans/initial-module-inventory-plan.md) and accepted
+The [final integrated-review handoff](records/reviews/2026-09-13-module-inventory-final.md)
+is prepared and awaits human-arranged independent review against the [approved plan](docs/plans/initial-module-inventory-plan.md) and accepted
 decisions. The task remains active until review findings are materially resolved
 or residual concerns are explicitly accepted by the human.

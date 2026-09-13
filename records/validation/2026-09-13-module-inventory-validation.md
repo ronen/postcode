@@ -1,10 +1,10 @@
 # Module inventory: validation handoff
 
 Prepared: 2026-09-13
-Implementation commit: `3c66971`
+Original runnable milestone commit: `3c66971`
 Clean-agent input commit: `7308fac`
 Feature branch: `codex/initial-module-inventory`
-Status: validation in progress; task active
+Status: planned validation complete; final independent review pending
 
 This records the runnable milestone of the
 [active task](../tasks/2026-09-12-initial-module-inventory.md), governed by the
@@ -12,7 +12,8 @@ This records the runnable milestone of the
 [module inventory](../../docs/decisions/initial-module-inventory-decisions.md),
 [projection architecture](../../docs/decisions/initial-projection-architecture-decisions.md),
 and [observation recording](../../docs/decisions/initial-observation-recording-decisions.md)
-decisions. It is a validation handoff, not final independent review or acceptance.
+decisions. The original milestone evidence is preserved below; current approval
+and final-review gate status appear at the end. This is not independent review.
 
 ## Implemented and verified
 
@@ -119,6 +120,6 @@ evaluated input. Human usability inspection is still necessary.
 2. The approved [p-queue exercise](2026-09-13-p-queue.md) is complete at its pinned
    revision. Final rechecks preserve seven modules and all six entry exports.
    Third-party contents and real-project observations remain local and uncommitted.
-3. Final integrated independent review remains required. The human must arrange
-   that review; findings must be resolved or residual concerns explicitly accepted
+3. The [final integrated-review handoff](../reviews/2026-09-13-module-inventory-final.md)
+   is prepared. The human must arrange that independent review; findings must be resolved or residual concerns explicitly accepted
    before task closure. No final independent review or task completion is claimed.
