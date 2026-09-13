@@ -61,6 +61,22 @@ syntax diagnostics are duplicated by redundant parsing. Both are accepted as
 in-scope corrections. Preserve precise ID and exact-name selection, and keep the
 continuation active for the next human-arranged review.
 
+### 2026-09-13: approved diagnostic correction approach
+
+Context: removing the additional configuration parse, as suggested by Copilot,
+caused malformed root configurations to be accepted in TypeScript 6.0.3. The agent
+restored that check and asked: "I recommend preserving syntax validation and
+removing duplicate diagnostics by file, position, code and message, so distinct
+errors remain visible. Shall I proceed with that approach?"
+
+Human response:
+
+yes
+
+The independently verified handle correction was committed as `cc836cc` before
+this authorization checkpoint. Proceed with the approved diagnostic approach,
+then verify and prepare the next rereview handoff; keep the continuation active.
+
 ## Outcome
 
 ### 2026-09-13: corrections ready for Copilot rereview
