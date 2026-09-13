@@ -157,6 +157,17 @@ an unsafe generated command. No disagreement or unresolved scope issue remains.
 Changes are prepared for the existing PR and another human-arranged Copilot review.
 The continuation remains active.
 
+### 2026-09-13: sixth-round correction ready for rereview
+
+Correction `b19e787a2bb212cca21aabf2252feb60eb7bc9d7` escapes controls in the
+observation-destination disclosure and adjacent CLI diagnostic/warning values.
+The actual sink path and observation values remain unchanged. The
+[sixth disposition and handoff](../reviews/2026-09-13-module-inventory-continuation-round-6.md)
+records verification and review target `a512c62`, which adds only a trailing-blank-line
+cleanup to the tested correction. No disagreement or unresolved scope issue remains.
+Changes are prepared for the existing PR and another human-arranged Copilot review.
+The continuation remains active.
+
 ## Verification
 
 - `npm test`: 57/57 passed; `npm run check`: passed on Node 22.13.1 / TypeScript
@@ -229,5 +240,21 @@ The continuation remains active.
 - All 211 checkout observation batches remained unchanged by name/content hash;
   none were added, and no temporary test directories leaked. Whitespace, document
   links, hashes and historical/governing preservation checked.
+- Real-project captures, clean-agent exercises and human presentation review were
+  not repeated. Next Copilot rereview remains pending.
+
+### Sixth-round verification
+
+- `npm test`: 71/71 passed; `npm run check`: passed on Node 22.13.1 / TypeScript
+  6.0.3. Both initial disclosure/error regressions failed before correction.
+- A temporary real sink writes at the original control-bearing path and stores the
+  exact rendered stdout; disclosure stays one escaped line. Diagnostic/warning
+  cases and an isolated executable failure retain their expected exit behavior.
+- A before/after CLI probe confirms unchanged JSON stdout and exit status with
+  escaped stderr. Evidence hashes and comparison limits are recorded in the handoff.
+- All 211 checkout observation batches remained unchanged by name/content hash,
+  none were added and no temporary test directories leaked. Full-branch whitespace
+  passed after formatting-only cleanup; document links, hashes and completed-task/
+  governing preservation checked. No executable changes followed the tested correction.
 - Real-project captures, clean-agent exercises and human presentation review were
   not repeated. Next Copilot rereview remains pending.
