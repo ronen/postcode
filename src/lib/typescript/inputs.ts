@@ -5,7 +5,18 @@ import { canonical, compare, digest } from '../identity.js';
 /** Captures positive and negative resolution inputs, not just configured root contents. */
 export function captureInputs(excludedDirectories: readonly string[]) {
   const absolute = (name: string) => path.resolve(name);
-  const real = (name: string): string => ts.sys.realpath?.(absolute(name)) ?? absolute(name);
+  const real = (name: string): string => {
+    const requested = absolute(name);
+    let ancestor = requested;
+    // realpath alone leaves a missing leaf unresolved, even under an existing symlink.
+    while (!ts.sys.fileExists(ancestor) && !ts.sys.directoryExists(ancestor)) {
+      const parent = path.dirname(ancestor);
+      if (parent === ancestor) break;
+      ancestor = parent;
+    }
+    const resolved = ts.sys.realpath?.(ancestor) ?? ancestor;
+    return path.resolve(resolved, path.relative(ancestor, requested));
+  };
   const exclusions = excludedDirectories.map(name => ({ lexical: absolute(name), real: real(name) }))
     .sort((a, b) => compare(a.lexical, b.lexical) || compare(a.real, b.real))
     .filter((directory, index, all) => index === 0 || directory.lexical !== all[index - 1]!.lexical

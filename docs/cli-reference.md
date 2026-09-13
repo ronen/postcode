@@ -33,7 +33,9 @@ required; the marker does not enable multiple selectors.
 
 Exit 0 means a view was produced, including a qualified or partial result. Exit 2
 means invalid arguments or failure to open the project; exit 1 means an internal
-failure. Observation delivery failure is a visible warning and preserves the view.
+failure. Project-open diagnostics include the file and one-based line/column
+when TypeScript supplies them. Observation delivery failure is a visible warning
+and preserves the view.
 
 ## First use
 

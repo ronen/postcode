@@ -121,7 +121,8 @@ test('malformed root and inherited configurations report each syntax diagnostic 
       assert.equal(result.exit, 2);
       assert.equal(result.stdout, '');
       assert.equal(result.batches.length, 0);
-      assert.deepEqual(result.stderr.trim().split('\n'), ['Project open failed:', "  TS1005: '}' expected."]);
+      assert.deepEqual(result.stderr.trim().split('\n'), ['Project open failed:',
+        `  TS1005: ${inherited ? path.join(root, 'base.json') : config}:1:${malformed.length + 1}: '}' expected.`]);
     }
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
@@ -139,7 +140,8 @@ test('configuration diagnostics retain equal messages at different files or posi
     assert.equal(files.stdout, '');
     assert.equal(files.batches.length, 0);
     assert.deepEqual(files.stderr.trim().split('\n'), ['Project open failed:',
-      "  TS1005: '}' expected.", "  TS1005: '}' expected."]);
+      `  TS1005: ${path.join(root, 'first.json')}:1:56: '}' expected.`,
+      `  TS1005: ${path.join(root, 'second.json')}:1:56: '}' expected.`]);
     writeFileSync(config, '{"extends":"./first.json","files":[]}');
     writeFileSync(path.join(root, 'first.json'), '{"compilerOptions":{"noLib":true "types":[]} "files":[]}');
     const positions = await invoke(['--project', config]);
@@ -147,7 +149,8 @@ test('configuration diagnostics retain equal messages at different files or posi
     assert.equal(positions.stdout, '');
     assert.equal(positions.batches.length, 0);
     assert.deepEqual(positions.stderr.trim().split('\n'), ['Project open failed:',
-      "  TS1005: ',' expected.", "  TS1005: ',' expected."]);
+      `  TS1005: ${path.join(root, 'first.json')}:1:34: ',' expected.`,
+      `  TS1005: ${path.join(root, 'first.json')}:1:46: ',' expected.`]);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -772,5 +775,19 @@ test('the executable escapes unexpected failure messages without changing exit s
     assert.equal(result.stderr.trimEnd().split('\n').length, 1);
     assert.equal(result.stderr.includes(message), false);
     assert.ok(result.stderr.startsWith('Internal failure: failure\\u000aFORGED\\u0009'));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('configuration diagnostic locations are one-based across lines and safely escaped on stderr', async () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-config-location-'));
+  try {
+    const config = path.join(root, 'multiline\nStatus.json');
+    writeFileSync(config, '{\n  "compilerOptions": {\n    "noLib": true\n    "types": []\n  },\n  "files": []\n}');
+    const result = await invoke(['--project', config]);
+    assert.equal(result.exit, 2);
+    assert.equal(result.stdout, '');
+    assert.equal(result.batches.length, 0);
+    assert.deepEqual(result.stderr.trim().split('\n'), ['Project open failed:',
+      `  TS1005: ${path.join(root, 'multiline\\u000aStatus.json')}:4:5: ',' expected.`]);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

@@ -53,7 +53,11 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
           diagnostic.start, diagnostic.length, diagnostic.category, diagnostic.code, message]);
         if (seen.has(key)) return [];
         seen.add(key);
-        return [{ code: diagnostic.code, message }];
+        const file = diagnostic.file;
+        const position = file && diagnostic.start !== undefined
+          ? ts.getLineAndCharacterOfPosition(file, diagnostic.start) : undefined;
+        const location = file ? `${file.fileName}${position ? `:${position.line + 1}:${position.character + 1}` : ''}: ` : '';
+        return [{ code: diagnostic.code, message: `${location}${message}` }];
       }),
     };
   };

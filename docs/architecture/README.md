@@ -87,7 +87,8 @@ Actual generated-output directories supplied by the caller are excluded before
 configuration discovery and compiler reads. A target directory named `_observations`
 or `_build` remains an ordinary configured input unless it is an explicitly
 supplied output destination. Exclusion applies to roots, imported files, directory
-listings, and symlink targets, so excluded contents do not enter evidence or its
+listings, and symlink targets, including missing descendants resolved through
+the nearest existing ancestor, so excluded contents do not enter evidence or its
 identity digest. Exclusion entries are normalized, sorted and deduplicated as
 lexical/real-path pairs before filtering and identity capture, so input order and
 repeated entries do not change the snapshot. Discovery contexts assert this exclusion only when at least one
@@ -99,7 +100,9 @@ alone are not this evidence boundary.
 Configuration opening retains explicit syntax validation because TypeScript 6.0
 omits root syntax errors from its parsed configuration error list. Repeated error
 reports are deduplicated by file, position, length, category, code and message;
-identical text at different source occurrences remains visible.
+identical text at different source occurrences remains visible. Failure messages
+retain the diagnostic file and one-based line/column when available, so those
+occurrences can be located; absent locations are not inferred.
 
 Discovery collects syntax diagnostics encountered while examining the configured
 Program, conservatively qualifying the whole population and affected modules.

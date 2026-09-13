@@ -324,3 +324,33 @@ test('exclusion order and duplicates preserve snapshots while different exclusio
     assert.equal(changed.claims.length, 2);
   });
 });
+
+test('missing descendants of symlinked exclusions stay outside snapshot inputs when generated output appears', () => {
+  temporary(root => {
+    const output = path.join(root, 'output');
+    const ordinary = path.join(root, 'ordinary');
+    mkdirSync(output); mkdirSync(ordinary);
+    symlinkSync(output, path.join(root, 'alias'), 'dir');
+    symlinkSync(ordinary, path.join(root, 'visible'), 'dir');
+    const config = path.join(root, 'tsconfig.json');
+    writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
+    writeFileSync(path.join(root, 'entry.ts'), "import './alias/deep/generated.js'; import './visible/new.js'; export const value=1;");
+    const before = discover(config, [output]);
+    const verify = () => {
+      const result = discover(config, [output]);
+      assert.equal(result.evaluation.snapshot, before.evaluation.snapshot);
+      assert.deepEqual(result.claims, before.claims);
+      assert.deepEqual(result.contexts, before.contexts);
+      assert.equal(result.claims.length, 1);
+    };
+    mkdirSync(path.join(output, 'deep')); verify();
+    const generated = path.join(output, 'deep/generated.ts');
+    writeFileSync(generated, 'export const generated=1;'); verify();
+    writeFileSync(generated, 'export const generated=2;'); verify();
+    rmSync(generated); verify();
+    writeFileSync(path.join(ordinary, 'new.ts'), 'export const real=1;');
+    const changed = discover(config, [output]);
+    assert.notEqual(changed.evaluation.snapshot, before.evaluation.snapshot);
+    assert.equal(changed.claims.length, 2);
+  });
+});
