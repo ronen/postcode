@@ -52,6 +52,10 @@ Claude has performed a review, I've placed the findings in \_work/review-finding
 
 the use of p-queue is approved.  the unicode output is not approved yet; i will examine it and give you feedback
 
+### 2026-09-13 — Unicode review returned; explicit acceptance required
+
+please see \_work/2026-09-13-view-after-review\.txt for review of the unicode output.  after addressing that review, show me the new unicode output for further review; do not presume it is ready until receiving explicit approval of the unicode output
+
 ## Outcome
 
 ### First architectural checkpoint — 2026-09-12
