@@ -199,6 +199,16 @@ was committed as `3f31a8a`. No disagreement or unresolved scope issue remains.
 Changes are prepared for the existing PR and another human-arranged Copilot review.
 The continuation remains active.
 
+### 2026-09-13: eighth-round regression and example ready for rereview
+
+- `fa8ecee` tests the actual generated command for a shared language-name/basename
+  handle and documents the same example in the CLI reference. Runtime behavior
+  and method versions remain unchanged.
+- The High defect classification is disputed against the approved duplicate-handle
+  contract; the human authorized regression/documentation after assessment.
+- [Eighth-round disposition and handoff](../reviews/2026-09-13-module-inventory-continuation-round-8.md)
+  records the evidence. The continuation remains active for human-arranged rereview.
+
 ## Verification
 
 - `npm test`: 57/57 passed; `npm run check`: passed on Node 22.13.1 / TypeScript
@@ -303,3 +313,11 @@ The continuation remains active.
   unchanged by name/content hash, none were added and no temporary test directories leaked.
 - Real-project captures, clean-agent exercises and human presentation review were
   not repeated. Next Copilot rereview remains pending.
+
+### Eighth-round verification
+
+- `npm test`: 74/74 passed; `npm run check` and whitespace checks passed.
+- The new regression runs the generated shell command in a disposable checkout,
+  verifies visible multiple matches and exact recorded output, and checks JSON
+  scoped handle, unscoped name and both precise Entity-ID selections.
+- No runtime changes or real-project recaptures; temporary test data is cleaned up.
