@@ -179,6 +179,17 @@ cleanup to the tested correction. No disagreement or unresolved scope issue rema
 Changes are prepared for the existing PR and another human-arranged Copilot review.
 The continuation remains active.
 
+### 2026-09-13: seventh-round corrections ready for rereview
+
+Correction `e89d741ff4d2b6f9b077c61a6b5460629e3b3bde` resolves missing descendants
+through existing symlink ancestors before exclusion checks and retains diagnostic
+file/line/column information in project-open failure messages. Occurrence
+deduplication, safe terminal disclosure and no-location fallback remain intact.
+The [seventh-round disposition and handoff](../reviews/2026-09-13-module-inventory-continuation-round-7.md)
+was committed as `3f31a8a`. No disagreement or unresolved scope issue remains.
+Changes are prepared for the existing PR and another human-arranged Copilot review.
+The continuation remains active.
+
 ## Verification
 
 - `npm test`: 57/57 passed; `npm run check`: passed on Node 22.13.1 / TypeScript
@@ -267,5 +278,19 @@ The continuation remains active.
   none were added and no temporary test directories leaked. Full-branch whitespace
   passed after formatting-only cleanup; document links, hashes and completed-task/
   governing preservation checked. No executable changes followed the tested correction.
+- Real-project captures, clean-agent exercises and human presentation review were
+  not repeated. Next Copilot rereview remains pending.
+
+### Seventh-round verification
+
+- `npm test`: 73/73 passed; `npm run check`: passed on Node 22.13.1 / TypeScript
+  6.0.3. Symlink and initial diagnostic-location regressions failed before fixes.
+- Excluded symlink descendants retain snapshot, claims and contexts as directories
+  and files appear/change/disappear. Non-excluded symlink inputs still affect identity.
+- Diagnostics retain distinct file/position locations, one-based multiline coordinates,
+  deduplication and terminal escaping. A no-location error retains its original message.
+- Fixture evidence, full-branch whitespace, document links, hashes and historical/
+  governing preservation checked. All 211 checkout observation batches stayed
+  unchanged by name/content hash, none were added and no temporary test directories leaked.
 - Real-project captures, clean-agent exercises and human presentation review were
   not repeated. Next Copilot rereview remains pending.
