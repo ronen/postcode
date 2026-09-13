@@ -272,3 +272,32 @@ Final integrated review and remaining validation are still required.
 - Explicit human Unicode approval and final independent integrated review are
   still pending. Earlier clean agents evaluated their original sample; no human
   acceptance, final readiness or task completion is inferred from these checks.
+
+### Fourth output sample verification — 2026-09-13
+
+- Addressed the third human review with a compact inventory table, generated
+  basename/export handles, precise compact Entity IDs, scoped epistemological
+  status, vertical omission counts, shell-safe generated commands and updated
+  first-use/reference documentation. No foundation or accepted decision was edited.
+- All 46 tests and type checking pass. Intentional digest-prefix collisions extend
+  deterministically; IDs resolve precisely with snapshot scope across duplicate
+  handles. Basenames remain generated mnemonic evidence, distinct from names and
+  source locations. Tests retain changed-input rejection, independent-process
+  determinism, meaningful inspection provenance and explicit abnormal states.
+- Final self-analysis retains 174 modules and 349 fully materialized scopes;
+  Unicode lists 18 and collapses 156. Its 47-line, 2,287-byte inventory discloses
+  28 omitted exports and documentation omissions for nine listed modules. The
+  suggested command, with a compact ID, produced the 33-line inspection sample.
+- Captured and inspected ten exceptional cases: aliases/re-exports, merged and
+  overloaded declarations, zero/multiple selection, partial exports, documentation
+  truncation, explicit source detail, and clearly labeled synthetic unavailable,
+  failed and stopped expansion states. That inspection led to scoped zero-match
+  status and corrected advice for already bounded inspections.
+- Rechecked the approved pinned p-queue repository: seven JSON modules, five listed
+  and two collapsed, 15 fully materialized scopes, all six entry exports preserved.
+  The full branch whitespace check passes; generated artifacts and third-party
+  contents remain uncommitted. A local hash manifest identifies retained samples.
+- The [fourth response](../reviews/2026-09-13-unicode-fourth-response.md) records
+  dispositions, evidence and limitations. Explicit human output approval and the
+  final independent integrated review remain pending. The task stays active;
+  neither acceptance nor completion is inferred from the successful checks.
