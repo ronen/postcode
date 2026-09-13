@@ -302,3 +302,25 @@ test('output-exclusion qualifications describe only filters actually supplied by
     }
   }
 });
+
+test('exclusion order and duplicates preserve snapshots while different exclusion sets remain distinct', () => {
+  temporary(root => {
+    const config = path.join(root, 'tsconfig.json');
+    writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"include":["**/*.ts"]}');
+    writeFileSync(path.join(root, 'entry.ts'), 'export const value=1;');
+    const outputs = ['first', 'second'].map(name => path.join(root, name));
+    for (const output of outputs) { mkdirSync(output); writeFileSync(path.join(output, 'generated.ts'), 'export const fake=1;'); }
+    const before = discover(config, outputs);
+    for (const exclusions of [[...outputs].reverse(), [outputs[1]!, outputs[0]!, outputs[1]!],
+      [path.join(outputs[0]!, '.'), outputs[1]!]]) {
+      const next = discover(config, exclusions);
+      assert.equal(next.evaluation.snapshot, before.evaluation.snapshot);
+      assert.deepEqual(next.claims, before.claims);
+      assert.deepEqual(next.contexts, before.contexts);
+    }
+    assert.equal(before.claims.length, 1);
+    const changed = discover(config, [outputs[0]!]);
+    assert.notEqual(changed.evaluation.snapshot, before.evaluation.snapshot);
+    assert.equal(changed.claims.length, 2);
+  });
+});

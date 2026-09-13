@@ -6,7 +6,10 @@ import { canonical, compare, digest } from '../identity.js';
 export function captureInputs(excludedDirectories: readonly string[]) {
   const absolute = (name: string) => path.resolve(name);
   const real = (name: string): string => ts.sys.realpath?.(absolute(name)) ?? absolute(name);
-  const exclusions = excludedDirectories.map(name => ({ lexical: absolute(name), real: real(name) }));
+  const exclusions = excludedDirectories.map(name => ({ lexical: absolute(name), real: real(name) }))
+    .sort((a, b) => compare(a.lexical, b.lexical) || compare(a.real, b.real))
+    .filter((directory, index, all) => index === 0 || directory.lexical !== all[index - 1]!.lexical
+      || directory.real !== all[index - 1]!.real);
   const within = (name: string, directory: string) => {
     const relative = path.relative(directory, name);
     return relative === '' || (!relative.startsWith(`..${path.sep}`) && relative !== '..' && !path.isAbsolute(relative));

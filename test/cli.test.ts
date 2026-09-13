@@ -656,3 +656,66 @@ test('Unicode bounds each assertion to eight wrapped content lines with exact ch
     assert.equal(missing.stdout.includes('More:'), false);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
+
+test('Unicode inline names and paths cannot inject structure while JSON and wrapped content retain source text', async () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-inline-controls-'));
+  try {
+    const config = path.join(root, 'tsconfig.json');
+    const name = 'spoof\nStatus\tmarker\u2028tail';
+    const filename = `file-${name}.ts`;
+    writeFileSync(config, JSON.stringify({ compilerOptions: { noLib: true, types: [] }, files: [filename, 'ambient.d.ts'] }));
+    writeFileSync(path.join(root, filename), `/** First documentation line.\n * Second documentation line. */\nconst value=1; export { value as ${JSON.stringify(name)} };`);
+    writeFileSync(path.join(root, 'ambient.d.ts'), `declare module ${JSON.stringify(name)} { export const item:number; }`);
+    const inventory = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+    const file = inventory.modules.find(module => module.exports.some(exported => exported.exportedName === name))!;
+    const escaped = 'spoof\\u000aStatus\\u0009marker\\u2028tail';
+    for (const module of [file]) {
+      const json = JSON.parse((await invoke(['inspect', module.entityId, '--snapshot', inventory.projection.snapshot,
+        '--project', config, '--source-detail', '--json'])).stdout) as QualifiedView;
+      const original = JSON.stringify(json);
+      const output = renderUnicode(json);
+      assert.equal(output.includes(name), false);
+      assert.ok(output.includes(escaped));
+      assert.equal(output.split('\n').filter(line => line === 'Status').length, 1);
+      assert.equal(output.includes('\t'), false);
+      assert.equal(output.includes('\u2028'), false);
+      assert.equal(JSON.stringify(json), original);
+      // Exercise module-name and selector interpolation independently of compiler naming rules.
+      const labelled = structuredClone(json);
+      (labelled.modules[0] as { name: string | null }).name = name;
+      const parameters = labelled.projection.parameters as { selector: string | null };
+      parameters.selector = name;
+      assert.equal(renderUnicode(labelled).includes(name), false);
+      assert.ok(renderUnicode(labelled).includes(escaped));
+      if (module === file) {
+        assert.ok(json.sourceDetail!.items.flatMap(item => item.evidence).some(evidence => evidence.path.endsWith(filename)));
+        assert.ok(output.includes('First documentation line.'));
+        assert.ok(output.includes('Second documentation line.'));
+      }
+    }
+    const unicode = (await invoke(['--project', config])).stdout;
+    assert.equal(unicode.includes(name), false);
+    assert.ok(unicode.includes(escaped));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('control-bearing invocation paths omit the generated command instead of injecting or altering shell arguments', async () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-command-controls-'));
+  try {
+    const config = path.join(root, 'config\nStatus\tspoof.json');
+    writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
+    writeFileSync(path.join(root, 'entry.ts'), 'export const value=1;');
+    const ordinaryConfig = path.join(root, 'tsconfig.json');
+    writeFileSync(ordinaryConfig, readFileSync(config));
+    for (const [selectedConfig, checkout] of [[config, root], [ordinaryConfig, path.join(root, 'checkout\nspoof')]]) {
+      const result = await invoke(['--project', selectedConfig!, '--json'], undefined, checkout!);
+      assert.equal(result.exit, 0);
+      const view = JSON.parse(result.stdout) as QualifiedView;
+      assert.equal(view.presentation.navigation, undefined);
+      const unicode = renderUnicode(view);
+      assert.equal(unicode.includes('config\nStatus\tspoof'), false);
+      assert.equal(unicode.includes('checkout\nspoof'), false);
+      assert.ok(unicode.includes('Inspection requires an exact subject'));
+    }
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});

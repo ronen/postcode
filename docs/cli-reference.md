@@ -26,7 +26,9 @@ and `--snapshot` are inspection options. `--help` performs no analysis.
 `--` ends option parsing: subsequent arguments are literal positional values.
 For a module named `--json`, use `inspect --project path/to/tsconfig.json -- --json`.
 Place all options, including `--json` and `--source-detail`, before the marker.
-Generated inspection commands include this marker. One exact selector is still
+Generated inspection commands include this marker. Commands are omitted when
+CLI or configuration paths contain control characters; the view instead gives
+manual-inspection guidance. One exact selector is still
 required; the marker does not enable multiple selectors.
 
 Exit 0 means a view was produced, including a qualified or partial result. Exit 2
@@ -179,3 +181,8 @@ generated files found or read. A configured location can be absent or outside th
 selected roots and still be protected against resolution into it. Git-ignore alone
 does not establish this exclusion. Keep additional generated views in the excluded
 `_observations/` directory or outside the analyzed repository.
+
+Unicode inline values (names, selectors, qualifications and source paths) display
+line-breaking and indentation controls as visible Unicode escapes. Documentation
+and excerpts retain the renderer's structured wrapping. JSON retains the original
+string values; display escaping does not alter stored claims or evidence.

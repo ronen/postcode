@@ -97,7 +97,11 @@ export async function runCli(args: readonly string[], environment: {
     ['node', path.join(environment.checkout, '_build/src/cli.js'), 'inspect'],
     ['--snapshot', projection.snapshot], ['--project', config, '--', 'MODULE_HANDLE'],
   ].map(tokens => tokens.map(shellQuote).join(' ')).join(' \\\n  ');
-  const view = createView(store, projection, { ...presentation, navigation: { inspect: command } });
+  // A displayed command must remain both structurally safe and executable as shown.
+  const unsafeCommandPath = /[\u0000-\u001f\u007f-\u009f\u2028\u2029]/.test(config + environment.checkout);
+  const view = createView(store, projection, { ...presentation,
+    ...(unsafeCommandPath ? {} : { navigation: { inspect: command } }),
+  });
   const rendered = renderView(view);
   environment.stdout(rendered);
   environment.stderr(`Local observations: ${destination} (may contain repository-derived text and explicitly requested source locations).\n`);

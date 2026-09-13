@@ -88,7 +88,9 @@ configuration discovery and compiler reads. A target directory named `_observati
 or `_build` remains an ordinary configured input unless it is an explicitly
 supplied output destination. Exclusion applies to roots, imported files, directory
 listings, and symlink targets, so excluded contents do not enter evidence or its
-identity digest. Discovery contexts assert this exclusion only when at least one
+identity digest. Exclusion entries are normalized, sorted and deduplicated as
+lexical/real-path pairs before filtering and identity capture, so input order and
+repeated entries do not change the snapshot. Discovery contexts assert this exclusion only when at least one
 output location was supplied; direct library runs may enforce none. The CLI supplies
 its actual checkout observation and build directories before opening a project,
 including when the selected configuration is nested elsewhere. Git-ignore rules
@@ -176,3 +178,10 @@ Both initial independent reviews and instrument validation are complete; their
 evidence and limitations remain in the completed initial task. Subsequent PR review
 corrections and the human-arranged rereview gate are tracked by the active
 [continuation](../../records/tasks/2026-09-13-module-inventory-review-continuation.md).
+
+Unicode rendering escapes controls at inline value boundaries before assembling
+layout. Documentation and source excerpts use structured wrapping; JSON and domain
+records retain their original text. Generated commands are omitted for invocation
+paths with controls rather than displaying a changed, non-executable argument.
+Re-export traversal guards module/exported-name pairs along each path, permitting
+renamed routes to revisit a module while bounding actual cycles.

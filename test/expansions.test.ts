@@ -131,3 +131,28 @@ test('requested expansion kinds are unique while qualified evaluation scopes rem
     }
   }
 });
+
+test('renamed re-export traversal revisits a module under another name and still terminates true cycles', () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-reexport-cycle-'));
+  try {
+    const config = path.join(root, 'tsconfig.json');
+    writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"include":["*.ts"]}');
+    writeFileSync(path.join(root, 'a.ts'), "export { b as a } from './b.js'; export const b = 1;");
+    writeFileSync(path.join(root, 'b.ts'), "export { b } from './a.js';");
+    writeFileSync(path.join(root, 'c.ts'), "export * from './d.js'; export * from './e.js';");
+    writeFileSync(path.join(root, 'd.ts'), "export * from './c.js';");
+    writeFileSync(path.join(root, 'e.ts'), 'export const value=1;');
+    const { from, store } = expanded(config);
+    const alias = from('a.ts').find(claim => claim.information.exportedName === 'a')!;
+    const local = from('a.ts').find(claim => claim.information.exportedName === 'b')!;
+    assert.deepEqual(alias.information.routes.map(route => route.kind), ['reexport', 'reexport', 'direct']);
+    assert.deepEqual(alias.information.routes.map(route => route.via), [from('b.ts')[0]!.subject, local.subject, null]);
+    assert.equal(alias.information.symbol, local.information.symbol);
+    const context = store.get(alias.context) as ClaimContextRecord;
+    assert.ok(context.evidence.map(id => store.get(id) as SourceEvidenceRecord)
+      .some(evidence => evidence.path.endsWith('/b.ts')));
+    assert.deepEqual(from('c.ts').map(claim => claim.information.exportedName), ['value']);
+    assert.deepEqual(from('d.ts').map(claim => claim.information.exportedName), ['value']);
+    assert.ok(from('c.ts')[0]!.information.routes.length < 8);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});

@@ -98,10 +98,10 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
       for (const tag of conceptualTags.slice(0, maximumTags)) {
         if (remainingLines <= 0) break;
         const bounded = excerpt(tag.text, 300);
-        const text = Number.isFinite(remainingLines) ? fitLines(bounded.text, `@${tag.name} `, remainingLines) : bounded.text;
-        if (Number.isFinite(remainingLines) && wrapText(`@${tag.name} ${text}`, '       ').length > remainingLines) break;
+        const text = Number.isFinite(remainingLines) ? fitLines(bounded.text, `@${inlineText(tag.name)} `, remainingLines) : bounded.text;
+        if (Number.isFinite(remainingLines) && wrapText(`@${inlineText(tag.name)} ${text}`, '       ').length > remainingLines) break;
         tags.push({ name: tag.name, text, omittedTextCharacters: [...tag.text].length - [...text].length });
-        remainingLines -= wrapText(`@${tag.name} ${text}`, '       ').length;
+        remainingLines -= wrapText(`@${inlineText(tag.name)} ${text}`, '       ').length;
       }
       return { id: assertion.id, status: assertion.status,
         text: proseExcerpt.text, omittedTextCharacters: [...assertion.text].length - [...proseExcerpt.text].length,
@@ -200,7 +200,11 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
   };
 }
 
-const terminalText = (text: string) => text.replace(/[\u0000-\u0008\u000b-\u001f\u007f-\u009f]/g,
+const terminalText = (text: string) => text.replace(/[\u0000-\u0008\u000b-\u001f\u007f-\u009f\u2028\u2029]/g,
+  character => `\\u${character.charCodeAt(0).toString(16).padStart(4, '0')}`);
+
+/** Inline values cannot create renderer-owned line breaks or indentation. */
+const inlineText = (text: string) => terminalText(text).replace(/[\n\t]/g,
   character => `\\u${character.charCodeAt(0).toString(16).padStart(4, '0')}`);
 
 /** Largest bounded prefix that fits the Unicode assertion's remaining display height. */
@@ -239,13 +243,13 @@ export function renderUnicode(view: QualifiedView): string {
   const lines = [`${inventory ? 'Modules' : 'Inspect'} · configured TypeScript project`,
     `Snapshot ${view.projection.snapshot.replace(/^snapshot:/, '').slice(0, 12)}`,
     inventory ? `${selection.population} module${selection.population === 1 ? '' : 's'} found · ${view.modules.length} listed${view.display.collapsedModules ? ` · ${view.display.collapsedModules} external module${view.display.collapsedModules === 1 ? '' : 's'} collapsed` : ''}`
-      : `${selection.matches} module${selection.matches === 1 ? '' : 's'} selected from ${selection.population} · ${selection.matches === 0 ? 'no exact match' : selection.matches === 1 ? 'exact match' : 'exact matches'} for ${view.projection.parameters.selector}`];
+      : `${selection.matches} module${selection.matches === 1 ? '' : 's'} selected from ${selection.population} · ${selection.matches === 0 ? 'no exact match' : selection.matches === 1 ? 'exact match' : 'exact matches'} for ${inlineText(view.projection.parameters.selector ?? '')}`];
   if (!selection.populationEstablished) lines.push('Module population is not established.');
   if (selection.referenceStatus === 'snapshot-required') lines.push('No current match: handle or compact Entity ID selection requires --snapshot from its inventory.');
   if (selection.referenceStatus === 'snapshot-mismatch') lines.push('No current match: the supplied snapshot differs from this analysis; no successor is inferred.');
   const outcomeGroups = new Map<string, number>();
   for (const outcome of view.evaluations) {
-    const label = `${outcome.requirement}: ${outcome.execution}, materialization ${outcome.materialization}${outcome.applicability !== 'applicable' ? `, ${outcome.applicability}` : ''}${outcome.availability !== 'available' ? `, ${outcome.availability}` : ''}${outcome.reason ? ` — ${outcome.reason}` : ''}`;
+    const label = `${outcome.requirement}: ${outcome.execution}, materialization ${outcome.materialization}${outcome.applicability !== 'applicable' ? `, ${outcome.applicability}` : ''}${outcome.availability !== 'available' ? `, ${outcome.availability}` : ''}${outcome.reason ? ` — ${inlineText(outcome.reason)}` : ''}`;
     outcomeGroups.set(label, (outcomeGroups.get(label) ?? 0) + 1);
   }
   const complete = view.evaluations.length > 0 && view.evaluations.every(outcome => outcome.applicability === 'applicable'
@@ -257,7 +261,7 @@ export function renderUnicode(view: QualifiedView): string {
   const sharedDiagnostics = new Set(projectContexts.flatMap(context => context.diagnostics.map(diagnostic => diagnostic.code)));
   const local = (contexts: readonly Qualification[], indent: string) => {
     for (const limitation of new Set(contexts.flatMap(context => context.limitations))) {
-      if (!sharedLimitations.has(limitation)) lines.push(`${indent}Limitation: ${limitation}`);
+      if (!sharedLimitations.has(limitation)) lines.push(`${indent}Limitation: ${inlineText(limitation)}`);
     }
     for (const code of new Set(contexts.flatMap(context => context.diagnostics.map(diagnostic => diagnostic.code)))) {
       if (!sharedDiagnostics.has(code)) lines.push(`${indent}Encountered TypeScript diagnostic: TS${code}`);
@@ -278,7 +282,7 @@ export function renderUnicode(view: QualifiedView): string {
         if (index) lines.push(indent);
         if (doc.text) lines.push(...wrapText(doc.text, `${indent}  `));
         if (doc.omittedTextCharacters) lines.push(`${indent}  … ${doc.omittedTextCharacters} assertion character(s) omitted.`);
-        for (const tag of doc.tags) lines.push(...wrapText(`@${tag.name} ${tag.text}${tag.omittedTextCharacters ? ` … (${tag.omittedTextCharacters} characters omitted)` : ''}`, `${indent}  `));
+        for (const tag of doc.tags) lines.push(...wrapText(`@${inlineText(tag.name)} ${tag.text}${tag.omittedTextCharacters ? ` … (${tag.omittedTextCharacters} characters omitted)` : ''}`, `${indent}  `));
         if (doc.omittedTags) lines.push(`${indent}  … ${doc.omittedTags} structured tag(s) omitted (including source-oriented examples/links).`);
       }
     }
@@ -292,13 +296,13 @@ export function renderUnicode(view: QualifiedView): string {
       .map(route => `${route.kind}${route.typeOnly ? ' (type-only)' : ''}`))];
     if (details.length || exported.origin !== moduleId) relationshipsDisplayed = true;
     if (!exported.routes.length) details.push('route unavailable');
-    if (exported.origin !== moduleId) details.push(exported.origin ? `origin: ${exported.originHandle ?? 'anonymous'} (${exported.originEntityId ?? 'identity unavailable'})` : 'origin not established');
+    if (exported.origin !== moduleId) details.push(exported.origin ? `origin: ${inlineText(exported.originHandle ?? 'anonymous')} (${exported.originEntityId ?? 'identity unavailable'})` : 'origin not established');
     if (exported.symbolInformation && exported.symbolInformation.declarationCount !== 1) details.push(`${exported.symbolInformation.declarationCount} contributing declarations`);
     return details;
   };
   const commonFacets = view.modules[0]?.facets.filter(facet => view.modules.every(module => module.facets.includes(facet))) ?? [];
   const allAnonymous = view.modules.length > 0 && view.modules.every(module => module.name === null);
-  const handleWidth = Math.min(30, Math.max(6, ...view.modules.map(module => module.handle.length)));
+  const handleWidth = Math.min(30, Math.max(6, ...view.modules.map(module => inlineText(module.handle).length)));
   const idWidth = Math.max(9, ...view.modules.map(module => module.entityId.length));
   if (view.modules.length) {
     const projectSelection = commonFacets.includes('project');
@@ -308,7 +312,7 @@ export function renderUnicode(view: QualifiedView): string {
     if (inventory) lines.push('', `${'Handle'.padEnd(handleWidth)}  ${'Entity ID'.padEnd(idWidth)}  Export names`);
   }
   for (const module of view.modules) {
-    if (!inventory) lines.push('', `◆ ${module.handle}${allAnonymous ? '' : ` · ${module.name ?? '[anonymous]'}`}`);
+    if (!inventory) lines.push('', `◆ ${inlineText(module.handle)}${allAnonymous ? '' : ` · ${inlineText(module.name ?? '[anonymous]')}`}`);
     const facets = module.facets.filter(facet => !commonFacets.includes(facet));
     if (!inventory) {
       if (facets.length) lines.push(`  ${facets.join(', ')}`);
@@ -318,11 +322,11 @@ export function renderUnicode(view: QualifiedView): string {
     const established = view.evaluations.some(outcome => outcome.requirement === 'exports'
       && outcome.modules.includes(module.id) && outcome.availability === 'available' && outcome.applicability === 'applicable' && outcome.execution === 'completed' && outcome.materialization === 'full');
     if (inventory) {
-      const names = module.exports.map(exported => exported.exportedName);
+      const names = module.exports.map(exported => inlineText(exported.exportedName));
       if (module.omittedExports) names.push(`+${module.omittedExports}`);
       const cue = total ? names.join(', ') : established ? '(none)' : '(not established; no exports displayed)';
-      lines.push(`${module.handle.padEnd(handleWidth)}  ${module.entityId.padEnd(idWidth)}  ${cue}${total && !established ? ' (materialized; surface incomplete)' : ''}`);
-      if (!allAnonymous) lines.push(`  TypeScript name: ${module.name ?? '(not established)'}`);
+      lines.push(`${inlineText(module.handle).padEnd(handleWidth)}  ${module.entityId.padEnd(idWidth)}  ${cue}${total && !established ? ' (materialized; surface incomplete)' : ''}`);
+      if (!allAnonymous) lines.push(`  TypeScript name: ${inlineText(module.name ?? '(not established)')}`);
       if (facets.length) lines.push(`  ${facets.join(', ')}`);
     } else {
       docs(module.documentation, module.omittedDocumentation, '  ');
@@ -330,8 +334,8 @@ export function renderUnicode(view: QualifiedView): string {
       if (!total) lines.push(established ? '    (none)' : '    Not established; no exports displayed.');
       for (const exported of module.exports) {
         const details = exceptions(exported, module.id);
-        lines.push(`  ├─ ${exported.exportedName} [${roles(exported)}]${details.length ? ` · ${details.join('; ')}` : ''}`);
-        if (exported.symbolInformation?.name && exported.symbolInformation.name !== exported.exportedName) lines.push(`  │  Semantic symbol: ${exported.symbolInformation.name}`);
+        lines.push(`  ├─ ${inlineText(exported.exportedName)} [${roles(exported)}]${details.length ? ` · ${details.join('; ')}` : ''}`);
+        if (exported.symbolInformation?.name && exported.symbolInformation.name !== exported.exportedName) lines.push(`  │  Semantic symbol: ${inlineText(exported.symbolInformation.name)}`);
         docs(exported.documentation, exported.omittedDocumentation, '  │  ');
       }
       if (module.omittedExports) lines.push(`  … ${module.omittedExports} effective export(s) omitted.`);
@@ -346,9 +350,9 @@ export function renderUnicode(view: QualifiedView): string {
     const showEvidence = (evidence: readonly SourceEvidenceRecord[], indent: string) => {
       for (const record of evidence) {
         const location = record.location;
-        if (location.association === 'file') lines.push(`${indent}Source file: ${record.path}`);
+        if (location.association === 'file') lines.push(`${indent}Source file: ${inlineText(record.path)}`);
         else {
-          lines.push(`${indent}${record.path}:${location.from.line}:${location.from.column}–${location.to.line}:${location.to.column}`);
+          lines.push(`${indent}${inlineText(record.path)}:${location.from.line}:${location.from.column}–${location.to.line}:${location.to.column}`);
           lines.push(...wrapText(location.excerpt.text, `${indent}  `, 88, `${indent}  ↪ `));
           if (location.excerpt.omittedCharacters) lines.push(`${indent}  … ${location.excerpt.omittedCharacters} source character(s) omitted.`);
         }
@@ -362,14 +366,14 @@ export function renderUnicode(view: QualifiedView): string {
       }
     };
     for (const module of view.modules) {
-      lines.push('', `◆ ${module.handle}`, `  Entity ID: ${module.entityId}`);
+      lines.push('', `◆ ${inlineText(module.handle)}`, `  Entity ID: ${module.entityId}`);
       const association = items.find(item => item.module === module.id && item.role === 'module');
       if (association) showEvidence(association.evidence, '  ');
       sourceDocs(module.id, module.id, '  ');
       lines.push('', '  Exports:');
       if (!module.exports.length) lines.push('    No displayed export source.');
       for (const exported of module.exports) {
-        lines.push(`  ├─ ${exported.exportedName} [${roles(exported)}]`);
+        lines.push(`  ├─ ${inlineText(exported.exportedName)} [${roles(exported)}]`);
         const defining = items.find(item => item.module === module.id && item.subject === exported.id && item.role === 'symbol')?.evidence ?? [];
         const definingKeys = new Set(defining.map(key));
         const forwarding = (items.find(item => item.module === module.id && item.subject === exported.id && item.role === 'export')?.evidence ?? []).filter(evidence => !definingKeys.has(key(evidence)));
@@ -379,7 +383,7 @@ export function renderUnicode(view: QualifiedView): string {
         }
         if (defining.length) {
           const remote = exported.origin !== module.id;
-          lines.push(remote ? `  │  Defining source · ${exported.symbolInformation?.name ?? exported.exportedName} in ${exported.originHandle ?? 'unestablished origin'}${exported.originEntityId ? ` (${exported.originEntityId})` : ''}:` : '  │  Source:');
+          lines.push(remote ? `  │  Defining source · ${inlineText(exported.symbolInformation?.name ?? exported.exportedName)} in ${inlineText(exported.originHandle ?? 'unestablished origin')}${exported.originEntityId ? ` (${exported.originEntityId})` : ''}:` : '  │  Source:');
           showEvidence(defining, '  │    ');
         }
         sourceDocs(module.id, exported.id, '  │  ');
@@ -403,7 +407,7 @@ export function renderUnicode(view: QualifiedView): string {
         : '  Module membership established by TypeScript analysis; export information is qualified by the capability states above.'
         : '  Displayed information is derived by TypeScript analysis; module population is not established.',
       '  Coverage: external-module SourceFiles and visible named ambient modules; other compiler module categories are not established.');
-  } else for (const guarantee of new Set(projectContexts.map(context => context.guarantee))) lines.push(`  ${guarantee}`);
+  } else for (const guarantee of new Set(projectContexts.map(context => context.guarantee))) lines.push(`  ${inlineText(guarantee)}`);
   for (const code of sharedDiagnostics) lines.push(`  Encountered TypeScript diagnostic: TS${code}`);
   const representedLimitations = view.analysis ? new Set([
     'Population is configured Program external-module SourceFiles and visible named ambient-module symbols; other compiler module categories are not established.',
@@ -415,12 +419,12 @@ export function renderUnicode(view: QualifiedView): string {
     lines.push('', 'Run limitations');
     if (view.analysis?.excludedOutputLocations) lines.push(`  ${view.analysis.excludedOutputLocations} generated-output locations excluded by this run's input filter.`);
     if (view.analysis?.inputConsistency === 'first-observed') lines.push('  Inputs were memoized as first observed, not captured as an atomic filesystem snapshot.');
-    for (const limitation of extraLimitations) lines.push(`  ${limitation}`);
+    for (const limitation of extraLimitations) lines.push(`  ${inlineText(limitation)}`);
   }
   for (const collapsed of view.display.collapsedQualifications) {
     const exceptional = collapsed.contexts.filter(context => context.limitations.some(limitation => !sharedLimitations.has(limitation))
       || context.diagnostics.some(diagnostic => !sharedDiagnostics.has(diagnostic.code)));
-    if (exceptional.length) { lines.push(`- Collapsed ${collapsed.handle}:`); local(exceptional, '  '); }
+    if (exceptional.length) { lines.push(`- Collapsed ${inlineText(collapsed.handle)}:`); local(exceptional, '  '); }
   }
   if (view.presentation.navigation) {
     const next = inventory ? 'Next · inspect a module:' : selection.matches === 0

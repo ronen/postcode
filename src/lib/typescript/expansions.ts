@@ -61,9 +61,9 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
     }
     return undefined;
   };
-  const trace = (module: ts.Symbol, name: string, seen = new Set<ts.Symbol>()): Route[][] => {
-    if (seen.has(module)) return [];
-    seen = new Set([...seen, module]);
+  const trace = (module: ts.Symbol, name: string, seen = new Map<ts.Symbol, ReadonlySet<string>>()): Route[][] => {
+    if (seen.get(module)?.has(name)) return [];
+    seen = new Map(seen).set(module, new Set([...(seen.get(module) ?? []), name]));
     const exported = effective(module).find(symbol => symbol.getName() === name);
     if (!exported) return [];
     const target = resolve(exported);
