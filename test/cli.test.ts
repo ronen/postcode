@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { cpSync, mkdtempSync, mkdirSync, readFileSync, readdirSync, realpathSync, rmSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -717,5 +717,60 @@ test('control-bearing invocation paths omit the generated command instead of inj
       assert.equal(unicode.includes('checkout\nspoof'), false);
       assert.ok(unicode.includes('Inspection requires an exact subject'));
     }
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('observation destination disclosure escapes controls while the sink uses the original path', async () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-stderr-controls-'));
+  try {
+    const checkout = path.join(root, 'checkout-\n\t\u001b[2J\u0085\u2028\u2029');
+    let stdout = '', stderr = '';
+    const exit = await runCli(['--project', config, '--json'], { cwd: process.cwd(), checkout,
+      stdout: text => { stdout += text; }, stderr: text => { stderr += text; } });
+    assert.equal(exit, 0);
+    assert.equal(stderr.trimEnd().split('\n').length, 1);
+    assert.equal(/[\u0000-\u001f\u007f-\u009f\u2028\u2029]/.test(stderr.slice(0, -1)), false);
+    assert.ok(stderr.includes('checkout-\\u000a\\u0009\\u001b[2J\\u0085\\u2028\\u2029'));
+    const destination = path.join(checkout, '_observations');
+    const files = readdirSync(destination);
+    assert.equal(files.length, 1);
+    const batch = JSON.parse(readFileSync(path.join(destination, files[0]!), 'utf8')) as ObservationBatch;
+    assert.equal(batch.records.find(record => record.kind === 'rendered-output')!.value, stdout);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('CLI error and observation-warning values cannot introduce diagnostic lines', async () => {
+  const text = 'spoof\nWARNING: forged\t\u001b[2J\u0085\u2028\u2029';
+  const unknown = await invoke([`--${text}`]);
+  assert.equal(unknown.exit, 2);
+  assert.equal(unknown.stderr.trimEnd().split('\n').length, 1);
+  const missing = await invoke(['--project', path.join('/postcode-not-present', text, 'tsconfig.json')]);
+  assert.equal(missing.exit, 2);
+  assert.equal(missing.stderr.includes(text), false);
+  for (const sink of [
+    { async submit() { return { accepted: false as const, reason: text }; } },
+    { async submit(): Promise<never> { throw new Error(text); } },
+  ]) {
+    const result = await invoke(['--project', config], sink);
+    assert.equal(result.exit, 0);
+    assert.equal(result.stderr.trimEnd().split('\n').length, 2);
+    assert.equal(result.stderr.includes(text), false);
+    assert.ok(result.stderr.includes('spoof\\u000aWARNING: forged\\u0009'));
+  }
+});
+
+test('the executable escapes unexpected failure messages without changing exit status', () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-entry-error-'));
+  try {
+    const checkout = copyTestCheckout(root);
+    const message = 'failure\nFORGED\t\u001b[2J\u0085\u2028\u2029';
+    writeFileSync(path.join(checkout, '_build/src/lib/cli.js'),
+      `export async function runCli() { throw new Error(${JSON.stringify(message)}); }`);
+    const result = spawnSync(process.execPath, [path.join(checkout, '_build/src/cli.js')], { encoding: 'utf8' });
+    assert.equal(result.status, 1);
+    assert.equal(result.stdout, '');
+    assert.equal(result.stderr.trimEnd().split('\n').length, 1);
+    assert.equal(result.stderr.includes(message), false);
+    assert.ok(result.stderr.startsWith('Internal failure: failure\\u000aFORGED\\u0009'));
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

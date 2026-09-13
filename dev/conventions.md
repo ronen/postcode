@@ -128,7 +128,9 @@ the PostCode checkout, independently of the selected project's configuration
 directory. The root underscore rule ignores it in Git. No remote or shared sink
 is selected.
 
-The CLI discloses the absolute local destination on stderr. Files may contain
+The CLI discloses the absolute local destination on stderr, escaping terminal
+controls in its displayed value without changing the actual path. Diagnostic and
+warning values use the same inline escaping policy. Files may contain
 repository context, selection inputs, documentation, qualifications, the qualified
 view artifact, the exact rendered output, and explicitly requested source detail.
 The sink creates its directory with mode `0700` and files with mode `0600`;

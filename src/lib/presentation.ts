@@ -1,3 +1,4 @@
+import { inlineText, terminalText } from './terminal-text.js';
 import { methods, moduleEntityIds, recordId } from './identity.js';
 import { isModuleClaim, moduleStandardExpansions } from './records.js';
 import type { Claim, ClaimContextRecord, EvaluationRecord, ExportClaim, ModuleClaim, ModuleExpansion, ProgramRecordStore, ProjectionRecord, RecordId, RecordedAssertion, SnapshotRecord, SourceEvidenceRecord, SymbolClaim } from './records.js';
@@ -199,13 +200,6 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
     } } : {}),
   };
 }
-
-const terminalText = (text: string) => text.replace(/[\u0000-\u0008\u000b-\u001f\u007f-\u009f\u2028\u2029]/g,
-  character => `\\u${character.charCodeAt(0).toString(16).padStart(4, '0')}`);
-
-/** Inline values cannot create renderer-owned line breaks or indentation. */
-const inlineText = (text: string) => terminalText(text).replace(/[\n\t]/g,
-  character => `\\u${character.charCodeAt(0).toString(16).padStart(4, '0')}`);
 
 /** Largest bounded prefix that fits the Unicode assertion's remaining display height. */
 function fitLines(text: string, prefix: string, maximumLines: number): string {

@@ -5,6 +5,7 @@ import { MemoryProgramRecordStore } from './memory-store.js';
 import { localFileObservationSink, observationBatch } from './observations.js';
 import type { ObservationSink } from './observations.js';
 import { createView, presentationRequirements, renderView } from './presentation.js';
+import { inlineText } from './terminal-text.js';
 import { inspect, modules } from './projections.js';
 import { openTypeScriptProject } from './typescript/project.js';
 
@@ -72,7 +73,7 @@ export async function runCli(args: readonly string[], environment: {
       const next = args[++index];
       if (!next || next.startsWith('--')) { environment.stderr('Usage error: --project requires a configuration path.\n'); return 2; }
       config = path.resolve(environment.cwd, next);
-    } else if (arg.startsWith('--')) { environment.stderr(`Usage error: unknown option ${arg}.\n`); return 2; }
+    } else if (arg.startsWith('--')) { environment.stderr(`Usage error: unknown option ${inlineText(arg)}.\n`); return 2; }
     else positional.push(arg);
   }
   const lens = positional[0] ?? 'modules';
@@ -86,7 +87,7 @@ export async function runCli(args: readonly string[], environment: {
     destination, path.resolve(environment.checkout, '_build'),
   ] });
   if (opened.status !== 'opened') {
-    environment.stderr(`Project open failed:\n${opened.diagnostics.map(diagnostic => `  TS${diagnostic.code}: ${diagnostic.message}`).join('\n')}\n`);
+    environment.stderr(`Project open failed:\n${opened.diagnostics.map(diagnostic => `  TS${diagnostic.code}: ${inlineText(diagnostic.message)}`).join('\n')}\n`);
     return 2;
   }
   const presentation = { format: json ? 'json' as const : 'unicode' as const, sourceDetail };
@@ -104,15 +105,15 @@ export async function runCli(args: readonly string[], environment: {
   });
   const rendered = renderView(view);
   environment.stdout(rendered);
-  environment.stderr(`Local observations: ${destination} (may contain repository-derived text and explicitly requested source locations).\n`);
+  environment.stderr(`Local observations: ${inlineText(destination)} (may contain repository-derived text and explicitly requested source locations).\n`);
   const snapshot = store.get(projection.snapshot);
   if (snapshot.kind !== 'snapshot') throw new Error('Expected analysis snapshot');
   const batch = observationBatch(view, rendered, { configPath: config, repositoryRoot: repositoryRoot(config), methods: snapshot.methods });
   try {
     const acknowledgement = await (environment.sink ?? localFileObservationSink(destination)).submit(batch);
-    if (!acknowledgement.accepted) environment.stderr(`WARNING: observation not recorded: ${acknowledgement.reason}\n`);
+    if (!acknowledgement.accepted) environment.stderr(`WARNING: observation not recorded: ${inlineText(acknowledgement.reason)}\n`);
   } catch (error) {
-    environment.stderr(`WARNING: observation not recorded: ${error instanceof Error ? error.message : 'sink delivery failed'}\n`);
+    environment.stderr(`WARNING: observation not recorded: ${inlineText(error instanceof Error ? error.message : 'sink delivery failed')}\n`);
   }
   return 0;
 }

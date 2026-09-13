@@ -186,3 +186,7 @@ Unicode inline values (names, selectors, qualifications and source paths) displa
 line-breaking and indentation controls as visible Unicode escapes. Documentation
 and excerpts retain the renderer's structured wrapping. JSON retains the original
 string values; display escaping does not alter stored claims or evidence.
+
+The observation-destination disclosure and CLI diagnostic/warning values use the
+same inline terminal-control escaping. Escaping changes the displayed text only;
+it does not change filesystem destinations or recorded observation values.
