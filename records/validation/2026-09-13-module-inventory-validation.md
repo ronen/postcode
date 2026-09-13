@@ -111,9 +111,10 @@ evaluated input. Human usability inspection is still necessary.
 
 ## Remaining gates and work
 
-1. Human Unicode-output inspection: inspect the retained corrected `view-after.txt` for usefulness
-   as an investigation starting point, including qualifications, module roles,
-   navigation, and distracting output volume. Human acceptance has not occurred.
+1. Human Unicode-output inspection: the human reviewed `view-after.txt` and
+   requested further changes. The [second review response](../reviews/2026-09-13-unicode-response.md)
+   records the corrections and new `view-review-2.txt` sample. Explicit human
+   acceptance is still required and has not occurred.
 2. External-repository exercise: the human approved p-queue on 2026-09-13 while
    explicitly withholding Unicode acceptance. The
    [completed validation record](2026-09-13-p-queue.md) identifies the pinned

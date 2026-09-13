@@ -14,7 +14,7 @@ Program claims, Claim context, source evidence, documentation assertions, evalua
 outcomes, projections and observations remain distinct. See [usage](README.md)
 and the [architecture overview](docs/architecture/README.md).
 
-All 37 automated tests and type checks pass. Coverage includes semantic fixtures,
+All 39 automated tests and type checks pass. Coverage includes semantic fixtures,
 separate-process CLI determinism, changed-input identity, source separation,
 omission disclosure, sink delivery/privacy behavior, and actual checkout output
 exclusion for nested configurations. PostCode self-analysis has run successfully.
@@ -30,5 +30,9 @@ project export surfaces. No implementation defect was found in that exercise.
 
 Outstanding gates: human Unicode-output feedback/acceptance and final independent
 integrated review. Unicode output is explicitly not yet approved.
+The [Unicode review response](records/reviews/2026-09-13-unicode-response.md)
+records the second sample: compact project entries, counted external collapse,
+conceptual handles with explicit snapshot scoping, and detailed inspection.
+Final integrated-review handoff is on hold for the human's further Unicode review.
 The full [approved plan](docs/plans/initial-module-inventory-plan.md) remains
 the task scope; no closure or final acceptance is claimed.
