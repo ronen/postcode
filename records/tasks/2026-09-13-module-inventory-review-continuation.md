@@ -136,6 +136,17 @@ was committed as `5f6a4d6`. No further disagreement or unresolved scope issue re
 Changes are prepared for the existing PR and another human-arranged Copilot review.
 The continuation remains active under the same exit gate.
 
+### 2026-09-13: fifth-round corrections ready for rereview
+
+Correction `8199cca85bf837ed6a61f9bf8a3bdfbf13c36e70` addresses renamed re-export
+route completeness, exclusion-set identity and Unicode structural text injection.
+The [fifth disposition and handoff](../reviews/2026-09-13-module-inventory-continuation-round-5.md)
+was committed as `712cd21`. Inline controls are escaped without mutating domain/JSON
+text; control-bearing invocation paths use manual-inspection guidance instead of
+an unsafe generated command. No disagreement or unresolved scope issue remains.
+Changes are prepared for the existing PR and another human-arranged Copilot review.
+The continuation remains active.
+
 ## Verification
 
 - `npm test`: 57/57 passed; `npm run check`: passed on Node 22.13.1 / TypeScript
@@ -193,3 +204,20 @@ The continuation remains active under the same exit gate.
   links, full-branch whitespace and completed/governing preservation checked.
 - Real-project captures, clean-agent exercises and human presentation review were
   not repeated. The next Copilot rereview remains pending.
+
+### Fifth-round verification
+
+- `npm test`: 68/68 passed; `npm run check`: passed on Node 22.13.1 / TypeScript
+  6.0.3. Route/exclusion regressions failed before fixes; a separate predecessor
+  renderer probe confirmed raw inline controls and corrected escaping on the same view.
+- Tests cover renamed routes and cycles, exclusion permutations/duplicates versus
+  genuinely changed sets, inline names/paths/selectors, unchanged JSON, wrapping,
+  and command omission for control-bearing invocation paths.
+- Refreshed fixture output preserves unique expansion kinds and complete renamed
+  route segments. Ordinary output renders identically through both renderers on
+  the same qualified view. Evidence scope and manifest are recorded in the handoff.
+- All 211 checkout observation batches remained unchanged by name/content hash;
+  none were added, and no temporary test directories leaked. Whitespace, document
+  links, hashes and historical/governing preservation checked.
+- Real-project captures, clean-agent exercises and human presentation review were
+  not repeated. Next Copilot rereview remains pending.
