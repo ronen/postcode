@@ -109,23 +109,16 @@ scopes fully materialized. The conceptual JSON source-field exclusion checks pas
 Unicode now has 3,380 lines and 193,526 bytes, about 31% fewer bytes than the
 evaluated input. Human usability inspection is still necessary.
 
-## Remaining gates and work
+## Gate status
 
-1. Human Unicode-output inspection: the human reviewed `view-after.txt` and
-   requested further changes, then reviewed samples two through six. The
-   [seventh review response](../reviews/2026-09-13-unicode-seventh-response.md)
-   records the latest corrections and `view-review-7.txt`, source hierarchies and exceptional inspection samples. Explicit human
-   acceptance is still required and has not occurred.
-2. External-repository exercise: the human approved p-queue on 2026-09-13 while
-   explicitly withholding Unicode acceptance. The
-   [completed validation record](2026-09-13-p-queue.md) identifies the pinned
-   revision, actual configuration, dependency tree, checks and retained evidence.
-   No implementation defect was found; all third-party contents and observations
-   remain local and uncommitted.
-3. After planned verification is substantially complete, prepare the final
-   integrated-review handoff identifying the complete reviewed commit and ask the
-   human to arrange independent review. Resolve returned findings or obtain human
-   acceptance of residual concerns before closing the task.
-
-Human inspection and final integrated independent review are not yet verified. These remain within
-the authorized task; no deferral or task closure is claimed.
+1. Human presentation inspection and approval are complete under the final explicit
+   conditional authorization. The [approval record](../reviews/2026-09-13-presentation-approval.md)
+   verifies unique expansion kinds in `view-final.json`, all 51 tests and type
+   checking, and the retained final snapshots/artifact hashes. Prior clean-agent
+   responses remain evidence about their original input, not the final sample.
+2. The approved [p-queue exercise](2026-09-13-p-queue.md) is complete at its pinned
+   revision. Final rechecks preserve seven modules and all six entry exports.
+   Third-party contents and real-project observations remain local and uncommitted.
+3. Final integrated independent review remains required. The human must arrange
+   that review; findings must be resolved or residual concerns explicitly accepted
+   before task closure. No final independent review or task completion is claimed.
