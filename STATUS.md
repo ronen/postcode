@@ -14,7 +14,7 @@ Program claims, Claim context, source evidence, documentation assertions, evalua
 outcomes, projections and observations remain distinct. See [usage](README.md)
 and the [architecture overview](docs/architecture/README.md).
 
-All 52 automated tests and type checks pass. Coverage includes semantic fixtures,
+All 57 automated tests and type checks pass. Coverage includes semantic fixtures,
 separate-process CLI determinism, changed-input identity, source separation,
 omission disclosure, sink delivery/privacy behavior, and actual checkout output
 exclusion for nested configurations. PostCode self-analysis has run successfully.
@@ -34,7 +34,14 @@ once while retaining per-module evaluation records. Presentation review is compl
 
 The [final independent review](records/reviews/2026-09-13-module-inventory-final-findings.md)
 reported no blocking findings. Both notes are [resolved](records/reviews/2026-09-13-module-inventory-final-disposition.md):
-diagnostic scoping was already correct, and an exact name/compact-ID collision now
-has a tested correction. Refreshed validation preserves the approved output apart
-from snapshot identities. All task gates are satisfied; further product work
-requires a new authorized task. The branch is ready for integration.
+diagnostic scoping was already correct, and an exact name/compact-ID collision has
+a tested correction. The initial task remains completed and immutable.
+
+A subsequent GitHub Copilot PR review identified further record-validation,
+target-exclusion, option-like selector and documentation issues. The active
+[continuation](records/tasks/2026-09-13-module-inventory-review-continuation.md)
+corrects all five findings, including optional attempt-numbering cleanup, in
+`15c1398`. Its [disposition and handoff](records/reviews/2026-09-13-module-inventory-continuation.md)
+record verification and the required human-arranged Copilot rereview.
+The continuation remains active until returned findings are resolved or the human
+explicitly accepts any residual concern. PR #1 is awaiting rereview.
