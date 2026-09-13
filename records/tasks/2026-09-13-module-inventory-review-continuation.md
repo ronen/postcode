@@ -57,6 +57,16 @@ This checkpoint does not close the task. Status remains **active** until remaini
 in-scope defects are resolved and no actionable findings remain, or the human
 explicitly accepts residual concerns.
 
+### 2026-09-13: second-round corrections ready for rereview
+
+Correction `a612015bed0087634d9f185a9b2b33e0fd91053d` addresses all three new
+findings: documentation-association subject validation, truthful zero-exclusion
+qualifications, and disposable checkouts for both generated-command tests.
+The [second disposition and handoff](../reviews/2026-09-13-module-inventory-continuation-round-2.md)
+was committed as `c8a5dff`. No unforeseen scope or approval issue arose.
+Changes are prepared for the existing PR and another human-arranged Copilot review.
+The continuation remains active under the same exit gate.
+
 ## Verification
 
 - `npm test`: 57/57 passed; `npm run check`: passed on Node 22.13.1 / TypeScript
@@ -70,3 +80,18 @@ explicitly accepts residual concerns.
   predecessor and governing documents unchanged.
 - Copilot rereview is pending. Current automated checks and implementing-agent
   dispositions do not constitute that acceptance.
+
+### Second-round verification
+
+- `npm test`: 59/59 passed; `npm run check`: passed on Node 22.13.1 / TypeScript
+  6.0.3. Both new correctness regressions failed before the production fixes.
+- Association validation covers 42 pending/existing-target combinations. Exclusion
+  qualification checks cover omitted options, an empty list and one output location.
+- The full passing suite left all 211 existing checkout observation batches
+  unchanged by name/content hash, added none, and left no new temporary test directories.
+- Regenerated direct-library fixture JSON/Unicode with zero and one exclusions:
+  seven modules, eight discovery contexts, truthful qualifications and unique
+  requested expansions in both cases. The handoff records the verified manifest hash.
+- Full-branch whitespace and changed-document links passed; governing material and
+  the completed predecessor remain unchanged. Real-project captures and clean-agent
+  exercises were not repeated this round. Next Copilot rereview remains pending.
