@@ -76,6 +76,21 @@ please see _work/2026-09-13-view-review-5-review.txt for review of the new outpu
 
 please see the latest review notes in \_work/2026-09-13-view-review-6-review\.txt
 
+### Final expansion-list correction and conditional presentation approval — 2026-09-13
+
+Please make one final correction before approval.
+
+In `view-review-7.json`, `presentation.expansions` contains repeated `"exports"` and `"documentation"` entries. Treat this field as the expansion kinds requested by the presentation and emit each kind once:
+```json
+"expansions": ["exports", "documentation"]
+```
+
+Per-module execution and materialization details should remain in the qualified evaluation records rather than appearing as repeated unscoped strings.
+
+Fix this at the appropriate projection/presentation boundary, add a regression test asserting uniqueness, regenerate the representative JSON validation output, and run the relevant tests.
+
+This change is pre-approved. If the tests pass and the regenerated output has the expected unique expansion list, consider the presentation approved and proceed with the normal task-completion workflow. No further presentation review or separate approval is required unless the change exposes another substantive issue.
+
 ## Outcome
 
 ### First architectural checkpoint — 2026-09-12
