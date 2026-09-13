@@ -34,8 +34,9 @@ and writes an addressable projection. It does not call TypeScript.
 
 The current store adapter uses private in-memory maps. It clones and freezes
 records, rejects conflicting replacements and invalid references (including entity
-claim discriminators and reciprocal subjects), and supports
-multiple snapshots and evaluation attempts. No persistence, sessions, SQL query
+claim discriminators and reciprocal subjects, and documentation-association
+subjects matching their module, origin-symbol or export-alias provenance), and
+supports multiple snapshots and evaluation attempts. No persistence, sessions, SQL query
 model, or general scheduling framework exists.
 
 Module claims carry the information asserted. Claim context separately identifies
@@ -84,8 +85,11 @@ configuration discovery and compiler reads. A target directory named `_observati
 or `_build` remains an ordinary configured input unless it is an explicitly
 supplied output destination. Exclusion applies to roots, imported files, directory
 listings, and symlink targets, so excluded contents do not enter evidence or its
-identity digest. The CLI supplies its actual checkout observation and build directories before
-opening a project, including when the selected configuration is nested elsewhere. Git-ignore rules alone are not this evidence boundary.
+identity digest. Discovery contexts assert this exclusion only when at least one
+output location was supplied; direct library runs may enforce none. The CLI supplies
+its actual checkout observation and build directories before opening a project,
+including when the selected configuration is nested elsewhere. Git-ignore rules
+alone are not this evidence boundary.
 
 Discovery collects syntax diagnostics encountered while examining the configured
 Program, conservatively qualifying the whole population and affected modules.

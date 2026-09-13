@@ -184,7 +184,8 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
         guarantee: relevant.length > 0
           ? 'Compiler-established module information with encountered syntax diagnostics; correctness is qualified.'
           : 'Module membership established by the supported TypeScript compiler operations.',
-        limitations: [limitation, 'Configured generated-output locations are explicitly excluded from repository evidence.',
+        limitations: [limitation,
+          ...(inputs.excludedLocationCount > 0 ? ['Configured generated-output locations are explicitly excluded from repository evidence.'] : []),
           'No atomic filesystem snapshot is claimed; inputs are memoized as first observed.',
           ...(relevant.length > 0 ? ['Encountered syntax diagnostics may limit the module interpretation.'] : [])],
         diagnostics: relevant,

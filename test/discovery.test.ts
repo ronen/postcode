@@ -5,8 +5,10 @@ import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
 import { evaluateModules } from '../src/lib/evaluation.js';
-import { moduleEntityIds } from '../src/lib/identity.js';
-import { inspect } from '../src/lib/projections.js';
+import { methods, moduleEntityIds } from '../src/lib/identity.js';
+import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
+import { createView } from '../src/lib/presentation.js';
+import { inspect, modules } from '../src/lib/projections.js';
 import type { SourceEvidenceRecord } from '../src/lib/records.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
 import { discover } from './helpers.js';
@@ -238,4 +240,28 @@ test('expanded discovery attempts count root evaluations and preserve earlier ex
   assert.ok(store.evaluations(repeated.snapshot).filter(outcome => outcome.basis === repeated.id)
     .every(outcome => outcome.attempt === 3 && outcome.requirement === 'exports'));
   for (const outcome of earlier) assert.deepEqual(store.get(outcome.id), outcome);
+});
+
+test('output-exclusion qualifications describe only filters actually supplied by the caller', () => {
+  for (const excludedOutputDirectories of [undefined, [], [path.resolve('_observations')]]) {
+    const opened = openTypeScriptProject({ configPath: fixture('module-population'),
+      ...(excludedOutputDirectories === undefined ? {} : { excludedOutputDirectories }) });
+    assert.equal(opened.status, 'opened');
+    if (opened.status !== 'opened') throw new Error('Project did not open');
+    const store = new MemoryProgramRecordStore();
+    const evaluation = evaluateModules(store, opened.analysis, ['exports', 'documentation']);
+    const projection = modules(store, evaluation);
+    const view = createView(store, projection, { format: 'json', sourceDetail: false });
+    const expectedCount = excludedOutputDirectories?.length ?? 0;
+    assert.equal(view.analysis!.excludedOutputLocations, expectedCount);
+    // Check both project and per-module discovery contexts through the public view.
+    assert.ok(view.qualifications.some(context => context.scope === 'configured-project'));
+    assert.ok(view.modules.length > 0);
+    const contexts = [...view.qualifications, ...view.modules.map(module => module.qualification)]
+      .filter(context => context.method.startsWith(`${methods.discovery};`));
+    assert.ok(contexts.length > view.modules.length);
+    for (const context of contexts) {
+      assert.equal(context.limitations.includes('Configured generated-output locations are explicitly excluded from repository evidence.'), expectedCount > 0);
+    }
+  }
 });

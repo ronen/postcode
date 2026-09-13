@@ -66,7 +66,15 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
         case 'claim':
           if (record.information.type === 'module' || record.information.type === 'export') requireKind(record.subject, 'module');
           if (record.information.type === 'symbol') requireKind(record.subject, 'symbol');
-          if (record.information.type === 'documentation-association') requireKind(record.information.assertion, 'recorded-assertion');
+          if (record.information.type === 'documentation-association') {
+            requireKind(record.information.assertion, 'recorded-assertion');
+            const subject = pending.get(record.subject) ?? this.#records.get(record.subject);
+            const association = record.information.association;
+            const validSubject = association === 'module' ? subject?.kind === 'module'
+              : association === 'origin-symbol' ? subject?.kind === 'symbol'
+              : subject?.kind === 'claim' && subject.information.type === 'export';
+            if (!validSubject) throw new Error(`Invalid ${association} documentation subject`);
+          }
           if (record.information.type === 'export') {
             if (record.information.symbol) requireKind(record.information.symbol, 'symbol');
             if (record.information.origin) requireKind(record.information.origin, 'module');

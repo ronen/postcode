@@ -5,7 +5,7 @@ import { evaluateModules } from '../src/lib/evaluation.js';
 import { methods, recordId, snapshotId } from '../src/lib/identity.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { inspect, modules } from '../src/lib/projections.js';
-import type { ClaimContextRecord, EvaluationState, ModuleClaim, ModuleRecord, ProgramRecord, SnapshotRecord, SymbolClaim } from '../src/lib/records.js';
+import type { ClaimContextRecord, DocumentationAssociationClaim, EvaluationState, ModuleClaim, ModuleRecord, ProgramRecord, SnapshotRecord, SymbolClaim } from '../src/lib/records.js';
 import { discover } from './helpers.js';
 
 function context() {
@@ -62,6 +62,50 @@ test('entity claims require the matching discriminator and reciprocal subject be
         assert.throws(() => store.put([marker, invalid, ...(existingTarget ? [] : valid)]), /entity claim/);
         for (const rejected of [marker, invalid, ...(existingTarget ? [] : valid)]) {
           assert.throws(() => store.get(rejected.id), /Missing/);
+        }
+        assert.deepEqual(store.get(snapshot), record);
+        if (!existingTarget) store.put(valid);
+        for (const accepted of valid) assert.deepEqual(store.get(accepted.id), accepted);
+      }
+    }
+  }
+});
+
+test('documentation associations validate subject kinds and export discriminators atomically for pending and existing targets', () => {
+  for (const association of ['module', 'origin-symbol', 'export-alias'] as const) {
+    for (const target of ['module', 'symbol', 'export', 'module-claim', 'symbol-claim', 'context', 'assertion'] as const) {
+      for (const existingTarget of [false, true]) {
+        const { store, snapshot, record } = context();
+        const id = (key: string) => recordId(snapshot, 'test', key);
+        const base = { snapshot, method: 'test@0' };
+        const claimContext: ClaimContextRecord = { ...base, kind: 'claim-context', id: id('context'),
+          scope: 'configured-project', evidence: [], status: 'mechanically-derived',
+          guarantee: 'Synthetic fixture', limitations: [], diagnostics: [] };
+        const valid: ProgramRecord[] = [claimContext,
+          { ...base, kind: 'module', id: id('module'), claim: id('module-claim') },
+          { ...base, kind: 'symbol', id: id('symbol'), claim: id('symbol-claim') },
+          { ...base, kind: 'claim', id: id('module-claim'), subject: id('module'), context: claimContext.id,
+            information: { type: 'module', name: null, handle: 'fixture', handleStatus: 'generated-navigation-aid',
+              handleProvenance: 'anonymous-fallback', facets: [] } },
+          { ...base, kind: 'claim', id: id('symbol-claim'), subject: id('symbol'), context: claimContext.id,
+            information: { type: 'symbol', name: 'fixture', roles: { type: false, value: true }, declarationCount: 1 } },
+          { ...base, kind: 'claim', id: id('export'), subject: id('module'), context: claimContext.id,
+            information: { type: 'export', exportedName: 'fixture', symbol: id('symbol'), origin: id('module'), roles: null, routes: [] } },
+          { ...base, kind: 'recorded-assertion', id: id('assertion'), context: claimContext.id,
+            status: 'recorded-assertion', text: 'Fixture documentation', tags: [] }];
+        const claim: DocumentationAssociationClaim = { ...base, kind: 'claim', id: id('documentation'),
+          subject: id(target), context: claimContext.id,
+          information: { type: 'documentation-association', association, assertion: id('assertion') } };
+        const marker: ClaimContextRecord = { ...claimContext, id: id('marker') };
+        if (existingTarget) store.put(valid);
+        const batch = [marker, claim, ...(existingTarget ? [] : valid)];
+        const expected = association === 'module' ? 'module' : association === 'origin-symbol' ? 'symbol' : 'export';
+        if (target === expected) {
+          store.put(batch);
+          assert.deepEqual(store.get(claim.id), claim);
+        } else {
+          assert.throws(() => store.put(batch), /documentation subject/);
+          for (const rejected of batch) assert.throws(() => store.get(rejected.id), /Missing/);
         }
         assert.deepEqual(store.get(snapshot), record);
         if (!existingTarget) store.put(valid);

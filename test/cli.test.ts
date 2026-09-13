@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { cpSync, mkdtempSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdtempSync, mkdirSync, readFileSync, readdirSync, realpathSync, rmSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
@@ -19,6 +19,22 @@ async function invoke(args: string[], sink?: ObservationSink, checkout = process
     sink: sink ?? { async submit(batch) { batches.push(batch); return { accepted: true }; } },
   });
   return { stdout, stderr, exit, batches };
+}
+
+function copyTestCheckout(checkout: string) {
+  cpSync('_build/src', path.join(checkout, '_build/src'), { recursive: true });
+  writeFileSync(path.join(checkout, 'package.json'), '{"type":"module"}');
+  symlinkSync(path.resolve('node_modules'), path.join(checkout, 'node_modules'), 'dir');
+  // Node resolves the entry point's real path; use that same checkout for generated scope.
+  return realpathSync(checkout);
+}
+
+function assertRecordedOutput(checkout: string, output: string) {
+  const sink = path.join(checkout, '_observations');
+  const files = readdirSync(sink);
+  assert.equal(files.length, 1);
+  const batch = JSON.parse(readFileSync(path.join(sink, files[0]!), 'utf8')) as ObservationBatch;
+  assert.equal(batch.records.find(record => record.kind === 'rendered-output')!.value, output);
 }
 
 test('Unicode and experimental JSON use the same qualified projection and automatically record exact displayed artifacts', async () => {
@@ -96,12 +112,13 @@ test('invalid CLI requests and project-open failures produce no view or misleadi
 test('end-of-options preserves option-like exact names while keeping one-selector validation', async () => {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-option-names-'));
   try {
+    const checkout = copyTestCheckout(path.join(root, 'checkout'));
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["ambient.d.ts"]}');
     const names = ['--json', '-h', '--help', '--project', '--source-detail', '--'];
     writeFileSync(path.join(root, 'ambient.d.ts'), names.map(name => `declare module "${name}" { export const value: number; }`).join('\n'));
     for (const name of names) {
-      const result = await invoke(['inspect', '--project', config, '--json', '--', name]);
+      const result = await invoke(['inspect', '--project', config, '--json', '--', name], undefined, checkout);
       assert.equal(result.exit, 0, result.stderr);
       const view = JSON.parse(result.stdout) as QualifiedView;
       assert.deepEqual(view.modules.map(module => module.name), [name]);
@@ -112,6 +129,7 @@ test('end-of-options preserves option-like exact names while keeping one-selecto
         const output = execFileSync('/bin/sh', ['-c', command], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
         assert.ok(output.includes('exact match for --json'));
         assert.ok(output.includes('1 module selected from 6'));
+        assertRecordedOutput(checkout, output);
       }
     }
     const invalid = await invoke(['inspect', '--project', config, '--', '--json', '-h']);
@@ -156,9 +174,7 @@ test('target directories named like PostCode output retain configured sources an
 test('independent CLI processes reproduce JSON while the local sink writes private self-contained batches', () => {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-cli-'));
   try {
-    cpSync('_build', path.join(root, '_build'), { recursive: true });
-    writeFileSync(path.join(root, 'package.json'), '{"type":"module"}');
-    symlinkSync(path.resolve('node_modules'), path.join(root, 'node_modules'), 'dir');
+    copyTestCheckout(root);
     const cli = path.join(root, '_build/src/cli.js');
     const args = [cli, '--project', config, '--json'];
     const output = execFileSync(process.execPath, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
@@ -387,15 +403,17 @@ test('a mostly-type module uses an exported type cue instead of a helper predica
 test('the suggested command runs after replacing MODULE_HANDLE, including a quoted project path', async () => {
   const root = mkdtempSync(path.join(os.tmpdir(), "postcode-project's "));
   try {
+    const checkout = copyTestCheckout(path.join(root, 'checkout'));
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
     writeFileSync(path.join(root, 'entry.ts'), 'export function runCli() {}');
-    const view = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+    const view = JSON.parse((await invoke(['--project', config, '--json'], undefined, checkout)).stdout) as QualifiedView;
     const command = view.presentation.navigation!.inspect.replace('MODULE_HANDLE', 'run-cli');
     const output = execFileSync('/bin/sh', ['-c', command], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
     assert.ok(output.includes('exact match for run-cli'));
     assert.ok(output.includes('1 module selected from 1'));
     assert.equal(output.includes('No current match'), false);
+    assertRecordedOutput(checkout, output);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
