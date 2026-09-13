@@ -77,6 +77,17 @@ The independently verified handle correction was committed as `cc836cc` before
 this authorization checkpoint. Proceed with the approved diagnostic approach,
 then verify and prepare the next rereview handoff; keep the continuation active.
 
+### 2026-09-13: fifth Copilot review
+
+Again, Copilot has completed its review.  Please retrieve the new review materials.  It again refers to "previously missed", you are authorized to act on those; though if you disagree pause to discuss.  Otherwise, as before unless any unforeseen issues arise, commit and prepare handoff for next review
+
+Context: [review 5191721749](https://github.com/ronen/postcode/pull/1#pullrequestreview-5191721749)
+on `8cc68d5` contains two previously missed suppressed findings (renamed re-export
+traversal and exclusion-set identity) and one inline finding (Unicode structural
+text injection). All three are accepted as in-scope corrections. Preserve precise
+provenance, deterministic analysis and structured documentation/source wrapping;
+keep this continuation active for the next human-arranged review.
+
 ## Outcome
 
 ### 2026-09-13: corrections ready for Copilot rereview
