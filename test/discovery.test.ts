@@ -5,6 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
 import { evaluateModules } from '../src/lib/evaluation.js';
+import { moduleEntityIds } from '../src/lib/identity.js';
 import { inspect } from '../src/lib/projections.js';
 import type { SourceEvidenceRecord } from '../src/lib/records.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
@@ -113,6 +114,33 @@ test('inspect exact names, handles and IDs preserves zero/one selection and appl
   }
 });
 
+test('exact names remain usable when they collide with compact IDs; scoped IDs stay precise', () => {
+  temporary(root => {
+    const config = path.join(root, 'tsconfig.json');
+    writeFileSync(config, JSON.stringify({ compilerOptions: { noLib: true, types: [] }, include: ['*.ts'] }));
+    writeFileSync(path.join(root, 'ordinary.ts'), 'export const value = 1;');
+    const before = discover(config);
+    const selector = moduleEntityIds(before.evaluation.modules).get(before.evaluation.modules[0]!)!;
+    writeFileSync(path.join(root, 'ambient.d.ts'), `declare module "${selector}" { export const named: number; }`);
+    const { store, evaluation, claims } = discover(config);
+    const named = claims.find(claim => claim.information.name === selector)!;
+    const ordinary = claims.find(claim => claim.information.name === null)!;
+    const ids = moduleEntityIds(evaluation.modules);
+    assert.equal(ids.get(ordinary.subject), selector);
+
+    const currentName = inspect(store, evaluation, selector);
+    assert.equal(currentName.selection.referenceStatus, 'current');
+    assert.deepEqual(currentName.modules, [named.subject]);
+    assert.ok(currentName.contexts.includes(named.context));
+    assert.deepEqual(inspect(store, evaluation, selector, evaluation.snapshot).modules, [ordinary.subject]);
+    assert.deepEqual(inspect(store, evaluation, ids.get(named.subject)!, evaluation.snapshot).modules, [named.subject]);
+    assert.equal(inspect(store, evaluation, ids.get(named.subject)!).selection.referenceStatus, 'snapshot-required');
+    const stale = inspect(store, evaluation, selector, before.evaluation.snapshot);
+    assert.equal(stale.selection.referenceStatus, 'snapshot-mismatch');
+    assert.deepEqual(stale.modules, []);
+  });
+});
+
 test('equivalent separate processes reproduce snapshot, records, ordering and projection', () => {
   const invoke = () => execFileSync(process.execPath, ['_build/test/process-probe.js', fixture('module-population')], { encoding: 'utf8' });
   assert.equal(invoke(), invoke());
@@ -128,8 +156,8 @@ test('a changed method version produces a new snapshot in an independent process
     const before = invoke();
     const implementation = path.join(root, '_build/src/lib/identity.js');
     const original = readFileSync(implementation, 'utf8');
-    assert.ok(original.includes('postcode/projection@4'));
-    writeFileSync(implementation, original.replace('postcode/projection@4', 'postcode/projection@verification-change'));
+    assert.ok(original.includes('postcode/projection@5'));
+    writeFileSync(implementation, original.replace('postcode/projection@5', 'postcode/projection@verification-change'));
     assert.notEqual(invoke().evaluation.snapshot, before.evaluation.snapshot);
   });
 });

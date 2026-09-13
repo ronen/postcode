@@ -77,7 +77,10 @@ short Unicode snapshot label is for recognition, not a valid `--snapshot` value.
 Handle and compact Entity ID selection require the full snapshot in the generated
 command or JSON. A missing or stale scope produces no current match; repeated
 handle or ID text does not imply continuity. Exact names are current-snapshot
-lookups. Internal full record keys include snapshot scope and remain accepted.
+lookups. If a name equals an existing compact Entity ID, omit `--snapshot` to
+select by name; supplying the current snapshot selects precisely by that compact
+ID. The named module remains separately addressable by its own scoped Entity ID.
+Internal full record keys include snapshot scope and remain accepted.
 There are no fuzzy matches, wildcard selectors, retained aliases, or durable
 navigation sessions.
 

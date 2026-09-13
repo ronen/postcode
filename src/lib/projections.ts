@@ -19,12 +19,14 @@ function project(store: ProgramRecordStore, evaluation: EvaluationRecord, select
   const snapshotMismatch = expectedSnapshot !== null && expectedSnapshot !== evaluation.snapshot;
   const entityIds = moduleEntityIds(evaluation.modules);
   const compactId = [...entityIds.values()].includes(selector ?? '');
+  const exactName = selector !== null && evaluation.modules.some(id => moduleClaim(store, id).information.name === selector);
   const handleOnly = selector !== null && evaluation.modules.some(id => moduleClaim(store, id).information.handle === selector)
-    && !evaluation.modules.some(id => id === selector || moduleClaim(store, id).information.name === selector);
-  const referenceStatus = snapshotMismatch ? 'snapshot-mismatch' : (handleOnly || compactId) && expectedSnapshot === null ? 'snapshot-required' : 'current';
+    && !exactName && !evaluation.modules.some(id => id === selector);
+  const referenceStatus = snapshotMismatch ? 'snapshot-mismatch' : (handleOnly || compactId && !exactName) && expectedSnapshot === null ? 'snapshot-required' : 'current';
   const modules = evaluation.modules.filter(id => {
     if (referenceStatus !== 'current') return false;
-    if (compactId) return selector === entityIds.get(id);
+    // Names are current lookups; an explicitly scoped compact ID remains a precise address.
+    if (compactId && expectedSnapshot !== null) return selector === entityIds.get(id);
     if (selector === null || selector === id) return true;
     const claim = moduleClaim(store, id);
     return selector === claim.information.name || expectedSnapshot !== null && selector === claim.information.handle;
