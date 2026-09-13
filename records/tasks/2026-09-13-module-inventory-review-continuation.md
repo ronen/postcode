@@ -88,6 +88,16 @@ text injection). All three are accepted as in-scope corrections. Preserve precis
 provenance, deterministic analysis and structured documentation/source wrapping;
 keep this continuation active for the next human-arranged review.
 
+### 2026-09-13: sixth Copilot review
+
+Again, Copilot has completed its review.  Please retrieve the new review materials, you are authorized to act on those; though if you disagree pause to discuss.  Otherwise, as before unless any unforeseen issues arise, commit and prepare handoff for next review
+
+Context: [review 5192088604](https://github.com/ronen/postcode/pull/1#pullrequestreview-5192088604)
+on `bdadc50` contains one inline finding: the observation destination is disclosed
+on stderr without escaping checkout-path controls. The finding is accepted as
+an in-scope terminal-output correction. Preserve the actual destination and keep
+the continuation active for the next human-arranged review.
+
 ## Outcome
 
 ### 2026-09-13: corrections ready for Copilot rereview
