@@ -1,6 +1,6 @@
 # Project Status
 
-Last reviewed: 2026-09-13
+Last reviewed: 2026-09-14
 
 The [initial module-inventory task](records/tasks/2026-09-12-initial-module-inventory.md)
 is complete on `codex/initial-module-inventory`. The first independent architectural
@@ -14,7 +14,7 @@ Program claims, Claim context, source evidence, documentation assertions, evalua
 outcomes, projections and observations remain distinct. See [usage](README.md)
 and the [architecture overview](docs/architecture/README.md).
 
-All 73 automated tests and type checks pass. Coverage includes semantic fixtures,
+All 76 automated tests and type checks pass. Coverage includes semantic fixtures,
 separate-process CLI determinism, changed-input identity, source separation,
 omission disclosure, sink delivery/privacy behavior, and actual checkout output
 exclusion for nested configurations. PostCode self-analysis has run successfully.
@@ -71,3 +71,14 @@ findings are corrected in `e89d741`. The
 [seventh-round disposition and handoff](records/reviews/2026-09-13-module-inventory-continuation-round-7.md)
 records 73 passing tests and targeted fixture evidence. The continuation remains
 active; PR #1 is awaiting another human-arranged rereview.
+
+The eighth round's shared-name/handle concern was assessed against the approved
+multiple-match contract. `fa8ecee` adds the authorized regression and CLI example
+without changing selection behavior; the
+[eighth-round handoff](records/reviews/2026-09-13-module-inventory-continuation-round-8.md)
+records the disposition. The ninth round corrects bidi-control display injection,
+exponential forwarding-path enumeration and repeated exclusion-path resolution,
+and refreshes this status count. The
+[ninth-round handoff](records/reviews/2026-09-14-module-inventory-continuation-round-9.md)
+records 76 passing tests and verification. The continuation remains active for
+human-arranged Copilot rereview.
