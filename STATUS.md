@@ -24,8 +24,11 @@ inventories. Their responses and exact inputs are retained locally; the
 [validation handoff](records/validation/2026-09-13-module-inventory-validation.md)
 records findings, corrections, and remaining usability uncertainty.
 
-Outstanding gates: human approval of an unfamiliar external TypeScript repository
-before acquisition/analysis, its validation exercise, human Unicode-output
-inspection, and final independent integrated
-review. The full [approved plan](docs/plans/initial-module-inventory-plan.md) remains
+The approved [p-queue validation](records/validation/2026-09-13-p-queue.md) is complete
+at a pinned revision: seven modules, matching independent invocations and checked
+project export surfaces. No implementation defect was found in that exercise.
+
+Outstanding gates: human Unicode-output feedback/acceptance and final independent
+integrated review. Unicode output is explicitly not yet approved.
+The full [approved plan](docs/plans/initial-module-inventory-plan.md) remains
 the task scope; no closure or final acceptance is claimed.

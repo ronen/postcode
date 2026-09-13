@@ -114,17 +114,16 @@ evaluated input. Human usability inspection is still necessary.
 1. Human Unicode-output inspection: inspect the retained corrected `view-after.txt` for usefulness
    as an investigation starting point, including qualifications, module roles,
    navigation, and distracting output volume. Human acceptance has not occurred.
-2. External-repository approval: proposed candidate is
-   [sindresorhus/p-queue](https://github.com/sindresorhus/p-queue). No contents have
-   been acquired or analyzed. The task explicitly requires human approval before
-   either action. After approval, record the exact revision and configured inputs,
-   exercise the CLI, and retain evidence locally without committing third-party
-   contents or real-project observations.
+2. External-repository exercise: the human approved p-queue on 2026-09-13 while
+   explicitly withholding Unicode acceptance. The
+   [completed validation record](2026-09-13-p-queue.md) identifies the pinned
+   revision, actual configuration, dependency tree, checks and retained evidence.
+   No implementation defect was found; all third-party contents and observations
+   remain local and uncommitted.
 3. After planned verification is substantially complete, prepare the final
    integrated-review handoff identifying the complete reviewed commit and ask the
    human to arrange independent review. Resolve returned findings or obtain human
    acceptance of residual concerns before closing the task.
 
-External-repository validation, human inspection, and final integrated independent
-review are not yet verified. These remain within
+Human inspection and final integrated independent review are not yet verified. These remain within
 the authorized task; no deferral or task closure is claimed.
