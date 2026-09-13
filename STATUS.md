@@ -14,7 +14,7 @@ Program claims, Claim context, source evidence, documentation assertions, evalua
 outcomes, projections and observations remain distinct. See [usage](README.md)
 and the [architecture overview](docs/architecture/README.md).
 
-All 61 automated tests and type checks pass. Coverage includes semantic fixtures,
+All 64 automated tests and type checks pass. Coverage includes semantic fixtures,
 separate-process CLI determinism, changed-input identity, source separation,
 omission disclosure, sink delivery/privacy behavior, and actual checkout output
 exclusion for nested configurations. PostCode self-analysis has run successfully.
@@ -53,4 +53,8 @@ snapshot self-identity validation and the inspection-only CLI option explanation
 The [third disposition and handoff](records/reviews/2026-09-13-module-inventory-continuation-round-3.md)
 records 61 passing tests and verification. The continuation remains active until
 returned findings are resolved or the human explicitly accepts any residual concern.
-PR #1 is awaiting another rereview.
+The fourth review's handle/Entity-ID collision and duplicate configuration
+syntax diagnostics are corrected in `cc836cc` and `92e4ed2`. The human approved
+preserving root syntax validation after the suggested removal caused a regression.
+The [fourth disposition and handoff](records/reviews/2026-09-13-module-inventory-continuation-round-4.md)
+records 64 passing tests and fixture verification. PR #1 is awaiting another rereview.
