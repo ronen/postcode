@@ -14,7 +14,7 @@ Program claims, Claim context, source evidence, documentation assertions, evalua
 outcomes, projections and observations remain distinct. See [usage](README.md)
 and the [architecture overview](docs/architecture/README.md).
 
-All 43 automated tests and type checks pass. Coverage includes semantic fixtures,
+All 46 automated tests and type checks pass. Coverage includes semantic fixtures,
 separate-process CLI determinism, changed-input identity, source separation,
 omission disclosure, sink delivery/privacy behavior, and actual checkout output
 exclusion for nested configurations. PostCode self-analysis has run successfully.
@@ -30,10 +30,12 @@ project export surfaces. No implementation defect was found in that exercise.
 
 Outstanding gates: human Unicode-output feedback/acceptance and final independent
 integrated review. Unicode output is explicitly not yet approved.
-The [third Unicode sample](records/reviews/2026-09-13-unicode-third-response.md)
-separates run status, aggregate display omissions, and limitations; consolidates
-common module information; and supplies a usable inspection command. A concise
-[command and concepts reference](docs/cli-reference.md) is available.
+The [fourth Unicode sample](records/reviews/2026-09-13-unicode-fourth-response.md)
+uses a compact table with generated basename/export handles and collision-checked
+snapshot-scoped Entity IDs. Status says what TypeScript establishes; display
+omissions and run limitations stay separate. Ten exceptional inspection samples
+are available for review, along with the updated
+[command and concepts reference](docs/cli-reference.md).
 Final integrated-review handoff is on hold for the human's further Unicode review.
 The full [approved plan](docs/plans/initial-module-inventory-plan.md) remains
 the task scope; no closure or final acceptance is claimed.
