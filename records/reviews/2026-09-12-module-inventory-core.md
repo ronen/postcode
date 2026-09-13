@@ -146,11 +146,12 @@ The human delegated disposition of the nonblocking findings to the implementer.
    the containing filename. Discovery method version advanced.
 3. **File-less diagnostics:** addressed by limiting these to project-wide context;
    ordinary file-associated syntax diagnostics still qualify affected modules.
-4. **Claim union:** accepted as an integration note. Export and documentation
-   records will add distinct variants when implemented, preserving module claims.
-5. **Actual output destination:** accepted as an integration obligation. The CLI
-   must pass its actual checkout observation/build paths explicitly, with a nested
-   configuration regression check. The existing caller boundary remains suitable.
+4. **Claim union:** addressed in `8c3fc00`. Module, symbol, export, and documentation
+   association claims have distinct variants; documentation assertions remain
+   separately addressable records.
+5. **Actual output destination:** addressed in `7308fac`. The CLI passes its actual
+   checkout observation/build paths explicitly. A nested-configuration regression
+   test verifies that those locations remain excluded from analysis inputs.
 
 The first checkpoint is cleared. Final independent integrated review remains
 required; this result does not establish completion of the full task.
