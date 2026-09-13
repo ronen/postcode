@@ -217,6 +217,17 @@ The continuation remains active.
 - [Eighth-round disposition and handoff](../reviews/2026-09-13-module-inventory-continuation-round-8.md)
   records the evidence. The continuation remains active for human-arranged rereview.
 
+### 2026-09-14: ninth-round corrections ready for rereview
+
+- `30145ad` escapes bidi controls with aligned command omission, collects bounded
+  forwarding evidence with value reachability, and resolves exclusion candidates
+  once per check. Expansion/presentation methods advance to @2/@11.
+- `4dcd9b8` refreshes STATUS and records the
+  [ninth-round disposition and handoff](../reviews/2026-09-14-module-inventory-continuation-round-9.md).
+  All three inline findings and the suppressed performance finding are addressed.
+- No disagreement or unforeseen issue arose. The continuation remains active for
+  human-arranged Copilot rereview.
+
 ## Verification
 
 - `npm test`: 57/57 passed; `npm run check`: passed on Node 22.13.1 / TypeScript
@@ -329,3 +340,15 @@ The continuation remains active.
   verifies visible multiple matches and exact recorded output, and checks JSON
   scoped handle, unscoped name and both precise Entity-ID selections.
 - No runtime changes or real-project recaptures; temporary test data is cleaned up.
+
+### Ninth-round verification
+
+- `npm test`: 76/76 passed; `npm run check` and whitespace checks passed.
+- Four targeted regressions fail against predecessor implementations. Eight-layer
+  diamond evidence falls from 2,560 steps to 33; twelve exclusions now require the
+  same candidate resolution work as one. Mixed type/value cycles retain roles.
+- Bidi escaping covers names, paths, diagnostics/warnings and command omission;
+  JSON and actual sink paths remain unchanged. Refreshed fixture JSON/Unicode
+  retains seven modules and unique requested expansion kinds.
+- Real-project captures and clean-agent/presentation exercises were not repeated;
+  the handoff records the verification scope and remaining performance limits.
