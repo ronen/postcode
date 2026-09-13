@@ -112,9 +112,9 @@ evaluated input. Human usability inspection is still necessary.
 ## Remaining gates and work
 
 1. Human Unicode-output inspection: the human reviewed `view-after.txt` and
-   requested further changes, then reviewed samples two through four. The
-   [fifth review response](../reviews/2026-09-13-unicode-fifth-response.md)
-   records the latest corrections and `view-review-5.txt`, source detail and exceptional inspection samples. Explicit human
+   requested further changes, then reviewed samples two through five. The
+   [sixth review response](../reviews/2026-09-13-unicode-sixth-response.md)
+   records the latest corrections and `view-review-6.txt`, source hierarchies and exceptional inspection samples. Explicit human
    acceptance is still required and has not occurred.
 2. External-repository exercise: the human approved p-queue on 2026-09-13 while
    explicitly withholding Unicode acceptance. The
