@@ -109,6 +109,15 @@ actionable file/position information. Both are accepted as in-scope corrections.
 Preserve occurrence deduplication and real output exclusion, and keep this
 continuation active for the next human-arranged review.
 
+### 2026-09-13: eighth-round regression and documentation
+
+Context: Copilot review 5192494945 on `74ed103` reported a name/handle collision
+as critical. Read-only assessment found the example selects two genuine shared
+handle matches, as permitted by the approved plan. The human accepted adding a
+regression and CLI example without changing selection semantics.
+
+> yes, add the regression test and add this example to the CLI reference
+
 ## Outcome
 
 ### 2026-09-13: corrections ready for Copilot rereview
