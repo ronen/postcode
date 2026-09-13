@@ -176,7 +176,22 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
     }) }));
     const globalContext = makeContext('configured-project', [...files.map(file => evidence(file, null)), ...resolutionEvidence.map(item => item.id)], files);
     const moduleIds: RecordId[] = [];
-    for (const [index, candidate] of candidates.entries()) {
+    let anonymous = 0;
+    const mnemonic = (candidate: typeof candidates[number]): string => {
+      // Declared export names are conceptual recognition evidence, not inferred module responsibilities.
+      const exported = [...(candidate.symbol?.exports?.values() ?? [])].filter(symbol => !symbol.getName().startsWith('__'));
+      exported.sort((a, b) => Number(Boolean(b.flags & (ts.SymbolFlags.Class | ts.SymbolFlags.Function)))
+        - Number(Boolean(a.flags & (ts.SymbolFlags.Class | ts.SymbolFlags.Function))) || compare(a.getName(), b.getName()));
+      const cue = candidate.name ?? exported.map(symbol => {
+        if (symbol.getName() !== 'default') return symbol.getName();
+        const named = symbol.getDeclarations()?.find(node => (ts.isClassDeclaration(node) || ts.isFunctionDeclaration(node)) && node.name);
+        return named && (ts.isClassDeclaration(named) || ts.isFunctionDeclaration(named)) ? named.name?.text : undefined;
+      }).find(Boolean);
+      const slug = cue?.replace(/([A-Z])([A-Z][a-z])/g, '$1-$2').replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+        .normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48).replace(/-$/, '');
+      return slug ? `module-${slug}` : `anonymous-${String(++anonymous).padStart(2, '0')}`;
+    };
+    for (const candidate of candidates) {
       const id = recordId(snapshot, 'module', candidate.key);
       const claim = recordId(snapshot, 'claim', id);
       const context = makeContext(id, [...candidate.declarations.map(declaration => evidence(declaration, candidate.compilerName)),
@@ -186,7 +201,7 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       records.push({ kind: 'module', id, snapshot, method, claim }, {
         kind: 'claim', id: claim, snapshot, method, subject: id, context,
         information: { type: 'module', name: candidate.name,
-          handle: `module-${snapshot.slice(9, 21)}-${index + 1}`, handleStatus: 'generated-navigation-aid',
+          handle: mnemonic(candidate), handleStatus: 'generated-navigation-aid',
           facets: candidate.facets },
       });
       moduleIds.push(id);

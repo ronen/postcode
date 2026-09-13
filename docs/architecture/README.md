@@ -66,7 +66,10 @@ The method registry must be bumped when the associated semantics change.
 Entity identity follows the configured compiler's source identities and ambient
 symbols. It makes no continuity claim across snapshots or relocated checkouts.
 Absolute paths contribute to internal snapshot identity, but are not conceptual
-names. Handles contain a snapshot prefix; full Entity IDs carry the entire digest.
+names. Handles use conceptual names or declared export cues, with honestly
+anonymous fallbacks. The handle text contains no snapshot prefix. Inspection
+requires explicit snapshot context for handles and records a no-current-match
+state when it is missing or stale. Full Entity IDs carry the entire digest.
 
 Known generated-output directories are excluded before configuration discovery
 and compiler reads. The integration excludes `_observations` and `_build` under
@@ -102,8 +105,14 @@ Projection construction selects expansion claims and outcomes relevant to select
 modules. View construction reads only materialized records and selects documented
 export/documentation limits; omitted exports, assertions, tags and text characters
 remain counted. Rendering receives a qualified view value and cannot query the
-store or trigger analysis. Unicode and JSON use the same selected domain content.
-JSON has an explicitly experimental schema. Normal qualifications omit detailed
+store or trigger analysis. Unicode and JSON use the same domain projection with
+different display limits. Unicode inventory lists project modules, counts collapsed
+external modules, retains their exceptional qualifications, and offers a small
+name preview. Its qualified view records display coverage separately from analysis
+selection. JSON retains the full selected module list and full identities.
+Detailed inspection exposes exports and recorded assertions; shared qualifications
+appear once while exceptional provenance stays local. JSON has an explicitly
+experimental schema. Normal qualifications omit detailed
 source evidence. Explicit inspection source detail contains only locations backing
 displayed claims and never renders full-file content.
 

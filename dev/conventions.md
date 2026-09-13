@@ -92,6 +92,13 @@ resolve to zero, one, or multiple subjects. Multiple input referents and list
 selector syntax remain deferred by the initial plan; this is distinct from
 multiple matches of one referent.
 
+Generated mnemonic handles contain conceptual name/export cues, never snapshot
+hash text. Handles are not cross-snapshot identities: exact handle selection
+requires the inventory's snapshot through `--snapshot`. The projection records
+the requested snapshot and an explicit current/snapshot-required/snapshot-mismatch
+reference status. Mismatches never infer successors. Full Entity IDs remain
+snapshot-qualified; exact conceptual names are current-snapshot lookups.
+
 Method versions in the identity module participate in snapshot identity. Bump
 the responsible version when changing analysis, record, handle, or projection
 semantics. Equivalent runs must not include clocks or random observation UUIDs

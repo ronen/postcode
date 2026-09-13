@@ -41,19 +41,32 @@ accepts one exact module name, generated handle, or Entity ID from an inventory.
 One referent can match zero, one, or several modules; it never falls back to fuzzy
 matching. IDs and handles are scoped to the analyzed snapshot. Source-backed
 modules without a compiler-established conceptual name are shown as anonymous,
-with exported symbols and documentation for recognition.
+with exported symbols for recognition. Generated handles use conceptual names or
+declared exports, with short anonymous handles where no useful cue exists. They
+are navigation aids, not inferred responsibility labels. Handle selection requires
+`--snapshot <complete-snapshot-id>` copied from its inventory header; mismatched
+snapshots produce an explicit no-current-match result. Exact names are current
+lookups; full Entity IDs already contain snapshot context.
 
 Normal output contains conceptual information and qualifications. Unicode and the
 experimental `postcode-view/0` JSON presentation use the same qualified projection.
 `--source-detail` is available only for inspection and shows supporting source
 locations, separately identified as source escape. It does not show full files.
 
-The default inventory shows up to six exports and one documentation assertion per
-project-associated module/export. External documentation is omitted with counts;
-inspect its module handle to read it. Inspection shows up to 50 exports and three assertions. Inventory
-assertion excerpts are limited to 400 characters and five tags; inspection uses
+The default Unicode inventory lists project-associated modules with up to three
+exports each. External modules are collapsed with an accurate count and a short
+preview; their entries and details are omitted from display, not from analysis.
+Symbol documentation belongs in inspection. Full Entity IDs and ordinary local
+export provenance are suppressed in the Unicode inventory; aliases, forwarding,
+multiple contributing declarations and differing qualifications remain visible.
+
+JSON retains the full selected module list, full Entity IDs, up to six exports
+and one documentation assertion per project-associated module/export. Its
+inventory assertion excerpts are limited to 400 characters and five tags.
+Inspection shows up to 50 exports and three assertions, with
 2,000 characters and 20 tags. Tag text is limited to 300 characters. Every omitted
-export, assertion, tag or character is counted. Conceptual documentation excerpts
+export, assertion, tag or character is counted for displayed subjects; collapsed
+modules' details are collectively disclosed as omitted. Conceptual documentation excerpts
 omit fenced source examples and source-oriented `@example`/`@see` tags; the full
 assertions remain stored with provenance. Documentation is a recorded
 assertion, not proof of behavior or currency. Type-only forwarding may expose a

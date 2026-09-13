@@ -96,7 +96,7 @@ test('duplicate exact names and handles select multiple modules and only their c
     execution: 'completed', materialization: 'full', reason: null, cost: { measure: 'module-count', value: 3 },
   }) });
   for (const selector of ['duplicate', 'shared-handle']) {
-    const projection = inspect(store, evaluation, selector);
+    const projection = inspect(store, evaluation, selector, evaluation.snapshot);
     assert.deepEqual(projection.modules, ids.slice(0, 2));
     assert.equal(projection.selection.matches, 2);
     assert.equal(projection.contexts.length, 2);

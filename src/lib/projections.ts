@@ -11,15 +11,20 @@ function moduleClaim(store: ProgramRecordStore, id: RecordId): ModuleClaim {
 }
 
 /** Construction reads materialized state only; it has no language-provider access. */
-function project(store: ProgramRecordStore, evaluation: EvaluationRecord, selector: string | null): ProjectionRecord {
+function project(store: ProgramRecordStore, evaluation: EvaluationRecord, selector: string | null, expectedSnapshot: string | null = null): ProjectionRecord {
   const stored = store.get(evaluation.id);
   if (stored.kind !== 'evaluation') throw new Error('Expected stored evaluation');
   evaluation = stored;
   const lens = selector === null ? 'modules' : 'inspect';
+  const snapshotMismatch = expectedSnapshot !== null && expectedSnapshot !== evaluation.snapshot;
+  const handleOnly = selector !== null && evaluation.modules.some(id => moduleClaim(store, id).information.handle === selector)
+    && !evaluation.modules.some(id => id === selector || moduleClaim(store, id).information.name === selector);
+  const referenceStatus = snapshotMismatch ? 'snapshot-mismatch' : handleOnly && expectedSnapshot === null ? 'snapshot-required' : 'current';
   const modules = evaluation.modules.filter(id => {
+    if (referenceStatus !== 'current') return false;
     if (selector === null || selector === id) return true;
     const claim = moduleClaim(store, id);
-    return selector === claim.information.name || selector === claim.information.handle;
+    return selector === claim.information.name || expectedSnapshot !== null && selector === claim.information.handle;
   });
   const claims = modules.map(id => moduleClaim(store, id));
   const expansions = store.evaluations(evaluation.snapshot).filter(outcome => outcome.basis === evaluation.id);
@@ -41,9 +46,9 @@ function project(store: ProgramRecordStore, evaluation: EvaluationRecord, select
   const method = methods.projection;
   const projection: ProjectionRecord = {
     kind: 'projection', method, snapshot: evaluation.snapshot,
-    id: recordId(evaluation.snapshot, 'projection', { method, lens, selector, evaluation: evaluation.id }),
+    id: recordId(evaluation.snapshot, 'projection', { method, lens, selector, expectedSnapshot, evaluation: evaluation.id }),
     lens, subject: selector === null ? 'configured-project' : 'selected-modules',
-    parameters: { selector }, modules, claims: claims.map(claim => claim.id),
+    parameters: { selector, expectedSnapshot }, modules, claims: claims.map(claim => claim.id),
     contexts: [...new Set([...evaluation.contexts, ...claims.map(claim => claim.context)])],
     evaluations: [evaluation.id, ...relevantExpansions.map(outcome => outcome.id)],
     expansions: { requested: expansions.flatMap(outcome => outcome.requirement === 'modules' ? [] : [outcome.requirement]), claims: [...new Set(expansionClaims)] },
@@ -51,6 +56,7 @@ function project(store: ProgramRecordStore, evaluation: EvaluationRecord, select
       matches: modules.length, population: evaluation.modules.length,
       populationEstablished: evaluation.execution === 'completed' && evaluation.materialization === 'full',
       subset: selector !== null && modules.length < evaluation.modules.length,
+      referenceStatus,
     },
   };
   store.put([projection]);
@@ -61,6 +67,6 @@ export function modules(store: ProgramRecordStore, evaluation: EvaluationRecord)
   return project(store, evaluation, null);
 }
 
-export function inspect(store: ProgramRecordStore, evaluation: EvaluationRecord, selector: string): ProjectionRecord {
-  return project(store, evaluation, selector);
+export function inspect(store: ProgramRecordStore, evaluation: EvaluationRecord, selector: string, expectedSnapshot: string | null = null): ProjectionRecord {
+  return project(store, evaluation, selector, expectedSnapshot);
 }

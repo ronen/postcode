@@ -9,13 +9,15 @@ import { inspect, modules } from './projections.js';
 import { openTypeScriptProject } from './typescript/project.js';
 
 const help = `PostCode — initial module inventory\n
-Usage: postcode [modules | inspect <exact-selector>] [--project <tsconfig.json>] [--json] [--source-detail]
+Usage: postcode [modules | inspect <exact-selector>] [--project <tsconfig.json>] [--snapshot <snapshot-id>] [--json] [--source-detail]
 
 Defaults: modules(project), ./tsconfig.json, Unicode text.
 inspect accepts one exact name, mnemonic handle, or Entity ID; zero/one/multiple matches are explicit.
+Handle selection requires --snapshot from the inventory. A stale snapshot produces no current match.
 --source-detail requires inspect and discloses only source locations supporting displayed claims.
 JSON uses the experimental postcode-view/0 schema. Exports/documentation expansions are declared before evaluation.
-Inventory shows up to 6 exports per module; inspection shows up to 50. Every omission is counted.
+Unicode inventory lists project modules with 3 export cues and collapses external modules with counts.
+JSON lists all selected modules with up to 6 exports; inspection shows up to 50. Omissions are explicit.
 Normal views automatically submit a local observation batch; the destination is disclosed on stderr.
 `;
 
@@ -39,13 +41,18 @@ export async function runCli(args: readonly string[], environment: {
   let config = path.join(environment.cwd, 'tsconfig.json');
   let json = false;
   let sourceDetail = false;
+  let expectedSnapshot: string | null = null;
   const positional: string[] = [];
   for (let index = 0; index < args.length; index++) {
     const arg = args[index]!;
     if (arg === '--help' || arg === '-h') { environment.stdout(help); return 0; }
     if (arg === '--json') json = true;
     else if (arg === '--source-detail') sourceDetail = true;
-    else if (arg === '--project') {
+    else if (arg === '--snapshot') {
+      const next = args[++index];
+      if (!next || !/^snapshot:[a-f0-9]{64}$/.test(next)) { environment.stderr('Usage error: --snapshot requires a complete snapshot ID.\n'); return 2; }
+      expectedSnapshot = next;
+    } else if (arg === '--project') {
       const next = args[++index];
       if (!next || next.startsWith('--')) { environment.stderr('Usage error: --project requires a configuration path.\n'); return 2; }
       config = path.resolve(environment.cwd, next);
@@ -54,7 +61,7 @@ export async function runCli(args: readonly string[], environment: {
   }
   const lens = positional[0] ?? 'modules';
   if ((lens !== 'modules' && lens !== 'inspect') || (lens === 'modules' && positional.length > 1)
-    || (lens === 'inspect' && positional.length !== 2) || (sourceDetail && lens !== 'inspect')) {
+    || (lens === 'inspect' && positional.length !== 2) || ((sourceDetail || expectedSnapshot !== null) && lens !== 'inspect')) {
     environment.stderr('Usage error: use modules or inspect <one exact selector>; source detail requires inspect.\n');
     return 2;
   }
@@ -69,7 +76,7 @@ export async function runCli(args: readonly string[], environment: {
   const presentation = { format: json ? 'json' as const : 'unicode' as const, sourceDetail };
   const store = new MemoryProgramRecordStore();
   const evaluation = evaluateModules(store, opened.analysis, presentationRequirements(presentation));
-  const projection = lens === 'inspect' ? inspect(store, evaluation, positional[1]!) : modules(store, evaluation);
+  const projection = lens === 'inspect' ? inspect(store, evaluation, positional[1]!, expectedSnapshot) : modules(store, evaluation);
   const view = createView(store, projection, presentation);
   const rendered = renderView(view);
   environment.stdout(rendered);

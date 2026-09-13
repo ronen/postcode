@@ -1,0 +1,132 @@
+Please revise the Unicode presentation based on the sample at `_observations/validation/2026-09-13/view-after.txt`.
+
+The current output is technically transparent but not sufficiently usable as an initial module-inventory view. It is 3,380 lines and approximately 194 KB. The 156 external/ambient modules overwhelm the 18 project-associated modules, while repeated identifiers, provenance, and normal-case export details obscure the information needed to choose a subject for further investigation.
+
+The goal is progressive disclosure:
+
+- `modules(project)` should be a compact inventory and navigation starting point.
+- `inspect(subjects)` should provide detailed information about selected modules.
+- This is a presentation change, not a narrowing of the module lens or a claim that omitted display content was not analyzed.
+- Qualifications, materialization state, display omissions, and exceptional relationships must remain explicit.
+
+Please apply these presentation principles:
+
+1. Show project modules prominently and collapse external/ambient modules by default.
+
+   The view should disclose the number of external modules omitted from the display. It may show a short preview of their names, but it should not render the complete external declaration catalogue in the default inventory.
+
+2. Give each project module a compact recognition-oriented entry.
+
+   Show its name or honest anonymity, mnemonic handle, salient facets, and a short export cue. A small export list followed by the total omitted count is preferable to a detailed export tree.
+
+3. Do not display symbol documentation throughout the default inventory.
+
+   Documentation may inform a short module-level recognition cue where useful, but detailed symbol documentation belongs in `inspect(subjects)`.
+
+4. Improve mnemonic handles.
+
+   Handles should use available conceptual evidence such as salient exports or associated documentation where practical—for example, `module-run-cli`, `module-record-store`, or `module-presentation`. If no useful conceptual evidence exists, use an honestly anonymous short handle.
+
+   Do not include snapshot-derived text in mnemonic handles. Values such as `module-2174f0d1617a-157` are not meaningfully mnemonic.
+
+5. Display snapshot context once per view.
+
+   Do not repeat the full snapshot-qualified Entity ID for every module in the normal Unicode inventory. Full Entity IDs should remain available in JSON, detailed inspection, or other explicit metadata.
+
+   Snapshot and entity identity may remain separate in structured representations, for example:
+
+   ```json
+   {
+     "snapshotId": "snapshot:2174…",
+     "entityId": "module:f576…"
+   }
+   ```
+
+   Old references must still fail honestly when they do not belong to the current snapshot; removing visible repetition must not weaken snapshot scoping.
+
+6. Suppress normal-case export provenance.
+
+   Do not repeat the following when they merely state the ordinary default:
+
+   - `Origin this module`
+   - `routes: direct`
+   - `1 contributing declaration`
+   - the same compiler-derivation statement for every module
+
+   Continue to show provenance when it carries distinguishing information, including aliases, re-exports, forwarding, merged declarations, multiple contributing declarations, or non-local origins.
+
+7. Consolidate shared qualifications.
+
+   Lens-wide derivation, population limitations, generated-output exclusion, and filesystem-snapshot limitations should normally appear once in a clearly labeled qualifications section. Per-module qualifications should remain local only when they differ from the shared result.
+
+8. Make analysis coverage and display coverage unmistakably different.
+
+   Prefer wording such as:
+
+   > 174 modules found · 18 listed · 156 external modules collapsed
+
+   Do not use “shown” for entities or details omitted by the presentation. A fully materialized analysis does not imply that all materialized information is displayed.
+
+9. Keep documentation status visible without repeating a long disclaimer for every assertion.
+
+   A compact local marker such as `doc [recorded assertion]` may be combined with a concise shared explanation that documentation truth, currency, and completeness are not established. The status must remain visible in the view; it must not survive only in hidden metadata.
+
+10. Preserve detailed output for inspection.
+
+    `inspect(subjects)` may show exports, documentation, Entity IDs, Claim context, exceptional route information, and explicitly requested source detail. Apply the same normal-case suppression where it improves readability without hiding meaningful distinctions.
+
+The following is an illustrative layout, not a required byte-for-byte format:
+
+```text
+Modules · configured TypeScript project
+174 found · 18 project · 156 external
+Analysis complete · 3 qualifications
+
+Project modules
+
+◆ module-run-cli
+  exports: runCli
+
+◆ module-evaluate-modules
+  exports: DiscoveryResult, ModuleAnalysis, evaluateModules
+  doc [recorded assertion]: Language-specific objects stay behind this boundary…
+
+◆ module-record-store
+  exports: MemoryProgramRecordStore
+
+◆ module-program-records
+  23 exports: Claim, ClaimContextRecord, EvaluationRecord, … +20
+
+◆ anonymous-07
+  exports: none
+
+External and ambient modules · 156 collapsed
+  assert, assert/strict, async_hooks, … +153
+
+Next: inspect <name-or-handle>
+
+Qualifications
+
+- Module population is established for external-module SourceFiles and visible
+  named ambient modules; other compiler categories are not established.
+- Configured generated-output locations were excluded from repository evidence.
+- Inputs were memoized as first observed; no atomic filesystem snapshot is claimed.
+```
+
+The exact wording, spacing, grouping, and whether this uses presentation parameters or shared rendering components remain implementation choices.
+
+Do not attempt to solve missing project purpose, dependency flow, or architectural relationships through this presentation change. Those require later lenses such as summary and dependencies. The module inventory needs to be a good menu for further investigation, not a complete explanation of the program.
+
+Please verify at least:
+
+- project modules can be scanned without reading the external catalogue;
+- external/ambient omission is explicit and accurately counted;
+- handles contain no snapshot-derived prefix;
+- the normal inventory does not repeat full Entity IDs;
+- ordinary direct/local/single-declaration provenance is suppressed;
+- exceptional export provenance remains visible;
+- empty exports are distinguishable from unmaterialized or display-omitted exports;
+- lens-wide qualifications remain visible;
+- `inspect` still exposes the detailed information needed for follow-up;
+- Unicode output remains deterministic for equivalent inputs; and
+- the revised output is materially smaller and easier to use than `view-after.txt`.

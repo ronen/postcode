@@ -28,10 +28,12 @@ test('Unicode and experimental JSON use the same qualified projection and automa
   const structured = JSON.parse(json.stdout) as QualifiedView;
   const unicodeArtifact = unicode.batches[0]!.records.find(record => record.kind === 'qualified-view')!.value as QualifiedView;
   assert.deepEqual(structured.projection, unicodeArtifact.projection);
-  assert.deepEqual(structured.modules, unicodeArtifact.modules);
+  assert.deepEqual(structured.modules.map(module => module.id), unicodeArtifact.modules.map(module => module.id));
   assert.equal(structured.schema, 'postcode-view/0-experimental');
-  assert.ok(unicode.stdout.includes('Recorded assertion'));
+  assert.ok(unicode.stdout.includes('Symbol documentation is omitted from inventory'));
   assert.ok(unicode.stdout.includes('documentation assertion(s) omitted'));
+  assert.ok(unicode.stdout.includes('wildcard (type-only); origin module-'));
+  assert.ok(unicode.stdout.includes('2 contributing declarations'));
   assert.ok(unicode.stderr.includes('Local observations:'));
   for (const result of [unicode, json]) {
     assert.equal(result.batches.length, 1);
@@ -55,7 +57,7 @@ test('normal views omit source facets and raw evidence; inspection source escape
   assert.equal(inventory.stdout.includes(process.cwd()), false);
   for (const key of ['"path":', '"compilerName":', '"contentDigest":', '"evidence":', '"start":']) assert.equal(inventory.stdout.includes(key), false);
   const selected = view.modules.find(module => module.name === 'documented')!;
-  const inspected = await invoke(['inspect', selected.handle, '--project', config, '--source-detail', '--json']);
+  const inspected = await invoke(['inspect', selected.handle, '--snapshot', view.projection.snapshot, '--project', config, '--source-detail', '--json']);
   const detail = JSON.parse(inspected.stdout) as QualifiedView;
   assert.equal(detail.modules.length, 1);
   assert.ok(detail.sourceDetail);
@@ -99,15 +101,18 @@ test('independent CLI processes reproduce JSON while the local sink writes priva
     const args = [cli, '--project', config, '--json'];
     const output = execFileSync(process.execPath, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
     assert.equal(execFileSync(process.execPath, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }), output);
+    const unicodeArgs = [cli, '--project', config];
+    const unicode = execFileSync(process.execPath, unicodeArgs, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+    assert.equal(execFileSync(process.execPath, unicodeArgs, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }), unicode);
     const sink = path.join(root, '_observations');
     const files = readdirSync(sink);
-    assert.equal(files.length, 2);
+    assert.equal(files.length, 4);
     assert.equal(statSync(sink).mode & 0o777, 0o700);
     for (const file of files) {
       const destination = path.join(sink, file);
       assert.equal(statSync(destination).mode & 0o777, 0o600);
       const batch = JSON.parse(readFileSync(destination, 'utf8')) as ObservationBatch;
-      assert.equal(batch.records.find(record => record.kind === 'rendered-output')!.value, output);
+      assert.ok([output, unicode].includes(batch.records.find(record => record.kind === 'rendered-output')!.value as string));
     }
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
@@ -140,8 +145,8 @@ test('bounded exports and documentation disclose every material omission in both
     assert.equal(view.modules[0]!.exports.length, 6);
     assert.equal(view.modules[0]!.omittedExports, 3);
     assert.equal(view.modules[0]!.exports[0]!.documentation[0]!.omittedTextCharacters, 200);
-    assert.ok(unicode.stdout.includes('3 effective export(s) omitted'));
-    assert.ok(unicode.stdout.includes('200 assertion character(s) omitted'));
+    assert.ok(unicode.stdout.includes('+6 effective export(s) omitted'));
+    assert.ok(unicode.stdout.includes('1 documentation assertion(s) omitted'));
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -169,13 +174,13 @@ test('Unicode distinguishes established empty exports from unresolved exports an
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
     writeFileSync(path.join(root, 'entry.ts'), 'export {};');
     const empty = await invoke(['--project', config]);
-    assert.ok(empty.stdout.includes('Effective export set established as empty.'));
-    assert.ok(empty.stdout.includes('display limits may still omit exports or documentation'));
-    assert.ok(empty.stdout.includes('Next: inspect <handle>'));
+    assert.ok(empty.stdout.includes('effective export set established as empty'));
+    assert.ok(empty.stdout.includes('Display limits do not imply missing analysis'));
+    assert.ok(empty.stdout.includes('Next: inspect <name-or-handle>'));
     writeFileSync(path.join(root, 'entry.ts'), 'export * from "./missing.js";');
     const unresolved = await invoke(['--project', config]);
-    assert.ok(unresolved.stdout.includes('an empty effective export set is not established.'));
-    assert.equal(unresolved.stdout.includes('Effective export set established as empty.'), false);
+    assert.ok(unresolved.stdout.includes('Exports: not established; no exports displayed.'));
+    assert.equal(unresolved.stdout.includes('effective export set established as empty'), false);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -193,8 +198,69 @@ test('inventory counts omitted external documentation while exact inspection mak
     assert.ok(external);
     assert.equal(external.exports[0]!.documentation.length, 0);
     assert.equal(external.exports[0]!.omittedDocumentation, 1);
-    const inspected = await invoke(['inspect', external.handle, '--project', config, '--json']);
+    const inspected = await invoke(['inspect', external.handle, '--snapshot', view.projection.snapshot, '--project', config, '--json']);
     const detail = JSON.parse(inspected.stdout) as QualifiedView;
     assert.equal(detail.modules[0]!.exports[0]!.documentation[0]!.text, 'External responsibility.');
+    const unicode = await invoke(['--project', config]);
+    assert.ok(unicode.stdout.includes('2 modules found · 1 listed · 1 external modules collapsed'));
+    assert.equal(unicode.stdout.includes('External responsibility.'), false);
+    assert.equal(unicode.stdout.includes('  Entity '), false);
+    assert.equal(unicode.stdout.includes('Origin this module'), false);
+    assert.equal(unicode.stdout.includes('routes: direct'), false);
+    assert.equal(unicode.stdout.includes('1 contributing declaration'), false);
+    assert.equal(unicode.stdout.split(view.projection.snapshot).length - 1, 1);
+    assert.ok(unicode.stdout.includes('Qualifications'));
+    const inspectedUnicode = await invoke(['inspect', external.handle, '--snapshot', view.projection.snapshot, '--project', config]);
+    assert.ok(inspectedUnicode.stdout.includes('doc [recorded assertion]'));
+    assert.ok(inspectedUnicode.stdout.includes('External responsibility.'));
+    assert.ok(inspectedUnicode.stdout.includes(`Entity ${external.id}`));
+    writeFileSync(path.join(root, 'node_modules/dependency/index.d.ts'), 'export * from "./missing.js";');
+    const incomplete = await invoke(['--project', config]);
+    assert.ok(incomplete.stdout.includes('1 external modules collapsed'));
+    assert.ok(incomplete.stdout.includes('materialization partial'));
+    assert.ok(incomplete.stdout.includes('Collapsed anonymous-'));
+    assert.ok(incomplete.stdout.includes('An export target could not be resolved'));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('conceptual handles require their snapshot and never infer successors after changed inputs', async () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-handle-'));
+  try {
+    const config = path.join(root, 'tsconfig.json');
+    writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
+    const entry = path.join(root, 'entry.ts');
+    writeFileSync(entry, 'export function runCli() {}');
+    const before = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+    const module = before.modules[0]!;
+    assert.equal(module.handle, 'module-run-cli');
+    const unscoped = JSON.parse((await invoke(['inspect', module.handle, '--project', config, '--json'])).stdout) as QualifiedView;
+    assert.equal(unscoped.projection.selection.referenceStatus, 'snapshot-required');
+    assert.equal(unscoped.projection.selection.matches, 0);
+    writeFileSync(entry, 'export function runCli() { return 1; }');
+    const after = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+    assert.equal(after.modules[0]!.handle, module.handle);
+    assert.notEqual(after.projection.snapshot, before.projection.snapshot);
+    const stale = JSON.parse((await invoke(['inspect', module.handle, '--snapshot', before.projection.snapshot, '--project', config, '--json'])).stdout) as QualifiedView;
+    assert.equal(stale.projection.selection.referenceStatus, 'snapshot-mismatch');
+    assert.equal(stale.projection.selection.matches, 0);
+    const staleId = JSON.parse((await invoke(['inspect', module.id, '--project', config, '--json'])).stdout) as QualifiedView;
+    assert.equal(staleId.projection.selection.matches, 0);
+    const current = JSON.parse((await invoke(['inspect', module.handle, '--snapshot', after.projection.snapshot, '--project', config, '--json'])).stdout) as QualifiedView;
+    assert.equal(current.projection.selection.matches, 1);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('compact inventory suppresses ordinary provenance but preserves aliases and merged declarations', async () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-provenance-'));
+  try {
+    const config = path.join(root, 'tsconfig.json');
+    writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
+    writeFileSync(path.join(root, 'entry.ts'), 'export interface Merged {a: string}; export interface Merged {b: string}; export const ordinary = 1; export {ordinary as renamed};');
+    const result = await invoke(['--project', config]);
+    assert.ok(result.stdout.includes('Merged: 2 contributing declarations'));
+    assert.ok(result.stdout.includes('renamed: alias'));
+    assert.equal(result.stdout.includes('ordinary: direct'), false);
+    assert.equal(result.stdout.includes('1 contributing declaration'), false);
+    assert.equal(result.stdout.includes('Origin this module'), false);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
