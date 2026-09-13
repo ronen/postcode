@@ -109,6 +109,48 @@ test('invalid CLI requests and project-open failures produce no view or misleadi
   }
 });
 
+test('malformed root and inherited configurations report each syntax diagnostic once', async () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-config-diagnostics-'));
+  try {
+    const config = path.join(root, 'tsconfig.json');
+    const malformed = '{"compilerOptions":{"noLib":true,"types":[]},"files":[]';
+    for (const inherited of [false, true]) {
+      writeFileSync(config, inherited ? '{"extends":"./base.json","files":[]}' : malformed);
+      if (inherited) writeFileSync(path.join(root, 'base.json'), malformed);
+      const result = await invoke(['--project', config]);
+      assert.equal(result.exit, 2);
+      assert.equal(result.stdout, '');
+      assert.equal(result.batches.length, 0);
+      assert.deepEqual(result.stderr.trim().split('\n'), ['Project open failed:', "  TS1005: '}' expected."]);
+    }
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('configuration diagnostics retain equal messages at different files or positions', async () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-distinct-diagnostics-'));
+  try {
+    const config = path.join(root, 'tsconfig.json');
+    writeFileSync(config, '{"extends":["./first.json","./second.json"],"files":[]}');
+    for (const name of ['first.json', 'second.json']) {
+      writeFileSync(path.join(root, name), '{"compilerOptions":{"noLib":true,"types":[]},"files":[]');
+    }
+    const files = await invoke(['--project', config]);
+    assert.equal(files.exit, 2);
+    assert.equal(files.stdout, '');
+    assert.equal(files.batches.length, 0);
+    assert.deepEqual(files.stderr.trim().split('\n'), ['Project open failed:',
+      "  TS1005: '}' expected.", "  TS1005: '}' expected."]);
+    writeFileSync(config, '{"extends":"./first.json","files":[]}');
+    writeFileSync(path.join(root, 'first.json'), '{"compilerOptions":{"noLib":true "types":[]} "files":[]}');
+    const positions = await invoke(['--project', config]);
+    assert.equal(positions.exit, 2);
+    assert.equal(positions.stdout, '');
+    assert.equal(positions.batches.length, 0);
+    assert.deepEqual(positions.stderr.trim().split('\n'), ['Project open failed:',
+      "  TS1005: ',' expected.", "  TS1005: ',' expected."]);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
 test('modules usage errors identify source-detail and snapshot as inspection-only options', async () => {
   for (const lens of [[], ['modules']]) {
     for (const options of [['--source-detail'], ['--snapshot', `snapshot:${'a'.repeat(64)}`],

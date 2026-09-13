@@ -94,6 +94,11 @@ its actual checkout observation and build directories before opening a project,
 including when the selected configuration is nested elsewhere. Git-ignore rules
 alone are not this evidence boundary.
 
+Configuration opening retains explicit syntax validation because TypeScript 6.0
+omits root syntax errors from its parsed configuration error list. Repeated error
+reports are deduplicated by file, position, length, category, code and message;
+identical text at different source occurrences remains visible.
+
 Discovery collects syntax diagnostics encountered while examining the configured
 Program, conservatively qualifying the whole population and affected modules.
 It does not invoke unrelated semantic checking. There is no claim that an absence

@@ -31,6 +31,7 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
     readFile: name => {
       const text = inputs.system.readFile(name);
       if (text !== undefined) {
+        // TS 6.0 omits root syntax errors from parsed.errors; keep this validation.
         const syntax = ts.parseConfigFileTextToJson(name, text);
         if (syntax.error) diagnostics.push(syntax.error);
       }
@@ -41,12 +42,21 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
   // An empty configured selection is meaningful, including `files: []`.
   const isEmpty = (diagnostic: ts.Diagnostic) => diagnostic.code === 18002 || diagnostic.code === 18003;
   diagnostics.push(...(parsed?.errors.filter(diagnostic => !isEmpty(diagnostic)) ?? []));
-  const failure = (): ProjectOpenResult => ({
-    status: 'project-open-failed',
-    diagnostics: diagnostics.map(diagnostic => ({
-      code: diagnostic.code, message: ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n'),
-    })),
-  });
+  const failure = (): ProjectOpenResult => {
+    const seen = new Set<string>();
+    return {
+      status: 'project-open-failed',
+      diagnostics: diagnostics.flatMap(diagnostic => {
+        const message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n');
+        // Repeated parser reports are one occurrence; equal messages elsewhere remain distinct.
+        const key = JSON.stringify([diagnostic.file ? path.resolve(diagnostic.file.fileName) : null,
+          diagnostic.start, diagnostic.length, diagnostic.category, diagnostic.code, message]);
+        if (seen.has(key)) return [];
+        seen.add(key);
+        return [{ code: diagnostic.code, message }];
+      }),
+    };
+  };
   if (!parsed || diagnostics.length > 0) return failure();
   const host = ts.createCompilerHost(parsed.options, true);
   host.readFile = inputs.system.readFile;

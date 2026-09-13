@@ -5,7 +5,7 @@ import type { RecordId, SnapshotId } from './records.js';
 export const methods = {
   inputs: 'postcode/observed-inputs@0',
   records: 'postcode/program-records@9',
-  discovery: 'postcode/typescript-modules@6',
+  discovery: 'postcode/typescript-modules@7',
   evaluation: 'postcode/evaluate-modules@2',
   projection: 'postcode/projection@5',
   expansions: 'postcode/typescript-expansions@0',
