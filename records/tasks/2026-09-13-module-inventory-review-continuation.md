@@ -232,6 +232,17 @@ The continuation remains active.
 - No disagreement or unforeseen issue arose. The continuation remains active for
   human-arranged Copilot rereview.
 
+### 2026-09-14: concise status and final Claude handoff ready
+
+- `f2e87d2` addresses the human-supplied Copilot comment by replacing duplicated
+  review chronology in STATUS with current work, authoritative links, latest
+  verification and the next gate.
+- The [Claude final verification handoff](../reviews/2026-09-14-module-inventory-continuation-claude-handoff.md)
+  covers the entire continuation from the completed initial task, including
+  interactions among corrections, deliberate dispositions and independent checks.
+- The human arranges Claude review. The task remains active and is not closed;
+  the returned final report must be assessed before considering completion.
+
 ## Verification
 
 - `npm test`: 57/57 passed; `npm run check`: passed on Node 22.13.1 / TypeScript
@@ -356,3 +367,13 @@ The continuation remains active.
   retains seven modules and unique requested expansion kinds.
 - Real-project captures and clean-agent/presentation exercises were not repeated;
   the handoff records the verification scope and remaining performance limits.
+
+### Final-review preparation verification
+
+- STATUS and Claude-handoff local links resolve; whitespace checks pass.
+- Runtime and tests are unchanged from `d81c164`. No executable tests were rerun
+  for this documentation-only correction; the latest result remains 76/76 plus
+  type checks, recorded in the ninth-round handoff.
+- Foundation, approved plans/decisions and the completed predecessor remain
+  unchanged across the continuation. Claude is asked to independently run tests
+  and assess the entire continuation, not only the latest status correction.
