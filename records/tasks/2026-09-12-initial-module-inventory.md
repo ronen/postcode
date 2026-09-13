@@ -407,3 +407,26 @@ Final integrated review and remaining validation are still required.
   The review recommends no additional presentation round, but the user's explicit
   output-approval requirement remains pending. The task stays active; final
   independent integrated-review handoff awaits that approval.
+
+### Presentation approved; final implementation review required — 2026-09-13
+
+- Corrected requested expansion kinds at projection construction. Each kind
+  appears once in the presentation field; per-module evaluation records remain
+  scoped and intact. The new regression covers inventory, single-module inspection
+  and zero matches, including exact serialized JSON and preserved outcome records.
+- All 51 tests and type checking pass. Regenerated representative `view-final.json`
+  contains exactly `["exports", "documentation"]` and retains all 349 evaluation
+  records (one discovery, 174 export and 174 documentation outcomes), with full
+  materialization. Self Unicode/JSON share their snapshot; exact inspection works.
+- The approved p-queue recheck retains seven modules, 15 full evaluation scopes,
+  unique requested kinds and all six entry exports. Eleven exceptional samples
+  are refreshed, preserving source hierarchy and qualified abnormal outcomes.
+  Final artifacts and hashes remain private and ignored. Branch whitespace checks
+  pass; no further substantive issue was exposed.
+- Both conditions in the human's pre-approval are satisfied. Presentation is
+  approved, as recorded in the [approval evidence](../reviews/2026-09-13-presentation-approval.md).
+  No additional presentation review or separate presentation approval is required.
+- Planned implementation and verification are substantially complete. The task
+  remains active at the required final independent integrated-review gate. Prepare
+  the complete-change handoff and await the human-arranged review; do not close
+  before returned findings are resolved or residual concerns explicitly accepted.
