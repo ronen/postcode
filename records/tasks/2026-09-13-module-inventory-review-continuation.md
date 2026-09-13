@@ -29,6 +29,17 @@ The human arranges rereview. Successful tests alone do not close this continuati
 
 ## Follow-ups
 
+### 2026-09-13: second Copilot review
+
+Copilot has completed its review.  Please retrieve the new review materials.   It has labelled its comments with High, Medium, and Medium; you are authorized to act on those.  Unless any unforeseen issue arises from addressing those, go ahead and again commit a review disposition and handoff etc. for the next round of Copilot review.
+
+Context: [review 5191106822](https://github.com/ronen/postcode/pull/1#pullrequestreview-5191106822)
+on `77b95e3` contains three new findings: documentation-association subject
+validation, output-exclusion qualifications when no exclusions were supplied,
+and two generated-command tests writing persistent checkout observations. Its
+suppressed comment repeats the second affected test. The continuation remains
+active for another human-arranged rereview.
+
 ## Outcome
 
 ### 2026-09-13: corrections ready for Copilot rereview
