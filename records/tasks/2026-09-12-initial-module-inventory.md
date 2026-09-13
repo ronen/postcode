@@ -338,3 +338,32 @@ Final integrated review and remaining validation are still required.
   records dispositions and artifact hashes. Human output approval remains pending;
   the positive inventory assessment is not treated as approval of the presentation
   set. The task stays active and final integrated review remains on hold.
+
+### Sixth output sample verification — 2026-09-13
+
+- Addressed the fifth review by nesting source and documentation beneath module
+  exports, separating forwarding from defining source, and moving the explicit
+  source expansion before qualifications and navigation. Both inspection sections
+  use `Entity ID:` and an `Exports:` container; the repeated `More` line is removed.
+- Narrow compiler spans now include enclosing declaration syntax where needed.
+  The direct `value` excerpt shows its export statement. The `chain` source sample
+  preserves forwarding, `Dual as Renamed`, its defining symbol and original-symbol
+  versus alias documentation. Source remains captured, bounded and explicitly
+  disclosed; no rendering-time reads or full-file source mode was added.
+- Consolidated documentation status into one view qualification, suppressed
+  ordinary homogeneous provenance, and applied an eight-line Unicode content
+  budget per assertion with exact additional character/tag omission counts.
+  Stored assertions and fuller bounded JSON excerpts remain distinct.
+- All 50 tests and type checking pass, including new hierarchy/order, supporting
+  syntax, mixed provenance, supplementary-Unicode omission and height regressions.
+  Existing source bounds, selection scoping, deterministic process, observation
+  and abnormal-state checks pass. Full branch whitespace checks pass.
+- Refreshed self-analysis retains 174 modules and 349 fully materialized scopes.
+  Inventory is 46 lines / 2,209 bytes; ordinary inspection is 35 lines / 1,434 bytes.
+  Separate direct and alias source samples accompany eleven exceptional cases.
+  The approved pinned p-queue recheck retains seven modules, 15 fully materialized
+  scopes and all six entry exports. Artifacts and manifests remain private/ignored.
+- The [sixth response](../reviews/2026-09-13-unicode-sixth-response.md) records
+  dispositions, retained artifacts and hashes. Earlier samples remain intact.
+  Explicit human output approval is still pending; the task remains active and
+  final integrated independent review remains on hold. No completion is inferred.
