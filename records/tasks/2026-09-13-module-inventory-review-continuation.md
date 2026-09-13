@@ -130,6 +130,10 @@ suppressed repeated-realpath exclusion check. All four are accepted in scope.
 
 Copilot's only comment is:  "`STATUS.md` now duplicates the full nine-round review chronology already preserved in the linked handoffs. This conflicts with the repository rule that status stay concise and link to authoritative task/review records instead of repeating them (`dev/workflow.md:119`); collapse this section to the active continuation, latest correction/verification, and next gate."  that's worth correcting.  after that prepare a handoff for review of this entire continuation task (by Claude) for a final verification.  don't close the task yet.
 
+### 2026-09-14: final review disposition and authorized closure
+
+Claude review has finished, results are in records/reviews/2026-09-14-module-inventory-continuation-claude-findings.md (uncommitted).   Finish recording that as usual, commit it, and you're good to close the task and push it.  When that's complete prepare a final comment for me to use when I do the merge.
+
 ## Outcome
 
 ### 2026-09-13: corrections ready for Copilot rereview
