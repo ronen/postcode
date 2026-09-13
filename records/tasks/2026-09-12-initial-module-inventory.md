@@ -1,8 +1,8 @@
 # Implement the initial module inventory slice
 
-Status: active
+Status: completed
 Opened: 2026-09-12
-Closed:
+Closed: 2026-09-13
 
 ## Task
 
@@ -166,6 +166,32 @@ dispositions, evidence and the new inventory/inspection samples. Operational CLI
 and configuration paths in the requested next command are distinct from discovered
 source evidence. Unicode remains unapproved, and final integrated-review handoff
 is still on hold for explicit human approval. The task remains active.
+
+### Completed initial slice — 2026-09-13
+
+Implemented the complete authorized local TypeScript module-inventory slice on
+`codex/initial-module-inventory`: deterministic qualified inventory and exact
+inspection, effective exports and recorded documentation assertions, Unicode and
+experimental JSON presentations, explicit bounded source detail, and private local
+observation batches excluded from analysis evidence. The ephemeral record/store,
+compiler, evaluation, projection, presentation and observation boundaries remain
+distinct. User-facing usage, architecture, conventions and status are documented.
+
+The human's presentation approval conditions were met. The final independent
+review of `fee7635` reported no blocking findings and reproduced the stated checks.
+Its [original findings](../reviews/2026-09-13-module-inventory-final-findings.md)
+are retained unchanged. The [disposition](../reviews/2026-09-13-module-inventory-final-disposition.md)
+establishes that diagnostic scoping was already correct and records the reproduced
+name/compact-ID collision corrected in `88f6d6d`. Exact current name lookup and
+precise snapshot-scoped ID selection both work, with a regression test. Both notes
+are resolved; no residual review concern or required approval remains.
+
+The implementation and verification satisfy the approved task, including its
+recorded presentation refinements, without expanding into deferred product work.
+No material scope deviation or required work is deferred. No foundation, accepted
+decision or plan lifecycle was revised; no third-party contents or real-project
+observations were committed. Broader product development requires new task
+authorization. The complete task remains on its dedicated feature branch.
 
 ## Verification
 
@@ -430,3 +456,40 @@ Final integrated review and remaining validation are still required.
   remains active at the required final independent integrated-review gate. Prepare
   the complete-change handoff and await the human-arranged review; do not close
   before returned findings are resolved or residual concerns explicitly accepted.
+
+### Final independent review resolved and task closed — 2026-09-13
+
+- Claude's human-arranged independent review covers the complete branch at
+  `fee7635`, with 51 tests, type checking, full-branch whitespace checks, fixture
+  and self-analysis exercises, and three retained artifact hashes reproduced.
+  The final handoff, original findings and separate dispositions are committed.
+- After the local selector correction, all **52 tests** and `npm run check` pass.
+  The new real-compiler regression failed before the fix and passes afterward;
+  it covers an established name equal to another module's compact ID, subject
+  context, precise scoped selection, missing scope and stale scope rejection.
+  The correction is implementing-agent verified; no independent rereview of that
+  subsequent commit is claimed.
+- Refreshed self-analysis retains 174 modules and all 349 fully materialized
+  evaluation scopes, with exactly `["exports", "documentation"]` requested.
+  Refreshed pinned p-queue analysis retains seven modules, 15 full scopes and all
+  six entry exports. Eleven exceptional cases were refreshed, including clearly
+  labeled synthetic unavailable/failed/stopped provider outcomes.
+- Self inventory/inspection, direct and alias source views, the combined
+  exceptional samples, and p-queue inventory match approved Unicode output after
+  replacing only full and abbreviated snapshot identities. No new presentation
+  approval is required. Earlier approved evidence remains intact; fresh private
+  evidence, capture drivers, logs and hashes are identified in the disposition
+  under `_observations/validation/2026-09-13/post-review/`.
+- Verified all 14 retained artifact hashes, updated documentation links, and the
+  complete branch diff for whitespace and unintended/private/generated content.
+  Implementation, review and documentation commits precede this closing record;
+  the worktree was clean before updating the record for closure.
+- Evidence limits remain explicit: clean agents evaluated their original view,
+  not the final presentation; external validation covers one approved pinned
+  repository; uncommon execution states use synthetic providers; captured compiler
+  inputs are first-observed rather than an atomic filesystem snapshot. This final
+  correction did not repeat external acquisition, target runtime/build/test work,
+  or clean-agent evaluation. These limits do not leave required task work undone.
+- Presentation acceptance and both required independent reviews are complete,
+  with all findings resolved. No outstanding task gate, material deviation or
+  proposed residual concern remains. The task is completed under protocol section 4.
