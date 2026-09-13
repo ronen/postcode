@@ -1,0 +1,129 @@
+# Review of Unicode presentation, round 6
+
+Reviewed:
+
+- `_observations/validation/2026-09-13/view-review-6.txt`
+- `_observations/validation/2026-09-13/inspect-review-6.txt`
+- `_observations/validation/2026-09-13/source-review-6.txt`
+- `_observations/validation/2026-09-13/source-chain-review-6.txt`
+- `_observations/validation/2026-09-13/exceptions-review-6.txt`
+- `docs/cli-reference.md`
+
+## Overall assessment
+
+The presentation now meets the substantive review requirements. The ordinary
+inventory and inspection are usable, source detail preserves the conceptual
+hierarchy while remaining visibly separate, and exceptional states remain
+qualified rather than being mistaken for empty or successful results.
+
+The round-five acceptance items are all addressed:
+
+- source and documentation are grouped beneath each module export;
+- source detail precedes qualifications and navigation;
+- variable evidence expands to a declaration that visibly supports the export
+  claim;
+- the source hierarchy is validated on wildcard forwarding and aliasing;
+- inspection has an explicit `Exports:` container;
+- documentation status is stated once per view;
+- ordinary documentation provenance is suppressed and differing provenance is
+  expressed in plain language;
+- the repeated `More: --help` line is gone;
+- Entity ID labels have colons; and
+- Unicode documentation is bounded to eight wrapped lines.
+
+I see no remaining architectural or behavioral presentation blocker. The
+following small corrections would improve the final result.
+
+## 1. Replace `origin origin` with a labelled relationship
+
+The re-export inspection repeatedly says:
+
+    wildcard; origin origin (module-147fbfad)
+
+The first `origin` is a relationship label and the second is the module handle,
+but the result reads like accidental duplication. Use punctuation or a more
+natural phrase, for example:
+
+    wildcard; origin: origin (module-147fbfad)
+
+or:
+
+    wildcard; defined in origin (module-147fbfad)
+
+The latter is easier to read, provided `defined in` accurately describes every
+case represented by that field. The source-detail wording `Defining source ·
+Dual in origin (...)` already demonstrates a clearer formulation.
+
+## 2. Correct the documentation bound in the command reference
+
+The reference says:
+
+    Inspection shows up to 50 exports and three documentation assertions per subject.
+
+A subject is a selected module, but the examples display more than three
+documentation assertions for one module. If the implemented bound is per export,
+say:
+
+    Inspection shows up to 50 exports and three documentation assertions per
+    displayed export.
+
+If the bound has another scope, name that scope precisely. This is a documentation
+accuracy issue rather than a rendering issue.
+
+## 3. Improve the view-level documentation sentence
+
+The current sentence:
+
+    Documentation is recorded assertion; truth, currency, and completeness are not established.
+
+is semantically right but grammatically awkward. Prefer:
+
+    Documentation entries are recorded assertions; truth, currency, and
+    completeness are not established.
+
+or:
+
+    Documentation consists of recorded assertions; truth, currency, and
+    completeness are not established.
+
+The first is slightly plainer. Keep this as one view-level qualification rather
+than restoring labels on every assertion.
+
+## 4. Simplify module source-file wording
+
+The source section currently combines:
+
+    File associations have no excerpt.
+
+with:
+
+    Source file: /.../origin.ts (file association)
+
+`Source file` already tells the reader what the association is, so the
+parenthetical is redundant. A more direct explanation would be:
+
+    Module source files are listed without full-file excerpts.
+
+followed by:
+
+    Source file: /.../origin.ts
+
+This is optional polish; the current form is truthful.
+
+## 5. Tidy wrapping in the Markdown reference
+
+Two paragraphs in `docs/cli-reference.md` contain accidental long physical
+lines around:
+
+- `Inspection discloses assertion...`; and
+- `human-readable provenance labels distinguish them...`.
+
+Reflow those paragraphs to the document's existing line width. This has no effect
+on behavior but will keep the maintained source readable.
+
+## Recommendation
+
+Make items 1–3 before declaring the presentation finished because they correct
+visible ambiguity or inaccurate documentation. Items 4–5 are non-blocking polish.
+No further redesign or additional review round appears necessary unless those
+edits reveal a regression.

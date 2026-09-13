@@ -72,8 +72,10 @@ JSON retains the full selected module list, compact IDs and internal record keys
 up to six exports
 and one documentation assertion per project-associated module/export. Its
 inventory assertion excerpts are limited to 400 characters and five tags.
-Inspection shows up to 50 exports and three assertions, with
-up to 2,000 characters and 20 tags in JSON. Unicode limits each assertion to
+Inspection shows up to 50 exports per selected module, up to three module-level
+assertions, and up to three assertions per displayed export (combining original
+symbol and alias contributions). Each assertion has up to 2,000 characters and
+20 tags in JSON. Unicode limits each assertion to
 eight wrapped content lines shared by prose and tags, with extra omissions counted.
 Tag text is limited to 300 characters. Every omitted
 export, assertion, tag or character is counted for displayed subjects; collapsed

@@ -31,7 +31,7 @@ test('Unicode and experimental JSON use the same qualified projection and automa
   assert.deepEqual(structured.projection, unicodeArtifact.projection);
   assert.deepEqual(structured.modules.map(module => module.id), unicodeArtifact.modules.map(module => module.id));
   assert.equal(structured.schema, 'postcode-view/0-experimental');
-  assert.equal(unicode.stdout.includes('Documentation is recorded assertion'), false);
+  assert.equal(unicode.stdout.includes('Documentation entries are recorded assertions'), false);
   assert.ok(unicode.stdout.includes('documentation for'));
   assert.equal(unicode.stdout.includes('[type]'), false);
   assert.ok(unicode.stdout.includes('Export names'));
@@ -213,7 +213,7 @@ test('inventory counts omitted external documentation while exact inspection mak
     assert.equal(unicode.stdout.split(view.projection.snapshot).length - 1, 1);
     assert.ok(unicode.stdout.includes('Coverage: external-module SourceFiles'));
     const inspectedUnicode = await invoke(['inspect', external.handle, '--snapshot', view.projection.snapshot, '--project', config]);
-    assert.ok(inspectedUnicode.stdout.includes('Documentation is recorded assertion'));
+    assert.ok(inspectedUnicode.stdout.includes('Documentation entries are recorded assertions'));
     assert.ok(inspectedUnicode.stdout.includes('External responsibility.'));
     assert.ok(inspectedUnicode.stdout.includes(`Entity ID: ${external.entityId}`));
     writeFileSync(path.join(root, 'node_modules/dependency/index.d.ts'), 'export * from "./missing.js";');
@@ -301,7 +301,7 @@ test('compact inventory consolidates common labels and counts documentation beyo
     assert.equal(result.stdout.split('TypeScript names not established').length - 1, 1);
     assert.equal(result.stdout.includes('(anonymous module)'), false);
     assert.equal(result.stdout.split('implementation-available').length - 1, 0);
-    assert.equal(result.stdout.includes('Documentation is recorded assertion'), false);
+    assert.equal(result.stdout.includes('Documentation entries are recorded assertions'), false);
     assert.equal(result.stdout.includes('not calls or dependencies'), false);
     assert.equal(result.stdout.includes('Not a displayed cue.'), false);
     assert.ok(result.stdout.includes('other compiler module categories are not established'));
@@ -383,7 +383,7 @@ test('exceptional inspections retain forwarding provenance, qualified failures, 
   const selected = view.modules.find(module => module.handle === 'chain')!;
   const reexport = await invoke(['inspect', selected.entityId, '--snapshot', view.projection.snapshot, '--project', config]);
   assert.ok(reexport.stdout.includes('wildcard'));
-  assert.match(reexport.stdout, /origin origin \(module-[a-f0-9]+\)/);
+  assert.match(reexport.stdout, /origin: origin \(module-[a-f0-9]+\)/);
   assert.ok(reexport.stdout.includes('not calls or dependencies'));
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-inspection-'));
   try {
@@ -394,7 +394,7 @@ test('exceptional inspections retain forwarding provenance, qualified failures, 
     const detail = await invoke(['inspect', inventory.modules[0]!.entityId, '--snapshot', inventory.projection.snapshot, '--project', project, '--source-detail']);
     assert.ok(detail.stdout.includes('materialization partial'));
     assert.ok(detail.stdout.includes('assertion character(s) omitted'));
-    assert.ok(detail.stdout.includes('Documentation is recorded assertion'));
+    assert.ok(detail.stdout.includes('Documentation entries are recorded assertions'));
     assert.ok(detail.stdout.includes('truth, currency, and completeness are not established'));
     assert.ok(detail.stdout.includes('SOURCE DETAIL — explicit source escape'));
     assert.equal(detail.stdout.includes('Module membership and effective exports established'), false);
@@ -431,7 +431,8 @@ test('source expansion groups deduplicated evidence by displayed concepts with p
   const text = renderUnicode(view);
   assert.ok(text.includes('origin.ts:4:1–4:43'));
   assert.ok(text.includes('export interface Merged { first: string; }'));
-  assert.ok(text.includes('file association'));
+  assert.ok(text.includes('Source file:'));
+  assert.ok(text.replace(/\s+/g, ' ').includes('Module source files are listed without full-file excerpts.'));
   assert.equal(text.includes('Claim snapshot:'), false);
   assert.equal(text.includes('offset '), false);
   assert.equal(view.sourceDetail!.level, 'declaration-locations-and-excerpts');
@@ -478,7 +479,7 @@ test('source hierarchy preserves forwarding, defining syntax and mixed documenta
     assert.ok(text.indexOf('SOURCE DETAIL') < text.indexOf('\nStatus\n'));
     assert.ok(text.indexOf('\nStatus\n') < text.indexOf('\nNext'));
     assert.equal(text.includes('More:'), false);
-    assert.equal(text.match(/Documentation is recorded assertion/g)?.length, 1);
+    assert.equal(text.match(/Documentation entries are recorded assertions/g)?.length, 1);
     assert.ok(text.includes(`Entity ID: ${module.entityId}\n\n  Exports:`));
     assert.equal(source.match(new RegExp(`Entity ID: ${module.entityId}`, 'g'))?.length, 1);
     assert.ok(source.includes('  ├─ value [value]\n'));

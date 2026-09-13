@@ -43,7 +43,9 @@ of project purpose, architecture, runtime behavior, or dependencies.
 
 `inspect(subjects)` selects exact module subjects from that population. One
 referent can select zero, one, or several matches; a selected subset is explicit.
-Inspection shows up to 50 exports and three documentation assertions per subject.
+Inspection shows up to 50 exports per selected module, up to three module-level
+documentation assertions, and up to three assertions per displayed export. The
+per-export limit combines original-symbol and export-alias contributions.
 JSON inventory retains the full module list, full identities, up to six exports,
 and bounded project documentation. Neither format changes the lens population.
 
@@ -96,8 +98,9 @@ type/value roles and exceptional export provenance remain available in inspectio
 their details, unlisted exports, and omitted documentation. Aggregate export and
 documentation-module counts refer to listed modules, excluding the separately
 collapsed group. A module can contribute to the documentation omission count even
-when its documented export is outside the small export cue. Inspection discloses assertion, character and tag omissions locally, without
-repeating an aggregate item that could imply all module documentation was absent.
+when its documented export is outside the small export cue. Inspection discloses
+assertion, character and tag omissions locally, without repeating an aggregate
+item that could imply all module documentation was absent.
 Unicode wraps documentation to 88-character lines including its indentation; the
 stored assertion remains unchanged. Each Unicode assertion has at most eight
 wrapped content lines shared by prose and tags, excluding labels and omission
@@ -120,9 +123,10 @@ affected results. Inputs are memoized as first observed, not captured atomically
 Compiler-associated documentation is a **recorded assertion**. One view-level
 qualification states that truth, currency and completeness are not established.
 Ordinary local labels say `Documentation`; when original-symbol and alias
-contributions differ, human-readable provenance labels distinguish them. An export relationship describes aliases, origins or forwarding,
-not calls or dependencies. Ordinary local provenance may be suppressed; meaningful
-exceptions remain visible in inspection.
+contributions differ, human-readable provenance labels distinguish them. An export
+relationship describes aliases, origins or forwarding, not calls or dependencies.
+Ordinary local provenance may be suppressed; meaningful exceptions remain visible
+in inspection.
 
 ## Source detail and observations
 
@@ -130,9 +134,9 @@ exceptions remain visible in inspection.
 locations and bounded excerpts supporting selected, displayed claims, grouped by
 module and then export, with defining/forwarding source and documentation beneath
 each item. This section precedes qualifications, run limitations and navigation.
-Ranges use one-based lines and UTF-16
-columns, with exclusive ends. Excerpts retain at most four source lines and 300
-Unicode characters per evidence span; omitted characters are counted. Wrapped
+Ranges use one-based lines and UTF-16 columns, with exclusive ends. Excerpts
+retain at most four source lines and 300 Unicode characters per evidence span;
+omitted characters are counted. Wrapped
 source lines use `↪` in Unicode. File-level module associations are labeled and
 have no excerpt. Full claim record keys remain in JSON.
 

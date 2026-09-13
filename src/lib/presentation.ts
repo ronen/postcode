@@ -178,7 +178,7 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
       collapsedQualifications: collapsed.map(module => ({ handle: module.handle, contexts: contexts.filter(context => context.scope === module.id) })) },
     ...(presentation.sourceDetail ? { sourceDetail: {
       level: 'declaration-locations-and-excerpts' as const,
-      notice: 'Source locations and bounded excerpts supporting displayed claims only. File associations have no excerpt. Range ends are exclusive; ↪ marks a wrapped source line.',
+      notice: 'Source locations and bounded excerpts supporting displayed claims only. Module source files are listed without full-file excerpts. Range ends are exclusive; ↪ marks a wrapped source line.',
       items: [...sourceGroups.values()].map(group => {
         const { claims } = group;
         const evidence = new Map<string, SourceEvidenceRecord>();
@@ -292,7 +292,7 @@ export function renderUnicode(view: QualifiedView): string {
       .map(route => `${route.kind}${route.typeOnly ? ' (type-only)' : ''}`))];
     if (details.length || exported.origin !== moduleId) relationshipsDisplayed = true;
     if (!exported.routes.length) details.push('route unavailable');
-    if (exported.origin !== moduleId) details.push(exported.origin ? `origin ${`${exported.originHandle ?? 'anonymous'} (${exported.originEntityId ?? 'identity unavailable'})`}` : 'origin not established');
+    if (exported.origin !== moduleId) details.push(exported.origin ? `origin: ${exported.originHandle ?? 'anonymous'} (${exported.originEntityId ?? 'identity unavailable'})` : 'origin not established');
     if (exported.symbolInformation && exported.symbolInformation.declarationCount !== 1) details.push(`${exported.symbolInformation.declarationCount} contributing declarations`);
     return details;
   };
@@ -346,7 +346,7 @@ export function renderUnicode(view: QualifiedView): string {
     const showEvidence = (evidence: readonly SourceEvidenceRecord[], indent: string) => {
       for (const record of evidence) {
         const location = record.location;
-        if (location.association === 'file') lines.push(`${indent}Source file: ${record.path} (file association)`);
+        if (location.association === 'file') lines.push(`${indent}Source file: ${record.path}`);
         else {
           lines.push(`${indent}${record.path}:${location.from.line}:${location.from.column}–${location.to.line}:${location.to.column}`);
           lines.push(...wrapText(location.excerpt.text, `${indent}  `, 88, `${indent}  ↪ `));
@@ -386,7 +386,7 @@ export function renderUnicode(view: QualifiedView): string {
       }
     }
   }
-  if (documentationDisplayed) lines.push('', 'Documentation is recorded assertion; truth, currency, and completeness are not established.');
+  if (documentationDisplayed) lines.push('', 'Documentation entries are recorded assertions; truth, currency, and completeness are not established.');
   if (relationshipsDisplayed) lines.push('', 'Export relationships describe aliases and forwarding, not calls or dependencies.');
   const omissions: string[] = [];
   if (view.display.collapsedModules) omissions.push(`${view.display.collapsedModules} external module${view.display.collapsedModules === 1 ? '' : 's'} and their details`);
