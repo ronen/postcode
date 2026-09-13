@@ -107,7 +107,8 @@ Keep internal record keys, compact Entity IDs, names and handles distinct. The s
 Unicode snapshot label is for recognition; commands and JSON retain the full scope.
 
 Suggested commands include explicit CLI/project invocation paths and shell-quote
-their arguments. Keep those operational paths separate from discovered source
+their arguments. Put options before `--` and the literal selector after it. Keep
+those operational paths separate from discovered source
 evidence and from domain identity. Run qualification counts report distinct
 enforced output-location boundaries, not a census of generated files.
 
@@ -135,6 +136,9 @@ The caller must explicitly supply the actual observation directory to project
 opening's output-exclusion boundary before any analysis, even when analyzing a
 parent repository or a configuration outside the PostCode checkout. The same
 requirement applies to retained views, reports, and other generated outputs.
+Do not infer excluded output from target directory names: configured sources under
+`_build` or `_observations` remain inputs unless the caller identifies those paths
+as actual output destinations.
 The destination choice does not impose retention, migration, historical-reading,
 or producer-side cache policy. Delivery failure must be visible while preserving
 a successfully produced view. The CLI and sink have automated delivery, privacy-mode, exact-output and nested-configuration

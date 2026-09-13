@@ -54,6 +54,8 @@ experimental `postcode-view/0` JSON presentation use the same qualified projecti
 The suggested inspection command includes the explicit CLI and selected-project
 paths as invocation context; replace only its subject. A short snapshot label is
 displayed in the header, while that command retains the full required snapshot.
+Place additional options before the generated command's `--` marker; text after
+it is the literal selector, including names such as `--json` or `-h`.
 `--source-detail` is available only for inspection and shows supporting source
 locations and bounded excerpts grouped by displayed concepts, separately identified
 as source escape. File-level associations have no excerpt; it does not show full files.

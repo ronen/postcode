@@ -156,6 +156,7 @@ export interface EvaluationRecord extends RecordContext, EvaluationState {
   readonly requirement: 'modules' | ModuleExpansion;
   readonly basis?: RecordId;
   readonly claims?: readonly RecordId[];
+  /** One-based discovery attempt within this snapshot; its expansion outcomes share the ordinal. */
   readonly attempt: number;
   readonly modules: readonly RecordId[];
   readonly contexts: readonly RecordId[];

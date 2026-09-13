@@ -24,10 +24,7 @@ export interface ProjectOptions {
 export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResult {
   const configPath = path.resolve(options.configPath);
   const base = path.dirname(configPath);
-  const inputs = captureInputs([
-    path.join(base, '_observations'), path.join(base, '_build'),
-    ...(options.excludedOutputDirectories ?? []),
-  ]);
+  const inputs = captureInputs(options.excludedOutputDirectories ?? []);
   const diagnostics: ts.Diagnostic[] = [];
   const parsed = ts.getParsedCommandLineOfConfigFile(configPath, { noEmit: true }, {
     ...inputs.system,

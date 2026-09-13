@@ -13,6 +13,7 @@ Usage: postcode [modules | inspect <exact-selector>] [--project <tsconfig.json>]
 
 Defaults: modules(project), ./tsconfig.json, Unicode text.
 inspect accepts one exact name, mnemonic handle, or Entity ID; zero/one/multiple matches are explicit.
+Place options before -- to pass an option-like selector literally: inspect --json -- --help.
 Handle and compact Entity ID selection require --snapshot from the inventory. A stale snapshot produces no current match.
 --source-detail requires inspect and discloses source locations and bounded excerpts supporting displayed claims.
 JSON uses the experimental postcode-view/0 schema. Exports/documentation expansions are declared before evaluation.
@@ -59,6 +60,7 @@ export async function runCli(args: readonly string[], environment: {
   const positional: string[] = [];
   for (let index = 0; index < args.length; index++) {
     const arg = args[index]!;
+    if (arg === '--') { positional.push(...args.slice(index + 1)); break; }
     if (arg === '--help' || arg === '-h') { environment.stdout(help); return 0; }
     if (arg === '--json') json = true;
     else if (arg === '--source-detail') sourceDetail = true;
@@ -92,8 +94,8 @@ export async function runCli(args: readonly string[], environment: {
   const evaluation = evaluateModules(store, opened.analysis, presentationRequirements(presentation));
   const projection = lens === 'inspect' ? inspect(store, evaluation, positional[1]!, expectedSnapshot) : modules(store, evaluation);
   const command = [
-    ['node', path.join(environment.checkout, '_build/src/cli.js'), 'inspect', 'MODULE_HANDLE'],
-    ['--snapshot', projection.snapshot], ['--project', config],
+    ['node', path.join(environment.checkout, '_build/src/cli.js'), 'inspect'],
+    ['--snapshot', projection.snapshot], ['--project', config, '--', 'MODULE_HANDLE'],
   ].map(tokens => tokens.map(shellQuote).join(' ')).join(' \\\n  ');
   const view = createView(store, projection, { ...presentation, navigation: { inspect: command } });
   const rendered = renderView(view);

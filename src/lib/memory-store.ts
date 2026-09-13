@@ -54,7 +54,14 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
       };
       switch (record.kind) {
         case 'module':
-        case 'symbol': requireKind(record.claim, 'claim'); break;
+        case 'symbol': {
+          requireKind(record.claim, 'claim');
+          const claim = pending.get(record.claim) ?? this.#records.get(record.claim);
+          if (claim?.kind !== 'claim' || claim.information.type !== record.kind || claim.subject !== record.id) {
+            throw new Error(`Invalid ${record.kind} entity claim`);
+          }
+          break;
+        }
         case 'recorded-assertion': requireKind(record.context, 'claim-context'); break;
         case 'claim':
           if (record.information.type === 'module' || record.information.type === 'export') requireKind(record.subject, 'module');

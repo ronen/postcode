@@ -20,7 +20,8 @@ export interface ModuleAnalysis {
 
 export function evaluateModules(store: ProgramRecordStore, analysis: ModuleAnalysis, expansions: readonly ModuleExpansion[] = []): EvaluationRecord {
   const { expansions: expanded = [], ...result } = analysis.discover(store, expansions);
-  const attempt = store.evaluations(result.snapshot).length + 1;
+  const attempt = store.evaluations(result.snapshot)
+    .filter(outcome => outcome.requirement === 'modules' && outcome.basis === undefined).length + 1;
   const method = methods.evaluation;
   const outcome: EvaluationRecord = {
     ...result, kind: 'evaluation', method, requirement: 'modules', attempt,

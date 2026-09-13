@@ -93,6 +93,66 @@ test('invalid CLI requests and project-open failures produce no view or misleadi
   }
 });
 
+test('end-of-options preserves option-like exact names while keeping one-selector validation', async () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-option-names-'));
+  try {
+    const config = path.join(root, 'tsconfig.json');
+    writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["ambient.d.ts"]}');
+    const names = ['--json', '-h', '--help', '--project', '--source-detail', '--'];
+    writeFileSync(path.join(root, 'ambient.d.ts'), names.map(name => `declare module "${name}" { export const value: number; }`).join('\n'));
+    for (const name of names) {
+      const result = await invoke(['inspect', '--project', config, '--json', '--', name]);
+      assert.equal(result.exit, 0, result.stderr);
+      const view = JSON.parse(result.stdout) as QualifiedView;
+      assert.deepEqual(view.modules.map(module => module.name), [name]);
+      assert.equal(result.batches.length, 1);
+      assert.equal(view.sourceDetail, undefined);
+      if (name === '--json') {
+        const command = view.presentation.navigation!.inspect.replace('MODULE_HANDLE', name);
+        const output = execFileSync('/bin/sh', ['-c', command], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+        assert.ok(output.includes('exact match for --json'));
+        assert.ok(output.includes('1 module selected from 6'));
+      }
+    }
+    const invalid = await invoke(['inspect', '--project', config, '--', '--json', '-h']);
+    assert.equal(invalid.exit, 2);
+    assert.equal(invalid.batches.length, 0);
+    const missing = await invoke(['inspect', '--project', config, '--']);
+    assert.equal(missing.exit, 2);
+    const help = await invoke(['inspect', '--help']);
+    assert.equal(help.exit, 0);
+    assert.ok(help.stdout.startsWith('PostCode —'));
+    assert.equal(help.batches.length, 0);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('target directories named like PostCode output retain configured sources and input identity', async () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-legitimate-inputs-'));
+  try {
+    for (const directory of ['_build', '_observations']) mkdirSync(path.join(root, directory));
+    const config = path.join(root, 'tsconfig.json');
+    writeFileSync(path.join(root, 'regular.ts'), 'export const regular = 1;');
+    for (const selection of [{ files: ['regular.ts', '_build/legitimate.ts', '_observations/legitimate.ts'] }, { include: ['**/*.ts'] }]) {
+      writeFileSync(path.join(root, '_build/legitimate.ts'), 'export const buildSource = 1;');
+      writeFileSync(path.join(root, '_observations/legitimate.ts'), 'export const observationSource = 1;');
+      writeFileSync(config, JSON.stringify({ compilerOptions: { noLib: true, types: [] }, ...selection }));
+      const before = await invoke(['modules', '--project', config, '--json']);
+      assert.equal(before.exit, 0, before.stderr);
+      const view = JSON.parse(before.stdout) as QualifiedView;
+      assert.equal(view.modules.length, 3);
+      assert.ok(view.evaluations.every(outcome => outcome.materialization === 'full'));
+      const snapshots = [view.projection.snapshot];
+      for (const directory of ['_build', '_observations']) {
+        const filename = path.join(root, directory, 'legitimate.ts');
+        writeFileSync(filename, readFileSync(filename, 'utf8') + '\nexport const extra = 2;');
+        const changed = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+        snapshots.push(changed.projection.snapshot);
+      }
+      assert.equal(new Set(snapshots).size, 3);
+    }
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
 test('independent CLI processes reproduce JSON while the local sink writes private self-contained batches', () => {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-cli-'));
   try {
@@ -306,8 +366,8 @@ test('compact inventory consolidates common labels and counts documentation beyo
     assert.equal(result.stdout.includes('Not a displayed cue.'), false);
     assert.ok(result.stdout.includes('other compiler module categories are not established'));
     assert.ok(result.stdout.includes('not captured as an atomic filesystem snapshot'));
-    assert.equal(view.analysis?.excludedOutputLocations, 4);
-    assert.ok(result.stdout.includes("4 generated-output locations excluded by this run's input filter"));
+    assert.equal(view.analysis?.excludedOutputLocations, 2);
+    assert.ok(result.stdout.includes("2 generated-output locations excluded by this run's input filter"));
     assert.ok(result.stdout.includes(`Snapshot ${view.projection.snapshot.slice(9, 21)}\n`));
     assert.equal(result.stdout.includes('Snapshot snapshot:'), false);
   } finally { rmSync(root, { recursive: true, force: true }); }

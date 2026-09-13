@@ -5,7 +5,7 @@ import { evaluateModules } from '../src/lib/evaluation.js';
 import { methods, recordId, snapshotId } from '../src/lib/identity.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { inspect, modules } from '../src/lib/projections.js';
-import type { ClaimContextRecord, EvaluationState, ModuleClaim, ModuleRecord, SnapshotRecord } from '../src/lib/records.js';
+import type { ClaimContextRecord, EvaluationState, ModuleClaim, ModuleRecord, ProgramRecord, SnapshotRecord, SymbolClaim } from '../src/lib/records.js';
 import { discover } from './helpers.js';
 
 function context() {
@@ -34,6 +34,43 @@ test('store rejects overwrites, missing/cross-snapshot/wrong-kind references and
   assert.deepEqual(store.get(snapshot), record);
 });
 
+test('entity claims require the matching discriminator and reciprocal subject before any batch is committed', () => {
+  for (const kind of ['module', 'symbol'] as const) {
+    for (const mismatch of ['discriminator', 'subject', 'export-claim'] as const) {
+      for (const existingTarget of [false, true]) {
+        const { store, snapshot, record } = context();
+        const id = (key: string) => recordId(snapshot, 'test', key);
+        const base = { snapshot, method: 'test@0' };
+        const claimContext: ClaimContextRecord = { ...base, kind: 'claim-context', id: id('context'),
+          scope: 'configured-project', evidence: [], status: 'mechanically-derived',
+          guarantee: 'Synthetic fixture', limitations: [], diagnostics: [] };
+        const moduleClaim: ModuleClaim = { ...base, kind: 'claim', id: id('module-claim'),
+          subject: id('module'), context: claimContext.id, information: { type: 'module', name: null,
+            handle: 'fixture', handleStatus: 'generated-navigation-aid', handleProvenance: 'anonymous-fallback', facets: [] } };
+        const symbolClaim: SymbolClaim = { ...base, kind: 'claim', id: id('symbol-claim'),
+          subject: id('symbol'), context: claimContext.id, information: { type: 'symbol', name: 'fixture',
+            roles: { type: false, value: true }, declarationCount: 1 } };
+        const valid: ProgramRecord[] = [claimContext, moduleClaim, symbolClaim,
+          { ...base, id: id('module'), kind: 'module', claim: moduleClaim.id },
+          { ...base, id: id('symbol'), kind: 'symbol', claim: symbolClaim.id },
+          { ...base, id: id('export-claim'), kind: 'claim', subject: id('module'), context: claimContext.id,
+            information: { type: 'export', exportedName: 'fixture', symbol: id('symbol'), origin: id('module'), roles: null, routes: [] } }];
+        const target = mismatch === 'export-claim' ? 'export' : mismatch === 'subject' ? kind : kind === 'module' ? 'symbol' : 'module';
+        const invalid: ProgramRecord = { ...base, kind, id: id('invalid'), claim: id(`${target}-claim`) };
+        if (existingTarget) store.put(valid);
+        const marker: ClaimContextRecord = { ...claimContext, id: id('uncommitted') };
+        assert.throws(() => store.put([marker, invalid, ...(existingTarget ? [] : valid)]), /entity claim/);
+        for (const rejected of [marker, invalid, ...(existingTarget ? [] : valid)]) {
+          assert.throws(() => store.get(rejected.id), /Missing/);
+        }
+        assert.deepEqual(store.get(snapshot), record);
+        if (!existingTarget) store.put(valid);
+        for (const accepted of valid) assert.deepEqual(store.get(accepted.id), accepted);
+      }
+    }
+  }
+});
+
 test('store owns immutable copies rather than sharing mutable producer values', () => {
   const { store, snapshot } = context();
   const record = store.get(snapshot);
@@ -43,6 +80,20 @@ test('store owns immutable copies rather than sharing mutable producer values', 
   store.put([input]);
   (input.methods as string[]).push('mutated');
   assert.deepEqual((store.get(snapshot) as SnapshotRecord).methods, ['test@0']);
+});
+
+test('an export claim cannot serve as a module primary claim even with a reciprocal subject', () => {
+  const { store, snapshot } = context();
+  const module: ModuleRecord = { kind: 'module', id: recordId(snapshot, 'module', 'invalid-primary'),
+    snapshot, method: 'test@0', claim: recordId(snapshot, 'claim', 'invalid-primary') };
+  const claimContext: ClaimContextRecord = { kind: 'claim-context', id: recordId(snapshot, 'context', 'primary'),
+    snapshot, method: 'test@0', scope: module.id, evidence: [], status: 'mechanically-derived',
+    guarantee: 'Synthetic fixture', limitations: [], diagnostics: [] };
+  assert.throws(() => store.put([module, claimContext, {
+    kind: 'claim', id: module.claim, snapshot, method: 'test@0', subject: module.id, context: claimContext.id,
+    information: { type: 'export', exportedName: 'fixture', symbol: null, origin: null, roles: null, routes: [] },
+  }]), /Invalid module entity claim/);
+  for (const id of [module.id, module.claim, claimContext.id]) assert.throws(() => store.get(id), /Missing/);
 });
 
 test('unavailable, deferred, failed, stopped and partial outcomes survive without becoming an established empty population', () => {

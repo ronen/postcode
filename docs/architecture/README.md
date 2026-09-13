@@ -4,8 +4,9 @@ The development CLI opens one configured TypeScript project, evaluates module
 inventory and presentation-declared standard expansions, constructs stored
 `modules(project)` or exact-selection `inspect(subjects)` projections, and presents
 a qualified Unicode or experimental JSON view. Every produced view submits a
-self-contained observation batch to a separate local sink. Instrument validation
-and final independent review remain active-task gates.
+self-contained observation batch to a separate local sink. The initial slice's
+instrument validation and independent reviews are recorded in the
+[completed task](../../records/tasks/2026-09-12-initial-module-inventory.md).
 
 The governing choices are the accepted [projection architecture decisions](../decisions/initial-projection-architecture-decisions.md)
 and [module inventory decisions](../decisions/initial-module-inventory-decisions.md).
@@ -32,7 +33,8 @@ construction reads stored information, selects relevant subjects and context,
 and writes an addressable projection. It does not call TypeScript.
 
 The current store adapter uses private in-memory maps. It clones and freezes
-records, rejects conflicting replacements and invalid references, and supports
+records, rejects conflicting replacements and invalid references (including entity
+claim discriminators and reciprocal subjects), and supports
 multiple snapshots and evaluation attempts. No persistence, sessions, SQL query
 model, or general scheduling framework exists.
 
@@ -77,10 +79,10 @@ on collision. Inspection requires explicit snapshot scope for handles and compac
 IDs, reporting no current match when scope is missing or stale. Internal record
 keys remain separate from the compact user-facing address.
 
-Known generated-output directories are excluded before configuration discovery
-and compiler reads. The integration excludes `_observations` and `_build` under
-the selected configuration directory and accepts additional absolute output
-directories from its caller. Exclusion applies to roots, imported files, directory
+Actual generated-output directories supplied by the caller are excluded before
+configuration discovery and compiler reads. A target directory named `_observations`
+or `_build` remains an ordinary configured input unless it is an explicitly
+supplied output destination. Exclusion applies to roots, imported files, directory
 listings, and symlink targets, so excluded contents do not enter evidence or its
 identity digest. The CLI supplies its actual checkout observation and build directories before
 opening a project, including when the selected configuration is nested elsewhere. Git-ignore rules alone are not this evidence boundary.
@@ -133,6 +135,8 @@ documentation omission counts include materialized exports outside the displayed
 cue. Stable explanations live in help and the command reference, while concise
 TypeScript coverage and non-atomic-input limitations remain in the view. The CLI
 supplies a quoted next-action command with the selected project and full snapshot.
+Options precede an end-of-options marker so exact selectors that resemble flags
+remain usable. The parser still accepts one exact selector.
 Its paths are explicit invocation context, distinct from analyzed source evidence.
 
 ## Observations and runtime boundaries
@@ -156,6 +160,7 @@ sink or contemporaneous-note command exists. Privacy and exclusion details are i
 Expected usage and project-open failures precede view production. Internal defects
 propagate to a distinct CLI failure. Successful views can carry partial expansion
 outcomes; process success is not a claim that every requested fact was established.
-The first independent core review has been received and its findings disposed of.
-The remaining validation and final-review obligations are recorded in the active
-[task](../../records/tasks/2026-09-12-initial-module-inventory.md).
+Both initial independent reviews and instrument validation are complete; their
+evidence and limitations remain in the completed initial task. Subsequent PR review
+corrections and the human-arranged rereview gate are tracked by the active
+[continuation](../../records/tasks/2026-09-13-module-inventory-review-continuation.md).

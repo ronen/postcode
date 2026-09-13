@@ -188,15 +188,15 @@ test('generated output is excluded from roots, imports, symlinks and snapshot in
     writeFileSync(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"noLib":true,"types":[]},"include":["**/*.ts"]}');
     writeFileSync(path.join(root, 'entry.ts'), 'import "./_observations/generated"; export const value = 1;');
     const config = path.join(root, 'tsconfig.json');
-    const before = discover(config);
+    const before = discover(config, [output]);
     writeFileSync(path.join(output, 'generated.ts'), 'export const fabricated = 1;');
     writeFileSync(path.join(output, 'batch.json'), '{"formatVersion":0}');
-    assert.equal(discover(config).evaluation.snapshot, before.evaluation.snapshot);
+    assert.equal(discover(config, [output]).evaluation.snapshot, before.evaluation.snapshot);
     symlinkSync(output, path.join(root, 'alias'), 'dir');
-    const linked = discover(config);
+    const linked = discover(config, [output]);
     assert.equal(linked.claims.length, 1);
     writeFileSync(path.join(output, 'generated.ts'), 'export const fabricated = 200;');
-    assert.equal(discover(config).evaluation.snapshot, linked.evaluation.snapshot);
+    assert.equal(discover(config, [output]).evaluation.snapshot, linked.evaluation.snapshot);
     assert.equal(linked.contexts.flatMap(context => context.evidence)
       .map(id => linked.store.get(id) as SourceEvidenceRecord).some(source => source.path.includes('_observations')), false);
   });
@@ -223,4 +223,19 @@ test('repeated evaluation retains distinct attempts without changing equivalent 
   assert.notEqual(next.id, evaluation.id);
   assert.equal(store.evaluations(evaluation.snapshot).length, 2);
   assert.deepEqual(store.get(evaluation.id), evaluation);
+});
+
+test('expanded discovery attempts count root evaluations and preserve earlier expansion outcomes', () => {
+  const { store, analysis, evaluation } = discover(fixture('exports'));
+  const expanded = evaluateModules(store, analysis, ['exports', 'documentation']);
+  assert.equal(expanded.attempt, 2);
+  const earlier = store.evaluations(evaluation.snapshot);
+  assert.ok(earlier.some(outcome => outcome.basis === expanded.id));
+  const repeated = evaluateModules(store, analysis, ['exports']);
+  assert.equal(repeated.attempt, 3);
+  assert.equal(repeated.snapshot, evaluation.snapshot);
+  assert.notEqual(repeated.id, expanded.id);
+  assert.ok(store.evaluations(repeated.snapshot).filter(outcome => outcome.basis === repeated.id)
+    .every(outcome => outcome.attempt === 3 && outcome.requirement === 'exports'));
+  for (const outcome of earlier) assert.deepEqual(store.get(outcome.id), outcome);
 });

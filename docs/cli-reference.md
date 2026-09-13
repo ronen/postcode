@@ -8,8 +8,8 @@ checkout, install with `npm ci` and build with `npm run build`.
 ```sh
 node _build/src/cli.js modules --project path/to/tsconfig.json
 node _build/src/cli.js modules --project path/to/tsconfig.json --json
-node _build/src/cli.js inspect MODULE_HANDLE --project path/to/tsconfig.json --snapshot SNAPSHOT
-node _build/src/cli.js inspect MODULE_HANDLE --project path/to/tsconfig.json --snapshot SNAPSHOT --source-detail
+node _build/src/cli.js inspect --project path/to/tsconfig.json --snapshot SNAPSHOT -- MODULE_HANDLE
+node _build/src/cli.js inspect --project path/to/tsconfig.json --snapshot SNAPSHOT --source-detail -- MODULE_HANDLE
 node _build/src/cli.js --help
 ```
 
@@ -23,6 +23,12 @@ Without arguments, the command is `modules` with `./tsconfig.json` and Unicode
 output. `--json` selects the experimental structured presentation. `--source-detail`
 and `--snapshot` are inspection options. `--help` performs no analysis.
 
+`--` ends option parsing: subsequent arguments are literal positional values.
+For a module named `--json`, use `inspect --project path/to/tsconfig.json -- --json`.
+Place all options, including `--json` and `--source-detail`, before the marker.
+Generated inspection commands include this marker. One exact selector is still
+required; the marker does not enable multiple selectors.
+
 Exit 0 means a view was produced, including a qualified or partial result. Exit 2
 means invalid arguments or failure to open the project; exit 1 means an internal
 failure. Observation delivery failure is a visible warning and preserves the view.
@@ -32,7 +38,7 @@ failure. Observation delivery failure is a visible warning and preserves the vie
 1. List modules.
 2. Choose a mnemonic handle or precise Entity ID.
 3. Run the generated inspection command with that subject.
-4. Add `--source-detail` when source evidence is needed.
+4. Add `--source-detail` before `--` when source evidence is needed.
 
 ## Inventory and inspection
 
@@ -163,8 +169,8 @@ they may contain repository-derived text and explicitly requested source detail.
 Nothing is sent remotely. Files are created with private permissions and ignored
 by Git. The producer does not read historical batches or prescribe retention.
 
-Known generated-output locations are excluded before configuration and compiler
-input reads, including imported files and symlink targets. The run's exclusion
+Caller-supplied generated-output locations are excluded before configuration and
+compiler input reads, including imported files and symlink targets. The run's exclusion
 count is the distinct location boundaries enforced by that filter, not a count of
 generated files found or read. A configured location can be absent or outside the
 selected roots and still be protected against resolution into it. Git-ignore alone
