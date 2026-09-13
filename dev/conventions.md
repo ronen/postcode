@@ -101,6 +101,8 @@ Compact module Entity IDs abbreviate record-key digests against the entire modul
 population, extending prefixes on collision. Compute the same mapping for inventory
 and inspection, including collapsed modules. Handles and compact IDs require the
 full snapshot through `--snapshot`; missing or stale scope cannot infer successors.
+An exact language name remains usable without snapshot scope even when it equals
+a compact ID. With explicit current scope, compact ID selection stays precise.
 Keep internal record keys, compact Entity IDs, names and handles distinct. The short
 Unicode snapshot label is for recognition; commands and JSON retain the full scope.
 
@@ -136,7 +138,8 @@ requirement applies to retained views, reports, and other generated outputs.
 The destination choice does not impose retention, migration, historical-reading,
 or producer-side cache policy. Delivery failure must be visible while preserving
 a successfully produced view. The CLI and sink have automated delivery, privacy-mode, exact-output and nested-configuration
-exclusion checks. The active task still requires its instrument-validation and final review gates.
+exclusion checks. Instrument validation and independent reviews are recorded in
+the [initial task](../records/tasks/2026-09-12-initial-module-inventory.md).
 
 Source evidence stores file associations separately from precise spans. Span ranges
 use one-based UTF-16 columns and exclusive ends. Bounded excerpts come from captured

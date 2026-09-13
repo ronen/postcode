@@ -95,8 +95,8 @@ routes qualify results; this command does not run a general type check. Exit cod
 
 See the [architecture overview](docs/architecture/README.md),
 [development conventions](dev/conventions.md), and
-[active task](records/tasks/2026-09-12-initial-module-inventory.md) for implementation
-boundaries and outstanding validation/review gates.
+[task record](records/tasks/2026-09-12-initial-module-inventory.md) for implementation
+boundaries, verification and review dispositions.
 
 ## Observability
 

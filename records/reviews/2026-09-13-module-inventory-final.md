@@ -1,6 +1,6 @@
 # Initial module inventory: final integrated independent-review handoff
 
-Status: awaiting human-arranged independent review
+Status: independent review returned; findings dispositioned
 Prepared: 2026-09-13
 Review target: `fee76353d011f93f0cf1f7bd377c94e96c4fe4c8`
 Last implementation commit: `a2e7bb30d1215717ab609d96c3eb0394efd31cb8`
@@ -8,12 +8,11 @@ Feature branch: `codex/initial-module-inventory`
 Base main commit: `4a8914c823c6e9856f0aa02cf7704f6830348de8`
 Task-opening commit: `58971db`
 
-Please arrange an independent review of the **complete branch change**, not only
-its last presentation fix. The target includes implementation, tests, documentation,
-review dispositions, validation summaries and recorded presentation approval.
-Subsequent changes preparing this handoff/index are metadata only. The implementing
-agent's verification does not satisfy independent review. No final reviewer has
-yet reviewed this integrated result, and the task is not closed.
+The requested independent review of the **complete branch change** has returned.
+Its [original findings](2026-09-13-module-inventory-final-findings.md) are preserved
+unchanged. The [disposition](2026-09-13-module-inventory-final-disposition.md)
+distinguishes the reviewed target from the subsequent tested selector correction.
+The remaining sections preserve the review request and its verification context.
 
 ## Governing context and scope
 
@@ -163,7 +162,7 @@ or concrete risk, reproduction/reasoning and suggested correction where useful.
 Distinguish blockers from nonblocking suggestions and explicitly state whether
 any finding prevents task closure. List verification reproduced and not performed.
 
-The human arranges this independent review and returns the findings. The active
-task cannot close until findings are materially resolved or proposed residual
-concerns are explicitly accepted. Presentation approval is already complete and
-must not be mistaken for final integrated implementation approval.
+The human arranged the independent review and returned its findings. Both notes
+are resolved as recorded in the disposition; no proposed residual review concern
+remains. The independent-review gate is satisfied separately from the already
+completed presentation approval. See the task record for closure.
