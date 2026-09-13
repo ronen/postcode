@@ -40,6 +40,16 @@ and two generated-command tests writing persistent checkout observations. Its
 suppressed comment repeats the second affected test. The continuation remains
 active for another human-arranged rereview.
 
+### 2026-09-13: third Copilot review
+
+Copilot has completed its review.  Please retrieve the new review materials.  It refers to "previously missed", you are authorized to act on those; though if you disagree pause to discuss.  Otherwise, as before unless any unforeseen issues arise, commit and prepare handoff for next review
+
+Context: [review 5191209974](https://github.com/ronen/postcode/pull/1#pullrequestreview-5191209974)
+on `17aef4f` contains no new inline comments and two previously missed suppressed
+findings: malformed snapshot self-identity can be committed, and the modules-lens
+usage error omits the inspection-only snapshot option. Both findings are accepted
+as in-scope corrections. Keep this continuation active for the next human-arranged review.
+
 ## Outcome
 
 ### 2026-09-13: corrections ready for Copilot rereview
