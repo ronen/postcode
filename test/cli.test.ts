@@ -366,6 +366,8 @@ test('basename mnemonic evidence stays distinct from names and precise scoped En
     assert.ok(multiple.stdout.includes('2 modules selected from 4 · exact matches for evaluation'));
     const zero = await invoke(['inspect', 'absent', '--project', config]);
     assert.ok(zero.stdout.includes('0 modules selected from 4 · exact matches for absent'));
+    assert.ok(zero.stdout.includes('Module membership established by TypeScript analysis.'));
+    assert.equal(zero.stdout.includes('export information is qualified'), false);
     const unicode = (await invoke(['--project', config])).stdout;
     assert.ok(unicode.includes(long));
     assert.match(unicode, /evaluation +module-[a-f0-9]+ +none\n/);

@@ -277,14 +277,15 @@ export function renderUnicode(view: QualifiedView): string {
   if (view.display.collapsedModules) omissions.push(`${view.display.collapsedModules} external module${view.display.collapsedModules === 1 ? '' : 's'} and their details`);
   if (view.display.omittedExports) omissions.push(`${view.display.omittedExports} export${view.display.omittedExports === 1 ? '' : 's'} from listed modules`);
   if (view.display.modulesWithOmittedDocumentation) omissions.push(`documentation for ${view.display.modulesWithOmittedDocumentation} listed module${view.display.modulesWithOmittedDocumentation === 1 ? '' : 's'}`);
-  if (omissions.length) lines.push('', 'Display', '  Omitted:', ...omissions.map(omission => `    ${omission}`), '  Inspection shows detail; JSON lists the full selected inventory.');
+  if (omissions.length) lines.push('', 'Display', '  Omitted:', ...omissions.map(omission => `    ${omission}`), inventory ? '  Inspection shows detail; JSON lists the full selected inventory.' : '  Displayed detail is bounded; JSON retains fuller context.');
   lines.push('', 'Status');
   if (view.analysis?.provider === 'typescript') {
     const exportsComplete = view.evaluations.filter(outcome => outcome.requirement === 'exports');
     const establishedExports = exportsComplete.length > 0 && exportsComplete.every(outcome => outcome.execution === 'completed' && outcome.materialization === 'full' && outcome.availability === 'available' && outcome.applicability === 'applicable');
     lines.push(selection.populationEstablished && establishedExports
       ? '  Module membership and effective exports established by TypeScript analysis.'
-      : selection.populationEstablished ? '  Module membership established by TypeScript analysis; export information is qualified by the capability states above.'
+      : selection.populationEstablished ? exportsComplete.length === 0 ? '  Module membership established by TypeScript analysis.'
+        : '  Module membership established by TypeScript analysis; export information is qualified by the capability states above.'
         : '  Displayed information is derived by TypeScript analysis; module population is not established.',
       '  Coverage: external-module SourceFiles and visible named ambient modules; other compiler module categories are not established.');
   } else for (const guarantee of new Set(projectContexts.map(context => context.guarantee))) lines.push(`  ${guarantee}`);
