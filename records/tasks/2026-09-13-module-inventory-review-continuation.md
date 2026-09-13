@@ -98,6 +98,17 @@ on stderr without escaping checkout-path controls. The finding is accepted as
 an in-scope terminal-output correction. Preserve the actual destination and keep
 the continuation active for the next human-arranged review.
 
+### 2026-09-13: seventh Copilot review round
+
+Again, Copilot has completed its review.  Please retrieve the new review materials, you are authorized to act on those; though if you disagree pause to discuss.  Otherwise, as before unless any unforeseen issues arise, commit and prepare handoff for next review
+
+Context: after a quota-limit notice, [review 5192259666](https://github.com/ronen/postcode/pull/1#pullrequestreview-5192259666)
+on `fbea319` reports missing descendants of symlinked exclusions changing snapshot
+identity, plus a previously missed finding that configuration diagnostics discard
+actionable file/position information. Both are accepted as in-scope corrections.
+Preserve occurrence deduplication and real output exclusion, and keep this
+continuation active for the next human-arranged review.
+
 ## Outcome
 
 ### 2026-09-13: corrections ready for Copilot rereview
