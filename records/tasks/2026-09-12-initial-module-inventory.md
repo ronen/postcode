@@ -305,3 +305,32 @@ Final integrated review and remaining validation are still required.
   dispositions, evidence and limitations. Explicit human output approval and the
   final independent integrated review remain pending. The task stays active;
   neither acceptance nor completion is inferred from the successful checks.
+
+### Fifth output sample verification — 2026-09-13
+
+- Addressed the fourth review with concept-labeled source items, one-based
+  line/UTF-16-column ranges, bounded excerpts and explicit file associations.
+  Raw claim keys remain in JSON. Source evidence comes from captured compiler
+  input; rendering does not reread files. Source-escape events identify the
+  expanded locations-and-excerpts disclosure level.
+- Removed ordinary homogeneous facet noise, wrapped documentation without
+  changing stored assertions, kept precise local inspection omission notices,
+  made zero matches explicit, and tailored navigation and JSON coverage wording.
+- All 48 tests and type checking pass. Added checks for merged evidence ranges,
+  deduplication, file associations, excerpt fidelity and bounds, UTF-16 positions,
+  wrapping, and absence of undisplayed source exports. Existing tests exposed a
+  whole-file/declaration evidence-key collision, corrected by including association
+  kind. Source separation, deterministic processes and scoped selection still pass.
+- Self-analysis retains 174 modules and 349 fully materialized scopes. The latest
+  inventory is 47 lines / 2,280 bytes; normal inspection is 34 lines / 1,519 bytes.
+  The separate source-detail sample is 97 lines / 4,229 bytes. Ten exceptional
+  cases were refreshed and inspected, with unmistakable synthetic truncation text
+  and explicitly labeled synthetic unavailable/failed/stopped provider states.
+- The approved p-queue recheck retains seven modules, five listed and two collapsed,
+  15 fully materialized scopes and all six entry exports. Full branch whitespace
+  checks pass. Real-project output, manifests and capture drivers remain private
+  and ignored; prior samples remain intact.
+- The [fifth review response](../reviews/2026-09-13-unicode-fifth-response.md)
+  records dispositions and artifact hashes. Human output approval remains pending;
+  the positive inventory assessment is not treated as approval of the presentation
+  set. The task stays active and final integrated review remains on hold.
