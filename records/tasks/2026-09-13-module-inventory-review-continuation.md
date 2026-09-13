@@ -31,4 +31,31 @@ The human arranges rereview. Successful tests alone do not close this continuati
 
 ## Outcome
 
+### 2026-09-13: corrections ready for Copilot rereview
+
+Correction commit `15c1398ccfafd0cd094645d63a77cb3b618ee5f7` addresses all five
+referenced findings: primary-claim validation, actual output exclusions, literal
+option-like selectors and generated commands, attempt ordinals, and architecture
+status. The optional attempt-numbering cleanup is included within the recorded
+scope. The completed predecessor and governing plan/decisions remain unchanged.
+
+The [committed disposition and handoff](../reviews/2026-09-13-module-inventory-continuation.md)
+(`ce872f6`) records each finding, evidence and rereview focus. Changes are prepared
+for the existing PR; the human will arrange Copilot rereview and return its result.
+This checkpoint does not close the task. Status remains **active** until remaining
+in-scope defects are resolved and no actionable findings remain, or the human
+explicitly accepts residual concerns.
+
 ## Verification
+
+- `npm test`: 57/57 passed; `npm run check`: passed on Node 22.13.1 / TypeScript
+  6.0.3. Four core regressions failed before the fixes.
+- Refreshed self-analysis: 174 modules, 349 full evaluation records and unique
+  requested expansion kinds. Generated exact-inspection command executed.
+- Refreshed approved pinned p-queue analysis: seven modules, 15 full evaluation
+  scopes and six entry exports; eleven exceptional/source cases also refreshed.
+- All 15 retained evidence files match the SHA-256 manifest identified in the
+  handoff. Full-branch whitespace and changed-document links checked; completed
+  predecessor and governing documents unchanged.
+- Copilot rereview is pending. Current automated checks and implementing-agent
+  dispositions do not constitute that acceptance.
