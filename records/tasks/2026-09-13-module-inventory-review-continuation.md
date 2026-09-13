@@ -126,6 +126,10 @@ Context: review 5192561111 on `8d4c094` reports bidi-control display injection,
 exponential forwarding-path enumeration, stale STATUS verification count, and a
 suppressed repeated-realpath exclusion check. All four are accepted in scope.
 
+### 2026-09-14: concise status and final Claude verification gate
+
+Copilot's only comment is:  "`STATUS.md` now duplicates the full nine-round review chronology already preserved in the linked handoffs. This conflicts with the repository rule that status stay concise and link to authoritative task/review records instead of repeating them (`dev/workflow.md:119`); collapse this section to the active continuation, latest correction/verification, and next gate."  that's worth correcting.  after that prepare a handoff for review of this entire continuation task (by Claude) for a final verification.  don't close the task yet.
+
 ## Outcome
 
 ### 2026-09-13: corrections ready for Copilot rereview
