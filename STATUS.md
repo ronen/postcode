@@ -14,7 +14,7 @@ Program claims, Claim context, source evidence, documentation assertions, evalua
 outcomes, projections and observations remain distinct. See [usage](README.md)
 and the [architecture overview](docs/architecture/README.md).
 
-All 71 automated tests and type checks pass. Coverage includes semantic fixtures,
+All 73 automated tests and type checks pass. Coverage includes semantic fixtures,
 separate-process CLI determinism, changed-input identity, source separation,
 omission disclosure, sink delivery/privacy behavior, and actual checkout output
 exclusion for nested configurations. PostCode self-analysis has run successfully.
@@ -66,4 +66,8 @@ active. The sixth review's stderr observation-destination injection is corrected
 in `b19e787`, with the same escaping applied to adjacent diagnostics and warnings.
 The [sixth disposition and handoff](records/reviews/2026-09-13-module-inventory-continuation-round-6.md)
 records 71 passing tests and verification of unchanged actual sink paths.
-PR #1 is awaiting another human-arranged rereview.
+The seventh round's missing symlink-descendant exclusion and diagnostic-location
+findings are corrected in `e89d741`. The
+[seventh-round disposition and handoff](records/reviews/2026-09-13-module-inventory-continuation-round-7.md)
+records 73 passing tests and targeted fixture evidence. The continuation remains
+active; PR #1 is awaiting another human-arranged rereview.
