@@ -118,6 +118,14 @@ regression and CLI example without changing selection semantics.
 
 > yes, add the regression test and add this example to the CLI reference
 
+### 2026-09-14: ninth Copilot review round
+
+> Again, Copilot has completed its review.  Please retrieve the new review materials, you are authorized to act on those; though if you disagree pause to discuss.  Otherwise, as before unless any unforeseen issues arise, commit and prepare handoff for next review
+
+Context: review 5192561111 on `8d4c094` reports bidi-control display injection,
+exponential forwarding-path enumeration, stale STATUS verification count, and a
+suppressed repeated-realpath exclusion check. All four are accepted in scope.
+
 ## Outcome
 
 ### 2026-09-13: corrections ready for Copilot rereview
