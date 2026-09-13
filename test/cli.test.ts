@@ -475,6 +475,45 @@ test('the suggested command runs after replacing MODULE_HANDLE, including a quot
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
+test('generated navigation selects shared name-derived and basename handles; unscoped names and scoped IDs stay precise', async () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-shared-handle-'));
+  try {
+    const checkout = copyTestCheckout(path.join(root, 'checkout'));
+    const config = path.join(root, 'tsconfig.json');
+    writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["widget.ts","ambient.d.ts"]}');
+    writeFileSync(path.join(root, 'widget.ts'), 'export const value = 1;');
+    writeFileSync(path.join(root, 'ambient.d.ts'), 'declare module "widget" { export const named: number; }');
+    const inventory = JSON.parse((await invoke(['--project', config, '--json'], undefined, checkout)).stdout) as QualifiedView;
+    assert.equal(inventory.modules.length, 2);
+    const named = inventory.modules.find(module => module.name === 'widget')!;
+    const anonymous = inventory.modules.find(module => module.name === null)!;
+    assert.equal(named.handle, 'widget');
+    assert.equal(named.handleProvenance, 'language-name');
+    assert.equal(anonymous.handle, 'widget');
+    assert.equal(anonymous.handleProvenance, 'source-basename');
+
+    const command = inventory.presentation.navigation!.inspect.replace('MODULE_HANDLE', 'widget');
+    const output = execFileSync('/bin/sh', ['-c', command], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+    assert.ok(output.includes('2 modules selected from 2 · exact matches for widget'));
+    for (const module of inventory.modules) assert.ok(output.includes(`Entity ID: ${module.entityId}`));
+    assertRecordedOutput(checkout, output);
+
+    const scoped = JSON.parse((await invoke(['inspect', '--project', config, '--json',
+      '--snapshot', inventory.projection.snapshot, '--', 'widget'], undefined, checkout)).stdout) as QualifiedView;
+    assert.deepEqual(scoped.modules.map(module => module.id), inventory.modules.map(module => module.id));
+    assert.equal(scoped.projection.selection.matches, 2);
+    const unscoped = JSON.parse((await invoke(['inspect', '--project', config, '--json', '--', 'widget'], undefined, checkout)).stdout) as QualifiedView;
+    assert.deepEqual(unscoped.modules.map(module => module.id), [named.id]);
+    assert.equal(unscoped.projection.selection.matches, 1);
+    for (const module of inventory.modules) {
+      const precise = JSON.parse((await invoke(['inspect', '--project', config, '--json',
+        '--snapshot', inventory.projection.snapshot, '--', module.entityId], undefined, checkout)).stdout) as QualifiedView;
+      assert.deepEqual(precise.modules.map(selected => selected.id), [module.id]);
+      assert.equal(precise.projection.selection.matches, 1);
+    }
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
 test('basename mnemonic evidence stays distinct from names and precise scoped Entity IDs', async () => {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-mnemonic-'));
   try {

@@ -97,6 +97,20 @@ Internal full record keys include snapshot scope and remain accepted.
 There are no fuzzy matches, wildcard selectors, retained aliases, or durable
 navigation sessions.
 
+For example, an exporting source file `widget.ts` and a separate ambient
+declaration `declare module "widget" { export const named: number; }` both receive
+the handle `widget`. The ambient module also has the exact language name `widget`;
+the source-file module remains conceptually anonymous.
+
+| Selector (with the same `--project` configuration) | Result |
+| --- | --- |
+| `inspect --snapshot SNAPSHOT_ID -- widget` | Both modules: two genuine matches for the shared handle, with the count displayed. This is the result of replacing `MODULE_HANDLE` with `widget` in the generated command. |
+| `inspect -- widget` | Only the ambient module, by its exact language name. Unscoped lookup does not select by handle. |
+| `inspect --snapshot SNAPSHOT_ID -- ENTITY_ID` | Exactly the module identified by that Entity ID. |
+
+Use the full snapshot value and the desired module's Entity ID from the inventory
+when you need one precise selection; a shared handle does not promise uniqueness.
+
 ## Analysis coverage and display omissions
 
 Analysis **materialization** describes what records were established for a
