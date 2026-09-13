@@ -51,12 +51,11 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
   };
   const expanded = projection.expansions.claims.map(id => store.get(id)).filter((record): record is Claim => record.kind === 'claim');
   const displayedClaims = new Map<RecordId, Claim>();
-  const maximumDocs = projection.lens === 'inspect' ? 3 : 1;
   const excerpt = (text: string, maximum: number) => {
     const characters = [...text];
     return { text: characters.slice(0, maximum).join(''), omittedTextCharacters: Math.max(0, characters.length - maximum) };
   };
-  const documentation = (subjects: readonly RecordId[]) => {
+  const documentation = (subjects: readonly RecordId[], maximumDocs: number) => {
     const associations = expanded.filter(record => record.information.type === 'documentation-association' && subjects.includes(record.subject));
     const shown = associations.slice(0, maximumDocs);
     const items: Documentation[] = shown.map(claim => {
@@ -82,6 +81,8 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
     if (entity.kind !== 'module') throw new Error('Expected module');
     const claim = store.get(entity.claim);
     if (!isModuleClaim(claim)) throw new Error('Expected module claim');
+    // Keep the full population visible without letting external documentation dominate inventory.
+    const maximumDocs = projection.lens === 'inspect' ? 3 : claim.information.facets.includes('project') ? 1 : 0;
     displayedClaims.set(claim.id, claim);
     const allExports = expanded.filter((record): record is ExportClaim => record.information.type === 'export' && record.subject === id);
     const maximumExports = projection.lens === 'inspect' ? 50 : 6;
@@ -97,9 +98,9 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
         displayedClaims.set(symbolClaim.id, symbolClaim);
       }
       return { ...exported.information, id: exported.id, qualification: qualification(exported.context), symbolInformation,
-        ...documentation([exported.id, ...(exported.information.symbol ? [exported.information.symbol] : [])]) };
+        ...documentation([exported.id, ...(exported.information.symbol ? [exported.information.symbol] : [])], maximumDocs) };
     });
-    return { id, ...claim.information, qualification: qualification(claim.context), ...documentation([id]),
+    return { id, ...claim.information, qualification: qualification(claim.context), ...documentation([id], maximumDocs),
       exports, omittedExports: allExports.length - exports.length };
   }).sort((left, right) => Number(right.facets.includes('project')) - Number(left.facets.includes('project')));
   const evaluations = projection.evaluations.map(id => {
@@ -149,6 +150,10 @@ export function renderUnicode(view: QualifiedView): string {
     `${selection.matches} module${selection.matches === 1 ? '' : 's'} shown · ${selection.population} discovered · population ${selection.populationEstablished ? 'established' : 'not established'}`];
   if (selection.subset) lines.push('Selected subset; other discovered modules are not shown.');
   if (view.projection.parameters.selector !== null) lines.push(`Exact selector: ${view.projection.parameters.selector}`);
+  lines.push('Materialization describes analysis results; display limits may still omit exports or documentation, with counts below.',
+    'Handles are generated navigation aids for this snapshot. Next: inspect <handle> with the same project configuration.',
+    'Export roles: type, value, or both. Routes list contributing export relationships, not calls or dependencies.');
+  if (view.projection.lens === 'modules') lines.push('External documentation is omitted from inventory; inspect its module handle to read bounded assertions.');
   const outcomeGroups = new Map<string, number>();
   for (const outcome of view.evaluations) {
     const label = `${outcome.requirement}: ${outcome.applicability}, ${outcome.availability}, ${outcome.execution}, materialization ${outcome.materialization}${outcome.reason ? ` — ${outcome.reason}` : ''}`;
@@ -181,10 +186,16 @@ export function renderUnicode(view: QualifiedView): string {
       for (const limitation of context.limitations) lines.push(`  Limitation: ${limitation}`);
     }
     docs(module.documentation, module.omittedDocumentation, '  ');
-    if (module.exports.length === 0) lines.push('  No exports displayed; consult expansion materialization above.');
+    if (module.exports.length === 0) {
+      const exportsEstablished = view.evaluations.some(outcome => outcome.requirement === 'exports'
+        && outcome.modules.includes(module.id) && outcome.execution === 'completed' && outcome.materialization === 'full');
+      lines.push(exportsEstablished && module.omittedExports === 0
+        ? '  Effective export set established as empty.'
+        : '  No exports displayed; an empty effective export set is not established.');
+    }
     for (const exported of module.exports) {
       const roles = exported.roles ? [exported.roles.type ? 'type' : '', exported.roles.value ? 'value' : ''].filter(Boolean).join(' + ') || 'no type/value role' : 'roles unavailable';
-      lines.push(`  ├─ ${exported.exportedName} · ${roles} · ${exported.routes.map(route => `${route.kind}${route.typeOnly ? ' (type-only)' : ''}`).join(' → ') || 'route unavailable'}`);
+      lines.push(`  ├─ ${exported.exportedName} · ${roles} · routes: ${exported.routes.map(route => `${route.kind}${route.typeOnly ? ' (type-only)' : ''}`).join(', ') || 'unavailable'}`);
       if (exported.origin) lines.push(`  │  Origin ${exported.origin === module.id ? 'this module' : view.modules.find(module => module.id === exported.origin)?.handle ?? exported.origin}`);
       if (exported.symbolInformation) lines.push(`  │  Semantic symbol ${exported.symbolInformation.name ?? '(anonymous)'} · ${exported.symbolInformation.declarationCount} contributing declaration(s)`);
       for (const limitation of exported.qualification.limitations) lines.push(`  │  Limitation: ${limitation}`);

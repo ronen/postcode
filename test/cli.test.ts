@@ -161,3 +161,40 @@ test('conceptual documentation excerpts omit source examples and source-oriented
     assert.equal(assertion.tags[0]!.name, 'deprecated');
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
+
+test('Unicode distinguishes established empty exports from unresolved exports and explains display limits', async () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-empty-exports-'));
+  try {
+    const config = path.join(root, 'tsconfig.json');
+    writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
+    writeFileSync(path.join(root, 'entry.ts'), 'export {};');
+    const empty = await invoke(['--project', config]);
+    assert.ok(empty.stdout.includes('Effective export set established as empty.'));
+    assert.ok(empty.stdout.includes('display limits may still omit exports or documentation'));
+    assert.ok(empty.stdout.includes('Next: inspect <handle>'));
+    writeFileSync(path.join(root, 'entry.ts'), 'export * from "./missing.js";');
+    const unresolved = await invoke(['--project', config]);
+    assert.ok(unresolved.stdout.includes('an empty effective export set is not established.'));
+    assert.equal(unresolved.stdout.includes('Effective export set established as empty.'), false);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('inventory counts omitted external documentation while exact inspection makes it available', async () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-external-docs-'));
+  try {
+    const config = path.join(root, 'tsconfig.json');
+    mkdirSync(path.join(root, 'node_modules/dependency'), { recursive: true });
+    writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
+    writeFileSync(path.join(root, 'entry.ts'), 'import "dependency"; export {};');
+    writeFileSync(path.join(root, 'node_modules/dependency/index.d.ts'), '/** External responsibility. */\nexport declare const value: number;');
+    const inventory = await invoke(['--project', config, '--json']);
+    const view = JSON.parse(inventory.stdout) as QualifiedView;
+    const external = view.modules.find(module => module.facets.includes('external'))!;
+    assert.ok(external);
+    assert.equal(external.exports[0]!.documentation.length, 0);
+    assert.equal(external.exports[0]!.omittedDocumentation, 1);
+    const inspected = await invoke(['inspect', external.handle, '--project', config, '--json']);
+    const detail = JSON.parse(inspected.stdout) as QualifiedView;
+    assert.equal(detail.modules[0]!.exports[0]!.documentation[0]!.text, 'External responsibility.');
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});

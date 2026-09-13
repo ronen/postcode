@@ -9,7 +9,7 @@ export const methods = {
   evaluation: 'postcode/evaluate-modules@1',
   projection: 'postcode/projection@1',
   expansions: 'postcode/typescript-expansions@0',
-  presentation: 'postcode/presentation@0',
+  presentation: 'postcode/presentation@1',
   handles: 'postcode/module-handles@0',
 } as const;
 

@@ -49,7 +49,8 @@ experimental `postcode-view/0` JSON presentation use the same qualified projecti
 locations, separately identified as source escape. It does not show full files.
 
 The default inventory shows up to six exports and one documentation assertion per
-module/export. Inspection shows up to 50 exports and three assertions. Inventory
+project-associated module/export. External documentation is omitted with counts;
+inspect its module handle to read it. Inspection shows up to 50 exports and three assertions. Inventory
 assertion excerpts are limited to 400 characters and five tags; inspection uses
 2,000 characters and 20 tags. Tag text is limited to 300 characters. Every omitted
 export, assertion, tag or character is counted. Conceptual documentation excerpts
