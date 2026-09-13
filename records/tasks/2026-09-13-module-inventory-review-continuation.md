@@ -77,6 +77,16 @@ was committed as `c8a5dff`. No unforeseen scope or approval issue arose.
 Changes are prepared for the existing PR and another human-arranged Copilot review.
 The continuation remains active under the same exit gate.
 
+### 2026-09-13: third-round corrections ready for rereview
+
+Correction `ba1436db9d42933d498ba97416e2c6b6c6233cef` addresses both previously
+missed findings: snapshot records must validate their own self-identity, and the
+modules usage error identifies both inspection-only options. Both findings were
+accepted; no unforeseen scope or approval issue arose. The
+[third disposition and handoff](../reviews/2026-09-13-module-inventory-continuation-round-3.md)
+was committed as `b326d81`. Changes are prepared for the existing PR and another
+human-arranged Copilot review. The continuation remains active.
+
 ## Verification
 
 - `npm test`: 57/57 passed; `npm run check`: passed on Node 22.13.1 / TypeScript
@@ -105,3 +115,17 @@ The continuation remains active under the same exit gate.
 - Full-branch whitespace and changed-document links passed; governing material and
   the completed predecessor remain unchanged. Real-project captures and clean-agent
   exercises were not repeated this round. Next Copilot rereview remains pending.
+
+### Third-round verification
+
+- `npm test`: 61/61 passed; `npm run check`: passed on Node 22.13.1 / TypeScript
+  6.0.3. Both new regressions failed before the fixes.
+- Snapshot rejection covers pending/stored valid targets, atomic batch rejection,
+  preserved prior records and valid acceptance. Six CLI cases cover both
+  inspection-only flags on default/explicit modules requests without observations.
+- A separate CLI process confirmed exit 2, empty stdout and the corrected error.
+- The full passing suite left all 211 existing checkout observation batches
+  unchanged by name/content hash and no new temporary test directories.
+- Full-branch whitespace, changed-document links, evidence manifest and preservation
+  of completed task/governing material checked. Real-project captures, clean-agent
+  exercises and human presentation review were not repeated. Next rereview is pending.
