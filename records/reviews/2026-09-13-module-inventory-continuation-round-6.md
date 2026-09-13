@@ -2,7 +2,8 @@
 
 Date: 2026-09-13
 Status: correction verified; awaiting human-arranged Copilot rereview
-Correction/review target: `b19e787a2bb212cca21aabf2252feb60eb7bc9d7`
+Correction: `b19e787a2bb212cca21aabf2252feb60eb7bc9d7`
+Review target: `a512c62d5ba24d0269c7e1432ed08dfba0ed6fba`
 Reviewed predecessor: `bdadc50ccb39f746388764e81b9ec27c622b6d30`
 Pull request: [#1](https://github.com/ronen/postcode/pull/1)
 Task: [active continuation](../tasks/2026-09-13-module-inventory-review-continuation.md)
@@ -47,8 +48,10 @@ semantics, so no analysis/presentation method version was advanced.
 - The full passing suite preserved all 211 existing top-level checkout observation
   batches by name/content hash, added none and leaked no temporary test directories.
 - Full-branch whitespace, changed-document links, evidence hashes and preservation
-  of completed task/governing records checked. Subsequent handoff/checkpoint commits
-  are metadata only.
+  of completed task/governing records checked. Formatting-only commit `a512c62`
+  removes a trailing blank line found by the final full-branch whitespace check;
+  no executable behavior changes after the tested correction. Handoff/checkpoint
+  commits contain metadata only.
 
 Seven evidence files and their manifest are retained under the ignored
 `_observations/validation/2026-09-13/continuation-round-6/`. Manifest SHA-256:
