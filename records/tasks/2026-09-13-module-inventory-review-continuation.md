@@ -114,6 +114,17 @@ accepted; no unforeseen scope or approval issue arose. The
 was committed as `b326d81`. Changes are prepared for the existing PR and another
 human-arranged Copilot review. The continuation remains active.
 
+### 2026-09-13: fourth-round corrections ready for rereview
+
+Handle correction `cc836cc` separates generated handles from compact Entity IDs.
+Diagnostic correction `92e4ed20bcef2af99181b7813ab6fb2910f3f82b` preserves root
+syntax validation and deduplicates source occurrences, following the human's
+approval after the proposed parse removal caused a regression. The
+[fourth disposition and handoff](../reviews/2026-09-13-module-inventory-continuation-round-4.md)
+was committed as `5f6a4d6`. No further disagreement or unresolved scope issue remains.
+Changes are prepared for the existing PR and another human-arranged Copilot review.
+The continuation remains active under the same exit gate.
+
 ## Verification
 
 - `npm test`: 57/57 passed; `npm run check`: passed on Node 22.13.1 / TypeScript
@@ -156,3 +167,18 @@ human-arranged Copilot review. The continuation remains active.
 - Full-branch whitespace, changed-document links, evidence manifest and preservation
   of completed task/governing material checked. Real-project captures, clean-agent
   exercises and human presentation review were not repeated. Next rereview is pending.
+
+### Fourth-round verification
+
+- `npm test`: 64/64 passed; `npm run check`: passed on Node 22.13.1 / TypeScript
+  6.0.3. Initial collision and duplicate-diagnostic regressions failed before fixes.
+- Constructed handle/ID collision covers basename, language-name and export cues,
+  repeated handle matches, precise IDs, exact names, extended grammar and determinism.
+- Malformed root/inherited configurations report once per occurrence; equal messages
+  in different files or positions remain visible. Generated fixture JSON/Unicode
+  confirms the rewritten handle, scoped inspection and unique expansion kinds.
+- The full suite preserved all 211 checkout observation batches by name/content
+  hash, added none and leaked no temporary test directories. Manifest, document
+  links, full-branch whitespace and completed/governing preservation checked.
+- Real-project captures, clean-agent exercises and human presentation review were
+  not repeated. The next Copilot rereview remains pending.
