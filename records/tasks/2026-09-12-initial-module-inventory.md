@@ -120,6 +120,22 @@ preserves all findings and dispositions and identifies the new inventory and
 inspection samples for human review. Unicode remains unapproved. Final integrated
 review handoff is on hold for the human's further feedback; the task remains active.
 
+### Third Unicode sample — 2026-09-13
+
+The human's second Unicode review was located under the matching filename
+`_work/2026-09-13-view-review-2-review.txt` and retained verbatim. `52ae8ba`
+implements separated run status, display omissions and limitations; consolidated
+common module information; shorter snapshot display; improved type-heavy module
+handles; and a directly usable, quoted inspection command. Full snapshot reference
+validation remains unchanged. A concise user-facing command and concepts reference
+now supplies the stable explanations removed from ordinary output.
+
+The [third response](../reviews/2026-09-13-unicode-third-response.md) records all
+dispositions, evidence and the new inventory/inspection samples. Operational CLI
+and configuration paths in the requested next command are distinct from discovered
+source evidence. Unicode remains unapproved, and final integrated-review handoff
+is still on hold for explicit human approval. The task remains active.
+
 ## Verification
 
 ### First checkpoint — 2026-09-12
@@ -225,3 +241,30 @@ Final integrated review and remaining validation are still required.
 - Still pending: explicit human Unicode approval and final independent integrated
   review. Existing clean-agent responses apply to their original input, not the
   second sample. No subjective acceptance or completion is claimed.
+
+### Third Unicode sample verification — 2026-09-13
+
+- All 43 tests and type checking pass. Checks now cover compact successful states
+  and explicit abnormal states; aggregate omissions including documentation on
+  unlisted export cues; shared anonymity/facets; conditional explanations; concise
+  snapshot labels; type-based mnemonic selection; and a suggested command executed
+  after replacing only its subject, including paths with spaces and an apostrophe.
+- Existing independent-process Unicode determinism, stale-reference validation,
+  exceptional provenance, source separation and generated-output exclusion checks
+  continue to pass. The run reports distinct enforced output-location boundaries,
+  not a count of generated files discovered or read.
+- The third self inventory is 77 lines and 2,533 bytes. JSON retains 174 modules;
+  Unicode lists 18 and explicitly collapses 156. It consolidates 27 omitted exports
+  and omitted documentation for nine listed modules. All 349 evaluation scopes
+  remain fully materialized. The suggested command produced the retained 1,692-byte
+  inspection sample with all six presentation-module exports and recorded assertion.
+- Repeated pinned p-queue validation retains seven JSON modules, five listed and
+  two collapsed in Unicode, all six entry exports in exact inspection, and full
+  materialization for all 15 evaluation scopes.
+- Exact artifacts and a SHA-256 manifest are retained locally under the excluded
+  observation directory and identified in the third response. Earlier reviews,
+  samples and clean-agent evidence remain intact. The supplied review is preserved
+  verbatim; documentation links and complete branch diff whitespace checks pass.
+- Explicit human Unicode approval and final independent integrated review are
+  still pending. Earlier clean agents evaluated their original sample; no human
+  acceptance, final readiness or task completion is inferred from these checks.
