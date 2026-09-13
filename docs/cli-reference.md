@@ -159,6 +159,9 @@ qualification states that truth, currency and completeness are not established.
 Ordinary local labels say `Documentation`; when original-symbol and alias
 contributions differ, human-readable provenance labels distinguish them. An export
 relationship describes aliases, origins or forwarding, not calls or dependencies.
+Forwarding evidence retains distinct declaration steps across reachable module/name
+states, including converging and cyclic routes; it does not enumerate every complete
+path. A value role requires a reachable route without a type-only step.
 Ordinary local provenance may be suppressed; meaningful exceptions remain visible
 in inspection.
 
@@ -199,7 +202,9 @@ does not establish this exclusion. Keep additional generated views in the exclud
 `_observations/` directory or outside the analyzed repository.
 
 Unicode inline values (names, selectors, qualifications and source paths) display
-line-breaking and indentation controls as visible Unicode escapes. Documentation
+line-breaking, indentation and Unicode bidirectional formatting controls as visible
+Unicode escapes. Bidi controls in invocation paths suppress generated commands
+rather than changing their actual path arguments. Documentation
 and excerpts retain the renderer's structured wrapping. JSON retains the original
 string values; display escaping does not alter stored claims or evidence.
 

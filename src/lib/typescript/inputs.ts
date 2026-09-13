@@ -25,8 +25,13 @@ export function captureInputs(excludedDirectories: readonly string[]) {
     const relative = path.relative(directory, name);
     return relative === '' || (!relative.startsWith(`..${path.sep}`) && relative !== '..' && !path.isAbsolute(relative));
   };
-  const excluded = (name: string) => exclusions.some(directory =>
-    within(absolute(name), directory.lexical) || within(real(name), directory.real));
+  const excluded = (name: string) => {
+    const lexical = absolute(name);
+    if (exclusions.some(directory => within(lexical, directory.lexical))) return true;
+    if (exclusions.length === 0) return false;
+    const resolved = real(name);
+    return exclusions.some(directory => within(resolved, directory.real));
+  };
   const observations = new Map<string, unknown>();
   const memo = <T>(operation: string, args: unknown, run: () => T): T => {
     const key = canonical([operation, args]);

@@ -61,16 +61,14 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
     }
     return undefined;
   };
-  const trace = (module: ts.Symbol, name: string, seen = new Map<ts.Symbol, ReadonlySet<string>>()): Route[][] => {
-    if (seen.get(module)?.has(name)) return [];
-    seen = new Map(seen).set(module, new Set([...(seen.get(module) ?? []), name]));
+  interface Edge { route: Route; next?: { module: ts.Symbol; name: string } }
+  const edges = (module: ts.Symbol, name: string): Edge[] => {
     const exported = effective(module).find(symbol => symbol.getName() === name);
     if (!exported) return [];
     const target = resolve(exported);
-    const paths: Route[][] = [];
+    const paths: Edge[] = [];
     const forward = (via: ts.Symbol | undefined, importedName: string, route: Route): void => {
-      const continuation = via ? trace(via, importedName, seen) : [];
-      paths.push(...(continuation.length ? continuation.map(rest => [route, ...rest]) : [[route]]));
+      paths.push({ route, ...(via ? { next: { module: via, name: importedName } } : {}) });
     };
     for (const declaration of exported.getDeclarations() ?? []) {
       if (owner(declaration) !== module) continue;
@@ -89,12 +87,12 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
         });
       } else if (ts.isNamespaceExport(declaration)) {
         const statement = declaration.parent;
-        paths.push([{ kind: 'reexport', typeOnly: statement.isTypeOnly, aliased: true,
-          via: moduleAt(statement.moduleSpecifier), node: declaration }]);
+        paths.push({ route: { kind: 'reexport', typeOnly: statement.isTypeOnly, aliased: true,
+          via: moduleAt(statement.moduleSpecifier), node: declaration } });
       } else {
-        paths.push([{ kind: ts.isExportAssignment(declaration)
+        paths.push({ route: { kind: ts.isExportAssignment(declaration)
           ? declaration.isExportEquals ? 'export-assignment' : 'default'
-          : name === 'default' ? 'default' : 'direct', typeOnly: false, aliased: false, via: undefined, node: declaration }]);
+          : name === 'default' ? 'default' : 'direct', typeOnly: false, aliased: false, via: undefined, node: declaration } });
       }
     }
     if (paths.length === 0 && name !== 'default' && name !== 'export=') {
@@ -115,6 +113,57 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
       }
     }
     return paths;
+  };
+
+  // Keep a graph of reachable states, never a list of complete forwarding paths.
+  // Shared suffixes and cycles are visited once; value reachability is a fixed point.
+  const trace = (module: ts.Symbol, name: string) => {
+    interface State { edges: Edge[]; predecessors: State[]; value: boolean }
+    const states = new Map<ts.Symbol, Map<string, State>>();
+    const pending: { module: ts.Symbol; name: string; state: State }[] = [];
+    const stateFor = (module: ts.Symbol, name: string): State => {
+      let names = states.get(module);
+      if (!names) { names = new Map(); states.set(module, names); }
+      let state = names.get(name);
+      if (!state) {
+        state = { edges: [], predecessors: [], value: false };
+        names.set(name, state);
+        pending.push({ module, name, state });
+      }
+      return state;
+    };
+    const root = stateFor(module, name);
+    const routes: Route[] = [];
+    const byNode = new Map<ts.Node, Route[]>();
+    for (let index = 0; index < pending.length; index++) {
+      const item = pending[index]!;
+      item.state.edges = edges(item.module, item.name);
+      for (const edge of item.state.edges) {
+        const prior = byNode.get(edge.route.node) ?? [];
+        if (!prior.some(route => route.kind === edge.route.kind && route.via === edge.route.via
+          && route.typeOnly === edge.route.typeOnly && route.aliased === edge.route.aliased)) {
+          prior.push(edge.route);
+          byNode.set(edge.route.node, prior);
+          routes.push(edge.route);
+        }
+        if (edge.next) stateFor(edge.next.module, edge.next.name);
+      }
+    }
+    const values: State[] = [];
+    for (const { state } of pending) {
+      for (const edge of state.edges) {
+        if (edge.route.typeOnly) continue;
+        const next = edge.next && states.get(edge.next.module)!.get(edge.next.name)!;
+        if (next && next.edges.length) next.predecessors.push(state);
+        else if (!state.value) { state.value = true; values.push(state); }
+      }
+    }
+    for (let index = 0; index < values.length; index++) {
+      for (const predecessor of values[index]!.predecessors) {
+        if (!predecessor.value) { predecessor.value = true; values.push(predecessor); }
+      }
+    }
+    return { routes, allowsValue: root.value };
   };
 
   const docs = (declarations: readonly ts.Declaration[]) => {
@@ -142,7 +191,7 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
     const exports = (module.symbol ? effective(module.symbol) : []).map(exported => {
       const symbol = resolve(exported);
       const unresolved = checker.isUnknownSymbol(symbol);
-      const paths = trace(module.symbol!, exported.getName());
+      const traced = trace(module.symbol!, exported.getName());
       if (!(exported.getDeclarations() ?? []).some(node => owner(node) === module.symbol)) {
         const wildcardTargets = new Set(statements(module.symbol!).flatMap(statement => {
           if (!ts.isExportDeclaration(statement) || statement.exportClause) return [];
@@ -153,8 +202,8 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
         if (wildcardTargets.size > 1) issues.push(`Export ${exported.getName()} has conflicting wildcard origins; the compiler surface is qualified.`);
       }
       if (unresolved) issues.push(`Export ${exported.getName()} has an unresolved originating symbol.`);
-      if (paths.length === 0) issues.push(`The forwarding route for export ${exported.getName()} is unavailable.`);
-      return { exported, symbol: unresolved ? undefined : symbol, paths,
+      if (traced.routes.length === 0) issues.push(`The forwarding route for export ${exported.getName()} is unavailable.`);
+      return { exported, symbol: unresolved ? undefined : symbol, traced,
         originDocs: requested.includes('documentation') && !unresolved ? docs(symbol.getDeclarations() ?? []) : [],
         aliasDocs: requested.includes('documentation') && symbol !== exported ? docs(exported.getDeclarations() ?? []) : [] };
     });
@@ -219,16 +268,16 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
           });
           docClaims.push(...putDocs(symbol, exported.originDocs, 'origin-symbol'));
         }
-        const ctx = context(subject, id, [...declarations, ...exported.paths.flatMap(route => route.map(step => step.node))],
+        const ctx = context(subject, id, [...declarations, ...exported.traced.routes.map(step => step.node)],
           'The compiler exposes this exported name; roles and forwarding are qualified by the recorded route.', item.issues);
-        const routes = exported.paths.flatMap(route => route.map(step => ({ kind: step.kind, typeOnly: step.typeOnly,
-          aliased: step.aliased, via: moduleId(step.via) })));
+        const routes = exported.traced.routes.map(step => ({ kind: step.kind, typeOnly: step.typeOnly,
+          aliased: step.aliased, via: moduleId(step.via) }));
         const origins = [...new Set(declarations.map(node => moduleId(owner(node, true))).filter(id => id !== null))];
         records.push({ kind: 'claim', id, snapshot, method, subject, context: ctx, information: {
           type: 'export', exportedName: exported.exported.getName(), symbol,
           origin: origins.length === 1 ? origins[0]! : null,
-          roles: targetRoles && exported.paths.length ? { type: targetRoles.type, value: targetRoles.value
-            && aliasAllowsValue(exported.exported) && exported.paths.some(route => route.every(step => !step.typeOnly)) } : null, routes,
+          roles: targetRoles && exported.traced.routes.length ? { type: targetRoles.type, value: targetRoles.value
+            && aliasAllowsValue(exported.exported) && exported.traced.allowsValue } : null, routes,
         } });
         exportClaims.push(id);
         docClaims.push(...putDocs(id, exported.aliasDocs, 'export-alias'));

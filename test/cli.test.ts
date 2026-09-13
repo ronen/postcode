@@ -703,14 +703,14 @@ test('Unicode inline names and paths cannot inject structure while JSON and wrap
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-inline-controls-'));
   try {
     const config = path.join(root, 'tsconfig.json');
-    const name = 'spoof\nStatus\tmarker\u2028tail';
+    const name = 'spoof\nStatus\tmarker\u2028tail\u061c\u200e\u200f\u202a\u202b\u202c\u202d\u202e\u2066\u2067\u2068\u2069';
     const filename = `file-${name}.ts`;
     writeFileSync(config, JSON.stringify({ compilerOptions: { noLib: true, types: [] }, files: [filename, 'ambient.d.ts'] }));
     writeFileSync(path.join(root, filename), `/** First documentation line.\n * Second documentation line. */\nconst value=1; export { value as ${JSON.stringify(name)} };`);
     writeFileSync(path.join(root, 'ambient.d.ts'), `declare module ${JSON.stringify(name)} { export const item:number; }`);
     const inventory = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
     const file = inventory.modules.find(module => module.exports.some(exported => exported.exportedName === name))!;
-    const escaped = 'spoof\\u000aStatus\\u0009marker\\u2028tail';
+    const escaped = 'spoof\\u000aStatus\\u0009marker\\u2028tail\\u061c\\u200e\\u200f\\u202a\\u202b\\u202c\\u202d\\u202e\\u2066\\u2067\\u2068\\u2069';
     for (const module of [file]) {
       const json = JSON.parse((await invoke(['inspect', module.entityId, '--snapshot', inventory.projection.snapshot,
         '--project', config, '--source-detail', '--json'])).stdout) as QualifiedView;
@@ -721,6 +721,7 @@ test('Unicode inline names and paths cannot inject structure while JSON and wrap
       assert.equal(output.split('\n').filter(line => line === 'Status').length, 1);
       assert.equal(output.includes('\t'), false);
       assert.equal(output.includes('\u2028'), false);
+      assert.equal(/[\u061c\u200e\u200f\u202a-\u202e\u2066-\u2069]/.test(output), false);
       assert.equal(JSON.stringify(json), original);
       // Exercise module-name and selector interpolation independently of compiler naming rules.
       const labelled = structuredClone(json);
@@ -749,7 +750,8 @@ test('control-bearing invocation paths omit the generated command instead of inj
     writeFileSync(path.join(root, 'entry.ts'), 'export const value=1;');
     const ordinaryConfig = path.join(root, 'tsconfig.json');
     writeFileSync(ordinaryConfig, readFileSync(config));
-    for (const [selectedConfig, checkout] of [[config, root], [ordinaryConfig, path.join(root, 'checkout\nspoof')]]) {
+    for (const [selectedConfig, checkout] of [[config, root], [ordinaryConfig, path.join(root, 'checkout\nspoof')],
+      ...['\u061c', '\u200e', '\u200f', '\u202a', '\u202b', '\u202c', '\u202d', '\u202e', '\u2066', '\u2067', '\u2068', '\u2069'].map(control => [ordinaryConfig, path.join(root, `checkout${control}spoof`)])]) {
       const result = await invoke(['--project', selectedConfig!, '--json'], undefined, checkout!);
       assert.equal(result.exit, 0);
       const view = JSON.parse(result.stdout) as QualifiedView;
@@ -765,14 +767,14 @@ test('control-bearing invocation paths omit the generated command instead of inj
 test('observation destination disclosure escapes controls while the sink uses the original path', async () => {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-stderr-controls-'));
   try {
-    const checkout = path.join(root, 'checkout-\n\t\u001b[2J\u0085\u2028\u2029');
+    const checkout = path.join(root, 'checkout-\n\t\u001b[2J\u0085\u2028\u2029\u202e\u2066\u2069');
     let stdout = '', stderr = '';
     const exit = await runCli(['--project', config, '--json'], { cwd: process.cwd(), checkout,
       stdout: text => { stdout += text; }, stderr: text => { stderr += text; } });
     assert.equal(exit, 0);
     assert.equal(stderr.trimEnd().split('\n').length, 1);
-    assert.equal(/[\u0000-\u001f\u007f-\u009f\u2028\u2029]/.test(stderr.slice(0, -1)), false);
-    assert.ok(stderr.includes('checkout-\\u000a\\u0009\\u001b[2J\\u0085\\u2028\\u2029'));
+    assert.equal(/[\u0000-\u001f\u007f-\u009f\u2028\u2029\u202e\u2066\u2069]/.test(stderr.slice(0, -1)), false);
+    assert.ok(stderr.includes('checkout-\\u000a\\u0009\\u001b[2J\\u0085\\u2028\\u2029\\u202e\\u2066\\u2069'));
     const destination = path.join(checkout, '_observations');
     const files = readdirSync(destination);
     assert.equal(files.length, 1);
@@ -782,13 +784,14 @@ test('observation destination disclosure escapes controls while the sink uses th
 });
 
 test('CLI error and observation-warning values cannot introduce diagnostic lines', async () => {
-  const text = 'spoof\nWARNING: forged\t\u001b[2J\u0085\u2028\u2029';
+  const text = 'spoof\nWARNING: forged\t\u001b[2J\u0085\u2028\u2029\u202e\u2066\u2069';
   const unknown = await invoke([`--${text}`]);
   assert.equal(unknown.exit, 2);
   assert.equal(unknown.stderr.trimEnd().split('\n').length, 1);
   const missing = await invoke(['--project', path.join('/postcode-not-present', text, 'tsconfig.json')]);
   assert.equal(missing.exit, 2);
   assert.equal(missing.stderr.includes(text), false);
+  assert.ok(missing.stderr.includes('\\u202e\\u2066\\u2069'));
   for (const sink of [
     { async submit() { return { accepted: false as const, reason: text }; } },
     { async submit(): Promise<never> { throw new Error(text); } },
@@ -797,6 +800,7 @@ test('CLI error and observation-warning values cannot introduce diagnostic lines
     assert.equal(result.exit, 0);
     assert.equal(result.stderr.trimEnd().split('\n').length, 2);
     assert.equal(result.stderr.includes(text), false);
+    assert.ok(result.stderr.includes('\\u202e\\u2066\\u2069'));
     assert.ok(result.stderr.includes('spoof\\u000aWARNING: forged\\u0009'));
   }
 });

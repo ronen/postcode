@@ -156,3 +156,31 @@ test('renamed re-export traversal revisits a module under another name and still
     assert.ok(from('c.ts')[0]!.information.routes.length < 8);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
+
+test('layered wildcard diamonds retain linear route evidence and value reachability through mixed cyclic branches', () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-export-diamond-'));
+  try {
+    const config = path.join(root, 'tsconfig.json');
+    writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"include":["*.ts"]}');
+    writeFileSync(path.join(root, 'origin.ts'), 'export class Dual {}');
+    const layers = 8;
+    for (let layer = 0; layer < layers; layer++) {
+      const source = layer === 0 ? "export * from './origin.js';"
+        : `export * from './a${layer - 1}.js'; export * from './b${layer - 1}.js';`;
+      for (const side of ['a', 'b']) writeFileSync(path.join(root, `${side}${layer}.ts`), source);
+    }
+    writeFileSync(path.join(root, 'top.ts'), `export * from './a${layers - 1}.js'; export * from './b${layers - 1}.js';`);
+    writeFileSync(path.join(root, 'typed.ts'), "export type * from './top.js';");
+    writeFileSync(path.join(root, 'mixed.ts'), "export type * from './typed.js'; export * from './loop.js';");
+    writeFileSync(path.join(root, 'loop.ts'), "export * from './mixed.js'; export * from './top.js';");
+    const result = expanded(config);
+    const top = result.from('top.ts')[0]!;
+    // Two root edges, four per non-leaf layer, two leaf edges and one declaration.
+    assert.equal(top.information.routes.length, 4 * layers + 1);
+    assert.deepEqual(top.information.roles, { type: true, value: true });
+    assert.deepEqual(result.from('typed.ts')[0]!.information.roles, { type: true, value: false });
+    assert.deepEqual(result.from('mixed.ts')[0]!.information.roles, { type: true, value: true });
+    assert.ok(result.from('mixed.ts')[0]!.information.routes.length <= 4 * layers + 6);
+    assert.deepEqual(expanded(config).from('top.ts')[0], top);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});

@@ -99,7 +99,8 @@ export async function runCli(args: readonly string[], environment: {
     ['--snapshot', projection.snapshot], ['--project', config, '--', 'MODULE_HANDLE'],
   ].map(tokens => tokens.map(shellQuote).join(' ')).join(' \\\n  ');
   // A displayed command must remain both structurally safe and executable as shown.
-  const unsafeCommandPath = /[\u0000-\u001f\u007f-\u009f\u2028\u2029]/.test(config + environment.checkout);
+  const commandPaths = config + environment.checkout;
+  const unsafeCommandPath = inlineText(commandPaths) !== commandPaths;
   const view = createView(store, projection, { ...presentation,
     ...(unsafeCommandPath ? {} : { navigation: { inspect: command } }),
   });

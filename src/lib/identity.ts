@@ -8,8 +8,8 @@ export const methods = {
   discovery: 'postcode/typescript-modules@8',
   evaluation: 'postcode/evaluate-modules@2',
   projection: 'postcode/projection@5',
-  expansions: 'postcode/typescript-expansions@1',
-  presentation: 'postcode/presentation@10',
+  expansions: 'postcode/typescript-expansions@2',
+  presentation: 'postcode/presentation@11',
   handles: 'postcode/module-handles@4',
 } as const;
 
