@@ -14,7 +14,7 @@ Program claims, Claim context, source evidence, documentation assertions, evalua
 outcomes, projections and observations remain distinct. See [usage](README.md)
 and the [architecture overview](docs/architecture/README.md).
 
-All 57 automated tests and type checks pass. Coverage includes semantic fixtures,
+All 59 automated tests and type checks pass. Coverage includes semantic fixtures,
 separate-process CLI determinism, changed-input identity, source separation,
 omission disclosure, sink delivery/privacy behavior, and actual checkout output
 exclusion for nested configurations. PostCode self-analysis has run successfully.
@@ -43,5 +43,10 @@ target-exclusion, option-like selector and documentation issues. The active
 corrects all five findings, including optional attempt-numbering cleanup, in
 `15c1398`. Its [disposition and handoff](records/reviews/2026-09-13-module-inventory-continuation.md)
 record verification and the required human-arranged Copilot rereview.
+The next Copilot review identified documentation-association validation, inaccurate
+zero-exclusion qualifications, and persistent observations from two CLI tests.
+Those three findings are corrected in `a612015`; the
+[second disposition and handoff](records/reviews/2026-09-13-module-inventory-continuation-round-2.md)
+records 59 passing tests and verified observation/test-directory cleanup.
 The continuation remains active until returned findings are resolved or the human
-explicitly accepts any residual concern. PR #1 is awaiting rereview.
+explicitly accepts any residual concern. PR #1 is awaiting another rereview.
