@@ -137,3 +137,9 @@ The destination choice does not impose retention, migration, historical-reading,
 or producer-side cache policy. Delivery failure must be visible while preserving
 a successfully produced view. The CLI and sink have automated delivery, privacy-mode, exact-output and nested-configuration
 exclusion checks. The active task still requires its instrument-validation and final review gates.
+
+Source evidence stores file associations separately from precise spans. Span ranges
+use one-based UTF-16 columns and exclusive ends. Bounded excerpts come from captured
+compiler input, never a presentation-time filesystem read. Source disclosure remains
+an explicit inspection expansion, grouped by conceptual labels, with its actual
+locations-and-excerpts level recorded in the source-escape event.

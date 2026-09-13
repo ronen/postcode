@@ -46,8 +46,8 @@ export interface QualifiedView {
     readonly modulesWithOmittedDocumentation: number;
     readonly collapsedQualifications: readonly { readonly handle: string; readonly contexts: readonly Qualification[] }[];
   };
-  readonly sourceDetail?: { readonly level: 'declaration-locations'; readonly notice: string;
-    readonly claims: readonly { readonly claim: RecordId; readonly evidence: readonly SourceEvidenceRecord[] }[] };
+  readonly sourceDetail?: { readonly level: 'declaration-locations-and-excerpts'; readonly notice: string;
+    readonly items: readonly { readonly label: string; readonly claims: readonly RecordId[]; readonly evidence: readonly SourceEvidenceRecord[] }[] };
 }
 
 /** Assembles a bounded view from already-materialized records. Neither this nor rendering evaluates. */
@@ -67,18 +67,23 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
   const expanded = projection.expansions.claims.map(id => store.get(id)).filter((record): record is Claim => record.kind === 'claim');
   const compact = presentation.format === 'unicode' && projection.lens === 'modules';
   const displayedClaims = new Map<RecordId, Claim>();
+  const sourceGroups = new Map<string, RecordId[]>();
+  const sourceGroup = (label: string, claims: readonly Claim[]) => {
+    sourceGroups.set(label, [...new Set([...(sourceGroups.get(label) ?? []), ...claims.map(claim => claim.id)])]);
+    for (const claim of claims) displayedClaims.set(claim.id, claim);
+  };
   const excerpt = (text: string, maximum: number) => {
     const characters = [...text];
     return { text: characters.slice(0, maximum).join(''), omittedTextCharacters: Math.max(0, characters.length - maximum) };
   };
-  const documentation = (subjects: readonly RecordId[], maximumDocs: number) => {
+  const documentation = (subjects: readonly RecordId[], maximumDocs: number, label: string) => {
     const associations = expanded.filter(record => record.information.type === 'documentation-association' && subjects.includes(record.subject));
     const shown = associations.slice(0, maximumDocs);
     const items: Documentation[] = shown.map(claim => {
       if (claim.information.type !== 'documentation-association') throw new Error('Expected documentation association');
       const assertion = store.get(claim.information.assertion);
       if (assertion.kind !== 'recorded-assertion') throw new Error('Expected recorded assertion');
-      displayedClaims.set(claim.id, claim);
+      sourceGroup(`Documentation for ${label} [${claim.information.association}]`, [claim]);
       const maximumTags = projection.lens === 'inspect' ? 20 : 5;
       // Keep source-oriented examples/links in the assertion record, outside normal conceptual excerpts.
       const prose = assertion.text.replace(/```[\s\S]*?```/g, '').trim();
@@ -99,13 +104,14 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
     if (!isModuleClaim(claim)) throw new Error('Expected module claim');
     // Keep the full population visible without letting external documentation dominate inventory.
     const maximumDocs = compact ? 0 : projection.lens === 'inspect' ? 3 : claim.information.facets.includes('project') ? 1 : 0;
-    displayedClaims.set(claim.id, claim);
+    const sourceLabel = `${claim.information.handle} (${entityIds.get(id)!})`;
+    sourceGroup(`Module ${sourceLabel}`, [claim]);
     const allExports = expanded.filter((record): record is ExportClaim => record.information.type === 'export' && record.subject === id);
     const allSubjects = new Set([id, ...allExports.map(exported => exported.id), ...allExports.flatMap(exported => exported.information.symbol ? [exported.information.symbol] : [])]);
     const allDocumentation = expanded.flatMap(record => record.information.type === 'documentation-association' && allSubjects.has(record.subject) ? [record.information.assertion] : []);
     const maximumExports = compact ? 3 : projection.lens === 'inspect' ? 50 : 6;
     const exports = allExports.slice(0, maximumExports).map(exported => {
-      displayedClaims.set(exported.id, exported);
+      const contributingClaims: Claim[] = [exported];
       let symbolInformation: SymbolClaim['information'] | null = null;
       if (exported.information.symbol) {
         const symbol = store.get(exported.information.symbol);
@@ -113,15 +119,16 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
         const symbolClaim = store.get(symbol.claim);
         if (symbolClaim.kind !== 'claim' || symbolClaim.information.type !== 'symbol') throw new Error('Expected symbol claim');
         symbolInformation = symbolClaim.information;
-        displayedClaims.set(symbolClaim.id, symbolClaim);
+        contributingClaims.push(symbolClaim);
       }
+      sourceGroup(`Export ${exported.information.exportedName} · ${sourceLabel}`, contributingClaims);
       const origin = exported.information.origin ? store.get(exported.information.origin) : null;
       const originClaim = origin?.kind === 'module' ? store.get(origin.claim) : null;
       const originHandle = originClaim && isModuleClaim(originClaim) ? originClaim.information.handle : null;
       return { ...exported.information, id: exported.id, qualification: qualification(exported.context), symbolInformation, originHandle, originEntityId: exported.information.origin ? entityIds.get(exported.information.origin) ?? null : null,
-        ...documentation([exported.id, ...(exported.information.symbol ? [exported.information.symbol] : [])], maximumDocs) };
+        ...documentation([exported.id, ...(exported.information.symbol ? [exported.information.symbol] : [])], maximumDocs, `${exported.information.exportedName} · ${sourceLabel}`) };
     });
-    const moduleDocumentation = documentation([id], maximumDocs);
+    const moduleDocumentation = documentation([id], maximumDocs, `module ${sourceLabel}`);
     const shownDocumentation = [...moduleDocumentation.documentation, ...exports.flatMap(exported => exported.documentation)];
     const omittedDocumentationInModule = allDocumentation.some(id => !shownDocumentation.some(doc => doc.id === id))
       || shownDocumentation.some(doc => doc.omittedTextCharacters > 0 || doc.omittedTags > 0 || doc.tags.some(tag => tag.omittedTextCharacters > 0));
@@ -158,16 +165,23 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
       modulesWithOmittedDocumentation: listed.filter(module => module.omittedDocumentationInModule).length,
       collapsedQualifications: collapsed.map(module => ({ handle: module.handle, contexts: contexts.filter(context => context.scope === module.id) })) },
     ...(presentation.sourceDetail ? { sourceDetail: {
-      level: 'declaration-locations' as const,
-      notice: 'Source escape: locations supporting displayed claims only; no full-file content. Omitted exports/documentation have no source disclosure.',
-      claims: [...displayedClaims.values()].map(claim => {
-        const context = store.get(claim.context);
-        if (context.kind !== 'claim-context') throw new Error('Expected Claim context');
-        return { claim: claim.id, evidence: context.evidence.map(id => {
-          const record = store.get(id);
-          if (record.kind !== 'source-evidence') throw new Error('Expected source evidence');
-          return record;
-        }) };
+      level: 'declaration-locations-and-excerpts' as const,
+      notice: 'Source locations and bounded excerpts supporting displayed claims only. File associations have no excerpt. Range ends are exclusive; ↪ marks a wrapped source line.',
+      items: [...sourceGroups].map(([label, claims]) => {
+        const evidence = new Map<string, SourceEvidenceRecord>();
+        for (const id of claims) {
+          const claim = displayedClaims.get(id)!;
+          const context = store.get(claim.context);
+          if (context.kind !== 'claim-context') throw new Error('Expected Claim context');
+          for (const id of context.evidence) {
+            const record = store.get(id);
+            if (record.kind !== 'source-evidence') throw new Error('Expected source evidence');
+            // Resolution occurrences are not a module's declaration association.
+            if (claim.information.type === 'module' && record.resolution) continue;
+            evidence.set(JSON.stringify([record.path, record.start, record.length]), record);
+          }
+        }
+        return { label, claims, evidence: [...evidence.values()] };
       }),
     } } : {}),
   };
@@ -176,13 +190,30 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
 const terminalText = (text: string) => text.replace(/[\u0000-\u0008\u000b-\u001f\u007f-\u009f]/g,
   character => `\\u${character.charCodeAt(0).toString(16).padStart(4, '0')}`);
 
+/** Wrap display text without changing the stored assertion or source excerpt. */
+function wrapText(text: string, indent: string, width = 88, continuation = indent): string[] {
+  const available = Math.max(1, width - Math.max([...indent].length, [...continuation].length));
+  return terminalText(text.replace(/\r\n/g, '\n')).split('\n').flatMap(line => {
+    const result: string[] = [];
+    let rest = [...line];
+    while (rest.length > available) {
+      let end = rest.slice(0, available + 1).lastIndexOf(' ');
+      if (end < 1) end = available;
+      result.push((result.length ? continuation : indent) + rest.slice(0, end).join(''));
+      rest = rest.slice(end + (rest[end] === ' ' ? 1 : 0));
+    }
+    result.push((result.length ? continuation : indent) + rest.join(''));
+    return result;
+  });
+}
+
 export function renderUnicode(view: QualifiedView): string {
   const selection = view.projection.selection;
   const inventory = view.projection.lens === 'modules';
   const lines = [`${inventory ? 'Modules' : 'Inspect'} · configured TypeScript project`,
     `Snapshot ${view.projection.snapshot.replace(/^snapshot:/, '').slice(0, 12)}`,
     inventory ? `${selection.population} module${selection.population === 1 ? '' : 's'} found · ${view.modules.length} listed${view.display.collapsedModules ? ` · ${view.display.collapsedModules} external module${view.display.collapsedModules === 1 ? '' : 's'} collapsed` : ''}`
-      : `${selection.matches} module${selection.matches === 1 ? '' : 's'} selected from ${selection.population} · ${selection.matches === 1 ? 'exact match' : 'exact matches'} for ${view.projection.parameters.selector}`];
+      : `${selection.matches} module${selection.matches === 1 ? '' : 's'} selected from ${selection.population} · ${selection.matches === 0 ? 'no exact match' : selection.matches === 1 ? 'exact match' : 'exact matches'} for ${view.projection.parameters.selector}`];
   if (!selection.populationEstablished) lines.push('Module population is not established.');
   if (selection.referenceStatus === 'snapshot-required') lines.push('No current match: handle or compact Entity ID selection requires --snapshot from its inventory.');
   if (selection.referenceStatus === 'snapshot-mismatch') lines.push('No current match: the supplied snapshot differs from this analysis; no successor is inferred.');
@@ -212,9 +243,9 @@ export function renderUnicode(view: QualifiedView): string {
     for (const doc of items) {
       documentationDisplayed = true;
       lines.push(`${indent}doc [recorded assertion] (${doc.association}):`);
-      for (const line of doc.text.split('\n')) if (line.trim()) lines.push(`${indent}  ${line}`);
+      lines.push(...wrapText(doc.text, `${indent}  `));
       if (doc.omittedTextCharacters) lines.push(`${indent}  … ${doc.omittedTextCharacters} assertion character(s) omitted.`);
-      for (const tag of doc.tags) lines.push(`${indent}  @${tag.name} ${tag.text}${tag.omittedTextCharacters ? ` … (${tag.omittedTextCharacters} characters omitted)` : ''}`);
+      for (const tag of doc.tags) lines.push(...wrapText(`@${tag.name} ${tag.text}${tag.omittedTextCharacters ? ` … (${tag.omittedTextCharacters} characters omitted)` : ''}`, `${indent}  `));
       if (doc.omittedTags) lines.push(`${indent}  … ${doc.omittedTags} structured tag(s) omitted (including source-oriented examples/links).`);
     }
     if (omitted) lines.push(`${indent}… ${omitted} documentation assertion(s) omitted.`);
@@ -236,8 +267,10 @@ export function renderUnicode(view: QualifiedView): string {
   const handleWidth = Math.min(30, Math.max(6, ...view.modules.map(module => module.handle.length)));
   const idWidth = Math.max(9, ...view.modules.map(module => module.entityId.length));
   if (view.modules.length) {
-    const facets = commonFacets.filter(facet => !inventory || facet !== 'project');
-    lines.push('', `${inventory ? 'Project modules' : 'Selected modules'} · ${view.modules.length}${allAnonymous ? ' · TypeScript names not established' : ''}${facets.length ? ` · ${facets.join(', ')}` : ''}`);
+    const projectSelection = commonFacets.includes('project');
+    const ordinary = projectSelection && commonFacets.includes('implementation-available') && view.modules.every(module => module.facets.every(facet => facet === 'project' || facet === 'implementation-available'));
+    const facets = commonFacets.filter(facet => facet !== 'project' && (!ordinary || facet !== 'implementation-available'));
+    lines.push('', `${inventory ? 'Project modules' : projectSelection ? 'Selected project modules' : 'Selected modules'} · ${view.modules.length}${allAnonymous ? ' · TypeScript names not established' : ''}${facets.length ? ` · ${facets.join(', ')}` : ''}`);
     if (inventory) lines.push('', `${'Handle'.padEnd(handleWidth)}  ${'Entity ID'.padEnd(idWidth)}  Export names`);
   }
   for (const module of view.modules) {
@@ -276,8 +309,8 @@ export function renderUnicode(view: QualifiedView): string {
   const omissions: string[] = [];
   if (view.display.collapsedModules) omissions.push(`${view.display.collapsedModules} external module${view.display.collapsedModules === 1 ? '' : 's'} and their details`);
   if (view.display.omittedExports) omissions.push(`${view.display.omittedExports} export${view.display.omittedExports === 1 ? '' : 's'} from listed modules`);
-  if (view.display.modulesWithOmittedDocumentation) omissions.push(`documentation for ${view.display.modulesWithOmittedDocumentation} listed module${view.display.modulesWithOmittedDocumentation === 1 ? '' : 's'}`);
-  if (omissions.length) lines.push('', 'Display', '  Omitted:', ...omissions.map(omission => `    ${omission}`), inventory ? '  Inspection shows detail; JSON lists the full selected inventory.' : '  Displayed detail is bounded; JSON retains fuller context.');
+  if (inventory && view.display.modulesWithOmittedDocumentation) omissions.push(`documentation for ${view.display.modulesWithOmittedDocumentation} listed module${view.display.modulesWithOmittedDocumentation === 1 ? '' : 's'}`);
+  if (omissions.length) lines.push('', 'Display', '  Omitted:', ...omissions.map(omission => `    ${omission}`), inventory ? '  Inspection shows detail; JSON lists all selected modules with bounded related detail.' : '  Displayed detail is bounded; JSON retains fuller context.');
   lines.push('', 'Status');
   if (view.analysis?.provider === 'typescript') {
     const exportsComplete = view.evaluations.filter(outcome => outcome.requirement === 'exports');
@@ -307,14 +340,27 @@ export function renderUnicode(view: QualifiedView): string {
       || context.diagnostics.some(diagnostic => !sharedDiagnostics.has(diagnostic.code)));
     if (exceptional.length) { lines.push(`- Collapsed ${collapsed.handle}:`); local(exceptional, '  '); }
   }
-  if (view.presentation.navigation) lines.push('', 'Next · inspect a module:', view.presentation.navigation.inspect);
+  if (view.presentation.navigation) {
+    const next = inventory ? 'Next · inspect a module:' : selection.matches === 0
+      ? 'Next · choose a handle or Entity ID from modules and replace MODULE_HANDLE:'
+      : `Next · replace MODULE_HANDLE to inspect another module${view.sourceDetail ? '.' : '; add --source-detail for supporting source evidence.'}`;
+    lines.push('', next, view.presentation.navigation.inspect);
+  }
   else lines.push('', 'Inspection requires an exact subject, the full snapshot ID from JSON, and the selected --project configuration.');
   lines.push('More: --help; command and concepts reference in docs/cli-reference.md.');
   if (view.sourceDetail) {
     lines.push('', 'SOURCE DETAIL — explicit source escape', view.sourceDetail.notice);
-    for (const claim of view.sourceDetail.claims) {
-      lines.push(`Claim ${claim.claim}`);
-      for (const evidence of claim.evidence) lines.push(`  ${evidence.path} · offset ${evidence.start}, length ${evidence.length}`);
+    for (const item of view.sourceDetail.items) {
+      lines.push('', item.label);
+      for (const evidence of item.evidence) {
+        const location = evidence.location;
+        if (location.association === 'file') lines.push(`  ${evidence.path} · file association`);
+        else {
+          lines.push(`  ${evidence.path}:${location.from.line}:${location.from.column}–${location.to.line}:${location.to.column}`);
+          lines.push(...wrapText(location.excerpt.text, '    ', 88, '    ↪ '));
+          if (location.excerpt.omittedCharacters) lines.push(`    … ${location.excerpt.omittedCharacters} source character(s) omitted.`);
+        }
+      }
     }
   }
   return `${lines.map(terminalText).join('\n')}\n`;

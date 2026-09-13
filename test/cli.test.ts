@@ -63,11 +63,11 @@ test('normal views omit source facets and raw evidence; inspection source escape
   const detail = JSON.parse(inspected.stdout) as QualifiedView;
   assert.equal(detail.modules.length, 1);
   assert.ok(detail.sourceDetail);
-  assert.ok(detail.sourceDetail.claims.flatMap(claim => claim.evidence).every(evidence => evidence.path.endsWith('/ambient.d.ts')));
+  assert.ok(detail.sourceDetail.items.flatMap(claim => claim.evidence).every(evidence => evidence.path.endsWith('/ambient.d.ts')));
   const batch = inspected.batches[0]!;
   assert.deepEqual(batch.events.map(event => event.type), ['view-produced', 'source-escape']);
   assert.equal(batch.records.length, 4);
-  assert.equal(batch.events[1]!.sourceLevel, 'declaration-locations');
+  assert.equal(batch.events[1]!.sourceLevel, 'declaration-locations-and-excerpts');
   const missing = await invoke(['inspect', 'no match', '--project', config, '--json']);
   assert.equal((JSON.parse(missing.stdout) as QualifiedView).projection.selection.matches, 0);
 });
@@ -300,7 +300,7 @@ test('compact inventory consolidates common labels and counts documentation beyo
     assert.ok(result.stdout.includes('Omitted:\n    1 export from listed modules\n    documentation for 1 listed module'));
     assert.equal(result.stdout.split('TypeScript names not established').length - 1, 1);
     assert.equal(result.stdout.includes('(anonymous module)'), false);
-    assert.equal(result.stdout.split('implementation-available').length - 1, 1);
+    assert.equal(result.stdout.split('implementation-available').length - 1, 0);
     assert.equal(result.stdout.includes('doc [recorded assertion]'), false);
     assert.equal(result.stdout.includes('not calls or dependencies'), false);
     assert.equal(result.stdout.includes('Not a displayed cue.'), false);
@@ -365,7 +365,7 @@ test('basename mnemonic evidence stays distinct from names and precise scoped En
     const multiple = await invoke(['inspect', 'evaluation', '--snapshot', view.projection.snapshot, '--project', config]);
     assert.ok(multiple.stdout.includes('2 modules selected from 4 · exact matches for evaluation'));
     const zero = await invoke(['inspect', 'absent', '--project', config]);
-    assert.ok(zero.stdout.includes('0 modules selected from 4 · exact matches for absent'));
+    assert.ok(zero.stdout.includes('0 modules selected from 4 · no exact match for absent'));
     assert.ok(zero.stdout.includes('Module membership established by TypeScript analysis.'));
     assert.equal(zero.stdout.includes('export information is qualified'), false);
     const unicode = (await invoke(['--project', config])).stdout;
@@ -398,5 +398,72 @@ test('exceptional inspections retain forwarding provenance, qualified failures, 
     assert.ok(detail.stdout.includes('no established truth, currency or completeness'));
     assert.ok(detail.stdout.includes('SOURCE DETAIL — explicit source escape'));
     assert.equal(detail.stdout.includes('Module membership and effective exports established'), false);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('source expansion groups deduplicated evidence by displayed concepts with precise ranges and excerpts', async () => {
+  const inventory = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+  const origin = inventory.modules.find(module => module.handle === 'origin')!;
+  const args = ['inspect', origin.entityId, '--snapshot', inventory.projection.snapshot, '--project', config];
+  const plain = await invoke(args);
+  assert.equal(plain.stdout.includes('export interface Merged'), false);
+  const result = await invoke([...args, '--source-detail', '--json']);
+  const view = JSON.parse(result.stdout) as QualifiedView;
+  const items = view.sourceDetail!.items;
+  const module = items.find(item => item.label.startsWith('Module origin'))!;
+  assert.equal(module.evidence.length, 1);
+  assert.deepEqual(module.evidence[0]!.location, { association: 'file' });
+  const merged = items.find(item => item.label.startsWith('Export Merged'))!;
+  assert.equal(merged.evidence.length, 2);
+  assert.deepEqual(merged.evidence.map(evidence => evidence.location.association === 'span' ? evidence.location.from : null), [
+    { line: 4, column: 1 }, { line: 6, column: 1 },
+  ]);
+  const docs = items.find(item => item.label.startsWith('Documentation for Merged'))!;
+  assert.equal(docs.evidence.length, 2);
+  assert.ok(docs.evidence.every(evidence => evidence.location.association === 'span' && evidence.location.excerpt.text.startsWith('/**')));
+  for (const evidence of items.flatMap(item => item.evidence)) {
+    if (evidence.location.association === 'file') continue;
+    const source = readFileSync(evidence.path, 'utf8');
+    const span = source.slice(evidence.start, evidence.start + evidence.length);
+    assert.ok(span.startsWith(evidence.location.excerpt.text));
+    assert.equal(evidence.location.excerpt.omittedCharacters, [...span].length - [...evidence.location.excerpt.text].length);
+  }
+  const text = renderUnicode(view);
+  assert.ok(text.includes('origin.ts:4:1–4:43'));
+  assert.ok(text.includes('export interface Merged { first: string; }'));
+  assert.ok(text.includes('file association'));
+  assert.equal(text.includes('Claim snapshot:'), false);
+  assert.equal(text.includes('offset '), false);
+  assert.equal(view.sourceDetail!.level, 'declaration-locations-and-excerpts');
+});
+
+test('documentation wraps without changing stored text and source excerpts stay bounded to displayed subjects', async () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-source-bounds-'));
+  try {
+    const project = path.join(root, 'tsconfig.json');
+    writeFileSync(project, '{"compilerOptions":{"noLib":true,"types":[]},"files":["sample.ts"]}');
+    const prose = Array.from({ length: 160 }, (_, index) => `TEST_SEGMENT_${index}`).join(' ');
+    const source = `/** ${prose} */\r\nexport const a = "😀"; export const b = 2;\r\n${Array.from({ length: 50 }, (_, index) => `export const c${String(index).padStart(2, '0')}=${index};`).join('\r\n')}\r\nexport const zzzOmitted = 'DO_NOT_DISCLOSE';`;
+    writeFileSync(path.join(root, 'sample.ts'), source);
+    const inventory = JSON.parse((await invoke(['--project', project, '--json'])).stdout) as QualifiedView;
+    const view = JSON.parse((await invoke(['inspect', inventory.modules[0]!.entityId, '--snapshot', inventory.projection.snapshot, '--project', project, '--source-detail', '--json'])).stdout) as QualifiedView;
+    const text = renderUnicode(view);
+    const documentation = view.modules[0]!.exports[0]!.documentation[0]!;
+    assert.equal(documentation.text, prose.slice(0, 2000));
+    assert.ok(text.split('\n').filter(line => line.startsWith('  │  ')).every(line => [...line].length <= 88));
+    assert.ok(text.includes('assertion character(s) omitted'));
+    assert.equal(text.includes('documentation for 1 listed module'), false);
+    assert.equal(text.includes('DO_NOT_DISCLOSE'), false);
+    assert.equal(text.includes('Export zzzOmitted'), false);
+    assert.ok(text.includes('source character(s) omitted'));
+    const b = view.sourceDetail!.items.find(item => item.label.startsWith('Export b '))!.evidence[0]!.location;
+    assert.equal(b.association, 'span');
+    if (b.association === 'span') assert.deepEqual(b.from, { line: 2, column: 37 });
+    for (const evidence of view.sourceDetail!.items.flatMap(item => item.evidence)) {
+      if (evidence.location.association === 'span') {
+        assert.ok([...evidence.location.excerpt.text].length <= 300);
+        assert.ok(evidence.location.excerpt.text.split('\n').length <= 4);
+      }
+    }
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

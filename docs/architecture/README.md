@@ -118,8 +118,10 @@ selection. JSON retains the full selected module list and full identities.
 Detailed inspection exposes exports and recorded assertions; shared qualifications
 appear once while exceptional provenance stays local. JSON has an explicitly
 experimental schema. Normal qualifications omit detailed
-source evidence. Explicit inspection source detail contains only locations backing
-displayed claims and never renders full-file content.
+source evidence. Explicit inspection source detail groups locations and bounded excerpts by displayed
+concepts, retains claim keys in JSON, and never renders full-file content. The compiler
+boundary captures ranges and excerpts from already observed input. Presentation does
+not reread files; file-level module associations have no excerpt.
 
 Successful capability states and common module anonymity/facets are consolidated.
 Analysis status, aggregate display omissions, and run limitations remain separate;

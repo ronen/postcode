@@ -14,7 +14,7 @@ Usage: postcode [modules | inspect <exact-selector>] [--project <tsconfig.json>]
 Defaults: modules(project), ./tsconfig.json, Unicode text.
 inspect accepts one exact name, mnemonic handle, or Entity ID; zero/one/multiple matches are explicit.
 Handle and compact Entity ID selection require --snapshot from the inventory. A stale snapshot produces no current match.
---source-detail requires inspect and discloses only source locations supporting displayed claims.
+--source-detail requires inspect and discloses source locations and bounded excerpts supporting displayed claims.
 JSON uses the experimental postcode-view/0 schema. Exports/documentation expansions are declared before evaluation.
 Unicode inventory lists project modules with 3 export cues and collapses external modules with counts.
 JSON lists all selected modules with up to 6 exports; inspection shows up to 50. Omissions are explicit.

@@ -142,10 +142,22 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
     const evidence = (declaration: ts.Node, compilerName: string | null, resolution?: SourceEvidenceRecord['resolution']): RecordId => {
       const file = declaration.getSourceFile();
       const start = ts.isSourceFile(declaration) ? 0 : declaration.getStart(file);
+      const position = (offset: number) => {
+        const point = file.getLineAndCharacterOfPosition(offset);
+        return { line: point.line + 1, column: point.character + 1 };
+      };
+      // Capture from the already-observed compiler input; presentation never rereads source.
+      const span = ts.isSourceFile(declaration) ? '' : file.text.slice(start, declaration.end);
+      const excerpt = [...span.split('\n').slice(0, 4).join('\n')].slice(0, 300).join('');
       const detail: SourceEvidenceRecord = {
-        kind: 'source-evidence', id: recordId(snapshot, 'source', [file.fileName, start, declaration.end, compilerName, resolution ?? null]),
+        kind: 'source-evidence', id: recordId(snapshot, 'source', [file.fileName, start, declaration.end, ts.isSourceFile(declaration) ? 'file' : 'span', compilerName, resolution ?? null]),
         snapshot, method, path: file.fileName, contentDigest: digest(file.text),
-        start, length: declaration.end - start, configuredRoot: roots.has(file.fileName), compilerName,
+        start, length: declaration.end - start,
+        location: ts.isSourceFile(declaration) ? { association: 'file' } : {
+          association: 'span', from: position(start), to: position(declaration.end),
+          excerpt: { text: excerpt, omittedCharacters: [...span].length - [...excerpt].length },
+        },
+        configuredRoot: roots.has(file.fileName), compilerName,
         ...(resolution ? { resolution } : {}),
       };
       records.push(detail);

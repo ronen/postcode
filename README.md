@@ -55,7 +55,8 @@ The suggested inspection command includes the explicit CLI and selected-project
 paths as invocation context; replace only its subject. A short snapshot label is
 displayed in the header, while that command retains the full required snapshot.
 `--source-detail` is available only for inspection and shows supporting source
-locations, separately identified as source escape. It does not show full files.
+locations and bounded excerpts grouped by displayed concepts, separately identified
+as source escape. File-level associations have no excerpt; it does not show full files.
 
 The default Unicode inventory lists project-associated modules with up to three
 export names each. External modules are collapsed with an accurate count; their entries and details are omitted from display, not from analysis.
@@ -100,7 +101,7 @@ version-zero observation batch to a local file under this PostCode checkout's
 `_observations/` directory. The CLI discloses that absolute destination on stderr.
 The batch includes the request, analysis context, qualified view, exact output,
 and any source-escape event. It can contain repository-derived documentation and
-explicitly requested source locations. Nothing is sent remotely. The local sink
+explicitly requested source locations and excerpts. Nothing is sent remotely. The local sink
 creates its directory with mode `0700` and files with mode `0600`.
 
 Observation output is Git-ignored and explicitly excluded from analysis, along

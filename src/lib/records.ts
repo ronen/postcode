@@ -114,6 +114,14 @@ export interface SourceEvidenceRecord extends RecordContext {
   readonly contentDigest: string;
   readonly start: number;
   readonly length: number;
+  /** File associations deliberately carry no excerpt or precise declaration range. */
+  readonly location: { readonly association: 'file' } | {
+    readonly association: 'span';
+    /** One-based UTF-16 columns; the end position is exclusive, matching compiler spans. */
+    readonly from: { readonly line: number; readonly column: number };
+    readonly to: { readonly line: number; readonly column: number };
+    readonly excerpt: { readonly text: string; readonly omittedCharacters: number };
+  };
   readonly configuredRoot: boolean;
   readonly compilerName: string | null;
   readonly resolution?: {

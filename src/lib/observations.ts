@@ -10,7 +10,7 @@ export interface ObservationBatch {
   readonly events: readonly {
     readonly id: string; readonly type: 'view-produced' | 'source-escape';
     readonly request: string; readonly analysis: string; readonly view: string; readonly rendered: string;
-    readonly sourceLevel?: 'declaration-locations';
+    readonly sourceLevel?: 'declaration-locations-and-excerpts';
   }[];
 }
 

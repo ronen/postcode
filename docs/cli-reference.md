@@ -96,8 +96,10 @@ type/value roles and exceptional export provenance remain available in inspectio
 their details, unlisted exports, and omitted documentation. Aggregate export and
 documentation-module counts refer to listed modules, excluding the separately
 collapsed group. A module can contribute to the documentation omission count even
-when its documented export is outside the small export cue. Inspection still
-discloses assertion, character and tag omissions locally.
+when its documented export is outside the small export cue. Inspection discloses assertion, character and tag omissions locally, without
+repeating an aggregate item that could imply all module documentation was absent.
+Unicode wraps documentation to 88-character lines including its indentation; the
+stored text and structured excerpt remain unchanged.
 
 ## Supported TypeScript population and qualifications
 
@@ -120,9 +122,17 @@ exceptions remain visible in inspection.
 ## Source detail and observations
 
 `--source-detail` is an explicit escape from conceptual information. It displays
-only source locations supporting selected, displayed claims, separately marked.
-It does not provide full-file rendering or arbitrary source browsing. The invocation
-records source-escape use alongside the produced view.
+locations and bounded excerpts supporting selected, displayed claims, grouped by
+module, export and documentation labels. Ranges use one-based lines and UTF-16
+columns, with exclusive ends. Excerpts retain at most four source lines and 300
+Unicode characters per evidence span; omitted characters are counted. Wrapped
+source lines use `↪` in Unicode. File-level module associations are labeled and
+have no excerpt. Full claim record keys remain in JSON.
+
+Evidence comes from already captured compiler inputs; rendering never rereads the
+filesystem. Shared export/symbol spans are deduplicated within each source item.
+This is not full-file rendering or arbitrary source browsing. The invocation
+records source-escape use at the locations-and-excerpts level alongside the view.
 
 Every view-producing CLI invocation submits one self-contained observation batch
 to the PostCode checkout's `_observations/` directory. The destination is disclosed
