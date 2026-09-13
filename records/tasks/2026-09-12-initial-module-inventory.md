@@ -99,6 +99,23 @@ proposed unfamiliar repository before acquisition or analysis. External validati
 and final integrated independent review remain within this task. No scope revision,
 subjective acceptance, final review, or task closure is claimed.
 
+### External validation and second Unicode review sample — 2026-09-13
+
+The human-approved p-queue exercise is complete at pinned revision
+`180ab9e25cd10b6f548767d7176076b50d25e188`; its configuration, dependency state,
+results and evidence are recorded in the [external validation record](../validation/2026-09-13-p-queue.md).
+No target runtime code or lifecycle scripts were executed, and no third-party
+contents or real-project observations were committed.
+
+The human then requested further Unicode changes and explicitly reserved
+acceptance. `43b6e6b` implements compact project entries, counted external collapse,
+conceptual handles requiring separate snapshot context, consolidated qualifications,
+normal-provenance suppression, and detailed inspection. The full module lens
+population is unchanged. The [review response](../reviews/2026-09-13-unicode-response.md)
+preserves all findings and dispositions and identifies the new inventory and
+inspection samples for human review. Unicode remains unapproved. Final integrated
+review handoff is on hold for the human's further feedback; the task remains active.
+
 ## Verification
 
 ### First checkpoint — 2026-09-12
@@ -172,3 +189,35 @@ Final integrated review and remaining validation are still required.
   human Unicode-output inspection, and final integrated independent review. The
   proposed repository and next steps are in the handoff; final review must follow
   substantial completion of planned verification before task closure.
+
+### External validation and Unicode review corrections — 2026-09-13
+
+- The original p-queue exercise found the expected five project modules and two
+  external declaration modules. A separate standard-host compiler probe confirmed
+  that population. All five project export sets were checked against pinned
+  source declarations. Independent JSON processes matched exactly, and normal
+  versus explicit-source inspection preserved qualifications and source separation.
+  Ten private invocation batches, including five source-escape events, were checked.
+- After Unicode corrections, all 39 automated tests and type checking pass.
+  Coverage now includes collapse and preview counts, retained collapsed-module
+  limitations, absence of repeated full inventory identities and ordinary export
+  provenance, exceptional aliases/forwarding/merged declarations, honest empty
+  exports, detailed inspection, and separate-process Unicode determinism.
+- A changed-input regression keeps the same conceptual handle text and verifies
+  explicit no-current-match results for a stale snapshot or full Entity ID.
+  Unscoped handle requests cannot silently select a current successor.
+- Final self-analysis retains 174 modules in JSON with all 349 evaluation scopes
+  fully materialized. Unicode lists exactly 18 project entries and discloses 156
+  collapsed modules. The second inventory sample is 105 lines and 5,226 bytes;
+  the inspection sample retains all six presentation-module exports and the
+  documentation assertion. Snapshot context, artifact hashes and exact local
+  evidence locations are recorded in the review response.
+- Repeated p-queue validation after the corrections retains seven JSON modules,
+  lists five and collapses two in Unicode, and selects the entry module by its
+  conceptual handle plus snapshot with all six entry exports intact.
+- Reviewed documentation links, preserved the supplied Unicode review verbatim,
+  and checked the complete branch diff for whitespace and unintended generated
+  contents. Observations, generated output and dependencies remain ignored.
+- Still pending: explicit human Unicode approval and final independent integrated
+  review. Existing clean-agent responses apply to their original input, not the
+  second sample. No subjective acceptance or completion is claimed.
