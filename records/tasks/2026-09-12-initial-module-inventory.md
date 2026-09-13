@@ -48,6 +48,10 @@ Do not close the task merely because the CLI runs or an intermediate milestone p
 
 Claude has performed a review, I've placed the findings in \_work/review-findings.md ; the review reports that none of the findings are blocking, so i will leave it to you whether/which you think they should be addressed before continuing with the task
 
+### 2026-09-13 — external repository approved; Unicode acceptance pending
+
+the use of p-queue is approved.  the unicode output is not approved yet; i will examine it and give you feedback
+
 ## Outcome
 
 ### First architectural checkpoint — 2026-09-12
