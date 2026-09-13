@@ -109,6 +109,19 @@ test('invalid CLI requests and project-open failures produce no view or misleadi
   }
 });
 
+test('modules usage errors identify source-detail and snapshot as inspection-only options', async () => {
+  for (const lens of [[], ['modules']]) {
+    for (const options of [['--source-detail'], ['--snapshot', `snapshot:${'a'.repeat(64)}`],
+      ['--source-detail', '--snapshot', `snapshot:${'a'.repeat(64)}`]]) {
+      const result = await invoke([...lens, ...options]);
+      assert.equal(result.exit, 2);
+      assert.equal(result.stdout, '');
+      assert.equal(result.batches.length, 0);
+      assert.ok(result.stderr.includes('--source-detail and --snapshot require inspect'));
+    }
+  }
+});
+
 test('end-of-options preserves option-like exact names while keeping one-selector validation', async () => {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-option-names-'));
   try {

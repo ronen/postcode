@@ -33,7 +33,8 @@ construction reads stored information, selects relevant subjects and context,
 and writes an addressable projection. It does not call TypeScript.
 
 The current store adapter uses private in-memory maps. It clones and freezes
-records, rejects conflicting replacements and invalid references (including entity
+records, requires each snapshot record's own ID to equal its snapshot identity,
+rejects conflicting replacements and invalid references (including entity
 claim discriminators and reciprocal subjects, and documentation-association
 subjects matching their module, origin-symbol or export-alias provenance), and
 supports multiple snapshots and evaluation attempts. No persistence, sessions, SQL query

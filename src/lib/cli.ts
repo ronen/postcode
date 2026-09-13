@@ -78,7 +78,7 @@ export async function runCli(args: readonly string[], environment: {
   const lens = positional[0] ?? 'modules';
   if ((lens !== 'modules' && lens !== 'inspect') || (lens === 'modules' && positional.length > 1)
     || (lens === 'inspect' && positional.length !== 2) || ((sourceDetail || expectedSnapshot !== null) && lens !== 'inspect')) {
-    environment.stderr('Usage error: use modules or inspect <one exact selector>; source detail requires inspect.\n');
+    environment.stderr('Usage error: use modules or inspect <one exact selector>; --source-detail and --snapshot require inspect.\n');
     return 2;
   }
   const destination = path.resolve(environment.checkout, '_observations');

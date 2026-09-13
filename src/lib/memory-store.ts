@@ -40,7 +40,8 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
     }
     for (const record of pending.values()) {
       const snapshot = pending.get(record.snapshot) ?? this.#records.get(record.snapshot);
-      if (snapshot?.kind !== 'snapshot' || snapshot.id !== snapshot.snapshot) {
+      if ((record.kind === 'snapshot' && record.id !== record.snapshot)
+        || snapshot?.kind !== 'snapshot' || snapshot.id !== snapshot.snapshot) {
         throw new Error('Missing or invalid snapshot');
       }
       for (const id of references(record)) {

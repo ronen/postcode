@@ -34,6 +34,27 @@ test('store rejects overwrites, missing/cross-snapshot/wrong-kind references and
   assert.deepEqual(store.get(snapshot), record);
 });
 
+test('snapshot records require their own matching identity even when referencing a valid pending or stored snapshot', () => {
+  for (const existingTarget of [false, true]) {
+    const { store, record } = context();
+    const targetId = snapshotId('valid-target');
+    const target: SnapshotRecord = { ...record, id: targetId, snapshot: targetId };
+    const malformed: SnapshotRecord = { ...target, id: snapshotId('orphan') };
+    const marker: ClaimContextRecord = { kind: 'claim-context', id: recordId(targetId, 'context', 'marker'),
+      snapshot: targetId, method: 'test@0', scope: 'configured-project', evidence: [],
+      status: 'mechanically-derived', guarantee: 'Synthetic fixture', limitations: [], diagnostics: [] };
+    if (existingTarget) store.put([target]);
+    const batch = [marker, malformed, ...(existingTarget ? [] : [target])];
+    assert.throws(() => store.put(batch), /invalid snapshot/i);
+    for (const rejected of batch) assert.throws(() => store.get(rejected.id), /Missing/);
+    assert.deepEqual(store.get(record.id), record);
+    if (!existingTarget) store.put([target]);
+    assert.deepEqual(store.get(targetId), target);
+    store.put([marker]);
+    assert.deepEqual(store.get(marker.id), marker);
+  }
+});
+
 test('entity claims require the matching discriminator and reciprocal subject before any batch is committed', () => {
   for (const kind of ['module', 'symbol'] as const) {
     for (const mismatch of ['discriminator', 'subject', 'export-claim'] as const) {
