@@ -2,7 +2,7 @@ import path from 'node:path';
 import ts from 'typescript';
 import { compare, digest, methods, recordId, snapshotId } from '../identity.js';
 import type { DiscoveryResult, ModuleAnalysis } from '../evaluation.js';
-import type { ClaimContextRecord, ModuleExpansion, ModuleFacet, ProgramRecord, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
+import type { ClaimContextRecord, ModuleClaim, ModuleExpansion, ModuleFacet, ProgramRecord, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
 import { captureInputs } from './inputs.js';
 import { prepareExpansions } from './expansions.js';
 
@@ -178,8 +178,7 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
     }) }));
     const globalContext = makeContext('configured-project', [...files.map(file => evidence(file, null)), ...resolutionEvidence.map(item => item.id)], files);
     const moduleIds: RecordId[] = [];
-    let anonymous = 0;
-    const mnemonic = (candidate: typeof candidates[number]): string => {
+    const mnemonic = (candidate: typeof candidates[number]): Pick<ModuleClaim['information'], 'handle' | 'handleProvenance'> => {
       // Declared export names are conceptual recognition evidence, not inferred module responsibilities.
       const exported = [...(candidate.symbol?.exports?.values() ?? [])].filter(symbol => !symbol.getName().startsWith('__'));
       exported.sort((a, b) => Number(Boolean(b.flags & (ts.SymbolFlags.Class | ts.SymbolFlags.Function)))
@@ -188,14 +187,19 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       // A mostly-type module is better cued by an actual exported type than by a lone helper predicate.
       const representative = types.length >= 3 && types.length * 2 > exported.length
         ? [...types].sort((a, b) => compare(a.getName(), b.getName())) : exported;
-      const cue = candidate.name ?? representative.map(symbol => {
+      const source = candidate.declarations.find(ts.isSourceFile);
+      const basename = source ? path.basename(source.fileName).replace(/(?:\.d)?\.[cm]?[jt]sx?$/i, '') : null;
+      const filename = basename && !['index', 'main', 'entry', 'mod'].includes(basename.toLowerCase()) ? basename : null;
+      const exportCue = representative.map(symbol => {
         if (symbol.getName() !== 'default') return symbol.getName();
         const named = symbol.getDeclarations()?.find(node => (ts.isClassDeclaration(node) || ts.isFunctionDeclaration(node)) && node.name);
         return named && (ts.isClassDeclaration(named) || ts.isFunctionDeclaration(named)) ? named.name?.text : undefined;
       }).find(Boolean);
+      const cue = candidate.name ?? filename ?? exportCue;
+      const handleProvenance = candidate.name ? 'language-name' : filename ? 'source-basename' : exportCue ? 'declared-export' : 'anonymous-fallback';
       const slug = cue?.replace(/([A-Z])([A-Z][a-z])/g, '$1-$2').replace(/([a-z0-9])([A-Z])/g, '$1-$2')
-        .normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48).replace(/-$/, '');
-      return slug ? `module-${slug}` : `anonymous-${String(++anonymous).padStart(2, '0')}`;
+        .normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      return { handle: slug || 'anonymous', handleProvenance: slug ? handleProvenance : 'anonymous-fallback' };
     };
     for (const candidate of candidates) {
       const id = recordId(snapshot, 'module', candidate.key);
@@ -207,7 +211,7 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       records.push({ kind: 'module', id, snapshot, method, claim }, {
         kind: 'claim', id: claim, snapshot, method, subject: id, context,
         information: { type: 'module', name: candidate.name,
-          handle: mnemonic(candidate), handleStatus: 'generated-navigation-aid',
+          ...mnemonic(candidate), handleStatus: 'generated-navigation-aid',
           facets: candidate.facets },
       });
       moduleIds.push(id);

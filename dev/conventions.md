@@ -92,16 +92,17 @@ resolve to zero, one, or multiple subjects. Multiple input referents and list
 selector syntax remain deferred by the initial plan; this is distinct from
 multiple matches of one referent.
 
-Generated mnemonic handles contain conceptual name/export cues, never snapshot
-hash text. Handles are not cross-snapshot identities: exact handle selection
-requires the inventory's snapshot through `--snapshot`. The projection records
-the requested snapshot and an explicit current/snapshot-required/snapshot-mismatch
-reference status. Mismatches never infer successors. Full Entity IDs remain
-snapshot-qualified; exact conceptual names are current-snapshot lookups.
-Mostly-type modules prefer an actual exported type over a helper predicate when
-generating a mnemonic; this is a syntactic naming heuristic, not responsibility
-classification. Unicode uses a short snapshot label for recognition, while the
-next-action command and structured view retain the full reference for validation.
+Generated mnemonic handles use language names, extensionless source basenames or
+declared exports, never snapshot hash text. Retain generated status and provenance;
+a basename cue is not a conceptual name or a responsibility classification.
+Generic basenames fall back to representative exports or honest anonymity.
+
+Compact module Entity IDs abbreviate record-key digests against the entire module
+population, extending prefixes on collision. Compute the same mapping for inventory
+and inspection, including collapsed modules. Handles and compact IDs require the
+full snapshot through `--snapshot`; missing or stale scope cannot infer successors.
+Keep internal record keys, compact Entity IDs, names and handles distinct. The short
+Unicode snapshot label is for recognition; commands and JSON retain the full scope.
 
 Suggested commands include explicit CLI/project invocation paths and shell-quote
 their arguments. Keep those operational paths separate from discovered source

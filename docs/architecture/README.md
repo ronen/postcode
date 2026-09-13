@@ -69,10 +69,13 @@ The method registry must be bumped when the associated semantics change.
 Entity identity follows the configured compiler's source identities and ambient
 symbols. It makes no continuity claim across snapshots or relocated checkouts.
 Absolute paths contribute to internal snapshot identity, but are not conceptual
-names. Handles use conceptual names or declared export cues, with honestly
-anonymous fallbacks. The handle text contains no snapshot prefix. Inspection
-requires explicit snapshot context for handles and records a no-current-match
-state when it is missing or stale. Full Entity IDs carry the entire digest.
+names. Handles use language names, basenames or declared exports, with honest
+anonymous fallbacks. Basenames provide bounded mnemonic evidence without becoming
+conceptual names; generated provenance remains explicit. Compact Entity IDs use
+record-key digest prefixes checked against the entire module population, extended
+on collision. Inspection requires explicit snapshot scope for handles and compact
+IDs, reporting no current match when scope is missing or stale. Internal record
+keys remain separate from the compact user-facing address.
 
 Known generated-output directories are excluded before configuration discovery
 and compiler reads. The integration excludes `_observations` and `_build` under
@@ -110,8 +113,7 @@ export/documentation limits; omitted exports, assertions, tags and text characte
 remain counted. Rendering receives a qualified view value and cannot query the
 store or trigger analysis. Unicode and JSON use the same domain projection with
 different display limits. Unicode inventory lists project modules, counts collapsed
-external modules, retains their exceptional qualifications, and offers a small
-name preview. Its qualified view records display coverage separately from analysis
+external modules and retains their exceptional qualifications. Its qualified view records display coverage separately from analysis
 selection. JSON retains the full selected module list and full identities.
 Detailed inspection exposes exports and recorded assertions; shared qualifications
 appear once while exceptional provenance stays local. JSON has an explicitly

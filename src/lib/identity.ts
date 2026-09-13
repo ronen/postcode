@@ -4,13 +4,13 @@ import type { RecordId, SnapshotId } from './records.js';
 /** Bump the responsible method whenever its analysis/identity/projection semantics change. */
 export const methods = {
   inputs: 'postcode/observed-inputs@0',
-  records: 'postcode/program-records@3',
+  records: 'postcode/program-records@4',
   discovery: 'postcode/typescript-modules@4',
   evaluation: 'postcode/evaluate-modules@1',
-  projection: 'postcode/projection@2',
+  projection: 'postcode/projection@3',
   expansions: 'postcode/typescript-expansions@0',
-  presentation: 'postcode/presentation@3',
-  handles: 'postcode/module-handles@2',
+  presentation: 'postcode/presentation@4',
+  handles: 'postcode/module-handles@3',
 } as const;
 
 /** Stable key order without locale, clock, random IDs, or storage identity. */
@@ -34,4 +34,23 @@ export function snapshotId(input: unknown): SnapshotId {
 }
 export function recordId(snapshot: SnapshotId, kind: string, key: unknown): RecordId {
   return `${snapshot}:${kind}:${digest(key)}` as RecordId;
+}
+
+/** Precise module addresses, abbreviated against the complete snapshot population. */
+export function moduleEntityIds(ids: readonly RecordId[]): ReadonlyMap<RecordId, string> {
+  const entries = [...new Set(ids)].map(id => ({ id, hash: id.slice(id.lastIndexOf(':') + 1) }))
+    .sort((a, b) => compare(a.hash, b.hash));
+  const common = (a: string, b: string) => {
+    let length = 0;
+    while (length < Math.min(a.length, b.length) && a[length] === b[length]) length++;
+    return length;
+  };
+  return new Map(entries.map((entry, index) => {
+    const before = entries[index - 1];
+    const after = entries[index + 1];
+    const length = Math.max(8, before ? common(entry.hash, before.hash) + 1 : 0,
+      after ? common(entry.hash, after.hash) + 1 : 0);
+    if (!/^[a-f0-9]{64}$/.test(entry.hash) || length > entry.hash.length) throw new Error('Invalid or colliding module record keys');
+    return [entry.id, `module-${entry.hash.slice(0, length)}`];
+  }));
 }

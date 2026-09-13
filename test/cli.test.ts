@@ -33,8 +33,8 @@ test('Unicode and experimental JSON use the same qualified projection and automa
   assert.equal(structured.schema, 'postcode-view/0-experimental');
   assert.equal(unicode.stdout.includes('doc [recorded assertion]'), false);
   assert.ok(unicode.stdout.includes('documentation for'));
-  assert.ok(unicode.stdout.includes('wildcard (type-only); origin module-'));
-  assert.ok(unicode.stdout.includes('2 contributing declarations'));
+  assert.equal(unicode.stdout.includes('[type]'), false);
+  assert.ok(unicode.stdout.includes('Export names'));
   assert.ok(unicode.stderr.includes('Local observations:'));
   for (const result of [unicode, json]) {
     assert.equal(result.batches.length, 1);
@@ -148,7 +148,7 @@ test('bounded exports and documentation disclose every material omission in both
     assert.equal(view.modules[0]!.omittedExports, 3);
     assert.equal(view.modules[0]!.exports[0]!.documentation[0]!.omittedTextCharacters, 200);
     assert.ok(unicode.stdout.includes('6 exports from listed modules'));
-    assert.ok(unicode.stdout.includes('documentation for 1 listed modules'));
+    assert.ok(unicode.stdout.includes('documentation for 1 listed module'));
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -176,13 +176,13 @@ test('Unicode distinguishes established empty exports from unresolved exports an
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
     writeFileSync(path.join(root, 'entry.ts'), 'export {};');
     const empty = await invoke(['--project', config]);
-    assert.ok(empty.stdout.includes('  Exports: none'));
+    assert.ok(empty.stdout.includes('(none)'));
     assert.ok(empty.stdout.includes('Analysis complete: modules, exports, documentation'));
-    assert.ok(empty.stdout.includes('Next · replace SUBJECT only'));
+    assert.ok(empty.stdout.includes('Next · inspect a module:'));
     writeFileSync(path.join(root, 'entry.ts'), 'export * from "./missing.js";');
     const unresolved = await invoke(['--project', config]);
-    assert.ok(unresolved.stdout.includes('Exports: not established; no exports displayed.'));
-    assert.equal(unresolved.stdout.includes('  Exports: none'), false);
+    assert.ok(unresolved.stdout.includes('(not established; no exports displayed)'));
+    assert.equal(unresolved.stdout.includes('(none)'), false);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -204,9 +204,9 @@ test('inventory counts omitted external documentation while exact inspection mak
     const detail = JSON.parse(inspected.stdout) as QualifiedView;
     assert.equal(detail.modules[0]!.exports[0]!.documentation[0]!.text, 'External responsibility.');
     const unicode = await invoke(['--project', config]);
-    assert.ok(unicode.stdout.includes('2 modules found · 1 listed · 1 external modules collapsed'));
+    assert.ok(unicode.stdout.includes('2 modules found · 1 listed · 1 external module collapsed'));
     assert.equal(unicode.stdout.includes('External responsibility.'), false);
-    assert.equal(unicode.stdout.includes('  Entity '), false);
+    assert.ok(unicode.stdout.includes('Entity ID'));
     assert.equal(unicode.stdout.includes('Origin this module'), false);
     assert.equal(unicode.stdout.includes('routes: direct'), false);
     assert.equal(unicode.stdout.includes('1 contributing declaration'), false);
@@ -215,12 +215,12 @@ test('inventory counts omitted external documentation while exact inspection mak
     const inspectedUnicode = await invoke(['inspect', external.handle, '--snapshot', view.projection.snapshot, '--project', config]);
     assert.ok(inspectedUnicode.stdout.includes('doc [recorded assertion]'));
     assert.ok(inspectedUnicode.stdout.includes('External responsibility.'));
-    assert.ok(inspectedUnicode.stdout.includes(`Entity ${external.id}`));
+    assert.ok(inspectedUnicode.stdout.includes(`Entity ID ${external.entityId}`));
     writeFileSync(path.join(root, 'node_modules/dependency/index.d.ts'), 'export * from "./missing.js";');
     const incomplete = await invoke(['--project', config]);
-    assert.ok(incomplete.stdout.includes('1 external modules collapsed'));
+    assert.ok(incomplete.stdout.includes('1 external module collapsed'));
     assert.ok(incomplete.stdout.includes('materialization partial'));
-    assert.ok(incomplete.stdout.includes('Collapsed anonymous-'));
+    assert.ok(incomplete.stdout.includes('Collapsed anonymous:'));
     assert.ok(incomplete.stdout.includes('An export target could not be resolved'));
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
@@ -234,7 +234,7 @@ test('conceptual handles require their snapshot and never infer successors after
     writeFileSync(entry, 'export function runCli() {}');
     const before = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
     const module = before.modules[0]!;
-    assert.equal(module.handle, 'module-run-cli');
+    assert.equal(module.handle, 'run-cli');
     const unscoped = JSON.parse((await invoke(['inspect', module.handle, '--project', config, '--json'])).stdout) as QualifiedView;
     assert.equal(unscoped.projection.selection.referenceStatus, 'snapshot-required');
     assert.equal(unscoped.projection.selection.matches, 0);
@@ -252,15 +252,16 @@ test('conceptual handles require their snapshot and never infer successors after
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('compact inventory suppresses ordinary provenance but preserves aliases and merged declarations', async () => {
+test('inspection suppresses ordinary provenance but preserves aliases and merged declarations', async () => {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-provenance-'));
   try {
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
     writeFileSync(path.join(root, 'entry.ts'), 'export interface Merged {a: string}; export interface Merged {b: string}; export const ordinary = 1; export {ordinary as renamed};');
-    const result = await invoke(['--project', config]);
-    assert.ok(result.stdout.includes('Merged: 2 contributing declarations'));
-    assert.ok(result.stdout.includes('renamed: alias'));
+    const inventory = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+    const result = await invoke(['inspect', inventory.modules[0]!.entityId, '--snapshot', inventory.projection.snapshot, '--project', config]);
+    assert.ok(result.stdout.includes('Merged [type] · 2 contributing declarations'));
+    assert.ok(result.stdout.includes('renamed [value] · alias'));
     assert.equal(result.stdout.includes('ordinary: direct'), false);
     assert.equal(result.stdout.includes('1 contributing declaration'), false);
     assert.equal(result.stdout.includes('Origin this module'), false);
@@ -296,8 +297,8 @@ test('compact inventory consolidates common labels and counts documentation beyo
     const view = result.batches[0]!.records.find(record => record.kind === 'qualified-view')!.value as QualifiedView;
     assert.equal(view.display.omittedExports, 1);
     assert.equal(view.display.modulesWithOmittedDocumentation, 1);
-    assert.ok(result.stdout.includes('Omitted: 1 exports from listed modules; documentation for 1 listed modules.'));
-    assert.equal(result.stdout.split('All listed modules are anonymous').length - 1, 1);
+    assert.ok(result.stdout.includes('Omitted:\n    1 export from listed modules\n    documentation for 1 listed module'));
+    assert.equal(result.stdout.split('TypeScript names not established').length - 1, 1);
     assert.equal(result.stdout.includes('(anonymous module)'), false);
     assert.equal(result.stdout.split('implementation-available').length - 1, 1);
     assert.equal(result.stdout.includes('doc [recorded assertion]'), false);
@@ -319,21 +320,81 @@ test('a mostly-type module uses an exported type cue instead of a helper predica
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
     writeFileSync(path.join(root, 'entry.ts'), 'export type Claim=string; export type ClaimContext={}; export type ExportClaim={}; export function isModuleClaim() {return true}');
     const view = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
-    assert.equal(view.modules[0]!.handle, 'module-claim');
+    assert.equal(view.modules[0]!.handle, 'claim');
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('the suggested command runs after replacing only SUBJECT, including a quoted project path', async () => {
+test('the suggested command runs after replacing MODULE_HANDLE, including a quoted project path', async () => {
   const root = mkdtempSync(path.join(os.tmpdir(), "postcode-project's "));
   try {
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
     writeFileSync(path.join(root, 'entry.ts'), 'export function runCli() {}');
     const view = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
-    const command = view.presentation.navigation!.inspect.replace("'SUBJECT'", "'module-run-cli'");
+    const command = view.presentation.navigation!.inspect.replace('MODULE_HANDLE', 'run-cli');
     const output = execFileSync('/bin/sh', ['-c', command], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
-    assert.ok(output.includes('Exact selector: module-run-cli'));
-    assert.ok(output.includes('1 modules found · 1 listed'));
+    assert.ok(output.includes('exact match for run-cli'));
+    assert.ok(output.includes('1 module selected from 1'));
     assert.equal(output.includes('No current match'), false);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('basename mnemonic evidence stays distinct from names and precise scoped Entity IDs', async () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-mnemonic-'));
+  try {
+    const config = path.join(root, 'tsconfig.json');
+    writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"include":["**/*.ts"]}');
+    mkdirSync(path.join(root, 'nested'));
+    writeFileSync(path.join(root, 'evaluation.ts'), 'export const none=1;');
+    writeFileSync(path.join(root, 'nested/evaluation.ts'), 'export {};');
+    const long = 'a-very-long-recognition-handle-that-exceeds-the-padded-column';
+    writeFileSync(path.join(root, `${long}.ts`), 'export {};');
+    writeFileSync(path.join(root, 'index.ts'), 'export {};');
+    const view = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+    const matching = view.modules.filter(module => module.handle === 'evaluation');
+    assert.equal(matching.length, 2);
+    for (const module of matching) {
+      assert.equal(module.name, null);
+      assert.equal(module.handleProvenance, 'source-basename');
+      assert.match(module.entityId, /^module-[a-f0-9]{8,64}$/);
+      const unscoped = JSON.parse((await invoke(['inspect', module.entityId, '--project', config, '--json'])).stdout) as QualifiedView;
+      assert.equal(unscoped.projection.selection.referenceStatus, 'snapshot-required');
+      const selected = JSON.parse((await invoke(['inspect', module.entityId, '--snapshot', view.projection.snapshot, '--project', config, '--json'])).stdout) as QualifiedView;
+      assert.deepEqual(selected.modules.map(item => item.id), [module.id]);
+    }
+    const multiple = await invoke(['inspect', 'evaluation', '--snapshot', view.projection.snapshot, '--project', config]);
+    assert.ok(multiple.stdout.includes('2 modules selected from 4 · exact matches for evaluation'));
+    const zero = await invoke(['inspect', 'absent', '--project', config]);
+    assert.ok(zero.stdout.includes('0 modules selected from 4 · exact matches for absent'));
+    const unicode = (await invoke(['--project', config])).stdout;
+    assert.ok(unicode.includes(long));
+    assert.match(unicode, /evaluation +module-[a-f0-9]+ +none\n/);
+    assert.match(unicode, /evaluation +module-[a-f0-9]+ +\(none\)\n/);
+    assert.equal(unicode.includes('nested/'), false);
+    assert.equal(unicode.includes('evaluation.ts'), false);
+    assert.ok(unicode.includes('Module membership and effective exports established by TypeScript analysis.'));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('exceptional inspections retain forwarding provenance, qualified failures, and truncated assertions', async () => {
+  const view = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+  const selected = view.modules.find(module => module.handle === 'chain')!;
+  const reexport = await invoke(['inspect', selected.entityId, '--snapshot', view.projection.snapshot, '--project', config]);
+  assert.ok(reexport.stdout.includes('wildcard'));
+  assert.match(reexport.stdout, /origin origin \(module-[a-f0-9]+\)/);
+  assert.ok(reexport.stdout.includes('not calls or dependencies'));
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-inspection-'));
+  try {
+    const project = path.join(root, 'tsconfig.json');
+    writeFileSync(project, '{"compilerOptions":{"noLib":true,"types":[]},"files":["index.ts"]}');
+    writeFileSync(path.join(root, 'index.ts'), `/** ${'A'.repeat(2100)} */\nexport const documented=1;\nexport * from './missing.js';`);
+    const inventory = JSON.parse((await invoke(['--project', project, '--json'])).stdout) as QualifiedView;
+    const detail = await invoke(['inspect', inventory.modules[0]!.entityId, '--snapshot', inventory.projection.snapshot, '--project', project, '--source-detail']);
+    assert.ok(detail.stdout.includes('materialization partial'));
+    assert.ok(detail.stdout.includes('100 assertion character(s) omitted'));
+    assert.ok(detail.stdout.includes('doc [recorded assertion]'));
+    assert.ok(detail.stdout.includes('no established truth, currency or completeness'));
+    assert.ok(detail.stdout.includes('SOURCE DETAIL — explicit source escape'));
+    assert.equal(detail.stdout.includes('Module membership and effective exports established'), false);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

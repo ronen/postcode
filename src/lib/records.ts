@@ -39,6 +39,7 @@ export interface ModuleClaim extends RecordContext {
     readonly name: string | null;
     readonly handle: string;
     readonly handleStatus: 'generated-navigation-aid';
+    readonly handleProvenance: 'language-name' | 'source-basename' | 'declared-export' | 'anonymous-fallback';
     readonly facets: readonly ModuleFacet[];
   };
 }

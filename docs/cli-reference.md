@@ -8,15 +8,15 @@ checkout, install with `npm ci` and build with `npm run build`.
 ```sh
 node _build/src/cli.js modules --project path/to/tsconfig.json
 node _build/src/cli.js modules --project path/to/tsconfig.json --json
-node _build/src/cli.js inspect SUBJECT --project path/to/tsconfig.json --snapshot SNAPSHOT
-node _build/src/cli.js inspect SUBJECT --project path/to/tsconfig.json --snapshot SNAPSHOT --source-detail
+node _build/src/cli.js inspect MODULE_HANDLE --project path/to/tsconfig.json --snapshot SNAPSHOT
+node _build/src/cli.js inspect MODULE_HANDLE --project path/to/tsconfig.json --snapshot SNAPSHOT --source-detail
 node _build/src/cli.js --help
 ```
 
-Replace `SUBJECT` with one exact name, generated handle, or full Entity ID.
+Replace `MODULE_HANDLE` with one exact name, generated handle, or compact Entity ID.
 Replace `SNAPSHOT` with the full `snapshot:…` value from JSON. For convenience,
 each CLI view supplies an inspection command with the selected configuration,
-CLI location and full snapshot already filled in; replace only `SUBJECT` there.
+CLI location and full snapshot already filled in.
 These command paths are invocation context, not discovered source evidence.
 
 Without arguments, the command is `modules` with `./tsconfig.json` and Unicode
@@ -26,6 +26,13 @@ and `--snapshot` are inspection options. `--help` performs no analysis.
 Exit 0 means a view was produced, including a qualified or partial result. Exit 2
 means invalid arguments or failure to open the project; exit 1 means an internal
 failure. Observation delivery failure is a visible warning and preserves the view.
+
+## First use
+
+1. List modules.
+2. Choose a mnemonic handle or precise Entity ID.
+3. Run the generated inspection command with that subject.
+4. Add `--source-detail` when source evidence is needed.
 
 ## Inventory and inspection
 
@@ -42,22 +49,35 @@ and bounded project documentation. Neither format changes the lens population.
 
 ## Names, handles and identity
 
-A **name** is established by the language model; a file path is not a conceptual
-module name. Modules without such a name remain anonymous. A **handle** is a
-deterministic recognition cue drawn from a module name or declared export, with
-anonymous fallbacks. Type-heavy modules prefer an actual type export over a helper
-predicate. Handles do not classify responsibilities and can have multiple matches.
+A **name** is established by the language model. Ordinary source-file modules
+usually have no conceptual TypeScript name; path-derived compiler symbols do not
+supply one. Explicit language naming mechanisms and named ambient modules can.
 
-An **Entity ID** addresses a record within its analysis snapshot. A **snapshot**
-identifies captured inputs, environment and method versions. The short Unicode
-snapshot label is for recognition, not a valid `--snapshot` argument. Full IDs and
-full snapshots remain in JSON and in operational commands where required.
+A **handle** is a generated recognition cue, not a responsibility claim or precise
+identifier. It uses a language name, then an extensionless source basename when
+non-generic, then a representative declared export, then `anonymous`. Generic
+basenames (`index`, `main`, `entry`, `mod`) fall back to exports or anonymity.
+Type-heavy fallback candidates prefer a type export over a helper predicate.
+Basename evidence exposes no directory, extension or source location and does not
+become a conceptual name. JSON retains `handleStatus` and `handleProvenance`.
+Handles may repeat; one handle can select several modules.
 
-Handle selection requires the full snapshot from its inventory. A missing or stale
-snapshot produces no current match; repeated handle text does not imply continuity.
-Exact names are current-snapshot lookups and do not require `--snapshot`. Full
-Entity IDs already contain their snapshot. There are no fuzzy matches, wildcard
-selectors, retained aliases, or durable navigation sessions.
+A compact **Entity ID**, such as `module-a7bcf3e2`, precisely selects a module
+within its snapshot. Digest prefixes start at eight hexadecimal characters and
+extend when needed against the complete module population, including collapsed
+modules. IDs are deterministic and collision-free within that population. A
+complete reference is the pair of snapshot ID and Entity ID. JSON exposes
+`projection.snapshot` and each module's `entityId` separately; its internal `id`
+record key remains available for record references and compatibility.
+
+A **snapshot** identifies captured inputs, environment and method versions. The
+short Unicode snapshot label is for recognition, not a valid `--snapshot` value.
+Handle and compact Entity ID selection require the full snapshot in the generated
+command or JSON. A missing or stale scope produces no current match; repeated
+handle or ID text does not imply continuity. Exact names are current-snapshot
+lookups. Internal full record keys include snapshot scope and remain accepted.
+There are no fuzzy matches, wildcard selectors, retained aliases, or durable
+navigation sessions.
 
 ## Analysis coverage and display omissions
 
@@ -66,9 +86,11 @@ capability. Full materialization does not mean every record is displayed or that
 the entire program is correct. Partial, unavailable, deferred, stopped and failed
 states remain explicit; missing results cannot establish an empty set.
 
-The compact successful state names completed capabilities. Detailed scope counts,
-Claim context, guarantees and limitations remain in JSON. `Exports: none` is used
-only when the module's effective export set is established as empty.
+The compact successful state names completed capabilities. Unicode retains the
+status and limitations needed to interpret its claims; JSON supplies fuller
+context and machine-readable detail. `(none)` denotes an established empty export
+set and differs from an actual export named `none`. Inventory shows export names;
+type/value roles and exceptional export provenance remain available in inspection.
 
 **Display omissions** describe presentation choices: collapsed module entries and
 their details, unlisted exports, and omitted documentation. Aggregate export and
@@ -93,7 +115,7 @@ Compiler-associated documentation is a **recorded assertion**. The local
 `doc [recorded assertion]` marker does not establish its truth, currency or
 completeness. An export relationship describes aliases, origins or forwarding,
 not calls or dependencies. Ordinary local provenance may be suppressed; meaningful
-exceptions remain visible for displayed exports.
+exceptions remain visible in inspection.
 
 ## Source detail and observations
 

@@ -13,7 +13,7 @@ Usage: postcode [modules | inspect <exact-selector>] [--project <tsconfig.json>]
 
 Defaults: modules(project), ./tsconfig.json, Unicode text.
 inspect accepts one exact name, mnemonic handle, or Entity ID; zero/one/multiple matches are explicit.
-Handle selection requires --snapshot from the inventory. A stale snapshot produces no current match.
+Handle and compact Entity ID selection require --snapshot from the inventory. A stale snapshot produces no current match.
 --source-detail requires inspect and discloses only source locations supporting displayed claims.
 JSON uses the experimental postcode-view/0 schema. Exports/documentation expansions are declared before evaluation.
 Unicode inventory lists project modules with 3 export cues and collapses external modules with counts.
@@ -24,7 +24,7 @@ Concepts:
 modules inventories the supported population; inspect selects exact subjects from that population.
 Materialization is analysis coverage; omissions describe display coverage, not missing analysis.
 Population: configured external-module SourceFiles and visible named ambient modules, not every compiler category.
-Names are current lookups. Generated handles are navigation cues, not responsibility claims; full IDs are snapshot-scoped.
+Names are current lookups. Generated handles are navigation cues, not responsibility claims; precise compact Entity IDs are snapshot-scoped.
 Source and environment changes require a fresh snapshot; old references never imply a successor.
 Derived claims retain limitations. Documentation is a recorded assertion whose truth, currency and completeness are not established.
 Export relationships describe aliases/forwarding, not calls or dependencies. Target code is not executed.
@@ -33,7 +33,7 @@ Next-action commands include CLI/project invocation paths; declaration paths and
 See docs/cli-reference.md for commands, examples, reference scoping, qualifications and observations.
 `;
 
-const shellQuote = (value: string) => `'${value.replace(/'/g, `'\\''`)}'`;
+const shellQuote = (value: string) => /^[a-zA-Z0-9_./:@=-]+$/.test(value) ? value : `'${value.replace(/'/g, `'\\''`)}'`;
 
 function repositoryRoot(config: string): string | null {
   let directory = path.dirname(config);
@@ -91,8 +91,10 @@ export async function runCli(args: readonly string[], environment: {
   const store = new MemoryProgramRecordStore();
   const evaluation = evaluateModules(store, opened.analysis, presentationRequirements(presentation));
   const projection = lens === 'inspect' ? inspect(store, evaluation, positional[1]!, expectedSnapshot) : modules(store, evaluation);
-  const command = ['node', path.join(environment.checkout, '_build/src/cli.js'), 'inspect', 'SUBJECT',
-    '--snapshot', projection.snapshot, '--project', config].map(shellQuote).join(' ');
+  const command = [
+    ['node', path.join(environment.checkout, '_build/src/cli.js'), 'inspect', 'MODULE_HANDLE'],
+    ['--snapshot', projection.snapshot], ['--project', config],
+  ].map(tokens => tokens.map(shellQuote).join(' ')).join(' \\\n  ');
   const view = createView(store, projection, { ...presentation, navigation: { inspect: command } });
   const rendered = renderView(view);
   environment.stdout(rendered);

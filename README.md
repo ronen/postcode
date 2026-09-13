@@ -41,12 +41,13 @@ accepts one exact module name, generated handle, or Entity ID from an inventory.
 One referent can match zero, one, or several modules; it never falls back to fuzzy
 matching. IDs and handles are scoped to the analyzed snapshot. Source-backed
 modules without a compiler-established conceptual name are shown as anonymous,
-with exported symbols for recognition. Generated handles use conceptual names or
-declared exports, with short anonymous handles where no useful cue exists. They
-are navigation aids, not inferred responsibility labels. Handle selection requires
-`--snapshot <complete-snapshot-id>` copied from its inventory header; mismatched
-snapshots produce an explicit no-current-match result. Exact names are current
-lookups; full Entity IDs already contain snapshot context.
+with generated handles for recognition. Handles use language names, extensionless
+basenames, or declared exports, with an honest anonymous fallback. They preserve
+their generated provenance and do not claim responsibilities or conceptual names.
+Compact Entity IDs are precise within the full snapshot population, extending
+hash prefixes on collision. Handle and compact ID selection require
+`--snapshot <complete-snapshot-id>` supplied by the generated command or JSON;
+mismatched snapshots produce no current match. Exact names are current lookups.
 
 Normal output contains conceptual information and qualifications. Unicode and the
 experimental `postcode-view/0` JSON presentation use the same qualified projection.
@@ -57,17 +58,17 @@ displayed in the header, while that command retains the full required snapshot.
 locations, separately identified as source escape. It does not show full files.
 
 The default Unicode inventory lists project-associated modules with up to three
-exports each. External modules are collapsed with an accurate count and a short
-preview; their entries and details are omitted from display, not from analysis.
-Symbol documentation belongs in inspection. Full Entity IDs and ordinary local
-export provenance are suppressed in the Unicode inventory; aliases, forwarding,
-multiple contributing declarations and differing qualifications remain visible.
+export names each. External modules are collapsed with an accurate count; their entries and details are omitted from display, not from analysis.
+Symbol documentation belongs in inspection. Compact Entity IDs accompany handles in the inventory. Inspection retains export
+roles, aliases, forwarding and multiple contributing declarations. Consequential
+qualifications remain visible in every affected view.
 Common module anonymity/facets and successful analysis states are consolidated.
 Display omissions are counted separately from analysis coverage. The default view
 retains concise TypeScript coverage and run limitations; stable terminology is in
 `--help` and the [command and concepts reference](docs/cli-reference.md).
 
-JSON retains the full selected module list, full Entity IDs, up to six exports
+JSON retains the full selected module list, compact IDs and internal record keys,
+up to six exports
 and one documentation assertion per project-associated module/export. Its
 inventory assertion excerpts are limited to 400 characters and five tags.
 Inspection shows up to 50 exports and three assertions, with

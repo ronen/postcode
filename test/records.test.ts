@@ -1,3 +1,4 @@
+import type { RecordId } from '../src/lib/records.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { evaluateModules } from '../src/lib/evaluation.js';
@@ -87,7 +88,7 @@ test('duplicate exact names and handles select multiple modules and only their c
     const claim: ModuleClaim = {
       kind: 'claim', id: recordId(snapshot, 'claim', id), snapshot, method: 'test@0', subject: id, context: context.id,
       information: { type: 'module', name: index < 2 ? 'duplicate' : 'other', handle: index < 2 ? 'shared-handle' : 'other-handle',
-        handleStatus: 'generated-navigation-aid', facets: [] },
+        handleStatus: 'generated-navigation-aid', handleProvenance: 'anonymous-fallback', facets: [] },
     };
     store.put([{ kind: 'module', id, snapshot, method: 'test@0', claim: claim.id }, context, claim]);
   }
@@ -112,4 +113,14 @@ test('multiple snapshots coexist; stale IDs and scoped handles have no inferred 
   assert.equal(initial.store.evaluations(next.evaluation.snapshot).length, 1);
   assert.equal(inspect(initial.store, next.evaluation, initial.claims[0]!.subject).selection.matches, 0);
   assert.equal(inspect(initial.store, next.evaluation, initial.claims[0]!.information.handle).selection.matches, 0);
+});
+
+test('compact module Entity IDs extend colliding prefixes across the complete population', async () => {
+  const { moduleEntityIds } = await import('../src/lib/identity.js');
+  const ids = ['12345678a', '12345678b', '12345679a'].map(prefix =>
+    `${snapshotId('collision-fixture')}:module:${prefix.padEnd(64, '0')}` as RecordId);
+  const compact = moduleEntityIds(ids);
+  assert.deepEqual([...compact.values()], ['module-12345678a', 'module-12345678b', 'module-12345679']);
+  assert.deepEqual([...moduleEntityIds([...ids].reverse())], [...compact]);
+  assert.equal(new Set(compact.values()).size, ids.length);
 });

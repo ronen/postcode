@@ -1,4 +1,4 @@
-import { methods, recordId } from './identity.js';
+import { methods, moduleEntityIds, recordId } from './identity.js';
 import type { EvaluationRecord, ModuleClaim, ProgramRecordStore, ProjectionRecord, RecordId } from './records.js';
 import { isModuleClaim } from './records.js';
 
@@ -17,11 +17,14 @@ function project(store: ProgramRecordStore, evaluation: EvaluationRecord, select
   evaluation = stored;
   const lens = selector === null ? 'modules' : 'inspect';
   const snapshotMismatch = expectedSnapshot !== null && expectedSnapshot !== evaluation.snapshot;
+  const entityIds = moduleEntityIds(evaluation.modules);
+  const compactId = [...entityIds.values()].includes(selector ?? '');
   const handleOnly = selector !== null && evaluation.modules.some(id => moduleClaim(store, id).information.handle === selector)
     && !evaluation.modules.some(id => id === selector || moduleClaim(store, id).information.name === selector);
-  const referenceStatus = snapshotMismatch ? 'snapshot-mismatch' : handleOnly && expectedSnapshot === null ? 'snapshot-required' : 'current';
+  const referenceStatus = snapshotMismatch ? 'snapshot-mismatch' : (handleOnly || compactId) && expectedSnapshot === null ? 'snapshot-required' : 'current';
   const modules = evaluation.modules.filter(id => {
     if (referenceStatus !== 'current') return false;
+    if (compactId) return selector === entityIds.get(id);
     if (selector === null || selector === id) return true;
     const claim = moduleClaim(store, id);
     return selector === claim.information.name || expectedSnapshot !== null && selector === claim.information.handle;
