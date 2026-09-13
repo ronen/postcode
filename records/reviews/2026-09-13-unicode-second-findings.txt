@@ -1,0 +1,205 @@
+Please revise the Unicode presentation based on the second review sample at
+`_observations/validation/2026-09-13/view-review-2.txt`.
+
+This version is a substantial improvement. It reduces the initial inventory from
+3,380 lines and approximately 194 KB to 105 lines and approximately 5 KB. Project
+modules are now prominent, external modules are explicitly collapsed, mnemonic
+handles are recognizable, normal-case export provenance is suppressed, and
+display omissions are visible. The overall progressive-disclosure direction is
+working.
+
+The remaining work is primarily about distinguishing different scopes of
+qualification and removing repetition that still competes with the inventory.
+The current `Qualifications` section mixes:
+
+- facts about this particular analysis run;
+- disclosures about this particular presentation;
+- stable contracts of the lens or analysis method; and
+- general explanations of PostCode terminology.
+
+Those categories should not all be repeated in full in every Unicode view.
+However, do not move a consequential qualification entirely out of the view merely
+because it is stable. The view must still state enough for the user to interpret
+the claims and their coverage honestly.
+
+Please use the following classification.
+
+1. Run-specific analysis state
+
+   The completed/materialized state of modules, exports, and documentation applies
+   to this run. Keep it in the view, but make the successful common case compact.
+   For example:
+
+   `Analysis complete: modules, exports, documentation`
+
+   Continue to show separate capability states when any analysis is partial,
+   unavailable, deferred, stopped, or failed. Scope counts such as `174 scopes`
+   can move to detailed qualification output unless they explain an abnormal
+   result.
+
+2. Presentation-specific disclosure
+
+   Display omissions must remain visible whenever they occur. Consolidate them
+   rather than repeating them per module. For example:
+
+   `Display: 156 external modules, 9 exports, and documentation for 7 modules omitted.`
+
+   A compact per-module marker such as `doc available` may be useful, but seven
+   copies of “documentation assertions omitted; inspect for detail” are not.
+
+3. Stable lens and analysis contracts
+
+   The supported module-population boundary is stable, but it materially limits
+   what “174 modules found” establishes. Keep a concise coverage statement in each
+   affected view. The full explanation can live in help or user documentation.
+
+   Likewise, retain a concise statement that the result was established through
+   TypeScript analysis. The detailed compiler-method explanation need not be
+   repeated in every ordinary view.
+
+4. Run- or method-specific limitations
+
+   “No atomic filesystem snapshot is claimed” materially qualifies the consistency
+   of this result and should remain visible in every affected view, though it can
+   be stated compactly.
+
+   Generated-output exclusion should be shown when output locations were actually
+   excluded from evidence for this run. Prefer a concrete run statement, including
+   a count when available, rather than a generic policy statement. The general
+   exclusion rule belongs in user documentation.
+
+5. General interaction and terminology rules
+
+   Handle generation and cross-snapshot continuity are general interaction rules.
+   Put the reusable explanation in help or user documentation. Keep only the cue
+   required for safe next use near the suggested command—for example, that the
+   handle belongs to this snapshot when the command actually requires snapshot
+   context.
+
+   The meaning of a recorded documentation assertion should appear locally when
+   documentation is displayed. This inventory displays no documentation text, so
+   its general documentation disclaimer is unnecessary here.
+
+   The statement that export relationships are not calls or dependencies belongs
+   in an inspection view that displays export relationships, or in general help.
+   It does not qualify anything displayed in this compact inventory.
+
+A possible compact footer is:
+
+```text
+Status
+  Established via TypeScript analysis.
+  Coverage: supported module population; additional compiler module categories
+  are not established.
+
+Display
+  156 external modules, 9 exports, and documentation for 7 modules omitted.
+  Use inspect <name-or-handle> for detail.
+
+Run limitations
+  2 generated-output locations excluded from repository evidence.
+  Inputs were not captured as an atomic filesystem snapshot.
+
+More: <help or detailed-qualification affordance>
+```
+
+This is illustrative rather than a required byte-for-byte format. The precise
+help command, option name, and layout remain implementation choices.
+
+Please also address the following remaining presentation issues.
+
+1. Shorten snapshot display
+
+   `Snapshot snapshot:7ca033...` repeats the word “snapshot” and exposes the full
+   hash. Prefer a short display such as `Snapshot 7ca033fe3d78`. Preserve the full
+   value in JSON or detailed metadata and wherever it is operationally required.
+
+2. Consolidate anonymous-module disclosure
+
+   Every project module currently shows `(anonymous module)`. Explain once at the
+   project-group level that these are anonymous TypeScript modules labeled with
+   generated handles, then suppress the repeated phrase. If some project modules
+   are named and others anonymous, retain a compact local marker only where it
+   distinguishes them.
+
+3. Consolidate common facets
+
+   Every project entry repeats `project, implementation-available`. Move facets
+   shared by the entire group into the group heading or a short group description.
+   Continue to show exceptional or distinguishing facets locally.
+
+4. Shorten established empty exports
+
+   When export analysis completed successfully, `Exports: none` is sufficient in
+   a module entry. The shared analysis status establishes that this means an
+   established empty effective export set. Preserve more explicit wording only
+   when needed to distinguish empty, unavailable, partial, or display-omitted
+   results.
+
+5. Avoid misleading mnemonic handles
+
+   `module-is-module-claim` appears to derive the module handle from an arbitrary
+   exported predicate and reads like a responsibility claim. Improve the simple
+   heuristic where practical—for example, by preferring a coherent type family or
+   a more representative export—but do not turn handle generation into semantic
+   classification or natural-language interpretation. When no defensible mnemonic
+   exists, an honestly anonymous handle is better than a misleading one.
+
+6. Make the next action directly usable
+
+   The current instruction contains placeholders:
+
+   `inspect <name-or-handle> --snapshot <snapshot-above> with the same --project configuration`
+
+   Prefer an actual command form that the user can copy and complete by replacing
+   only the subject, or explain the minimum required arguments precisely. Do not
+   require the user to infer how “the same project configuration” is represented.
+
+7. Keep the external preview only if it helps selection
+
+   The alphabetical preview `assert, assert/strict, async_hooks` confirms that
+   external modules exist but gives little indication of relevance. It is
+   acceptable to retain it, omit it, or replace it with a more useful compact
+   grouping. Do not introduce dependency analysis merely to rank external modules;
+   that belongs to a later lens.
+
+Please also begin a concise user-facing command-and-concepts reference. This is
+within the plan's existing requirement to document how to run and exercise the
+CLI; it is not a request for a comprehensive manual. The reference should provide
+the stable explanations that no longer need to appear in full in every view:
+
+- `modules(project)` versus `inspect(subjects)`;
+- names, mnemonic handles, Entity IDs, and snapshot scope;
+- analysis materialization versus display omission;
+- the supported TypeScript module-population contract;
+- established claims, recorded documentation assertions, and limitations;
+- explicit source-detail escape; and
+- observation output and generated-output evidence exclusion.
+
+The normal view must remain self-qualifying. User documentation or an optional
+detailed-qualification affordance supplements concise inline status; it does not
+replace material coverage and limitation disclosures.
+
+Do not attempt to add project purpose, dependency flow, call relationships, or an
+architecture summary to this module-inventory presentation. Those require later
+lenses and are outside this presentation refinement.
+
+Please verify at least:
+
+- the successful analysis state is compact while partial or failed states remain
+  explicit;
+- display omissions are consolidated and accurately counted;
+- the supported-population limitation remains visible in the default view;
+- run-specific generated-output exclusion is reported when it occurs;
+- the non-atomic-input limitation remains visible;
+- documentation and export-relationship explanations appear only in views where
+  the corresponding information is displayed;
+- common anonymity and facet information is not repeated for every project module;
+- empty exports remain distinguishable from unavailable, partial, or omitted
+  exports;
+- the displayed snapshot reference is concise without weakening reference
+  validation;
+- the suggested inspection action is operationally clear;
+- the user-facing reference covers the stable concepts removed from ordinary
+  output; and
+- Unicode output remains deterministic for equivalent inputs.

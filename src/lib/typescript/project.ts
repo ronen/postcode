@@ -136,6 +136,8 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
     const records: ProgramRecord[] = [{
       kind: 'snapshot', id: snapshot, snapshot, method: identityMethod,
       inputDigest: snapshot.slice('snapshot:'.length), methods: [...Object.values(methods), method],
+      analysis: { provider: 'typescript', coverage: 'external-source-files-and-visible-named-ambient-modules',
+        inputConsistency: 'first-observed', excludedOutputLocations: inputs.excludedLocationCount },
     }];
     const evidence = (declaration: ts.Node, compilerName: string | null, resolution?: SourceEvidenceRecord['resolution']): RecordId => {
       const file = declaration.getSourceFile();
@@ -182,7 +184,11 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       const exported = [...(candidate.symbol?.exports?.values() ?? [])].filter(symbol => !symbol.getName().startsWith('__'));
       exported.sort((a, b) => Number(Boolean(b.flags & (ts.SymbolFlags.Class | ts.SymbolFlags.Function)))
         - Number(Boolean(a.flags & (ts.SymbolFlags.Class | ts.SymbolFlags.Function))) || compare(a.getName(), b.getName()));
-      const cue = candidate.name ?? exported.map(symbol => {
+      const types = exported.filter(symbol => Boolean(symbol.flags & (ts.SymbolFlags.Interface | ts.SymbolFlags.TypeAlias)));
+      // A mostly-type module is better cued by an actual exported type than by a lone helper predicate.
+      const representative = types.length >= 3 && types.length * 2 > exported.length
+        ? [...types].sort((a, b) => compare(a.getName(), b.getName())) : exported;
+      const cue = candidate.name ?? representative.map(symbol => {
         if (symbol.getName() !== 'default') return symbol.getName();
         const named = symbol.getDeclarations()?.find(node => (ts.isClassDeclaration(node) || ts.isFunctionDeclaration(node)) && node.name);
         return named && (ts.isClassDeclaration(named) || ts.isFunctionDeclaration(named)) ? named.name?.text : undefined;

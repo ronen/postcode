@@ -61,6 +61,9 @@ Those inputs include positive and negative reads/existence checks, directory
 queries, and realpath results. Each observation is memoized within an opened
 project. This is a snapshot of first-observed inputs, not an atomic filesystem
 transaction or a cache-validity contract. A changing repository should be reopened.
+The snapshot retains concise analysis coverage, consistency and enforced
+output-location counts for run-specific presentation. Exclusion counts identify
+filter boundaries, not generated files discovered or read.
 
 The method registry must be bumped when the associated semantics change.
 Entity identity follows the configured compiler's source identities and ambient
@@ -115,6 +118,14 @@ appear once while exceptional provenance stays local. JSON has an explicitly
 experimental schema. Normal qualifications omit detailed
 source evidence. Explicit inspection source detail contains only locations backing
 displayed claims and never renders full-file content.
+
+Successful capability states and common module anonymity/facets are consolidated.
+Analysis status, aggregate display omissions, and run limitations remain separate;
+documentation omission counts include materialized exports outside the displayed
+cue. Stable explanations live in help and the command reference, while concise
+TypeScript coverage and non-atomic-input limitations remain in the view. The CLI
+supplies a quoted next-action command with the selected project and full snapshot.
+Its paths are explicit invocation context, distinct from analyzed source evidence.
 
 ## Observations and runtime boundaries
 

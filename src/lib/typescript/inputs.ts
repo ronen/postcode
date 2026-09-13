@@ -38,7 +38,7 @@ export function captureInputs(excludedDirectories: readonly string[]) {
     writeFile: () => { throw new Error('Analysis must not write compiler output'); },
   };
   return {
-    system, excluded,
+    system, excluded, excludedLocationCount: new Set(exclusions.map(directory => directory.real)).size,
     identity: () => ({
       caseSensitive: system.useCaseSensitiveFileNames,
       exclusions,

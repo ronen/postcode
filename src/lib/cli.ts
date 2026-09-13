@@ -19,7 +19,21 @@ JSON uses the experimental postcode-view/0 schema. Exports/documentation expansi
 Unicode inventory lists project modules with 3 export cues and collapses external modules with counts.
 JSON lists all selected modules with up to 6 exports; inspection shows up to 50. Omissions are explicit.
 Normal views automatically submit a local observation batch; the destination is disclosed on stderr.
+
+Concepts:
+modules inventories the supported population; inspect selects exact subjects from that population.
+Materialization is analysis coverage; omissions describe display coverage, not missing analysis.
+Population: configured external-module SourceFiles and visible named ambient modules, not every compiler category.
+Names are current lookups. Generated handles are navigation cues, not responsibility claims; full IDs are snapshot-scoped.
+Source and environment changes require a fresh snapshot; old references never imply a successor.
+Derived claims retain limitations. Documentation is a recorded assertion whose truth, currency and completeness are not established.
+Export relationships describe aliases/forwarding, not calls or dependencies. Target code is not executed.
+Generated-output locations are excluded by the input filter; the reported count is location boundaries, not files found.
+Next-action commands include CLI/project invocation paths; declaration paths and evidence require --source-detail.
+See docs/cli-reference.md for commands, examples, reference scoping, qualifications and observations.
 `;
+
+const shellQuote = (value: string) => `'${value.replace(/'/g, `'\\''`)}'`;
 
 function repositoryRoot(config: string): string | null {
   let directory = path.dirname(config);
@@ -77,7 +91,9 @@ export async function runCli(args: readonly string[], environment: {
   const store = new MemoryProgramRecordStore();
   const evaluation = evaluateModules(store, opened.analysis, presentationRequirements(presentation));
   const projection = lens === 'inspect' ? inspect(store, evaluation, positional[1]!, expectedSnapshot) : modules(store, evaluation);
-  const view = createView(store, projection, presentation);
+  const command = ['node', path.join(environment.checkout, '_build/src/cli.js'), 'inspect', 'SUBJECT',
+    '--snapshot', projection.snapshot, '--project', config].map(shellQuote).join(' ');
+  const view = createView(store, projection, { ...presentation, navigation: { inspect: command } });
   const rendered = renderView(view);
   environment.stdout(rendered);
   environment.stderr(`Local observations: ${destination} (may contain repository-derived text and explicitly requested source locations).\n`);

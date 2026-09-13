@@ -50,6 +50,9 @@ lookups; full Entity IDs already contain snapshot context.
 
 Normal output contains conceptual information and qualifications. Unicode and the
 experimental `postcode-view/0` JSON presentation use the same qualified projection.
+The suggested inspection command includes the explicit CLI and selected-project
+paths as invocation context; replace only its subject. A short snapshot label is
+displayed in the header, while that command retains the full required snapshot.
 `--source-detail` is available only for inspection and shows supporting source
 locations, separately identified as source escape. It does not show full files.
 
@@ -59,6 +62,10 @@ preview; their entries and details are omitted from display, not from analysis.
 Symbol documentation belongs in inspection. Full Entity IDs and ordinary local
 export provenance are suppressed in the Unicode inventory; aliases, forwarding,
 multiple contributing declarations and differing qualifications remain visible.
+Common module anonymity/facets and successful analysis states are consolidated.
+Display omissions are counted separately from analysis coverage. The default view
+retains concise TypeScript coverage and run limitations; stable terminology is in
+`--help` and the [command and concepts reference](docs/cli-reference.md).
 
 JSON retains the full selected module list, full Entity IDs, up to six exports
 and one documentation assertion per project-associated module/export. Its

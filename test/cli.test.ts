@@ -6,6 +6,7 @@ import path from 'node:path';
 import { test } from 'node:test';
 import { runCli } from '../src/lib/cli.js';
 import type { ObservationBatch, ObservationSink } from '../src/lib/observations.js';
+import { renderUnicode } from '../src/lib/presentation.js';
 import type { QualifiedView } from '../src/lib/presentation.js';
 
 const config = path.resolve('fixtures/exports/tsconfig.json');
@@ -30,8 +31,8 @@ test('Unicode and experimental JSON use the same qualified projection and automa
   assert.deepEqual(structured.projection, unicodeArtifact.projection);
   assert.deepEqual(structured.modules.map(module => module.id), unicodeArtifact.modules.map(module => module.id));
   assert.equal(structured.schema, 'postcode-view/0-experimental');
-  assert.ok(unicode.stdout.includes('Symbol documentation is omitted from inventory'));
-  assert.ok(unicode.stdout.includes('documentation assertion(s) omitted'));
+  assert.equal(unicode.stdout.includes('doc [recorded assertion]'), false);
+  assert.ok(unicode.stdout.includes('documentation for'));
   assert.ok(unicode.stdout.includes('wildcard (type-only); origin module-'));
   assert.ok(unicode.stdout.includes('2 contributing declarations'));
   assert.ok(unicode.stderr.includes('Local observations:'));
@@ -54,7 +55,8 @@ test('normal views omit source facets and raw evidence; inspection source escape
   const inventory = await invoke(['--project', config, '--json']);
   const view = JSON.parse(inventory.stdout) as QualifiedView;
   assert.equal(view.sourceDetail, undefined);
-  assert.equal(inventory.stdout.includes(process.cwd()), false);
+  const { navigation: _navigation, ...presentation } = view.presentation;
+  assert.equal(JSON.stringify({ ...view, presentation }).includes(process.cwd()), false);
   for (const key of ['"path":', '"compilerName":', '"contentDigest":', '"evidence":', '"start":']) assert.equal(inventory.stdout.includes(key), false);
   const selected = view.modules.find(module => module.name === 'documented')!;
   const inspected = await invoke(['inspect', selected.handle, '--snapshot', view.projection.snapshot, '--project', config, '--source-detail', '--json']);
@@ -145,8 +147,8 @@ test('bounded exports and documentation disclose every material omission in both
     assert.equal(view.modules[0]!.exports.length, 6);
     assert.equal(view.modules[0]!.omittedExports, 3);
     assert.equal(view.modules[0]!.exports[0]!.documentation[0]!.omittedTextCharacters, 200);
-    assert.ok(unicode.stdout.includes('+6 effective export(s) omitted'));
-    assert.ok(unicode.stdout.includes('1 documentation assertion(s) omitted'));
+    assert.ok(unicode.stdout.includes('6 exports from listed modules'));
+    assert.ok(unicode.stdout.includes('documentation for 1 listed modules'));
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -174,13 +176,13 @@ test('Unicode distinguishes established empty exports from unresolved exports an
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
     writeFileSync(path.join(root, 'entry.ts'), 'export {};');
     const empty = await invoke(['--project', config]);
-    assert.ok(empty.stdout.includes('effective export set established as empty'));
-    assert.ok(empty.stdout.includes('Display limits do not imply missing analysis'));
-    assert.ok(empty.stdout.includes('Next: inspect <name-or-handle>'));
+    assert.ok(empty.stdout.includes('  Exports: none'));
+    assert.ok(empty.stdout.includes('Analysis complete: modules, exports, documentation'));
+    assert.ok(empty.stdout.includes('Next · replace SUBJECT only'));
     writeFileSync(path.join(root, 'entry.ts'), 'export * from "./missing.js";');
     const unresolved = await invoke(['--project', config]);
     assert.ok(unresolved.stdout.includes('Exports: not established; no exports displayed.'));
-    assert.equal(unresolved.stdout.includes('effective export set established as empty'), false);
+    assert.equal(unresolved.stdout.includes('  Exports: none'), false);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -209,7 +211,7 @@ test('inventory counts omitted external documentation while exact inspection mak
     assert.equal(unicode.stdout.includes('routes: direct'), false);
     assert.equal(unicode.stdout.includes('1 contributing declaration'), false);
     assert.equal(unicode.stdout.split(view.projection.snapshot).length - 1, 1);
-    assert.ok(unicode.stdout.includes('Qualifications'));
+    assert.ok(unicode.stdout.includes('Coverage: external-module SourceFiles'));
     const inspectedUnicode = await invoke(['inspect', external.handle, '--snapshot', view.projection.snapshot, '--project', config]);
     assert.ok(inspectedUnicode.stdout.includes('doc [recorded assertion]'));
     assert.ok(inspectedUnicode.stdout.includes('External responsibility.'));
@@ -262,5 +264,76 @@ test('compact inventory suppresses ordinary provenance but preserves aliases and
     assert.equal(result.stdout.includes('ordinary: direct'), false);
     assert.equal(result.stdout.includes('1 contributing declaration'), false);
     assert.equal(result.stdout.includes('Origin this module'), false);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('common success state is compact but abnormal capability states remain explicit', async () => {
+  const result = await invoke(['--project', config, '--json']);
+  const view = JSON.parse(result.stdout) as QualifiedView;
+  assert.ok(renderUnicode(view).includes('Analysis complete: modules, exports, documentation'));
+  for (const execution of ['deferred', 'stopped', 'failed'] as const) {
+    const evaluations = view.evaluations.map((outcome, index) => index === 0 ? {
+      ...outcome, execution, materialization: 'none' as const, reason: 'Explicit fixture state',
+    } : outcome);
+    const output = renderUnicode({ ...view, evaluations });
+    assert.equal(output.includes('Analysis complete:'), false);
+    assert.ok(output.includes(execution));
+    assert.ok(output.includes('Explicit fixture state'));
+  }
+  const unavailable = renderUnicode({ ...view, evaluations: view.evaluations.map(outcome => ({ ...outcome, availability: 'unavailable', execution: 'deferred', materialization: 'none' })) });
+  assert.ok(unavailable.includes('unavailable'));
+  assert.equal(unavailable.includes('Analysis complete:'), false);
+});
+
+test('compact inventory consolidates common labels and counts documentation beyond its export cues', async () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-display-scopes-'));
+  try {
+    const config = path.join(root, 'tsconfig.json');
+    writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"include":["*.ts"]}');
+    writeFileSync(path.join(root, 'first.ts'), 'export const a=1; export const b=2; export const c=3;\n/** Not a displayed cue. */\nexport const z=4;');
+    writeFileSync(path.join(root, 'second.ts'), 'export const other=1;');
+    const result = await invoke(['--project', config]);
+    const view = result.batches[0]!.records.find(record => record.kind === 'qualified-view')!.value as QualifiedView;
+    assert.equal(view.display.omittedExports, 1);
+    assert.equal(view.display.modulesWithOmittedDocumentation, 1);
+    assert.ok(result.stdout.includes('Omitted: 1 exports from listed modules; documentation for 1 listed modules.'));
+    assert.equal(result.stdout.split('All listed modules are anonymous').length - 1, 1);
+    assert.equal(result.stdout.includes('(anonymous module)'), false);
+    assert.equal(result.stdout.split('implementation-available').length - 1, 1);
+    assert.equal(result.stdout.includes('doc [recorded assertion]'), false);
+    assert.equal(result.stdout.includes('not calls or dependencies'), false);
+    assert.equal(result.stdout.includes('Not a displayed cue.'), false);
+    assert.ok(result.stdout.includes('other compiler module categories are not established'));
+    assert.ok(result.stdout.includes('not captured as an atomic filesystem snapshot'));
+    assert.equal(view.analysis?.excludedOutputLocations, 4);
+    assert.ok(result.stdout.includes("4 generated-output locations excluded by this run's input filter"));
+    assert.ok(result.stdout.includes(`Snapshot ${view.projection.snapshot.slice(9, 21)}\n`));
+    assert.equal(result.stdout.includes('Snapshot snapshot:'), false);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('a mostly-type module uses an exported type cue instead of a helper predicate', async () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-type-handle-'));
+  try {
+    const config = path.join(root, 'tsconfig.json');
+    writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
+    writeFileSync(path.join(root, 'entry.ts'), 'export type Claim=string; export type ClaimContext={}; export type ExportClaim={}; export function isModuleClaim() {return true}');
+    const view = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+    assert.equal(view.modules[0]!.handle, 'module-claim');
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('the suggested command runs after replacing only SUBJECT, including a quoted project path', async () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), "postcode-project's "));
+  try {
+    const config = path.join(root, 'tsconfig.json');
+    writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
+    writeFileSync(path.join(root, 'entry.ts'), 'export function runCli() {}');
+    const view = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+    const command = view.presentation.navigation!.inspect.replace("'SUBJECT'", "'module-run-cli'");
+    const output = execFileSync('/bin/sh', ['-c', command], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+    assert.ok(output.includes('Exact selector: module-run-cli'));
+    assert.ok(output.includes('1 modules found · 1 listed'));
+    assert.equal(output.includes('No current match'), false);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

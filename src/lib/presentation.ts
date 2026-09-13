@@ -1,10 +1,12 @@
 import { methods, recordId } from './identity.js';
 import { isModuleClaim, moduleStandardExpansions } from './records.js';
-import type { Claim, ClaimContextRecord, EvaluationRecord, ExportClaim, ModuleExpansion, ProgramRecordStore, ProjectionRecord, RecordId, RecordedAssertion, SourceEvidenceRecord, SymbolClaim } from './records.js';
+import type { Claim, ClaimContextRecord, EvaluationRecord, ExportClaim, ModuleExpansion, ProgramRecordStore, ProjectionRecord, RecordId, RecordedAssertion, SnapshotRecord, SourceEvidenceRecord, SymbolClaim } from './records.js';
 
 export interface Presentation {
   readonly format: 'unicode' | 'json';
   readonly sourceDetail: boolean;
+  /** Operational invocation context supplied by the CLI, not repository source evidence. */
+  readonly navigation?: { readonly inspect: string };
 }
 
 export function presentationRequirements(_presentation: Presentation): readonly ModuleExpansion[] {
@@ -30,6 +32,7 @@ export interface QualifiedView {
   readonly id: RecordId;
   readonly projection: Pick<ProjectionRecord, 'id' | 'snapshot' | 'lens' | 'subject' | 'parameters' | 'selection'>;
   readonly presentation: Presentation & { readonly expansions: readonly ModuleExpansion[] };
+  readonly analysis: SnapshotRecord['analysis'] | null;
   readonly qualifications: readonly Qualification[];
   readonly evaluations: readonly Pick<EvaluationRecord, 'id' | 'requirement' | 'modules' | 'applicability' | 'availability' | 'execution' | 'materialization' | 'reason' | 'cost'>[];
   readonly modules: readonly {
@@ -39,7 +42,8 @@ export interface QualifiedView {
   }[];
   readonly display: {
     readonly collapsedModules: number;
-    readonly collapsedPreview: readonly { readonly name: string | null; readonly handle: string }[];
+    readonly omittedExports: number;
+    readonly modulesWithOmittedDocumentation: number;
     readonly collapsedQualifications: readonly { readonly handle: string; readonly contexts: readonly Qualification[] }[];
   };
   readonly sourceDetail?: { readonly level: 'declaration-locations'; readonly notice: string;
@@ -49,6 +53,8 @@ export interface QualifiedView {
 /** Assembles a bounded view from already-materialized records. Neither this nor rendering evaluates. */
 export function createView(store: ProgramRecordStore, projection: ProjectionRecord, presentation: Presentation): QualifiedView {
   if (presentation.sourceDetail && projection.lens !== 'inspect') throw new Error('Source detail requires inspection');
+  const snapshot = store.get(projection.snapshot);
+  if (snapshot.kind !== 'snapshot') throw new Error('Expected analysis snapshot');
   const qualification = (id: RecordId): Qualification => {
     const context = store.get(id);
     if (context.kind !== 'claim-context') throw new Error('Expected Claim context');
@@ -92,6 +98,8 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
     const maximumDocs = compact ? 0 : projection.lens === 'inspect' ? 3 : claim.information.facets.includes('project') ? 1 : 0;
     displayedClaims.set(claim.id, claim);
     const allExports = expanded.filter((record): record is ExportClaim => record.information.type === 'export' && record.subject === id);
+    const allSubjects = new Set([id, ...allExports.map(exported => exported.id), ...allExports.flatMap(exported => exported.information.symbol ? [exported.information.symbol] : [])]);
+    const allDocumentation = expanded.flatMap(record => record.information.type === 'documentation-association' && allSubjects.has(record.subject) ? [record.information.assertion] : []);
     const maximumExports = compact ? 3 : projection.lens === 'inspect' ? 50 : 6;
     const exports = allExports.slice(0, maximumExports).map(exported => {
       displayedClaims.set(exported.id, exported);
@@ -110,7 +118,11 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
       return { ...exported.information, id: exported.id, qualification: qualification(exported.context), symbolInformation, originHandle,
         ...documentation([exported.id, ...(exported.information.symbol ? [exported.information.symbol] : [])], maximumDocs) };
     });
-    return { id, ...claim.information, qualification: qualification(claim.context), ...documentation([id], maximumDocs),
+    const moduleDocumentation = documentation([id], maximumDocs);
+    const shownDocumentation = [...moduleDocumentation.documentation, ...exports.flatMap(exported => exported.documentation)];
+    const omittedDocumentationInModule = allDocumentation.some(id => !shownDocumentation.some(doc => doc.id === id))
+      || shownDocumentation.some(doc => doc.omittedTextCharacters > 0 || doc.omittedTags > 0 || doc.tags.some(tag => tag.omittedTextCharacters > 0));
+    return { id, ...claim.information, qualification: qualification(claim.context), ...moduleDocumentation, omittedDocumentationInModule,
       exports, omittedExports: allExports.length - exports.length };
   }).sort((left, right) => Number(right.facets.includes('project')) - Number(left.facets.includes('project')));
   const evaluations = projection.evaluations.map(id => {
@@ -130,14 +142,17 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
   }
   const contexts = [...contextIds].map(qualification);
   const collapsed = compact ? modules.filter(module => !module.facets.includes('project')) : [];
+  const listed = compact ? modules.filter(module => module.facets.includes('project')) : modules;
   return {
     schema: 'postcode-view/0-experimental', id: recordId(projection.snapshot, 'view', { projection: projection.id, presentation, method: methods.presentation }),
     projection: { id: projection.id, snapshot: projection.snapshot, lens: projection.lens, subject: projection.subject,
       parameters: projection.parameters, selection: projection.selection },
     presentation: { ...presentation, expansions: projection.expansions.requested },
-    qualifications: contexts, evaluations, modules: compact ? modules.filter(module => module.facets.includes('project')) : modules,
+    analysis: snapshot.analysis ?? null,
+    qualifications: contexts, evaluations, modules: listed.map(({ omittedDocumentationInModule: _omittedDocumentation, ...module }) => module),
     display: { collapsedModules: collapsed.length,
-      collapsedPreview: collapsed.slice(0, 3).map(module => ({ name: module.name, handle: module.handle })),
+      omittedExports: listed.reduce((count, module) => count + module.omittedExports, 0),
+      modulesWithOmittedDocumentation: listed.filter(module => module.omittedDocumentationInModule).length,
       collapsedQualifications: collapsed.map(module => ({ handle: module.handle, contexts: contexts.filter(context => context.scope === module.id) })) },
     ...(presentation.sourceDetail ? { sourceDetail: {
       level: 'declaration-locations' as const,
@@ -162,7 +177,7 @@ export function renderUnicode(view: QualifiedView): string {
   const selection = view.projection.selection;
   const inventory = view.projection.lens === 'modules';
   const lines = [`${inventory ? 'Modules' : 'Inspect'} · configured TypeScript project`,
-    `Snapshot ${view.projection.snapshot}`,
+    `Snapshot ${view.projection.snapshot.replace(/^snapshot:/, '').slice(0, 12)}`,
     `${selection.population} modules found · ${view.modules.length} listed${view.display.collapsedModules ? ` · ${view.display.collapsedModules} external modules collapsed` : ''}`];
   if (!selection.populationEstablished) lines.push('Module population is not established.');
   if (selection.subset) lines.push(`Selected subset: ${selection.matches} exact matches; other discovered modules are not selected.`);
@@ -174,7 +189,10 @@ export function renderUnicode(view: QualifiedView): string {
     const label = `${outcome.requirement}: ${outcome.execution}, materialization ${outcome.materialization}${outcome.applicability !== 'applicable' ? `, ${outcome.applicability}` : ''}${outcome.availability !== 'available' ? `, ${outcome.availability}` : ''}${outcome.reason ? ` — ${outcome.reason}` : ''}`;
     outcomeGroups.set(label, (outcomeGroups.get(label) ?? 0) + 1);
   }
-  for (const [label, count] of outcomeGroups) lines.push(`Analysis ${label} (${count} scope${count === 1 ? '' : 's'})`);
+  const complete = view.evaluations.length > 0 && view.evaluations.every(outcome => outcome.applicability === 'applicable'
+    && outcome.availability === 'available' && outcome.execution === 'completed' && outcome.materialization === 'full');
+  if (complete) lines.push(`Analysis complete: ${[...new Set(view.evaluations.map(outcome => outcome.requirement))].join(', ')}`);
+  else for (const [label, count] of outcomeGroups) lines.push(`Analysis ${label} (${count} scope${count === 1 ? '' : 's'})`);
   const projectContexts = view.qualifications.filter(context => context.scope === 'configured-project');
   const sharedLimitations = new Set(projectContexts.flatMap(context => context.limitations));
   const sharedDiagnostics = new Set(projectContexts.flatMap(context => context.diagnostics.map(diagnostic => diagnostic.code)));
@@ -186,8 +204,11 @@ export function renderUnicode(view: QualifiedView): string {
       if (!sharedDiagnostics.has(code)) lines.push(`${indent}Encountered TypeScript diagnostic: TS${code}`);
     }
   };
+  let documentationDisplayed = false;
+  let relationshipsDisplayed = false;
   const docs = (items: readonly Documentation[], omitted: number, indent: string) => {
     for (const doc of items) {
+      documentationDisplayed = true;
       lines.push(`${indent}doc [recorded assertion] (${doc.association}):`);
       for (const line of doc.text.split('\n')) if (line.trim()) lines.push(`${indent}  ${line}`);
       if (doc.omittedTextCharacters) lines.push(`${indent}  … ${doc.omittedTextCharacters} assertion character(s) omitted.`);
@@ -202,22 +223,31 @@ export function renderUnicode(view: QualifiedView): string {
   const exceptions = (exported: ExportView, moduleId: RecordId): string[] => {
     const details = [...new Set(exported.routes.filter(route => route.kind !== 'direct' && route.kind !== 'default' || route.aliased || route.typeOnly)
       .map(route => `${route.kind}${route.typeOnly ? ' (type-only)' : ''}`))];
+    if (details.length || exported.origin !== moduleId) relationshipsDisplayed = true;
     if (!exported.routes.length) details.push('route unavailable');
     if (exported.origin !== moduleId) details.push(exported.origin ? `origin ${exported.originHandle ?? 'module identity available in JSON'}` : 'origin not established');
     if (exported.symbolInformation && exported.symbolInformation.declarationCount !== 1) details.push(`${exported.symbolInformation.declarationCount} contributing declarations`);
     return details;
   };
-  if (view.modules.length) lines.push('', inventory ? 'Project modules' : 'Selected modules');
+  const commonFacets = view.modules[0]?.facets.filter(facet => view.modules.every(module => module.facets.includes(facet))) ?? [];
+  const allAnonymous = view.modules.length > 0 && view.modules.every(module => module.name === null);
+  if (view.modules.length) {
+    const facets = commonFacets.filter(facet => !inventory || facet !== 'project');
+    lines.push('', `${inventory ? 'Project modules' : 'Selected modules'}${facets.length ? ` · ${facets.join(', ')}` : ''}`);
+    if (allAnonymous) lines.push('All listed modules are anonymous; generated handles shown.');
+  }
   for (const module of view.modules) {
-    lines.push('', `◆ ${module.handle} · ${module.name ?? '(anonymous module)'}`, `  ${module.facets.join(', ') || 'facets not established'}`);
+    lines.push('', `◆ ${module.handle}${allAnonymous ? '' : ` · ${module.name ?? '[anonymous]'}`}`);
+    const facets = module.facets.filter(facet => !commonFacets.includes(facet));
+    if (facets.length) lines.push(`  ${facets.join(', ')}`);
     if (!inventory) lines.push(`  Entity ${module.id}`);
     const total = module.exports.length + module.omittedExports;
     const established = view.evaluations.some(outcome => outcome.requirement === 'exports'
       && outcome.modules.includes(module.id) && outcome.execution === 'completed' && outcome.materialization === 'full');
-    if (!total) lines.push(established ? '  Exports: none (effective export set established as empty).'
+    if (!total) lines.push(established ? '  Exports: none'
       : '  Exports: not established; no exports displayed.');
     if (inventory && total) {
-      lines.push(`  Exports (${total}${established ? '' : ' materialized; surface incomplete'}): ${module.exports.map(exported => `${exported.exportedName} [${roles(exported)}]`).join(', ')}${module.omittedExports ? `; … +${module.omittedExports} effective export(s) omitted` : ''}`);
+      lines.push(`  Exports (${total}${established ? '' : ' materialized; surface incomplete'}): ${module.exports.map(exported => `${exported.exportedName} [${roles(exported)}]`).join(', ')}${module.omittedExports ? `; … +${module.omittedExports}` : ''}`);
       for (const exported of module.exports) {
         const details = exceptions(exported, module.id);
         if (details.length) lines.push(`    ${exported.exportedName}: ${details.join('; ')}`);
@@ -232,31 +262,42 @@ export function renderUnicode(view: QualifiedView): string {
       }
       if (module.omittedExports) lines.push(`  … ${module.omittedExports} effective export(s) omitted.`);
     }
-    if (inventory) {
-      const omittedDocs = module.omittedDocumentation + module.exports.reduce((count, exported) => count + exported.omittedDocumentation, 0);
-      if (omittedDocs) lines.push(`  ${omittedDocs} documentation assertion(s) omitted for listed subjects; inspect for detail.`);
-    }
+
     local([...view.qualifications.filter(context => context.scope === module.id), ...module.exports.map(exported => exported.qualification)], '  ');
   }
-  if (view.display.collapsedModules) {
-    lines.push('', `External modules (including ambient declarations) · ${view.display.collapsedModules} collapsed`,
-      `  Preview: ${view.display.collapsedPreview.map(module => module.name ?? module.handle).join(', ')}${view.display.collapsedModules > view.display.collapsedPreview.length ? `; … +${view.display.collapsedModules - view.display.collapsedPreview.length} omitted from preview` : ''}`,
-      '  Module entries and their export/documentation details are omitted from this display. JSON lists the full inventory.');
+  if (documentationDisplayed) lines.push('', 'Documentation: doc [recorded assertion] has no established truth, currency or completeness.');
+  if (relationshipsDisplayed) lines.push('', 'Export relationships describe aliases and forwarding, not calls or dependencies.');
+  const omissions: string[] = [];
+  if (view.display.collapsedModules) omissions.push(`${view.display.collapsedModules} external modules (entries and details)`);
+  if (view.display.omittedExports) omissions.push(`${view.display.omittedExports} exports from listed modules`);
+  if (view.display.modulesWithOmittedDocumentation) omissions.push(`documentation for ${view.display.modulesWithOmittedDocumentation} listed modules`);
+  if (omissions.length) lines.push('', 'Display', `  Omitted: ${omissions.join('; ')}.`, '  Inspection shows detail; JSON lists the full selected inventory.');
+  lines.push('', 'Status');
+  if (view.analysis?.provider === 'typescript') {
+    lines.push('  Method: TypeScript analysis.',
+      '  Coverage: external-module SourceFiles and visible named ambient modules; other compiler module categories are not established.');
+  } else for (const guarantee of new Set(projectContexts.map(context => context.guarantee))) lines.push(`  ${guarantee}`);
+  for (const code of sharedDiagnostics) lines.push(`  Encountered TypeScript diagnostic: TS${code}`);
+  const representedLimitations = view.analysis ? new Set([
+    'Population is configured Program external-module SourceFiles and visible named ambient-module symbols; other compiler module categories are not established.',
+    'Configured generated-output locations are explicitly excluded from repository evidence.',
+    'No atomic filesystem snapshot is claimed; inputs are memoized as first observed.',
+  ]) : new Set<string>();
+  const extraLimitations = [...sharedLimitations].filter(limitation => !representedLimitations.has(limitation));
+  if (view.analysis || extraLimitations.length) {
+    lines.push('', 'Run limitations');
+    if (view.analysis?.excludedOutputLocations) lines.push(`  ${view.analysis.excludedOutputLocations} generated-output locations excluded by this run's input filter.`);
+    if (view.analysis?.inputConsistency === 'first-observed') lines.push('  Inputs were memoized as first observed, not captured as an atomic filesystem snapshot.');
+    for (const limitation of extraLimitations) lines.push(`  ${limitation}`);
   }
-  lines.push('', 'Next: inspect <name-or-handle> --snapshot <snapshot-above> with the same --project configuration.', '', 'Qualifications',
-    '- Materialization describes analysis results. Display limits do not imply missing analysis; export and documentation omissions are disclosed.',
-    '- Handles are generated from conceptual names/exports, not module responsibility claims. They require snapshot context; no cross-snapshot continuity is inferred.');
-  for (const guarantee of new Set(view.qualifications.map(context => context.guarantee))) lines.push(`- Derived: ${guarantee}`);
-  for (const limitation of sharedLimitations) lines.push(`- ${limitation}`);
-  for (const code of sharedDiagnostics) lines.push(`- Encountered TypeScript diagnostic: TS${code}`);
-  if (inventory) lines.push('- Symbol documentation is omitted from inventory; inspect a subject for recorded assertions.');
-  lines.push('- Documentation marked doc [recorded assertion] has no established truth, currency, or completeness.',
-    '- Export relationships describe aliases and forwarding, not calls or dependencies.');
   for (const collapsed of view.display.collapsedQualifications) {
     const exceptional = collapsed.contexts.filter(context => context.limitations.some(limitation => !sharedLimitations.has(limitation))
       || context.diagnostics.some(diagnostic => !sharedDiagnostics.has(diagnostic.code)));
     if (exceptional.length) { lines.push(`- Collapsed ${collapsed.handle}:`); local(exceptional, '  '); }
   }
+  if (view.presentation.navigation) lines.push('', 'Next · replace SUBJECT only; the command uses this snapshot and project:', `  ${view.presentation.navigation.inspect}`);
+  else lines.push('', 'Inspection requires an exact subject, the full snapshot ID from JSON, and the selected --project configuration.');
+  lines.push('More: --help; command and concepts reference in docs/cli-reference.md.');
   if (view.sourceDetail) {
     lines.push('', 'SOURCE DETAIL — explicit source escape', view.sourceDetail.notice);
     for (const claim of view.sourceDetail.claims) {

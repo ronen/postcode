@@ -12,6 +12,13 @@ export interface SnapshotRecord extends RecordContext {
   readonly kind: 'snapshot';
   readonly inputDigest: string;
   readonly methods: readonly string[];
+  readonly analysis?: {
+    readonly provider: 'typescript';
+    readonly coverage: 'external-source-files-and-visible-named-ambient-modules';
+    readonly inputConsistency: 'first-observed';
+    /** Distinct output-location boundaries enforced by this run's input filter, not a count of files found. */
+    readonly excludedOutputLocations: number;
+  };
 }
 
 export interface ModuleRecord extends RecordContext {

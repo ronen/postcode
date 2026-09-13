@@ -98,6 +98,15 @@ requires the inventory's snapshot through `--snapshot`. The projection records
 the requested snapshot and an explicit current/snapshot-required/snapshot-mismatch
 reference status. Mismatches never infer successors. Full Entity IDs remain
 snapshot-qualified; exact conceptual names are current-snapshot lookups.
+Mostly-type modules prefer an actual exported type over a helper predicate when
+generating a mnemonic; this is a syntactic naming heuristic, not responsibility
+classification. Unicode uses a short snapshot label for recognition, while the
+next-action command and structured view retain the full reference for validation.
+
+Suggested commands include explicit CLI/project invocation paths and shell-quote
+their arguments. Keep those operational paths separate from discovered source
+evidence and from domain identity. Run qualification counts report distinct
+enforced output-location boundaries, not a census of generated files.
 
 Method versions in the identity module participate in snapshot identity. Bump
 the responsible version when changing analysis, record, handle, or projection
