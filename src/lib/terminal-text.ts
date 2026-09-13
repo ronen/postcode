@@ -5,4 +5,3 @@ export const terminalText = (text: string) => text.replace(/[\u0000-\u0008\u000b
 /** Inline values cannot create renderer-owned line breaks or indentation. */
 export const inlineText = (text: string) => terminalText(text).replace(/[\n\t]/g,
   character => `\\u${character.charCodeAt(0).toString(16).padStart(4, '0')}`);
-
