@@ -30,12 +30,12 @@ project export surfaces. No implementation defect was found in that exercise.
 
 Outstanding gates: human Unicode-output feedback/acceptance and final independent
 integrated review. Unicode output is explicitly not yet approved.
-The [sixth output sample](records/reviews/2026-09-13-unicode-sixth-response.md)
-nests source and documentation beneath exports, separates forwarding from defining
-source, and places the expansion before qualifications and navigation. Documentation
-has one status statement and an eight-line Unicode bound with truthful omissions.
-Eleven exceptional cases include the alias/re-export source hierarchy. The
-[command and concepts reference](docs/cli-reference.md) is updated.
-Final integrated-review handoff is on hold for the human's further Unicode review.
+The [sixth review](records/reviews/2026-09-13-unicode-sixth-findings.txt) reports
+that substantive presentation requirements are met, with no remaining blocker.
+All five small wording/reference corrections are applied in the
+[seventh sample](records/reviews/2026-09-13-unicode-seventh-response.md).
+The [command and concepts reference](docs/cli-reference.md) reflects the precise
+per-module and per-export documentation bounds. No regression was found.
+Final integrated-review handoff still awaits the user's explicit output approval.
 The full [approved plan](docs/plans/initial-module-inventory-plan.md) remains
 the task scope; no closure or final acceptance is claimed.
