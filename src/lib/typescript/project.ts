@@ -220,7 +220,9 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       const handleProvenance = candidate.name ? 'language-name' : filename ? 'source-basename' : exportCue ? 'declared-export' : 'anonymous-fallback';
       const slug = cue?.replace(/([A-Z])([A-Z][a-z])/g, '$1-$2').replace(/([a-z0-9])([A-Z])/g, '$1-$2')
         .normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-      return { handle: slug || 'anonymous', handleProvenance: slug ? handleProvenance : 'anonymous-fallback' };
+      // Reserve compact Entity-ID syntax so generated handles remain independently selectable.
+      const handle = slug && /^module-[a-f0-9]{8,64}$/.test(slug) ? `handle-${slug}` : slug || 'anonymous';
+      return { handle, handleProvenance: slug ? handleProvenance : 'anonymous-fallback' };
     };
     for (const candidate of candidates) {
       const id = recordId(snapshot, 'module', candidate.key);

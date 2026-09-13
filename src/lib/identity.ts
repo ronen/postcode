@@ -10,7 +10,7 @@ export const methods = {
   projection: 'postcode/projection@5',
   expansions: 'postcode/typescript-expansions@0',
   presentation: 'postcode/presentation@9',
-  handles: 'postcode/module-handles@3',
+  handles: 'postcode/module-handles@4',
 } as const;
 
 /** Stable key order without locale, clock, random IDs, or storage identity. */

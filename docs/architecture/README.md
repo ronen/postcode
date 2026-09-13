@@ -75,7 +75,9 @@ symbols. It makes no continuity claim across snapshots or relocated checkouts.
 Absolute paths contribute to internal snapshot identity, but are not conceptual
 names. Handles use language names, basenames or declared exports, with honest
 anonymous fallbacks. Basenames provide bounded mnemonic evidence without becoming
-conceptual names; generated provenance remains explicit. Compact Entity IDs use
+conceptual names; generated provenance remains explicit. Handles that match compact
+Entity-ID syntax receive a `handle-` prefix, keeping those selectors distinct.
+Compact Entity IDs use
 record-key digest prefixes checked against the entire module population, extended
 on collision. Inspection requires explicit snapshot scope for handles and compact
 IDs, reporting no current match when scope is missing or stale. Internal record

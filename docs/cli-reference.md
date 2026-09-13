@@ -69,6 +69,9 @@ Type-heavy fallback candidates prefer a type export over a helper predicate.
 Basename evidence exposes no directory, extension or source location and does not
 become a conceptual name. JSON retains `handleStatus` and `handleProvenance`.
 Handles may repeat; one handle can select several modules.
+Generated cues matching compact Entity-ID syntax (`module-` plus 8–64 lowercase
+hexadecimal characters) receive a `handle-` prefix. Their original cue provenance
+is retained, while scoped Entity IDs remain precise and independently selectable.
 
 A compact **Entity ID**, such as `module-a7bcf3e2`, precisely selects a module
 within its snapshot. Digest prefixes start at eight hexadecimal characters and

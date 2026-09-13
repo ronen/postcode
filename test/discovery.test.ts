@@ -143,6 +143,43 @@ test('exact names remain usable when they collide with compact IDs; scoped IDs s
   });
 });
 
+test('generated handles avoid compact Entity IDs across basename, language-name and export cues', () => {
+  temporary(root => {
+    const config = path.join(root, 'tsconfig.json');
+    writeFileSync(config, JSON.stringify({ compilerOptions: { noLib: true, types: [] }, include: ['**/*.ts'] }));
+    writeFileSync(path.join(root, 'ordinary.ts'), 'export const value = 1;');
+    const before = discover(config);
+    const selector = moduleEntityIds(before.evaluation.modules).get(before.evaluation.modules[0]!)!;
+    for (const directory of ['first', 'second']) {
+      mkdirSync(path.join(root, directory));
+      writeFileSync(path.join(root, directory, `${selector}.ts`), 'export const value = 1;');
+    }
+    writeFileSync(path.join(root, 'ambient.d.ts'), `declare module "${selector}" { export const value: number; }`);
+    writeFileSync(path.join(root, 'index.ts'), `export const ${selector.replace('-', '_')} = 1;`);
+    // Reserve the entire compact-ID grammar, including prefixes extended on collision.
+    for (const length of [9, 64]) writeFileSync(path.join(root, `module-${'a'.repeat(length)}.ts`), 'export const value = 1;');
+    const { store, evaluation, claims } = discover(config);
+    const ids = moduleEntityIds(evaluation.modules);
+    const ordinary = claims.find(claim => claim.information.handle === 'ordinary')!;
+    assert.equal(ids.get(ordinary.subject), selector);
+    const rewritten = claims.filter(claim => claim.information.handle === `handle-${selector}`);
+    assert.equal(rewritten.length, 4);
+    assert.deepEqual(new Set(rewritten.map(claim => claim.information.handleProvenance)),
+      new Set(['source-basename', 'language-name', 'declared-export']));
+    assert.deepEqual(inspect(store, evaluation, `handle-${selector}`, evaluation.snapshot).modules,
+      rewritten.map(claim => claim.subject));
+    assert.equal(inspect(store, evaluation, `handle-${selector}`).selection.referenceStatus, 'snapshot-required');
+    assert.deepEqual(inspect(store, evaluation, selector, evaluation.snapshot).modules, [ordinary.subject]);
+    const named = claims.find(claim => claim.information.name === selector)!;
+    assert.deepEqual(inspect(store, evaluation, selector).modules, [named.subject]);
+    for (const claim of claims) {
+      assert.equal(/^module-[a-f0-9]{8,64}$/.test(claim.information.handle), false);
+      assert.deepEqual(inspect(store, evaluation, ids.get(claim.subject)!, evaluation.snapshot).modules, [claim.subject]);
+    }
+    assert.deepEqual(discover(config).claims, claims);
+  });
+});
+
 test('equivalent separate processes reproduce snapshot, records, ordering and projection', () => {
   const invoke = () => execFileSync(process.execPath, ['_build/test/process-probe.js', fixture('module-population')], { encoding: 'utf8' });
   assert.equal(invoke(), invoke());

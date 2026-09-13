@@ -96,6 +96,9 @@ Generated mnemonic handles use language names, extensionless source basenames or
 declared exports, never snapshot hash text. Retain generated status and provenance;
 a basename cue is not a conceptual name or a responsibility classification.
 Generic basenames fall back to representative exports or honest anonymity.
+Reserve compact Entity-ID syntax (`module-` plus 8–64 lowercase hexadecimal
+characters) by prefixing matching generated handles with `handle-`. Apply this
+after cue normalization, regardless of cue provenance; exact language names remain unchanged.
 
 Compact module Entity IDs abbreviate record-key digests against the entire module
 population, extending prefixes on collision. Compute the same mapping for inventory
