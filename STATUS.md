@@ -14,7 +14,7 @@ Program claims, Claim context, source evidence, documentation assertions, evalua
 outcomes, projections and observations remain distinct. See [usage](README.md)
 and the [architecture overview](docs/architecture/README.md).
 
-All 64 automated tests and type checks pass. Coverage includes semantic fixtures,
+All 68 automated tests and type checks pass. Coverage includes semantic fixtures,
 separate-process CLI determinism, changed-input identity, source separation,
 omission disclosure, sink delivery/privacy behavior, and actual checkout output
 exclusion for nested configurations. PostCode self-analysis has run successfully.
@@ -57,4 +57,9 @@ The fourth review's handle/Entity-ID collision and duplicate configuration
 syntax diagnostics are corrected in `cc836cc` and `92e4ed2`. The human approved
 preserving root syntax validation after the suggested removal caused a regression.
 The [fourth disposition and handoff](records/reviews/2026-09-13-module-inventory-continuation-round-4.md)
-records 64 passing tests and fixture verification. PR #1 is awaiting another rereview.
+records 64 passing tests and fixture verification.
+The fifth review's renamed re-export route, exclusion-set identity and Unicode
+structural injection findings are corrected in `8199cca`. The
+[fifth disposition and handoff](records/reviews/2026-09-13-module-inventory-continuation-round-5.md)
+records 68 passing tests and targeted output comparisons. The continuation remains
+active; PR #1 is awaiting another human-arranged rereview.
