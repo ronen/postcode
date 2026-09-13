@@ -50,6 +50,17 @@ findings: malformed snapshot self-identity can be committed, and the modules-len
 usage error omits the inspection-only snapshot option. Both findings are accepted
 as in-scope corrections. Keep this continuation active for the next human-arranged review.
 
+### 2026-09-13: fourth Copilot review
+
+Again, Copilot has completed its review.  Please retrieve the new review materials.  It again refers to "previously missed", you are authorized to act on those; though if you disagree pause to discuss.  Otherwise, as before unless any unforeseen issues arise, commit and prepare handoff for next review
+
+Context: [review 5191357243](https://github.com/ronen/postcode/pull/1#pullrequestreview-5191357243)
+on `3a09a24` contains two previously missed suppressed findings and no new inline
+comments: generated handles can collide with compact Entity IDs, and configuration
+syntax diagnostics are duplicated by redundant parsing. Both are accepted as
+in-scope corrections. Preserve precise ID and exact-name selection, and keep the
+continuation active for the next human-arranged review.
+
 ## Outcome
 
 ### 2026-09-13: corrections ready for Copilot rereview
