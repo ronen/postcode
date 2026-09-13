@@ -94,6 +94,10 @@ context and machine-readable detail. `(none)` denotes an established empty expor
 set and differs from an actual export named `none`. Inventory shows export names;
 type/value roles and exceptional export provenance remain available in inspection.
 
+The structured presentation's `expansions` field lists each requested expansion
+kind once. Per-module execution and materialization belong to the qualified
+`evaluations` records, not repeated entries in that kind list.
+
 **Display omissions** describe presentation choices: collapsed module entries and
 their details, unlisted exports, and omitted documentation. Aggregate export and
 documentation-module counts refer to listed modules, excluding the separately

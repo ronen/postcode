@@ -7,7 +7,7 @@ export const methods = {
   records: 'postcode/program-records@6',
   discovery: 'postcode/typescript-modules@4',
   evaluation: 'postcode/evaluate-modules@1',
-  projection: 'postcode/projection@3',
+  projection: 'postcode/projection@4',
   expansions: 'postcode/typescript-expansions@0',
   presentation: 'postcode/presentation@8',
   handles: 'postcode/module-handles@3',

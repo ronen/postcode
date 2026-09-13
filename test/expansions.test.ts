@@ -5,6 +5,7 @@ import path from 'node:path';
 import { test } from 'node:test';
 import { evaluateModules } from '../src/lib/evaluation.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
+import { createView, renderView } from '../src/lib/presentation.js';
 import { inspect, modules } from '../src/lib/projections.js';
 import type { ClaimContextRecord, ExportClaim, ModuleExpansion, RecordedAssertion, SourceEvidenceRecord, SymbolClaim, SymbolRecord } from '../src/lib/records.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
@@ -109,4 +110,24 @@ test('unresolved export targets produce partial expansion outcomes even when no 
     const healthy = inspect(store, evaluation, from('healthy.ts')[0]!.subject);
     assert.ok(healthy.evaluations.map(id => store.get(id)).every(record => record.kind === 'evaluation' && record.materialization === 'full'));
   } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+
+test('requested expansion kinds are unique while qualified evaluation scopes remain per module', () => {
+  const { store, evaluation, projection } = expanded();
+  assert.ok(projection.modules.length > 1);
+  for (const selected of [projection, inspect(store, evaluation, projection.modules[0]!), inspect(store, evaluation, 'absent')]) {
+    assert.deepEqual(selected.expansions.requested, ['exports', 'documentation']);
+    const view = createView(store, selected, { format: 'json', sourceDetail: false });
+    const serialized = JSON.parse(renderView(view)) as typeof view;
+    assert.deepEqual(serialized.presentation.expansions, ['exports', 'documentation']);
+    assert.equal(new Set(serialized.presentation.expansions).size, serialized.presentation.expansions.length);
+    assert.deepEqual(serialized.evaluations.map(outcome => outcome.id), selected.evaluations);
+    for (const requirement of ['exports', 'documentation']) {
+      const outcomes = serialized.evaluations.filter(outcome => outcome.requirement === requirement);
+      assert.equal(outcomes.length, selected.modules.length);
+      assert.deepEqual(outcomes.flatMap(outcome => outcome.modules), selected.modules);
+      assert.ok(outcomes.every(outcome => outcome.execution === 'completed' && outcome.materialization === 'full'));
+    }
+  }
 });

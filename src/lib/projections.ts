@@ -54,7 +54,7 @@ function project(store: ProgramRecordStore, evaluation: EvaluationRecord, select
     parameters: { selector, expectedSnapshot }, modules, claims: claims.map(claim => claim.id),
     contexts: [...new Set([...evaluation.contexts, ...claims.map(claim => claim.context)])],
     evaluations: [evaluation.id, ...relevantExpansions.map(outcome => outcome.id)],
-    expansions: { requested: expansions.flatMap(outcome => outcome.requirement === 'modules' ? [] : [outcome.requirement]), claims: [...new Set(expansionClaims)] },
+    expansions: { requested: [...new Set(expansions.flatMap(outcome => outcome.requirement === 'modules' ? [] : [outcome.requirement]))], claims: [...new Set(expansionClaims)] },
     selection: {
       matches: modules.length, population: evaluation.modules.length,
       populationEstablished: evaluation.execution === 'completed' && evaluation.materialization === 'full',
