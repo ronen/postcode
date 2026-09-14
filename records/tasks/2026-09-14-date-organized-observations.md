@@ -10,6 +10,8 @@ The current code records observations `_observations/<36-character-hash>.json` w
 
 ## Follow-ups
 
+don't close the task until separate review
+
 ## Outcome
 
 ## Verification
