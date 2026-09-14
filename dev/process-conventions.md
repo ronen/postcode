@@ -16,14 +16,3 @@ This document contains human-maintained conventions governing how development wo
 Use [`drafts/`](../drafts/) when provisional planning material is worth preserving in Git for review, comparison, or continuity across sessions. Draft artifacts are durable but non-governing: neither committing them nor placing approval language within them gives them the role of a plan, decision, or other canonical project document. Agents may use them as planning context, but not as binding requirements.
 
 Keep canonical project material independent of draft artifacts. Do not cite a draft artifact as context required to understand canonical project material. When draft artifacts are promoted, carry the necessary context into the resulting canonical documents and link those documents to one another; Git history may preserve their shared drafting provenance. The human directs promotion, and content moved or incorporated into a canonical location must independently satisfy the approval requirements for that document type. Treat a canonical document that depends on a draft artifact as an unexpected finding.
-
-## Architectural Material Pending Consolidation
-
-Method versions in the identity module participate in snapshot identity.
-Equivalent runs must not include clocks or random observation UUIDs in
-program-record identity or structured projection output.
-
-- Explicitly identify and exclude actual generated-output destinations from repository evidence before analysis. Apply this rule to observation output, retained views, reports, and other generated output. Do not infer exclusions from directory names: configured sources under `_build` or `_observations` remain inputs unless the caller identifies those paths as output destinations.
-- Keep sink selection independent of retention, migration, historical-reading, and producer-side cache policy. Make delivery failure visible without invalidating a successfully produced view.
-- Produce bounded source excerpts from captured analysis input, never by rereading the filesystem during presentation.
-- Record the actual level of source detail disclosed in the corresponding source-escape event.
