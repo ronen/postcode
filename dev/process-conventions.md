@@ -17,18 +17,6 @@ Use [`drafts/`](../drafts/) when provisional planning material is worth preservi
 
 Keep canonical project material independent of draft artifacts. Do not cite a draft artifact as context required to understand canonical project material. When draft artifacts are promoted, carry the necessary context into the resulting canonical documents and link those documents to one another; Git history may preserve their shared drafting provenance. The human directs promotion, and content moved or incorporated into a canonical location must independently satisfy the approval requirements for that document type. Treat a canonical document that depends on a draft artifact as an unexpected finding.
 
-## Domain Information and Failures
-
-- Keep expected failures, defects or broken invariants, successful results containing diagnostics, and failures that prevent the intended result distinct.
-- Preserve meaningful distinctions in computed results and format them only at presentation boundaries.
-
-## Claims and Evidence
-
-- Preserve provenance, method, epistemological status, scope, and limitations with projected information throughout processing and presentation.
-- Do not strengthen a claim when transforming, aggregating, caching, comparing, or rendering it.
-- Distinguish mechanically derived facts, recorded assertions, observations, and interpretations in names, types, tests, and user-visible output.
-- Prefer explicit unavailability or limitation over plausible unsupported output.
-
 ## Technology-Specific Conventions
 
 The initial slice uses Node.js 22.13 or later, TypeScript, ECMAScript modules,
