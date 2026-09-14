@@ -10,6 +10,7 @@ instrument validation and independent reviews are recorded in the
 
 The governing choices are the accepted [projection architecture decisions](../decisions/initial-projection-architecture-decisions.md)
 and [module inventory decisions](../decisions/initial-module-inventory-decisions.md).
+The governing cross-cutting architectural concepts are maintained in [core concepts](../core-concepts.md); this document describes how the current implementation realizes them.
 
 ## Responsibilities and flow
 

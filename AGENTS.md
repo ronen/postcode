@@ -14,6 +14,10 @@ Treat the documents under [`foundation/`](foundation/README.md) as adopted, gove
 
 Follow the conventions in [`foundation/baseline-conventions.md`](foundation/baseline-conventions.md) and [`dev/conventions.md`](dev/conventions.md).
 
+## Governing Core Concepts
+
+Read and follow the governing architectural concepts in [`docs/core-concepts.md`](docs/core-concepts.md) and the accepted decisions relevant to the work. Semantic changes to the core concepts require explicit human agreement and a corresponding accepted decision record.
+
 ## Development Workflow
 
 Follow [`dev/workflow.md`](dev/workflow.md) when planning, implementing, verifying, documenting, or handing off work. Use [`docs/README.md`](docs/README.md) to locate plans, architecture documentation, and recorded decisions.

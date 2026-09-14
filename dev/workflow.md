@@ -23,7 +23,7 @@ Small local corrections may accompany related work when they are obvious, low ri
 ## 2. Before Making Changes
 
 1. Read `AGENTS.md` and the applicable adopted foundation documents.
-2. Read the current plan, architecture documentation, accepted decisions, and conventions relevant to the work.
+2. Read the governing core concepts, current plan, architecture documentation, accepted decisions, and conventions relevant to the work.
 3. Inspect the worktree and preserve existing human or agent changes.
 4. For substantive implementation, locate or open the applicable task record before changing the implementation.
 5. Identify uncertainties that could materially change the goal, architecture, or external behavior. Resolve them with the human rather than embedding an assumption silently.
@@ -40,7 +40,9 @@ A useful implementation plan should state:
 - relevant constraints and dependencies;
 - proposed milestones or vertical slices;
 - risks, uncertainties, and open questions;
-- decisions required before or during implementation.
+- accepted decisions relevant to the proposed work;
+- unresolved consequential decisions, including when and by whom they must be resolved; and
+- governing core-concept changes associated with the work, if any.
 
 Keep plans at the level needed to guide work. Do not use planning documents to settle architecture implicitly: record consequential accepted choices under [`docs/decisions/`](../docs/decisions/).
 
@@ -56,13 +58,14 @@ This sequence is a convenience, not a required ceremony. Feel free to vary it or
    ```text
    drafts/<planning-name>/proposal/
    ├── plans/<plan-name>.md
-   └── decisions/<decision-name>.md
+   ├── decisions/<decision-name>.md
+   └── docs/core-concepts.md
    ```
 
-   This mirrors the canonical `docs/plans/` and `docs/decisions/` directories, making the intended role and destination of each proposed document clear.
+   Include the complete proposed revision of `docs/core-concepts.md` only when the package would change the governing core concepts. This layout makes the intended role and destination of each proposed document clear.
 3. For clarity during drafting and review, consider using `Status: in preparation` or `Status: in review`. These are optional draft labels, not canonical plan or decision statuses. Regardless of any status or approval language within a file, material under `drafts/` remains non-governing under the [provisional-working-material conventions](conventions.md#provisional-working-material).
 4. Review the plan and decisions together when their choices are interdependent. Another agent may perform a review when an independent reading would be useful.
-5. Once the human approves the package, change the plan status to `approved`, give accepted decision records their canonical `accepted` status, and move the files into the corresponding canonical directories. Check and correct links after moving the files; relative paths to documents that were already canonical will generally change. Review the moved documents and their links as a whole before committing the promotion.
+5. Once the human approves the package, change the plan status to `approved`, give accepted decision records their canonical `accepted` status, and move the files into the corresponding canonical directories. When the package changes core concepts, replace `docs/core-concepts.md` with the approved revision in the same promotion commit as the corresponding decision record. Check and correct links after moving the files; relative paths to documents that were already canonical will generally change. Review the moved documents and their links as a whole before committing the promotion.
 
 The human directs which provisional artifacts are promoted or discarded. Move or incorporate only explicitly approved plans into `docs/plans/`, and only explicitly accepted decisions into `docs/decisions/`. Promotion is a change of project role, not merely a file move: review the resulting canonical documents against their destination requirements. Before removing provisional material, confirm that all context worth preserving has been carried into durable documents. An abandoned draft may be deleted without acquiring a lifecycle status; its Git history remains available.
 
@@ -97,6 +100,8 @@ Pre-existing or trivial inconsistencies do not all require investigation. Releva
 
 Documentation is part of the implementation. If a change makes an existing document materially false or incomplete, the work is not complete until that document is updated or the omission is explicitly recorded.
 
+[`docs/core-concepts.md`](../docs/core-concepts.md) is the governing current statement of cross-cutting architectural concepts. A semantic change requires explicit human agreement and a corresponding accepted decision record; update the concepts document and decision log together. Typographical, link, and other editorial corrections that do not change meaning do not require a decision. If classification is unclear, treat the change as semantic and ask the human. If the core concepts and an accepted decision disagree, report the inconsistency rather than silently choosing or reconciling them.
+
 Architecture documentation is selective and descriptive, not a source of prescriptive requirements. Include information when it defines a major responsibility or boundary; explains important dependency direction or data flow; describes a process, storage, deployment, trust, or security boundary; records a system-wide invariant or operational constraint; or helps orient work across multiple components or tasks. It should be durable, cross-cutting, and necessary to understand the system beyond what the implementation directly reveals.
 
 Do not turn architecture documentation into a file, class, function, or API inventory. Exclude copied interfaces, details readily discoverable from nearby source, transient implementation mechanics, speculative future structure, and rationale already preserved in a decision record. Store architecture documentation under `docs/architecture/`. Begin with `docs/architecture/README.md` as the single overview, and add further documents only when a stable area needs its own conceptual explanation. Link descriptions to the accepted decisions that govern them. If the implementation, architecture documentation, and a governing decision disagree, treat that divergence as an unexpected finding rather than silently changing the decision or presenting the description as normative.
@@ -104,6 +109,7 @@ Do not turn architecture documentation into a file, class, function, or API inve
 Update the appropriate form of documentation:
 
 - plans describe intended work and learning goals;
+- the core-concepts document states the governing current architectural concepts;
 - architecture documentation describes how the current system works;
 - decision records preserve consequential choices and their rationale;
 - `STATUS.md` gives humans a concise, current view of the project's externally meaningful state;

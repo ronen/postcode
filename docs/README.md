@@ -2,7 +2,7 @@
 
 This is the human-readable map of PostCode's canonical project knowledge. It also helps coding agents locate the context governing their work, but the documentation should remain understandable without access to an agent conversation.
 
-Adopted, governing product and development material lives under [`foundation/`](../foundation/). This directory contains evolving plans, accepted decisions, and documentation of the application built from that foundation.
+Adopted, governing product and development material lives under [`foundation/`](../foundation/). This directory contains the governing core architectural concepts, evolving plans, accepted decisions, and documentation of the application built from that foundation.
 
 Coding agents begin with [`AGENTS.md`](../AGENTS.md), which directs them to the applicable task protocol, development workflow, conventions, and project documentation.
 
@@ -18,6 +18,10 @@ For CLI use, begin with the [command and concepts reference](cli-reference.md).
 
 [`plans/`](plans/) contains future-work plans explicitly approved by the human. Plans may evolve while approved or active and do not authorize implementation by themselves. Proposed plans and revisions remain under [`drafts/`](../drafts/) or in ignored underscore workspaces until approved.
 
+### Core concepts
+
+[`core-concepts.md`](core-concepts.md) states PostCode's governing cross-cutting architectural concepts. It records what governs now; accepted decision records preserve why the concepts were adopted or changed. Semantic changes require explicit human agreement and a corresponding accepted decision record.
+
 ### Architecture
 
 Architecture documentation is a selective, descriptive map of how the current system works, not an exhaustive inventory of the implementation or a source of prescriptive requirements. It describes major boundaries, responsibilities, data flows, and operational constraints. Before implementation exists, proposed architecture belongs in a plan rather than being presented as current fact.
@@ -26,7 +30,7 @@ Create architecture documentation under `architecture/` when there is implemente
 
 ### Decisions
 
-[`decisions/`](decisions/) preserves consequential choices explicitly accepted by the human, together with their context, rationale, and consequences. Accepted decisions are prescriptive and binding within their stated scope unless superseded; architecture documentation describes the resulting implemented shape.
+[`decisions/`](decisions/) preserves consequential choices explicitly accepted by the human, together with their context, rationale, and consequences. Accepted decisions are prescriptive and binding within their stated scope unless superseded; they authorize and explain semantic changes to the governing core concepts, while architecture documentation describes the resulting implemented shape.
 
 ### Task records
 
