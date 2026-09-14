@@ -6,7 +6,7 @@ Except for this directory guide, material here is non-governing. A draft does no
 
 Use descriptive subdirectories when a planning effort has several related artifacts. Keep ephemeral, bulky, generated, or checkout-local investigation material in a descriptively named ignored root underscore directory instead.
 
-The [development workflow](../dev/workflow.md#suggested-planning-sequence) describes an optional review-package layout that mirrors the canonical plan and decision directories, making the intended role of each proposed document clear.
+The [planning workflow](../dev/planning.md#suggested-planning-sequence) describes an optional review-package layout that mirrors the canonical plan and decision directories, making the intended role of each proposed document clear.
 
 The human directs promotion and disposal. Move or incorporate approved plans into [`docs/plans/`](../docs/plans/), accepted decisions into [`docs/decisions/`](../docs/decisions/), and other material into its appropriate canonical location. Review promoted content against the destination's requirements; carry all context needed to understand it into canonical documents rather than citing draft artifacts. An abandoned draft may be deleted without receiving a lifecycle status; Git retains its history.
 
