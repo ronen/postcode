@@ -103,12 +103,13 @@ boundaries, verification and review dispositions.
 ## Observability
 
 Normal view-producing invocations automatically submit one experimental
-version-zero observation batch to a local file under this PostCode checkout's
-`_observations/` directory. The CLI discloses that absolute destination on stderr.
+version-zero observation batch to a timestamped local file under a UTC date
+subdirectory of this PostCode checkout's `_observations/` directory. The CLI
+discloses that absolute root destination on stderr.
 The batch includes the request, analysis context, qualified view, exact output,
 and any source-escape event. It can contain repository-derived documentation and
 explicitly requested source locations and excerpts. Nothing is sent remotely. The local sink
-creates its directory with mode `0700` and files with mode `0600`.
+creates its root and dated directories with mode `0700` and files with mode `0600`.
 
 Observation output is Git-ignored and explicitly excluded from analysis, along
 with PostCode's build output, including when a nested configuration is selected.

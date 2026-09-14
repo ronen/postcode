@@ -187,7 +187,9 @@ This is not full-file rendering or arbitrary source browsing. The invocation
 records source-escape use at the locations-and-excerpts level alongside the view.
 
 Every view-producing CLI invocation submits one self-contained observation batch
-to the PostCode checkout's `_observations/` directory. The destination is disclosed
+to a `date=YYYY-MM-DD` UTC subdirectory of the PostCode checkout's
+`_observations/` directory. Each filename starts with its filesystem-safe UTC
+submission timestamp and ends with the batch UUID. The root destination is disclosed
 on stderr. Batches contain request/context, the qualified view and exact output;
 they may contain repository-derived text and explicitly requested source detail.
 Nothing is sent remotely. Files are created with private permissions and ignored
