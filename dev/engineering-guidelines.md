@@ -16,6 +16,7 @@ This document may be changed only through separate human-directed process mainte
 ## Dependencies and boundaries
 
 - Avoid both expedient coupling and speculative abstraction; introduce a boundary when there is a concrete responsibility to separate.
+- Represent important domain concepts explicitly rather than repeatedly encoding them as primitive values.
 - Expose a component through its intended public boundary; do not expose internal helpers or coordination types merely for consumer convenience.
 - Keep transformations that require no external state independent of external I/O when those concerns are conceptually distinct.
 - Translate external data and failure models at the boundary when they should not become part of domain behavior.

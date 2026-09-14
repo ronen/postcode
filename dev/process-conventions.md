@@ -19,7 +19,6 @@ Keep canonical project material independent of draft artifacts. Do not cite a dr
 
 ## Domain Information and Failures
 
-- Represent important domain concepts explicitly rather than repeatedly encoding them as primitive values.
 - Keep expected failures, defects or broken invariants, successful results containing diagnostics, and failures that prevent the intended result distinct.
 - Preserve meaningful distinctions in computed results and format them only at presentation boundaries.
 
