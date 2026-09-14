@@ -1,8 +1,8 @@
 # Organize observation files by date and timestamp
 
-Status: active
+Status: completed
 Opened: 2026-09-14
-Closed:
+Closed: 2026-09-14
 
 ## Task
 
@@ -18,4 +18,31 @@ Claude's review is in place.  As you can see it's clean.  So you can close out t
 
 ## Outcome
 
+The local file observation sink now stores each newly submitted batch under a UTC
+date directory named `date=YYYY-MM-DD`. Each JSON filename begins with the
+filesystem-safe UTC submission timestamp `timestamp=YYYY-MM-DDTHH-MM-SS.sssZ_`
+and retains the batch UUID as its collision-resistant suffix. One clock reading
+supplies both path components. Private directory and file modes, exclusive file
+creation, batch contents, destination disclosure, and output exclusion remain
+intact. No retention, migration, historical-read, or old-file management behavior
+was added.
+
+User-facing, CLI, architecture, and development documentation describe the dated
+layout. `STATUS.md` now links to this task as the most recently completed task.
+The independent review found no actionable defects and recommended closure. The
+reviewed branch was pushed and [pull request #2](https://github.com/ronen/postcode/pull/2)
+was opened against `main`.
+
 ## Verification
+
+- Implementing-agent verification: `npm run check` passed; `npm test` passed all
+  77 tests; `git diff --check` passed.
+- Deterministic automated coverage verifies one clock read, the exact UTC path,
+  stored batch, timestamped filename pattern, and `0700`/`0600` permissions.
+- The [independent review](../reviews/2026-09-14-date-organized-observations-findings.md)
+  reproduced the type check and all 77 tests on Node 22.13.1, found no whitespace
+  errors, and independently probed UTC-midnight rollover, collision/exclusive
+  creation, recursive-directory permissions, and nested output exclusion.
+- Documentation links and the minimal `STATUS.md` update were checked locally.
+- GitHub confirmed pull request #2 is open from
+  `codex/date-organized-observations` into `main`.
