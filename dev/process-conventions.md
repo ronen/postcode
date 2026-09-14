@@ -1,6 +1,6 @@
-# Application Development Conventions
+# Process Conventions
 
-These conventions supplement the adopted [baseline conventions](../foundation/baseline-conventions.md). Keep this document concrete and current as the implementation and toolchain emerge.
+This document contains human-maintained conventions governing how development work is conducted in this repository. It supplements the adopted [baseline conventions](../foundation/baseline-conventions.md) and may be changed only through separate human-directed process maintenance.
 
 ## Provisional Working Material
 
