@@ -39,13 +39,23 @@ This sequence is a convenience, not a required ceremony. Feel free to vary it or
    ```
 
    Include the complete proposed revision of `docs/core-concepts.md` only when the package would change the governing core concepts. This layout makes the intended role and destination of each proposed document clear.
-3. For clarity during drafting and review, consider using `Status: in preparation` or `Status: in review`. These are optional draft labels, not canonical plan or decision statuses. Regardless of any status or approval language within a file, material under `drafts/` remains non-governing under the [provisional-working-material conventions](conventions.md#provisional-working-material).
+3. For clarity during drafting and review, a draft plan or draft decision record may use `Status: in preparation` or `Status: in review`. These are optional draft labels, not canonical plan or decision statuses. Regardless of any status or approval language within a file, material under `drafts/` remains non-governing under the [provisional-working-material conventions](conventions.md#provisional-working-material).
 4. Review the plan and decisions together when their choices are interdependent. Another agent may perform a review when an independent reading would be useful.
-5. Once the human approves the package, change the plan status to `approved`, give accepted decision records their canonical `accepted` status, and move the files into the corresponding canonical directories. When the package changes core concepts, replace `docs/core-concepts.md` with the approved revision in the same promotion commit as the corresponding decision record. Check and correct links after moving the files; relative paths to documents that were already canonical will generally change. Review the moved documents and their links as a whole before committing the promotion.
+5. Once the human approves the package, promote it as described below.
 
 ## Promotion and disposal
 
-The human directs which provisional artifacts are promoted or discarded. Move or incorporate only explicitly approved plans into `docs/plans/`, and only explicitly accepted decisions into `docs/decisions/`. Promotion is a change of project role, not merely a file move: review the resulting canonical documents against their destination requirements. Before removing provisional material, confirm that all context worth preserving has been carried into durable documents. An abandoned draft may be deleted without acquiring a lifecycle status; its Git history remains available.
+The human directs which provisional artifacts are promoted or discarded. Promotion is a change of project role, not merely a file move. When promoting an approved package:
+
+1. Give plans their canonical `approved` status and accepted decision records their canonical `accepted` status.
+2. Move or incorporate the documents into their canonical locations under `docs/`.
+3. If the package changes the governing core concepts, replace `docs/core-concepts.md` with the approved revision in the same commit as the corresponding accepted decision record.
+4. Update any earlier plans or decisions that the promoted documents supersede. Follow the applicable [plan lifecycle](../docs/plans/README.md#lifecycle) and [decision lifecycle](../docs/decisions/README.md#lifecycle), including complete forward and backward decision-supersession mappings.
+5. Update any canonical indexes that list the promoted or superseded documents.
+6. Check and correct links after moving the files; relative paths to documents that were already canonical will generally change.
+7. Review the promoted documents, core concepts when changed, supersession metadata, indexes, and links as a whole before committing the promotion.
+
+Before removing provisional material, confirm that all context worth preserving has been carried into canonical documents. An abandoned draft may be deleted without acquiring a lifecycle status; its Git history remains available.
 
 ## Draft commits
 
