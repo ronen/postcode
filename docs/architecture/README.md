@@ -175,7 +175,7 @@ historical-read API and supplies no producer retention or migration policy.
 Rejection or delivery failure emits a
 warning without changing the successful view or its exit status. No remote/shared
 sink or contemporaneous-note command exists. Privacy and exclusion details are in
-[development process conventions](../../dev/process-conventions.md#local-development-observation-sink-selection).
+[implementation conventions](../implementation-conventions.md#local-observation-sink).
 
 Expected usage and project-open failures precede view production. Internal defects
 propagate to a distinct CLI failure. Successful views can carry partial expansion

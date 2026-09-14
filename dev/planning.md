@@ -1,6 +1,6 @@
 # Planning Workflow
 
-This document describes how plans, related decisions, and changes to governing core concepts or architectural constraints may be developed, reviewed, promoted, or discarded. It expands the planning stage of the [development workflow](workflow.md#3-planning). Planning does not authorize implementation.
+This document describes how plans, related decisions, and changes to governing core concepts or architectural constraints may be developed, reviewed, promoted, or discarded. It expands the planning stage of the [development workflow](workflow.md#planning). Planning does not authorize implementation.
 
 ## Plan contents
 

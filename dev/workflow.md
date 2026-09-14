@@ -34,6 +34,7 @@ Small local corrections may accompany related work when they are obvious, low ri
 4. For substantive implementation, locate or open the applicable task record before changing the implementation.
 5. Identify uncertainties that could materially change the goal, architecture, or external behavior. Resolve them with the human rather than embedding an assumption silently.
 
+<a id="planning"></a>
 ## 3. Planning
 
 Plans describe intended work, not established system behavior, and do not authorize implementation. Store only human-approved plans under [`docs/plans/`](../docs/plans/). Record consequential accepted choices under [`docs/decisions/`](../docs/decisions/), and change the governing core concepts or architectural constraints only through explicit human agreement and a corresponding accepted decision record.
@@ -67,6 +68,7 @@ Implementation, documentation, planning, decisions, and verification may reveal 
 
 Pre-existing or trivial inconsistencies do not all require investigation. Relevance to the current work, potential impact, and the cost of being wrong should determine the depth of investigation.
 
+<a id="documentation-and-decisions"></a>
 ## 6. Documentation and Decisions
 
 Documentation is part of the implementation. If a change makes an existing document materially false or incomplete, the work is not complete until that document is updated or the omission is explicitly recorded.
