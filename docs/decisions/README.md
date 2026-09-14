@@ -58,6 +58,7 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 
 ## Accepted decisions
 
+- [Initial core-concepts decisions](initial-core-concepts-decisions.md)
 - [Identity, evidence, and observation constraints](adopt-identity-evidence-and-observation-constraints.md)
 - [Qualification and evaluation constraints](adopt-qualification-and-evaluation-constraints.md)
 - [Initial module inventory decisions](initial-module-inventory-decisions.md)
