@@ -40,7 +40,9 @@ Participants are not necessarily all entities: a documentation association can c
 
 ### Facet
 
-A **Facet** is an established characteristic used to describe an entity. Facets can overlap; they do not form one exclusive, universal enumeration of entity kinds. For example, a module may be both external and declaration-only.
+A **Facet** is a property used as a compact classification dimension for describing, filtering, grouping, or comparing entities. A claim supplies its value, and Claim context supplies its qualification. Different facets may overlap and need not share one representation or value type. For example, a module may be both external and declaration-only.
+
+Facet names a role played by a property, not a separate record category or a special epistemological status. It does not imply a universal facet schema.
 
 A conceptual facet describes the entity in terms useful to the investigation. A source facet describes its source-level representation or implementation mapping. Language-specific knowledge can establish a conceptual facet; language-specific does not by itself mean source-level. Facet names do not determine the strength of the supporting claim.
 
