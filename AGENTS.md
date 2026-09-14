@@ -12,7 +12,11 @@ Treat the documents under [`foundation/`](foundation/README.md) as adopted, gove
 
 ## Human-Directed Process Maintenance
 
-Files under [`dev/`](dev/) contain human-maintained development-process instructions. Do not modify them as part of product planning or implementation work. Report or propose process changes for separate human-directed process maintenance.
+Files under [`dev/`](dev/) contain human-maintained development instructions. Do not modify them as part of product planning or implementation work. Report or propose changes for separate human-directed process maintenance.
+
+## Engineering Guidelines
+
+Follow the human-maintained guidance in [`dev/engineering-guidelines.md`](dev/engineering-guidelines.md) when exercising implementation judgment.
 
 ## Development Conventions
 
