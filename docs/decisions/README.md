@@ -1,8 +1,8 @@
 # Decisions
 
-Decision records preserve consequential accepted choices and the reasoning available when those choices were made. They complement the governing [core concepts](../core-concepts.md) and descriptive architecture documentation rather than replacing either. Do not create a decision record until the decision has been accepted; keep unresolved choices in drafts or discussion.
+Decision records preserve consequential accepted choices and the reasoning available when those choices were made. They complement the governing [core concepts](../core-concepts.md), [architectural constraints](../architectural-constraints.md), and descriptive architecture documentation rather than replacing them. Do not create a decision record until the decision has been accepted; keep unresolved choices in drafts or discussion.
 
-A decision is accepted only through explicit human agreement. Agents may develop and evaluate alternatives in drafts or discussion, but must not accept a decision themselves. An accepted decision must conform to governing foundation material and the current core concepts unless it explicitly changes the core concepts through the process below. A choice that conflicts with foundation material requires an explicitly authorized foundation revision before it can be accepted. Within its stated scope, an accepted decision is prescriptive and binding on subsequent work until it is superseded.
+A decision is accepted only through explicit human agreement. Agents may develop and evaluate alternatives in drafts or discussion, but must not accept a decision themselves. An accepted decision must conform to governing foundation material, core concepts, and architectural constraints unless it explicitly changes an affected governing document through the process below. A choice that conflicts with foundation material requires an explicitly authorized foundation revision before it can be accepted. Within its stated scope, an accepted decision is prescriptive and binding on subsequent work until it is superseded.
 
 Use descriptive, unnumbered filenames, such as `keep-analysis-core-independent-of-desktop-ui.md` or `initial-product-slice-architecture.md`. Store decisions globally by subject rather than nesting them under the plan or task where they arose.
 
@@ -19,11 +19,11 @@ Create a record when a choice:
 
 Routine implementation choices do not require decision records.
 
-## Core-concept changes
+## Governing-document changes
 
-[`docs/core-concepts.md`](../core-concepts.md) records the governing current cross-cutting architectural concepts; decision records preserve why those concepts were adopted or changed. Every semantic change to the core concepts requires explicit human agreement and a corresponding accepted decision record. Update the concepts document and decision log in the same commit so the current statement and its history do not diverge.
+[`docs/core-concepts.md`](../core-concepts.md) records the governing current cross-cutting architectural terminology, and [`docs/architectural-constraints.md`](../architectural-constraints.md) records the governing current cross-cutting rules. Decision records preserve why either was adopted or changed. Every semantic change to the core concepts and every substantive change to the architectural constraints requires explicit human agreement and a corresponding accepted decision record. Update the affected governing document and decision log in the same commit so the current statement and its history do not diverge.
 
-Follow the [development workflow](../../dev/workflow.md#documentation-and-decisions) when changing the core concepts. If the core concepts and an accepted decision disagree, report the inconsistency rather than silently deciding which source to follow.
+Follow the [development workflow](../../dev/workflow.md#documentation-and-decisions) when changing either governing document. If a governing document and an accepted decision disagree, report the inconsistency rather than silently deciding which source to follow.
 
 ## Lifecycle
 

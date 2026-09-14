@@ -29,14 +29,14 @@ Small local corrections may accompany related work when they are obvious, low ri
 ## 2. Before Making Changes
 
 1. Read `AGENTS.md` and the applicable adopted foundation documents.
-2. Read the governing core concepts, current plan, architecture documentation, accepted decisions, and applicable engineering guidelines and conventions.
+2. Read the governing core concepts and architectural constraints, current plan, architecture documentation, accepted decisions, and applicable engineering guidelines and conventions.
 3. Inspect the worktree and preserve existing human or agent changes.
 4. For substantive implementation, locate or open the applicable task record before changing the implementation.
 5. Identify uncertainties that could materially change the goal, architecture, or external behavior. Resolve them with the human rather than embedding an assumption silently.
 
 ## 3. Planning
 
-Plans describe intended work, not established system behavior, and do not authorize implementation. Store only human-approved plans under [`docs/plans/`](../docs/plans/). Record consequential accepted choices under [`docs/decisions/`](../docs/decisions/), and make semantic changes to the governing core concepts only through explicit human agreement and a corresponding accepted decision record.
+Plans describe intended work, not established system behavior, and do not authorize implementation. Store only human-approved plans under [`docs/plans/`](../docs/plans/). Record consequential accepted choices under [`docs/decisions/`](../docs/decisions/), and change the governing core concepts or architectural constraints only through explicit human agreement and a corresponding accepted decision record.
 
 Follow the [planning workflow](planning.md) for plan contents, provisional working material, review, promotion, disposal, and draft commit conventions.
 
@@ -73,6 +73,8 @@ Documentation is part of the implementation. If a change makes an existing docum
 
 [`docs/core-concepts.md`](../docs/core-concepts.md) is the governing current statement of cross-cutting architectural concepts. A semantic change requires explicit human agreement and a corresponding accepted decision record; update the concepts document and decision log together. Typographical, link, and other editorial corrections that do not change meaning do not require a decision. If classification is unclear, treat the change as semantic and ask the human. If the core concepts and an accepted decision disagree, report the inconsistency rather than silently choosing or reconciling them.
 
+[`docs/architectural-constraints.md`](../docs/architectural-constraints.md) is the governing current statement of binding cross-cutting architectural rules. A substantive change requires explicit human agreement and a corresponding accepted decision record; update the constraints document and decision log together. Editorial corrections that do not change meaning do not require a decision. If classification is unclear, treat the change as substantive and ask the human. If the constraints and an accepted decision disagree, report the inconsistency rather than silently choosing or reconciling them.
+
 Architecture documentation is selective and descriptive, not a source of prescriptive requirements. Include information when it defines a major responsibility or boundary; explains important dependency direction or data flow; describes a process, storage, deployment, trust, or security boundary; records a system-wide invariant or operational constraint; or helps orient work across multiple components or tasks. It should be durable, cross-cutting, and necessary to understand the system beyond what the implementation directly reveals.
 
 Do not turn architecture documentation into a file, class, function, or API inventory. Exclude copied interfaces, details readily discoverable from nearby source, transient implementation mechanics, speculative future structure, and rationale already preserved in a decision record. Store architecture documentation under `docs/architecture/`. Begin with `docs/architecture/README.md` as the single overview, and add further documents only when a stable area needs its own conceptual explanation. Link descriptions to the accepted decisions that govern them. If the implementation, architecture documentation, and a governing decision disagree, treat that divergence as an unexpected finding rather than silently changing the decision or presenting the description as normative.
@@ -81,6 +83,7 @@ Update the appropriate form of documentation:
 
 - [plans](../docs/plans/) describe intended work and learning goals;
 - the [core-concepts document](../docs/core-concepts.md) states the governing current architectural concepts;
+- [architectural constraints](../docs/architectural-constraints.md) state the governing current cross-cutting rules;
 - [architecture documentation](../docs/architecture/) describes how the current system works;
 - [decision records](../docs/decisions/) preserve consequential choices and their rationale;
 - [`STATUS.md`](../STATUS.md) gives humans a concise, current view of the project's externally meaningful state;
