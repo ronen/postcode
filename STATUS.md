@@ -7,4 +7,4 @@ Unicode and experimental JSON inventories, exact-selection inspection,
 export and documentation expansions, source evidence, and local observations.
 
 Most recently completed:
-[Module-inventory PR review continuation](records/tasks/2026-09-13-module-inventory-review-continuation.md).
+[Date-organized observation files](records/tasks/2026-09-14-date-organized-observations.md).
