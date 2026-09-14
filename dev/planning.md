@@ -22,7 +22,7 @@ Keep plans at the level needed to guide work. Do not use planning documents to s
 
 ## Provisional working material
 
-Use [`drafts/`](../drafts/) for provisional planning artifacts when their history is worth tracking in Git. Draft artifacts are durable but non-governing; a commit preserves a draft without approving it. Use a descriptively named root underscore directory, such as `_initial-product-slice/`, instead when the artifacts are ephemeral, local to the checkout, and disposable. Both forms of provisional material follow the [provisional-working-material conventions](process-conventions.md#provisional-working-material).
+Use [`drafts/`](../drafts/) for provisional planning artifacts when their history is worth tracking in Git. Draft artifacts are durable but non-governing; a commit preserves a draft without approving it. Use a descriptively named root underscore directory, such as `_initial-product-slice/`, instead when the artifacts are ephemeral, local to the checkout, and disposable. Each form follows the applicable [provisional-draft](process-conventions.md#provisional-draft-material) or [disposable-scratch](process-conventions.md#disposable-scratch-material) conventions.
 
 ## Suggested planning sequence
 
@@ -41,7 +41,7 @@ This sequence is a convenience, not a required ceremony. Feel free to vary it or
    ```
 
    Include the complete proposed revision of `docs/core-concepts.md` or `docs/architectural-constraints.md` only when the package would change that governing document. This layout makes the intended role and destination of each proposed document clear.
-3. For clarity during drafting and review, a draft plan or draft decision record may use `Status: in preparation` or `Status: in review`. These are optional draft labels, not canonical plan or decision statuses. Regardless of any status or approval language within a file, material under `drafts/` remains non-governing under the [provisional-working-material conventions](process-conventions.md#provisional-working-material).
+3. For clarity during drafting and review, a draft plan or draft decision record may use `Status: in preparation` or `Status: in review`. These are optional draft labels, not canonical plan or decision statuses. Regardless of any status or approval language within a file, material under `drafts/` remains non-governing under the [provisional-draft conventions](process-conventions.md#provisional-draft-material).
 4. Review the plan and decisions together when their choices are interdependent. Another agent may perform a review when an independent reading would be useful.
 5. Once the human approves the package, promote it as described below.
 
