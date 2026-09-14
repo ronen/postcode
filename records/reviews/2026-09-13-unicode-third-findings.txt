@@ -1,0 +1,323 @@
+Please refine the Unicode module inventory, Unicode inspection view, and CLI
+reference based on these artifacts:
+
+- `_observations/validation/2026-09-13/view-review-3.txt`
+- `_observations/validation/2026-09-13/inspect-review-3.txt`
+- `docs/cli-reference.md`
+
+This iteration is a substantial improvement. The inventory is now 77 lines and
+approximately 2.5 KB, and the inspection example is 34 lines and approximately
+1.7 KB. The interaction reads coherently as inventory, selection, and detailed
+inspection. Project modules are prominent, external modules are explicitly
+collapsed, mnemonic handles are recognizable, normal-case export provenance is
+suppressed, and stable explanatory material has begun moving into user
+documentation.
+
+The remaining work is refinement rather than another structural redesign.
+
+## 1. Make epistemological status explicit
+
+The current status section says:
+
+```text
+Status
+  Method: TypeScript analysis.
+```
+
+That identifies the method but does not state what the result establishes.
+Completion and full materialization are execution properties, not epistemological
+guarantees. Prefer wording along these lines:
+
+```text
+Status
+  Module membership and effective exports established by TypeScript analysis.
+  Coverage: external-module SourceFiles and visible named ambient modules;
+  other compiler module categories are not established.
+```
+
+Adapt the first line to the information actually shown by each view. Preserve
+separate capability states when an analysis is partial, unavailable, deferred,
+stopped, or failed.
+
+## 2. Keep qualifications scoped
+
+The current separation into `Display`, `Status`, and `Run limitations` is sound.
+Continue to distinguish:
+
+- run-specific analysis state;
+- presentation-specific omissions;
+- stable lens and analysis contracts;
+- run- or method-specific limitations; and
+- general interaction and terminology rules.
+
+Consequential status and limitations must remain in each affected view. Stable
+explanations can live in `docs/cli-reference.md` or a help/detail affordance, but
+documentation must not become the only place where a user can learn that the
+current result is partial, bounded, or qualified.
+
+Keep a concise supported-population statement in the view because it materially
+limits what “174 modules found” establishes. Keep the non-atomic-input limitation
+because it qualifies this run's consistency.
+
+Report generated-output exclusion as a fact about the current run when boundaries
+were enforced. A count is helpful. The general evidence-exclusion rule belongs in
+the CLI reference.
+
+Documentation epistemology needs to appear locally when documentation is
+displayed. It need not be repeated in an inventory that displays no documentation
+text. Likewise, the explanation that export relationships are not calls or
+dependencies belongs where those relationships are shown, or in the reference;
+it does not qualify the compact inventory.
+
+## 3. Separate mnemonic handles from precise Entity IDs
+
+Remove the `module-` prefix from mnemonic handles. The surrounding view already
+establishes that the subjects are modules, and the prefix makes handles look like
+identifiers instead of recognition cues.
+
+Prefer handles such as:
+
+```text
+run-cli
+evaluation
+canonical
+memory-program-record-store
+anonymous
+```
+
+Handles may be non-unique. They optimize recognition, not precision. The current
+subject-kind context can constrain resolution; a future generic resolver may
+return several matches or accept an explicit kind filter. Do not add general
+filtering machinery in this slice solely to make handles globally unique.
+
+Conversely, give each module a compact, precise Entity ID with a useful kind
+prefix, for example:
+
+```text
+module-a7bcf3e2
+module-19d842ab
+module-3c55da91
+```
+
+A complete reference remains the combination of snapshot ID and Entity ID. The
+displayed Entity ID must be collision-free within its snapshot, not merely
+probably unique. A deterministic digest prefix may be extended on collision,
+similar to an abbreviated Git hash. Avoid a fixed six-hex-digit form for arbitrary
+project sizes.
+
+Full internal record keys or hashes need not be user-facing Entity IDs. Structured
+output can expose snapshot ID and Entity ID as separate fields.
+
+## 4. Use filenames as bounded mnemonic evidence
+
+Ordinary TypeScript source-file modules are normally anonymous under the current
+conceptual definition. `SourceFile.moduleName` is generally absent for ordinary
+ES or CommonJS source files. It may be present for uncommon explicitly named
+mechanisms such as an AMD module directive. Named ambient modules also have names,
+but they are declaration constructs rather than ordinary source-file modules.
+TypeScript compiler symbols may carry path-derived names; those should not be
+promoted into TypeScript-established conceptual module names.
+
+An author-chosen filename can nevertheless provide useful mnemonic evidence. Use
+an extensionless basename as a candidate for generating the navigation handle,
+particularly when it is more representative than an arbitrary exported helper or
+when a module has no exports. This does not make the filename the module's
+conceptual name, and it must not make the handle a claim about responsibility.
+
+Retain the handle's generated status and provenance. Do not expose a full path,
+directory structure, extension, or source location through the handle. Generic
+basenames such as `index` may fall back to a representative export or honest
+anonymity. Collisions are acceptable because the adjacent Entity ID supplies
+precision.
+
+## 5. Present the inventory as a compact table-like list
+
+The inventory does not need `[type]`, `[value]`, or `[type+value]` after every
+export name. Those roles remain available through inspection. Do not silently
+suggest that all listed names are runtime values: label the column `Export names`
+or otherwise make clear that only names are being shown.
+
+Move each module and its export cues onto one line and remove blank lines between
+ordinary entries. Use a padded handle column with a reasonable maximum width.
+Short handles should align; longer handles must not be truncated merely to retain
+alignment. Instead, allow exceptional long rows to exceed the normal column
+width and become locally unaligned.
+
+For example:
+
+```text
+Project modules · 18 · TypeScript names not established
+
+Handle                         Entity ID        Export names
+run-cli                        module-a7bcf3e2   runCli
+evaluation                     module-19d842ab   DiscoveryResult, ModuleAnalysis, evaluateModules
+canonical                      module-31fc20a4   canonical, compare, digest, +3
+memory-program-record-store    module-4ac9217d   MemoryProgramRecordStore
+anonymous                      module-3c55da91   (none)
+```
+
+This is illustrative, not a byte-for-byte requirement. A Unicode marker such as
+`◆` may be retained if it materially improves scanning.
+
+Use `(none)` for an established empty export set. Parentheses distinguish
+presentation metadata from an actual export named `none`:
+
+```text
+anonymous   module-3c55da91   (none)
+example     module-918da322   none
+```
+
+An export count is unnecessary when all names are displayed or when a local `+N`
+already states the omitted amount. Prefer:
+
+```text
+canonical   module-31fc20a4   canonical, compare, digest, +3
+```
+
+rather than displaying both `Exports (6)` and `+3`. Keep the consolidated display
+omission totals below the inventory.
+
+## 6. Refine inventory and inspection headings
+
+In an inspection view, this wording is awkward:
+
+```text
+174 modules found · 1 listed
+Selected subset: 1 exact matches; other discovered modules are not selected.
+```
+
+Prefer one selection-oriented statement:
+
+```text
+1 module selected from 174 · exact match for create-view
+```
+
+Use correct singular/plural forms for zero, one, and multiple matches. “Listed”
+should describe presentation coverage, not lens subject selection.
+
+The full identifier in inspection should at least be labeled `Entity ID`, not
+`Entity`. If compact Entity IDs are implemented, show the compact ID there too;
+the snapshot is already established once at view level.
+
+Shorten `Snapshot snapshot:...` to a concise recognition label such as:
+
+```text
+Snapshot 7d358d23be70
+```
+
+Keep the full snapshot value in structured output and operational commands where
+required.
+
+## 7. Simplify the generated next command
+
+Retain a directly usable inspection command, but do not single-quote tokens that
+do not require shell quoting. Quote only paths or values that actually contain
+shell-sensitive characters.
+
+Do not use a literal `<SUBJECT>` placeholder in a command intended for copying:
+`<` and `>` are shell redirection operators. Use an obvious shell-safe placeholder
+such as `MODULE_HANDLE`.
+
+The surrounding sentence does not need to say “replace SUBJECT only” or explain
+that the generated command already carries the snapshot and project. The command
+itself should make that apparent. Render it over several lines if necessary:
+
+```sh
+node /Users/ronen/postcode/app/_build/src/cli.js inspect MODULE_HANDLE \
+  --snapshot snapshot:7d358d23be708ec6b5bed35246ec267dceb061492c26228a04d61c9150e44aea \
+  --project /Users/ronen/postcode/app/tsconfig.json
+```
+
+The exact invocation path and option syntax remain implementation choices. It is
+also reasonable to accept a displayed snapshot prefix when it can be validated
+unambiguously, but that is not required for this presentation refinement.
+
+## 8. Refine display omissions
+
+The omission disclosure is valuable. Format it vertically if the single line
+would wrap or become difficult to scan:
+
+```text
+Display
+  Omitted:
+    156 external modules and their details
+    27 exports from listed modules
+    documentation for 9 listed modules
+```
+
+Retain the external preview only if it helps selection. The alphabetical preview
+`assert, assert/strict, async_hooks` proves that external modules exist but says
+little about their relevance. It may be omitted or replaced with a more useful
+compact grouping. Do not introduce dependency analysis merely to rank external
+modules; that belongs to a later lens.
+
+## 9. Continue the CLI reference
+
+`docs/cli-reference.md` is a good foundation and contains the right stable
+concepts. Add a very short first-use workflow before or after the command list:
+
+1. List modules.
+2. Choose a mnemonic handle or precise Entity ID.
+3. Run the generated inspection command.
+4. Add the explicit source-detail option when source evidence is needed.
+
+Update the reference for the final handle and Entity ID representation, including
+filename-derived mnemonic evidence and the separation of snapshot ID from Entity
+ID.
+
+Avoid wording that implies consequential guarantees or limitations exist only in
+JSON. The Unicode view retains the status and limitations necessary to interpret
+its claims; JSON contains fuller context and machine-readable detail.
+
+The reference should continue to explain:
+
+- `modules(project)` versus `inspect(subjects)`;
+- TypeScript-established names, generated mnemonic handles, Entity IDs, and
+  snapshot scope;
+- analysis materialization versus display omission;
+- the supported TypeScript module-population contract;
+- established claims, recorded documentation assertions, and limitations;
+- explicit source-detail escape; and
+- observation output and generated-output evidence exclusion.
+
+## 10. Validate exceptional inspection cases
+
+The supplied inspection sample contains only ordinary direct exports. Before
+considering presentation validation complete, capture and review examples for:
+
+- a re-export or alias;
+- multiple contributing declarations;
+- zero and multiple selector matches;
+- partial, unavailable, or failed expansion;
+- documentation truncation; and
+- explicit source detail.
+
+These cases are where normal-case suppression is most likely to hide meaningful
+provenance or qualification.
+
+Do not add project purpose, dependency flow, call relationships, or an architecture
+summary to this module-inventory presentation. Those require later lenses. The
+inventory should remain a good menu for further investigation rather than trying
+to explain the whole program.
+
+## Verification
+
+Please verify at least:
+
+- successful analysis state is compact while abnormal capability states remain
+  explicit;
+- epistemological status says what TypeScript analysis establishes;
+- the supported-population and non-atomic-input limitations remain visible;
+- generated-output exclusion is reported when enforced for the current run;
+- display omissions are accurate and easy to scan;
+- handles have no redundant `module-` prefix and may be non-unique;
+- filename-derived handles do not become conceptual module names or expose paths;
+- compact Entity IDs are deterministic and collision-free within the snapshot;
+- names, handles, Entity IDs, and snapshots remain distinct in structured data;
+- export roles remain available through inspection after removal from inventory;
+- `(none)` is distinguishable from an actual export named `none`;
+- long handles are not truncated solely for column alignment;
+- generated inspection commands are shell-safe and operationally clear;
+- exceptional alias export and analysis cases retain their meaningful detail;
+- the CLI reference agrees with the implemented commands and identity model; and
+- Unicode output remains deterministic for equivalent inputs.

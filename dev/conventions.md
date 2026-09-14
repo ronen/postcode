@@ -60,4 +60,104 @@ Keep canonical project material independent of draft artifacts. Do not cite a dr
 
 ## Technology-Specific Conventions
 
-Add language, formatting, naming, testing, and module conventions here when the relevant technology is adopted. Do not infer them from a proposed architecture before that decision is accepted.
+The initial slice uses Node.js 22.13 or later, TypeScript, ECMAScript modules,
+and npm with a committed lockfile. Install with `npm ci`. TypeScript's compiler
+API is also the runtime language analyzer. Version 6.0.3 is pinned because this
+slice targets its documented JavaScript compiler API; compiler upgrades require
+re-running semantic fixtures and checking identity method versions.
+
+- `typescript` provides the analyzer and `tsc` build/type check. It is the only
+  direct runtime dependency. Its upstream is Microsoft's TypeScript project.
+- `@types/node` 22.20.2 provides compile-time declarations for Node APIs.
+  Its transitive `undici-types` dependency supplies HTTP API declarations used
+  by those types; neither adds a runtime observation transport.
+- Node's built-in test runner and assertions provide tests without a separate
+  test framework or transpilation runner. npm is installation/build orchestration.
+
+Use strict checking, explicit type-only imports, `.js` relative import specifiers,
+two-space indentation, single-quoted TypeScript strings, and semicolons. Keep
+compiler imports under the TypeScript integration. Do not expose compiler nodes
+or symbols through program-domain interfaces. Tests use the real compiler with
+small fixtures; synthetic providers are appropriate for evaluation states that
+the eager first provider does not normally produce.
+
+`npm run check` checks types without emitting; `npm test` builds and runs tests.
+Build output lives under Git-ignored `_build/`. Repository-input fixtures live in
+`fixtures/`, outside the application's compile include list. Tests can create
+temporary projects through Node's temporary directory and must clean them up.
+The internal test process probe is not a supported application CLI or JSON schema.
+
+Inspection accepts one exact referent (name, handle, or Entity ID), which can
+resolve to zero, one, or multiple subjects. Multiple input referents and list
+selector syntax remain deferred by the initial plan; this is distinct from
+multiple matches of one referent.
+
+Generated mnemonic handles use language names, extensionless source basenames or
+declared exports, never snapshot hash text. Retain generated status and provenance;
+a basename cue is not a conceptual name or a responsibility classification.
+Generic basenames fall back to representative exports or honest anonymity.
+Reserve compact Entity-ID syntax (`module-` plus 8–64 lowercase hexadecimal
+characters) by prefixing matching generated handles with `handle-`. Apply this
+after cue normalization, regardless of cue provenance; exact language names remain unchanged.
+
+Compact module Entity IDs abbreviate record-key digests against the entire module
+population, extending prefixes on collision. Compute the same mapping for inventory
+and inspection, including collapsed modules. Handles and compact IDs require the
+full snapshot through `--snapshot`; missing or stale scope cannot infer successors.
+An exact language name remains usable without snapshot scope even when it equals
+a compact ID. With explicit current scope, compact ID selection stays precise.
+Keep internal record keys, compact Entity IDs, names and handles distinct. The short
+Unicode snapshot label is for recognition; commands and JSON retain the full scope.
+
+Suggested commands include explicit CLI/project invocation paths and shell-quote
+their arguments. Put options before `--` and the literal selector after it. Keep
+those operational paths separate from discovered source
+evidence and from domain identity. Run qualification counts report distinct
+enforced output-location boundaries, not a census of generated files.
+
+Method versions in the identity module participate in snapshot identity. Bump
+the responsible version when changing analysis, record, handle, or projection
+semantics. Equivalent runs must not include clocks or random observation UUIDs
+in program-record identity or structured projection output.
+
+### Local development observation sink selection
+
+Implemented for this task: one version-zero invocation batch per local JSON file under the
+PostCode development checkout's `_observations/` directory. The destination is
+the PostCode checkout, independently of the selected project's configuration
+directory. The root underscore rule ignores it in Git. No remote or shared sink
+is selected.
+
+The CLI discloses the absolute local destination on stderr, escaping terminal
+controls in its displayed value without changing the actual path. Diagnostic and
+warning values use the same inline escaping policy. Files may contain
+repository context, selection inputs, documentation, qualifications, the qualified
+view artifact, the exact rendered output, and explicitly requested source detail.
+The sink creates its directory with mode `0700` and files with mode `0600`;
+pre-existing directory permissions remain the local owner's responsibility.
+No real-project observations may be committed without human approval.
+
+The caller must explicitly supply the actual observation directory to project
+opening's output-exclusion boundary before any analysis, even when analyzing a
+parent repository or a configuration outside the PostCode checkout. The same
+requirement applies to retained views, reports, and other generated outputs.
+Do not infer excluded output from target directory names: configured sources under
+`_build` or `_observations` remain inputs unless the caller identifies those paths
+as actual output destinations.
+The destination choice does not impose retention, migration, historical-reading,
+or producer-side cache policy. Delivery failure must be visible while preserving
+a successfully produced view. The CLI and sink have automated delivery, privacy-mode, exact-output and nested-configuration
+exclusion checks. Instrument validation and independent reviews are recorded in
+the [initial task](../records/tasks/2026-09-12-initial-module-inventory.md).
+
+Source evidence stores file associations separately from precise spans. Span ranges
+use one-based UTF-16 columns and exclusive ends. Bounded excerpts come from captured
+compiler input, never a presentation-time filesystem read. Source disclosure remains
+an explicit inspection expansion, grouped by conceptual labels, with its actual
+locations-and-excerpts level recorded in the source-escape event.
+
+Source presentation must preserve module/export containment and distinguish
+forwarding from semantic-symbol definition. Enclosing statement evidence may make
+a narrow compiler span intelligible, but excerpts stay bounded and qualified.
+Unicode documentation height limits are presentation policy; preserve stored
+assertions and count the additional omitted characters/tags in the qualified view.

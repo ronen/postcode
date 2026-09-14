@@ -1,0 +1,4 @@
+{
+  "compilerOptions": { "noLib": true, "types": [], "module": "NodeNext", "moduleResolution": "NodeNext", "moduleDetection": "legacy" },
+  "files": ["origin.ts", "barrel.ts", "chain.ts", "types.ts", "import-alias.ts", "assignment.cts", "ambient.d.ts"]
+}

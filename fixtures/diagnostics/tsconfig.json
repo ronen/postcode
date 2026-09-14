@@ -1,0 +1,1 @@
+{ "compilerOptions": { "noLib": true, "types": [] }, "files": ["syntax.ts", "semantic.ts"] }

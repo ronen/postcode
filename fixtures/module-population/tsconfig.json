@@ -1,0 +1,4 @@
+{
+  "extends": "./base.json",
+  "files": ["root.ts", "script.ts", "ambient.d.ts", "external.d.ts", "allowed.js"]
+}
