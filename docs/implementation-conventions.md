@@ -19,15 +19,19 @@ Use strict checking, explicit type-only imports, `.js` relative import specifier
 
 ## Toolchain operation
 
-- Use Node.js 22.13 or later, TypeScript, ECMAScript modules, and npm with a committed lockfile.
-- Use TypeScript 6.0.3 as the runtime language analyzer and `tsc` build/type checker. It is pinned because the current slice targets its documented JavaScript compiler API.
+- Use Node.js 22.13 or later and `tsc` from TypeScript 6.0.3 to build and type-check PostCode. Use ECMAScript modules and npm with a committed lockfile.
 - Use Node's built-in test runner and assertions without a separate test framework or transpilation runner. Use npm for installation and build orchestration.
 - Install dependencies with `npm ci`.
-- When upgrading TypeScript, rerun the semantic fixtures and check whether any identity method versions require a bump.
+
+One installed TypeScript package currently supplies both the runtime analyzer and the build-time `tsc`, although those roles do not inherently require the same version. Under the current dependency layout, an upgrade made for build-tool convenience also changes the runtime analyzer and must satisfy the semantic verification described under [TypeScript integration](#typescript-integration).
 
 ## TypeScript integration
 
-Keep compiler imports within the TypeScript integration, and do not expose compiler nodes or symbols through program-domain interfaces, as required by the accepted [initial language-integration boundary](decisions/initial-module-inventory-decisions.md#begin-with-a-typescript-module-inventory).
+Use the bundled TypeScript compiler API as the runtime language analyzer. Keep its version pinned because the current slice targets its documented JavaScript API.
+
+When changing the TypeScript version used by the runtime language analyzer, rerun the semantic fixtures and determine whether any analysis identity method versions must be updated to reflect changed analysis semantics.
+
+Application modules outside `src/lib/typescript/` must not import the `typescript` package. Interfaces between the TypeScript integration and the rest of the application use PostCode domain types rather than exposing TypeScript compiler nodes, symbols, or other compiler objects, as required by the accepted [initial language-integration boundary](decisions/initial-module-inventory-decisions.md#begin-with-a-typescript-module-inventory). Tests may import the compiler directly when they need to verify the integration against real compiler behavior.
 
 ## Testing and verification
 

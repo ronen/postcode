@@ -20,4 +20,10 @@ Describe the need, why it matters, and relevant constraints without designing th
 
 ## Candidates
 
-No items recorded.
+## Evaluate independent TypeScript versions for building and analysis
+
+Added: 2026-09-14
+Origin: human-directed process review of implementation conventions
+Area: toolchain and TypeScript language integration
+
+The current dependency layout uses one installed TypeScript version both to build and type-check PostCode and to analyze subject projects at runtime. Evaluate whether to separate those roles so the build-time compiler can evolve for development convenience while the runtime analyzer remains deliberately pinned and changes only with semantic fixtures and analysis-identity review. Preserve a clear account of which analyzer version establishes each result. If the roles are separated, revise the implementation convention so build-only TypeScript upgrades no longer require runtime-analyzer semantic verification.
