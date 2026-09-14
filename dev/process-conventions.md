@@ -2,11 +2,6 @@
 
 These conventions supplement the adopted [baseline conventions](../foundation/baseline-conventions.md). Keep this document concrete and current as the implementation and toolchain emerge.
 
-## Repository Structure
-
-- Prefer logical internal boundaries under `src/lib/` until there is evidence that a component needs an independently versioned package boundary.
-- Create directories when they receive meaningful content; do not use placeholder files to materialize a speculative structure.
-
 ## Provisional Working Material
 
 - Put repository-specific scratch files and directories under a descriptively named root-level directory beginning with `_`, such as `_analysis/`, `_investigation/`, or `_rendered/`. The root `.gitignore` reserves this namespace for uncommitted working material.
@@ -22,14 +17,6 @@ Use [`drafts/`](../drafts/) when provisional planning material is worth preservi
 
 Keep canonical project material independent of draft artifacts. Do not cite a draft artifact as context required to understand canonical project material. When draft artifacts are promoted, carry the necessary context into the resulting canonical documents and link those documents to one another; Git history may preserve their shared drafting provenance. The human directs promotion, and content moved or incorporated into a canonical location must independently satisfy the approval requirements for that document type. Treat a canonical document that depends on a draft artifact as an unexpected finding.
 
-## Dependencies and Boundaries
-
-- Expose a component through its intended public boundary; do not expose internal helpers or coordination types merely for consumer convenience.
-- Keep transformations that require no external state independent of external I/O when those concerns are conceptually distinct.
-- Translate external data and failure models at the boundary when they should not become part of domain behavior.
-- Preserve language-specific semantics rather than forcing them into a falsely universal model.
-- Treat a new third-party dependency as a design choice: confirm its purpose, maintenance posture, and operational implications before adding it.
-
 ## Domain Information and Failures
 
 - Represent important domain concepts explicitly rather than repeatedly encoding them as primitive values.
@@ -42,18 +29,6 @@ Keep canonical project material independent of draft artifacts. Do not cite a dr
 - Do not strengthen a claim when transforming, aggregating, caching, comparing, or rendering it.
 - Distinguish mechanically derived facts, recorded assertions, observations, and interpretations in names, types, tests, and user-visible output.
 - Prefer explicit unavailability or limitation over plausible unsupported output.
-
-## Tests and Fixtures
-
-- Test public behavior and important boundaries rather than implementation detail alone.
-- Prefer representative data and real objects over mocks when practical.
-- Before creating fixture or test infrastructure, look for existing assets that express the same concept.
-- Make nondeterminism explicit and controlled.
-
-## Implementation Anomalies
-
-- Treat implementation elements made newly unused by a change as evidence to investigate before deleting or retaining them.
-- Treat recurring violations of an intended boundary as possible evidence that the implementation or the boundary is wrong; do not conceal the mismatch through repeated exceptions.
 
 ## Technology-Specific Conventions
 
