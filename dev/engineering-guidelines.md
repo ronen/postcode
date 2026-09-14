@@ -30,6 +30,10 @@ This document may be changed only through separate human-directed process mainte
 - Before creating fixture or test infrastructure, look for existing assets that express the same concept.
 - Make nondeterminism explicit and controlled.
 
+## Output safety
+
+- Treat repository-derived text, configuration values, invocation input, and other externally supplied strings as untrusted at terminal-output boundaries. Render terminal controls visibly or otherwise neutralize their effects without changing the underlying stored values.
+
 ## Implementation anomalies
 
 - Treat implementation elements made newly unused by a change as evidence to investigate before deleting or retaining them.

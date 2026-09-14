@@ -17,52 +17,13 @@ Use [`drafts/`](../drafts/) when provisional planning material is worth preservi
 
 Keep canonical project material independent of draft artifacts. Do not cite a draft artifact as context required to understand canonical project material. When draft artifacts are promoted, carry the necessary context into the resulting canonical documents and link those documents to one another; Git history may preserve their shared drafting provenance. The human directs promotion, and content moved or incorporated into a canonical location must independently satisfy the approval requirements for that document type. Treat a canonical document that depends on a draft artifact as an unexpected finding.
 
-## Technology-Specific Conventions
+## Architectural Material Pending Consolidation
 
 Method versions in the identity module participate in snapshot identity.
 Equivalent runs must not include clocks or random observation UUIDs in
 program-record identity or structured projection output.
 
-### Local development observation sink selection
-
-Implemented for this task: one version-zero invocation batch per local JSON file under a
-UTC date directory named `date=YYYY-MM-DD` in the PostCode development checkout's
-`_observations/` directory. Filenames begin with a filesystem-safe UTC timestamp as
-`timestamp=YYYY-MM-DDTHH-MM-SS.sssZ_`, followed by the batch UUID. The destination is
-the PostCode checkout, independently of the selected project's configuration
-directory. The root underscore rule ignores it in Git. No remote or shared sink
-is selected.
-
-The CLI discloses the absolute local destination on stderr, escaping terminal
-controls in its displayed value without changing the actual path. Diagnostic and
-warning values use the same inline escaping policy. Files may contain
-repository context, selection inputs, documentation, qualifications, the qualified
-view artifact, the exact rendered output, and explicitly requested source detail.
-The sink creates its root and dated directories with mode `0700` and files with
-mode `0600`; pre-existing directory permissions remain the local owner's responsibility.
-No real-project observations may be committed without human approval.
-
-The caller must explicitly supply the actual observation directory to project
-opening's output-exclusion boundary before any analysis, even when analyzing a
-parent repository or a configuration outside the PostCode checkout. The same
-requirement applies to retained views, reports, and other generated outputs.
-Do not infer excluded output from target directory names: configured sources under
-`_build` or `_observations` remain inputs unless the caller identifies those paths
-as actual output destinations.
-The destination choice does not impose retention, migration, historical-reading,
-or producer-side cache policy. Delivery failure must be visible while preserving
-a successfully produced view. The CLI and sink have automated delivery, privacy-mode, exact-output and nested-configuration
-exclusion checks. Instrument validation and independent reviews are recorded in
-the [initial task](../records/tasks/2026-09-12-initial-module-inventory.md).
-
-Source evidence stores file associations separately from precise spans. Span ranges
-use one-based UTF-16 columns and exclusive ends. Bounded excerpts come from captured
-compiler input, never a presentation-time filesystem read. Source disclosure remains
-an explicit inspection expansion, grouped by conceptual labels, with its actual
-locations-and-excerpts level recorded in the source-escape event.
-
-Source presentation must preserve module/export containment and distinguish
-forwarding from semantic-symbol definition. Enclosing statement evidence may make
-a narrow compiler span intelligible, but excerpts stay bounded and qualified.
-Unicode documentation height limits are presentation policy; preserve stored
-assertions and count the additional omitted characters/tags in the qualified view.
+- Explicitly identify and exclude actual generated-output destinations from repository evidence before analysis. Apply this rule to observation output, retained views, reports, and other generated output. Do not infer exclusions from directory names: configured sources under `_build` or `_observations` remain inputs unless the caller identifies those paths as output destinations.
+- Keep sink selection independent of retention, migration, historical-reading, and producer-side cache policy. Make delivery failure visible without invalidating a successfully produced view.
+- Produce bounded source excerpts from captured analysis input, never by rereading the filesystem during presentation.
+- Record the actual level of source detail disclosed in the corresponding source-escape event.

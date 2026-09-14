@@ -54,3 +54,18 @@ Agents may update this document only as part of authorized implementation work t
 - Put options before `--` and the literal selector after it.
 - Keep operational invocation paths separate from discovered source evidence and domain identity.
 - Report distinct enforced output-location boundaries in run qualification counts, not a census of generated files.
+
+## Local observation sink
+
+- Write each version-zero invocation batch as one JSON file beneath a UTC date directory named `date=YYYY-MM-DD` in the PostCode development checkout's ignored `_observations/` directory. Begin each filename with the filesystem-safe UTC timestamp `timestamp=YYYY-MM-DDTHH-MM-SS.sssZ_` and follow it with the batch UUID.
+- Use the PostCode working tree containing the running CLI build as the local sink destination, independently of the selected project's configuration directory. Do not send observations to a remote or shared sink under the current configuration. [[Send to a sink and forget](decisions/initial-observation-recording-decisions.md#send-to-a-sink-and-forget)]
+- Disclose the absolute local destination on stderr.
+- Treat local observation files as potentially sensitive because they can contain repository context, selection inputs, documentation, qualifications, the qualified view artifact, the exact rendered output, and explicitly requested source detail. Create new sink and date directories with mode `0700` and files with mode `0600`; leave permissions of pre-existing directories under their owner's control.
+
+## Source-detail presentation
+
+- Store file associations separately from precise source spans. Represent spans with one-based UTF-16 columns and exclusive ends.
+- Expose source detail only through an explicit inspection expansion and group it by conceptual module and export labels. [[Conceptual presentation and source escape](decisions/initial-module-inventory-decisions.md#keep-conceptual-presentation-separate-from-source-escape)]
+- Preserve module and export containment in source presentation, and distinguish forwarding declarations from semantic-symbol definitions. [[Conceptual presentation and source escape](decisions/initial-module-inventory-decisions.md#keep-conceptual-presentation-separate-from-source-escape)]
+- Expand a narrow compiler span to its enclosing statement when that context makes the evidence intelligible, while keeping excerpts bounded and qualified.
+- Treat Unicode documentation height limits as presentation policy. Preserve the stored assertions and count additional characters or tags omitted by the height limit in the qualified view.
