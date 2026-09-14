@@ -14,6 +14,8 @@ don't close the task until separate review
 
 prepare a handoff for review
 
+Claude's review is in place.  As you can see it's clean.  So you can close out the task.  Note the only change needed for STATUS.md i think is to update the link to the latest completed task.  Once it's all done, push and create a PR, and give me a comment to use when I merge it.
+
 ## Outcome
 
 ## Verification
