@@ -1,8 +1,8 @@
 # Address module inventory PR review findings
 
-Status: active
+Status: completed
 Opened: 2026-09-13
-Closed:
+Closed: 2026-09-14
 
 Continues: [completed initial module-inventory task](2026-09-12-initial-module-inventory.md)
 Pull request: [#1](https://github.com/ronen/postcode/pull/1)
@@ -247,6 +247,25 @@ The continuation remains active.
 - The human arranges Claude review. The task remains active and is not closed;
   the returned final report must be assessed before considering completion.
 
+### Final outcome: completed 2026-09-14
+
+The continuation is complete with explicit human authorization following the
+[final independent Claude review](../reviews/2026-09-14-module-inventory-continuation-claude-findings.md).
+All actionable in-scope findings are resolved. Corrections cover record integrity,
+exact selection and handles, observed-input exclusions, diagnostic occurrence
+and location fidelity, terminal escaping, bounded forwarding evidence and truthful
+status/documentation. The shared-handle concern was correctly retained as approved
+multiple-match behavior with a regression and example; root syntax validation was
+preserved using the human-approved deduplication approach.
+
+The final review found no actionable defects and recommended closure. Its report
+is preserved unchanged in `f790b50`; `17ad101` records the
+[accepted final disposition](../reviews/2026-09-14-module-inventory-continuation-final-disposition.md)
+and status. No implementation changes were needed after review. Disclosed
+verification limits remain recorded; there are no new deferred findings or open
+implementation/review gates. The original task and governing records are unchanged.
+The human will merge PR #1; task completion does not assert that merge occurred.
+
 ## Verification
 
 - `npm test`: 57/57 passed; `npm run check`: passed on Node 22.13.1 / TypeScript
@@ -381,3 +400,15 @@ The continuation remains active.
 - Foundation, approved plans/decisions and the completed predecessor remain
   unchanged across the continuation. Claude is asked to independently run tests
   and assess the entire continuation, not only the latest status correction.
+
+### Final closure verification
+
+- Claude independently reproduced 76/76 passing tests, a passing type check and
+  clean continuation whitespace at reviewed HEAD `b8c9eaf` on Node 22.13.1.
+- The review assessed the full continuation against approved material and performed
+  additional symlink-exclusion, cyclic-export and shell-quoting probes. It found
+  no actionable defects; scope and unperformed checks are preserved in the report.
+- Reviewed runtime/tests remain unchanged. Closure metadata links and whitespace
+  passed checks; foundation, approved plans/decisions and the completed predecessor
+  remain unchanged. Tests were not rerun for metadata-only closure changes.
+- The human explicitly authorized closure and push after receiving the final review.
