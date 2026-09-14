@@ -122,8 +122,10 @@ in program-record identity or structured projection output.
 
 ### Local development observation sink selection
 
-Implemented for this task: one version-zero invocation batch per local JSON file under the
-PostCode development checkout's `_observations/` directory. The destination is
+Implemented for this task: one version-zero invocation batch per local JSON file under a
+UTC date directory named `date=YYYY-MM-DD` in the PostCode development checkout's
+`_observations/` directory. Filenames begin with a filesystem-safe UTC timestamp as
+`timestamp=YYYY-MM-DDTHH-MM-SS.sssZ_`, followed by the batch UUID. The destination is
 the PostCode checkout, independently of the selected project's configuration
 directory. The root underscore rule ignores it in Git. No remote or shared sink
 is selected.
@@ -133,8 +135,8 @@ controls in its displayed value without changing the actual path. Diagnostic and
 warning values use the same inline escaping policy. Files may contain
 repository context, selection inputs, documentation, qualifications, the qualified
 view artifact, the exact rendered output, and explicitly requested source detail.
-The sink creates its directory with mode `0700` and files with mode `0600`;
-pre-existing directory permissions remain the local owner's responsibility.
+The sink creates its root and dated directories with mode `0700` and files with
+mode `0600`; pre-existing directory permissions remain the local owner's responsibility.
 No real-project observations may be committed without human approval.
 
 The caller must explicitly supply the actual observation directory to project

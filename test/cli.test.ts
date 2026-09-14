@@ -5,6 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
 import { runCli } from '../src/lib/cli.js';
+import { localFileObservationSink } from '../src/lib/observations.js';
 import type { ObservationBatch, ObservationSink } from '../src/lib/observations.js';
 import { renderUnicode } from '../src/lib/presentation.js';
 import type { QualifiedView } from '../src/lib/presentation.js';
@@ -31,9 +32,12 @@ function copyTestCheckout(checkout: string) {
 
 function assertRecordedOutput(checkout: string, output: string) {
   const sink = path.join(checkout, '_observations');
-  const files = readdirSync(sink);
+  const directories = readdirSync(sink);
+  assert.equal(directories.length, 1);
+  const datedDirectory = path.join(sink, directories[0]!);
+  const files = readdirSync(datedDirectory);
   assert.equal(files.length, 1);
-  const batch = JSON.parse(readFileSync(path.join(sink, files[0]!), 'utf8')) as ObservationBatch;
+  const batch = JSON.parse(readFileSync(path.join(datedDirectory, files[0]!), 'utf8')) as ObservationBatch;
   assert.equal(batch.records.find(record => record.kind === 'rendered-output')!.value, output);
 }
 
@@ -241,15 +245,42 @@ test('independent CLI processes reproduce JSON while the local sink writes priva
     const unicode = execFileSync(process.execPath, unicodeArgs, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
     assert.equal(execFileSync(process.execPath, unicodeArgs, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }), unicode);
     const sink = path.join(root, '_observations');
-    const files = readdirSync(sink);
+    const datedDirectories = readdirSync(sink);
+    assert.ok(datedDirectories.every(directory => /^date=\d{4}-\d{2}-\d{2}$/.test(directory)));
+    const files = datedDirectories.flatMap(directory => {
+      const datedDirectory = path.join(sink, directory);
+      assert.equal(statSync(datedDirectory).mode & 0o777, 0o700);
+      return readdirSync(datedDirectory).map(file => path.join(datedDirectory, file));
+    });
     assert.equal(files.length, 4);
     assert.equal(statSync(sink).mode & 0o777, 0o700);
     for (const file of files) {
-      const destination = path.join(sink, file);
-      assert.equal(statSync(destination).mode & 0o777, 0o600);
-      const batch = JSON.parse(readFileSync(destination, 'utf8')) as ObservationBatch;
+      assert.match(path.basename(file),
+        /^timestamp=\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}\.\d{3}Z_[\da-f-]{36}\.json$/);
+      assert.equal(statSync(file).mode & 0o777, 0o600);
+      const batch = JSON.parse(readFileSync(file, 'utf8')) as ObservationBatch;
       assert.ok([output, unicode].includes(batch.records.find(record => record.kind === 'rendered-output')!.value as string));
     }
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('local observation paths use one UTC clock reading for their date directory and timestamped filename', async () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-observation-path-'));
+  try {
+    const result = await invoke(['--project', config, '--json']);
+    const batch = result.batches[0]!;
+    let clockReads = 0;
+    const sink = localFileObservationSink(path.join(root, '_observations'), () => {
+      clockReads++;
+      return new Date('2026-09-14T23:45:06.007Z');
+    });
+    await sink.submit(batch);
+    assert.equal(clockReads, 1);
+    const datedDirectory = path.join(root, '_observations/date=2026-09-14');
+    const filename = `timestamp=2026-09-14T23-45-06.007Z_${batch.id}.json`;
+    assert.deepEqual(JSON.parse(readFileSync(path.join(datedDirectory, filename), 'utf8')), batch);
+    assert.equal(statSync(datedDirectory).mode & 0o777, 0o700);
+    assert.equal(statSync(path.join(datedDirectory, filename)).mode & 0o777, 0o600);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -776,9 +807,12 @@ test('observation destination disclosure escapes controls while the sink uses th
     assert.equal(/[\u0000-\u001f\u007f-\u009f\u2028\u2029\u202e\u2066\u2069]/.test(stderr.slice(0, -1)), false);
     assert.ok(stderr.includes('checkout-\\u000a\\u0009\\u001b[2J\\u0085\\u2028\\u2029\\u202e\\u2066\\u2069'));
     const destination = path.join(checkout, '_observations');
-    const files = readdirSync(destination);
+    const directories = readdirSync(destination);
+    assert.equal(directories.length, 1);
+    const datedDirectory = path.join(destination, directories[0]!);
+    const files = readdirSync(datedDirectory);
     assert.equal(files.length, 1);
-    const batch = JSON.parse(readFileSync(path.join(destination, files[0]!), 'utf8')) as ObservationBatch;
+    const batch = JSON.parse(readFileSync(path.join(datedDirectory, files[0]!), 'utf8')) as ObservationBatch;
     assert.equal(batch.records.find(record => record.kind === 'rendered-output')!.value, stdout);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

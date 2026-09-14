@@ -167,9 +167,11 @@ batch, referenced by the view-produced and optional source-escape events. They
 remain interpretable after the ephemeral store is discarded.
 
 The CLI discloses the absolute local sink destination on stderr. The sink creates
-one private JSON file per accepted batch under the PostCode checkout's ignored
-`_observations/` directory. It exposes no historical-read API and supplies no
-producer retention or migration policy. Rejection or delivery failure emits a
+one private JSON file per accepted batch under a UTC `date=YYYY-MM-DD` subdirectory
+of the PostCode checkout's ignored `_observations/` directory. Filenames carry a
+filesystem-safe UTC submission timestamp and the batch UUID. It exposes no
+historical-read API and supplies no producer retention or migration policy.
+Rejection or delivery failure emits a
 warning without changing the successful view or its exit status. No remote/shared
 sink or contemporaneous-note command exists. Privacy and exclusion details are in
 [development conventions](../../dev/conventions.md#local-development-observation-sink-selection).

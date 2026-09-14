@@ -43,10 +43,17 @@ export function observationBatch(view: QualifiedView, rendered: string, context:
   ] };
 }
 
-export function localFileObservationSink(directory: string): ObservationSink {
+export function localFileObservationSink(
+  directory: string,
+  now: () => Date = () => new Date(),
+): ObservationSink {
   return { async submit(batch) {
-    await mkdir(directory, { recursive: true, mode: 0o700 });
-    await writeFile(path.join(directory, `${batch.id}.json`), `${JSON.stringify(batch)}\n`, { flag: 'wx', mode: 0o600 });
+    const timestamp = now().toISOString();
+    const datedDirectory = path.join(directory, `date=${timestamp.slice(0, 10)}`);
+    const filenameTimestamp = timestamp.replaceAll(':', '-');
+    await mkdir(datedDirectory, { recursive: true, mode: 0o700 });
+    const destination = path.join(datedDirectory, `timestamp=${filenameTimestamp}_${batch.id}.json`);
+    await writeFile(destination, `${JSON.stringify(batch)}\n`, { flag: 'wx', mode: 0o600 });
     return { accepted: true };
   } };
 }
