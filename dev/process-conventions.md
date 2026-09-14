@@ -4,10 +4,8 @@ These conventions supplement the adopted [baseline conventions](../foundation/ba
 
 ## Repository Structure
 
-- Put application source under `src/`.
 - Prefer logical internal boundaries under `src/lib/` until there is evidence that a component needs an independently versioned package boundary.
 - Create directories when they receive meaningful content; do not use placeholder files to materialize a speculative structure.
-- Keep test fixtures under `fixtures/` when they represent repositories or external inputs rather than unit-local test data.
 
 ## Provisional Working Material
 
@@ -16,6 +14,7 @@ These conventions supplement the adopted [baseline conventions](../foundation/ba
 - Except for the task-intake role of `_work/TASK.md` defined by the governing task protocol, content under a root underscore directory is provisional and non-governing, regardless of any status or approval language it contains. To become durable or governing, content must be moved or incorporated into its appropriate non-underscore repository location and satisfy any applicable approval and commit requirements for that document type.
 - Treat underscore directories as disposable. Do not use them as the sole location of durable project knowledge, implementation, committed generated artifacts, configuration, or documentation. Remove scratch material that you created when it is no longer useful; do not remove pre-existing scratch material without human direction or clear ownership.
 - Do not create project-local `.codex`, `.claude`, or similar tool-specific directories for scratch work.
+- Automated tests and tools may use the operating system's temporary location for ephemeral runtime artifacts that they create and clean up. This exception does not apply to agent-created investigation, planning, or other repository working material.
 - A Git-ignored directory is still inside the observed repository. Do not use underscore directories for information that is required to remain outside that repository.
 - Committed or otherwise durable project material must not depend on content under an underscore directory. Treat such a dependency as an unexpected finding and report it rather than using the underscore content as authoritative.
 
@@ -47,8 +46,6 @@ Keep canonical project material independent of draft artifacts. Do not cite a dr
 ## Tests and Fixtures
 
 - Test public behavior and important boundaries rather than implementation detail alone.
-- For analysis results, use small fixtures whose expected answers and limitations are reviewable.
-- Include negative and incomplete-analysis cases where they test the epistemological contract.
 - Prefer representative data and real objects over mocks when practical.
 - Before creating fixture or test infrastructure, look for existing assets that express the same concept.
 - Make nondeterminism explicit and controlled.
@@ -61,10 +58,9 @@ Keep canonical project material independent of draft artifacts. Do not cite a dr
 ## Technology-Specific Conventions
 
 The initial slice uses Node.js 22.13 or later, TypeScript, ECMAScript modules,
-and npm with a committed lockfile. Install with `npm ci`. TypeScript's compiler
-API is also the runtime language analyzer. Version 6.0.3 is pinned because this
-slice targets its documented JavaScript compiler API; compiler upgrades require
-re-running semantic fixtures and checking identity method versions.
+and npm with a committed lockfile. TypeScript's compiler API is also the runtime
+language analyzer. Version 6.0.3 is pinned because this slice targets its
+documented JavaScript compiler API.
 
 - `typescript` provides the analyzer and `tsc` build/type check. It is the only
   direct runtime dependency. Its upstream is Microsoft's TypeScript project.
@@ -74,17 +70,9 @@ re-running semantic fixtures and checking identity method versions.
 - Node's built-in test runner and assertions provide tests without a separate
   test framework or transpilation runner. npm is installation/build orchestration.
 
-Use strict checking, explicit type-only imports, `.js` relative import specifiers,
-two-space indentation, single-quoted TypeScript strings, and semicolons. Keep
-compiler imports under the TypeScript integration. Do not expose compiler nodes
-or symbols through program-domain interfaces. Tests use the real compiler with
-small fixtures; synthetic providers are appropriate for evaluation states that
-the eager first provider does not normally produce.
+Keep compiler imports under the TypeScript integration. Do not expose compiler
+nodes or symbols through program-domain interfaces.
 
-`npm run check` checks types without emitting; `npm test` builds and runs tests.
-Build output lives under Git-ignored `_build/`. Repository-input fixtures live in
-`fixtures/`, outside the application's compile include list. Tests can create
-temporary projects through Node's temporary directory and must clean them up.
 The internal test process probe is not a supported application CLI or JSON schema.
 
 Inspection accepts one exact referent (name, handle, or Entity ID), which can
@@ -115,10 +103,9 @@ those operational paths separate from discovered source
 evidence and from domain identity. Run qualification counts report distinct
 enforced output-location boundaries, not a census of generated files.
 
-Method versions in the identity module participate in snapshot identity. Bump
-the responsible version when changing analysis, record, handle, or projection
-semantics. Equivalent runs must not include clocks or random observation UUIDs
-in program-record identity or structured projection output.
+Method versions in the identity module participate in snapshot identity.
+Equivalent runs must not include clocks or random observation UUIDs in
+program-record identity or structured projection output.
 
 ### Local development observation sink selection
 
