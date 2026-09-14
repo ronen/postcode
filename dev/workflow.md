@@ -6,17 +6,23 @@ This document describes how humans and coding agents plan, implement, verify, do
 
 ### 1.1 Exploration and planning
 
-Exploration, discussion, and preliminary planning do not require a task record. This includes investigating alternatives, drafting plans, maintaining development-process documentation, and preparing a proposed implementation task.
+Exploration, discussion, and preliminary planning do not require a task record. This includes investigating alternatives, drafting plans, and preparing a proposed implementation task.
 
 Planning must not be treated as authorization to implement. Unresolved choices should remain in drafts or discussion until the human approves a plan or accepts and records a decision.
 
-### 1.2 Substantive implementation
+### 1.2 Human-directed process maintenance
+
+Human-directed process maintenance reviews or changes the repository's development instructions under `dev/`. It is initiated and guided by the human, conducted separately from product planning and implementation, and does not require an implementation task record.
+
+Agents performing planning or implementation may report or propose process changes, but must not modify `dev/` as part of that work. A process concern discovered during an implementation task remains outside that task even when recorded as a follow-up.
+
+### 1.3 Substantive implementation
 
 Substantive implementation follows the [task protocol](../foundation/task-protocol.md). Examples include creating an executable scaffold, adding application dependencies, defining runtime contracts, implementing behavior, and materially changing existing behavior or architecture.
 
 Before implementation begins, restate the authorized goal and its explicit scope boundaries, then open the task record as prescribed by the protocol.
 
-### 1.3 Incidental changes
+### 1.4 Incidental changes
 
 Small local corrections may accompany related work when they are obvious, low risk, and do not introduce a separate design decision. Keep unrelated cleanup separate. When classification would materially affect scope or history, ask the human.
 
@@ -82,6 +88,8 @@ Update the appropriate form of documentation:
 - user-facing documentation describes observable use and behavior.
 
 Do not modify governing documents under `foundation/` unless the human explicitly authorizes a foundation revision. Authorization for implementation that conflicts with the foundation is not authorization to revise it; report the conflict and seek direction.
+
+Do not modify files under `dev/` as part of product planning or implementation work. Report or propose an improvement to those instructions for separate human-directed process maintenance; do not include the change as incidental work or implement it through a task follow-up.
 
 Record a decision when a choice has meaningful, durable consequences; constrains later work; or is likely to be repeatedly reconsidered. Routine implementation details do not require decision records.
 

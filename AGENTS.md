@@ -10,6 +10,10 @@ Before performing substantive implementation work, read and follow [`foundation/
 
 Treat the documents under [`foundation/`](foundation/README.md) as adopted, governing material. Read and follow the documents relevant to the work. Do not modify any file under `foundation/` unless the human explicitly asks to revise or adopt foundation material.
 
+## Human-Directed Process Maintenance
+
+Files under [`dev/`](dev/) contain human-maintained development-process instructions. Do not modify them as part of product planning or implementation work. Report or propose process changes for separate human-directed process maintenance.
+
 ## Development Conventions
 
 Follow the conventions in [`foundation/baseline-conventions.md`](foundation/baseline-conventions.md) and [`dev/conventions.md`](dev/conventions.md).
