@@ -19,8 +19,15 @@ Use strict checking, explicit type-only imports, `.js` relative import specifier
 
 ## Toolchain operation
 
+- Use Node.js 22.13 or later, TypeScript, ECMAScript modules, and npm with a committed lockfile.
+- Use TypeScript 6.0.3 as the runtime language analyzer and `tsc` build/type checker. It is pinned because the current slice targets its documented JavaScript compiler API.
+- Use Node's built-in test runner and assertions without a separate test framework or transpilation runner. Use npm for installation and build orchestration.
 - Install dependencies with `npm ci`.
 - When upgrading TypeScript, rerun the semantic fixtures and check whether any identity method versions require a bump.
+
+## TypeScript integration
+
+Keep compiler imports within the TypeScript integration, and do not expose compiler nodes or symbols through program-domain interfaces, as required by the accepted [initial language-integration boundary](decisions/initial-module-inventory-decisions.md#begin-with-a-typescript-module-inventory).
 
 ## Testing and verification
 

@@ -19,21 +19,10 @@ Keep canonical project material independent of draft artifacts. Do not cite a dr
 
 ## Technology-Specific Conventions
 
-The initial slice uses Node.js 22.13 or later, TypeScript, ECMAScript modules,
-and npm with a committed lockfile. TypeScript's compiler API is also the runtime
-language analyzer. Version 6.0.3 is pinned because this slice targets its
-documented JavaScript compiler API.
-
-- `typescript` provides the analyzer and `tsc` build/type check. It is the only
-  direct runtime dependency. Its upstream is Microsoft's TypeScript project.
-- `@types/node` 22.20.2 provides compile-time declarations for Node APIs.
-  Its transitive `undici-types` dependency supplies HTTP API declarations used
-  by those types; neither adds a runtime observation transport.
-- Node's built-in test runner and assertions provide tests without a separate
-  test framework or transpilation runner. npm is installation/build orchestration.
-
-Keep compiler imports under the TypeScript integration. Do not expose compiler
-nodes or symbols through program-domain interfaces.
+The TypeScript package is currently the application's only direct runtime
+dependency. `@types/node` 22.20.2 provides compile-time declarations for Node
+APIs. Its transitive `undici-types` dependency supplies HTTP API declarations
+used by those types; neither adds a runtime observation transport.
 
 The internal test process probe is not a supported application CLI or JSON schema.
 
