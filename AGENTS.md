@@ -16,7 +16,7 @@ Files under [`dev/`](dev/) contain human-maintained development-process instruct
 
 ## Development Conventions
 
-Follow the conventions in [`foundation/baseline-conventions.md`](foundation/baseline-conventions.md) and [`dev/conventions.md`](dev/conventions.md).
+Follow the conventions in [`foundation/baseline-conventions.md`](foundation/baseline-conventions.md), [`dev/process-conventions.md`](dev/process-conventions.md), and [`docs/implementation-conventions.md`](docs/implementation-conventions.md).
 
 ## Governing Core Concepts
 

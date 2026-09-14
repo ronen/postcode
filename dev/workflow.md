@@ -29,7 +29,7 @@ Small local corrections may accompany related work when they are obvious, low ri
 ## 2. Before Making Changes
 
 1. Read `AGENTS.md` and the applicable adopted foundation documents.
-2. Read the governing core concepts, current plan, architecture documentation, accepted decisions, and conventions relevant to the work.
+2. Read the governing core concepts, current plan, architecture documentation, accepted decisions, and applicable conventions.
 3. Inspect the worktree and preserve existing human or agent changes.
 4. For substantive implementation, locate or open the applicable task record before changing the implementation.
 5. Identify uncertainties that could materially change the goal, architecture, or external behavior. Resolve them with the human rather than embedding an assumption silently.
@@ -42,6 +42,7 @@ Follow the [planning workflow](planning.md) for plan contents, provisional worki
 
 ## 4. Implementation
 
+- Follow the applicable [implementation conventions](../docs/implementation-conventions.md).
 - Prefer the smallest coherent change that advances the authorized goal.
 - Preserve established boundaries and dependency direction. If they need to change, make that change explicit and document the decision when consequential.
 - Add or update automated tests with behavior where practical.
@@ -77,14 +78,15 @@ Do not turn architecture documentation into a file, class, function, or API inve
 
 Update the appropriate form of documentation:
 
-- plans describe intended work and learning goals;
-- the core-concepts document states the governing current architectural concepts;
-- architecture documentation describes how the current system works;
-- decision records preserve consequential choices and their rationale;
-- `STATUS.md` gives humans a concise, current view of the project's externally meaningful state;
-- the backlog captures worthwhile work that is not part of an active plan or authorized task;
-- conventions describe repeatable local engineering rules;
-- task records preserve authorization, material follow-ups, outcome, and verification;
+- [plans](../docs/plans/) describe intended work and learning goals;
+- the [core-concepts document](../docs/core-concepts.md) states the governing current architectural concepts;
+- [architecture documentation](../docs/architecture/) describes how the current system works;
+- [decision records](../docs/decisions/) preserve consequential choices and their rationale;
+- [`STATUS.md`](../STATUS.md) gives humans a concise, current view of the project's externally meaningful state;
+- the [backlog](../docs/backlog.md) captures worthwhile work that is not part of an active plan or authorized task;
+- [process conventions](process-conventions.md) govern how development work is conducted;
+- [implementation conventions](../docs/implementation-conventions.md) describe repeatable application-level engineering practices;
+- [task records](../records/tasks/) preserve authorization, material follow-ups, outcome, and verification;
 - user-facing documentation describes observable use and behavior.
 
 Do not modify governing documents under `foundation/` unless the human explicitly authorizes a foundation revision. Authorization for implementation that conflicts with the foundation is not authorization to revise it; report the conflict and seek direction.

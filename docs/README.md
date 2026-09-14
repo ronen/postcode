@@ -28,6 +28,10 @@ Architecture documentation is a selective, descriptive map of how the current sy
 
 Create architecture documentation under `architecture/` when there is implemented architecture to describe. Begin with `architecture/README.md` as the single overview, and add further documents only when a stable area needs its own conceptual explanation. Link to accepted decisions that govern the described architecture; if implementation and a governing decision diverge, expose the inconsistency rather than making the description silently normative.
 
+### Implementation conventions
+
+[`implementation-conventions.md`](implementation-conventions.md) records repeatable application-level engineering practices within the governing architecture. These conventions may evolve with authorized implementation work, but cannot introduce consequential product behavior, conceptual semantics, architectural boundaries, guarantees, or lifecycle policy in place of an accepted decision.
+
 ### Decisions
 
 [`decisions/`](decisions/) preserves consequential choices explicitly accepted by the human, together with their context, rationale, and consequences. Accepted decisions are prescriptive and binding within their stated scope unless superseded; they authorize and explain semantic changes to the governing core concepts, while architecture documentation describes the resulting implemented shape.

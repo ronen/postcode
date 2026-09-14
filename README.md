@@ -96,7 +96,8 @@ routes qualify results; this command does not run a general type check. Exit cod
 2 indicates a usage or project-open failure; 1 indicates an internal failure.
 
 See the [architecture overview](docs/architecture/README.md),
-[development conventions](dev/conventions.md), and
+[implementation conventions](docs/implementation-conventions.md),
+[development process conventions](dev/process-conventions.md), and
 [task record](records/tasks/2026-09-12-initial-module-inventory.md) for implementation
 boundaries, verification and review dispositions.
 
