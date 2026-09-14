@@ -19,41 +19,6 @@ Keep canonical project material independent of draft artifacts. Do not cite a dr
 
 ## Technology-Specific Conventions
 
-The TypeScript package is currently the application's only direct runtime
-dependency. `@types/node` 22.20.2 provides compile-time declarations for Node
-APIs. Its transitive `undici-types` dependency supplies HTTP API declarations
-used by those types; neither adds a runtime observation transport.
-
-The internal test process probe is not a supported application CLI or JSON schema.
-
-Inspection accepts one exact referent (name, handle, or Entity ID), which can
-resolve to zero, one, or multiple subjects. Multiple input referents and list
-selector syntax remain deferred by the initial plan; this is distinct from
-multiple matches of one referent.
-
-Generated mnemonic handles use language names, extensionless source basenames or
-declared exports, never snapshot hash text. Retain generated status and provenance;
-a basename cue is not a conceptual name or a responsibility classification.
-Generic basenames fall back to representative exports or honest anonymity.
-Reserve compact Entity-ID syntax (`module-` plus 8–64 lowercase hexadecimal
-characters) by prefixing matching generated handles with `handle-`. Apply this
-after cue normalization, regardless of cue provenance; exact language names remain unchanged.
-
-Compact module Entity IDs abbreviate record-key digests against the entire module
-population, extending prefixes on collision. Compute the same mapping for inventory
-and inspection, including collapsed modules. Handles and compact IDs require the
-full snapshot through `--snapshot`; missing or stale scope cannot infer successors.
-An exact language name remains usable without snapshot scope even when it equals
-a compact ID. With explicit current scope, compact ID selection stays precise.
-Keep internal record keys, compact Entity IDs, names and handles distinct. The short
-Unicode snapshot label is for recognition; commands and JSON retain the full scope.
-
-Suggested commands include explicit CLI/project invocation paths and shell-quote
-their arguments. Put options before `--` and the literal selector after it. Keep
-those operational paths separate from discovered source
-evidence and from domain identity. Run qualification counts report distinct
-enforced output-location boundaries, not a census of generated files.
-
 Method versions in the identity module participate in snapshot identity.
 Equivalent runs must not include clocks or random observation UUIDs in
 program-record identity or structured projection output.
