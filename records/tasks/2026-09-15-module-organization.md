@@ -33,6 +33,10 @@ final acceptance will await one or more rounds of review from github copilot.  p
 
 oh good point that Github's main is behind the local main.  push the repo so that Copilot will have access to the current planning and governance documents.
 
+### 2026-09-15 — retrieve and address Copilot review
+
+Copilot review has finished.  Fetch all the review materials and record them as per dev/review\.md ; then act on the recommendations (unless you have any pushback) and prepare for another round of copilot review
+
 ## Outcome
 
 ### Intermediate checkpoint: repository evidence (2026-09-15)
