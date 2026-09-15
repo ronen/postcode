@@ -161,6 +161,27 @@ evidence. The original integrated handoff and authored findings are unchanged.
 The task remains active. The human will initiate another Copilot review on the
 updated pull request; the final gate has not been accepted.
 
+### Clean Copilot review and repository organization naming (2026-09-15)
+
+Preserved the complete clean second Copilot review as
+[integrated round 3](../reviews/module-organization/2026-09-15-integrated-round-3-copilot-findings.md)
+in commit `59444dd`. Copilot reviewed `4f0a03c59a9645af67282231b8ca50dec4cc33fd`,
+recommended approval, and generated no new comments. The submitted review
+reports static inspection, not a fresh runtime test run. Final acceptance and
+task closure are not inferred from that recommendation.
+
+At the human's request, commit `7858a17205ae934db6a2a46dc5582bc662bc082c` moves
+the current plan and decisions to
+[repository-organization-plan.md](../../docs/plans/repository-organization-plan.md)
+and [repository-organization-decisions.md](../../docs/decisions/repository-organization-decisions.md).
+Titles, terminology, the decisions index, architecture, implementation conventions,
+and current status now use repository organization. Short forwarding pages at the
+old paths preserve historical links. This is an editorial naming correction;
+accepted scope, decision headings, lifecycle status, and executable code are
+unchanged. The task identifier, preserved authorization, historical handoffs, and
+authored findings retain their original names and text. The task remains active
+as explicitly directed by the human.
+
 ## Verification
 
 At the intermediate implementation target:
@@ -311,3 +332,13 @@ directions, unchanged direct artifacts, exclusion of unrelated links, absent
 source paths from ordinary views, no artifact contents, and exact source-event
 and recorded-output behavior. The prior bounded instrument exercise was not
 repeated for these localized corrections.
+
+### Naming correction verification
+
+Compared each renamed document with its predecessor and verified that the only
+content differences are the requested name and corresponding links. Validated
+59 local documentation links and anchors across the updated documents and
+forwarding pages. Whitespace checks passed. No source, tests, fixtures, foundation,
+or development instructions changed; the runtime suite was not repeated for this
+documentation-only correction. The last implementation verification remains
+129 passing tests and successful type checking.
