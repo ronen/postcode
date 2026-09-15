@@ -26,6 +26,7 @@ scope, documentation limits, and next-step navigation; their wording feedback wa
 incorporated. Fresh self-analysis was slow in the measured multi-invocation
 journey, a recorded limitation for final review.
 
-Implementation and planned verification are substantially complete. The task
-remains active, awaiting final integrated review and explicit human acceptance
-before closure.
+Implementation and planned verification are substantially complete; type checking
+and all 127 tests pass. The task remains active, awaiting
+[final integrated review](records/reviews/module-organization/2026-09-15-integrated-handoff.md)
+and explicit human acceptance before closure.
