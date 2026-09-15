@@ -8,6 +8,6 @@ authored findings and handoffs. Historical references to the former directory
 inside those records identify this same series; new findings belong here.
 
 The [integrated disposition](2026-09-15-integrated-disposition.md) links all final
-review rounds. The [active task](../../tasks/2026-09-15-module-organization.md)
+review rounds. The [completed task](../../tasks/2026-09-15-module-organization.md)
 retains its original identifier. Links pinned to earlier Git commits continue
 to use the paths that existed at those commits.

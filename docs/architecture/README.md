@@ -195,8 +195,8 @@ renamed routes to revisit a module while bounding actual cycles.
 
 ## Repository organization
 
-The active [repository organization task](../../records/tasks/2026-09-15-module-organization.md)
-adds an internal repository-layout evidence boundary under `src/lib/repository/`,
+The completed [repository organization task](../../records/tasks/2026-09-15-module-organization.md)
+added an internal repository-layout evidence boundary under `src/lib/repository/`,
 governed by the [organization decisions](../decisions/repository-organization-decisions.md).
 Repository evidence is captured after successful project opening and before
 snapshot identity is finalized. The snapshot references a stored capture result,
@@ -284,7 +284,7 @@ repository root comes from stored capture rather than a second live lookup.
 The representative fixture and focused ephemeral Git projects exercise the full
 journey, graph/display limits, source disclosure, observations, and synthetic
 partial/unavailable module providers. Instrument validation and the final review
-gate are recorded in the active task.
+gate are recorded in the completed repository organization task.
 
 Inputs remain first-observed and non-atomic. Git may reread live exclusion policy;
 a final policy check refuses detected lasting changes but cannot detect every
