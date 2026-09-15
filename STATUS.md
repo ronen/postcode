@@ -28,12 +28,12 @@ journey, a recorded limitation for final review.
 
 Implementation and planned verification are substantially complete. The first
 integrated review's decision-link correction and both
-[Copilot findings](records/reviews/module-organization/2026-09-15-integrated-round-2-copilot-findings.md)
+[Copilot findings](records/reviews/repository-organization/2026-09-15-integrated-round-2-copilot-findings.md)
 are addressed. Type checking and all 129 tests pass after the link-placement and
 incoming-parent source-evidence corrections. The
-[disposition](records/reviews/module-organization/2026-09-15-integrated-disposition.md)
+[disposition](records/reviews/repository-organization/2026-09-15-integrated-disposition.md)
 records verification and remaining limits. The
-[second Copilot review](records/reviews/module-organization/2026-09-15-integrated-round-3-copilot-findings.md)
+[second Copilot review](records/reviews/repository-organization/2026-09-15-integrated-round-3-copilot-findings.md)
 is clean. The plan and decisions now use “repository organization” to reflect
 their scope; historical task and review identifiers retain their original names.
 The task remains active on [PR #3](https://github.com/ronen/postcode/pull/3), pending
