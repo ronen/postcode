@@ -44,6 +44,10 @@ Create architecture documentation under `architecture/` when there is implemente
 
 `records/tasks/` contains the durable record of each authorized implementation task, including its request, material follow-ups, outcome, and verification. The governing [task protocol](../foundation/task-protocol.md) creates this directory with the first task; it is not created speculatively.
 
+### Review records
+
+[`records/reviews/`](../records/reviews/) preserves durable handoffs, returned findings, and dispositions for independent implementation reviews required by approved plans or authorized tasks. New review series are grouped by their governing plan, or by task when no plan applies; filenames identify each record's role.
+
 ### Backlog
 
 [`backlog.md`](backlog.md) records worthwhile work and concerns that are not part of an active plan or authorized task. Backlog entries are candidates rather than commitments. Substantial entries should be promoted into plans before implementation.

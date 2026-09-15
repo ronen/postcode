@@ -94,6 +94,7 @@ Update the appropriate form of documentation:
 - [engineering guidelines](engineering-guidelines.md) provide human-maintained guidance for implementation judgment;
 - [implementation conventions](../docs/implementation-conventions.md) describe repeatable application-level engineering practices;
 - [task records](../records/tasks/) preserve authorization, material follow-ups, outcome, and verification;
+- [review records](../records/reviews/) preserve independent-review handoffs, findings, and dispositions;
 - user-facing documentation describes observable use and behavior.
 
 Do not modify governing documents under `foundation/` unless the human explicitly authorizes a foundation revision. Authorization for implementation that conflicts with the foundation is not authorization to revise it; report the conflict and seek direction.
@@ -119,6 +120,8 @@ Verification should be proportional to the risk and scope of the change. Before 
 7. review the final diff for accidental, unrelated, sensitive, or generated content.
 
 Report what was verified, what was not verified, and any residual uncertainty. Never imply that an unperformed check passed.
+
+When an approved plan or authorized task requires an independent review checkpoint, follow the [independent review workflow](review.md) to prepare the handoff, preserve findings and dispositions, and determine whether further review is required. The human arranges the reviewer and review mechanism unless the approved plan expressly assigns that responsibility to the agent or the human explicitly directs the agent to do so.
 
 ## 8. Completion and Handoff
 
