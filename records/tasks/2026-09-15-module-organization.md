@@ -25,6 +25,10 @@ next round of review is clean (see new findings file);  checkpoint is accepted, 
 
 the review found one issue, see records/reviews/module-organization/2026-09-15-organization-records-round-1-findings.md -- act in its low-severity finding (and other comments if/as you see fit); you can decide whether another review round is needed, if it is not needed you can consider the checkpoint accepted and continue
 
+### 2026-09-15 — Copilot review before final acceptance
+
+final acceptance will await one or more rounds of review from github copilot.  please create a github pull request; populate the request body with sufficient handoff information for copilot to be able to effectively do a review.   when that's ready i will initiate the copilot review
+
 ## Outcome
 
 ### Intermediate checkpoint: repository evidence (2026-09-15)
