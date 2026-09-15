@@ -79,7 +79,7 @@ before closing this task.
 ### Repository evidence review corrections (2026-09-15)
 
 Acted on the committed
-[round-1 findings](../reviews/module-organization/2026-09-15-repository-evidence-round-1-findings.md)
+[round-1 findings](../reviews/repository-organization/2026-09-15-repository-evidence-round-1-findings.md)
 in correction commit `ae09e427acae3ce3e112081ed270f0fbe5f965d8`.
 Accepted both actionable findings: added regression coverage for an existing
 link target with uncaptured case spelling, and removed the redundant opaque
@@ -97,7 +97,7 @@ closure is asserted.
 
 The human accepted the repository-evidence checkpoint after its clean second
 review round, as preserved in the follow-up above and the
-[evidence disposition](../reviews/module-organization/2026-09-15-repository-evidence-disposition.md).
+[evidence disposition](../reviews/repository-organization/2026-09-15-repository-evidence-disposition.md).
 
 Implementation target: `faa1d538c50e3d345f2e7f379064da928687683a` on
 `codex/module-organization`, based on `b0501be8c287677c65bd98342d0efad0f0fcb9b8`.
@@ -125,7 +125,7 @@ active and no final gate is asserted.
 Corrected the organization-records review in `f46b513008f58723486363286371052328211a6d`:
 opaque README-named boundaries no longer establish documentation, and invoked
 root aliases are verified rather than inferred from path depth. The
-[disposition](../reviews/module-organization/2026-09-15-organization-records-disposition.md)
+[disposition](../reviews/repository-organization/2026-09-15-organization-records-disposition.md)
 records acceptance of the checkpoint under the human's explicit delegation;
 another intermediate round was not needed for these bounded corrections.
 
@@ -150,7 +150,7 @@ until the human explicitly says that the final review gate is sufficient.
 ### Copilot integrated review corrections (2026-09-15)
 
 Retrieved and committed the complete first Copilot review as
-[integrated round 2](../reviews/module-organization/2026-09-15-integrated-round-2-copilot-findings.md):
+[integrated round 2](../reviews/repository-organization/2026-09-15-integrated-round-2-copilot-findings.md):
 one review summary, two inline findings, and no conversation comments, with
 verbatim bodies and stable GitHub identifiers. Accepted both medium-severity
 findings in correction commit `d1043d0bb4fb78d5b13fa5afcd90229b01622255`.
@@ -168,7 +168,7 @@ updated pull request; the final gate has not been accepted.
 ### Clean Copilot review and repository organization naming (2026-09-15)
 
 Preserved the complete clean second Copilot review as
-[integrated round 3](../reviews/module-organization/2026-09-15-integrated-round-3-copilot-findings.md)
+[integrated round 3](../reviews/repository-organization/2026-09-15-integrated-round-3-copilot-findings.md)
 in commit `59444dd`. Copilot reviewed `4f0a03c59a9645af67282231b8ca50dec4cc33fd`,
 recommended approval, and generated no new comments. The submitted review
 reports static inspection, not a fresh runtime test run. Final acceptance and
@@ -185,6 +185,18 @@ accepted scope, decision headings, lifecycle status, and executable code are
 unchanged. The task identifier, preserved authorization, historical handoffs, and
 authored findings retain their original names and text. The task remains active
 as explicitly directed by the human.
+
+### Review directory naming (2026-09-15)
+
+At the human's request, commit `eeee5eae17b6c772ddcad6b2b5c6328fec63f7ee`
+moves the twelve review records to
+[repository-organization](../reviews/repository-organization/README.md).
+Every moved record retains exactly its previous bytes, filename, and authored
+heading; relative links within the series remain valid. Incoming current links
+are updated in status, this task, the review index, and the PR. The series README
+explains historical path references and the destination for future findings.
+Earlier commit-pinned links remain valid at their historical paths. The task
+remains active and the preserved authorization is unchanged.
 
 ## Verification
 
@@ -346,3 +358,10 @@ forwarding pages. Whitespace checks passed. No source, tests, fixtures, foundati
 or development instructions changed; the runtime suite was not repeated for this
 documentation-only correction. The last implementation verification remains
 129 passing tests and successful type checking.
+
+### Review directory verification
+
+Verified all twelve moved records byte-for-byte against their old paths. Checked
+105 local links and anchors across the review series, task, status, and review
+index. Whitespace checks passed. No runtime code or tests changed, so no runtime
+suite was repeated for the directory move.
