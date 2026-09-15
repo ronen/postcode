@@ -27,6 +27,9 @@ incorporated. Fresh self-analysis was slow in the measured multi-invocation
 journey, a recorded limitation for final review.
 
 Implementation and planned verification are substantially complete; type checking
-and all 127 tests pass. The task remains active, awaiting
-[final integrated review](records/reviews/module-organization/2026-09-15-integrated-handoff.md)
-and explicit human acceptance before closure.
+and all 127 tests pass, independently reproduced in the
+[integrated review](records/reviews/module-organization/2026-09-15-integrated-round-1-findings.md).
+Its sole finding, a decision cross-reference, is corrected and verified; the
+[disposition](records/reviews/module-organization/2026-09-15-integrated-disposition.md)
+records the remaining review limits. The task remains active, awaiting explicit
+human acceptance of the final review gate before closure.
