@@ -19,4 +19,57 @@ say that the review gate is sufficient.
 
 ## Outcome
 
+### Intermediate checkpoint: repository evidence (2026-09-15)
+
+Implementation target: `b48b47baff36f3f38f855a5391966fb484247bd7` on
+`codex/module-organization`.
+
+Implemented internal worktree-evidence capture and pure layout derivation:
+Git-visible current artifacts, qualified exclusion inputs, explicit generated-output
+boundaries, opaque repositories, bounded link handling, induced regions, direct
+containment and artifact placement, and direct README association. Updated status
+and architecture documentation to identify the implemented boundary and the
+remaining integration. No dependencies, governing documents, or development
+instructions were changed.
+
+An independent review checkpoint precedes integration because visibility,
+exclusion, link-resolution, and identity-input mistakes would affect every later
+group and placement claim. The human arranges that review. The task remains
+active; this is not the final integrated-review gate.
+
+Still required by the approved plan: connect capture after successful project
+opening and before snapshot identity; materialize qualified groups and
+relationships through the record store; relate configured-project modules with
+their actual evaluation states; implement repository/project projections and
+generic group inspection; present and navigate the Unicode and structured views;
+extend source-detail and observations; complete integration and acceptance
+coverage; perform bounded instrument validation on PostCode and an unfamiliar
+external repository; update resulting product documentation; prepare the final
+integrated-review handoff; and obtain the human's explicit review-gate conclusion
+before closing this task.
+
 ## Verification
+
+At the intermediate implementation target:
+
+- `npm run check` passed.
+- `npm test` passed all 97 tests, including 20 new repository tests.
+- New tests cover the representative artifact layout, ancestor regions, direct
+  README matching, effective ignore rules and tracked overrides, current deletion,
+  case matching, explicit output exclusions, opaque boundaries, safe and refused
+  links, ordering, changed-input evidence, cross-process determinism, and failure
+  classification.
+- A read-only capture/derivation smoke check on the PostCode worktree, explicitly
+  excluding its actual `_build` and `_observations` destinations, returned 127
+  artifacts, 23 regions, 22 containment edges, and 9 direct README associations in
+  approximately 227 ms. This is an implementation smoke check, not instrument
+  validation or a general performance guarantee.
+- The staged diff passed `git diff --cached --check` and was inspected for
+  unrelated, generated, and sensitive content.
+
+These checks do not establish snapshot/store integration, organization CLI
+behavior, source disclosure, observation coverage for new views, or instrument
+usefulness. Those remain subsequent implementation and verification work. Capture
+is non-atomic; sparse-checkout completeness remains unresolved. Unsupported path
+spellings and bounded link resolution are explicit qualifications to assess at
+the intermediate review.
