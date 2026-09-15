@@ -7,3 +7,8 @@ Group new review series under a directory named for the governing plan, or for t
 Use and adapt the development workflow's [review record templates](../../dev/templates/) for new records.
 
 Existing records at this directory's root predate that organization. Preserve their names and links as historical evidence.
+
+## Review series
+
+- [Repository organization](repository-organization/README.md), formerly stored
+  under `module-organization`; the move preserves the original record contents.

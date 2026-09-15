@@ -1,0 +1,4 @@
+{
+  "compilerOptions": { "noLib": true, "types": [], "preserveSymlinks": true },
+  "files": ["src/direct.ts", "src/child/module.ts"]
+}

@@ -5,6 +5,8 @@ import type { DiscoveryResult, ModuleAnalysis } from '../evaluation.js';
 import type { ClaimContextRecord, ModuleClaim, ModuleExpansion, ModuleFacet, ProgramRecord, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
 import { captureInputs } from './inputs.js';
 import { prepareExpansions } from './expansions.js';
+import { captureRepository, repositoryInputMethod } from '../repository/capture.js';
+import { deriveLayout, repositoryLayoutMethod } from '../repository/layout.js';
 
 const method = `${methods.discovery};typescript@${ts.version}`;
 const identityMethod = methods.inputs;
@@ -87,6 +89,11 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
   diagnostics.push(...program.getOptionsDiagnostics(), ...program.getConfigFileParsingDiagnostics());
   if (diagnostics.length > 0) return failure();
 
+  // Repository capture begins only after the configured project opens. Its
+  // result is retained independently of later requested module evaluation.
+  const repository = captureRepository(configPath, options.excludedOutputDirectories ?? []);
+  const layout = repository.status === 'available' ? deriveLayout(repository.evidence) : null;
+
   // Compiler state never escapes the language integration. Discovery writes domain records atomically.
   return { status: 'opened', analysis: { discover: (store, expansions) => discover(store, expansions ?? []) } };
 
@@ -139,17 +146,20 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
     const preparedExpansions = requested.length ? prepareExpansions(checker, candidates, requested) : undefined;
     const snapshot = snapshotId({
       method, methods, configPath, cwd: base, node: process.versions.node,
+      repository, repositoryMethods: [repositoryInputMethod, repositoryLayoutMethod],
       platform: process.platform, arch: process.arch, inputs: inputs.identity(),
       options: parsed!.options, roots: program.getRootFileNames(),
       sources: files.map(file => [file.fileName, digest(file.text)]),
       population: candidates.map(candidate => candidate.key),
     });
+    const repositoryId = recordId(snapshot, 'repository-evidence', repositoryInputMethod);
     const records: ProgramRecord[] = [{
       kind: 'snapshot', id: snapshot, snapshot, method: identityMethod,
-      inputDigest: snapshot.slice('snapshot:'.length), methods: [...Object.values(methods), method],
+      inputDigest: snapshot.slice('snapshot:'.length), repository: repositoryId,
+      methods: [...Object.values(methods), method, repositoryInputMethod, repositoryLayoutMethod],
       analysis: { provider: 'typescript', coverage: 'external-source-files-and-visible-named-ambient-modules',
         inputConsistency: 'first-observed', excludedOutputLocations: inputs.excludedLocationCount },
-    }];
+    }, { kind: 'repository-evidence', id: repositoryId, snapshot, method: `${repositoryInputMethod};${repositoryLayoutMethod}`, capture: repository, layout }];
     const evidence = (declaration: ts.Node, compilerName: string | null, resolution?: SourceEvidenceRecord['resolution']): RecordId => {
       // Retain enough enclosing syntax to show declaration/export/import relationships.
       if (ts.isVariableDeclaration(declaration) || ts.isBindingElement(declaration)
@@ -235,7 +245,7 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       const slug = cue?.replace(/([A-Z])([A-Z][a-z])/g, '$1-$2').replace(/([a-z0-9])([A-Z])/g, '$1-$2')
         .normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
       // Reserve compact Entity-ID syntax so generated handles remain independently selectable.
-      const handle = slug && /^module-[a-f0-9]{8,64}$/.test(slug) ? `handle-${slug}` : slug || 'anonymous';
+      const handle = slug && /^(?:module|group)-[a-f0-9]{8,64}$/.test(slug) ? `handle-${slug}` : slug || 'anonymous';
       return { handle, handleProvenance: slug ? handleProvenance : 'anonymous-fallback' };
     };
     for (const candidate of candidates) {

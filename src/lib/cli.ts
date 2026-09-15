@@ -1,4 +1,3 @@
-import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { evaluateModules } from './evaluation.js';
 import { MemoryProgramRecordStore } from './memory-store.js';
@@ -6,20 +5,30 @@ import { localFileObservationSink, observationBatch } from './observations.js';
 import type { ObservationSink } from './observations.js';
 import { createView, presentationRequirements, renderView } from './presentation.js';
 import { inlineText } from './terminal-text.js';
-import { inspect, modules } from './projections.js';
+import { modules } from './projections.js';
+import { evaluateOrganization } from './organization/evaluate.js';
+import { inspectOrganization, organization } from './organization/projections.js';
+import { createOrganizationView, organizationPresentationRequirements, renderOrganizationView } from './organization/presentation.js';
+import type { ProjectionRecord } from './records.js';
 import { openTypeScriptProject } from './typescript/project.js';
 
-const help = `PostCode — initial module inventory\n
-Usage: postcode [modules | inspect <exact-selector>] [--project <tsconfig.json>] [--snapshot <snapshot-id>] [--json] [--source-detail]
+const help = `PostCode — modules and organization\n
+Usage: postcode [modules | organization [project | repository] | inspect <exact-selector>] [--project <tsconfig.json>] [--snapshot <snapshot-id>] [--json] [--source-detail]
 
 Defaults: modules(project), ./tsconfig.json, Unicode text.
-inspect accepts one exact name, mnemonic handle, or Entity ID; zero/one/multiple matches are explicit.
+organization defaults to the configured project; repository selects the complete enclosing Git worktree organization.
+inspect accepts one exact group/module name, module handle, or Entity ID; zero/one/multiple matches are explicit.
+Groups have segment names and group Entity IDs, with no handles or path selectors. The root has no intrinsic name.
 Place options before -- to pass an option-like selector literally: inspect --json -- --help.
 Handle and compact Entity ID selection require --snapshot from the inventory. A stale snapshot produces no current match.
 --source-detail requires inspect and discloses source locations and bounded excerpts supporting displayed claims.
-JSON uses the experimental postcode-view/0 schema. Exports/documentation expansions are declared before evaluation.
+Group source detail shows captured paths and artifact metadata without documentation or other file contents.
+JSON uses experimental postcode-view/0 or postcode-organization-view/0 schemas. Standard expansions are declared before evaluation.
 Unicode inventory lists project modules with 3 export cues and collapses external modules with counts.
 JSON lists all selected modules with up to 6 exports; inspection shows up to 50. Omissions are explicit.
+Organization Unicode expands 150 groups, 6 levels, and 12 module leaves per group; JSON retains the full graph.
+Project views retain direct artifact-only siblings and disclose pruned descent. Repeated groups expand once.
+Group inspection lists all direct parents, subgroups, modules, and bounded artifact counts.
 Normal views automatically submit a local observation batch; the destination is disclosed on stderr.
 
 Concepts:
@@ -36,16 +45,6 @@ See docs/cli-reference.md for commands, examples, reference scoping, qualificati
 `;
 
 const shellQuote = (value: string) => /^[a-zA-Z0-9_./:@=-]+$/.test(value) ? value : `'${value.replace(/'/g, `'\\''`)}'`;
-
-function repositoryRoot(config: string): string | null {
-  let directory = path.dirname(config);
-  for (;;) {
-    if (existsSync(path.join(directory, '.git'))) return directory;
-    const parent = path.dirname(directory);
-    if (parent === directory) return null;
-    directory = parent;
-  }
-}
 
 export async function runCli(args: readonly string[], environment: {
   readonly cwd: string;
@@ -77,9 +76,10 @@ export async function runCli(args: readonly string[], environment: {
     else positional.push(arg);
   }
   const lens = positional[0] ?? 'modules';
-  if ((lens !== 'modules' && lens !== 'inspect') || (lens === 'modules' && positional.length > 1)
+  if ((lens !== 'modules' && lens !== 'inspect' && lens !== 'organization') || (lens === 'modules' && positional.length > 1)
+    || (lens === 'organization' && (positional.length > 2 || !['project', 'repository'].includes(positional[1] ?? 'project')))
     || (lens === 'inspect' && positional.length !== 2) || ((sourceDetail || expectedSnapshot !== null) && lens !== 'inspect')) {
-    environment.stderr('Usage error: use modules or inspect <one exact selector>; --source-detail and --snapshot require inspect.\n');
+    environment.stderr('Usage error: use modules, organization [project | repository], or inspect <one exact selector>; --source-detail and --snapshot require inspect.\n');
     return 2;
   }
   const destination = path.resolve(environment.checkout, '_observations');
@@ -92,24 +92,35 @@ export async function runCli(args: readonly string[], environment: {
   }
   const presentation = { format: json ? 'json' as const : 'unicode' as const, sourceDetail };
   const store = new MemoryProgramRecordStore();
-  const evaluation = evaluateModules(store, opened.analysis, presentationRequirements(presentation));
-  const projection = lens === 'inspect' ? inspect(store, evaluation, positional[1]!, expectedSnapshot) : modules(store, evaluation);
-  const command = [
+  const evaluation = evaluateModules(store, opened.analysis, lens === 'modules' ? presentationRequirements(presentation) : organizationPresentationRequirements.modules);
+  const organizationOutcome = lens === 'modules' ? null : evaluateOrganization(store, evaluation, organizationPresentationRequirements.groups);
+  const projection = lens === 'modules' ? modules(store, evaluation) : lens === 'inspect'
+    ? inspectOrganization(store, organizationOutcome!, positional[1]!, expectedSnapshot)
+    : organization(store, organizationOutcome!, positional[1] === 'repository' ? 'repository' : 'configured-project');
+  const command = (placeholder: string) => [
     ['node', path.join(environment.checkout, '_build/src/cli.js'), 'inspect'],
-    ['--snapshot', projection.snapshot], ['--project', config, '--', 'MODULE_HANDLE'],
+    ['--snapshot', projection.snapshot], ['--project', config, '--', placeholder],
   ].map(tokens => tokens.map(shellQuote).join(' ')).join(' \\\n  ');
   // A displayed command must remain both structurally safe and executable as shown.
   const commandPaths = config + environment.checkout;
   const unsafeCommandPath = inlineText(commandPaths) !== commandPaths;
-  const view = createView(store, projection, { ...presentation,
-    ...(unsafeCommandPath ? {} : { navigation: { inspect: command } }),
-  });
-  const rendered = renderView(view);
+  const moduleProjection = projection.kind === 'organization-projection' && projection.moduleProjection
+    ? store.get(projection.moduleProjection) as ProjectionRecord : null;
+  const moduleOnly = projection.kind === 'organization-projection' && projection.lens === 'inspect' && projection.groups.length === 0
+    && moduleProjection !== null && (moduleProjection.modules.length > 0 || organizationOutcome!.groups.length === 0);
+  const options = { ...presentation, ...(unsafeCommandPath ? {} : { navigation: { inspect: command('MODULE_HANDLE') } }) };
+  const view = projection.kind === 'projection' ? createView(store, projection, options)
+    : moduleOnly ? createView(store, moduleProjection!, options)
+    : createOrganizationView(store, projection, { ...options,
+      ...(unsafeCommandPath ? {} : { navigation: { inspect: command('ENTITY_ID') } }) });
+  const rendered = view.schema === 'postcode-view/0-experimental' ? renderView(view) : renderOrganizationView(view);
   environment.stdout(rendered);
   environment.stderr(`Local observations: ${inlineText(destination)} (may contain repository-derived text and explicitly requested source locations).\n`);
   const snapshot = store.get(projection.snapshot);
   if (snapshot.kind !== 'snapshot') throw new Error('Expected analysis snapshot');
-  const batch = observationBatch(view, rendered, { configPath: config, repositoryRoot: repositoryRoot(config), methods: snapshot.methods });
+  const captured = snapshot.repository ? store.get(snapshot.repository) : null;
+  const repositoryRoot = captured?.kind === 'repository-evidence' && captured.capture.status === 'available' ? captured.capture.evidence.root : null;
+  const batch = observationBatch(view, rendered, { configPath: config, repositoryRoot, methods: snapshot.methods });
   try {
     const acknowledgement = await (environment.sink ?? localFileObservationSink(destination)).submit(batch);
     if (!acknowledgement.accepted) environment.stderr(`WARNING: observation not recorded: ${inlineText(acknowledgement.reason)}\n`);

@@ -17,6 +17,13 @@ population reviewable. Invalid source is intentional in `diagnostics`.
 Tests create temporary projects for changing-input and generated-output scenarios.
 No third-party repository contents or real-project observations are retained here.
 
+- `organization`: a documented group with one direct module and one subgroup
+  module, plus documentation-only and data-only siblings. Organization tests copy
+  it into temporary Git repositories, then exercise repository/project selection,
+  inspection/navigation, captured source detail, and observation production.
+  Separate mutations cover alias graphs, opaque boundaries, exclusions, repeated
+  names, partial/unavailable evaluation, and display limits.
+
 - `exports`: direct/default exports, wildcard and named forwarding, a chained
   barrel, type-only exports and imported aliases, overloads, declaration merging,
   a CommonJS export assignment with a namespace member, named ambient documentation,

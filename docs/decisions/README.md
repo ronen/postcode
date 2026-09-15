@@ -64,7 +64,7 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 - [Initial module inventory decisions](initial-module-inventory-decisions.md)
 - [Initial projection architecture decisions](initial-projection-architecture-decisions.md)
 - [Initial observation recording decisions](initial-observation-recording-decisions.md)
-- [Module organization slice decisions](module-organization-decisions.md)
+- [Repository organization slice decisions](repository-organization-decisions.md)
 
 ## Suggested Contents
 

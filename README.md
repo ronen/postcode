@@ -21,7 +21,8 @@ For the current project state, see [`STATUS.md`](STATUS.md). For plans, architec
 Coding agents should begin with [`AGENTS.md`](AGENTS.md). The detailed development process is described in [`dev/workflow.md`](dev/workflow.md).
 
 The development CLI opens one configured TypeScript project and presents qualified
-`modules(project)` and exact-selection `inspect(subjects)` views. Use Node.js
+`modules(project)`, repository/project organization, and exact-selection group or
+module inspection views. Use Node.js
 22.13 or later:
 
 ```sh
@@ -32,13 +33,15 @@ npm run --silent postcode -- --project fixtures/exports/tsconfig.json
 npm run --silent postcode -- inspect documented --project fixtures/exports/tsconfig.json
 npm run --silent postcode -- inspect documented --project fixtures/exports/tsconfig.json --source-detail
 npm run --silent postcode -- --json
+npm run --silent postcode -- organization project
+npm run --silent postcode -- organization repository --json
 npm test
 npm run check
 ```
 
 The default configuration is `tsconfig.json` in the current directory. Inspection
-accepts one exact module name, generated handle, or Entity ID from an inventory.
-One referent can match zero, one, or several modules; it never falls back to fuzzy
+accepts one exact group/module name, module handle, or Entity ID from a view.
+One referent can match zero, one, or several entities; it never falls back to fuzzy
 matching. IDs and handles are scoped to the analyzed snapshot. Source-backed
 modules without a compiler-established conceptual name are shown as anonymous,
 with generated handles for recognition. Handles use language names, extensionless
@@ -50,7 +53,7 @@ hash prefixes on collision. Handle and compact ID selection require
 mismatched snapshots produce no current match. Exact names are current lookups.
 
 Normal output contains conceptual information and qualifications. Unicode and the
-experimental `postcode-view/0` JSON presentation use the same qualified projection.
+experimental JSON presentations use the same qualified projection for each lens.
 The suggested inspection command includes the explicit CLI and selected-project
 paths as invocation context; replace only its subject. A short snapshot label is
 displayed in the header, while that command retains the full required snapshot.
@@ -100,6 +103,37 @@ See the [architecture overview](docs/architecture/README.md),
 [development process conventions](dev/process-conventions.md), and
 [task record](records/tasks/2026-09-12-initial-module-inventory.md) for implementation
 boundaries, verification and review dispositions.
+
+## Organization
+
+`organization project` shows groups with direct or descendant modules from the
+selected project and their ancestor context. `organization repository` includes
+artifact-only groups throughout the enclosing Git worktree. Both use the same
+group identities and direct relationships. Context-only siblings are labelled;
+pruning and omitted module leaves are disclosed. A shared group expands once,
+with subsequent occurrences marked as references.
+
+Inspect a group's `group-…` Entity ID with its full snapshot to see all direct
+parents, subgroups, member modules, documentation availability, and counts of
+other unanalyzed artifacts. Exact names may match several groups and modules;
+inspection sections distinguish the kinds. Groups have directory-segment names,
+no generated handles or path selectors, and a contextual label for the unnamed
+repository root.
+
+Direct README/README.* existence establishes documentation availability; its
+contents and applicability to descendants are not evaluated. Opaque repository
+boundaries remain unanalyzed. Module presence is `direct`, `descendant-only`, or
+`none`, with unknown presence separately qualified by incomplete evaluation.
+External, unplaced, multiple, ambiguous, and unavailable placement outcomes retain
+their distinctions. Layout is one organizational account, without architectural
+role inference. A successfully opened project outside Git has unavailable
+repository organization.
+
+Group `--source-detail` shows captured paths and artifact/link metadata without
+file contents. Organization and group views use the experimental
+`postcode-organization-view/0` JSON schema. See the
+[command reference](docs/cli-reference.md#organization-and-group-inspection) for
+limits, scope, evidence qualifications, and navigation examples.
 
 ## Observability
 

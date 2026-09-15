@@ -2,7 +2,7 @@
 
 The development CLI opens one configured TypeScript project, evaluates module
 inventory and presentation-declared standard expansions, constructs stored
-`modules(project)` or exact-selection `inspect(subjects)` projections, and presents
+`modules(project)`, repository/project organization, or exact-selection group/module inspection projections, and presents
 a qualified Unicode or experimental JSON view. Every produced view submits a
 self-contained observation batch to a separate local sink. The initial slice's
 instrument validation and independent reviews are recorded in the
@@ -61,7 +61,8 @@ Unexpected defects propagate rather than becoming ordinary analysis failures.
 
 Snapshot identity hashes the compiler and PostCode method versions, Node and
 platform context, selected configuration and options, source population and
-contents, and the observed filesystem inputs used by configuration and resolution.
+contents, the observed filesystem inputs used by configuration and resolution,
+and the captured repository organization inputs and method versions.
 Those inputs include positive and negative reads/existence checks, directory
 queries, and realpath results. Each observation is memoized within an opened
 project. This is a snapshot of first-observed inputs, not an atomic filesystem
@@ -191,3 +192,102 @@ records retain their original text. Generated commands are omitted for invocatio
 paths with controls rather than displaying a changed, non-executable argument.
 Re-export traversal guards module/exported-name pairs along each path, permitting
 renamed routes to revisit a module while bounding actual cycles.
+
+## Repository organization
+
+The completed [repository organization task](../../records/tasks/2026-09-15-module-organization.md)
+added an internal repository-layout evidence boundary under `src/lib/repository/`,
+governed by the [organization decisions](../decisions/repository-organization-decisions.md).
+Repository evidence is captured after successful project opening and before
+snapshot identity is finalized. The snapshot references a stored capture result,
+including explicit unavailability outside a worktree. Organization evaluation
+reads that result and a stored module evaluation; it performs no filesystem or
+compiler work. Pure layout is prepared with capture and retained alongside it,
+so view construction never repeats layout analysis. Repository inputs contribute
+to snapshots across the module and organization CLI surfaces.
+
+Capture uses the enclosing Git worktree of a configuration path. Git supplies
+tracked membership, effective ignore decisions, and repository metadata; native
+filesystem reads capture present artifact kinds, directory entries, link targets,
+and applicable exclusion-policy digests. Tracked artifacts override ignore
+matches, while deleted artifacts are absent. Explicit output destinations are
+normalized and excluded independently of Git ignores. Nested repository markers
+and Gitlinks identify opaque boundaries without importing their contents.
+Opaque boundaries named README or README.* do not establish documentation
+availability. Ordinary artifact and README contents are not read. Repository, local, and global
+exclusion inputs remain distinguishable. Known environmental or filesystem
+failures produce explicit capture unavailability; unexpected defects propagate.
+
+Link resolution uses the captured visible paths and link targets. A metadata-only
+probe in an already visible containing directory distinguishes an absent target
+from an existing target whose exact path spelling was not captured. The latter
+remains unestablished. Resolution does not traverse opaque repositories, ignored
+contents, or generated output, and distinguishes proven cycles from the bounded
+redirect limit. External path traversal is refused, even where a path could later
+re-enter the worktree through an uncaptured alias.
+
+Pure layout derivation prepares region names, direct containment and artifact
+placements, direct README associations, and qualified link outcomes. Directory
+links can add a parent to an existing region; deterministic cycle refusal leaves
+a directed acyclic containment graph. Captured canonical and invoked repository
+roots (verified by resolving lexical ancestors, rather than inferred from path
+depth) let placement interpret apparent source paths without using realpath as
+module identity. Bounded traversal through accepted directory-link regions maps
+aliased source paths to existing groups; ordinary file-link modules retain their
+apparent artifact's placement.
+
+Organization evaluation materializes group entities, region and artifact evidence,
+qualified direct containment, artifact and module placement, and direct README
+associations through `ProgramRecordStore`. Group entities and direct layout
+relationships remain fixed within a snapshot. Root groups have no intrinsic name;
+other names are single captured segments. Module placement retains established,
+multiple, unplaced, external, and unavailable outcomes with reasons. Candidate
+ambiguity is represented separately; this provider does not invent candidates.
+
+Each organization evaluation references its module-evaluation basis and retains
+repository coverage separately from placement coverage. Group-property claims
+reference that evaluation. Known direct placements survive incomplete evaluation;
+descendant-only and none are asserted only when placement evaluation completed
+fully. Unknown presence is represented separately from those values. The store
+validates group claim identity, reference kinds, placement outcome shape, and the
+evaluation prerequisite for negative presence.
+
+Repository projections select the complete group population. Project projections
+select established project-module placement groups and their ancestor closure.
+Neither changes the direct relationships of a retained group. Declared
+`group-details` expansions retain direct parents, subgroups, modules, artifact
+placements, and documentation relationships; adjacent entities are expansion
+data rather than extra selected subjects. Generic organization inspection matches
+exact group and module names together, including repeated group names, or selects
+precisely by currently scoped Entity ID. Group IDs use `group-` and the same
+collision-extending digest abbreviation as module IDs. Group paths and root
+display labels are not selectors. Existing module inspection expansion records
+remain available through a referenced module projection.
+
+The organization presentation declares group details and the common module
+standard expansions before evaluation. Using the same compiler preparation keeps
+navigation across lenses in a common snapshot. View construction reads stored
+claims and captured paths, materializes bounded display rows and omission counts,
+and never invokes another lens or analysis. Rendering receives only that value.
+Repository/project trees retain direct contextual siblings, distinguish pruning
+from selection, and expand a shared group once. Group inspection shows all direct
+relationships; adjacent summary records explicitly identify unrequested detail.
+Module-only inspection reuses the existing qualified module view; mixed matches
+are sectioned by kind and retain that module view as embedded detail.
+
+Group source escape carries captured group/README/artifact paths and qualified
+link evidence without contents. Source-level mechanics are absent from ordinary
+organization output. Observations accept either view schema and distinguish group
+paths from module locations/excerpts or mixed disclosure. The analysis context's
+repository root comes from stored capture rather than a second live lookup.
+
+The representative fixture and focused ephemeral Git projects exercise the full
+journey, graph/display limits, source disclosure, observations, and synthetic
+partial/unavailable module providers. Instrument validation and the final review
+gate are recorded in the completed repository organization task.
+
+Inputs remain first-observed and non-atomic. Git may reread live exclusion policy;
+a final policy check refuses detected lasting changes but cannot detect every
+transient concurrent edit. Sparse-checkout completeness remains unresolved.
+Capture refuses non-UTF-8 names or Git evidence and Git output exceeding its
+bounded subprocess buffer instead of silently dropping or corrupting artifacts.
