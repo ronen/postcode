@@ -17,6 +17,10 @@ say that the review gate is sufficient.
 
 ## Follow-ups
 
+### 2026-09-15 — evidence checkpoint accepted
+
+next round of review is clean (see new findings file);  checkpoint is accepted, you may continue
+
 ## Outcome
 
 ### Intermediate checkpoint: repository evidence (2026-09-15)
