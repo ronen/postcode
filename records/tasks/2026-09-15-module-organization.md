@@ -29,6 +29,10 @@ the review found one issue, see records/reviews/module-organization/2026-09-15-o
 
 final acceptance will await one or more rounds of review from github copilot.  please create a github pull request; populate the request body with sufficient handoff information for copilot to be able to effectively do a review.   when that's ready i will initiate the copilot review
 
+### 2026-09-15 — publish current main before the review PR
+
+oh good point that Github's main is behind the local main.  push the repo so that Copilot will have access to the current planning and governance documents.
+
 ## Outcome
 
 ### Intermediate checkpoint: repository evidence (2026-09-15)
