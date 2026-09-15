@@ -37,6 +37,10 @@ oh good point that Github's main is behind the local main.  push the repo so tha
 
 Copilot review has finished.  Fetch all the review materials and record them as per dev/review\.md ; then act on the recommendations (unless you have any pushback) and prepare for another round of copilot review
 
+### 2026-09-15 — preserve clean review and rename the slice
+
+Copilot's review found no issues, but you may as well fetch it and preserve it.   After that, I have one request for you unrelated to the code:  The plan, decision files, and headings use the name "module organization" which is a remnant from early planning before the scope was finalized; it would be better to use "repository organization" to avoid misleading future reviewers and implementors.  Can you rename the relevant files and adjust the relevant content appropriately?  commit that but don't close the task yet
+
 ## Outcome
 
 ### Intermediate checkpoint: repository evidence (2026-09-15)
