@@ -21,6 +21,10 @@ say that the review gate is sufficient.
 
 next round of review is clean (see new findings file);  checkpoint is accepted, you may continue
 
+### 2026-09-15 — organization review correction and checkpoint discretion
+
+the review found one issue, see records/reviews/module-organization/2026-09-15-organization-records-round-1-findings.md -- act in its low-severity finding (and other comments if/as you see fit); you can decide whether another review round is needed, if it is not needed you can consider the checkpoint accepted and continue
+
 ## Outcome
 
 ### Intermediate checkpoint: repository evidence (2026-09-15)
