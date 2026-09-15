@@ -446,6 +446,36 @@ Use several focused fixtures rather than one repository containing every edge:
 - Which module roles and group-boundary properties become useful once dependency
   analysis is available?
 
+## Governing-document impact
+
+This package proposes no change to
+[`docs/core-concepts.md`](../../../../docs/core-concepts.md) or
+[`docs/architectural-constraints.md`](../../../../docs/architectural-constraints.md),
+so it intentionally contains no proposed `docs/` revisions.
+
+Groups and organization are concrete domain concepts needed by this slice, but
+their use here does not yet demonstrate that a cross-cutting governing definition
+would remain stable across later package, namespace, build-target, declared,
+user-defined, or inferred organization methods. The companion decisions define
+the initial behavior within their stated scope. Repeated use can justify a later
+core-concept addition without making this implementation slice settle the
+universal meaning prematurely.
+
+Likewise, treating the enclosing Git worktree as the repository evidence and
+revision boundary is an operational definition for the initial repository-layout
+provider and configured-project invocation. It is not proposed as a universal
+definition of repository that would exclude future analysis of a bare repository,
+remote revision, archive, or another repository representation.
+
+Keeping distinct organization schemes from being silently merged is a scoped
+organization decision and a concrete application of the existing requirements to
+preserve provenance, method, scope, and consequential distinctions without
+strengthening or broadening claims. It does not prohibit a future explicitly
+defined comparison or composite lens that retains those qualifications. If the
+rule later proves necessary across kinds of analyses rather than specifically for
+organization, generalizing it into an architectural constraint requires separate
+human agreement and the normal governing-document change process.
+
 ## Implementation selections and approval gates
 
 The implementing agent may choose exact command syntax, internal record and type
