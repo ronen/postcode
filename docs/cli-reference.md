@@ -8,6 +8,8 @@ checkout, install with `npm ci` and build with `npm run build`.
 ```sh
 node _build/src/cli.js modules --project path/to/tsconfig.json
 node _build/src/cli.js modules --project path/to/tsconfig.json --json
+node _build/src/cli.js organization project --project path/to/tsconfig.json
+node _build/src/cli.js organization repository --project path/to/tsconfig.json --json
 node _build/src/cli.js inspect --project path/to/tsconfig.json --snapshot SNAPSHOT -- MODULE_HANDLE
 node _build/src/cli.js inspect --project path/to/tsconfig.json --snapshot SNAPSHOT --source-detail -- MODULE_HANDLE
 node _build/src/cli.js --help
@@ -51,7 +53,7 @@ project modules prominently, collapses other modules with counts, and shows up t
 three exports per listed module. It is a menu for investigation, not a statement
 of project purpose, architecture, runtime behavior, or dependencies.
 
-`inspect(subjects)` selects exact module subjects from that population. One
+`inspect(subjects)` selects exact group and module subjects. One
 referent can select zero, one, or several matches; a selected subset is explicit.
 Inspection shows up to 50 exports per selected module, up to three module-level
 documentation assertions, and up to three assertions per displayed export. The
@@ -59,7 +61,91 @@ per-export limit combines original-symbol and export-alias contributions.
 JSON inventory retains the full module list, full identities, up to six exports,
 and bounded project documentation. Neither format changes the lens population.
 
+## Organization and group inspection
+
+`organization project` (also `organization`) selects groups containing a direct
+or descendant module of the opened project, plus their full ancestor closure.
+`organization repository` selects the complete repository-layout population.
+Neither changes a retained group's direct relationships. Context-only direct
+subgroups remain reachable in the project view even when descent is pruned.
+
+```sh
+node _build/src/cli.js organization project --project path/to/tsconfig.json --json
+node _build/src/cli.js inspect --project path/to/tsconfig.json --snapshot SNAPSHOT -- GROUP_ID
+node _build/src/cli.js inspect --project path/to/tsconfig.json --snapshot SNAPSHOT --source-detail -- GROUP_ID
+```
+
+Replace `GROUP_ID` with a displayed group ID. Inspect a documented group, then
+use a subgroup's ID to inspect it, then a direct module's ID for the established
+export/documentation inspection. The generated command includes full snapshot
+scope; replace its `ENTITY_ID` placeholder. Module-only views retain the
+`MODULE_HANDLE` placeholder. Run again after changed inputs; old scope does not
+infer a successor.
+
+Group inspection shows all direct parents, subgroups and modules, with IDs and
+salient group annotations. It counts direct documentation artifacts and other
+unanalyzed artifacts, including opaque boundaries. Direct presence does not deny
+descendant membership. `none` means completed placement found no selected-project
+modules in that group or its descendants. Unknown presence is qualified evaluation
+state, not a fourth property value. Documentation existence is direct and is not
+inherited. Module placement exceptions are grouped by outcome, with established
+multiple locations separated from uncertain candidates and unavailable evidence.
+
+Unicode organization expands at most 150 distinct groups, through depth 6 (root
+depth 0), with 12 module leaves per expanded group. It expands a repeated group
+once and marks later occurrences as references. Selected-group omissions, pruned
+descents, repeated references, and omitted module placements are separate counts.
+JSON retains the full selected graph and direct relationships. Its adjacent
+group summaries have `detail: "not-requested"`; their empty detail arrays are not
+claims of absent relationships. Group inspection lists all direct relationships
+and uses aggregate counts for other artifacts. Ordinary output includes names,
+IDs and qualifications; link mechanics and repository paths require source detail.
+
+Organization and group views use `postcode-organization-view/0-experimental`.
+Module-only inspections retain `postcode-view/0-experimental`. Mixed inspection
+embeds the existing qualified module view in `moduleDetail`. Both are experimental
+schemas; observation records retain the exact view and rendered output.
+
+Group source detail identifies the absolute repository root and group paths,
+repository-relative artifact paths, artifact kinds, and qualified link evidence.
+It reads the already captured evidence and includes no documentation or artifact
+contents. Source-escape observation levels distinguish `organization-paths`,
+`organization-and-module-source`, and the existing
+`declaration-locations-and-excerpts` module detail.
+
+The enclosing Git worktree supplies current tracked and visible untracked
+artifacts. Deleted artifacts and ignored untracked contents are absent. Empty
+directories do not induce groups. Direct README/README.* artifacts establish
+documentation availability, except opaque submodule/nested-repository boundaries.
+Repository/local/global exclusion policies and explicit generated-output
+locations remain qualified. Ordinary artifact contents do not affect organization
+identity unless independently observed as compiler inputs. Captured metadata,
+exclusion policy, link evidence, and provider methods participate in the snapshot.
+First-observed inputs are non-atomic; sparse-checkout completeness remains unresolved.
+
+A missing or unusable project fails before any view. After opening, unavailable
+repository evidence yields a qualified unavailable organization; no project-layout
+fallback is invented outside Git. Repository coverage is independent of module
+placement coverage: a partial module provider can retain complete repository
+groups and known direct placements. The current eager TypeScript provider's
+incomplete states are covered by synthetic-provider tests. This view establishes
+layout relationships rather than dependencies or architectural responsibilities.
+
+Every CLI invocation opens and evaluates afresh. Complete per-invocation analysis
+can be costly even for an organization view: a local five-invocation
+PostCode validation journey took approximately 420 seconds, compared with about
+2.8 seconds for the same journey on the smaller external test project. These are
+environment-specific observations, not timing guarantees. Caching and partial
+discovery policies are outside this slice.
+
 ## Names, handles and identity
+
+Groups have one intrinsic directory-segment name and a compact `group-…` Entity
+ID, abbreviated against the complete repository group population. The root has
+no intrinsic name and is displayed as `[repository root]`. This display label
+and repository paths are not selectors. Groups have no generated handles.
+Repeated group names and exact group/module name collisions return every match,
+sectioned by kind. Current snapshot scope makes a compact ID precise across kinds.
 
 A **name** is established by the language model. Ordinary source-file modules
 usually have no conceptual TypeScript name; path-derived compiler symbols do not
@@ -73,7 +159,7 @@ Type-heavy fallback candidates prefer a type export over a helper predicate.
 Basename evidence exposes no directory, extension or source location and does not
 become a conceptual name. JSON retains `handleStatus` and `handleProvenance`.
 Handles may repeat; one handle can select several modules.
-Generated cues matching compact Entity-ID syntax (`module-` plus 8–64 lowercase
+Generated cues matching compact Entity-ID syntax (`module-` or `group-` plus 8–64 lowercase
 hexadecimal characters) receive a `handle-` prefix. Their original cue provenance
 is retained, while scoped Entity IDs remain precise and independently selectable.
 

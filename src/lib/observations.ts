@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import type { QualifiedView } from './presentation.js';
+import type { QualifiedOrganizationView } from './organization/presentation.js';
 
 export interface ObservationBatch {
   readonly formatVersion: 0;
@@ -10,7 +11,7 @@ export interface ObservationBatch {
   readonly events: readonly {
     readonly id: string; readonly type: 'view-produced' | 'source-escape';
     readonly request: string; readonly analysis: string; readonly view: string; readonly rendered: string;
-    readonly sourceLevel?: 'declaration-locations-and-excerpts';
+    readonly sourceLevel?: 'declaration-locations-and-excerpts' | 'organization-paths' | 'organization-and-module-source';
   }[];
 }
 
@@ -19,7 +20,7 @@ export interface ObservationSink {
 }
 
 /** No UUID registry, historical reads, producer retention policy, or operational-store dependency. */
-export function observationBatch(view: QualifiedView, rendered: string, context: {
+export function observationBatch(view: QualifiedView | QualifiedOrganizationView, rendered: string, context: {
   readonly configPath: string; readonly repositoryRoot: string | null; readonly methods: readonly string[];
 }): ObservationBatch {
   const request = randomUUID();
@@ -32,7 +33,7 @@ export function observationBatch(view: QualifiedView, rendered: string, context:
       lens: view.projection.lens, subject: view.projection.subject, lensParameters: view.projection.parameters,
       presentation: view.presentation, navigation: view.projection.lens === 'inspect'
         ? 'Exact selector supplied in this invocation; no previous view or cross-invocation continuity is established.'
-        : 'Configured-project inventory requested.',
+        : view.projection.lens === 'organization' ? 'Organization investigation requested for the stated subject.' : 'Configured-project inventory requested.',
     } },
     { id: analysis, kind: 'analysis-context', value: { ...context, snapshot: view.projection.snapshot } },
     { id: artifact, kind: 'qualified-view', value: view },

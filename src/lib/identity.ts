@@ -4,14 +4,14 @@ import type { RecordId, SnapshotId } from './records.js';
 /** Bump the responsible method whenever its analysis/identity/projection semantics change. */
 export const methods = {
   inputs: 'postcode/observed-inputs@3',
-  records: 'postcode/program-records@10',
+  records: 'postcode/program-records@11',
   discovery: 'postcode/typescript-modules@8',
   evaluation: 'postcode/evaluate-modules@2',
   projection: 'postcode/projection@5',
   expansions: 'postcode/typescript-expansions@2',
-  presentation: 'postcode/presentation@11',
+  presentation: 'postcode/presentation@12',
   handles: 'postcode/module-handles@5',
-  organization: 'postcode/organization@1',
+  organization: 'postcode/organization@2',
 } as const;
 
 /** Stable key order without locale, clock, random IDs, or storage identity. */

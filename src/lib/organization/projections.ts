@@ -73,7 +73,7 @@ function project(store: ProgramRecordStore, evaluation: OrganizationEvaluationRe
       if (claim.information.type === 'module-placement' && (selectedModuleSet.has(claim.subject)
         || claim.information.groups.some(id => selected.has(id)))) {
         expandedModules.add(claim.subject);
-        claim.information.groups.forEach(id => expandedGroups.add(id));
+        [...claim.information.groups, ...claim.information.candidates].forEach(id => expandedGroups.add(id));
         expandedClaims.add(claim.id);
       }
       if (selected.has(claim.subject)) expandedClaims.add(claim.id);

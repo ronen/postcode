@@ -6,7 +6,7 @@ import type { ClaimContextRecord, ModuleClaim, ModuleExpansion, ModuleFacet, Pro
 import { captureInputs } from './inputs.js';
 import { prepareExpansions } from './expansions.js';
 import { captureRepository, repositoryInputMethod } from '../repository/capture.js';
-import { repositoryLayoutMethod } from '../repository/layout.js';
+import { deriveLayout, repositoryLayoutMethod } from '../repository/layout.js';
 
 const method = `${methods.discovery};typescript@${ts.version}`;
 const identityMethod = methods.inputs;
@@ -92,6 +92,7 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
   // Repository capture begins only after the configured project opens. Its
   // result is retained independently of later requested module evaluation.
   const repository = captureRepository(configPath, options.excludedOutputDirectories ?? []);
+  const layout = repository.status === 'available' ? deriveLayout(repository.evidence) : null;
 
   // Compiler state never escapes the language integration. Discovery writes domain records atomically.
   return { status: 'opened', analysis: { discover: (store, expansions) => discover(store, expansions ?? []) } };
@@ -158,7 +159,7 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       methods: [...Object.values(methods), method, repositoryInputMethod, repositoryLayoutMethod],
       analysis: { provider: 'typescript', coverage: 'external-source-files-and-visible-named-ambient-modules',
         inputConsistency: 'first-observed', excludedOutputLocations: inputs.excludedLocationCount },
-    }, { kind: 'repository-evidence', id: repositoryId, snapshot, method: repositoryInputMethod, capture: repository }];
+    }, { kind: 'repository-evidence', id: repositoryId, snapshot, method: `${repositoryInputMethod};${repositoryLayoutMethod}`, capture: repository, layout }];
     const evidence = (declaration: ts.Node, compilerName: string | null, resolution?: SourceEvidenceRecord['resolution']): RecordId => {
       // Retain enough enclosing syntax to show declaration/export/import relationships.
       if (ts.isVariableDeclaration(declaration) || ts.isBindingElement(declaration)

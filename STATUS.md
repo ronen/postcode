@@ -14,21 +14,18 @@ Active implementation:
 [the active task](records/tasks/2026-09-15-module-organization.md) on
 `codex/module-organization`.
 
-The human accepted the repository-evidence checkpoint after two review rounds;
-its [disposition](records/reviews/module-organization/2026-09-15-repository-evidence-disposition.md)
-records the findings and corrections. The next checkpoint now integrates captured
-repository inputs into snapshots and materializes group records, module placement,
-evaluation-qualified properties, repository/project projections, and generic
-group/module selection. Type checking and all 115 tests pass.
+The CLI now provides `organization project`, `organization repository`, and
+generic group/module inspection, including scoped navigation, qualified Unicode
+and JSON views, source-detail paths, display omissions, and observations. The
+repository-evidence and records checkpoints are accepted; their dispositions
+preserve the reviews and corrections.
 
-The [records checkpoint disposition](records/reviews/module-organization/2026-09-15-organization-records-disposition.md)
-records the review corrections and checkpoint acceptance under the human's
-explicit delegation. All 117 tests pass. Presentation and CLI integration
-continue. The existing CLI does not yet expose organization.
-The task remains active; final integrated review and explicit human acceptance
-remain required before task closure.
+The representative journey and bounded instrument evaluation have run on PostCode
+and the unfamiliar `tsyringe` repository. Clean evaluators understood membership,
+scope, documentation limits, and next-step navigation; their wording feedback was
+incorporated. Fresh self-analysis was slow in the measured multi-invocation
+journey, a recorded limitation for final review.
 
-Still required: Unicode and structured views and navigation, group source detail,
-new-view observations, remaining integration and acceptance coverage, bounded
-instrument validation on PostCode and an unfamiliar repository, product
-documentation, and the final integrated-review gate.
+Implementation and planned verification are substantially complete. The task
+remains active, awaiting final integrated review and explicit human acceptance
+before closure.

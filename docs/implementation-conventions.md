@@ -65,6 +65,10 @@ Agents may update this document only as part of authorized implementation work t
 
 ## Source-detail presentation
 
+- Organization/group views use the experimental `postcode-organization-view/0-experimental` schema; module-only views retain the existing schema. Mixed inspection embeds module detail and sections the subject kinds. Declare group details and the common module-standard expansions before evaluation to keep cross-lens navigation scoped to the same captured inputs.
+- Group source detail includes captured absolute repository/group paths and repository-relative artifact paths and metadata, without reading or reproducing contents. Source-escape observations distinguish organization paths, module locations/excerpts, and mixed disclosure.
+- Unicode organization bounds recursive display to 150 distinct groups, depth 6, and 12 direct module leaves per expanded group. Record pruning, repeated references, omitted selected groups, and omitted placements separately. JSON retains full selected structure; inspection retains all direct relationships and summarizes other artifacts by counts.
+
 - Store file associations separately from precise source spans. Represent spans with one-based UTF-16 columns and exclusive ends.
 - Expose source detail only through an explicit inspection expansion and group it by conceptual module and export labels. [[Conceptual presentation and source escape](decisions/initial-module-inventory-decisions.md#keep-conceptual-presentation-separate-from-source-escape)]
 - Preserve module and export containment in source presentation, and distinguish forwarding declarations from semantic-symbol definitions. [[Conceptual presentation and source escape](decisions/initial-module-inventory-decisions.md#keep-conceptual-presentation-separate-from-source-escape)]

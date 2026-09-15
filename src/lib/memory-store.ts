@@ -155,7 +155,9 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
         case 'snapshot':
           if (record.repository) requireKind(record.repository, 'repository-evidence');
           break;
-        case 'repository-evidence': break;
+        case 'repository-evidence':
+          if ((record.capture.status === 'available') !== (record.layout !== null)) throw new Error('Repository layout must match capture availability');
+          break;
         case 'repository-region':
         case 'repository-artifact': requireKind(record.repository, 'repository-evidence'); break;
         case 'organization-evaluation': {

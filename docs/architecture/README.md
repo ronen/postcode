@@ -2,7 +2,7 @@
 
 The development CLI opens one configured TypeScript project, evaluates module
 inventory and presentation-declared standard expansions, constructs stored
-`modules(project)` or exact-selection `inspect(subjects)` projections, and presents
+`modules(project)`, repository/project organization, or exact-selection group/module inspection projections, and presents
 a qualified Unicode or experimental JSON view. Every produced view submits a
 self-contained observation batch to a separate local sink. The initial slice's
 instrument validation and independent reviews are recorded in the
@@ -193,7 +193,7 @@ paths with controls rather than displaying a changed, non-executable argument.
 Re-export traversal guards module/exported-name pairs along each path, permitting
 renamed routes to revisit a module while bounding actual cycles.
 
-## Organization records and projections checkpoint
+## Repository organization
 
 The active [module organization task](../../records/tasks/2026-09-15-module-organization.md)
 adds an internal repository-layout evidence boundary under `src/lib/repository/`,
@@ -201,10 +201,10 @@ governed by the [organization decisions](../decisions/module-organization-decisi
 Repository evidence is captured after successful project opening and before
 snapshot identity is finalized. The snapshot references a stored capture result,
 including explicit unavailability outside a worktree. Organization evaluation
-under `src/lib/organization/` reads that result and a stored module evaluation;
-it performs no filesystem or compiler work. Organization presentation and CLI
-integration remain pending. The existing module pipeline remains the runnable
-product surface, with repository inputs now contributing to its snapshots.
+reads that result and a stored module evaluation; it performs no filesystem or
+compiler work. Pure layout is prepared with capture and retained alongside it,
+so view construction never repeats layout analysis. Repository inputs contribute
+to snapshots across the module and organization CLI surfaces.
 
 Capture uses the enclosing Git worktree of a configuration path. Git supplies
 tracked membership, effective ignore decisions, and repository metadata; native
@@ -264,11 +264,27 @@ collision-extending digest abbreviation as module IDs. Group paths and root
 display labels are not selectors. Existing module inspection expansion records
 remain available through a referenced module projection.
 
-The `fixtures/organization/` journey and focused ephemeral Git projects test the
-record and projection boundary, including partial and unavailable synthetic
-module providers. These APIs are not yet a qualified organization view or new CLI
-commands. Unicode/JSON presentation, group source detail, observation integration,
-and product-instrument validation remain subsequent work under the approved plan.
+The organization presentation declares group details and the common module
+standard expansions before evaluation. Using the same compiler preparation keeps
+navigation across lenses in a common snapshot. View construction reads stored
+claims and captured paths, materializes bounded display rows and omission counts,
+and never invokes another lens or analysis. Rendering receives only that value.
+Repository/project trees retain direct contextual siblings, distinguish pruning
+from selection, and expand a shared group once. Group inspection shows all direct
+relationships; adjacent summary records explicitly identify unrequested detail.
+Module-only inspection reuses the existing qualified module view; mixed matches
+are sectioned by kind and retain that module view as embedded detail.
+
+Group source escape carries captured group/README/artifact paths and qualified
+link evidence without contents. Source-level mechanics are absent from ordinary
+organization output. Observations accept either view schema and distinguish group
+paths from module locations/excerpts or mixed disclosure. The analysis context's
+repository root comes from stored capture rather than a second live lookup.
+
+The representative fixture and focused ephemeral Git projects exercise the full
+journey, graph/display limits, source disclosure, observations, and synthetic
+partial/unavailable module providers. Instrument validation and the final review
+gate are recorded in the active task.
 
 Inputs remain first-observed and non-atomic. Git may reread live exclusion policy;
 a final policy check refuses detected lasting changes but cannot detect every

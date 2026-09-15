@@ -1,6 +1,5 @@
 import path from 'node:path';
 import { compare, methods, recordId } from '../identity.js';
-import { deriveLayout } from '../repository/layout.js';
 import type { LayoutEvidence, RepositoryEvidence } from '../repository/evidence.js';
 import type { ClaimContextRecord, EvaluationRecord, EvaluationState, ProgramRecord, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
 import type { GroupExpansion, ModulePlacementClaim, OrganizationClaims, OrganizationEvaluationRecord, PlacementReason } from './records.js';
@@ -43,7 +42,7 @@ export function evaluateOrganization(store: ProgramRecordStore, moduleEvaluation
   };
   const capture = repository.capture;
   const evidence = capture.status === 'available' ? capture.evidence : null;
-  const layout = evidence ? deriveLayout(evidence) : null;
+  const layout = repository.layout;
   const layoutContext = context('repository-layout', repository.id, [repository.id],
     'Repository-layout relationships are established from the captured visible worktree artifact population.',
     [...(evidence?.limitations ?? ['Repository layout is unavailable.']),

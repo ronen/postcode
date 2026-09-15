@@ -1,5 +1,5 @@
 import type { EvaluationState, RecordContext, RecordId } from '../records.js';
-import type { RepositoryArtifact, RepositoryCapture } from '../repository/evidence.js';
+import type { LayoutEvidence, RepositoryArtifact, RepositoryCapture } from '../repository/evidence.js';
 
 export const groupStandardExpansions = ['group-details'] as const;
 export type GroupExpansion = typeof groupStandardExpansions[number];
@@ -7,6 +7,7 @@ export type GroupExpansion = typeof groupStandardExpansions[number];
 export interface RepositoryEvidenceRecord extends RecordContext {
   readonly kind: 'repository-evidence';
   readonly capture: RepositoryCapture;
+  readonly layout: LayoutEvidence | null;
 }
 
 export interface RegionEvidenceRecord extends RecordContext {
