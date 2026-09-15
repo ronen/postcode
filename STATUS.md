@@ -10,7 +10,7 @@ Most recently completed:
 [Date-organized observation files](records/tasks/2026-09-14-date-organized-observations.md).
 
 Active implementation:
-[Module organization slice](docs/plans/module-organization-plan.md), tracked by
+[Repository organization slice](docs/plans/repository-organization-plan.md), tracked by
 [the active task](records/tasks/2026-09-15-module-organization.md) on
 `codex/module-organization`.
 
@@ -32,6 +32,9 @@ integrated review's decision-link correction and both
 are addressed. Type checking and all 129 tests pass after the link-placement and
 incoming-parent source-evidence corrections. The
 [disposition](records/reviews/module-organization/2026-09-15-integrated-disposition.md)
-records verification and remaining limits. The task remains active, awaiting
-another human-initiated Copilot round on [PR #3](https://github.com/ronen/postcode/pull/3)
-and explicit human acceptance of the final gate before closure.
+records verification and remaining limits. The
+[second Copilot review](records/reviews/module-organization/2026-09-15-integrated-round-3-copilot-findings.md)
+is clean. The plan and decisions now use “repository organization” to reflect
+their scope; historical task and review identifiers retain their original names.
+The task remains active on [PR #3](https://github.com/ronen/postcode/pull/3), pending
+explicit human acceptance and direction to close it.

@@ -195,9 +195,9 @@ renamed routes to revisit a module while bounding actual cycles.
 
 ## Repository organization
 
-The active [module organization task](../../records/tasks/2026-09-15-module-organization.md)
+The active [repository organization task](../../records/tasks/2026-09-15-module-organization.md)
 adds an internal repository-layout evidence boundary under `src/lib/repository/`,
-governed by the [organization decisions](../decisions/module-organization-decisions.md).
+governed by the [organization decisions](../decisions/repository-organization-decisions.md).
 Repository evidence is captured after successful project opening and before
 snapshot identity is finalized. The snapshot references a stored capture result,
 including explicit unavailability outside a worktree. Organization evaluation
