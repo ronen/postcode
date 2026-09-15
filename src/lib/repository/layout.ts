@@ -2,7 +2,7 @@ import path from 'node:path';
 import { compare } from '../identity.js';
 import type { LayoutEvidence, RepositoryEvidence } from './evidence.js';
 
-export const repositoryLayoutMethod = 'postcode/repository-layout@1';
+export const repositoryLayoutMethod = 'postcode/repository-layout@2';
 
 /** Pure preparation of region, placement and containment evidence for group records. */
 export function deriveLayout(evidence: RepositoryEvidence): LayoutEvidence {
@@ -23,7 +23,7 @@ export function deriveLayout(evidence: RepositoryEvidence): LayoutEvidence {
     parent: parent(child), child, basis: 'directory', evidencePath: child,
   }));
   const placements = artifacts.map(artifact => ({ artifactPath: artifact.path,
-    groupPath: parent(artifact.path), documentation: /^README(?:\.[\s\S]*)?$/.test(path.posix.basename(artifact.path)),
+    groupPath: parent(artifact.path), documentation: !artifact.boundary && /^README(?:\.[\s\S]*)?$/.test(path.posix.basename(artifact.path)),
   }));
   const artifactPaths = new Set(artifacts.map(artifact => artifact.path));
   const links: LayoutEvidence['links'][number][] = [];

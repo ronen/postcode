@@ -213,7 +213,8 @@ and applicable exclusion-policy digests. Tracked artifacts override ignore
 matches, while deleted artifacts are absent. Explicit output destinations are
 normalized and excluded independently of Git ignores. Nested repository markers
 and Gitlinks identify opaque boundaries without importing their contents.
-Ordinary artifact and README contents are not read. Repository, local, and global
+Opaque boundaries named README or README.* do not establish documentation
+availability. Ordinary artifact and README contents are not read. Repository, local, and global
 exclusion inputs remain distinguishable. Known environmental or filesystem
 failures produce explicit capture unavailability; unexpected defects propagate.
 
@@ -229,7 +230,8 @@ Pure layout derivation prepares region names, direct containment and artifact
 placements, direct README associations, and qualified link outcomes. Directory
 links can add a parent to an existing region; deterministic cycle refusal leaves
 a directed acyclic containment graph. Captured canonical and invoked repository
-roots let placement interpret apparent source paths without using realpath as
+roots (verified by resolving lexical ancestors, rather than inferred from path
+depth) let placement interpret apparent source paths without using realpath as
 module identity. Bounded traversal through accepted directory-link regions maps
 aliased source paths to existing groups; ordinary file-link modules retain their
 apparent artifact's placement.

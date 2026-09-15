@@ -383,7 +383,8 @@ test('special artifacts stay present and README matching asserts only direct ava
     const evidence = capture(root);
     assert.equal(evidence.artifacts.find(item => item.path === 'README.pipe')!.kind, 'other');
     const layout = deriveLayout(evidence);
-    assert.deepEqual(layout.placements.filter(item => item.documentation).map(item => item.artifactPath), ['README.pipe', 'README.repo']);
+    assert.deepEqual(layout.placements.filter(item => item.documentation).map(item => item.artifactPath), ['README.pipe']);
+    assert.ok(layout.placements.some(item => item.artifactPath === 'README.repo' && !item.documentation));
   });
 });
 

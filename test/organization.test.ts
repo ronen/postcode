@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { cpSync, mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, realpathSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
@@ -363,5 +363,36 @@ test('generated module handles cannot impersonate group navigation IDs', () => {
     assert.equal(modules.length, 2);
     assert.ok(modules.every(claim => claim.information.handle === `handle-${cue}`));
     assert.ok(modules.some(claim => claim.information.name === cue));
+  });
+});
+
+test('opaque README boundaries remain unanalyzed artifacts without documentation availability', () => {
+  fixture((root, write) => {
+    write('boundaries/README/.git', 'gitdir: unavailable');
+    write('boundaries/README/hidden.md', 'not inspected');
+    write('boundaries/README.submodule/hidden.md', 'not inspected');
+    execFileSync('git', ['-C', root, 'update-index', '--add', '--cacheinfo',
+      '160000', '1234567890123456789012345678901234567890', 'boundaries/README.submodule']);
+    const { store, outcome } = evaluated(root);
+    const group = groups(store, outcome).get('boundaries')!;
+    assert.equal(properties(store, outcome).get(group)!.documented, false);
+    assert.equal(claims(store, outcome).filter(claim => claim.subject === group && claim.information.type === 'group-documentation').length, 0);
+    assert.equal(claims(store, outcome).filter(claim => claim.subject === group && claim.information.type === 'artifact-placement').length, 2);
+  });
+});
+
+test('intermediate invocation links do not invent worktree-root aliases from path depth', () => {
+  fixture((root, write) => {
+    write('deep/project/tsconfig.json', '{"compilerOptions":{"noLib":true,"types":[]},"files":["module.ts"]}');
+    write('deep/project/module.ts', 'export const value = 1;');
+    symlinkSync('deep/project', path.join(root, 'alias'));
+    const { store, evaluation } = discover(path.join(root, 'alias/tsconfig.json'));
+    const outcome = evaluateOrganization(store, evaluation);
+    const repository = store.get(outcome.repository);
+    assert.ok(repository.kind === 'repository-evidence' && repository.capture.status === 'available');
+    assert.ok(repository.capture.evidence.rootPaths.every(spelling => realpathSync(spelling) === realpathSync(root)));
+    assert.equal(repository.capture.evidence.rootPaths.includes(path.dirname(root)), false);
+    assert.equal(placements(store, outcome)[0]!.information.outcome, 'established');
+    assert.deepEqual(placements(store, outcome)[0]!.information.groups, [groups(store, outcome).get('project')]);
   });
 });

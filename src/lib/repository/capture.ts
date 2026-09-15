@@ -6,7 +6,7 @@ import path from 'node:path';
 import { canonical, compare, digest } from '../identity.js';
 import type { ExclusionEvidence, RepositoryArtifact, RepositoryCapture } from './evidence.js';
 
-export const repositoryInputMethod = 'postcode/repository-inputs@2';
+export const repositoryInputMethod = 'postcode/repository-inputs@3';
 
 class CaptureFailure extends Error {
   constructor(readonly operation: string, readonly code: string | number | null) { super(operation); }
@@ -75,9 +75,17 @@ export function captureRepository(configPath: string, excludedOutputDirectories:
     }
     // Remove only Git's final newline; path whitespace is significant.
     const root = discovery.output.replace(/\n$/, '');
-    const baseWithinRoot = path.relative(root, realpathSync(base));
-    const invokedRoot = path.resolve(base, ...baseWithinRoot.split(path.sep).filter(Boolean).map(() => '..'));
-    const rootPaths = [...new Set([root, invokedRoot])].sort((a, b) => b.length - a.length);
+    // A lexical ancestor is a root alias only when it actually resolves to the
+    // worktree root. Intermediate links can change the relative path depth.
+    const rootPaths = [root];
+    for (let ancestor = base; ; ancestor = path.dirname(ancestor)) {
+      if (realpathSync(ancestor) === root) {
+        if (ancestor !== root) rootPaths.push(ancestor);
+        break;
+      }
+      if (path.dirname(ancestor) === ancestor) break;
+    }
+    rootPaths.sort((a, b) => b.length - a.length);
     const absolute = (name: string) => path.resolve(root, name);
     const relative = (name: string) => path.relative(root, name).split(path.sep).join('/');
     const statCache = new Map<string, ReturnType<typeof lstatSync> | null>();
