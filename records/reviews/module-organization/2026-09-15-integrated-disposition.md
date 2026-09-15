@@ -50,3 +50,10 @@ explicitly instructed the agent not to close the task. Human direction on the
 final gate remains required: acceptance has not been given, and the task remains
 active with its closure date blank. This disposition records the correction and
 review judgment without accepting the gate or concluding the task.
+
+The human subsequently required one or more GitHub Copilot review rounds before
+final acceptance and authorized a pull request containing the review context.
+The human will initiate Copilot review. Those rounds continue under the original
+integrated handoff, with their exact targets identified in the pull request and
+returned findings. The earlier recommendation about the link correction does not
+waive this additional human-required review.

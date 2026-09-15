@@ -31,5 +31,7 @@ and all 127 tests pass, independently reproduced in the
 [integrated review](records/reviews/module-organization/2026-09-15-integrated-round-1-findings.md).
 Its sole finding, a decision cross-reference, is corrected and verified; the
 [disposition](records/reviews/module-organization/2026-09-15-integrated-disposition.md)
-records the remaining review limits. The task remains active, awaiting explicit
-human acceptance of the final review gate before closure.
+records the remaining review limits. The task remains active. The human requires
+one or more GitHub Copilot review rounds and will initiate review on the pull
+request; explicit human acceptance of the final gate is still required before
+closure.
