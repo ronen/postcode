@@ -139,6 +139,24 @@ Implementation and planned verification are substantially complete. Final
 integrated review is still required. The task remains active and must not close
 until the human explicitly says that the final review gate is sufficient.
 
+### Copilot integrated review corrections (2026-09-15)
+
+Retrieved and committed the complete first Copilot review as
+[integrated round 2](../reviews/module-organization/2026-09-15-integrated-round-2-copilot-findings.md):
+one review summary, two inline findings, and no conversation comments, with
+verbatim bodies and stable GitHub identifiers. Accepted both medium-severity
+findings in correction commit `d1043d0bb4fb78d5b13fa5afcd90229b01622255`.
+
+Placement now checks the destination after the fortieth directory-link redirect,
+while refusing a forty-first. Group source detail includes captured links that
+establish incoming parent relationships, preserving direct artifact membership.
+Organization and presentation identity methods are incremented for the changed
+claims and exposed evidence. The command reference documents incoming link
+evidence. The original integrated handoff and authored findings are unchanged.
+
+The task remains active. The human will initiate another Copilot review on the
+updated pull request; the final gate has not been accepted.
+
 ## Verification
 
 At the intermediate implementation target:
@@ -272,3 +290,20 @@ advertised as current navigation addresses. Outputs remain uncommitted as requir
 for real-project observations. Reproduction requires fresh capture and current
 snapshot scope. No general usability, performance, or unfamiliar-project
 completeness claim is inferred from this bounded exercise.
+
+### Copilot correction verification
+
+Both new regressions failed on the reviewed implementation with the reported
+symptoms before the production fixes. After correction, `npm run check` passed
+and `npm test` passed all 129 tests, with zero failures or skips. Diff and staged
+whitespace checks passed for the correction.
+
+The redirect-boundary regression uses real captured directory links and synthetic
+provider source paths to test 39, 40, and 41 redirects independently of host
+filesystem traversal limits. It verifies placement at 39/40, refusal at 41, and
+preservation of the supplied module identity. The CLI regression verifies incoming
+additional/existing-parent evidence in JSON and Unicode, both relationship
+directions, unchanged direct artifacts, exclusion of unrelated links, absent
+source paths from ordinary views, no artifact contents, and exact source-event
+and recorded-output behavior. The prior bounded instrument exercise was not
+repeated for these localized corrections.
