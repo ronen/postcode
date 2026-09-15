@@ -267,6 +267,48 @@ test('nested directory-link traversal maps to captured regions and refuses cycli
   });
 });
 
+test('placement accepts the destination after 40 directory-link redirects and refuses a 41st', () => {
+  fixture((root, write) => {
+    for (let index = 0; index < 41; index++) {
+      mkdirSync(path.join(root, `d${index}`));
+      symlinkSync(`../d${index + 1}`, path.join(root, `d${index}/next`));
+    }
+    write('d41/module.ts', 'export const linked = 1;');
+    write('tsconfig.json', JSON.stringify({ compilerOptions: { noLib: true, types: [] }, files: ['d41/module.ts'] }));
+    const { store, evaluation } = discover(path.join(root, 'tsconfig.json'));
+    const snapshot = store.get(evaluation.snapshot);
+    assert.ok(snapshot.kind === 'snapshot' && snapshot.repository);
+    const repository = store.get(snapshot.repository);
+    assert.ok(repository.kind === 'repository-evidence');
+    assert.equal(repository.layout!.links.length, 41);
+    assert.ok(repository.layout!.links.every(link => link.outcome === 'additional-parent'));
+    const original = store.get(evaluation.modules[0]!);
+    assert.ok(original.kind === 'module');
+    const claim = store.get(original.claim) as ModuleClaim;
+    const context = store.get(claim.context);
+    assert.ok(context.kind === 'claim-context');
+    const source = context.evidence.map(id => store.get(id)).find(record => record.kind === 'source-evidence' && !record.resolution);
+    assert.ok(source?.kind === 'source-evidence');
+    // Use actual captured links with synthetic provider paths: host filesystem
+    // traversal limits must not prevent exercising the evaluator's own bound.
+    for (const redirects of [39, 40, 41]) {
+      const module: typeof original = { ...original, id: recordId(evaluation.snapshot, 'module', redirects), claim: recordId(evaluation.snapshot, 'claim', redirects) };
+      const aliasSource = { ...source, id: recordId(evaluation.snapshot, 'source-evidence', redirects),
+        path: path.join(root, `d${41 - redirects}`, ...Array<string>(redirects).fill('next'), 'module.ts') };
+      const aliasContext = { ...context, id: recordId(evaluation.snapshot, 'context', redirects), scope: module.id, evidence: [aliasSource.id] };
+      const aliasClaim = { ...claim, id: module.claim, subject: module.id, context: aliasContext.id };
+      const synthetic = { ...evaluation, id: recordId(evaluation.snapshot, 'evaluation', redirects), modules: [module.id], attempt: redirects };
+      store.put([module, aliasSource, aliasContext, aliasClaim, synthetic]);
+      const outcome = evaluateOrganization(store, synthetic);
+      const placement = placements(store, outcome)[0]!;
+      assert.equal(placement.subject, module.id);
+      assert.equal(placement.information.outcome, redirects <= 40 ? 'established' : 'unplaced', `${redirects} redirects`);
+      assert.deepEqual(placement.information.groups, redirects <= 40 ? [groups(store, outcome).get('d41')] : []);
+      assert.deepEqual(placement.information.reasons, redirects <= 40 ? [] : ['link-not-established']);
+    }
+  });
+});
+
 test('unavailable source evidence preserves usable placements and leaves absent presence unknown', () => {
   fixture(root => {
     const { store, evaluation } = discover(path.join(root, 'tsconfig.json'));

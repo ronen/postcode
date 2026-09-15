@@ -211,7 +211,8 @@ export function createOrganizationView(store: ProgramRecordStore, projection: Or
         const artifacts = available.flatMap(claim => claim.subject === group.id && claim.information.type === 'artifact-placement' ? [store.get(claim.information.artifact)] : [])
           .flatMap(record => record.kind === 'repository-artifact' ? [record.artifact] : []);
         return { id: group.id, path: path.resolve(evidence.root, region.path), artifacts,
-          links: layout?.links.filter(link => artifacts.some(artifact => artifact.path === link.artifactPath)) ?? [] };
+          links: layout?.links.filter(link => link.targetRegion === region.path
+            || artifacts.some(artifact => artifact.path === link.artifactPath)) ?? [] };
       }), modules: moduleDetail?.sourceDetail ?? null,
     } } : {}),
   };

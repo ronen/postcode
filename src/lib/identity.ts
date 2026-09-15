@@ -9,9 +9,9 @@ export const methods = {
   evaluation: 'postcode/evaluate-modules@2',
   projection: 'postcode/projection@5',
   expansions: 'postcode/typescript-expansions@2',
-  presentation: 'postcode/presentation@12',
+  presentation: 'postcode/presentation@13',
   handles: 'postcode/module-handles@5',
-  organization: 'postcode/organization@2',
+  organization: 'postcode/organization@3',
 } as const;
 
 /** Stable key order without locale, clock, random IDs, or storage identity. */

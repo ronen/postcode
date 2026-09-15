@@ -188,7 +188,8 @@ function locate(sourcePath: string, evidence: RepositoryEvidence, layout: Layout
   }
   if (relative === undefined) return { reason: 'outside-repository' };
   const seen = new Set<string>();
-  for (let redirects = 0; redirects < 40; redirects++) {
+  // Inspect the destination after the last permitted redirect as well.
+  for (let redirects = 0; redirects <= 40; redirects++) {
     if (seen.has(relative)) return { reason: 'link-not-established' };
     seen.add(relative);
     const direct = layout.placements.find(item => item.artifactPath === relative);
@@ -202,7 +203,7 @@ function locate(sourcePath: string, evidence: RepositoryEvidence, layout: Layout
     const link = layout.links.filter(item => relative!.startsWith(`${item.artifactPath}/`))
       .sort((a, b) => b.artifactPath.length - a.artifactPath.length)[0];
     if (!link) return { reason: 'not-visible' };
-    if (link.targetRegion === null) return { reason: 'link-not-established' };
+    if (link.targetRegion === null || redirects === 40) return { reason: 'link-not-established' };
     relative = [link.targetRegion, relative.slice(link.artifactPath.length + 1)].filter(Boolean).join('/');
   }
   return { reason: 'link-not-established' };

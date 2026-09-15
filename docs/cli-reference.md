@@ -108,6 +108,8 @@ schemas; observation records retain the exact view and rendered output.
 
 Group source detail identifies the absolute repository root and group paths,
 repository-relative artifact paths, artifact kinds, and qualified link evidence.
+Link evidence includes incoming links that establish the group's parents;
+the artifact list retains only artifacts placed directly in the inspected group.
 It reads the already captured evidence and includes no documentation or artifact
 contents. Source-escape observation levels distinguish `organization-paths`,
 `organization-and-module-source`, and the existing

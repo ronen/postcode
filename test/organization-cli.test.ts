@@ -110,6 +110,40 @@ test('Unicode and JSON share selection, disclose project pruning, and show all d
   });
 });
 
+test('group source detail retains incoming parent-link evidence without changing direct artifact placement', async () => {
+  await fixture(async (root, write) => {
+    write('other/README', 'parent documentation contents stay private');
+    write('unrelated/README', 'unrelated contents stay private');
+    symlinkSync('../src', path.join(root, 'other/alias'));
+    symlinkSync('../src', path.join(root, 'other/second'));
+    symlinkSync('../manual', path.join(root, 'unrelated/alias'));
+    const ordinary = viewOf(await invoke(root, ['inspect', 'src', '--json']));
+    assert.ok(ordinary.groups.find(group => group.selected)!.parents.some(parent => parent.name === 'other'));
+    assert.equal(ordinary.sourceDetail, undefined);
+    assert.equal(JSON.stringify(ordinary).includes('other/alias'), false);
+    const source = await invoke(root, ['inspect', 'src', '--source-detail', '--json']);
+    const detailed = viewOf(source);
+    assert.equal(detailed.projection.snapshot, ordinary.projection.snapshot);
+    assert.deepEqual(detailed.groups, ordinary.groups);
+    assert.deepEqual(detailed.sourceDetail!.groups[0]!.links, [
+      { artifactPath: 'other/alias', outcome: 'additional-parent', targetRegion: 'src' },
+      { artifactPath: 'other/second', outcome: 'existing-parent', targetRegion: 'src' },
+    ]);
+    assert.deepEqual(detailed.sourceDetail!.groups[0]!.artifacts.map(artifact => artifact.path), ['src/README', 'src/direct.ts']);
+    assert.equal(source.stdout.includes('documentation contents stay private'), false);
+    assert.equal(source.stdout.includes('unrelated/alias'), false);
+    assert.equal(source.batches[0]!.events[1]!.sourceLevel, 'organization-paths');
+    assert.equal(source.batches[0]!.records.find(record => record.kind === 'rendered-output')!.value, source.stdout);
+    const parent = viewOf(await invoke(root, ['inspect', 'other', '--source-detail', '--json']));
+    assert.deepEqual(parent.sourceDetail!.groups[0]!.links, detailed.sourceDetail!.groups[0]!.links);
+    assert.ok(parent.sourceDetail!.groups[0]!.artifacts.some(artifact => artifact.path === 'other/alias'));
+    const unicode = await invoke(root, ['inspect', 'src', '--source-detail']);
+    assert.ok(unicode.stdout.includes('Relationship evidence: other/alias · additional-parent'));
+    assert.ok(unicode.stdout.includes('Relationship evidence: other/second · existing-parent'));
+    assert.equal(unicode.stdout.includes('unrelated/alias'), false);
+  });
+});
+
 test('generic inspection displays every group/module name match, with precise scoped navigation and stale refusal', async () => {
   await fixture(async (root, write) => {
     write('src/ambient.d.ts', "declare module 'src' { export const named: number; }");
