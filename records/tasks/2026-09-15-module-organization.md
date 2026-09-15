@@ -69,6 +69,33 @@ task remains active, with the intermediate checkpoint's human conclusion and
 the remaining integration work still pending. No final review gate or task
 closure is asserted.
 
+### Intermediate checkpoint: organization records and projections (2026-09-15)
+
+The human accepted the repository-evidence checkpoint after its clean second
+review round, as preserved in the follow-up above and the
+[evidence disposition](../reviews/module-organization/2026-09-15-repository-evidence-disposition.md).
+
+Implementation target: `faa1d538c50e3d345f2e7f379064da928687683a` on
+`codex/module-organization`, based on `b0501be8c287677c65bd98342d0efad0f0fcb9b8`.
+
+Captured repository results and method versions now participate in snapshots
+after successful project opening. The record store carries group entities,
+qualified containment, artifact and module placements, documentation associations,
+and evaluation-specific group properties. Complete repository population remains
+independent of partial or unavailable module placement. Repository/project lenses
+and generic group/module inspection select from the same records, with declared
+direct-relationship expansions and scoped group IDs. Generated module handles now
+reserve both module and group compact-ID syntax; the identity methods and
+implementation convention document this extension.
+
+An intermediate review precedes presentation integration because shared snapshot,
+record, evaluation, and projection contracts will support every new view. The
+human arranges this review. Remaining work includes Unicode and structured
+presentation/navigation, group source detail, new-view observations, remaining
+acceptance coverage, instrument validation on PostCode and an unfamiliar
+repository, product documentation, and final integrated review. The task remains
+active and no final gate is asserted.
+
 ## Verification
 
 At the intermediate implementation target:
@@ -110,3 +137,23 @@ For correction commit `ae09e427acae3ce3e112081ed270f0fbe5f965d8`:
 - `git diff --check` and the staged diff check passed; the correction diff was
   manually inspected. No new public behavior or identity-method semantics for
   valid captured evidence were introduced.
+
+For organization implementation `faa1d538c50e3d345f2e7f379064da928687683a`:
+
+- `npm run check` passed.
+- `npm test` passed all 115 tests, with zero failures and zero skips. Fifteen new
+  organization tests cover representative repository/project populations, direct
+  relationships and properties, snapshot input inclusion and content exclusion,
+  captured-input reuse, complete/partial/unavailable evaluations, empty selection,
+  multiple placements, external/unplaced/opaque outcomes, source unavailability,
+  alias paths, nested/refused links, generic selection and cross-kind collisions,
+  declared expansions, and record validation.
+- A read-only PostCode smoke check, excluding its actual build and observation
+  destinations, returned 185 modules, 30 repository groups, 7 project groups, and
+  426 organization claims, with full repository and placement materialization in
+  approximately 1,983 ms. This is implementation evidence, not product-instrument
+  validation or a performance guarantee.
+- The implementation diff was inspected; `git diff --check` and the staged diff
+  check passed. No dependencies, foundation files, or development instructions
+  changed. Product presentation and observations for new lenses remain unverified
+  because they are not implemented at this checkpoint.
