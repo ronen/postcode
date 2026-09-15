@@ -16,8 +16,8 @@ Active implementation:
 
 The first checkpoint implements and tests internal repository-evidence capture
 and layout derivation. [Round-1 review corrections](records/reviews/module-organization/2026-09-15-repository-evidence-disposition.md)
-are implemented and verified; human checkpoint direction remains pending.
-Independent review precedes integration with snapshots,
+are implemented and verified. The second review round is clean, and the human
+accepted the evidence checkpoint. Work continues on snapshots,
 group records, module placement, projections, inspection, and CLI views. The
 existing CLI does not yet expose organization. Final integrated review and
 explicit human acceptance remain required before task closure.
