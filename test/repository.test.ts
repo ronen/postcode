@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, realpathSync, renameSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, realpathSync, renameSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
@@ -265,6 +265,25 @@ test('opposed directory links establish a deterministic acyclic subset', () => {
   });
 });
 
+test('directory links refuse a cycle through several established containment edges', () => {
+  fixture((root, write) => {
+    for (const name of ['a', 'b', 'c']) write(`${name}/file`);
+    symlinkSync('../b', path.join(root, 'a/to-b'));
+    symlinkSync('../c', path.join(root, 'b/to-c'));
+    symlinkSync('../a', path.join(root, 'c/to-a'));
+    const evidence = capture(root);
+    const layout = deriveLayout(evidence);
+    assert.deepEqual(layout.links, [
+      { artifactPath: 'a/to-b', outcome: 'additional-parent', targetRegion: 'b' },
+      { artifactPath: 'b/to-c', outcome: 'additional-parent', targetRegion: 'c' },
+      { artifactPath: 'c/to-a', outcome: 'cyclic-containment', targetRegion: null },
+    ]);
+    assert.deepEqual(layout.containment.filter(edge => edge.basis === 'symlink').map(edge => [edge.parent, edge.child]),
+      [['a', 'b'], ['b', 'c']]);
+    assert.deepEqual(layout, deriveLayout({ ...evidence, artifacts: [...evidence.artifacts].reverse() }));
+  });
+});
+
 test('link resolution uses captured evidence without traversing opaque or ignored targets', () => {
   fixture((root, write) => {
     write('nested/.git', 'gitdir: unavailable');
@@ -276,9 +295,57 @@ test('link resolution uses captured evidence without traversing opaque or ignore
     const before = capture(root);
     assert.equal(before.artifacts.find(item => item.path === 'opaque-link')!.link!.status, 'opaque-boundary');
     assert.equal(before.artifacts.find(item => item.path === 'ignored-link')!.link!.status, 'outside-population');
+    const layout = deriveLayout(before);
+    assert.deepEqual(layout.links, [
+      { artifactPath: 'ignored-link', outcome: 'outside-population', targetRegion: null },
+      { artifactPath: 'nested-alias', outcome: 'opaque-boundary', targetRegion: null },
+      { artifactPath: 'opaque-link', outcome: 'opaque-boundary', targetRegion: null },
+    ]);
+    assert.deepEqual(layout.containment, []);
     write('nested/missing/deep/new-file');
     write('ignored/missing/deep/new-file');
     assert.deepEqual(capture(root), before);
+  });
+});
+
+test('an existing link target with uncaptured case spelling remains unestablished rather than broken', context => {
+  fixture((root, write) => {
+    write('Target/module.ts');
+    if (!existsSync(path.join(root, 'target'))) {
+      context.skip('Requires a filesystem where Target and target address the same existing directory.');
+      return;
+    }
+    symlinkSync('target', path.join(root, 'alias'));
+    const evidence = capture(root);
+    assert.deepEqual(evidence.artifacts.find(item => item.path === 'alias')!.link, {
+      target: 'target', status: 'target-not-established', resolved: null, targetKind: null,
+    });
+    const layout = deriveLayout(evidence);
+    assert.deepEqual(layout.links, [{ artifactPath: 'alias', outcome: 'target-not-established', targetRegion: null }]);
+    assert.deepEqual(layout.regions.map(region => region.path), ['', 'Target']);
+    assert.deepEqual(layout.containment, [{ parent: '', child: 'Target', basis: 'directory', evidencePath: 'Target' }]);
+  });
+});
+
+test('a nested project opened through a directory alias accepts absolute links through the invoked worktree path', () => {
+  fixture((root, write, _git, workspace) => {
+    write('projects/selected/tsconfig.json', '{"files":[]}');
+    write('target/file');
+    write('holder/file');
+    const invokedRoot = path.join(workspace, 'invoked-repo');
+    symlinkSync(root, invokedRoot);
+    symlinkSync(path.join(invokedRoot, 'target'), path.join(root, 'holder/through-invocation'));
+    const result = captureRepository(path.join(invokedRoot, 'projects/selected/tsconfig.json'));
+    assert.equal(result.status, 'available', JSON.stringify(result));
+    if (result.status !== 'available') throw new Error('Repository unavailable');
+    assert.equal(result.evidence.root, realpathSync(root));
+    assert.deepEqual(result.evidence.artifacts.find(item => item.path === 'holder/through-invocation')!.link, {
+      target: path.join(invokedRoot, 'target'), status: 'resolved',
+      resolved: path.join(realpathSync(root), 'target'), targetKind: 'directory',
+    });
+    assert.deepEqual(deriveLayout(result.evidence).links, [{
+      artifactPath: 'holder/through-invocation', outcome: 'additional-parent', targetRegion: 'target',
+    }]);
   });
 });
 

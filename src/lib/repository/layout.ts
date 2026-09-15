@@ -25,7 +25,6 @@ export function deriveLayout(evidence: RepositoryEvidence): LayoutEvidence {
   const placements = artifacts.map(artifact => ({ artifactPath: artifact.path,
     groupPath: parent(artifact.path), documentation: /^README(?:\.[\s\S]*)?$/.test(path.posix.basename(artifact.path)),
   }));
-  const boundaryPaths = artifacts.filter(artifact => artifact.boundary).map(artifact => artifact.path);
   const artifactPaths = new Set(artifacts.map(artifact => artifact.path));
   const links: LayoutEvidence['links'][number][] = [];
   const reaches = (from: string, target: string) => {
@@ -46,12 +45,12 @@ export function deriveLayout(evidence: RepositoryEvidence): LayoutEvidence {
     if (!link) continue;
     const add = (outcome: LayoutEvidence['links'][number]['outcome'], targetRegion: string | null = null) =>
       links.push({ artifactPath: artifact.path, outcome, targetRegion });
+    // Capture classifies opaque boundaries while resolving each path segment;
+    // preserve that outcome here instead of reclassifying resolved targets.
     if (link.status !== 'resolved') { add(link.status); continue; }
     if (!link.resolved) throw new Error('Resolved link is missing target evidence');
     const target = path.relative(evidence.root, link.resolved).split(path.sep).join('/');
-    if (boundaryPaths.some(boundary => target === boundary || target.startsWith(`${boundary}/`))) {
-      add('opaque-boundary');
-    } else if (link.targetKind !== 'directory') {
+    if (link.targetKind !== 'directory') {
       add(artifactPaths.has(target) ? link.targetKind === 'file' ? 'file-target' : 'artifact-target' : 'outside-population');
     } else if (!regions.has(target)) {
       add('outside-population');
