@@ -100,6 +100,33 @@ acceptance coverage, instrument validation on PostCode and an unfamiliar
 repository, product documentation, and final integrated review. The task remains
 active and no final gate is asserted.
 
+### Review corrections and integrated implementation (2026-09-15)
+
+Corrected the organization-records review in `f46b513008f58723486363286371052328211a6d`:
+opaque README-named boundaries no longer establish documentation, and invoked
+root aliases are verified rather than inferred from path depth. The
+[disposition](../reviews/module-organization/2026-09-15-organization-records-disposition.md)
+records acceptance of the checkpoint under the human's explicit delegation;
+another intermediate round was not needed for these bounded corrections.
+
+Integrated implementation target: `4c95fd090c72a53358eb5d0e76c23ae896d5af8a`.
+
+The CLI now exposes project/repository organization and generic group/module
+inspection. Qualified Unicode and experimental JSON views show group structure,
+module leaves, evaluation-sensitive properties, complete direct inspection
+relationships, placement exceptions, and explicit display omissions. Shared
+groups expand once. Group source escape uses captured paths and artifact metadata
+without contents; module-only and mixed inspections preserve module detail.
+Observations retain the produced view, output, request, and actual disclosure
+level. Prepared layout is stored with repository evidence so presentation does
+not re-derive it. Candidate-only expansion references and generated module-handle
+provenance are retained in presentation. Identity method versions, architecture,
+user documentation, and implementation conventions were updated accordingly.
+
+Implementation and planned verification are substantially complete. Final
+integrated review is still required. The task remains active and must not close
+until the human explicitly says that the final review gate is sufficient.
+
 ## Verification
 
 At the intermediate implementation target:
@@ -161,3 +188,75 @@ For organization implementation `faa1d538c50e3d345f2e7f379064da928687683a`:
   check passed. No dependencies, foundation files, or development instructions
   changed. Product presentation and observations for new lenses remain unverified
   because they are not implemented at this checkpoint.
+
+For review corrections `f46b513008f58723486363286371052328211a6d`, type checking
+passed and all 117 tests passed with zero failures/skips. An old assertion that
+encoded opaque-README misclassification was corrected alongside new regressions
+for nested-repository/gitlink README boundaries and intermediate invocation links.
+
+For integrated target `4c95fd090c72a53358eb5d0e76c23ae896d5af8a`:
+
+- `npm run check` passed; `npm test` passed all 127 tests, zero failures/skips.
+- Ten new CLI/presentation tests cover the representative repository/project and
+  group/subgroup/module navigation journey, mixed name matches, exact/stale scope,
+  source-path disclosure without group contents, source event levels, recorded
+  output, unavailable organization and sink rejection, partial evaluation,
+  captured-input reuse, graph repetition, depth/group/module limits, complete
+  direct inspection relationships, cross-process determinism, terminal controls,
+  candidate ambiguity, and generated-handle provenance.
+- The implementation and staged diff were inspected and whitespace checks passed.
+  No dependencies, foundation files, or development instructions changed. Raw
+  real-project views and evaluator responses remain in ignored `_build/` storage,
+  outside analyzed inputs and commits.
+
+### Bounded instrument validation
+
+Two fresh subagents received only a qualified Unicode view each, with no task
+history, source, documentation, or permission to inspect other files or run
+PostCode. The shared questions asked for the main groups and selected scope,
+direct versus descendant membership, a justified next group and scope
+requirements, the meaning/limits of documentation and placement, and consequential
+omissions or uncertainty. Responses are evaluator interpretations, not program
+facts or independent implementation review.
+
+- PostCode: the evaluator identified seven selected groups within thirty
+  repository groups, distinguished direct membership from descendants, and
+  selected the organization group for a bounded next inspection with its ID,
+  project, and full snapshot. It understood direct documentation existence,
+  exclusions, external modules, pruning, and non-atomic/sparse qualifications.
+- External project: public `microsoft/tsyringe`, revision
+  `78222334f49265ea2874fac2c73284345c1124d9`, cloned into temporary storage.
+  Its selected root configuration required the single compatibility setting
+  `compilerOptions.ignoreDeprecations = "6.0"` for the bundled TypeScript version.
+  Source selection was unchanged, dependencies were not installed, and target
+  code was not executed. The evaluator identified six selected groups within
+  fifteen repository groups and chose providers for inspection, distinguishing
+  same-handle modules by ID and retaining documentation/placement limits.
+- Both evaluators found selection of contextual branches insufficiently explicit
+  and the phrase “potential relationships” insufficiently scoped. The view now
+  labels context groups and names repository-layout evidence for that count.
+  Both reread only their updated view and confirmed those clarifications, while
+  retaining qualifications about completeness and semantic interpretation.
+- A five-invocation journey on each repository produced a project Unicode view,
+  full repository JSON, a chosen group with source detail, root README-path
+  detail, and inspection of a displayed direct module. Assertions verified a
+  common full snapshot, exact navigation, source event levels, README paths
+  without artifact contents, and observation output equality. PostCode selected
+  seven groups from thirty; tsyringe selected six from fifteen.
+- Total local time for those five fresh invocations was approximately 420 seconds
+  on PostCode and 2.8 seconds on tsyringe. This is a material observed latency
+  limitation, not a phase-level diagnosis or timing guarantee. No caching or
+  weakened discovery policy was introduced. It is disclosed in the command
+  reference and must be assessed at final review.
+
+Local artifacts are `_build/organization-{postcode,tsyringe}.txt`, corresponding
+`-repository.json`, `-inspect.json`, `-root-source.json`, and `-module.json` files,
+`_build/organization-validation.mjs`, its `organization-validation-summary.jsonl`,
+and `_build/organization-evaluator-responses.md`. These captures were made during
+integration before the final candidate-expansion method bump, explicit module
+handle metadata, and command-placeholder construction refinement. The final
+automated suite covers those refinements; these historical snapshots are not
+advertised as current navigation addresses. Outputs remain uncommitted as required
+for real-project observations. Reproduction requires fresh capture and current
+snapshot scope. No general usability, performance, or unfamiliar-project
+completeness claim is inferred from this bounded exercise.
