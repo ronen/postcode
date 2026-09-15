@@ -41,6 +41,10 @@ Copilot review has finished.  Fetch all the review materials and record them as 
 
 Copilot's review found no issues, but you may as well fetch it and preserve it.   After that, I have one request for you unrelated to the code:  The plan, decision files, and headings use the name "module organization" which is a remnant from early planning before the scope was finalized; it would be better to use "repository organization" to avoid misleading future reviewers and implementors.  Can you rename the relevant files and adjust the relevant content appropriately?  commit that but don't close the task yet
 
+### 2026-09-15 — rename the review directory
+
+can the review directory could be from module-organization to repository-organization without breaking any links?
+
 ## Outcome
 
 ### Intermediate checkpoint: repository evidence (2026-09-15)
