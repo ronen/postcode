@@ -21,7 +21,8 @@ repository inputs into snapshots and materializes group records, module placemen
 evaluation-qualified properties, repository/project projections, and generic
 group/module selection. Type checking and all 115 tests pass.
 
-An intermediate review of the snapshot, record, and projection contracts precedes
+An [intermediate review](records/reviews/module-organization/2026-09-15-organization-records-handoff.md)
+of the snapshot, record, and projection contracts precedes
 presentation integration because every new view will depend on those contracts.
 The human arranges that review. The existing CLI does not yet expose organization.
 The task remains active; final integrated review and explicit human acceptance
