@@ -1,13 +1,13 @@
 # Module organization slice
 
-Status: in review
+Status: approved
 Created: 2026-09-15
 Updated: 2026-09-15
 Superseded by:
 
 ## Context
 
-The [initial module inventory slice](../../../../docs/plans/initial-module-inventory-plan.md)
+The [initial module inventory slice](initial-module-inventory-plan.md)
 establishes the first working PostCode path from an opened TypeScript project
 through qualified program records, evaluation, projections, inspection, Unicode
 and structured presentations, snapshot-scoped navigation, source-detail escape,
@@ -29,10 +29,8 @@ dependencies relative to the organizational boundaries established here without
 making dependency roles, re-exports, cycles, runtime behavior, or architectural
 rules part of organization discovery.
 
-The proposed consequential choices are collected in the companion
+The consequential choices are recorded in the accepted
 [module organization decisions](../decisions/module-organization-decisions.md).
-Material under `drafts/` remains provisional and non-governing until the human
-directs its promotion.
 
 ## Use narrative
 
@@ -448,10 +446,10 @@ Use several focused fixtures rather than one repository containing every edge:
 
 ## Governing-document impact
 
-This package proposes no change to
-[`docs/core-concepts.md`](../../../../docs/core-concepts.md) or
-[`docs/architectural-constraints.md`](../../../../docs/architectural-constraints.md),
-so it intentionally contains no proposed `docs/` revisions.
+This plan requires no change to
+[`docs/core-concepts.md`](../core-concepts.md) or
+[`docs/architectural-constraints.md`](../architectural-constraints.md),
+so its promotion did not include revisions to either governing document.
 
 Groups and organization are concrete domain concepts needed by this slice, but
 their use here does not yet demonstrate that a cross-cutting governing definition
@@ -500,14 +498,14 @@ would require:
 
 ## Resulting decisions
 
-The companion proposed
+The accepted
 [module organization decisions](../decisions/module-organization-decisions.md)
-records the new consequential choices for review. Existing governing decisions
+record the new consequential choices. Existing governing decisions
 remain applicable, especially:
 
-- [Initial core-concepts decisions](../../../../docs/decisions/initial-core-concepts-decisions.md)
-- [Initial module inventory decisions](../../../../docs/decisions/initial-module-inventory-decisions.md)
-- [Initial projection architecture decisions](../../../../docs/decisions/initial-projection-architecture-decisions.md)
-- [Qualification and evaluation constraints](../../../../docs/decisions/adopt-qualification-and-evaluation-constraints.md)
-- [Identity, evidence, and observation constraints](../../../../docs/decisions/adopt-identity-evidence-and-observation-constraints.md)
-- [Initial observation recording decisions](../../../../docs/decisions/initial-observation-recording-decisions.md)
+- [Initial core-concepts decisions](../decisions/initial-core-concepts-decisions.md)
+- [Initial module inventory decisions](../decisions/initial-module-inventory-decisions.md)
+- [Initial projection architecture decisions](../decisions/initial-projection-architecture-decisions.md)
+- [Qualification and evaluation constraints](../decisions/adopt-qualification-and-evaluation-constraints.md)
+- [Identity, evidence, and observation constraints](../decisions/adopt-identity-evidence-and-observation-constraints.md)
+- [Initial observation recording decisions](../decisions/initial-observation-recording-decisions.md)

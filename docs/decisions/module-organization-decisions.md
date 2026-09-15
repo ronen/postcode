@@ -1,7 +1,7 @@
 # Module organization slice decisions
 
-Status: in review
-Decided:
+Status: accepted
+Decided: 2026-09-15
 Arising from: [Module organization plan](../plans/module-organization-plan.md)
 Scope: the initial repository-layout organization slice
 
