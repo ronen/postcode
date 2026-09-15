@@ -26,12 +26,12 @@ scope, documentation limits, and next-step navigation; their wording feedback wa
 incorporated. Fresh self-analysis was slow in the measured multi-invocation
 journey, a recorded limitation for final review.
 
-Implementation and planned verification are substantially complete; type checking
-and all 127 tests pass, independently reproduced in the
-[integrated review](records/reviews/module-organization/2026-09-15-integrated-round-1-findings.md).
-Its sole finding, a decision cross-reference, is corrected and verified; the
+Implementation and planned verification are substantially complete. The first
+integrated review's decision-link correction and both
+[Copilot findings](records/reviews/module-organization/2026-09-15-integrated-round-2-copilot-findings.md)
+are addressed. Type checking and all 129 tests pass after the link-placement and
+incoming-parent source-evidence corrections. The
 [disposition](records/reviews/module-organization/2026-09-15-integrated-disposition.md)
-records the remaining review limits. The task remains active. The human requires
-one or more GitHub Copilot review rounds and will initiate review on the pull
-request; explicit human acceptance of the final gate is still required before
-closure.
+records verification and remaining limits. The task remains active, awaiting
+another human-initiated Copilot round on [PR #3](https://github.com/ronen/postcode/pull/3)
+and explicit human acceptance of the final gate before closure.
