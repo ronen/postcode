@@ -45,6 +45,10 @@ Copilot's review found no issues, but you may as well fetch it and preserve it. 
 
 can the review directory could be from module-organization to repository-organization without breaking any links?
 
+### 2026-09-15 — final acceptance and task closure
+
+ok good.  close the task and push it, and give me a comment that I can paste into the PR merge
+
 ## Outcome
 
 ### Intermediate checkpoint: repository evidence (2026-09-15)
