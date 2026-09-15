@@ -3,14 +3,15 @@ import type { RecordId, SnapshotId } from './records.js';
 
 /** Bump the responsible method whenever its analysis/identity/projection semantics change. */
 export const methods = {
-  inputs: 'postcode/observed-inputs@2',
-  records: 'postcode/program-records@9',
+  inputs: 'postcode/observed-inputs@3',
+  records: 'postcode/program-records@10',
   discovery: 'postcode/typescript-modules@8',
   evaluation: 'postcode/evaluate-modules@2',
   projection: 'postcode/projection@5',
   expansions: 'postcode/typescript-expansions@2',
   presentation: 'postcode/presentation@11',
-  handles: 'postcode/module-handles@4',
+  handles: 'postcode/module-handles@5',
+  organization: 'postcode/organization@1',
 } as const;
 
 /** Stable key order without locale, clock, random IDs, or storage identity. */
@@ -38,6 +39,14 @@ export function recordId(snapshot: SnapshotId, kind: string, key: unknown): Reco
 
 /** Precise module addresses, abbreviated against the complete snapshot population. */
 export function moduleEntityIds(ids: readonly RecordId[]): ReadonlyMap<RecordId, string> {
+  return entityIds(ids, 'module');
+}
+
+export function groupEntityIds(ids: readonly RecordId[]): ReadonlyMap<RecordId, string> {
+  return entityIds(ids, 'group');
+}
+
+function entityIds(ids: readonly RecordId[], kind: 'module' | 'group'): ReadonlyMap<RecordId, string> {
   const entries = [...new Set(ids)].map(id => ({ id, hash: id.slice(id.lastIndexOf(':') + 1) }))
     .sort((a, b) => compare(a.hash, b.hash));
   const common = (a: string, b: string) => {
@@ -50,7 +59,7 @@ export function moduleEntityIds(ids: readonly RecordId[]): ReadonlyMap<RecordId,
     const after = entries[index + 1];
     const length = Math.max(8, before ? common(entry.hash, before.hash) + 1 : 0,
       after ? common(entry.hash, after.hash) + 1 : 0);
-    if (!/^[a-f0-9]{64}$/.test(entry.hash) || length > entry.hash.length) throw new Error('Invalid or colliding module record keys');
-    return [entry.id, `module-${entry.hash.slice(0, length)}`];
+    if (!/^[a-f0-9]{64}$/.test(entry.hash) || length > entry.hash.length) throw new Error('Invalid or colliding entity record keys');
+    return [entry.id, `${kind}-${entry.hash.slice(0, length)}`];
   }));
 }

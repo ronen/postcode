@@ -61,7 +61,8 @@ Unexpected defects propagate rather than becoming ordinary analysis failures.
 
 Snapshot identity hashes the compiler and PostCode method versions, Node and
 platform context, selected configuration and options, source population and
-contents, and the observed filesystem inputs used by configuration and resolution.
+contents, the observed filesystem inputs used by configuration and resolution,
+and the captured repository organization inputs and method versions.
 Those inputs include positive and negative reads/existence checks, directory
 queries, and realpath results. Each observation is memoized within an opened
 project. This is a snapshot of first-observed inputs, not an atomic filesystem
@@ -192,13 +193,18 @@ paths with controls rather than displaying a changed, non-executable argument.
 Re-export traversal guards module/exported-name pairs along each path, permitting
 renamed routes to revisit a module while bounding actual cycles.
 
-## Repository evidence implementation checkpoint
+## Organization records and projections checkpoint
 
 The active [module organization task](../../records/tasks/2026-09-15-module-organization.md)
 adds an internal repository-layout evidence boundary under `src/lib/repository/`,
 governed by the [organization decisions](../decisions/module-organization-decisions.md).
-It is not yet connected to project opening, analysis snapshots, program records,
-or the CLI. The existing module pipeline remains the runnable product surface.
+Repository evidence is captured after successful project opening and before
+snapshot identity is finalized. The snapshot references a stored capture result,
+including explicit unavailability outside a worktree. Organization evaluation
+under `src/lib/organization/` reads that result and a stored module evaluation;
+it performs no filesystem or compiler work. Organization presentation and CLI
+integration remain pending. The existing module pipeline remains the runnable
+product surface, with repository inputs now contributing to its snapshots.
 
 Capture uses the enclosing Git worktree of a configuration path. Git supplies
 tracked membership, effective ignore decisions, and repository metadata; native
@@ -222,10 +228,45 @@ re-enter the worktree through an uncaptured alias.
 Pure layout derivation prepares region names, direct containment and artifact
 placements, direct README associations, and qualified link outcomes. Directory
 links can add a parent to an existing region; deterministic cycle refusal leaves
-a directed acyclic containment graph. These are prepared provider evidence,
-not yet snapshot-scoped Entity IDs, qualified program-record claims, projections,
-or presentation data. Materializing those records and composing the capture and
-layout method versions into snapshot identity remain the next integration work.
+a directed acyclic containment graph. Captured canonical and invoked repository
+roots let placement interpret apparent source paths without using realpath as
+module identity. Bounded traversal through accepted directory-link regions maps
+aliased source paths to existing groups; ordinary file-link modules retain their
+apparent artifact's placement.
+
+Organization evaluation materializes group entities, region and artifact evidence,
+qualified direct containment, artifact and module placement, and direct README
+associations through `ProgramRecordStore`. Group entities and direct layout
+relationships remain fixed within a snapshot. Root groups have no intrinsic name;
+other names are single captured segments. Module placement retains established,
+multiple, unplaced, external, and unavailable outcomes with reasons. Candidate
+ambiguity is represented separately; this provider does not invent candidates.
+
+Each organization evaluation references its module-evaluation basis and retains
+repository coverage separately from placement coverage. Group-property claims
+reference that evaluation. Known direct placements survive incomplete evaluation;
+descendant-only and none are asserted only when placement evaluation completed
+fully. Unknown presence is represented separately from those values. The store
+validates group claim identity, reference kinds, placement outcome shape, and the
+evaluation prerequisite for negative presence.
+
+Repository projections select the complete group population. Project projections
+select established project-module placement groups and their ancestor closure.
+Neither changes the direct relationships of a retained group. Declared
+`group-details` expansions retain direct parents, subgroups, modules, artifact
+placements, and documentation relationships; adjacent entities are expansion
+data rather than extra selected subjects. Generic organization inspection matches
+exact group and module names together, including repeated group names, or selects
+precisely by currently scoped Entity ID. Group IDs use `group-` and the same
+collision-extending digest abbreviation as module IDs. Group paths and root
+display labels are not selectors. Existing module inspection expansion records
+remain available through a referenced module projection.
+
+The `fixtures/organization/` journey and focused ephemeral Git projects test the
+record and projection boundary, including partial and unavailable synthetic
+module providers. These APIs are not yet a qualified organization view or new CLI
+commands. Unicode/JSON presentation, group source detail, observation integration,
+and product-instrument validation remain subsequent work under the approved plan.
 
 Inputs remain first-observed and non-atomic. Git may reread live exclusion policy;
 a final policy check refuses detected lasting changes but cannot detect every

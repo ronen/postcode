@@ -24,6 +24,8 @@ export interface RepositoryEvidence {
   readonly provider: 'repository-layout';
   readonly method: string;
   readonly root: string;
+  /** Captured worktree spellings used for apparent source-path association. */
+  readonly rootPaths: readonly string[];
   readonly gitVersion: string;
   readonly gitPathPolicy: { readonly ignoreCase: boolean; readonly precomposeUnicode: boolean };
   readonly inputConsistency: 'first-observed';

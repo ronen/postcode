@@ -1,3 +1,5 @@
+import type { OrganizationClaims, OrganizationRecords } from './organization/records.js';
+
 /** Logical records; no compiler objects or storage-native identifiers cross this boundary. */
 export type RecordId = string & { readonly recordId: unique symbol };
 export type SnapshotId = RecordId & { readonly snapshotId: unique symbol };
@@ -12,6 +14,7 @@ export interface SnapshotRecord extends RecordContext {
   readonly kind: 'snapshot';
   readonly inputDigest: string;
   readonly methods: readonly string[];
+  readonly repository?: RecordId;
   readonly analysis?: {
     readonly provider: 'typescript';
     readonly coverage: 'external-source-files-and-visible-named-ambient-modules';
@@ -103,7 +106,7 @@ export interface DocumentationAssociationClaim extends RecordContext {
   };
 }
 
-export type Claim = ModuleClaim | SymbolClaim | ExportClaim | DocumentationAssociationClaim;
+export type Claim = ModuleClaim | SymbolClaim | ExportClaim | DocumentationAssociationClaim | OrganizationClaims;
 export function isModuleClaim(record: ProgramRecord): record is ModuleClaim {
   return record.kind === 'claim' && record.information.type === 'module';
 }
@@ -182,7 +185,7 @@ export interface ProjectionRecord extends RecordContext {
 }
 
 export type ProgramRecord = SnapshotRecord | ModuleRecord | SymbolRecord | Claim | RecordedAssertion
-  | SourceEvidenceRecord | ClaimContextRecord | EvaluationRecord | ProjectionRecord;
+  | SourceEvidenceRecord | ClaimContextRecord | EvaluationRecord | ProjectionRecord | OrganizationRecords;
 
 /** Only the domain operations currently used by discovery and lenses. */
 export interface ProgramRecordStore {

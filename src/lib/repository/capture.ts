@@ -6,7 +6,7 @@ import path from 'node:path';
 import { canonical, compare, digest } from '../identity.js';
 import type { ExclusionEvidence, RepositoryArtifact, RepositoryCapture } from './evidence.js';
 
-export const repositoryInputMethod = 'postcode/repository-inputs@1';
+export const repositoryInputMethod = 'postcode/repository-inputs@2';
 
 class CaptureFailure extends Error {
   constructor(readonly operation: string, readonly code: string | number | null) { super(operation); }
@@ -295,7 +295,7 @@ export function captureRepository(configPath: string, excludedOutputDirectories:
       throw new CaptureFailure('global exclusion selection changed during capture', null);
     }
     return { status: 'available', evidence: {
-      provider: 'repository-layout', method: repositoryInputMethod, root,
+      provider: 'repository-layout', method: repositoryInputMethod, root, rootPaths,
       gitVersion: required(root, ['--version']).replace(/\n$/, ''), gitPathPolicy, inputConsistency: 'first-observed',
       sparseCheckout: sparse.output === 'true\n',
       limitations: ['Current worktree inputs are first-observed, not an atomic filesystem transaction.',

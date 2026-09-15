@@ -14,10 +14,20 @@ Active implementation:
 [the active task](records/tasks/2026-09-15-module-organization.md) on
 `codex/module-organization`.
 
-The first checkpoint implements and tests internal repository-evidence capture
-and layout derivation. [Round-1 review corrections](records/reviews/module-organization/2026-09-15-repository-evidence-disposition.md)
-are implemented and verified. The second review round is clean, and the human
-accepted the evidence checkpoint. Work continues on snapshots,
-group records, module placement, projections, inspection, and CLI views. The
-existing CLI does not yet expose organization. Final integrated review and
-explicit human acceptance remain required before task closure.
+The human accepted the repository-evidence checkpoint after two review rounds;
+its [disposition](records/reviews/module-organization/2026-09-15-repository-evidence-disposition.md)
+records the findings and corrections. The next checkpoint now integrates captured
+repository inputs into snapshots and materializes group records, module placement,
+evaluation-qualified properties, repository/project projections, and generic
+group/module selection. Type checking and all 115 tests pass.
+
+An intermediate review of the snapshot, record, and projection contracts precedes
+presentation integration because every new view will depend on those contracts.
+The human arranges that review. The existing CLI does not yet expose organization.
+The task remains active; final integrated review and explicit human acceptance
+remain required before task closure.
+
+Still required: Unicode and structured views and navigation, group source detail,
+new-view observations, remaining integration and acceptance coverage, bounded
+instrument validation on PostCode and an unfamiliar repository, product
+documentation, and the final integrated-review gate.
