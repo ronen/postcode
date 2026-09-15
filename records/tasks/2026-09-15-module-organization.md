@@ -48,6 +48,23 @@ external repository; update resulting product documentation; prepare the final
 integrated-review handoff; and obtain the human's explicit review-gate conclusion
 before closing this task.
 
+### Repository evidence review corrections (2026-09-15)
+
+Acted on the committed
+[round-1 findings](../reviews/module-organization/2026-09-15-repository-evidence-round-1-findings.md)
+in correction commit `ae09e427acae3ce3e112081ed270f0fbe5f965d8`.
+Accepted both actionable findings: added regression coverage for an existing
+link target with uncaptured case spelling, and removed the redundant opaque
+boundary classification from layout derivation after confirming that capture
+owns that classification. Strengthened the opaque-outcome assertions and added
+the reviewer's suggested three-group cycle and aliased-invocation fixtures.
+The authored findings and original handoff remain unchanged.
+
+These are in-scope review corrections under the existing authorization. The
+task remains active, with the intermediate checkpoint's human conclusion and
+the remaining integration work still pending. No final review gate or task
+closure is asserted.
+
 ## Verification
 
 At the intermediate implementation target:
@@ -73,3 +90,19 @@ usefulness. Those remain subsequent implementation and verification work. Captur
 is non-atomic; sparse-checkout completeness remains unresolved. Unsupported path
 spellings and bounded link resolution are explicit qualifications to assess at
 the intermediate review.
+
+For correction commit `ae09e427acae3ce3e112081ed270f0fbe5f965d8`:
+
+- `npm run check` passed.
+- `npm test` passed all 100 tests, with zero failures and zero skips, including
+  23 repository tests. The new case-spelling regression actually executed on
+  this machine; it explicitly skips when run on a filesystem without the
+  required case alias behavior.
+- New assertions verify that `target-not-established` survives layout
+  derivation without a false containment edge, that opaque refusal outcomes
+  survive without a duplicate classifier, that indirect containment cycles are
+  refused, and that nested configuration opening through a directory alias
+  retains the supported absolute-link resolution.
+- `git diff --check` and the staged diff check passed; the correction diff was
+  manually inspected. No new public behavior or identity-method semantics for
+  valid captured evidence were introduced.
