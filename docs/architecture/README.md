@@ -191,3 +191,44 @@ records retain their original text. Generated commands are omitted for invocatio
 paths with controls rather than displaying a changed, non-executable argument.
 Re-export traversal guards module/exported-name pairs along each path, permitting
 renamed routes to revisit a module while bounding actual cycles.
+
+## Repository evidence implementation checkpoint
+
+The active [module organization task](../../records/tasks/2026-09-15-module-organization.md)
+adds an internal repository-layout evidence boundary under `src/lib/repository/`,
+governed by the [organization decisions](../decisions/module-organization-decisions.md).
+It is not yet connected to project opening, analysis snapshots, program records,
+or the CLI. The existing module pipeline remains the runnable product surface.
+
+Capture uses the enclosing Git worktree of a configuration path. Git supplies
+tracked membership, effective ignore decisions, and repository metadata; native
+filesystem reads capture present artifact kinds, directory entries, link targets,
+and applicable exclusion-policy digests. Tracked artifacts override ignore
+matches, while deleted artifacts are absent. Explicit output destinations are
+normalized and excluded independently of Git ignores. Nested repository markers
+and Gitlinks identify opaque boundaries without importing their contents.
+Ordinary artifact and README contents are not read. Repository, local, and global
+exclusion inputs remain distinguishable. Known environmental or filesystem
+failures produce explicit capture unavailability; unexpected defects propagate.
+
+Link resolution uses the captured visible paths and link targets. A metadata-only
+probe in an already visible containing directory distinguishes an absent target
+from an existing target whose exact path spelling was not captured. The latter
+remains unestablished. Resolution does not traverse opaque repositories, ignored
+contents, or generated output, and distinguishes proven cycles from the bounded
+redirect limit. External path traversal is refused, even where a path could later
+re-enter the worktree through an uncaptured alias.
+
+Pure layout derivation prepares region names, direct containment and artifact
+placements, direct README associations, and qualified link outcomes. Directory
+links can add a parent to an existing region; deterministic cycle refusal leaves
+a directed acyclic containment graph. These are prepared provider evidence,
+not yet snapshot-scoped Entity IDs, qualified program-record claims, projections,
+or presentation data. Materializing those records and composing the capture and
+layout method versions into snapshot identity remain the next integration work.
+
+Inputs remain first-observed and non-atomic. Git may reread live exclusion policy;
+a final policy check refuses detected lasting changes but cannot detect every
+transient concurrent edit. Sparse-checkout completeness remains unresolved.
+Capture refuses non-UTF-8 names or Git evidence and Git output exceeding its
+bounded subprocess buffer instead of silently dropping or corrupting artifacts.
