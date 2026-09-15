@@ -1,8 +1,8 @@
 # Implement the module organization slice
 
-Status: active
+Status: completed
 Opened: 2026-09-15
-Closed:
+Closed: 2026-09-15
 
 ## Task
 
@@ -202,6 +202,25 @@ explains historical path references and the destination for future findings.
 Earlier commit-pinned links remain valid at their historical paths. The task
 remains active and the preserved authorization is unchanged.
 
+### Final outcome and acceptance (2026-09-15)
+
+Completed the repository organization slice: bounded Git-worktree evidence,
+snapshot-qualified groups and placement, repository/project organization views,
+exact group/module inspection, scoped navigation, source-detail metadata, and
+observations. Product documentation and the human-requested plan, decision, and
+review-directory naming corrections are committed. Historical authorization and
+review text remain preserved.
+
+The human explicitly accepted the accumulated review and directed closure after
+the clean second Copilot round. All actionable findings were addressed; both
+intermediate checkpoints and the final integrated gate are satisfied. The
+[final disposition](../reviews/repository-organization/2026-09-15-integrated-disposition.md)
+records that acceptance. No required implementation or review work remains.
+The disclosed non-atomic capture, sparse-checkout, bounded-link, synthetic-provider,
+and bounded instrument/performance limitations remain as documented; no broader
+guarantee is asserted. The task is completed. The feature branch is prepared for
+human merging through PR #3.
+
 ## Verification
 
 At the intermediate implementation target:
@@ -369,3 +388,15 @@ Verified all twelve moved records byte-for-byte against their old paths. Checked
 105 local links and anchors across the review series, task, status, and review
 index. Whitespace checks passed. No runtime code or tests changed, so no runtime
 suite was repeated for the directory move.
+
+### Closure verification
+
+The last executable correction, `d1043d0bb4fb78d5b13fa5afcd90229b01622255`,
+passed `npm run check` and all 129 tests with zero failures/skips. Copilot's
+subsequent static review at `4f0a03c59a9645af67282231b8ca50dec4cc33fd` was clean.
+Executable source, tests, fixtures, and dependencies are unchanged since that
+verified correction. Later naming changes passed 59 documentation link/anchor
+checks; the review-directory move preserved twelve records byte-for-byte and
+passed 105 local link/anchor checks. Closure changes are records and documentation
+only; their local links and whitespace were checked without rerunning the runtime
+suite. The human's closure instruction is preserved above.
