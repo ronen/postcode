@@ -155,6 +155,7 @@ Rows assume established ownership and supported call shape unless stated otherwi
 | Either CommonJS context with consistent callable ambient declaration | recognized request | retain corroborating evidence |
 | Preserve, no per-file format, complete negative lexical result, callable ambient declaration | recognized request | explicitly bounded preserve support |
 | Preserve, no per-file format, declarations absent | insufficient context | explicitly disclosed unsupported case |
+| Unset module option and no per-file format, including legacy pre-ES6 effective CommonJS defaults | insufficient context | fallback requires explicit CommonJS; no inference from compiler defaults |
 | Other configuration without established supporting context | insufficient context or known unsupported configuration | distinguish known exclusion from unavailable evidence |
 | Recognized literal with supported target | resolved occurrence | contributes to one ordered module-pair edge |
 | Recognized literal resolving outside population | qualified non-edge result | no fabricated module or mislabeled resolution failure |

@@ -335,10 +335,11 @@ test('dependency contract: global implementation, ambient variable, absent bindi
     const global = path.join(root, 'globals.ts');
     writeFileSync(entry, "export {}; require('./target');");
     const cases = [
-      { text: 'function require(name: string) { return name; }', callable: 1, ambient: false, exists: true },
-      { text: 'declare var require: (name: string) => unknown;', callable: 1, ambient: true, exists: true },
-      { text: 'declare var require: string;', callable: 0, ambient: true, exists: true },
-      { text: '', callable: 0, ambient: false, exists: false },
+      { text: 'function require(name: string) { return name; }', callable: 1, ambient: false, exists: true, kinds: [ts.SyntaxKind.FunctionDeclaration] },
+      { text: 'var require = (name) => name;', callable: 1, ambient: false, exists: true, kinds: [ts.SyntaxKind.VariableDeclaration] },
+      { text: 'declare var require: (name: string) => unknown;', callable: 1, ambient: true, exists: true, kinds: [ts.SyntaxKind.VariableDeclaration] },
+      { text: 'declare var require: string;', callable: 0, ambient: true, exists: true, kinds: [ts.SyntaxKind.VariableDeclaration] },
+      { text: '', callable: 0, ambient: false, exists: false, kinds: [] },
     ];
     for (const example of cases) {
       writeFileSync(global, example.text);
@@ -354,6 +355,7 @@ test('dependency contract: global implementation, ambient variable, absent bindi
       assert.equal(symbol !== undefined, example.exists, example.text);
       assert.equal(checker.getTypeAtLocation(call.expression).getCallSignatures().length, example.callable, example.text);
       const declarations = symbol?.declarations ?? [];
+      assert.deepEqual(declarations.map(declaration => declaration.kind), example.kinds, example.text);
       assert.equal(declarations.length > 0 && declarations.every(declaration =>
         (ts.getCombinedModifierFlags(declaration) & ts.ModifierFlags.Ambient) !== 0), example.ambient, example.text);
     }
@@ -453,6 +455,8 @@ test('dependency contract: preserve binding evidence is absent, corroborating, a
     const cases = [
       { text: '', callability: [] },
       { text: 'declare var require: (name: string) => unknown;', callability: [1] },
+      { text: 'interface Requireish { (name: string): unknown } declare var require: Requireish;', callability: [1], named: true },
+      { text: 'type Requireish = (name: string) => unknown; declare var require: Requireish;', callability: [1], named: true },
       { text: 'declare var require: string;', callability: [0] },
       { text: 'declare var require: (name: string) => unknown; declare var require: string;', callability: [1, 0] },
     ];
@@ -473,6 +477,10 @@ test('dependency contract: preserve binding evidence is absent, corroborating, a
       const callability = declarations.filter(ts.isVariableDeclaration).map(declaration =>
         checker.getTypeFromTypeNode(declaration.type!).getCallSignatures().length);
       assert.deepEqual(callability, example.callability, example.text);
+      if (example.named) {
+        assert.ok(declarations.filter(ts.isVariableDeclaration).every(declaration =>
+          declaration.type !== undefined && ts.isTypeReferenceNode(declaration.type)), example.text);
+      }
     }
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
