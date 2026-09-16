@@ -64,8 +64,8 @@ When requested by the selected presentation, PostCode also materializes:
   that local implementation is unlikely to be found in that module without
   calling it a barrel, facade, or API boundary; and
 - repository-layout-relative information describing whether an occurrence stays
-  within, moves into descendants of, or moves outward from every applicable
-  organization placement established by its captured source evidence.
+  in the same group, moves into descendant groups of, or moves outward from every
+  applicable organization placement established by its captured source evidence.
 
 These properties remain distinct from presentation. A graph, list, structured
 view, or organization tree may expose, group, filter, or omit materialized
@@ -101,11 +101,17 @@ Deliver an independently useful read-only dependency investigation that:
 ### Lens and navigation behavior
 
 - `dependency-structure(project)` selects the direct dependency graph established
-  for project-classified modules in the configured TypeScript project.
-- `dependency-children(module)` selects the subject module and its direct outgoing
-  module relationships.
+  for project-classified modules in the configured TypeScript project, together
+  with supported non-edge request results owned by those modules. The project
+  presentation reports qualified counts for those results without rendering them
+  as graph nodes.
+- `dependency-children(module)` selects the subject module, its direct outgoing
+  module relationships, and its supported source requests that establish no
+  dependency child. The latter remain qualified request results and are presented
+  separately from dependency children.
 - `dependency-parents(module)` selects the subject module and its direct incoming
-  module relationships.
+  module relationships. A source request that establishes no child creates no
+  corresponding parent result.
 - These are distinct lens questions even when one shared evaluation supplies
   their information. Exact command spelling remains an implementation choice.
 - Human-facing views define the direction: a dependency parent depends directly
@@ -163,6 +169,11 @@ Deliver an independently useful read-only dependency investigation that:
 - A nonliteral dynamic request is recognized as target-indeterminate and produces
   no module-pair edge. The provider performs no target-expression constant
   evaluation or reachability analysis.
+- The focused child presentation lists unresolved literal and
+  target-indeterminate request results separately from established dependency
+  children. The project presentation summarizes their counts without depicting
+  them as nodes or relationships. Explicit source detail exposes their captured
+  syntax, location, target status, and applicable resolution evidence.
 - Conditional and unreachable syntax remains source request evidence without a
   claim that execution reached it.
 - Resolved occurrences from one source module to one target module aggregate into
@@ -234,12 +245,13 @@ Deliver an independently useful read-only dependency investigation that:
   conservatively. Do not invent a source-to-target placement association that the
   evidence does not support.
 - An occurrence may be classified:
-  - `within` when the child remains within every applicable parent placement's
-    organizational context;
-  - `into-descendants` when the child is in a descendant group for every
-    applicable parent placement;
-  - `outward` when the child is outside every applicable parent placement and its
-    descendants;
+  - `same-group` when every applicable endpoint-placement combination supported
+    by the evidence places parent and child in the same organization group;
+  - `into-descendants` when every applicable endpoint-placement combination
+    supported by the evidence places the child in a strict descendant group of
+    the parent placement;
+  - `outward` when every applicable endpoint-placement combination supported by
+    the evidence places the child outside the parent group and its descendants;
   - `varies-by-placement` when established placements give different results; or
   - partial or unavailable when required placement evidence is incomplete.
 - Use ambiguous only for candidate placements that the provider cannot establish.
@@ -307,18 +319,22 @@ Deliver an independently useful read-only dependency investigation that:
 
 ### CommonJS coverage and practical gate
 
-- CommonJS-form `require()` calls are not analyzed initially. Every dependency
-  view discloses that provider limitation.
+- The baseline scope excludes CommonJS-form `require()` analysis. Every
+  dependency view produced under that scope discloses the provider limitation.
 - The occurrence and relationship model must admit later qualified CommonJS-form
   occurrences without changing dependency-edge identity, direction, aggregation,
   roots, cycles, or presentation bounds.
-- Validation records whether source-owned CommonJS-form calls are materially
-  present in PostCode and the unfamiliar validation repository. Repository
-  selection must not be manipulated to conceal the limitation.
+- Before substantive dependency implementation, a preliminary survey records
+  source-owned CommonJS-form calls in PostCode and the selected unfamiliar
+  validation repository and estimates which direct structural relationships the
+  initial omission would lose. Repository selection must not be manipulated to
+  conceal the limitation.
 - If omission materially changes the apparent main structure, CommonJS support
-  becomes required before the slice can satisfy its usefulness criterion. Do not
-  conceal the distortion by weakening that criterion or selecting a more
-  convenient repository.
+  must be added to the slice scope before approval and before the occurrence
+  provider and presentations are implemented. Do not conceal the distortion by
+  weakening that criterion or selecting a more convenient repository.
+- Final instrument validation repeats the survey against the implemented
+  coverage and confirms that the earlier scope judgment still holds.
 
 ### Instrument validation
 
@@ -347,7 +363,7 @@ Use a compact configured project of roughly six modules containing:
 - two immediate branches;
 - one shared dependency child with two dependency parents;
 - one direct re-export intermediary; and
-- enough ordinary repository placement to demonstrate one within-group and one
+- enough ordinary repository placement to demonstrate one same-group and one
   outward relationship.
 
 Demonstrate the bounded project structure, navigate to one module's direct
@@ -379,8 +395,8 @@ topologies in focused fixtures so they do not dominate the product journey.
 ## Non-goals
 
 - Transitive dependency reach or maximum-hop parameters.
-- CommonJS-form `require()` support under the initial scope; the CommonJS
-  validation condition above may invalidate that scope.
+- CommonJS-form `require()` support under the baseline scope; the preliminary
+  survey above may require adding bounded support before approval.
 - Value-use analysis, emitted-code analysis, execution reachability, runtime
   loading evidence, bundler behavior, tree-shaking, or deployment behavior.
 - Addressable cycle subjects, cycle mnemonic handles, or cycle inspection.
@@ -402,28 +418,39 @@ topologies in focused fixtures so they do not dominate the product journey.
 
 ## Approach
 
-### 1. Characterize the supported TypeScript request contract
+### 1. Survey CommonJS structural relevance
+
+Before changing the dependency provider, scan source-owned files in PostCode and
+the selected unfamiliar validation repository for CommonJS-form calls. Inspect
+the calls and their literal targets far enough to estimate whether omitting them
+would remove relationships that materially shape either repository's apparent
+main structure. This survey determines whether the implementation scope must add
+a bounded CommonJS recognition contract. It is an early scope check, not a
+substitute for final validation or a claim that every call named `require` is a
+module-loading request.
+
+### 2. Characterize the supported TypeScript request contract
 
 Use small compiler-backed investigations to settle source-module ownership,
 literal and nonliteral request recognition, public resolution behavior, named
 ambient modules, import-equals, direct re-export forms, and diagnostics. Finalize
 the provider guarantee and limitations before depending on them in projections.
 
-### 2. Materialize occurrences and direct relationships
+### 3. Materialize occurrences and direct relationships
 
 Add the minimum records and store operations for occurrence evidence and
 aggregated directed module relationships. Keep resolution status, mechanism,
 type-only evidence, and source ownership independent. Extend snapshot method
 identity for every changed claim.
 
-### 3. Derive project graph information and focused projections
+### 4. Derive project graph information and focused projections
 
 Derive the project graph, condensation graph, roots, shared-node structure, and
 cycle groupings from materialized relationships. Implement the project,
 dependency-child, and dependency-parent lenses without allowing presentations to
 alter their requested populations.
 
-### 4. Add requested module and organization expansions
+### 5. Add requested module and organization expansions
 
 Materialize the positive `re-exports only` property from an exhaustive syntax
 rule. Relate dependency occurrences to captured source placement and derive
@@ -431,20 +458,20 @@ conservative organization classifications. Rename the initial discovery-facet
 type and field without changing their values or semantics. Preserve independent
 outcomes when either expansion is partial or unavailable.
 
-### 5. Present, navigate, disclose, and observe
+### 6. Present, navigate, disclose, and observe
 
 Create bounded conceptual Unicode and structured presentations, explicit source
 detail, generated next actions, and complete observation artifacts. Extend the
 organization view only with the requested module property; do not add dependency
 counts or hidden dependency-lens behavior to it.
 
-### 6. Verify the instrument and its practical boundary
+### 7. Verify the instrument and its practical boundary
 
 Verify exact semantic fixtures before rendered outputs. Exercise the complete
 journey on PostCode and an unfamiliar repository, inspect usability, run clean
-evaluation, measure cost, and apply the CommonJS decision gate. Update
-implemented-behavior documentation and prepare independent review checkpoints in
-proportion to the new evidence and graph boundaries.
+evaluation, measure cost, and confirm the preliminary CommonJS scope judgment.
+Update implemented-behavior documentation and prepare independent review
+checkpoints in proportion to the new evidence and graph boundaries.
 
 ## Fixture and acceptance coverage
 
@@ -462,17 +489,20 @@ Use several reviewable fixtures covering:
   occurrence ownership that can and cannot be established;
 - project-to-project, project-to-external, unresolved, target-indeterminate, and
   platform-provided outcomes where supported;
+- focused-child separation of non-edge request results, project-level summary
+  counts for those results, and their explicit source detail;
 - positive `re-exports only`, comments and empty statements, every supported
   direct re-export form, and each substantive statement that prevents the claim;
 - occurrence-specific source placement, multiple module placements, consistent
-  within/descendant/outward classifications, variation by placement, variation by
-  occurrence, placement ambiguity, and organization unavailability;
+  same-group/into-descendants/outward classifications, variation by placement,
+  variation by occurrence, placement ambiguity, and organization unavailability;
 - partial, unavailable, failed, and established-empty evaluation without false
   negative properties;
 - Unicode and structured display bounds, repeated nodes, cycle grouping,
   omissions, exact navigation, source detail, controls, and observation output;
 - equivalent-process determinism and changed-input/method invalidation; and
-- visible CommonJS coverage limitation plus validation-gate evidence.
+- visible CommonJS coverage limitation plus preliminary-survey and final
+  confirmation evidence.
 
 ## Risks and uncertainties
 
@@ -512,9 +542,8 @@ Use several reviewable fixtures covering:
   rule, apart from comments which are not statements?
 - What bounded Unicode graph shape best supports the representative journey
   without implying that omitted levels were not requested?
-- What observed CommonJS presence or structural distortion should trigger the
-  scope condition? No numeric threshold is set before validation evidence exists;
-  the judgment concerns whether the omission changes the apparent main structure.
+- Which unfamiliar TypeScript repository will supply both the preliminary
+  CommonJS survey and the final external product exercise?
 
 ## Governing-document impact
 
@@ -543,8 +572,8 @@ The following choices are outside implementation discretion and require a
 separately accepted change:
 
 - expanding or narrowing the supported request mechanisms materially;
-- including CommonJS-form requests when the validation condition has not made
-  bounded support required;
+- including CommonJS-form requests when the preliminary scope condition has not
+  made bounded support required;
 - changing the configured-project or repository-layout organization boundary;
 - treating external package or runtime identity as established;
 - weakening occurrence evidence, edge aggregation, cycle preservation,

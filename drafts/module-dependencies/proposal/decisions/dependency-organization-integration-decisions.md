@@ -36,12 +36,15 @@ does not support.
 Establish a common classification only when it survives every applicable
 endpoint placement supported by the occurrence evidence:
 
-- `within` when the child remains within every applicable source placement's
-  organizational context;
-- `into-descendants` when the child is in a descendant group for every applicable
-  source placement, accounting for every applicable target placement;
-- `outward` when the child is outside every applicable source placement and its
-  descendants, accounting for every applicable target placement; and
+- `same-group` when every applicable source-and-target placement combination
+  supported by the evidence places both endpoints in the same organization
+  group;
+- `into-descendants` when every applicable source-and-target placement
+  combination supported by the evidence places the target in a strict descendant
+  group of the source placement;
+- `outward` when every applicable source-and-target placement combination
+  supported by the evidence places the target outside the source group and its
+  descendants; and
 - `varies-by-placement` when established placements give different answers.
 
 Retain partial or unavailable placement evaluation rather than forcing a value.
@@ -58,11 +61,11 @@ this slice.
 
 #### Rationale
 
-A module with several established placements can have a relationship that is
-inside all placement contexts, outside all of them, or inside some and outside
-others. Conservative invariant classification supplies useful structure without
-choosing one convenient organizational perspective. Captured occurrence evidence
-can often avoid unrelated placements that would otherwise weaken the result.
+A module with several established placements can have comparisons that are all
+same-group, all into strict descendants, all outward, or mixed. Conservative
+invariant classification supplies useful structure without choosing one
+convenient organizational perspective. Captured occurrence evidence can often
+avoid unrelated placements that would otherwise weaken the result.
 
 #### Alternatives considered
 

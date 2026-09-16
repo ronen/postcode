@@ -156,11 +156,17 @@ Every initial dependency view must disclose that CommonJS-form `require()` is no
 analyzed. Provider completeness applies only to the explicitly supported request
 mechanisms.
 
-Practical validation must not select repositories merely because they avoid this
-limitation. Validation on PostCode and an unfamiliar repository should record
-whether source-owned CommonJS-form requests are materially present. If their
-omission distorts the apparent main structure, that is evidence to promote
-bounded support before judging the slice useful.
+A preliminary survey before substantive dependency implementation must not
+select repositories merely because they avoid this limitation. It should record
+source-owned CommonJS-form requests in PostCode and the selected unfamiliar
+repository and estimate which structural relationships their omission would
+lose. If that omission distorts the apparent main structure, bounded support
+belongs in the approved implementation scope. Final validation confirms the
+survey judgment against the implemented result.
+
+A preliminary 2026-09-16 scan found no CommonJS-form `require()` calls in
+PostCode's JavaScript or TypeScript source files. The unfamiliar repository has
+not yet been selected or surveyed, so this does not resolve the scope condition.
 
 ### `re-exports only` module property
 
@@ -230,8 +236,7 @@ claims about it. Organization-relative information should preserve:
   captured source evidence;
 - established dependency-child placement or placements;
 - the relationship supported across those applicable placements, such as the
-  same direct group, within the parent placements' organizational contexts, into
-  descendants, toward enclosing groups, or outward from those contexts;
+  same direct group, into descendants, or outward from those contexts;
 - applicable common ancestor or ancestors; and
 - outside-organization, multiple, ambiguous, unplaced, partial, and unavailable
   outcomes with their actual evidence and evaluation state.
@@ -251,14 +256,15 @@ placement associations that the evidence does not establish.
 Expose a common organization classification only when it survives every
 applicable endpoint placement supported by the occurrence evidence:
 
-- if the child remains within the relevant organizational context for every
-  applicable parent placement, classify the occurrence as `within`;
-- if the child is in a descendant group for every applicable parent placement,
-  expose the more specific `into-descendants` classification;
-- if the child is outside every applicable parent placement and its descendants,
-  classify the occurrence as `outward`;
-- if it is inside some applicable parent-placement contexts and outside others,
-  classify it as `varies-by-placement`; and
+- if every applicable endpoint-placement combination supported by the evidence
+  places parent and child in the same group, classify the occurrence as
+  `same-group`;
+- if every such combination places the child in a strict descendant group of the
+  parent placement, classify the occurrence as `into-descendants`;
+- if every such combination places the child outside the parent group and its
+  descendants, classify the occurrence as `outward`;
+- if supported placement comparisons yield different classifications, classify
+  it as `varies-by-placement`; and
 - if required placement evidence is partial or unavailable, do not present a
   complete organization classification.
 
@@ -278,7 +284,7 @@ insufficient.
 
 Multiple organizational placements and multi-parent organization containment are
 completeness cases rather than the representative journey. The central example
-should use ordinary within-group and outward relationships; focused fixtures
+should use ordinary same-group and outward relationships; focused fixtures
 should retain variation coverage.
 
 Organization-relative information must not establish an architectural violation,
@@ -349,6 +355,12 @@ Keep an opaque resolved target, an unresolved literal request, an indeterminate
 nonliteral request, and a platform-provided target distinct whenever the provider
 can establish those outcomes. Do not present failure to resolve as a known opaque
 target.
+
+Expose requests that establish no relationship without turning them into graph
+nodes: the focused dependency-child result lists them separately from dependency
+children, the project result supports qualified summary counts, and explicit
+source detail exposes captured syntax, location, target status, and applicable
+resolution evidence. They create no dependency-parent result.
 
 Locally installed package contents, published artifacts, online source
 repositories, and repository metadata links must not be assumed to represent the

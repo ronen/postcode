@@ -20,11 +20,20 @@ The product must reveal direct module relationships while keeping source request
 Implement three primitive dependency questions:
 
 - `dependency-structure(project)` selects the configured project's established
-  direct module graph;
+  direct module graph and supported non-edge request results owned by its project
+  modules;
 - `dependency-children(module)` selects modules on which the subject directly
-  depends and their relationships; and
+  depends and their relationships, plus the subject's supported source requests
+  that establish no dependency child; and
 - `dependency-parents(module)` selects modules that depend directly on the
   subject and their relationships.
+
+Non-edge request results remain separate from dependency children and
+relationships. The focused child presentation lists them as qualified request
+results; the project presentation summarizes their counts without depicting
+them as nodes; and explicit source detail exposes captured syntax, location,
+target status, and applicable resolution evidence. Because such a request
+establishes no child, it creates no parent result.
 
 The names describe lens semantics; exact CLI spelling remains an implementation
 choice. A dependency parent depends directly on a dependency child. Views scope
@@ -210,9 +219,9 @@ requiring all future languages to fit one vocabulary.
 
 #### Decision
 
-Do not recognize CommonJS-form `require()` calls in the initial implementation.
-Disclose that limitation in every dependency view and bound provider completeness
-to the supported mechanisms.
+The baseline scope does not recognize CommonJS-form `require()` calls. Disclose
+that limitation in every dependency view produced under that scope and bound
+provider completeness to the supported mechanisms.
 
 Design occurrence records so later CommonJS support can add a qualified mechanism
 without changing module-edge direction, aggregation, roots, cycles, or
@@ -221,11 +230,11 @@ single-argument `require` that is not established as locally shadowed and whose
 context supports the interpretation. Literal and nonliteral status remain
 distinct, and TypeScript analysis does not establish the runtime loader.
 
-During validation, record material source-owned CommonJS-form calls in PostCode
-and the unfamiliar repository. If omission materially distorts the apparent main
-structure, the slice does not satisfy its usefulness criterion without bounded
-CommonJS support. Do not conceal the distortion by weakening the criterion or
-selecting more convenient validation evidence.
+The initial exclusion is conditional on evidence from PostCode and an unfamiliar
+repository that omission does not materially distort their apparent main
+structure. If the omitted calls would remove structurally important direct
+relationships, the slice requires bounded CommonJS support. Do not conceal
+distortion by weakening the criterion or selecting more convenient evidence.
 
 #### Rationale
 
@@ -249,8 +258,7 @@ that architectural convenience from disguising a serious usability gap.
 
 - Initial JavaScript and older TypeScript projects may have materially partial
   dependency coverage.
-- Validation can invalidate the initial omission of CommonJS support before the
-  slice is judged useful.
+- Evidence can invalidate the initial omission before the slice is judged useful.
 - Later CommonJS support has a defined semantic boundary rather than an open-ended
   compatibility promise.
 
@@ -309,7 +317,9 @@ those guarantees.
 
 ## Follow-up
 
-- Add qualified CommonJS-form request analysis if validation or later use demonstrates sufficient value and its recognition contract is accepted.
+- If the preliminary scope survey does not require it, reconsider qualified
+  CommonJS-form request analysis when later use demonstrates sufficient value and
+  its recognition contract is accepted.
 - Add transitive reach and maximum-hop lens parameters after direct structure is exercised.
 - Revisit addressable cycle subjects if humans need cycle-focused inspection.
 - Add package identity, package versions, or external source expansion only with explicit correspondence and analysis-boundary semantics.
