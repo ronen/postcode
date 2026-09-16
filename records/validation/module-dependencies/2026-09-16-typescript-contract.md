@@ -34,7 +34,7 @@ predicate characterizes the approved composition rule explicitly.
 | Question | Observed evidence | Provider consequence |
 | --- | --- | --- |
 | Supported request forms | Public node kinds distinguish static and side-effect imports, direct re-exports, import-equals, import types, dynamic imports, and bare require calls. | No text scanning or emitted-code analysis is needed for recognition. |
-| Explicit type evidence | Clause-level and element-level `isTypeOnly` flags remain distinct; import types expose `isTypeOf`. | Preserve the evidence before deciding whether all occurrences establish a whole-edge type-only claim. An empty named list must not become type-only through vacuous `every`. |
+| Explicit type evidence | Clause-level and element-level `isTypeOnly` flags remain distinct; import types expose `isTypeOf`. A default import combined with an all-type named list has a default binding and a non-type-only clause despite every named element being type-only. | Preserve the evidence before deciding whether all occurrences establish a whole-edge type-only claim. Neither an empty named list nor an all-type named list with a default binding establishes the whole-occurrence claim. |
 | Nonliteral expressions | Identifiers and concatenations remain expression nodes; no-substitution templates satisfy `isStringLiteralLike`. | Do not evaluate expressions. Treat no-substitution templates as literal dynamic targets. |
 | Re-export intermediates | The specifier symbol identifies `forward.ts`; following its export alias reaches `target.ts`. | Use the specifier target for dependency structure; do not flatten the alias chain. |
 | TypeScript require literals | `getSymbolAtLocation` on the literal returns no target, even for an already loaded target. | Existing discovery resolution evidence is insufficient for this mechanism. |
@@ -46,7 +46,7 @@ predicate characterizes the approved composition rule explicitly.
 | Missing versus global binding | Both can have no local lookup result, but only the global declaration has a symbol and callable signature. | Absence of a local symbol alone does not establish affirmative CommonJS context. |
 | Source format | `.cts` and `.mts` retain distinct public `impliedNodeFormat` values under the captured-host construction. An ESM file can still see an ambient require declaration. | Format, declared availability, source-request recognition, and actual loader existence are different claims. |
 | Ambient ownership | Merged named ambient declarations share one symbol while request locations remain associated with individual declarations. | Retain occurrence-specific source evidence rather than assigning every declaration placement to each occurrence. |
-| Nested namespaces and augmentations | A namespace symbol is not a discovered ambient module. A module-augmentation name can resolve to the augmented source module instead of the enclosing file module. | Ownership cannot be implemented as simply the nearest syntactic module or every enclosing source file. |
+| Nested namespaces and augmentations | Walking outward from the nested import-type occurrence visits `Nested` and then the discovered ambient module `named`; its owner is `named`, distinct from its resolved target `target`. A module-augmentation name can resolve to the augmented source module instead of the enclosing file module. | Ownership cannot be implemented as simply the nearest syntactic module or every enclosing source file. |
 | Composition | Named, wildcard, namespace, type-only, and empty-list direct `export ... from` forms pass the candidate syntax rule. Comments and empty statements do not block it; the tested declaration, import, executable, local-export, and assignment forms do. | Require at least one direct re-export and inspect every substantive top-level statement. Empty-list direct re-exports differ from local `export {}`. |
 | Diagnostics | A supported import node survives a syntax error elsewhere in the same file. | Preserve encountered diagnostics and qualify the result; do not equate parse recovery with an unqualified complete interpretation. |
 
@@ -54,6 +54,11 @@ predicate characterizes the approved composition rule explicitly.
 
 These are implementation proposals within the approved plan, not established
 production behavior or independently reviewed guarantees.
+
+Round-1 review identified an unresolved precedence decision in item 4. That item
+must not be implemented as written pending human direction and additional
+characterization; see the review response below. The original proposal remains
+visible here so the reviewed uncertainty is not silently replaced by a new rule.
 
 1. Enumerate source requests only for project-classified modules in the existing
    discovered population. External-only modules remain opaque. Associate each
@@ -119,3 +124,34 @@ observations, or discovery-facet rename have been implemented at this checkpoint
 The full semantic fixtures, representative journey, unfamiliar-repository
 exercise, clean instrument evaluation, latency measurement, and final integrated
 review all remain required. No claim of slice completion is made.
+
+## Round-1 review response
+
+The [independent findings](../../reviews/module-dependencies/2026-09-16-provider-contract-round-1-findings.md)
+identify four actionable items. The [disposition](../../reviews/module-dependencies/2026-09-16-provider-contract-disposition.md)
+tracks each separately.
+
+The default-plus-all-type-named import fixture now records the missing clause
+evidence (finding 2). The namespace test now starts at the import-type occurrence,
+walks enclosing module declarations, and checks both the owner and its distinction
+from the import target (finding 4). These characterize compiler facts; production
+type-only aggregation and ownership validation remain future work.
+
+For finding 3, the reviewer reports that the surveyed ts-node configuration uses
+`include: ["src/**/*"]`. This makes already-selected internal targets plausible
+and narrows the specific population risk; it does not confirm either surveyed
+edge. This configuration observation is reviewer-supplied evidence, not a new
+implementing-agent verification. Final ts-node validation must record each of the
+two internal occurrences and targets, whether the target is selected by the root
+glob, its actual Program/discovery membership, and the resulting edge or qualified
+non-edge outcome. A target outside `src/` still needs independent membership
+assessment. No expansion of the discovery population is chosen here.
+
+For finding 1, the reviewer reports that classic `module: commonjs` with Node
+resolution supplies no `impliedNodeFormat`, while mixed NodeNext files share the
+ambient declaration despite differing formats. The proposed disjunction therefore
+has an unresolved recognition-policy gap. Additional classic/mixed fixtures,
+Node-style variable-declaration evidence, and motivating-repository investigation
+are proposed next, subject to the human's instruction to ask before proceeding
+through reviewer-identified uncertainty. No precedence rule or ESM recognition
+outcome has been selected. Production integration remains paused.

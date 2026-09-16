@@ -3,6 +3,7 @@ import './target.js';
 import type { Shape } from './target.js';
 import { type Shape as OtherShape } from './target.js';
 import { type Shape as MixedShape, value as otherValue } from './target.js';
+import Def, { type Shape as DefaultShape } from './target.js';
 export * from './forward.js';
 export * as namespace from './target.js';
 export type * from './target.js';

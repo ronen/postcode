@@ -41,7 +41,7 @@ test('dependency contract: supported request syntax preserves mechanism and expl
   assert.equal(ts.version, '6.0.3');
   assert.deepEqual(program.getSyntacticDiagnostics(), []);
   const imports = file.statements.filter(ts.isImportDeclaration);
-  assert.equal(imports.length, 5);
+  assert.equal(imports.length, 6);
   assert.equal(imports[1]!.importClause, undefined); // Side-effect form.
   assert.equal(imports[2]!.importClause!.isTypeOnly, true);
   const typeElements = imports[3]!.importClause!.namedBindings!;
@@ -50,6 +50,11 @@ test('dependency contract: supported request syntax preserves mechanism and expl
   const mixed = imports[4]!.importClause!.namedBindings!;
   assert.ok(ts.isNamedImports(mixed));
   assert.deepEqual(mixed.elements.map(element => element.isTypeOnly), [true, false]);
+  const withDefault = imports[5]!.importClause!;
+  assert.equal(withDefault.isTypeOnly, false);
+  assert.equal(withDefault.name!.text, 'Def');
+  assert.ok(ts.isNamedImports(withDefault.namedBindings!));
+  assert.deepEqual(withDefault.namedBindings.elements.map(element => element.isTypeOnly), [true]);
   const exports = file.statements.filter(ts.isExportDeclaration);
   assert.equal(exports.length, 5);
   assert.equal(exports[0]!.exportClause, undefined);
@@ -82,7 +87,7 @@ test('dependency contract: static, dynamic, import-type and import-equals litera
     && (ts.isImportDeclaration(node.parent) || ts.isExportDeclaration(node.parent)
       || ts.isExternalModuleReference(node.parent) || ts.isLiteralTypeNode(node.parent)
       || (ts.isCallExpression(node.parent) && node.parent.expression.kind === ts.SyntaxKind.ImportKeyword)));
-  assert.equal(requests.length, 15);
+  assert.equal(requests.length, 16);
   assert.ok(requests.every(node => checker.getSymbolAtLocation(node) === target));
   const missing = nodes(file).filter(ts.isStringLiteralLike).find(node => node.text === './missing.js')!;
   assert.equal(checker.getSymbolAtLocation(missing), undefined);
@@ -213,6 +218,23 @@ test('dependency contract: module declarations and augmentations require symbol 
     const nested = nodes(named.declarations![0]!).filter(ts.isModuleDeclaration).find(node => node.name.getText() === 'Nested')!;
     assert.ok(checker.getSymbolAtLocation(nested.name));
     assert.equal(ambient.includes(checker.getSymbolAtLocation(nested.name)!), false);
+    const request = nodes(nested).filter(ts.isImportTypeNode)[0]!;
+    assert.ok(ts.isLiteralTypeNode(request.argument));
+    const target = checker.getSymbolAtLocation(request.argument.literal)!;
+    assert.equal(target, ambient.find(symbol => symbol.name === '"target"'));
+    // Start at the actual occurrence and retain the first enclosing module
+    // whose symbol is in the discovered ambient population, skipping Nested.
+    let owner: ts.Symbol | undefined;
+    const enclosingNames: string[] = [];
+    for (let parent: ts.Node | undefined = request.parent; parent; parent = parent.parent) {
+      if (!ts.isModuleDeclaration(parent)) continue;
+      enclosingNames.push(parent.name.getText());
+      const symbol = checker.getSymbolAtLocation(parent.name);
+      if (symbol && ambient.includes(symbol)) { owner = symbol; break; }
+    }
+    assert.deepEqual(enclosingNames, ['Nested', "'named'"]);
+    assert.equal(owner, named);
+    assert.notEqual(owner, target);
     const augmentationFile = program.getSourceFile(path.join(root, 'augmentation.ts'))!;
     const augmentation = augmentationFile.statements.filter(ts.isModuleDeclaration)[0]!;
     const augmented = checker.getSymbolAtLocation(augmentation.name)!;
