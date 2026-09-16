@@ -323,7 +323,7 @@ test('captured request evidence survives later edits and dependency method versi
     const snapshot = result.store.get(result.evaluation.snapshot);
     assert.equal(snapshot.kind, 'snapshot');
     if (snapshot.kind !== 'snapshot') throw new Error('Expected snapshot');
-    assert.ok(snapshot.methods.includes('postcode/typescript-dependencies@1'));
+    assert.ok(snapshot.methods.includes('postcode/typescript-dependencies@2'));
     assert.ok(snapshot.methods.includes('postcode/evaluate-dependencies@1'));
   });
 });
@@ -363,5 +363,27 @@ test('file resolver evidence never narrows a different ambient target declaratio
         && evidence.path === result.source(required).dependencyResolution!.resolvedFile
         && realpathSync(evidence.path) === realpathSync(path.join(root, 'node_modules/both/index.d.ts'));
     }));
+  });
+});
+
+test('relationship diagnostics count source diagnostics once without collapsing distinct same-code errors', () => {
+  for (const diagnosticCount of [1, 2]) temporary({
+    'entry.ts': `import { value as first } from './target'; import { value as second } from './target';
+      const broken = ; ${diagnosticCount === 2 ? 'const alsoBroken = ;' : ''}`,
+    'target.ts': 'export const value = 1;',
+    'unrelated.ts': 'export {}; const unrelatedError = ;',
+  }, root => {
+    const result = analyze(path.join(root, 'tsconfig.json'));
+    assert.equal(result.occurrences.length, 2);
+    assert.equal(result.relationships.length, 1);
+    const expected = Array.from({ length: diagnosticCount }, () => ({ code: 1109, category: 'error' }));
+    for (const record of [...result.occurrences, ...result.relationships]) {
+      const context = result.store.get(record.context);
+      assert.equal(context.kind, 'claim-context');
+      if (context.kind !== 'claim-context') throw new Error('Expected context');
+      assert.deepEqual(context.diagnostics, expected);
+    }
+    assert.equal(result.evaluation.execution, 'completed');
+    assert.equal(result.evaluation.materialization, 'full');
   });
 });

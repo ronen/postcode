@@ -7,7 +7,7 @@ export const methods = {
   records: 'postcode/program-records@12',
   discovery: 'postcode/typescript-modules@9',
   evaluation: 'postcode/evaluate-modules@3',
-  dependencies: 'postcode/typescript-dependencies@1',
+  dependencies: 'postcode/typescript-dependencies@2',
   dependencyEvaluation: 'postcode/evaluate-dependencies@1',
   projection: 'postcode/projection@5',
   expansions: 'postcode/typescript-expansions@2',

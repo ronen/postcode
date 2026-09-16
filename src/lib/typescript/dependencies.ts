@@ -145,6 +145,7 @@ export function prepareDependencies(program: ts.Program, host: ts.CompilerHost, 
     const method = `${methods.dependencies};typescript@${ts.version}`;
     const records: ProgramRecord[] = [];
     const occurrences: DependencyOccurrenceRecord[] = [];
+    const occurrenceFiles = new Map<RecordId, ts.SourceFile>();
     const coverage: DependencyCoverageRecord[] = [];
     const contexts = new Map<RecordId, ClaimContextRecord>();
     const moduleId = (candidate: ModuleCandidate) => recordId(snapshot, 'module', candidate.key);
@@ -176,6 +177,7 @@ export function prepareDependencies(program: ts.Program, host: ts.CompilerHost, 
           evidence: source, outcome: request.coverage, commonjs: request.commonjs });
       } else {
         if (!owner) throw new Error('Recognized dependency occurrence lacks an owner');
+        occurrenceFiles.set(id, request.node.getSourceFile());
         occurrences.push({ kind: 'dependency-occurrence', id, snapshot, method, owner, context: qualification,
           evidence: source, targetEvidence, mechanism: request.mechanism, typeOnly: request.typeOnly,
           targetStatus: request.targetStatus, target: request.target ? moduleId(request.target) : null, commonjs: request.commonjs });
@@ -192,10 +194,12 @@ export function prepareDependencies(program: ts.Program, host: ts.CompilerHost, 
     const relationships: DependencyRelationshipClaim[] = [...pairs].sort(([a], [b]) => compare(a, b)).map(([, supporting]) => {
       const first = supporting[0]!;
       const id = recordId(snapshot, 'dependency', [method, first.owner, first.target]);
-      const qualification = context(id, first.owner, supporting.flatMap(occurrence => contexts.get(occurrence.context)!.evidence), []);
-      // Preserve all narrower diagnostics in the aggregate context, too.
-      const base = contexts.get(qualification)!;
-      contexts.set(qualification, { ...base, diagnostics: supporting.flatMap(occurrence => contexts.get(occurrence.context)!.diagnostics) });
+      // Select each captured diagnostic once across the contributing files.
+      // Concatenating occurrence contexts multiplies file-wide diagnostics;
+      // deduplicating projected code/category pairs would lose distinct errors.
+      const sourceFiles = [...new Set(supporting.map(occurrence => occurrenceFiles.get(occurrence.id)!))];
+      const qualification = context(id, first.owner,
+        supporting.flatMap(occurrence => contexts.get(occurrence.context)!.evidence), sourceFiles);
       return { kind: 'claim', id, snapshot, method, subject: first.owner, context: qualification,
         information: { type: 'dependency', child: first.target!, occurrences: supporting.map(occurrence => occurrence.id),
           mechanisms: [...new Set(supporting.map(occurrence => occurrence.mechanism))].sort(compare),
