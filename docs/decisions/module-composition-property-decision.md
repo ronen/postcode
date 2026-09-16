@@ -1,7 +1,7 @@
 # Module composition property decision
 
-Status: in review
-Decided:
+Status: accepted
+Decided: 2026-09-16
 Arising from: [Module dependencies plan](../plans/module-dependencies-plan.md)
 Scope: the `re-exports only` module-composition property introduced with dependency analysis
 

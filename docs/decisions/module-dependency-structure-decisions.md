@@ -1,7 +1,7 @@
 # Module dependency structure decisions
 
-Status: in review
-Decided:
+Status: accepted
+Decided: 2026-09-16
 Arising from: [Module dependencies plan](../plans/module-dependencies-plan.md)
 Scope: direct TypeScript module-dependency evidence, graph semantics, project and focused navigation, and analysis boundaries
 

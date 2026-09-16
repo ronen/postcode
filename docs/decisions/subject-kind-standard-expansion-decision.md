@@ -1,7 +1,7 @@
 # Subject-kind standard expansion decision
 
-Status: in review
-Decided:
+Status: accepted
+Decided: 2026-09-16
 Arising from: [Module dependencies plan](../plans/module-dependencies-plan.md)
 Scope: the cross-cutting definition of standard expansion for entity and non-entity subject kinds
 
@@ -73,7 +73,7 @@ context inherent to every dependency projection.
 
 ## Governing-document change
 
-[`docs/core-concepts.md`](../docs/core-concepts.md) defines standard expansion as
+[`docs/core-concepts.md`](../core-concepts.md) defines standard expansion as
 related information for a kind of subject rather than only an entity kind.
 
 This decision does not change the architectural constraints.

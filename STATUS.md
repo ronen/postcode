@@ -1,6 +1,6 @@
 # Project Status
 
-Last reviewed: 2026-09-15
+Last reviewed: 2026-09-16
 
 The initial module-inventory slice is complete. The development CLI provides
 Unicode and experimental JSON inventories, exact-selection inspection,
@@ -35,3 +35,11 @@ is clean. The plan and decisions now use “repository organization” to reflec
 their scope; historical task and review identifiers retain their original names.
 The human accepted the final review gate and directed task closure on 2026-09-15.
 [PR #3](https://github.com/ronen/postcode/pull/3) is ready for the human to merge.
+
+Approved next plan:
+[Module dependencies slice](docs/plans/module-dependencies-plan.md). It adds a
+bounded project dependency view, focused navigation to dependency children and
+parents, occurrence-backed relationship evidence, bounded CommonJS-form request
+recognition, and qualified repository-organization context. Planning approval
+does not authorize implementation; no implementation task is active for this
+plan.

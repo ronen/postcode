@@ -122,8 +122,8 @@ A **View** is an instantiated presentation of a particular projection. Different
 
 ### Expansion
 
-*[decision: [Initial core concepts](decisions/initial-core-concepts-decisions.md#define-standard-expansion-separately-from-another-lens-application)]*
+*[decision: [Subject-kind standard expansion](decisions/subject-kind-standard-expansion-decision.md#define-standard-expansions-for-kinds-of-subject)]*
 
-An **Expansion** exposes additional detail within a presentation. A **standard expansion** is related information defined for an entity kind that a presentation can include as inline detail without applying another lens. Effective exported-symbol relationships and associated in-source documentation assertions are the initial module examples.
+An **Expansion** exposes additional detail within a presentation. A **standard expansion** is related information defined for a kind of subject that a presentation can include as inline detail without applying another lens. Effective exported-symbol relationships and associated in-source documentation assertions are initial module-entity examples. Module composition and a dependency relationship's organization context are examples added by the module-dependency slice.
 
-Standard expansions concern the entity kind's presentation semantics, independently of the lens that selected the entity. A source-detail expansion discloses supporting implementation evidence. Expanding an item to embed a view of another projection instead involves another lens application; inline placement alone does not make that information a standard expansion. Dependencies and dependents, for example, are separately meaningful lens questions in the accepted module slice.
+Standard expansions concern the subject kind's presentation semantics, independently of the lens that selected the subject. A source-detail expansion discloses supporting implementation evidence. Expanding an item to embed a view of another projection instead involves another lens application; inline placement alone does not make that information a standard expansion. Dependency children and dependency parents, for example, are separately meaningful lens questions rather than standard module expansions.

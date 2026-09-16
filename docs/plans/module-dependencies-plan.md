@@ -1,6 +1,6 @@
 # Module dependencies slice
 
-Status: in review
+Status: approved
 Created: 2026-09-15
 Updated: 2026-09-16
 Superseded by:
@@ -34,7 +34,7 @@ requested.
 
 The consequential choices are recorded in the decision records listed under
 [Resulting decisions](#resulting-decisions).
-The governing [`core concepts`](../docs/core-concepts.md) define standard expansions
+The governing [`core concepts`](../core-concepts.md) define standard expansions
 for kinds of subject.
 
 ## Use narrative
@@ -576,7 +576,7 @@ Use several reviewable fixtures covering:
 
 ## Governing-document impact
 
-The governing [`core concepts`](../docs/core-concepts.md) define standard expansion for
+The governing [`core concepts`](../core-concepts.md) define standard expansion for
 a kind of subject rather than only an entity kind. This permits a dependency
 relationship to have presentation-requested organization context without turning
 the relationship into an entity or making the information inherent to every
