@@ -45,11 +45,17 @@ recognition, and qualified repository-organization context. The human authorized
 2026-09-16; work is on `codex/module-dependencies`.
 
 The first checkpoint characterizes TypeScript request, resolution, shadowing,
-ownership, and composition evidence with 13 compiler-backed tests. All 142 tests
+ownership, and composition evidence with 16 compiler-backed tests. All 145 tests
 pass. The [characterization record](records/validation/module-dependencies/2026-09-16-typescript-contract.md)
 distinguishes observed behavior from the proposed provider contract. In
 particular, resolving a TypeScript `require` target does not add it to the
-configured Program population. Implementation pauses for human-arranged
-independent review of this evidence boundary before production integration.
+configured Program population. The first independent review is complete;
+default-import and namespace-owner evidence gaps are corrected. The
+[disposition](records/reviews/module-dependencies/2026-09-16-provider-contract-disposition.md)
+records every finding. Authorized CommonJS investigation confirmed the classic
+and mixed-module distinction and the two ts-node target roots at compiler level.
+Human direction is pending on the proposed recognition rule, ts-node validation
+configuration, and qualification of the survey's unique-edge premise. Production
+integration remains paused; the intermediate review gate is not yet satisfied.
 Dependency product behavior and final integrated review remain pending; the task
 is active.
