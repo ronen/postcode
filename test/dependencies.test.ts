@@ -387,3 +387,45 @@ test('relationship diagnostics count source diagnostics once without collapsing 
     assert.equal(result.evaluation.materialization, 'full');
   });
 });
+
+test('merged module relationships retain distinct diagnostics across files without multiplying shared file diagnostics', () => {
+  temporary({
+    'first.d.ts': `declare module 'parent' {
+      export type A = import('child').T;
+      export type B = import('child').T;
+      const broken = ;
+    }`,
+    'second.d.ts': `declare module 'parent' {
+      export type C = import('child').T;
+      const alsoBroken = ;
+    }`,
+    'child.d.ts': "declare module 'child' { export interface T {} }",
+    'unrelated.ts': 'export {}; const unrelatedError = ;',
+  }, root => {
+    const result = analyze(path.join(root, 'tsconfig.json'));
+    assert.equal(result.relationships.length, 1);
+    const relationship = result.relationships[0]!;
+    assert.equal(result.name(relationship.subject), 'parent');
+    assert.equal(result.name(relationship.information.child), 'child');
+    assert.equal(relationship.information.occurrences.length, 3);
+    assert.equal(result.occurrences.length, 3);
+    assert.deepEqual(result.occurrences.map(occurrence => path.basename(result.source(occurrence).path)).sort(),
+      ['first.d.ts', 'first.d.ts', 'second.d.ts']);
+    for (const occurrence of result.occurrences) {
+      assert.equal(occurrence.owner, relationship.subject);
+      assert.equal(occurrence.target, relationship.information.child);
+      const context = result.store.get(occurrence.context);
+      assert.equal(context.kind, 'claim-context');
+      if (context.kind !== 'claim-context') throw new Error('Expected context');
+      assert.deepEqual(context.diagnostics, [{ code: 1109, category: 'error' }]);
+    }
+    const context = result.store.get(relationship.context);
+    assert.equal(context.kind, 'claim-context');
+    if (context.kind !== 'claim-context') throw new Error('Expected context');
+    assert.deepEqual(context.diagnostics, [
+      { code: 1109, category: 'error' }, { code: 1109, category: 'error' },
+    ]);
+    assert.equal(result.evaluation.execution, 'completed');
+    assert.equal(result.evaluation.materialization, 'full');
+  });
+});
