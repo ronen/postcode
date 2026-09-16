@@ -21,6 +21,12 @@ say that the review gate is sufficient.
 
 The review is complete.  Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
 
+### 2026-09-16 — CommonJS investigation authorization
+
+Context: The agent asked, "Finding 1 leaves CommonJS recognition unresolved: classic ts-node configuration lacks a per-file format signal, while ESM files can share ambient require declarations. May I investigate classic and mixed-module fixtures plus the surveyed ts-node checkout, then bring you a concrete recognition rule before implementing it? Your instruction requires approval before proceeding through this uncertainty."
+
+Investigate, then propose a rule (Recommended)
+
 ## Outcome
 
 ## Verification
