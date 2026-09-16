@@ -156,11 +156,11 @@ Every initial dependency view must disclose that CommonJS-form `require()` is no
 analyzed. Provider completeness applies only to the explicitly supported request
 mechanisms.
 
-A preliminary survey before substantive dependency implementation must not
-select repositories merely because they avoid this limitation. It should record
-source-owned CommonJS-form requests in PostCode and the selected unfamiliar
-repository and estimate which structural relationships their omission would
-lose. If that omission distorts the apparent main structure, bounded support
+A preliminary survey before proposal approval should record source-owned
+CommonJS-form requests in PostCode and the selected unfamiliar repository and
+estimate which structural relationships their omission would lose. The
+unfamiliar repository must not be selected merely because it avoids this
+limitation. If the omission distorts the apparent main structure, bounded support
 belongs in the approved implementation scope. Final validation confirms the
 survey judgment against the implemented result.
 

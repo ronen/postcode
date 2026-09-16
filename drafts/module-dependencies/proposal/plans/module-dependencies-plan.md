@@ -324,15 +324,6 @@ Deliver an independently useful read-only dependency investigation that:
 - The occurrence and relationship model must admit later qualified CommonJS-form
   occurrences without changing dependency-edge identity, direction, aggregation,
   roots, cycles, or presentation bounds.
-- Before substantive dependency implementation, a preliminary survey records
-  source-owned CommonJS-form calls in PostCode and the selected unfamiliar
-  validation repository and estimates which direct structural relationships the
-  initial omission would lose. Repository selection must not be manipulated to
-  conceal the limitation.
-- If omission materially changes the apparent main structure, CommonJS support
-  must be added to the slice scope before approval and before the occurrence
-  provider and presentations are implemented. Do not conceal the distortion by
-  weakening that criterion or selecting a more convenient repository.
 - Final instrument validation repeats the survey against the implemented
   coverage and confirms that the earlier scope judgment still holds.
 
@@ -374,6 +365,22 @@ beyond its initial rendering bounds.
 Keep unresolved requests, nonliteral dynamic requests, external targets,
 diagnostics, unavailable evaluation, source disclosure, and unusual organization
 topologies in focused fixtures so they do not dominate the product journey.
+
+## CommonJS scope prerequisite
+
+Approval requires a preliminary survey of source-owned CommonJS-form calls in
+PostCode and the selected unfamiliar validation repository. Inspect the calls and
+their literal targets far enough to estimate which direct structural
+relationships the baseline scope would omit. Repository selection must not be
+manipulated to conceal this limitation, and the survey does not establish that
+every call named `require` is a module-loading request.
+
+The PostCode portion found no CommonJS-form `require()` calls in its JavaScript
+or TypeScript source files on 2026-09-16. The unfamiliar repository has not yet
+been selected or surveyed, so the baseline scope is not ready for approval. If
+that survey shows that omission would materially change the apparent main
+structure, revise the scope and dependency-structure decision to include bounded
+CommonJS support before approving this plan.
 
 ## Scope
 
@@ -418,39 +425,28 @@ topologies in focused fixtures so they do not dominate the product journey.
 
 ## Approach
 
-### 1. Survey CommonJS structural relevance
-
-Before changing the dependency provider, scan source-owned files in PostCode and
-the selected unfamiliar validation repository for CommonJS-form calls. Inspect
-the calls and their literal targets far enough to estimate whether omitting them
-would remove relationships that materially shape either repository's apparent
-main structure. This survey determines whether the implementation scope must add
-a bounded CommonJS recognition contract. It is an early scope check, not a
-substitute for final validation or a claim that every call named `require` is a
-module-loading request.
-
-### 2. Characterize the supported TypeScript request contract
+### 1. Characterize the supported TypeScript request contract
 
 Use small compiler-backed investigations to settle source-module ownership,
 literal and nonliteral request recognition, public resolution behavior, named
 ambient modules, import-equals, direct re-export forms, and diagnostics. Finalize
 the provider guarantee and limitations before depending on them in projections.
 
-### 3. Materialize occurrences and direct relationships
+### 2. Materialize occurrences and direct relationships
 
 Add the minimum records and store operations for occurrence evidence and
 aggregated directed module relationships. Keep resolution status, mechanism,
 type-only evidence, and source ownership independent. Extend snapshot method
 identity for every changed claim.
 
-### 4. Derive project graph information and focused projections
+### 3. Derive project graph information and focused projections
 
 Derive the project graph, condensation graph, roots, shared-node structure, and
 cycle groupings from materialized relationships. Implement the project,
 dependency-child, and dependency-parent lenses without allowing presentations to
 alter their requested populations.
 
-### 5. Add requested module and organization expansions
+### 4. Add requested module and organization expansions
 
 Materialize the positive `re-exports only` property from an exhaustive syntax
 rule. Relate dependency occurrences to captured source placement and derive
@@ -458,14 +454,14 @@ conservative organization classifications. Rename the initial discovery-facet
 type and field without changing their values or semantics. Preserve independent
 outcomes when either expansion is partial or unavailable.
 
-### 6. Present, navigate, disclose, and observe
+### 5. Present, navigate, disclose, and observe
 
 Create bounded conceptual Unicode and structured presentations, explicit source
 detail, generated next actions, and complete observation artifacts. Extend the
 organization view only with the requested module property; do not add dependency
 counts or hidden dependency-lens behavior to it.
 
-### 7. Verify the instrument and its practical boundary
+### 6. Verify the instrument and its practical boundary
 
 Verify exact semantic fixtures before rendered outputs. Exercise the complete
 journey on PostCode and an unfamiliar repository, inspect usability, run clean
