@@ -128,18 +128,20 @@ truthful without prematurely creating a new cycle-subject identity contract.
 A direct dependency occurrence is a supported source module request owned by an
 established module. The initial TypeScript provider recognizes static imports,
 side-effect imports, direct re-exports, import types, TypeScript import-equals
-external references, and literal or nonliteral dynamic `import()` calls.
+external references, literal or nonliteral dynamic `import()` calls, and the
+bounded CommonJS-form `require()` calls defined below.
 
 Use the configured TypeScript environment to resolve literal targets. A resolved
 occurrence contributes to one directed relationship from its source module to the
 resolved target module. Aggregate occurrences with the same ordered module pair
 into one relationship while retaining every occurrence and its evidence.
 
-Retain unresolved literal requests and target-indeterminate nonliteral dynamic
-requests as source request results without inventing target modules or graph
-edges. Do not perform expression constant evaluation or control-flow and
-reachability analysis in this slice. Conditional or unreachable syntax therefore
-remains a recognized request without a claim that execution reached it.
+Retain unresolved literal requests and target-indeterminate nonliteral dynamic or
+CommonJS-form requests as source request results without inventing target modules
+or graph edges. Do not perform expression constant evaluation or control-flow
+and reachability analysis in this slice. Conditional or unreachable syntax
+therefore remains a recognized request without a claim that execution reached
+it.
 
 Re-exports create a direct relationship to the named intermediate module. Preserve
 existing alias and forwarding provenance without flattening the relationship to
@@ -215,51 +217,74 @@ requiring all future languages to fit one vocabulary.
 - Later binding-use or runtime analyses can add claims without changing edge
   identity.
 
-### Defer CommonJS-form requests behind an explicit product gate
+### Include bounded CommonJS-form requests without loader claims
 
 #### Decision
 
-The baseline scope does not recognize CommonJS-form `require()` calls. Disclose
-that limitation in every dependency view produced under that scope and bound
-provider completeness to the supported mechanisms.
+Recognize a CommonJS-form source request only for a call of a bare `require`
+identifier with exactly one argument, where the identifier is not established as
+locally shadowed and the captured context supports the CommonJS-form
+interpretation. The implementation must characterize that context and the
+available shadowing evidence explicitly. When required evidence is unavailable,
+do not guess that the call has CommonJS meaning.
 
-Design occurrence records so later CommonJS support can add a qualified mechanism
-without changing module-edge direction, aggregation, roots, cycles, or
-presentation bounds. A future provider may recognize only a bare,
-single-argument `require` that is not established as locally shadowed and whose
-context supports the interpretation. Literal and nonliteral status remain
-distinct, and TypeScript analysis does not establish the runtime loader.
+Preserve literal and nonliteral target status. Resolve a literal target through
+the configured TypeScript environment and create a relationship only when that
+environment establishes a supported target. Retain an unresolved literal as a
+non-edge request result. Retain a nonliteral target as target-indeterminate
+without constant evaluation or a fabricated edge.
 
-The initial exclusion is conditional on evidence from PostCode and an unfamiliar
-repository that omission does not materially distort their apparent main
-structure. If the omitted calls would remove structurally important direct
-relationships, the slice requires bounded CommonJS support. Do not conceal
-distortion by weakening the criterion or selecting more convenient evidence.
+The mechanism establishes a qualified source request, not that a runtime
+CommonJS loader exists, loading occurred, emitted code retains the call, or
+execution reached it. Calls through aliases or properties, calls with zero or
+several arguments, `require.resolve`, and other CommonJS APIs remain outside this
+bounded mechanism unless a later decision expands it. Dependency views disclose
+the supported boundary and any material unavailable recognition evidence.
 
 #### Rationale
 
-CommonJS support could improve practical coverage, but shadowing, contextual
-loader interpretation, and resolution require their own evidence contract. The
-occurrence model makes deferral architecturally safe; the product gate prevents
-that architectural convenience from disguising a serious usability gap.
+The pre-approval survey found that excluding CommonJS-form requests from the
+ts-node core source population would hide otherwise undiscoverable internal
+relationships, literal requests to external packages and Node builtins, and
+target-indeterminate requests. Provider analysis may establish the literal
+requests as external boundary children, platform-target results, or other
+qualified outcomes. All of those result kinds are part of this slice's product
+model. Results from PostCode, date-fns, and the rxjs library packages show that
+the mechanism may be absent in other projects, but they do not cancel material
+distortion in a project where it is used. Structural distortion is judged per
+configured project rather than by repository-wide prevalence or a majority of
+surveyed repositories.
+
+Shadowing, contextual interpretation, and resolution still require a narrow
+evidence contract. The occurrence model already keeps the source mechanism,
+target status, relationship, and runtime claims separate, so bounded support does
+not require a broader CommonJS subsystem.
 
 #### Alternatives considered
 
 - Include every call named `require`: rejected because local functions and
-  unavailable loaders would produce false relationships.
-- Omit `require` silently: rejected because users could mistake a partial graph
-  for complete supported structure.
-- Add bounded support automatically if validation finds calls: rejected because
-  validation evidence does not itself authorize expanded implementation scope.
-- Select an unfamiliar repository without CommonJS use: rejected as acceptance
-  bias when repository choice is used to conceal a known gap.
+  unsupported contexts would produce false source requests and relationships.
+- Retain the baseline exclusion with a disclosure: rejected because disclosure
+  does not restore internal relationships, external boundary children, or useful
+  target-indeterminate request results that bounded recognition can establish.
+- Recognize only literal calls: rejected because a qualified nonliteral request
+  remains useful even though it creates no graph edge.
+- Count only omitted project-internal edges: rejected because resolved external
+  boundary children, platform-target results, and non-edge request results are
+  part of the selected dependency result.
+- Infer runtime CommonJS loading from the recognized form: rejected because the
+  configured TypeScript evidence does not establish loader availability or
+  execution.
 
 #### Consequences
 
-- Initial JavaScript and older TypeScript projects may have materially partial
-  dependency coverage.
-- Evidence can invalidate the initial omission before the slice is judged useful.
-- Later CommonJS support has a defined semantic boundary rather than an open-ended
+- The TypeScript characterization must settle the exact affirmative contextual
+  and shadowing evidence used by the bounded recognizer.
+- Literal CommonJS-form requests participate in the same target resolution,
+  aggregation, organization, external-boundary, source-detail, and observation
+  rules as other occurrences.
+- Nonliteral CommonJS-form requests become visible non-edge request results.
+- CommonJS coverage remains explicitly bounded rather than an open-ended
   compatibility promise.
 
 ### Preserve external, diagnostic, evaluation, and observation boundaries
@@ -317,9 +342,8 @@ those guarantees.
 
 ## Follow-up
 
-- If the preliminary scope survey does not require it, reconsider qualified
-  CommonJS-form request analysis when later use demonstrates sufficient value and
-  its recognition contract is accepted.
+- Broaden CommonJS recognition beyond the bounded direct-call form only when a
+  later product question and evidence contract justify it.
 - Add transitive reach and maximum-hop lens parameters after direct structure is exercised.
 - Revisit addressable cycle subjects if humans need cycle-focused inspection.
 - Add package identity, package versions, or external source expansion only with explicit correspondence and analysis-boundary semantics.

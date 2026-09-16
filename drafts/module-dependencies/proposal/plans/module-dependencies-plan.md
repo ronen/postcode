@@ -86,6 +86,8 @@ Deliver an independently useful read-only dependency investigation that:
   primary product journey;
 - distinguishes resolved edges from unresolved and target-indeterminate source
   requests;
+- recognizes bounded CommonJS-form requests while preserving uncertainty about
+  loader availability and execution;
 - avoids unsupported value-use, emitted-code, loader, and runtime claims;
 - adds the qualified `re-exports only` module property to dependency and
   repository-organization presentations that request it;
@@ -161,14 +163,24 @@ Deliver an independently useful read-only dependency investigation that:
   - side-effect import declarations;
   - direct TypeScript re-export declarations;
   - import-type nodes;
-  - TypeScript import-equals external module references; and
-  - dynamic `import()` calls with literal or nonliteral target expressions.
+  - TypeScript import-equals external module references;
+  - dynamic `import()` calls with literal or nonliteral target expressions; and
+  - bounded CommonJS-form `require()` calls with literal or nonliteral target
+    expressions.
 - A literal target produces a module-pair relationship only when the configured
   TypeScript environment establishes a target in the supported module population.
   An unresolved literal remains a recognized request with no fabricated target.
 - A nonliteral dynamic request is recognized as target-indeterminate and produces
   no module-pair edge. The provider performs no target-expression constant
   evaluation or reachability analysis.
+- A CommonJS-form request is recognized only for a bare, exactly one-argument
+  `require` call that is not established as locally shadowed and whose captured
+  context affirmatively supports that interpretation. When the required context
+  or shadowing evidence is unavailable, the provider does not guess.
+- Literal CommonJS-form targets use the configured TypeScript resolution
+  environment. Nonliteral targets remain target-indeterminate. Recognition does
+  not establish that a runtime CommonJS loader exists or that loading or
+  execution occurred.
 - The focused child presentation lists unresolved literal and
   target-indeterminate request results separately from established dependency
   children. The project presentation summarizes their counts without depicting
@@ -317,15 +329,17 @@ Deliver an independently useful read-only dependency investigation that:
   qualified view artifact, rendered output, omissions, navigation, and actual
   source-disclosure level.
 
-### CommonJS coverage and practical gate
+### CommonJS coverage
 
-- The baseline scope excludes CommonJS-form `require()` analysis. Every
-  dependency view produced under that scope discloses the provider limitation.
-- The occurrence and relationship model must admit later qualified CommonJS-form
-  occurrences without changing dependency-edge identity, direction, aggregation,
-  roots, cycles, or presentation bounds.
-- Final instrument validation repeats the survey against the implemented
-  coverage and confirms that the earlier scope judgment still holds.
+- Calls through aliases or properties, calls with zero or several arguments,
+  `require.resolve`, and other CommonJS APIs are outside the initial bounded
+  mechanism.
+- Every dependency view states the bounded CommonJS-form coverage and discloses
+  any material unavailable recognition evidence.
+- Final instrument validation confirms that the implementation establishes the
+  supported outcomes for surveyed literal requests and retains surveyed
+  nonliteral calls as target-indeterminate request results without adding
+  unsupported loader or runtime claims.
 
 ### Instrument validation
 
@@ -366,26 +380,37 @@ Keep unresolved requests, nonliteral dynamic requests, external targets,
 diagnostics, unavailable evaluation, source disclosure, and unusual organization
 topologies in focused fixtures so they do not dominate the product journey.
 
-## CommonJS scope prerequisite
+## CommonJS scope evidence
 
-Approval requires a preliminary survey of source-owned CommonJS-form calls in
-PostCode and the selected unfamiliar validation repository. Inspect the calls and
-their literal targets far enough to estimate which direct structural
-relationships the baseline scope would omit. Repository selection must not be
-manipulated to conceal this limitation, and the survey does not establish that
-every call named `require` is a module-loading request.
+The 2026-09-16 pre-approval survey examined PostCode, date-fns, rxjs, and
+TypeStrong/ts-node. PostCode and the main date-fns and rxjs library projects
+contained no structurally material source-owned CommonJS-form requests. A
+CommonJS-heavy rxjs documentation application showed that relevance varies by
+configured project rather than by repository as a whole, although the survey did
+not establish that application's exact configured TypeScript population. The
+ts-node evidence came from revision
+`ddb05ef23be92a90c3ecac5a0220435c65ebbd2a`.
 
-The PostCode portion found no CommonJS-form `require()` calls in its JavaScript
-or TypeScript source files on 2026-09-16. The unfamiliar repository has not yet
-been selected or surveyed, so the baseline scope is not ready for approval. If
-that survey shows that omission would materially change the apparent main
-structure, revise the scope and dependency-structure decision to include bounded
-CommonJS support before approving this plan.
+Within ts-node's core source population, baseline exclusion would hide two
+otherwise undiscoverable internal relationships, roughly ten literal requests to
+external packages or Node builtins, and central nonliteral transpiler requests.
+Provider analysis may establish the literals as opaque external boundary
+children, platform-target results, or other qualified outcomes. The nonliteral
+calls matter as qualified target-indeterminate request results even though they
+cannot create edges.
+
+The evidence therefore requires bounded CommonJS-form recognition in this slice.
+Structural distortion is assessed per configured project and includes omitted
+project relationships, resolved external boundary children, and non-edge request
+results. Prevalence across a repository or across several surveyed repositories
+does not dilute a material project-level omission.
 
 ## Scope
 
 - Extend the TypeScript integration with the supported dependency occurrences and
   explicit coverage contract.
+- Include bounded CommonJS-form request recognition, literal target resolution,
+  and nonliteral target-indeterminate results.
 - Materialize occurrence evidence, direct module relationships, graph evaluation,
   roots, strongly connected components, and focused parent/child projections
   through the established record and evaluation boundaries.
@@ -402,8 +427,8 @@ CommonJS support before approving this plan.
 ## Non-goals
 
 - Transitive dependency reach or maximum-hop parameters.
-- CommonJS-form `require()` support under the baseline scope; the preliminary
-  survey above may require adding bounded support before approval.
+- CommonJS aliases, property calls, `require.resolve`, calls with zero or several
+  arguments, and other CommonJS APIs beyond the bounded direct-call form.
 - Value-use analysis, emitted-code analysis, execution reachability, runtime
   loading evidence, bundler behavior, tree-shaking, or deployment behavior.
 - Addressable cycle subjects, cycle mnemonic handles, or cycle inspection.
@@ -429,8 +454,9 @@ CommonJS support before approving this plan.
 
 Use small compiler-backed investigations to settle source-module ownership,
 literal and nonliteral request recognition, public resolution behavior, named
-ambient modules, import-equals, direct re-export forms, and diagnostics. Finalize
-the provider guarantee and limitations before depending on them in projections.
+ambient modules, import-equals, direct re-export forms, CommonJS-form contextual
+and shadowing evidence, and diagnostics. Finalize the provider guarantee and
+limitations before depending on them in projections.
 
 ### 2. Materialize occurrences and direct relationships
 
@@ -464,10 +490,12 @@ counts or hidden dependency-lens behavior to it.
 ### 6. Verify the instrument and its practical boundary
 
 Verify exact semantic fixtures before rendered outputs. Exercise the complete
-journey on PostCode and an unfamiliar repository, inspect usability, run clean
-evaluation, measure cost, and confirm the preliminary CommonJS scope judgment.
-Update implemented-behavior documentation and prepare independent review
-checkpoints in proportion to the new evidence and graph boundaries.
+journey on PostCode and at least one unfamiliar repository. Use ts-node at the
+surveyed revision, or a recorded later revision with equivalent CommonJS cases,
+to exercise the bounded mechanism. Inspect usability, run clean evaluation,
+measure cost, and confirm the survey judgment against implemented results. Update
+implemented-behavior documentation and prepare independent review checkpoints in
+proportion to the new evidence and graph boundaries.
 
 ## Fixture and acceptance coverage
 
@@ -476,6 +504,9 @@ Use several reviewable fixtures covering:
 - the representative root, shared-child, and re-export-intermediary journey;
 - static, side-effect, type-only, import-type, import-equals, named and wildcard
   re-export, literal dynamic, nonliteral dynamic, and unresolved literal requests;
+- literal resolved, literal unresolved, and nonliteral target-indeterminate
+  bounded CommonJS-form requests, plus locally shadowed, unsupported-context,
+  aliased, property-call, wrong-arity, and `require.resolve` exclusions;
 - several occurrences aggregated into one edge, including wholly type-only and
   mixed-evidence edges;
 - direct re-export chains preserving every intermediate module;
@@ -497,8 +528,8 @@ Use several reviewable fixtures covering:
 - Unicode and structured display bounds, repeated nodes, cycle grouping,
   omissions, exact navigation, source detail, controls, and observation output;
 - equivalent-process determinism and changed-input/method invalidation; and
-- visible CommonJS coverage limitation plus preliminary-survey and final
-  confirmation evidence.
+- visible bounded CommonJS coverage and final confirmation of the supported
+  outcomes for surveyed literal and nonliteral requests.
 
 ## Risks and uncertainties
 
@@ -518,9 +549,11 @@ Use several reviewable fixtures covering:
 - Repository layout can supply several valid placements or containment paths.
   Conservative classification may produce variation rather than a neat tag; that
   result is preferable to choosing a convenient organizational perspective.
-- Omitting CommonJS-form calls may materially reduce usefulness on JavaScript or
-  older TypeScript repositories. The explicit validation gate prevents silent
-  acceptance but may invalidate the initial scope.
+- An overly permissive CommonJS recognizer could mistake a local function or
+  unsupported loader context for a module request. An overly narrow recognizer
+  could recreate the surveyed structural omissions. The provider contract must
+  make its affirmative context, shadowing evidence, and unavailable outcomes
+  explicit.
 - Dependency analysis may amplify the completed organization slice's measured
   fresh-invocation latency. Premature caching would create a larger validity and
   lifecycle problem than this slice is intended to solve.
@@ -538,8 +571,8 @@ Use several reviewable fixtures covering:
   rule, apart from comments which are not statements?
 - What bounded Unicode graph shape best supports the representative journey
   without implying that omitted levels were not requested?
-- Which unfamiliar TypeScript repository will supply both the preliminary
-  CommonJS survey and the final external product exercise?
+- What stable TypeScript evidence establishes that a bare `require` is unshadowed
+  and appears in a context supporting the CommonJS-form interpretation?
 
 ## Governing-document impact
 
@@ -568,8 +601,7 @@ The following choices are outside implementation discretion and require a
 separately accepted change:
 
 - expanding or narrowing the supported request mechanisms materially;
-- including CommonJS-form requests when the preliminary scope condition has not
-  made bounded support required;
+- broadening CommonJS recognition beyond the bounded direct-call form;
 - changing the configured-project or repository-layout organization boundary;
 - treating external package or runtime identity as established;
 - weakening occurrence evidence, edge aggregation, cycle preservation,
@@ -579,9 +611,11 @@ separately accepted change:
 - exposing source syntax or paths in ordinary conceptual views; or
 - changing another governing core concept or an architectural constraint.
 
-The slice cannot be treated as complete when omitted CommonJS-form requests
-materially distort the exercised structure. Validation of presentation usefulness
-and independent review remain required, as in the completed slices.
+The slice cannot be treated as complete unless bounded CommonJS-form recognition
+establishes the supported outcomes for the surveyed literal and nonliteral
+requests without adding unsupported loader or runtime claims. Validation of
+presentation usefulness and independent review remain required, as in the
+completed slices.
 
 ## Resulting decisions
 

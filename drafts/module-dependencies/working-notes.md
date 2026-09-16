@@ -106,13 +106,15 @@ Initial occurrence mechanisms are expected to include:
 - side-effect imports;
 - direct TypeScript re-exports;
 - import types;
-- TypeScript import-equals external module references; and
-- literal dynamic imports whose targets TypeScript establishes.
+- TypeScript import-equals external module references;
+- literal dynamic imports whose targets TypeScript establishes; and
+- bounded CommonJS-form `require()` calls.
 
-Recognize nonliteral dynamic requests as target-indeterminate requests. They do
-not produce a module-pair edge. Do not perform target-expression constant
-evaluation or control-flow and reachability analysis, so conditional or
-unreachable syntax remains a recognized source request with bounded claims.
+Recognize nonliteral dynamic and bounded CommonJS-form requests as
+target-indeterminate requests. They do not produce a module-pair edge. Do not
+perform target-expression constant evaluation or control-flow and reachability
+analysis, so conditional or unreachable syntax remains a recognized source
+request with bounded claims.
 
 Preserve direct intermediate modules in re-export chains rather than flattening a
 dependency to the originating declaration. Use **re-export** for direct
@@ -140,33 +142,38 @@ scope.
 
 ### Qualified CommonJS-form `require`
 
-Defer CommonJS-form `require()` recognition from the initial implementation, but
-make the deferral conditional and architecturally deliberate rather than assuming
-the gap is harmless.
+Include bounded CommonJS-form `require()` recognition in the initial
+implementation. Recognize only a bare `require` call with exactly one argument,
+where the identifier is not established as locally shadowed and captured context
+supports the CommonJS-form interpretation. The provider must characterize the
+affirmative context and shadowing evidence; it must not guess when required
+evidence is unavailable.
 
-The occurrence model must allow later CommonJS support to add a mechanism and its
-own qualification without changing dependency-edge identity, direction,
-aggregation, roots, cycles, or presentation bounds. A future provider may
-recognize a qualified loading request only for a bare, single-argument `require`
-that is not established as locally shadowed and whose context supports that
-interpretation. It must preserve literal versus nonliteral target status and must
-not claim that TypeScript establishes the runtime loader.
+Resolve literal targets through the configured TypeScript environment. Preserve
+unresolved literal requests without fabricating targets, and preserve nonliteral
+calls as target-indeterminate request results without constant evaluation. Do not
+claim that TypeScript establishes a runtime loader, loading, emission, or
+execution.
 
-Every initial dependency view must disclose that CommonJS-form `require()` is not
-analyzed. Provider completeness applies only to the explicitly supported request
-mechanisms.
+Calls through aliases or properties, wrong-arity calls, `require.resolve`, and
+other CommonJS APIs remain outside the bounded mechanism. Views disclose this
+boundary and material unavailable recognition evidence.
 
-A preliminary survey before proposal approval should record source-owned
-CommonJS-form requests in PostCode and the selected unfamiliar repository and
-estimate which structural relationships their omission would lose. The
-unfamiliar repository must not be selected merely because it avoids this
-limitation. If the omission distorts the apparent main structure, bounded support
-belongs in the approved implementation scope. Final validation confirms the
-survey judgment against the implemented result.
+The 2026-09-16 pre-approval survey covered PostCode, date-fns, rxjs, and ts-node.
+PostCode and the principal date-fns and rxjs library projects had no material
+source-owned CommonJS-form structure. In ts-node's core source population,
+exclusion would hide two otherwise undiscoverable internal relationships, roughly
+ten literal requests to external packages or Node builtins, and central
+nonliteral transpiler requests. Provider analysis may establish external boundary
+children, platform-target results, unresolved literals, and target-indeterminate
+non-edge results from that evidence. Those outcomes all belong to this slice's
+product model, so the evidence triggers the product gate.
 
-A preliminary 2026-09-16 scan found no CommonJS-form `require()` calls in
-PostCode's JavaScript or TypeScript source files. The unfamiliar repository has
-not yet been selected or surveyed, so this does not resolve the scope condition.
+Assess distortion per configured project. Repository-wide prevalence, likely
+project preference, or a majority of CommonJS-light repositories does not cancel
+a material omission in another configured project. The CommonJS-heavy rxjs
+documentation application is supporting evidence of project-level variation,
+but the survey did not establish its exact configured TypeScript population.
 
 ### `re-exports only` module property
 
@@ -392,8 +399,8 @@ compiler-feature or exceptional-case demonstration.
 ## Explicitly deferred
 
 - Transitive dependency reach and maximum-hop lens parameters.
-- Qualified CommonJS-form `require()` support, subject to the practical
-  validation gate above.
+- CommonJS aliases, property calls, `require.resolve`, wrong-arity calls, and
+  other APIs beyond the bounded direct-call form.
 - Binding-use analysis sufficient to establish actual value access.
 - Constant evaluation, reachability analysis, emission, bundler, tree-shaking,
   deployment, and runtime-execution claims.
@@ -431,7 +438,8 @@ before becoming proposed decisions:
 ## Open questions
 
 - What exact supported-occurrence contract can the TypeScript provider claim for
-  every import, import-type, re-export, import-equals, and dynamic-import form?
+  every import, import-type, re-export, import-equals, dynamic-import, and bounded
+  CommonJS form?
 - How should occurrence evidence identify the originating module for named
   ambient modules and other modules with several declarations?
 - When TypeScript resolves a target with several declarations or placements,
@@ -453,8 +461,8 @@ before becoming proposed decisions:
 - What is the minimal qualified presentation that makes project roots, shared
   nodes, omitted structure, and organization context understandable
   without overloading the initial view?
-- What constitutes successful product validation on PostCode and an unfamiliar
-  repository, including the threshold for promoting CommonJS-form support?
+- What stable TypeScript evidence establishes the bounded CommonJS-form context
+  and absence of local shadowing?
 - Does the dependency analysis materially increase repeated-invocation cost
   enough to revisit eager evaluation or caching, given the measured latency of
   the completed organization slice?
@@ -482,7 +490,8 @@ deferred:
   children/parents;
 - the initial `type`/`runtime` role pair is replaced by conservative independent
   evidence and whole-edge type-only qualification;
-- CommonJS support is conditionally deferred;
+- bounded CommonJS-form support is included after the project-level survey found
+  material recoverable omissions;
 - dependency-specific symbol-path reconstruction and package/version identity are
   deferred; and
 - repository organization now supplies an implemented, qualified context that
