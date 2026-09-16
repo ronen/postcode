@@ -155,3 +155,13 @@ Node-style variable-declaration evidence, and motivating-repository investigatio
 are proposed next, subject to the human's instruction to ask before proceeding
 through reviewer-identified uncertainty. No precedence rule or ESM recognition
 outcome has been selected. Production integration remains paused.
+
+The human subsequently authorized that investigation. The
+[CommonJS review investigation](2026-09-16-commonjs-review-investigation.md)
+now confirms the classic/mixed contextual distinction and the two target roots
+at compiler level, and presents an explicit recognition proposal for human
+approval. It also records operational failure opening the unchanged ts-node
+configuration and adjacent import-type evidence for the two surveyed pairs.
+The earlier proposal in item 4 is not an implementation instruction; the new
+ordered proposal likewise remains unaccepted. See the disposition for current
+per-finding status and outstanding human decisions.

@@ -8,8 +8,8 @@ import ts from 'typescript';
 // Compiler characterization for the dependency provider, not a second provider.
 // Assertions describe public API evidence; recognition policy is reviewed separately.
 const config = path.resolve('fixtures/dependency-contract/tsconfig.json');
-function open() {
-  const parsed = ts.getParsedCommandLineOfConfigFile(config, {}, {
+function open(configPath = config, entry = 'requests.cts') {
+  const parsed = ts.getParsedCommandLineOfConfigFile(configPath, {}, {
     ...ts.sys, onUnRecoverableConfigFileDiagnostic: diagnostic => assert.fail(String(diagnostic.messageText)),
   });
   assert.ok(parsed);
@@ -22,7 +22,7 @@ function open() {
   };
   const program = ts.createProgram(parsed.fileNames, parsed.options, host);
   const checker = program.getTypeChecker();
-  const file = program.getSourceFile(path.resolve('fixtures/dependency-contract/requests.cts'))!;
+  const file = program.getSourceFile(path.resolve(path.dirname(configPath), entry))!;
   return { program, checker, file, host };
 }
 function nodes(root: ts.Node): ts.Node[] {
@@ -280,5 +280,73 @@ test('dependency contract: request syntax can survive diagnostics without implyi
     const request = file.statements.filter(ts.isImportDeclaration)[0]!;
     assert.equal(request.moduleSpecifier.getText(file), "'./missing.js'");
     assert.equal(program.getTypeChecker().getSymbolAtLocation(request.moduleSpecifier), undefined);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('dependency contract: classic CommonJS has configured format and Node require evidence but no implied file format', () => {
+  const { program, checker, file } = open(path.resolve('fixtures/dependency-context/classic/tsconfig.json'), 'entry.ts');
+  assert.deepEqual(program.getOptionsDiagnostics(), []);
+  assert.equal(program.getCompilerOptions().module, ts.ModuleKind.CommonJS);
+  assert.equal(program.getCompilerOptions().moduleResolution, ts.ModuleResolutionKind.Node10);
+  assert.equal(file.impliedNodeFormat, undefined);
+  const calls = bareRequires(file);
+  assert.equal(calls.length, 2);
+  assert.deepEqual(calls.map(call => ts.isStringLiteralLike(call.arguments[0]!)), [true, false]);
+  for (const call of calls) {
+    assert.equal(checker.resolveName('require', call.expression, ts.SymbolFlags.Value, true), undefined);
+    const symbol = checker.getSymbolAtLocation(call.expression)!;
+    assert.ok(symbol.declarations!.every(ts.isVariableDeclaration));
+    assert.ok(symbol.declarations!.every(declaration => declaration.getSourceFile().isDeclarationFile));
+    assert.ok(symbol.declarations!.every(declaration => declaration.getSourceFile().fileName.includes('/@types/node/')));
+    assert.equal(checker.getTypeAtLocation(call.expression).getCallSignatures().length, 1);
+  }
+});
+
+test('dependency contract: mixed NodeNext formats share the same actual Node require variable declaration', () => {
+  const { program, checker, file } = open(path.resolve('fixtures/dependency-context/mixed/tsconfig.json'), 'entry.cts');
+  assert.deepEqual(program.getOptionsDiagnostics(), []);
+  const esm = program.getSourceFile(path.resolve('fixtures/dependency-context/mixed/entry.mts'))!;
+  assert.equal(file.impliedNodeFormat, ts.ModuleKind.CommonJS);
+  assert.equal(esm.impliedNodeFormat, ts.ModuleKind.ESNext);
+  const cjsCall = bareRequires(file)[0]!;
+  const esmCall = bareRequires(esm)[0]!;
+  assert.equal(checker.getSymbolAtLocation(cjsCall.expression), checker.getSymbolAtLocation(esmCall.expression));
+  for (const call of [cjsCall, esmCall]) {
+    assert.equal(checker.resolveName('require', call.expression, ts.SymbolFlags.Value, true), undefined);
+    const declaration = checker.getSymbolAtLocation(call.expression)!.declarations![0]!;
+    assert.ok(ts.isVariableDeclaration(declaration));
+    assert.equal(checker.getTypeAtLocation(call.expression).getCallSignatures().length, 1);
+  }
+});
+
+test('dependency contract: global implementation, ambient variable, absent binding and noncallable declaration differ', () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-require-global-'));
+  try {
+    const entry = path.join(root, 'entry.ts');
+    const global = path.join(root, 'globals.ts');
+    writeFileSync(entry, "export {}; require('./target');");
+    const cases = [
+      { text: 'function require(name: string) { return name; }', callable: 1, ambient: false, exists: true },
+      { text: 'declare var require: (name: string) => unknown;', callable: 1, ambient: true, exists: true },
+      { text: 'declare var require: string;', callable: 0, ambient: true, exists: true },
+      { text: '', callable: 0, ambient: false, exists: false },
+    ];
+    for (const example of cases) {
+      writeFileSync(global, example.text);
+      const program = ts.createProgram([entry, global], {
+        noLib: true, types: [], module: ts.ModuleKind.CommonJS, moduleResolution: ts.ModuleResolutionKind.Node10,
+      });
+      const checker = program.getTypeChecker();
+      const file = program.getSourceFile(entry)!;
+      const call = bareRequires(file)[0]!;
+      assert.equal(file.impliedNodeFormat, undefined);
+      assert.equal(checker.resolveName('require', call.expression, ts.SymbolFlags.Value, true), undefined);
+      const symbol = checker.getSymbolAtLocation(call.expression);
+      assert.equal(symbol !== undefined, example.exists, example.text);
+      assert.equal(checker.getTypeAtLocation(call.expression).getCallSignatures().length, example.callable, example.text);
+      const declarations = symbol?.declarations ?? [];
+      assert.equal(declarations.length > 0 && declarations.every(declaration =>
+        (ts.getCombinedModifierFlags(declaration) & ts.ModifierFlags.Ambient) !== 0), example.ambient, example.text);
+    }
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

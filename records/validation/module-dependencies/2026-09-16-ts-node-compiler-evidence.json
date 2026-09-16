@@ -1,0 +1,578 @@
+{
+  "investigation": "Compiler evidence only; operational PostCode opening failed; not final instrument validation",
+  "revision": "ddb05ef23be92a90c3ecac5a0220435c65ebbd2a",
+  "environment": {
+    "typescript": "6.0.3",
+    "nodeTypes": "22.20.2",
+    "dependencies": "ts-node dependencies not installed; Node declarations and TypeScript resolved from the enclosing PostCode checkout",
+    "configurationChanged": false
+  },
+  "normalization": "Absolute checkout prefix replaced by <ts-node-checkout>; other file paths are relative to that checkout. Import-type evidence filtered to the two surveyed internal target pairs; all core bare one-argument require calls retained. src/test excluded only from reporting, not Program selection.",
+  "compiler": "6.0.3",
+  "node": "22.13.1",
+  "operationalOpen": {
+    "status": "project-open-failed",
+    "diagnostics": [
+      {
+        "code": 5107,
+        "message": "<ts-node-checkout>/tsconfig.json:13:25: Option 'moduleResolution=node10' is deprecated and will stop functioning in TypeScript 7.0. Specify compilerOption '\"ignoreDeprecations\": \"6.0\"' to silence this error.\n  Visit https://aka.ms/ts6 for migration information."
+      },
+      {
+        "code": 5102,
+        "message": "<ts-node-checkout>/tsconfig.json:22:5: Option 'importsNotUsedAsValues' has been removed. Please remove it from your configuration.\n  Use 'verbatimModuleSyntax' instead."
+      }
+    ]
+  },
+  "compilerOnlyInvestigation": true,
+  "configurationChanged": false,
+  "diagnostics": [
+    {
+      "code": 5107,
+      "message": "Option 'moduleResolution=node10' is deprecated and will stop functioning in TypeScript 7.0. Specify compilerOption '\"ignoreDeprecations\": \"6.0\"' to silence this error.\n  Visit https://aka.ms/ts6 for migration information."
+    },
+    {
+      "code": 5102,
+      "message": "Option 'importsNotUsedAsValues' has been removed. Please remove it from your configuration.\n  Use 'verbatimModuleSyntax' instead."
+    }
+  ],
+  "module": 1,
+  "moduleResolution": 2,
+  "rootCount": 66,
+  "programFileCount": 228,
+  "coreRootFiles": [
+    "src/bin-cwd.ts",
+    "src/bin-esm.ts",
+    "src/bin-script.ts",
+    "src/bin-transpile.ts",
+    "src/bin.ts",
+    "src/child/argv-payload.ts",
+    "src/child/child-entrypoint.ts",
+    "src/child/child-loader.ts",
+    "src/child/child-require.ts",
+    "src/child/spawn-child.ts",
+    "src/cjs-resolve-hooks.ts",
+    "src/configuration.ts",
+    "src/esm.ts",
+    "src/file-extensions.ts",
+    "src/index.ts",
+    "src/module-type-classifier.ts",
+    "src/node-module-type-classifier.ts",
+    "src/repl.ts",
+    "src/resolver-functions.ts",
+    "src/transpilers/swc.ts",
+    "src/transpilers/types.ts",
+    "src/ts-compiler-types.ts",
+    "src/ts-internals.ts",
+    "src/ts-transpile-module.ts",
+    "src/tsconfig-schema.ts",
+    "src/tsconfigs.ts",
+    "src/util.ts"
+  ],
+  "calls": [
+    {
+      "file": "src/util.ts",
+      "line": 95,
+      "column": 19,
+      "literal": "v8-compile-cache-lib",
+      "expression": "'v8-compile-cache-lib'",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": null,
+      "exactAmbientTarget": null
+    },
+    {
+      "file": "src/tsconfigs.ts",
+      "line": 12,
+      "column": 20,
+      "literal": "@tsconfig/node20/tsconfig.json",
+      "expression": "'@tsconfig/node20/tsconfig.json'",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": null,
+      "exactAmbientTarget": null
+    },
+    {
+      "file": "src/tsconfigs.ts",
+      "line": 16,
+      "column": 20,
+      "literal": "@tsconfig/node18/tsconfig.json",
+      "expression": "'@tsconfig/node18/tsconfig.json'",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": null,
+      "exactAmbientTarget": null
+    },
+    {
+      "file": "src/tsconfigs.ts",
+      "line": 20,
+      "column": 20,
+      "literal": "@tsconfig/node16/tsconfig.json",
+      "expression": "'@tsconfig/node16/tsconfig.json'",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": null,
+      "exactAmbientTarget": null
+    },
+    {
+      "file": "src/tsconfigs.ts",
+      "line": 24,
+      "column": 20,
+      "literal": "@tsconfig/node14/tsconfig.json",
+      "expression": "'@tsconfig/node14/tsconfig.json'",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": null,
+      "exactAmbientTarget": null
+    },
+    {
+      "file": "src/cjs-resolve-hooks.ts",
+      "line": 25,
+      "column": 18,
+      "literal": "module",
+      "expression": "'module'",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": null,
+      "exactAmbientTarget": "\"module\""
+    },
+    {
+      "file": "src/index.ts",
+      "line": 128,
+      "column": 24,
+      "literal": "../package.json",
+      "expression": "'../package.json'",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": null,
+      "exactAmbientTarget": null
+    },
+    {
+      "file": "src/index.ts",
+      "line": 671,
+      "column": 33,
+      "literal": null,
+      "expression": "transpilerPath",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": null,
+      "exactAmbientTarget": null
+    },
+    {
+      "file": "src/index.ts",
+      "line": 694,
+      "column": 30,
+      "literal": "@cspotcode/source-map-support",
+      "expression": "'@cspotcode/source-map-support'",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": null,
+      "exactAmbientTarget": null
+    },
+    {
+      "file": "src/index.ts",
+      "line": 1245,
+      "column": 6,
+      "literal": "../dist-raw/node-internal-modules-esm-resolve",
+      "expression": "'../dist-raw/node-internal-modules-esm-resolve'",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": {
+        "file": "dist-raw/node-internal-modules-esm-resolve.js",
+        "root": false,
+        "inProgram": true,
+        "supportedSourceModule": false,
+        "externalLibrary": false
+      },
+      "exactAmbientTarget": null
+    },
+    {
+      "file": "src/index.ts",
+      "line": 1253,
+      "column": 7,
+      "literal": "../dist-raw/node-internal-modules-esm-get_format",
+      "expression": "'../dist-raw/node-internal-modules-esm-get_format'",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": {
+        "file": "dist-raw/node-internal-modules-esm-get_format.js",
+        "root": false,
+        "inProgram": true,
+        "supportedSourceModule": false,
+        "externalLibrary": false
+      },
+      "exactAmbientTarget": null
+    },
+    {
+      "file": "src/index.ts",
+      "line": 1257,
+      "column": 6,
+      "literal": "../dist-raw/node-internal-modules-cjs-loader",
+      "expression": "'../dist-raw/node-internal-modules-cjs-loader'",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": {
+        "file": "dist-raw/node-internal-modules-cjs-loader.js",
+        "root": false,
+        "inProgram": true,
+        "supportedSourceModule": false,
+        "externalLibrary": false
+      },
+      "exactAmbientTarget": null
+    },
+    {
+      "file": "src/index.ts",
+      "line": 1466,
+      "column": 4,
+      "literal": "./esm",
+      "expression": "'./esm'",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": {
+        "file": "src/esm.ts",
+        "root": true,
+        "inProgram": true,
+        "supportedSourceModule": true,
+        "externalLibrary": false
+      },
+      "exactAmbientTarget": null
+    },
+    {
+      "file": "src/repl.ts",
+      "line": 20,
+      "column": 56,
+      "literal": "../dist-raw/node-internal-repl-await",
+      "expression": "'../dist-raw/node-internal-repl-await'",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": {
+        "file": "dist-raw/node-internal-repl-await.js",
+        "root": false,
+        "inProgram": false,
+        "supportedSourceModule": false,
+        "externalLibrary": null
+      },
+      "exactAmbientTarget": null
+    },
+    {
+      "file": "src/repl.ts",
+      "line": 27,
+      "column": 12,
+      "literal": "diff",
+      "expression": "'diff'",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": null,
+      "exactAmbientTarget": null
+    },
+    {
+      "file": "src/repl.ts",
+      "line": 38,
+      "column": 16,
+      "literal": "repl",
+      "expression": "'repl'",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": null,
+      "exactAmbientTarget": "\"repl\""
+    },
+    {
+      "file": "src/bin.ts",
+      "line": 98,
+      "column": 11,
+      "literal": "arg",
+      "expression": "'arg'",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": null,
+      "exactAmbientTarget": null
+    },
+    {
+      "file": "src/bin.ts",
+      "line": 526,
+      "column": 6,
+      "literal": "./child/child-loader",
+      "expression": "'./child/child-loader'",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": {
+        "file": "src/child/child-loader.ts",
+        "root": true,
+        "inProgram": true,
+        "supportedSourceModule": true,
+        "externalLibrary": false
+      },
+      "exactAmbientTarget": null
+    },
+    {
+      "file": "src/bin.ts",
+      "line": 598,
+      "column": 7,
+      "literal": "../dist-raw/runmain-hack.js",
+      "expression": "'../dist-raw/runmain-hack.js'",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": {
+        "file": "dist-raw/runmain-hack.js",
+        "root": false,
+        "inProgram": false,
+        "supportedSourceModule": false,
+        "externalLibrary": null
+      },
+      "exactAmbientTarget": null
+    },
+    {
+      "file": "src/transpilers/swc.ts",
+      "line": 32,
+      "column": 19,
+      "literal": null,
+      "expression": "transpilerConfigLocalResolveHelper(swc, true)",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": null,
+      "exactAmbientTarget": null
+    },
+    {
+      "file": "src/transpilers/swc.ts",
+      "line": 48,
+      "column": 19,
+      "literal": null,
+      "expression": "swcResolved",
+      "sourceRoot": true,
+      "sourceExternalModule": true,
+      "impliedNodeFormat": null,
+      "locallyBound": false,
+      "callSignatures": 1,
+      "bindingDeclarations": [
+        {
+          "file": "../../node_modules/@types/node/module.d.ts",
+          "kind": "VariableDeclaration",
+          "declarationFile": true
+        }
+      ],
+      "resolution": null,
+      "exactAmbientTarget": null
+    }
+  ],
+  "importTypes": [
+    {
+      "file": "src/index.ts",
+      "line": 1466,
+      "column": 24,
+      "literal": "./esm",
+      "isTypeOf": true,
+      "targetDeclarations": [
+        "src/esm.ts"
+      ]
+    },
+    {
+      "file": "src/bin.ts",
+      "line": 526,
+      "column": 41,
+      "literal": "./child/child-loader",
+      "isTypeOf": true,
+      "targetDeclarations": [
+        "src/child/child-loader.ts"
+      ]
+    }
+  ]
+}
