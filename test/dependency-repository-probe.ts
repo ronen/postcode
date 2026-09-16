@@ -97,7 +97,7 @@ if (opened.status === 'opened') {
       const evidence = store.get(evidenceId);
       if (evidence.kind === 'source-evidence' && evidence.location.association === 'file'
         && ['src/child/child-loader.ts', 'src/esm.ts'].includes(relative(evidence.path))) {
-        surveyedTargets.push({ path: relative(evidence.path), facets: claim.information.facets });
+        surveyedTargets.push({ path: relative(evidence.path), discoveryFacets: claim.information.discoveryFacets });
       }
     }
   }

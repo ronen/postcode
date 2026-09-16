@@ -30,7 +30,7 @@ test('enumerates the exact supported population, with merged ambient evidence an
   assert.equal(sources.find(source => source.path.endsWith('/transitive.ts'))!.configuredRoot, false);
   assert.equal(evaluation.materialization, 'full');
   assert.equal(new Set(evaluation.modules).size, 6);
-  assert.equal(claims.filter(claim => claim.information.facets.includes('declaration-only')).length, 3);
+  assert.equal(claims.filter(claim => claim.information.discoveryFacets.includes('declaration-only')).length, 3);
   const resolution = contexts.flatMap(context => context.evidence).map(id => store.get(id) as SourceEvidenceRecord)
     .filter(source => source.resolution);
   assert.ok(resolution.length >= 2);
@@ -51,7 +51,7 @@ test('named ambient declarations in ordinary TypeScript have declaration-only fa
     const { claims } = discover(path.join(root, 'tsconfig.json'));
     assert.equal(claims.length, 1);
     assert.equal(claims[0]!.information.name, 'ordinary-ambient');
-    assert.deepEqual(claims[0]!.information.facets, ['ambient', 'project', 'declaration-only']);
+    assert.deepEqual(claims[0]!.information.discoveryFacets, ['ambient', 'project', 'declaration-only']);
   });
 });
 

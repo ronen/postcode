@@ -361,7 +361,7 @@ test('inventory counts omitted external documentation while exact inspection mak
     writeFileSync(path.join(root, 'node_modules/dependency/index.d.ts'), '/** External responsibility. */\nexport declare const value: number;');
     const inventory = await invoke(['--project', config, '--json']);
     const view = JSON.parse(inventory.stdout) as QualifiedView;
-    const external = view.modules.find(module => module.facets.includes('external'))!;
+    const external = view.modules.find(module => module.discoveryFacets.includes('external'))!;
     assert.ok(external);
     assert.equal(external.exports[0]!.documentation.length, 0);
     assert.equal(external.exports[0]!.omittedDocumentation, 1);

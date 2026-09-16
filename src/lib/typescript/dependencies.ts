@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import { compare, methods, recordId } from '../identity.js';
-import type { ClaimContextRecord, ModuleFacet, ProgramRecord, RecordId, SnapshotId, SourceEvidenceRecord } from '../records.js';
+import type { ClaimContextRecord, ModuleDiscoveryFacet, ProgramRecord, RecordId, SnapshotId, SourceEvidenceRecord } from '../records.js';
 import type { CommonJSRecognition, DependencyCoverageRecord, DependencyMechanism, DependencyOccurrenceRecord,
   DependencyRelationshipClaim, DependencyResult, DependencyTargetStatus } from '../dependencies/records.js';
 import { dependencyLimitations } from '../dependencies/records.js';
@@ -10,7 +10,7 @@ interface ModuleCandidate {
   readonly key: string;
   readonly symbol: ts.Symbol | undefined;
   readonly declarations: readonly ts.Declaration[];
-  readonly facets: readonly ModuleFacet[];
+  readonly discoveryFacets: readonly ModuleDiscoveryFacet[];
 }
 interface PreparedRequest {
   node: ts.Node;
@@ -96,7 +96,7 @@ export function prepareDependencies(program: ts.Program, host: ts.CompilerHost, 
         node, owner, mechanism, typeOnly, target: undefined, targetStatus: 'target-indeterminate',
         literal: expression && ts.isStringLiteralLike(expression) ? expression.text : null,
         resolvedFile: null, targetBasis: 'none', mode: 'unspecified', commonjs: null, declarations: [], targetDeclarations: [],
-        coverage: !owner ? 'ownership-unestablished' : !owner.facets.includes('project') ? 'external-owner'
+        coverage: !owner ? 'ownership-unestablished' : !owner.discoveryFacets.includes('project') ? 'external-owner'
           : wrongShape ? 'outside-commonjs-shape' : null,
       };
       if (request.coverage === null && mechanism === 'commonjs' && ts.isCallExpression(node)) {
@@ -206,7 +206,7 @@ export function prepareDependencies(program: ts.Program, host: ts.CompilerHost, 
           typeOnly: supporting.every(occurrence => occurrence.typeOnly) } };
     });
     context('project', 'configured-project', [], program.getSourceFiles().filter(file => !program.isSourceFileFromExternalLibrary(file) && !program.isSourceFileDefaultLibrary(file)));
-    const projectModules = modules.filter(module => module.facets.includes('project')).map(moduleId);
+    const projectModules = modules.filter(module => module.discoveryFacets.includes('project')).map(moduleId);
     // Full materialization means the bounded pass completed, not universal recognition.
     const result: DependencyResult = {
       projectModules, occurrences: occurrences.map(occurrence => occurrence.id), relationships: relationships.map(relationship => relationship.id),

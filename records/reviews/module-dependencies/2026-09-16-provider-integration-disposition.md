@@ -6,7 +6,7 @@ Date: 2026-09-16
 Task: [Module dependencies](../../tasks/2026-09-16-module-dependencies.md)
 Handoff: [Provider integration](2026-09-16-provider-integration-handoff.md)
 Findings: [Round 1](2026-09-16-provider-integration-round-1-findings.md)
-Status: actionable finding corrected and authorized multi-file verification complete; intermediate gate awaits human acceptance
+Status: complete; human accepted the provider-integration gate on 2026-09-16
 
 ## Findings and dispositions
 
@@ -94,8 +94,8 @@ no new handoff is required for this narrowly scoped correction.
 
 ## Gate conclusion
 
-The human has not yet declared the provider-integration gate sufficient.
-The reviewer's favorable recommendation is not human acceptance. The authorized
-multi-file verification is complete. Downstream implementation remains paused;
-the task remains active and still requires final integrated review and explicit
-human authorization to close.
+The human accepted the provider-integration gate after the correction and
+authorized multi-file verification on 2026-09-16: "yes, resume implementation".
+The task follow-up records that authorization. Downstream implementation may
+resume. The task remains active and still requires final integrated review and
+explicit human authorization to close.

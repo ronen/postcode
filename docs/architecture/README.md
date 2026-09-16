@@ -317,3 +317,35 @@ a final policy check refuses detected lasting changes but cannot detect every
 transient concurrent edit. Sparse-checkout completeness remains unresolved.
 Capture refuses non-UTF-8 names or Git evidence and Git output exceeding its
 bounded subprocess buffer instead of silently dropping or corrupting artifacts.
+
+
+## Dependency graph and qualified expansions
+
+The dependency library now constructs project structure and focused child/parent
+projections from stored provider results. It keeps the discovered project population,
+including isolated modules, separate from dependency evaluation coverage. Structure
+uses strongly connected components of project-to-project edges; generated component
+indices are grouping data, never entity identities. Every internal relationship and
+cycle member remains available. Source components are established roots only with
+complete module and dependency evaluations. External endpoints remain opaque.
+Focused projections reuse exact, snapshot-scoped module selection and retain direct
+relationships; non-edge requests remain attached to their source owners.
+
+Composition is a separately requested module expansion. The TypeScript integration
+checks all captured module declarations for the positive `re-exports-only` property
+and records its own outcome. No inverse property is produced. Discovery classifications
+use `discoveryFacets`, keeping discovery evidence distinct from qualified composition.
+
+The optional dependency-organization expansion consumes a matching stored organization
+evaluation. Captured request and target declaration evidence narrow endpoint placement
+before broader module-placement fallback. All applicable endpoint combinations remain
+explicit, including placement and occurrence variation, incomplete information, and
+candidate ambiguity. Common ancestors retain containment evidence across multiple
+parents. This expansion performs no filesystem or compiler work and cannot weaken the
+underlying dependency result when repository organization is unavailable.
+
+These library layers follow the accepted [dependency structure](../decisions/module-dependency-structure-decisions.md),
+[composition](../decisions/module-composition-property-decision.md), and
+[organization integration](../decisions/dependency-organization-integration-decisions.md)
+decisions. Dependency CLI views and the associated presentation/observation integration
+remain pending at this intermediate checkpoint.

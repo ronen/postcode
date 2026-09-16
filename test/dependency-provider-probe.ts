@@ -24,7 +24,7 @@ if (opened.status !== 'opened') {
     if (claim.kind !== 'claim' || claim.information.type !== 'module') throw new Error('Expected module claim');
     const context = store.get(claim.context);
     if (context.kind !== 'claim-context') throw new Error('Expected context');
-    return { name: claim.information.name, handle: claim.information.handle, facets: claim.information.facets,
+    return { name: claim.information.name, handle: claim.information.handle, discoveryFacets: claim.information.discoveryFacets,
       files: [...new Set(context.evidence.flatMap(id => {
         const evidence = store.get(id);
         return evidence.kind === 'source-evidence' && !evidence.resolution ? [relative(evidence.path)] : [];

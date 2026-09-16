@@ -1,4 +1,4 @@
-import type { DependencyRecords, DependencyRelationshipClaim, DependencyTargetStatus } from './dependencies/records.js';
+import type { DependencyRecords, DependencyRelationshipClaim, DependencyOrganizationClaim, DependencyTargetStatus } from './dependencies/records.js';
 import type { OrganizationClaims, OrganizationRecords } from './organization/records.js';
 
 /** Logical records; no compiler objects or storage-native identifiers cross this boundary. */
@@ -30,7 +30,7 @@ export interface ModuleRecord extends RecordContext {
   readonly claim: RecordId;
 }
 
-export type ModuleFacet = 'ambient' | 'declaration-only' | 'implementation-available'
+export type ModuleDiscoveryFacet = 'ambient' | 'declaration-only' | 'implementation-available'
   | 'project' | 'external';
 
 export interface ModuleClaim extends RecordContext {
@@ -44,11 +44,11 @@ export interface ModuleClaim extends RecordContext {
     readonly handle: string;
     readonly handleStatus: 'generated-navigation-aid';
     readonly handleProvenance: 'language-name' | 'source-basename' | 'declared-export' | 'anonymous-fallback';
-    readonly facets: readonly ModuleFacet[];
+    readonly discoveryFacets: readonly ModuleDiscoveryFacet[];
   };
 }
 
-export type ModuleExpansion = 'exports' | 'documentation';
+export type ModuleExpansion = 'exports' | 'documentation' | 'composition';
 /** Entity-kind policy, independent of the lens used to select modules. */
 export const moduleStandardExpansions: readonly ModuleExpansion[] = ['exports', 'documentation'];
 
@@ -107,7 +107,14 @@ export interface DocumentationAssociationClaim extends RecordContext {
   };
 }
 
-export type Claim = ModuleClaim | SymbolClaim | ExportClaim | DocumentationAssociationClaim | OrganizationClaims | DependencyRelationshipClaim;
+export interface ModuleCompositionClaim extends RecordContext {
+  readonly kind: 'claim';
+  readonly subject: RecordId;
+  readonly context: RecordId;
+  readonly information: { readonly type: 'module-composition'; readonly property: 're-exports-only' };
+}
+
+export type Claim = ModuleCompositionClaim | ModuleClaim | SymbolClaim | ExportClaim | DocumentationAssociationClaim | OrganizationClaims | DependencyRelationshipClaim | DependencyOrganizationClaim;
 export function isModuleClaim(record: ProgramRecord): record is ModuleClaim {
   return record.kind === 'claim' && record.information.type === 'module';
 }

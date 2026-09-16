@@ -1,6 +1,6 @@
 # Project Status
 
-Last reviewed: 2026-09-16
+Last reviewed: 2026-09-17
 
 The initial module-inventory slice is complete. The development CLI provides
 Unicode and experimental JSON inventories, exact-selection inspection,
@@ -61,9 +61,17 @@ opening failure remains explicit. The first provider-integration review's single
 finding (duplicated relationship diagnostics) is corrected. Its
 [disposition](records/reviews/module-dependencies/2026-09-16-provider-integration-disposition.md)
 records the correction and verification, including the subsequently authorized
-multi-file regression. Human acceptance of this intermediate gate remains pending
-before downstream graph and presentation work.
+multi-file regression. The human accepted this intermediate gate and authorized
+downstream implementation.
 
-Dependency graph projections, module composition, organization expansion,
-discovery-facet renaming, CLI views, navigation, observations, final instrument
-validation, and final integrated review remain pending. The task is active.
+Dependency graph projections, independently qualified composition claims, and
+occurrence-specific organization expansion are implemented at the library boundary.
+The discovery-facet field is now `discoveryFacets`. Type checking and all 181 tests
+pass, including 11 new graph/expansion tests. The
+[graph and expansion handoff](records/reviews/module-dependencies/2026-09-17-graph-expansions-handoff.md)
+requests intermediate review before presentation integration, because multi-placement
+qualification and incomplete graph outcomes now determine what those views may say.
+
+CLI dependency views, composition annotations in organization views, navigation,
+observations, final instrument validation, and final integrated review remain
+pending. The task is active and paused for human-arranged intermediate review.

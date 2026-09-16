@@ -2,8 +2,9 @@ import path from 'node:path';
 import ts from 'typescript';
 import { compare, digest, methods, recordId, snapshotId } from '../identity.js';
 import type { DiscoveryResult, ModuleAnalysis } from '../evaluation.js';
-import type { ClaimContextRecord, ModuleClaim, ModuleExpansion, ModuleFacet, ProgramRecord, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
+import type { ClaimContextRecord, ModuleClaim, ModuleExpansion, ModuleDiscoveryFacet, ProgramRecord, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
 import { captureInputs } from './inputs.js';
+import { prepareComposition } from './composition.js';
 import { prepareDependencies } from './dependencies.js';
 import { prepareExpansions } from './expansions.js';
 import { captureRepository, repositoryInputMethod } from '../repository/capture.js';
@@ -104,14 +105,14 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
     const encountered = program.getSyntacticDiagnostics();
     const roots = new Set(program.getRootFileNames());
     const candidates: { key: string; name: string | null; compilerName: string | null; symbol: ts.Symbol | undefined;
-      declarations: readonly ts.Declaration[]; facets: ModuleFacet[] }[] = [];
+      declarations: readonly ts.Declaration[]; discoveryFacets: ModuleDiscoveryFacet[] }[] = [];
     for (const file of files) {
       if (!ts.isExternalModule(file)) continue;
       candidates.push({
         key: `source:${host.getCanonicalFileName(file.fileName)}`, name: file.moduleName ?? null,
         symbol: checker.getSymbolAtLocation(file),
         compilerName: checker.getSymbolAtLocation(file)?.getName() ?? null, declarations: [file],
-        facets: [program.isSourceFileFromExternalLibrary(file) ? 'external' : 'project',
+        discoveryFacets: [program.isSourceFileFromExternalLibrary(file) ? 'external' : 'project',
           file.isDeclarationFile ? 'declaration-only' : 'implementation-available'],
       });
     }
@@ -121,7 +122,7 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
         key: `ambient:${symbol.getName()}`, name: symbol.getName().replace(/^"|"$/g, ''),
         symbol,
         compilerName: symbol.getName(), declarations,
-        facets: ['ambient',
+        discoveryFacets: ['ambient',
           ...(declarations.some(declaration => !program.isSourceFileFromExternalLibrary(declaration.getSourceFile())) ? ['project' as const] : []),
           ...(declarations.some(declaration => program.isSourceFileFromExternalLibrary(declaration.getSourceFile())) ? ['external' as const] : []),
           ...(declarations.length > 0 && declarations.every(declaration =>
@@ -144,7 +145,9 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       ts.forEachChild(node, visit);
     };
     files.forEach(visit);
-    const preparedExpansions = requested.length ? prepareExpansions(checker, candidates, requested) : undefined;
+    const existingExpansions = requested.filter(requirement => requirement !== 'composition');
+    const preparedExpansions = existingExpansions.length ? prepareExpansions(checker, candidates, existingExpansions) : undefined;
+    const preparedComposition = requested.includes('composition') ? prepareComposition(program, candidates) : undefined;
     const preparedDependencies = dependencies ? prepareDependencies(program, host, candidates) : undefined;
     const snapshot = snapshotId({
       method, methods, configPath, cwd: base, node: process.versions.node,
@@ -262,17 +265,18 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
         kind: 'claim', id: claim, snapshot, method, subject: id, context,
         information: { type: 'module', name: candidate.name,
           ...mnemonic(candidate), handleStatus: 'generated-navigation-aid',
-          facets: candidate.facets },
+          discoveryFacets: candidate.discoveryFacets },
       });
       moduleIds.push(id);
     }
     const expansions = preparedExpansions?.(snapshot, evidence);
+    const composition = preparedComposition?.(snapshot, evidence);
     const dependencyResult = preparedDependencies?.(snapshot, evidence);
-    store.put([...records, ...(expansions?.records ?? []), ...(dependencyResult?.records ?? [])]);
+    store.put([...records, ...(expansions?.records ?? []), ...(dependencyResult?.records ?? []), ...(composition?.records ?? [])]);
     return {
       snapshot, modules: moduleIds, contexts: [globalContext], applicability: 'applicable', availability: 'available',
       execution: 'completed', materialization: 'full', reason: null, cost: { measure: 'module-count', value: moduleIds.length },
-      ...(expansions ? { expansions: expansions.results } : {}),
+      ...(requested.length ? { expansions: [...(expansions?.results ?? []), ...(composition?.results ?? [])] } : {}),
       ...(dependencyResult ? { dependencies: dependencyResult.result } : {}),
     };
   }
