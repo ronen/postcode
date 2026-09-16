@@ -6,11 +6,11 @@ Date: 2026-09-16
 Task: [Implement module dependencies](../../tasks/2026-09-16-module-dependencies.md)
 Handoff: [Provider contract](2026-09-16-provider-contract-handoff.md)
 Findings: [Round 1](2026-09-16-provider-contract-round-1-findings.md), [Round 2](2026-09-16-provider-contract-round-2-findings.md)
-Status: authorized corrections and investigation complete; final ordered contract returned for approval
+Status: complete; human approved the ordered contract and intermediate gate on 2026-09-16
 
 ## Findings and dispositions
 
-### 1. CommonJS format/declaration precedence — accepted gap; requires human direction
+### 1. CommonJS format/declaration precedence — accepted and resolved through investigation and approval
 
 The original disjunction does not settle classic CommonJS or mixed NodeNext
 recognition. No recognizer has been implemented from that proposal. The human
@@ -29,13 +29,12 @@ binding/coverage outcomes, and conditional preserve support. Six additional test
 characterize missing declarations, JavaScript synthetic symbols, nesting and
 lexical bindings, parse recovery, with scope, and preserve declaration conflicts.
 
-The complete contract is returned for approval, not implemented as a production
-recognizer. No unresolved uncertainty is silently treated as acceptance. In
+At the characterization checkpoint the complete contract was returned for
+approval, without a production recognizer. No unresolved uncertainty is silently treated as acceptance. In
 particular, the recommendation for preserve is affirmative mixed-mode context
 plus callable ambient corroboration when no per-file format is available; it is
-an explicit result of the authorized investigation, awaiting approval alongside
-the complete outcome table. Finding 1's evidence work is complete; its integration
-gate still requires human direction and any requested further review.
+an explicit result of the authorized investigation. The human subsequently
+approved the complete outcome table and integration gate, as recorded below.
 
 Correction/evidence: `be4897e66de57c16caf869d2da9bec829a8ef8ec`.
 
@@ -206,13 +205,11 @@ The two matrices expanded within the existing 22 compiler-contract tests.
 
 ## Gate conclusion
 
-All round-2 corrections are complete. The ordered recognition rule is unchanged;
-only supporting compiler cases and an explicit existing coverage boundary were
-added. The human has not yet approved the complete ordered recognition contract
-or declared the intermediate gate sufficient. Any further round can use the
-same handoff and original baseline with the correction commit as its exact target.
-No replacement handoff is needed for these additive corrections.
+The human approved the complete ordered recognition contract and declared the
+intermediate gate sufficient on 2026-09-16: "yes resume implementation", recorded
+in the active task's follow-ups. Both review rounds and the additive round-2
+corrections are complete. Production integration may resume under this contract.
 
-Production recognizer integration remains paused pending the human's gate
-decision. The task remains active, with final integrated review and human
-authorization to close separately required.
+The task remains active. Further implementation checkpoints may be used where
+independent review materially reduces risk; final integrated review and human
+authorization to close remain separately required.

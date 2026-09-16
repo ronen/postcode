@@ -44,27 +44,22 @@ recognition, and qualified repository-organization context. The human authorized
 [the implementation task](records/tasks/2026-09-16-module-dependencies.md) on
 2026-09-16; work is on `codex/module-dependencies`.
 
-The first checkpoint characterizes TypeScript request, resolution, shadowing,
-ownership, and composition evidence with 22 compiler-backed tests. All 151 tests
-pass. The [characterization record](records/validation/module-dependencies/2026-09-16-typescript-contract.md)
-distinguishes observed behavior from the proposed provider contract. In
-particular, resolving a TypeScript `require` target does not add it to the
-configured Program population. The first independent review is complete;
-default-import and namespace-owner evidence gaps are corrected. The
+The human approved the ordered CommonJS recognition contract and intermediate
+gate after two review rounds; the
 [disposition](records/reviews/module-dependencies/2026-09-16-provider-contract-disposition.md)
-records every finding. Authorized CommonJS investigation confirmed the classic
-and mixed-module distinction and the two ts-node target roots at compiler level.
-The human authorized the revised investigation, adapted validation, and a new
-superseding decision. The [final contract proposal](records/validation/module-dependencies/2026-09-16-final-recognition-contract.md)
-specifies completed lexical analysis, permits absent declarations in established
-CommonJS contexts, and recommends bounded preserve support. The adapted ts-node
-configuration preserves all 66 selected roots and successfully exercises existing
-production discovery; the original opening failure is retained. The
-[new decision](docs/decisions/bounded-commonjs-source-evidence-decision.md)
-corrects the rationale without rewriting the prior decision body. Round 2 confirms
-all prior findings are addressed; its two additive compiler-coverage findings and
-unset-module disclosure are corrected. Approval of the
-complete recognition contract and the intermediate gate remains pending before
-production recognizer integration.
-Dependency product behavior and final integrated review remain pending; the task
-is active.
+records the findings, corrections, and approval. Production provider integration
+now materializes source-request occurrences, distinct recognition and target
+outcomes, and occurrence-backed direct relationships. Type checking and all 168
+tests pass, including 17 new production-provider tests and the 22 compiler
+characterization tests.
+
+The [provider validation](records/validation/module-dependencies/2026-09-16-dependency-provider-integration.md)
+records PostCode and adapted ts-node exercises. All 21 surveyed core CommonJS
+calls are recognized; the two internal pairs retain mixed mechanism evidence,
+and the three nonliteral calls remain target-indeterminate. The original ts-node
+opening failure remains explicit. This provider/evidence boundary is ready for
+an intermediate independent review before downstream graph and presentation work.
+
+Dependency graph projections, module composition, organization expansion,
+discovery-facet renaming, CLI views, navigation, observations, final instrument
+validation, and final integrated review remain pending. The task is active.

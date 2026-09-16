@@ -3,7 +3,7 @@
 Date: 2026-09-16
 Task: [Module dependencies](../../tasks/2026-09-16-module-dependencies.md)
 Decision: [Bounded CommonJS source evidence](../../../docs/decisions/bounded-commonjs-source-evidence-decision.md)
-Status: completed proposal for provider-contract approval; production recognizer not integrated
+Status: approved by the human after round-2 corrections on 2026-09-16; original investigation narrative retained below
 Replaces as proposal: the mandatory-ambient rule in [the earlier investigation](2026-09-16-commonjs-review-investigation.md#proposed-recognition-rule--approval-required)
 
 ## Authorized result
@@ -238,3 +238,11 @@ integration must encode these recognition outcomes as behavior tests, capture
 method/input identity, and complete remaining ownership/resolution/graph/product
 verification. Neither these compiler tests nor existing module discovery satisfy
 the final integrated-review gate.
+
+## Subsequent approval
+
+On 2026-09-16, after round 2 and its corrections, the human approved this ordered
+contract and the intermediate gate and authorized resumed implementation. See the
+[task follow-up](../../tasks/2026-09-16-module-dependencies.md) and
+[review disposition](../../reviews/module-dependencies/2026-09-16-provider-contract-disposition.md).
+The proposal and investigation narrative above are retained as historical evidence.

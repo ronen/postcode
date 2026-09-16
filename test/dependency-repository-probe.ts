@@ -109,7 +109,7 @@ const currentRoots = [...roots].map(relative).sort();
 if (baselineRoots && canonical(baselineRoots) !== canonical(currentRoots)) throw new Error('Adaptation changed source selection');
 console.log(JSON.stringify({ compiler: ts.version, node: process.versions.node,
   operationalOpen: opened.status === 'opened' ? { status: opened.status } : opened,
-  productionDiscovery, dependencyProviderImplemented: false, configurationChangedByProbe: false,
+  productionDiscovery, dependencyProviderExercised: false, configurationChangedByProbe: false,
   adaptation: baseline ? {
     baseline: relative(baselinePath!), selected: relative(configPath),
     originalOpen: baselineOpen?.status === 'project-open-failed' ? baselineOpen : { status: baselineOpen?.status },

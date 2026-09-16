@@ -57,6 +57,32 @@ current TypeScript provider discovers eagerly; other state combinations are
 verified at the evaluation boundary, not exposed as a new scheduling product.
 Unexpected defects propagate rather than becoming ordinary analysis failures.
 
+## Dependency provider checkpoint
+
+An explicit dependency evaluation can now request a bounded source-request pass
+through the same TypeScript integration. Compiler and file-resolution work
+finishes before snapshot identity is finalized. The pass materializes qualified
+occurrences, separate recognition/ownership coverage results, and directed
+module-pair relationship claims retaining every resolved supporting occurrence.
+The evaluator records dependency work separately from its module-discovery basis;
+a provider that cannot supply it yields unavailable work, not an empty graph.
+Ordinary discovery does not implicitly request dependency analysis.
+
+The [dependency structure decisions](../decisions/module-dependency-structure-decisions.md)
+and [bounded CommonJS decision](../decisions/bounded-commonjs-source-evidence-decision.md)
+govern this boundary. Only project-owned requests contribute relationships;
+external interiors remain opaque. Resolution outside the existing module
+population never adds an entity. Source evidence keeps the configured file
+resolver's result distinct from the evidence identifying a target module, and
+retains actual target declarations for later placement analysis. Aggregation
+preserves direct re-export intermediates and all occurrences, and marks a
+relationship type-only only when every occurrence establishes that qualification.
+
+This is an implementation checkpoint, not a new CLI view. Dependency graph
+projections, optional composition and organization expansions, presentations,
+navigation, and dependency-view observations remain to be integrated under the
+[active plan](../plans/module-dependencies-plan.md).
+
 ## Identity and evidence
 
 Snapshot identity hashes the compiler and PostCode method versions, Node and

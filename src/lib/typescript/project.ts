@@ -4,6 +4,7 @@ import { compare, digest, methods, recordId, snapshotId } from '../identity.js';
 import type { DiscoveryResult, ModuleAnalysis } from '../evaluation.js';
 import type { ClaimContextRecord, ModuleClaim, ModuleExpansion, ModuleFacet, ProgramRecord, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
 import { captureInputs } from './inputs.js';
+import { prepareDependencies } from './dependencies.js';
 import { prepareExpansions } from './expansions.js';
 import { captureRepository, repositoryInputMethod } from '../repository/capture.js';
 import { deriveLayout, repositoryLayoutMethod } from '../repository/layout.js';
@@ -95,9 +96,9 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
   const layout = repository.status === 'available' ? deriveLayout(repository.evidence) : null;
 
   // Compiler state never escapes the language integration. Discovery writes domain records atomically.
-  return { status: 'opened', analysis: { discover: (store, expansions) => discover(store, expansions ?? []) } };
+  return { status: 'opened', analysis: { discover: (store, expansions, dependencies) => discover(store, expansions ?? [], dependencies ?? false) } };
 
-  function discover(store: ProgramRecordStore, requested: readonly ModuleExpansion[]): DiscoveryResult {
+  function discover(store: ProgramRecordStore, requested: readonly ModuleExpansion[], dependencies: boolean): DiscoveryResult {
     const checker = program.getTypeChecker();
     const files = [...program.getSourceFiles()].sort((a, b) => compare(a.fileName, b.fileName));
     const encountered = program.getSyntacticDiagnostics();
@@ -144,6 +145,7 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
     };
     files.forEach(visit);
     const preparedExpansions = requested.length ? prepareExpansions(checker, candidates, requested) : undefined;
+    const preparedDependencies = dependencies ? prepareDependencies(program, host, candidates) : undefined;
     const snapshot = snapshotId({
       method, methods, configPath, cwd: base, node: process.versions.node,
       repository, repositoryMethods: [repositoryInputMethod, repositoryLayoutMethod],
@@ -160,7 +162,7 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       analysis: { provider: 'typescript', coverage: 'external-source-files-and-visible-named-ambient-modules',
         inputConsistency: 'first-observed', excludedOutputLocations: inputs.excludedLocationCount },
     }, { kind: 'repository-evidence', id: repositoryId, snapshot, method: `${repositoryInputMethod};${repositoryLayoutMethod}`, capture: repository, layout }];
-    const evidence = (declaration: ts.Node, compilerName: string | null, resolution?: SourceEvidenceRecord['resolution']): RecordId => {
+    const evidence = (declaration: ts.Node, compilerName: string | null, resolution?: SourceEvidenceRecord['resolution'], dependencyResolution?: SourceEvidenceRecord['dependencyResolution']): RecordId => {
       // Retain enough enclosing syntax to show declaration/export/import relationships.
       if (ts.isVariableDeclaration(declaration) || ts.isBindingElement(declaration)
         || ts.isExportSpecifier(declaration) || ts.isImportSpecifier(declaration)) {
@@ -182,7 +184,7 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       const span = ts.isSourceFile(declaration) ? '' : file.text.slice(start, declaration.end);
       const excerpt = [...span.split('\n').slice(0, 4).join('\n')].slice(0, 300).join('');
       const detail: SourceEvidenceRecord = {
-        kind: 'source-evidence', id: recordId(snapshot, 'source', [file.fileName, start, declaration.end, ts.isSourceFile(declaration) ? 'file' : 'span', compilerName, resolution ?? null]),
+        kind: 'source-evidence', id: recordId(snapshot, 'source', [file.fileName, start, declaration.end, ts.isSourceFile(declaration) ? 'file' : 'span', compilerName, resolution ?? null, dependencyResolution ?? null]),
         snapshot, method, path: file.fileName, contentDigest: digest(file.text),
         start, length: declaration.end - start,
         location: ts.isSourceFile(declaration) ? { association: 'file' } : {
@@ -191,6 +193,7 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
         },
         configuredRoot: roots.has(file.fileName), compilerName,
         ...(resolution ? { resolution } : {}),
+        ...(dependencyResolution ? { dependencyResolution } : {}),
       };
       records.push(detail);
       return detail.id;
@@ -264,11 +267,13 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       moduleIds.push(id);
     }
     const expansions = preparedExpansions?.(snapshot, evidence);
-    store.put([...records, ...(expansions?.records ?? [])]);
+    const dependencyResult = preparedDependencies?.(snapshot, evidence);
+    store.put([...records, ...(expansions?.records ?? []), ...(dependencyResult?.records ?? [])]);
     return {
       snapshot, modules: moduleIds, contexts: [globalContext], applicability: 'applicable', availability: 'available',
       execution: 'completed', materialization: 'full', reason: null, cost: { measure: 'module-count', value: moduleIds.length },
       ...(expansions ? { expansions: expansions.results } : {}),
+      ...(dependencyResult ? { dependencies: dependencyResult.result } : {}),
     };
   }
 }

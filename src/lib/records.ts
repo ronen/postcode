@@ -1,3 +1,4 @@
+import type { DependencyRecords, DependencyRelationshipClaim, DependencyTargetStatus } from './dependencies/records.js';
 import type { OrganizationClaims, OrganizationRecords } from './organization/records.js';
 
 /** Logical records; no compiler objects or storage-native identifiers cross this boundary. */
@@ -106,7 +107,7 @@ export interface DocumentationAssociationClaim extends RecordContext {
   };
 }
 
-export type Claim = ModuleClaim | SymbolClaim | ExportClaim | DocumentationAssociationClaim | OrganizationClaims;
+export type Claim = ModuleClaim | SymbolClaim | ExportClaim | DocumentationAssociationClaim | OrganizationClaims | DependencyRelationshipClaim;
 export function isModuleClaim(record: ProgramRecord): record is ModuleClaim {
   return record.kind === 'claim' && record.information.type === 'module';
 }
@@ -124,6 +125,14 @@ export interface SourceEvidenceRecord extends RecordContext {
     readonly from: { readonly line: number; readonly column: number };
     readonly to: { readonly line: number; readonly column: number };
     readonly excerpt: { readonly text: string; readonly omittedCharacters: number };
+  };
+  readonly dependencyResolution?: {
+    readonly writtenSpecifier: string | null;
+    readonly status: DependencyTargetStatus;
+    /** Raw configured file-resolver result; target correspondence is separately established. */
+    readonly resolvedFile: string | null;
+    readonly targetBasis: 'checker-symbol' | 'configured-file-resolution' | 'exact-ambient-symbol' | 'none';
+    readonly mode: 'commonjs' | 'esm' | 'unspecified';
   };
   readonly configuredRoot: boolean;
   readonly compilerName: string | null;
@@ -185,7 +194,7 @@ export interface ProjectionRecord extends RecordContext {
 }
 
 export type ProgramRecord = SnapshotRecord | ModuleRecord | SymbolRecord | Claim | RecordedAssertion
-  | SourceEvidenceRecord | ClaimContextRecord | EvaluationRecord | ProjectionRecord | OrganizationRecords;
+  | SourceEvidenceRecord | ClaimContextRecord | EvaluationRecord | ProjectionRecord | OrganizationRecords | DependencyRecords;
 
 /** Only the domain operations currently used by discovery and lenses. */
 export interface ProgramRecordStore {
