@@ -61,7 +61,9 @@ CommonJS contexts, and recommends bounded preserve support. The adapted ts-node
 configuration preserves all 66 selected roots and successfully exercises existing
 production discovery; the original opening failure is retained. The
 [new decision](docs/decisions/bounded-commonjs-source-evidence-decision.md)
-corrects the rationale without rewriting the prior decision body. Approval of the
+corrects the rationale without rewriting the prior decision body. Round 2 confirms
+all prior findings are addressed; its two additive compiler-coverage findings and
+unset-module disclosure are corrected. Approval of the
 complete recognition contract and the intermediate gate remains pending before
 production recognizer integration.
 Dependency product behavior and final integrated review remain pending; the task
