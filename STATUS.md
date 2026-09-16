@@ -49,16 +49,20 @@ gate after two review rounds; the
 [disposition](records/reviews/module-dependencies/2026-09-16-provider-contract-disposition.md)
 records the findings, corrections, and approval. Production provider integration
 now materializes source-request occurrences, distinct recognition and target
-outcomes, and occurrence-backed direct relationships. Type checking and all 168
-tests pass, including 17 new production-provider tests and the 22 compiler
+outcomes, and occurrence-backed direct relationships. Type checking and all 169
+tests pass, including 18 production-provider tests and the 22 compiler
 characterization tests.
 
 The [provider validation](records/validation/module-dependencies/2026-09-16-dependency-provider-integration.md)
 records PostCode and adapted ts-node exercises. All 21 surveyed core CommonJS
 calls are recognized; the two internal pairs retain mixed mechanism evidence,
 and the three nonliteral calls remain target-indeterminate. The original ts-node
-opening failure remains explicit. This provider/evidence boundary is ready for
-an intermediate independent review before downstream graph and presentation work.
+opening failure remains explicit. The first provider-integration review's single
+finding (duplicated relationship diagnostics) is corrected. Its
+[disposition](records/reviews/module-dependencies/2026-09-16-provider-integration-disposition.md)
+records the correction and verification. Human direction on the reviewer's
+unverified multi-file variant and acceptance of this intermediate gate remain
+pending before downstream graph and presentation work.
 
 Dependency graph projections, module composition, organization expansion,
 discovery-facet renaming, CLI views, navigation, observations, final instrument
