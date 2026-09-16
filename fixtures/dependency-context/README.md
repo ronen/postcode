@@ -18,5 +18,11 @@ are intentional: these tests characterize contextual evidence, not resolution.
 
 The same test file also distinguishes a global implementation named require,
 an ambient callable variable, a noncallable declaration, and no declaration.
+`preserve` characterizes mixed syntax with a callable ambient variable, including
+an explicit `.mts` counterexample. Temporary projects cover missing declarations,
+conflicting annotations, JavaScript's compiler-generated require symbol, nested
+calls, destructuring/catch/loop bindings, parse recovery, and `with` scope.
+The completed lexical protocol and recommended preserve boundary are in the
+[final contract proposal](../../records/validation/module-dependencies/2026-09-16-final-recognition-contract.md).
 See [the characterization tests](../../test/dependency-contract.test.ts) and
 [the review investigation](../../records/validation/module-dependencies/2026-09-16-commonjs-review-investigation.md).

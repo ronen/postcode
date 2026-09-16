@@ -391,8 +391,8 @@ not establish that application's exact configured TypeScript population. The
 ts-node evidence came from revision
 `ddb05ef23be92a90c3ecac5a0220435c65ebbd2a`.
 
-Within ts-node's core source population, baseline exclusion would hide two
-otherwise undiscoverable internal relationships, roughly ten literal requests to
+Within ts-node's core source population, baseline exclusion would hide CommonJS
+occurrence evidence for two internal module pairs, roughly ten literal requests to
 external packages or Node builtins, and central nonliteral transpiler requests.
 Provider analysis may establish the literals as opaque external boundary
 children, platform-target results, or other qualified outcomes. The nonliteral
@@ -400,6 +400,13 @@ calls matter as qualified target-indeterminate request results even though they
 cannot create edges.
 
 The evidence therefore requires bounded CommonJS-form recognition in this slice.
+The authorized compiler investigation subsequently established adjacent
+`typeof import(...)` occurrences for both internal pairs. They are not uniquely
+recoverable through CommonJS; the CommonJS occurrences still matter for mechanism
+evidence and whole-edge type-only qualification. The
+[superseding CommonJS decision](../decisions/bounded-commonjs-source-evidence-decision.md)
+records this correction while retaining the original decision as history and
+preserving every approved CommonJS requirement.
 Structural distortion is assessed per configured project and includes omitted
 project relationships, resolved external boundary children, and non-edge request
 results. Prevalence across a repository or across several surveyed repositories
@@ -622,6 +629,7 @@ completed slices.
 The consequential choices are recorded in:
 
 - [module dependency structure](../decisions/module-dependency-structure-decisions.md);
+- [bounded CommonJS source evidence](../decisions/bounded-commonjs-source-evidence-decision.md), superseding the CommonJS decision in that bundle;
 - [module composition property](../decisions/module-composition-property-decision.md);
 - [dependency and organization integration](../decisions/dependency-organization-integration-decisions.md);
 - [subject-kind standard expansion](../decisions/subject-kind-standard-expansion-decision.md).

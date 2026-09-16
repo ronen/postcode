@@ -3,6 +3,10 @@ import path from 'node:path';
 import ts from 'typescript';
 import { captureInputs } from '../src/lib/typescript/inputs.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
+import { evaluateModules } from '../src/lib/evaluation.js';
+import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
+import { canonical, digest } from '../src/lib/identity.js';
+import { isModuleClaim } from '../src/lib/records.js';
 
 const configPath = path.resolve(process.argv[2]!);
 const root = path.dirname(configPath);
@@ -72,9 +76,48 @@ for (const file of program.getSourceFiles()) {
   visit(file);
 }
 const opened = openTypeScriptProject({ configPath });
+const baselinePath = process.argv[3] ? path.resolve(process.argv[3]) : null;
+const baseline = baselinePath ? ts.getParsedCommandLineOfConfigFile(baselinePath, {}, {
+  ...captured.system, onUnRecoverableConfigFileDiagnostic: diagnostic => { throw new Error(String(diagnostic.messageText)); },
+}) : null;
+const baselineOpen = baselinePath ? openTypeScriptProject({ configPath: baselinePath }) : null;
+let productionDiscovery: unknown = null;
+if (opened.status === 'opened') {
+  const store = new MemoryProgramRecordStore();
+  const evaluation = evaluateModules(store, opened.analysis);
+  const surveyedTargets: unknown[] = [];
+  for (const id of evaluation.modules) {
+    const module = store.get(id);
+    if (module.kind !== 'module') throw new Error('Invalid discovered module');
+    const claim = store.get(module.claim);
+    if (!isModuleClaim(claim)) throw new Error('Invalid module claim');
+    const context = store.get(claim.context);
+    if (context.kind !== 'claim-context') throw new Error('Invalid module context');
+    for (const evidenceId of context.evidence) {
+      const evidence = store.get(evidenceId);
+      if (evidence.kind === 'source-evidence' && evidence.location.association === 'file'
+        && ['src/child/child-loader.ts', 'src/esm.ts'].includes(relative(evidence.path))) {
+        surveyedTargets.push({ path: relative(evidence.path), facets: claim.information.facets });
+      }
+    }
+  }
+  productionDiscovery = { execution: evaluation.execution, materialization: evaluation.materialization,
+    moduleCount: evaluation.modules.length, surveyedTargets };
+}
+const baselineRoots = baseline?.fileNames.map(relative).sort();
+const currentRoots = [...roots].map(relative).sort();
+if (baselineRoots && canonical(baselineRoots) !== canonical(currentRoots)) throw new Error('Adaptation changed source selection');
 console.log(JSON.stringify({ compiler: ts.version, node: process.versions.node,
   operationalOpen: opened.status === 'opened' ? { status: opened.status } : opened,
-  compilerOnlyInvestigation: true, configurationChanged: false,
+  productionDiscovery, dependencyProviderImplemented: false, configurationChangedByProbe: false,
+  adaptation: baseline ? {
+    baseline: relative(baselinePath!), selected: relative(configPath),
+    originalOpen: baselineOpen?.status === 'project-open-failed' ? baselineOpen : { status: baselineOpen?.status },
+    identicalRoots: true, rootsDigest: digest(currentRoots), roots: currentRoots,
+    changedOptions: [...new Set([...Object.keys(baseline.options), ...Object.keys(parsed.options)])]
+      .filter(key => key !== 'configFilePath' && canonical(baseline.options[key] ?? null) !== canonical(parsed.options[key] ?? null))
+      .map(key => ({ option: key, before: baseline.options[key] ?? null, after: parsed.options[key] ?? null })),
+  } : null,
   diagnostics: [...parsed.errors, ...program.getOptionsDiagnostics()].map(diagnostic => ({ code: diagnostic.code,
     message: ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n') })),
   module: parsed.options.module, moduleResolution: parsed.options.moduleResolution,

@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "target": "ES2020", "module": "preserve", "moduleResolution": "bundler",
+    "types": [], "noLib": true
+  },
+  "files": ["entry.ts", "explicit.mts", "globals.d.ts"]
+}

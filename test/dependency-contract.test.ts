@@ -36,6 +36,15 @@ function bareRequires(file: ts.SourceFile) {
     .filter(node => ts.isIdentifier(node.expression) && node.expression.text === 'require');
 }
 
+// Public resolveName can synthesize a require symbol at a JavaScript call's
+// identifier even with excludeGlobals. Call-expression locations retain the
+// same lexical scope without triggering that fallback. Nested calls add no scope.
+function lexicalLocation(call: ts.CallExpression): ts.CallExpression {
+  let location = call;
+  while (ts.isCallExpression(location.parent)) location = location.parent;
+  return location;
+}
+
 test('dependency contract: supported request syntax preserves mechanism and explicit type evidence', () => {
   const { file, program } = open();
   assert.equal(ts.version, '6.0.3');
@@ -121,7 +130,7 @@ test('dependency contract: scope lookup distinguishes globals from parameters, h
   const { file, checker } = open();
   const calls = bareRequires(file);
   assert.equal(calls.length, 10);
-  assert.deepEqual(calls.map(call => checker.resolveName('require', call.expression, ts.SymbolFlags.Value, true)
+  assert.deepEqual(calls.map(call => checker.resolveName('require', lexicalLocation(call), ts.SymbolFlags.Value, true)
     ?.declarations?.map(node => ts.SyntaxKind[node.kind]) ?? []),
   [[], [], [], [], [], ['Parameter'], ['FunctionDeclaration'], ['VariableDeclaration'], [], []]);
   assert.equal(path.basename(checker.getSymbolAtLocation(calls[0]!.expression)!.declarations![0]!.getSourceFile().fileName), 'globals.d.ts');
@@ -192,9 +201,9 @@ test('dependency contract: absent require evidence and local import aliases rema
     const call = (name: string) => bareRequires(program.getSourceFile(path.join(root, name))!)[0]!;
     assert.equal(checker.getSymbolAtLocation(call('missing.mts').expression), undefined);
     assert.equal(checker.resolveName('require', call('missing.mts').expression, ts.SymbolFlags.Value, true), undefined);
-    const alias = checker.resolveName('require', call('alias.mts').expression, ts.SymbolFlags.Value, true)!;
+    const alias = checker.resolveName('require', lexicalLocation(call('alias.mts')), ts.SymbolFlags.Value, true)!;
     assert.ok(alias.flags & ts.SymbolFlags.Alias);
-    const local = checker.resolveName('require', call('local.cts').expression, ts.SymbolFlags.Value, true)!;
+    const local = checker.resolveName('require', lexicalLocation(call('local.cts')), ts.SymbolFlags.Value, true)!;
     assert.equal(local.declarations![0]!.getSourceFile().fileName, path.join(root, 'local.cts'));
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
@@ -348,5 +357,144 @@ test('dependency contract: global implementation, ambient variable, absent bindi
       assert.equal(declarations.length > 0 && declarations.every(declaration =>
         (ts.getCombinedModifierFlags(declaration) & ts.ModifierFlags.Ambient) !== 0), example.ambient, example.text);
     }
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('dependency contract: preserve retains mixed syntax and distinguishes explicit ESM from absent file format', () => {
+  const { program, checker, file } = open(path.resolve('fixtures/dependency-context/preserve/tsconfig.json'), 'entry.ts');
+  assert.deepEqual(program.getOptionsDiagnostics(), []);
+  assert.deepEqual(program.getSyntacticDiagnostics(), []);
+  assert.equal(program.getCompilerOptions().module, ts.ModuleKind.Preserve);
+  assert.equal(file.impliedNodeFormat, undefined);
+  assert.ok(file.statements.some(ts.isImportDeclaration));
+  assert.ok(file.statements.some(ts.isExportDeclaration));
+  const calls = bareRequires(file);
+  assert.deepEqual(calls.map(call => ts.isStringLiteralLike(call.arguments[0]!)), [true, false]);
+  const esm = program.getSourceFile(path.resolve('fixtures/dependency-context/preserve/explicit.mts'))!;
+  assert.equal(esm.impliedNodeFormat, ts.ModuleKind.ESNext);
+  for (const call of [...calls, ...bareRequires(esm)]) {
+    assert.equal(checker.resolveName('require', call.expression, ts.SymbolFlags.Value, true), undefined);
+    assert.equal(checker.getTypeAtLocation(call.expression).getCallSignatures().length, 1);
+  }
+});
+
+test('dependency contract: a completed CommonJS lexical lookup does not require a global declaration', () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-no-require-types-'));
+  try {
+    for (const name of ['entry.cts', 'entry.cjs']) {
+      const entry = path.join(root, name);
+      writeFileSync(entry, "export {}; require('./target');");
+      const program = ts.createProgram([entry], {
+        noLib: true, types: [], allowJs: true, module: ts.ModuleKind.NodeNext, moduleResolution: ts.ModuleResolutionKind.NodeNext,
+      });
+      const checker = program.getTypeChecker();
+      const file = program.getSourceFile(entry)!;
+      assert.deepEqual(program.getSyntacticDiagnostics(file), []);
+      assert.equal(file.impliedNodeFormat, ts.ModuleKind.CommonJS);
+      const call = bareRequires(file)[0]!;
+      assert.equal(checker.resolveName('require', lexicalLocation(call), ts.SymbolFlags.Value, true), undefined);
+      const global = checker.getSymbolAtLocation(call.expression);
+      // JS may supply a compiler-created require symbol with no declarations.
+      assert.equal(global?.declarations?.length ?? 0, 0);
+    }
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('dependency contract: lexical lookup covers destructuring, catch, loop and type-only names', () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-lexical-require-'));
+  try {
+    const entry = path.join(root, 'entry.cts');
+    writeFileSync(entry, `export {};
+      function parameter({ require }: { require: Function }) { require('a'); }
+      try {} catch (require) { require('b'); }
+      for (const require of []) { require('c'); }
+      { const { require } = source; require('d'); }
+      type require = string; require('e');`);
+    const program = ts.createProgram([entry], { noLib: true, types: [], module: ts.ModuleKind.NodeNext });
+    const checker = program.getTypeChecker();
+    const file = program.getSourceFile(entry)!;
+    assert.deepEqual(program.getSyntacticDiagnostics(file), []);
+    const results = bareRequires(file).map(call => checker.resolveName('require', lexicalLocation(call), ts.SymbolFlags.Value, true));
+    assert.deepEqual(results.map(symbol => symbol?.declarations?.map(declaration => ts.SyntaxKind[declaration.kind]) ?? []),
+      [['BindingElement'], ['VariableDeclaration'], ['VariableDeclaration'], ['BindingElement'], []]);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('dependency contract: parse recovery and with scope do not establish complete lexical evidence from an absent lookup', () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-incomplete-scope-'));
+  try {
+    const cases = [
+      { name: 'broken.cts', text: "export {}; const broken = ; require('a');", syntaxError: true, withScope: false },
+      { name: 'dynamic.cjs', text: "export {}; with (source) { require('a'); }", syntaxError: false, withScope: true },
+    ];
+    for (const example of cases) {
+      const entry = path.join(root, example.name);
+      writeFileSync(entry, example.text);
+      const program = ts.createProgram([entry], { noLib: true, types: [], allowJs: true, module: ts.ModuleKind.NodeNext });
+      const checker = program.getTypeChecker();
+      const file = program.getSourceFile(entry)!;
+      const call = bareRequires(file)[0]!;
+      assert.equal(program.getSyntacticDiagnostics(file).length > 0, example.syntaxError);
+      const ancestors: ts.Node[] = [];
+      for (let node: ts.Node | undefined = call; node; node = node.parent) ancestors.push(node);
+      assert.equal(ancestors.at(-1), file);
+      assert.equal(ancestors.some(ts.isWithStatement), example.withScope);
+      assert.equal(checker.resolveName('require', lexicalLocation(call), ts.SymbolFlags.Value, true), undefined);
+    }
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('dependency contract: preserve binding evidence is absent, corroborating, alternative, or conflicting independently of format', () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-preserve-binding-'));
+  try {
+    const entry = path.join(root, 'entry.ts');
+    const global = path.join(root, 'globals.ts');
+    writeFileSync(entry, "export {}; require('./target');");
+    const cases = [
+      { text: '', callability: [] },
+      { text: 'declare var require: (name: string) => unknown;', callability: [1] },
+      { text: 'declare var require: string;', callability: [0] },
+      { text: 'declare var require: (name: string) => unknown; declare var require: string;', callability: [1, 0] },
+    ];
+    for (const example of cases) {
+      writeFileSync(global, example.text);
+      const program = ts.createProgram([entry, global], {
+        noLib: true, types: [], module: ts.ModuleKind.Preserve, moduleResolution: ts.ModuleResolutionKind.Bundler,
+      });
+      const checker = program.getTypeChecker();
+      const file = program.getSourceFile(entry)!;
+      assert.deepEqual(program.getSyntacticDiagnostics(), []);
+      assert.equal(file.impliedNodeFormat, undefined);
+      const call = bareRequires(file)[0]!;
+      assert.equal(checker.resolveName('require', call.expression, ts.SymbolFlags.Value, true), undefined);
+      const declarations = checker.getSymbolAtLocation(call.expression)?.declarations ?? [];
+      // Examine contributing annotations independently: a merged effective type
+      // can otherwise conceal a contradictory declaration.
+      const callability = declarations.filter(ts.isVariableDeclaration).map(declaration =>
+        checker.getTypeFromTypeNode(declaration.type!).getCallSignatures().length);
+      assert.deepEqual(callability, example.callability, example.text);
+    }
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('dependency contract: call-location lookup separates JavaScript synthetic require from nested local bindings', () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-js-require-scope-'));
+  try {
+    const entry = path.join(root, 'entry.cjs');
+    writeFileSync(entry, `export {}; require(require('a'));
+      function f(require) { return require(require('b')); }
+      function g() { require('c'); function require(value) { return value; } }
+      { require('d'); const require = value => value; }`);
+    const program = ts.createProgram([entry], { noLib: true, types: [], allowJs: true, module: ts.ModuleKind.NodeNext });
+    const checker = program.getTypeChecker();
+    const file = program.getSourceFile(entry)!;
+    assert.deepEqual(program.getSyntacticDiagnostics(file), []);
+    const calls = bareRequires(file);
+    const identifier = checker.resolveName('require', calls[0]!.expression, ts.SymbolFlags.Value, true);
+    assert.ok(identifier);
+    assert.equal(identifier.declarations, undefined);
+    const results = calls.map(call => checker.resolveName('require', lexicalLocation(call), ts.SymbolFlags.Value, true));
+    assert.deepEqual(results.map(symbol => symbol?.declarations?.map(declaration => ts.SyntaxKind[declaration.kind]) ?? []),
+      [[], [], ['Parameter'], ['Parameter'], ['FunctionDeclaration'], ['VariableDeclaration']]);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

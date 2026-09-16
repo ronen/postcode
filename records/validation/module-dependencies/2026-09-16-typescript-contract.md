@@ -165,3 +165,8 @@ configuration and adjacent import-type evidence for the two surveyed pairs.
 The earlier proposal in item 4 is not an implementation instruction; the new
 ordered proposal likewise remains unaccepted. See the disposition for current
 per-finding status and outstanding human decisions.
+
+The subsequently authorized [final recognition proposal](2026-09-16-final-recognition-contract.md)
+removes the universal declaration prerequisite, specifies lexical completion,
+addresses preserve explicitly, and records adapted-config production opening and
+module discovery. It supersedes the earlier proposed rules for approval purposes.

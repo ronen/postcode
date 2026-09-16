@@ -3,7 +3,7 @@
 Date: 2026-09-16
 Task: [Module dependencies](../../tasks/2026-09-16-module-dependencies.md)
 Basis: [Provider-contract round 1](../../reviews/module-dependencies/2026-09-16-provider-contract-round-1-findings.md), findings 1 and 3
-Status: investigation completed; recognition rule and validation adaptation await human direction
+Status: historical investigation; its recognition proposal is replaced by the [final ordered proposal](2026-09-16-final-recognition-contract.md); validation adaptation authorized and exercised
 
 ## Authorization and boundary
 
