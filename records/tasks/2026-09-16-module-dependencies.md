@@ -27,6 +27,12 @@ Context: The agent asked, "Finding 1 leaves CommonJS recognition unresolved: cla
 
 Investigate, then propose a rule (Recommended)
 
+### 2026-09-16 — Revised recognition investigation and decision supersession
+
+Context: After discussion of non-authoritative feedback, the work proposed for authorization was to revise the mandatory ambient-declaration requirement; define completed lexical analysis precisely; characterize `module: preserve` with focused fixtures; return a final ordered recognition rule and outcome table before recognizer integration; use the adapted ts-node validation configuration while retaining its original opening failure and proving equivalent source selection; and correct the prior decision's unique-edge rationale while preserving the CommonJS requirements.
+
+OK, now that everybody's in alignment, I do authorize the work.  Note that "correcting" the prior decision does not literally mean editing the decison record, but rather creating a new decision that supersedes the previous one, as per docs/decisions/README
+
 ## Outcome
 
 ## Verification
