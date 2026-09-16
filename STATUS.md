@@ -49,8 +49,8 @@ gate after two review rounds; the
 [disposition](records/reviews/module-dependencies/2026-09-16-provider-contract-disposition.md)
 records the findings, corrections, and approval. Production provider integration
 now materializes source-request occurrences, distinct recognition and target
-outcomes, and occurrence-backed direct relationships. Type checking and all 169
-tests pass, including 18 production-provider tests and the 22 compiler
+outcomes, and occurrence-backed direct relationships. Type checking and all 170
+tests pass, including 19 production-provider tests and the 22 compiler
 characterization tests.
 
 The [provider validation](records/validation/module-dependencies/2026-09-16-dependency-provider-integration.md)
@@ -60,9 +60,9 @@ and the three nonliteral calls remain target-indeterminate. The original ts-node
 opening failure remains explicit. The first provider-integration review's single
 finding (duplicated relationship diagnostics) is corrected. Its
 [disposition](records/reviews/module-dependencies/2026-09-16-provider-integration-disposition.md)
-records the correction and verification. Human direction on the reviewer's
-unverified multi-file variant and acceptance of this intermediate gate remain
-pending before downstream graph and presentation work.
+records the correction and verification, including the subsequently authorized
+multi-file regression. Human acceptance of this intermediate gate remains pending
+before downstream graph and presentation work.
 
 Dependency graph projections, module composition, organization expansion,
 discovery-facet renaming, CLI views, navigation, observations, final instrument
