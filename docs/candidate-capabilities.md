@@ -33,13 +33,18 @@ This need not become a rigid schema or a single monolithic analysis. Possibiliti
 
 The summary could omit inapplicable questions, report unavailable answers explicitly, and let the human expand each answer into its supporting evidence. Omission would not imply an established negative answer, and a compact presentation would retain consequential qualification.
 
-## Historical metadata
+## Historical summary
 
-Historical metadata about an entity could answer:
+An exploration of an entity's history could address both authorship and chronology and the substance of particular changes:
 
-- Who introduced or subsequently worked on it?
-- When was it introduced, and when did consequential changes occur?
+- **Who:** Who introduced or subsequently worked on it?
+- **When:** When was it introduced, and when did consequential changes occur?
+- **What:** What did they change or achieve?
+- **Why:** What need, problem, or rationale motivated the change?
+- **How:** What mechanism or approach produced the change or its effects?
 
 Historical authorship and change chronology are distinct from the operational users and circumstances of use explored by the [5WH summary](#explorative-5wh-summary). They could complement that summary without substituting for its operational answers.
 
-Answers could derive from Git and related records, qualified by available history, attribution, and correspondence of the entity across revisions. Identifying a change as consequential may itself involve interpretation. Each answer could be expanded into its supporting evidence, with its method, scope, and limitations visible.
+Answers could draw on Git, related development records, comparisons of program structure, tests, and runtime observations, qualified by available history, attribution, and correspondence of the entity across revisions. A claimed outcome might be measured or merely recorded; motivation might be documented or interpreted; and a mechanism might be derived from the implementation change. Evidence of the mechanism alone would not establish its effects or motivation. Identifying a change as consequential may itself involve interpretation.
+
+As with the operational summary, these questions need not form a rigid schema or a monolithic analysis. Each answer could be expanded into its supporting evidence, with its method, scope, and limitations visible; inapplicable questions could be omitted and unavailable answers reported explicitly.
