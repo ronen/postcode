@@ -36,10 +36,20 @@ their scope; historical task and review identifiers retain their original names.
 The human accepted the final review gate and directed task closure on 2026-09-15.
 [PR #3](https://github.com/ronen/postcode/pull/3) is ready for the human to merge.
 
-Approved next plan:
+Active implementation plan:
 [Module dependencies slice](docs/plans/module-dependencies-plan.md). It adds a
 bounded project dependency view, focused navigation to dependency children and
 parents, occurrence-backed relationship evidence, bounded CommonJS-form request
-recognition, and qualified repository-organization context. Planning approval
-does not authorize implementation; no implementation task is active for this
-plan.
+recognition, and qualified repository-organization context. The human authorized
+[the implementation task](records/tasks/2026-09-16-module-dependencies.md) on
+2026-09-16; work is on `codex/module-dependencies`.
+
+The first checkpoint characterizes TypeScript request, resolution, shadowing,
+ownership, and composition evidence with 13 compiler-backed tests. All 142 tests
+pass. The [characterization record](records/validation/module-dependencies/2026-09-16-typescript-contract.md)
+distinguishes observed behavior from the proposed provider contract. In
+particular, resolving a TypeScript `require` target does not add it to the
+configured Program population. Implementation pauses for human-arranged
+independent review of this evidence boundary before production integration.
+Dependency product behavior and final integrated review remain pending; the task
+is active.

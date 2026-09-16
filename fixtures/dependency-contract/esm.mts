@@ -1,0 +1,2 @@
+require('./target.js');
+export {};
