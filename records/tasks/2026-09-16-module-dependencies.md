@@ -47,6 +47,12 @@ yes resume implementation
 
 Round 1 of review is complete.  Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
 
+### 2026-09-16 — Multi-file diagnostic regression authorized
+
+Context: The agent recommended a focused regression proving that an aggregated relationship supported by multiple source files retains each distinct diagnostic once, including errors with identical codes.
+
+ok, do it
+
 ## Outcome
 
 ## Verification
