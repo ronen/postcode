@@ -53,6 +53,12 @@ Context: The agent recommended a focused regression proving that an aggregated r
 
 ok, do it
 
+### 2026-09-16 — Provider integration gate approved; implementation resumed
+
+Context: Asked whether the provider-integration review gate, including the authorized multi-file regression, is sufficient to resume implementation.
+
+yes, resume implementation
+
 ## Outcome
 
 ## Verification
