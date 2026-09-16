@@ -6,7 +6,7 @@ Date: 2026-09-16
 Task: [Implement module dependencies](../../tasks/2026-09-16-module-dependencies.md)
 Handoff: [Provider contract](2026-09-16-provider-contract-handoff.md)
 Findings: [Round 1](2026-09-16-provider-contract-round-1-findings.md)
-Status: findings assessed; clear corrections complete; human direction required
+Status: authorized corrections and investigation complete; final ordered contract returned for approval
 
 ## Findings and dispositions
 
@@ -20,18 +20,24 @@ facts, using actual Node variable declarations rather than only a simplified
 ambient function. A further test distinguishes ambient callable, noncallable,
 missing, and global implementation bindings.
 
-The [investigation and ordered proposal](../../validation/module-dependencies/2026-09-16-commonjs-review-investigation.md)
-give per-file format precedence, use explicit configured CommonJS only when the
-per-file signal is absent, and additionally require an unshadowed global callable
-binding whose contributing declarations are ambient/declaration-only. An ambient
-declaration alone cannot override ESM. Missing evidence must remain a disclosed
-coverage limitation, not a false empty dependency result.
+The initial proposal required ambient declarations universally. Subsequent human
+feedback and explicit authorization removed that prerequisite, required precise
+lexical completion, and authorized bounded preserve characterization. The
+[final ordered contract](../../validation/module-dependencies/2026-09-16-final-recognition-contract.md)
+now specifies the public compiler lookup protocol, format precedence, separate
+binding/coverage outcomes, and conditional preserve support. Six additional tests
+characterize missing declarations, JavaScript synthetic symbols, nesting and
+lexical bindings, parse recovery, with scope, and preserve declaration conflicts.
 
-This proposal has not been accepted or encoded as recognition behavior. It is a
-consequential resolution of the identified uncertainty and requires human
-approval under the follow-up instructions. After agreement, outcome tests and
-production integration remain necessary, followed by review under the original
-handoff. The finding is not rejected or treated as resolved by raw-fact tests.
+The complete contract is returned for approval, not implemented as a production
+recognizer. No unresolved uncertainty is silently treated as acceptance. In
+particular, the recommendation for preserve is affirmative mixed-mode context
+plus callable ambient corroboration when no per-file format is available; it is
+an explicit result of the authorized investigation, awaiting approval alongside
+the complete outcome table. Finding 1's evidence work is complete; its integration
+gate still requires human direction and any requested further review.
+
+Correction/evidence: `be4897e66de57c16caf869d2da9bec829a8ef8ec`.
 
 ### 2. Default import plus all-type named imports — accepted and corrected
 
@@ -62,12 +68,18 @@ dependency set. Some other resolved targets are outside the supported population
 Those limits are recorded rather than generalized away. Final validation still
 must preserve the two target-specific outcomes and other request qualifications.
 
-No discovery expansion or validation-revision choice has been made. Human
-resolution is required for the newly observed configuration incompatibility,
-as described below; the population finding itself is accepted.
+The human subsequently authorized a minimally adapted configuration at the same
+revision. Validation now retains the original opening failure and exact
+configuration edits, proves identical selection of all 66 roots, and exercises
+existing production module discovery successfully. Its 202-module result includes
+both targets as project modules. All declared dependencies were installed with
+lifecycle scripts disabled; the retained evidence discloses npm range resolution
+rather than historical Yarn-lock reproduction. This completes the population and
+opening setup checks, not future dependency instrument validation.
 
-Corrections/evidence: `0a5f58a4bdb3359ce0e22d7b0663a69c6ec73901` and
-`0ccd04221d1d24e57830d656e02f823617e78cf2`.
+Corrections/evidence: `0a5f58a4bdb3359ce0e22d7b0663a69c6ec73901`,
+`0ccd04221d1d24e57830d656e02f823617e78cf2`, and
+`be4897e66de57c16caf869d2da9bec829a8ef8ec`.
 
 ### 4. Nested-namespace occurrence ownership — accepted and corrected
 
@@ -98,26 +110,24 @@ Correction: `0a5f58a4bdb3359ce0e22d7b0663a69c6ec73901`.
   unverified as the review states. Nothing here treats the review recommendation
   as authorizing advancement through those uncertainties.
 
-## Additional observations requiring human direction
+## Additional observations and authorized resolutions
 
-1. **Validation configuration:** the unchanged surveyed revision fails operational
-   opening under TypeScript 6.0.3 with diagnostics 5107 and 5102. Proposed next
-   step: use a separately recorded configuration at the same revision, removing
-   `importsNotUsedAsValues` and adding `ignoreDeprecations: "6.0"`, verify identical
-   source selection, and retain the original failure. A later compatible revision
-   with equivalent cases is an alternative allowed by the plan. No option has
-   been selected or applied.
-2. **Survey qualification:** both cited internal require calls have adjacent
-   `typeof import(...)` occurrences resolving to the same targets. Proposed
-   correction: retain every approved CommonJS requirement, but qualify the survey's
-   description of these pairs as otherwise undiscoverable. Their distinct CommonJS
-   occurrences still matter for mechanism and mixed type-only qualification;
-   nonliteral requests remain separately important. No governing plan or decision
-   has been rewritten, and this observation is not used to narrow scope.
+1. **Validation configuration — authorized and exercised.** The original pinned
+   ts-node configuration remains untouched and fails with diagnostics 5107 and
+   5102. The separately named adapted configuration removes only
+   `importsNotUsedAsValues` and adds `ignoreDeprecations: "6.0"`. The complete root
+   arrays are identical. Successful production opening/discovery and their limits
+   are in the [final report](../../validation/module-dependencies/2026-09-16-final-recognition-contract.md#adapted-ts-node-validation).
+2. **Survey qualification — authorized and recorded by supersession.** The human
+   explicitly directed a new decision, not rewriting the earlier decision body.
+   [Bounded CommonJS source evidence](../../../docs/decisions/bounded-commonjs-source-evidence-decision.md)
+   supersedes only the headed CommonJS decision in the original bundle. Required
+   lifecycle metadata supplies both forward and backward mappings. Its original
+   rationale remains intact; a byte comparison verified the body unchanged. The
+   current plan cites the corrected rationale while preserving every approved
+   mechanism, qualification, and nonliteral-result requirement.
 
-These observations arose during the authorized investigation. They are distinct
-from rejecting or materially qualifying a returned finding; any consequential
-response still awaits the human's direction.
+These resolutions do not reject any reviewer finding or authorize scope expansion.
 
 ## Corrections and verification
 
@@ -134,9 +144,16 @@ response still awaits the human's direction.
 - Actual unchanged ts-node operational opening: failed as explicitly recorded;
   the compiler probe does not convert it into a successful product investigation.
 
+- `be4897e66de57c16caf869d2da9bec829a8ef8ec`: authorized final lexical/preserve
+  characterization, exact adapted configuration and production-discovery evidence,
+  corrected rationale through a superseding decision, and complete ordered
+  recognition proposal. `npm run check` passed; `npm test` passed all 151 tests,
+  including 22 compiler-contract cases. Diff checks, local links, and preservation
+  of the previous decision body were verified.
+
 The reviewer findings and original handoff remain unchanged. No finding was
-rejected. No production recognition outcome, plan revision, or population change
-was implemented.
+rejected. The human-authorized plan correction and decision supersession are
+recorded; no production recognizer or population change was implemented.
 
 ## Review rounds
 
@@ -148,9 +165,14 @@ corrections; no replacement handoff is needed for this assignment.
 
 ## Gate conclusion
 
-The human has authorized disposition, clear in-scope corrections, and investigation
-followed by a proposed rule. The human has **not** determined that the intermediate
-review gate is sufficient. Direction is required on the recognition proposal,
-validation setup, and survey qualification. Production integration remains paused.
-The task remains active; final integrated review and human authorization to close
-remain separately required.
+The authorized revisions, bounded investigation, validation adaptation, and
+superseding decision are complete. The human has not yet approved the complete
+ordered recognition contract or declared the intermediate gate sufficient. The
+new review target is `be4897e66de57c16caf869d2da9bec829a8ef8ec`, under the same
+handoff and original baseline, with the round-1 findings linked above. Further
+review, if requested, should assess the revised lexical and preserve boundaries
+and the adapted validation evidence; the original review recommendation does not
+automatically apply to this new target.
+
+Production recognizer integration remains paused. The task remains active, with
+final integrated review and human authorization to close separately required.

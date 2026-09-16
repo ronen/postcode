@@ -45,7 +45,7 @@ recognition, and qualified repository-organization context. The human authorized
 2026-09-16; work is on `codex/module-dependencies`.
 
 The first checkpoint characterizes TypeScript request, resolution, shadowing,
-ownership, and composition evidence with 16 compiler-backed tests. All 145 tests
+ownership, and composition evidence with 22 compiler-backed tests. All 151 tests
 pass. The [characterization record](records/validation/module-dependencies/2026-09-16-typescript-contract.md)
 distinguishes observed behavior from the proposed provider contract. In
 particular, resolving a TypeScript `require` target does not add it to the
@@ -54,8 +54,15 @@ default-import and namespace-owner evidence gaps are corrected. The
 [disposition](records/reviews/module-dependencies/2026-09-16-provider-contract-disposition.md)
 records every finding. Authorized CommonJS investigation confirmed the classic
 and mixed-module distinction and the two ts-node target roots at compiler level.
-Human direction is pending on the proposed recognition rule, ts-node validation
-configuration, and qualification of the survey's unique-edge premise. Production
-integration remains paused; the intermediate review gate is not yet satisfied.
+The human authorized the revised investigation, adapted validation, and a new
+superseding decision. The [final contract proposal](records/validation/module-dependencies/2026-09-16-final-recognition-contract.md)
+specifies completed lexical analysis, permits absent declarations in established
+CommonJS contexts, and recommends bounded preserve support. The adapted ts-node
+configuration preserves all 66 selected roots and successfully exercises existing
+production discovery; the original opening failure is retained. The
+[new decision](docs/decisions/bounded-commonjs-source-evidence-decision.md)
+corrects the rationale without rewriting the prior decision body. Approval of the
+complete recognition contract and the intermediate gate remains pending before
+production recognizer integration.
 Dependency product behavior and final integrated review remain pending; the task
 is active.
