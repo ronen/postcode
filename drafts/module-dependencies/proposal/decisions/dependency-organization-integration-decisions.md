@@ -1,5 +1,7 @@
 # Dependency and organization integration decisions
 
+Status: in review
+Decided:
 Arising from: [Module dependencies plan](../plans/module-dependencies-plan.md)
 Scope: qualified composition of module-dependency evidence with the accepted repository-layout organization
 
