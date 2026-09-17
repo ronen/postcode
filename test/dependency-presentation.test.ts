@@ -62,6 +62,12 @@ test('source-owned request results and recognition outcomes are separate and par
   const children = await invoke(config, ['children', requests.entityId, '--snapshot', initial.projection.snapshot, '--json']);
   const view = viewOf(children);
   assert.equal(view.requestResults.length, 6);
+  assert.ok(view.presentation.dependencyNavigation!.source.includes('--source-detail'));
+  assert.ok(view.recognitionCoverage.some(item => item.commonjs?.outcome === 'alternative-binding'));
+  const text = await invoke(config, ['children', requests.entityId, '--snapshot', initial.projection.snapshot]);
+  assert.match(text.stdout, /Request 1:/);
+  assert.match(text.stdout, /Coverage 1:/);
+  assert.match(text.stdout, /strict organization descendant/);
   assert.ok(view.recognitionCoverage.length > 0);
   assert.ok(view.recognitionCoverage.some(item => item.outcome === 'alternative-binding'));
   assert.ok(view.limitations.some(text => text.includes('bare require')));
@@ -112,20 +118,22 @@ test('cycle grouping retains internal edges and display depth omissions do not r
     execFileSync('git', ['init', '--quiet', root]);
     writeFileSync(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"noLib":true,"types":[]},"include":["*.ts"]}');
     for (let index = 0; index < 10; index++) writeFileSync(path.join(root, `m${index}.ts`), index === 9 ? 'export const value = 1;' : `export * from './m${index + 1}';`);
-    writeFileSync(path.join(root, 'a.ts'), "export * from './b';");
+    writeFileSync(path.join(root, 'a.ts'), "export * from './b'; export * from './c';");
+    writeFileSync(path.join(root, 'c.ts'), "export * from './a';");
     writeFileSync(path.join(root, 'b.ts'), "export * from './a';");
     const config = path.join(root, 'tsconfig.json');
     const unicode = await invoke(config, ['dependencies']);
     const view = viewOf(unicode);
     assert.match(unicode.stdout, /Cycle grouping \(not an entity\)/);
-    assert.equal(view.graph!.components.find(component => component.cyclic)!.internalRelationships.length, 2);
+    assert.ok(!unicode.stdout.split('\n').find(line => line.includes('Cycle grouping'))!.includes('↔'));
+    assert.equal(view.graph!.components.find(component => component.cyclic)!.internalRelationships.length, 4);
     assert.ok(view.display.prunedComponents > 0);
     assert.ok(view.display.omittedRelationships > 0);
     assert.match(unicode.stdout, /Display bounds do not reduce analysis coverage/);
     const json = viewOf(await invoke(config, ['dependencies', '--json']));
     assert.equal(json.display.omittedModules, 0);
     assert.equal(json.display.omittedRelationships, 0);
-    assert.equal(json.relationships.length, 11);
+    assert.equal(json.relationships.length, 13);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 

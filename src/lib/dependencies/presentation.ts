@@ -6,7 +6,7 @@ import { moduleStandardExpansions } from '../records.js';
 import type { ClaimContextRecord, EvaluationState, ModuleClaim, ProgramRecord, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
 import { inlineText } from '../terminal-text.js';
 import { dependencyLimitations } from './records.js';
-import type { DependencyGraph, DependencyOccurrenceRecord, DependencyOrganizationClaim, DependencyProjectionRecord, DependencyRelationshipClaim } from './records.js';
+import type { DependencyCoverageRecord, DependencyGraph, DependencyOccurrenceRecord, DependencyOrganizationClaim, DependencyProjectionRecord, DependencyRelationshipClaim } from './records.js';
 
 export const dependencyPresentationRequirements = { modules: moduleStandardExpansions, organization: 'repository-layout' } as const;
 type Qualification = Omit<ClaimContextRecord, 'kind' | 'evidence'>;
@@ -29,14 +29,14 @@ type Row = { readonly component: number; readonly depth: number; readonly refere
 export interface QualifiedDependencyView {
   readonly schema: 'postcode-dependency-view/0-experimental'; readonly id: RecordId;
   readonly projection: Pick<DependencyProjectionRecord, 'id' | 'snapshot' | 'lens' | 'subject' | 'parameters' | 'selection'>;
-  readonly presentation: Presentation & { readonly expansions: readonly string[]; readonly dependencyNavigation?: { readonly children: string; readonly parents: string } };
+  readonly presentation: Presentation & { readonly expansions: readonly string[]; readonly dependencyNavigation?: { readonly children: string; readonly parents: string; readonly source: string } };
   readonly evaluations: { readonly modules: Outcome; readonly dependencies: Outcome; readonly organization: Outcome | null };
   readonly limitations: readonly string[]; readonly qualifications: readonly Qualification[];
   readonly modules: readonly ModuleView[]; readonly subjects: readonly RecordId[]; readonly relationships: readonly EdgeView[];
   readonly graph: DependencyGraph | null;
   readonly requestResults: readonly OccurrenceView[];
-  readonly recognitionCoverage: readonly { readonly id: RecordId; readonly owner: RecordId | null; readonly outcome: string; readonly qualification: Qualification }[];
-  readonly summary: { readonly modules: number; readonly relationships: number; readonly requestsWithoutEdges: Readonly<Record<string, number>>; readonly recognitionCoverage: Readonly<Record<string, number>> };
+  readonly recognitionCoverage: readonly { readonly id: RecordId; readonly owner: RecordId | null; readonly outcome: string; readonly commonjs: DependencyCoverageRecord['commonjs']; readonly qualification: Qualification }[];
+  readonly summary: { readonly modules: number; readonly discoveredModules: number; readonly projectModules: number; readonly relationships: number; readonly requestsWithoutEdges: Readonly<Record<string, number>>; readonly recognitionCoverage: Readonly<Record<string, number>> };
   readonly display: { readonly rows: readonly Row[]; readonly omittedModules: number; readonly omittedRelationships: number;
     readonly omittedOccurrences: number; readonly omittedRequestResults: number; readonly omittedCoverageOutcomes: number; readonly prunedComponents: number };
   readonly sourceDetail?: { readonly level: 'dependency-occurrences-and-organization-evidence'; readonly notice: string;
@@ -50,7 +50,7 @@ const full = (outcome: Outcome) => outcome.applicability === 'applicable' && out
 
 /** Materializes display bounds from the stored graph; rendering below only formats this value. */
 export function createDependencyView(store: ProgramRecordStore, projection: DependencyProjectionRecord,
-  presentation: Presentation & { readonly dependencyNavigation?: { readonly children: string; readonly parents: string } }): QualifiedDependencyView {
+  presentation: Presentation & { readonly dependencyNavigation?: { readonly children: string; readonly parents: string; readonly source: string } }): QualifiedDependencyView {
   const evaluation = store.get(projection.evaluation);
   if (evaluation.kind !== 'dependency-evaluation') throw new Error('Expected dependency evaluation');
   const basis = store.get(evaluation.moduleEvaluation);
@@ -136,8 +136,10 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
     const item = store.get(id);
     if (item.kind !== 'dependency-coverage') throw new Error('Expected coverage outcome');
     source(id, 'recognition-coverage', item.evidence);
-    return { id, owner: item.owner, outcome: item.outcome, qualification: qualification(item.context) };
+    return { id, owner: item.owner, outcome: item.outcome, commonjs: item.commonjs, qualification: qualification(item.context) };
   });
+  requestResults.forEach(item => displayed.add(item.owner));
+  recognitionCoverage.forEach(item => { if (item.owner && projection.modules.includes(item.owner)) displayed.add(item.owner); });
   const modules = projection.modules.filter(id => displayed.has(id)).map(id => {
     const module = store.get(id);
     if (module.kind !== 'module') throw new Error('Expected module');
@@ -184,9 +186,13 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
   const limitations: string[] = [...dependencyLimitations,
     'Dependency direction: a parent depends directly on a child. Roots are structural, not entry points or importance.',
     'Re-exports only is a syntax property, not a barrel, API, purity, or safe-collapse claim.',
-    'Repository layout establishes no dependency policy or architectural violation.',
+    'Repository-layout labels compare all applicable occurrence endpoint placements: same-group means equal groups; into-descendants means a strict organization descendant; outward means outside the source group and its descendants.',
+    'Variation labels preserve different established answers; unestablished organization is not a policy failure. Repository layout establishes no dependency policy or architectural violation.',
     'Generated handles are navigation cues; exact names and snapshot-scoped Entity IDs retain their established meanings.'];
   if (projection.lens === 'dependency-parents') limitations.push('A request without an established child cannot be attributed to the selected module and therefore cannot produce a parent result.');
+  const sourcePriority = (item: typeof sourceItems[number]) => projection.nonEdgeRequests.includes(item.subject) ? 0
+    : projection.coverage.includes(item.subject) ? 1 : item.role === 'target' ? 3 : 2;
+  sourceItems.sort((a, b) => sourcePriority(a) - sourcePriority(b));
   const result: QualifiedDependencyView = {
     schema: 'postcode-dependency-view/0-experimental',
     id: recordId(projection.snapshot, 'dependency-view', { method: methods.presentation, projection: projection.id, presentation }),
@@ -197,7 +203,7 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
     evaluations: { modules: state(basis), dependencies: state(evaluation), organization: expanded ? state(expanded) : null },
     qualifications: projection.contexts.map(qualification), limitations, modules, subjects: projection.subjects, relationships, graph,
     requestResults, recognitionCoverage,
-    summary: { modules: projection.modules.length, relationships: projection.relationships.length,
+    summary: { modules: projection.modules.length, discoveredModules: basis.modules.length, projectModules: basis.modules.filter(id => { const entity = store.get(id); if (entity.kind !== 'module') return false; const claim = store.get(entity.claim); return claim.kind === 'claim' && claim.information.type === 'module' && claim.information.discoveryFacets.includes('project'); }).length, relationships: projection.relationships.length,
       requestsWithoutEdges: count(projection.nonEdgeRequests, 'targetStatus'), recognitionCoverage: count(projection.coverage, 'outcome') },
     display: { rows, omittedModules: projection.modules.length - modules.length, omittedRelationships: projection.relationships.length - relationships.length,
       omittedOccurrences: relationships.reduce((sum, edge) => sum + edge.omittedOccurrences, 0),
@@ -215,25 +221,28 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
 export function renderDependencyView(view: QualifiedDependencyView): string {
   if (view.presentation.format === 'json') return `${JSON.stringify(view, null, 2)}\n`;
   const modules = new Map(view.modules.map(module => [module.id, module]));
-  const label = (id: RecordId) => {
+  const label = (id: RecordId, annotation = true) => {
     const module = modules.get(id);
-    return module ? `${inlineText(module.name ?? module.handle)} (${module.entityId})${module.opaque ? ' · opaque external' : ''}${compositionAnnotation(module.composition)}` : '[module omitted]';
+    return module ? `${inlineText(module.name ?? module.handle)} (${module.entityId})${module.opaque ? ' · opaque external' : ''}${annotation ? compositionAnnotation(module.composition) : ''}` : '[module omitted]';
   };
-  const edgeText = (edge: EdgeView) => `${label(edge.parent)} → ${label(edge.child)}${edge.typeOnly ? ' · type-only' : ''} · ${edge.mechanisms.join(', ')}${edge.organization ? ` · ${edge.organization.classification ?? 'organization not established'}` : ''}`;
+  const edgeText = (edge: EdgeView) => `${label(edge.parent, false)} → ${label(edge.child, false)}${edge.typeOnly ? ' · type-only' : ''} · ${edge.mechanisms.join(', ')}${edge.organization ? ` · ${edge.organization.classification ?? 'organization not established'}` : ''}`;
   const lines = [`Module dependency ${view.projection.lens === 'dependency-structure' ? 'structure' : view.projection.lens === 'dependency-children' ? 'children' : 'parents'}`,
     `Snapshot ${view.projection.snapshot}`, 'Direction: dependency parent → dependency child (depends directly on).',
-    `${view.summary.modules} modules · ${view.summary.relationships} direct relationships`];
+    `${view.summary.modules} modules in this projection · ${view.summary.relationships} direct relationships`,
+    `Materialized population: ${view.summary.projectModules} project modules; ${view.summary.discoveredModules} discovered modules available for exact lookup.`,
+    'Analysis outcomes below describe supported source requests, not complete runtime behavior.',
+    `Display bounds: ${view.display.omittedModules} modules and ${view.display.omittedRelationships} relationships omitted; ${view.display.prunedComponents} further descents pruned.`];
   for (const [name, outcome] of Object.entries(view.evaluations)) if (outcome) lines.push(`${name}: ${outcome.availability}, ${outcome.execution}, materialization ${outcome.materialization}${outcome.reason ? ` · ${inlineText(outcome.reason)}` : ''}`);
   if (view.projection.parameters.selector !== null) {
     lines.push(`${view.projection.selection.matches} exact match(es) · ${view.projection.selection.referenceStatus}`);
     for (const subject of view.subjects) lines.push(`Selected: ${label(subject)}`);
   }
   if (view.graph) {
-    lines.push('', view.graph.rootsEstablished ? 'Dependency roots and direct structure' : 'Known components; roots not established');
+    lines.push('', view.graph.rootsEstablished ? 'Dependency roots and direct structure (root components have no incoming project relationships from outside the component)' : 'Known components; roots not established');
     for (const row of view.display.rows) {
       const component = view.graph.components[row.component]!;
       const indent = '  '.repeat(row.depth);
-      lines.push(`${indent}◆ ${component.cyclic ? 'Cycle grouping (not an entity): ' : ''}${component.members.map(label).join(' ↔ ')}${row.reference ? ' · reference (already expanded)' : ''}${row.pruned ? ' · descent pruned at display depth' : ''}`);
+      lines.push(`${indent}◆ ${component.cyclic ? 'Cycle grouping (not an entity): ' : ''}${component.members.map(id => label(id)).join(', ')}${row.reference ? ' · reference (already expanded)' : ''}${row.pruned ? ' · further descent pruned at display depth' : ''}`);
       if (!row.reference) for (const edge of view.relationships.filter(edge => component.members.includes(edge.parent))) lines.push(`${indent}  ${edgeText(edge)}`);
     }
     if (!view.graph.components.length) lines.push(view.graph.rootsEstablished ? 'No project modules.' : 'No project modules materialized.');
@@ -244,20 +253,24 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
       ? '  External interiors are opaque; an empty child set is not established.'
       : !view.subjects.length ? '  No selected module.' : (full(view.evaluations.dependencies) && full(view.evaluations.modules)) ? '  None in the supported project-owned request population.' : '  None materialized; dependency evaluation is incomplete.');
   }
+  if (!view.graph) for (const module of view.modules.filter(module => module.composition.claims.length)) lines.push(`Module property: ${label(module.id, false)} · re-exports only`);
   if (view.projection.lens !== 'dependency-parents') {
     lines.push('', 'Source-owned request results without edges');
     for (const [status, count] of Object.entries(view.summary.requestsWithoutEdges)) lines.push(`  ${status}: ${count}`);
     if (!Object.keys(view.summary.requestsWithoutEdges).length) lines.push((full(view.evaluations.dependencies) && full(view.evaluations.modules)) ? '  None in supported coverage.' : '  None materialized; evaluation is incomplete.');
-    for (const item of view.requestResults) lines.push(`  ${item.mechanism} · ${item.targetStatus}${item.typeOnly ? ' · type-only' : ''}`);
+    for (const [index, item] of view.requestResults.entries()) lines.push(`  Request ${index + 1}: ${item.mechanism} · ${item.targetStatus}${item.typeOnly ? ' · type-only' : ''}`);
     lines.push('', 'Recognition-coverage outcomes (not recognized occurrences)');
     for (const [outcome, count] of Object.entries(view.summary.recognitionCoverage)) lines.push(`  ${outcome}: ${count}`);
+    for (const [index, item] of view.recognitionCoverage.entries()) lines.push(`  Coverage ${index + 1}: ${item.outcome}${item.owner && modules.has(item.owner) ? ` · ${label(item.owner, false)}` : ' · owner not shown/established'}`);
     if (!Object.keys(view.summary.recognitionCoverage).length) lines.push('  No recorded coverage outcomes; bounded recognition still applies.');
   }
   if (view.sourceDetail) {
     lines.push('', 'SOURCE DETAIL — explicit source escape', view.sourceDetail.notice);
     for (const item of view.sourceDetail.items) {
       const source = item.evidence;
-      lines.push(`  ${item.role}: ${inlineText(source.path)}${source.location.association === 'span' ? `:${source.location.from.line}:${source.location.from.column}` : ''}`);
+      const request = view.requestResults.findIndex(result => result.id === item.subject);
+      const coverage = view.recognitionCoverage.findIndex(result => result.id === item.subject);
+      lines.push(`  ${request >= 0 ? `Request ${request + 1}` : coverage >= 0 ? `Coverage ${coverage + 1}` : item.role}: ${inlineText(source.path)}${source.location.association === 'span' ? `:${source.location.from.line}:${source.location.from.column}` : ''}`);
       if (source.location.association === 'span') lines.push(`    ${inlineText(source.location.excerpt.text)}${source.location.excerpt.omittedCharacters ? ` … ${source.location.excerpt.omittedCharacters} characters omitted` : ''}`);
       if (source.dependencyResolution) lines.push(`    ${source.dependencyResolution.status} · ${source.dependencyResolution.targetBasis} · ${source.dependencyResolution.mode} · target file: ${inlineText(source.dependencyResolution.resolvedFile ?? '(none)')}`);
     }
@@ -273,6 +286,6 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
     '  Display bounds do not reduce analysis coverage.', '', 'Qualifications', ...view.limitations.map(item => `  ${item}`));
   for (const code of new Set(view.qualifications.flatMap(context => context.diagnostics.map(item => item.code)))) lines.push(`  Encountered TypeScript diagnostic: TS${code}`);
   if (view.presentation.navigation) lines.push('', 'Next · inspect a module:', view.presentation.navigation.inspect);
-  if (view.presentation.dependencyNavigation) lines.push('', 'Next · dependency children:', view.presentation.dependencyNavigation.children, '', 'Next · dependency parents:', view.presentation.dependencyNavigation.parents);
+  if (view.presentation.dependencyNavigation) lines.push('', 'Next · dependency children:', view.presentation.dependencyNavigation.children, '', 'Next · dependency parents:', view.presentation.dependencyNavigation.parents, '', 'Next · captured request and organization source detail (view-local Request/Coverage numbers are not entity selectors):', view.presentation.dependencyNavigation.source);
   return `${lines.join('\n')}\n`;
 }

@@ -374,3 +374,12 @@ requesting that preparation so the supplied snapshot and IDs remain valid. The f
 also supports module and organization commands when a shared dependency context is
 wanted. Ordinary organization views do not silently run the dependency lens. A changed
 input still invalidates the snapshot; no successor is inferred.
+
+
+Dependency views define organization-relative labels and distinguish their projection
+population from the full discovered population available to exact lookup. Cycle headers
+list members without implying extra pairwise edges. Request and recognition rows use
+view-local `Request N` and `Coverage N` labels; these are not entity selectors. The
+source-detail command exposes captured support for the selected view, prioritizing
+non-edge and recognition evidence within its source bound. Module composition badges
+are separated from relationship mechanism labels.

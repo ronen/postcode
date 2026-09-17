@@ -131,9 +131,9 @@ export async function runCli(args: readonly string[], environment: {
     ? store.get(projection.moduleProjection) as ProjectionRecord : null;
   const moduleOnly = projection.kind === 'organization-projection' && projection.lens === 'inspect' && projection.groups.length === 0
     && moduleProjection !== null && (moduleProjection.modules.length > 0 || organizationOutcome!.groups.length === 0);
-  const options = { ...presentation, ...(unsafeCommandPath ? {} : { navigation: { inspect: command('MODULE_HANDLE') } }) };
+  const options = { ...presentation, ...(unsafeCommandPath ? {} : { navigation: { inspect: command(dependencyLens ? 'ENTITY_ID' : 'MODULE_HANDLE') } }) };
   const view = projection.kind === 'dependency-projection' ? createDependencyView(store, projection, { ...options,
-    ...(unsafeCommandPath ? {} : { dependencyNavigation: { children: command('ENTITY_ID', 'children'), parents: command('ENTITY_ID', 'parents') } }) })
+    ...(unsafeCommandPath ? {} : { dependencyNavigation: { children: command('ENTITY_ID', 'children'), parents: command('ENTITY_ID', 'parents'), source: ['node', path.join(environment.checkout, '_build/src/cli.js'), lens, '--source-detail', '--project', config, ...(lens === 'dependencies' ? [] : ['--snapshot', projection.snapshot, '--', 'ENTITY_ID'])].map(shellQuote).join(' ') } }) })
     : projection.kind === 'projection' ? createView(store, projection, options)
     : moduleOnly ? createView(store, moduleProjection!, options)
     : createOrganizationView(store, projection, { ...options,

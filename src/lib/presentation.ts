@@ -342,7 +342,9 @@ export function renderUnicode(view: QualifiedView): string {
       if (module.omittedExports) lines.push(`  … ${module.omittedExports} effective export(s) omitted.`);
     }
 
-    local([...view.qualifications.filter(context => context.scope === module.id), ...module.exports.map(exported => exported.qualification)], '  ');
+    local([...view.qualifications.filter(context => context.scope === module.id
+      && (!context.method.startsWith(methods.composition) || module.composition.claims.length > 0
+        || !module.composition.evaluations.some(outcome => outcome.execution === 'completed' && outcome.materialization === 'full'))), ...module.exports.map(exported => exported.qualification)], '  ');
   }
   if (view.sourceDetail) {
     lines.push('', 'SOURCE DETAIL — explicit source escape', ...wrapText(view.sourceDetail.notice, ''));
