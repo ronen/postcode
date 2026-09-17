@@ -158,7 +158,7 @@ test('configuration diagnostics retain equal messages at different files or posi
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('modules usage errors identify source-detail and snapshot as inspection-only options', async () => {
+test('modules usage errors identify the supported source-detail and snapshot views', async () => {
   for (const lens of [[], ['modules']]) {
     for (const options of [['--source-detail'], ['--snapshot', `snapshot:${'a'.repeat(64)}`],
       ['--source-detail', '--snapshot', `snapshot:${'a'.repeat(64)}`]]) {
@@ -166,7 +166,8 @@ test('modules usage errors identify source-detail and snapshot as inspection-onl
       assert.equal(result.exit, 2);
       assert.equal(result.stdout, '');
       assert.equal(result.batches.length, 0);
-      assert.ok(result.stderr.includes('--source-detail and --snapshot require inspect'));
+      assert.ok(result.stderr.includes('--snapshot requires inspect, children or parents'));
+      assert.ok(result.stderr.includes('--source-detail requires inspect or a dependency view'));
     }
   }
 });
