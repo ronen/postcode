@@ -80,6 +80,12 @@ Structure and child views should expose the source-owned details:
 I would avoid the phrase “occurrence-level exclusions.” Some excluded forms never become recognized occurrences. Call them source-owned request results and recognition-coverage outcomes instead.
 The bounded rule can be presented as concise reusable disclosure text; the parent projection does not need fabricated coverage records merely to satisfy the presentation requirement. This preserves the distinction between analysis facts and how each view explains its limits.
 
+### 2026-09-17 — Clean instrument evaluators authorized
+
+Context: The agent asked permission to run two fresh evaluator agents, supplying only captured views and fixed comprehension questions for instrument validation, while leaving final independent implementation review to the human.
+
+Run two clean evaluators
+
 ## Outcome
 
 ## Verification
