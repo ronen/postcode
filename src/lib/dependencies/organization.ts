@@ -108,6 +108,8 @@ export function evaluateDependencyOrganization(store: ProgramRecordStore, depend
       if (occurrence.kind !== 'dependency-occurrence' || !occurrence.target) throw new Error('Expected resolved occurrence');
       const source = endpoint(occurrence.owner, [occurrence.evidence], 'occurrence');
       const target = endpoint(occurrence.target, occurrence.targetEvidence, 'target-declaration');
+      // These sets are narrowed by this occurrence's source/target evidence above.
+      // Whole-module placements enter only through the explicit evidence-absent fallback.
       const pairs: DependencyOrganizationClaim['information']['occurrences'][number]['pairs'] = complete(organization) ? source.groups.flatMap(from => target.groups.map(to => {
         const sourceAncestors = ancestors(from);
         const targetAncestors = ancestors(to);
