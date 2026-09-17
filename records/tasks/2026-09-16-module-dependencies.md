@@ -59,6 +59,10 @@ Context: Asked whether the provider-integration review gate, including the autho
 
 yes, resume implementation
 
+### 2026-09-17 — Graph review observations and continued implementation
+
+The review is complete.  It has no findings but a few non-defect observations.  Assess and act on those observations as you see fit. Ask me before choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty, otherwise continue with the implementation
+
 ## Outcome
 
 ## Verification
