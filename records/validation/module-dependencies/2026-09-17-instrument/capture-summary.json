@@ -1,0 +1,470 @@
+{
+  "implementation": "29380ac6259fda679040f3772d27f43374402a1d",
+  "node": "22.13.1",
+  "typescript": "6.0.3",
+  "tsnodeRevision": "ddb05ef23be92a90c3ecac5a0220435c65ebbd2a",
+  "equivalentTsnodeRootSelection": {
+    "roots": 66,
+    "equal": true
+  },
+  "runs": [
+    {
+      "name": "journey-structure-json",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "dependencies",
+        "--json",
+        "--project",
+        "/Users/ronen/postcode/app/fixtures/dependency-journey/tsconfig.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 1112,
+      "bytes": 365765
+    },
+    {
+      "name": "journey-structure",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "dependencies",
+        "--project",
+        "/Users/ronen/postcode/app/fixtures/dependency-journey/tsconfig.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 1007,
+      "bytes": 3591
+    },
+    {
+      "name": "journey-children",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "children",
+        "module-7ae3cce7",
+        "--snapshot",
+        "snapshot:f8ccf79c1074fab5027a1cf8e518699c07929a39a323a1c704b10d7c081a921a",
+        "--project",
+        "/Users/ronen/postcode/app/fixtures/dependency-journey/tsconfig.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 985,
+      "bytes": 2927
+    },
+    {
+      "name": "journey-parents",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "parents",
+        "module-0a02841d",
+        "--snapshot",
+        "snapshot:f8ccf79c1074fab5027a1cf8e518699c07929a39a323a1c704b10d7c081a921a",
+        "--project",
+        "/Users/ronen/postcode/app/fixtures/dependency-journey/tsconfig.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 980,
+      "bytes": 2932
+    },
+    {
+      "name": "journey-inspect",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "inspect",
+        "module-aee44b7a",
+        "--snapshot",
+        "snapshot:f8ccf79c1074fab5027a1cf8e518699c07929a39a323a1c704b10d7c081a921a",
+        "--dependency-context",
+        "--project",
+        "/Users/ronen/postcode/app/fixtures/dependency-journey/tsconfig.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 939,
+      "bytes": 1390
+    },
+    {
+      "name": "boundary-structure",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "dependencies",
+        "--project",
+        "/Users/ronen/postcode/app/_dependency-presentation-validation/boundary-input/tsconfig.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 860,
+      "bytes": 3151
+    },
+    {
+      "name": "boundary-json",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "dependencies",
+        "--json",
+        "--project",
+        "/Users/ronen/postcode/app/_dependency-presentation-validation/boundary-input/tsconfig.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 839,
+      "bytes": 67525
+    },
+    {
+      "name": "boundary-external-children",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "children",
+        "module-f8a7afe4",
+        "--snapshot",
+        "snapshot:25665c5f4e00b5e103a0b390355e4d81625c97a2493c178daee78237863dac61",
+        "--project",
+        "/Users/ronen/postcode/app/_dependency-presentation-validation/boundary-input/tsconfig.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 898,
+      "bytes": 3049
+    },
+    {
+      "name": "postcode-json",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "dependencies",
+        "--json",
+        "--project",
+        "/Users/ronen/postcode/app/tsconfig.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 42447,
+      "bytes": 5714417
+    },
+    {
+      "name": "postcode-structure",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "dependencies",
+        "--project",
+        "/Users/ronen/postcode/app/tsconfig.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 39348,
+      "bytes": 39898
+    },
+    {
+      "name": "postcode-children-json",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "children",
+        "module-61acf56d",
+        "--snapshot",
+        "snapshot:3c40ae1d5d38840e5c286ace1df33da0a5006f5e64e40db060d070fd6889f044",
+        "--json",
+        "--project",
+        "/Users/ronen/postcode/app/tsconfig.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 39225,
+      "bytes": 1082243
+    },
+    {
+      "name": "postcode-children",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "children",
+        "module-61acf56d",
+        "--snapshot",
+        "snapshot:3c40ae1d5d38840e5c286ace1df33da0a5006f5e64e40db060d070fd6889f044",
+        "--project",
+        "/Users/ronen/postcode/app/tsconfig.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 40337,
+      "bytes": 4322
+    },
+    {
+      "name": "postcode-inspect",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "inspect",
+        "module-61acf56d",
+        "--snapshot",
+        "snapshot:3c40ae1d5d38840e5c286ace1df33da0a5006f5e64e40db060d070fd6889f044",
+        "--dependency-context",
+        "--project",
+        "/Users/ronen/postcode/app/tsconfig.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 39963,
+      "bytes": 1214
+    },
+    {
+      "name": "postcode-parents",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "parents",
+        "module-b3cab524",
+        "--snapshot",
+        "snapshot:3c40ae1d5d38840e5c286ace1df33da0a5006f5e64e40db060d070fd6889f044",
+        "--project",
+        "/Users/ronen/postcode/app/tsconfig.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 39258,
+      "bytes": 5810
+    },
+    {
+      "name": "postcode-source-json",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "children",
+        "module-61acf56d",
+        "--snapshot",
+        "snapshot:3c40ae1d5d38840e5c286ace1df33da0a5006f5e64e40db060d070fd6889f044",
+        "--source-detail",
+        "--json",
+        "--project",
+        "/Users/ronen/postcode/app/tsconfig.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 39894,
+      "bytes": 1230549
+    },
+    {
+      "name": "tsnode-json",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "dependencies",
+        "--json",
+        "--project",
+        "/Users/ronen/postcode/app/_dependency-contract-investigation/ts-node/tsconfig.postcode-validation.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 28346,
+      "bytes": 7419695
+    },
+    {
+      "name": "tsnode-structure",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "dependencies",
+        "--project",
+        "/Users/ronen/postcode/app/_dependency-contract-investigation/ts-node/tsconfig.postcode-validation.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 27131,
+      "bytes": 40161
+    },
+    {
+      "name": "tsnode-children-json",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "children",
+        "module-e144eeff",
+        "--snapshot",
+        "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe",
+        "--json",
+        "--project",
+        "/Users/ronen/postcode/app/_dependency-contract-investigation/ts-node/tsconfig.postcode-validation.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 975779,
+      "bytes": 3395799
+    },
+    {
+      "name": "tsnode-children",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "children",
+        "module-e144eeff",
+        "--snapshot",
+        "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe",
+        "--project",
+        "/Users/ronen/postcode/app/_dependency-contract-investigation/ts-node/tsconfig.postcode-validation.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 27560,
+      "bytes": 5684
+    },
+    {
+      "name": "tsnode-inspect",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "inspect",
+        "module-e144eeff",
+        "--snapshot",
+        "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe",
+        "--dependency-context",
+        "--project",
+        "/Users/ronen/postcode/app/_dependency-contract-investigation/ts-node/tsconfig.postcode-validation.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 27640,
+      "bytes": 8034
+    },
+    {
+      "name": "tsnode-parents",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "parents",
+        "module-696df3fe",
+        "--snapshot",
+        "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe",
+        "--project",
+        "/Users/ronen/postcode/app/_dependency-contract-investigation/ts-node/tsconfig.postcode-validation.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 27680,
+      "bytes": 5552
+    },
+    {
+      "name": "tsnode-source-json",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "children",
+        "module-e144eeff",
+        "--snapshot",
+        "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe",
+        "--source-detail",
+        "--json",
+        "--project",
+        "/Users/ronen/postcode/app/_dependency-contract-investigation/ts-node/tsconfig.postcode-validation.json"
+      ],
+      "exit": 0,
+      "elapsedMs": 27828,
+      "bytes": 3585831
+    },
+    {
+      "name": "tsnode-original-opening",
+      "command": [
+        "/Users/ronen/.nvm/versions/node/v22.13.1/bin/node",
+        "/Users/ronen/postcode/app/_build/src/cli.js",
+        "dependencies",
+        "--project",
+        "/Users/ronen/postcode/app/_dependency-contract-investigation/ts-node/tsconfig.json"
+      ],
+      "exit": 2,
+      "elapsedMs": 1511,
+      "bytes": 0
+    }
+  ],
+  "summaries": {
+    "postcode": {
+      "snapshot": "snapshot:3c40ae1d5d38840e5c286ace1df33da0a5006f5e64e40db060d070fd6889f044",
+      "summary": {
+        "modules": 60,
+        "relationships": 280,
+        "requestsWithoutEdges": {},
+        "recognitionCoverage": {}
+      },
+      "evaluations": {
+        "modules": {
+          "applicability": "applicable",
+          "availability": "available",
+          "execution": "completed",
+          "materialization": "full",
+          "reason": null
+        },
+        "dependencies": {
+          "applicability": "applicable",
+          "availability": "available",
+          "execution": "completed",
+          "materialization": "full",
+          "reason": null
+        },
+        "organization": {
+          "applicability": "applicable",
+          "availability": "available",
+          "execution": "completed",
+          "materialization": "partial",
+          "reason": "Some requested organization context is unavailable or incomplete."
+        }
+      },
+      "roots": 17,
+      "cycles": 1,
+      "selected": {
+        "handle": "cli",
+        "entityId": "module-61acf56d",
+        "directChildren": 16
+      },
+      "selectedParents": {
+        "handle": "records",
+        "entityId": "module-b3cab524"
+      },
+      "sourceDisclosure": {
+        "level": "dependency-occurrences-and-organization-evidence",
+        "records": 34,
+        "omittedEvidence": 0
+      }
+    },
+    "tsnode": {
+      "snapshot": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe",
+      "summary": {
+        "modules": 94,
+        "relationships": 263,
+        "requestsWithoutEdges": {
+          "outside-population": 20,
+          "unresolved": 17,
+          "target-indeterminate": 13
+        },
+        "recognitionCoverage": {
+          "ownership-unestablished": 44
+        }
+      },
+      "evaluations": {
+        "modules": {
+          "applicability": "applicable",
+          "availability": "available",
+          "execution": "completed",
+          "materialization": "full",
+          "reason": null
+        },
+        "dependencies": {
+          "applicability": "applicable",
+          "availability": "available",
+          "execution": "completed",
+          "materialization": "full",
+          "reason": null
+        },
+        "organization": {
+          "applicability": "applicable",
+          "availability": "available",
+          "execution": "completed",
+          "materialization": "partial",
+          "reason": "Some requested organization context is unavailable or incomplete."
+        }
+      },
+      "roots": 30,
+      "cycles": 3,
+      "selected": {
+        "handle": "ts-error",
+        "entityId": "module-e144eeff",
+        "directChildren": 19
+      },
+      "selectedParents": {
+        "handle": "testlib",
+        "entityId": "module-696df3fe"
+      },
+      "sourceDisclosure": {
+        "level": "dependency-occurrences-and-organization-evidence",
+        "records": 61,
+        "omittedEvidence": 0
+      }
+    }
+  }
+}

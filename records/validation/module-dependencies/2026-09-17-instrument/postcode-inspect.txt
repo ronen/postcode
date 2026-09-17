@@ -1,0 +1,26 @@
+Inspect · configured TypeScript project
+Snapshot 3c40ae1d5d38
+1 module selected from 204 · exact match for module-61acf56d
+Analysis complete: modules, exports, documentation, composition
+
+Selected project modules · 1 · TypeScript names not established
+
+◆ cli
+  Entity ID: module-61acf56d
+
+  Exports:
+  ├─ runCli [value]
+  Limitation: Only comments and EmptyStatement syntax are ignored. No barrel, facade, API, purity, safe-collapse, or transitive-side-effect claim.
+
+Status
+  Module membership and effective exports established by TypeScript analysis.
+  Coverage: external-module SourceFiles and visible named ambient modules; other compiler module categories are not established.
+
+Run limitations
+  2 generated-output locations excluded by this run's input filter.
+  Inputs were memoized as first observed, not captured as an atomic filesystem snapshot.
+
+Next · replace MODULE_HANDLE to inspect another module; add --source-detail for supporting source evidence.
+node /Users/ronen/postcode/app/_build/src/cli.js inspect --dependency-context \
+  --snapshot snapshot:3c40ae1d5d38840e5c286ace1df33da0a5006f5e64e40db060d070fd6889f044 \
+  --project /Users/ronen/postcode/app/tsconfig.json -- MODULE_HANDLE

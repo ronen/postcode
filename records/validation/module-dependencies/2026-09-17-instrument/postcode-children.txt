@@ -1,0 +1,64 @@
+Module dependency children
+Snapshot snapshot:3c40ae1d5d38840e5c286ace1df33da0a5006f5e64e40db060d070fd6889f044
+Direction: dependency parent → dependency child (depends directly on).
+17 modules · 16 direct relationships
+modules: available, completed, materialization full
+dependencies: available, completed, materialization full
+organization: available, completed, materialization partial · Some requested organization context is unavailable or incomplete.
+1 exact match(es) · current
+Selected: cli (module-61acf56d)
+
+Established direct relationships
+  cli (module-61acf56d) → node:path (module-01229df8) · opaque external · static-import · organization not established
+  cli (module-61acf56d) → memory-store (module-06752ef3) · static-import · same-group
+  cli (module-61acf56d) → organization (module-0b4396fc) · static-import · into-descendants
+  cli (module-61acf56d) → presentation (module-2cdb5357) · static-import · into-descendants
+  cli (module-61acf56d) → presentation (module-2e897200) · static-import · same-group
+  cli (module-61acf56d) → presentation (module-34f2e9f0) · static-import · into-descendants
+  cli (module-61acf56d) → projections (module-37728742) · static-import · same-group
+  cli (module-61acf56d) → observations (module-3c0d2fc9) · static-import · same-group
+  cli (module-61acf56d) → projections (module-69998884) · static-import · into-descendants
+  cli (module-61acf56d) → evaluate (module-7fa6c1d9) · static-import · into-descendants
+  cli (module-61acf56d) → project (module-abc07ffd) · static-import · into-descendants
+  cli (module-61acf56d) → evaluation (module-b1fefef5) · static-import · same-group
+  cli (module-61acf56d) → records (module-b3cab524) · type-only · static-import · same-group
+  cli (module-61acf56d) → evaluate (module-b9e659b2) · static-import · into-descendants
+  cli (module-61acf56d) → terminal-text (module-c9216600) · static-import · same-group
+  cli (module-61acf56d) → projections (module-f3757677) · static-import · into-descendants
+
+Source-owned request results without edges
+  None in supported coverage.
+
+Recognition-coverage outcomes (not recognized occurrences)
+  No recorded coverage outcomes; bounded recognition still applies.
+
+Display
+  0 modules omitted · 0 relationships omitted · 0 descents pruned
+  0 supporting occurrences omitted · 0 request results summarized/omitted · 0 recognition outcomes summarized/omitted
+  Display bounds do not reduce analysis coverage.
+
+Qualifications
+  Source requests only: no value-use, emission, loader availability, execution, bundler, or deployment claims.
+  Only project-owned requests are analyzed; external module interiors are opaque.
+  CommonJS coverage is bare require with exactly one argument, complete lexical evidence, and affirmative captured context; aliases, properties and other APIs are excluded.
+  Defined ESM format overrides ambient declarations; preserve requires callable ambient corroboration; absent module options do not infer compiler defaults.
+  Nonliteral targets are not evaluated; resolved files outside the discovered population do not add modules.
+  Dependency direction: a parent depends directly on a child. Roots are structural, not entry points or importance.
+  Re-exports only is a syntax property, not a barrel, API, purity, or safe-collapse claim.
+  Repository layout establishes no dependency policy or architectural violation.
+  Generated handles are navigation cues; exact names and snapshot-scoped Entity IDs retain their established meanings.
+
+Next · inspect a module:
+node /Users/ronen/postcode/app/_build/src/cli.js inspect --dependency-context \
+  --snapshot snapshot:3c40ae1d5d38840e5c286ace1df33da0a5006f5e64e40db060d070fd6889f044 \
+  --project /Users/ronen/postcode/app/tsconfig.json -- MODULE_HANDLE
+
+Next · dependency children:
+node /Users/ronen/postcode/app/_build/src/cli.js children \
+  --snapshot snapshot:3c40ae1d5d38840e5c286ace1df33da0a5006f5e64e40db060d070fd6889f044 \
+  --project /Users/ronen/postcode/app/tsconfig.json -- ENTITY_ID
+
+Next · dependency parents:
+node /Users/ronen/postcode/app/_build/src/cli.js parents \
+  --snapshot snapshot:3c40ae1d5d38840e5c286ace1df33da0a5006f5e64e40db060d070fd6889f044 \
+  --project /Users/ronen/postcode/app/tsconfig.json -- ENTITY_ID

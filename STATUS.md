@@ -71,7 +71,11 @@ The graph/expansion review found no defects; its
 records all observations and the human-approved parent-view coverage disclosure.
 Composition appears separately from `discoveryFacets` in module/organization views.
 
-The representative six-module journey and focused boundary tests pass. Whole-repository
-instrument validation, fresh-invocation measurement, two authorized clean evaluators,
-and final integrated-review handoff are underway. The task remains active; its final
-review gate has not been satisfied.
+Implementation and planned verification are complete: type checking and all 188 tests
+pass. The six-module journey, exceptional boundary fixture, PostCode and adapted
+ts-node exercises, and two authorized clean evaluators are recorded in the
+[integrated instrument validation](records/validation/module-dependencies/2026-09-17-integrated-instrument.md).
+Evaluator feedback improved cycle notation, qualifications, omissions and fresh
+source navigation. Measured fresh invocation cost remains substantial, with an
+unexplained ts-node timing outlier retained in the evidence. The final integrated
+review is next. The task remains active until the human accepts that review gate.

@@ -1,0 +1,232 @@
+Module dependency structure
+Snapshot snapshot:f8a28786839ac21f06328303be2962b31032dff8a6a3bceb6b68601e35d2af4f
+Direction: dependency parent → dependency child (depends directly on).
+7 modules in this projection · 5 direct relationships
+Materialized population: 7 project modules; 7 discovered modules available for exact lookup.
+Analysis outcomes below describe supported source requests, not complete runtime behavior.
+Display bounds: 0 modules and 0 relationships omitted; 0 further descents pruned.
+modules: available, completed, materialization full
+dependencies: available, completed, materialization full
+organization: available, completed, materialization full
+
+Dependency roots and direct structure (root components have no incoming project relationships from outside the component)
+◆ script (module-6d64ffea)
+  script (module-6d64ffea) → target (module-3ad25a29) · commonjs · same-group
+  ◆ target (module-3ad25a29)
+◆ ambient-parent (module-9d24da11)
+  ambient-parent (module-9d24da11) → ambient-target (module-620affec) · import-type, re-export, static-import · same-group
+  ◆ ambient-target (module-620affec)
+◆ esm (module-dc4e3c29)
+◆ requests (module-e8b7d650)
+  requests (module-e8b7d650) → target (module-3ad25a29) · commonjs, dynamic-import, import-equals, import-type, re-export, side-effect-import, static-import · same-group
+  requests (module-e8b7d650) → forward (module-ef6c58bd) · re-export · same-group
+  ◆ target (module-3ad25a29) · reference (already expanded)
+  ◆ forward (module-ef6c58bd) · re-exports only
+    forward (module-ef6c58bd) → target (module-3ad25a29) · re-export · same-group
+    ◆ target (module-3ad25a29) · reference (already expanded)
+
+Source-owned request results without edges
+  target-indeterminate: 3
+  unresolved: 2
+  outside-population: 1
+  Request 1: dynamic-import · target-indeterminate
+  Request 2: dynamic-import · target-indeterminate
+  Request 3: dynamic-import · unresolved
+  Request 4: commonjs · outside-population
+  Request 5: commonjs · unresolved
+  Request 6: commonjs · target-indeterminate
+
+Recognition-coverage outcomes (not recognized occurrences)
+  unsupported-format: 1
+  alternative-binding: 3
+  outside-commonjs-shape: 2
+  Coverage 1: unsupported-format · esm (module-dc4e3c29)
+  Coverage 2: alternative-binding · requests (module-e8b7d650)
+  Coverage 3: alternative-binding · requests (module-e8b7d650)
+  Coverage 4: alternative-binding · requests (module-e8b7d650)
+  Coverage 5: outside-commonjs-shape · requests (module-e8b7d650)
+  Coverage 6: outside-commonjs-shape · requests (module-e8b7d650)
+
+SOURCE DETAIL — explicit source escape
+Explicit source escape: captured source and organization evidence only; files are not reread.
+  Request 1: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:19:1
+    import(chosen)
+    target-indeterminate · none · unspecified · target file: (none)
+  Request 2: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:20:1
+    import('./' + 'target.js')
+    target-indeterminate · none · unspecified · target file: (none)
+  Request 3: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:21:1
+    import('./missing.js')
+    unresolved · none · esm · target file: (none)
+  Request 4: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:23:1
+    require('./require-only.js')
+    outside-population · configured-file-resolution · commonjs · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/require-only.ts
+  Request 5: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:24:1
+    require('./missing.js')
+    unresolved · none · commonjs · target file: (none)
+  Request 6: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:25:1
+    require(chosen)
+    target-indeterminate · none · unspecified · target file: (none)
+  Coverage 1: /Users/ronen/postcode/app/fixtures/dependency-contract/esm.mts:1:1
+    require('./target.js')
+  Coverage 2: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:27:58
+    require('./target.js')
+  Coverage 3: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:28:22
+    require('./target.js')
+  Coverage 4: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:29:3
+    require('./target.js')
+  Coverage 5: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:35:1
+    require()
+  Coverage 6: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:36:1
+    require('./target.js', './forward.js')
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/script.js:1:16
+    require('./target.js')
+    resolved · configured-file-resolution · commonjs · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/ambient.d.ts:3:3
+    import type { Shape } from 'ambient-target';
+    resolved · checker-symbol · commonjs · target file: (none)
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/ambient.d.ts:4:3
+    export { Shape } from 'ambient-target';
+    resolved · checker-symbol · commonjs · target file: (none)
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/ambient.d.ts:5:24
+    import('ambient-target').Shape
+    resolved · checker-symbol · commonjs · target file: (none)
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/ambient.d.ts:8:23
+    import('ambient-target').Shape
+    resolved · checker-symbol · commonjs · target file: (none)
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:1:1
+    import { value } from './target.js';
+    resolved · checker-symbol · commonjs · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:2:1
+    import './target.js';
+    resolved · checker-symbol · commonjs · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:3:1
+    import type { Shape } from './target.js';
+    resolved · checker-symbol · commonjs · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:4:1
+    import { type Shape as OtherShape } from './target.js';
+    resolved · checker-symbol · commonjs · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:5:1
+    import { type Shape as MixedShape, value as otherValue } from './target.js';
+    resolved · checker-symbol · commonjs · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:6:1
+    import Def, { type Shape as DefaultShape } from './target.js';
+    resolved · checker-symbol · commonjs · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:8:1
+    export * as namespace from './target.js';
+    resolved · checker-symbol · commonjs · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:9:1
+    export type * from './target.js';
+    resolved · checker-symbol · commonjs · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:10:1
+    export { type Shape } from './target.js';
+    resolved · checker-symbol · commonjs · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:11:1
+    export {} from './target.js';
+    resolved · checker-symbol · commonjs · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:12:1
+    import target = require('./target.js');
+    resolved · checker-symbol · commonjs · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:13:1
+    import type typeTarget = require('./target.js');
+    resolved · checker-symbol · commonjs · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:14:17
+    import('./target.js').Shape
+    resolved · checker-symbol · commonjs · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:15:16
+    typeof import('./target.js')
+    resolved · checker-symbol · commonjs · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:16:1
+    import('./target.js')
+    resolved · checker-symbol · esm · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:17:1
+    import(`./target.js`)
+    resolved · checker-symbol · esm · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:22:1
+    require('./target.js')
+    resolved · configured-file-resolution · commonjs · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:26:12
+    require('./target.js')
+    resolved · configured-file-resolution · commonjs · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/requests.cts:7:1
+    export * from './forward.js';
+    resolved · checker-symbol · commonjs · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/forward.ts
+  request: /Users/ronen/postcode/app/fixtures/dependency-contract/forward.ts:1:1
+    export { value, type Shape } from './target.js';
+    resolved · checker-symbol · commonjs · target file: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  composition: /Users/ronen/postcode/app/fixtures/dependency-contract/forward.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/ambient.d.ts:1:1
+    declare module 'ambient-target' { export interface Shape { value: number } }
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/ambient.d.ts:1:1
+    declare module 'ambient-target' { export interface Shape { value: number } }
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/ambient.d.ts:1:1
+    declare module 'ambient-target' { export interface Shape { value: number } }
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/ambient.d.ts:1:1
+    declare module 'ambient-target' { export interface Shape { value: number } }
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/forward.ts
+  target: /Users/ronen/postcode/app/fixtures/dependency-contract/target.ts
+  Organization evidence: same-group · 1 occurrence(s) · 1 placement comparison(s); bounded captured support in JSON source detail.
+  Organization evidence: same-group · 4 occurrence(s) · 4 placement comparison(s); bounded captured support in JSON source detail.
+  Organization evidence: same-group · 18 occurrence(s) · 18 placement comparison(s); bounded captured support in JSON source detail.
+  Organization evidence: same-group · 1 occurrence(s) · 1 placement comparison(s); bounded captured support in JSON source detail.
+  Organization evidence: same-group · 1 occurrence(s) · 1 placement comparison(s); bounded captured support in JSON source detail.
+  Organization region: fixtures/dependency-contract
+  Organization region: [repository root]
+  Organization region: fixtures
+  Source omissions: 0 evidence records · 0 organization claims · 0 organization evidence records · 0 organization occurrences.
+
+Display
+  0 modules omitted · 0 relationships omitted · 0 descents pruned
+  0 supporting occurrences omitted · 0 request results summarized/omitted · 0 recognition outcomes summarized/omitted
+  Display bounds do not reduce analysis coverage.
+
+Qualifications
+  Source requests only: no value-use, emission, loader availability, execution, bundler, or deployment claims.
+  Only project-owned requests are analyzed; external module interiors are opaque.
+  CommonJS coverage is bare require with exactly one argument, complete lexical evidence, and affirmative captured context; aliases, properties and other APIs are excluded.
+  Defined ESM format overrides ambient declarations; preserve requires callable ambient corroboration; absent module options do not infer compiler defaults.
+  Nonliteral targets are not evaluated; resolved files outside the discovered population do not add modules.
+  Dependency direction: a parent depends directly on a child. Roots are structural, not entry points or importance.
+  Re-exports only is a syntax property, not a barrel, API, purity, or safe-collapse claim.
+  Repository-layout labels compare all applicable occurrence endpoint placements: same-group means equal groups; into-descendants means a strict organization descendant; outward means outside the source group and its descendants.
+  Variation labels preserve different established answers; unestablished organization is not a policy failure. Repository layout establishes no dependency policy or architectural violation.
+  Generated handles are navigation cues; exact names and snapshot-scoped Entity IDs retain their established meanings.
+
+Navigation evaluates current inputs afresh. Scoped selectors reject snapshot mismatches; source detail uses evidence captured in the new invocation.
+
+Next · inspect a module:
+node /Users/ronen/postcode/app/_build/src/cli.js inspect --dependency-context \
+  --snapshot snapshot:f8a28786839ac21f06328303be2962b31032dff8a6a3bceb6b68601e35d2af4f \
+  --project /Users/ronen/postcode/app/fixtures/dependency-contract/tsconfig.json -- ENTITY_ID
+
+Next · dependency children:
+node /Users/ronen/postcode/app/_build/src/cli.js children \
+  --snapshot snapshot:f8a28786839ac21f06328303be2962b31032dff8a6a3bceb6b68601e35d2af4f \
+  --project /Users/ronen/postcode/app/fixtures/dependency-contract/tsconfig.json -- ENTITY_ID
+
+Next · dependency parents:
+node /Users/ronen/postcode/app/_build/src/cli.js parents \
+  --snapshot snapshot:f8a28786839ac21f06328303be2962b31032dff8a6a3bceb6b68601e35d2af4f \
+  --project /Users/ronen/postcode/app/fixtures/dependency-contract/tsconfig.json -- ENTITY_ID
+
+Next · fresh evaluation with request and organization source detail (view-local Request/Coverage numbers are not entity selectors):
+node /Users/ronen/postcode/app/_build/src/cli.js dependencies --source-detail --project /Users/ronen/postcode/app/fixtures/dependency-contract/tsconfig.json

@@ -1,0 +1,2079 @@
+{
+  "implementation": "f7c13495d433e24e3994afc7b3a02000483f1199",
+  "runs": [
+    {
+      "name": "final-journey-structure",
+      "elapsedMs": 425,
+      "exit": 0,
+      "snapshot": "snapshot:7b819e209c1cb5da5671d3b2201614a21ce00de427f2e8fa2f25d1d4a249522e",
+      "summary": {
+        "modules": 6,
+        "discoveredModules": 6,
+        "projectModules": 6,
+        "relationships": 6,
+        "requestsWithoutEdges": {},
+        "recognitionCoverage": {}
+      },
+      "display": {
+        "rows": [
+          {
+            "component": 4,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 2,
+            "depth": 1,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 0,
+            "depth": 2,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 1,
+            "depth": 3,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 3,
+            "depth": 1,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 5,
+            "depth": 2,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 0,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          }
+        ],
+        "omittedModules": 0,
+        "omittedRelationships": 0,
+        "omittedOccurrences": 0,
+        "omittedRequestResults": 0,
+        "omittedCoverageOutcomes": 0,
+        "prunedComponents": 0
+      }
+    },
+    {
+      "name": "final-journey-children",
+      "elapsedMs": 311,
+      "exit": 0,
+      "snapshot": "snapshot:7b819e209c1cb5da5671d3b2201614a21ce00de427f2e8fa2f25d1d4a249522e",
+      "summary": {
+        "modules": 2,
+        "discoveredModules": 6,
+        "projectModules": 6,
+        "relationships": 1,
+        "requestsWithoutEdges": {},
+        "recognitionCoverage": {}
+      },
+      "display": {
+        "rows": [],
+        "omittedModules": 0,
+        "omittedRelationships": 0,
+        "omittedOccurrences": 0,
+        "omittedRequestResults": 0,
+        "omittedCoverageOutcomes": 0,
+        "prunedComponents": 0
+      }
+    },
+    {
+      "name": "final-journey-parents",
+      "elapsedMs": 326,
+      "exit": 0,
+      "snapshot": "snapshot:7b819e209c1cb5da5671d3b2201614a21ce00de427f2e8fa2f25d1d4a249522e",
+      "summary": {
+        "modules": 3,
+        "discoveredModules": 6,
+        "projectModules": 6,
+        "relationships": 2,
+        "requestsWithoutEdges": {},
+        "recognitionCoverage": {}
+      },
+      "display": {
+        "rows": [],
+        "omittedModules": 0,
+        "omittedRelationships": 0,
+        "omittedOccurrences": 0,
+        "omittedRequestResults": 0,
+        "omittedCoverageOutcomes": 0,
+        "prunedComponents": 0
+      }
+    },
+    {
+      "name": "final-journey-inspect",
+      "elapsedMs": 329,
+      "exit": 0,
+      "snapshot": "snapshot:7b819e209c1cb5da5671d3b2201614a21ce00de427f2e8fa2f25d1d4a249522e",
+      "display": {
+        "collapsedModules": 0,
+        "omittedExports": 0,
+        "modulesWithOmittedDocumentation": 0,
+        "collapsedQualifications": []
+      }
+    },
+    {
+      "name": "final-boundary-structure",
+      "elapsedMs": 302,
+      "exit": 0,
+      "snapshot": "snapshot:9bc1c8d14d44e12197ec6069c18dc9cacdc6f3d845709249941696740567b7fc",
+      "summary": {
+        "modules": 14,
+        "discoveredModules": 14,
+        "projectModules": 13,
+        "relationships": 12,
+        "requestsWithoutEdges": {},
+        "recognitionCoverage": {}
+      },
+      "display": {
+        "rows": [
+          {
+            "component": 4,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 6,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 8,
+            "depth": 1,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 2,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 5,
+            "depth": 3,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 7,
+            "depth": 4,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 2,
+            "depth": 5,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 1,
+            "depth": 6,
+            "reference": false,
+            "pruned": true
+          },
+          {
+            "component": 11,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          }
+        ],
+        "omittedModules": 2,
+        "omittedRelationships": 2,
+        "omittedOccurrences": 0,
+        "omittedRequestResults": 0,
+        "omittedCoverageOutcomes": 0,
+        "prunedComponents": 1
+      }
+    },
+    {
+      "name": "final-postcode-structure",
+      "elapsedMs": 39766,
+      "exit": 0,
+      "snapshot": "snapshot:be131a9bc8381b0d61b878aba8a84af5f1ce1e74ca2020ebc2f4465675eef90c",
+      "summary": {
+        "modules": 60,
+        "discoveredModules": 204,
+        "projectModules": 48,
+        "relationships": 280,
+        "requestsWithoutEdges": {},
+        "recognitionCoverage": {}
+      },
+      "display": {
+        "rows": [
+          {
+            "component": 7,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 40,
+            "depth": 1,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 1,
+            "depth": 2,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 3,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 0,
+            "depth": 4,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 3,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 4,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 14,
+            "depth": 2,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 30,
+            "depth": 2,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 3,
+            "depth": 3,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 4,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 4,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 32,
+            "depth": 4,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 5,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 5,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 4,
+            "depth": 3,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 3,
+            "depth": 4,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 4,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 4,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 32,
+            "depth": 4,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 18,
+            "depth": 3,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 0,
+            "depth": 4,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 4,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 19,
+            "depth": 3,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 4,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 21,
+            "depth": 3,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 5,
+            "depth": 4,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 5,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 4,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 4,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 22,
+            "depth": 3,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 0,
+            "depth": 4,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 4,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 32,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 32,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 8,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 1,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 19,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 30,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 32,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 1,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 12,
+            "depth": 1,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 37,
+            "depth": 2,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 39,
+            "depth": 2,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 14,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 30,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 32,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 40,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 24,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 1,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 25,
+            "depth": 1,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 32,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 30,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 26,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 1,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 12,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 14,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 30,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 32,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 27,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 18,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 22,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 28,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 19,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 29,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 1,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 25,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 30,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 32,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 31,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 1,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 14,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 32,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 40,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 33,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 23,
+            "depth": 1,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 14,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 32,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 34,
+            "depth": 1,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 6,
+            "depth": 2,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 0,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 40,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 35,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 18,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 22,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 36,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 12,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 16,
+            "depth": 1,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 10,
+            "depth": 2,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 0,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 12,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 37,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 39,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 12,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 13,
+            "depth": 2,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 12,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 37,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 39,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 20,
+            "depth": 1,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 1,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 2,
+            "depth": 2,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 6,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 10,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 12,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 13,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 14,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 16,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 23,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 25,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 30,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 32,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 34,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 37,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 43,
+            "depth": 2,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 11,
+            "depth": 3,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 4,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 4,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 14,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 38,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 12,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 13,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 16,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 20,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 41,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 10,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 12,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 16,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 20,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 23,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 32,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 34,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 40,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 42,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 44,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 20,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 37,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 45,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 1,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 2,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 25,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 30,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 34,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 43,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          }
+        ],
+        "omittedModules": 1,
+        "omittedRelationships": 80,
+        "omittedOccurrences": 0,
+        "omittedRequestResults": 0,
+        "omittedCoverageOutcomes": 0,
+        "prunedComponents": 0
+      }
+    },
+    {
+      "name": "final-tsnode-structure",
+      "elapsedMs": 27634,
+      "exit": 0,
+      "snapshot": "snapshot:d3a19a84d1e4fffc4198a168f66c18f1e1be4b704b27ca98d31de5eec5352f3a",
+      "summary": {
+        "modules": 94,
+        "discoveredModules": 202,
+        "projectModules": 64,
+        "relationships": 263,
+        "requestsWithoutEdges": {
+          "outside-population": 20,
+          "unresolved": 17,
+          "target-indeterminate": 13
+        },
+        "recognitionCoverage": {
+          "ownership-unestablished": 44
+        }
+      },
+      "display": {
+        "rows": [
+          {
+            "component": 0,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 8,
+            "depth": 2,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 5,
+            "depth": 3,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 9,
+            "depth": 4,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 18,
+            "depth": 4,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 23,
+            "depth": 5,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 30,
+            "depth": 5,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 23,
+            "depth": 4,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 30,
+            "depth": 4,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 45,
+            "depth": 4,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 30,
+            "depth": 5,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 50,
+            "depth": 4,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 30,
+            "depth": 5,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 28,
+            "depth": 3,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 20,
+            "depth": 2,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 21,
+            "depth": 2,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 8,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 28,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 38,
+            "depth": 2,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 28,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 40,
+            "depth": 1,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 5,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 18,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 1,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 5,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 2,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 5,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 3,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 13,
+            "depth": 1,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 5,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 23,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 30,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 41,
+            "depth": 2,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 44,
+            "depth": 2,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 5,
+            "depth": 3,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 6,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 7,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 21,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 28,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 10,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 4,
+            "depth": 1,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 12,
+            "depth": 1,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 8,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 28,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 11,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 15,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 13,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 16,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 19,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 22,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 24,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 13,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 25,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 26,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 27,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 29,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 31,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 21,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 28,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 32,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 5,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 33,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 13,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 34,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 13,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 41,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 35,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 5,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 36,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 4,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 12,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 14,
+            "depth": 1,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 48,
+            "depth": 1,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 12,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 2,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 37,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 28,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 38,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 39,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 42,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 43,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 46,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 47,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 49,
+            "depth": 0,
+            "reference": false,
+            "pruned": false
+          },
+          {
+            "component": 5,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          },
+          {
+            "component": 17,
+            "depth": 1,
+            "reference": true,
+            "pruned": false
+          }
+        ],
+        "omittedModules": 1,
+        "omittedRelationships": 63,
+        "omittedOccurrences": 0,
+        "omittedRequestResults": 50,
+        "omittedCoverageOutcomes": 24,
+        "prunedComponents": 0
+      }
+    },
+    {
+      "name": "final-tsnode-children",
+      "elapsedMs": 26823,
+      "exit": 0,
+      "snapshot": "snapshot:d3a19a84d1e4fffc4198a168f66c18f1e1be4b704b27ca98d31de5eec5352f3a",
+      "summary": {
+        "modules": 20,
+        "discoveredModules": 202,
+        "projectModules": 64,
+        "relationships": 19,
+        "requestsWithoutEdges": {
+          "outside-population": 10,
+          "unresolved": 1,
+          "target-indeterminate": 1
+        },
+        "recognitionCoverage": {}
+      },
+      "display": {
+        "rows": [],
+        "omittedModules": 0,
+        "omittedRelationships": 0,
+        "omittedOccurrences": 0,
+        "omittedRequestResults": 0,
+        "omittedCoverageOutcomes": 0,
+        "prunedComponents": 0
+      }
+    },
+    {
+      "name": "final-tsnode-source",
+      "elapsedMs": 27135,
+      "exit": 0,
+      "snapshot": "snapshot:d3a19a84d1e4fffc4198a168f66c18f1e1be4b704b27ca98d31de5eec5352f3a",
+      "summary": {
+        "modules": 20,
+        "discoveredModules": 202,
+        "projectModules": 64,
+        "relationships": 19,
+        "requestsWithoutEdges": {
+          "outside-population": 10,
+          "unresolved": 1,
+          "target-indeterminate": 1
+        },
+        "recognitionCoverage": {}
+      },
+      "display": {
+        "rows": [],
+        "omittedModules": 0,
+        "omittedRelationships": 0,
+        "omittedOccurrences": 0,
+        "omittedRequestResults": 0,
+        "omittedCoverageOutcomes": 0,
+        "prunedComponents": 0
+      }
+    }
+  ]
+}

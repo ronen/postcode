@@ -1,0 +1,95 @@
+[
+  {
+    "capture": "final-journey-structure",
+    "exit": 0,
+    "elapsedMs": 425,
+    "snapshot": "snapshot:7b819e209c1cb5da5671d3b2201614a21ce00de427f2e8fa2f25d1d4a249522e",
+    "schema": "postcode-dependency-view/0-experimental",
+    "events": [
+      "view-produced"
+    ],
+    "sourceLevel": null,
+    "renderedOutputMatches": true,
+    "omittedSourceEvidence": null
+  },
+  {
+    "capture": "final-journey-children",
+    "exit": 0,
+    "elapsedMs": 311,
+    "snapshot": "snapshot:7b819e209c1cb5da5671d3b2201614a21ce00de427f2e8fa2f25d1d4a249522e",
+    "schema": "postcode-dependency-view/0-experimental",
+    "events": [
+      "view-produced"
+    ],
+    "sourceLevel": null,
+    "renderedOutputMatches": true,
+    "omittedSourceEvidence": null
+  },
+  {
+    "capture": "final-journey-parents",
+    "exit": 0,
+    "elapsedMs": 326,
+    "snapshot": "snapshot:7b819e209c1cb5da5671d3b2201614a21ce00de427f2e8fa2f25d1d4a249522e",
+    "schema": "postcode-dependency-view/0-experimental",
+    "events": [
+      "view-produced"
+    ],
+    "sourceLevel": null,
+    "renderedOutputMatches": true,
+    "omittedSourceEvidence": null
+  },
+  {
+    "capture": "final-journey-inspect",
+    "exit": 0,
+    "elapsedMs": 329,
+    "snapshot": "snapshot:7b819e209c1cb5da5671d3b2201614a21ce00de427f2e8fa2f25d1d4a249522e",
+    "schema": "postcode-view/0-experimental",
+    "events": [
+      "view-produced"
+    ],
+    "sourceLevel": null,
+    "renderedOutputMatches": true,
+    "omittedSourceEvidence": null
+  },
+  {
+    "capture": "final-tsnode-source",
+    "exit": 0,
+    "elapsedMs": 27135,
+    "snapshot": "snapshot:d3a19a84d1e4fffc4198a168f66c18f1e1be4b704b27ca98d31de5eec5352f3a",
+    "schema": "postcode-dependency-view/0-experimental",
+    "events": [
+      "view-produced",
+      "source-escape"
+    ],
+    "sourceLevel": "dependency-occurrences-and-organization-evidence",
+    "renderedOutputMatches": true,
+    "omittedSourceEvidence": 0
+  },
+  {
+    "capture": "final-wording-journey",
+    "exit": 0,
+    "elapsedMs": 320,
+    "snapshot": "snapshot:46de90d9f12916fc70d62007c56ed0673c43d2924202eeaf33ea81395c815e75",
+    "schema": "postcode-dependency-view/0-experimental",
+    "events": [
+      "view-produced"
+    ],
+    "sourceLevel": null,
+    "renderedOutputMatches": true,
+    "omittedSourceEvidence": null
+  },
+  {
+    "capture": "final-wording-source",
+    "exit": 0,
+    "elapsedMs": 391,
+    "snapshot": "snapshot:f8a28786839ac21f06328303be2962b31032dff8a6a3bceb6b68601e35d2af4f",
+    "schema": "postcode-dependency-view/0-experimental",
+    "events": [
+      "view-produced",
+      "source-escape"
+    ],
+    "sourceLevel": "dependency-occurrences-and-organization-evidence",
+    "renderedOutputMatches": true,
+    "omittedSourceEvidence": 0
+  }
+]

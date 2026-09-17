@@ -1,0 +1,29 @@
+Inspect · configured TypeScript project
+Snapshot f8ccf79c1074
+1 module selected from 6 · exact match for module-aee44b7a
+Analysis complete: modules, exports, documentation, composition
+
+Selected project modules · 1 · TypeScript names not established
+
+◆ forward
+  re-exports only
+  Entity ID: module-aee44b7a
+
+  Exports:
+  ├─ shared [value] · reexport; origin: shared (module-0a02841d)
+  Limitation: Only comments and EmptyStatement syntax are ignored. No barrel, facade, API, purity, safe-collapse, or transitive-side-effect claim.
+
+Export relationships describe aliases and forwarding, not calls or dependencies.
+
+Status
+  Module membership and effective exports established by TypeScript analysis.
+  Coverage: external-module SourceFiles and visible named ambient modules; other compiler module categories are not established.
+
+Run limitations
+  2 generated-output locations excluded by this run's input filter.
+  Inputs were memoized as first observed, not captured as an atomic filesystem snapshot.
+
+Next · replace MODULE_HANDLE to inspect another module; add --source-detail for supporting source evidence.
+node /Users/ronen/postcode/app/_build/src/cli.js inspect --dependency-context \
+  --snapshot snapshot:f8ccf79c1074fab5027a1cf8e518699c07929a39a323a1c704b10d7c081a921a \
+  --project /Users/ronen/postcode/app/fixtures/dependency-journey/tsconfig.json -- MODULE_HANDLE

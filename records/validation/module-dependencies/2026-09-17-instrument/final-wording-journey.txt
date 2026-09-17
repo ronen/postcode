@@ -1,0 +1,68 @@
+Module dependency structure
+Snapshot snapshot:46de90d9f12916fc70d62007c56ed0673c43d2924202eeaf33ea81395c815e75
+Direction: dependency parent → dependency child (depends directly on).
+6 modules in this projection · 6 direct relationships
+Materialized population: 6 project modules; 6 discovered modules available for exact lookup.
+Analysis outcomes below describe supported source requests, not complete runtime behavior.
+Display bounds: 0 modules and 0 relationships omitted; 0 further descents pruned.
+modules: available, completed, materialization full
+dependencies: available, completed, materialization full
+organization: available, completed, materialization full
+
+Dependency roots and direct structure (root components have no incoming project relationships from outside the component)
+◆ entry (module-aea97dd6)
+  entry (module-aea97dd6) → left (module-3a757ac6) · static-import · same-group
+  entry (module-aea97dd6) → right (module-7ae3cce7) · static-import · same-group
+  ◆ left (module-3a757ac6)
+    left (module-3a757ac6) → shared (module-0a02841d) · static-import · outward
+    ◆ shared (module-0a02841d)
+      shared (module-0a02841d) → leaf (module-36ca0679) · static-import · same-group
+      ◆ leaf (module-36ca0679)
+  ◆ right (module-7ae3cce7)
+    right (module-7ae3cce7) → forward (module-aee44b7a) · static-import · same-group
+    ◆ forward (module-aee44b7a) · re-exports only
+      forward (module-aee44b7a) → shared (module-0a02841d) · re-export · outward
+      ◆ shared (module-0a02841d) · reference (already expanded)
+
+Source-owned request results without edges
+  None in supported coverage.
+
+Recognition-coverage outcomes (not recognized occurrences)
+  No recorded coverage outcomes; bounded recognition still applies.
+
+Display
+  0 modules omitted · 0 relationships omitted · 0 descents pruned
+  0 supporting occurrences omitted · 0 request results summarized/omitted · 0 recognition outcomes summarized/omitted
+  Display bounds do not reduce analysis coverage.
+
+Qualifications
+  Source requests only: no value-use, emission, loader availability, execution, bundler, or deployment claims.
+  Only project-owned requests are analyzed; external module interiors are opaque.
+  CommonJS coverage is bare require with exactly one argument, complete lexical evidence, and affirmative captured context; aliases, properties and other APIs are excluded.
+  Defined ESM format overrides ambient declarations; preserve requires callable ambient corroboration; absent module options do not infer compiler defaults.
+  Nonliteral targets are not evaluated; resolved files outside the discovered population do not add modules.
+  Dependency direction: a parent depends directly on a child. Roots are structural, not entry points or importance.
+  Re-exports only is a syntax property, not a barrel, API, purity, or safe-collapse claim.
+  Repository-layout labels compare all applicable occurrence endpoint placements: same-group means equal groups; into-descendants means a strict organization descendant; outward means outside the source group and its descendants.
+  Variation labels preserve different established answers; unestablished organization is not a policy failure. Repository layout establishes no dependency policy or architectural violation.
+  Generated handles are navigation cues; exact names and snapshot-scoped Entity IDs retain their established meanings.
+
+Navigation evaluates current inputs afresh. Scoped selectors reject snapshot mismatches; source detail uses evidence captured in the new invocation.
+
+Next · inspect a module:
+node /Users/ronen/postcode/app/_build/src/cli.js inspect --dependency-context \
+  --snapshot snapshot:46de90d9f12916fc70d62007c56ed0673c43d2924202eeaf33ea81395c815e75 \
+  --project /Users/ronen/postcode/app/fixtures/dependency-journey/tsconfig.json -- ENTITY_ID
+
+Next · dependency children:
+node /Users/ronen/postcode/app/_build/src/cli.js children \
+  --snapshot snapshot:46de90d9f12916fc70d62007c56ed0673c43d2924202eeaf33ea81395c815e75 \
+  --project /Users/ronen/postcode/app/fixtures/dependency-journey/tsconfig.json -- ENTITY_ID
+
+Next · dependency parents:
+node /Users/ronen/postcode/app/_build/src/cli.js parents \
+  --snapshot snapshot:46de90d9f12916fc70d62007c56ed0673c43d2924202eeaf33ea81395c815e75 \
+  --project /Users/ronen/postcode/app/fixtures/dependency-journey/tsconfig.json -- ENTITY_ID
+
+Next · fresh evaluation with request and organization source detail (view-local Request/Coverage numbers are not entity selectors):
+node /Users/ronen/postcode/app/_build/src/cli.js dependencies --source-detail --project /Users/ronen/postcode/app/fixtures/dependency-journey/tsconfig.json

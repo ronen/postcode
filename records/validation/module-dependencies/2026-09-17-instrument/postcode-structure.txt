@@ -1,0 +1,430 @@
+Module dependency structure
+Snapshot snapshot:3c40ae1d5d38840e5c286ace1df33da0a5006f5e64e40db060d070fd6889f044
+Direction: dependency parent → dependency child (depends directly on).
+60 modules · 280 direct relationships
+modules: available, completed, materialization full
+dependencies: available, completed, materialization full
+organization: available, completed, materialization partial · Some requested organization context is unavailable or incomplete.
+
+Dependency roots and direct structure
+◆ process-probe (module-22de7455)
+  process-probe (module-22de7455) → helpers (module-eea1d225) · static-import · same-group
+  ◆ helpers (module-eea1d225)
+    helpers (module-eea1d225) → memory-store (module-06752ef3) · static-import · outward
+    helpers (module-eea1d225) → node:assert/strict (module-12b68933) · opaque external · static-import · organization not established
+    helpers (module-eea1d225) → projections (module-37728742) · static-import · outward
+    helpers (module-eea1d225) → project (module-abc07ffd) · static-import · outward
+    helpers (module-eea1d225) → evaluation (module-b1fefef5) · static-import · outward
+    helpers (module-eea1d225) → records (module-b3cab524) · type-only · static-import · outward
+    ◆ memory-store (module-06752ef3)
+      memory-store (module-06752ef3) → identity (module-393681de) · static-import · same-group
+      memory-store (module-06752ef3) → records (module-b3cab524) · type-only · static-import · same-group
+      ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524)
+        records (module-2b23ed6d) → evidence (module-01a14ec5) · type-only · static-import · outward
+        records (module-2b23ed6d) → records (module-b3cab524) · type-only · static-import · outward
+        records (module-a9b8523d) → records (module-b3cab524) · type-only · static-import · outward
+        records (module-b3cab524) → records (module-2b23ed6d) · type-only · static-import · into-descendants
+        records (module-b3cab524) → records (module-a9b8523d) · type-only · static-import · into-descendants
+        ◆ evidence (module-01a14ec5)
+      ◆ identity (module-393681de)
+        identity (module-393681de) → node:crypto (module-12d84a81) · opaque external · re-exports only · static-import · organization not established
+        identity (module-393681de) → records (module-b3cab524) · type-only · static-import · same-group
+        ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+    ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+    ◆ projections (module-37728742)
+      projections (module-37728742) → identity (module-393681de) · static-import · same-group
+      projections (module-37728742) → records (module-b3cab524) · static-import · same-group
+      ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+      ◆ identity (module-393681de) · reference (already expanded)
+    ◆ project (module-abc07ffd)
+      project (module-abc07ffd) → node:path (module-01229df8) · opaque external · static-import · organization not established
+      project (module-abc07ffd) → expansions (module-12c6a73c) · static-import · same-group
+      project (module-abc07ffd) → composition (module-1b8132e0) · static-import · same-group
+      project (module-abc07ffd) → identity (module-393681de) · static-import · outward
+      project (module-abc07ffd) → layout (module-51444689) · static-import · outward
+      project (module-abc07ffd) → inputs (module-598cc746) · static-import · same-group
+      project (module-abc07ffd) → dependencies (module-62d9f41d) · static-import · same-group
+      project (module-abc07ffd) → capture (module-6919717b) · static-import · outward
+      project (module-abc07ffd) → evaluation (module-b1fefef5) · type-only · static-import · outward
+      project (module-abc07ffd) → records (module-b3cab524) · type-only · static-import · outward
+      project (module-abc07ffd) → typescript (module-e65a6e82) · opaque external · static-import · organization not established
+      ◆ expansions (module-12c6a73c)
+        expansions (module-12c6a73c) → identity (module-393681de) · static-import · outward
+        expansions (module-12c6a73c) → evaluation (module-b1fefef5) · type-only · static-import · outward
+        expansions (module-12c6a73c) → records (module-b3cab524) · type-only · static-import · outward
+        expansions (module-12c6a73c) → typescript (module-e65a6e82) · opaque external · static-import · organization not established
+        ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+        ◆ identity (module-393681de) · reference (already expanded)
+        ◆ evaluation (module-b1fefef5)
+          evaluation (module-b1fefef5) → identity (module-393681de) · static-import · same-group
+          evaluation (module-b1fefef5) → records (module-a9b8523d) · type-only · static-import · into-descendants
+          evaluation (module-b1fefef5) → records (module-b3cab524) · type-only · static-import · same-group
+          ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+          ◆ identity (module-393681de) · reference (already expanded)
+      ◆ composition (module-1b8132e0)
+        composition (module-1b8132e0) → expansions (module-12c6a73c) · type-only · static-import · same-group
+        composition (module-1b8132e0) → identity (module-393681de) · static-import · outward
+        composition (module-1b8132e0) → evaluation (module-b1fefef5) · type-only · static-import · outward
+        composition (module-1b8132e0) → records (module-b3cab524) · type-only · static-import · outward
+        composition (module-1b8132e0) → typescript (module-e65a6e82) · opaque external · static-import · organization not established
+        ◆ expansions (module-12c6a73c) · reference (already expanded)
+        ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+        ◆ identity (module-393681de) · reference (already expanded)
+        ◆ evaluation (module-b1fefef5) · reference (already expanded)
+      ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+      ◆ identity (module-393681de) · reference (already expanded)
+      ◆ layout (module-51444689)
+        layout (module-51444689) → node:path (module-01229df8) · opaque external · static-import · organization not established
+        layout (module-51444689) → evidence (module-01a14ec5) · type-only · static-import · same-group
+        layout (module-51444689) → identity (module-393681de) · static-import · outward
+        ◆ evidence (module-01a14ec5) · reference (already expanded)
+        ◆ identity (module-393681de) · reference (already expanded)
+      ◆ inputs (module-598cc746)
+        inputs (module-598cc746) → node:path (module-01229df8) · opaque external · static-import · organization not established
+        inputs (module-598cc746) → identity (module-393681de) · static-import · outward
+        inputs (module-598cc746) → typescript (module-e65a6e82) · opaque external · static-import · organization not established
+        ◆ identity (module-393681de) · reference (already expanded)
+      ◆ dependencies (module-62d9f41d)
+        dependencies (module-62d9f41d) → commonjs (module-1bc6e889) · static-import · same-group
+        dependencies (module-62d9f41d) → identity (module-393681de) · static-import · outward
+        dependencies (module-62d9f41d) → records (module-a9b8523d) · static-import · outward
+        dependencies (module-62d9f41d) → records (module-b3cab524) · type-only · static-import · outward
+        dependencies (module-62d9f41d) → typescript (module-e65a6e82) · opaque external · static-import · organization not established
+        ◆ commonjs (module-1bc6e889)
+          commonjs (module-1bc6e889) → records (module-a9b8523d) · type-only · static-import · outward
+          commonjs (module-1bc6e889) → typescript (module-e65a6e82) · opaque external · static-import · organization not established
+          ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+        ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+        ◆ identity (module-393681de) · reference (already expanded)
+      ◆ capture (module-6919717b)
+        capture (module-6919717b) → node:path (module-01229df8) · opaque external · static-import · organization not established
+        capture (module-6919717b) → evidence (module-01a14ec5) · type-only · static-import · same-group
+        capture (module-6919717b) → node:fs (module-1e618c78) · opaque external · re-exports only · static-import · organization not established
+        capture (module-6919717b) → identity (module-393681de) · static-import · outward
+        capture (module-6919717b) → node:buffer (module-869d85c3) · opaque external · re-exports only · static-import · organization not established
+        capture (module-6919717b) → node:os (module-887f51e0) · opaque external · re-exports only · static-import · organization not established
+        capture (module-6919717b) → node:child_process (module-a0c14b82) · opaque external · re-exports only · static-import · organization not established
+        ◆ evidence (module-01a14ec5) · reference (already expanded)
+        ◆ identity (module-393681de) · reference (already expanded)
+      ◆ evaluation (module-b1fefef5) · reference (already expanded)
+    ◆ evaluation (module-b1fefef5) · reference (already expanded)
+◆ dependency-repository-probe (module-2a7c76ea)
+  dependency-repository-probe (module-2a7c76ea) → node:path (module-01229df8) · opaque external · static-import · organization not established
+  dependency-repository-probe (module-2a7c76ea) → memory-store (module-06752ef3) · static-import · outward
+  dependency-repository-probe (module-2a7c76ea) → identity (module-393681de) · static-import · outward
+  dependency-repository-probe (module-2a7c76ea) → inputs (module-598cc746) · static-import · outward
+  dependency-repository-probe (module-2a7c76ea) → project (module-abc07ffd) · static-import · outward
+  dependency-repository-probe (module-2a7c76ea) → evaluation (module-b1fefef5) · static-import · outward
+  dependency-repository-probe (module-2a7c76ea) → records (module-b3cab524) · static-import · outward
+  dependency-repository-probe (module-2a7c76ea) → typescript (module-e65a6e82) · opaque external · static-import · organization not established
+  ◆ memory-store (module-06752ef3) · reference (already expanded)
+  ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+  ◆ identity (module-393681de) · reference (already expanded)
+  ◆ inputs (module-598cc746) · reference (already expanded)
+  ◆ project (module-abc07ffd) · reference (already expanded)
+  ◆ evaluation (module-b1fefef5) · reference (already expanded)
+◆ discovery-test (module-42f36502)
+  discovery-test (module-42f36502) → node:path (module-01229df8) · opaque external · static-import · organization not established
+  discovery-test (module-42f36502) → memory-store (module-06752ef3) · static-import · outward
+  discovery-test (module-42f36502) → node:assert/strict (module-12b68933) · opaque external · static-import · organization not established
+  discovery-test (module-42f36502) → node:fs (module-1e618c78) · opaque external · re-exports only · static-import · organization not established
+  discovery-test (module-42f36502) → presentation (module-2e897200) · static-import · outward
+  discovery-test (module-42f36502) → node:test (module-346b189b) · opaque external · static-import · organization not established
+  discovery-test (module-42f36502) → projections (module-37728742) · static-import · outward
+  discovery-test (module-42f36502) → identity (module-393681de) · static-import · outward
+  discovery-test (module-42f36502) → node:os (module-887f51e0) · opaque external · re-exports only · static-import · organization not established
+  discovery-test (module-42f36502) → node:child_process (module-a0c14b82) · opaque external · re-exports only · static-import · organization not established
+  discovery-test (module-42f36502) → project (module-abc07ffd) · static-import · outward
+  discovery-test (module-42f36502) → evaluation (module-b1fefef5) · static-import · outward
+  discovery-test (module-42f36502) → records (module-b3cab524) · type-only · static-import · outward
+  discovery-test (module-42f36502) → helpers (module-eea1d225) · static-import · same-group
+  ◆ memory-store (module-06752ef3) · reference (already expanded)
+  ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+  ◆ presentation (module-2e897200)
+    presentation (module-2e897200) → identity (module-393681de) · static-import · same-group
+    presentation (module-2e897200) → records (module-b3cab524) · static-import · same-group
+    presentation (module-2e897200) → terminal-text (module-c9216600) · static-import · same-group
+    presentation (module-2e897200) → composition-view (module-e9b413c4) · static-import · same-group
+    ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+    ◆ identity (module-393681de) · reference (already expanded)
+    ◆ terminal-text (module-c9216600)
+    ◆ composition-view (module-e9b413c4)
+      composition-view (module-e9b413c4) → records (module-b3cab524) · type-only · static-import · same-group
+      ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+  ◆ projections (module-37728742) · reference (already expanded)
+  ◆ identity (module-393681de) · reference (already expanded)
+  ◆ project (module-abc07ffd) · reference (already expanded)
+  ◆ evaluation (module-b1fefef5) · reference (already expanded)
+  ◆ helpers (module-eea1d225) · reference (already expanded)
+◆ dependency-provider-probe (module-7ee5cd37)
+  dependency-provider-probe (module-7ee5cd37) → node:path (module-01229df8) · opaque external · static-import · organization not established
+  dependency-provider-probe (module-7ee5cd37) → memory-store (module-06752ef3) · static-import · outward
+  dependency-provider-probe (module-7ee5cd37) → node:perf_hooks (module-1c875d9a) · opaque external · re-exports only · static-import · organization not established
+  dependency-provider-probe (module-7ee5cd37) → evaluate (module-7fa6c1d9) · static-import · outward
+  dependency-provider-probe (module-7ee5cd37) → project (module-abc07ffd) · static-import · outward
+  dependency-provider-probe (module-7ee5cd37) → records (module-b3cab524) · type-only · static-import · outward
+  ◆ memory-store (module-06752ef3) · reference (already expanded)
+  ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+  ◆ evaluate (module-7fa6c1d9)
+    evaluate (module-7fa6c1d9) → identity (module-393681de) · static-import · outward
+    evaluate (module-7fa6c1d9) → records (module-a9b8523d) · type-only · static-import · same-group
+    evaluate (module-7fa6c1d9) → evaluation (module-b1fefef5) · static-import · outward
+    evaluate (module-7fa6c1d9) → records (module-b3cab524) · type-only · static-import · outward
+    ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+    ◆ identity (module-393681de) · reference (already expanded)
+    ◆ evaluation (module-b1fefef5) · reference (already expanded)
+  ◆ project (module-abc07ffd) · reference (already expanded)
+◆ expansions-test (module-8894daae)
+  expansions-test (module-8894daae) → node:path (module-01229df8) · opaque external · static-import · organization not established
+  expansions-test (module-8894daae) → memory-store (module-06752ef3) · static-import · outward
+  expansions-test (module-8894daae) → node:assert/strict (module-12b68933) · opaque external · static-import · organization not established
+  expansions-test (module-8894daae) → node:fs (module-1e618c78) · opaque external · re-exports only · static-import · organization not established
+  expansions-test (module-8894daae) → presentation (module-2e897200) · static-import · outward
+  expansions-test (module-8894daae) → node:test (module-346b189b) · opaque external · static-import · organization not established
+  expansions-test (module-8894daae) → projections (module-37728742) · static-import · outward
+  expansions-test (module-8894daae) → node:os (module-887f51e0) · opaque external · re-exports only · static-import · organization not established
+  expansions-test (module-8894daae) → project (module-abc07ffd) · static-import · outward
+  expansions-test (module-8894daae) → evaluation (module-b1fefef5) · static-import · outward
+  expansions-test (module-8894daae) → records (module-b3cab524) · type-only · static-import · outward
+  ◆ memory-store (module-06752ef3) · reference (already expanded)
+  ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+  ◆ presentation (module-2e897200) · reference (already expanded)
+  ◆ projections (module-37728742) · reference (already expanded)
+  ◆ project (module-abc07ffd) · reference (already expanded)
+  ◆ evaluation (module-b1fefef5) · reference (already expanded)
+◆ repository-test (module-8899ebee)
+  repository-test (module-8899ebee) → node:path (module-01229df8) · opaque external · static-import · organization not established
+  repository-test (module-8899ebee) → node:assert/strict (module-12b68933) · opaque external · static-import · organization not established
+  repository-test (module-8899ebee) → node:fs (module-1e618c78) · opaque external · re-exports only · static-import · organization not established
+  repository-test (module-8899ebee) → node:test (module-346b189b) · opaque external · static-import · organization not established
+  repository-test (module-8899ebee) → identity (module-393681de) · static-import · outward
+  repository-test (module-8899ebee) → layout (module-51444689) · static-import · outward
+  repository-test (module-8899ebee) → capture (module-6919717b) · static-import · outward
+  repository-test (module-8899ebee) → node:os (module-887f51e0) · opaque external · re-exports only · static-import · organization not established
+  repository-test (module-8899ebee) → node:child_process (module-a0c14b82) · opaque external · re-exports only · static-import · organization not established
+  ◆ identity (module-393681de) · reference (already expanded)
+  ◆ layout (module-51444689) · reference (already expanded)
+  ◆ capture (module-6919717b) · reference (already expanded)
+◆ inputs-test (module-939158a0)
+  inputs-test (module-939158a0) → node:path (module-01229df8) · opaque external · static-import · organization not established
+  inputs-test (module-939158a0) → node:assert/strict (module-12b68933) · opaque external · static-import · organization not established
+  inputs-test (module-939158a0) → node:fs (module-1e618c78) · opaque external · re-exports only · static-import · organization not established
+  inputs-test (module-939158a0) → node:test (module-346b189b) · opaque external · static-import · organization not established
+  inputs-test (module-939158a0) → inputs (module-598cc746) · static-import · outward
+  inputs-test (module-939158a0) → node:os (module-887f51e0) · opaque external · re-exports only · static-import · organization not established
+  inputs-test (module-939158a0) → typescript (module-e65a6e82) · opaque external · static-import · organization not established
+  ◆ inputs (module-598cc746) · reference (already expanded)
+◆ dependencies-test (module-9f201eec)
+  dependencies-test (module-9f201eec) → node:path (module-01229df8) · opaque external · static-import · organization not established
+  dependencies-test (module-9f201eec) → memory-store (module-06752ef3) · static-import · outward
+  dependencies-test (module-9f201eec) → node:assert/strict (module-12b68933) · opaque external · static-import · organization not established
+  dependencies-test (module-9f201eec) → node:fs (module-1e618c78) · opaque external · re-exports only · static-import · organization not established
+  dependencies-test (module-9f201eec) → node:test (module-346b189b) · opaque external · static-import · organization not established
+  dependencies-test (module-9f201eec) → evaluate (module-7fa6c1d9) · static-import · outward
+  dependencies-test (module-9f201eec) → node:os (module-887f51e0) · opaque external · re-exports only · static-import · organization not established
+  dependencies-test (module-9f201eec) → node:child_process (module-a0c14b82) · opaque external · re-exports only · static-import · organization not established
+  dependencies-test (module-9f201eec) → records (module-a9b8523d) · type-only · static-import · outward
+  dependencies-test (module-9f201eec) → project (module-abc07ffd) · static-import · outward
+  dependencies-test (module-9f201eec) → evaluation (module-b1fefef5) · static-import · outward
+  dependencies-test (module-9f201eec) → records (module-b3cab524) · type-only · static-import · outward
+  ◆ memory-store (module-06752ef3) · reference (already expanded)
+  ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+  ◆ evaluate (module-7fa6c1d9) · reference (already expanded)
+  ◆ project (module-abc07ffd) · reference (already expanded)
+  ◆ evaluation (module-b1fefef5) · reference (already expanded)
+◆ records-test (module-ae601b33)
+  records-test (module-ae601b33) → memory-store (module-06752ef3) · static-import · outward
+  records-test (module-ae601b33) → node:assert/strict (module-12b68933) · opaque external · static-import · organization not established
+  records-test (module-ae601b33) → node:test (module-346b189b) · opaque external · static-import · organization not established
+  records-test (module-ae601b33) → projections (module-37728742) · static-import · outward
+  records-test (module-ae601b33) → identity (module-393681de) · dynamic-import, static-import · outward
+  records-test (module-ae601b33) → evaluation (module-b1fefef5) · static-import · outward
+  records-test (module-ae601b33) → records (module-b3cab524) · type-only · static-import · outward
+  records-test (module-ae601b33) → helpers (module-eea1d225) · static-import · same-group
+  ◆ memory-store (module-06752ef3) · reference (already expanded)
+  ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+  ◆ projections (module-37728742) · reference (already expanded)
+  ◆ identity (module-393681de) · reference (already expanded)
+  ◆ evaluation (module-b1fefef5) · reference (already expanded)
+  ◆ helpers (module-eea1d225) · reference (already expanded)
+◆ organization-test (module-b5fefc6c)
+  organization-test (module-b5fefc6c) → node:path (module-01229df8) · opaque external · static-import · organization not established
+  organization-test (module-b5fefc6c) → node:assert/strict (module-12b68933) · opaque external · static-import · organization not established
+  organization-test (module-b5fefc6c) → node:fs (module-1e618c78) · opaque external · re-exports only · static-import · organization not established
+  organization-test (module-b5fefc6c) → records (module-2b23ed6d) · type-only · static-import · outward
+  organization-test (module-b5fefc6c) → node:test (module-346b189b) · opaque external · static-import · organization not established
+  organization-test (module-b5fefc6c) → identity (module-393681de) · static-import · outward
+  organization-test (module-b5fefc6c) → projections (module-69998884) · static-import · outward
+  organization-test (module-b5fefc6c) → node:os (module-887f51e0) · opaque external · re-exports only · static-import · organization not established
+  organization-test (module-b5fefc6c) → node:child_process (module-a0c14b82) · opaque external · re-exports only · static-import · organization not established
+  organization-test (module-b5fefc6c) → evaluation (module-b1fefef5) · static-import · outward
+  organization-test (module-b5fefc6c) → records (module-b3cab524) · type-only · static-import · outward
+  organization-test (module-b5fefc6c) → evaluate (module-b9e659b2) · static-import · outward
+  organization-test (module-b5fefc6c) → helpers (module-eea1d225) · static-import · same-group
+  ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+  ◆ identity (module-393681de) · reference (already expanded)
+  ◆ projections (module-69998884)
+    projections (module-69998884) → records (module-2b23ed6d) · type-only · static-import · same-group
+    projections (module-69998884) → projections (module-37728742) · static-import · outward
+    projections (module-69998884) → identity (module-393681de) · static-import · outward
+    projections (module-69998884) → records (module-b3cab524) · type-only · static-import · outward
+    ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+    ◆ projections (module-37728742) · reference (already expanded)
+    ◆ identity (module-393681de) · reference (already expanded)
+  ◆ evaluation (module-b1fefef5) · reference (already expanded)
+  ◆ evaluate (module-b9e659b2)
+    evaluate (module-b9e659b2) → placement (module-21d58f01) · static-import · same-group
+    evaluate (module-b9e659b2) → records (module-2b23ed6d) · static-import · same-group
+    evaluate (module-b9e659b2) → identity (module-393681de) · static-import · outward
+    evaluate (module-b9e659b2) → records (module-b3cab524) · type-only · static-import · outward
+    ◆ placement (module-21d58f01)
+      placement (module-21d58f01) → node:path (module-01229df8) · opaque external · static-import · organization not established
+      placement (module-21d58f01) → evidence (module-01a14ec5) · type-only · static-import · outward
+      placement (module-21d58f01) → records (module-2b23ed6d) · type-only · static-import · same-group
+      ◆ evidence (module-01a14ec5) · reference (already expanded)
+      ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+    ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+    ◆ identity (module-393681de) · reference (already expanded)
+  ◆ helpers (module-eea1d225) · reference (already expanded)
+◆ repository-probe (module-c01bc5b5)
+  repository-probe (module-c01bc5b5) → layout (module-51444689) · static-import · outward
+  repository-probe (module-c01bc5b5) → capture (module-6919717b) · static-import · outward
+  ◆ layout (module-51444689) · reference (already expanded)
+  ◆ capture (module-6919717b) · reference (already expanded)
+◆ cli-test (module-c229a27f)
+  cli-test (module-c229a27f) → node:path (module-01229df8) · opaque external · static-import · organization not established
+  cli-test (module-c229a27f) → node:assert/strict (module-12b68933) · opaque external · static-import · organization not established
+  cli-test (module-c229a27f) → node:fs (module-1e618c78) · opaque external · re-exports only · static-import · organization not established
+  cli-test (module-c229a27f) → presentation (module-2e897200) · static-import · outward
+  cli-test (module-c229a27f) → node:test (module-346b189b) · opaque external · static-import · organization not established
+  cli-test (module-c229a27f) → observations (module-3c0d2fc9) · static-import · outward
+  cli-test (module-c229a27f) → cli (module-61acf56d) · static-import · outward
+  cli-test (module-c229a27f) → node:os (module-887f51e0) · opaque external · re-exports only · static-import · organization not established
+  cli-test (module-c229a27f) → node:child_process (module-a0c14b82) · opaque external · re-exports only · static-import · organization not established
+  ◆ presentation (module-2e897200) · reference (already expanded)
+  ◆ observations (module-3c0d2fc9)
+    observations (module-3c0d2fc9) → node:path (module-01229df8) · opaque external · static-import · organization not established
+    observations (module-3c0d2fc9) → node:fs/promises (module-0539c4c5) · opaque external · re-exports only · static-import · organization not established
+    observations (module-3c0d2fc9) → node:crypto (module-12d84a81) · opaque external · re-exports only · static-import · organization not established
+    observations (module-3c0d2fc9) → presentation (module-2cdb5357) · type-only · static-import · into-descendants
+    observations (module-3c0d2fc9) → presentation (module-2e897200) · type-only · static-import · same-group
+    observations (module-3c0d2fc9) → presentation (module-34f2e9f0) · type-only · static-import · into-descendants
+    ◆ presentation (module-2cdb5357)
+      presentation (module-2cdb5357) → node:path (module-01229df8) · opaque external · static-import · organization not established
+      presentation (module-2cdb5357) → evidence (module-01a14ec5) · type-only · static-import · outward
+      presentation (module-2cdb5357) → records (module-2b23ed6d) · static-import · same-group
+      presentation (module-2cdb5357) → presentation (module-2e897200) · static-import · outward
+      presentation (module-2cdb5357) → identity (module-393681de) · static-import · outward
+      presentation (module-2cdb5357) → records (module-b3cab524) · static-import · outward
+      presentation (module-2cdb5357) → terminal-text (module-c9216600) · static-import · outward
+      presentation (module-2cdb5357) → composition-view (module-e9b413c4) · static-import · outward
+      ◆ evidence (module-01a14ec5) · reference (already expanded)
+      ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+      ◆ presentation (module-2e897200) · reference (already expanded)
+      ◆ identity (module-393681de) · reference (already expanded)
+      ◆ terminal-text (module-c9216600) · reference (already expanded)
+      ◆ composition-view (module-e9b413c4) · reference (already expanded)
+    ◆ presentation (module-2e897200) · reference (already expanded)
+    ◆ presentation (module-34f2e9f0)
+      presentation (module-34f2e9f0) → presentation (module-2e897200) · type-only · static-import · outward
+      presentation (module-34f2e9f0) → identity (module-393681de) · static-import · outward
+      presentation (module-34f2e9f0) → records (module-a9b8523d) · static-import · same-group
+      presentation (module-34f2e9f0) → records (module-b3cab524) · static-import · outward
+      presentation (module-34f2e9f0) → terminal-text (module-c9216600) · static-import · outward
+      presentation (module-34f2e9f0) → composition-view (module-e9b413c4) · static-import · outward
+      ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+      ◆ presentation (module-2e897200) · reference (already expanded)
+      ◆ identity (module-393681de) · reference (already expanded)
+      ◆ terminal-text (module-c9216600) · reference (already expanded)
+      ◆ composition-view (module-e9b413c4) · reference (already expanded)
+  ◆ cli (module-61acf56d)
+    ◆ memory-store (module-06752ef3) · reference (already expanded)
+    ◆ organization (module-0b4396fc)
+      ◆ placement (module-21d58f01) · reference (already expanded)
+      ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+      ◆ identity (module-393681de) · reference (already expanded)
+    ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+    ◆ presentation (module-2cdb5357) · reference (already expanded)
+    ◆ presentation (module-2e897200) · reference (already expanded)
+    ◆ presentation (module-34f2e9f0) · reference (already expanded)
+    ◆ projections (module-37728742) · reference (already expanded)
+    ◆ observations (module-3c0d2fc9) · reference (already expanded)
+    ◆ projections (module-69998884) · reference (already expanded)
+    ◆ evaluate (module-7fa6c1d9) · reference (already expanded)
+    ◆ project (module-abc07ffd) · reference (already expanded)
+    ◆ evaluation (module-b1fefef5) · reference (already expanded)
+    ◆ evaluate (module-b9e659b2) · reference (already expanded)
+    ◆ terminal-text (module-c9216600) · reference (already expanded)
+    ◆ projections (module-f3757677)
+      ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+      ◆ graph (module-2dc13097)
+        ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+        ◆ identity (module-393681de) · reference (already expanded)
+      ◆ projections (module-37728742) · reference (already expanded)
+      ◆ identity (module-393681de) · reference (already expanded)
+◆ dependency-presentation-test (module-d4869047)
+  ◆ presentation (module-2e897200) · reference (already expanded)
+  ◆ presentation (module-34f2e9f0) · reference (already expanded)
+  ◆ observations (module-3c0d2fc9) · reference (already expanded)
+  ◆ cli (module-61acf56d) · reference (already expanded)
+◆ organization-cli-test (module-f0f5c27a)
+  ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+  ◆ presentation (module-2cdb5357) · reference (already expanded)
+  ◆ presentation (module-2e897200) · reference (already expanded)
+  ◆ identity (module-393681de) · reference (already expanded)
+  ◆ observations (module-3c0d2fc9) · reference (already expanded)
+  ◆ cli (module-61acf56d) · reference (already expanded)
+  ◆ projections (module-69998884) · reference (already expanded)
+  ◆ evaluation (module-b1fefef5) · reference (already expanded)
+  ◆ evaluate (module-b9e659b2) · reference (already expanded)
+  ◆ helpers (module-eea1d225) · reference (already expanded)
+◆ dependency-contract-test (module-f363be31)
+◆ cli (module-f576de7c)
+  ◆ cli (module-61acf56d) · reference (already expanded)
+  ◆ terminal-text (module-c9216600) · reference (already expanded)
+◆ dependency-projections-test (module-fdd6127b)
+  ◆ memory-store (module-06752ef3) · reference (already expanded)
+  ◆ organization (module-0b4396fc) · reference (already expanded)
+  ◆ Cycle grouping (not an entity): records (module-2b23ed6d) ↔ records (module-a9b8523d) ↔ records (module-b3cab524) · reference (already expanded)
+  ◆ identity (module-393681de) · reference (already expanded)
+  ◆ evaluate (module-7fa6c1d9) · reference (already expanded)
+  ◆ project (module-abc07ffd) · reference (already expanded)
+  ◆ evaluate (module-b9e659b2) · reference (already expanded)
+  ◆ projections (module-f3757677) · reference (already expanded)
+
+Source-owned request results without edges
+  None in supported coverage.
+
+Recognition-coverage outcomes (not recognized occurrences)
+  No recorded coverage outcomes; bounded recognition still applies.
+
+Display
+  1 modules omitted · 80 relationships omitted · 0 descents pruned
+  0 supporting occurrences omitted · 0 request results summarized/omitted · 0 recognition outcomes summarized/omitted
+  Display bounds do not reduce analysis coverage.
+
+Qualifications
+  Source requests only: no value-use, emission, loader availability, execution, bundler, or deployment claims.
+  Only project-owned requests are analyzed; external module interiors are opaque.
+  CommonJS coverage is bare require with exactly one argument, complete lexical evidence, and affirmative captured context; aliases, properties and other APIs are excluded.
+  Defined ESM format overrides ambient declarations; preserve requires callable ambient corroboration; absent module options do not infer compiler defaults.
+  Nonliteral targets are not evaluated; resolved files outside the discovered population do not add modules.
+  Dependency direction: a parent depends directly on a child. Roots are structural, not entry points or importance.
+  Re-exports only is a syntax property, not a barrel, API, purity, or safe-collapse claim.
+  Repository layout establishes no dependency policy or architectural violation.
+  Generated handles are navigation cues; exact names and snapshot-scoped Entity IDs retain their established meanings.
+
+Next · inspect a module:
+node /Users/ronen/postcode/app/_build/src/cli.js inspect --dependency-context \
+  --snapshot snapshot:3c40ae1d5d38840e5c286ace1df33da0a5006f5e64e40db060d070fd6889f044 \
+  --project /Users/ronen/postcode/app/tsconfig.json -- MODULE_HANDLE
+
+Next · dependency children:
+node /Users/ronen/postcode/app/_build/src/cli.js children \
+  --snapshot snapshot:3c40ae1d5d38840e5c286ace1df33da0a5006f5e64e40db060d070fd6889f044 \
+  --project /Users/ronen/postcode/app/tsconfig.json -- ENTITY_ID
+
+Next · dependency parents:
+node /Users/ronen/postcode/app/_build/src/cli.js parents \
+  --snapshot snapshot:3c40ae1d5d38840e5c286ace1df33da0a5006f5e64e40db060d070fd6889f044 \
+  --project /Users/ronen/postcode/app/tsconfig.json -- ENTITY_ID

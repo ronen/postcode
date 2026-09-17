@@ -1,0 +1,81 @@
+Module dependency children
+Snapshot snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe
+Direction: dependency parent → dependency child (depends directly on).
+20 modules · 19 direct relationships
+modules: available, completed, materialization full
+dependencies: available, completed, materialization full
+organization: available, completed, materialization partial · Some requested organization context is unavailable or incomplete.
+1 exact match(es) · current
+Selected: ts-error (module-e144eeff)
+
+Established direct relationships
+  ts-error (module-e144eeff) → source-map-support (module-0700e7cd) · opaque external · commonjs, static-import · organization not established
+  ts-error (module-e144eeff) → path (module-0a782b44) · opaque external · static-import · organization not established
+  ts-error (module-e144eeff) → repl (module-15efbe16) · re-export · same-group
+  ts-error (module-e144eeff) → cjs-resolve-hooks (module-222f8f25) · static-import · same-group
+  ts-error (module-e144eeff) → configuration (module-23b6ca57) · static-import · same-group
+  ts-error (module-e144eeff) → export (module-24d4d540) · opaque external · static-import · organization not established
+  ts-error (module-e144eeff) → node-module-type-classifier (module-28f40554) · static-import · same-group
+  ts-error (module-e144eeff) → util (module-2a8964a8) · opaque external · static-import · organization not established
+  ts-error (module-e144eeff) → file-extensions (module-56741def) · static-import · same-group
+  ts-error (module-e144eeff) → util (module-83354f6b) · static-import · same-group
+  ts-error (module-e144eeff) → module (module-8fb04584) · opaque external · static-import · organization not established
+  ts-error (module-e144eeff) → types (module-94d96b15) · type-only · re-export, static-import · into-descendants
+  ts-error (module-e144eeff) → esm (module-990ee013) · commonjs, import-type, re-export, static-import · same-group
+  ts-error (module-e144eeff) → resolver-functions (module-aacad3c1) · static-import · same-group
+  ts-error (module-e144eeff) → ts-compiler-types (module-ac9d4643) · type-only · static-import · same-group
+  ts-error (module-e144eeff) → typescript (module-c9517864) · opaque external · type-only · static-import · organization not established
+  ts-error (module-e144eeff) → module-type-classifier (module-d4f104d7) · static-import · same-group
+  ts-error (module-e144eeff) → url (module-df7dc18b) · opaque external · static-import · organization not established
+  ts-error (module-e144eeff) → ts-transpile-module (module-eac4c00f) · static-import · same-group
+
+Source-owned request results without edges
+  outside-population: 10
+  unresolved: 1
+  target-indeterminate: 1
+  static-import · outside-population · type-only
+  static-import · outside-population · type-only
+  static-import · outside-population · type-only
+  static-import · outside-population
+  commonjs · unresolved
+  import-type · outside-population · type-only
+  import-type · outside-population · type-only
+  import-type · outside-population · type-only
+  commonjs · target-indeterminate
+  commonjs · outside-population
+  commonjs · outside-population
+  commonjs · outside-population
+
+Recognition-coverage outcomes (not recognized occurrences)
+  No recorded coverage outcomes; bounded recognition still applies.
+
+Display
+  0 modules omitted · 0 relationships omitted · 0 descents pruned
+  0 supporting occurrences omitted · 0 request results summarized/omitted · 0 recognition outcomes summarized/omitted
+  Display bounds do not reduce analysis coverage.
+
+Qualifications
+  Source requests only: no value-use, emission, loader availability, execution, bundler, or deployment claims.
+  Only project-owned requests are analyzed; external module interiors are opaque.
+  CommonJS coverage is bare require with exactly one argument, complete lexical evidence, and affirmative captured context; aliases, properties and other APIs are excluded.
+  Defined ESM format overrides ambient declarations; preserve requires callable ambient corroboration; absent module options do not infer compiler defaults.
+  Nonliteral targets are not evaluated; resolved files outside the discovered population do not add modules.
+  Dependency direction: a parent depends directly on a child. Roots are structural, not entry points or importance.
+  Re-exports only is a syntax property, not a barrel, API, purity, or safe-collapse claim.
+  Repository layout establishes no dependency policy or architectural violation.
+  Generated handles are navigation cues; exact names and snapshot-scoped Entity IDs retain their established meanings.
+
+Next · inspect a module:
+node /Users/ronen/postcode/app/_build/src/cli.js inspect --dependency-context \
+  --snapshot snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe \
+  --project /Users/ronen/postcode/app/_dependency-contract-investigation/ts-node/tsconfig.postcode-validation.json -- MODULE_HANDLE
+
+Next · dependency children:
+node /Users/ronen/postcode/app/_build/src/cli.js children \
+  --snapshot snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe \
+  --project /Users/ronen/postcode/app/_dependency-contract-investigation/ts-node/tsconfig.postcode-validation.json -- ENTITY_ID
+
+Next · dependency parents:
+node /Users/ronen/postcode/app/_build/src/cli.js parents \
+  --snapshot snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe \
+  --project /Users/ronen/postcode/app/_dependency-contract-investigation/ts-node/tsconfig.postcode-validation.json -- ENTITY_ID

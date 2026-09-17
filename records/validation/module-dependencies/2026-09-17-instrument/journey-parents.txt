@@ -1,0 +1,45 @@
+Module dependency parents
+Snapshot snapshot:f8ccf79c1074fab5027a1cf8e518699c07929a39a323a1c704b10d7c081a921a
+Direction: dependency parent → dependency child (depends directly on).
+3 modules · 2 direct relationships
+modules: available, completed, materialization full
+dependencies: available, completed, materialization full
+organization: available, completed, materialization full
+1 exact match(es) · current
+Selected: shared (module-0a02841d)
+
+Established direct relationships
+  left (module-3a757ac6) → shared (module-0a02841d) · static-import · outward
+  forward (module-aee44b7a) · re-exports only → shared (module-0a02841d) · re-export · outward
+
+Display
+  0 modules omitted · 0 relationships omitted · 0 descents pruned
+  0 supporting occurrences omitted · 0 request results summarized/omitted · 0 recognition outcomes summarized/omitted
+  Display bounds do not reduce analysis coverage.
+
+Qualifications
+  Source requests only: no value-use, emission, loader availability, execution, bundler, or deployment claims.
+  Only project-owned requests are analyzed; external module interiors are opaque.
+  CommonJS coverage is bare require with exactly one argument, complete lexical evidence, and affirmative captured context; aliases, properties and other APIs are excluded.
+  Defined ESM format overrides ambient declarations; preserve requires callable ambient corroboration; absent module options do not infer compiler defaults.
+  Nonliteral targets are not evaluated; resolved files outside the discovered population do not add modules.
+  Dependency direction: a parent depends directly on a child. Roots are structural, not entry points or importance.
+  Re-exports only is a syntax property, not a barrel, API, purity, or safe-collapse claim.
+  Repository layout establishes no dependency policy or architectural violation.
+  Generated handles are navigation cues; exact names and snapshot-scoped Entity IDs retain their established meanings.
+  A request without an established child cannot be attributed to the selected module and therefore cannot produce a parent result.
+
+Next · inspect a module:
+node /Users/ronen/postcode/app/_build/src/cli.js inspect --dependency-context \
+  --snapshot snapshot:f8ccf79c1074fab5027a1cf8e518699c07929a39a323a1c704b10d7c081a921a \
+  --project /Users/ronen/postcode/app/fixtures/dependency-journey/tsconfig.json -- MODULE_HANDLE
+
+Next · dependency children:
+node /Users/ronen/postcode/app/_build/src/cli.js children \
+  --snapshot snapshot:f8ccf79c1074fab5027a1cf8e518699c07929a39a323a1c704b10d7c081a921a \
+  --project /Users/ronen/postcode/app/fixtures/dependency-journey/tsconfig.json -- ENTITY_ID
+
+Next · dependency parents:
+node /Users/ronen/postcode/app/_build/src/cli.js parents \
+  --snapshot snapshot:f8ccf79c1074fab5027a1cf8e518699c07929a39a323a1c704b10d7c081a921a \
+  --project /Users/ronen/postcode/app/fixtures/dependency-journey/tsconfig.json -- ENTITY_ID
