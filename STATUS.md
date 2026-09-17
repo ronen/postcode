@@ -78,4 +78,9 @@ ts-node exercises, and two authorized clean evaluators are recorded in the
 Evaluator feedback improved cycle notation, qualifications, omissions and fresh
 source navigation. Measured fresh invocation cost remains substantial, with an
 unexplained ts-node timing outlier retained in the evidence. The final integrated
-review is next. The task remains active until the human accepts that review gate.
+review reports no defects and independently reproduces the journey and PostCode
+counts, with type checking and all 188 tests passing. Its
+[disposition](records/reviews/module-dependencies/2026-09-17-integrated-disposition.md)
+records the non-defect observations, editorial clarifications and verification
+limits. The human explicitly directed that the task remain open for a later PR
+process; no closure or PR has been performed.
