@@ -17,17 +17,20 @@ all 181 tests. Each non-defect observation is carried forward as follows:
    at combination construction distinguishing narrowed endpoint sets from the
    whole-module placement cross product rejected by the accepted decision. No
    behavior or governing decision changed.
-2. **Parent-view bounded CommonJS disclosure — requires human direction.** The
+2. **Parent-view bounded CommonJS disclosure — approved and implemented.** The
    reviewer explicitly identifies an undecided presentation contract. Proposed:
    every dependency view states bounded CommonJS coverage, and parent views explain
    that unsupported/unresolved outgoing requests cannot be attributed to the
    selected target. Detailed exclusions remain source-owned in structure/child
-   views. Asked the human before implementing this disclosure choice; independent
-   presentation work can continue meanwhile.
+   views. The human approved this contract with the terminology correction “source-owned
+   request results and recognition-coverage outcomes,” preserved in the task follow-up.
+   All dependency views now disclose bounded recognition. Parent views explain why
+   a request without an established child cannot produce a parent result, with no
+   fabricated coverage records.
 3. **Opaque external leaves — accepted implementation requirement.** The renderer
    must combine graph grouping with projection relationships and modules to retain
-   opaque external endpoints. Carry this into rendering and integration tests;
-   external modules do not become project roots or traversable interiors.
+   opaque external endpoints. Implemented opaque leaves and focused external-child qualification, covered by
+   `test/dependency-presentation.test.ts`; external modules do not become project roots or traversable interiors.
 
 The review's residual limits remain explicit: no repeated compiler characterization,
 whole-repository/performance exercise, presentation review, or re-derivation of
@@ -39,5 +42,13 @@ integrated review remain required by the active plan.
 The human authorized continued implementation on 2026-09-17 subject to asking
 before consequential alternatives, scope expansion, or reviewer-identified unresolved
 uncertainty. That direction accepts the library checkpoint for continued work;
-the parent-view disclosure question remains pending. The task is active and its
+the human subsequently approved the parent-view disclosure contract. The task is active and its
 final integrated-review gate has not been satisfied.
+
+
+## Implementation and verification
+
+`7dda2eb` records the placement comment. `1197368` implements dependency rendering,
+source disclosure, and observations. Type checking and the focused CLI/dependency
+presentation suite pass (42 tests). The broader integrated task continues; final
+verification and independent integrated review will cover its finished target.

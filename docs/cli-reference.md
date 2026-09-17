@@ -12,6 +12,9 @@ node _build/src/cli.js organization project --project path/to/tsconfig.json
 node _build/src/cli.js organization repository --project path/to/tsconfig.json --json
 node _build/src/cli.js inspect --project path/to/tsconfig.json --snapshot SNAPSHOT -- MODULE_HANDLE
 node _build/src/cli.js inspect --project path/to/tsconfig.json --snapshot SNAPSHOT --source-detail -- MODULE_HANDLE
+node _build/src/cli.js dependencies --project path/to/tsconfig.json
+node _build/src/cli.js children --project path/to/tsconfig.json --snapshot SNAPSHOT -- ENTITY_ID
+node _build/src/cli.js parents --project path/to/tsconfig.json --snapshot SNAPSHOT -- ENTITY_ID
 node _build/src/cli.js --help
 ```
 
@@ -23,7 +26,8 @@ These command paths are invocation context, not discovered source evidence.
 
 Without arguments, the command is `modules` with `./tsconfig.json` and Unicode
 output. `--json` selects the experimental structured presentation. `--source-detail`
-and `--snapshot` are inspection options. `--help` performs no analysis.
+supports inspection and dependency views. `--snapshot` supports inspection,
+children and parents. `--help` performs no analysis.
 
 `--` ends option parsing: subsequent arguments are literal positional values.
 For a module named `--json`, use `inspect --project path/to/tsconfig.json -- --json`.
@@ -301,3 +305,72 @@ string values; display escaping does not alter stored claims or evidence.
 The observation-destination disclosure and CLI diagnostic/warning values use the
 same inline terminal-control escaping. Escaping changes the displayed text only;
 it does not change filesystem destinations or recorded observation values.
+
+
+## Dependency investigation
+
+`dependencies` shows direct project dependency structure. A dependency parent depends
+directly on a dependency child. `children` selects outgoing relationships and
+source-owned request results without edges; `parents` selects established incoming
+project relationships. Each accepts the same exact module names, generated handles,
+Entity IDs and snapshot scoping as module inspection. Groups are not dependency
+subjects. Zero, one and multiple matches remain explicit.
+
+Start with `dependencies --project fixtures/dependency-journey/tsconfig.json`, then
+use the generated commands to investigate the `right` module's children, the `shared`
+module's parents, and inspect `forward`. Replace `ENTITY_ID` in a generated command
+with a displayed precise ID. Options go before `--`.
+
+Project modules form the root and cycle population, including isolated modules. Roots
+have no established project dependency parents; they do not imply entry points or
+importance. Cycles are generated groupings, not entities, and retain every member and
+internal relationship. Shared children retain one identity. External modules appear
+as opaque leaves: a parent view can show known incoming relationships, but a child
+view cannot establish an empty external interior.
+
+Unicode expands at most 60 components through depth 6 and displays at most 200
+relationships. JSON retains the complete graph and relationships. Unicode shows up
+to 20 supporting occurrences per displayed edge, JSON up to 50. Request results and
+recognition-coverage details are bounded to 20/50 respectively; structure summarizes
+request results unless source detail is requested. Omission counts describe display,
+not analysis. Incomplete dependency evaluations retain known components without
+establishing roots or false empty results.
+
+Recognized unresolved literals, target-indeterminate nonliteral calls, and targets
+outside the discovered population are request results, never fabricated modules or
+edges. Recognition-coverage outcomes separately record unsupported shapes, missing
+ownership, and unavailable/conflicting evidence. Parent views cannot attribute a
+request without an established child to the selected target, so they explain this
+limit without copying source-owned coverage records. Every dependency view states the
+bounded CommonJS rule: bare, one-argument `require`, completed lexical evidence, and
+affirmative captured context. Recognition establishes no runtime loader or execution.
+Other mechanisms remain distinguishable; only an edge whose every occurrence has
+explicit type-only evidence is labelled type-only. An unmarked edge makes no value
+or runtime claim.
+
+The `re-exports only` annotation is an independently qualified syntax property; it
+is neither an API label nor a safe-collapse recommendation. It appears in module and
+organization views as well as dependency views. Evaluation unavailability remains
+separate from absence of a positive claim. Discovery classifications are exposed as
+`discoveryFacets` in experimental JSON, with composition outside that array.
+
+Requested repository-layout expansion compares occurrence-specific source and target
+placements. Results may be same-group, into-descendants, outward, varies-by-placement,
+or varies-by-occurrence, or remain unestablished. None establishes architectural
+policy. Missing repository organization weakens only the expansion.
+
+`--source-detail` exposes captured occurrence syntax, locations, target-resolution
+basis and file evidence, recognition outcomes, and organization placement/containment
+support without rereading files. It bounds source evidence to 100 records and
+organization claims to 50, with per-claim occurrence and evidence omissions explicit.
+Ordinary views omit raw syntax and source paths. The experimental schema is
+`postcode-dependency-view/0-experimental`; observations retain its request, outcomes,
+qualifications, display bounds and rendered output. Source escape uses the
+`dependency-occurrences-and-organization-evidence` level.
+
+Dependency resolution can observe inputs not needed by ordinary inventory. Generated
+inspection commands from dependency views include `--dependency-context`, explicitly
+requesting that preparation so the supplied snapshot and IDs remain valid. The flag
+also supports module and organization commands when a shared dependency context is
+wanted. Ordinary organization views do not silently run the dependency lens. A changed
+input still invalidates the snapshot; no successor is inferred.

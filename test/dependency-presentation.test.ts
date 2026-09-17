@@ -26,6 +26,7 @@ test('representative journey preserves direct intermediates, shared parents, com
   const initial = await invoke(config, ['dependencies']);
   const view = viewOf(initial);
   assert.equal(view.summary.modules, 6);
+  assert.deepEqual([...view.presentation.expansions].sort(), ['composition', 'documentation', 'exports', 'repository-layout']);
   assert.equal(view.summary.relationships, 6);
   const module = (handle: string) => view.modules.find(module => module.handle === handle)!;
   assert.equal(view.graph!.roots.length, 1);

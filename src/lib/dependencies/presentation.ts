@@ -191,7 +191,9 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
     schema: 'postcode-dependency-view/0-experimental',
     id: recordId(projection.snapshot, 'dependency-view', { method: methods.presentation, projection: projection.id, presentation }),
     projection: { id: projection.id, snapshot: projection.snapshot, lens: projection.lens, subject: projection.subject, parameters: projection.parameters, selection: projection.selection },
-    presentation: { ...presentation, expansions: ['composition', 'repository-layout'] },
+    presentation: { ...presentation, expansions: [...new Set(projection.expansions.moduleEvaluations.flatMap(id => {
+      const outcome = store.get(id); return outcome.kind === 'evaluation' && outcome.requirement !== 'modules' ? [outcome.requirement] : [];
+    })), ...(expanded ? ['repository-layout'] : [])] },
     evaluations: { modules: state(basis), dependencies: state(evaluation), organization: expanded ? state(expanded) : null },
     qualifications: projection.contexts.map(qualification), limitations, modules, subjects: projection.subjects, relationships, graph,
     requestResults, recognitionCoverage,
@@ -259,7 +261,7 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
       if (source.location.association === 'span') lines.push(`    ${inlineText(source.location.excerpt.text)}${source.location.excerpt.omittedCharacters ? ` … ${source.location.excerpt.omittedCharacters} characters omitted` : ''}`);
       if (source.dependencyResolution) lines.push(`    ${source.dependencyResolution.status} · ${source.dependencyResolution.targetBasis} · ${source.dependencyResolution.mode} · target file: ${inlineText(source.dependencyResolution.resolvedFile ?? '(none)')}`);
     }
-    for (const claim of view.sourceDetail.organization) lines.push(`  Organization evidence: ${claim.information.classification ?? 'not established'} · ${claim.information.occurrences.length} occurrence(s) · ${claim.information.occurrences.reduce((sum, item) => sum + item.pairs.length, 0)} placement comparison(s); full captured references in JSON source detail.`);
+    for (const claim of view.sourceDetail.organization) lines.push(`  Organization evidence: ${claim.information.classification ?? 'not established'} · ${claim.information.occurrences.length} occurrence(s) · ${claim.information.occurrences.reduce((sum, item) => sum + item.pairs.length, 0)} placement comparison(s); bounded captured support in JSON source detail.`);
     for (const evidence of view.sourceDetail.organizationEvidence) {
       if (evidence.kind === 'repository-region') lines.push(`  Organization region: ${inlineText(evidence.path || '[repository root]')}`);
       if (evidence.kind === 'repository-artifact') lines.push(`  Organization artifact: ${inlineText(evidence.artifact.path)}`);

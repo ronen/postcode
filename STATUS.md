@@ -64,14 +64,14 @@ records the correction and verification, including the subsequently authorized
 multi-file regression. The human accepted this intermediate gate and authorized
 downstream implementation.
 
-Dependency graph projections, independently qualified composition claims, and
-occurrence-specific organization expansion are implemented at the library boundary.
-The discovery-facet field is now `discoveryFacets`. Type checking and all 181 tests
-pass, including 11 new graph/expansion tests. The
-[graph and expansion handoff](records/reviews/module-dependencies/2026-09-17-graph-expansions-handoff.md)
-requests intermediate review before presentation integration, because multi-placement
-qualification and incomplete graph outcomes now determine what those views may say.
+Dependency graph projections, qualified composition, occurrence-specific organization
+expansion, dependency CLI views, scoped navigation and observations are implemented.
+The graph/expansion review found no defects; its
+[disposition](records/reviews/module-dependencies/2026-09-17-graph-expansions-disposition.md)
+records all observations and the human-approved parent-view coverage disclosure.
+Composition appears separately from `discoveryFacets` in module/organization views.
 
-CLI dependency views, composition annotations in organization views, navigation,
-observations, final instrument validation, and final integrated review remain
-pending. The task is active and paused for human-arranged intermediate review.
+The representative six-module journey and focused boundary tests pass. Whole-repository
+instrument validation, fresh-invocation measurement, two authorized clean evaluators,
+and final integrated-review handoff are underway. The task remains active; its final
+review gate has not been satisfied.

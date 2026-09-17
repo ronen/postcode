@@ -188,7 +188,9 @@ export function createOrganizationView(store: ProgramRecordStore, projection: Or
     id: recordId(projection.snapshot, 'organization-view', { projection: projection.id, presentation, method: methods.presentation }),
     projection: { id: projection.id, snapshot: projection.snapshot, lens: projection.lens, subject: projection.subject,
       parameters: projection.parameters, selection: projection.selection },
-    presentation: { ...presentation, expansions: projection.expansions.requested },
+    presentation: { ...presentation, expansions: [...projection.expansions.requested, ...new Set(projection.expansions.moduleEvaluations.flatMap(id => {
+      const outcome = store.get(id); return outcome.kind === 'evaluation' && outcome.requirement !== 'modules' ? [outcome.requirement] : [];
+    }))] },
     evaluations: { repository: { id: outcome.id, applicability, availability, execution, materialization, reason, cost }, placement: outcome.placement },
     repository: { provider: 'repository-layout', groups: outcome.groups.length, artifacts: evidence?.artifacts.length ?? 0,
       consistency: 'first-observed', sparseCheckout: evidence?.sparseCheckout ?? null,

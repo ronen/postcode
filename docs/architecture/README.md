@@ -21,7 +21,7 @@ application reads programs. Configuration errors and unavailable configured root
 files return project-open failure before a projection exists. Compiler objects
 remain inside that integration; input projects are never executed.
 
-The presentation declares module-standard exports and documentation requirements
+The presentation declares module-standard exports, documentation and composition requirements
 before the evaluator requests discovery through a small language-analysis boundary. Discovery writes an atomic batch of snapshot, module entity, module
 claim, Claim context, and source-evidence records through `ProgramRecordStore`.
 Compiler expansion preparation completes before snapshot identity is finalized.
@@ -347,5 +347,15 @@ underlying dependency result when repository organization is unavailable.
 These library layers follow the accepted [dependency structure](../decisions/module-dependency-structure-decisions.md),
 [composition](../decisions/module-composition-property-decision.md), and
 [organization integration](../decisions/dependency-organization-integration-decisions.md)
-decisions. Dependency CLI views and the associated presentation/observation integration
-remain pending at this intermediate checkpoint.
+decisions. Dependency CLI views now declare composition and repository-layout expansion,
+materialize bounded Unicode/JSON displays, and use the established observation sink.
+Project SCCs remain separate from opaque leaves drawn from projection relationships.
+Parent views use reusable bounded-coverage disclosure without inventing source-owned
+coverage records. Explicit source detail materializes captured request and organization
+evidence with separate bounds.
+
+Ordinary organization analysis remains independent of dependency evaluation. Since
+bounded dependency resolution may observe additional inputs, generated dependency-to-
+inspection commands request `--dependency-context` explicitly to reproduce the analysis
+context before selecting a scoped ID. This performs a fresh evaluation and introduces
+no cache or cross-invocation continuity.
