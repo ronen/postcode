@@ -50,7 +50,7 @@ export interface ModuleClaim extends RecordContext {
 
 export type ModuleExpansion = 'exports' | 'documentation' | 'composition';
 /** Entity-kind policy, independent of the lens used to select modules. */
-export const moduleStandardExpansions: readonly ModuleExpansion[] = ['exports', 'documentation'];
+export const moduleStandardExpansions: readonly ModuleExpansion[] = ['exports', 'documentation', 'composition'];
 
 export interface SymbolRecord extends RecordContext {
   readonly kind: 'symbol';

@@ -195,8 +195,8 @@ test('a changed method version produces a new snapshot in an independent process
     const before = invoke();
     const implementation = path.join(root, '_build/src/lib/identity.js');
     const original = readFileSync(implementation, 'utf8');
-    assert.ok(original.includes('postcode/projection@5'));
-    writeFileSync(implementation, original.replace('postcode/projection@5', 'postcode/projection@verification-change'));
+    assert.ok(original.includes('postcode/projection@6'));
+    writeFileSync(implementation, original.replace('postcode/projection@6', 'postcode/projection@verification-change'));
     assert.notEqual(invoke().evaluation.snapshot, before.evaluation.snapshot);
   });
 });

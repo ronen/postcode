@@ -39,7 +39,7 @@ function references(record: ProgramRecord): readonly RecordId[] {
     case 'evaluation': return [...record.modules, ...record.contexts, ...(record.claims ?? []), ...(record.basis ? [record.basis] : [])];
     case 'projection': return [...record.modules, ...record.claims, ...record.contexts, ...record.evaluations, ...record.expansions.claims];
     case 'organization-evaluation': return [record.repository, record.moduleEvaluation, ...record.groups, ...record.claims, ...record.contexts];
-    case 'organization-projection': return [record.evaluation, ...(record.moduleProjection ? [record.moduleProjection] : []),
+    case 'organization-projection': return [...record.expansions.moduleClaims, ...record.expansions.moduleEvaluations, record.evaluation, ...(record.moduleProjection ? [record.moduleProjection] : []),
       ...record.groups, ...record.modules, ...record.claims, ...record.contexts,
       ...record.expansions.groups, ...record.expansions.modules, ...record.expansions.claims];
   }
@@ -291,6 +291,8 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
           break;
         }
         case 'organization-projection':
+          record.expansions.moduleClaims.forEach(id => requireKind(id, 'claim'));
+          record.expansions.moduleEvaluations.forEach(id => requireKind(id, 'evaluation'));
           requireKind(record.evaluation, 'organization-evaluation');
           if (record.moduleProjection) requireKind(record.moduleProjection, 'projection');
           [...record.groups, ...record.expansions.groups].forEach(id => requireKind(id, 'group'));

@@ -1,3 +1,5 @@
+import { compositionView, compositionAnnotation } from '../composition-view.js';
+import type { CompositionView } from '../composition-view.js';
 import path from 'node:path';
 import { groupEntityIds, methods, moduleEntityIds, recordId } from '../identity.js';
 import { createView, renderUnicode } from '../presentation.js';
@@ -22,6 +24,7 @@ interface GroupReference extends EntityReference {
   readonly modulePresence: GroupPropertiesClaim['information']['modulePresence'];
 }
 interface ModuleReference extends EntityReference {
+  readonly composition: CompositionView;
   readonly handle: string;
   readonly handleStatus: ModuleClaim['information']['handleStatus'];
   readonly handleProvenance: ModuleClaim['information']['handleProvenance'];
@@ -120,7 +123,7 @@ export function createOrganizationView(store: ProgramRecordStore, projection: Or
     if (entity.kind !== 'module') throw new Error('Expected module');
     const claim = store.get(entity.claim) as ModuleClaim;
     const { artifacts: _artifacts, reasons, ...information } = placement.information;
-    return { id: entity.id, entityId: moduleIds.get(entity.id)!, name: claim.information.name,
+    return { composition: compositionView(store, entity.id, projection.expansions.moduleClaims, projection.expansions.moduleEvaluations), id: entity.id, entityId: moduleIds.get(entity.id)!, name: claim.information.name,
       label: claim.information.name ?? claim.information.handle, handle: claim.information.handle,
       handleStatus: claim.information.handleStatus, handleProvenance: claim.information.handleProvenance,
       placement: { ...information, reasons: reasons.map(reason => reason === 'link-not-established' ? 'relationship-not-established' : reason) },
@@ -251,7 +254,7 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
       }
       lines.push('  Direct modules:');
       if (!group.modules.length) lines.push(view.evaluations.placement.materialization === 'full' ? '    None.' : '    None established; placement is incomplete.');
-      for (const module of group.modules) lines.push(`    ${label(module)}${module.placement.outcome === 'multiple' ? ' · multiple placements' : ''}`);
+      for (const module of group.modules) lines.push(`    ${label(module)}${compositionAnnotation(module.composition)}${module.placement.outcome === 'multiple' ? ' · multiple placements' : ''}`);
       lines.push(`  Other artifacts: ${group.artifacts.unanalyzed} unanalyzed · ${group.artifacts.opaqueBoundaries} opaque boundaries`);
     }
     if (view.moduleDetail?.modules.length) lines.push('', 'Modules', renderUnicode(view.moduleDetail).trimEnd());
@@ -265,7 +268,7 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
       const item = row.kind === 'group' ? groups.get(row.id)! : modules.get(row.id)!;
       const group = row.kind === 'group' ? item as GroupView : null;
       const name = inlineText(item.label).padEnd(Math.max(0, width - row.depth * 2));
-      lines.push(`${'  '.repeat(row.depth)}${row.kind === 'group' ? '◆' : '·'} ${name}  ${item.entityId}${group ? ` · ${annotation(group)}${!group.selected ? ' · context group' : ''}${group.artifacts.unanalyzed ? ` · ${group.artifacts.unanalyzed} unanalyzed artifacts` : ''}` : ''}${row.reference ? ' · reference (already expanded)' : ''}${row.pruned ? ` · descent pruned (${row.pruned === 'outside-project' ? 'outside project selection' : 'depth limit'})` : ''}`);
+      lines.push(`${'  '.repeat(row.depth)}${row.kind === 'group' ? '◆' : '·'} ${name}  ${item.entityId}${group ? ` · ${annotation(group)}${!group.selected ? ' · context group' : ''}${group.artifacts.unanalyzed ? ` · ${group.artifacts.unanalyzed} unanalyzed artifacts` : ''}` : ''}${row.kind === 'module' ? compositionAnnotation((item as ModuleReference).composition) : ''}${row.reference ? ' · reference (already expanded)' : ''}${row.pruned ? ` · descent pruned (${row.pruned === 'outside-project' ? 'outside project selection' : 'depth limit'})` : ''}`);
     }
     if (!view.display.rows.length) lines.push(view.projection.selection.populationEstablished ? 'No groups in this selection.' : 'No groups materialized for this selection.');
   }
@@ -274,7 +277,7 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
     for (const outcome of [...new Set(view.placementExceptions.map(module => module.placement.outcome))]) {
       lines.push(`  ${outcome}:`);
       for (const module of view.placementExceptions.filter(module => module.placement.outcome === outcome)) {
-        lines.push(`    ${label(module)} · ${module.placement.materialization}${module.placement.reasons.length ? ` · ${module.placement.reasons.map(inlineText).join(', ')}` : ''}`);
+        lines.push(`    ${label(module)}${compositionAnnotation(module.composition)} · ${module.placement.materialization}${module.placement.reasons.length ? ` · ${module.placement.reasons.map(inlineText).join(', ')}` : ''}`);
         for (const location of module.locations) lines.push(`      Established in ${label(location)}`);
         for (const candidate of module.candidates) lines.push(`      Candidate only: ${label(candidate)}`);
       }
@@ -293,6 +296,7 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
     '', 'Qualifications', '  Repository layout is one organizational account; architectural purpose is not established.',
     '  Documentation availability is direct existence only; contents and descendant applicability are not evaluated.',
     '  Module presence describes the selected configured project; other artifacts remain unanalyzed.',
+    '  Re-exports only is a syntax property, not an API, purity, or safe-collapse claim.',
     '  Unnamed module leaves use generated navigation handles, not responsibility labels.',
     `  Repository-layout evidence left ${view.repository.unestablishedRelationships} relationships unestablished.`,
     `  Exclusion policies: ${view.repository.exclusions.repository} repository, ${view.repository.exclusions.local} local, ${view.repository.exclusions.global} global; ${view.repository.exclusions.outputLocations} output locations excluded.`,

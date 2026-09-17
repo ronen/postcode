@@ -99,7 +99,8 @@ export interface OrganizationProjectionRecord extends RecordContext {
   readonly claims: readonly RecordId[];
   readonly contexts: readonly RecordId[];
   readonly expansions: { readonly requested: readonly GroupExpansion[];
-    readonly groups: readonly RecordId[]; readonly modules: readonly RecordId[]; readonly claims: readonly RecordId[] };
+    readonly groups: readonly RecordId[]; readonly modules: readonly RecordId[]; readonly claims: readonly RecordId[];
+    readonly moduleClaims: readonly RecordId[]; readonly moduleEvaluations: readonly RecordId[] };
   readonly selection: {
     readonly matches: number;
     readonly population: number;

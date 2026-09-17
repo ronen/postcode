@@ -868,3 +868,23 @@ test('configuration diagnostic locations are one-based across lines and safely e
       `  TS1005: ${path.join(root, 'multiline\\u000aStatus.json')}:4:5: ',' expected.`]);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
+
+test('composition remains a separately qualified property in inspection and organization leaves', async () => {
+  const directory = mkdtempSync(path.join(os.tmpdir(), 'postcode-composition-view-'));
+  try {
+    execFileSync('git', ['init', '--quiet', directory]);
+    writeFileSync(path.join(directory, 'tsconfig.json'), JSON.stringify({ compilerOptions: { noLib: true, types: [] }, files: ['forward.ts', 'target.ts'] }));
+    writeFileSync(path.join(directory, 'forward.ts'), "export * from './target';");
+    writeFileSync(path.join(directory, 'target.ts'), 'export const value = 1;');
+    const project = path.join(directory, 'tsconfig.json');
+    const inventory = JSON.parse((await invoke(['modules', '--project', project, '--json'])).stdout) as QualifiedView;
+    const forward = inventory.modules.find(module => module.handle === 'forward')!;
+    assert.equal(forward.composition.claims[0]!.property, 're-exports-only');
+    assert.equal(forward.discoveryFacets.includes('re-exports-only'), false);
+    const inspection = await invoke(['inspect', forward.entityId, '--snapshot', inventory.projection.snapshot, '--project', project, '--source-detail']);
+    assert.match(inspection.stdout, /re-exports only/);
+    const organization = await invoke(['organization', '--project', project]);
+    assert.match(organization.stdout, /forward.*re-exports only/);
+    assert.doesNotMatch(organization.stdout, /target.*re-exports only/);
+  } finally { rmSync(directory, { recursive: true, force: true }); }
+});
