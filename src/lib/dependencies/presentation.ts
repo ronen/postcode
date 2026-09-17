@@ -261,7 +261,7 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
     for (const [index, item] of view.requestResults.entries()) lines.push(`  Request ${index + 1}: ${item.mechanism} · ${item.targetStatus}${item.typeOnly ? ' · type-only' : ''}`);
     lines.push('', 'Recognition-coverage outcomes (not recognized occurrences)');
     for (const [outcome, count] of Object.entries(view.summary.recognitionCoverage)) lines.push(`  ${outcome}: ${count}`);
-    for (const [index, item] of view.recognitionCoverage.entries()) lines.push(`  Coverage ${index + 1}: ${item.outcome}${item.owner && modules.has(item.owner) ? ` · ${label(item.owner, false)}` : ' · owner not shown/established'}`);
+    for (const [index, item] of view.recognitionCoverage.entries()) lines.push(`  Coverage ${index + 1}: ${item.outcome}${item.owner && modules.has(item.owner) ? ` · ${label(item.owner, false)}` : item.owner ? ' · owner omitted from this view' : ' · owner not established'}`);
     if (!Object.keys(view.summary.recognitionCoverage).length) lines.push('  No recorded coverage outcomes; bounded recognition still applies.');
   }
   if (view.sourceDetail) {
@@ -285,7 +285,8 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
     `  ${view.display.omittedOccurrences} supporting occurrences omitted · ${view.display.omittedRequestResults} request results summarized/omitted · ${view.display.omittedCoverageOutcomes} recognition outcomes summarized/omitted`,
     '  Display bounds do not reduce analysis coverage.', '', 'Qualifications', ...view.limitations.map(item => `  ${item}`));
   for (const code of new Set(view.qualifications.flatMap(context => context.diagnostics.map(item => item.code)))) lines.push(`  Encountered TypeScript diagnostic: TS${code}`);
+  if (view.presentation.navigation || view.presentation.dependencyNavigation) lines.push('', 'Navigation evaluates current inputs afresh. Scoped selectors reject snapshot mismatches; source detail uses evidence captured in the new invocation.');
   if (view.presentation.navigation) lines.push('', 'Next · inspect a module:', view.presentation.navigation.inspect);
-  if (view.presentation.dependencyNavigation) lines.push('', 'Next · dependency children:', view.presentation.dependencyNavigation.children, '', 'Next · dependency parents:', view.presentation.dependencyNavigation.parents, '', 'Next · captured request and organization source detail (view-local Request/Coverage numbers are not entity selectors):', view.presentation.dependencyNavigation.source);
+  if (view.presentation.dependencyNavigation) lines.push('', 'Next · dependency children:', view.presentation.dependencyNavigation.children, '', 'Next · dependency parents:', view.presentation.dependencyNavigation.parents, '', 'Next · fresh evaluation with request and organization source detail (view-local Request/Coverage numbers are not entity selectors):', view.presentation.dependencyNavigation.source);
   return `${lines.join('\n')}\n`;
 }

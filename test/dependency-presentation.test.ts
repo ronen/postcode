@@ -67,6 +67,9 @@ test('source-owned request results and recognition outcomes are separate and par
   const text = await invoke(config, ['children', requests.entityId, '--snapshot', initial.projection.snapshot]);
   assert.match(text.stdout, /Request 1:/);
   assert.match(text.stdout, /Coverage 1:/);
+  assert.match(text.stdout, /Navigation evaluates current inputs afresh/);
+  assert.match(text.stdout, /Next · fresh evaluation with request/);
+  assert.doesNotMatch(text.stdout, /owner not shown\/established/);
   assert.match(text.stdout, /strict organization descendant/);
   assert.ok(view.recognitionCoverage.length > 0);
   assert.ok(view.recognitionCoverage.some(item => item.outcome === 'alternative-binding'));

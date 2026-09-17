@@ -383,3 +383,9 @@ view-local `Request N` and `Coverage N` labels; these are not entity selectors. 
 source-detail command exposes captured support for the selected view, prioritizing
 non-edge and recognition evidence within its source bound. Module composition badges
 are separated from relationship mechanism labels.
+
+Every navigation command evaluates current inputs afresh. Focused commands reject a
+supplied snapshot mismatch. Project-wide source detail has no selected entity and
+therefore does not accept a snapshot guard; its output identifies the new snapshot.
+It uses evidence captured in that invocation, not a reopened historical capture.
+Unknown request ownership and known ownership omitted from display remain distinct.
