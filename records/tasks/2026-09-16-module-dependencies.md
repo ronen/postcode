@@ -63,6 +63,23 @@ yes, resume implementation
 
 The review is complete.  It has no findings but a few non-defect observations.  Assess and act on those observations as you see fit. Ask me before choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty, otherwise continue with the implementation
 
+### 2026-09-17 — Parent-view coverage disclosure approved
+
+Context: The agent asked for approval of a disclosure contract that retains source-owned coverage in structure/child projections and explains bounded coverage in every view.
+
+Yes, I would approve that disclosure contract, with one terminology correction.
+A parent view should:
+- show only established incoming relationships;
+- state the bounded CommonJS coverage;
+- explain that a request without an established child cannot be attributed to the selected module and therefore cannot produce a parent result;
+- avoid copying source-owned coverage records into the parent projection.
+Structure and child views should expose the source-owned details:
+- recognized requests with no edge, such as unresolved literals and target-indeterminate calls;
+- unavailable or conflicting recognition evidence;
+- applicable bounded-recognition limitations.
+I would avoid the phrase “occurrence-level exclusions.” Some excluded forms never become recognized occurrences. Call them source-owned request results and recognition-coverage outcomes instead.
+The bounded rule can be presented as concise reusable disclosure text; the parent projection does not need fabricated coverage records merely to satisfy the presentation requirement. This preserves the distinction between analysis facts and how each view explains its limits.
+
 ## Outcome
 
 ## Verification
