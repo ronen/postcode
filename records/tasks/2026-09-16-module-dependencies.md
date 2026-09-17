@@ -86,6 +86,10 @@ Context: The agent asked permission to run two fresh evaluator agents, supplying
 
 Run two clean evaluators
 
+### 2026-09-17 — Integrated review disposition; keep task open for later PR process
+
+The review is complete.  It has no findings but a few non-defect issues.  Assess and act on those issues as you see fit. Ask me before choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.  In any case, keep the task open, we will do a PR process later
+
 ## Outcome
 
 ## Verification
