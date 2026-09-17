@@ -353,6 +353,9 @@ is neither an API label nor a safe-collapse recommendation. It appears in module
 organization views as well as dependency views. Evaluation unavailability remains
 separate from absence of a positive claim. Discovery classifications are exposed as
 `discoveryFacets` in experimental JSON, with composition outside that array.
+An empty named re-export, `export {} from './target'`, is a supported direct
+re-export for this property; the bare module marker `export {};` prevents it.
+This syntax distinction does not establish runtime behavior or side-effect freedom.
 
 Requested repository-layout expansion compares occurrence-specific source and target
 placements. Results may be same-group, into-descendants, outward, varies-by-placement,

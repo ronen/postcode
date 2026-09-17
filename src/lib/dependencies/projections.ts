@@ -43,6 +43,9 @@ function project(store: ProgramRecordStore, evaluation: DependencyEvaluationReco
     if (occurrence.kind !== 'dependency-occurrence') throw new Error('Expected occurrence');
     return subjectSet.has(occurrence.owner) && occurrence.targetStatus !== 'resolved';
   });
+  // Structure retains the evaluation's recognition coverage, including unowned results;
+  // children require the selected owner, and parents carry no source-owned coverage.
+  // This is intentionally distinct from the project-owned request/edge selection above.
   const coverage = evaluation.coverage.filter(id => {
     const item = store.get(id);
     if (item.kind !== 'dependency-coverage') throw new Error('Expected coverage result');

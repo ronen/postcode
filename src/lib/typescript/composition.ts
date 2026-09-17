@@ -19,6 +19,8 @@ export function prepareComposition(program: ts.Program, modules: readonly Expans
       .map(diagnostic => ({ code: diagnostic.code, category: ts.DiagnosticCategory[diagnostic.category]!.toLowerCase() }));
     const substantive = statements.filter(statement => !ts.isEmptyStatement(statement));
     const complete = supported && relevant.length === 0;
+    // An empty named re-export (`export {} from './target'`) still has a module
+    // specifier; the bare module marker (`export {};`) does not qualify.
     const positive = complete && substantive.length > 0 && substantive.every(statement =>
       ts.isExportDeclaration(statement) && statement.moduleSpecifier !== undefined && ts.isStringLiteralLike(statement.moduleSpecifier));
     return { module, complete, positive, diagnostics: relevant };
