@@ -90,6 +90,10 @@ Run two clean evaluators
 
 The review is complete.  It has no findings but a few non-defect issues.  Assess and act on those issues as you see fit. Ask me before choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.  In any case, keep the task open, we will do a PR process later
 
+### 2026-09-20 — GitHub pull request authorized
+
+Create a github pull request, with the request body giving Copilot the necessary information to do a review
+
 ## Outcome
 
 ## Verification
