@@ -466,3 +466,33 @@ test('dependency evaluations partition resolved occurrences exactly and reject i
   store.put([valid]);
   assert.deepEqual(store.get(valid.id), valid); // Partial evaluation still covers all retained resolved evidence.
 });
+
+
+test('dependency evaluations reject disjoint relationships for one ordered pair atomically', () => {
+  temporary({
+    'entry.cts': "import { value } from './target.cjs'; export { value } from './target.cjs';",
+    'target.cts': "import './entry.cjs'; export const value = 1;",
+  }, root => {
+    const { store, evaluation, relationships, occurrences } = analyze(path.join(root, 'tsconfig.json'));
+    const edge = relationships.find(item => item.information.occurrences.length === 2)!;
+    assert.equal(edge.information.occurrences.length, 2);
+    // Reverse direction is a different ordered pair and is accepted in the original evaluation.
+    assert.equal(relationships.length, 2);
+    assert.ok(relationships.some(item => item.subject === edge.information.child && item.information.child === edge.subject));
+    const split = edge.information.occurrences.map((id, index) => {
+      const support = occurrences.find(item => item.id === id)!;
+      return { ...edge, id: `${edge.id}-split-${index}` as RecordId,
+        information: { ...edge.information, occurrences: [id], mechanisms: [support.mechanism], typeOnly: support.typeOnly } };
+    });
+    const invalid = { ...evaluation, id: `${evaluation.id}-split` as RecordId,
+      relationships: [...evaluation.relationships.filter(id => id !== edge.id), ...split.map(item => item.id)] };
+    // Individually valid pending edges cover every resolved occurrence exactly once.
+    // Only their repeated ordered pair is invalid, regardless of batch insertion order.
+    for (const batch of [[...split, invalid], [invalid, ...split]]) {
+      assert.throws(() => store.put(batch), /Duplicate dependency relationship for ordered module pair/);
+      for (const record of batch) assert.throws(() => store.get(record.id), /Missing program record/);
+      assert.deepEqual(store.get(evaluation.id), evaluation);
+      assert.deepEqual(store.get(edge.id), edge);
+    }
+  });
+});

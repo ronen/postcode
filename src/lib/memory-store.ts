@@ -149,6 +149,7 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
           if (basis?.kind !== 'evaluation' || basis.requirement !== 'modules') throw new Error('Expected module evaluation basis');
           record.projectModules.forEach(id => requireKind(id, 'module'));
           const remaining = new Set<RecordId>();
+          const pairs = new Set<string>();
           if (new Set(record.occurrences).size !== record.occurrences.length) throw new Error('Duplicate dependency evaluation occurrence');
           record.occurrences.forEach(id => {
             requireKind(id, 'dependency-occurrence');
@@ -162,6 +163,9 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
             for (const occurrence of relationship.information.occurrences) {
               if (!remaining.delete(occurrence)) throw new Error('Dependency relationships must partition evaluation resolved occurrences exactly');
             }
+            const pair = canonical([relationship.subject, relationship.information.child]);
+            if (pairs.has(pair)) throw new Error('Duplicate dependency relationship for ordered module pair');
+            pairs.add(pair);
           });
           if (remaining.size) throw new Error('Dependency relationships must partition evaluation resolved occurrences exactly');
           record.coverage.forEach(id => requireKind(id, 'dependency-coverage'));

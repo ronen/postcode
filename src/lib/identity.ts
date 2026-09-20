@@ -4,7 +4,7 @@ import type { RecordId, SnapshotId } from './records.js';
 /** Bump the responsible method whenever its analysis/identity/projection semantics change. */
 export const methods = {
   inputs: 'postcode/observed-inputs@3',
-  records: 'postcode/program-records@15',
+  records: 'postcode/program-records@16',
   discovery: 'postcode/typescript-modules@10',
   evaluation: 'postcode/evaluate-modules@3',
   dependencies: 'postcode/typescript-dependencies@2',
