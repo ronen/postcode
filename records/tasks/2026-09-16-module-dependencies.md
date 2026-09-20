@@ -94,6 +94,10 @@ The review is complete.  It has no findings but a few non-defect issues.  Assess
 
 Create a github pull request, with the request body giving Copilot the necessary information to do a review
 
+### 2026-09-20 — Copilot findings retrieval and correction authorized
+
+The copilot review is complete.  Please fetch the full review and preserve it as per dev/review\.md;  Its findings seem sound, act on them unless you disagree or see any issues that should be raised for discussion.  If there are no such issues, record the disposition, commit, push, and update the PR to prepare for the next review.
+
 ## Outcome
 
 ## Verification
