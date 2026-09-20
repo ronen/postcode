@@ -1,8 +1,8 @@
 # Independent Review Workflow
 
-This document describes how an implementation agent prepares for a human-arranged independent review and how the resulting review evidence is preserved. It applies when an approved plan or authorized task requires an independent review checkpoint. It does not require independent review for every implementation task and does not determine which reviewer or review mechanism the human uses.
+This document describes how an implementation agent prepares for a human-arranged independent review and how the resulting review evidence is preserved. It applies when review is required by the development workflow, an approved plan, an authorized task, or explicit human direction. It does not require independent review for every implementation task and does not determine which reviewer or review mechanism the human uses.
 
-The applicable plan or task defines whether review is required, what gates it establishes, and when those gates occur. A reviewer's findings are input to the active task; they do not authorize implementation, expand task scope, accept a product result, or conclude the task.
+The development workflow supplies defaults for substantive implementation of an approved plan. An approved plan, authorized task, or explicit human direction may add, alter, or waive review gates. A reviewer's findings are input to the active task; they do not authorize implementation, expand task scope, accept a product result, or conclude the task.
 
 ## Review records
 

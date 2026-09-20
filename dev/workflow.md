@@ -43,6 +43,7 @@ Follow the [planning workflow](planning.md) for plan contents, provisional worki
 
 ## 4. Implementation
 
+- Implement an approved plan on a suitably named feature branch unless the plan or human explicitly directs otherwise.
 - Use the applicable [engineering guidelines](engineering-guidelines.md) when exercising implementation judgment, and explain material departures.
 - Follow the applicable [implementation conventions](../docs/implementation-conventions.md).
 - Prefer the smallest coherent change that advances the authorized goal.
@@ -121,7 +122,12 @@ Verification should be proportional to the risk and scope of the change. Before 
 
 Report what was verified, what was not verified, and any residual uncertainty. Never imply that an unperformed check passed.
 
-When an approved plan or authorized task requires an independent review checkpoint, follow the [independent review workflow](review.md) to prepare the handoff, preserve findings and dispositions, and determine whether further review is required. The human arranges the reviewer and review mechanism unless the approved plan expressly assigns that responsibility to the agent or the human explicitly directs the agent to do so.
+Unless the approved plan or human explicitly directs otherwise, substantive implementation of an approved plan uses these independent-review defaults:
+
+- If the implementation becomes sufficiently complex that intermediate review would materially reduce risk, pause for independent review after appropriate key developments.
+- After implementation and planned verification are substantially complete, prepare and commit a final integrated-review handoff. Pause for one or more final review rounds, and do not close the task until the human says that the review gate is sufficient.
+
+Follow the [independent review workflow](review.md) whenever these defaults, an approved plan, or an authorized task require review. The human arranges the reviewer and review mechanism unless the approved plan expressly assigns that responsibility to the agent or the human explicitly directs the agent to do so.
 
 ## 8. Completion and Handoff
 
