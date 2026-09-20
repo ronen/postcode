@@ -1,8 +1,8 @@
 # Implement module dependencies
 
-Status: active
+Status: completed
 Opened: 2026-09-16
-Closed:
+Closed: 2026-09-20
 
 ## Task
 
@@ -110,4 +110,45 @@ ok good.  close out the task as per the workflow & protocol, push, and give me a
 
 ## Outcome
 
+Implemented the approved module dependency slice on `codex/module-dependencies`:
+source-request occurrences and qualified direct relationships; bounded CommonJS
+recognition; structure, children and parents projections; SCC/root derivation and
+external opacity; composition properties and occurrence-specific organization
+context; Unicode/JSON presentation, source detail, scoped navigation and observations.
+Documentation describes the integrated result. The approved CommonJS refinement is
+recorded in a superseding decision, preserving the original historical decision.
+
+Provider, graph and integrated review records preserve the checkpoints and corrections.
+All four concrete Copilot findings were accepted and corrected, including exact
+resolved-occurrence partitioning and one relationship per ordered module pair, with
+atomic rejection regressions. The final Copilot review reports no findings. The human
+accepted the accumulated final review gate and authorized closure on 2026-09-20.
+[PR #4](https://github.com/ronen/postcode/pull/4) is ready for human merge; it was not
+merged by the implementing agent.
+
+No required implementation work is deferred. Bounded source/CommonJS coverage,
+partial organization evidence, the unconfirmed external-owner scenario, incomplete
+independent reproduction of external validation, and measured fresh-analysis latency
+(including the unexplained ts-node outlier) remain disclosed in the
+[integrated disposition](../reviews/module-dependencies/2026-09-17-integrated-disposition.md)
+and [instrument report](../validation/module-dependencies/2026-09-17-integrated-instrument.md).
+No runtime-execution or latency-bound claim is made.
+
 ## Verification
+
+- `npm run check` and `npm test`: **191/191 tests pass** at final implementation
+  `e3adc105bd958ebe2829ec1f8feac4af2c5ace52`; subsequent changes are review/task/status
+  records only. Tests cover compiler evidence, graph and organization qualification,
+  composition, source separation, navigation, observations, deterministic identities,
+  and evaluation-wide partition, ordered-pair and atomicity invariants.
+- The representative six-module journey, boundary cases, PostCode self-analysis and
+  adapted ts-node validation are preserved in the instrument report. The original
+  ts-node opening failure and equivalent 66-root adapted selection remain explicit.
+  Two clean evaluators assessed view comprehension separately from correctness review.
+- The independent integrated reviewer reproduced the journey and PostCode structural
+  counts and passed the then-current 188-test suite. Three Copilot rounds identified,
+  checked corrections for, and ultimately reported resolution of all four findings;
+  the final reviewed target is `f6bc7fcb6aea87ba27894284870f99df3a35f1a8`.
+- Final record links and `git diff --check` verified. No new implementation tests were
+  needed for closure-only record changes. Human gate acceptance is preserved above.
+
