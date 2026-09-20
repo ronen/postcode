@@ -2,25 +2,34 @@
 
 Last reviewed: 2026-09-20
 
-The module dependency slice is complete. The CLI provides qualified dependency
-structure, direct children and parents, bounded CommonJS source-request recognition,
-occurrence-backed relationship evidence, composition properties, repository-organization
-context, explicit source detail, scoped navigation and local observations. It builds
-on the completed module inventory and repository organization slices.
+The module-inventory and repository-organization slices are complete. The
+development CLI provides Unicode and experimental JSON views, module and group
+inspection, exports and documentation, source evidence, and scoped navigation.
 
-The [approved plan](docs/plans/module-dependencies-plan.md) and
-[completed task](records/tasks/2026-09-16-module-dependencies.md) preserve scope,
-authorization, outcome and verification. The
+Most recently completed:
+[Module dependency slice](docs/plans/module-dependencies-plan.md), with
+implementation, verification, and acceptance preserved in
+[the completed task](records/tasks/2026-09-16-module-dependencies.md).
+
+The CLI now provides project dependency structure and direct dependency children
+and parents, including shared dependencies, cycles, and opaque external endpoints.
+Module composition and repository organization add context to these relationships.
+The provider and graph checkpoints are accepted; their dispositions preserve the
+reviews and corrections.
+
+The representative journey and bounded instrument evaluation have run on PostCode
+and the unfamiliar `ts-node` repository using an explicitly adapted configuration.
+Clean evaluators understood dependency direction, qualifications, display limits,
+and next-step navigation; their wording feedback was incorporated. Fresh analysis
+was slow in measured runs, a recorded limitation.
+
+Dependency views retain the distinction between established relationships,
+requests without established targets, and limits on what the analysis recognizes.
+They describe direct source dependencies rather than runtime behavior or
+architectural intent. These views connect to module inspection and repository
+organization, providing a broader basis for exploring program structure.
+
+Implementation, planned verification, and review are complete. The human accepted
+the final review gate on 2026-09-20. The
 [integrated disposition](records/reviews/module-dependencies/2026-09-17-integrated-disposition.md)
-records independent review, all Copilot findings and corrections, and the human's
-acceptance of the final review gate on 2026-09-20. Type checking and all **191 tests**
-pass on the final implementation. The latest Copilot review reports no findings.
-
-The [instrument validation](records/validation/module-dependencies/2026-09-17-integrated-instrument.md)
-records the representative journey, boundary cases, PostCode and adapted ts-node
-exercises, clean evaluators, and limits. Fresh analysis remains slow in measured
-runs, including an unexplained ts-node outlier; bounded recognition and source-detail
-coverage remain explicit rather than runtime guarantees.
-
-[PR #4](https://github.com/ronen/postcode/pull/4) is ready for the human to merge.
-The task is closed; the PR has not been merged by the implementing agent.
+records the review outcomes and remaining limits.
