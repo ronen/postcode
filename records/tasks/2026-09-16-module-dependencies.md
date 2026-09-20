@@ -98,6 +98,10 @@ Create a github pull request, with the request body giving Copilot the necessary
 
 The copilot review is complete.  Please fetch the full review and preserve it as per dev/review\.md;  Its findings seem sound, act on them unless you disagree or see any issues that should be raised for discussion.  If there are no such issues, record the disposition, commit, push, and update the PR to prepare for the next review.
 
+### 2026-09-20 — Next Copilot round authorized
+
+[Same as before]   The copilot review is complete.  Please fetch the full review and preserve it as per dev/review\.md;  Its findings seem sound, act on them unless you disagree or see any issues that should be raised for discussion.  If there are no such issues, record the disposition, commit, push, and update the PR to prepare for the next review.
+
 ## Outcome
 
 ## Verification
