@@ -83,5 +83,9 @@ counts, with type checking and all 188 tests passing. Its
 [disposition](records/reviews/module-dependencies/2026-09-17-integrated-disposition.md)
 records the non-defect observations, editorial clarifications and verification
 limits. [PR #4](https://github.com/ronen/postcode/pull/4) is open with implementation
-context and review guidance for Copilot. The task remains active as directed by the
-human; PR review and an explicit final gate decision remain pending.
+context and review guidance for Copilot. Its first Copilot review identified three
+findings: evaluation-wide occurrence partition validation, count-dependent wording,
+and a stale architecture paragraph. All are corrected and recorded in the integrated
+disposition; type checking and all 190 tests pass. The PR is prepared for another
+review. The task remains active; further review and an explicit human final gate
+decision remain pending.

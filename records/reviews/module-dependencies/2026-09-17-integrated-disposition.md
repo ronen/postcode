@@ -1,8 +1,9 @@
 Record type: disposition
 Date: 2026-09-17
+Updated: 2026-09-20
 Task: [Module dependencies](../../tasks/2026-09-16-module-dependencies.md)
 Handoff: [Integrated review](2026-09-17-integrated-handoff.md)
-Findings: [Round 1](2026-09-17-integrated-round-1-findings.md)
+Findings: [Round 1](2026-09-17-integrated-round-1-findings.md); [Round 2 — Copilot](2026-09-20-integrated-round-2-copilot-findings.md)
 
 # Module dependencies integrated review: disposition
 
@@ -84,3 +85,55 @@ to remain open for a later PR process. This disposition does not infer human gat
 acceptance from the reviewer's recommendation. The task remains **active**, with no
 closure date and no PR created by this follow-up. Await human direction for that
 process and any further review or explicit gate conclusion.
+
+
+## Round 2 — Copilot dispositions (2026-09-20)
+
+The human authorized retrieval, in-scope correction, commit/push and PR update for
+another review. The full review and all three inline comments were preserved before
+correction in `9f7e01c`. No conversation comments were returned. All three findings
+are accepted and corrected in `7efb9f0a55bc4e51df95063892973e6cba805d10`:
+
+1. **Exact occurrence partition — accepted.**
+   [Comment 4056501244](https://github.com/ronen/postcode/pull/4#discussion_r4056501244).
+   Individually valid edges did not ensure evaluation-wide completeness or uniqueness.
+   The store now collects resolved occurrence IDs from the evaluation and consumes
+   each exactly once across its referenced relationships. Missing support, support
+   outside this evaluation, duplicate relationship references and overlapping support
+   under distinct relationship IDs are rejected. Duplicate evaluation occurrence IDs
+   are also rejected. Non-resolved requests remain outside the partition. The rule
+   applies to retained evidence even when evaluation materialization is partial.
+   Existing endpoint and aggregation checks still apply. A regression checks these
+   cases using stored and pending references, verifies every new record is absent
+   after rejected batches, preserves the prior evaluation, and accepts a consistent
+   partial evaluation. The records method advances to `program-records@15`.
+2. **Count-dependent nouns — accepted.**
+   [Comment 4056501262](https://github.com/ronen/postcode/pull/4#discussion_r4056501262).
+   Dependency Unicode rendering now chooses singular/plural nouns independently for
+   projection and population summaries, selection matches, display omissions and
+   source-detail counts. Regression coverage exercises zero, one and two, including
+   opposing module/relationship counts to detect accidental reuse of another count.
+   The presentation method advances to `presentation@20`. Historical captures remain
+   unchanged as evidence of their original targets.
+3. **Stale architecture checkpoint — accepted.**
+   [Comment 4056501275](https://github.com/ronen/postcode/pull/4#discussion_r4056501275).
+   The architecture overview now describes the provider as the evidence basis for
+   the integrated projections, expansions, presentation, navigation and observations.
+   The contradictory statement that those layers remain unimplemented is removed.
+
+Verification: `npm run check` and `npm test` pass, **190/190 tests**, on the correction
+code. `git diff --check` passes for the corrections. The original retrieved review
+body retains its source whitespace/line endings rather than being reformatted.
+No fresh external ts-node validation or instrument-evaluator round was performed;
+previous limits remain. These corrections require further review rather than
+extending round 1's clean recommendation to changed code.
+
+Round 2 reviewed `51148890e634021a6e47862d37d7bd06798e70d0` through
+[PR #4](https://github.com/ronen/postcode/pull/4); Copilot review ID `5260062233`
+recommended changes. The next round should review the updated PR head, focusing on
+the evaluation-wide partition and its atomic rejection behavior while retaining the
+original integrated assignment. No new handoff is needed. The PR description will
+identify the exact new head and prior target for that review.
+
+The task remains **active**. Further independent review and the human's explicit
+final gate decision are pending; no merge or closure is authorized by this disposition.
