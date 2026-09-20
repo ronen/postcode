@@ -391,7 +391,7 @@ test('completed empty module population establishes none; expansions require an 
     assert.equal(project.selection.populationEstablished, true);
     const inspected = inspectOrganization(store, outcome, 'src');
     assert.equal(inspected.groups.length, 1);
-    assert.deepEqual(inspected.expansions, { requested: [], groups: [], modules: [], claims: [] });
+    assert.deepEqual(inspected.expansions, { requested: [], groups: [], modules: [], claims: [], moduleClaims: [], moduleEvaluations: [] });
   });
 });
 

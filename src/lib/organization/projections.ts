@@ -84,6 +84,9 @@ function project(store: ProgramRecordStore, evaluation: OrganizationEvaluationRe
       }
     }
   }
+  const moduleSubjects = new Set([...selectedModules, ...expandedModules]);
+  const moduleExpansions = store.evaluations(evaluation.snapshot).filter(outcome => outcome.basis === moduleEvaluation.id
+    && (outcome.modules.length === 0 || outcome.modules.some(id => moduleSubjects.has(id))));
   const method = `${methods.projection};${methods.organization}`;
   const populationEstablished = evaluation.execution === 'completed' && evaluation.materialization === 'full'
     && (subject === 'repository' || evaluation.placement.execution === 'completed' && evaluation.placement.materialization === 'full');
@@ -95,7 +98,8 @@ function project(store: ProgramRecordStore, evaluation: OrganizationEvaluationRe
     contexts: [...new Set([...evaluation.contexts, ...selectedClaims.map(claim => claim.context),
       ...claims.filter(claim => expandedClaims.has(claim.id)).map(claim => claim.context)])],
     expansions: { requested: evaluation.requested, groups: [...expandedGroups].sort(compare),
-      modules: [...expandedModules].sort(compare), claims: [...expandedClaims].sort(compare) },
+      modules: [...expandedModules].sort(compare), claims: [...expandedClaims].sort(compare),
+      moduleClaims: moduleExpansions.flatMap(outcome => outcome.claims ?? []), moduleEvaluations: moduleExpansions.map(outcome => outcome.id) },
     selection: { matches: groups.length + (subject === 'selected-entities' ? selectedModules.length : 0),
       population: subject === 'selected-entities' ? evaluation.groups.length + moduleEvaluation.modules.length : groups.length,
       populationEstablished, materialization: populationEstablished ? 'full' : groups.length + selectedModules.length > 0 ? 'partial' : 'none', referenceStatus },

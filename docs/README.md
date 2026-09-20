@@ -51,3 +51,7 @@ Create architecture documentation under `architecture/` when there is implemente
 ### Backlog
 
 [`backlog.md`](backlog.md) records worthwhile work and concerns that are not part of an active plan or authorized task. Backlog entries are candidates rather than commitments. Substantial entries should be promoted into plans before implementation.
+
+### Candidate capabilities
+
+[`candidate-capabilities.md`](candidate-capabilities.md) is a non-governing inventory of possible future analyses, lenses, presentations, and interactions. It keeps exploratory possibilities visible during future planning without making them requirements, accepted design, roadmap commitments, or scheduled work. Entries may be refined or rejected before implementation.

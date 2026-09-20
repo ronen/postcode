@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "target": "ES2020", "module": "commonjs", "moduleResolution": "node",
+    "types": ["node"], "typeRoots": ["../../../node_modules/@types"],
+    "ignoreDeprecations": "6.0"
+  },
+  "files": ["entry.ts"]
+}

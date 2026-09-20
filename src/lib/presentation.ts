@@ -1,3 +1,5 @@
+import { compositionView, compositionAnnotation } from './composition-view.js';
+import type { CompositionView } from './composition-view.js';
 import { inlineText, terminalText } from './terminal-text.js';
 import { methods, moduleEntityIds, recordId } from './identity.js';
 import { isModuleClaim, moduleStandardExpansions } from './records.js';
@@ -37,8 +39,8 @@ export interface QualifiedView {
   readonly qualifications: readonly Qualification[];
   readonly evaluations: readonly Pick<EvaluationRecord, 'id' | 'requirement' | 'modules' | 'applicability' | 'availability' | 'execution' | 'materialization' | 'reason' | 'cost'>[];
   readonly modules: readonly {
-    id: RecordId; entityId: string; name: string | null; handle: string; handleStatus: string; handleProvenance: ModuleClaim['information']['handleProvenance']; facets: readonly string[];
-    qualification: Qualification; documentation: Documentation[]; omittedDocumentation: number;
+    id: RecordId; entityId: string; name: string | null; handle: string; handleStatus: string; handleProvenance: ModuleClaim['information']['handleProvenance']; discoveryFacets: readonly string[];
+    composition: CompositionView; qualification: Qualification; documentation: Documentation[]; omittedDocumentation: number;
     exports: ExportView[]; omittedExports: number;
   }[];
   readonly display: {
@@ -117,9 +119,13 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
     const claim = store.get(entity.claim);
     if (!isModuleClaim(claim)) throw new Error('Expected module claim');
     // Keep the full population visible without letting external documentation dominate inventory.
-    const maximumDocs = compact ? 0 : projection.lens === 'inspect' ? 3 : claim.information.facets.includes('project') ? 1 : 0;
+    const maximumDocs = compact ? 0 : projection.lens === 'inspect' ? 3 : claim.information.discoveryFacets.includes('project') ? 1 : 0;
     const sourceLabel = `${claim.information.handle} (${entityIds.get(id)!})`;
     sourceGroup({ label: `Module ${sourceLabel}`, module: id, subject: id, role: 'module' }, [claim]);
+    const composition = compositionView(store, id, projection.expansions.claims, projection.evaluations);
+    for (const property of expanded.filter(record => record.subject === id && record.information.type === 'module-composition')) {
+      sourceGroup({ label: `Composition ${sourceLabel}`, module: id, subject: id, role: 'module' }, [property]);
+    }
     const allExports = expanded.filter((record): record is ExportClaim => record.information.type === 'export' && record.subject === id);
     const allSubjects = new Set([id, ...allExports.map(exported => exported.id), ...allExports.flatMap(exported => exported.information.symbol ? [exported.information.symbol] : [])]);
     const allDocumentation = expanded.flatMap(record => record.information.type === 'documentation-association' && allSubjects.has(record.subject) ? [record.information.assertion] : []);
@@ -145,9 +151,9 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
     const shownDocumentation = [...moduleDocumentation.documentation, ...exports.flatMap(exported => exported.documentation)];
     const omittedDocumentationInModule = allDocumentation.some(id => !shownDocumentation.some(doc => doc.id === id))
       || shownDocumentation.some(doc => doc.omittedTextCharacters > 0 || doc.omittedTags > 0 || doc.tags.some(tag => tag.omittedTextCharacters > 0));
-    return { id, entityId: entityIds.get(id)!, ...claim.information, qualification: qualification(claim.context), ...moduleDocumentation, omittedDocumentationInModule,
+    return { id, composition, entityId: entityIds.get(id)!, ...claim.information, qualification: qualification(claim.context), ...moduleDocumentation, omittedDocumentationInModule,
       exports, omittedExports: allExports.length - exports.length };
-  }).sort((left, right) => Number(right.facets.includes('project')) - Number(left.facets.includes('project')));
+  }).sort((left, right) => Number(right.discoveryFacets.includes('project')) - Number(left.discoveryFacets.includes('project')));
   const evaluations = projection.evaluations.map(id => {
     const outcome = store.get(id);
     if (outcome.kind !== 'evaluation') throw new Error('Expected evaluation');
@@ -164,8 +170,8 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
     }
   }
   const contexts = [...contextIds].map(qualification);
-  const collapsed = compact ? modules.filter(module => !module.facets.includes('project')) : [];
-  const listed = compact ? modules.filter(module => module.facets.includes('project')) : modules;
+  const collapsed = compact ? modules.filter(module => !module.discoveryFacets.includes('project')) : [];
+  const listed = compact ? modules.filter(module => module.discoveryFacets.includes('project')) : modules;
   return {
     schema: 'postcode-view/0-experimental', id: recordId(projection.snapshot, 'view', { projection: projection.id, presentation, method: methods.presentation }),
     projection: { id: projection.id, snapshot: projection.snapshot, lens: projection.lens, subject: projection.subject,
@@ -294,22 +300,23 @@ export function renderUnicode(view: QualifiedView): string {
     if (exported.symbolInformation && exported.symbolInformation.declarationCount !== 1) details.push(`${exported.symbolInformation.declarationCount} contributing declarations`);
     return details;
   };
-  const commonFacets = view.modules[0]?.facets.filter(facet => view.modules.every(module => module.facets.includes(facet))) ?? [];
+  const commonFacets = view.modules[0]?.discoveryFacets.filter(facet => view.modules.every(module => module.discoveryFacets.includes(facet))) ?? [];
   const allAnonymous = view.modules.length > 0 && view.modules.every(module => module.name === null);
   const handleWidth = Math.min(30, Math.max(6, ...view.modules.map(module => inlineText(module.handle).length)));
   const idWidth = Math.max(9, ...view.modules.map(module => module.entityId.length));
   if (view.modules.length) {
     const projectSelection = commonFacets.includes('project');
-    const ordinary = projectSelection && commonFacets.includes('implementation-available') && view.modules.every(module => module.facets.every(facet => facet === 'project' || facet === 'implementation-available'));
+    const ordinary = projectSelection && commonFacets.includes('implementation-available') && view.modules.every(module => module.discoveryFacets.every(facet => facet === 'project' || facet === 'implementation-available'));
     const facets = commonFacets.filter(facet => facet !== 'project' && (!ordinary || facet !== 'implementation-available'));
     lines.push('', `${inventory ? 'Project modules' : projectSelection ? 'Selected project modules' : 'Selected modules'} · ${view.modules.length}${allAnonymous ? ' · TypeScript names not established' : ''}${facets.length ? ` · ${facets.join(', ')}` : ''}`);
     if (inventory) lines.push('', `${'Handle'.padEnd(handleWidth)}  ${'Entity ID'.padEnd(idWidth)}  Export names`);
   }
   for (const module of view.modules) {
     if (!inventory) lines.push('', `◆ ${inlineText(module.handle)}${allAnonymous ? '' : ` · ${inlineText(module.name ?? '[anonymous]')}`}`);
-    const facets = module.facets.filter(facet => !commonFacets.includes(facet));
+    const facets = module.discoveryFacets.filter(facet => !commonFacets.includes(facet));
     if (!inventory) {
       if (facets.length) lines.push(`  ${facets.join(', ')}`);
+      if (compositionAnnotation(module.composition)) lines.push(`  ${compositionAnnotation(module.composition).slice(3)}`);
       lines.push(`  Entity ID: ${module.entityId}`);
     }
     const total = module.exports.length + module.omittedExports;
@@ -319,7 +326,7 @@ export function renderUnicode(view: QualifiedView): string {
       const names = module.exports.map(exported => inlineText(exported.exportedName));
       if (module.omittedExports) names.push(`+${module.omittedExports}`);
       const cue = total ? names.join(', ') : established ? '(none)' : '(not established; no exports displayed)';
-      lines.push(`${inlineText(module.handle).padEnd(handleWidth)}  ${module.entityId.padEnd(idWidth)}  ${cue}${total && !established ? ' (materialized; surface incomplete)' : ''}`);
+      lines.push(`${inlineText(module.handle).padEnd(handleWidth)}  ${module.entityId.padEnd(idWidth)}  ${cue}${compositionAnnotation(module.composition)}${total && !established ? ' (materialized; surface incomplete)' : ''}`);
       if (!allAnonymous) lines.push(`  TypeScript name: ${inlineText(module.name ?? '(not established)')}`);
       if (facets.length) lines.push(`  ${facets.join(', ')}`);
     } else {
@@ -335,7 +342,9 @@ export function renderUnicode(view: QualifiedView): string {
       if (module.omittedExports) lines.push(`  … ${module.omittedExports} effective export(s) omitted.`);
     }
 
-    local([...view.qualifications.filter(context => context.scope === module.id), ...module.exports.map(exported => exported.qualification)], '  ');
+    local([...view.qualifications.filter(context => context.scope === module.id
+      && (!context.method.startsWith(methods.composition) || module.composition.claims.length > 0
+        || !module.composition.evaluations.some(outcome => outcome.execution === 'completed' && outcome.materialization === 'full'))), ...module.exports.map(exported => exported.qualification)], '  ');
   }
   if (view.sourceDetail) {
     lines.push('', 'SOURCE DETAIL — explicit source escape', ...wrapText(view.sourceDetail.notice, ''));

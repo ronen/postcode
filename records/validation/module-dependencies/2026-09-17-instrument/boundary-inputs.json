@@ -1,0 +1,19 @@
+{
+  "tsconfig.json": "{\"compilerOptions\":{\"noLib\":true,\"types\":[],\"module\":\"NodeNext\",\"moduleResolution\":\"NodeNext\"},\"files\":[\"a.ts\",\"m0.ts\",\"isolated.ts\"]}",
+  "a.ts": "export * from './b'; export type { T } from 'outside';",
+  "b.ts": "export * from './a';",
+  "isolated.ts": "export const isolated = 1;",
+  "node_modules/outside/package.json": "{\"types\":\"index.d.ts\"}",
+  "node_modules/outside/index.d.ts": "export interface T {}",
+  "m0.ts": "export * from './m1';",
+  "m1.ts": "export * from './m2';",
+  "m2.ts": "export * from './m3';",
+  "m3.ts": "export * from './m4';",
+  "m4.ts": "export * from './m5';",
+  "m5.ts": "export * from './m6';",
+  "m6.ts": "export * from './m7';",
+  "m7.ts": "export * from './m8';",
+  "m8.ts": "export * from './m9';",
+  "m9.ts": "export const value = 1;",
+  "package.json": "{\"type\":\"commonjs\"}"
+}

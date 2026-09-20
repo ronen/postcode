@@ -1,0 +1,385 @@
+Module dependency structure
+Snapshot snapshot:d3a19a84d1e4fffc4198a168f66c18f1e1be4b704b27ca98d31de5eec5352f3a
+Direction: dependency parent → dependency child (depends directly on).
+94 modules in this projection · 263 direct relationships
+Materialized population: 64 project modules; 202 discovered modules available for exact lookup.
+Analysis outcomes below describe supported source requests, not complete runtime behavior.
+Display bounds: 1 modules and 63 relationships omitted; 0 further descents pruned.
+modules: available, completed, materialization full
+dependencies: available, completed, materialization full
+organization: available, completed, materialization partial · Some requested organization context is unavailable or incomplete.
+
+Dependency roots and direct structure (root components have no incoming project relationships from outside the component)
+◆ transpilers-spec (module-0330ffe9)
+  transpilers-spec (module-0330ffe9) → path (module-0a782b44) · opaque external · static-import · organization not established
+  transpilers-spec (module-0330ffe9) → export (module-6051faa5) · opaque external · static-import · organization not established
+  transpilers-spec (module-0330ffe9) → testlib (module-696df3fe) · static-import · same-group
+  transpilers-spec (module-0330ffe9) → options (module-95d2f046) · opaque external · static-import · organization not established
+  transpilers-spec (module-0330ffe9) → typescript (module-c9517864) · opaque external · type-only · import-type · organization not established
+  transpilers-spec (module-0330ffe9) → swc (module-d40f6df3) · import-type, static-import · outward
+  transpilers-spec (module-0330ffe9) → anonymous (module-dd8d9cfa) · static-import · into-descendants
+  transpilers-spec (module-0330ffe9) → compiler (module-f1515143) · opaque external · commonjs · organization not established
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f)
+    testlib (module-696df3fe) → anonymous (module-dd8d9cfa) · side-effect-import · into-descendants
+    ctx-ts-node (module-8c6a7056) → path (module-0a782b44) · opaque external · static-import · organization not established
+    ctx-ts-node (module-8c6a7056) → misc (module-28df3032) · static-import · same-group
+    ctx-ts-node (module-8c6a7056) → util (module-2a8964a8) · opaque external · static-import · organization not established
+    ctx-ts-node (module-8c6a7056) → testlib (module-696df3fe) · type-only · static-import · outward
+    ctx-ts-node (module-8c6a7056) → fs (module-877ff10a) · opaque external · static-import · organization not established
+    ctx-ts-node (module-8c6a7056) → paths (module-9fa0b7a9) · static-import · same-group
+    ctx-ts-node (module-8c6a7056) → export (module-bf5d2fdc) · opaque external · static-import · organization not established
+    ctx-ts-node (module-8c6a7056) → child_process (module-c34dd498) · opaque external · static-import · organization not established
+    ctx-ts-node (module-8c6a7056) → check (module-df018fbd) · opaque external · static-import · organization not established
+    exec (module-b9bc2b2c) → testlib (module-696df3fe) · static-import · outward
+    exec (module-b9bc2b2c) → child_process (module-c34dd498) · opaque external · static-import · organization not established
+    anonymous (module-dd8d9cfa) → misc (module-28df3032) · re-export · same-group
+    anonymous (module-dd8d9cfa) → reset-node-environment (module-7a7f422c) · re-export · same-group
+    anonymous (module-dd8d9cfa) → version-checks (module-7b5fb698) · re-export · same-group
+    anonymous (module-dd8d9cfa) → ctx-ts-node (module-8c6a7056) · re-export · same-group
+    anonymous (module-dd8d9cfa) → paths (module-9fa0b7a9) · re-export · same-group
+    anonymous (module-dd8d9cfa) → exec (module-b9bc2b2c) · re-export · same-group
+    anonymous (module-dd8d9cfa) → command-lines (module-c914152c) · re-export · same-group
+    anonymous (module-dd8d9cfa) → ctx-tmp-dir (module-ea86c70f) · re-export · same-group
+    ctx-tmp-dir (module-ea86c70f) → os (module-1a4401af) · opaque external · static-import · organization not established
+    ctx-tmp-dir (module-ea86c70f) → testlib (module-696df3fe) · type-only · static-import · outward
+    ◆ misc (module-28df3032)
+      misc (module-28df3032) → path (module-0a782b44) · opaque external · static-import · organization not established
+      misc (module-28df3032) → util (module-2a8964a8) · opaque external · static-import · organization not established
+      misc (module-28df3032) → module (module-8fb04584) · opaque external · static-import · organization not established
+      misc (module-28df3032) → paths (module-9fa0b7a9) · static-import · same-group
+      misc (module-28df3032) → typescript (module-c9517864) · opaque external · type-only · import-type · organization not established
+      misc (module-28df3032) → ts-error (module-e144eeff) · type-only · static-import · outward
+      ◆ Cycle grouping (not an entity): repl (module-15efbe16), cjs-resolve-hooks (module-222f8f25), configuration (module-23b6ca57), file-extensions (module-56741def), types (module-94d96b15), esm (module-990ee013), resolver-functions (module-aacad3c1), module-type-classifier (module-d4f104d7), ts-error (module-e144eeff)
+        repl (module-15efbe16) → path (module-0a782b44) · opaque external · static-import · organization not established
+        repl (module-15efbe16) → os (module-1a4401af) · opaque external · static-import · organization not established
+        repl (module-15efbe16) → console (module-435fe856) · opaque external · static-import · organization not established
+        repl (module-15efbe16) → assert (module-527da7f3) · opaque external · static-import · organization not established
+        repl (module-15efbe16) → file-extensions (module-56741def) · static-import · same-group
+        repl (module-15efbe16) → fs (module-877ff10a) · opaque external · static-import · organization not established
+        repl (module-15efbe16) → module (module-8fb04584) · opaque external · static-import · organization not established
+        repl (module-15efbe16) → tty (module-b17c72da) · opaque external · type-only · static-import · organization not established
+        repl (module-15efbe16) → diff (module-cab82699) · opaque external · commonjs, static-import · organization not established
+        repl (module-15efbe16) → repl (module-d6679e24) · opaque external · commonjs, static-import · organization not established
+        repl (module-15efbe16) → ts-error (module-e144eeff) · static-import · same-group
+        repl (module-15efbe16) → vm (module-f3fb6cbf) · opaque external · static-import · organization not established
+        cjs-resolve-hooks (module-222f8f25) → module (module-8fb04584) · opaque external · commonjs, import-equals · organization not established
+        cjs-resolve-hooks (module-222f8f25) → ts-error (module-e144eeff) · type-only · static-import · same-group
+        configuration (module-23b6ca57) → path (module-0a782b44) · opaque external · static-import · organization not established
+        configuration (module-23b6ca57) → ts-internals (module-71dd4da0) · static-import · same-group
+        configuration (module-23b6ca57) → util (module-83354f6b) · static-import · same-group
+        configuration (module-23b6ca57) → ts-compiler-types (module-ac9d4643) · type-only · static-import · same-group
+        configuration (module-23b6ca57) → typescript (module-c9517864) · opaque external · type-only · static-import · organization not established
+        configuration (module-23b6ca57) → ts-error (module-e144eeff) · static-import · same-group
+        configuration (module-23b6ca57) → tsconfigs (module-fdb6d57f) · static-import · same-group
+        file-extensions (module-56741def) → util (module-83354f6b) · static-import · same-group
+        file-extensions (module-56741def) → typescript (module-c9517864) · opaque external · type-only · static-import · organization not established
+        file-extensions (module-56741def) → ts-error (module-e144eeff) · type-only · static-import · same-group
+        types (module-94d96b15) → util (module-83354f6b) · type-only · static-import · outward
+        types (module-94d96b15) → typescript (module-c9517864) · opaque external · type-only · static-import · organization not established
+        types (module-94d96b15) → ts-error (module-e144eeff) · type-only · static-import · outward
+        esm (module-990ee013) → path (module-0a782b44) · opaque external · static-import · organization not established
+        esm (module-990ee013) → assert (module-527da7f3) · opaque external · static-import · organization not established
+        esm (module-990ee013) → util (module-83354f6b) · static-import · same-group
+        esm (module-990ee013) → module (module-8fb04584) · opaque external · static-import · organization not established
+        esm (module-990ee013) → url (module-df7dc18b) · opaque external · static-import · organization not established
+        esm (module-990ee013) → ts-error (module-e144eeff) · static-import · same-group
+        resolver-functions (module-aacad3c1) → path (module-0a782b44) · opaque external · static-import · organization not established
+        resolver-functions (module-aacad3c1) → file-extensions (module-56741def) · type-only · static-import · same-group
+        resolver-functions (module-aacad3c1) → util (module-83354f6b) · type-only · static-import · same-group
+        resolver-functions (module-aacad3c1) → ts-compiler-types (module-ac9d4643) · type-only · static-import · same-group
+        resolver-functions (module-aacad3c1) → ts-error (module-e144eeff) · type-only · static-import · same-group
+        module-type-classifier (module-d4f104d7) → ts-internals (module-71dd4da0) · static-import · same-group
+        module-type-classifier (module-d4f104d7) → util (module-83354f6b) · static-import · same-group
+        module-type-classifier (module-d4f104d7) → ts-error (module-e144eeff) · type-only · static-import · same-group
+        ts-error (module-e144eeff) → source-map-support (module-0700e7cd) · opaque external · commonjs, static-import · organization not established
+        ts-error (module-e144eeff) → path (module-0a782b44) · opaque external · static-import · organization not established
+        ts-error (module-e144eeff) → repl (module-15efbe16) · re-export · same-group
+        ts-error (module-e144eeff) → cjs-resolve-hooks (module-222f8f25) · static-import · same-group
+        ts-error (module-e144eeff) → configuration (module-23b6ca57) · static-import · same-group
+        ts-error (module-e144eeff) → export (module-24d4d540) · opaque external · static-import · organization not established
+        ts-error (module-e144eeff) → node-module-type-classifier (module-28f40554) · static-import · same-group
+        ts-error (module-e144eeff) → util (module-2a8964a8) · opaque external · static-import · organization not established
+        ts-error (module-e144eeff) → file-extensions (module-56741def) · static-import · same-group
+        ts-error (module-e144eeff) → util (module-83354f6b) · static-import · same-group
+        ts-error (module-e144eeff) → module (module-8fb04584) · opaque external · static-import · organization not established
+        ts-error (module-e144eeff) → types (module-94d96b15) · type-only · re-export, static-import · into-descendants
+        ts-error (module-e144eeff) → esm (module-990ee013) · commonjs, import-type, re-export, static-import · same-group
+        ts-error (module-e144eeff) → resolver-functions (module-aacad3c1) · static-import · same-group
+        ts-error (module-e144eeff) → ts-compiler-types (module-ac9d4643) · type-only · static-import · same-group
+        ts-error (module-e144eeff) → typescript (module-c9517864) · opaque external · type-only · static-import · organization not established
+        ts-error (module-e144eeff) → module-type-classifier (module-d4f104d7) · static-import · same-group
+        ts-error (module-e144eeff) → url (module-df7dc18b) · opaque external · static-import · organization not established
+        ts-error (module-e144eeff) → ts-transpile-module (module-eac4c00f) · static-import · same-group
+        ◆ node-module-type-classifier (module-28f40554)
+        ◆ ts-internals (module-71dd4da0)
+          ts-internals (module-71dd4da0) → path (module-0a782b44) · opaque external · static-import · organization not established
+          ts-internals (module-71dd4da0) → util (module-83354f6b) · static-import · same-group
+          ts-internals (module-71dd4da0) → ts-compiler-types (module-ac9d4643) · type-only · static-import · same-group
+          ts-internals (module-71dd4da0) → typescript (module-c9517864) · opaque external · type-only · static-import · organization not established
+          ◆ util (module-83354f6b)
+            util (module-83354f6b) → path (module-0a782b44) · opaque external · static-import · organization not established
+            util (module-83354f6b) → v8-compile-cache (module-1d9d009b) · opaque external · commonjs, import-type · organization not established
+          ◆ ts-compiler-types (module-ac9d4643)
+            ts-compiler-types (module-ac9d4643) → typescript (module-c9517864) · opaque external · type-only · static-import · organization not established
+        ◆ util (module-83354f6b) · reference (already expanded)
+        ◆ ts-compiler-types (module-ac9d4643) · reference (already expanded)
+        ◆ ts-transpile-module (module-eac4c00f)
+          ts-transpile-module (module-eac4c00f) → ts-compiler-types (module-ac9d4643) · type-only · static-import · same-group
+          ts-transpile-module (module-eac4c00f) → typescript (module-c9517864) · opaque external · type-only · static-import · organization not established
+          ◆ ts-compiler-types (module-ac9d4643) · reference (already expanded)
+        ◆ tsconfigs (module-fdb6d57f)
+          tsconfigs (module-fdb6d57f) → ts-compiler-types (module-ac9d4643) · type-only · static-import · same-group
+          ◆ ts-compiler-types (module-ac9d4643) · reference (already expanded)
+      ◆ paths (module-9fa0b7a9)
+        paths (module-9fa0b7a9) → path (module-0a782b44) · opaque external · static-import · organization not established
+    ◆ reset-node-environment (module-7a7f422c)
+      reset-node-environment (module-7a7f422c) → source-map-support (module-0700e7cd) · opaque external · commonjs, import-type · organization not established
+      reset-node-environment (module-7a7f422c) → export (module-69d4aa40) · opaque external · static-import · organization not established
+      reset-node-environment (module-7a7f422c) → module (module-8fb04584) · opaque external · commonjs · organization not established
+    ◆ version-checks (module-7b5fb698)
+      version-checks (module-7b5fb698) → misc (module-28df3032) · static-import · same-group
+      version-checks (module-7b5fb698) → coerce-options (module-2f318dd6) · opaque external · import-equals · organization not established
+      ◆ misc (module-28df3032) · reference (already expanded)
+    ◆ paths (module-9fa0b7a9) · reference (already expanded)
+    ◆ command-lines (module-c914152c)
+      command-lines (module-c914152c) → paths (module-9fa0b7a9) · static-import · same-group
+      ◆ paths (module-9fa0b7a9) · reference (already expanded)
+  ◆ swc (module-d40f6df3)
+    swc (module-d40f6df3) → wasm (module-23615bdc) · opaque external · type-only · static-import · organization not established
+    swc (module-d40f6df3) → ts-internals (module-71dd4da0) · static-import · outward
+    swc (module-d40f6df3) → types (module-94d96b15) · type-only · static-import · same-group
+    swc (module-d40f6df3) → typescript (module-c9517864) · opaque external · type-only · static-import · organization not established
+    swc (module-d40f6df3) → ts-error (module-e144eeff) · type-only · static-import · outward
+    swc (module-d40f6df3) → compiler (module-f1515143) · opaque external · type-only · static-import · organization not established
+    ◆ Cycle grouping (not an entity): repl (module-15efbe16), cjs-resolve-hooks (module-222f8f25), configuration (module-23b6ca57), file-extensions (module-56741def), types (module-94d96b15), esm (module-990ee013), resolver-functions (module-aacad3c1), module-type-classifier (module-d4f104d7), ts-error (module-e144eeff) · reference (already expanded)
+    ◆ ts-internals (module-71dd4da0) · reference (already expanded)
+◆ diagnostics-spec (module-0c291b29)
+  diagnostics-spec (module-0c291b29) → coerce-options (module-2f318dd6) · opaque external · static-import · organization not established
+  diagnostics-spec (module-0c291b29) → testlib (module-696df3fe) · static-import · same-group
+  diagnostics-spec (module-0c291b29) → export (module-69d4aa40) · opaque external · static-import · organization not established
+  diagnostics-spec (module-0c291b29) → anonymous (module-dd8d9cfa) · static-import · into-descendants
+  diagnostics-spec (module-0c291b29) → ts-error (module-e144eeff) · type-only · static-import · outward
+  ◆ Cycle grouping (not an entity): repl (module-15efbe16), cjs-resolve-hooks (module-222f8f25), configuration (module-23b6ca57), file-extensions (module-56741def), types (module-94d96b15), esm (module-990ee013), resolver-functions (module-aacad3c1), module-type-classifier (module-d4f104d7), ts-error (module-e144eeff) · reference (already expanded)
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+◆ tsconfig-schema (module-111399de)
+  tsconfig-schema (module-111399de) → ts-error (module-e144eeff) · type-only · static-import · same-group
+  ◆ Cycle grouping (not an entity): repl (module-15efbe16), cjs-resolve-hooks (module-222f8f25), configuration (module-23b6ca57), file-extensions (module-56741def), types (module-94d96b15), esm (module-990ee013), resolver-functions (module-aacad3c1), module-type-classifier (module-d4f104d7), ts-error (module-e144eeff) · reference (already expanded)
+◆ bin-cwd (module-11344717)
+  bin-cwd (module-11344717) → bin (module-813b2a67) · static-import · same-group
+  ◆ Cycle grouping (not an entity): spawn-child (module-4a182369), bin (module-813b2a67)
+    spawn-child (module-4a182369) → bin (module-813b2a67) · type-only · static-import · outward
+    spawn-child (module-4a182369) → child_process (module-c34dd498) · opaque external · static-import · organization not established
+    spawn-child (module-4a182369) → argv-payload (module-d68dcd87) · static-import · same-group
+    spawn-child (module-4a182369) → url (module-df7dc18b) · opaque external · static-import · organization not established
+    bin (module-813b2a67) → path (module-0a782b44) · opaque external · static-import · organization not established
+    bin (module-813b2a67) → repl (module-15efbe16) · static-import · same-group
+    bin (module-813b2a67) → configuration (module-23b6ca57) · static-import · same-group
+    bin (module-813b2a67) → util (module-2a8964a8) · opaque external · static-import · organization not established
+    bin (module-813b2a67) → spawn-child (module-4a182369) · static-import · into-descendants
+    bin (module-813b2a67) → util (module-83354f6b) · static-import · same-group
+    bin (module-813b2a67) → module (module-8fb04584) · opaque external · import-equals · organization not established
+    bin (module-813b2a67) → ts-compiler-types (module-ac9d4643) · type-only · static-import · same-group
+    bin (module-813b2a67) → export (module-b7ec0587) · opaque external · commonjs, import-type · organization not established
+    bin (module-813b2a67) → ts-error (module-e144eeff) · static-import · same-group
+    bin (module-813b2a67) → child-loader (module-e94a8328) · commonjs, import-type · into-descendants
+    ◆ Cycle grouping (not an entity): repl (module-15efbe16), cjs-resolve-hooks (module-222f8f25), configuration (module-23b6ca57), file-extensions (module-56741def), types (module-94d96b15), esm (module-990ee013), resolver-functions (module-aacad3c1), module-type-classifier (module-d4f104d7), ts-error (module-e144eeff) · reference (already expanded)
+    ◆ util (module-83354f6b) · reference (already expanded)
+    ◆ ts-compiler-types (module-ac9d4643) · reference (already expanded)
+    ◆ argv-payload (module-d68dcd87)
+      argv-payload (module-d68dcd87) → zlib (module-9167b23f) · opaque external · static-import · organization not established
+    ◆ child-loader (module-e94a8328)
+      child-loader (module-e94a8328) → esm (module-990ee013) · static-import · outward
+      child-loader (module-e94a8328) → ts-error (module-e144eeff) · type-only · static-import · outward
+      ◆ Cycle grouping (not an entity): repl (module-15efbe16), cjs-resolve-hooks (module-222f8f25), configuration (module-23b6ca57), file-extensions (module-56741def), types (module-94d96b15), esm (module-990ee013), resolver-functions (module-aacad3c1), module-type-classifier (module-d4f104d7), ts-error (module-e144eeff) · reference (already expanded)
+◆ create-spec (module-19a972b6)
+  create-spec (module-19a972b6) → testlib (module-696df3fe) · static-import · same-group
+  create-spec (module-19a972b6) → anonymous (module-dd8d9cfa) · static-import · into-descendants
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+◆ tsconfig-bases-spec (module-282a52fc)
+  tsconfig-bases-spec (module-282a52fc) → path (module-0a782b44) · opaque external · static-import · organization not established
+  tsconfig-bases-spec (module-282a52fc) → coerce-options (module-2f318dd6) · opaque external · import-equals · organization not established
+  tsconfig-bases-spec (module-282a52fc) → testlib (module-696df3fe) · static-import · same-group
+  tsconfig-bases-spec (module-282a52fc) → version-checks (module-7b5fb698) · static-import · into-descendants
+  tsconfig-bases-spec (module-282a52fc) → ctx-ts-node (module-8c6a7056) · static-import · into-descendants
+  tsconfig-bases-spec (module-282a52fc) → paths (module-9fa0b7a9) · static-import · into-descendants
+  tsconfig-bases-spec (module-282a52fc) → exec (module-b9bc2b2c) · static-import · into-descendants
+  tsconfig-bases-spec (module-282a52fc) → anonymous (module-dd8d9cfa) · static-import · into-descendants
+  tsconfig-bases-spec (module-282a52fc) → ctx-tmp-dir (module-ea86c70f) · static-import · into-descendants
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+  ◆ version-checks (module-7b5fb698) · reference (already expanded)
+  ◆ paths (module-9fa0b7a9) · reference (already expanded)
+◆ repl-environment-spec (module-3476bf64)
+  repl-environment-spec (module-3476bf64) → path (module-0a782b44) · opaque external · static-import · organization not established
+  repl-environment-spec (module-3476bf64) → misc (module-14b35a9f) · static-import · into-descendants
+  repl-environment-spec (module-3476bf64) → os (module-1a4401af) · opaque external · static-import · organization not established
+  repl-environment-spec (module-3476bf64) → ctx-repl (module-4830fd94) · static-import · into-descendants
+  repl-environment-spec (module-3476bf64) → testlib (module-696df3fe) · static-import · outward
+  repl-environment-spec (module-3476bf64) → exec (module-b9bc2b2c) · static-import · outward
+  repl-environment-spec (module-3476bf64) → anonymous (module-dd8d9cfa) · static-import · outward
+  ◆ misc (module-14b35a9f)
+    misc (module-14b35a9f) → anonymous (module-dd8d9cfa) · static-import · outward
+    ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+  ◆ ctx-repl (module-4830fd94)
+    ctx-repl (module-4830fd94) → stream (module-0c7a5eeb) · opaque external · static-import · organization not established
+    ctx-repl (module-4830fd94) → misc (module-28df3032) · static-import · outward
+    ctx-repl (module-4830fd94) → ctx-ts-node (module-8c6a7056) · type-only · static-import · outward
+    ctx-repl (module-4830fd94) → paths (module-9fa0b7a9) · static-import · outward
+    ◆ misc (module-28df3032) · reference (already expanded)
+    ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+    ◆ paths (module-9fa0b7a9) · reference (already expanded)
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+◆ 1778-spec (module-3adbea3e)
+  1778-spec (module-3adbea3e) → path (module-0a782b44) · opaque external · static-import · organization not established
+  1778-spec (module-3adbea3e) → testlib (module-696df3fe) · static-import · outward
+  1778-spec (module-3adbea3e) → exec (module-b9bc2b2c) · static-import · outward
+  1778-spec (module-3adbea3e) → anonymous (module-dd8d9cfa) · static-import · outward
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+◆ bin-script (module-5b856e70)
+  bin-script (module-5b856e70) → bin (module-813b2a67) · static-import · same-group
+  ◆ Cycle grouping (not an entity): spawn-child (module-4a182369), bin (module-813b2a67) · reference (already expanded)
+◆ resolution-spec (module-67297cab)
+  resolution-spec (module-67297cab) → path (module-0a782b44) · opaque external · static-import · organization not established
+  resolution-spec (module-67297cab) → testlib (module-696df3fe) · static-import · outward
+  resolution-spec (module-67297cab) → fs (module-877ff10a) · opaque external · static-import · organization not established
+  resolution-spec (module-67297cab) → anonymous (module-dd8d9cfa) · static-import · outward
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+◆ module-node-spec (module-78e3a12b)
+  module-node-spec (module-78e3a12b) → path (module-0a782b44) · opaque external · static-import · organization not established
+  module-node-spec (module-78e3a12b) → testlib (module-696df3fe) · static-import · outward
+  module-node-spec (module-78e3a12b) → exec (module-b9bc2b2c) · static-import · outward
+  module-node-spec (module-78e3a12b) → anonymous (module-dd8d9cfa) · static-import · outward
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+◆ test-loader (module-80c86723)
+◆ bin-esm (module-88b57596)
+  bin-esm (module-88b57596) → bin (module-813b2a67) · static-import · same-group
+  ◆ Cycle grouping (not an entity): spawn-child (module-4a182369), bin (module-813b2a67) · reference (already expanded)
+◆ register-spec (module-8d42ebb2)
+  register-spec (module-8d42ebb2) → path (module-0a782b44) · opaque external · static-import · organization not established
+  register-spec (module-8d42ebb2) → export (module-6051faa5) · opaque external · static-import · organization not established
+  register-spec (module-8d42ebb2) → testlib (module-696df3fe) · static-import · same-group
+  register-spec (module-8d42ebb2) → export (module-69d4aa40) · opaque external · static-import · organization not established
+  register-spec (module-8d42ebb2) → export (module-6dad2f65) · opaque external · import-equals · organization not established
+  register-spec (module-8d42ebb2) → anonymous (module-dd8d9cfa) · static-import · into-descendants
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+◆ sourcemaps-spec (module-8e23002f)
+  sourcemaps-spec (module-8e23002f) → export (module-6051faa5) · opaque external · static-import · organization not established
+  sourcemaps-spec (module-8e23002f) → testlib (module-696df3fe) · static-import · same-group
+  sourcemaps-spec (module-8e23002f) → anonymous (module-dd8d9cfa) · static-import · into-descendants
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+◆ package-spec (module-919a5771)
+  package-spec (module-919a5771) → testlib (module-696df3fe) · static-import · same-group
+  package-spec (module-919a5771) → anonymous (module-dd8d9cfa) · static-import · into-descendants
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+◆ ts-import-specifiers-spec (module-a5e77142)
+  ts-import-specifiers-spec (module-a5e77142) → export (module-6051faa5) · opaque external · static-import · organization not established
+  ts-import-specifiers-spec (module-a5e77142) → testlib (module-696df3fe) · static-import · same-group
+  ts-import-specifiers-spec (module-a5e77142) → options (module-95d2f046) · opaque external · static-import · organization not established
+  ts-import-specifiers-spec (module-a5e77142) → exec (module-b9bc2b2c) · static-import · into-descendants
+  ts-import-specifiers-spec (module-a5e77142) → anonymous (module-dd8d9cfa) · static-import · into-descendants
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+◆ tsnode-opts-from-tsconfig-spec (module-b16454a2)
+  tsnode-opts-from-tsconfig-spec (module-b16454a2) → path (module-0a782b44) · opaque external · static-import · organization not established
+  tsnode-opts-from-tsconfig-spec (module-b16454a2) → testlib (module-696df3fe) · static-import · outward
+  tsnode-opts-from-tsconfig-spec (module-b16454a2) → version-checks (module-7b5fb698) · static-import · outward
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+  ◆ version-checks (module-7b5fb698) · reference (already expanded)
+  ◆ paths (module-9fa0b7a9) · reference (already expanded)
+◆ esm-loader-spec (module-b2440075)
+  ◆ Cycle grouping (not an entity): repl (module-15efbe16), cjs-resolve-hooks (module-222f8f25), configuration (module-23b6ca57), file-extensions (module-56741def), types (module-94d96b15), esm (module-990ee013), resolver-functions (module-aacad3c1), module-type-classifier (module-d4f104d7), ts-error (module-e144eeff) · reference (already expanded)
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+◆ bin-transpile (module-b6526761)
+  ◆ Cycle grouping (not an entity): spawn-child (module-4a182369), bin (module-813b2a67) · reference (already expanded)
+◆ child-entrypoint (module-b81a3736)
+  ◆ Cycle grouping (not an entity): spawn-child (module-4a182369), bin (module-813b2a67) · reference (already expanded)
+  ◆ argv-payload (module-d68dcd87) · reference (already expanded)
+◆ resolver-spec (module-c3938fd1)
+  ◆ Cycle grouping (not an entity): repl (module-15efbe16), cjs-resolve-hooks (module-222f8f25), configuration (module-23b6ca57), file-extensions (module-56741def), types (module-94d96b15), esm (module-990ee013), resolver-functions (module-aacad3c1), module-type-classifier (module-d4f104d7), ts-error (module-e144eeff) · reference (already expanded)
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+◆ repl-spec (module-c494c0b5)
+  ◆ misc (module-14b35a9f) · reference (already expanded)
+  ◆ ctx-repl (module-4830fd94) · reference (already expanded)
+  ◆ node-repl-tla (module-526fa30e)
+    ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+  ◆ macros (module-f6048fcd)
+    ◆ ctx-repl (module-4830fd94) · reference (already expanded)
+    ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+◆ transpile-only-spec (module-c51cb3ea)
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+  ◆ paths (module-9fa0b7a9) · reference (already expanded)
+  ◆ command-lines (module-c914152c) · reference (already expanded)
+◆ test-loader (module-cfe7783f)
+◆ pluggable-dep-resolution-spec (module-e137a6d7)
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+◆ index-spec (module-e418452e)
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+◆ ci-node-and-ts-versions-spec (module-f3d72cda)
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+◆ reminders-spec (module-f5e1bb88)
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+◆ regression-spec (module-fae94c16)
+  ◆ Cycle grouping (not an entity): repl (module-15efbe16), cjs-resolve-hooks (module-222f8f25), configuration (module-23b6ca57), file-extensions (module-56741def), types (module-94d96b15), esm (module-990ee013), resolver-functions (module-aacad3c1), module-type-classifier (module-d4f104d7), ts-error (module-e144eeff) · reference (already expanded)
+  ◆ Cycle grouping (not an entity): testlib (module-696df3fe), ctx-ts-node (module-8c6a7056), exec (module-b9bc2b2c), anonymous (module-dd8d9cfa) · re-exports only, ctx-tmp-dir (module-ea86c70f) · reference (already expanded)
+
+Source-owned request results without edges
+  outside-population: 20
+  unresolved: 17
+  target-indeterminate: 13
+
+Recognition-coverage outcomes (not recognized occurrences)
+  ownership-unestablished: 44
+  Coverage 1: ownership-unestablished · owner not shown/established
+  Coverage 2: ownership-unestablished · owner not shown/established
+  Coverage 3: ownership-unestablished · owner not shown/established
+  Coverage 4: ownership-unestablished · owner not shown/established
+  Coverage 5: ownership-unestablished · owner not shown/established
+  Coverage 6: ownership-unestablished · owner not shown/established
+  Coverage 7: ownership-unestablished · owner not shown/established
+  Coverage 8: ownership-unestablished · owner not shown/established
+  Coverage 9: ownership-unestablished · owner not shown/established
+  Coverage 10: ownership-unestablished · owner not shown/established
+  Coverage 11: ownership-unestablished · owner not shown/established
+  Coverage 12: ownership-unestablished · owner not shown/established
+  Coverage 13: ownership-unestablished · owner not shown/established
+  Coverage 14: ownership-unestablished · owner not shown/established
+  Coverage 15: ownership-unestablished · owner not shown/established
+  Coverage 16: ownership-unestablished · owner not shown/established
+  Coverage 17: ownership-unestablished · owner not shown/established
+  Coverage 18: ownership-unestablished · owner not shown/established
+  Coverage 19: ownership-unestablished · owner not shown/established
+  Coverage 20: ownership-unestablished · owner not shown/established
+
+Display
+  1 modules omitted · 63 relationships omitted · 0 descents pruned
+  0 supporting occurrences omitted · 50 request results summarized/omitted · 24 recognition outcomes summarized/omitted
+  Display bounds do not reduce analysis coverage.
+
+Qualifications
+  Source requests only: no value-use, emission, loader availability, execution, bundler, or deployment claims.
+  Only project-owned requests are analyzed; external module interiors are opaque.
+  CommonJS coverage is bare require with exactly one argument, complete lexical evidence, and affirmative captured context; aliases, properties and other APIs are excluded.
+  Defined ESM format overrides ambient declarations; preserve requires callable ambient corroboration; absent module options do not infer compiler defaults.
+  Nonliteral targets are not evaluated; resolved files outside the discovered population do not add modules.
+  Dependency direction: a parent depends directly on a child. Roots are structural, not entry points or importance.
+  Re-exports only is a syntax property, not a barrel, API, purity, or safe-collapse claim.
+  Repository-layout labels compare all applicable occurrence endpoint placements: same-group means equal groups; into-descendants means a strict organization descendant; outward means outside the source group and its descendants.
+  Variation labels preserve different established answers; unestablished organization is not a policy failure. Repository layout establishes no dependency policy or architectural violation.
+  Generated handles are navigation cues; exact names and snapshot-scoped Entity IDs retain their established meanings.
+
+Next · inspect a module:
+node /Users/ronen/postcode/app/_build/src/cli.js inspect --dependency-context \
+  --snapshot snapshot:d3a19a84d1e4fffc4198a168f66c18f1e1be4b704b27ca98d31de5eec5352f3a \
+  --project /Users/ronen/postcode/app/_dependency-contract-investigation/ts-node/tsconfig.postcode-validation.json -- ENTITY_ID
+
+Next · dependency children:
+node /Users/ronen/postcode/app/_build/src/cli.js children \
+  --snapshot snapshot:d3a19a84d1e4fffc4198a168f66c18f1e1be4b704b27ca98d31de5eec5352f3a \
+  --project /Users/ronen/postcode/app/_dependency-contract-investigation/ts-node/tsconfig.postcode-validation.json -- ENTITY_ID
+
+Next · dependency parents:
+node /Users/ronen/postcode/app/_build/src/cli.js parents \
+  --snapshot snapshot:d3a19a84d1e4fffc4198a168f66c18f1e1be4b704b27ca98d31de5eec5352f3a \
+  --project /Users/ronen/postcode/app/_dependency-contract-investigation/ts-node/tsconfig.postcode-validation.json -- ENTITY_ID
+
+Next · captured request and organization source detail (view-local Request/Coverage numbers are not entity selectors):
+node /Users/ronen/postcode/app/_build/src/cli.js dependencies --source-detail --project /Users/ronen/postcode/app/_dependency-contract-investigation/ts-node/tsconfig.postcode-validation.json

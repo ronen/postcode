@@ -2,8 +2,10 @@ import path from 'node:path';
 import ts from 'typescript';
 import { compare, digest, methods, recordId, snapshotId } from '../identity.js';
 import type { DiscoveryResult, ModuleAnalysis } from '../evaluation.js';
-import type { ClaimContextRecord, ModuleClaim, ModuleExpansion, ModuleFacet, ProgramRecord, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
+import type { ClaimContextRecord, ModuleClaim, ModuleExpansion, ModuleDiscoveryFacet, ProgramRecord, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
 import { captureInputs } from './inputs.js';
+import { prepareComposition } from './composition.js';
+import { prepareDependencies } from './dependencies.js';
 import { prepareExpansions } from './expansions.js';
 import { captureRepository, repositoryInputMethod } from '../repository/capture.js';
 import { deriveLayout, repositoryLayoutMethod } from '../repository/layout.js';
@@ -95,22 +97,22 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
   const layout = repository.status === 'available' ? deriveLayout(repository.evidence) : null;
 
   // Compiler state never escapes the language integration. Discovery writes domain records atomically.
-  return { status: 'opened', analysis: { discover: (store, expansions) => discover(store, expansions ?? []) } };
+  return { status: 'opened', analysis: { discover: (store, expansions, dependencies) => discover(store, expansions ?? [], dependencies ?? false) } };
 
-  function discover(store: ProgramRecordStore, requested: readonly ModuleExpansion[]): DiscoveryResult {
+  function discover(store: ProgramRecordStore, requested: readonly ModuleExpansion[], dependencies: boolean): DiscoveryResult {
     const checker = program.getTypeChecker();
     const files = [...program.getSourceFiles()].sort((a, b) => compare(a.fileName, b.fileName));
     const encountered = program.getSyntacticDiagnostics();
     const roots = new Set(program.getRootFileNames());
     const candidates: { key: string; name: string | null; compilerName: string | null; symbol: ts.Symbol | undefined;
-      declarations: readonly ts.Declaration[]; facets: ModuleFacet[] }[] = [];
+      declarations: readonly ts.Declaration[]; discoveryFacets: ModuleDiscoveryFacet[] }[] = [];
     for (const file of files) {
       if (!ts.isExternalModule(file)) continue;
       candidates.push({
         key: `source:${host.getCanonicalFileName(file.fileName)}`, name: file.moduleName ?? null,
         symbol: checker.getSymbolAtLocation(file),
         compilerName: checker.getSymbolAtLocation(file)?.getName() ?? null, declarations: [file],
-        facets: [program.isSourceFileFromExternalLibrary(file) ? 'external' : 'project',
+        discoveryFacets: [program.isSourceFileFromExternalLibrary(file) ? 'external' : 'project',
           file.isDeclarationFile ? 'declaration-only' : 'implementation-available'],
       });
     }
@@ -120,7 +122,7 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
         key: `ambient:${symbol.getName()}`, name: symbol.getName().replace(/^"|"$/g, ''),
         symbol,
         compilerName: symbol.getName(), declarations,
-        facets: ['ambient',
+        discoveryFacets: ['ambient',
           ...(declarations.some(declaration => !program.isSourceFileFromExternalLibrary(declaration.getSourceFile())) ? ['project' as const] : []),
           ...(declarations.some(declaration => program.isSourceFileFromExternalLibrary(declaration.getSourceFile())) ? ['external' as const] : []),
           ...(declarations.length > 0 && declarations.every(declaration =>
@@ -143,7 +145,10 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       ts.forEachChild(node, visit);
     };
     files.forEach(visit);
-    const preparedExpansions = requested.length ? prepareExpansions(checker, candidates, requested) : undefined;
+    const existingExpansions = requested.filter(requirement => requirement !== 'composition');
+    const preparedExpansions = existingExpansions.length ? prepareExpansions(checker, candidates, existingExpansions) : undefined;
+    const preparedComposition = requested.includes('composition') ? prepareComposition(program, candidates) : undefined;
+    const preparedDependencies = dependencies ? prepareDependencies(program, host, candidates) : undefined;
     const snapshot = snapshotId({
       method, methods, configPath, cwd: base, node: process.versions.node,
       repository, repositoryMethods: [repositoryInputMethod, repositoryLayoutMethod],
@@ -160,7 +165,7 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       analysis: { provider: 'typescript', coverage: 'external-source-files-and-visible-named-ambient-modules',
         inputConsistency: 'first-observed', excludedOutputLocations: inputs.excludedLocationCount },
     }, { kind: 'repository-evidence', id: repositoryId, snapshot, method: `${repositoryInputMethod};${repositoryLayoutMethod}`, capture: repository, layout }];
-    const evidence = (declaration: ts.Node, compilerName: string | null, resolution?: SourceEvidenceRecord['resolution']): RecordId => {
+    const evidence = (declaration: ts.Node, compilerName: string | null, resolution?: SourceEvidenceRecord['resolution'], dependencyResolution?: SourceEvidenceRecord['dependencyResolution']): RecordId => {
       // Retain enough enclosing syntax to show declaration/export/import relationships.
       if (ts.isVariableDeclaration(declaration) || ts.isBindingElement(declaration)
         || ts.isExportSpecifier(declaration) || ts.isImportSpecifier(declaration)) {
@@ -182,7 +187,7 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       const span = ts.isSourceFile(declaration) ? '' : file.text.slice(start, declaration.end);
       const excerpt = [...span.split('\n').slice(0, 4).join('\n')].slice(0, 300).join('');
       const detail: SourceEvidenceRecord = {
-        kind: 'source-evidence', id: recordId(snapshot, 'source', [file.fileName, start, declaration.end, ts.isSourceFile(declaration) ? 'file' : 'span', compilerName, resolution ?? null]),
+        kind: 'source-evidence', id: recordId(snapshot, 'source', [file.fileName, start, declaration.end, ts.isSourceFile(declaration) ? 'file' : 'span', compilerName, resolution ?? null, dependencyResolution ?? null]),
         snapshot, method, path: file.fileName, contentDigest: digest(file.text),
         start, length: declaration.end - start,
         location: ts.isSourceFile(declaration) ? { association: 'file' } : {
@@ -191,6 +196,7 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
         },
         configuredRoot: roots.has(file.fileName), compilerName,
         ...(resolution ? { resolution } : {}),
+        ...(dependencyResolution ? { dependencyResolution } : {}),
       };
       records.push(detail);
       return detail.id;
@@ -259,16 +265,19 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
         kind: 'claim', id: claim, snapshot, method, subject: id, context,
         information: { type: 'module', name: candidate.name,
           ...mnemonic(candidate), handleStatus: 'generated-navigation-aid',
-          facets: candidate.facets },
+          discoveryFacets: candidate.discoveryFacets },
       });
       moduleIds.push(id);
     }
     const expansions = preparedExpansions?.(snapshot, evidence);
-    store.put([...records, ...(expansions?.records ?? [])]);
+    const composition = preparedComposition?.(snapshot, evidence);
+    const dependencyResult = preparedDependencies?.(snapshot, evidence);
+    store.put([...records, ...(expansions?.records ?? []), ...(dependencyResult?.records ?? []), ...(composition?.records ?? [])]);
     return {
       snapshot, modules: moduleIds, contexts: [globalContext], applicability: 'applicable', availability: 'available',
       execution: 'completed', materialization: 'full', reason: null, cost: { measure: 'module-count', value: moduleIds.length },
-      ...(expansions ? { expansions: expansions.results } : {}),
+      ...(requested.length ? { expansions: [...(expansions?.results ?? []), ...(composition?.results ?? [])] } : {}),
+      ...(dependencyResult ? { dependencies: dependencyResult.result } : {}),
     };
   }
 }

@@ -21,7 +21,7 @@ application reads programs. Configuration errors and unavailable configured root
 files return project-open failure before a projection exists. Compiler objects
 remain inside that integration; input projects are never executed.
 
-The presentation declares module-standard exports and documentation requirements
+The presentation declares module-standard exports, documentation and composition requirements
 before the evaluator requests discovery through a small language-analysis boundary. Discovery writes an atomic batch of snapshot, module entity, module
 claim, Claim context, and source-evidence records through `ProgramRecordStore`.
 Compiler expansion preparation completes before snapshot identity is finalized.
@@ -56,6 +56,33 @@ projection. Unavailable or unmaterialized work cannot establish emptiness. The
 current TypeScript provider discovers eagerly; other state combinations are
 verified at the evaluation boundary, not exposed as a new scheduling product.
 Unexpected defects propagate rather than becoming ordinary analysis failures.
+
+## Dependency provider checkpoint
+
+An explicit dependency evaluation can now request a bounded source-request pass
+through the same TypeScript integration. Compiler and file-resolution work
+finishes before snapshot identity is finalized. The pass materializes qualified
+occurrences, separate recognition/ownership coverage results, and directed
+module-pair relationship claims retaining every resolved supporting occurrence.
+The evaluator records dependency work separately from its module-discovery basis;
+a provider that cannot supply it yields unavailable work, not an empty graph.
+Ordinary discovery does not implicitly request dependency analysis.
+
+The [dependency structure decisions](../decisions/module-dependency-structure-decisions.md)
+and [bounded CommonJS decision](../decisions/bounded-commonjs-source-evidence-decision.md)
+govern this boundary. Only project-owned requests contribute relationships;
+external interiors remain opaque. Resolution outside the existing module
+population never adds an entity. Source evidence keeps the configured file
+resolver's result distinct from the evidence identifying a target module, and
+retains actual target declarations for later placement analysis. Aggregation
+preserves direct re-export intermediates and all occurrences, and marks a
+relationship type-only only when every occurrence establishes that qualification.
+
+This provider boundary supplies the evidence for the integrated dependency graph
+projections, composition and organization expansions, presentations, navigation,
+and dependency-view observations described below. Those layers implement the
+[active plan](../plans/module-dependencies-plan.md) without moving compiler analysis
+into projections or presentation.
 
 ## Identity and evidence
 
@@ -291,3 +318,45 @@ a final policy check refuses detected lasting changes but cannot detect every
 transient concurrent edit. Sparse-checkout completeness remains unresolved.
 Capture refuses non-UTF-8 names or Git evidence and Git output exceeding its
 bounded subprocess buffer instead of silently dropping or corrupting artifacts.
+
+
+## Dependency graph and qualified expansions
+
+The dependency library now constructs project structure and focused child/parent
+projections from stored provider results. It keeps the discovered project population,
+including isolated modules, separate from dependency evaluation coverage. Structure
+uses strongly connected components of project-to-project edges; generated component
+indices are grouping data, never entity identities. Every internal relationship and
+cycle member remains available. Source components are established roots only with
+complete module and dependency evaluations. External endpoints remain opaque.
+Focused projections reuse exact, snapshot-scoped module selection and retain direct
+relationships; non-edge requests remain attached to their source owners.
+
+Composition is a separately requested module expansion. The TypeScript integration
+checks all captured module declarations for the positive `re-exports-only` property
+and records its own outcome. No inverse property is produced. Discovery classifications
+use `discoveryFacets`, keeping discovery evidence distinct from qualified composition.
+
+The optional dependency-organization expansion consumes a matching stored organization
+evaluation. Captured request and target declaration evidence narrow endpoint placement
+before broader module-placement fallback. All applicable endpoint combinations remain
+explicit, including placement and occurrence variation, incomplete information, and
+candidate ambiguity. Common ancestors retain containment evidence across multiple
+parents. This expansion performs no filesystem or compiler work and cannot weaken the
+underlying dependency result when repository organization is unavailable.
+
+These library layers follow the accepted [dependency structure](../decisions/module-dependency-structure-decisions.md),
+[composition](../decisions/module-composition-property-decision.md), and
+[organization integration](../decisions/dependency-organization-integration-decisions.md)
+decisions. Dependency CLI views now declare composition and repository-layout expansion,
+materialize bounded Unicode/JSON displays, and use the established observation sink.
+Project SCCs remain separate from opaque leaves drawn from projection relationships.
+Parent views use reusable bounded-coverage disclosure without inventing source-owned
+coverage records. Explicit source detail materializes captured request and organization
+evidence with separate bounds.
+
+Ordinary organization analysis remains independent of dependency evaluation. Since
+bounded dependency resolution may observe additional inputs, generated dependency-to-
+inspection commands request `--dependency-context` explicitly to reproduce the analysis
+context before selecting a scoped ID. This performs a fresh evaluation and introduces
+no cache or cross-invocation continuity.

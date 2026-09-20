@@ -158,7 +158,7 @@ test('configuration diagnostics retain equal messages at different files or posi
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('modules usage errors identify source-detail and snapshot as inspection-only options', async () => {
+test('modules usage errors identify the supported source-detail and snapshot views', async () => {
   for (const lens of [[], ['modules']]) {
     for (const options of [['--source-detail'], ['--snapshot', `snapshot:${'a'.repeat(64)}`],
       ['--source-detail', '--snapshot', `snapshot:${'a'.repeat(64)}`]]) {
@@ -166,7 +166,8 @@ test('modules usage errors identify source-detail and snapshot as inspection-onl
       assert.equal(result.exit, 2);
       assert.equal(result.stdout, '');
       assert.equal(result.batches.length, 0);
-      assert.ok(result.stderr.includes('--source-detail and --snapshot require inspect'));
+      assert.ok(result.stderr.includes('--snapshot requires inspect, children or parents'));
+      assert.ok(result.stderr.includes('--source-detail requires inspect or a dependency view'));
     }
   }
 });
@@ -361,7 +362,7 @@ test('inventory counts omitted external documentation while exact inspection mak
     writeFileSync(path.join(root, 'node_modules/dependency/index.d.ts'), '/** External responsibility. */\nexport declare const value: number;');
     const inventory = await invoke(['--project', config, '--json']);
     const view = JSON.parse(inventory.stdout) as QualifiedView;
-    const external = view.modules.find(module => module.facets.includes('external'))!;
+    const external = view.modules.find(module => module.discoveryFacets.includes('external'))!;
     assert.ok(external);
     assert.equal(external.exports[0]!.documentation.length, 0);
     assert.equal(external.exports[0]!.omittedDocumentation, 1);
@@ -867,4 +868,24 @@ test('configuration diagnostic locations are one-based across lines and safely e
     assert.deepEqual(result.stderr.trim().split('\n'), ['Project open failed:',
       `  TS1005: ${path.join(root, 'multiline\\u000aStatus.json')}:4:5: ',' expected.`]);
   } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('composition remains a separately qualified property in inspection and organization leaves', async () => {
+  const directory = mkdtempSync(path.join(os.tmpdir(), 'postcode-composition-view-'));
+  try {
+    execFileSync('git', ['init', '--quiet', directory]);
+    writeFileSync(path.join(directory, 'tsconfig.json'), JSON.stringify({ compilerOptions: { noLib: true, types: [] }, files: ['forward.ts', 'target.ts'] }));
+    writeFileSync(path.join(directory, 'forward.ts'), "export * from './target';");
+    writeFileSync(path.join(directory, 'target.ts'), 'export const value = 1;');
+    const project = path.join(directory, 'tsconfig.json');
+    const inventory = JSON.parse((await invoke(['modules', '--project', project, '--json'])).stdout) as QualifiedView;
+    const forward = inventory.modules.find(module => module.handle === 'forward')!;
+    assert.equal(forward.composition.claims[0]!.property, 're-exports-only');
+    assert.equal(forward.discoveryFacets.includes('re-exports-only'), false);
+    const inspection = await invoke(['inspect', forward.entityId, '--snapshot', inventory.projection.snapshot, '--project', project, '--source-detail']);
+    assert.match(inspection.stdout, /re-exports only/);
+    const organization = await invoke(['organization', '--project', project]);
+    assert.match(organization.stdout, /forward.*re-exports only/);
+    assert.doesNotMatch(organization.stdout, /target.*re-exports only/);
+  } finally { rmSync(directory, { recursive: true, force: true }); }
 });

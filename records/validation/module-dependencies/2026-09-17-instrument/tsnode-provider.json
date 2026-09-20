@@ -1,0 +1,1631 @@
+{
+  "status": "opened",
+  "node": "22.13.1",
+  "elapsedMs": 2191,
+  "execution": "completed",
+  "materialization": "full",
+  "projectModules": 64,
+  "occurrences": 336,
+  "relationships": 263,
+  "mechanisms": {
+    "commonjs": 42,
+    "import-equals": 10,
+    "import-type": 11,
+    "re-export": 12,
+    "side-effect-import": 1,
+    "static-import": 260
+  },
+  "targetStatuses": {
+    "outside-population": 20,
+    "resolved": 286,
+    "target-indeterminate": 13,
+    "unresolved": 17
+  },
+  "coverageCounts": {
+    "ownership-unestablished": 44
+  },
+  "coreCommonJS": [
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:4bf5d5d173c155fcd150a7eb569d0b05742ea0067180907b490419bae1c8a1b8",
+      "owner": {
+        "name": null,
+        "handle": "bin",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/bin.ts"
+        ]
+      },
+      "file": "src/bin.ts",
+      "from": {
+        "line": 98,
+        "column": 11
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": "arg",
+        "status": "resolved",
+        "resolvedFile": "node_modules/arg/index.d.ts",
+        "targetBasis": "configured-file-resolution",
+        "mode": "commonjs"
+      },
+      "target": {
+        "name": null,
+        "handle": "export",
+        "discoveryFacets": [
+          "external",
+          "declaration-only"
+        ],
+        "files": [
+          "node_modules/arg/index.d.ts"
+        ]
+      }
+    },
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:a889b60b2658123dc0d1fb9b5efd8833730ddd874621ed7ab962150353655640",
+      "owner": {
+        "name": null,
+        "handle": "bin",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/bin.ts"
+        ]
+      },
+      "file": "src/bin.ts",
+      "from": {
+        "line": 526,
+        "column": 6
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": "./child/child-loader",
+        "status": "resolved",
+        "resolvedFile": "src/child/child-loader.ts",
+        "targetBasis": "configured-file-resolution",
+        "mode": "commonjs"
+      },
+      "target": {
+        "name": null,
+        "handle": "child-loader",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/child/child-loader.ts"
+        ]
+      }
+    },
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:80722d550083965a3c5a3de706b70b7aa9a6dc34a3eb366e23939e33d4c4130d",
+      "owner": {
+        "name": null,
+        "handle": "bin",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/bin.ts"
+        ]
+      },
+      "file": "src/bin.ts",
+      "from": {
+        "line": 598,
+        "column": 7
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": "../dist-raw/runmain-hack.js",
+        "status": "outside-population",
+        "resolvedFile": "dist-raw/runmain-hack.js",
+        "targetBasis": "configured-file-resolution",
+        "mode": "commonjs"
+      },
+      "target": null
+    },
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:574c2f3acb1a5dec49c0dbbbf672fc72efb4c5aed71ac48a588fd7289402f536",
+      "owner": {
+        "name": null,
+        "handle": "cjs-resolve-hooks",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/cjs-resolve-hooks.ts"
+        ]
+      },
+      "file": "src/cjs-resolve-hooks.ts",
+      "from": {
+        "line": 25,
+        "column": 18
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": "module",
+        "status": "resolved",
+        "resolvedFile": null,
+        "targetBasis": "exact-ambient-symbol",
+        "mode": "commonjs"
+      },
+      "target": {
+        "name": "module",
+        "handle": "module",
+        "discoveryFacets": [
+          "ambient",
+          "external",
+          "declaration-only"
+        ],
+        "files": [
+          "node_modules/@types/node/module.d.ts"
+        ]
+      }
+    },
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:c5fd88e8fab951946ac78831e7b518d466836d6b3ea2e9a819b5abd4bc629b83",
+      "owner": {
+        "name": null,
+        "handle": "ts-error",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/index.ts"
+        ]
+      },
+      "file": "src/index.ts",
+      "from": {
+        "line": 128,
+        "column": 24
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": "../package.json",
+        "status": "unresolved",
+        "resolvedFile": null,
+        "targetBasis": "none",
+        "mode": "commonjs"
+      },
+      "target": null
+    },
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:cdc9a5ca70a9c1fe5c9277d530c63b2b09877f8cc86deac4523d325ffd1a492d",
+      "owner": {
+        "name": null,
+        "handle": "ts-error",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/index.ts"
+        ]
+      },
+      "file": "src/index.ts",
+      "from": {
+        "line": 671,
+        "column": 33
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": null,
+        "status": "target-indeterminate",
+        "resolvedFile": null,
+        "targetBasis": "none",
+        "mode": "unspecified"
+      },
+      "target": null
+    },
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:3ffd26720d7f563128d463f4460895b05bf05a40c0f3106d6f2802d23d87368f",
+      "owner": {
+        "name": null,
+        "handle": "ts-error",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/index.ts"
+        ]
+      },
+      "file": "src/index.ts",
+      "from": {
+        "line": 694,
+        "column": 30
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": "@cspotcode/source-map-support",
+        "status": "resolved",
+        "resolvedFile": "node_modules/@cspotcode/source-map-support/source-map-support.d.ts",
+        "targetBasis": "configured-file-resolution",
+        "mode": "commonjs"
+      },
+      "target": {
+        "name": null,
+        "handle": "source-map-support",
+        "discoveryFacets": [
+          "external",
+          "declaration-only"
+        ],
+        "files": [
+          "node_modules/@cspotcode/source-map-support/source-map-support.d.ts"
+        ]
+      }
+    },
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:14620a5388f6731b654a0019ab1e3e5f690edd779afe0d39202f94437aaab622",
+      "owner": {
+        "name": null,
+        "handle": "ts-error",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/index.ts"
+        ]
+      },
+      "file": "src/index.ts",
+      "from": {
+        "line": 1245,
+        "column": 6
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": "../dist-raw/node-internal-modules-esm-resolve",
+        "status": "outside-population",
+        "resolvedFile": "dist-raw/node-internal-modules-esm-resolve.js",
+        "targetBasis": "configured-file-resolution",
+        "mode": "commonjs"
+      },
+      "target": null
+    },
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:6f849e8fa5362dee33ccb246390c8641fc390822cb37e043b63faa9e2e85f970",
+      "owner": {
+        "name": null,
+        "handle": "ts-error",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/index.ts"
+        ]
+      },
+      "file": "src/index.ts",
+      "from": {
+        "line": 1253,
+        "column": 7
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": "../dist-raw/node-internal-modules-esm-get_format",
+        "status": "outside-population",
+        "resolvedFile": "dist-raw/node-internal-modules-esm-get_format.js",
+        "targetBasis": "configured-file-resolution",
+        "mode": "commonjs"
+      },
+      "target": null
+    },
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:d046ca4f5107fabeca741a3c5168d7a4acd9327c51551d0798a7fd3cb09d67b5",
+      "owner": {
+        "name": null,
+        "handle": "ts-error",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/index.ts"
+        ]
+      },
+      "file": "src/index.ts",
+      "from": {
+        "line": 1257,
+        "column": 6
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": "../dist-raw/node-internal-modules-cjs-loader",
+        "status": "outside-population",
+        "resolvedFile": "dist-raw/node-internal-modules-cjs-loader.js",
+        "targetBasis": "configured-file-resolution",
+        "mode": "commonjs"
+      },
+      "target": null
+    },
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:847dd5a09cec706c7c8bfc4b4d14173b17f32f21b13b9c4c76bcdc36b0e14b17",
+      "owner": {
+        "name": null,
+        "handle": "ts-error",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/index.ts"
+        ]
+      },
+      "file": "src/index.ts",
+      "from": {
+        "line": 1466,
+        "column": 4
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": "./esm",
+        "status": "resolved",
+        "resolvedFile": "src/esm.ts",
+        "targetBasis": "configured-file-resolution",
+        "mode": "commonjs"
+      },
+      "target": {
+        "name": null,
+        "handle": "esm",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/esm.ts"
+        ]
+      }
+    },
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:5ea95b960e90b70d0e52c9bb6f3c31293e719fed8718b5a6985af2b88426e3dd",
+      "owner": {
+        "name": null,
+        "handle": "repl",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/repl.ts"
+        ]
+      },
+      "file": "src/repl.ts",
+      "from": {
+        "line": 20,
+        "column": 56
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": "../dist-raw/node-internal-repl-await",
+        "status": "outside-population",
+        "resolvedFile": "dist-raw/node-internal-repl-await.js",
+        "targetBasis": "configured-file-resolution",
+        "mode": "commonjs"
+      },
+      "target": null
+    },
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:47fdf8a3154df6b8f86b90f6086372514a914535407411980915e5d8c90c56eb",
+      "owner": {
+        "name": null,
+        "handle": "repl",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/repl.ts"
+        ]
+      },
+      "file": "src/repl.ts",
+      "from": {
+        "line": 27,
+        "column": 12
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": "diff",
+        "status": "resolved",
+        "resolvedFile": "node_modules/@types/diff/index.d.ts",
+        "targetBasis": "configured-file-resolution",
+        "mode": "commonjs"
+      },
+      "target": {
+        "name": null,
+        "handle": "diff",
+        "discoveryFacets": [
+          "external",
+          "declaration-only"
+        ],
+        "files": [
+          "node_modules/@types/diff/index.d.ts"
+        ]
+      }
+    },
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:5218eaa143d65ce663e1f0984af522e9bec18404744af5db38cf3f77f1a9a0d9",
+      "owner": {
+        "name": null,
+        "handle": "repl",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/repl.ts"
+        ]
+      },
+      "file": "src/repl.ts",
+      "from": {
+        "line": 38,
+        "column": 16
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": "repl",
+        "status": "resolved",
+        "resolvedFile": null,
+        "targetBasis": "exact-ambient-symbol",
+        "mode": "commonjs"
+      },
+      "target": {
+        "name": "repl",
+        "handle": "repl",
+        "discoveryFacets": [
+          "ambient",
+          "external",
+          "declaration-only"
+        ],
+        "files": [
+          "node_modules/@types/node/repl.d.ts"
+        ]
+      }
+    },
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:9a7b8baba68146baf236af231bc92226f51f6e832074bcbb4846add9649581ea",
+      "owner": {
+        "name": null,
+        "handle": "swc",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/transpilers/swc.ts"
+        ]
+      },
+      "file": "src/transpilers/swc.ts",
+      "from": {
+        "line": 32,
+        "column": 19
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": null,
+        "status": "target-indeterminate",
+        "resolvedFile": null,
+        "targetBasis": "none",
+        "mode": "unspecified"
+      },
+      "target": null
+    },
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:fad329fe08af6a927b193f3ee034f3ad89ff5fb308b5765698992a0beef7fa6e",
+      "owner": {
+        "name": null,
+        "handle": "swc",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/transpilers/swc.ts"
+        ]
+      },
+      "file": "src/transpilers/swc.ts",
+      "from": {
+        "line": 48,
+        "column": 19
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": null,
+        "status": "target-indeterminate",
+        "resolvedFile": null,
+        "targetBasis": "none",
+        "mode": "unspecified"
+      },
+      "target": null
+    },
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:1d5a34c6da47685167ee8fbc1e822838c663a1c054f6c6ad0210b018459d33ab",
+      "owner": {
+        "name": null,
+        "handle": "tsconfigs",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/tsconfigs.ts"
+        ]
+      },
+      "file": "src/tsconfigs.ts",
+      "from": {
+        "line": 12,
+        "column": 20
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": "@tsconfig/node20/tsconfig.json",
+        "status": "unresolved",
+        "resolvedFile": null,
+        "targetBasis": "none",
+        "mode": "commonjs"
+      },
+      "target": null
+    },
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:91fb21bf0047de0ff04d3f61f0ba0e3ad94dac777459c2bd81ed5037128e8085",
+      "owner": {
+        "name": null,
+        "handle": "tsconfigs",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/tsconfigs.ts"
+        ]
+      },
+      "file": "src/tsconfigs.ts",
+      "from": {
+        "line": 16,
+        "column": 20
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": "@tsconfig/node18/tsconfig.json",
+        "status": "unresolved",
+        "resolvedFile": null,
+        "targetBasis": "none",
+        "mode": "commonjs"
+      },
+      "target": null
+    },
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:261117f96504f4eaab14734caf990011cec8067ab3ac3cb87d4d194a807b2577",
+      "owner": {
+        "name": null,
+        "handle": "tsconfigs",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/tsconfigs.ts"
+        ]
+      },
+      "file": "src/tsconfigs.ts",
+      "from": {
+        "line": 20,
+        "column": 20
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": "@tsconfig/node16/tsconfig.json",
+        "status": "unresolved",
+        "resolvedFile": null,
+        "targetBasis": "none",
+        "mode": "commonjs"
+      },
+      "target": null
+    },
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:c06bc257f3b6a2b422902215c1c7b2c7c6af7a9aa536529684159e13e7ac3c3c",
+      "owner": {
+        "name": null,
+        "handle": "tsconfigs",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/tsconfigs.ts"
+        ]
+      },
+      "file": "src/tsconfigs.ts",
+      "from": {
+        "line": 24,
+        "column": 20
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": "@tsconfig/node14/tsconfig.json",
+        "status": "unresolved",
+        "resolvedFile": null,
+        "targetBasis": "none",
+        "mode": "commonjs"
+      },
+      "target": null
+    },
+    {
+      "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:249d5f9545b5dd2a0db2d73ddd6d1edf384bbe70db11b47f2e66c61ac2edcfeb",
+      "owner": {
+        "name": null,
+        "handle": "util",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/util.ts"
+        ]
+      },
+      "file": "src/util.ts",
+      "from": {
+        "line": 95,
+        "column": 19
+      },
+      "mechanism": "commonjs",
+      "typeOnly": false,
+      "commonjs": {
+        "outcome": "recognized",
+        "lexical": "no-local-binding",
+        "format": "commonjs-option",
+        "binding": "callable-ambient"
+      },
+      "resolution": {
+        "writtenSpecifier": "v8-compile-cache-lib",
+        "status": "resolved",
+        "resolvedFile": "node_modules/v8-compile-cache-lib/v8-compile-cache.d.ts",
+        "targetBasis": "configured-file-resolution",
+        "mode": "commonjs"
+      },
+      "target": {
+        "name": null,
+        "handle": "v8-compile-cache",
+        "discoveryFacets": [
+          "external",
+          "declaration-only"
+        ],
+        "files": [
+          "node_modules/v8-compile-cache-lib/v8-compile-cache.d.ts"
+        ]
+      }
+    }
+  ],
+  "surveyedRelationships": [
+    {
+      "owner": {
+        "name": null,
+        "handle": "bin",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/bin.ts"
+        ]
+      },
+      "child": {
+        "name": null,
+        "handle": "child-loader",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/child/child-loader.ts"
+        ]
+      },
+      "typeOnly": false,
+      "mechanisms": [
+        "commonjs",
+        "import-type"
+      ],
+      "occurrences": [
+        {
+          "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:a889b60b2658123dc0d1fb9b5efd8833730ddd874621ed7ab962150353655640",
+          "owner": {
+            "name": null,
+            "handle": "bin",
+            "discoveryFacets": [
+              "project",
+              "implementation-available"
+            ],
+            "files": [
+              "src/bin.ts"
+            ]
+          },
+          "file": "src/bin.ts",
+          "from": {
+            "line": 526,
+            "column": 6
+          },
+          "mechanism": "commonjs",
+          "typeOnly": false,
+          "commonjs": {
+            "outcome": "recognized",
+            "lexical": "no-local-binding",
+            "format": "commonjs-option",
+            "binding": "callable-ambient"
+          },
+          "resolution": {
+            "writtenSpecifier": "./child/child-loader",
+            "status": "resolved",
+            "resolvedFile": "src/child/child-loader.ts",
+            "targetBasis": "configured-file-resolution",
+            "mode": "commonjs"
+          },
+          "target": {
+            "name": null,
+            "handle": "child-loader",
+            "discoveryFacets": [
+              "project",
+              "implementation-available"
+            ],
+            "files": [
+              "src/child/child-loader.ts"
+            ]
+          }
+        },
+        {
+          "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:1260f26c25d68b15b4552f06d8f03aa6a1196d4dbe7e95d38aecf4020781d7cd",
+          "owner": {
+            "name": null,
+            "handle": "bin",
+            "discoveryFacets": [
+              "project",
+              "implementation-available"
+            ],
+            "files": [
+              "src/bin.ts"
+            ]
+          },
+          "file": "src/bin.ts",
+          "from": {
+            "line": 526,
+            "column": 41
+          },
+          "mechanism": "import-type",
+          "typeOnly": true,
+          "commonjs": null,
+          "resolution": {
+            "writtenSpecifier": "./child/child-loader",
+            "status": "resolved",
+            "resolvedFile": "src/child/child-loader.ts",
+            "targetBasis": "checker-symbol",
+            "mode": "unspecified"
+          },
+          "target": {
+            "name": null,
+            "handle": "child-loader",
+            "discoveryFacets": [
+              "project",
+              "implementation-available"
+            ],
+            "files": [
+              "src/child/child-loader.ts"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "owner": {
+        "name": null,
+        "handle": "ts-error",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/index.ts"
+        ]
+      },
+      "child": {
+        "name": null,
+        "handle": "esm",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/esm.ts"
+        ]
+      },
+      "typeOnly": false,
+      "mechanisms": [
+        "commonjs",
+        "import-type",
+        "re-export",
+        "static-import"
+      ],
+      "occurrences": [
+        {
+          "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:66dc144c3cd830386500ac2b5d1117943669e5b23f688acf9ef7dfcc92d9cf72",
+          "owner": {
+            "name": null,
+            "handle": "ts-error",
+            "discoveryFacets": [
+              "project",
+              "implementation-available"
+            ],
+            "files": [
+              "src/index.ts"
+            ]
+          },
+          "file": "src/index.ts",
+          "from": {
+            "line": 27,
+            "column": 1
+          },
+          "mechanism": "static-import",
+          "typeOnly": true,
+          "commonjs": null,
+          "resolution": {
+            "writtenSpecifier": "./esm",
+            "status": "resolved",
+            "resolvedFile": "src/esm.ts",
+            "targetBasis": "checker-symbol",
+            "mode": "unspecified"
+          },
+          "target": {
+            "name": null,
+            "handle": "esm",
+            "discoveryFacets": [
+              "project",
+              "implementation-available"
+            ],
+            "files": [
+              "src/esm.ts"
+            ]
+          }
+        },
+        {
+          "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:1eafd4822830637e183249ab4585ff40620d859f85977203b43abe1523609c0f",
+          "owner": {
+            "name": null,
+            "handle": "ts-error",
+            "discoveryFacets": [
+              "project",
+              "implementation-available"
+            ],
+            "files": [
+              "src/index.ts"
+            ]
+          },
+          "file": "src/index.ts",
+          "from": {
+            "line": 47,
+            "column": 1
+          },
+          "mechanism": "re-export",
+          "typeOnly": true,
+          "commonjs": null,
+          "resolution": {
+            "writtenSpecifier": "./esm",
+            "status": "resolved",
+            "resolvedFile": "src/esm.ts",
+            "targetBasis": "checker-symbol",
+            "mode": "unspecified"
+          },
+          "target": {
+            "name": null,
+            "handle": "esm",
+            "discoveryFacets": [
+              "project",
+              "implementation-available"
+            ],
+            "files": [
+              "src/esm.ts"
+            ]
+          }
+        },
+        {
+          "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:847dd5a09cec706c7c8bfc4b4d14173b17f32f21b13b9c4c76bcdc36b0e14b17",
+          "owner": {
+            "name": null,
+            "handle": "ts-error",
+            "discoveryFacets": [
+              "project",
+              "implementation-available"
+            ],
+            "files": [
+              "src/index.ts"
+            ]
+          },
+          "file": "src/index.ts",
+          "from": {
+            "line": 1466,
+            "column": 4
+          },
+          "mechanism": "commonjs",
+          "typeOnly": false,
+          "commonjs": {
+            "outcome": "recognized",
+            "lexical": "no-local-binding",
+            "format": "commonjs-option",
+            "binding": "callable-ambient"
+          },
+          "resolution": {
+            "writtenSpecifier": "./esm",
+            "status": "resolved",
+            "resolvedFile": "src/esm.ts",
+            "targetBasis": "configured-file-resolution",
+            "mode": "commonjs"
+          },
+          "target": {
+            "name": null,
+            "handle": "esm",
+            "discoveryFacets": [
+              "project",
+              "implementation-available"
+            ],
+            "files": [
+              "src/esm.ts"
+            ]
+          }
+        },
+        {
+          "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:08d19b51de36eb035626793d6771b46fcb00be09aa47c79260e6e56ab9e617db",
+          "owner": {
+            "name": null,
+            "handle": "ts-error",
+            "discoveryFacets": [
+              "project",
+              "implementation-available"
+            ],
+            "files": [
+              "src/index.ts"
+            ]
+          },
+          "file": "src/index.ts",
+          "from": {
+            "line": 1466,
+            "column": 24
+          },
+          "mechanism": "import-type",
+          "typeOnly": true,
+          "commonjs": null,
+          "resolution": {
+            "writtenSpecifier": "./esm",
+            "status": "resolved",
+            "resolvedFile": "src/esm.ts",
+            "targetBasis": "checker-symbol",
+            "mode": "unspecified"
+          },
+          "target": {
+            "name": null,
+            "handle": "esm",
+            "discoveryFacets": [
+              "project",
+              "implementation-available"
+            ],
+            "files": [
+              "src/esm.ts"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "owner": {
+        "name": null,
+        "handle": "child-loader",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/child/child-loader.ts"
+        ]
+      },
+      "child": {
+        "name": null,
+        "handle": "esm",
+        "discoveryFacets": [
+          "project",
+          "implementation-available"
+        ],
+        "files": [
+          "src/esm.ts"
+        ]
+      },
+      "typeOnly": false,
+      "mechanisms": [
+        "static-import"
+      ],
+      "occurrences": [
+        {
+          "id": "snapshot:1ba429928ddc2ccc772cb7a76ca5cc16e06d943010ccd4435043f193560873fe:dependency-occurrence:38217364a35cade02bd3f1d3e8d0342517180895660c1a985cf4737583624ca8",
+          "owner": {
+            "name": null,
+            "handle": "child-loader",
+            "discoveryFacets": [
+              "project",
+              "implementation-available"
+            ],
+            "files": [
+              "src/child/child-loader.ts"
+            ]
+          },
+          "file": "src/child/child-loader.ts",
+          "from": {
+            "line": 2,
+            "column": 1
+          },
+          "mechanism": "static-import",
+          "typeOnly": false,
+          "commonjs": null,
+          "resolution": {
+            "writtenSpecifier": "../esm",
+            "status": "resolved",
+            "resolvedFile": "src/esm.ts",
+            "targetBasis": "checker-symbol",
+            "mode": "unspecified"
+          },
+          "target": {
+            "name": null,
+            "handle": "esm",
+            "discoveryFacets": [
+              "project",
+              "implementation-available"
+            ],
+            "files": [
+              "src/esm.ts"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "coverage": [
+    {
+      "file": "dist-raw/node-internal-errors.js",
+      "location": {
+        "line": 3,
+        "column": 14
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-errors.js",
+      "location": {
+        "line": 67,
+        "column": 18
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-cjs-helpers.js",
+      "location": {
+        "line": 12,
+        "column": 5
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-cjs-helpers.js",
+      "location": {
+        "line": 14,
+        "column": 28
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-cjs-helpers.js",
+      "location": {
+        "line": 35,
+        "column": 18
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-cjs-loader.js",
+      "location": {
+        "line": 24,
+        "column": 5
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-cjs-loader.js",
+      "location": {
+        "line": 25,
+        "column": 26
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-cjs-loader.js",
+      "location": {
+        "line": 26,
+        "column": 42
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-cjs-loader.js",
+      "location": {
+        "line": 27,
+        "column": 12
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-cjs-loader.js",
+      "location": {
+        "line": 28,
+        "column": 14
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-cjs-loader.js",
+      "location": {
+        "line": 30,
+        "column": 32
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-cjs-loader.js",
+      "location": {
+        "line": 31,
+        "column": 27
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-cjs-loader.js",
+      "location": {
+        "line": 34,
+        "column": 5
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-cjs-loader.js",
+      "location": {
+        "line": 35,
+        "column": 28
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-cjs-loader.js",
+      "location": {
+        "line": 38,
+        "column": 28
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-cjs-loader.js",
+      "location": {
+        "line": 39,
+        "column": 31
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-cjs-loader.js",
+      "location": {
+        "line": 44,
+        "column": 5
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-cjs-loader.js",
+      "location": {
+        "line": 48,
+        "column": 5
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-cjs-loader.js",
+      "location": {
+        "line": 50,
+        "column": 16
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-cjs-loader.js",
+      "location": {
+        "line": 342,
+        "column": 30
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-esm-get_format.js",
+      "location": {
+        "line": 7,
+        "column": 5
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-esm-get_format.js",
+      "location": {
+        "line": 8,
+        "column": 21
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-esm-get_format.js",
+      "location": {
+        "line": 9,
+        "column": 28
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-esm-get_format.js",
+      "location": {
+        "line": 18,
+        "column": 32
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-esm-get_format.js",
+      "location": {
+        "line": 19,
+        "column": 40
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-esm-resolve.js",
+      "location": {
+        "line": 5,
+        "column": 24
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-esm-resolve.js",
+      "location": {
+        "line": 34,
+        "column": 5
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-esm-resolve.js",
+      "location": {
+        "line": 37,
+        "column": 16
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-esm-resolve.js",
+      "location": {
+        "line": 38,
+        "column": 26
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-esm-resolve.js",
+      "location": {
+        "line": 43,
+        "column": 5
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-esm-resolve.js",
+      "location": {
+        "line": 45,
+        "column": 28
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-esm-resolve.js",
+      "location": {
+        "line": 52,
+        "column": 27
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-esm-resolve.js",
+      "location": {
+        "line": 57,
+        "column": 47
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-esm-resolve.js",
+      "location": {
+        "line": 71,
+        "column": 5
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-esm-resolve.js",
+      "location": {
+        "line": 77,
+        "column": 27
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-package_json_reader.js",
+      "location": {
+        "line": 4,
+        "column": 21
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-package_json_reader.js",
+      "location": {
+        "line": 5,
+        "column": 36
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-package_json_reader.js",
+      "location": {
+        "line": 6,
+        "column": 27
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internal-modules-package_json_reader.js",
+      "location": {
+        "line": 7,
+        "column": 30
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internalBinding-fs.js",
+      "location": {
+        "line": 1,
+        "column": 12
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-internalBinding-fs.js",
+      "location": {
+        "line": 2,
+        "column": 24
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-nativemodule.js",
+      "location": {
+        "line": 3,
+        "column": 16
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "dist-raw/node-options.js",
+      "location": {
+        "line": 28,
+        "column": 10
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    },
+    {
+      "file": "src/test/remove-env-var-force-color.js",
+      "location": {
+        "line": 2,
+        "column": 1
+      },
+      "outcome": "ownership-unestablished",
+      "commonjs": null
+    }
+  ],
+  "pathPolicy": "Source paths are relative to the selected configuration directory. Snapshot IDs are retained and depend on absolute analysis inputs."
+}

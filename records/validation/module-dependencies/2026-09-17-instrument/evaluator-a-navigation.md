@@ -1,0 +1,1 @@
+Yes. The text explicitly says navigation evaluates current inputs afresh, source detail uses evidence captured in the new invocation, and scoped selectors reject snapshot mismatches. The source-detail command is also labeled “fresh evaluation.” No ambiguity remains on whether it reopens the displayed capture.

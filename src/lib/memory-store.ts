@@ -11,7 +11,21 @@ function references(record: ProgramRecord): readonly RecordId[] {
     case 'module':
     case 'symbol': return [record.claim];
     case 'recorded-assertion': return [record.context];
+    case 'dependency-occurrence': return [record.owner, record.context, record.evidence, ...record.targetEvidence, ...(record.target ? [record.target] : [])];
+    case 'dependency-coverage': return [record.context, record.evidence, ...(record.owner ? [record.owner] : [])];
+    case 'dependency-projection': return [record.evaluation, ...record.subjects, ...record.modules, ...record.relationships,
+      ...record.occurrences, ...record.nonEdgeRequests, ...record.coverage, ...record.opaqueSubjects, ...record.contexts,
+      ...record.expansions.moduleEvaluations, ...record.expansions.moduleClaims, ...(record.expansions.organization ? [record.expansions.organization] : []),
+      ...(record.graph?.components.flatMap(component => [...component.members, ...component.internalRelationships]) ?? [])];
+    case 'dependency-organization-evaluation': return [record.dependencyEvaluation, record.organizationEvaluation, ...record.claims, ...record.contexts];
+    case 'dependency-evaluation': return [record.moduleEvaluation, ...record.projectModules, ...record.occurrences,
+      ...record.relationships, ...record.coverage, ...record.contexts];
     case 'claim': return [record.subject, record.context,
+      ...(record.information.type === 'dependency-organization' ? [record.information.evaluation,
+        ...record.information.occurrences.flatMap(item => [item.occurrence,
+          ...[item.source, item.target].flatMap(endpoint => [...endpoint.groups, ...endpoint.candidates, ...endpoint.artifacts, ...endpoint.evidence, ...endpoint.claims]),
+          ...item.pairs.flatMap(pair => [pair.source, pair.target, ...pair.commonAncestors, ...pair.containment])])] : []),
+      ...(record.information.type === 'dependency' ? [record.information.child, ...record.information.occurrences] : []),
       ...(record.information.type === 'export' ? [record.information.symbol, record.information.origin,
         ...record.information.routes.map(route => route.via)].filter((id): id is RecordId => id !== null) : []),
       ...(record.information.type === 'documentation-association' ? [record.information.assertion] : []),
@@ -25,7 +39,7 @@ function references(record: ProgramRecord): readonly RecordId[] {
     case 'evaluation': return [...record.modules, ...record.contexts, ...(record.claims ?? []), ...(record.basis ? [record.basis] : [])];
     case 'projection': return [...record.modules, ...record.claims, ...record.contexts, ...record.evaluations, ...record.expansions.claims];
     case 'organization-evaluation': return [record.repository, record.moduleEvaluation, ...record.groups, ...record.claims, ...record.contexts];
-    case 'organization-projection': return [record.evaluation, ...(record.moduleProjection ? [record.moduleProjection] : []),
+    case 'organization-projection': return [...record.expansions.moduleClaims, ...record.expansions.moduleEvaluations, record.evaluation, ...(record.moduleProjection ? [record.moduleProjection] : []),
       ...record.groups, ...record.modules, ...record.claims, ...record.contexts,
       ...record.expansions.groups, ...record.expansions.modules, ...record.expansions.claims];
   }
@@ -76,9 +90,129 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
           }
           break;
         }
+        case 'dependency-occurrence': {
+          requireKind(record.owner, 'module');
+          requireKind(record.context, 'claim-context');
+          requireKind(record.evidence, 'source-evidence');
+          record.targetEvidence.forEach(id => requireKind(id, 'source-evidence'));
+          if (record.target) requireKind(record.target, 'module');
+          const evidence = pending.get(record.evidence) ?? this.#records.get(record.evidence);
+          if (evidence?.kind !== 'source-evidence' || evidence.dependencyResolution?.status !== record.targetStatus) {
+            throw new Error('Dependency occurrence requires matching resolution evidence');
+          }
+          if ((record.targetStatus === 'resolved') !== (record.target !== null)
+            || (record.mechanism === 'commonjs') !== (record.commonjs !== null)
+            || (record.commonjs !== null && record.commonjs.outcome !== 'recognized')) {
+            throw new Error('Invalid dependency occurrence');
+          }
+          break;
+        }
+        case 'dependency-coverage':
+          if (record.owner) requireKind(record.owner, 'module');
+          requireKind(record.context, 'claim-context');
+          requireKind(record.evidence, 'source-evidence');
+          if (record.outcome === 'recognized') throw new Error('Recognized requests are not coverage exclusions');
+          break;
+        case 'dependency-projection': {
+          requireKind(record.evaluation, 'dependency-evaluation');
+          [...record.modules, ...record.subjects, ...record.opaqueSubjects].forEach(id => requireKind(id, 'module'));
+          record.relationships.forEach(id => {
+            requireKind(id, 'claim');
+            const edge = pending.get(id) ?? this.#records.get(id);
+            if (edge?.kind !== 'claim' || edge.information.type !== 'dependency') throw new Error('Expected dependency relationship');
+          });
+          [...record.occurrences, ...record.nonEdgeRequests].forEach(id => requireKind(id, 'dependency-occurrence'));
+          record.coverage.forEach(id => requireKind(id, 'dependency-coverage'));
+          record.contexts.forEach(id => requireKind(id, 'claim-context'));
+          record.expansions.moduleEvaluations.forEach(id => requireKind(id, 'evaluation'));
+          record.expansions.moduleClaims.forEach(id => requireKind(id, 'claim'));
+          if (record.expansions.organization) requireKind(record.expansions.organization, 'dependency-organization-evaluation');
+          if (record.graph) {
+            const count = record.graph.components.length;
+            const indices = [...record.graph.roots, ...record.graph.components.flatMap(component => component.children)];
+            if (indices.some(index => !Number.isInteger(index) || index < 0 || index >= count)
+              || !record.graph.rootsEstablished && record.graph.roots.length > 0) throw new Error('Invalid dependency graph grouping');
+            const members = record.graph.components.flatMap(component => component.members);
+            if (new Set(members).size !== members.length || members.some(id => !record.modules.includes(id))) throw new Error('Invalid dependency graph population');
+          }
+          break;
+        }
+        case 'dependency-organization-evaluation':
+          requireKind(record.dependencyEvaluation, 'dependency-evaluation');
+          requireKind(record.organizationEvaluation, 'organization-evaluation');
+          record.claims.forEach(id => requireKind(id, 'claim'));
+          record.contexts.forEach(id => requireKind(id, 'claim-context'));
+          break;
+        case 'dependency-evaluation': {
+          requireKind(record.moduleEvaluation, 'evaluation');
+          const basis = pending.get(record.moduleEvaluation) ?? this.#records.get(record.moduleEvaluation);
+          if (basis?.kind !== 'evaluation' || basis.requirement !== 'modules') throw new Error('Expected module evaluation basis');
+          record.projectModules.forEach(id => requireKind(id, 'module'));
+          const remaining = new Set<RecordId>();
+          const pairs = new Set<string>();
+          if (new Set(record.occurrences).size !== record.occurrences.length) throw new Error('Duplicate dependency evaluation occurrence');
+          record.occurrences.forEach(id => {
+            requireKind(id, 'dependency-occurrence');
+            const occurrence = pending.get(id) ?? this.#records.get(id);
+            if (occurrence?.kind === 'dependency-occurrence' && occurrence.targetStatus === 'resolved') remaining.add(id);
+          });
+          record.relationships.forEach(id => {
+            requireKind(id, 'claim');
+            const relationship = pending.get(id) ?? this.#records.get(id);
+            if (relationship?.kind !== 'claim' || relationship.information.type !== 'dependency') throw new Error('Expected dependency relationship');
+            for (const occurrence of relationship.information.occurrences) {
+              if (!remaining.delete(occurrence)) throw new Error('Dependency relationships must partition evaluation resolved occurrences exactly');
+            }
+            const pair = canonical([relationship.subject, relationship.information.child]);
+            if (pairs.has(pair)) throw new Error('Duplicate dependency relationship for ordered module pair');
+            pairs.add(pair);
+          });
+          if (remaining.size) throw new Error('Dependency relationships must partition evaluation resolved occurrences exactly');
+          record.coverage.forEach(id => requireKind(id, 'dependency-coverage'));
+          record.contexts.forEach(id => requireKind(id, 'claim-context'));
+          break;
+        }
         case 'recorded-assertion': requireKind(record.context, 'claim-context'); break;
         case 'claim':
-          if (record.information.type === 'module' || record.information.type === 'export') requireKind(record.subject, 'module');
+          if (record.information.type === 'dependency-organization') {
+            requireKind(record.subject, 'claim');
+            requireKind(record.information.evaluation, 'dependency-organization-evaluation');
+            const subject = pending.get(record.subject) ?? this.#records.get(record.subject);
+            if (subject?.kind !== 'claim' || subject.information.type !== 'dependency') throw new Error('Expected dependency relationship subject');
+            const information = record.information;
+            if (canonical([...information.occurrences.map(item => item.occurrence)].sort())
+              !== canonical([...subject.information.occurrences].sort())) throw new Error('Organization expansion requires every supporting occurrence');
+            for (const item of information.occurrences) {
+              requireKind(item.occurrence, 'dependency-occurrence');
+              for (const endpoint of [item.source, item.target]) {
+                [...endpoint.groups, ...endpoint.candidates].forEach(id => requireKind(id, 'group'));
+                endpoint.artifacts.forEach(id => requireKind(id, 'repository-artifact'));
+                endpoint.evidence.forEach(id => requireKind(id, 'source-evidence'));
+                endpoint.claims.forEach(id => requireKind(id, 'claim'));
+              }
+              item.pairs.forEach(pair => {
+                [pair.source, pair.target, ...pair.commonAncestors].forEach(id => requireKind(id, 'group'));
+                pair.containment.forEach(id => requireKind(id, 'claim'));
+              });
+              if ((item.status === 'established') !== (item.classification !== null)) throw new Error('Invalid occurrence organization qualification');
+            }
+            if (information.classification !== null && information.occurrences.some(item => item.status !== 'established')) throw new Error('Incomplete organization evidence cannot establish a common classification');
+          }
+          if (record.information.type === 'dependency') {
+            const child = record.information.child;
+            requireKind(record.subject, 'module');
+            requireKind(record.information.child, 'module');
+            const occurrences = record.information.occurrences.map(id => pending.get(id) ?? this.#records.get(id));
+            if (occurrences.length === 0 || new Set(record.information.occurrences).size !== occurrences.length
+              || occurrences.some(occurrence => occurrence?.kind !== 'dependency-occurrence'
+                || occurrence.owner !== record.subject || occurrence.target !== child
+                || occurrence.targetStatus !== 'resolved')) throw new Error('Dependency relationship lacks matching occurrences');
+            const support = occurrences.filter(occurrence => occurrence?.kind === 'dependency-occurrence');
+            const mechanisms = [...new Set(support.map(occurrence => occurrence.mechanism))].sort();
+            if (record.information.typeOnly !== support.every(occurrence => occurrence.typeOnly)
+              || canonical(mechanisms) !== canonical(record.information.mechanisms)) throw new Error('Invalid dependency aggregation');
+          }
+          if (record.information.type === 'module' || record.information.type === 'export' || record.information.type === 'module-composition') requireKind(record.subject, 'module');
           if (record.information.type === 'symbol') requireKind(record.subject, 'symbol');
           if (['group', 'group-containment', 'artifact-placement', 'group-documentation', 'group-properties'].includes(record.information.type)) {
             requireKind(record.subject, 'group');
@@ -171,6 +305,8 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
           break;
         }
         case 'organization-projection':
+          record.expansions.moduleClaims.forEach(id => requireKind(id, 'claim'));
+          record.expansions.moduleEvaluations.forEach(id => requireKind(id, 'evaluation'));
           requireKind(record.evaluation, 'organization-evaluation');
           if (record.moduleProjection) requireKind(record.moduleProjection, 'projection');
           [...record.groups, ...record.expansions.groups].forEach(id => requireKind(id, 'group'));

@@ -1,37 +1,35 @@
 # Project Status
 
-Last reviewed: 2026-09-15
+Last reviewed: 2026-09-20
 
-The initial module-inventory slice is complete. The development CLI provides
-Unicode and experimental JSON inventories, exact-selection inspection,
-export and documentation expansions, source evidence, and local observations.
+The module-inventory and repository-organization slices are complete. The
+development CLI provides Unicode and experimental JSON views, module and group
+inspection, exports and documentation, source evidence, and scoped navigation.
 
 Most recently completed:
-[Repository organization slice](docs/plans/repository-organization-plan.md), with
+[Module dependency slice](docs/plans/module-dependencies-plan.md), with
 implementation, verification, and acceptance preserved in
-[the completed task](records/tasks/2026-09-15-module-organization.md).
+[the completed task](records/tasks/2026-09-16-module-dependencies.md).
 
-The CLI now provides `organization project`, `organization repository`, and
-generic group/module inspection, including scoped navigation, qualified Unicode
-and JSON views, source-detail paths, display omissions, and observations. The
-repository-evidence and records checkpoints are accepted; their dispositions
-preserve the reviews and corrections.
+The CLI now provides project dependency structure and direct dependency children
+and parents, including shared dependencies, cycles, and opaque external endpoints.
+Module composition and repository organization add context to these relationships.
+The provider and graph checkpoints are accepted; their dispositions preserve the
+reviews and corrections.
 
 The representative journey and bounded instrument evaluation have run on PostCode
-and the unfamiliar `tsyringe` repository. Clean evaluators understood membership,
-scope, documentation limits, and next-step navigation; their wording feedback was
-incorporated. Fresh self-analysis was slow in the measured multi-invocation
-journey, a recorded limitation for final review.
+and the unfamiliar `ts-node` repository using an explicitly adapted configuration.
+Clean evaluators understood dependency direction, qualifications, display limits,
+and next-step navigation; their wording feedback was incorporated. Fresh analysis
+was slow in measured runs, a recorded limitation.
 
-Implementation and planned verification are complete. The first
-integrated review's decision-link correction and both
-[Copilot findings](records/reviews/repository-organization/2026-09-15-integrated-round-2-copilot-findings.md)
-are addressed. Type checking and all 129 tests pass after the link-placement and
-incoming-parent source-evidence corrections. The
-[disposition](records/reviews/repository-organization/2026-09-15-integrated-disposition.md)
-records verification and remaining limits. The
-[second Copilot review](records/reviews/repository-organization/2026-09-15-integrated-round-3-copilot-findings.md)
-is clean. The plan and decisions now use “repository organization” to reflect
-their scope; historical task and review identifiers retain their original names.
-The human accepted the final review gate and directed task closure on 2026-09-15.
-[PR #3](https://github.com/ronen/postcode/pull/3) is ready for the human to merge.
+Dependency views retain the distinction between established relationships,
+requests without established targets, and limits on what the analysis recognizes.
+They describe direct source dependencies rather than runtime behavior or
+architectural intent. These views connect to module inspection and repository
+organization, providing a broader basis for exploring program structure.
+
+Implementation, planned verification, and review are complete. The human accepted
+the final review gate on 2026-09-20. The
+[integrated disposition](records/reviews/module-dependencies/2026-09-17-integrated-disposition.md)
+records the review outcomes and remaining limits.

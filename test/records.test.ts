@@ -67,7 +67,7 @@ test('entity claims require the matching discriminator and reciprocal subject be
           guarantee: 'Synthetic fixture', limitations: [], diagnostics: [] };
         const moduleClaim: ModuleClaim = { ...base, kind: 'claim', id: id('module-claim'),
           subject: id('module'), context: claimContext.id, information: { type: 'module', name: null,
-            handle: 'fixture', handleStatus: 'generated-navigation-aid', handleProvenance: 'anonymous-fallback', facets: [] } };
+            handle: 'fixture', handleStatus: 'generated-navigation-aid', handleProvenance: 'anonymous-fallback', discoveryFacets: [] } };
         const symbolClaim: SymbolClaim = { ...base, kind: 'claim', id: id('symbol-claim'),
           subject: id('symbol'), context: claimContext.id, information: { type: 'symbol', name: 'fixture',
             roles: { type: false, value: true }, declarationCount: 1 } };
@@ -107,7 +107,7 @@ test('documentation associations validate subject kinds and export discriminator
           { ...base, kind: 'symbol', id: id('symbol'), claim: id('symbol-claim') },
           { ...base, kind: 'claim', id: id('module-claim'), subject: id('module'), context: claimContext.id,
             information: { type: 'module', name: null, handle: 'fixture', handleStatus: 'generated-navigation-aid',
-              handleProvenance: 'anonymous-fallback', facets: [] } },
+              handleProvenance: 'anonymous-fallback', discoveryFacets: [] } },
           { ...base, kind: 'claim', id: id('symbol-claim'), subject: id('symbol'), context: claimContext.id,
             information: { type: 'symbol', name: 'fixture', roles: { type: false, value: true }, declarationCount: 1 } },
           { ...base, kind: 'claim', id: id('export'), subject: id('module'), context: claimContext.id,
@@ -204,7 +204,7 @@ test('duplicate exact names and handles select multiple modules and only their c
     const claim: ModuleClaim = {
       kind: 'claim', id: recordId(snapshot, 'claim', id), snapshot, method: 'test@0', subject: id, context: context.id,
       information: { type: 'module', name: index < 2 ? 'duplicate' : 'other', handle: index < 2 ? 'shared-handle' : 'other-handle',
-        handleStatus: 'generated-navigation-aid', handleProvenance: 'anonymous-fallback', facets: [] },
+        handleStatus: 'generated-navigation-aid', handleProvenance: 'anonymous-fallback', discoveryFacets: [] },
     };
     store.put([{ kind: 'module', id, snapshot, method: 'test@0', claim: claim.id }, context, claim]);
   }

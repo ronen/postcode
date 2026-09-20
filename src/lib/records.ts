@@ -1,3 +1,4 @@
+import type { DependencyRecords, DependencyRelationshipClaim, DependencyOrganizationClaim, DependencyTargetStatus } from './dependencies/records.js';
 import type { OrganizationClaims, OrganizationRecords } from './organization/records.js';
 
 /** Logical records; no compiler objects or storage-native identifiers cross this boundary. */
@@ -29,7 +30,7 @@ export interface ModuleRecord extends RecordContext {
   readonly claim: RecordId;
 }
 
-export type ModuleFacet = 'ambient' | 'declaration-only' | 'implementation-available'
+export type ModuleDiscoveryFacet = 'ambient' | 'declaration-only' | 'implementation-available'
   | 'project' | 'external';
 
 export interface ModuleClaim extends RecordContext {
@@ -43,13 +44,13 @@ export interface ModuleClaim extends RecordContext {
     readonly handle: string;
     readonly handleStatus: 'generated-navigation-aid';
     readonly handleProvenance: 'language-name' | 'source-basename' | 'declared-export' | 'anonymous-fallback';
-    readonly facets: readonly ModuleFacet[];
+    readonly discoveryFacets: readonly ModuleDiscoveryFacet[];
   };
 }
 
-export type ModuleExpansion = 'exports' | 'documentation';
+export type ModuleExpansion = 'exports' | 'documentation' | 'composition';
 /** Entity-kind policy, independent of the lens used to select modules. */
-export const moduleStandardExpansions: readonly ModuleExpansion[] = ['exports', 'documentation'];
+export const moduleStandardExpansions: readonly ModuleExpansion[] = ['exports', 'documentation', 'composition'];
 
 export interface SymbolRecord extends RecordContext {
   readonly kind: 'symbol';
@@ -106,7 +107,14 @@ export interface DocumentationAssociationClaim extends RecordContext {
   };
 }
 
-export type Claim = ModuleClaim | SymbolClaim | ExportClaim | DocumentationAssociationClaim | OrganizationClaims;
+export interface ModuleCompositionClaim extends RecordContext {
+  readonly kind: 'claim';
+  readonly subject: RecordId;
+  readonly context: RecordId;
+  readonly information: { readonly type: 'module-composition'; readonly property: 're-exports-only' };
+}
+
+export type Claim = ModuleCompositionClaim | ModuleClaim | SymbolClaim | ExportClaim | DocumentationAssociationClaim | OrganizationClaims | DependencyRelationshipClaim | DependencyOrganizationClaim;
 export function isModuleClaim(record: ProgramRecord): record is ModuleClaim {
   return record.kind === 'claim' && record.information.type === 'module';
 }
@@ -124,6 +132,14 @@ export interface SourceEvidenceRecord extends RecordContext {
     readonly from: { readonly line: number; readonly column: number };
     readonly to: { readonly line: number; readonly column: number };
     readonly excerpt: { readonly text: string; readonly omittedCharacters: number };
+  };
+  readonly dependencyResolution?: {
+    readonly writtenSpecifier: string | null;
+    readonly status: DependencyTargetStatus;
+    /** Raw configured file-resolver result; target correspondence is separately established. */
+    readonly resolvedFile: string | null;
+    readonly targetBasis: 'checker-symbol' | 'configured-file-resolution' | 'exact-ambient-symbol' | 'none';
+    readonly mode: 'commonjs' | 'esm' | 'unspecified';
   };
   readonly configuredRoot: boolean;
   readonly compilerName: string | null;
@@ -185,7 +201,7 @@ export interface ProjectionRecord extends RecordContext {
 }
 
 export type ProgramRecord = SnapshotRecord | ModuleRecord | SymbolRecord | Claim | RecordedAssertion
-  | SourceEvidenceRecord | ClaimContextRecord | EvaluationRecord | ProjectionRecord | OrganizationRecords;
+  | SourceEvidenceRecord | ClaimContextRecord | EvaluationRecord | ProjectionRecord | OrganizationRecords | DependencyRecords;
 
 /** Only the domain operations currently used by discovery and lenses. */
 export interface ProgramRecordStore {

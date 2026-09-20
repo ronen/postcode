@@ -22,7 +22,8 @@ Coding agents should begin with [`AGENTS.md`](AGENTS.md). The detailed developme
 
 The development CLI opens one configured TypeScript project and presents qualified
 `modules(project)`, repository/project organization, and exact-selection group or
-module inspection views. Use Node.js
+module inspection views, plus project dependency structure and direct dependency
+child/parent navigation. Use Node.js
 22.13 or later:
 
 ```sh
@@ -35,6 +36,7 @@ npm run --silent postcode -- inspect documented --project fixtures/exports/tscon
 npm run --silent postcode -- --json
 npm run --silent postcode -- organization project
 npm run --silent postcode -- organization repository --json
+npm run --silent postcode -- dependencies --project fixtures/dependency-journey/tsconfig.json
 npm test
 npm run check
 ```
@@ -59,7 +61,7 @@ paths as invocation context; replace only its subject. A short snapshot label is
 displayed in the header, while that command retains the full required snapshot.
 Place additional options before the generated command's `--` marker; text after
 it is the literal selector, including names such as `--json` or `-h`.
-`--source-detail` is available only for inspection and shows supporting source
+`--source-detail` is available for inspection and dependency views and shows supporting source
 locations and bounded excerpts grouped by displayed concepts, separately identified
 as source escape. File-level associations have no excerpt; it does not show full files.
 

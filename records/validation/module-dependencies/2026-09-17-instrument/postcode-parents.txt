@@ -1,0 +1,73 @@
+Module dependency parents
+Snapshot snapshot:3c40ae1d5d38840e5c286ace1df33da0a5006f5e64e40db060d070fd6889f044
+Direction: dependency parent → dependency child (depends directly on).
+31 modules · 30 direct relationships
+modules: available, completed, materialization full
+dependencies: available, completed, materialization full
+organization: available, completed, materialization partial · Some requested organization context is unavailable or incomplete.
+1 exact match(es) · current
+Selected: records (module-b3cab524)
+
+Established direct relationships
+  memory-store (module-06752ef3) → records (module-b3cab524) · type-only · static-import · same-group
+  organization (module-0b4396fc) → records (module-b3cab524) · type-only · static-import · outward
+  expansions (module-12c6a73c) → records (module-b3cab524) · type-only · static-import · outward
+  composition (module-1b8132e0) → records (module-b3cab524) · type-only · static-import · outward
+  dependency-repository-probe (module-2a7c76ea) → records (module-b3cab524) · static-import · outward
+  records (module-2b23ed6d) → records (module-b3cab524) · type-only · static-import · outward
+  presentation (module-2cdb5357) → records (module-b3cab524) · static-import · outward
+  graph (module-2dc13097) → records (module-b3cab524) · type-only · static-import · outward
+  presentation (module-2e897200) → records (module-b3cab524) · static-import · same-group
+  presentation (module-34f2e9f0) → records (module-b3cab524) · static-import · outward
+  projections (module-37728742) → records (module-b3cab524) · static-import · same-group
+  identity (module-393681de) → records (module-b3cab524) · type-only · static-import · same-group
+  discovery-test (module-42f36502) → records (module-b3cab524) · type-only · static-import · outward
+  cli (module-61acf56d) → records (module-b3cab524) · type-only · static-import · same-group
+  dependencies (module-62d9f41d) → records (module-b3cab524) · type-only · static-import · outward
+  projections (module-69998884) → records (module-b3cab524) · type-only · static-import · outward
+  dependency-provider-probe (module-7ee5cd37) → records (module-b3cab524) · type-only · static-import · outward
+  evaluate (module-7fa6c1d9) → records (module-b3cab524) · type-only · static-import · outward
+  expansions-test (module-8894daae) → records (module-b3cab524) · type-only · static-import · outward
+  dependencies-test (module-9f201eec) → records (module-b3cab524) · type-only · static-import · outward
+  records (module-a9b8523d) → records (module-b3cab524) · type-only · static-import · outward
+  project (module-abc07ffd) → records (module-b3cab524) · type-only · static-import · outward
+  records-test (module-ae601b33) → records (module-b3cab524) · type-only · static-import · outward
+  evaluation (module-b1fefef5) → records (module-b3cab524) · type-only · static-import · same-group
+  organization-test (module-b5fefc6c) → records (module-b3cab524) · type-only · static-import · outward
+  evaluate (module-b9e659b2) → records (module-b3cab524) · type-only · static-import · outward
+  composition-view (module-e9b413c4) → records (module-b3cab524) · type-only · static-import · same-group
+  helpers (module-eea1d225) → records (module-b3cab524) · type-only · static-import · outward
+  projections (module-f3757677) → records (module-b3cab524) · static-import · outward
+  dependency-projections-test (module-fdd6127b) → records (module-b3cab524) · type-only · static-import · outward
+
+Display
+  0 modules omitted · 0 relationships omitted · 0 descents pruned
+  0 supporting occurrences omitted · 0 request results summarized/omitted · 0 recognition outcomes summarized/omitted
+  Display bounds do not reduce analysis coverage.
+
+Qualifications
+  Source requests only: no value-use, emission, loader availability, execution, bundler, or deployment claims.
+  Only project-owned requests are analyzed; external module interiors are opaque.
+  CommonJS coverage is bare require with exactly one argument, complete lexical evidence, and affirmative captured context; aliases, properties and other APIs are excluded.
+  Defined ESM format overrides ambient declarations; preserve requires callable ambient corroboration; absent module options do not infer compiler defaults.
+  Nonliteral targets are not evaluated; resolved files outside the discovered population do not add modules.
+  Dependency direction: a parent depends directly on a child. Roots are structural, not entry points or importance.
+  Re-exports only is a syntax property, not a barrel, API, purity, or safe-collapse claim.
+  Repository layout establishes no dependency policy or architectural violation.
+  Generated handles are navigation cues; exact names and snapshot-scoped Entity IDs retain their established meanings.
+  A request without an established child cannot be attributed to the selected module and therefore cannot produce a parent result.
+
+Next · inspect a module:
+node /Users/ronen/postcode/app/_build/src/cli.js inspect --dependency-context \
+  --snapshot snapshot:3c40ae1d5d38840e5c286ace1df33da0a5006f5e64e40db060d070fd6889f044 \
+  --project /Users/ronen/postcode/app/tsconfig.json -- MODULE_HANDLE
+
+Next · dependency children:
+node /Users/ronen/postcode/app/_build/src/cli.js children \
+  --snapshot snapshot:3c40ae1d5d38840e5c286ace1df33da0a5006f5e64e40db060d070fd6889f044 \
+  --project /Users/ronen/postcode/app/tsconfig.json -- ENTITY_ID
+
+Next · dependency parents:
+node /Users/ronen/postcode/app/_build/src/cli.js parents \
+  --snapshot snapshot:3c40ae1d5d38840e5c286ace1df33da0a5006f5e64e40db060d070fd6889f044 \
+  --project /Users/ronen/postcode/app/tsconfig.json -- ENTITY_ID

@@ -65,6 +65,11 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 - [Initial projection architecture decisions](initial-projection-architecture-decisions.md)
 - [Initial observation recording decisions](initial-observation-recording-decisions.md)
 - [Repository organization slice decisions](repository-organization-decisions.md)
+- [Module dependency structure decisions](module-dependency-structure-decisions.md)
+- [Bounded CommonJS source evidence](bounded-commonjs-source-evidence-decision.md) (replaces the CommonJS decision in the preceding bundle)
+- [Module composition property decision](module-composition-property-decision.md)
+- [Dependency and organization integration decisions](dependency-organization-integration-decisions.md)
+- [Subject-kind standard expansion decision](subject-kind-standard-expansion-decision.md)
 
 ## Suggested Contents
 
