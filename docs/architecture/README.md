@@ -78,10 +78,11 @@ retains actual target declarations for later placement analysis. Aggregation
 preserves direct re-export intermediates and all occurrences, and marks a
 relationship type-only only when every occurrence establishes that qualification.
 
-This is an implementation checkpoint, not a new CLI view. Dependency graph
-projections, optional composition and organization expansions, presentations,
-navigation, and dependency-view observations remain to be integrated under the
-[active plan](../plans/module-dependencies-plan.md).
+This provider boundary supplies the evidence for the integrated dependency graph
+projections, composition and organization expansions, presentations, navigation,
+and dependency-view observations described below. Those layers implement the
+[active plan](../plans/module-dependencies-plan.md) without moving compiler analysis
+into projections or presentation.
 
 ## Identity and evidence
 

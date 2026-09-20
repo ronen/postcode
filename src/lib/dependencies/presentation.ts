@@ -220,6 +220,7 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
 
 export function renderDependencyView(view: QualifiedDependencyView): string {
   if (view.presentation.format === 'json') return `${JSON.stringify(view, null, 2)}\n`;
+  const counted = (count: number, noun: string) => `${count} ${noun}${count === 1 ? '' : 's'}`;
   const modules = new Map(view.modules.map(module => [module.id, module]));
   const label = (id: RecordId, annotation = true) => {
     const module = modules.get(id);
@@ -228,13 +229,13 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
   const edgeText = (edge: EdgeView) => `${label(edge.parent, false)} → ${label(edge.child, false)}${edge.typeOnly ? ' · type-only' : ''} · ${edge.mechanisms.join(', ')}${edge.organization ? ` · ${edge.organization.classification ?? 'organization not established'}` : ''}`;
   const lines = [`Module dependency ${view.projection.lens === 'dependency-structure' ? 'structure' : view.projection.lens === 'dependency-children' ? 'children' : 'parents'}`,
     `Snapshot ${view.projection.snapshot}`, 'Direction: dependency parent → dependency child (depends directly on).',
-    `${view.summary.modules} modules in this projection · ${view.summary.relationships} direct relationships`,
-    `Materialized population: ${view.summary.projectModules} project modules; ${view.summary.discoveredModules} discovered modules available for exact lookup.`,
+    `${counted(view.summary.modules, 'module')} in this projection · ${counted(view.summary.relationships, 'direct relationship')}`,
+    `Materialized population: ${counted(view.summary.projectModules, 'project module')}; ${counted(view.summary.discoveredModules, 'discovered module')} available for exact lookup.`,
     'Analysis outcomes below describe supported source requests, not complete runtime behavior.',
-    `Display bounds: ${view.display.omittedModules} modules and ${view.display.omittedRelationships} relationships omitted; ${view.display.prunedComponents} further descents pruned.`];
+    `Display bounds: ${counted(view.display.omittedModules, 'module')} and ${counted(view.display.omittedRelationships, 'relationship')} omitted; ${counted(view.display.prunedComponents, 'further descent')} pruned.`];
   for (const [name, outcome] of Object.entries(view.evaluations)) if (outcome) lines.push(`${name}: ${outcome.availability}, ${outcome.execution}, materialization ${outcome.materialization}${outcome.reason ? ` · ${inlineText(outcome.reason)}` : ''}`);
   if (view.projection.parameters.selector !== null) {
-    lines.push(`${view.projection.selection.matches} exact match(es) · ${view.projection.selection.referenceStatus}`);
+    lines.push(`${view.projection.selection.matches} exact ${view.projection.selection.matches === 1 ? 'match' : 'matches'} · ${view.projection.selection.referenceStatus}`);
     for (const subject of view.subjects) lines.push(`Selected: ${label(subject)}`);
   }
   if (view.graph) {
@@ -271,18 +272,18 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
       const request = view.requestResults.findIndex(result => result.id === item.subject);
       const coverage = view.recognitionCoverage.findIndex(result => result.id === item.subject);
       lines.push(`  ${request >= 0 ? `Request ${request + 1}` : coverage >= 0 ? `Coverage ${coverage + 1}` : item.role}: ${inlineText(source.path)}${source.location.association === 'span' ? `:${source.location.from.line}:${source.location.from.column}` : ''}`);
-      if (source.location.association === 'span') lines.push(`    ${inlineText(source.location.excerpt.text)}${source.location.excerpt.omittedCharacters ? ` … ${source.location.excerpt.omittedCharacters} characters omitted` : ''}`);
+      if (source.location.association === 'span') lines.push(`    ${inlineText(source.location.excerpt.text)}${source.location.excerpt.omittedCharacters ? ` … ${counted(source.location.excerpt.omittedCharacters, 'character')} omitted` : ''}`);
       if (source.dependencyResolution) lines.push(`    ${source.dependencyResolution.status} · ${source.dependencyResolution.targetBasis} · ${source.dependencyResolution.mode} · target file: ${inlineText(source.dependencyResolution.resolvedFile ?? '(none)')}`);
     }
-    for (const claim of view.sourceDetail.organization) lines.push(`  Organization evidence: ${claim.information.classification ?? 'not established'} · ${claim.information.occurrences.length} occurrence(s) · ${claim.information.occurrences.reduce((sum, item) => sum + item.pairs.length, 0)} placement comparison(s); bounded captured support in JSON source detail.`);
+    for (const claim of view.sourceDetail.organization) lines.push(`  Organization evidence: ${claim.information.classification ?? 'not established'} · ${counted(claim.information.occurrences.length, 'occurrence')} · ${counted(claim.information.occurrences.reduce((sum, item) => sum + item.pairs.length, 0), 'placement comparison')}; bounded captured support in JSON source detail.`);
     for (const evidence of view.sourceDetail.organizationEvidence) {
       if (evidence.kind === 'repository-region') lines.push(`  Organization region: ${inlineText(evidence.path || '[repository root]')}`);
       if (evidence.kind === 'repository-artifact') lines.push(`  Organization artifact: ${inlineText(evidence.artifact.path)}`);
     }
-    lines.push(`  Source omissions: ${view.sourceDetail.omittedEvidence} evidence records · ${view.sourceDetail.omittedOrganizationClaims} organization claims · ${view.sourceDetail.omittedOrganizationEvidence} organization evidence records · ${view.sourceDetail.organization.reduce((sum, claim) => sum + claim.omittedOccurrences, 0)} organization occurrences.`);
+    lines.push(`  Source omissions: ${counted(view.sourceDetail.omittedEvidence, 'evidence record')} · ${counted(view.sourceDetail.omittedOrganizationClaims, 'organization claim')} · ${counted(view.sourceDetail.omittedOrganizationEvidence, 'organization evidence record')} · ${counted(view.sourceDetail.organization.reduce((sum, claim) => sum + claim.omittedOccurrences, 0), 'organization occurrence')}.`);
   }
-  lines.push('', 'Display', `  ${view.display.omittedModules} modules omitted · ${view.display.omittedRelationships} relationships omitted · ${view.display.prunedComponents} descents pruned`,
-    `  ${view.display.omittedOccurrences} supporting occurrences omitted · ${view.display.omittedRequestResults} request results summarized/omitted · ${view.display.omittedCoverageOutcomes} recognition outcomes summarized/omitted`,
+  lines.push('', 'Display', `  ${counted(view.display.omittedModules, 'module')} omitted · ${counted(view.display.omittedRelationships, 'relationship')} omitted · ${counted(view.display.prunedComponents, 'descent')} pruned`,
+    `  ${counted(view.display.omittedOccurrences, 'supporting occurrence')} omitted · ${counted(view.display.omittedRequestResults, 'request result')} summarized/omitted · ${counted(view.display.omittedCoverageOutcomes, 'recognition outcome')} summarized/omitted`,
     '  Display bounds do not reduce analysis coverage.', '', 'Qualifications', ...view.limitations.map(item => `  ${item}`));
   for (const code of new Set(view.qualifications.flatMap(context => context.diagnostics.map(item => item.code)))) lines.push(`  Encountered TypeScript diagnostic: TS${code}`);
   if (view.presentation.navigation || view.presentation.dependencyNavigation) lines.push('', 'Navigation evaluates current inputs afresh. Scoped selectors reject snapshot mismatches; source detail uses evidence captured in the new invocation.');

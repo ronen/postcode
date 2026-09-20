@@ -5,10 +5,10 @@ import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
 import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
-import type { DependencyCoverageRecord, DependencyOccurrenceRecord, DependencyRelationshipClaim } from '../src/lib/dependencies/records.js';
+import type { DependencyCoverageRecord, DependencyEvaluationRecord, DependencyOccurrenceRecord, DependencyRelationshipClaim } from '../src/lib/dependencies/records.js';
 import { evaluateModules } from '../src/lib/evaluation.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
-import type { ModuleClaim, RecordId, SourceEvidenceRecord } from '../src/lib/records.js';
+import type { ModuleClaim, ProgramRecord, RecordId, SourceEvidenceRecord } from '../src/lib/records.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
 
 function analyze(config: string, excludedOutputDirectories: readonly string[] = []) {
@@ -428,4 +428,41 @@ test('merged module relationships retain distinct diagnostics across files witho
     assert.equal(result.evaluation.execution, 'completed');
     assert.equal(result.evaluation.materialization, 'full');
   });
+});
+
+
+test('dependency evaluations partition resolved occurrences exactly and reject inconsistent batches atomically', () => {
+  const { store, evaluation, relationships, occurrences } = analyze(fixture('dependency-contract'));
+  const edge = relationships[0]!;
+  const occurrence = occurrences.find(item => item.id === edge.information.occurrences[0])!;
+  let sequence = 0;
+  const reject = (changes: Partial<DependencyEvaluationRecord>, extra: ProgramRecord[] = []) => {
+    const id = `${evaluation.id}-partition-${sequence++}` as RecordId;
+    const context = store.get(evaluation.contexts[0]!);
+    const marker = { ...context, id: `${id}-marker` as RecordId };
+    assert.throws(() => store.put([marker, ...extra, { ...evaluation, ...changes, id }]), /partition|Duplicate dependency evaluation occurrence/);
+    for (const rejected of [marker.id, ...extra.map(record => record.id), id]) {
+      assert.throws(() => store.get(rejected), /Missing program record/);
+    }
+    assert.deepEqual(store.get(evaluation.id), evaluation);
+  };
+  // Missing an edge loses retained resolved evidence.
+  reject({ relationships: evaluation.relationships.filter(id => id !== edge.id) });
+  // A valid stored edge cannot draw support outside this evaluation.
+  reject({ occurrences: evaluation.occurrences.filter(id => id !== occurrence.id) });
+  reject({ relationships: [...evaluation.relationships, edge.id] });
+  // Distinct relationship IDs must not count the same occurrence twice either.
+  const duplicate = { ...edge, id: `${edge.id}-duplicate` as RecordId };
+  reject({ relationships: [...evaluation.relationships, duplicate.id] }, [duplicate]);
+  reject({ occurrences: [...evaluation.occurrences, occurrence.id] });
+  // Exercise forward references to new support in the pending batch.
+  const pendingOccurrence = { ...occurrence, id: `${occurrence.id}-pending` as RecordId };
+  const pendingEdge = { ...edge, id: `${edge.id}-pending` as RecordId,
+    information: { ...edge.information, occurrences: [pendingOccurrence.id],
+      mechanisms: [pendingOccurrence.mechanism], typeOnly: pendingOccurrence.typeOnly } };
+  reject({ relationships: [...evaluation.relationships, pendingEdge.id] }, [pendingEdge, pendingOccurrence]);
+  const valid = { ...evaluation, id: `${evaluation.id}-valid-partial` as RecordId,
+    materialization: 'partial' as const, reason: 'Other requests unavailable.' };
+  store.put([valid]);
+  assert.deepEqual(store.get(valid.id), valid); // Partial evaluation still covers all retained resolved evidence.
 });

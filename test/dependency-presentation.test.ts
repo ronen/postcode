@@ -6,7 +6,7 @@ import path from 'node:path';
 import { test } from 'node:test';
 import { runCli } from '../src/lib/cli.js';
 import type { ObservationBatch } from '../src/lib/observations.js';
-import type { QualifiedDependencyView } from '../src/lib/dependencies/presentation.js';
+import { renderDependencyView, type QualifiedDependencyView } from '../src/lib/dependencies/presentation.js';
 import type { QualifiedView } from '../src/lib/presentation.js';
 
 async function invoke(config: string, args: string[]) {
@@ -165,4 +165,29 @@ test('component bounds count disconnected omissions and terminal controls stay i
     assert.equal(json.modules.length, 66);
     assert.equal(json.display.omittedModules, 0);
   } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+
+test('dependency rendering pluralizes each independent count including omissions', async () => {
+  const original = viewOf(await invoke(path.resolve('fixtures/dependency-journey/tsconfig.json'), ['dependencies', '--source-detail']));
+  for (const count of [0, 1, 2]) {
+    const view: QualifiedDependencyView = { ...original,
+      summary: { ...original.summary, modules: count, relationships: 2 - count,
+        projectModules: count, discoveredModules: 2 - count },
+      display: { ...original.display, omittedModules: count, omittedRelationships: 2 - count,
+        prunedComponents: count, omittedOccurrences: count, omittedRequestResults: count,
+        omittedCoverageOutcomes: count },
+      sourceDetail: { ...original.sourceDetail!, omittedEvidence: count, omittedOrganizationClaims: count },
+    };
+    const text = renderDependencyView(view);
+    const suffix = count === 1 ? '' : 's';
+    const otherSuffix = 2 - count === 1 ? '' : 's';
+    assert.ok(text.includes(`${count} module${suffix} in this projection · ${2 - count} direct relationship${otherSuffix}`));
+    assert.ok(text.includes(`${count} project module${suffix}; ${2 - count} discovered module${otherSuffix}`));
+    assert.ok(text.includes(`${count} module${suffix} and ${2 - count} relationship${otherSuffix} omitted; ${count} further descent${suffix} pruned`));
+    assert.ok(text.includes(`${count} supporting occurrence${suffix} omitted`));
+    assert.ok(text.includes(`${count} request result${suffix} summarized/omitted`));
+    assert.ok(text.includes(`${count} recognition outcome${suffix} summarized/omitted`));
+    assert.ok(text.includes(`${count} evidence record${suffix} · ${count} organization claim${suffix}`));
+  }
 });

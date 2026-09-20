@@ -148,12 +148,22 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
           const basis = pending.get(record.moduleEvaluation) ?? this.#records.get(record.moduleEvaluation);
           if (basis?.kind !== 'evaluation' || basis.requirement !== 'modules') throw new Error('Expected module evaluation basis');
           record.projectModules.forEach(id => requireKind(id, 'module'));
-          record.occurrences.forEach(id => requireKind(id, 'dependency-occurrence'));
+          const remaining = new Set<RecordId>();
+          if (new Set(record.occurrences).size !== record.occurrences.length) throw new Error('Duplicate dependency evaluation occurrence');
+          record.occurrences.forEach(id => {
+            requireKind(id, 'dependency-occurrence');
+            const occurrence = pending.get(id) ?? this.#records.get(id);
+            if (occurrence?.kind === 'dependency-occurrence' && occurrence.targetStatus === 'resolved') remaining.add(id);
+          });
           record.relationships.forEach(id => {
             requireKind(id, 'claim');
             const relationship = pending.get(id) ?? this.#records.get(id);
             if (relationship?.kind !== 'claim' || relationship.information.type !== 'dependency') throw new Error('Expected dependency relationship');
+            for (const occurrence of relationship.information.occurrences) {
+              if (!remaining.delete(occurrence)) throw new Error('Dependency relationships must partition evaluation resolved occurrences exactly');
+            }
           });
+          if (remaining.size) throw new Error('Dependency relationships must partition evaluation resolved occurrences exactly');
           record.coverage.forEach(id => requireKind(id, 'dependency-coverage'));
           record.contexts.forEach(id => requireKind(id, 'claim-context'));
           break;
