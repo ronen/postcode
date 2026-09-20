@@ -1,6 +1,6 @@
 # Project Status
 
-Last reviewed: 2026-09-17
+Last reviewed: 2026-09-20
 
 The initial module-inventory slice is complete. The development CLI provides
 Unicode and experimental JSON inventories, exact-selection inspection,
@@ -82,5 +82,6 @@ review reports no defects and independently reproduces the journey and PostCode
 counts, with type checking and all 188 tests passing. Its
 [disposition](records/reviews/module-dependencies/2026-09-17-integrated-disposition.md)
 records the non-defect observations, editorial clarifications and verification
-limits. The human explicitly directed that the task remain open for a later PR
-process; no closure or PR has been performed.
+limits. [PR #4](https://github.com/ronen/postcode/pull/4) is open with implementation
+context and review guidance for Copilot. The task remains active as directed by the
+human; PR review and an explicit final gate decision remain pending.
