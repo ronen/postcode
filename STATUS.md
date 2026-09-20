@@ -86,6 +86,8 @@ limits. [PR #4](https://github.com/ronen/postcode/pull/4) is open with implement
 context and review guidance for Copilot. Its first Copilot review identified three
 findings: evaluation-wide occurrence partition validation, count-dependent wording,
 and a stale architecture paragraph. All are corrected and recorded in the integrated
-disposition; type checking and all 190 tests pass. The PR is prepared for another
-review. The task remains active; further review and an explicit human final gate
+disposition. The second Copilot review confirms those findings resolved and identifies
+a further gap: disjointly supported relationships for the same ordered module pair.
+That invariant is now enforced with an atomic-rejection regression; type checking
+and all 191 tests pass. The PR is prepared for another review. The task remains active; further review and an explicit human final gate
 decision remain pending.

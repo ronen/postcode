@@ -3,7 +3,7 @@ Date: 2026-09-17
 Updated: 2026-09-20
 Task: [Module dependencies](../../tasks/2026-09-16-module-dependencies.md)
 Handoff: [Integrated review](2026-09-17-integrated-handoff.md)
-Findings: [Round 1](2026-09-17-integrated-round-1-findings.md); [Round 2 — Copilot](2026-09-20-integrated-round-2-copilot-findings.md)
+Findings: [Round 1](2026-09-17-integrated-round-1-findings.md); [Round 2 — Copilot](2026-09-20-integrated-round-2-copilot-findings.md); [Round 3 — Copilot](2026-09-20-integrated-round-3-copilot-findings.md)
 
 # Module dependencies integrated review: disposition
 
@@ -137,3 +137,37 @@ identify the exact new head and prior target for that review.
 
 The task remains **active**. Further independent review and the human's explicit
 final gate decision are pending; no merge or closure is authorized by this disposition.
+
+
+## Round 3 — Copilot disposition (2026-09-20)
+
+Copilot review `5260102601` examined `bb29a6dd99808bce31331c860225d25e2101679c`
+and confirms all three round-2 findings are resolved. The complete new review and
+annotation were preserved in `1f1ee0f` before correction. No additional conversation
+or replies were returned. One new finding is accepted:
+
+- **One relationship per ordered module pair — accepted and corrected.**
+  [Comment 4056541956](https://github.com/ronen/postcode/pull/4#discussion_r4056541956).
+  Exact occurrence partitioning alone permitted two distinct edges for the same
+  parent/child pair when their support was disjoint. The store now also tracks
+  canonical ordered `(subject, child)` pairs and rejects duplicates within each
+  dependency evaluation. This enforces the existing aggregation decision without
+  conflating opposite directions or changing provider recognition. The records
+  method advances to `program-records@16`.
+
+Correction: `e3adc105bd958ebe2829ec1f8feac4af2c5ace52`. The regression creates two
+same-pair occurrences, divides them across individually valid pending relationships,
+and checks rejection for both batch insertion orders. Each rejected record remains
+absent and the prior evaluation and aggregate remain unchanged. The same fixture's
+reverse-direction relationship is accepted in the original evaluation, preserving
+ordered-pair semantics. The previous partition regressions remain in force.
+
+Verification: `npm run check`, all **191/191 tests**, and `git diff --check` pass on
+the correction. The new test initially assumed a particular generated module name;
+that fixture assumption was corrected to select the two-occurrence aggregate before
+the final passing run. No external-repository or new instrument-evaluator run was
+performed; previously disclosed limits remain unchanged.
+
+The human authorized commit, push and PR update for another review. The PR body
+identifies the new exact head and prior reviewed target. Further review remains
+required; the task is active and neither merged nor closed.
