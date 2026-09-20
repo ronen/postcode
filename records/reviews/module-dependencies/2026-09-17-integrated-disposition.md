@@ -207,3 +207,14 @@ external-checkout reproduction limits and latency observations. Copilot's broad
 sentence does not resolve these or identify a new concrete issue. No new tests,
 implementation changes or gate acceptance follow from this record. The human's
 final acceptance/scope decision is pending; the task remains active and unmerged.
+
+
+## Final human gate acceptance (2026-09-20)
+
+After considering Copilot's broad-review recommendation and the accumulated review
+evidence, the human accepted the recommendation that no further mandatory review
+round was needed and explicitly authorized task closure and push. The integrated
+review gate is satisfied by that human decision, not inferred from an automated
+recommendation. All four concrete Copilot findings are corrected; the latest review
+reports none remaining. Previously disclosed limits remain recorded. PR #4 remains
+for the human to merge; closure does not perform or authorize an agent merge.
