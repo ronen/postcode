@@ -3,7 +3,7 @@ Date: 2026-09-17
 Updated: 2026-09-20
 Task: [Module dependencies](../../tasks/2026-09-16-module-dependencies.md)
 Handoff: [Integrated review](2026-09-17-integrated-handoff.md)
-Findings: [Round 1](2026-09-17-integrated-round-1-findings.md); [Round 2 — Copilot](2026-09-20-integrated-round-2-copilot-findings.md); [Round 3 — Copilot](2026-09-20-integrated-round-3-copilot-findings.md)
+Findings: [Round 1](2026-09-17-integrated-round-1-findings.md); [Round 2 — Copilot](2026-09-20-integrated-round-2-copilot-findings.md); [Round 3 — Copilot](2026-09-20-integrated-round-3-copilot-findings.md); [Round 4 — Copilot](2026-09-20-integrated-round-4-copilot-findings.md)
 
 # Module dependencies integrated review: disposition
 
@@ -171,3 +171,39 @@ performed; previously disclosed limits remain unchanged.
 The human authorized commit, push and PR update for another review. The PR body
 identifies the new exact head and prior reviewed target. Further review remains
 required; the task is active and neither merged nor closed.
+
+
+## Round 4 — no findings; human review recommendation (2026-09-20)
+
+Review `5260125842` examined `f6bc7fcb6aea87ba27894284870f99df3a35f1a8`, reports
+no findings, and confirms the ordered-pair correction resolved. It recommends final
+human review because of the breadth of the integration, but identifies no particular
+unresolved defect, missing check or contradictory requirement. Its complete text is
+preserved in `45c85bf`; that recommendation is not converted into an unconditional
+approval or rejected as meaningless.
+
+The human asks whether another broad implementation review is warranted. The
+implementing agent's recommendation is that another full broad pass is not necessary
+solely on this evidence. Human review of the plan alone would not establish the
+implementation's correctness. However, the accumulated evidence also includes the
+independent round-1 implementation review of compiler evidence, record invariants,
+graph, organization and CLI integration, its passing tests and live reproductions,
+the earlier provider/graph checkpoints, and subsequent Copilot corrections and
+rereviews. This is more than design approval. The broad round-1 review was performed
+by an independent Claude Code session, not a human line-by-line code review.
+
+The substantive changes after that broad review were localized store validation and
+presentation corrections, with regression tests and a final passing 191-test suite.
+Copilot's two store findings demonstrate that the earlier broad review was imperfect;
+the response was to strengthen evaluation-wide checks and test the specific failure
+modes, not to assume the earlier clean review proved every invariant. If the human
+wants an additional independent check, a focused adversarial review of evaluation
+partitioning, ordered-pair aggregation and atomicity would address the observed
+weakness more directly than repeating all layers. This is an optional recommendation,
+not authorization to arrange another reviewer.
+
+Residual limits remain explicit, including the unconfirmed external-owner scenario,
+external-checkout reproduction limits and latency observations. Copilot's broad
+sentence does not resolve these or identify a new concrete issue. No new tests,
+implementation changes or gate acceptance follow from this record. The human's
+final acceptance/scope decision is pending; the task remains active and unmerged.
