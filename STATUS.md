@@ -1,6 +1,6 @@
 # Project Status
 
-Last reviewed: 2026-09-20
+Last reviewed: 2026-09-21
 
 The module-inventory and repository-organization slices are complete. The
 development CLI provides Unicode and experimental JSON views, module and group
@@ -21,7 +21,8 @@ The representative journey and bounded instrument evaluation have run on PostCod
 and the unfamiliar `ts-node` repository using an explicitly adapted configuration.
 Clean evaluators understood dependency direction, qualifications, display limits,
 and next-step navigation; their wording feedback was incorporated. Fresh analysis
-was slow in measured runs, a recorded limitation.
+was slow in those measured runs; the subsequent investigation below addresses its
+dominant cost.
 
 Dependency views retain the distinction between established relationships,
 requests without established targets, and limits on what the analysis recognizes.
@@ -33,3 +34,12 @@ Implementation, planned verification, and review are complete. The human accepte
 the final review gate on 2026-09-20. The
 [integrated disposition](records/reviews/module-dependencies/2026-09-17-integrated-disposition.md)
 records the review outcomes and remaining limits.
+
+The active [analysis-latency task](records/tasks/2026-09-21-analysis-latency.md)
+has implemented and verified discovery-local source-digest reuse. Paired fresh
+invocations on PostCode improved from 39.09s to 4.82s for dependency JSON and from
+39.00s to 4.35s for repository organization. The six-module fixture remained near
+0.9s. All 192 tests and 21 focused before/after comparisons passed; the
+[validation report](records/validation/2026-09-21-analysis-latency.md) preserves
+measurements, conditions, equivalence evidence and remaining costs. Independent
+integrated review and human acceptance of that gate remain before task closure.

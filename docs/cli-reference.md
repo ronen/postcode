@@ -392,3 +392,10 @@ supplied snapshot mismatch. Project-wide source detail has no selected entity an
 therefore does not accept a snapshot guard; its output identifies the new snapshot.
 It uses evidence captured in that invocation, not a reopened historical capture.
 Unknown request ownership and known ownership omitted from display remain distinct.
+
+Fresh analysis can still take several seconds on larger configured projects.
+Evidence preparation reuses each captured file's content digest within the current
+analysis, avoiding repeated hashing without retaining analysis between commands.
+The [latency measurements](../records/validation/2026-09-21-analysis-latency.md)
+show the measured improvement and its limits. There is no cache/session option;
+each command still establishes its own current evidence and records its observation.

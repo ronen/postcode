@@ -149,12 +149,24 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
     const preparedExpansions = existingExpansions.length ? prepareExpansions(checker, candidates, existingExpansions) : undefined;
     const preparedComposition = requested.includes('composition') ? prepareComposition(program, candidates) : undefined;
     const preparedDependencies = dependencies ? prepareDependencies(program, host, candidates) : undefined;
+    // Evidence can refer to one captured file thousands of times. Reuse its
+    // content digest only within this discovery, keyed by the compiler object
+    // rather than a path that could denote different input in another opening.
+    const sourceDigests = new Map<ts.SourceFile, string>();
+    const sourceDigest = (file: ts.SourceFile): string => {
+      let value = sourceDigests.get(file);
+      if (value === undefined) {
+        value = digest(file.text);
+        sourceDigests.set(file, value);
+      }
+      return value;
+    };
     const snapshot = snapshotId({
       method, methods, configPath, cwd: base, node: process.versions.node,
       repository, repositoryMethods: [repositoryInputMethod, repositoryLayoutMethod],
       platform: process.platform, arch: process.arch, inputs: inputs.identity(),
       options: parsed!.options, roots: program.getRootFileNames(),
-      sources: files.map(file => [file.fileName, digest(file.text)]),
+      sources: files.map(file => [file.fileName, sourceDigest(file)]),
       population: candidates.map(candidate => candidate.key),
     });
     const repositoryId = recordId(snapshot, 'repository-evidence', repositoryInputMethod);
@@ -188,7 +200,7 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       const excerpt = [...span.split('\n').slice(0, 4).join('\n')].slice(0, 300).join('');
       const detail: SourceEvidenceRecord = {
         kind: 'source-evidence', id: recordId(snapshot, 'source', [file.fileName, start, declaration.end, ts.isSourceFile(declaration) ? 'file' : 'span', compilerName, resolution ?? null, dependencyResolution ?? null]),
-        snapshot, method, path: file.fileName, contentDigest: digest(file.text),
+        snapshot, method, path: file.fileName, contentDigest: sourceDigest(file),
         start, length: declaration.end - start,
         location: ts.isSourceFile(declaration) ? { association: 'file' } : {
           association: 'span', from: position(start), to: position(declaration.end),

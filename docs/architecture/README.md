@@ -49,6 +49,15 @@ occurrences with established resolution targets or explicit non-establishment. I
 module label. SourceFile modules without an independently established module name
 are anonymous; their snapshot-scoped generated handles are navigation aids.
 
+Within each discovery call, the TypeScript integration computes a captured
+`SourceFile` object's content digest once and reuses it for snapshot source entries
+and source-evidence records. This avoids repeatedly serializing and hashing large
+declaration files during expansion materialization. The map is local to that call;
+new project openings still capture and analyze inputs afresh. Evidence identity,
+spans, excerpts, qualification and store validation are unchanged. The
+[latency investigation](../../records/validation/2026-09-21-analysis-latency.md)
+records the measurements and equivalence checks supporting this bounded reuse.
+
 Evaluation state separately records applicability, availability, execution,
 materialization, reason, and a deterministic module-count cost. An established
 empty population has a completed, fully materialized evaluation and a stored

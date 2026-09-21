@@ -1,0 +1,5156 @@
+{
+  "format": "postcode-latency-validation/1",
+  "date": "2026-09-21",
+  "baselineCommit": "db3a5934ec219b0c45974a13135aa2a36eead92c",
+  "note": "Developer performance evidence, not program-domain claims or a cache. Parent monotonicMs includes process startup and exit. Child stages are nested; use exclusiveMs to avoid double counting.",
+  "pilots": [
+    {
+      "variant": "before",
+      "measurement": {
+        "args": [
+          "dependencies",
+          "--json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            3.548828125,
+            3.4716796875,
+            3.8876953125
+          ],
+          "freeMemoryBefore": 3922513920,
+          "loadAfter": [
+            3.873046875,
+            3.54736328125,
+            3.89697265625
+          ],
+          "freeMemoryAfter": 3174178816
+        },
+        "exitCode": 0,
+        "wallMs": 38090,
+        "monotonicMs": 38087.287181,
+        "wallMinusMonotonicMs": 2.7128190000003087,
+        "cpu": {
+          "user": 30951280,
+          "system": 10571998
+        },
+        "firstOutputMs": 37992.592447,
+        "observationMs": 74.57078400000319,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 235.0693050000002,
+            "exclusiveMs": 235.0693050000002
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.8139639999999417,
+            "exclusiveMs": 1.8139639999999417
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 1544.799488,
+            "exclusiveMs": 1307.916219
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 206.75337599999966,
+            "exclusiveMs": 206.75337599999966
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 2.639556000000084,
+            "exclusiveMs": 2.639556000000084
+          },
+          "prepareDependencies": {
+            "calls": 1,
+            "inclusiveMs": 92.704792,
+            "exclusiveMs": 92.704792
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 33349.212637,
+            "exclusiveMs": 33349.212637
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 75.7502999999997,
+            "exclusiveMs": 75.7502999999997
+          },
+          "materializeDependencies": {
+            "calls": 1,
+            "inclusiveMs": 167.23960200000147,
+            "exclusiveMs": 167.23960200000147
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 25.496171999999206,
+            "exclusiveMs": 25.496171999999206
+          },
+          "evaluateDependencies": {
+            "calls": 1,
+            "inclusiveMs": 35790.238100999995,
+            "exclusiveMs": 1870.4416659999988
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 42.28091999999742,
+            "exclusiveMs": 42.28091999999742
+          },
+          "evaluateDependencyOrganization": {
+            "calls": 1,
+            "inclusiveMs": 45.64122199999838,
+            "exclusiveMs": 45.64122199999838
+          },
+          "dependencyStructure": {
+            "calls": 1,
+            "inclusiveMs": 17.025557000000845,
+            "exclusiveMs": 17.025557000000845
+          },
+          "createDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 42.735333000004175,
+            "exclusiveMs": 42.735333000004175
+          },
+          "renderDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 23.62475600000471,
+            "exclusiveMs": 23.62475600000471
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.5063779999982216,
+            "exclusiveMs": 0.5063779999982216
+          }
+        },
+        "outputBytes": 5751255,
+        "outputDigest": "6cf14313518e163bdd4001f9b0204f8b03fabf2a91b60e4c73dc5b7ff8deff0e",
+        "warning": false,
+        "disposition": "diagnostic-pilot"
+      },
+      "reason": "CPU profiler enabled; different pilot subject revisions; excluded from paired aggregates."
+    },
+    {
+      "variant": "after",
+      "measurement": {
+        "args": [
+          "dependencies",
+          "--json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            3.80810546875,
+            3.6015625,
+            3.89111328125
+          ],
+          "freeMemoryBefore": 3102568448,
+          "loadAfter": [
+            4.1435546875,
+            3.67431640625,
+            3.9150390625
+          ],
+          "freeMemoryAfter": 2541559808
+        },
+        "exitCode": 0,
+        "wallMs": 4987,
+        "monotonicMs": 4985.608585,
+        "wallMinusMonotonicMs": 1.3914150000000518,
+        "cpu": {
+          "user": 7253032,
+          "system": 664886
+        },
+        "firstOutputMs": 4876.036725,
+        "observationMs": 88.8222050000004,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 227.75484700000015,
+            "exclusiveMs": 227.75484700000015
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.280025999999907,
+            "exclusiveMs": 1.280025999999907
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 1474.545155,
+            "exclusiveMs": 1245.510282
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 250.03334300000006,
+            "exclusiveMs": 250.03334300000006
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 2.4294780000000173,
+            "exclusiveMs": 2.4294780000000173
+          },
+          "prepareDependencies": {
+            "calls": 1,
+            "inclusiveMs": 99.42248500000005,
+            "exclusiveMs": 99.42248500000005
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 777.6922960000002,
+            "exclusiveMs": 777.6922960000002
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 34.729787999999644,
+            "exclusiveMs": 34.729787999999644
+          },
+          "materializeDependencies": {
+            "calls": 1,
+            "inclusiveMs": 30.233350999999857,
+            "exclusiveMs": 30.233350999999857
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 26.77211299999999,
+            "exclusiveMs": 26.77211299999999
+          },
+          "evaluateDependencies": {
+            "calls": 1,
+            "inclusiveMs": 2727.767164,
+            "exclusiveMs": 1506.45431
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 42.70081200000004,
+            "exclusiveMs": 42.70081200000004
+          },
+          "evaluateDependencyOrganization": {
+            "calls": 1,
+            "inclusiveMs": 46.97797399999945,
+            "exclusiveMs": 46.97797399999945
+          },
+          "dependencyStructure": {
+            "calls": 1,
+            "inclusiveMs": 20.191044000000147,
+            "exclusiveMs": 20.191044000000147
+          },
+          "createDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 43.475132000000485,
+            "exclusiveMs": 43.475132000000485
+          },
+          "renderDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 27.48736100000042,
+            "exclusiveMs": 27.48736100000042
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.5279420000006212,
+            "exclusiveMs": 0.5279420000006212
+          }
+        },
+        "outputBytes": 5751255,
+        "outputDigest": "40756b9334edb39c2d14719001d27003a7003fd4fde31a453293fee7b4329bcc",
+        "warning": false,
+        "disposition": "diagnostic-pilot"
+      },
+      "reason": "CPU profiler enabled; different pilot subject revisions; excluded from paired aggregates."
+    }
+  ],
+  "cpuProfiles": [
+    {
+      "variant": "before",
+      "sampled": {
+        "totalSampleMs": 38138.1669999997,
+        "evidenceInclusiveMs": 32822.65000000008,
+        "canonicalUnderEvidenceMs": 20667.379999999972,
+        "hashUpdateUnderEvidenceMs": 11516.222000000034
+      },
+      "largestSelfTimes": [
+        {
+          "function": "canonical",
+          "file": "identity.js",
+          "ms": 20973.373999999967
+        },
+        {
+          "function": "update",
+          "file": "hash",
+          "ms": 11597.787000000038
+        },
+        {
+          "function": "(garbage collector)",
+          "file": "",
+          "ms": 921.7499999999978
+        },
+        {
+          "function": "evidence",
+          "file": "project.js",
+          "ms": 399.63099999999974
+        },
+        {
+          "function": "structuredClone",
+          "file": "js_transferable",
+          "ms": 280.1979999999998
+        },
+        {
+          "function": "",
+          "file": "expansions.js",
+          "ms": 275.25399999999996
+        },
+        {
+          "function": "spawnSync",
+          "file": "child_process",
+          "ms": 209.2350000000001
+        },
+        {
+          "function": "detectModuleFormat",
+          "file": "get_format",
+          "ms": 162.761
+        },
+        {
+          "function": "parseSource",
+          "file": "lexer",
+          "ms": 135.57000000000005
+        },
+        {
+          "function": "put",
+          "file": "memory-store.js",
+          "ms": 132.07999999999998
+        },
+        {
+          "function": "Hash",
+          "file": "hash",
+          "ms": 131.96599999999998
+        },
+        {
+          "function": "digest",
+          "file": "hash",
+          "ms": 106.36700000000003
+        },
+        {
+          "function": "",
+          "file": "identity.js",
+          "ms": 87.63499999999999
+        },
+        {
+          "function": "scan",
+          "file": "typescript.js",
+          "ms": 82.847
+        },
+        {
+          "function": "realpath",
+          "file": "",
+          "ms": 55.539
+        },
+        {
+          "function": "forEachChildRecursively",
+          "file": "typescript.js",
+          "ms": 52.47700000000002
+        },
+        {
+          "function": "submit",
+          "file": "observations.js",
+          "ms": 51.76699999999999
+        },
+        {
+          "function": "structuredClone",
+          "file": "",
+          "ms": 51.37100000000001
+        },
+        {
+          "function": "",
+          "file": "project.js",
+          "ms": 49.38100000000001
+        },
+        {
+          "function": "doJSDocScan",
+          "file": "typescript.js",
+          "ms": 48.689000000000014
+        }
+      ]
+    },
+    {
+      "variant": "after",
+      "sampled": {
+        "totalSampleMs": 5045.882999999987,
+        "evidenceInclusiveMs": 491.4000000000002,
+        "canonicalUnderEvidenceMs": 37.194,
+        "hashUpdateUnderEvidenceMs": 14.622
+      },
+      "largestSelfTimes": [
+        {
+          "function": "canonical",
+          "file": "identity.js",
+          "ms": 359.4890000000002
+        },
+        {
+          "function": "evidence",
+          "file": "project.js",
+          "ms": 338.73799999999994
+        },
+        {
+          "function": "(garbage collector)",
+          "file": "",
+          "ms": 337.413
+        },
+        {
+          "function": "structuredClone",
+          "file": "js_transferable",
+          "ms": 275.7709999999999
+        },
+        {
+          "function": "",
+          "file": "expansions.js",
+          "ms": 231.74199999999996
+        },
+        {
+          "function": "spawnSync",
+          "file": "child_process",
+          "ms": 200.78199999999998
+        },
+        {
+          "function": "detectModuleFormat",
+          "file": "get_format",
+          "ms": 177.42000000000002
+        },
+        {
+          "function": "put",
+          "file": "memory-store.js",
+          "ms": 136.93199999999996
+        },
+        {
+          "function": "parseSource",
+          "file": "lexer",
+          "ms": 127.51300000000002
+        },
+        {
+          "function": "update",
+          "file": "hash",
+          "ms": 92.91099999999997
+        },
+        {
+          "function": "bind",
+          "file": "typescript.js",
+          "ms": 75.62599999999999
+        },
+        {
+          "function": "",
+          "file": "identity.js",
+          "ms": 74.586
+        },
+        {
+          "function": "realpath",
+          "file": "",
+          "ms": 68.61699999999998
+        },
+        {
+          "function": "scan",
+          "file": "typescript.js",
+          "ms": 64.46000000000001
+        },
+        {
+          "function": "Hash",
+          "file": "hash",
+          "ms": 63.64800000000001
+        },
+        {
+          "function": "structuredClone",
+          "file": "",
+          "ms": 63.383
+        },
+        {
+          "function": "doJSDocScan",
+          "file": "typescript.js",
+          "ms": 62.256000000000014
+        },
+        {
+          "function": "submit",
+          "file": "observations.js",
+          "ms": 61.15100000000001
+        },
+        {
+          "function": "parseCJS",
+          "file": "lexer",
+          "ms": 50.261
+        },
+        {
+          "function": "stat",
+          "file": "",
+          "ms": 44.95400000000002
+        }
+      ]
+    }
+  ],
+  "runs": [
+    {
+      "id": "postcode-dependencies-before-0-0",
+      "name": "postcode-dependencies",
+      "variant": "before",
+      "sample": 0,
+      "attempt": 0,
+      "wallMs": 39474,
+      "monotonicMs": 39471.65665600001,
+      "maximumHeartbeatGapMs": 251.19765999999981,
+      "cpuRatio": 1.0680951482840968,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "warmup",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "dependencies",
+          "--json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            6.66552734375,
+            4.5029296875,
+            4.197265625
+          ],
+          "freeMemoryBefore": 2630090752,
+          "loadAfter": [
+            5.22021484375,
+            4.41748046875,
+            4.1796875
+          ],
+          "freeMemoryAfter": 2398842880
+        },
+        "exitCode": 0,
+        "wallMs": 39271,
+        "monotonicMs": 39268.173876999994,
+        "wallMinusMonotonicMs": 2.8261230000061914,
+        "cpu": {
+          "user": 30744487,
+          "system": 11197659
+        },
+        "firstOutputMs": 39166.530469,
+        "observationMs": 80.69798599999922,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 241.42344300000013,
+            "exclusiveMs": 241.42344300000013
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.5405249999998887,
+            "exclusiveMs": 1.5405249999998887
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 1430.495158,
+            "exclusiveMs": 1187.53119
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 208.92733100000032,
+            "exclusiveMs": 208.92733100000032
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 1.237869000000046,
+            "exclusiveMs": 1.237869000000046
+          },
+          "prepareDependencies": {
+            "calls": 1,
+            "inclusiveMs": 94.7985520000002,
+            "exclusiveMs": 94.7985520000002
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 34511.372985,
+            "exclusiveMs": 34511.372985
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 95.21432999999524,
+            "exclusiveMs": 95.21432999999524
+          },
+          "materializeDependencies": {
+            "calls": 1,
+            "inclusiveMs": 201.3750080000027,
+            "exclusiveMs": 201.3750080000027
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 30.271911000003456,
+            "exclusiveMs": 30.271911000003456
+          },
+          "evaluateDependencies": {
+            "calls": 1,
+            "inclusiveMs": 37057.529422,
+            "exclusiveMs": 1914.3314359999931
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 44.88068200000271,
+            "exclusiveMs": 44.88068200000271
+          },
+          "evaluateDependencyOrganization": {
+            "calls": 1,
+            "inclusiveMs": 45.80370000000403,
+            "exclusiveMs": 45.80370000000403
+          },
+          "dependencyStructure": {
+            "calls": 1,
+            "inclusiveMs": 22.330880000001343,
+            "exclusiveMs": 22.330880000001343
+          },
+          "createDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 43.08136899999954,
+            "exclusiveMs": 43.08136899999954
+          },
+          "renderDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 21.699738999996043,
+            "exclusiveMs": 21.699738999996043
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.4616210000021965,
+            "exclusiveMs": 0.4616210000021965
+          }
+        },
+        "outputBytes": 5852149,
+        "outputDigest": "8ddf1d8f6ce63405992aacb3669ea647dd364d03e3a50307a3e0953daff76b54",
+        "warning": false,
+        "disposition": "warmup"
+      }
+    },
+    {
+      "id": "postcode-dependencies-after-0-0",
+      "name": "postcode-dependencies",
+      "variant": "after",
+      "sample": 0,
+      "attempt": 0,
+      "wallMs": 5144,
+      "monotonicMs": 5144.203711000002,
+      "maximumHeartbeatGapMs": 250.69557400000485,
+      "cpuRatio": 1.5680145822079192,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "warmup",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "dependencies",
+          "--json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            5.22021484375,
+            4.41748046875,
+            4.1796875
+          ],
+          "freeMemoryBefore": 2968801280,
+          "loadAfter": [
+            5.2822265625,
+            4.443359375,
+            4.18994140625
+          ],
+          "freeMemoryAfter": 2574282752
+        },
+        "exitCode": 0,
+        "wallMs": 4874,
+        "monotonicMs": 4873.430443,
+        "wallMinusMonotonicMs": 0.5695569999998042,
+        "cpu": {
+          "user": 7082794,
+          "system": 558816
+        },
+        "firstOutputMs": 4769.286075,
+        "observationMs": 81.94989899999928,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 242.85187499999984,
+            "exclusiveMs": 242.85187499999984
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.4282149999999092,
+            "exclusiveMs": 1.4282149999999092
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 1377.97532,
+            "exclusiveMs": 1133.6952300000003
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 204.21939500000008,
+            "exclusiveMs": 204.21939500000008
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.9701119999999719,
+            "exclusiveMs": 0.9701119999999719
+          },
+          "prepareDependencies": {
+            "calls": 1,
+            "inclusiveMs": 94.8358659999999,
+            "exclusiveMs": 94.8358659999999
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 774.370418,
+            "exclusiveMs": 774.370418
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 36.95991200000026,
+            "exclusiveMs": 36.95991200000026
+          },
+          "materializeDependencies": {
+            "calls": 1,
+            "inclusiveMs": 34.69499599999972,
+            "exclusiveMs": 34.69499599999972
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 28.49670799999967,
+            "exclusiveMs": 28.49670799999967
+          },
+          "evaluateDependencies": {
+            "calls": 1,
+            "inclusiveMs": 2750.897773,
+            "exclusiveMs": 1576.3503660000006
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 40.423782999999275,
+            "exclusiveMs": 40.423782999999275
+          },
+          "evaluateDependencyOrganization": {
+            "calls": 1,
+            "inclusiveMs": 51.10187399999995,
+            "exclusiveMs": 51.10187399999995
+          },
+          "dependencyStructure": {
+            "calls": 1,
+            "inclusiveMs": 19.616414000000077,
+            "exclusiveMs": 19.616414000000077
+          },
+          "createDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 47.27313800000047,
+            "exclusiveMs": 47.27313800000047
+          },
+          "renderDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 25.511225000000195,
+            "exclusiveMs": 25.511225000000195
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.5360840000003009,
+            "exclusiveMs": 0.5360840000003009
+          }
+        },
+        "outputBytes": 5852149,
+        "outputDigest": "8ddf1d8f6ce63405992aacb3669ea647dd364d03e3a50307a3e0953daff76b54",
+        "warning": false,
+        "disposition": "warmup"
+      }
+    },
+    {
+      "id": "postcode-dependencies-after-1-0",
+      "name": "postcode-dependencies",
+      "variant": "after",
+      "sample": 1,
+      "attempt": 0,
+      "wallMs": 4939,
+      "monotonicMs": 4938.737991000002,
+      "maximumHeartbeatGapMs": 250.77497399999993,
+      "cpuRatio": 1.5772148253975777,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "dependencies",
+          "--json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            5.2822265625,
+            4.443359375,
+            4.18994140625
+          ],
+          "freeMemoryBefore": 2574282752,
+          "loadAfter": [
+            5.33935546875,
+            4.46875,
+            4.2001953125
+          ],
+          "freeMemoryAfter": 2480451584
+        },
+        "exitCode": 0,
+        "wallMs": 4747,
+        "monotonicMs": 4746.063047,
+        "wallMinusMonotonicMs": 0.9369530000003579,
+        "cpu": {
+          "user": 6943991,
+          "system": 541570
+        },
+        "firstOutputMs": 4650.371083,
+        "observationMs": 74.46123800000078,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 224.6123009999999,
+            "exclusiveMs": 224.6123009999999
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.4166280000001734,
+            "exclusiveMs": 1.4166280000001734
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 1328.176743,
+            "exclusiveMs": 1102.147814
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 206.14217499999995,
+            "exclusiveMs": 206.14217499999995
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 1.0586969999999383,
+            "exclusiveMs": 1.0586969999999383
+          },
+          "prepareDependencies": {
+            "calls": 1,
+            "inclusiveMs": 95.07221600000003,
+            "exclusiveMs": 95.07221600000003
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 723.5789479999999,
+            "exclusiveMs": 723.5789479999999
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 34.72438999999986,
+            "exclusiveMs": 34.72438999999986
+          },
+          "materializeDependencies": {
+            "calls": 1,
+            "inclusiveMs": 31.721162000000277,
+            "exclusiveMs": 31.721162000000277
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 86.4910149999996,
+            "exclusiveMs": 86.4910149999996
+          },
+          "evaluateDependencies": {
+            "calls": 1,
+            "inclusiveMs": 2661.235558,
+            "exclusiveMs": 1482.4469550000003
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 40.14277399999992,
+            "exclusiveMs": 40.14277399999992
+          },
+          "evaluateDependencyOrganization": {
+            "calls": 1,
+            "inclusiveMs": 46.44351900000038,
+            "exclusiveMs": 46.44351900000038
+          },
+          "dependencyStructure": {
+            "calls": 1,
+            "inclusiveMs": 18.063429000000724,
+            "exclusiveMs": 18.063429000000724
+          },
+          "createDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 41.829719000000296,
+            "exclusiveMs": 41.829719000000296
+          },
+          "renderDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 27.30026899999939,
+            "exclusiveMs": 27.30026899999939
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.49274700000023586,
+            "exclusiveMs": 0.49274700000023586
+          }
+        },
+        "outputBytes": 5852149,
+        "outputDigest": "8ddf1d8f6ce63405992aacb3669ea647dd364d03e3a50307a3e0953daff76b54",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "postcode-dependencies-before-1-0",
+      "name": "postcode-dependencies",
+      "variant": "before",
+      "sample": 1,
+      "attempt": 0,
+      "wallMs": 39060,
+      "monotonicMs": 39058.747451,
+      "maximumHeartbeatGapMs": 251.14519899999868,
+      "cpuRatio": 1.0573598509969697,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "dependencies",
+          "--json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            5.33935546875,
+            4.46875,
+            4.2001953125
+          ],
+          "freeMemoryBefore": 2480451584,
+          "loadAfter": [
+            4.84326171875,
+            4.45458984375,
+            4.2060546875
+          ],
+          "freeMemoryAfter": 2371538944
+        },
+        "exitCode": 0,
+        "wallMs": 38875,
+        "monotonicMs": 38873.047772,
+        "wallMinusMonotonicMs": 1.9522280000019236,
+        "cpu": {
+          "user": 29792856,
+          "system": 11309944
+        },
+        "firstOutputMs": 38772.7814,
+        "observationMs": 78.97358600000007,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 218.7782229999998,
+            "exclusiveMs": 218.7782229999998
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.32783500000005,
+            "exclusiveMs": 1.32783500000005
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 1212.438294,
+            "exclusiveMs": 992.3322360000002
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 186.2024859999999,
+            "exclusiveMs": 186.2024859999999
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 1.0136420000003454,
+            "exclusiveMs": 1.0136420000003454
+          },
+          "prepareDependencies": {
+            "calls": 1,
+            "inclusiveMs": 102.53646900000012,
+            "exclusiveMs": 102.53646900000012
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 34572.133154999996,
+            "exclusiveMs": 34572.133154999996
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 94.76439799999935,
+            "exclusiveMs": 94.76439799999935
+          },
+          "materializeDependencies": {
+            "calls": 1,
+            "inclusiveMs": 200.48767600000429,
+            "exclusiveMs": 200.48767600000429
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 27.376193999996758,
+            "exclusiveMs": 27.376193999996758
+          },
+          "evaluateDependencies": {
+            "calls": 1,
+            "inclusiveMs": 36954.981436,
+            "exclusiveMs": 1770.4674160000068
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 38.74305700000696,
+            "exclusiveMs": 38.74305700000696
+          },
+          "evaluateDependencyOrganization": {
+            "calls": 1,
+            "inclusiveMs": 48.0766220000005,
+            "exclusiveMs": 48.0766220000005
+          },
+          "dependencyStructure": {
+            "calls": 1,
+            "inclusiveMs": 17.432741999997234,
+            "exclusiveMs": 17.432741999997234
+          },
+          "createDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 44.68053399999917,
+            "exclusiveMs": 44.68053399999917
+          },
+          "renderDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 22.09117100000003,
+            "exclusiveMs": 22.09117100000003
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.4413810000041849,
+            "exclusiveMs": 0.4413810000041849
+          }
+        },
+        "outputBytes": 5852149,
+        "outputDigest": "8ddf1d8f6ce63405992aacb3669ea647dd364d03e3a50307a3e0953daff76b54",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "postcode-dependencies-before-2-0",
+      "name": "postcode-dependencies",
+      "variant": "before",
+      "sample": 2,
+      "attempt": 0,
+      "wallMs": 39094,
+      "monotonicMs": 39092.603835,
+      "maximumHeartbeatGapMs": 251.12410099999397,
+      "cpuRatio": 1.0640393486226158,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "dependencies",
+          "--json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.84326171875,
+            4.45458984375,
+            4.2060546875
+          ],
+          "freeMemoryBefore": 2371538944,
+          "loadAfter": [
+            4.4189453125,
+            4.39501953125,
+            4.1943359375
+          ],
+          "freeMemoryAfter": 2243080192
+        },
+        "exitCode": 0,
+        "wallMs": 38901,
+        "monotonicMs": 38898.381957000005,
+        "wallMinusMonotonicMs": 2.618042999994941,
+        "cpu": {
+          "user": 30126028,
+          "system": 11263381
+        },
+        "firstOutputMs": 38795.05395,
+        "observationMs": 82.68618299999798,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 216.39777600000002,
+            "exclusiveMs": 216.39777600000002
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.3936710000000403,
+            "exclusiveMs": 1.3936710000000403
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 1262.8620349999999,
+            "exclusiveMs": 1045.0705879999998
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 207.21153800000002,
+            "exclusiveMs": 207.21153800000002
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 1.0217000000002372,
+            "exclusiveMs": 1.0217000000002372
+          },
+          "prepareDependencies": {
+            "calls": 1,
+            "inclusiveMs": 94.33592899999985,
+            "exclusiveMs": 94.33592899999985
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 34443.619219,
+            "exclusiveMs": 34443.619219
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 96.69827400000213,
+            "exclusiveMs": 96.69827400000213
+          },
+          "materializeDependencies": {
+            "calls": 1,
+            "inclusiveMs": 192.94417100000283,
+            "exclusiveMs": 192.94417100000283
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 30.051675000002433,
+            "exclusiveMs": 30.051675000002433
+          },
+          "evaluateDependencies": {
+            "calls": 1,
+            "inclusiveMs": 36914.557764000005,
+            "exclusiveMs": 1848.6752579999957
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 39.73635600000125,
+            "exclusiveMs": 39.73635600000125
+          },
+          "evaluateDependencyOrganization": {
+            "calls": 1,
+            "inclusiveMs": 43.79920200000197,
+            "exclusiveMs": 43.79920200000197
+          },
+          "dependencyStructure": {
+            "calls": 1,
+            "inclusiveMs": 19.880560999998124,
+            "exclusiveMs": 19.880560999998124
+          },
+          "createDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 46.40338399999746,
+            "exclusiveMs": 46.40338399999746
+          },
+          "renderDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 21.331405999997514,
+            "exclusiveMs": 21.331405999997514
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.43340899999748217,
+            "exclusiveMs": 0.43340899999748217
+          }
+        },
+        "outputBytes": 5852149,
+        "outputDigest": "8ddf1d8f6ce63405992aacb3669ea647dd364d03e3a50307a3e0953daff76b54",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "postcode-dependencies-after-2-0",
+      "name": "postcode-dependencies",
+      "variant": "after",
+      "sample": 2,
+      "attempt": 0,
+      "wallMs": 4821,
+      "monotonicMs": 4820.670658999981,
+      "maximumHeartbeatGapMs": 251.05994100001408,
+      "cpuRatio": 1.5714504542896306,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "dependencies",
+          "--json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.4189453125,
+            4.39501953125,
+            4.1943359375
+          ],
+          "freeMemoryBefore": 2814513152,
+          "loadAfter": [
+            4.86572265625,
+            4.48779296875,
+            4.22802734375
+          ],
+          "freeMemoryAfter": 2228256768
+        },
+        "exitCode": 0,
+        "wallMs": 4638,
+        "monotonicMs": 4637.229879,
+        "wallMinusMonotonicMs": 0.7701209999995626,
+        "cpu": {
+          "user": 6755507,
+          "system": 531670
+        },
+        "firstOutputMs": 4535.462456,
+        "observationMs": 80.36480000000029,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 195.85284000000001,
+            "exclusiveMs": 195.85284000000001
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.3651599999998325,
+            "exclusiveMs": 1.3651599999998325
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 1205.922036,
+            "exclusiveMs": 1008.7040360000001
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 185.4325379999998,
+            "exclusiveMs": 185.4325379999998
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 1.0582370000001902,
+            "exclusiveMs": 1.0582370000001902
+          },
+          "prepareDependencies": {
+            "calls": 1,
+            "inclusiveMs": 186.1095849999997,
+            "exclusiveMs": 186.1095849999997
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 727.2651760000003,
+            "exclusiveMs": 727.2651760000003
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 36.89276000000018,
+            "exclusiveMs": 36.89276000000018
+          },
+          "materializeDependencies": {
+            "calls": 1,
+            "inclusiveMs": 33.92680999999993,
+            "exclusiveMs": 33.92680999999993
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 26.646598000000267,
+            "exclusiveMs": 26.646598000000267
+          },
+          "evaluateDependencies": {
+            "calls": 1,
+            "inclusiveMs": 2714.680789,
+            "exclusiveMs": 1517.3490849999996
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 38.660844999999426,
+            "exclusiveMs": 38.660844999999426
+          },
+          "evaluateDependencyOrganization": {
+            "calls": 1,
+            "inclusiveMs": 48.14655100000073,
+            "exclusiveMs": 48.14655100000073
+          },
+          "dependencyStructure": {
+            "calls": 1,
+            "inclusiveMs": 19.171089999999822,
+            "exclusiveMs": 19.171089999999822
+          },
+          "createDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 50.45854200000031,
+            "exclusiveMs": 50.45854200000031
+          },
+          "renderDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 27.200333999999202,
+            "exclusiveMs": 27.200333999999202
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.44757900000058726,
+            "exclusiveMs": 0.44757900000058726
+          }
+        },
+        "outputBytes": 5852149,
+        "outputDigest": "8ddf1d8f6ce63405992aacb3669ea647dd364d03e3a50307a3e0953daff76b54",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "postcode-dependencies-after-3-0",
+      "name": "postcode-dependencies",
+      "variant": "after",
+      "sample": 3,
+      "attempt": 0,
+      "wallMs": 4661,
+      "monotonicMs": 4660.921761999984,
+      "maximumHeartbeatGapMs": 251.11387100000866,
+      "cpuRatio": 1.538094065787563,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "dependencies",
+          "--json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.86572265625,
+            4.48779296875,
+            4.22802734375
+          ],
+          "freeMemoryBefore": 2705162240,
+          "loadAfter": [
+            5.27685546875,
+            4.5791015625,
+            4.26171875
+          ],
+          "freeMemoryAfter": 2240954368
+        },
+        "exitCode": 0,
+        "wallMs": 4465,
+        "monotonicMs": 4463.5364979999995,
+        "wallMinusMonotonicMs": 1.463502000000517,
+        "cpu": {
+          "user": 6376657,
+          "system": 488682
+        },
+        "firstOutputMs": 4368.935909999999,
+        "observationMs": 74.40571900000032,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 214.86803400000008,
+            "exclusiveMs": 214.86803400000008
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.4722709999998642,
+            "exclusiveMs": 1.4722709999998642
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 1272.0053810000002,
+            "exclusiveMs": 1055.6650760000002
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 194.46001699999988,
+            "exclusiveMs": 194.46001699999988
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 1.0208830000001399,
+            "exclusiveMs": 1.0208830000001399
+          },
+          "prepareDependencies": {
+            "calls": 1,
+            "inclusiveMs": 87.74051099999997,
+            "exclusiveMs": 87.74051099999997
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 713.59431,
+            "exclusiveMs": 713.59431
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 32.482832000000144,
+            "exclusiveMs": 32.482832000000144
+          },
+          "materializeDependencies": {
+            "calls": 1,
+            "inclusiveMs": 30.443060999999943,
+            "exclusiveMs": 30.443060999999943
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 25.876404999999977,
+            "exclusiveMs": 25.876404999999977
+          },
+          "evaluateDependencies": {
+            "calls": 1,
+            "inclusiveMs": 2476.0178109999997,
+            "exclusiveMs": 1390.3997919999997
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 39.067651999999725,
+            "exclusiveMs": 39.067651999999725
+          },
+          "evaluateDependencyOrganization": {
+            "calls": 1,
+            "inclusiveMs": 44.772955999999795,
+            "exclusiveMs": 44.772955999999795
+          },
+          "dependencyStructure": {
+            "calls": 1,
+            "inclusiveMs": 17.22077300000001,
+            "exclusiveMs": 17.22077300000001
+          },
+          "createDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 42.04295900000034,
+            "exclusiveMs": 42.04295900000034
+          },
+          "renderDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 23.91530799999964,
+            "exclusiveMs": 23.91530799999964
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.42929999999978463,
+            "exclusiveMs": 0.42929999999978463
+          }
+        },
+        "outputBytes": 5852149,
+        "outputDigest": "8ddf1d8f6ce63405992aacb3669ea647dd364d03e3a50307a3e0953daff76b54",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "postcode-dependencies-before-3-0",
+      "name": "postcode-dependencies",
+      "variant": "before",
+      "sample": 3,
+      "attempt": 0,
+      "wallMs": 39139,
+      "monotonicMs": 39138.052794999996,
+      "maximumHeartbeatGapMs": 251.16997600000468,
+      "cpuRatio": 1.0551816363210922,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "dependencies",
+          "--json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            5.27685546875,
+            4.5791015625,
+            4.26171875
+          ],
+          "freeMemoryBefore": 2716299264,
+          "loadAfter": [
+            5.3193359375,
+            4.66455078125,
+            4.3056640625
+          ],
+          "freeMemoryAfter": 2602516480
+        },
+        "exitCode": 0,
+        "wallMs": 38947,
+        "monotonicMs": 38945.091144,
+        "wallMinusMonotonicMs": 1.9088560000018333,
+        "cpu": {
+          "user": 29972128,
+          "system": 11122017
+        },
+        "firstOutputMs": 38846.058178,
+        "observationMs": 77.74042299999564,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 193.27594999999997,
+            "exclusiveMs": 193.27594999999997
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.3450820000000476,
+            "exclusiveMs": 1.3450820000000476
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 1175.5682660000002,
+            "exclusiveMs": 980.9472340000002
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 215.9851990000002,
+            "exclusiveMs": 215.9851990000002
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.9601200000001882,
+            "exclusiveMs": 0.9601200000001882
+          },
+          "prepareDependencies": {
+            "calls": 1,
+            "inclusiveMs": 90.58606099999997,
+            "exclusiveMs": 90.58606099999997
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 34494.020869,
+            "exclusiveMs": 34494.020869
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 102.29190999999992,
+            "exclusiveMs": 102.29190999999992
+          },
+          "materializeDependencies": {
+            "calls": 1,
+            "inclusiveMs": 243.3696759999948,
+            "exclusiveMs": 243.3696759999948
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 26.15868700000283,
+            "exclusiveMs": 26.15868700000283
+          },
+          "evaluateDependencies": {
+            "calls": 1,
+            "inclusiveMs": 37071.808903,
+            "exclusiveMs": 1898.4363809999995
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 37.408118999999715,
+            "exclusiveMs": 37.408118999999715
+          },
+          "evaluateDependencyOrganization": {
+            "calls": 1,
+            "inclusiveMs": 50.917349000003014,
+            "exclusiveMs": 50.917349000003014
+          },
+          "dependencyStructure": {
+            "calls": 1,
+            "inclusiveMs": 22.778261999999813,
+            "exclusiveMs": 22.778261999999813
+          },
+          "createDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 40.412592000000586,
+            "exclusiveMs": 40.412592000000586
+          },
+          "renderDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 21.239582000001974,
+            "exclusiveMs": 21.239582000001974
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.5094089999984135,
+            "exclusiveMs": 0.5094089999984135
+          }
+        },
+        "outputBytes": 5852149,
+        "outputDigest": "8ddf1d8f6ce63405992aacb3669ea647dd364d03e3a50307a3e0953daff76b54",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "postcode-organization-before-0-0",
+      "name": "postcode-organization",
+      "variant": "before",
+      "sample": 0,
+      "attempt": 0,
+      "wallMs": 39261,
+      "monotonicMs": 39260.07574099998,
+      "maximumHeartbeatGapMs": 251.56015499998466,
+      "cpuRatio": 1.0502986273282382,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "warmup",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "organization",
+          "repository"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            5.3193359375,
+            4.66455078125,
+            4.3056640625
+          ],
+          "freeMemoryBefore": 2602516480,
+          "loadAfter": [
+            5.62548828125,
+            4.78564453125,
+            4.36181640625
+          ],
+          "freeMemoryAfter": 2522857472
+        },
+        "exitCode": 0,
+        "wallMs": 39070,
+        "monotonicMs": 39067.865017000004,
+        "wallMinusMonotonicMs": 2.134982999996282,
+        "cpu": {
+          "user": 29597119,
+          "system": 11435806
+        },
+        "firstOutputMs": 39060.003258000004,
+        "observationMs": 7.255124999996042,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 212.70309599999996,
+            "exclusiveMs": 212.70309599999996
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.3256510000001072,
+            "exclusiveMs": 1.3256510000001072
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 1252.967426,
+            "exclusiveMs": 1038.9386789999999
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 209.29670600000009,
+            "exclusiveMs": 209.29670600000009
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 1.1322829999999158,
+            "exclusiveMs": 1.1322829999999158
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 35217.478695000005,
+            "exclusiveMs": 35217.478695000005
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 101.22375500000635,
+            "exclusiveMs": 101.22375500000635
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 25.20495800000208,
+            "exclusiveMs": 25.20495800000208
+          },
+          "evaluateModules": {
+            "calls": 1,
+            "inclusiveMs": 37289.848547,
+            "exclusiveMs": 1735.5121499999877
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 43.75750600000174,
+            "exclusiveMs": 43.75750600000174
+          },
+          "organization": {
+            "calls": 1,
+            "inclusiveMs": 6.656423000000359,
+            "exclusiveMs": 6.656423000000359
+          },
+          "createOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 11.93236700000125,
+            "exclusiveMs": 11.93236700000125
+          },
+          "renderOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 1.5109139999985928,
+            "exclusiveMs": 1.5109139999985928
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.4164230000023963,
+            "exclusiveMs": 0.4164230000023963
+          }
+        },
+        "outputBytes": 8101,
+        "outputDigest": "cdc0cef9af5b197ec80236c70edbb88ea01185bb9ade5e34e9299996f187c2d9",
+        "warning": false,
+        "disposition": "warmup"
+      }
+    },
+    {
+      "id": "postcode-organization-after-0-0",
+      "name": "postcode-organization",
+      "variant": "after",
+      "sample": 0,
+      "attempt": 0,
+      "wallMs": 4526,
+      "monotonicMs": 4525.265916000004,
+      "maximumHeartbeatGapMs": 251.0657539999811,
+      "cpuRatio": 1.600508014508072,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "warmup",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "organization",
+          "repository"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            5.62548828125,
+            4.78564453125,
+            4.36181640625
+          ],
+          "freeMemoryBefore": 2522857472,
+          "loadAfter": [
+            5.4951171875,
+            4.7724609375,
+            4.359375
+          ],
+          "freeMemoryAfter": 2635468800
+        },
+        "exitCode": 0,
+        "wallMs": 4347,
+        "monotonicMs": 4345.630223,
+        "wallMinusMonotonicMs": 1.3697769999998854,
+        "cpu": {
+          "user": 6497029,
+          "system": 458187
+        },
+        "firstOutputMs": 4337.946649,
+        "observationMs": 7.105978999999934,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 232.78803500000004,
+            "exclusiveMs": 232.78803500000004
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.4834820000000946,
+            "exclusiveMs": 1.4834820000000946
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 1339.459487,
+            "exclusiveMs": 1105.18797
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 203.864912,
+            "exclusiveMs": 203.864912
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 1.0063700000000608,
+            "exclusiveMs": 1.0063700000000608
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 762.4393210000003,
+            "exclusiveMs": 762.4393210000003
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 36.12116500000002,
+            "exclusiveMs": 36.12116500000002
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 25.648906000000352,
+            "exclusiveMs": 25.648906000000352
+          },
+          "evaluateModules": {
+            "calls": 1,
+            "inclusiveMs": 2493.1240750000006,
+            "exclusiveMs": 1464.043401
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 38.68155500000012,
+            "exclusiveMs": 38.68155500000012
+          },
+          "organization": {
+            "calls": 1,
+            "inclusiveMs": 6.869652000000315,
+            "exclusiveMs": 6.869652000000315
+          },
+          "createOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 13.692727999999988,
+            "exclusiveMs": 13.692727999999988
+          },
+          "renderOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 1.4911459999993895,
+            "exclusiveMs": 1.4911459999993895
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.4321159999999509,
+            "exclusiveMs": 0.4321159999999509
+          }
+        },
+        "outputBytes": 8101,
+        "outputDigest": "cdc0cef9af5b197ec80236c70edbb88ea01185bb9ade5e34e9299996f187c2d9",
+        "warning": false,
+        "disposition": "warmup"
+      }
+    },
+    {
+      "id": "postcode-organization-after-1-0",
+      "name": "postcode-organization",
+      "variant": "after",
+      "sample": 1,
+      "attempt": 0,
+      "wallMs": 4329,
+      "monotonicMs": 4328.902451000002,
+      "maximumHeartbeatGapMs": 251.10109799998463,
+      "cpuRatio": 1.5809864650405658,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "organization",
+          "repository"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            5.4951171875,
+            4.7724609375,
+            4.359375
+          ],
+          "freeMemoryBefore": 2635468800,
+          "loadAfter": [
+            5.455078125,
+            4.77587890625,
+            4.36279296875
+          ],
+          "freeMemoryAfter": 2665218048
+        },
+        "exitCode": 0,
+        "wallMs": 4156,
+        "monotonicMs": 4154.601665,
+        "wallMinusMonotonicMs": 1.3983349999998609,
+        "cpu": {
+          "user": 6128716,
+          "system": 439653
+        },
+        "firstOutputMs": 4111.276012,
+        "observationMs": 42.781449000000066,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 213.91294399999992,
+            "exclusiveMs": 213.91294399999992
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.278400000000147,
+            "exclusiveMs": 1.278400000000147
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 1236.7592490000002,
+            "exclusiveMs": 1021.5679050000001
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 193.41809799999965,
+            "exclusiveMs": 193.41809799999965
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 1.051785000000109,
+            "exclusiveMs": 1.051785000000109
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 708.7940589999998,
+            "exclusiveMs": 708.7940589999998
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 34.064652000000024,
+            "exclusiveMs": 34.064652000000024
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 25.72687900000028,
+            "exclusiveMs": 25.72687900000028
+          },
+          "evaluateModules": {
+            "calls": 1,
+            "inclusiveMs": 2375.798915,
+            "exclusiveMs": 1412.743442
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 38.3612720000001,
+            "exclusiveMs": 38.3612720000001
+          },
+          "organization": {
+            "calls": 1,
+            "inclusiveMs": 5.823207999999795,
+            "exclusiveMs": 5.823207999999795
+          },
+          "createOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 12.218228000000636,
+            "exclusiveMs": 12.218228000000636
+          },
+          "renderOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 1.4935209999994186,
+            "exclusiveMs": 1.4935209999994186
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.40432500000042637,
+            "exclusiveMs": 0.40432500000042637
+          }
+        },
+        "outputBytes": 8101,
+        "outputDigest": "cdc0cef9af5b197ec80236c70edbb88ea01185bb9ade5e34e9299996f187c2d9",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "postcode-organization-before-1-0",
+      "name": "postcode-organization",
+      "variant": "before",
+      "sample": 1,
+      "attempt": 0,
+      "wallMs": 38997,
+      "monotonicMs": 38995.27115600003,
+      "maximumHeartbeatGapMs": 251.13641900001676,
+      "cpuRatio": 1.0571814676367604,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "organization",
+          "repository"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            5.455078125,
+            4.77587890625,
+            4.36279296875
+          ],
+          "freeMemoryBefore": 2665218048,
+          "loadAfter": [
+            5.076171875,
+            4.8056640625,
+            4.39404296875
+          ],
+          "freeMemoryAfter": 2615824384
+        },
+        "exitCode": 0,
+        "wallMs": 38818,
+        "monotonicMs": 38815.338006,
+        "wallMinusMonotonicMs": 2.6619940000018687,
+        "cpu": {
+          "user": 29397832,
+          "system": 11637024
+        },
+        "firstOutputMs": 38804.132942000004,
+        "observationMs": 10.695573000004515,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 200.57000099999982,
+            "exclusiveMs": 200.57000099999982
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.2896829999999682,
+            "exclusiveMs": 1.2896829999999682
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 1202.1624219999999,
+            "exclusiveMs": 1000.3027380000001
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 188.3350529999998,
+            "exclusiveMs": 188.3350529999998
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.9286789999996472,
+            "exclusiveMs": 0.9286789999996472
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 35019.367311,
+            "exclusiveMs": 35019.367311
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 97.17029800000455,
+            "exclusiveMs": 97.17029800000455
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 31.775151000001642,
+            "exclusiveMs": 31.775151000001642
+          },
+          "evaluateModules": {
+            "calls": 1,
+            "inclusiveMs": 37119.350907,
+            "exclusiveMs": 1781.7744149999926
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 36.75338599999668,
+            "exclusiveMs": 36.75338599999668
+          },
+          "organization": {
+            "calls": 1,
+            "inclusiveMs": 6.734305000005406,
+            "exclusiveMs": 6.734305000005406
+          },
+          "createOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 14.82048300000315,
+            "exclusiveMs": 14.82048300000315
+          },
+          "renderOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 1.4490490000025602,
+            "exclusiveMs": 1.4490490000025602
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.3782290000017383,
+            "exclusiveMs": 0.3782290000017383
+          }
+        },
+        "outputBytes": 8101,
+        "outputDigest": "cdc0cef9af5b197ec80236c70edbb88ea01185bb9ade5e34e9299996f187c2d9",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "postcode-organization-before-2-0",
+      "name": "postcode-organization",
+      "variant": "before",
+      "sample": 2,
+      "attempt": 0,
+      "wallMs": 37776,
+      "monotonicMs": 37774.62759599998,
+      "maximumHeartbeatGapMs": 251.10246200003894,
+      "cpuRatio": 1.0577589918883357,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "organization",
+          "repository"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            5.076171875,
+            4.8056640625,
+            4.39404296875
+          ],
+          "freeMemoryBefore": 3111772160,
+          "loadAfter": [
+            4.58154296875,
+            4.728515625,
+            4.38525390625
+          ],
+          "freeMemoryAfter": 2610085888
+        },
+        "exitCode": 0,
+        "wallMs": 37591,
+        "monotonicMs": 37588.672188000004,
+        "wallMinusMonotonicMs": 2.3278119999959017,
+        "cpu": {
+          "user": 29279987,
+          "system": 10479769
+        },
+        "firstOutputMs": 37578.177948000004,
+        "observationMs": 9.960416999994777,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 216.01354500000002,
+            "exclusiveMs": 216.01354500000002
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.3588180000001557,
+            "exclusiveMs": 1.3588180000001557
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 1317.380874,
+            "exclusiveMs": 1100.0085109999998
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 191.98070499999994,
+            "exclusiveMs": 191.98070499999994
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 1.1965500000001157,
+            "exclusiveMs": 1.1965500000001157
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 33697.623538,
+            "exclusiveMs": 33697.623538
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 92.38080500000069,
+            "exclusiveMs": 92.38080500000069
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 25.919879000000947,
+            "exclusiveMs": 25.919879000000947
+          },
+          "evaluateModules": {
+            "calls": 1,
+            "inclusiveMs": 35768.271482000004,
+            "exclusiveMs": 1759.170005
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 36.465681000001496,
+            "exclusiveMs": 36.465681000001496
+          },
+          "organization": {
+            "calls": 1,
+            "inclusiveMs": 6.227936999996018,
+            "exclusiveMs": 6.227936999996018
+          },
+          "createOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 13.114502000003995,
+            "exclusiveMs": 13.114502000003995
+          },
+          "renderOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 2.280902000005881,
+            "exclusiveMs": 2.280902000005881
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.4003599999996368,
+            "exclusiveMs": 0.4003599999996368
+          }
+        },
+        "outputBytes": 8101,
+        "outputDigest": "cdc0cef9af5b197ec80236c70edbb88ea01185bb9ade5e34e9299996f187c2d9",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "postcode-organization-after-2-0",
+      "name": "postcode-organization",
+      "variant": "after",
+      "sample": 2,
+      "attempt": 0,
+      "wallMs": 4351,
+      "monotonicMs": 4350.727970000007,
+      "maximumHeartbeatGapMs": 250.91017599997576,
+      "cpuRatio": 1.5779217235331875,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "organization",
+          "repository"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.58154296875,
+            4.728515625,
+            4.38525390625
+          ],
+          "freeMemoryBefore": 3088785408,
+          "loadAfter": [
+            4.58154296875,
+            4.728515625,
+            4.38525390625
+          ],
+          "freeMemoryAfter": 2651148288
+        },
+        "exitCode": 0,
+        "wallMs": 4183,
+        "monotonicMs": 4181.993252,
+        "wallMinusMonotonicMs": 1.0067479999997886,
+        "cpu": {
+          "user": 6156116,
+          "system": 442742
+        },
+        "firstOutputMs": 4173.144043,
+        "observationMs": 8.304407999999967,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 229.0531410000001,
+            "exclusiveMs": 229.0531410000001
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.3458260000002156,
+            "exclusiveMs": 1.3458260000002156
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 1222.698464,
+            "exclusiveMs": 992.2994969999997
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 196.84954800000014,
+            "exclusiveMs": 196.84954800000014
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 1.1338289999998779,
+            "exclusiveMs": 1.1338289999998779
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 742.3041089999997,
+            "exclusiveMs": 742.3041089999997
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 35.90694100000019,
+            "exclusiveMs": 35.90694100000019
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 27.15897800000039,
+            "exclusiveMs": 27.15897800000039
+          },
+          "evaluateModules": {
+            "calls": 1,
+            "inclusiveMs": 2457.7229819999993,
+            "exclusiveMs": 1454.369576999999
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 39.05811700000049,
+            "exclusiveMs": 39.05811700000049
+          },
+          "organization": {
+            "calls": 1,
+            "inclusiveMs": 6.745336999999381,
+            "exclusiveMs": 6.745336999999381
+          },
+          "createOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 12.824352999999974,
+            "exclusiveMs": 12.824352999999974
+          },
+          "renderOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 1.3648120000007111,
+            "exclusiveMs": 1.3648120000007111
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.4009170000008453,
+            "exclusiveMs": 0.4009170000008453
+          }
+        },
+        "outputBytes": 8101,
+        "outputDigest": "cdc0cef9af5b197ec80236c70edbb88ea01185bb9ade5e34e9299996f187c2d9",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "postcode-organization-after-3-0",
+      "name": "postcode-organization",
+      "variant": "after",
+      "sample": 3,
+      "attempt": 0,
+      "wallMs": 4388,
+      "monotonicMs": 4387.342516999983,
+      "maximumHeartbeatGapMs": 251.0602979999967,
+      "cpuRatio": 1.592235289174234,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "organization",
+          "repository"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.58154296875,
+            4.728515625,
+            4.38525390625
+          ],
+          "freeMemoryBefore": 3039019008,
+          "loadAfter": [
+            4.45458984375,
+            4.69970703125,
+            4.376953125
+          ],
+          "freeMemoryAfter": 2640617472
+        },
+        "exitCode": 0,
+        "wallMs": 4216,
+        "monotonicMs": 4215.3298859999995,
+        "wallMinusMonotonicMs": 0.6701140000004671,
+        "cpu": {
+          "user": 6270105,
+          "system": 441692
+        },
+        "firstOutputMs": 4207.094468,
+        "observationMs": 7.710909999999785,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 206.75959399999988,
+            "exclusiveMs": 206.75959399999988
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.344959999999901,
+            "exclusiveMs": 1.344959999999901
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 1237.33194,
+            "exclusiveMs": 1029.2273860000003
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 201.4432469999997,
+            "exclusiveMs": 201.4432469999997
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.9976560000000063,
+            "exclusiveMs": 0.9976560000000063
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 747.3033169999999,
+            "exclusiveMs": 747.3033169999999
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 34.32385199999999,
+            "exclusiveMs": 34.32385199999999
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 25.422966000000088,
+            "exclusiveMs": 25.422966000000088
+          },
+          "evaluateModules": {
+            "calls": 1,
+            "inclusiveMs": 2468.060756,
+            "exclusiveMs": 1458.5697180000002
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 39.83314900000005,
+            "exclusiveMs": 39.83314900000005
+          },
+          "organization": {
+            "calls": 1,
+            "inclusiveMs": 7.141254000000117,
+            "exclusiveMs": 7.141254000000117
+          },
+          "createOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 13.875511999999617,
+            "exclusiveMs": 13.875511999999617
+          },
+          "renderOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 1.4757509999999456,
+            "exclusiveMs": 1.4757509999999456
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.39257999999972526,
+            "exclusiveMs": 0.39257999999972526
+          }
+        },
+        "outputBytes": 8101,
+        "outputDigest": "cdc0cef9af5b197ec80236c70edbb88ea01185bb9ade5e34e9299996f187c2d9",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "postcode-organization-before-3-0",
+      "name": "postcode-organization",
+      "variant": "before",
+      "sample": 3,
+      "attempt": 0,
+      "wallMs": 39171,
+      "monotonicMs": 39170.64196500002,
+      "maximumHeartbeatGapMs": 272.7544190000044,
+      "cpuRatio": 1.055435793809054,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "organization",
+          "repository"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.45458984375,
+            4.69970703125,
+            4.376953125
+          ],
+          "freeMemoryBefore": 3029979136,
+          "loadAfter": [
+            4.61865234375,
+            4.70556640625,
+            4.392578125
+          ],
+          "freeMemoryAfter": 2520248320
+        },
+        "exitCode": 0,
+        "wallMs": 38998,
+        "monotonicMs": 38995.603750999995,
+        "wallMinusMonotonicMs": 2.3962490000049,
+        "cpu": {
+          "user": 29250953,
+          "system": 11906403
+        },
+        "firstOutputMs": 38988.208145,
+        "observationMs": 6.886376000002201,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 199.8510550000001,
+            "exclusiveMs": 199.8510550000001
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.3155309999999645,
+            "exclusiveMs": 1.3155309999999645
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 1206.0504290000001,
+            "exclusiveMs": 1004.8838430000001
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 195.75519000000008,
+            "exclusiveMs": 195.75519000000008
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.9748150000000351,
+            "exclusiveMs": 0.9748150000000351
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 35201.221707,
+            "exclusiveMs": 35201.221707
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 90.65173800000048,
+            "exclusiveMs": 90.65173800000048
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 26.838746999994328,
+            "exclusiveMs": 26.838746999994328
+          },
+          "evaluateModules": {
+            "calls": 1,
+            "inclusiveMs": 37291.38564099999,
+            "exclusiveMs": 1775.943444000004
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 37.89026300000114,
+            "exclusiveMs": 37.89026300000114
+          },
+          "organization": {
+            "calls": 1,
+            "inclusiveMs": 6.177977999999712,
+            "exclusiveMs": 6.177977999999712
+          },
+          "createOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 11.078711000001931,
+            "exclusiveMs": 11.078711000001931
+          },
+          "renderOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 1.308310000000347,
+            "exclusiveMs": 1.308310000000347
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.38255999999819323,
+            "exclusiveMs": 0.38255999999819323
+          }
+        },
+        "outputBytes": 8101,
+        "outputDigest": "cdc0cef9af5b197ec80236c70edbb88ea01185bb9ade5e34e9299996f187c2d9",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "fixture-dependencies-before-0-0",
+      "name": "fixture-dependencies",
+      "variant": "before",
+      "sample": 0,
+      "attempt": 0,
+      "wallMs": 936,
+      "monotonicMs": 936.066055000003,
+      "maximumHeartbeatGapMs": 251.1536999999662,
+      "cpuRatio": 1.001541862409768,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "warmup",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "dependencies",
+          "--json",
+          "--project",
+          "fixtures/dependency-journey/tsconfig.json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.61865234375,
+            4.70556640625,
+            4.392578125
+          ],
+          "freeMemoryBefore": 3005784064,
+          "loadAfter": [
+            4.61865234375,
+            4.70556640625,
+            4.392578125
+          ],
+          "freeMemoryAfter": 2880671744
+        },
+        "exitCode": 0,
+        "wallMs": 774,
+        "monotonicMs": 772.763505,
+        "wallMinusMonotonicMs": 1.2364949999999908,
+        "cpu": {
+          "user": 689665,
+          "system": 84290
+        },
+        "firstOutputMs": 764.263147,
+        "observationMs": 6.711031000000048,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 223.296219,
+            "exclusiveMs": 223.296219
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.3353530000000546,
+            "exclusiveMs": 1.3353530000000546
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 259.61264300000005,
+            "exclusiveMs": 34.981070999999986
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 4.130594999999971,
+            "exclusiveMs": 4.130594999999971
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.2839019999998982,
+            "exclusiveMs": 0.2839019999998982
+          },
+          "prepareDependencies": {
+            "calls": 1,
+            "inclusiveMs": 3.397815000000037,
+            "exclusiveMs": 3.397815000000037
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 2.416560000000004,
+            "exclusiveMs": 2.416560000000004
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.4706570000000738,
+            "exclusiveMs": 0.4706570000000738
+          },
+          "materializeDependencies": {
+            "calls": 1,
+            "inclusiveMs": 1.4657359999999926,
+            "exclusiveMs": 1.4657359999999926
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 0.9173490000000584,
+            "exclusiveMs": 0.9173490000000584
+          },
+          "evaluateDependencies": {
+            "calls": 1,
+            "inclusiveMs": 40.24376900000004,
+            "exclusiveMs": 27.161155000000008
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 23.40793700000006,
+            "exclusiveMs": 23.40793700000006
+          },
+          "evaluateDependencyOrganization": {
+            "calls": 1,
+            "inclusiveMs": 3.8799770000000535,
+            "exclusiveMs": 3.8799770000000535
+          },
+          "dependencyStructure": {
+            "calls": 1,
+            "inclusiveMs": 1.8854939999999942,
+            "exclusiveMs": 1.8854939999999942
+          },
+          "createDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 2.502077999999983,
+            "exclusiveMs": 2.502077999999983
+          },
+          "renderDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 1.3193029999999908,
+            "exclusiveMs": 1.3193029999999908
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.404500999999982,
+            "exclusiveMs": 0.404500999999982
+          }
+        },
+        "outputBytes": 403924,
+        "outputDigest": "05ab526791d2b20f5daffad5bc15dcdfa1ee0ccd22883ca1ec3560ac606dacb5",
+        "warning": false,
+        "disposition": "warmup"
+      }
+    },
+    {
+      "id": "fixture-dependencies-after-0-0",
+      "name": "fixture-dependencies",
+      "variant": "after",
+      "sample": 0,
+      "attempt": 0,
+      "wallMs": 951,
+      "monotonicMs": 951.1944750000257,
+      "maximumHeartbeatGapMs": 250.66540200001327,
+      "cpuRatio": 0.9691096082721748,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "warmup",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "dependencies",
+          "--json",
+          "--project",
+          "fixtures/dependency-journey/tsconfig.json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.61865234375,
+            4.70556640625,
+            4.392578125
+          ],
+          "freeMemoryBefore": 3004616704,
+          "loadAfter": [
+            4.61865234375,
+            4.70556640625,
+            4.392578125
+          ],
+          "freeMemoryAfter": 2872340480
+        },
+        "exitCode": 0,
+        "wallMs": 801,
+        "monotonicMs": 800.160264,
+        "wallMinusMonotonicMs": 0.8397360000000162,
+        "cpu": {
+          "user": 691876,
+          "system": 83567
+        },
+        "firstOutputMs": 791.316648,
+        "observationMs": 7.173291000000063,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 246.51133799999997,
+            "exclusiveMs": 246.51133799999997
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.3409729999999627,
+            "exclusiveMs": 1.3409729999999627
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 283.78811500000006,
+            "exclusiveMs": 35.93580400000013
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 3.8528089999999793,
+            "exclusiveMs": 3.8528089999999793
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.27271699999994325,
+            "exclusiveMs": 0.27271699999994325
+          },
+          "prepareDependencies": {
+            "calls": 1,
+            "inclusiveMs": 3.3607920000000604,
+            "exclusiveMs": 3.3607920000000604
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 2.468994000000066,
+            "exclusiveMs": 2.468994000000066
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.4576049999999441,
+            "exclusiveMs": 0.4576049999999441
+          },
+          "materializeDependencies": {
+            "calls": 1,
+            "inclusiveMs": 1.7176489999999376,
+            "exclusiveMs": 1.7176489999999376
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 2.403502000000003,
+            "exclusiveMs": 2.403502000000003
+          },
+          "evaluateDependencies": {
+            "calls": 1,
+            "inclusiveMs": 41.28487700000005,
+            "exclusiveMs": 26.750809000000118
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 23.36815100000001,
+            "exclusiveMs": 23.36815100000001
+          },
+          "evaluateDependencyOrganization": {
+            "calls": 1,
+            "inclusiveMs": 3.7870880000000398,
+            "exclusiveMs": 3.7870880000000398
+          },
+          "dependencyStructure": {
+            "calls": 1,
+            "inclusiveMs": 1.9074100000000271,
+            "exclusiveMs": 1.9074100000000271
+          },
+          "createDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 2.484790000000089,
+            "exclusiveMs": 2.484790000000089
+          },
+          "renderDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 1.3462650000000167,
+            "exclusiveMs": 1.3462650000000167
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.3858390000000327,
+            "exclusiveMs": 0.3858390000000327
+          }
+        },
+        "outputBytes": 403924,
+        "outputDigest": "05ab526791d2b20f5daffad5bc15dcdfa1ee0ccd22883ca1ec3560ac606dacb5",
+        "warning": false,
+        "disposition": "warmup"
+      }
+    },
+    {
+      "id": "fixture-dependencies-after-1-0",
+      "name": "fixture-dependencies",
+      "variant": "after",
+      "sample": 1,
+      "attempt": 0,
+      "wallMs": 917,
+      "monotonicMs": 916.9774530000286,
+      "maximumHeartbeatGapMs": 250.77308399998583,
+      "cpuRatio": 1.0016306266188215,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "dependencies",
+          "--json",
+          "--project",
+          "fixtures/dependency-journey/tsconfig.json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.61865234375,
+            4.70556640625,
+            4.392578125
+          ],
+          "freeMemoryBefore": 2996842496,
+          "loadAfter": [
+            4.48876953125,
+            4.67724609375,
+            4.38427734375
+          ],
+          "freeMemoryAfter": 2871484416
+        },
+        "exitCode": 0,
+        "wallMs": 769,
+        "monotonicMs": 768.009663,
+        "wallMinusMonotonicMs": 0.9903369999999541,
+        "cpu": {
+          "user": 686989,
+          "system": 82273
+        },
+        "firstOutputMs": 759.904539,
+        "observationMs": 6.220147999999995,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 220.27290899999997,
+            "exclusiveMs": 220.27290899999997
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.2449649999999792,
+            "exclusiveMs": 1.2449649999999792
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 256.312148,
+            "exclusiveMs": 34.79427400000003
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 3.9278769999999668,
+            "exclusiveMs": 3.9278769999999668
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.2742800000000898,
+            "exclusiveMs": 0.2742800000000898
+          },
+          "prepareDependencies": {
+            "calls": 1,
+            "inclusiveMs": 3.6677640000000338,
+            "exclusiveMs": 3.6677640000000338
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 2.5095269999999346,
+            "exclusiveMs": 2.5095269999999346
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.39802800000006755,
+            "exclusiveMs": 0.39802800000006755
+          },
+          "materializeDependencies": {
+            "calls": 1,
+            "inclusiveMs": 1.4363120000000436,
+            "exclusiveMs": 1.4363120000000436
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 2.584400999999957,
+            "exclusiveMs": 2.584400999999957
+          },
+          "evaluateDependencies": {
+            "calls": 1,
+            "inclusiveMs": 41.364412000000016,
+            "exclusiveMs": 26.566222999999923
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 23.63239199999998,
+            "exclusiveMs": 23.63239199999998
+          },
+          "evaluateDependencyOrganization": {
+            "calls": 1,
+            "inclusiveMs": 3.8683099999999513,
+            "exclusiveMs": 3.8683099999999513
+          },
+          "dependencyStructure": {
+            "calls": 1,
+            "inclusiveMs": 2.1677190000000337,
+            "exclusiveMs": 2.1677190000000337
+          },
+          "createDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 2.4052520000000186,
+            "exclusiveMs": 2.4052520000000186
+          },
+          "renderDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 1.642733000000021,
+            "exclusiveMs": 1.642733000000021
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.3949670000000651,
+            "exclusiveMs": 0.3949670000000651
+          }
+        },
+        "outputBytes": 403924,
+        "outputDigest": "05ab526791d2b20f5daffad5bc15dcdfa1ee0ccd22883ca1ec3560ac606dacb5",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "fixture-dependencies-before-1-0",
+      "name": "fixture-dependencies",
+      "variant": "before",
+      "sample": 1,
+      "attempt": 0,
+      "wallMs": 930,
+      "monotonicMs": 929.7683919999981,
+      "maximumHeartbeatGapMs": 250.6893009999767,
+      "cpuRatio": 0.9732580703994356,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "dependencies",
+          "--json",
+          "--project",
+          "fixtures/dependency-journey/tsconfig.json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.48876953125,
+            4.67724609375,
+            4.38427734375
+          ],
+          "freeMemoryBefore": 2995609600,
+          "loadAfter": [
+            4.48876953125,
+            4.67724609375,
+            4.38427734375
+          ],
+          "freeMemoryAfter": 2859999232
+        },
+        "exitCode": 0,
+        "wallMs": 776,
+        "monotonicMs": 775.035957,
+        "wallMinusMonotonicMs": 0.9640429999999469,
+        "cpu": {
+          "user": 672904,
+          "system": 81406
+        },
+        "firstOutputMs": 766.771054,
+        "observationMs": 6.4778270000000475,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 226.17348999999996,
+            "exclusiveMs": 226.17348999999996
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.2582099999999627,
+            "exclusiveMs": 1.2582099999999627
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 263.44501399999996,
+            "exclusiveMs": 36.01331400000004
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 4.091080000000034,
+            "exclusiveMs": 4.091080000000034
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.27020699999991393,
+            "exclusiveMs": 0.27020699999991393
+          },
+          "prepareDependencies": {
+            "calls": 1,
+            "inclusiveMs": 3.307201999999961,
+            "exclusiveMs": 3.307201999999961
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 2.5993930000000773,
+            "exclusiveMs": 2.5993930000000773
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.4379069999999956,
+            "exclusiveMs": 0.4379069999999956
+          },
+          "materializeDependencies": {
+            "calls": 1,
+            "inclusiveMs": 1.530185000000074,
+            "exclusiveMs": 1.530185000000074
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 0.9285360000000082,
+            "exclusiveMs": 0.9285360000000082
+          },
+          "evaluateDependencies": {
+            "calls": 1,
+            "inclusiveMs": 39.78947700000003,
+            "exclusiveMs": 26.62496699999997
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 23.64322100000004,
+            "exclusiveMs": 23.64322100000004
+          },
+          "evaluateDependencyOrganization": {
+            "calls": 1,
+            "inclusiveMs": 3.747816999999941,
+            "exclusiveMs": 3.747816999999941
+          },
+          "dependencyStructure": {
+            "calls": 1,
+            "inclusiveMs": 1.8815999999999349,
+            "exclusiveMs": 1.8815999999999349
+          },
+          "createDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 2.387552000000028,
+            "exclusiveMs": 2.387552000000028
+          },
+          "renderDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 1.413528000000042,
+            "exclusiveMs": 1.413528000000042
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.4357560000000831,
+            "exclusiveMs": 0.4357560000000831
+          }
+        },
+        "outputBytes": 403924,
+        "outputDigest": "05ab526791d2b20f5daffad5bc15dcdfa1ee0ccd22883ca1ec3560ac606dacb5",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "fixture-dependencies-before-2-0",
+      "name": "fixture-dependencies",
+      "variant": "before",
+      "sample": 2,
+      "attempt": 0,
+      "wallMs": 866,
+      "monotonicMs": 865.6371670000372,
+      "maximumHeartbeatGapMs": 250.66815600002883,
+      "cpuRatio": 1.0517168553653393,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "dependencies",
+          "--json",
+          "--project",
+          "fixtures/dependency-journey/tsconfig.json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.48876953125,
+            4.67724609375,
+            4.38427734375
+          ],
+          "freeMemoryBefore": 2986655744,
+          "loadAfter": [
+            4.48876953125,
+            4.67724609375,
+            4.38427734375
+          ],
+          "freeMemoryAfter": 2986655744
+        },
+        "exitCode": 0,
+        "wallMs": 722,
+        "monotonicMs": 720.5351860000001,
+        "wallMinusMonotonicMs": 1.464813999999933,
+        "cpu": {
+          "user": 677322,
+          "system": 80477
+        },
+        "firstOutputMs": 712.0754260000001,
+        "observationMs": 6.621575000000007,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 179.71059299999996,
+            "exclusiveMs": 179.71059299999996
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.1916600000000699,
+            "exclusiveMs": 1.1916600000000699
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 215.172081,
+            "exclusiveMs": 34.26982799999996
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 3.996996999999965,
+            "exclusiveMs": 3.996996999999965
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.26344800000003943,
+            "exclusiveMs": 0.26344800000003943
+          },
+          "prepareDependencies": {
+            "calls": 1,
+            "inclusiveMs": 3.2140479999999343,
+            "exclusiveMs": 3.2140479999999343
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 2.48006799999996,
+            "exclusiveMs": 2.48006799999996
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.47448099999996884,
+            "exclusiveMs": 0.47448099999996884
+          },
+          "materializeDependencies": {
+            "calls": 1,
+            "inclusiveMs": 1.6094699999999875,
+            "exclusiveMs": 1.6094699999999875
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 2.878606999999988,
+            "exclusiveMs": 2.878606999999988
+          },
+          "evaluateDependencies": {
+            "calls": 1,
+            "inclusiveMs": 40.020021999999926,
+            "exclusiveMs": 25.102903000000083
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 23.508165000000076,
+            "exclusiveMs": 23.508165000000076
+          },
+          "evaluateDependencyOrganization": {
+            "calls": 1,
+            "inclusiveMs": 4.152321999999913,
+            "exclusiveMs": 4.152321999999913
+          },
+          "dependencyStructure": {
+            "calls": 1,
+            "inclusiveMs": 1.9842909999999847,
+            "exclusiveMs": 1.9842909999999847
+          },
+          "createDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 2.266546000000062,
+            "exclusiveMs": 2.266546000000062
+          },
+          "renderDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 1.4749729999999772,
+            "exclusiveMs": 1.4749729999999772
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.4049039999999877,
+            "exclusiveMs": 0.4049039999999877
+          }
+        },
+        "outputBytes": 403924,
+        "outputDigest": "05ab526791d2b20f5daffad5bc15dcdfa1ee0ccd22883ca1ec3560ac606dacb5",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "fixture-dependencies-after-2-0",
+      "name": "fixture-dependencies",
+      "variant": "after",
+      "sample": 2,
+      "attempt": 0,
+      "wallMs": 900,
+      "monotonicMs": 899.6046339999884,
+      "maximumHeartbeatGapMs": 250.98868299997412,
+      "cpuRatio": 1.0145962094196839,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "dependencies",
+          "--json",
+          "--project",
+          "fixtures/dependency-journey/tsconfig.json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.48876953125,
+            4.67724609375,
+            4.38427734375
+          ],
+          "freeMemoryBefore": 2980708352,
+          "loadAfter": [
+            4.48876953125,
+            4.67724609375,
+            4.38427734375
+          ],
+          "freeMemoryAfter": 2893578240
+        },
+        "exitCode": 0,
+        "wallMs": 748,
+        "monotonicMs": 746.351103,
+        "wallMinusMonotonicMs": 1.6488970000000336,
+        "cpu": {
+          "user": 673800,
+          "system": 83445
+        },
+        "firstOutputMs": 737.776667,
+        "observationMs": 6.743335000000002,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 206.73445099999998,
+            "exclusiveMs": 206.73445099999998
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.2045109999999113,
+            "exclusiveMs": 1.2045109999999113
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 242.21968299999997,
+            "exclusiveMs": 34.280721000000085
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 4.19012500000008,
+            "exclusiveMs": 4.19012500000008
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.2625100000000202,
+            "exclusiveMs": 0.2625100000000202
+          },
+          "prepareDependencies": {
+            "calls": 1,
+            "inclusiveMs": 3.5974449999999933,
+            "exclusiveMs": 3.5974449999999933
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 2.3131550000000516,
+            "exclusiveMs": 2.3131550000000516
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.5120789999999715,
+            "exclusiveMs": 0.5120789999999715
+          },
+          "materializeDependencies": {
+            "calls": 1,
+            "inclusiveMs": 1.4466310000000249,
+            "exclusiveMs": 1.4466310000000249
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 1.0136600000000726,
+            "exclusiveMs": 1.0136600000000726
+          },
+          "evaluateDependencies": {
+            "calls": 1,
+            "inclusiveMs": 40.18527299999994,
+            "exclusiveMs": 26.849667999999724
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 22.84737300000006,
+            "exclusiveMs": 22.84737300000006
+          },
+          "evaluateDependencyOrganization": {
+            "calls": 1,
+            "inclusiveMs": 3.5919020000000046,
+            "exclusiveMs": 3.5919020000000046
+          },
+          "dependencyStructure": {
+            "calls": 1,
+            "inclusiveMs": 1.7757400000000416,
+            "exclusiveMs": 1.7757400000000416
+          },
+          "createDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 2.617664999999988,
+            "exclusiveMs": 2.617664999999988
+          },
+          "renderDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 1.7349590000000035,
+            "exclusiveMs": 1.7349590000000035
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.3906000000000631,
+            "exclusiveMs": 0.3906000000000631
+          }
+        },
+        "outputBytes": 403924,
+        "outputDigest": "05ab526791d2b20f5daffad5bc15dcdfa1ee0ccd22883ca1ec3560ac606dacb5",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "fixture-dependencies-after-3-0",
+      "name": "fixture-dependencies",
+      "variant": "after",
+      "sample": 3,
+      "attempt": 0,
+      "wallMs": 932,
+      "monotonicMs": 932.5357849999564,
+      "maximumHeartbeatGapMs": 250.78588599996874,
+      "cpuRatio": 0.9912472699816539,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "dependencies",
+          "--json",
+          "--project",
+          "fixtures/dependency-journey/tsconfig.json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.48876953125,
+            4.67724609375,
+            4.38427734375
+          ],
+          "freeMemoryBefore": 2893578240,
+          "loadAfter": [
+            4.48876953125,
+            4.67724609375,
+            4.38427734375
+          ],
+          "freeMemoryAfter": 2862092288
+        },
+        "exitCode": 0,
+        "wallMs": 768,
+        "monotonicMs": 767.546124,
+        "wallMinusMonotonicMs": 0.4538760000000366,
+        "cpu": {
+          "user": 677475,
+          "system": 83353
+        },
+        "firstOutputMs": 758.829191,
+        "observationMs": 6.685603000000015,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 227.97281099999998,
+            "exclusiveMs": 227.97281099999998
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.2161250000000337,
+            "exclusiveMs": 1.2161250000000337
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 263.373583,
+            "exclusiveMs": 34.184646999999984
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 3.7401069999999663,
+            "exclusiveMs": 3.7401069999999663
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.2552610000000186,
+            "exclusiveMs": 0.2552610000000186
+          },
+          "prepareDependencies": {
+            "calls": 1,
+            "inclusiveMs": 3.0504300000000057,
+            "exclusiveMs": 3.0504300000000057
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 2.2904059999999618,
+            "exclusiveMs": 2.2904059999999618
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.35847499999999854,
+            "exclusiveMs": 0.35847499999999854
+          },
+          "materializeDependencies": {
+            "calls": 1,
+            "inclusiveMs": 1.3841409999999996,
+            "exclusiveMs": 1.3841409999999996
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 2.580441999999948,
+            "exclusiveMs": 2.580441999999948
+          },
+          "evaluateDependencies": {
+            "calls": 1,
+            "inclusiveMs": 39.33540999999991,
+            "exclusiveMs": 25.676148000000012
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 25.214886999999976,
+            "exclusiveMs": 25.214886999999976
+          },
+          "evaluateDependencyOrganization": {
+            "calls": 1,
+            "inclusiveMs": 3.617405000000076,
+            "exclusiveMs": 3.617405000000076
+          },
+          "dependencyStructure": {
+            "calls": 1,
+            "inclusiveMs": 1.8929979999999205,
+            "exclusiveMs": 1.8929979999999205
+          },
+          "createDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 2.2626319999999396,
+            "exclusiveMs": 2.2626319999999396
+          },
+          "renderDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 1.55346899999995,
+            "exclusiveMs": 1.55346899999995
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.400859999999966,
+            "exclusiveMs": 0.400859999999966
+          }
+        },
+        "outputBytes": 403924,
+        "outputDigest": "05ab526791d2b20f5daffad5bc15dcdfa1ee0ccd22883ca1ec3560ac606dacb5",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "fixture-dependencies-before-3-0",
+      "name": "fixture-dependencies",
+      "variant": "before",
+      "sample": 3,
+      "attempt": 0,
+      "wallMs": 914,
+      "monotonicMs": 914.4019599999883,
+      "maximumHeartbeatGapMs": 250.72968899999978,
+      "cpuRatio": 1.0080807984947688,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "dependencies",
+          "--json",
+          "--project",
+          "fixtures/dependency-journey/tsconfig.json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.48876953125,
+            4.67724609375,
+            4.38427734375
+          ],
+          "freeMemoryBefore": 2982580224,
+          "loadAfter": [
+            4.2890625,
+            4.63232421875,
+            4.3701171875
+          ],
+          "freeMemoryAfter": 2982580224
+        },
+        "exitCode": 0,
+        "wallMs": 767,
+        "monotonicMs": 765.844366,
+        "wallMinusMonotonicMs": 1.1556339999999636,
+        "cpu": {
+          "user": 688188,
+          "system": 83845
+        },
+        "firstOutputMs": 757.442786,
+        "observationMs": 6.273204999999962,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 217.04197500000004,
+            "exclusiveMs": 217.04197500000004
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.2252409999999827,
+            "exclusiveMs": 1.2252409999999827
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 252.07981800000005,
+            "exclusiveMs": 33.81260200000003
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 3.9137410000000727,
+            "exclusiveMs": 3.9137410000000727
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.2651499999999487,
+            "exclusiveMs": 0.2651499999999487
+          },
+          "prepareDependencies": {
+            "calls": 1,
+            "inclusiveMs": 3.1168290000000525,
+            "exclusiveMs": 3.1168290000000525
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 2.290175999999974,
+            "exclusiveMs": 2.290175999999974
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.5027249999999412,
+            "exclusiveMs": 0.5027249999999412
+          },
+          "materializeDependencies": {
+            "calls": 1,
+            "inclusiveMs": 1.3656550000000607,
+            "exclusiveMs": 1.3656550000000607
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 2.8957249999999704,
+            "exclusiveMs": 2.8957249999999704
+          },
+          "evaluateDependencies": {
+            "calls": 1,
+            "inclusiveMs": 39.076247999999964,
+            "exclusiveMs": 24.726246999999944
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 23.59222299999999,
+            "exclusiveMs": 23.59222299999999
+          },
+          "evaluateDependencyOrganization": {
+            "calls": 1,
+            "inclusiveMs": 4.045138000000065,
+            "exclusiveMs": 4.045138000000065
+          },
+          "dependencyStructure": {
+            "calls": 1,
+            "inclusiveMs": 1.7689229999999725,
+            "exclusiveMs": 1.7689229999999725
+          },
+          "createDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 2.16524000000004,
+            "exclusiveMs": 2.16524000000004
+          },
+          "renderDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 1.3349979999999277,
+            "exclusiveMs": 1.3349979999999277
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.3950810000000047,
+            "exclusiveMs": 0.3950810000000047
+          }
+        },
+        "outputBytes": 403924,
+        "outputDigest": "05ab526791d2b20f5daffad5bc15dcdfa1ee0ccd22883ca1ec3560ac606dacb5",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "fixture-organization-before-0-0",
+      "name": "fixture-organization",
+      "variant": "before",
+      "sample": 0,
+      "attempt": 0,
+      "wallMs": 927,
+      "monotonicMs": 927.2110950000351,
+      "maximumHeartbeatGapMs": 250.4703429999645,
+      "cpuRatio": 0.9922547695503096,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "warmup",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "organization",
+          "project",
+          "--project",
+          "fixtures/dependency-journey/tsconfig.json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.2890625,
+            4.63232421875,
+            4.3701171875
+          ],
+          "freeMemoryBefore": 2989076480,
+          "loadAfter": [
+            4.2890625,
+            4.63232421875,
+            4.3701171875
+          ],
+          "freeMemoryAfter": 2861506560
+        },
+        "exitCode": 0,
+        "wallMs": 773,
+        "monotonicMs": 771.789689,
+        "wallMinusMonotonicMs": 1.210311000000047,
+        "cpu": {
+          "user": 683945,
+          "system": 81867
+        },
+        "firstOutputMs": 764.225053,
+        "observationMs": 7.017668999999955,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 226.729967,
+            "exclusiveMs": 226.729967
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.3027920000000677,
+            "exclusiveMs": 1.3027920000000677
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 261.75950200000005,
+            "exclusiveMs": 33.726743
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 3.7311339999999973,
+            "exclusiveMs": 3.7311339999999973
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.2542359999999917,
+            "exclusiveMs": 0.2542359999999917
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 2.4861660000000256,
+            "exclusiveMs": 2.4861660000000256
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.40430000000003474,
+            "exclusiveMs": 0.40430000000003474
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 0.9841450000000123,
+            "exclusiveMs": 0.9841450000000123
+          },
+          "evaluateModules": {
+            "calls": 1,
+            "inclusiveMs": 32.60224000000005,
+            "exclusiveMs": 24.74225899999999
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 26.22401400000001,
+            "exclusiveMs": 26.22401400000001
+          },
+          "organization": {
+            "calls": 1,
+            "inclusiveMs": 2.16074500000002,
+            "exclusiveMs": 2.16074500000002
+          },
+          "createOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 4.405390000000011,
+            "exclusiveMs": 4.405390000000011
+          },
+          "renderOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 0.7457279999999855,
+            "exclusiveMs": 0.7457279999999855
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.4309960000000501,
+            "exclusiveMs": 0.4309960000000501
+          }
+        },
+        "outputBytes": 4263,
+        "outputDigest": "f231073ea572a9c79ff27407ddf423014eeae9731d1ac58d59db6930e8c694a2",
+        "warning": false,
+        "disposition": "warmup"
+      }
+    },
+    {
+      "id": "fixture-organization-after-0-0",
+      "name": "fixture-organization",
+      "variant": "after",
+      "sample": 0,
+      "attempt": 0,
+      "wallMs": 863,
+      "monotonicMs": 862.7700440000044,
+      "maximumHeartbeatGapMs": 250.6620090000215,
+      "cpuRatio": 1.0376327337923787,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "warmup",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "organization",
+          "project",
+          "--project",
+          "fixtures/dependency-journey/tsconfig.json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.2890625,
+            4.63232421875,
+            4.3701171875
+          ],
+          "freeMemoryBefore": 2986053632,
+          "loadAfter": [
+            4.2890625,
+            4.63232421875,
+            4.3701171875
+          ],
+          "freeMemoryAfter": 2859544576
+        },
+        "exitCode": 0,
+        "wallMs": 712,
+        "monotonicMs": 710.8623080000001,
+        "wallMinusMonotonicMs": 1.1376919999999018,
+        "cpu": {
+          "user": 659107,
+          "system": 78507
+        },
+        "firstOutputMs": 704.689698,
+        "observationMs": 5.637577999999962,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 182.35947500000003,
+            "exclusiveMs": 182.35947500000003
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.2440579999999954,
+            "exclusiveMs": 1.2440579999999954
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 217.90948099999997,
+            "exclusiveMs": 34.305947999999944
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 3.7852759999999535,
+            "exclusiveMs": 3.7852759999999535
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.2583200000000261,
+            "exclusiveMs": 0.2583200000000261
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 3.020674999999983,
+            "exclusiveMs": 3.020674999999983
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.3806400000000849,
+            "exclusiveMs": 0.3806400000000849
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 0.94208900000001,
+            "exclusiveMs": 0.94208900000001
+          },
+          "evaluateModules": {
+            "calls": 1,
+            "inclusiveMs": 32.77047700000003,
+            "exclusiveMs": 24.38347699999997
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 23.703449999999975,
+            "exclusiveMs": 23.703449999999975
+          },
+          "organization": {
+            "calls": 1,
+            "inclusiveMs": 2.280364000000077,
+            "exclusiveMs": 2.280364000000077
+          },
+          "createOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 4.001984999999991,
+            "exclusiveMs": 4.001984999999991
+          },
+          "renderOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 0.9337010000000419,
+            "exclusiveMs": 0.9337010000000419
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.42242799999996805,
+            "exclusiveMs": 0.42242799999996805
+          }
+        },
+        "outputBytes": 4263,
+        "outputDigest": "f231073ea572a9c79ff27407ddf423014eeae9731d1ac58d59db6930e8c694a2",
+        "warning": false,
+        "disposition": "warmup"
+      }
+    },
+    {
+      "id": "fixture-organization-after-1-0",
+      "name": "fixture-organization",
+      "variant": "after",
+      "sample": 1,
+      "attempt": 0,
+      "wallMs": 896,
+      "monotonicMs": 896.5461490000016,
+      "maximumHeartbeatGapMs": 251.17362199997297,
+      "cpuRatio": 1.0214094168427628,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "organization",
+          "project",
+          "--project",
+          "fixtures/dependency-journey/tsconfig.json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.2890625,
+            4.63232421875,
+            4.3701171875
+          ],
+          "freeMemoryBefore": 2977898496,
+          "loadAfter": [
+            4.2890625,
+            4.63232421875,
+            4.3701171875
+          ],
+          "freeMemoryAfter": 2977898496
+        },
+        "exitCode": 0,
+        "wallMs": 721,
+        "monotonicMs": 720.391831,
+        "wallMinusMonotonicMs": 0.6081689999999753,
+        "cpu": {
+          "user": 656296,
+          "system": 79519
+        },
+        "firstOutputMs": 714.882142,
+        "observationMs": 4.871691999999939,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 190.466811,
+            "exclusiveMs": 190.466811
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.2837930000000597,
+            "exclusiveMs": 1.2837930000000597
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 227.00623400000006,
+            "exclusiveMs": 35.25563
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 3.8942180000000235,
+            "exclusiveMs": 3.8942180000000235
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.265117000000032,
+            "exclusiveMs": 0.265117000000032
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 2.4387460000000374,
+            "exclusiveMs": 2.4387460000000374
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.38173699999993005,
+            "exclusiveMs": 0.38173699999993005
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 1.1578289999999924,
+            "exclusiveMs": 1.1578289999999924
+          },
+          "evaluateModules": {
+            "calls": 1,
+            "inclusiveMs": 31.590971999999965,
+            "exclusiveMs": 23.45332499999995
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 24.453392000000008,
+            "exclusiveMs": 24.453392000000008
+          },
+          "organization": {
+            "calls": 1,
+            "inclusiveMs": 2.6000369999999293,
+            "exclusiveMs": 2.6000369999999293
+          },
+          "createOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 3.850418999999988,
+            "exclusiveMs": 3.850418999999988
+          },
+          "renderOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 0.7794110000000956,
+            "exclusiveMs": 0.7794110000000956
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.4540359999999737,
+            "exclusiveMs": 0.4540359999999737
+          }
+        },
+        "outputBytes": 4263,
+        "outputDigest": "f231073ea572a9c79ff27407ddf423014eeae9731d1ac58d59db6930e8c694a2",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "fixture-organization-before-1-0",
+      "name": "fixture-organization",
+      "variant": "before",
+      "sample": 1,
+      "attempt": 0,
+      "wallMs": 886,
+      "monotonicMs": 886.3697829999728,
+      "maximumHeartbeatGapMs": 250.77564499998698,
+      "cpuRatio": 1.0024887953899126,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "organization",
+          "project",
+          "--project",
+          "fixtures/dependency-journey/tsconfig.json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.2890625,
+            4.63232421875,
+            4.3701171875
+          ],
+          "freeMemoryBefore": 2976976896,
+          "loadAfter": [
+            4.2890625,
+            4.63232421875,
+            4.3701171875
+          ],
+          "freeMemoryAfter": 2857840640
+        },
+        "exitCode": 0,
+        "wallMs": 740,
+        "monotonicMs": 739.042674,
+        "wallMinusMonotonicMs": 0.9573259999999664,
+        "cpu": {
+          "user": 659588,
+          "system": 81294
+        },
+        "firstOutputMs": 732.615131,
+        "observationMs": 5.883985999999936,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 208.830171,
+            "exclusiveMs": 208.830171
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.2682559999999512,
+            "exclusiveMs": 1.2682559999999512
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 243.61730500000004,
+            "exclusiveMs": 33.518878000000086
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 4.033083000000033,
+            "exclusiveMs": 4.033083000000033
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.278562000000079,
+            "exclusiveMs": 0.278562000000079
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 2.3837389999999914,
+            "exclusiveMs": 2.3837389999999914
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.458782000000042,
+            "exclusiveMs": 0.458782000000042
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 0.9700760000000628,
+            "exclusiveMs": 0.9700760000000628
+          },
+          "evaluateModules": {
+            "calls": 1,
+            "inclusiveMs": 32.80102299999999,
+            "exclusiveMs": 24.676780999999778
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 25.39469500000007,
+            "exclusiveMs": 25.39469500000007
+          },
+          "organization": {
+            "calls": 1,
+            "inclusiveMs": 2.216611000000057,
+            "exclusiveMs": 2.216611000000057
+          },
+          "createOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 3.957524000000035,
+            "exclusiveMs": 3.957524000000035
+          },
+          "renderOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 0.7310099999999693,
+            "exclusiveMs": 0.7310099999999693
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.4300509999999349,
+            "exclusiveMs": 0.4300509999999349
+          }
+        },
+        "outputBytes": 4263,
+        "outputDigest": "f231073ea572a9c79ff27407ddf423014eeae9731d1ac58d59db6930e8c694a2",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "fixture-organization-before-2-0",
+      "name": "fixture-organization",
+      "variant": "before",
+      "sample": 2,
+      "attempt": 0,
+      "wallMs": 915,
+      "monotonicMs": 915.2012580000446,
+      "maximumHeartbeatGapMs": 250.66678799997317,
+      "cpuRatio": 0.9761472717220588,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "organization",
+          "project",
+          "--project",
+          "fixtures/dependency-journey/tsconfig.json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.2890625,
+            4.63232421875,
+            4.3701171875
+          ],
+          "freeMemoryBefore": 2857840640,
+          "loadAfter": [
+            4.2890625,
+            4.63232421875,
+            4.3701171875
+          ],
+          "freeMemoryAfter": 2856894464
+        },
+        "exitCode": 0,
+        "wallMs": 763,
+        "monotonicMs": 761.690394,
+        "wallMinusMonotonicMs": 1.3096060000000307,
+        "cpu": {
+          "user": 664853,
+          "system": 78669
+        },
+        "firstOutputMs": 756.206792,
+        "observationMs": 4.928601999999955,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 225.09909,
+            "exclusiveMs": 225.09909
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.2295049999999037,
+            "exclusiveMs": 1.2295049999999037
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 260.22504499999997,
+            "exclusiveMs": 33.89645000000007
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 4.019525000000044,
+            "exclusiveMs": 4.019525000000044
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.28497600000002876,
+            "exclusiveMs": 0.28497600000002876
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 2.4625859999999875,
+            "exclusiveMs": 2.4625859999999875
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.4178739999999834,
+            "exclusiveMs": 0.4178739999999834
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 1.1332269999999198,
+            "exclusiveMs": 1.1332269999999198
+          },
+          "evaluateModules": {
+            "calls": 1,
+            "inclusiveMs": 32.957379999999944,
+            "exclusiveMs": 24.63919199999998
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 24.97029299999997,
+            "exclusiveMs": 24.97029299999997
+          },
+          "organization": {
+            "calls": 1,
+            "inclusiveMs": 2.4059839999999895,
+            "exclusiveMs": 2.4059839999999895
+          },
+          "createOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 4.126484000000005,
+            "exclusiveMs": 4.126484000000005
+          },
+          "renderOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 0.7468290000000479,
+            "exclusiveMs": 0.7468290000000479
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.43941899999992984,
+            "exclusiveMs": 0.43941899999992984
+          }
+        },
+        "outputBytes": 4263,
+        "outputDigest": "f231073ea572a9c79ff27407ddf423014eeae9731d1ac58d59db6930e8c694a2",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "fixture-organization-after-2-0",
+      "name": "fixture-organization",
+      "variant": "after",
+      "sample": 2,
+      "attempt": 0,
+      "wallMs": 933,
+      "monotonicMs": 933.2892709999578,
+      "maximumHeartbeatGapMs": 250.97973999998067,
+      "cpuRatio": 0.9698577475111122,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "organization",
+          "project",
+          "--project",
+          "fixtures/dependency-journey/tsconfig.json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.2890625,
+            4.63232421875,
+            4.3701171875
+          ],
+          "freeMemoryBefore": 2977779712,
+          "loadAfter": [
+            4.345703125,
+            4.63818359375,
+            4.37353515625
+          ],
+          "freeMemoryAfter": 2853277696
+        },
+        "exitCode": 0,
+        "wallMs": 769,
+        "monotonicMs": 767.7827,
+        "wallMinusMonotonicMs": 1.217300000000023,
+        "cpu": {
+          "user": 666683,
+          "system": 77957
+        },
+        "firstOutputMs": 761.901496,
+        "observationMs": 5.300510000000031,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 230.835038,
+            "exclusiveMs": 230.835038
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.3029939999998987,
+            "exclusiveMs": 1.3029939999998987
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 266.366058,
+            "exclusiveMs": 34.22802600000011
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 3.9198319999999285,
+            "exclusiveMs": 3.9198319999999285
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.26589000000001306,
+            "exclusiveMs": 0.26589000000001306
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 2.395448999999985,
+            "exclusiveMs": 2.395448999999985
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.413330999999971,
+            "exclusiveMs": 0.413330999999971
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 0.9714559999999892,
+            "exclusiveMs": 0.9714559999999892
+          },
+          "evaluateModules": {
+            "calls": 1,
+            "inclusiveMs": 33.14475200000004,
+            "exclusiveMs": 25.178794000000153
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 25.087001999999984,
+            "exclusiveMs": 25.087001999999984
+          },
+          "organization": {
+            "calls": 1,
+            "inclusiveMs": 2.250244000000066,
+            "exclusiveMs": 2.250244000000066
+          },
+          "createOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 4.1950669999999946,
+            "exclusiveMs": 4.1950669999999946
+          },
+          "renderOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 0.7344339999999647,
+            "exclusiveMs": 0.7344339999999647
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.4654160000000047,
+            "exclusiveMs": 0.4654160000000047
+          }
+        },
+        "outputBytes": 4263,
+        "outputDigest": "f231073ea572a9c79ff27407ddf423014eeae9731d1ac58d59db6930e8c694a2",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "fixture-organization-after-3-0",
+      "name": "fixture-organization",
+      "variant": "after",
+      "sample": 3,
+      "attempt": 0,
+      "wallMs": 897,
+      "monotonicMs": 897.2166229999857,
+      "maximumHeartbeatGapMs": 251.26629599998705,
+      "cpuRatio": 0.9963976862117031,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "organization",
+          "project",
+          "--project",
+          "fixtures/dependency-journey/tsconfig.json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.345703125,
+            4.63818359375,
+            4.37353515625
+          ],
+          "freeMemoryBefore": 2973044736,
+          "loadAfter": [
+            4.345703125,
+            4.63818359375,
+            4.37353515625
+          ],
+          "freeMemoryAfter": 2842263552
+        },
+        "exitCode": 0,
+        "wallMs": 747,
+        "monotonicMs": 745.093059,
+        "wallMinusMonotonicMs": 1.9069409999999607,
+        "cpu": {
+          "user": 663264,
+          "system": 79145
+        },
+        "firstOutputMs": 739.903566,
+        "observationMs": 4.644215000000031,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 210.24470900000006,
+            "exclusiveMs": 210.24470900000006
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.2023490000000265,
+            "exclusiveMs": 1.2023490000000265
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 246.55488100000002,
+            "exclusiveMs": 35.10782299999994
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 3.8650630000000774,
+            "exclusiveMs": 3.8650630000000774
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.2671569999999974,
+            "exclusiveMs": 0.2671569999999974
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 2.473137000000065,
+            "exclusiveMs": 2.473137000000065
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.3826099999999997,
+            "exclusiveMs": 0.3826099999999997
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 0.9421909999999798,
+            "exclusiveMs": 0.9421909999999798
+          },
+          "evaluateModules": {
+            "calls": 1,
+            "inclusiveMs": 32.369883999999956,
+            "exclusiveMs": 24.439725999999837
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 24.437955999999986,
+            "exclusiveMs": 24.437955999999986
+          },
+          "organization": {
+            "calls": 1,
+            "inclusiveMs": 2.4024590000000217,
+            "exclusiveMs": 2.4024590000000217
+          },
+          "createOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 3.9337399999999434,
+            "exclusiveMs": 3.9337399999999434
+          },
+          "renderOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 0.7323160000000826,
+            "exclusiveMs": 0.7323160000000826
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.4350600000000213,
+            "exclusiveMs": 0.4350600000000213
+          }
+        },
+        "outputBytes": 4263,
+        "outputDigest": "f231073ea572a9c79ff27407ddf423014eeae9731d1ac58d59db6930e8c694a2",
+        "warning": false,
+        "disposition": "representative"
+      }
+    },
+    {
+      "id": "fixture-organization-before-3-0",
+      "name": "fixture-organization",
+      "variant": "before",
+      "sample": 3,
+      "attempt": 0,
+      "wallMs": 888,
+      "monotonicMs": 887.6365530000185,
+      "maximumHeartbeatGapMs": 251.524179,
+      "cpuRatio": 0.9946119206683529,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disposition": "representative",
+      "reasons": [],
+      "error": "",
+      "measurement": {
+        "args": [
+          "organization",
+          "project",
+          "--project",
+          "fixtures/dependency-journey/tsconfig.json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.345703125,
+            4.63818359375,
+            4.37353515625
+          ],
+          "freeMemoryBefore": 2966335488,
+          "loadAfter": [
+            4.345703125,
+            4.63818359375,
+            4.37353515625
+          ],
+          "freeMemoryAfter": 2850840576
+        },
+        "exitCode": 0,
+        "wallMs": 742,
+        "monotonicMs": 741.521376,
+        "wallMinusMonotonicMs": 0.47862399999996796,
+        "cpu": {
+          "user": 658372,
+          "system": 79154
+        },
+        "firstOutputMs": 734.526911,
+        "observationMs": 6.439288000000033,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 215.90931499999994,
+            "exclusiveMs": 215.90931499999994
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.3313269999999875,
+            "exclusiveMs": 1.3313269999999875
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 251.60917500000005,
+            "exclusiveMs": 34.36853300000013
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 4.151587000000063,
+            "exclusiveMs": 4.151587000000063
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.27174300000001494,
+            "exclusiveMs": 0.27174300000001494
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 2.4770999999999503,
+            "exclusiveMs": 2.4770999999999503
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.4334790000000339,
+            "exclusiveMs": 0.4334790000000339
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 0.8892559999999321,
+            "exclusiveMs": 0.8892559999999321
+          },
+          "evaluateModules": {
+            "calls": 1,
+            "inclusiveMs": 31.144307000000026,
+            "exclusiveMs": 22.92114200000003
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 24.569154000000026,
+            "exclusiveMs": 24.569154000000026
+          },
+          "organization": {
+            "calls": 1,
+            "inclusiveMs": 2.3260199999999713,
+            "exclusiveMs": 2.3260199999999713
+          },
+          "createOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 3.75921900000003,
+            "exclusiveMs": 3.75921900000003
+          },
+          "renderOrganizationView": {
+            "calls": 1,
+            "inclusiveMs": 0.7427129999999806,
+            "exclusiveMs": 0.7427129999999806
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.44002499999999145,
+            "exclusiveMs": 0.44002499999999145
+          }
+        },
+        "outputBytes": 4263,
+        "outputDigest": "f231073ea572a9c79ff27407ddf423014eeae9731d1ac58d59db6930e8c694a2",
+        "warning": false,
+        "disposition": "representative"
+      }
+    }
+  ],
+  "reproductionSmoke": {
+    "disposition": "tooling-smoke; later worktree; excluded from paired aggregates",
+    "baselineReconstruction": "Every rebuilt application file matches. Original ignored build also had cli-before-round6.js and presentation-before-round5.js; neither is imported by the rebuilt application.",
+    "measurements": [
+      {
+        "args": [
+          "dependencies",
+          "--json",
+          "--project",
+          "fixtures/dependency-journey/tsconfig.json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            4.3369140625,
+            4.49072265625,
+            4.365234375
+          ],
+          "freeMemoryBefore": 2535276544,
+          "loadAfter": [
+            5.1103515625,
+            4.6484375,
+            4.42138671875
+          ],
+          "freeMemoryAfter": 2157260800
+        },
+        "exitCode": 0,
+        "wallMs": 1125,
+        "monotonicMs": 1122.936294,
+        "wallMinusMonotonicMs": 2.063705999999911,
+        "cpu": {
+          "user": 934511,
+          "system": 125652
+        },
+        "firstOutputMs": 1112.5356370000002,
+        "observationMs": 8.403767000000016,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 278.73800299999994,
+            "exclusiveMs": 278.73800299999994
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.4847440000000915,
+            "exclusiveMs": 1.4847440000000915
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 326.46398399999987,
+            "exclusiveMs": 46.24123699999984
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 5.069790999999896,
+            "exclusiveMs": 5.069790999999896
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.3154580000000351,
+            "exclusiveMs": 0.3154580000000351
+          },
+          "prepareDependencies": {
+            "calls": 1,
+            "inclusiveMs": 4.374278000000004,
+            "exclusiveMs": 4.374278000000004
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 4.455314000000044,
+            "exclusiveMs": 4.455314000000044
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.7374509999999646,
+            "exclusiveMs": 0.7374509999999646
+          },
+          "materializeDependencies": {
+            "calls": 1,
+            "inclusiveMs": 1.7305380000000241,
+            "exclusiveMs": 1.7305380000000241
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 1.1051119999999628,
+            "exclusiveMs": 1.1051119999999628
+          },
+          "evaluateDependencies": {
+            "calls": 1,
+            "inclusiveMs": 60.72962000000007,
+            "exclusiveMs": 42.94167800000014
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 32.188077999999905,
+            "exclusiveMs": 32.188077999999905
+          },
+          "evaluateDependencyOrganization": {
+            "calls": 1,
+            "inclusiveMs": 6.021500999999944,
+            "exclusiveMs": 6.021500999999944
+          },
+          "dependencyStructure": {
+            "calls": 1,
+            "inclusiveMs": 2.158437000000049,
+            "exclusiveMs": 2.158437000000049
+          },
+          "createDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 2.548082000000022,
+            "exclusiveMs": 2.548082000000022
+          },
+          "renderDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 1.4188739999999598,
+            "exclusiveMs": 1.4188739999999598
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.4695920000001479,
+            "exclusiveMs": 0.4695920000001479
+          }
+        },
+        "outputBytes": 406520,
+        "outputDigest": "3b73910d6ddbff1323083de20cce372e5dd9449a3fd7eb02c49c6d5ad0bb9db6",
+        "warning": false,
+        "disposition": "tooling-smoke"
+      },
+      {
+        "args": [
+          "dependencies",
+          "--json",
+          "--project",
+          "fixtures/dependency-journey/tsconfig.json"
+        ],
+        "conditions": {
+          "node": "v22.13.1",
+          "platform": "darwin",
+          "arch": "x64",
+          "cpus": 16,
+          "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+          "loadBefore": [
+            5.1103515625,
+            4.6484375,
+            4.42138671875
+          ],
+          "freeMemoryBefore": 2262134784,
+          "loadAfter": [
+            5.1103515625,
+            4.6484375,
+            4.42138671875
+          ],
+          "freeMemoryAfter": 2117099520
+        },
+        "exitCode": 0,
+        "wallMs": 923,
+        "monotonicMs": 921.148562,
+        "wallMinusMonotonicMs": 1.8514380000000301,
+        "cpu": {
+          "user": 837284,
+          "system": 104317
+        },
+        "firstOutputMs": 908.26127,
+        "observationMs": 10.80995299999995,
+        "stages": {
+          "captureRepository": {
+            "calls": 1,
+            "inclusiveMs": 244.91053399999998,
+            "exclusiveMs": 244.91053399999998
+          },
+          "deriveLayout": {
+            "calls": 1,
+            "inclusiveMs": 1.5206100000000333,
+            "exclusiveMs": 1.5206100000000333
+          },
+          "openTypeScriptProject": {
+            "calls": 1,
+            "inclusiveMs": 293.05172100000004,
+            "exclusiveMs": 46.620577000000026
+          },
+          "prepareExpansions": {
+            "calls": 1,
+            "inclusiveMs": 4.571833000000083,
+            "exclusiveMs": 4.571833000000083
+          },
+          "prepareComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.29616999999996096,
+            "exclusiveMs": 0.29616999999996096
+          },
+          "prepareDependencies": {
+            "calls": 1,
+            "inclusiveMs": 4.095013999999992,
+            "exclusiveMs": 4.095013999999992
+          },
+          "materializeExpansions": {
+            "calls": 1,
+            "inclusiveMs": 3.0392440000000533,
+            "exclusiveMs": 3.0392440000000533
+          },
+          "materializeComposition": {
+            "calls": 1,
+            "inclusiveMs": 0.5259639999999308,
+            "exclusiveMs": 0.5259639999999308
+          },
+          "materializeDependencies": {
+            "calls": 1,
+            "inclusiveMs": 1.570671999999945,
+            "exclusiveMs": 1.570671999999945
+          },
+          "recordModuleEvaluation": {
+            "calls": 1,
+            "inclusiveMs": 1.8142100000000028,
+            "exclusiveMs": 1.8142100000000028
+          },
+          "evaluateDependencies": {
+            "calls": 1,
+            "inclusiveMs": 53.24220700000001,
+            "exclusiveMs": 37.32910000000004
+          },
+          "evaluateOrganization": {
+            "calls": 1,
+            "inclusiveMs": 30.203850999999986,
+            "exclusiveMs": 30.203850999999986
+          },
+          "evaluateDependencyOrganization": {
+            "calls": 1,
+            "inclusiveMs": 5.083515000000034,
+            "exclusiveMs": 5.083515000000034
+          },
+          "dependencyStructure": {
+            "calls": 1,
+            "inclusiveMs": 2.204256999999984,
+            "exclusiveMs": 2.204256999999984
+          },
+          "createDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 2.4892959999999675,
+            "exclusiveMs": 2.4892959999999675
+          },
+          "renderDependencyView": {
+            "calls": 1,
+            "inclusiveMs": 1.4066329999999425,
+            "exclusiveMs": 1.4066329999999425
+          },
+          "observationBatch": {
+            "calls": 1,
+            "inclusiveMs": 0.42678300000000036,
+            "exclusiveMs": 0.42678300000000036
+          }
+        },
+        "outputBytes": 406520,
+        "outputDigest": "3b73910d6ddbff1323083de20cce372e5dd9449a3fd7eb02c49c6d5ad0bb9db6",
+        "warning": false,
+        "disposition": "tooling-smoke"
+      }
+    ]
+  }
+}

@@ -1,0 +1,348 @@
+[
+  {
+    "config": "fixtures/dependency-journey/tsconfig.json",
+    "args": [
+      "modules",
+      "--json"
+    ],
+    "bytes": 58016,
+    "sha256": "c9f62067c511786d93e9ebed048438636e81c37c6c2a72c6e7e350dc3cc4d42c",
+    "equal": true,
+    "snapshot": "snapshot:2e9d8464dd5aa4670c5fa8eb621a73a1439d60bf9f8b4e39d2d9ac5575b70b51",
+    "events": [
+      "view-produced"
+    ]
+  },
+  {
+    "config": "fixtures/dependency-journey/tsconfig.json",
+    "args": [
+      "organization",
+      "repository",
+      "--json"
+    ],
+    "bytes": 428832,
+    "sha256": "1cb6c8a6e7a836504003d9eead46a1cdaa787cce289b679c317addad578b8de8",
+    "equal": true,
+    "snapshot": "snapshot:2e9d8464dd5aa4670c5fa8eb621a73a1439d60bf9f8b4e39d2d9ac5575b70b51",
+    "events": [
+      "view-produced"
+    ]
+  },
+  {
+    "config": "fixtures/dependency-journey/tsconfig.json",
+    "args": [
+      "organization",
+      "project"
+    ],
+    "bytes": 4263,
+    "sha256": "f1ab2aaaee0593c11e1e078cff71f473d3941b3cd38d69eb44bf0d8b86de2fd1",
+    "equal": true,
+    "snapshot": "snapshot:2e9d8464dd5aa4670c5fa8eb621a73a1439d60bf9f8b4e39d2d9ac5575b70b51",
+    "events": [
+      "view-produced"
+    ]
+  },
+  {
+    "config": "fixtures/dependency-journey/tsconfig.json",
+    "args": [
+      "inspect",
+      "group-d4e2e6b1",
+      "--snapshot",
+      "snapshot:2e9d8464dd5aa4670c5fa8eb621a73a1439d60bf9f8b4e39d2d9ac5575b70b51",
+      "--source-detail",
+      "--json"
+    ],
+    "bytes": 320787,
+    "sha256": "80d0f69dd6f20f78ec67fef0a05d421b112034160171a48a05f0fd7b540d994c",
+    "equal": true,
+    "snapshot": "snapshot:2e9d8464dd5aa4670c5fa8eb621a73a1439d60bf9f8b4e39d2d9ac5575b70b51",
+    "events": [
+      "view-produced",
+      "source-escape"
+    ]
+  },
+  {
+    "config": "fixtures/dependency-journey/tsconfig.json",
+    "args": [
+      "dependencies",
+      "--json"
+    ],
+    "bytes": 404573,
+    "sha256": "4ab3cfddd5e2d92692c09a06a90e0b7cb35a123804a72915434726183cc94cbe",
+    "equal": true,
+    "snapshot": "snapshot:2e9d8464dd5aa4670c5fa8eb621a73a1439d60bf9f8b4e39d2d9ac5575b70b51",
+    "events": [
+      "view-produced"
+    ]
+  },
+  {
+    "config": "fixtures/dependency-journey/tsconfig.json",
+    "args": [
+      "dependencies",
+      "--source-detail"
+    ],
+    "bytes": 8006,
+    "sha256": "b8ba6fa3386eda3786b548209c43052c0375f1c81ac82d1a98074485fd1d1354",
+    "equal": true,
+    "snapshot": "snapshot:2e9d8464dd5aa4670c5fa8eb621a73a1439d60bf9f8b4e39d2d9ac5575b70b51",
+    "events": [
+      "view-produced",
+      "source-escape"
+    ]
+  },
+  {
+    "config": "fixtures/dependency-journey/tsconfig.json",
+    "args": [
+      "children",
+      "module-aee44b7a",
+      "--snapshot",
+      "snapshot:2e9d8464dd5aa4670c5fa8eb621a73a1439d60bf9f8b4e39d2d9ac5575b70b51",
+      "--json",
+      "--source-detail"
+    ],
+    "bytes": 361193,
+    "sha256": "5a14048d843a3eee6e02461783b7f3f149ac78e61aa8f38966f4aebdea6e07f6",
+    "equal": true,
+    "snapshot": "snapshot:2e9d8464dd5aa4670c5fa8eb621a73a1439d60bf9f8b4e39d2d9ac5575b70b51",
+    "events": [
+      "view-produced",
+      "source-escape"
+    ]
+  },
+  {
+    "config": "fixtures/dependency-journey/tsconfig.json",
+    "args": [
+      "parents",
+      "module-aee44b7a",
+      "--snapshot",
+      "snapshot:2e9d8464dd5aa4670c5fa8eb621a73a1439d60bf9f8b4e39d2d9ac5575b70b51",
+      "--json",
+      "--source-detail"
+    ],
+    "bytes": 357094,
+    "sha256": "f72b7cb470b474d9e4c478961a3d2d3b827f6466fc74afefd2261b9b3654d57d",
+    "equal": true,
+    "snapshot": "snapshot:2e9d8464dd5aa4670c5fa8eb621a73a1439d60bf9f8b4e39d2d9ac5575b70b51",
+    "events": [
+      "view-produced",
+      "source-escape"
+    ]
+  },
+  {
+    "config": "fixtures/dependency-journey/tsconfig.json",
+    "args": [
+      "inspect",
+      "module-aee44b7a",
+      "--snapshot",
+      "snapshot:2e9d8464dd5aa4670c5fa8eb621a73a1439d60bf9f8b4e39d2d9ac5575b70b51",
+      "--dependency-context",
+      "--source-detail",
+      "--json"
+    ],
+    "bytes": 20973,
+    "sha256": "bebde12288a420627d418beada6f1b84adf4c011335355cde80b74bfc172d881",
+    "equal": true,
+    "snapshot": "snapshot:2e9d8464dd5aa4670c5fa8eb621a73a1439d60bf9f8b4e39d2d9ac5575b70b51",
+    "events": [
+      "view-produced",
+      "source-escape"
+    ]
+  },
+  {
+    "config": "fixtures/dependency-journey/tsconfig.json",
+    "args": [
+      "children",
+      "module-aee44b7a",
+      "--snapshot",
+      "snapshot:0000000000000000000000000000000000000000000000000000000000000000",
+      "--json"
+    ],
+    "bytes": 311366,
+    "sha256": "5009e90afb8296a6554f592eedcbc1a406c1be80f99ebbc8009aa0bb3601205b",
+    "equal": true,
+    "snapshot": "snapshot:2e9d8464dd5aa4670c5fa8eb621a73a1439d60bf9f8b4e39d2d9ac5575b70b51",
+    "events": [
+      "view-produced"
+    ]
+  },
+  {
+    "config": "fixtures/dependency-contract/tsconfig.json",
+    "args": [
+      "modules",
+      "--json"
+    ],
+    "bytes": 87935,
+    "sha256": "fd7791c9ed068b053def59b1bddebac1c066d021a5a48616a6335adfaebeec17",
+    "equal": true,
+    "snapshot": "snapshot:3701fde65fc7dc6a4fe42649a0d15351d665894803630c3e096e1e53f885b46b",
+    "events": [
+      "view-produced"
+    ]
+  },
+  {
+    "config": "fixtures/dependency-contract/tsconfig.json",
+    "args": [
+      "organization",
+      "repository",
+      "--json"
+    ],
+    "bytes": 433724,
+    "sha256": "58fa14dcdf71239afa13023e38dac12442d58290e778a2c3297f98ea867fa69a",
+    "equal": true,
+    "snapshot": "snapshot:3701fde65fc7dc6a4fe42649a0d15351d665894803630c3e096e1e53f885b46b",
+    "events": [
+      "view-produced"
+    ]
+  },
+  {
+    "config": "fixtures/dependency-contract/tsconfig.json",
+    "args": [
+      "organization",
+      "project"
+    ],
+    "bytes": 4297,
+    "sha256": "5cba98c2b519a8f2f31b33594e280629736b03e52ab4afa49566ab5181615009",
+    "equal": true,
+    "snapshot": "snapshot:3701fde65fc7dc6a4fe42649a0d15351d665894803630c3e096e1e53f885b46b",
+    "events": [
+      "view-produced"
+    ]
+  },
+  {
+    "config": "fixtures/dependency-contract/tsconfig.json",
+    "args": [
+      "inspect",
+      "group-d4e2e6b1",
+      "--snapshot",
+      "snapshot:3701fde65fc7dc6a4fe42649a0d15351d665894803630c3e096e1e53f885b46b",
+      "--source-detail",
+      "--json"
+    ],
+    "bytes": 308057,
+    "sha256": "1149e687bf8265b5db281c3c30f49c71004d653a10d6c2f8edc562f6d90ec4d6",
+    "equal": true,
+    "snapshot": "snapshot:3701fde65fc7dc6a4fe42649a0d15351d665894803630c3e096e1e53f885b46b",
+    "events": [
+      "view-produced",
+      "source-escape"
+    ]
+  },
+  {
+    "config": "fixtures/dependency-contract/tsconfig.json",
+    "args": [
+      "dependencies",
+      "--json"
+    ],
+    "bytes": 531044,
+    "sha256": "a94c57d9863531e7415445e796e7827bfe9778def7e7939d0aa157517250833f",
+    "equal": true,
+    "snapshot": "snapshot:c86edabc23774b77d032f7d58cb02a7943a5f72ee727a0552b30b7e6b5aee76d",
+    "events": [
+      "view-produced"
+    ]
+  },
+  {
+    "config": "fixtures/dependency-contract/tsconfig.json",
+    "args": [
+      "dependencies",
+      "--source-detail"
+    ],
+    "bytes": 16725,
+    "sha256": "1e66fa09be4f1433d3a370ed1ba5f6ca8d007c72f9d5663ecbe088e52be2caed",
+    "equal": true,
+    "snapshot": "snapshot:c86edabc23774b77d032f7d58cb02a7943a5f72ee727a0552b30b7e6b5aee76d",
+    "events": [
+      "view-produced",
+      "source-escape"
+    ]
+  },
+  {
+    "config": "fixtures/dependency-contract/tsconfig.json",
+    "args": [
+      "children",
+      "module-e8b7d650",
+      "--snapshot",
+      "snapshot:c86edabc23774b77d032f7d58cb02a7943a5f72ee727a0552b30b7e6b5aee76d",
+      "--json",
+      "--source-detail"
+    ],
+    "bytes": 617709,
+    "sha256": "ae0dbc8022cadf32664250fa39c8b8cb7275b7d7bfd44fcaa93051e7ccf7dea7",
+    "equal": true,
+    "snapshot": "snapshot:c86edabc23774b77d032f7d58cb02a7943a5f72ee727a0552b30b7e6b5aee76d",
+    "events": [
+      "view-produced",
+      "source-escape"
+    ]
+  },
+  {
+    "config": "fixtures/dependency-contract/tsconfig.json",
+    "args": [
+      "parents",
+      "module-e8b7d650",
+      "--snapshot",
+      "snapshot:c86edabc23774b77d032f7d58cb02a7943a5f72ee727a0552b30b7e6b5aee76d",
+      "--json",
+      "--source-detail"
+    ],
+    "bytes": 319127,
+    "sha256": "818d874f6d7354ee22f319803b1f38a9c96e64ee7d593e28e64e162082f95afa",
+    "equal": true,
+    "snapshot": "snapshot:c86edabc23774b77d032f7d58cb02a7943a5f72ee727a0552b30b7e6b5aee76d",
+    "events": [
+      "view-produced",
+      "source-escape"
+    ]
+  },
+  {
+    "config": "fixtures/dependency-contract/tsconfig.json",
+    "args": [
+      "inspect",
+      "module-e8b7d650",
+      "--snapshot",
+      "snapshot:c86edabc23774b77d032f7d58cb02a7943a5f72ee727a0552b30b7e6b5aee76d",
+      "--dependency-context",
+      "--source-detail",
+      "--json"
+    ],
+    "bytes": 35617,
+    "sha256": "c4987417930df4b5c8ad4e6f851156dc8ca54cd0863136585f35a15355876704",
+    "equal": true,
+    "snapshot": "snapshot:c86edabc23774b77d032f7d58cb02a7943a5f72ee727a0552b30b7e6b5aee76d",
+    "events": [
+      "view-produced",
+      "source-escape"
+    ]
+  },
+  {
+    "config": "fixtures/dependency-contract/tsconfig.json",
+    "args": [
+      "children",
+      "module-e8b7d650",
+      "--snapshot",
+      "snapshot:0000000000000000000000000000000000000000000000000000000000000000",
+      "--json"
+    ],
+    "bytes": 311651,
+    "sha256": "fa85362602f410bb257a5cba8b6af10a16c594e85dab5f69b008f976a1e996a6",
+    "equal": true,
+    "snapshot": "snapshot:c86edabc23774b77d032f7d58cb02a7943a5f72ee727a0552b30b7e6b5aee76d",
+    "events": [
+      "view-produced"
+    ]
+  },
+  {
+    "config": "tsconfig.json",
+    "args": [
+      "modules",
+      "--json"
+    ],
+    "bytes": 3151461,
+    "sha256": "ecd61d3f8908cfae333e01709edcd26f82c0e13d6d74ee35b07bb6803324901a",
+    "equal": true,
+    "snapshot": "snapshot:d23b93a16cd0a954d90eceab663d2ce813b4607c276f3d349edf51a48ae37a68",
+    "events": [
+      "view-produced"
+    ]
+  }
+]
