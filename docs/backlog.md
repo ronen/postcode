@@ -42,8 +42,9 @@ The [authorized latency task](../records/tasks/2026-09-21-analysis-latency.md)
 removed repeated source-text hashing within discovery. Its
 [paired measurements](../records/validation/2026-09-21-analysis-latency.md)
 reduced ordinary PostCode dependency/organization invocations to about 4.4–4.8
-seconds, with unchanged outputs and current-input capture; integrated review is
-pending. The small fixture remained near 0.9 seconds. Further reduction remains a
+seconds, with unchanged outputs and current-input capture. Claude's independent
+review found no actionable defects; PR and Copilot review remain before task
+closure. The small fixture remained near 0.9 seconds. Further reduction remains a
 candidate: project opening, complete record materialization/validation, startup
 and repository capture still cost time, and navigation continues to analyze afresh.
 The historical outlier is not explained by this result. Any later reuse lifecycle
