@@ -1,8 +1,8 @@
 # Investigate and reduce analysis latency
 
-Status: active
+Status: completed
 Opened: 2026-09-21
-Closed:
+Closed: 2026-09-21
 
 ## Task
 
@@ -94,4 +94,36 @@ historical results and leaving the historical handoff unchanged.
 
 ## Outcome
 
+Implemented discovery-local source-digest reuse without cross-invocation caching
+or changes to evidence semantics. Paired fresh PostCode runs improved dependency
+JSON from 39.09s to 4.82s and repository organization from 39.00s to 4.35s;
+the small fixture remained near 0.9s. Architecture, CLI documentation, and the
+performance backlog reflect the bounded result. Benchmark retry exhaustion now
+fails the series explicitly while preserving attempted-run evidence.
+
+Claude and Copilot reviews are complete, including a final clean Balanced review.
+The human accepted closure after preserving that review and simplifying
+`STATUS.md` into an orientation snapshot. [PR #5](https://github.com/ronen/postcode/pull/5)
+remains open for merge. No broader lifecycle or product feature was introduced.
+Remaining costs and host-dependent measurement limits, including the unexplained
+historical outlier, are preserved in the validation report and backlog.
+
 ## Verification
+
+- Original implementation: type checks passed; 192 tests passed, zero skipped;
+  all 21 baseline/optimized CLI and observation comparisons passed.
+- Retry correction: type checks passed; 195 tests passed, zero skipped or failed,
+  including deterministic exhaustion, retained-evidence, and recovery cases.
+- Claude independently reproduced the 21 comparisons and passed type checks;
+  its separate run had 191 tests passed and one environment-dependent skip.
+- Final Copilot Balanced static review of `7486742` confirmed the retry finding
+  resolved and no remaining actionable defects; no independent test run claimed.
+- Full paginated review, inline-comment, and conversation collections retrieved;
+  final review body preserved byte-for-byte. No new inline or conversation
+  comments were returned. See the [final findings](../reviews/analysis-latency/2026-09-21-integrated-round-3-copilot-findings.md)
+  and [disposition](../reviews/analysis-latency/2026-09-21-integrated-disposition.md).
+- Closure changes are documentation and review records only; `git diff --check`
+  and local Markdown-link checks passed. Runtime tests were not repeated.
+- [Validation report](../validation/2026-09-21-analysis-latency.md) preserves
+  measurement conditions, raw evidence, comparisons, and residual limits.
+
