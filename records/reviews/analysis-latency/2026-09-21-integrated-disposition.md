@@ -35,7 +35,7 @@ The validation report explains the failure contract and use of a new output
 directory for another series. The historical measurement series contains no
 excluded attempts; its recorded samples and aggregates are unchanged.
 
-### Copilot overview allegation about skipped-test counts — requires human direction
+### Copilot overview allegation about skipped-test counts — rejected with human approval
 
 [Source](https://github.com/ronen/postcode/pull/5#pullrequestreview-5270611121).
 The overview states: "two records misstate one skipped test as passed." No separate
@@ -43,7 +43,7 @@ annotation identifies the two records or the test run to which this refers.
 This allegation is treated as a finding even though the overview lists only the
 retry issue in its numbered finding count.
 
-Evidence assembled for the human's decision:
+Evidence supporting the approved disposition:
 
 - The original implementer log's summary is reproduced below. It reports 192
   tests passed and zero skipped; this is the run described by the original
@@ -68,11 +68,13 @@ Original implementer log summary:
 # duration_ms 20855.7981
 ```
 
-The human was asked whether to record the allegation as unsupported by these
-separate runs while preserving both results and the historical handoff, or to
-clarify the current validation report further. No rejection or material
-qualification has been adopted pending that answer. The historical handoff and
-reviewer-authored findings have not been changed.
+After clarification that this allegation is separate from excluded benchmark
+samples, the human approved recording it as unsupported on 2026-09-21. The two
+historical runs have different, explicitly attributed results; the retained
+implementer summary supports the original 192-passed statement. No correction to
+those results is warranted. Both historical results, the handoff and the
+reviewer-authored findings remain unchanged. The approval is preserved in the
+[task follow-ups](../../tasks/2026-09-21-analysis-latency.md#follow-ups).
 
 ## Corrections and verification
 
@@ -96,11 +98,13 @@ reviewer-authored findings have not been changed.
 
 1. Claude: target `b74c454c08c95a5aae7aacff816b27019fecaf9f`; no actionable findings.
 2. Copilot: target `98c3c18cc15c0e8fa9039d849c96ece640acd368`; retry defect accepted
-   and corrected, overview test-count allegation awaiting human direction.
+   and corrected; overview test-count allegation rejected with human approval.
 
 ## Gate conclusion
 
-The task remains active. Human direction is required on the test-count allegation
-before its final disposition. No final review-gate acceptance, merge or task
-closure is inferred. The corrected benchmark behavior is verified by the
-implementing agent; Copilot has not yet reviewed the correction.
+Every retrieved finding now has a disposition: the retry defect is accepted and
+corrected, and the separate test-count allegation is rejected with human approval.
+The task remains active. Approval of that disposition does not imply final
+review-gate acceptance, merge or task closure. The corrected benchmark behavior
+is verified by the implementing agent; no further Copilot review of the correction
+has been retrieved as part of this disposition.

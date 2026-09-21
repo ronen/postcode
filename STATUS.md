@@ -48,5 +48,6 @@ Its test run passed 191 tests with one environment-dependent skip. Copilot's
 [PR review and disposition](records/reviews/analysis-latency/2026-09-21-integrated-disposition.md)
 identified an exhausted-retry defect in the benchmark driver; that correction now
 passes type checks and all 195 tests. Its separate overview allegation about
-historical test counts awaits human direction. The task remains active through
+historical test counts was rejected with human approval, preserving the distinct
+results of both historical runs. The task remains active through
 PR review and final human gate acceptance; it is not closed.

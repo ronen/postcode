@@ -44,7 +44,9 @@ removed repeated source-text hashing within discovery. Its
 reduced ordinary PostCode dependency/organization invocations to about 4.4–4.8
 seconds, with unchanged outputs and current-input capture. Claude's independent
 review found no actionable defects. Copilot's benchmark retry finding is corrected;
-its separate test-count allegation awaits human direction before review completion. The small fixture remained near 0.9 seconds. Further reduction remains a
+its separate test-count allegation was rejected with human approval. Final review-gate
+acceptance remains before task closure. The small fixture remained near 0.9 seconds.
+Further reduction remains a
 candidate: project opening, complete record materialization/validation, startup
 and repository capture still cost time, and navigation continues to analyze afresh.
 The historical outlier is not explained by this result. Any later reuse lifecycle
