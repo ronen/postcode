@@ -75,6 +75,10 @@ Task closure remains deferred pending PR and Copilot review.
 
 > ok, now open the PR, with handoff instructions for Copilot to do its review
 
+### Copilot findings follow-up — 2026-09-21
+
+> Copilot's review is complete.  Please fetch and preserve the review as per dev/review\.md.   Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
+
 ## Outcome
 
 ## Verification
