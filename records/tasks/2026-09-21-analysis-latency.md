@@ -71,6 +71,10 @@ The supplied review is preserved in the
 [round-1 findings](../reviews/analysis-latency/2026-09-21-integrated-round-1-findings.md).
 Task closure remains deferred pending PR and Copilot review.
 
+### PR review follow-up — 2026-09-21
+
+> ok, now open the PR, with handoff instructions for Copilot to do its review
+
 ## Outcome
 
 ## Verification
