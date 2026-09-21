@@ -61,6 +61,16 @@ dependency-landscape behavior, or interpretive summary features.
 
 ## Follow-ups
 
+### Review follow-up — 2026-09-21
+
+> Claude's review is complete.  Take a look; no actionable findings that I can see
+
+> but don't close the task, that will wait for PR & copilot review
+
+The supplied review is preserved in the
+[round-1 findings](../reviews/analysis-latency/2026-09-21-integrated-round-1-findings.md).
+Task closure remains deferred pending PR and Copilot review.
+
 ## Outcome
 
 ## Verification
