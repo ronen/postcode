@@ -122,8 +122,11 @@ historical outlier, are preserved in the validation report and backlog.
   final review body preserved byte-for-byte. No new inline or conversation
   comments were returned. See the [final findings](../reviews/analysis-latency/2026-09-21-integrated-round-3-copilot-findings.md)
   and [disposition](../reviews/analysis-latency/2026-09-21-integrated-disposition.md).
-- Closure changes are documentation and review records only; `git diff --check`
-  and local Markdown-link checks passed. Runtime tests were not repeated.
+- Closure changes are documentation and review records only. Local Markdown-link
+  checks passed; the closure-time `git diff --check` flagged an extra trailing
+  blank line. Runtime tests were not repeated.
+- With explicit human approval, this verification statement was corrected after
+  closure and the trailing blank line removed. The correction passed
+  `git diff --check`.
 - [Validation report](../validation/2026-09-21-analysis-latency.md) preserves
   measurement conditions, raw evidence, comparisons, and residual limits.
-
