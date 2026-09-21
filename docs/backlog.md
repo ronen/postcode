@@ -20,6 +20,24 @@ Describe the need, why it matters, and relevant constraints without designing th
 
 ## Candidates
 
+## Reduce repeated investigation latency
+
+Added: 2026-09-21
+Origin: completed repository-organization and module-dependencies validation
+Area: analysis execution and interaction
+
+Fresh CLI invocations repeat project opening, repository capture, TypeScript
+analysis, projection construction, presentation, and observation work. Recorded
+validation measured roughly 39–42 seconds for ordinary PostCode dependency
+commands and about 27–28 seconds for ordinary ts-node commands, with one retained
+975-second outlier; an earlier five-command PostCode organization journey took
+about 420 seconds. This latency makes ordinary navigation costly and will impede
+interactive or visual use. Characterize where time is spent and evaluate bounded
+ways to reuse valid analysis within and across investigation steps while
+preserving snapshot identity, changed-input invalidation, qualification,
+observation, and the distinction between cached results and current evidence. Do
+not assume that durable caching is the first or only remedy.
+
 ## Evaluate independent TypeScript versions for building and analysis
 
 Added: 2026-09-14
