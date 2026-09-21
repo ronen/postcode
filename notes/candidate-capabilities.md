@@ -2,7 +2,33 @@
 
 This non-governing inventory keeps possible future analyses, lenses, presentations, and interactions visible when considering future implementation steps. Entries are possibilities, not requirements, accepted design decisions, roadmap commitments, scheduled work, or authorization to implement. They may be refined, combined, or rejected before implementation.
 
-The [backlog](backlog.md) records broader worthwhile work and concerns; this inventory gives exploratory product capabilities room to retain their questions, evidence distinctions, and open alternatives. Inclusion here assigns no priority. Any selected capability still needs the applicable planning, decision, and task authorization before implementation.
+The [backlog](../docs/backlog.md) records broader worthwhile work and concerns; this inventory gives exploratory product capabilities room to retain their questions, evidence distinctions, and open alternatives. Inclusion here assigns no priority. Any selected capability still needs the applicable planning, decision, and task authorization before implementation.
+
+## Explorative dependency landscape
+
+A dependency-landscape lens could show how organizational regions depend on one
+another, which module relationships support those connections, and where a human
+might zoom in next. It would occupy a scale between repository organization and
+individual module dependency relationships.
+
+One candidate derivation uses the direct child groups of a selected organization
+group as the current regions, then aggregates qualified module dependency
+occurrences across those regions while retaining the supporting module pairs,
+mechanisms, placements, evidence, and evaluation outcomes. A related local
+dependency structure could expose collaboration among modules within one selected
+group boundary. Neither result would establish canonical architectural units,
+intended layers, API boundaries, cohesion, importance, or architectural quality.
+
+The usefulness and exact semantics remain unsettled. Open questions include the
+right organizational frontier, treatment of modules placed directly in the
+selected group, multiply placed or multiply parented regions, useful boundary
+summaries, and whether visual collapsing of the existing dependency graph already
+answers much of the need. The capability may warrant visible formative status
+while its value is being tested, without weakening the epistemological guarantees
+of its mechanically derived claims.
+
+The detailed derivations, alternatives, difficult cases, and open questions are
+preserved in the [dependency-landscape notes](dependency-landscape.md).
 
 ## Explorative 5WH summary
 
@@ -25,7 +51,7 @@ Answers could have different epistemological bases, even within one question:
 - **Who uses it** could be mechanically derived where supported, with static-analysis scope and limitations visible; discovered callers or dependents need not exhaust actual users.
 - **When it is used** could require runtime observations or qualified control-flow analysis. Observed participation and possible participation establish different things.
 
-Each answer could disclose its evidence, method, scope, and limitations, preserving the distinctions in the governing [core concepts](core-concepts.md) and [architectural constraints](architectural-constraints.md).
+Each answer could disclose its evidence, method, scope, and limitations, preserving the distinctions in the governing [core concepts](../docs/core-concepts.md) and [architectural constraints](../docs/architectural-constraints.md).
 
 ### Possible form and open choices
 

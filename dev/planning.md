@@ -24,6 +24,8 @@ Keep plans at the level needed to guide work. Do not use planning documents to s
 
 Use [`drafts/`](../drafts/) for provisional planning artifacts when their history is worth tracking in Git. Draft artifacts are durable but non-governing; a commit preserves a draft without approving it. Use a descriptively named root underscore directory, such as `_initial-product-slice/`, instead when the artifacts are ephemeral, local to the checkout, and disposable. Each form follows the applicable [provisional-draft](process-conventions.md#provisional-draft-material) or [disposable-scratch](process-conventions.md#disposable-scratch-material) conventions.
 
+When the human shelves exploratory material for durable reference rather than continuing it toward approval or abandonment, reclassify it under [`notes/`](../notes/) instead of leaving it indefinitely as a draft. Notes remain non-governing and non-permanent and follow the [durable-note conventions](process-conventions.md#durable-non-governing-notes).
+
 ## Suggested planning sequence
 
 This sequence is a convenience, not a required ceremony. Feel free to vary it or use an entirely different approach to suit the planning work.
@@ -54,11 +56,11 @@ The human directs which provisional artifacts are promoted or discarded. Promoti
 3. If the package changes the governing core concepts or architectural constraints, replace each affected governing document with the approved revision in the same commit as the corresponding accepted decision record.
 4. Update any earlier plans or decisions that the promoted documents supersede. Follow the applicable [plan lifecycle](../docs/plans/README.md#lifecycle) and [decision lifecycle](../docs/decisions/README.md#lifecycle), including complete forward and backward decision-supersession mappings.
 5. Update any canonical indexes that list the promoted or superseded documents.
-6. Check and correct links after moving the files; relative paths to documents that were already canonical will generally change.
+6. Check and correct links after moving the files; relative paths to documents that were already canonical will generally change. Remove or replace links to notes, carrying any required context into the promoted documents. A historical record that cannot later be edited must not link to a note.
 7. Review the promoted documents, governing core concepts or architectural constraints when changed, supersession metadata, indexes, and links as a whole before committing the promotion.
 
 Before removing provisional material, confirm that all context worth preserving has been carried into canonical documents. An abandoned draft may be deleted without acquiring a lifecycle status; its Git history remains available.
 
 ## Draft commits
 
-Any commit that adds, modifies, or deletes draft artifacts under `drafts/` must use a subject beginning `draft: ` followed by a concise description, and must not include changes outside `drafts/`. A promotion commit is the exception: it may add or update approved material at its canonical location while deleting the corresponding draft artifacts, and uses an ordinary descriptive subject. Changes to the directory guidance in `drafts/README.md` are not changes to a draft artifact and follow ordinary commit conventions.
+Any commit that adds, modifies, or deletes draft artifacts under `drafts/` must use a subject beginning `draft: ` followed by a concise description, and must not include changes outside `drafts/`. A promotion commit is an exception: it may add or update approved material at its canonical location while deleting the corresponding draft artifacts, and uses an ordinary descriptive subject. A human-directed reclassification commit is also an exception: it may move shelved exploratory material into `notes/` and update directly affected links and guidance without implying approval. Changes to the directory guidance in `drafts/README.md` are not changes to a draft artifact and follow ordinary commit conventions.

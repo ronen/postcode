@@ -20,6 +20,38 @@ Describe the need, why it matters, and relevant constraints without designing th
 
 ## Candidates
 
+## Reduce repeated investigation latency
+
+Added: 2026-09-21
+Origin: completed repository-organization and module-dependencies validation
+Area: analysis execution and interaction
+
+Fresh CLI invocations repeat project opening, repository capture, TypeScript
+analysis, projection construction, presentation, and observation work. Recorded
+validation measured roughly 39–42 seconds for ordinary PostCode dependency
+commands and about 27–28 seconds for ordinary ts-node commands, with one retained
+975-second outlier; an earlier five-command PostCode organization journey took
+about 420 seconds. This latency makes ordinary navigation costly and will impede
+interactive or visual use. Characterize where time is spent and evaluate bounded
+ways to reuse valid analysis within and across investigation steps while
+preserving snapshot identity, changed-input invalidation, qualification,
+observation, and the distinction between cached results and current evidence. Do
+not assume that durable caching is the first or only remedy.
+
+The [authorized latency task](../records/tasks/2026-09-21-analysis-latency.md)
+removed repeated source-text hashing within discovery. Its
+[paired measurements](../records/validation/2026-09-21-analysis-latency.md)
+reduced ordinary PostCode dependency/organization invocations to about 4.4–4.8
+seconds, with unchanged outputs and current-input capture. Claude's independent
+review found no actionable defects. Copilot's benchmark retry finding is corrected;
+its separate test-count allegation was rejected with human approval. Final review-gate
+acceptance remains before task closure. The small fixture remained near 0.9 seconds.
+Further reduction remains a
+candidate: project opening, complete record materialization/validation, startup
+and repository capture still cost time, and navigation continues to analyze afresh.
+The historical outlier is not explained by this result. Any later reuse lifecycle
+still needs its own measured justification and validity contract.
+
 ## Evaluate independent TypeScript versions for building and analysis
 
 Added: 2026-09-14
