@@ -8,6 +8,11 @@ slice. They are not a plan, decision record, governing concept revision,
 implementation authorization, or task record. There is intentionally no
 `proposal/` package yet.
 
+The concise product candidate is listed in
+[`docs/candidate-capabilities.md`](../../docs/candidate-capabilities.md#explorative-dependency-landscape).
+These working notes retain the detailed derivations, alternatives, difficult
+cases, and open questions rather than moving that material into the inventory.
+
 ## Why this investigation is separate
 
 The module-dependencies slice establishes the dependable substrate:
