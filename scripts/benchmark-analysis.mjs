@@ -48,6 +48,7 @@ for (const [name, args] of cases) {
         runs.push(run); writeFileSync(manifest, JSON.stringify(runs, null, 2) + '\n');
         console.log(JSON.stringify(run));
         if (!reasons.length) break;
+        if (attempt === 2) throw Error(`Incomplete measurement series: ${name} ${variant} sample ${sample} exhausted all 3 attempts. Retained attempts: ${manifest}`);
       }
     }
   }

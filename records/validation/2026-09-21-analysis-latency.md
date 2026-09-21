@@ -177,6 +177,15 @@ those boundaries only in the disposable copy. Materializer calls are timed
 separately. If implementation boundaries change, update the helper deliberately;
 a missing boundary fails instead of silently dropping attribution.
 
+Following Copilot review, exhausting all three attempts for any warm-up or
+representative sample now fails the series with a nonzero exit status and an
+explicit incomplete-series error. The manifest and per-attempt reports remain
+available; do not summarize that incomplete series as the requested sample set.
+Use a new output directory for another series. Deterministic regression checks
+cover exhausted warm-up and representative retries, retained failed attempts, and
+successful recovery on the third attempt. The original 32-run series had no
+excluded attempts, so this correction does not change its retained measurements.
+
 For a fresh comparison, build the baseline in a disposable directory and instrument
 it alongside the current build. From the repository root, using an unused output
 directory:
