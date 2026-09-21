@@ -96,6 +96,7 @@ Update the appropriate form of documentation:
 - [implementation conventions](../docs/implementation-conventions.md) describe repeatable application-level engineering practices;
 - [task records](../records/tasks/) preserve authorization, material follow-ups, outcome, and verification;
 - [review records](../records/reviews/) preserve independent-review handoffs, findings, and dispositions;
+- [durable notes](../notes/) preserve human-curated exploratory context without making it governing or permanent;
 - user-facing documentation describes observable use and behavior.
 
 Do not modify governing documents under `foundation/` unless the human explicitly authorizes a foundation revision. Authorization for implementation that conflicts with the foundation is not authorization to revise it; report the conflict and seek direction.

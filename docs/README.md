@@ -14,6 +14,10 @@ For CLI use, begin with the [command and concepts reference](cli-reference.md).
 
 [`drafts/`](../drafts/) contains provisional planning artifacts whose history is worth preserving in Git. Draft artifacts are durable but non-governing: committing them records their development without approving their contents. Ephemeral checkout-local work belongs in ignored root underscore directories instead.
 
+### Durable notes
+
+[`notes/`](../notes/) contains committed, human-curated exploratory material that is useful across sessions but is neither governing nor necessarily permanent. Notes may be revised, consolidated, incorporated elsewhere, or deleted; canonical documents must not depend on them, and immutable historical records must not link to them.
+
 ### Plans
 
 [`plans/`](plans/) contains future-work plans explicitly approved by the human. Plans may evolve while approved or active and do not authorize implementation by themselves. Proposed plans and revisions remain under [`drafts/`](../drafts/) or in ignored underscore workspaces until approved.
@@ -51,7 +55,3 @@ Create architecture documentation under `architecture/` when there is implemente
 ### Backlog
 
 [`backlog.md`](backlog.md) records worthwhile work and concerns that are not part of an active plan or authorized task. Backlog entries are candidates rather than commitments. Substantial entries should be promoted into plans before implementation.
-
-### Candidate capabilities
-
-[`candidate-capabilities.md`](candidate-capabilities.md) is a non-governing inventory of possible future analyses, lenses, presentations, and interactions. It keeps exploratory possibilities visible during future planning without making them requirements, accepted design, roadmap commitments, or scheduled work. Entries may be refined or rejected before implementation.

@@ -22,3 +22,12 @@ This document contains human-maintained conventions governing how development wo
 - Treat canonical project material that depends on a draft artifact as an unexpected finding and report it rather than using the draft artifact as authoritative.
 - When promoting draft artifacts, carry the necessary context into the resulting canonical documents and link those documents to one another. Git history may preserve their shared drafting provenance.
 - The human directs promotion. Content moved or incorporated into a canonical location must independently satisfy the approval requirements for that document type.
+
+## Durable Non-Governing Notes
+
+- Use [`notes/`](../notes/) for committed, human-curated exploratory material that should remain available across sessions without becoming governing or acquiring a permanent historical-record role.
+- Treat notes as context, not authority. They are not requirements, plans, decisions, backlog commitments, or implementation authorization.
+- Add, materially revise, move, or delete notes only through explicit human direction. Notes may be consolidated or deleted without a lifecycle status; Git retains their history.
+- Notes may link to canonical documents and other notes. Drafts may link to notes while planning, but promoted material must remove or replace those links and carry any required context into its durable role.
+- Keep canonical and governing material independent of notes. A mutable canonical document may link to a note only as optional background when it remains complete without the note and the link is removed or updated if the note is deleted.
+- Never link to notes from accepted decisions, concluded task records, preserved review findings, review handoffs after review begins, or other historical records whose lifecycle prevents later editorial repair.

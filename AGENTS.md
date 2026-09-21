@@ -22,6 +22,10 @@ Follow the human-maintained guidance in [`dev/engineering-guidelines.md`](dev/en
 
 Follow the conventions in [`foundation/baseline-conventions.md`](foundation/baseline-conventions.md), [`dev/process-conventions.md`](dev/process-conventions.md), and [`docs/implementation-conventions.md`](docs/implementation-conventions.md).
 
+## Durable Notes
+
+Material under [`notes/`](notes/README.md) is durable but non-permanent and non-governing. Use it only as exploratory context, not as authority. Do not add, materially revise, move, or delete notes without explicit human direction.
+
 ## Governing Architecture
 
 Read and follow the governing terminology in [`docs/core-concepts.md`](docs/core-concepts.md), the binding rules in [`docs/architectural-constraints.md`](docs/architectural-constraints.md), and the accepted decisions relevant to the work. Substantive changes to either governing document require explicit human agreement and a corresponding accepted decision record.

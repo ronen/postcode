@@ -9,7 +9,7 @@ implementation authorization, or task record. There is intentionally no
 `proposal/` package yet.
 
 The concise product candidate is listed in
-[`docs/candidate-capabilities.md`](../../docs/candidate-capabilities.md#explorative-dependency-landscape).
+[`candidate-capabilities.md`](candidate-capabilities.md#explorative-dependency-landscape).
 These working notes retain the detailed derivations, alternatives, difficult
 cases, and open questions rather than moving that material into the inventory.
 
