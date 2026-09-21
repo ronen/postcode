@@ -79,6 +79,15 @@ Task closure remains deferred pending PR and Copilot review.
 
 > Copilot's review is complete.  Please fetch and preserve the review as per dev/review\.md.   Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
 
+### Test-count disposition approval — 2026-09-21
+
+Context: After distinguishing the accepted benchmark retry finding from the
+separate skipped-unit-test allegation, the agent proposed recording the latter
+as unsupported by the distinct implementer and Claude runs, preserving both
+historical results and leaving the historical handoff unchanged.
+
+> oh i see.  yes, that's fine, i approve your response
+
 ## Outcome
 
 ## Verification
