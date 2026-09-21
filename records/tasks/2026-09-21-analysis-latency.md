@@ -88,6 +88,10 @@ historical results and leaving the historical handoff unchanged.
 
 > oh i see.  yes, that's fine, i approve your response
 
+### Final review and closure follow-up — 2026-09-21
+
+> The review is complete, and had no findings.  Please fetch and preserve the review as per the governing workflow.   Before closing the task adjust STATUS.md, the current version has too fine a level of detail; upcoming changes to workflow guidance will say:  "Update `STATUS.md` when a change materially alters what exists, what can be run or demonstrated, what work is active, or what is expected next. Treat it as a concise orientation snapshot, not a task progress, validation, or review log. Summarize active work and externally meaningful results at a high level, and link to authoritative plans, task records, validation reports, and review records for details."
+
 ## Outcome
 
 ## Verification
