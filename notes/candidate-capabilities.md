@@ -59,6 +59,54 @@ This need not become a rigid schema or a single monolithic analysis. Possibiliti
 
 The summary could omit inapplicable questions, report unavailable answers explicitly, and let the human expand each answer into its supporting evidence. Omission would not imply an established negative answer, and a compact presentation would retain consequential qualification.
 
+## Human contributions to interpretation and investigation
+
+A human could challenge an explanation, contribute rationale or other program
+knowledge, choose a preferred working account, or clarify the focus of an
+investigation. These contributions have different meanings and should not all
+become undifferentiated feedback or program facts.
+
+For example:
+
+- “That explanation is wrong” could prompt reconsideration without itself
+  establishing a correction.
+- “This exists because we needed X” could supply a recorded rationale assertion
+  with human provenance, not mechanically established truth or continuing purpose.
+- “Use this explanation as the current account” could select a working
+  interpretation without strengthening its epistemological status.
+- “I am interested in cancellation rather than scheduling” could refine the
+  investigation without making a claim about the program.
+
+### Provenance and subsequent use
+
+Preserve what the human contributed separately from what PostCode subsequently
+did with it. A contribution could identify its author, the relevant subject,
+result or explanation part, the program state, and enough conversational context
+to remain intelligible. Later interpretations could reference it as evidence;
+revisions and choices of a primary explanation would remain separate actions.
+Human endorsement does not turn an interpretation into a derived fact.
+
+A contribution could remain retrievable after code changes without automatically
+applying to the new state. Earlier assertions and preferences may be relevant
+context, but their continued applicability and subject correspondence need
+qualification rather than silent inheritance.
+
+### Storage and open questions
+
+Possible homes include durable investigation context for feedback, focus and
+preferences; addressable assertions for contributed program explanations; and
+the observation stream for evidence of the interaction. These could share
+physical storage without sharing meaning, validity or retention policy. The
+current observation sink alone does not supply retrieval for later investigation
+or establish a durable program-knowledge lifecycle.
+
+Open questions include how the human targets a contribution, how contributions
+are retrieved and selected for later synthesis, how disagreement and revision
+are presented, what persists across investigations, and how stale applicability
+is detected or disclosed. Storage, retention, editing, and deletion policies
+remain unsettled. This is future capability exploration, not a requirement to
+add human-contribution storage to the first interpretive summary slice.
+
 ## Historical summary
 
 An exploration of an entity's history could address both authorship and chronology and the substance of particular changes:
