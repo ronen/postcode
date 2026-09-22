@@ -14,3 +14,4 @@ Use [`drafts/`](../drafts/) for provisional material being developed toward appr
 
 - [Candidate capabilities](candidate-capabilities.md)
 - [Dependency landscape](dependency-landscape.md)
+- [Explorative module summary](explorative-module-summary.md)
