@@ -15,7 +15,7 @@ This document contains human-maintained conventions governing how development wo
 
 ## Provisional Draft Material
 
-- Use [`drafts/`](../drafts/) when provisional planning material is worth preserving in Git for review, comparison, or continuity across sessions.
+- Use [`drafts/`](../drafts/) for proposed plans, decisions, governing-document revisions, and other canonical-shaped documents being prepared for approval and promotion.
 - Treat draft artifacts as durable but non-governing. Neither committing them nor placing approval language within them gives them the role of a plan, decision, or other canonical project document.
 - Agents may use draft artifacts as planning context, but not as binding requirements.
 - Keep canonical project material independent of draft artifacts. Do not cite or link to draft artifacts from canonical project material.
@@ -25,7 +25,7 @@ This document contains human-maintained conventions governing how development wo
 
 ## Durable Non-Governing Notes
 
-- Use [`notes/`](../notes/) for committed, human-curated exploratory material that should remain available across sessions without becoming governing or acquiring a permanent historical-record role.
+- Use [`notes/`](../notes/) for committed, human-curated exploratory material that should remain available across sessions without becoming governing or acquiring a permanent historical-record role. This includes durable planning notes, alternatives, unresolved questions, investigation results, and shelved thinking.
 - Treat notes as context, not authority. They are not requirements, plans, decisions, backlog commitments, or implementation authorization.
 - Add, materially revise, move, or delete notes only through explicit human direction. Notes may be consolidated or deleted without a lifecycle status; Git retains their history.
 - Notes may link to canonical documents and other notes. Drafts may link to notes while planning, but promoted material must remove or replace those links and carry any required context into its durable role.

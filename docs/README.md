@@ -12,11 +12,11 @@ For CLI use, begin with the [command and concepts reference](cli-reference.md).
 
 ### Drafts
 
-[`drafts/`](../drafts/) contains provisional planning artifacts whose history is worth preserving in Git. Draft artifacts are durable but non-governing: committing them records their development without approving their contents. Ephemeral checkout-local work belongs in ignored root underscore directories instead.
+[`drafts/`](../drafts/) contains proposed plans, decisions, governing-document revisions, and other canonical-shaped documents being prepared for approval and promotion. Draft artifacts are durable but non-governing: committing them records their development without approving their contents.
 
 ### Durable notes
 
-[`notes/`](../notes/) contains committed, human-curated exploratory material that is useful across sessions but is neither governing nor necessarily permanent. Notes may be revised, consolidated, incorporated elsewhere, or deleted; canonical documents must not depend on them, and immutable historical records must not link to them.
+[`notes/`](../notes/) contains committed, human-curated exploratory material—including durable planning notes, alternatives, unresolved questions, and investigation results—that is useful across sessions but is neither governing nor necessarily permanent. Notes may be revised, consolidated, incorporated elsewhere, or deleted; canonical documents must not depend on them, and immutable historical records must not link to them.
 
 ### Plans
 

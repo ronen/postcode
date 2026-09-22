@@ -20,21 +20,23 @@ A useful implementation plan should state:
 
 Keep plans at the level needed to guide work. Do not use planning documents to settle architecture implicitly: record consequential accepted choices under [`docs/decisions/`](../docs/decisions/).
 
-## Provisional working material
+## Planning material
 
-Use [`drafts/`](../drafts/) for provisional planning artifacts when their history is worth tracking in Git. Draft artifacts are durable but non-governing; a commit preserves a draft without approving it. Use a descriptively named root underscore directory, such as `_initial-product-slice/`, instead when the artifacts are ephemeral, local to the checkout, and disposable. Each form follows the applicable [provisional-draft](process-conventions.md#provisional-draft-material) or [disposable-scratch](process-conventions.md#disposable-scratch-material) conventions.
+Use [`notes/`](../notes/) for human-curated exploratory material worth preserving in Git, including durable planning notes, alternatives, unresolved questions, and investigation results. Notes are non-governing and non-permanent and follow the [durable-note conventions](process-conventions.md#durable-non-governing-notes).
 
-When the human shelves exploratory material for durable reference rather than continuing it toward approval or abandonment, reclassify it under [`notes/`](../notes/) instead of leaving it indefinitely as a draft. Notes remain non-governing and non-permanent and follow the [durable-note conventions](process-conventions.md#durable-non-governing-notes).
+Use [`drafts/`](../drafts/) for proposed plans, decisions, governing-document revisions, and other canonical-shaped documents being prepared for approval and promotion. Draft artifacts are durable but non-governing; a commit preserves a draft without approving it.
+
+Use a descriptively named root underscore directory, such as `_initial-product-slice/`, when working material is ephemeral, local to the checkout, and disposable. Each form follows the applicable [durable-note](process-conventions.md#durable-non-governing-notes), [provisional-draft](process-conventions.md#provisional-draft-material), or [disposable-scratch](process-conventions.md#disposable-scratch-material) conventions.
 
 ## Suggested planning sequence
 
 This sequence is a convenience, not a required ceremony. Feel free to vary it or use an entirely different approach to suit the planning work.
 
-1. Capture initial notes and alternatives in whichever provisional form is useful: for example, `drafts/<planning-name>/` when Git history helps, or `_<planning-name>/` for disposable checkout-local work.
+1. Capture durable initial notes and alternatives under a suitable location in `notes/`, or use `_<planning-name>/` for disposable checkout-local work.
 2. When a coherent package is ready for review, arrange the proposed canonical documents under a tracked directory such as:
 
    ```text
-   drafts/<planning-name>/proposal/
+   drafts/<planning-name>/
    ├── plans/<plan-name>.md
    ├── decisions/<decision-name>.md
    └── docs/
@@ -59,7 +61,7 @@ The human directs which provisional artifacts are promoted or discarded. Promoti
 6. Check and correct links after moving the files; relative paths to documents that were already canonical will generally change. Remove or replace links to notes, carrying any required context into the promoted documents. A historical record that cannot later be edited must not link to a note.
 7. Review the promoted documents, governing core concepts or architectural constraints when changed, supersession metadata, indexes, and links as a whole before committing the promotion.
 
-Before removing provisional material, confirm that all context worth preserving has been carried into canonical documents. An abandoned draft may be deleted without acquiring a lifecycle status; its Git history remains available.
+Before removing provisional material, confirm that all context required by the promoted documents has been carried into them. Retain, consolidate, or delete associated notes according to whether they remain independently useful. An abandoned draft may be deleted without acquiring a lifecycle status; its Git history remains available.
 
 ## Draft commits
 

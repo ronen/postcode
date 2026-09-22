@@ -105,7 +105,7 @@ Do not modify files under `dev/` as part of product planning or implementation w
 
 Record a decision when a choice has meaningful, durable consequences; constrains later work; or is likely to be repeatedly reconsidered. Routine implementation details do not require decision records.
 
-Update `STATUS.md` when a change materially alters what exists, what can be run or demonstrated, what work is active, or what is expected next. Keep it concise and link to authoritative plans and task records instead of duplicating them.
+Update `STATUS.md` when a change materially alters what exists, what can be run or demonstrated, what work is active, or what is expected next. Treat it as a concise orientation snapshot, not a task progress, validation, or review log. Summarize active work and externally meaningful results at a high level, and link to authoritative plans, task records, validation reports, and review records for details.
 
 When useful work or a concern arises outside the current scope, add it to [`docs/backlog.md`](../docs/backlog.md) rather than silently expanding the plan or task. A backlog entry records an open candidate, not an implementation commitment. The human evaluates and curates the backlog during planning; an agent must not prioritize, promote, implement, or remove an entry without human direction.
 

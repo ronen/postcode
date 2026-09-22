@@ -1,6 +1,6 @@
 # Durable Notes
 
-This directory contains committed, human-curated project notes that are useful across sessions but are neither governing nor necessarily permanent. Notes may preserve exploratory reasoning, shelved investigations, open semantic questions, and candidate capabilities without turning them into requirements, plans, decisions, backlog commitments, or implementation authorization.
+This directory contains committed, human-curated project notes that are useful across sessions but are neither governing nor necessarily permanent. Notes may contain durable planning material, exploratory reasoning, alternatives, unresolved questions, investigation results, shelved thinking, and candidate capabilities without turning them into requirements, plans, decisions, backlog commitments, or implementation authorization.
 
 Agents may consult notes as context but must not treat them as authority. Add, materially revise, move, or delete notes only through explicit human direction. A note may evolve, be consolidated, have useful content incorporated elsewhere, or be deleted without promotion, supersession metadata, or a lifecycle status; Git retains its history.
 
@@ -8,7 +8,7 @@ Notes may link to canonical documents and to other notes. Drafts may link to not
 
 A document whose lifecycle prevents later editorial repair must not link to notes. This includes accepted decision records, concluded task records, preserved review findings, review handoffs after review begins, and other records required to remain unchanged as historical evidence.
 
-Use [`drafts/`](../drafts/) for provisional material being developed toward approval, promotion, or abandonment. Use an ignored root underscore directory for disposable checkout-local work, and use the [backlog](../docs/backlog.md) for worthwhile work awaiting human evaluation.
+Use [`drafts/`](../drafts/) for canonical-shaped proposals, an ignored root underscore directory for disposable checkout-local work, and the [backlog](../docs/backlog.md) for candidate work awaiting human evaluation.
 
 ## Current notes
 
