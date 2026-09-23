@@ -2,9 +2,12 @@
 
 Last reviewed: 2026-09-23
 
+PostCode is currently available as a development CLI for investigating one
+configured TypeScript project.
+
 ## Implemented capabilities
 
-- **[Interactive investigation](docs/cli-reference.md#commands) — latest addition.**
+- **[Interactive investigation](docs/cli-reference.md#commands).**
   A session shell supports successive questions, stable references to previously
   displayed subjects, and reuse of accumulated analysis.
 - **[Module inventory and inspection](docs/cli-reference.md#inventory-and-inspection).**
