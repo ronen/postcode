@@ -4,7 +4,7 @@ Record type: disposition
 Date: 2026-09-23
 Task: [Transient interactive session shell](../../tasks/2026-09-23-transient-session-shell.md)
 Handoff: [Integrated review assignment](2026-09-23-integrated-handoff.md)
-Findings: [Integrated round 1](2026-09-23-integrated-round-1-findings.md); [integrated round 2](2026-09-23-integrated-round-2-findings.md); [integrated round 3 and supplement](2026-09-23-integrated-round-3-findings.md)
+Findings: [Integrated round 1](2026-09-23-integrated-round-1-findings.md); [integrated round 2](2026-09-23-integrated-round-2-findings.md); [integrated round 3 and supplement](2026-09-23-integrated-round-3-findings.md); [integrated round 4, Copilot](2026-09-23-integrated-round-4-copilot-findings.md)
 State: no actionable findings remain; human inspection and final gate acceptance pending
 
 ## Round 1 findings and dispositions
@@ -390,6 +390,70 @@ new runtime work proposed. The remaining coverage limits and unexplained outlier
 are presented for the human's final acceptance; this disposition does not waive
 them or treat independent reviewer inspection as the required human inspection.
 
+## Round 4 disposition: Copilot PR review
+
+The human requested retrieval and preservation of the complete Copilot review of
+[PR #6](https://github.com/ronen/postcode/pull/6), followed by assessment of whether
+each documentation mismatch indicated a deeper functional issue. The
+[preserved findings](2026-09-23-integrated-round-4-copilot-findings.md) contain the
+overall review and all three inline comments; the paginated conversation endpoint
+returned no comments. The review targets `841f51098dbb33cfe0c231a29e2816bf99983254`.
+It is additional PR evidence under this assignment, not a claim that Copilot
+performed the handoff's requested verification.
+
+All three low-severity findings are **accepted and corrected** in `60c33a4`.
+Inspection of the implementation and focused verification establish stale
+descriptive text in each case, not a reason to change the identity contract:
+
+1. **R4-F1 — dependency preparation comment**
+   ([4084949168](https://github.com/ronen/postcode/pull/6#discussion_r4084949168)).
+   `openTypeScriptProject` allocates its session before returning the discovery
+   interface. Discovery calls `prepareDependencies` before constructing
+   `capturedInputs` from `inputs.identity()` and materializing domain records.
+   Later dependency acquisition can therefore add input support while retaining
+   the same session and earlier claim support. The comment now names that input
+   capture/materialization boundary. Existing regressions passed for additional
+   acquisition, changed resolution inputs and immutable earlier support; no
+   missing session-finalization operation is needed.
+2. **R4-F2 — expansion preparation comment**
+   ([4084949226](https://github.com/ronen/postcode/pull/6#discussion_r4084949226)).
+   The same discovery sequence calls `prepareExpansions` before constructing
+   captured input support, then materializes its prepared results in the already
+   allocated session. The comment incorrectly described session finalization
+   instead. It now describes preparation before input capture and record
+   materialization. Tests covering expansion reuse after dependency acquisition
+   and preservation of earlier bases passed. No identity or evidence-ordering
+   defect was established by this finding.
+3. **R4-F3 — manual provider probe description**
+   ([4084949274](https://github.com/ronen/postcode/pull/6#discussion_r4084949274)).
+   `sessionId()` takes no input and returns a `randomUUID()` namespace.
+   `recordId()` and separate `analysis-inputs` records retain the distinct
+   record/evidence roles; a session ID is not an input digest. The probe's
+   `pathPolicy` string wrongly claimed input-dependent session IDs. Corrected it
+   to state that retained session IDs are random namespaces independent of
+   analysis inputs, with input support recorded separately. Running the probe
+   confirmed the corrected output. The existing test that opens equivalent
+   projects in two sessions confirms distinct IDs with equivalent normalized
+   results. The defect is in the emitted explanation, not ID generation.
+
+The overview's reminder that human inspection remains pending is acknowledged.
+The generated suggestion to configure review skills/MCP is external tooling
+advice, not an implementation finding; no configuration change was requested.
+No finding was rejected or deferred, and no functional or governing change was
+made. These small descriptive corrections do not invalidate the prior runtime
+review or independently require another review round. The human still decides
+whether the accumulated review and inspection satisfy the final gate.
+
+Verification: `npm run build` passed. Five existing focused tests passed across
+`session.test.ts`, `session-inputs.test.ts` and `dependencies.test.ts`, covering
+independent session identity, separate immutable input support, changed resolution
+inputs, later acquisition and partial-attempt bases. The manual provider probe on
+`fixtures/dependency-contract/tsconfig.json` completed with full materialization
+and emitted the corrected policy text. Retrieved bodies were checked against the
+saved API responses for verbatim preservation. Diff checking of the corrections
+passed. No tests were added and the full suite was not rerun for two comment edits
+and one descriptive probe string.
+
 ## Review rounds
 
 - Round 1 reviewed `6dd42cb6426cf21d56cbeab4745e179354007576`, scope
@@ -401,11 +465,15 @@ them or treat independent reviewer inspection as the required human inspection.
   integrated handoff, with new scrutiny on `cafbd9c..4417726`. Its report and
   supplementary experiment identify no actionable findings and recommend no
   further round.
+- Round 4 is the supplementary Copilot review of PR target
+  `841f51098dbb33cfe0c231a29e2816bf99983254`, with PR scope
+  `0d59720..841f510`. All three documentation findings are corrected in `60c33a4`;
+  runtime semantics are unchanged.
 
 ## Gate conclusion
 
-Implementation, correction and independent review are complete, with no remaining
-actionable findings. The human has not yet accepted the final review gate or
+Implementation, review and corrections through the Copilot round are complete,
+with no remaining actionable findings. The human has not yet accepted the final review gate or
 confirmed the required human inspection. The task remains active pending those
 decisions. No reviewer recommendation is treated as human acceptance; residual
 limits remain recorded with the supplement's updated long-session evidence.
