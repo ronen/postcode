@@ -176,6 +176,13 @@ approvals remain effective; no repeat approval is requested. The task remains
 active because neither final acceptance nor a change to the inspection requirement
 has yet been given.
 
+2026-09-23: the human confirmed completing the representative journey on a separate
+project and that it functions as expected. Recorded this hands-on acceptance in
+the integrated disposition and project status, using the separate project in
+place of the specified fixture/PostCode human inspection as discussed. No further
+usability issue was reported. Only explicit final review-gate acceptance and
+closure remain pending; the task is still active.
+
 ## Verification
 
 At the one-shot checkpoint: `npm run check` and all 197 tests passed. Controlled
@@ -276,3 +283,8 @@ the outstanding acceptance items against the approved plan, development/review
 workflow, prior human directions and recorded verification. Diff checking passed.
 No code changed and no runtime tests were rerun; the latest 229-test result remains
 the applicable runtime verification.
+
+Human acceptance evidence: the human's confirmation above establishes successful
+execution of the representative journey on a separate project. It does not claim
+human inspection on fixtures or PostCode. No implementation changed; diff checking
+passed for the acceptance-record updates and runtime tests were not rerun.
