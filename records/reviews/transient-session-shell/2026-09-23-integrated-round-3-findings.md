@@ -207,3 +207,183 @@ findings remain from rounds 1–3. From the perspective of this review, I see no
 need for another round. Whether the accumulated review satisfies the final gate,
 and the required human inspection and acceptance, remain the human's decisions.
 This recommendation is not human acceptance of the gate.
+
+### Supplement: long-session experiment
+
+Added 2026-09-23 at the human's request, after the report above had been
+committed. It is by the same reviewer against the same target (`4417726`; the
+runtime at `HEAD` is unchanged). It addresses the residual limit "sessions much
+longer than about 30 commands". The report above is unchanged; this supplement
+updates that item only.
+
+#### Method
+
+The scratch script below opens one session on the ordinary PostCode checkout
+(`tsconfig.json`: 215 modules, 48 repository groups). It excludes `_build` and
+`_observations`, as `measure-session-journey.mjs` does, and calls
+`session.execute` directly. Worker transport, publication and terminal output
+are not included. Each execution still includes its two validation checks. The
+run used Node 22.13.1 with no concurrent verification jobs.
+
+- **Pass 1.** A deterministic plan of 400 commands cycles through ten request
+  shapes:
+  - `inspect`, `children`, `parents` and `inspect --source-detail` by module
+    reference;
+  - `inspect` and `inspect --source-detail` by group reference;
+  - `inspect` by exact module handle;
+  - `modules`, with source detail on some requests;
+  - `dependencies`;
+  - `organization`, alternating project and repository.
+
+  Subjects step through all 215 modules and all 48 groups, and presentation
+  alternates between text and JSON. Of the 400 commands, 238 are distinct
+  requests. The `modules`, `dependencies` and `organization` shapes have only a
+  few variants, so they repeat.
+- **Pass 2.** The same 400 commands again in the same session. The script
+  asserts that each rendering's SHA-256 matches pass 1.
+- **Measurements.** Collected heap (three forced collections) every 25 commands,
+  outside timed intervals. Per-command wall time. Heap after close.
+
+The script must retain only digests of pass-1 renderings. An earlier run kept the
+full rendered text, 171.6 MiB in total. That inflated apparent growth to about
+0.5 MiB per command and left 220 MiB held after close. That run's latency results
+and byte-for-byte pass-2 equality agreed with the corrected run below, but its
+heap figures are discarded.
+
+#### Results
+
+All 400 pass-2 renderings matched pass 1.
+
+| Point | Collected heap |
+| --- | ---: |
+| Before opening | 29.8 MiB |
+| Pass 1, after 25 commands (24 distinct) | 229.7 MiB |
+| Pass 1, after 400 commands (238 distinct) | 257.9 MiB |
+| Pass 2, every sample through 800 commands | 257.3–258.0 MiB |
+| After close | 39.2 MiB |
+
+Median direct latency (ms) per quarter of each pass:
+
+| Request | Pass 1 (q1/q2/q3/q4) | Pass 2 (q1/q2/q3/q4) |
+| --- | --- | --- |
+| Inspect module/group/handle | 616/617/701/691 | 649/580/587/651 |
+| Inspect with source detail | 634/617/672/675 | 652/580/580/648 |
+| Children | 717/691/772/798 | 784/665/663/723 |
+| Parents | 700/687/725/775 | 723/658/701/724 |
+| Modules | 1382/1465/1600/1400 | 1334/1234/1323/1321 |
+| Dependencies | 800/775/860/834 | 840/720/729/804 |
+| Organization | 633/638/728/719 | 676/585/589/657 |
+
+Opening took 1.5 s. The slowest single command took 1.9 s. Pass 1 took 310 s in
+total and pass 2 took 291 s.
+
+#### Interpretation
+
+- **Memory.** Retained heap grows linearly with new distinct requests: 28.2 MiB
+  over 214 new requests, about 135 KB each. It does not level off, as expected
+  with no eviction. Repeating requests adds nothing measurable, as the flat
+  pass 2 shows. At this rate, a few thousand distinct requests would retain a
+  few hundred MiB more. Close releases the session's state.
+- **My earlier figure.** An earlier conversational summary said "about 75 KB per
+  new request". That divided by commands, not distinct requests; the figure here
+  supersedes it.
+- **Latency.** No latency growth with store size was observed. Pass 1's later
+  quarters were somewhat slower, up to about 13% for inspection. Pass 2 ran with
+  the largest store and was as fast or faster, so the pass 1 variation is more
+  consistent with machine variation than with accumulated state.
+- **The 257 s outlier.** Nothing resembling it occurred in 1,600 commands across
+  the two runs. Its cause remains unestablished.
+- **Updated limit.** The long-session limit becomes: tested to 800 commands (238
+  distinct) on PostCode through direct execution. Retained memory grows linearly,
+  by about 135 KB per new distinct request, and stays flat on repetition. Results
+  are repeatable, latency did not drift, and closing releases memory. There is
+  still no memory bound other than closing the session.
+
+#### Limits
+
+- Direct execution only. The shell's worker and publication path uses the same
+  executor, but it was not driven for this length.
+- The clean project only. Sessions with partial projects or many input
+  acquisitions were not tested at this length.
+- One machine, two runs, with the heap figures from one run.
+- One deterministic command mix. A more varied real session could have different
+  per-request growth.
+
+This supplement does not change the actionable-findings result or the
+recommendation above.
+
+#### Script
+
+<details>
+<summary><code>long-session.mjs</code> (run with <code>node --expose-gc long-session.mjs tsconfig.json OUTPUT.json 400</code> after <code>npm run build</code>)</summary>
+
+```js
+import assert from 'node:assert/strict';
+import path from 'node:path';
+import { writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+const h = x => createHash('sha256').update(x).digest('hex');
+let renderedChars = 0;
+const app = '/Users/ronen/postcode/app';
+const { openSession } = await import(app + '/_build/src/lib/session.js');
+const configPath = path.resolve(process.argv[2] ?? app + '/tsconfig.json');
+const out = process.argv[3];
+const N = Number(process.argv[4] ?? 400);
+const collect = async () => { for (let i = 0; i < 3; i++) { global.gc(); await new Promise(r => setImmediate(r)); } return process.memoryUsage(); };
+const mib = m => +(m.heapUsed / 1048576).toFixed(1);
+const baseline = await collect();
+let t = performance.now();
+const opened = openSession({ configPath, excludedOutputDirectories: [path.join(app, '_build'), path.join(app, '_observations')] });
+assert.equal(opened.status, 'opened');
+const openMs = performance.now() - t;
+const s = opened.session;
+const fmt = (i, detail = false) => ({ format: i % 3 === 0 ? 'json' : 'text', sourceDetail: detail });
+let inv = s.execute({ lens: 'modules', selector: null, presentation: { format: 'json', sourceDetail: false } });
+const mods = inv.view.modules;
+let org = s.execute({ lens: 'organization', selector: null, subject: 'repository', presentation: { format: 'json', sourceDetail: false } });
+const groups = org.view.groups;
+console.error(`opened ${openMs.toFixed(0)} ms; ${mods.length} modules, ${groups.length} groups`);
+// Deterministic varied plan: walk across all modules and groups with different lenses/presentations.
+const plan = [];
+for (let i = 0; plan.length < N; i++) {
+  const m = mods[(i * 7) % mods.length], g = groups[(i * 3) % groups.length];
+  const kinds = [
+    { lens: 'inspect', selector: m.entityId, reference: true, presentation: fmt(i) },
+    { lens: 'children', selector: m.entityId, reference: true, presentation: fmt(i) },
+    { lens: 'parents', selector: m.entityId, reference: true, presentation: fmt(i) },
+    { lens: 'inspect', selector: m.entityId, reference: true, presentation: fmt(i, true) },
+    { lens: 'inspect', selector: g.entityId, reference: true, presentation: fmt(i) },
+    { lens: 'inspect', selector: m.handle, presentation: fmt(i) },
+    { lens: 'modules', selector: null, presentation: fmt(i, i % 20 === 5) },
+    { lens: 'dependencies', selector: null, presentation: fmt(i) },
+    { lens: 'organization', selector: null, subject: i % 2 ? 'project' : 'repository', presentation: fmt(i) },
+    { lens: 'inspect', selector: g.entityId, reference: true, presentation: fmt(i, true) },
+  ];
+  plan.push(kinds[i % kinds.length]);
+}
+const samples = [], heap = [], rendered = [];
+for (const pass of [1, 2]) {
+  for (const [index, request] of plan.entries()) {
+    t = performance.now();
+    const result = s.execute(request);
+    const ms = performance.now() - t;
+    if (pass === 1) { rendered.push(h(result.rendered)); renderedChars += result.rendered.length; }
+    else assert.equal(h(result.rendered), rendered[index], `pass 2 differs at ${index} ${request.lens}`);
+    samples.push({ pass, index, lens: request.lens, sourceDetail: request.presentation.sourceDetail, ms: +ms.toFixed(1) });
+    if ((index + 1) % 25 === 0) {
+      const m = await collect();
+      heap.push({ pass, after: index + 1, heapMiB: mib(m), rssMiB: +(m.rss / 1048576).toFixed(1) });
+      console.error(`pass ${pass} ${index + 1}/${plan.length} heap ${mib(m)} MiB`);
+    }
+  }
+}
+const live = await collect();
+const released = { inv: undefined };
+inv = undefined; org = undefined; s.close();
+const closed = await collect();
+writeFileSync(out, JSON.stringify({ node: process.versions.node, configPath, openMs, modules: mods.length, groups: groups.length,
+  renderedChars, baselineMiB: mib(baseline), liveMiB: mib(live), closedMiB: mib(closed), heap, samples }, null, 1));
+console.error('done');
+```
+
+</details>
