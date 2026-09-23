@@ -3,10 +3,7 @@
 Status: in preparation
 Arising from: [Transient interactive session shell](../plans/transient-session-shell.md)
 Scope: session context, reference binding, accumulated analysis, and CLI/observation lifecycle
-
-This proposed decision is non-governing. Discussion has established the direction;
-the package still requires human review and promotion. Command lifecycle details
-marked proposed in the plan remain open and are not accepted by this document.
+Supersedes: the scoped choices listed under [Supersession](#supersession).
 
 ## Context
 
@@ -26,169 +23,156 @@ The completed performance task removed redundant digest computation without
 sessions. Its result is established infrastructure, not evidence that session
 latency or a new lifecycle has already been validated.
 
-## Proposed decisions
+## Decisions
 
-### Use a session as the analysis and reference context
+### Session as the analysis and reference context
 
-A session owns the continuing investigation and its accumulated program records.
-The initial session opens one configured project. The shell retains it across
-commands; a one-shot invocation creates and ends a short-lived session.
+A session is the continuing context for an investigation and its accumulated
+program records. It replaces the snapshot model: the set of observed inputs may
+grow without replacing the context in which subjects are referenced.
 
-Replace the snapshot model rather than retaining a growing-input digest as the
-hidden reference namespace. No frozen all-input capture is required before the
-first view. New input acquisition is an ordinary consequence of a view request.
+The initial session concerns one configured project and lasts for one process.
+An interactive shell retains it across commands; a one-shot invocation has a
+short-lived session. Cross-invocation references are outside this contract. Future
+continuity across invocations belongs to session persistence and an explicit
+reopening validity policy.
 
-Session-local identities need not reproduce across independent invocations.
-Equivalent requests under equivalent inputs and methods must remain semantically
-comparable. Observation clocks and event UUIDs do not become claim content.
-Digests may support evidence integrity and change detection without defining an
-immutable snapshot object.
+Entity and record references need not reproduce across independent invocations.
+Equivalent requests under equivalent inputs and methods remain semantically
+comparable. Each claim retains its supporting evidence and method context;
+neither session membership nor observation metadata supplies that support.
 
-Rationale: the continuing context must survive evidence growth. Reproducible
-cross-invocation navigation is no longer a product requirement. A wrapper around
-fresh one-shot evaluation would leave the central accumulation problem unsolved.
+#### Rationale
 
-### Bind references within the active session
+Follow-up examination needs to acquire information while preserving the ongoing
+investigation. An identity derived from a fixed observed-input set makes that
+growth change the reference context. Hiding snapshot arguments would preserve
+this mismatch. Capturing every possible input in advance would instead restrict
+which follow-up analyses the investigation could support.
 
-Once a precise reference is bound to an entity, it must not be rebound. Additional
-analysis, new allocations, or abbreviation collisions cannot change an existing
-binding. Entity allocation remains grounded in the provider's established identity
-rules, not labels, realpath equality, content equality, or inferred responsibility.
+#### Consequences
 
-Names and generated handles are lookup inputs, not promises of unique identity.
-Preserve honest zero/one/many results and generated provenance. Precise references
-and exact lookups need unambiguous selection when their spellings collide; exact
-syntax is a pre-implementation review question.
+The session's lifetime and reference scope are independent of how much analysis
+has completed. Persistence remains a separate lifecycle decision, and the CLI's
+snapshot-based cross-invocation navigation contract is retired.
 
-There is only the active session's reference namespace. An unknown reference is
-invalid input; there is no other-session lookup or special stale-session diagnosis.
-A typed spelling that happens to be valid denotes its active binding, just as any
-other valid input would. Do not fall back from an invalid precise reference to
-another subject-selection mechanism.
+### Stable reference bindings within a session
 
-Remove --snapshot and cross-invocation ID navigation. Future cross-invocation
-references belong to deliberately persisted sessions, with their own reopening
-validity policy, not reconstruction by matching reference text.
+A reference bound to an entity retains that binding throughout the session.
+Additional evidence, discovered entities, or analysis cannot change its referent.
+Entity identity follows the applicable provider's established semantics; a label
+or matching source content does not establish identity.
 
-Rationale: stable local bindings support human navigation without repeated scope
-arguments. Persistence, not an ungainly command guard, is the appropriate future
-home for continuity across process lifetimes.
+Names and generated handles remain lookup inputs that can match zero, one, or
+several subjects. Their spelling and recognition value are distinct from the
+binding of a precise reference.
 
-### Retain results and coordinate additional analysis
+#### Rationale
 
-Retain captured evidence and published results without mutation by later analysis.
-Retain separate evaluation attempts and their applicability, availability,
-execution, materialization, and reasons. Later success does not erase earlier
-partiality, failure, or missing information.
+A human must be able to examine a previously encountered subject after further
+analysis without silently selecting a different subject. This requires stable
+bindings within the investigation, not deterministic identifiers across fresh
+invocations.
 
-Requests supply lens requirements and presentation-declared standard expansions
-to evaluation. Evaluation reuses applicable completed work and requests missing
-work. Projections select qualified materialized records; rendering cannot trigger
-analysis or reread source. Accumulation does not require a universal scheduler.
+#### Consequences
 
-A produced projection identifies its subject, lens, parameters, session, claims,
-supporting evidence/method context, and relevant evaluation outcomes. It is an
-immutable result, not a live query over everything subsequently stored. A repeated
-request can reuse a suitable existing result or create another addressable result.
-Session identity alone is insufficient as a cache key for all answers to that
-request: newly available material and changed request requirements matter.
+Reference allocation must accommodate later discovery without rebinding earlier
+references. Selection syntax and allocation mechanics are implementation choices.
 
-This resolves the immediate materialized-result identity question noted in the
-initial core-concepts decision without requiring a separate universal logical-query
-identity. Presentation parameters remain distinct from lens parameters.
+### Immutable information within an accumulating session
 
-Later interpretation augmentation or supersession must be explicit and preserve
-earlier results; the summary slice defines those relationships and their meaning.
-No generic supersession mechanism is implemented here.
+Captured evidence, claims, evaluation outcomes, and produced projections remain
+unchanged when later analysis adds information. Separate evaluation attempts
+retain their own execution and materialization outcomes. Later success does not
+erase earlier partiality or failure.
 
-Rationale: stable references and immutable results can coexist with expanding
-knowledge. More evidence does not retroactively strengthen an earlier claim or
-make a historical interpretation mechanically established.
+A produced projection identifies its subject, lens, parameters, session context,
+selected claims, and relevant evaluation outcomes. Its supporting evidence and
+method context remain attributable. It represents the information selected for
+that projection rather than a live query over subsequently accumulated records.
 
-### Assume stable inputs and invalidate on detected changes
+The established evaluation boundary coordinates reuse and additional analysis
+from lens requirements and presentation-declared expansions. Projection
+construction and rendering retain their existing responsibilities. Presentation
+parameters do not become lens parameters because evaluation work is shared.
 
-The user is expected not to change relevant project or analysis-environment inputs
-during a session, including through other agents, builds, or dependency installation.
-Disclose this precondition and the non-atomic, first-observed capture limitation.
+For the current lenses, unchanged inputs and completed evaluation yield the same
+information for a repeated request. Reconstructing a projection or rendering it
+again does not itself create a different semantic answer. A later attempt may
+establish information missing from an incomplete earlier evaluation, with the
+earlier outcome and projection retained.
 
-New analysis may read previously unobserved inputs under this assumption. It does
-not establish their contents at session start. Comprehensive concurrent-change
-detection, atomic capture, and tracking an evolving worktree are not promised.
+#### Rationale
 
-Provide best-effort detection of relevant changes. A detected relevant change
-invalidates the session for further investigation; restart is the recovery path.
-Do not silently reopen or continue combining known-inconsistent inputs. How the
-provider detects changes, and when checks occur, are implementation choices whose
-coverage and limitations must be documented and tested. Absence of detection must
-not be presented as proof of unchanged inputs.
+Accumulation is compatible with immutable evidence and projections. Without that
+separation, additional work could silently alter what an earlier view established
+or strengthen its claims. The session provides continuity without making all
+answers within it interchangeable.
 
-Rationale: full invalidation machinery is disproportionate to a session whose
-documented precondition excludes concurrent edits. Best-effort robustness does
-not relax reference binding, retained evidence integrity, or claim qualification.
+#### Consequences
 
-### Keep the interface interactive and transient
+This resolves the materialized-projection identity question needed for this
+slice without defining a universal logical-query identity. Future interpretation
+augmentation or supersession can relate retained accounts; its semantics belong
+to the summary slice.
 
-Retain the one-shot CLI and add an interactive shell using shared request
-execution. Remove generated next-command text in both interfaces; use help and
-documentation for command instruction. Keep Unicode and experimental structured
-views and the existing conceptual/source distinction.
+### Stable inputs as the session precondition
 
-Public stdin/file batch use is deferred. The normal journey chooses subsequent
-subjects from prior output. A useful adaptive scripting language would require
-additional semantics, while test harnesses can already consume results and issue
-follow-up requests through the shared boundary.
+The session assumes relevant project and analysis-environment inputs remain
+unchanged. Capture is first-observed and non-atomic. Reading an input later in
+the session does not establish its contents at session start.
 
-Do not introduce persistence, a daemon, GUI integration, managed workspaces,
-new lenses, summary interpretation, implicit current-subject state, or automatic
-refresh. The old --dependency-context mechanism must be reassessed during
-implementation: the shell acquires requirements internally, and a flag whose
-sole purpose was reproducing snapshot scope has no continuing purpose. Remove
-it if no independently useful documented behavior remains; do not create a new
-public analysis-control surface merely to preserve that mechanism.
+Change detection is best-effort. A detected relevant input change invalidates the
+session for further investigation, with restart as recovery. Absence of detection
+is not proof of unchanged inputs. Tracking an evolving worktree and automatic
+refresh are outside this lifecycle contract.
 
-### Observe commands independently within a session
+#### Rationale
 
-Produce self-contained observation batches per command, with session correlation
-and command order. Preserve requests, resolved subjects, qualified views, exact
-output, relevant outcomes, and actual source disclosure. Include failures,
-refusals, invalidation, and interruption where observable, without inventing
-produced views.
+Comprehensive concurrent-change detection would introduce a substantial validity
+mechanism for a use case explicitly outside the session's precondition. The
+bounded alternative supports accumulating analysis while refusing continuation
+when the system knows that the assumption has been violated.
 
-Each submitted batch remains interpretable without earlier batches or the
-ephemeral store. Send batches as commands complete, not only at session exit.
-Session correlation does not require durable producer state or a historical-read
-API. Observation records are not a persisted session or current program evidence.
+#### Consequences
 
-Retain the existing local sink, privacy posture, generated-output exclusions, and
-visible non-blocking delivery failure. Evolve the experimental format explicitly;
-exact version/schema mechanics remain a pre-implementation review question.
+The detection mechanism and coverage are implementation choices. The precondition
+and detection limits remain explicit qualifications; they do not weaken stable
+reference bindings or the integrity of captured evidence.
 
-Rationale: a process-scoped batch would defer evidence until exit and could lose
-an entire investigation. Command batches preserve the existing self-contained
-delivery boundary while adding the correlation needed for sequential use.
+### Command-scoped observations with session correlation
 
-## Alternatives not selected
+A command is the observation-batch boundary within a session. Each batch is
+self-contained and carries a session identifier and command order. The identifier
+is constant within a session and distinguishes it from other sessions; its format
+is an implementation choice. One-shot invocations use the same model.
 
-- Keep snapshots and hide --snapshot: retains the wrong growing-input identity
-  dependency and unwanted cross-invocation contract.
-- Capture every possible input before navigation: cannot accommodate open-ended
-  follow-up analyses and makes eager preparation a product restriction.
-- Guarantee complete change detection: unnecessary for the unchanged-input
-  precondition and materially broader than best-effort robustness.
-- Track changes and refresh automatically: risks retargeting and requires another
-  continuity contract.
-- Add persistence now: introduces retention, compatibility, reopening validity,
-  concurrency, and recovery requirements without serving the initial journey.
-- Treat observations as persistence: conflates historical use evidence with
-  operational state.
-- Add a command-file language for testing: adaptive harnesses can exercise the
-  actual command boundary without a new product language.
+Each batch remains interpretable without earlier batches or the transient program
+store. Delivery occurs at command completion rather than being deferred until
+session exit. The existing observation-content and delivery-failure contracts
+continue to apply.
 
-## Proposed supersession map
+Session correlation does not turn observations into persisted operational state,
+current program evidence, or a source for restoring reference bindings. The
+observation sink and program store retain their separate ownership and lifecycles.
 
-On promotion, add reciprocal metadata to the earlier records without rewriting
-their historical rationale. These are scoped replacements; unaffected decisions
-remain accepted.
+#### Rationale
+
+A process-scoped batch would defer the record of an entire investigation until
+exit. Command batches preserve independent delivery while session correlation
+makes the sequence of examinations available to observation consumers.
+
+#### Consequences
+
+The observation model extends invocation-local context to related commands without
+requiring producer-side persistence or historical reading. Sink retention policy
+remains independent of session lifetime.
+
+## Supersession
+
+This decision supersedes the earlier choices to the extent specified below.
+Unaffected decisions remain accepted, and the earlier rationale remains historical
+evidence.
 
 | Earlier decision | Replacement extent |
 | --- | --- |
@@ -196,7 +180,7 @@ remain accepted.
 | [Initial core concepts: lenses, projections and views](../../../docs/decisions/initial-core-concepts-decisions.md#preserve-the-lens-projection-presentation-and-view-distinction) | Replace the projection's snapshot scope with session and immutable result support; preserve lens/presentation distinctions. |
 | [Projection architecture: record-oriented model](../../../docs/decisions/initial-projection-architecture-decisions.md#use-a-record-oriented-program-information-model) | Replace universal snapshot context with session records and attributable result evidence/method context. |
 | [Projection architecture: storage boundary](../../../docs/decisions/initial-projection-architecture-decisions.md#isolate-storage-behind-programrecordstore) | Replace snapshot-scoped references with session bindings; preserve storage independence and separate lifecycle concerns. |
-| [Projection architecture: deterministic logical identity](../../../docs/decisions/initial-projection-architecture-decisions.md#use-deterministic-logical-identity-independently-of-persistence) | Replace snapshot-derived, cross-invocation identity with session identity and semantic comparability; persistence remains deferred. |
+| [Projection architecture: deterministic logical identity](../../../docs/decisions/initial-projection-architecture-decisions.md#use-deterministic-logical-identity-independently-of-persistence) | Replace snapshot-derived, cross-invocation identity with session context and semantic comparability; persistence remains deferred. |
 | [Inventory: qualified domain entities](../../../docs/decisions/initial-module-inventory-decisions.md#represent-modules-as-qualified-domain-entities) | Replace snapshot-scoped Entity IDs with session bindings; retain discovery, facets, and expansions. |
 | [Inventory: repeatable snapshot references](../../../docs/decisions/initial-module-inventory-decisions.md#make-references-repeatable-but-snapshot-scoped) | Replace reference scope and repeatability with active-session binding and exact lookup semantics. |
 | [Identity constraints: analysis versus invocation identity](../../../docs/decisions/adopt-identity-evidence-and-observation-constraints.md#make-analysis-identity-independent-of-invocation-identity) | Replace snapshot hashing and deterministic cross-invocation IDs with result method attribution, session-local identity, and semantic comparability. |
@@ -210,13 +194,16 @@ historical; this decision supplies the bounded answer needed for accumulated res
 
 ## Governing and implementation impact
 
-Promote the proposed core concepts and architectural constraints with the accepted
-decision when directed. The implementation-conventions revision removes obsolete
-identity allocation and command-generation practices; its adoption must align with
-implementation. Preserve all unrelated qualification, source evidence, output
-safety, language-boundary, and observation-sink requirements.
+The [core concepts](../docs/core-concepts.md) replace Analysis snapshot with
+Session and describe projections in that context. The
+[architectural constraints](../docs/architectural-constraints.md) replace
+snapshot-based identity requirements with stable session references and retained
+evidence and method context.
+
+Concrete implementation conventions are updated alongside implementation as
+described in the plan. Unrelated qualification, source evidence, output safety,
+language-boundary, and observation-sink requirements remain unchanged.
 
 The adopted foundation already permits continuing investigations and accumulated
-qualified information; no foundation change is proposed. Existing implementation
-and historical evidence continue to describe snapshots until implementation and
-documentation are updated. This draft does not authorize code changes.
+qualified information; no foundation change is required. Historical records
+retain their original snapshot terminology.

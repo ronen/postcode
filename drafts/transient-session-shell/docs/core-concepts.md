@@ -90,7 +90,7 @@ An outcome can exist without a produced claim or entity, and an incomplete attem
 
 ### Session
 
-*[decision: [Transient analysis sessions](../decisions/transient-analysis-sessions.md#use-a-session-as-the-analysis-and-reference-context)]*
+*[decision: [Transient analysis sessions](../decisions/transient-analysis-sessions.md#session-as-the-analysis-and-reference-context)]*
 
 A **Session** is a continuing context for investigation, retaining subject-reference bindings, captured evidence, analysis results, evaluation outcomes, and projections. Its accumulated information can grow as requests require additional analysis or inputs. A session is not an immutable description of a fixed, completely observed input set, a workspace of managed views, or a promise to follow changing program inputs.
 
@@ -98,7 +98,7 @@ Within a session, a reference once bound to an entity cannot be rebound. Evidenc
 
 The initial session opens one configured project and assumes its relevant inputs remain unchanged. Detection of a relevant change invalidates the session for further investigation; detection is best-effort and capture remains non-atomic. This does not establish earlier contents of an input first observed later.
 
-A transient session ends with its process. References have meaning only in the active session; unrecognized references are invalid inputs, without a separate other-session lookup model. Persistence and any future validity policy for reopening a session are separate decisions.
+A transient session ends with its process. References have meaning within the active session. Observations carry a session identifier to correlate commands within the session; this identifier does not establish the evidential basis or consistency of program claims. Persistence and any future validity policy for reopening a session are separate decisions.
 
 ## Investigation and representation
 
@@ -110,11 +110,11 @@ A **Lens** describes the aspect of a subject being investigated: the question be
 
 ### Projection
 
-*[decision: [Transient analysis sessions](../decisions/transient-analysis-sessions.md#retain-results-and-coordinate-additional-analysis)]*
+*[decision: [Transient analysis sessions](../decisions/transient-analysis-sessions.md#immutable-information-within-an-accumulating-session)]*
 
 A **Projection** is the qualified information produced by applying a lens to a particular program state and subject, with particular lens parameter values. It includes its content and the qualifications needed to understand what that content establishes.
 
-A projection is an addressable program-domain object identifying its subject, lens, lens parameters, and session, with references to its claims, supporting evidence and method context, and relevant evaluation outcomes. A produced projection retains the information selected for that result; later accumulation does not silently change it. Repeating a lens request may reuse a result whose requirements are still satisfied or produce another addressable result with additional information. It is distinct from both an evaluation attempt and a rendering of its result. Presentation choices describe how the information is shown; they do not redefine the question asked by the lens.
+A projection is an addressable program-domain object identifying its subject, lens, lens parameters, and session context, with references to its claims, supporting evidence and method context, and relevant evaluation outcomes. A produced projection retains the information selected for that result; later accumulation does not silently change it. For the current mechanically derived views, repeating a request with unchanged inputs and completed evaluation yields the same information. Reconstructing or rendering a projection need not establish a different answer. A later evaluation may add information when earlier work was incomplete, without changing the earlier projection or outcome. It is distinct from both an evaluation attempt and a rendering of its result. Presentation choices describe how the information is shown; they do not redefine the question asked by the lens.
 
 ### Presentation and View
 
