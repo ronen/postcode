@@ -28,6 +28,12 @@ limits explicitly into rereview.
 
 The second round review is complete.  Address its new finding,  record the disposition, and prepare for next review round.  Ask me if  a substantial question arises.  When complete, prepare handoff for next review round.
 
+Retry after additional inputs (Recommended)
+
+Context: selected in response to the R2-F1 question asking whether to narrow
+retries to when the provider has acquired additional inputs, preserving partial
+results otherwise, instead of retaining the previously approved repeated retries.
+
 ## Outcome
 
 2026-09-23: implemented the plan's one-shot conversion checkpoint in
