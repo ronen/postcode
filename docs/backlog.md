@@ -20,6 +20,22 @@ Describe the need, why it matters, and relevant constraints without designing th
 
 ## Candidates
 
+## Review the investigation UI and UX as a whole
+
+Added: 2026-09-23
+Origin: human exploratory use of the completed interactive session on another repository
+Area: presentations and interaction
+
+The session works, but repeated use makes the current views difficult to read:
+output is too wordy, important information is hard to find, and presentation
+choices that were tolerable for one-shot commands compound across an
+investigation. Evaluate the full journey across inventory, organization,
+dependencies, inspection, qualifications, source detail, and shell interaction
+before making isolated formatting changes. Identify what deserves immediate
+attention, what should be progressively disclosed, and what belongs in a later
+visual interface. Preserve precise navigation, evidence, qualifications, and
+consequential omission disclosure while improving readability.
+
 ## Reduce repeated investigation latency
 
 Added: 2026-09-21
