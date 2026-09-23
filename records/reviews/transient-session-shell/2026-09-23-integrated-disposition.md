@@ -4,7 +4,7 @@ Record type: disposition
 Date: 2026-09-23
 Task: [Transient interactive session shell](../../tasks/2026-09-23-transient-session-shell.md)
 Handoff: [Integrated review assignment](2026-09-23-integrated-handoff.md)
-Findings: [Integrated round 1](2026-09-23-integrated-round-1-findings.md); [integrated round 2](2026-09-23-integrated-round-2-findings.md); [integrated round 3 and supplement](2026-09-23-integrated-round-3-findings.md); [integrated round 4, Copilot](2026-09-23-integrated-round-4-copilot-findings.md)
+Findings: [Integrated round 1](2026-09-23-integrated-round-1-findings.md); [integrated round 2](2026-09-23-integrated-round-2-findings.md); [integrated round 3 and supplement](2026-09-23-integrated-round-3-findings.md); [integrated round 4, Copilot](2026-09-23-integrated-round-4-copilot-findings.md); [integrated round 5, Copilot](2026-09-23-integrated-round-5-copilot-findings.md)
 State: no actionable findings remain; human inspection and final gate acceptance pending
 
 ## Round 1 findings and dispositions
@@ -454,6 +454,60 @@ saved API responses for verbatim preservation. Diff checking of the corrections
 passed. No tests were added and the full suite was not rerun for two comment edits
 and one descriptive probe string.
 
+## Round 5 disposition: second Copilot PR review
+
+The [new review](2026-09-23-integrated-round-5-copilot-findings.md) targets
+`88f66b1f99d93694afc920fa12434c44f9118a7c` and confirms the three prior findings
+resolved. Its overview says "Findings: None" but embeds one medium-severity
+issue under "Previously missed (1)". That issue is assessed here as R5-F1;
+it was not omitted because it lacks a separate inline comment. Paginated
+retrieval found no new inline comments, replies or PR conversation comments.
+Earlier review bodies were verified unchanged against the round 4 record.
+
+### R5-F1 — accepted and corrected: navigation provenance in observations
+
+Source: [review 5294207644](https://github.com/ronen/postcode/pull/6#pullrequestreview-5294207644),
+"Derive provenance text from projection.parameters.reference", `observations.ts`.
+Correction: `579a57e`.
+
+This was a functional observation-content defect, rather than a stale source
+comment. The shell parser correctly distinguishes `@` references from exact
+name/handle lookups, the projection retains `parameters.reference`, and selection
+uses the session's bindings. The observation request nevertheless attached the
+same "no previous view" description to all focused requests. Consumers therefore
+received an explanation that contradicted the structured request and actual
+navigation. The finding did not reveal a broken reference binding or selection.
+
+Observation navigation text now uses the projection's reference flag for
+inspection and dependency children/parents. Reference requests are described as
+session-local, with resolution confined to that session; ordinary lookups are
+described as exact name/handle lookups without asserting reference continuity.
+The wording describes the requested selection mode, not successful resolution,
+so an unknown reference remains truthful alongside its zero-match result and
+`unknown-reference` status. A literal `@` selector after `--`, and an `@` selector
+in one-shot use, remain name/handle lookups. Neither branch implies
+cross-invocation continuity. The batch shape and experimental version remain
+unchanged, as do view content, rendered output and selection behavior. This is
+the existing command-provenance contract applied correctly, with no new policy.
+
+Verification: the new publication-boundary regression failed on the old navigation
+description before the fix. After correction, `npm run check`, `npm test`
+(**229 tests**, including build) and diff checking passed. The regression parses
+and publishes ten requests covering module inspection, dependency children and
+parents by reference and handle, group inspection by reference, an unknown
+reference, literal `@` lookup, and one-shot `@` lookup. It checks recorded selection
+mode and navigation, actual selected counts, and unknown-reference status.
+Assertions run after sink delivery, so sink error handling cannot swallow them.
+The existing adaptive worker-backed shell test now also checks the emitted
+reference-navigation observation. No additional comparison or performance run
+was warranted for this isolated metadata correction.
+
+No human policy choice, scope expansion or finding rejection was needed. This
+local correction does not materially invalidate the earlier runtime review;
+the exact corrected target is `579a57e` if the human arranges further scrutiny
+under the unchanged integrated handoff. Human inspection and final gate acceptance
+remain pending. The review itself does not authorize closure.
+
 ## Review rounds
 
 - Round 1 reviewed `6dd42cb6426cf21d56cbeab4745e179354007576`, scope
@@ -469,10 +523,13 @@ and one descriptive probe string.
   `841f51098dbb33cfe0c231a29e2816bf99983254`, with PR scope
   `0d59720..841f510`. All three documentation findings are corrected in `60c33a4`;
   runtime semantics are unchanged.
+- Round 5 is Copilot review 5294207644 of
+  `88f66b1f99d93694afc920fa12434c44f9118a7c`. It confirms the round 4 corrections
+  and identifies the observation-provenance defect, corrected in `579a57e`.
 
 ## Gate conclusion
 
-Implementation, review and corrections through the Copilot round are complete,
+Implementation, review and corrections through round 5 are complete,
 with no remaining actionable findings. The human has not yet accepted the final review gate or
 confirmed the required human inspection. The task remains active pending those
 decisions. No reviewer recommendation is treated as human acceptance; residual
