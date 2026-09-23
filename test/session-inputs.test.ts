@@ -12,6 +12,7 @@ import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
 import { modules } from '../src/lib/projections.js';
 import { openSession, SessionInvalidated, AnalysisFailure } from '../src/lib/session.js';
 import type { ProgramRecord } from '../src/lib/records.js';
+import type { ObservationBatch } from '../src/lib/observations.js';
 import { moduleStandardExpansions } from '../src/lib/records.js';
 
 function temporary(run: (root: string, configPath: string) => void, include = false) {
@@ -139,8 +140,8 @@ test('publication observes invalidation before and after output without fabricat
     let output = '', error = '';
     cases.push((async () => {
       try {
-        const code = await publishCommand({ id: session.id, check: session.check, execute: command => {
-          const result = session.execute(command);
+        const code = await publishCommand({ id: session.id, check: session.check, execute: (command, execution) => {
+          const result = session.execute(command, execution);
           if (!after) writeFileSync(source, 'export const changed = 2;');
           return result;
         } }, request, 'modules --json', configPath, 1, {
@@ -231,3 +232,95 @@ for (const changed of [false, true]) {
     });
   });
 }
+
+for (const lens of ['modules', 'inspect', 'dependencies'] as const) {
+  test(`session retries partial expansions through ${lens} while preserving earlier views`, () => {
+    temporary((root, configPath) => {
+      writeFileSync(path.join(root, 'entry.cts'), "export { missing } from './nowhere.js';");
+      writeFileSync(path.join(root, 'other.ts'), 'export const other = 1;');
+      const opened = openSession({ configPath });
+      if (opened.status !== 'opened') throw new Error('Expected project');
+      const { session } = opened;
+      try {
+        const inventory = session.execute(request);
+        if (inventory.view.schema !== 'postcode-view/1-experimental') throw new Error('Expected modules');
+        assert.ok(inventory.view.evaluations.some(item => item.requirement === 'modules' && item.materialization === 'full'));
+        assert.ok(inventory.view.evaluations.some(item => item.requirement === 'exports' && item.materialization === 'partial'));
+        const command = { ...request, lens, selector: lens === 'inspect' ? inventory.view.modules[0]!.entityId : null,
+          ...(lens === 'inspect' ? { reference: true } : {}) };
+        const first = session.execute(command);
+        const retained = structuredClone(first);
+        const later = session.execute(command);
+        assert.notEqual(later.view.projection.id, first.view.projection.id);
+        assert.deepEqual(first, retained);
+        if (!('modules' in first.view) || !('modules' in later.view)) throw new Error('Expected module selection');
+        assert.deepEqual(later.view.modules.map(item => [item.id, item.entityId]), first.view.modules.map(item => [item.id, item.entityId]));
+      } finally { session.close(); }
+    }, true);
+  });
+}
+
+test('direct execution keeps two checks while publication performs three without a duplicate', async t => {
+  const { publishCommand } = await import('../src/lib/command-execution.js');
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-check-count-'));
+  const configPath = path.join(root, 'tsconfig.json');
+  const source = path.join(root, 'entry.ts');
+  writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
+  writeFileSync(source, 'export const entry = 1;');
+  const opened = openSession({ configPath });
+  if (opened.status !== 'opened') throw new Error('Expected project');
+  const { session } = opened;
+  try {
+    session.execute(request);
+    const read = ts.sys.readFile;
+    let checks = 0;
+    t.mock.method(ts.sys, 'readFile', (name: string, encoding?: string) => {
+      if (name === source) checks++;
+      return read(name, encoding);
+    });
+    session.execute(request);
+    assert.equal(checks, 2);
+    checks = 0;
+    let published = false, observed = false;
+    assert.equal(await publishCommand(session, request, 'modules', configPath, 1,
+      { stdout: () => { published = true; }, stderr: text => assert.fail(text) },
+      { async submit() { observed = true; return { accepted: true }; } }), 0);
+    assert.equal(checks, 3);
+    assert.equal(published && observed, true);
+  } finally { session.close(); rmSync(root, { recursive: true, force: true }); }
+});
+
+test('worker delivery is validated before publication and emitted output survives later invalidation', async () => {
+  const { publishCommand } = await import('../src/lib/command-execution.js');
+  const { interactiveSession } = await import('../src/lib/interactive-session.js');
+  for (const after of [false, true]) {
+    const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-worker-publication-'));
+    const configPath = path.join(root, 'tsconfig.json');
+    const source = path.join(root, 'entry.ts');
+    writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
+    writeFileSync(source, 'export const original = 1;');
+    const remote = interactiveSession({ configPath });
+    try {
+      const opened = await remote.opening;
+      if (opened.status !== 'opened') throw new Error('Expected project');
+      let stdout = '', stderr = '';
+      let observed: ObservationBatch | undefined;
+      const code = await publishCommand({ id: opened.id, check: remote.check, execute: async (command, execution) => {
+        const result = await remote.execute(command, execution);
+        if (!after) writeFileSync(source, 'export const changed = 2;');
+        return result;
+      } }, request, 'modules', configPath, 1, {
+        stdout: text => { stdout += text; if (after) writeFileSync(source, 'export const changed = 2;'); },
+        stderr: text => { stderr += text; },
+      }, { async submit(batch) { observed = batch; return { accepted: true }; } });
+      assert.equal(code, 2);
+      assert.match(stderr, /invalidated/);
+      assert.equal(stdout.length > 0, after);
+      assert.equal(observed!.records.some(item => item.kind === 'qualified-view'), after);
+      assert.equal(observed!.records.find(item => item.kind === 'rendered-output')!.value, stdout);
+      assert.equal(observed!.events.some(item => item.type === 'view-produced'), after);
+      assert.ok(observed!.events.some(item => item.type === 'session-invalidated'));
+      await assert.rejects(remote.execute(request), SessionInvalidated);
+    } finally { await remote.close(); rmSync(root, { recursive: true, force: true }); }
+  }
+});

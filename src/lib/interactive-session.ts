@@ -1,6 +1,6 @@
 import { Worker } from 'node:worker_threads';
 import { AnalysisFailure, SessionInvalidated } from './session.js';
-import type { openSession, ViewRequest } from './session.js';
+import type { openSession, ViewRequest, ExecutionOptions } from './session.js';
 import type { ProjectOptions } from './typescript/project.js';
 
 type Opened = Extract<ReturnType<typeof openSession>, { status: 'opened' }>;
@@ -46,8 +46,8 @@ export function interactiveSession(options: ProjectOptions) {
   };
   return {
     opening,
-    async execute(request: ViewRequest): Promise<ExecutedView> {
-      const reply = await send({ type: 'execute', request });
+    async execute(request: ViewRequest, execution: ExecutionOptions = {}): Promise<ExecutedView> {
+      const reply = await send({ type: 'execute', request, execution });
       if (!reply.result) throw new Error('Worker returned no view');
       return reply.result;
     },

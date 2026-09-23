@@ -37,6 +37,11 @@ export interface ViewRequest {
   readonly presentation: Presentation;
 }
 
+export interface ExecutionOptions {
+  /** The publisher must check after delivery and before emitting this result. */
+  readonly deferPublicationCheck?: boolean;
+}
+
 /** One configured project and its accumulating transient program records. */
 export function openSession(options: ProjectOptions) {
   const opened = openTypeScriptProject(options);
@@ -59,12 +64,12 @@ export function openSession(options: ProjectOptions) {
   };
   return { status: 'opened' as const, session: {
     id, check,
-    execute(request: ViewRequest) {
+    execute(request: ViewRequest, execution: ExecutionOptions = {}) {
       if (!state) throw new Error('Session is closed');
       check();
       try {
         const result = state.execute(request);
-        check();
+        if (!execution.deferPublicationCheck) check();
         return result;
       } catch (error) {
         if (operational(error)) {
@@ -83,22 +88,28 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
   const dependencyOutcomes = new Map<string, DependencyEvaluationRecord>();
   const organizationOutcomes = new Map<string, OrganizationEvaluationRecord>();
   const dependencyOrganizations = new Map<string, ReturnType<typeof evaluateDependencyOrganization>>();
-  const reuse = <T extends Pick<EvaluationState, 'execution' | 'materialization'>>(cache: Map<string, T>, key: unknown, compute: () => T): T => {
+  const complete = (outcome: Pick<EvaluationState, 'execution' | 'materialization'>) =>
+    outcome.execution === 'completed' && outcome.materialization === 'full';
+  const moduleComplete = (outcome: EvaluationRecord) => complete(outcome)
+    && store.evaluations(outcome.session).filter(item => item.basis === outcome.id).every(complete);
+  const reuse = <T extends Pick<EvaluationState, 'execution' | 'materialization'>>(cache: Map<string, T>, key: unknown,
+    compute: () => T, reusable: (outcome: T) => boolean = complete): T => {
     const encoded = canonical(key);
     const previous = cache.get(encoded);
     if (previous) return previous;
     const outcome = compute();
-    if (outcome.execution === 'completed' && outcome.materialization === 'full') cache.set(encoded, outcome);
+    if (reusable(outcome)) cache.set(encoded, outcome);
     return outcome;
   };
   return (request: ViewRequest) => {
     const { lens, selector, presentation } = request;
     const dependencyLens = ['dependencies', 'children', 'parents'].includes(lens);
     const dependencyOutcome = dependencyLens ? reuse(dependencyOutcomes, dependencyPresentationRequirements.modules,
-      () => evaluateDependencies(store, analysis, dependencyPresentationRequirements.modules)) : null;
+      () => evaluateDependencies(store, analysis, dependencyPresentationRequirements.modules),
+      outcome => complete(outcome) && moduleComplete(store.get(outcome.moduleEvaluation) as EvaluationRecord)) : null;
     const expansions = lens === 'modules' ? presentationRequirements(presentation) : organizationPresentationRequirements.modules;
     const evaluation = dependencyOutcome ? store.get(dependencyOutcome.moduleEvaluation) as EvaluationRecord
-      : reuse(moduleOutcomes, expansions, () => evaluateModules(store, analysis, expansions));
+      : reuse(moduleOutcomes, expansions, () => evaluateModules(store, analysis, expansions), moduleComplete);
     const organizationOutcome = lens === 'modules' ? null : reuse(organizationOutcomes, [evaluation.id, organizationPresentationRequirements.groups],
       () => evaluateOrganization(store, evaluation, organizationPresentationRequirements.groups));
     const dependencyOrganization = dependencyLens ? reuse(dependencyOrganizations, [dependencyOutcome!.id, organizationOutcome!.id],

@@ -1,7 +1,7 @@
 import { commandObservation, observationBatch } from './observations.js';
 import type { ObservationSink } from './observations.js';
 import { AnalysisFailure, SessionInvalidated } from './session.js';
-import type { ViewRequest } from './session.js';
+import type { ViewRequest, ExecutionOptions } from './session.js';
 import { CommandInterrupted } from './interactive-session.js';
 import type { ExecutedView } from './interactive-session.js';
 import { inlineText } from './terminal-text.js';
@@ -23,13 +23,13 @@ export async function submitObservation(sink: ObservationSink, batch: ReturnType
 /** Shared publication and observation boundary for one-shot and interactive requests. */
 export async function publishCommand(session: {
   readonly id: string;
-  execute(request: ViewRequest): ExecutedView | Promise<ExecutedView>;
+  execute(request: ViewRequest, execution?: ExecutionOptions): ExecutedView | Promise<ExecutedView>;
   check(): void | Promise<void>;
 }, request: ViewRequest, supplied: unknown, configPath: string, command: number, output: Output, sink: ObservationSink): Promise<number> {
   let published: ExecutedView | undefined, stdout = '', stderr = '';
   let status: 'completed' | 'invalidated' | 'failed' | 'defect' | 'interrupted' = 'completed', code = 0;
   try {
-    const result = await session.execute(request);
+    const result = await session.execute(request, { deferPublicationCheck: true });
     await session.check();
     output.stdout(result.rendered);
     stdout = result.rendered; published = result;

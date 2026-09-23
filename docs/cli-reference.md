@@ -413,7 +413,10 @@ the repository manifest, effective exclusion policy, links, opaque boundaries an
 relevant Git policy, and checks the analysis process's environment, working
 directory and runtime versions. The worker checks its own environment copy, so
 this detects in-process mutation, not changes to the parent shell's environment.
-These checks do not replace captured claim inputs.
+These checks do not replace captured claim inputs. A successful view-producing CLI command has
+three validation passes: before execution, after result delivery immediately
+before output, and after output. Direct session execution retains checks before
+and after execution; the CLI defers the latter to its publication boundary.
 
 Checks are sequential and non-atomic: changes reverted between checks, changes
 after the final check, unobserved files outside configured selection/resolution,
@@ -433,9 +436,12 @@ observation output does not invalidate its own session.
 Compiler discovery and completed requirement-specific work are retained. Earlier
 claim contexts keep their first supporting input record when later work adds
 inputs; new claims retain the later basis. Evaluation outcomes and projections
-are immutable. Reuse requires matching requirements and completed outcomes;
-each lens selects its own population and relevant expansions. The current
-TypeScript provider fixes its module population when opening the Program;
+are immutable. Reuse requires matching requirements and completed outcomes,
+including the requested module expansions even when the root module evaluation
+is complete. Partial expansions are retried on later requests; the current
+provider can return the same partial information again, with a new retained
+attempt rather than replacing the earlier outcome. Each lens selects its own
+population and relevant expansions. The current TypeScript provider fixes its module population when opening the Program;
 additional dependency resolution does not discover extra modules. Thus name and
 handle ambiguity does not grow in this provider, although stable references are
 allocated safely for growing populations. There is no eviction, persistence or

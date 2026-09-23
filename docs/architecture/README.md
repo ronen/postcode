@@ -381,6 +381,8 @@ Dependency resolution can acquire additional inputs. Its former
 inspection uses current exact name/handle lookup. Accumulation reuses applicable
 completed work while preserving earlier captured input support. Discovery is
 retained per store; expansions and dependency analysis are acquired when requested.
+A cached module basis requires complete requested expansions as well as a complete
+root evaluation. Partial expansions are retried, preserving each earlier attempt.
 The compiler Program fixes this provider’s module population at opening, so
 additional dependency inputs do not add modules. Repeated contexts retain their
 first supporting input record; new contexts can reference a later input basis.
@@ -394,6 +396,9 @@ At an idle prompt, Ctrl-C cancels the line. EOF finishes accepted work and sink
 submission. Syntax errors and expected operational analysis failures retain
 sound state; unexpected defects terminate distinctly.
 
+Direct session execution checks inputs before and after work. CLI requests defer
+the latter check to the publisher, after worker delivery when applicable and
+before output, avoiding a duplicate scan while retaining the publication boundary.
 Before publication, detected input changes withhold the result. A check after
 output can instead report invalidation while retaining the actual emitted view
 in the observation. Validation is sequential, not atomic or continuous; transient

@@ -1,6 +1,6 @@
 import { parentPort, workerData } from 'node:worker_threads';
 import { openSession, SessionInvalidated, AnalysisFailure } from './session.js';
-import type { ViewRequest } from './session.js';
+import type { ViewRequest, ExecutionOptions } from './session.js';
 import type { ProjectOptions } from './typescript/project.js';
 
 // Private process boundary for interrupting synchronous compiler work. No public transport.
@@ -12,10 +12,10 @@ if (opened.status !== 'opened') {
 } else {
   const { session } = opened;
   port.postMessage({ status: 'opened', id: session.id });
-  port.on('message', (message: { type: 'execute'; request: ViewRequest } | { type: 'check' } | { type: 'close' }) => {
+  port.on('message', (message: { type: 'execute'; request: ViewRequest; execution: ExecutionOptions } | { type: 'check' } | { type: 'close' }) => {
     try {
       if (message.type === 'close') { session.close(); port.close(); return; }
-      const result = message.type === 'execute' ? session.execute(message.request) : session.check();
+      const result = message.type === 'execute' ? session.execute(message.request, message.execution) : session.check();
       port.postMessage({ status: 'ok', result });
     } catch (error) {
       if (error instanceof SessionInvalidated) port.postMessage({ status: 'invalidated' });
