@@ -5,8 +5,8 @@ import type { RecordId, SessionId } from './records.js';
 export const methods = {
   inputs: 'postcode/observed-inputs@3',
   records: 'postcode/program-records@18',
-  discovery: 'postcode/typescript-modules@11',
-  evaluation: 'postcode/evaluate-modules@4',
+  discovery: 'postcode/typescript-modules@12',
+  evaluation: 'postcode/evaluate-modules@5',
   dependencies: 'postcode/typescript-dependencies@2',
   dependencyEvaluation: 'postcode/evaluate-dependencies@2',
   dependencyProjection: 'postcode/dependency-projection@2',

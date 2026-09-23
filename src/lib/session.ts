@@ -10,7 +10,6 @@ import { evaluateOrganization } from './organization/evaluate.js';
 import { inspectOrganization, organization } from './organization/projections.js';
 import { createOrganizationView, organizationPresentationRequirements, renderOrganizationView } from './organization/presentation.js';
 import { canonical } from './identity.js';
-import type { DependencyEvaluationRecord } from './dependencies/records.js';
 import type { OrganizationEvaluationRecord } from './organization/records.js';
 import type { EvaluationState, EvaluationRecord, ProjectionRecord } from './records.js';
 
@@ -84,32 +83,27 @@ export function openSession(options: ProjectOptions) {
 }
 
 function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalysis) {
-  const moduleOutcomes = new Map<string, EvaluationRecord>();
-  const dependencyOutcomes = new Map<string, DependencyEvaluationRecord>();
   const organizationOutcomes = new Map<string, OrganizationEvaluationRecord>();
   const dependencyOrganizations = new Map<string, ReturnType<typeof evaluateDependencyOrganization>>();
   const complete = (outcome: Pick<EvaluationState, 'execution' | 'materialization'>) =>
     outcome.execution === 'completed' && outcome.materialization === 'full';
-  const moduleComplete = (outcome: EvaluationRecord) => complete(outcome)
-    && store.evaluations(outcome.session).filter(item => item.basis === outcome.id).every(complete);
   const reuse = <T extends Pick<EvaluationState, 'execution' | 'materialization'>>(cache: Map<string, T>, key: unknown,
-    compute: () => T, reusable: (outcome: T) => boolean = complete): T => {
+    compute: () => T): T => {
     const encoded = canonical(key);
     const previous = cache.get(encoded);
     if (previous) return previous;
     const outcome = compute();
-    if (reusable(outcome)) cache.set(encoded, outcome);
+    if (complete(outcome)) cache.set(encoded, outcome);
     return outcome;
   };
   return (request: ViewRequest) => {
     const { lens, selector, presentation } = request;
     const dependencyLens = ['dependencies', 'children', 'parents'].includes(lens);
-    const dependencyOutcome = dependencyLens ? reuse(dependencyOutcomes, dependencyPresentationRequirements.modules,
-      () => evaluateDependencies(store, analysis, dependencyPresentationRequirements.modules),
-      outcome => complete(outcome) && moduleComplete(store.get(outcome.moduleEvaluation) as EvaluationRecord)) : null;
+    // Provider/evaluation reuse owns input-basis validity; an outer cache could hide new acquisition.
+    const dependencyOutcome = dependencyLens ? evaluateDependencies(store, analysis, dependencyPresentationRequirements.modules) : null;
     const expansions = lens === 'modules' ? presentationRequirements(presentation) : organizationPresentationRequirements.modules;
     const evaluation = dependencyOutcome ? store.get(dependencyOutcome.moduleEvaluation) as EvaluationRecord
-      : reuse(moduleOutcomes, expansions, () => evaluateModules(store, analysis, expansions), moduleComplete);
+      : evaluateModules(store, analysis, expansions);
     const organizationOutcome = lens === 'modules' ? null : reuse(organizationOutcomes, [evaluation.id, organizationPresentationRequirements.groups],
       () => evaluateOrganization(store, evaluation, organizationPresentationRequirements.groups));
     const dependencyOrganization = dependencyLens ? reuse(dependencyOrganizations, [dependencyOutcome!.id, organizationOutcome!.id],

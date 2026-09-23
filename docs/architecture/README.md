@@ -381,8 +381,14 @@ Dependency resolution can acquire additional inputs. Its former
 inspection uses current exact name/handle lookup. Accumulation reuses applicable
 completed work while preserving earlier captured input support. Discovery is
 retained per store; expansions and dependency analysis are acquired when requested.
-A cached module basis requires complete requested expansions as well as a complete
-root evaluation. Partial expansions are retried, preserving each earlier attempt.
+Completed results remain reusable across input acquisition. The TypeScript
+provider additionally retains partial work against the captured-input revision on
+which it was prepared. New acquisition makes that partial work eligible to retry;
+ordinary repetition on the same basis reuses its qualified outcome. Evaluation
+accepts that reuse only with an explicit provider assurance referencing captured
+analysis inputs. Providers without the assurance retain ordinary retry behavior.
+Session requests go through the provider/evaluation boundary so an outer cache
+cannot hide acquisition. Earlier outcomes remain unchanged.
 The compiler Program fixes this provider’s module population at opening, so
 additional dependency inputs do not add modules. Repeated contexts retain their
 first supporting input record; new contexts can reference a later input basis.

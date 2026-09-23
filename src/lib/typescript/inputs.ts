@@ -60,6 +60,7 @@ export function captureInputs(excludedDirectories: readonly string[]) {
   };
   return {
     system, excluded, excludedLocationCount: new Set(exclusions.map(directory => directory.real)).size,
+    revision: () => observations.size,
     changed: (): boolean => {
       if (exclusions.some(directory => real(directory.lexical) !== directory.real)) return true;
       for (const [key, probe] of probes) {

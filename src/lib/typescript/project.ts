@@ -172,22 +172,33 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       return value;
     };
     let core: { globalContext: RecordId; moduleIds: RecordId[] } | undefined;
-    const expansionCache = new Map<string, ReturnType<ReturnType<typeof prepareExpansions>>>();
-    let compositionCache: ReturnType<ReturnType<typeof prepareComposition>> | undefined;
-    let dependencyCache: ReturnType<ReturnType<typeof prepareDependencies>> | undefined;
+    type Retained<T> = { value: T; revision: number | null };
+    const current = <T>(entry: Retained<T> | undefined): T | undefined =>
+      entry && (entry.revision === null || entry.revision === inputs.revision()) ? entry.value : undefined;
+    const keep = <T>(value: T, complete: boolean, revision: number): Retained<T> => ({ value, revision: complete ? null : revision });
+    const expansionCache = new Map<string, Retained<ReturnType<ReturnType<typeof prepareExpansions>>>>();
+    let compositionCache: Retained<ReturnType<ReturnType<typeof prepareComposition>>> | undefined;
+    let dependencyCache: Retained<ReturnType<ReturnType<typeof prepareDependencies>>> | undefined;
     const support = new Map<RecordId, RecordId>();
-    const results = new Map<string, DiscoveryResult>();
+    const results = new Map<string, Retained<DiscoveryResult>>();
     const complete = (state: { execution: string; materialization: string }) => state.execution === 'completed' && state.materialization === 'full';
     return function discover(store: ProgramRecordStore, requested: readonly ModuleExpansion[], dependencies: boolean): DiscoveryResult {
       const requestKey = canonical([[...new Set(requested)].sort(compare), dependencies]);
-      const prior = results.get(requestKey);
+      const prior = current(results.get(requestKey));
       if (prior) return prior;
+      // Acquire dependency inputs before deciding whether partial expansions need another attempt.
+      const cachedDependencies = dependencies ? current(dependencyCache) : undefined;
+      const preparedDependencies = dependencies && !cachedDependencies ? prepareDependencies(program, host, candidates) : undefined;
+      const dependencyRevision = inputs.revision();
       const existingExpansions = requested.filter(requirement => requirement !== 'composition');
       const expansionKey = canonical([...new Set(existingExpansions)].sort(compare));
-      const preparedExpansions = existingExpansions.length && !expansionCache.has(expansionKey)
+      const cachedExpansions = current(expansionCache.get(expansionKey));
+      const preparedExpansions = existingExpansions.length && !cachedExpansions
         ? prepareExpansions(checker, candidates, existingExpansions) : undefined;
-      const preparedComposition = requested.includes('composition') && !compositionCache ? prepareComposition(program, candidates) : undefined;
-      const preparedDependencies = dependencies && !dependencyCache ? prepareDependencies(program, host, candidates) : undefined;
+      const expansionRevision = inputs.revision();
+      const cachedComposition = requested.includes('composition') ? current(compositionCache) : undefined;
+      const preparedComposition = requested.includes('composition') && !cachedComposition ? prepareComposition(program, candidates) : undefined;
+      const compositionRevision = inputs.revision();
       const capturedInputs = {
         method, methods, configPath, cwd: base, node: process.versions.node,
         repository, repositoryMethods: [repositoryInputMethod, repositoryLayoutMethod],
@@ -329,19 +340,25 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
         if (record.kind === 'claim-context' && !support.has(record.id)) support.set(record.id, inputId);
       }
       core ??= { globalContext, moduleIds };
-      if (expansions?.results.every(complete)) expansionCache.set(expansionKey, expansions);
-      if (composition?.results.every(complete)) compositionCache = composition;
-      if (dependencyResult && complete(dependencyResult.result)) dependencyCache = dependencyResult;
-      const selectedExpansions = expansions ?? expansionCache.get(expansionKey);
-      const selectedComposition = composition ?? compositionCache;
-      const selectedDependencies = dependencyResult ?? dependencyCache;
+      if (expansions) expansionCache.set(expansionKey, keep(expansions, expansions.results.every(complete), expansionRevision));
+      if (composition) compositionCache = keep(composition, composition.results.every(complete), compositionRevision);
+      if (dependencyResult) dependencyCache = keep(dependencyResult, complete(dependencyResult.result), dependencyRevision);
+      const selectedExpansions = expansions ?? cachedExpansions;
+      const selectedComposition = composition ?? cachedComposition;
+      const selectedDependencies = dependencyResult ?? cachedDependencies;
+      // If later preparation acquired inputs, an earlier partial component must retry next time.
+      const stable = (!existingExpansions.length || current(expansionCache.get(expansionKey)) !== undefined)
+        && (!requested.includes('composition') || current(compositionCache) !== undefined)
+        && (!dependencies || current(dependencyCache) !== undefined);
       const result: DiscoveryResult = {
+        ...(stable ? { retryBasis: inputId } : {}),
         session, modules: moduleIds, contexts: [globalContext], applicability: 'applicable', availability: 'available',
         execution: 'completed', materialization: 'full', reason: null, cost: { measure: 'module-count', value: moduleIds.length },
         ...(requested.length ? { expansions: [...(selectedExpansions?.results ?? []), ...(requested.includes('composition') ? selectedComposition?.results ?? [] : [])] } : {}),
         ...(dependencies && selectedDependencies ? { dependencies: selectedDependencies.result } : {}),
       };
-      if ((result.expansions ?? []).every(complete) && (!result.dependencies || complete(result.dependencies))) results.set(requestKey, result);
+      if (stable) results.set(requestKey, keep(result,
+        (result.expansions ?? []).every(complete) && (!result.dependencies || complete(result.dependencies)), inputs.revision()));
       return result;
     };
   }

@@ -436,14 +436,22 @@ observation output does not invalidate its own session.
 Compiler discovery and completed requirement-specific work are retained. Earlier
 claim contexts keep their first supporting input record when later work adds
 inputs; new claims retain the later basis. Evaluation outcomes and projections
-are immutable. Reuse requires matching requirements and completed outcomes,
-including the requested module expansions even when the root module evaluation
-is complete. Partial expansions are retried on later requests; the current
-provider can return the same partial information again, with a new retained
-attempt rather than replacing the earlier outcome. Each lens selects its own
-population and relevant expansions. The current TypeScript provider fixes its module population when opening the Program;
+are immutable. Matching completed work is reused. The TypeScript provider also
+reuses partial work on an unchanged captured input basis; repeating a command does
+not rerun project-wide expansions or retain another identical attempt. Acquiring
+additional inputs permits a new partial attempt, preserving the earlier outcome.
+For example, a first dependency request can acquire resolution inputs and make a
+prior partial module expansion eligible to retry. A retry still evaluates the
+requested project-wide expansions, even for a focused view. The result can still be partial;
+reuse never upgrades its qualification to complete. A provider without an explicit
+stable-basis assurance continues to retry incomplete work.
+
+Each lens selects its own population and relevant expansions. The current
+TypeScript provider fixes its module population when opening the Program;
 additional dependency resolution does not discover extra modules. Thus name and
 handle ambiguity does not grow in this provider, although stable references are
 allocated safely for growing populations. There is no eviction, persistence or
 historical observation readback. Long sessions retain evidence and results and
-can consume increasing memory.
+can consume increasing memory, especially as new requirements or captured input
+bases establish additional retained outcomes. There is no eviction of earlier
+evidence to impose a memory bound.

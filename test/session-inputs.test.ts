@@ -234,7 +234,7 @@ for (const changed of [false, true]) {
 }
 
 for (const lens of ['modules', 'inspect', 'dependencies'] as const) {
-  test(`session retries partial expansions through ${lens} while preserving earlier views`, () => {
+  test(`session reuses partial expansions through ${lens} until additional inputs are acquired`, () => {
     temporary((root, configPath) => {
       writeFileSync(path.join(root, 'entry.cts'), "export { missing } from './nowhere.js';");
       writeFileSync(path.join(root, 'other.ts'), 'export const other = 1;');
@@ -251,7 +251,7 @@ for (const lens of ['modules', 'inspect', 'dependencies'] as const) {
         const first = session.execute(command);
         const retained = structuredClone(first);
         const later = session.execute(command);
-        assert.notEqual(later.view.projection.id, first.view.projection.id);
+        assert.deepEqual(later, first);
         assert.deepEqual(first, retained);
         if (!('modules' in first.view) || !('modules' in later.view)) throw new Error('Expected module selection');
         assert.deepEqual(later.view.modules.map(item => [item.id, item.entityId]), first.view.modules.map(item => [item.id, item.entityId]));
@@ -323,4 +323,61 @@ test('worker delivery is validated before publication and emitted output survive
       await assert.rejects(remote.execute(request), SessionInvalidated);
     } finally { await remote.close(); rmSync(root, { recursive: true, force: true }); }
   }
+});
+
+
+test('additional dependency inputs permit one new partial attempt and preserve the earlier basis', () => {
+  temporary((root, configPath) => {
+    writeFileSync(path.join(root, 'entry.cts'), "export { missing } from './nowhere.js'; require('./later/target');");
+    mkdirSync(path.join(root, 'later'));
+    writeFileSync(path.join(root, 'later/target.ts'), 'export const target = 1;');
+    const opened = openTypeScriptProject({ configPath });
+    if (opened.status !== 'opened') throw new Error('Expected project');
+    const store = new MemoryProgramRecordStore();
+    const firstResult = opened.analysis.discover(store, moduleStandardExpansions);
+    const first = evaluateModules(store, opened.analysis, moduleStandardExpansions);
+    const retained = structuredClone(first);
+    assert.ok(firstResult.expansions!.some(item => item.materialization === 'partial'));
+    assert.ok(firstResult.retryBasis);
+    const count = store.evaluations(first.session).length;
+    assert.equal(opened.analysis.discover(store, moduleStandardExpansions), firstResult);
+    assert.equal(evaluateModules(store, opened.analysis, moduleStandardExpansions).id, first.id);
+    assert.equal(store.evaluations(first.session).length, count);
+    const dependencies = evaluateDependencies(store, opened.analysis, moduleStandardExpansions);
+    const laterResult = opened.analysis.discover(store, moduleStandardExpansions);
+    assert.notEqual(laterResult.retryBasis, firstResult.retryBasis);
+    assert.notEqual(dependencies.moduleEvaluation, first.id);
+    const later = evaluateModules(store, opened.analysis, moduleStandardExpansions);
+    assert.equal(later.id, dependencies.moduleEvaluation);
+    assert.equal(opened.analysis.discover(store, moduleStandardExpansions), laterResult);
+    assert.equal(evaluateModules(store, opened.analysis, moduleStandardExpansions).id, later.id);
+    assert.deepEqual(store.get(first.id), retained);
+    assert.ok(laterResult.expansions!.some(item => item.materialization === 'partial'));
+    // Providers without the explicit stable-basis assurance still get a new attempt.
+    const uncertain = { discover: () => { const { retryBasis: _basis, ...result } = laterResult; return result; } };
+    assert.notEqual(evaluateModules(store, uncertain).id, evaluateModules(store, uncertain).id);
+  });
+});
+
+test('session reevaluates partial work after new dependency acquisition, then reuses it across lenses', () => {
+  temporary((root, configPath) => {
+    writeFileSync(path.join(root, 'entry.cts'), "export { missing } from './nowhere.js'; require('./later/target');");
+    mkdirSync(path.join(root, 'later'));
+    writeFileSync(path.join(root, 'later/target.ts'), 'export const target = 1;');
+    const opened = openSession({ configPath });
+    if (opened.status !== 'opened') throw new Error('Expected project');
+    const { session } = opened;
+    try {
+      const first = session.execute(request);
+      const retained = structuredClone(first);
+      assert.deepEqual(session.execute(request), first);
+      session.execute({ ...request, lens: 'dependencies' });
+      const later = session.execute(request);
+      assert.notEqual(later.view.projection.id, first.view.projection.id);
+      session.execute({ ...request, lens: 'organization' });
+      session.execute({ ...request, lens: 'inspect', selector: 'missing' });
+      assert.deepEqual(session.execute(request), later);
+      assert.deepEqual(first, retained);
+    } finally { session.close(); }
+  });
 });
