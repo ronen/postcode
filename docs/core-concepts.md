@@ -4,7 +4,7 @@ This document states PostCode's governing cross-cutting architectural terminolog
 
 This document is not an exhaustive ontology or an inventory of implementation types. It defines only concepts and distinctions that need to remain stable across plans and slices. Definitions do not prescribe classes, interfaces, schemas, storage, module boundaries, or language-specific representations. Examples illustrate meanings, not a list of implemented capabilities.
 
-Semantic changes require explicit human agreement and a corresponding accepted decision record, with both updated in the same commit. For every defined term include a short bracketed link to the decision that established or most recently changed it. Follow the [development workflow](../dev/workflow.md#documentation-and-decisions) when changing this document. If this document and an accepted decision disagree, treat the inconsistency as an unexpected finding rather than silently choosing or reconciling them.
+Semantic changes require explicit human agreement and a corresponding accepted decision record, with both updated in the same commit. For every defined term include a short bracketed link to the decision that established or most recently changed it. Follow the [development workflow](../dev/workflow.md#documentation) when changing this document. If this document and an accepted decision disagree, treat the inconsistency as an unexpected finding rather than silently choosing or reconciling them.
 
 ## Subjects and program information
 

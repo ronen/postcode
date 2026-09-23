@@ -48,6 +48,7 @@ Follow the [planning workflow](planning.md) for plan contents, provisional worki
 - Follow the applicable [implementation conventions](../docs/implementation-conventions.md).
 - Prefer the smallest coherent change that advances the authorized goal.
 - Preserve established boundaries and dependency direction. If they need to change, make that change explicit and document the decision when consequential.
+- Treat documentation as part of the implementation. If a change makes an existing document materially false or incomplete, update it or explicitly record the omission before completing the work. Follow the applicable [documentation requirements](#documentation).
 - Add or update automated tests with behavior where practical.
 - Use fixtures with known expected results for analysis behavior.
 - Validate data at boundaries rather than relying solely on static types or convention.
@@ -69,43 +70,40 @@ Implementation, documentation, planning, decisions, and verification may reveal 
 
 Pre-existing or trivial inconsistencies do not all require investigation. Relevance to the current work, potential impact, and the cost of being wrong should determine the depth of investigation.
 
-<a id="documentation-and-decisions"></a>
-## 6. Documentation and Decisions
+<a id="documentation"></a>
+## 6. Documentation
 
-Documentation is part of the implementation. If a change makes an existing document materially false or incomplete, the work is not complete until that document is updated or the omission is explicitly recorded.
+The responsibilities below supplement the plans, task records, review records, validation records, and other artifacts prescribed by their respective workflows. Use the [documentation guide](../docs/README.md) to locate the appropriate repository documentation.
+
+### Governing architecture and decisions
 
 [`docs/core-concepts.md`](../docs/core-concepts.md) is the governing current statement of cross-cutting architectural concepts. A semantic change requires explicit human agreement and a corresponding accepted decision record; update the concepts document and decision log together. Typographical, link, and other editorial corrections that do not change meaning do not require a decision. If classification is unclear, treat the change as semantic and ask the human. If the core concepts and an accepted decision disagree, report the inconsistency rather than silently choosing or reconciling them.
 
 [`docs/architectural-constraints.md`](../docs/architectural-constraints.md) is the governing current statement of binding cross-cutting architectural rules. A substantive change requires explicit human agreement and a corresponding accepted decision record; update the constraints document and decision log together. Editorial corrections that do not change meaning do not require a decision. If classification is unclear, treat the change as substantive and ask the human. If the constraints and an accepted decision disagree, report the inconsistency rather than silently choosing or reconciling them.
 
-Architecture documentation is selective and descriptive, not a source of prescriptive requirements. Include information when it defines a major responsibility or boundary; explains important dependency direction or data flow; describes a process, storage, deployment, trust, or security boundary; records a system-wide invariant or operational constraint; or helps orient work across multiple components or tasks. It should be durable, cross-cutting, and necessary to understand the system beyond what the implementation directly reveals.
+Record a decision under [`docs/decisions/`](../docs/decisions/) when a choice has meaningful, durable consequences; constrains later work; or is likely to be repeatedly reconsidered. Routine implementation details do not require decision records.
 
-Do not turn architecture documentation into a file, class, function, or API inventory. Exclude copied interfaces, details readily discoverable from nearby source, transient implementation mechanics, speculative future structure, and rationale already preserved in a decision record. Store architecture documentation under `docs/architecture/`. Begin with `docs/architecture/README.md` as the single overview, and add further documents only when a stable area needs its own conceptual explanation. Link descriptions to the accepted decisions that govern them. If the implementation, architecture documentation, and a governing decision disagree, treat that divergence as an unexpected finding rather than silently changing the decision or presenting the description as normative.
+### Descriptive architecture
 
-Update the appropriate form of documentation:
+Store architecture documentation under [`docs/architecture/`](../docs/architecture/). Architecture documentation is selective and descriptive, not a source of prescriptive requirements. Include information when it defines a major responsibility or boundary; explains important dependency direction or data flow; describes a process, storage, deployment, trust, or security boundary; records a system-wide invariant or operational constraint; or helps orient work across multiple components or tasks. It should be durable, cross-cutting, and necessary to understand the system beyond what the implementation directly reveals.
 
-- [plans](../docs/plans/) describe intended work and learning goals;
-- the [core-concepts document](../docs/core-concepts.md) states the governing current architectural concepts;
-- [architectural constraints](../docs/architectural-constraints.md) state the governing current cross-cutting rules;
-- [architecture documentation](../docs/architecture/) describes how the current system works;
-- [decision records](../docs/decisions/) preserve consequential choices and their rationale;
-- [`STATUS.md`](../STATUS.md) gives humans a concise, current view of the project's externally meaningful state;
-- the [backlog](../docs/backlog.md) captures worthwhile work that is not part of an active plan or authorized task;
-- [process conventions](process-conventions.md) govern how development work is conducted;
-- [engineering guidelines](engineering-guidelines.md) provide human-maintained guidance for implementation judgment;
-- [implementation conventions](../docs/implementation-conventions.md) describe repeatable application-level engineering practices;
-- [task records](../records/tasks/) preserve authorization, material follow-ups, outcome, and verification;
-- [review records](../records/reviews/) preserve independent-review handoffs, findings, and dispositions;
-- [durable notes](../notes/) preserve human-curated exploratory context without making it governing or permanent;
-- user-facing documentation describes observable use and behavior.
+Do not turn architecture documentation into a file, class, function, or API inventory. Exclude copied interfaces, details readily discoverable from nearby source, transient implementation mechanics, speculative future structure, and rationale already preserved in a decision record. Begin with [`docs/architecture/README.md`](../docs/architecture/README.md) as the single overview, and add further documents only when a stable area needs its own conceptual explanation. Link descriptions to the accepted decisions that govern them. If the implementation, architecture documentation, and a governing decision disagree, treat that divergence as an unexpected finding rather than silently changing the decision or presenting the description as normative.
 
-Do not modify governing documents under `foundation/` unless the human explicitly authorizes a foundation revision. Authorization for implementation that conflicts with the foundation is not authorization to revise it; report the conflict and seek direction.
+### Foundation and workflow
 
-Do not modify files under `dev/` as part of product planning or implementation work. Report or propose an improvement to those instructions for separate human-directed process maintenance; do not include the change as incidental work or implement it through a task follow-up.
+Do not modify governing documents under [`foundation/`](../foundation/) unless the human explicitly authorizes a foundation revision. Authorization for implementation that conflicts with the foundation is not authorization to revise it; report the conflict and seek direction.
 
-Record a decision when a choice has meaningful, durable consequences; constrains later work; or is likely to be repeatedly reconsidered. Routine implementation details do not require decision records.
+Do not modify files under [`dev/`](../dev/) as part of product planning or implementation work. Report or propose an improvement to those instructions for separate human-directed process maintenance; do not include the change as incidental work or implement it through a task follow-up.
 
-Update `STATUS.md` when a change materially alters what exists, what can be run or demonstrated, what work is active, or what is expected next. Treat it as a concise orientation snapshot, not a task progress, validation, or review log. Summarize active work and externally meaningful results at a high level, and link to authoritative plans, task records, validation reports, and review records for details.
+### Project status
+
+Keep [`STATUS.md`](../STATUS.md) as a concise, human-readable summary of what the application currently offers and its significant current limitations. Begin with a brief statement identifying the application's current form and scope. Describe its principal implemented capabilities and user-relevant limitations in user terms, linking to further detail where useful.
+
+Avoid implementation mechanics, usage instructions already covered elsewhere, task-by-task history, test results, review rounds, and acceptance bookkeeping. Mention active work or planned next steps only when they materially help explain the current state, and clearly distinguish them from implemented capabilities.
+
+Update the summary when externally meaningful capabilities or significant limitations change. Prefer revising the existing account over appending a description of the latest work.
+
+### Backlog
 
 When useful work or a concern arises outside the current scope, add it to [`docs/backlog.md`](../docs/backlog.md) rather than silently expanding the plan or task. A backlog entry records an open candidate, not an implementation commitment. The human evaluates and curates the backlog during planning; an agent must not prioritize, promote, implement, or remove an entry without human direction.
 

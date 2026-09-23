@@ -4,7 +4,7 @@ This document states PostCode's current binding, cross-cutting architectural con
 
 The constraints conform to the adopted [product design](../foundation/product-design.md) and use the governing terminology in [core concepts](core-concepts.md). They do not describe the implementation, repeat routine implementation conventions, or collect every consequence of every accepted decision. Descriptive implementation architecture belongs under [`docs/architecture/`](architecture/), and repeatable mechanical practices belong in [implementation conventions](implementation-conventions.md).
 
-Substantive changes require explicit human agreement and a corresponding accepted decision record, with both updated in the same commit. Append to every constraint a short bracketed link to the decision that established or most recently changed it. Follow the [development workflow](../dev/workflow.md#documentation-and-decisions) when changing this document. If this document and an accepted decision disagree, treat the inconsistency as an unexpected finding rather than silently choosing or reconciling them.
+Substantive changes require explicit human agreement and a corresponding accepted decision record, with both updated in the same commit. Append to every constraint a short bracketed link to the decision that established or most recently changed it. Follow the [development workflow](../dev/workflow.md#documentation) when changing this document. If this document and an accepted decision disagree, treat the inconsistency as an unexpected finding rather than silently choosing or reconciling them.
 
 ## Claims and qualification
 

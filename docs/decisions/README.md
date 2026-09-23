@@ -23,7 +23,7 @@ Routine implementation choices do not require decision records.
 
 [`docs/core-concepts.md`](../core-concepts.md) records the governing current cross-cutting architectural terminology, and [`docs/architectural-constraints.md`](../architectural-constraints.md) records the governing current cross-cutting rules. Decision records preserve why either was adopted or changed. Every semantic change to the core concepts and every substantive change to the architectural constraints requires explicit human agreement and a corresponding accepted decision record. Update the affected governing document and decision log in the same commit so the current statement and its history do not diverge.
 
-Follow the [development workflow](../../dev/workflow.md#documentation-and-decisions) when changing either governing document. If a governing document and an accepted decision disagree, report the inconsistency rather than silently deciding which source to follow.
+Follow the [development workflow](../../dev/workflow.md#documentation) when changing either governing document. If a governing document and an accepted decision disagree, report the inconsistency rather than silently deciding which source to follow.
 
 ## Lifecycle
 
