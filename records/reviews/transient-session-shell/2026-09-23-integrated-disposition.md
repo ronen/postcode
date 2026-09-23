@@ -4,8 +4,8 @@ Record type: disposition
 Date: 2026-09-23
 Task: [Transient interactive session shell](../../tasks/2026-09-23-transient-session-shell.md)
 Handoff: [Integrated review assignment](2026-09-23-integrated-handoff.md)
-Findings: [Integrated round 1](2026-09-23-integrated-round-1-findings.md); [integrated round 2](2026-09-23-integrated-round-2-findings.md)
-State: round 2 finding corrected; ready for round 3
+Findings: [Integrated round 1](2026-09-23-integrated-round-1-findings.md); [integrated round 2](2026-09-23-integrated-round-2-findings.md); [integrated round 3 and supplement](2026-09-23-integrated-round-3-findings.md)
+State: no actionable findings remain; human inspection and final gate acceptance pending
 
 ## Round 1 findings and dispositions
 
@@ -317,6 +317,79 @@ handoff's return procedure and write `YYYY-MM-DD-integrated-round-3[-reviewer]-f
 with the exact target above and prior findings/target. Commit only the returned
 findings when repository write access is available.
 
+## Round 3 disposition
+
+The [round 3 report and long-session supplement](2026-09-23-integrated-round-3-findings.md)
+are preserved as returned. The reviewer found no actionable findings, confirmed
+the R2-F1 correction against `441772648cbd550b108c1060cc8dfb1df883edc4`, and
+reported no remaining actionable findings from rounds 1–3. No implementation
+correction or additional review target results from this round.
+
+The reviewer independently passed type checking, **228 tests**, **162 complete
+view/output comparisons**, the real compiler interruption probe and the
+PostCode-sized clean/partial reuse measurement. Mixed-order acquisition produced
+one new attempt and then stable reuse; all nine negative-resolution mutation
+cases invalidated. The actual partial-project shell also recovered the expected
+follow-up latency. These are reviewer results, not checks rerun by the
+implementing agent while recording this disposition.
+
+### Non-defect observations
+
+1. **Global retry scope — acknowledged.** Additional acquisition permits retries
+   of partial work across the project, including for a focused request. This is
+   the approved and documented policy; the review introduces no request to
+   narrow it further.
+2. **Unstable preparation branch — retained as an execution-coverage limit.**
+   The reviewer could not trigger acquisition after dependency preparation in
+   the same call. Its conservative omission of a reuse basis remains unchanged.
+   No direct execution coverage is claimed for that branch.
+3. **Provider/store pairing — recorded as a reuse concern for future changes.**
+   The review identifies no current consequence because a session pairs one
+   provider with one store. This disposition makes no new multi-store guarantee
+   and introduces no change to that session arrangement.
+4. **Measurement warm-up — acknowledged.** The committed measurement deliberately
+   measures steady reuse after acquisition. The review's separate mixed-order
+   probe and real shell run provide transition evidence; the steady measurements
+   are not presented as the cost of the first retry.
+5. **Selected-subject qualification — acknowledged.** A complete focused subject
+   can truthfully omit partial qualification that appears in the project-wide
+   inventory. No qualification or rendering change is required.
+
+### Supplementary experiment
+
+The supplement extends long-session evidence to **800 direct executions with
+238 distinct requests** on the clean PostCode project. All 400 second-pass
+rendering digests matched the first pass. Collected heap rose from 229.7 MiB at
+24 distinct requests to 257.9 MiB at 238, then stayed at 257.3–258.0 MiB throughout
+the repeated pass and fell to 39.2 MiB after close. The observed growth was about
+135 KB per additional distinct request in this workload. The supplement explicitly
+supersedes the earlier conversational 75 KB figure and discards heap measurements
+from the preliminary harness that retained full rendered strings.
+
+This supports stable repetition and release on close in the tested workload,
+with retained growth for new distinct requests. It establishes no general memory
+bound or per-request cost guarantee. No latency growth with accumulated state was
+observed; the slowest command in the corrected run took 1.9 seconds. The earlier
+257-second outlier did not recur across the two runs, but its cause remains
+unknown. No eviction or new performance policy is introduced by this evidence.
+
+The earlier approximately 30-command coverage limit is therefore replaced by
+the supplement's stated scope: 800 commands through the direct executor on one
+clean project, one deterministic mix and one machine. This does not establish
+equivalent long-session coverage of worker/publication/terminal delivery,
+partial projects or many additional input acquisitions. Heap figures come from
+one corrected run. The reviewer did not repeat the full fixture/PostCode human
+journey this round. Real-terminal opening interruption, non-Git/non-macOS
+behavior, interactive sink failure and worker defects beyond code/tests, and
+realistically sized partial composition/dependency cases remain explicit limits.
+
+### Recommendation
+
+The reviewer recommends no further round. Recorded as review evidence, with no
+new runtime work proposed. The remaining coverage limits and unexplained outlier
+are presented for the human's final acceptance; this disposition does not waive
+them or treat independent reviewer inspection as the required human inspection.
+
 ## Review rounds
 
 - Round 1 reviewed `6dd42cb6426cf21d56cbeab4745e179354007576`, scope
@@ -324,14 +397,15 @@ findings when repository write access is available.
 - Round 2 reviewed `cafbd9c0b99016ecf9a1575bf9a8ddd67f009b0a`, with new scrutiny
   on `6dd42cb..cafbd9c`. Its [findings](2026-09-23-integrated-round-2-findings.md)
   confirm the prior corrections and introduce R2-F1.
-- Round 3 retains the original integrated handoff. Its corrected target is
-  `441772648cbd550b108c1060cc8dfb1df883edc4`; human arrangement and returned
-  findings remain pending.
+- Round 3 reviewed `441772648cbd550b108c1060cc8dfb1df883edc4` under the original
+  integrated handoff, with new scrutiny on `cafbd9c..4417726`. Its report and
+  supplementary experiment identify no actionable findings and recommend no
+  further round.
 
 ## Gate conclusion
 
-The human-approved R2-F1 correction and verification are complete. The requested
-round 3 handoff is ready under the original assignment; no policy question remains
-pending from round 2. The task remains active for human-arranged review and the
-required human inspection/acceptance. No reviewer recommendation is treated as
-human acceptance, and previously approved residual limits remain recorded.
+Implementation, correction and independent review are complete, with no remaining
+actionable findings. The human has not yet accepted the final review gate or
+confirmed the required human inspection. The task remains active pending those
+decisions. No reviewer recommendation is treated as human acceptance; residual
+limits remain recorded with the supplement's updated long-session evidence.
