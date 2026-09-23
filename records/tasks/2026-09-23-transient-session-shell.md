@@ -1,8 +1,8 @@
 # Transient interactive session shell
 
-Status: active
+Status: completed
 Opened: 2026-09-23
-Closed:
+Closed: 2026-09-23
 
 ## Task
 
@@ -188,6 +188,24 @@ place of the specified fixture/PostCode human inspection as discussed. No furthe
 usability issue was reported. Only explicit final review-gate acceptance and
 closure remain pending; the task is still active.
 
+Final outcome, 2026-09-23: completed the transient interactive session shell and
+shared one-shot executor, with accumulated analysis, stable references, immutable
+earlier support, input-change invalidation, interruptible compiler work and
+truthful command observations. Runtime documentation, validation evidence and
+all independent/Copilot reviews and dispositions are preserved. The human-approved
+retry policy reuses stable partial results until additional inputs are acquired.
+The human accepted the representative journey on a separate project in place of
+the specified fixture/PostCode human inspection, then explicitly accepted the
+final review gate and authorized closure. All actionable findings are resolved.
+
+Remaining limits are accepted and recorded in the integrated disposition:
+best-effort/non-atomic input validation, retained growth for distinct requests
+without eviction, the unexplained non-recurring latency outlier, and the stated
+platform/interaction coverage limits. Selector-UI clarity was left by human
+direction for a separate future cleanup pass. No further implementation or review
+work remains in this task. [PR #6](https://github.com/ronen/postcode/pull/6)
+contains the work; task closure does not merge the PR.
+
 ## Verification
 
 At the one-shot checkpoint: `npm run check` and all 197 tests passed. Controlled
@@ -293,3 +311,11 @@ Human acceptance evidence: the human's confirmation above establishes successful
 execution of the representative journey on a separate project. It does not claim
 human inspection on fixtures or PostCode. No implementation changed; diff checking
 passed for the acceptance-record updates and runtime tests were not rerun.
+
+Closure verification: the latest runtime change passed type checking, build and
+all 229 tests. Earlier verification includes 162 complete view/output comparisons,
+real compiler interruption, invalidation and reuse checks, and the independent
+800-command long-session experiment. The final Copilot round reports no findings.
+The human confirmed the representative journey functions as expected and accepted
+the final review gate. Closure changes only status and records; diff checking
+passed and no runtime tests were repeated for closure.
