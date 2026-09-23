@@ -1,4 +1,4 @@
-import { compare, groupEntityIds, methods, recordId } from '../identity.js';
+import { compare, methods, recordId } from '../identity.js';
 import { inspect as inspectModules } from '../projections.js';
 import type { EvaluationRecord, ProgramRecordStore, RecordId } from '../records.js';
 import type { GroupClaim, OrganizationClaims, OrganizationEvaluationRecord, OrganizationProjectionRecord } from './records.js';
@@ -38,7 +38,7 @@ function project(store: ProgramRecordStore, evaluation: OrganizationEvaluationRe
     }
   } else if (subject === 'selected-entities') {
     if (selector === null) throw new Error('Inspection requires a selector');
-    const groupIds = groupEntityIds(evaluation.groups);
+    const groupIds = store.entityIds(evaluation.groups, 'group');
     const preciseGroup = evaluation.groups.find(id => selector === id || reference && selector === groupIds.get(id));
     const namedGroups = reference ? [] : evaluation.groups.filter(id => groupClaim(store, id).information.name === selector);
     const moduleView = preciseGroup ? null : inspectModules(store, moduleEvaluation, selector, reference);

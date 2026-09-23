@@ -9,7 +9,7 @@ import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
 import { evaluateDependencyOrganization } from '../src/lib/dependencies/organization.js';
 import { dependencyChildren, dependencyParents, dependencyStructure } from '../src/lib/dependencies/projections.js';
 import type { DependencyOrganizationClaim } from '../src/lib/dependencies/records.js';
-import { moduleEntityIds, recordId } from '../src/lib/identity.js';
+import { recordId } from '../src/lib/identity.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import type { ModulePlacementClaim } from '../src/lib/organization/records.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
@@ -85,7 +85,7 @@ test('focused lenses retain only direct edges, nonedges stay with their owner an
     assert.deepEqual(external.opaqueSubjects, [module('t')]);
     assert.equal(external.relationships.length, 0);
     assert.equal(dependencyParents(store, evaluation, module('t')).relationships.length, 1);
-    const compact = moduleEntityIds(basis.modules).get(module('a'))!;
+    const compact = store.entityIds(basis.modules, 'module').get(module('a'))!;
     assert.equal(dependencyChildren(store, evaluation, compact).selection.referenceStatus, 'current');
     assert.equal(dependencyChildren(store, evaluation, 'module-00000000', true).subjects.length, 0);
     assert.deepEqual(dependencyChildren(store, evaluation, compact, true).subjects, [module('a')]);

@@ -1,4 +1,3 @@
-import type { RecordId } from '../src/lib/records.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { evaluateModules } from '../src/lib/evaluation.js';
@@ -229,14 +228,4 @@ test('multiple sessions coexist; old record IDs do not bind in another session',
   assert.equal(initial.store.evaluations(next.evaluation.session).length, 1);
   assert.equal(inspect(initial.store, next.evaluation, initial.claims[0]!.subject).selection.matches, 0);
   assert.equal(inspect(initial.store, next.evaluation, initial.claims[0]!.information.handle).selection.matches, 0);
-});
-
-test('compact module Entity IDs extend colliding prefixes across the complete population', async () => {
-  const { moduleEntityIds } = await import('../src/lib/identity.js');
-  const ids = ['12345678a', '12345678b', '12345679a'].map(prefix =>
-    `${sessionId()}:module:${prefix.padEnd(64, '0')}` as RecordId);
-  const compact = moduleEntityIds(ids);
-  assert.deepEqual([...compact.values()], ['module-12345678a', 'module-12345678b', 'module-12345679']);
-  assert.deepEqual([...moduleEntityIds([...ids].reverse())], [...compact]);
-  assert.equal(new Set(compact.values()).size, ids.length);
 });

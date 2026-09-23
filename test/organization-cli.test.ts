@@ -12,7 +12,7 @@ import type { QualifiedOrganizationView } from '../src/lib/organization/presenta
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
 import { inspectOrganization, organization } from '../src/lib/organization/projections.js';
 import { evaluateModules } from '../src/lib/evaluation.js';
-import { recordId, moduleEntityIds } from '../src/lib/identity.js';
+import { recordId } from '../src/lib/identity.js';
 import type { QualifiedView } from '../src/lib/presentation.js';
 import { discover } from './helpers.js';
 import type { GroupPropertiesClaim, ModulePlacementClaim, OrganizationClaims } from '../src/lib/organization/records.js';
@@ -86,7 +86,7 @@ test('representative organization journey selects, inspects, navigates, and esca
       assert.equal(JSON.stringify(withoutNavigation).includes('src/README'), false);
       assert.equal(JSON.stringify(withoutNavigation).includes('module.ts'), false);
     }
-    assert.deepEqual(source.batches[0]!.events.map(event => event.type), ['view-produced', 'source-escape']);
+    assert.deepEqual(source.batches[0]!.events.map(event => event.type), ['view-produced', 'source-escape', 'command-completed']);
     assert.equal(source.batches[0]!.events[1]!.sourceLevel, 'organization-paths');
     assert.equal(source.batches[0]!.records.find(record => record.kind === 'rendered-output')!.value, source.stdout);
   });
@@ -297,7 +297,7 @@ test('candidate ambiguity retains partial status and reachable candidate groups 
     const next = { ...outcome, id: nextId, claims: [...claims.filter(claim => claim.id !== original.id && claim.information.type !== 'group-properties').map(claim => claim.id),
       ambiguous.id, ...properties.map(claim => claim.id)], placement: { ...outcome.placement, materialization: 'partial' as const, reason: 'Candidate membership not established.' } };
     store.put([ambiguous, ...properties, next]);
-    const projection = inspectOrganization(store, next, moduleEntityIds(evaluation.modules).get(ambiguous.subject)!, true);
+    const projection = inspectOrganization(store, next, store.entityIds(evaluation.modules, 'module').get(ambiguous.subject)!, true);
     assert.ok(ambiguous.information.candidates.every(id => projection.expansions.groups.includes(id)));
     const view = createOrganizationView(store, projection, { format: 'unicode', sourceDetail: false });
     assert.equal(view.placementExceptions[0]!.placement.outcome, 'ambiguous');

@@ -32,7 +32,7 @@ test('one-shot sessions own a project, produce correlated views, and release the
     assert.equal(batch.formatVersion, 1);
     assert.deepEqual(batch.events.map(event => event.type), ['view-produced', 'source-escape']);
     assert.equal(batch.records.find(record => record.kind === 'rendered-output')!.value, a.rendered);
-    assert.throws(() => first.execute(request), /one request per session/);
+    assert.deepEqual(first.execute(request), a);
     assert.throws(() => observationBatch(a.view, a.rendered, { configPath, repositoryRoot: a.repositoryRoot, methods: a.methods }, 0), /command order/);
   } finally { first.close(); second.close(); }
   assert.throws(() => first.execute(request), /closed/);
@@ -58,4 +58,46 @@ test('claim input support is a retained record distinct from session identity an
   assert.throws(() => result.store.get(invalid.id), /Missing program record/);
   const unrelated = new MemoryProgramRecordStore();
   assert.throws(() => unrelated.put([inputs]), /invalid session/);
+});
+
+test('accumulation preserves complete earlier views and precise references across independent requests', () => {
+  const opened = openSession({ configPath });
+  assert.equal(opened.status, 'opened');
+  if (opened.status !== 'opened') return;
+  const { session } = opened;
+  try {
+    const inventory = session.execute({ ...request, lens: 'modules', presentation: { format: 'json', sourceDetail: false } });
+    const before = structuredClone(inventory);
+    const dependency = session.execute(request);
+    assert.deepEqual(session.execute({ ...request, lens: 'modules', presentation: { format: 'json', sourceDetail: false } }), before);
+    assert.deepEqual(inventory, before);
+    assert.deepEqual(session.execute(request), dependency);
+    if (inventory.view.schema !== 'postcode-view/1-experimental') throw new Error('Expected inventory');
+    const module = inventory.view.modules.find(item => item.handle === 'forward')!;
+    const selected = session.execute({ ...request, lens: 'inspect', selector: module.entityId, reference: true });
+    assert.equal(selected.view.projection.selection.matches, 1);
+    assert.ok(selected.rendered.includes(module.entityId));
+    session.execute({ ...request, lens: 'organization', subject: 'repository', presentation: { format: 'json', sourceDetail: false } });
+    assert.deepEqual(session.execute(request), dependency);
+    const fresh = openSession({ configPath });
+    if (fresh.status !== 'opened') throw new Error('Expected project');
+    try {
+      assert.deepEqual(normalizeSession(fresh.session.execute(request)), normalizeSession(dependency));
+      assert.deepEqual(normalizeSession(fresh.session.execute({ ...request, lens: 'modules', presentation: { format: 'json', sourceDetail: false } })), normalizeSession(inventory));
+    } finally { fresh.session.close(); }
+  } finally { session.close(); }
+});
+
+test('growing reference allocations cannot steal or lengthen earlier bindings', async () => {
+  const { EntityBindings, sessionId } = await import('../src/lib/identity.js');
+  const session = sessionId();
+  const a = recordId(session, 'module', 'a');
+  const colliding = (suffix: string) => `${session}:module:${'12345678' + suffix.padEnd(56, '0')}` as typeof a;
+  const bindings = new EntityBindings();
+  const first = bindings.allocate([colliding('b')], 'module').get(colliding('b'));
+  const later = bindings.allocate([colliding('a'), colliding('b'), colliding('bc')], 'module');
+  assert.equal(first, 'module-12345678');
+  assert.equal(later.get(colliding('b')), first);
+  assert.equal(new Set(later.values()).size, 3);
+  assert.deepEqual(bindings.allocate([...later.keys()].reverse(), 'module').get(colliding('b')), first);
 });

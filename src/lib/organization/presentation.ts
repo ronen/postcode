@@ -1,7 +1,7 @@
 import { compositionView, compositionAnnotation } from '../composition-view.js';
 import type { CompositionView } from '../composition-view.js';
 import path from 'node:path';
-import { groupEntityIds, methods, moduleEntityIds, recordId } from '../identity.js';
+import { methods, recordId } from '../identity.js';
 import { createView, renderUnicode } from '../presentation.js';
 import type { Presentation, QualifiedView } from '../presentation.js';
 import type { ClaimContextRecord, EvaluationState, ModuleClaim, ProgramRecordStore, ProjectionRecord, RecordId } from '../records.js';
@@ -99,8 +99,8 @@ export function createOrganizationView(store: ProgramRecordStore, projection: Or
   const layout = captured.layout;
   const moduleEvaluation = store.get(outcome.moduleEvaluation);
   if (moduleEvaluation.kind !== 'evaluation') throw new Error('Expected module evaluation');
-  const groupIds = groupEntityIds(outcome.groups);
-  const moduleIds = moduleEntityIds(moduleEvaluation.modules);
+  const groupIds = store.entityIds(outcome.groups, 'group');
+  const moduleIds = store.entityIds(moduleEvaluation.modules, 'module');
   const claims = outcome.claims.map(id => store.get(id) as OrganizationClaims);
   const selectedClaims = new Set([...projection.claims, ...projection.expansions.claims]);
   const available = claims.filter(claim => selectedClaims.has(claim.id));

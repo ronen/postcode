@@ -4,17 +4,17 @@ import type { RecordId, SessionId } from './records.js';
 /** Bump the responsible method whenever its analysis/identity/projection semantics change. */
 export const methods = {
   inputs: 'postcode/observed-inputs@3',
-  records: 'postcode/program-records@17',
-  discovery: 'postcode/typescript-modules@10',
-  evaluation: 'postcode/evaluate-modules@3',
+  records: 'postcode/program-records@18',
+  discovery: 'postcode/typescript-modules@11',
+  evaluation: 'postcode/evaluate-modules@4',
   dependencies: 'postcode/typescript-dependencies@2',
-  dependencyEvaluation: 'postcode/evaluate-dependencies@1',
+  dependencyEvaluation: 'postcode/evaluate-dependencies@2',
   dependencyProjection: 'postcode/dependency-projection@2',
   composition: 'postcode/typescript-composition@1',
   dependencyOrganization: 'postcode/dependency-organization@1',
-  projection: 'postcode/projection@7',
+  projection: 'postcode/projection@8',
   expansions: 'postcode/typescript-expansions@2',
-  presentation: 'postcode/presentation@21',
+  presentation: 'postcode/presentation@22',
   handles: 'postcode/module-handles@5',
   organization: 'postcode/organization@3',
 } as const;
@@ -44,29 +44,24 @@ export function recordId(session: SessionId, kind: string, key: unknown): Record
   return `${session}:${kind}:${createHash('sha256').update(localKey).digest('hex')}` as RecordId;
 }
 
-/** Precise module addresses, abbreviated against the complete session population. */
-export function moduleEntityIds(ids: readonly RecordId[]): ReadonlyMap<RecordId, string> {
-  return entityIds(ids, 'module');
-}
+/** Allocations are append-only: extending the population cannot steal a spelling. */
+export class EntityBindings {
+  readonly #bindings = new Map<RecordId, string>();
+  readonly #owners = new Map<string, RecordId>();
 
-export function groupEntityIds(ids: readonly RecordId[]): ReadonlyMap<RecordId, string> {
-  return entityIds(ids, 'group');
-}
-
-function entityIds(ids: readonly RecordId[], kind: 'module' | 'group'): ReadonlyMap<RecordId, string> {
-  const entries = [...new Set(ids)].map(id => ({ id, hash: id.slice(id.lastIndexOf(':') + 1) }))
-    .sort((a, b) => compare(a.hash, b.hash));
-  const common = (a: string, b: string) => {
-    let length = 0;
-    while (length < Math.min(a.length, b.length) && a[length] === b[length]) length++;
-    return length;
-  };
-  return new Map(entries.map((entry, index) => {
-    const before = entries[index - 1];
-    const after = entries[index + 1];
-    const length = Math.max(8, before ? common(entry.hash, before.hash) + 1 : 0,
-      after ? common(entry.hash, after.hash) + 1 : 0);
-    if (!/^[a-f0-9]{64}$/.test(entry.hash) || length > entry.hash.length) throw new Error('Invalid or colliding entity record keys');
-    return [entry.id, `${kind}-${entry.hash.slice(0, length)}`];
-  }));
+  allocate(ids: readonly RecordId[], kind: 'module' | 'group'): ReadonlyMap<RecordId, string> {
+    for (const id of [...new Set(ids)].sort(compare)) {
+      if (this.#bindings.has(id)) continue;
+      const hash = id.slice(id.lastIndexOf(':') + 1);
+      if (!/^[a-f0-9]{64}$/.test(hash)) throw new Error('Invalid entity record key');
+      let length = 8;
+      while (this.#owners.has(`${kind}-${hash.slice(0, length)}`)) {
+        if (++length > hash.length) throw new Error('Colliding entity record keys');
+      }
+      const reference = `${kind}-${hash.slice(0, length)}`;
+      this.#bindings.set(id, reference);
+      this.#owners.set(reference, id);
+    }
+    return new Map(ids.map(id => [id, this.#bindings.get(id)!]));
+  }
 }

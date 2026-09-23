@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
 import { evaluateModules } from '../src/lib/evaluation.js';
-import { groupEntityIds, moduleEntityIds, recordId } from '../src/lib/identity.js';
+import { recordId } from '../src/lib/identity.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
 import { inspectOrganization, organization } from '../src/lib/organization/projections.js';
 import type { GroupPropertiesClaim, ModulePlacementClaim, OrganizationClaims, OrganizationEvaluationRecord } from '../src/lib/organization/records.js';
@@ -85,7 +85,7 @@ test('explicit references select group IDs and inspect artifact-only groups outs
   fixture(root => {
     const { store, outcome } = evaluated(root);
     const manual = groups(store, outcome).get('manual')!;
-    const compact = groupEntityIds(outcome.groups).get(manual)!;
+    const compact = store.entityIds(outcome.groups, 'group').get(manual)!;
     assert.match(compact, /^group-[a-f0-9]{8,64}$/);
     assert.equal(inspectOrganization(store, outcome, compact).selection.referenceStatus, 'current');
     assert.deepEqual(inspectOrganization(store, outcome, compact, true).groups, [manual]);
@@ -132,7 +132,7 @@ test('organization evaluation and lenses use captured inputs, with stable groups
     assert.ok(groups(store, first).has('manual'));
     assert.equal(groups(store, first).has('later'), false);
     assert.deepEqual(organization(store, first).groups, organization(store, second).groups);
-    assert.notEqual(first.id, second.id);
+    assert.equal(first.id, second.id);
   });
 });
 
@@ -163,7 +163,7 @@ test('a configured project outside Git remains usable with unavailable organizat
     assert.equal(outcome.groups.length, 0);
     assert.ok(placements(store, outcome).every(claim => claim.information.outcome === 'unavailable'));
     assert.equal(organization(store, outcome, 'repository').selection.populationEstablished, false);
-    const compact = moduleEntityIds(evaluation.modules).get(evaluation.modules[0]!)!;
+    const compact = store.entityIds(evaluation.modules, 'module').get(evaluation.modules[0]!)!;
     assert.deepEqual(inspectOrganization(store, outcome, compact, true).modules, [evaluation.modules[0]]);
   });
 });
@@ -234,7 +234,7 @@ test('names can match groups and modules together; scoped Entity IDs are precise
     assert.ok(originalModule.kind === 'module');
     const originalClaim = store.get(originalModule.claim) as ModuleClaim;
     const group = inspection.groups[0]!;
-    const compactGroup = groupEntityIds(outcome.groups).get(group)!;
+    const compactGroup = store.entityIds(outcome.groups, 'group').get(group)!;
     // A later provider may report a literal language name equal to a navigation ID.
     const renamed = { ...originalModule, id: recordId(outcome.session, 'module', 'collision'), claim: recordId(outcome.session, 'claim', 'collision') };
     const claim = { ...originalClaim, id: renamed.claim, subject: renamed.id, information: { ...originalClaim.information, name: compactGroup } };
@@ -245,7 +245,7 @@ test('names can match groups and modules together; scoped Entity IDs are precise
     const precise = inspectOrganization(store, next, compactGroup, true);
     assert.deepEqual(precise.groups, [group]);
     assert.deepEqual(precise.modules, []);
-    const compactModule = moduleEntityIds(synthetic.modules).get(renamed.id)!;
+    const compactModule = store.entityIds(synthetic.modules, 'module').get(renamed.id)!;
     assert.deepEqual(inspectOrganization(store, next, compactModule, true).modules, [renamed.id]);
   });
 });

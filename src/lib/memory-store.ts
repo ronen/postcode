@@ -1,4 +1,4 @@
-import { canonical } from './identity.js';
+import { canonical, EntityBindings } from './identity.js';
 import type { EvaluationRecord, ProgramRecord, ProgramRecordStore, RecordId, SessionId } from './records.js';
 
 function references(record: ProgramRecord): readonly RecordId[] {
@@ -55,6 +55,7 @@ function freeze(value: unknown): void {
 
 /** Atomic batches permit mutually referring entity/claim/context records. */
 export class MemoryProgramRecordStore implements ProgramRecordStore {
+  readonly #bindings = new Map<SessionId, EntityBindings>();
   readonly #records = new Map<RecordId, ProgramRecord>();
 
   put(records: readonly ProgramRecord[]): void {
@@ -322,6 +323,18 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
       freeze(record);
       this.#records.set(id, record);
     }
+  }
+
+  entityIds(ids: readonly RecordId[], kind: 'module' | 'group'): ReadonlyMap<RecordId, string> {
+    const result = new Map<RecordId, string>();
+    for (const id of ids) {
+      const record = this.get(id);
+      if (record.kind !== kind) throw new Error('Expected matching entity kind');
+      let bindings = this.#bindings.get(record.session);
+      if (!bindings) { bindings = new EntityBindings(); this.#bindings.set(record.session, bindings); }
+      for (const pair of bindings.allocate([id], kind)) result.set(...pair);
+    }
+    return result;
   }
 
   get(id: RecordId): ProgramRecord {

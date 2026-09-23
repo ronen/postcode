@@ -1,7 +1,7 @@
 # Implemented architecture
 
-The development CLI opens one configured TypeScript project in a short-lived
-session, evaluates module
+The development CLI opens one configured TypeScript project in a transient
+session (one request or an interactive investigation), evaluates module
 inventory and presentation-declared standard expansions, constructs stored
 `modules(project)`, repository/project organization, or exact-selection group/module inspection projections, and presents
 a qualified Unicode or experimental JSON view. Every produced view submits a
@@ -10,9 +10,9 @@ instrument validation and independent reviews are recorded in the
 [completed task](../../records/tasks/2026-09-12-initial-module-inventory.md).
 
 The current lifecycle is governed by the [session decisions](../decisions/transient-analysis-sessions.md).
-The one-shot conversion checkpoint is implemented; accumulation, growth-safe
-reference allocation, change detection and the prompt remain behind the planned
-independent review gate. Other governing choices are the accepted [projection architecture decisions](../decisions/initial-projection-architecture-decisions.md)
+The shell and one-shot CLI share request execution. The shell retains compiler
+state and program records in a private worker while the parent owns terminal
+interaction, publication and observation delivery. Other governing choices are the accepted [projection architecture decisions](../decisions/initial-projection-architecture-decisions.md)
 and [module inventory decisions](../decisions/initial-module-inventory-decisions.md).
 The governing cross-cutting terminology is maintained in [core concepts](../core-concepts.md), and binding cross-cutting rules are maintained in [architectural constraints](../architectural-constraints.md); this document describes how the current implementation realizes them.
 
@@ -44,9 +44,10 @@ rejects conflicting replacements and invalid references (including entity
 claim discriminators and reciprocal subjects, and documentation-association
 subjects matching their module, origin-symbol or export-alias provenance), and
 supports session namespaces and immutable evaluation attempts. The request executor
-owns an opened provider and ephemeral store and releases them on close. This
-checkpoint permits one request per session; it does not offer accumulation,
-persistence, SQL queries, or a general scheduler.
+owns an opened provider and ephemeral store and releases them on close. Completed
+evaluations are reused by declared requirements, while newly requested work adds
+records. Each projection uses its own evaluation basis, never the entire store
+population. This establishes neither persistence nor a general scheduler.
 
 Module claims carry the information asserted. Claim context separately identifies
 evidence, method, scope, guarantee, limitations, and encountered diagnostic codes.
@@ -56,10 +57,10 @@ occurrences with established resolution targets or explicit non-establishment. I
 module label. SourceFile modules without an independently established module name
 are anonymous; their generated handles are navigation aids.
 
-Within each discovery call, the TypeScript integration computes a captured
+Within each opened provider, the TypeScript integration computes a captured
 `SourceFile` object's content digest once and reuses it for captured input source entries
 and source-evidence records. This avoids repeatedly serializing and hashing large
-declaration files during expansion materialization. The map is local to that call;
+declaration files during expansion materialization. The map is local to that provider;
 new project openings still capture and analyze inputs afresh. Evidence identity,
 spans, excerpts, qualification and store validation are unchanged. The
 [latency investigation](../../records/validation/2026-09-21-analysis-latency.md)
@@ -113,8 +114,9 @@ establishes the evidential basis of a claim.
 
 Positive and negative reads/existence checks, directory queries and realpath
 results are memoized within the opened project. Capture is first-observed and
-non-atomic. Inputs are assumed unchanged; continuing-session change detection
-is not implemented at this checkpoint. The session record retains concise
+non-atomic. Inputs are assumed unchanged. Validation replays captured probes and
+compares repository capture and process environment at command boundaries; it
+never updates the supporting evidence or refreshes the session. The session record retains concise
 coverage, consistency and enforced output-location counts for presentation.
 Counts identify filter boundaries, not generated files found or read.
 
@@ -124,9 +126,8 @@ cross-session or relocation continuity. Internal keys belong to a session;
 reference spelling is excluded from the local key digest so random session IDs
 do not randomize semantic record ordering. Handles use language names, basenames
 or declared exports with honest anonymity, retaining generated provenance.
-Compact module/group IDs currently extend digest prefixes against the complete
-request population. Accumulation will require the stable binding allocator in
-the next checkpoint. The one-shot CLI only performs exact name/handle lookups;
+Compact module/group IDs are allocated in a session-owned store map. Existing
+bindings remain fixed; new collisions extend only the new spelling. The one-shot CLI only performs exact name/handle lookups;
 its printed IDs cannot navigate another invocation. Library projections can
 select precise references in their existing session.
 
@@ -211,7 +212,10 @@ one, a session identifier, a command ordinal (1 for one-shot), and independent
 batch/event/context UUIDs. Request context, repository/configuration/session
 context, qualified view artifact and exact rendered output each appear once in the
 batch, referenced by the view-produced and optional source-escape events. They
-remain interpretable after the ephemeral store is discarded.
+remain interpretable after the ephemeral store is discarded. Command-outcome
+records preserve actual status stderr and supplied requests. Refusals, failures,
+invalidation and interruption can carry command events without view references;
+only actual produced views have view-produced/source-escape events.
 
 The CLI discloses the absolute local sink destination on stderr. The sink creates
 one private JSON file per accepted batch under a UTC `date=YYYY-MM-DD` subdirectory
@@ -374,11 +378,25 @@ evidence with separate bounds.
 Ordinary organization analysis remains independent of dependency evaluation.
 Dependency resolution can acquire additional inputs. Its former
 `--dependency-context` scope-reproduction option has been retired; ordinary
-inspection uses current exact name/handle lookup. Future accumulation will reuse
-applicable completed work while preserving earlier captured input support.
+inspection uses current exact name/handle lookup. Accumulation reuses applicable
+completed work while preserving earlier captured input support. Discovery is
+retained per store; expansions and dependency analysis are acquired when requested.
+The compiler Program fixes this provider’s module population at opening, so
+additional dependency inputs do not add modules. Repeated contexts retain their
+first supporting input record; new contexts can reference a later input basis.
+Any conflicting record content still fails the store’s immutability check.
 
-Native SIGINT can terminate the one-shot process while real compiler work blocks
-the JavaScript event loop. This releases the entire transient session, with no
-promise of an interruption observation. The compiler-backed experiment is in
-`scripts/probe-compiler-interruption.mjs`; the later shell stage must establish
-its own interruption and observation lifecycle.
+Native SIGINT can terminate a one-shot process during synchronous compiler work.
+The shell instead runs the shared executor in a worker, allowing the parent to
+terminate an active compiler request and observe interruption without publishing a
+fabricated view. The session ends; safe worker-state recovery is not claimed.
+At an idle prompt, Ctrl-C cancels the line. EOF finishes accepted work and sink
+submission. Syntax errors and expected operational analysis failures retain
+sound state; unexpected defects terminate distinctly.
+
+Before publication, detected input changes withhold the result. A check after
+output can instead report invalidation while retaining the actual emitted view
+in the observation. Validation is sequential, not atomic or continuous; transient
+changes and unobserved inputs may escape it. The [CLI reference](../cli-reference.md#input-stability-and-retained-work)
+states the implemented probe coverage and gaps. Worker messages are a private
+execution detail, not a public server or batch interface.

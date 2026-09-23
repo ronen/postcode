@@ -6,6 +6,7 @@ checkout, install with `npm ci` and build with `npm run build`.
 ## Commands
 
 ```sh
+node _build/src/cli.js shell --project path/to/tsconfig.json
 node _build/src/cli.js modules --project path/to/tsconfig.json
 node _build/src/cli.js modules --project path/to/tsconfig.json --json
 node _build/src/cli.js organization project --project path/to/tsconfig.json
@@ -23,10 +24,20 @@ match zero, one, or multiple subjects. Each command opens a short-lived session;
 Entity IDs in its output are local to that session and cannot navigate another
 invocation. No generated follow-up commands are emitted.
 
-This is the one-shot checkpoint of the [session plan](plans/transient-session-shell.md).
-The interactive prompt, accumulating analysis and change detection follow review.
-Until the prompt is available, ambiguous one-shot lookups display every match
-without a public mechanism for selecting one of their session-local IDs.
+`shell` opens one project for successive commands in a terminal. Each command uses
+the same lenses and options, except `--project` is fixed at opening. `--json` on
+opening chooses JSON as the command default. Use `help`, `exit` or EOF. Single and
+double quotes group selector words; backslash escapes a character outside single
+quotes. There is no interpolation, command execution, pipe or redirection syntax.
+Non-terminal stdin is refused before opening the project.
+
+For an ambiguous one-shot lookup, open a shell and repeat the lookup. Then use
+`inspect @module-…` or `inspect @group-…` with a reference displayed in that shell.
+`children @module-…` and `parents @module-…` follow direct relationships. Plain
+selectors remain exact name/handle lookups. `--` makes the following selector
+literal, including a name beginning `@` or `--`. Unknown references yield an
+explicit zero-match result. Matching spellings in different sessions do not
+restore the earlier investigation.
 
 Without arguments, the command is `modules` with `./tsconfig.json` and Unicode
 output. `--json` selects the experimental structured presentation. `--source-detail`
@@ -40,8 +51,13 @@ One exact selector is still
 required; the marker does not enable multiple selectors.
 
 Exit 0 means a view was produced, including a qualified or partial result. Exit 2
-means invalid arguments or failure to open the project; exit 1 means an internal
-failure. Project-open diagnostics include the file and one-based line/column
+means invalid arguments, failure to open the project or input invalidation; exit 1
+means an internal failure; exit 3 means an expected analysis failure preventing a
+view; exit 130 means interactive interruption. The shell keeps usable state after
+syntax errors and expected analysis failures. It terminates on internal defects
+and invalidation. At an idle prompt Ctrl-C cancels the line. During a command it
+terminates the worker and ends the session, recording interruption where possible.
+EOF finishes an already accepted command and its observation submission. Project-open diagnostics include the file and one-based line/column
 when TypeScript supplies them. Observation delivery failure is a visible warning
 and preserves the view.
 
@@ -166,9 +182,8 @@ hexadecimal characters) receive a `handle-` prefix. Their original cue provenanc
 is retained, while scoped Entity IDs remain precise and independently selectable.
 
 A compact **Entity ID**, such as `module-a7bcf3e2`, names an entity in a
-session. The current single-request implementation abbreviates digest prefixes
-against its complete population, including collapsed modules. The growth-safe
-binding allocator belongs to the next implementation checkpoint. These IDs have
+session. Allocations abbreviate provider-key digests and never rebind or lengthen
+an existing spelling. A new collision receives a longer unused spelling. These IDs have
 no cross-invocation selection contract, even if their spellings repeat.
 
 A **session** is the analysis and reference context, independently of which
@@ -176,8 +191,8 @@ inputs have been observed. JSON exposes `projection.session`; this identifier
 is also present in its observation batch. It is not an input digest or evidence
 of freshness. Supporting inputs, method versions and captured source evidence
 remain attached to program claims. Inputs are assumed stable during analysis;
-capture is first-observed and non-atomic. No continuing-session invalidation
-mechanism is exposed at this checkpoint.
+capture is first-observed and non-atomic. Best-effort checks invalidate the session
+on detected relevant changes; restarting is the recovery path.
 
 One-shot lookups match the union of exact names and generated handles. A language
 name that looks like `module-a7bcf3e2` remains an ordinary exact lookup. There are
@@ -185,7 +200,7 @@ no fuzzy matches, wildcard selectors, retained aliases, or durable sessions.
 
 For example, a source module cued by `widget.ts` and an ambient module named
 `widget` both match `inspect widget`. Both are shown; neither is chosen implicitly.
-The planned shell will let a human repeat an ambiguous lookup and select one
+The shell lets a human repeat an ambiguous lookup and select one
 of its displayed references in that same session. Opening a shell with an ID
 copied from a one-shot command will not restore the earlier session.
 
@@ -376,9 +391,47 @@ ownership omitted from display remain distinct.
 
 Fresh analysis can still take several seconds on larger configured projects.
 Evidence preparation reuses each captured file's content digest within the current
-analysis, avoiding repeated hashing without retaining analysis between commands.
+analysis, avoiding repeated hashing. Interactive sessions retain applicable
+completed analysis between commands.
 The [latency measurements](../records/validation/2026-09-21-analysis-latency.md)
-show the measured improvement and its limits. Each command currently has its own short-lived session and observation. Native
-SIGINT can terminate compiler-backed work; the process and transient state end.
-An interrupted process may not submit an observation. Shell interruption handling
-is a later checkpoint.
+show the earlier fresh-run improvement and its limits. Shell commands share a
+session and each submits its own observation. Active-command interruption ends
+the worker and session; the parent records the outcome where possible. One-shot
+native SIGINT can terminate before an observation can be delivered.
+
+## Input stability and retained work
+
+The session assumes unchanged inputs. Before evaluation and publication and after
+output, PostCode replays captured compiler read, existence, directory-selection
+and realpath probes and compares their results. This covers observed source and
+configuration contents, observed package metadata, negative resolution probes,
+and configured include patterns (including newly matching files). It recaptures
+the repository manifest, effective exclusion policy, links, opaque boundaries and
+relevant Git policy, and checks the analysis process's environment, working
+directory and runtime versions. These checks do not replace captured claim inputs.
+
+Checks are sequential and non-atomic: changes reverted between checks, changes
+after the final check, unobserved files outside configured selection/resolution,
+unread ordinary artifact contents, and external tool replacement with unchanged
+reported version may escape detection. Read-time races remain possible. Checks
+run at command boundaries, not continuously while idle. A newly observed input
+is first-observed at acquisition, never asserted to have had those contents at
+session opening. Excluded generated output is filtered during later acquisition
+and validation as well as opening.
+
+Detection before publication withholds the view. Detection after output reports
+invalidation and records the view/output actually emitted. Further investigation
+is refused; the shell exits without silently reopening. Writing the configured
+observation output does not invalidate its own session.
+
+Compiler discovery and completed requirement-specific work are retained. Earlier
+claim contexts keep their first supporting input record when later work adds
+inputs; new claims retain the later basis. Evaluation outcomes and projections
+are immutable. Reuse requires matching requirements and completed outcomes;
+each lens selects its own population and relevant expansions. The current
+TypeScript provider fixes its module population when opening the Program;
+additional dependency resolution does not discover extra modules. Thus name and
+handle ambiguity does not grow in this provider, although stable references are
+allocated safely for growing populations. There is no eviction, persistence or
+historical observation readback. Long sessions retain evidence and results and
+can consume increasing memory.

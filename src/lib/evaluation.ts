@@ -1,5 +1,5 @@
 import type { DependencyResult } from './dependencies/records.js';
-import { methods, recordId } from './identity.js';
+import { canonical, methods, recordId } from './identity.js';
 import type { EvaluationRecord, EvaluationState, ModuleExpansion, ProgramRecordStore, RecordId, SessionId } from './records.js';
 
 export interface DiscoveryResult extends EvaluationState {
@@ -25,9 +25,14 @@ export function evaluateModules(store: ProgramRecordStore, analysis: ModuleAnaly
   return recordModuleEvaluation(store, result);
 }
 
+const completed = new WeakMap<ProgramRecordStore, Map<string, EvaluationRecord>>();
+
 /** Shared recording path for discovery invoked by an additional lens requirement. */
 export function recordModuleEvaluation(store: ProgramRecordStore, discovery: DiscoveryResult): EvaluationRecord {
   const { expansions: expanded = [], dependencies: _dependencies, ...result } = discovery;
+  const key = canonical([result, expanded]);
+  const reused = completed.get(store)?.get(key);
+  if (reused) return reused;
   const attempt = store.evaluations(result.session)
     .filter(outcome => outcome.requirement === 'modules' && outcome.basis === undefined).length + 1;
   const method = methods.evaluation;
@@ -40,5 +45,10 @@ export function recordModuleEvaluation(store: ProgramRecordStore, discovery: Dis
     basis: outcome.id, method, attempt,
     id: recordId(result.session, 'evaluation', { method, attempt, requirement: expansion.requirement, modules: expansion.modules }),
   })));
+  if ([result, ...expanded].every(item => item.execution === 'completed' && item.materialization === 'full')) {
+    let cache = completed.get(store);
+    if (!cache) { cache = new Map(); completed.set(store, cache); }
+    cache.set(key, outcome);
+  }
   return outcome;
 }

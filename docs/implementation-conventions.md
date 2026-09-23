@@ -47,12 +47,12 @@ Agents may update this document only as part of authorized implementation work t
 - One-shot inspection accepts one exact name or generated handle and retains every match. Compact IDs and internal record keys belong to the producing session, without cross-invocation navigation. Library projection selection separates precise compact references from name/handle lookup. [[Session references](decisions/transient-analysis-sessions.md#stable-reference-bindings-within-a-session)]
 - Generate mnemonic handles from language names, extensionless basenames, or declared exports, with honest anonymity and explicit provenance. Generic basenames fall back to representative exports. Prefix cues matching `module-` or `group-` plus 8–64 lowercase hexadecimal characters with `handle-`; exact language names remain unchanged.
 - Session IDs are random namespaces. Preserve captured input and method support in separate records referenced by provider Claim context; do not use the session identifier as input evidence. Record-key construction removes the current session namespace from its local digest input to keep semantic ordering independent of random UUIDs. [[Session context](decisions/transient-analysis-sessions.md#session-as-the-analysis-and-reference-context)]
-- The one-shot checkpoint abbreviates module/group IDs against the complete request population, extending collisions. The following accumulation checkpoint must replace population-wide reallocation with growth-safe stable bindings before exposing multiple commands.
+- Allocate compact references through the store’s session-owned binding map. Once assigned, a spelling cannot be stolen or extended; only a new colliding allocation is lengthened. Shell `@` selectors request precise references; `--` preserves literal reserved-looking names.
 - Equivalent-run tests rename session prefixes consistently while retaining all record relationships, evidence, qualifications, ordering and omissions. Do not discard referenced relationships to make comparisons pass.
 
 ## CLI operation
 
-- Open one configured project per short-lived session. The current checkpoint executes one request and closes its transient state.
+- Open one configured project per session. One-shot use executes one request; the terminal shell retains state through successive requests and closes on exit, EOF, invalidation or interruption.
 - Keep operational invocation paths separate from source evidence and domain identity. No generated next-command strings or corresponding presentation fields remain.
 - Put options before `--` and a literal option-like selector after it.
 - Report distinct enforced output-location boundaries in run qualification counts, not a census of generated files.
@@ -60,7 +60,7 @@ Agents may update this document only as part of authorized implementation work t
 ## Local observation sink
 
 - Write each version-one command batch as one JSON file beneath a UTC date directory named `date=YYYY-MM-DD` in the PostCode development checkout's ignored `_observations/` directory. Begin each filename with the filesystem-safe UTC timestamp `timestamp=YYYY-MM-DDTHH-MM-SS.sssZ_` and follow it with the batch UUID.
-- Include the session identifier and command order in each self-contained batch; the one-shot command ordinal is 1.
+- Include the session identifier and command order in each self-contained batch; the one-shot command ordinal is 1. Record a command outcome and actual stdout/status stderr. A command without a view must not emit view-produced or source-escape events.
 - Use the PostCode working tree containing the running CLI build as the local sink destination, independently of the selected project's configuration directory. Do not send observations to a remote or shared sink under the current configuration. [[Send to a sink and forget](decisions/initial-observation-recording-decisions.md#send-to-a-sink-and-forget)]
 - Disclose the absolute local destination on stderr.
 - Treat local observation files as potentially sensitive because they can contain repository context, selection inputs, documentation, qualifications, the qualified view artifact, the exact rendered output, and explicitly requested source detail. Create new sink and date directories with mode `0700` and files with mode `0600`; leave permissions of pre-existing directories under their owner's control.
@@ -76,3 +76,11 @@ Agents may update this document only as part of authorized implementation work t
 - Preserve module and export containment in source presentation, and distinguish forwarding declarations from semantic-symbol definitions. [[Conceptual presentation and source escape](decisions/initial-module-inventory-decisions.md#keep-conceptual-presentation-separate-from-source-escape)]
 - Expand a narrow compiler span to its enclosing statement when that context makes the evidence intelligible, while keeping excerpts bounded and qualified.
 - Treat Unicode documentation height limits as presentation policy. Preserve the stored assertions and count additional characters or tags omitted by the height limit in the qualified view.
+
+## Accumulation and interactive execution
+
+- Retain provider discovery and completed work by declared requirements. Keep the module evaluation basis and its expansions together; never broaden projections by selecting the accumulated store indiscriminately. Incomplete attempts can produce later outcomes without replacing their earlier records. [[Accumulated information](decisions/transient-analysis-sessions.md#immutable-information-within-an-accumulating-session)]
+- Keep existing claim-context input references when reusing established information. Newly acquired input records support newly established contexts; the store still rejects any conflicting replacement.
+- Run the shell’s compiler-backed session in one private worker, with one operation in flight. Worker termination is the supported active-command interruption fallback; the parent retains observation delivery responsibility. No public transport or stdin batch API is established.
+- Validate captured compiler probes and repository evidence around command execution/publication. Detection invalidates rather than refreshes. The CLI reference specifies actual coverage and unavoidable gaps. [[Stable inputs](decisions/transient-analysis-sessions.md#stable-inputs-as-the-session-precondition)]
+- Compare full structured views and rendered output for fresh, accumulating and reordered requests. Consistent reference normalization must retain repeated-row reference markers and all evidence, relationships, qualification, omissions and ordering.

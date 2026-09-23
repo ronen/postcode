@@ -10,10 +10,10 @@ export interface ObservationBatch {
   readonly id: string;
   readonly session: string;
   readonly command: number;
-  readonly records: readonly { readonly id: string; readonly kind: 'request' | 'analysis-context' | 'qualified-view' | 'rendered-output'; readonly value: unknown }[];
+  readonly records: readonly { readonly id: string; readonly kind: 'request' | 'analysis-context' | 'qualified-view' | 'rendered-output' | 'command-outcome'; readonly value: unknown }[];
   readonly events: readonly {
-    readonly id: string; readonly type: 'view-produced' | 'source-escape';
-    readonly request: string; readonly analysis: string; readonly view: string; readonly rendered: string;
+    readonly id: string; readonly type: 'view-produced' | 'source-escape' | 'command-completed' | 'command-refused' | 'session-invalidated' | 'command-failed' | 'command-interrupted';
+    readonly request: string; readonly analysis: string; readonly view?: string; readonly rendered: string;
     readonly sourceLevel?: 'declaration-locations-and-excerpts' | 'organization-paths' | 'organization-and-module-source' | 'dependency-occurrences-and-organization-evidence';
   }[];
 }
@@ -61,4 +61,23 @@ export function localFileObservationSink(
     await writeFile(destination, `${JSON.stringify(batch)}\n`, { flag: 'wx', mode: 0o600 });
     return { accepted: true };
   } };
+}
+
+/** Refusals and failures have no fabricated view or source-disclosure event. */
+export function commandObservation(session: string, command: number, requestValue: unknown,
+  status: 'completed' | 'refused' | 'invalidated' | 'failed' | 'interrupted',
+  stdout: string, stderr: string, produced?: ObservationBatch): ObservationBatch {
+  if (!Number.isSafeInteger(command) || command < 1) throw new Error('Invalid command order');
+  const request = produced?.records.find(item => item.kind === 'request')?.id ?? randomUUID();
+  const analysis = produced?.records.find(item => item.kind === 'analysis-context')?.id ?? randomUUID();
+  const rendered = produced?.records.find(item => item.kind === 'rendered-output')?.id ?? randomUUID();
+  const records: ObservationBatch['records'][number][] = produced ? [...produced.records] : [
+    { id: request, kind: 'request', value: requestValue },
+    { id: analysis, kind: 'analysis-context', value: { session } },
+    { id: rendered, kind: 'rendered-output', value: stdout },
+  ];
+  records.push({ id: randomUUID(), kind: 'command-outcome', value: { status, request: requestValue, stderr } });
+  const type = status === 'invalidated' ? 'session-invalidated' : `command-${status}` as const;
+  return { formatVersion: 1, id: produced?.id ?? randomUUID(), session, command, records,
+    events: [...(produced?.events ?? []), { id: randomUUID(), type, request, analysis, rendered }] };
 }

@@ -30,6 +30,7 @@ child/parent navigation. Use Node.js
 npm ci
 npm run build
 npm run --silent postcode
+npm run --silent postcode -- shell
 npm run --silent postcode -- --project fixtures/exports/tsconfig.json
 npm run --silent postcode -- inspect documented --project fixtures/exports/tsconfig.json
 npm run --silent postcode -- inspect documented --project fixtures/exports/tsconfig.json --source-detail
@@ -42,7 +43,9 @@ npm run check
 ```
 
 The default configuration is `tsconfig.json` in the current directory. Each
-invocation opens a short-lived session for one request, then releases its state.
+one-shot invocation opens a short-lived session for one request. `shell` keeps
+that project and its accumulated analysis available until exit, EOF, interruption
+or detected input change.
 Inspection accepts one exact group/module name or generated module handle, with
 honest zero, one, or multiple matches. Handles retain their generated provenance
 and do not establish conceptual names or responsibilities. IDs belong only to
@@ -50,10 +53,14 @@ the producing session; copying one into another invocation does not select it.
 The old `--snapshot` and `--dependency-context` options and generated next-command
 text have been removed.
 
-This is the first checkpoint of the [session plan](docs/plans/transient-session-shell.md).
-Accumulation, change detection, and the interactive prompt follow independent
-review. Precise selection from an ambiguous lookup will become available within
-that prompt; the current one-shot surface displays all matches.
+Open `postcode shell --project path/to/tsconfig.json` in a terminal for an adaptive
+investigation. Commands use the same lenses and presentation options. After a
+lookup such as `inspect widget` displays several matches, select one with
+`inspect @module-…` using its displayed reference. Group references work the same
+way. Use `help` or `exit`; quoted names and backslash escapes are supported.
+Piped and command-file input are refused. No target code or operating-system
+commands are executed. Completed applicable work is reused; later dependency
+requests can capture additional resolution inputs without rewriting earlier views.
 
 Normal output contains conceptual information and qualifications. Unicode and
 experimental JSON retain the existing lens meanings and display bounds. Inputs
@@ -97,7 +104,11 @@ modules in the configured TypeScript Program, including external dependencies.
 Global scripts are not inventorial modules. Diagnostics and unavailable export
 routes qualify results; this command does not run a general type check. Exit code
 0 indicates a produced view, which can contain qualified/partial expansions;
-2 indicates a usage or project-open failure; 1 indicates an internal failure.
+2 indicates usage, project-open failure or invalidation; 3 indicates an expected
+analysis failure preventing a view; 1 indicates an internal failure; 130 indicates
+interactive interruption. The shell continues after syntax or expected analysis
+failures when state remains sound. Ctrl-C cancels an idle input line; during work
+it terminates the analysis worker and ends the session.
 
 See the [architecture overview](docs/architecture/README.md),
 [implementation conventions](docs/implementation-conventions.md),
@@ -138,13 +149,14 @@ limits, scope, evidence qualifications, and navigation examples.
 
 ## Observability
 
-Normal view-producing invocations automatically submit one experimental
+Each accepted shell command and each one-shot view request submits an experimental
 version-one observation batch to a timestamped local file under a UTC date
 subdirectory of this PostCode checkout's `_observations/` directory. The CLI
 discloses that absolute root destination on stderr.
 The batch carries the session identifier and command order (1 for one-shot use),
-plus the request, analysis context, qualified view, exact output,
-and any source-escape event. It can contain repository-derived documentation and
+plus the request, analysis context, command outcome, exact output, and any
+produced view/source-escape event. Refusals, failures, interruption and invalidation
+are recorded where possible without inventing a view. It can contain repository-derived documentation and
 explicitly requested source locations and excerpts. Nothing is sent remotely. The local sink
 creates its root and dated directories with mode `0700` and files with mode `0600`.
 

@@ -1,4 +1,4 @@
-import { methods, moduleEntityIds, recordId } from './identity.js';
+import { methods, recordId } from './identity.js';
 import type { EvaluationRecord, ModuleClaim, ProgramRecordStore, ProjectionRecord, RecordId } from './records.js';
 import { isModuleClaim } from './records.js';
 
@@ -16,7 +16,7 @@ function project(store: ProgramRecordStore, evaluation: EvaluationRecord, select
   if (stored.kind !== 'evaluation') throw new Error('Expected stored evaluation');
   evaluation = stored;
   const lens = selector === null ? 'modules' : 'inspect';
-  const entityIds = moduleEntityIds(evaluation.modules);
+  const entityIds = store.entityIds(evaluation.modules, 'module');
   const modules = evaluation.modules.filter(id => {
     if (selector === null) return true;
     if (selector === id) return true;

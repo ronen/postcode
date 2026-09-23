@@ -325,7 +325,7 @@ test('captured request evidence survives later edits and dependency method versi
     assert.equal(session.kind, 'session');
     if (session.kind !== 'session') throw new Error('Expected session');
     assert.ok(session.methods.includes('postcode/typescript-dependencies@2'));
-    assert.ok(session.methods.includes('postcode/evaluate-dependencies@1'));
+    assert.ok(session.methods.includes('postcode/evaluate-dependencies@2'));
   });
 });
 

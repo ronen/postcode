@@ -1,7 +1,7 @@
 import { compositionView, compositionAnnotation } from './composition-view.js';
 import type { CompositionView } from './composition-view.js';
 import { inlineText, terminalText } from './terminal-text.js';
-import { methods, moduleEntityIds, recordId } from './identity.js';
+import { methods, recordId } from './identity.js';
 import { isModuleClaim, moduleStandardExpansions } from './records.js';
 import type { Claim, ClaimContextRecord, EvaluationRecord, ExportClaim, ModuleClaim, ModuleExpansion, ProgramRecordStore, ProjectionRecord, RecordId, RecordedAssertion, SessionRecord, SourceEvidenceRecord, SymbolClaim } from './records.js';
 
@@ -58,7 +58,7 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
   if (session.kind !== 'session') throw new Error('Expected analysis session');
   const discovery = store.get(projection.evaluations[0]!);
   if (discovery.kind !== 'evaluation') throw new Error('Expected discovery evaluation');
-  const entityIds = moduleEntityIds(discovery.modules);
+  const entityIds = store.entityIds(discovery.modules, 'module');
   const qualification = (id: RecordId): Qualification => {
     const context = store.get(id);
     if (context.kind !== 'claim-context') throw new Error('Expected Claim context');

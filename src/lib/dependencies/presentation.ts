@@ -1,6 +1,6 @@
 import { compositionAnnotation, compositionView } from '../composition-view.js';
 import type { CompositionView } from '../composition-view.js';
-import { methods, moduleEntityIds, recordId } from '../identity.js';
+import { methods, recordId } from '../identity.js';
 import type { Presentation } from '../presentation.js';
 import { moduleStandardExpansions } from '../records.js';
 import type { ClaimContextRecord, EvaluationState, ModuleClaim, ProgramRecord, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
@@ -55,7 +55,7 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
   if (evaluation.kind !== 'dependency-evaluation') throw new Error('Expected dependency evaluation');
   const basis = store.get(evaluation.moduleEvaluation);
   if (basis.kind !== 'evaluation') throw new Error('Expected module evaluation');
-  const ids = moduleEntityIds(basis.modules);
+  const ids = store.entityIds(basis.modules, 'module');
   const qualification = (id: RecordId): Qualification => {
     const context = store.get(id);
     if (context.kind !== 'claim-context') throw new Error('Expected qualification');

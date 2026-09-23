@@ -65,7 +65,7 @@ test('Unicode and experimental JSON use the same qualified projection and automa
     const ids = [batch.id, ...batch.records.map(record => record.id), ...batch.events.map(event => event.id)];
     assert.equal(new Set(ids).size, ids.length);
     assert.ok(ids.every(id => /^[\da-f]{8}-[\da-f]{4}-4[\da-f]{3}-[89ab][\da-f]{3}-[\da-f]{12}$/.test(id)));
-    for (const event of batch.events) for (const id of [event.request, event.analysis, event.view, event.rendered]) {
+    for (const event of batch.events) for (const id of [event.request, event.analysis, event.view, event.rendered].filter(id => id !== undefined)) {
       assert.ok(batch.records.some(record => record.id === id));
     }
   }
@@ -86,8 +86,8 @@ test('normal views omit source facets and raw evidence; inspection source escape
   assert.ok(detail.sourceDetail);
   assert.ok(detail.sourceDetail.items.flatMap(claim => claim.evidence).every(evidence => evidence.path.endsWith('/ambient.d.ts')));
   const batch = inspected.batches[0]!;
-  assert.deepEqual(batch.events.map(event => event.type), ['view-produced', 'source-escape']);
-  assert.equal(batch.records.length, 4);
+  assert.deepEqual(batch.events.map(event => event.type), ['view-produced', 'source-escape', 'command-completed']);
+  assert.equal(batch.records.length, 5);
   assert.equal(batch.events[1]!.sourceLevel, 'declaration-locations-and-excerpts');
   const missing = await invoke(['inspect', 'no match', '--project', config, '--json']);
   assert.equal((JSON.parse(missing.stdout) as QualifiedView).projection.selection.matches, 0);

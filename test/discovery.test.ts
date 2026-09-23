@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
 import { evaluateModules } from '../src/lib/evaluation.js';
-import { methods, moduleEntityIds } from '../src/lib/identity.js';
+import { methods } from '../src/lib/identity.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { createView } from '../src/lib/presentation.js';
 import { inspect, modules } from '../src/lib/projections.js';
@@ -122,12 +122,12 @@ test('exact names remain usable when they collide with compact IDs; scoped IDs s
     writeFileSync(config, JSON.stringify({ compilerOptions: { noLib: true, types: [] }, include: ['*.ts'] }));
     writeFileSync(path.join(root, 'ordinary.ts'), 'export const value = 1;');
     const before = discover(config);
-    const selector = moduleEntityIds(before.evaluation.modules).get(before.evaluation.modules[0]!)!;
+    const selector = before.store.entityIds(before.evaluation.modules, 'module').get(before.evaluation.modules[0]!)!;
     writeFileSync(path.join(root, 'ambient.d.ts'), `declare module "${selector}" { export const named: number; }`);
     const { store, evaluation, claims } = discover(config);
     const named = claims.find(claim => claim.information.name === selector)!;
     const ordinary = claims.find(claim => claim.information.name === null)!;
-    const ids = moduleEntityIds(evaluation.modules);
+    const ids = store.entityIds(evaluation.modules, 'module');
     assert.equal(ids.get(ordinary.subject), selector);
 
     const currentName = inspect(store, evaluation, selector);
@@ -149,7 +149,7 @@ test('generated handles avoid compact Entity IDs across basename, language-name 
     writeFileSync(config, JSON.stringify({ compilerOptions: { noLib: true, types: [] }, include: ['**/*.ts'] }));
     writeFileSync(path.join(root, 'ordinary.ts'), 'export const value = 1;');
     const before = discover(config);
-    const selector = moduleEntityIds(before.evaluation.modules).get(before.evaluation.modules[0]!)!;
+    const selector = before.store.entityIds(before.evaluation.modules, 'module').get(before.evaluation.modules[0]!)!;
     for (const directory of ['first', 'second']) {
       mkdirSync(path.join(root, directory));
       writeFileSync(path.join(root, directory, `${selector}.ts`), 'export const value = 1;');
@@ -159,7 +159,7 @@ test('generated handles avoid compact Entity IDs across basename, language-name 
     // Reserve the entire compact-ID grammar, including prefixes extended on collision.
     for (const length of [9, 64]) writeFileSync(path.join(root, `module-${'a'.repeat(length)}.ts`), 'export const value = 1;');
     const { store, evaluation, claims } = discover(config);
-    const ids = moduleEntityIds(evaluation.modules);
+    const ids = store.entityIds(evaluation.modules, 'module');
     const ordinary = claims.find(claim => claim.information.handle === 'ordinary')!;
     assert.equal(ids.get(ordinary.subject), selector);
     const rewritten = claims.filter(claim => claim.information.handle === `handle-${selector}`);
@@ -195,8 +195,8 @@ test('a changed method version remains attributable in an independent process', 
     const before = invoke();
     const implementation = path.join(root, '_build/src/lib/identity.js');
     const original = readFileSync(implementation, 'utf8');
-    assert.ok(original.includes('postcode/projection@7'));
-    writeFileSync(implementation, original.replace('postcode/projection@7', 'postcode/projection@verification-change'));
+    assert.ok(original.includes('postcode/projection@8'));
+    writeFileSync(implementation, original.replace('postcode/projection@8', 'postcode/projection@verification-change'));
     assert.notEqual(invoke().projection.method, before.projection.method);
   });
 });
@@ -255,12 +255,12 @@ test('explicit output exclusion applies outside the default destination', () => 
   });
 });
 
-test('repeated evaluation retains distinct attempts without changing equivalent session identity', () => {
+test('repeated completed evaluation reuses the retained outcome', () => {
   const { store, evaluation, analysis } = discover(fixture('empty'));
   const next = evaluateModules(store, analysis);
   assert.equal(next.session, evaluation.session);
-  assert.notEqual(next.id, evaluation.id);
-  assert.equal(store.evaluations(evaluation.session).length, 2);
+  assert.equal(next.id, evaluation.id);
+  assert.equal(store.evaluations(evaluation.session).length, 1);
   assert.deepEqual(store.get(evaluation.id), evaluation);
 });
 

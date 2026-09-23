@@ -214,4 +214,5 @@ export interface ProgramRecordStore {
   put(records: readonly ProgramRecord[]): void;
   get(id: RecordId): ProgramRecord;
   evaluations(session: SessionId): readonly EvaluationRecord[];
+  entityIds(ids: readonly RecordId[], kind: 'module' | 'group'): ReadonlyMap<RecordId, string>;
 }
