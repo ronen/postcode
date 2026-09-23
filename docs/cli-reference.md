@@ -10,31 +10,33 @@ node _build/src/cli.js modules --project path/to/tsconfig.json
 node _build/src/cli.js modules --project path/to/tsconfig.json --json
 node _build/src/cli.js organization project --project path/to/tsconfig.json
 node _build/src/cli.js organization repository --project path/to/tsconfig.json --json
-node _build/src/cli.js inspect --project path/to/tsconfig.json --snapshot SNAPSHOT -- MODULE_HANDLE
-node _build/src/cli.js inspect --project path/to/tsconfig.json --snapshot SNAPSHOT --source-detail -- MODULE_HANDLE
+node _build/src/cli.js inspect --project path/to/tsconfig.json -- MODULE_HANDLE
+node _build/src/cli.js inspect --project path/to/tsconfig.json --source-detail -- MODULE_HANDLE
 node _build/src/cli.js dependencies --project path/to/tsconfig.json
-node _build/src/cli.js children --project path/to/tsconfig.json --snapshot SNAPSHOT -- ENTITY_ID
-node _build/src/cli.js parents --project path/to/tsconfig.json --snapshot SNAPSHOT -- ENTITY_ID
+node _build/src/cli.js children --project path/to/tsconfig.json -- MODULE_HANDLE
+node _build/src/cli.js parents --project path/to/tsconfig.json -- MODULE_HANDLE
 node _build/src/cli.js --help
 ```
 
-Replace `MODULE_HANDLE` with one exact name, generated handle, or compact Entity ID.
-Replace `SNAPSHOT` with the full `snapshot:â€¦` value from JSON. For convenience,
-each CLI view supplies an inspection command with the selected configuration,
-CLI location and full snapshot already filled in.
-These command paths are invocation context, not discovered source evidence.
+Replace `MODULE_HANDLE` with one exact name or generated handle. A lookup can
+match zero, one, or multiple subjects. Each command opens a short-lived session;
+Entity IDs in its output are local to that session and cannot navigate another
+invocation. No generated follow-up commands are emitted.
+
+This is the one-shot checkpoint of the [session plan](plans/transient-session-shell.md).
+The interactive prompt, accumulating analysis and change detection follow review.
+Until the prompt is available, ambiguous one-shot lookups display every match
+without a public mechanism for selecting one of their session-local IDs.
 
 Without arguments, the command is `modules` with `./tsconfig.json` and Unicode
 output. `--json` selects the experimental structured presentation. `--source-detail`
-supports inspection and dependency views. `--snapshot` supports inspection,
-children and parents. `--help` performs no analysis.
+supports inspection and dependency views. The retired `--snapshot` and
+`--dependency-context` options are rejected. `--help` performs no analysis.
 
 `--` ends option parsing: subsequent arguments are literal positional values.
 For a module named `--json`, use `inspect --project path/to/tsconfig.json -- --json`.
 Place all options, including `--json` and `--source-detail`, before the marker.
-Generated inspection commands include this marker. Commands are omitted when
-CLI or configuration paths contain control characters; the view instead gives
-manual-inspection guidance. One exact selector is still
+One exact selector is still
 required; the marker does not enable multiple selectors.
 
 Exit 0 means a view was produced, including a qualified or partial result. Exit 2
@@ -46,8 +48,8 @@ and preserves the view.
 ## First use
 
 1. List modules.
-2. Choose a mnemonic handle or precise Entity ID.
-3. Run the generated inspection command with that subject.
+2. Choose an exact name or mnemonic handle.
+3. Run `inspect NAME_OR_HANDLE --project path/to/tsconfig.json`.
 4. Add `--source-detail` before `--` when source evidence is needed.
 
 ## Inventory and inspection
@@ -75,16 +77,13 @@ subgroups remain reachable in the project view even when descent is pruned.
 
 ```sh
 node _build/src/cli.js organization project --project path/to/tsconfig.json --json
-node _build/src/cli.js inspect --project path/to/tsconfig.json --snapshot SNAPSHOT -- GROUP_ID
-node _build/src/cli.js inspect --project path/to/tsconfig.json --snapshot SNAPSHOT --source-detail -- GROUP_ID
+node _build/src/cli.js inspect --project path/to/tsconfig.json -- GROUP_NAME
+node _build/src/cli.js inspect --project path/to/tsconfig.json --source-detail -- GROUP_NAME
 ```
 
-Replace `GROUP_ID` with a displayed group ID. Inspect a documented group, then
-use a subgroup's ID to inspect it, then a direct module's ID for the established
-export/documentation inspection. The generated command includes full snapshot
-scope; replace its `ENTITY_ID` placeholder. Module-only views retain the
-`MODULE_HANDLE` placeholder. Run again after changed inputs; old scope does not
-infer a successor.
+Replace `GROUP_NAME` with an exact group segment name. Inspect a documented
+group, then look up a subgroup name or direct module handle. Repeated group names
+return all matches, sectioned from any matching modules.
 
 Group inspection shows all direct parents, subgroups and modules, with IDs and
 salient group annotations. It counts direct documentation artifacts and other
@@ -105,8 +104,8 @@ claims of absent relationships. Group inspection lists all direct relationships
 and uses aggregate counts for other artifacts. Ordinary output includes names,
 IDs and qualifications; link mechanics and repository paths require source detail.
 
-Organization and group views use `postcode-organization-view/0-experimental`.
-Module-only inspections retain `postcode-view/0-experimental`. Mixed inspection
+Organization and group views use `postcode-organization-view/1-experimental`.
+Module-only inspections retain `postcode-view/1-experimental`. Mixed inspection
 embeds the existing qualified module view in `moduleDetail`. Both are experimental
 schemas; observation records retain the exact view and rendered output.
 
@@ -126,7 +125,7 @@ documentation availability, except opaque submodule/nested-repository boundaries
 Repository/local/global exclusion policies and explicit generated-output
 locations remain qualified. Ordinary artifact contents do not affect organization
 identity unless independently observed as compiler inputs. Captured metadata,
-exclusion policy, link evidence, and provider methods participate in the snapshot.
+exclusion policy, link evidence, and provider methods remain in the captured analysis support.
 First-observed inputs are non-atomic; sparse-checkout completeness remains unresolved.
 
 A missing or unusable project fails before any view. After opening, unavailable
@@ -137,12 +136,9 @@ groups and known direct placements. The current eager TypeScript provider's
 incomplete states are covered by synthetic-provider tests. This view establishes
 layout relationships rather than dependencies or architectural responsibilities.
 
-Every CLI invocation opens and evaluates afresh. Complete per-invocation analysis
-can be costly even for an organization view: a local five-invocation
-PostCode validation journey took approximately 420 seconds, compared with about
-2.8 seconds for the same journey on the smaller external test project. These are
-environment-specific observations, not timing guarantees. Caching and partial
-discovery policies are outside this slice.
+Every CLI invocation opens and evaluates afresh. Earlier latency evidence is
+preserved in the [measurements](../records/validation/2026-09-21-analysis-latency.md);
+those measurements do not establish session reuse.
 
 ## Names, handles and identity
 
@@ -151,7 +147,7 @@ ID, abbreviated against the complete repository group population. The root has
 no intrinsic name and is displayed as `[repository root]`. This display label
 and repository paths are not selectors. Groups have no generated handles.
 Repeated group names and exact group/module name collisions return every match,
-sectioned by kind. Current snapshot scope makes a compact ID precise across kinds.
+sectioned by kind. Precise Entity IDs belong to the producing session.
 
 A **name** is established by the language model. Ordinary source-file modules
 usually have no conceptual TypeScript name; path-derived compiler symbols do not
@@ -169,39 +165,29 @@ Generated cues matching compact Entity-ID syntax (`module-` or `group-` plus 8â€
 hexadecimal characters) receive a `handle-` prefix. Their original cue provenance
 is retained, while scoped Entity IDs remain precise and independently selectable.
 
-A compact **Entity ID**, such as `module-a7bcf3e2`, precisely selects a module
-within its snapshot. Digest prefixes start at eight hexadecimal characters and
-extend when needed against the complete module population, including collapsed
-modules. IDs are deterministic and collision-free within that population. A
-complete reference is the pair of snapshot ID and Entity ID. JSON exposes
-`projection.snapshot` and each module's `entityId` separately; its internal `id`
-record key remains available for record references and compatibility.
+A compact **Entity ID**, such as `module-a7bcf3e2`, names an entity in a
+session. The current single-request implementation abbreviates digest prefixes
+against its complete population, including collapsed modules. The growth-safe
+binding allocator belongs to the next implementation checkpoint. These IDs have
+no cross-invocation selection contract, even if their spellings repeat.
 
-A **snapshot** identifies captured inputs, environment and method versions. The
-short Unicode snapshot label is for recognition, not a valid `--snapshot` value.
-Handle and compact Entity ID selection require the full snapshot in the generated
-command or JSON. A missing or stale scope produces no current match; repeated
-handle or ID text does not imply continuity. Exact names are current-snapshot
-lookups. If a name equals an existing compact Entity ID, omit `--snapshot` to
-select by name; supplying the current snapshot selects precisely by that compact
-ID. The named module remains separately addressable by its own scoped Entity ID.
-Internal full record keys include snapshot scope and remain accepted.
-There are no fuzzy matches, wildcard selectors, retained aliases, or durable
-navigation sessions.
+A **session** is the analysis and reference context, independently of which
+inputs have been observed. JSON exposes `projection.session`; this identifier
+is also present in its observation batch. It is not an input digest or evidence
+of freshness. Supporting inputs, method versions and captured source evidence
+remain attached to program claims. Inputs are assumed stable during analysis;
+capture is first-observed and non-atomic. No continuing-session invalidation
+mechanism is exposed at this checkpoint.
 
-For example, an exporting source file `widget.ts` and a separate ambient
-declaration `declare module "widget" { export const named: number; }` both receive
-the handle `widget`. The ambient module also has the exact language name `widget`;
-the source-file module remains conceptually anonymous.
+One-shot lookups match the union of exact names and generated handles. A language
+name that looks like `module-a7bcf3e2` remains an ordinary exact lookup. There are
+no fuzzy matches, wildcard selectors, retained aliases, or durable sessions.
 
-| Selector (with the same `--project` configuration) | Result |
-| --- | --- |
-| `inspect --snapshot SNAPSHOT_ID -- widget` | Both modules: two genuine matches for the shared handle, with the count displayed. This is the result of replacing `MODULE_HANDLE` with `widget` in the generated command. |
-| `inspect -- widget` | Only the ambient module, by its exact language name. Unscoped lookup does not select by handle. |
-| `inspect --snapshot SNAPSHOT_ID -- ENTITY_ID` | Exactly the module identified by that Entity ID. |
-
-Use the full snapshot value and the desired module's Entity ID from the inventory
-when you need one precise selection; a shared handle does not promise uniqueness.
+For example, a source module cued by `widget.ts` and an ambient module named
+`widget` both match `inspect widget`. Both are shown; neither is chosen implicitly.
+The planned shell will let a human repeat an ambiguous lookup and select one
+of its displayed references in that same session. Opening a shell with an ID
+copied from a one-shot command will not restore the earlier session.
 
 ## Analysis coverage and display omissions
 
@@ -262,7 +248,7 @@ in inspection.
 `--source-detail` is an explicit escape from conceptual information. It displays
 locations and bounded excerpts supporting selected, displayed claims, grouped by
 module and then export, with defining/forwarding source and documentation beneath
-each item. This section precedes qualifications, run limitations and navigation.
+each item. This section precedes qualifications and run limitations.
 Ranges use one-based lines and UTF-16 columns, with exclusive ends. Excerpts
 retain at most four source lines and 300 Unicode characters per evidence span;
 omitted characters are counted. Wrapped
@@ -282,7 +268,8 @@ Every view-producing CLI invocation submits one self-contained observation batch
 to a `date=YYYY-MM-DD` UTC subdirectory of the PostCode checkout's
 `_observations/` directory. Each filename starts with its filesystem-safe UTC
 submission timestamp and ends with the batch UUID. The root destination is disclosed
-on stderr. Batches contain request/context, the qualified view and exact output;
+on stderr. Format-version-1 batches carry `session` and `command` (1 for one-shot),
+with independent batch/event UUIDs. They contain request/context, the qualified view and exact output;
 they may contain repository-derived text and explicitly requested source detail.
 Nothing is sent remotely. Files are created with private permissions and ignored
 by Git. The producer does not read historical batches or prescribe retention.
@@ -297,8 +284,7 @@ does not establish this exclusion. Keep additional generated views in the exclud
 
 Unicode inline values (names, selectors, qualifications and source paths) display
 line-breaking, indentation and Unicode bidirectional formatting controls as visible
-Unicode escapes. Bidi controls in invocation paths suppress generated commands
-rather than changing their actual path arguments. Documentation
+Unicode escapes. Operational paths retain their original values internally. Documentation
 and excerpts retain the renderer's structured wrapping. JSON retains the original
 string values; display escaping does not alter stored claims or evidence.
 
@@ -312,14 +298,14 @@ it does not change filesystem destinations or recorded observation values.
 `dependencies` shows direct project dependency structure. A dependency parent depends
 directly on a dependency child. `children` selects outgoing relationships and
 source-owned request results without edges; `parents` selects established incoming
-project relationships. Each accepts the same exact module names, generated handles,
-Entity IDs and snapshot scoping as module inspection. Groups are not dependency
+project relationships. Each accepts the same exact module names and generated
+handles as module inspection. Groups are not dependency
 subjects. Zero, one and multiple matches remain explicit.
 
-Start with `dependencies --project fixtures/dependency-journey/tsconfig.json`, then
-use the generated commands to investigate the `right` module's children, the `shared`
-module's parents, and inspect `forward`. Replace `ENTITY_ID` in a generated command
-with a displayed precise ID. Options go before `--`.
+Start with `dependencies --project fixtures/dependency-journey/tsconfig.json`,
+then use `children right`, `parents shared`, or `inspect forward` with the same
+`--project` option. These are new lookups in independent short-lived sessions.
+Options go before `--` when the selector resembles an option.
 
 Project modules form the root and cycle population, including isolated modules. Roots
 have no established project dependency parents; they do not imply entry points or
@@ -367,17 +353,14 @@ basis and file evidence, recognition outcomes, and organization placement/contai
 support without rereading files. It bounds source evidence to 100 records and
 organization claims to 50, with per-claim occurrence and evidence omissions explicit.
 Ordinary views omit raw syntax and source paths. The experimental schema is
-`postcode-dependency-view/0-experimental`; observations retain its request, outcomes,
+`postcode-dependency-view/1-experimental`; observations retain its request, outcomes,
 qualifications, display bounds and rendered output. Source escape uses the
 `dependency-occurrences-and-organization-evidence` level.
 
-Dependency resolution can observe inputs not needed by ordinary inventory. Generated
-inspection commands from dependency views include `--dependency-context`, explicitly
-requesting that preparation so the supplied snapshot and IDs remain valid. The flag
-also supports module and organization commands when a shared dependency context is
-wanted. Ordinary organization views do not silently run the dependency lens. A changed
-input still invalidates the snapshot; no successor is inferred.
-
+Dependency resolution can observe inputs not needed by ordinary inventory.
+Ordinary organization and inspection do not silently request dependencies.
+`--dependency-context` has been retired because reproducing snapshot scope was
+its only purpose; handles no longer require such scope.
 
 Dependency views define organization-relative labels and distinguish their projection
 population from the full discovered population available to exact lookup. Cycle headers
@@ -387,15 +370,15 @@ source-detail command exposes captured support for the selected view, prioritizi
 non-edge and recognition evidence within its source bound. Module composition badges
 are separated from relationship mechanism labels.
 
-Every navigation command evaluates current inputs afresh. Focused commands reject a
-supplied snapshot mismatch. Project-wide source detail has no selected entity and
-therefore does not accept a snapshot guard; its output identifies the new snapshot.
-It uses evidence captured in that invocation, not a reopened historical capture.
-Unknown request ownership and known ownership omitted from display remain distinct.
+Every one-shot command evaluates current inputs afresh. Explicit source detail
+uses evidence captured for that command. Unknown request ownership and known
+ownership omitted from display remain distinct.
 
 Fresh analysis can still take several seconds on larger configured projects.
 Evidence preparation reuses each captured file's content digest within the current
 analysis, avoiding repeated hashing without retaining analysis between commands.
 The [latency measurements](../records/validation/2026-09-21-analysis-latency.md)
-show the measured improvement and its limits. There is no cache/session option;
-each command still establishes its own current evidence and records its observation.
+show the measured improvement and its limits. Each command currently has its own short-lived session and observation. Native
+SIGINT can terminate compiler-backed work; the process and transient state end.
+An interrupted process may not submit an observation. Shell interruption handling
+is a later checkpoint.

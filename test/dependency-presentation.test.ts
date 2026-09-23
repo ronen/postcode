@@ -4,6 +4,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
+import { normalizeSession } from './helpers.js';
 import { runCli } from '../src/lib/cli.js';
 import type { ObservationBatch } from '../src/lib/observations.js';
 import { renderDependencyView, type QualifiedDependencyView } from '../src/lib/dependencies/presentation.js';
@@ -21,7 +22,7 @@ const viewOf = (result: Awaited<ReturnType<typeof invoke>>) => {
   return result.batches[0]!.records.find(record => record.kind === 'qualified-view')!.value as QualifiedDependencyView;
 };
 
-test('representative journey preserves direct intermediates, shared parents, composition and scoped navigation', async () => {
+test('representative journey preserves direct intermediates, shared parents, composition and fresh exact lookups', async () => {
   const config = path.resolve('fixtures/dependency-journey/tsconfig.json');
   const initial = await invoke(config, ['dependencies']);
   const view = viewOf(initial);
@@ -35,47 +36,47 @@ test('representative journey preserves direct intermediates, shared parents, com
   assert.match(initial.stdout, /re-exports only/);
   assert.ok(view.relationships.some(edge => edge.organization?.classification === 'outward'));
   assert.ok(view.relationships.some(edge => edge.organization?.classification === 'same-group'));
-  const snapshot = view.projection.snapshot;
-  const children = viewOf(await invoke(config, ['children', module('right').entityId, '--snapshot', snapshot, '--json']));
-  assert.deepEqual(children.relationships.map(edge => edge.child), [module('forward').id]);
-  const parents = viewOf(await invoke(config, ['parents', module('shared').entityId, '--snapshot', snapshot, '--json']));
-  assert.deepEqual(parents.relationships.map(edge => edge.parent).sort(), [module('left').id, module('forward').id].sort());
-  assert.equal(parents.projection.snapshot, snapshot);
+  const session = view.projection.session;
+  const children = viewOf(await invoke(config, ['children', module('right').handle, '--json']));
+  assert.deepEqual(normalizeSession(children.relationships.map(edge => edge.child)), normalizeSession([module('forward').id]));
+  const parents = viewOf(await invoke(config, ['parents', module('shared').handle, '--json']));
+  assert.deepEqual(normalizeSession(parents.relationships.map(edge => edge.parent).sort()), normalizeSession([module('left').id, module('forward').id].sort()));
+  assert.notEqual(parents.projection.session, session);
   assert.equal(parents.recognitionCoverage.length, 0);
   assert.ok(parents.limitations.some(text => text.includes('cannot produce a parent result')));
-  assert.match(view.presentation.navigation!.inspect, /--dependency-context/);
-  const inspected = await invoke(config, ['inspect', module('forward').entityId, '--snapshot', snapshot, '--dependency-context', '--json']);
+  assert.equal('navigation' in view.presentation, false);
+  const inspected = await invoke(config, ['inspect', module('forward').handle, '--json']);
   const detail = JSON.parse(inspected.stdout) as QualifiedView;
   assert.equal(detail.modules.length, 1);
   assert.equal(detail.modules[0]!.composition.claims[0]!.property, 're-exports-only');
-  assert.equal(viewOf(await invoke(config, ['children', module('left').handle, '--json'])).projection.selection.referenceStatus, 'snapshot-required');
-  assert.equal(viewOf(await invoke(config, ['parents', module('shared').entityId, '--snapshot', `snapshot:${'0'.repeat(64)}`, '--json'])).subjects.length, 0);
+  assert.equal(viewOf(await invoke(config, ['children', module('left').handle, '--json'])).projection.selection.referenceStatus, 'current');
+  assert.equal(viewOf(await invoke(config, ['parents', module('shared').entityId, '--json'])).subjects.length, 0);
   const json = viewOf(await invoke(config, ['dependencies', '--json']));
-  assert.deepEqual(json.projection, view.projection);
-  assert.deepEqual(json.relationships.map(edge => edge.id), view.relationships.map(edge => edge.id));
+  assert.deepEqual(normalizeSession(json.projection), normalizeSession(view.projection));
+  assert.deepEqual(normalizeSession(json.relationships.map(edge => edge.id)), normalizeSession(view.relationships.map(edge => edge.id)));
 });
 
 test('source-owned request results and recognition outcomes are separate and parent disclosure does not fabricate them', async () => {
   const config = path.resolve('fixtures/dependency-contract/tsconfig.json');
   const initial = viewOf(await invoke(config, ['dependencies', '--json']));
   const requests = initial.modules.find(module => module.handle === 'requests')!;
-  const children = await invoke(config, ['children', requests.entityId, '--snapshot', initial.projection.snapshot, '--json']);
+  const children = await invoke(config, ['children', requests.handle, '--json']);
   const view = viewOf(children);
   assert.equal(view.requestResults.length, 6);
-  assert.ok(view.presentation.dependencyNavigation!.source.includes('--source-detail'));
+  assert.equal('dependencyNavigation' in view.presentation, false);
   assert.ok(view.recognitionCoverage.some(item => item.commonjs?.outcome === 'alternative-binding'));
-  const text = await invoke(config, ['children', requests.entityId, '--snapshot', initial.projection.snapshot]);
+  const text = await invoke(config, ['children', requests.handle]);
   assert.match(text.stdout, /Request 1:/);
   assert.match(text.stdout, /Coverage 1:/);
-  assert.match(text.stdout, /Navigation evaluates current inputs afresh/);
-  assert.match(text.stdout, /Next · fresh evaluation with request/);
+  assert.doesNotMatch(text.stdout, /Navigation evaluates current inputs afresh/);
+  assert.doesNotMatch(text.stdout, /Next ·/);
   assert.doesNotMatch(text.stdout, /owner not shown\/established/);
   assert.match(text.stdout, /strict organization descendant/);
   assert.ok(view.recognitionCoverage.length > 0);
   assert.ok(view.recognitionCoverage.some(item => item.outcome === 'alternative-binding'));
   assert.ok(view.limitations.some(text => text.includes('bare require')));
   for (const key of ['"path":', '"evidence":', '"writtenSpecifier":', '"resolvedFile":', '"excerpt":']) assert.equal(children.stdout.includes(key), false, key);
-  const escaped = await invoke(config, ['children', requests.entityId, '--snapshot', initial.projection.snapshot, '--source-detail', '--json']);
+  const escaped = await invoke(config, ['children', requests.handle, '--source-detail', '--json']);
   const source = viewOf(escaped).sourceDetail!;
   assert.ok(source.items.some(item => item.evidence.dependencyResolution?.status === 'target-indeterminate'));
   assert.ok(source.items.some(item => item.evidence.dependencyResolution?.status === 'unresolved'));
@@ -85,7 +86,7 @@ test('source-owned request results and recognition outcomes are separate and par
   const batch = escaped.batches[0]!;
   assert.equal(batch.events[1]!.sourceLevel, 'dependency-occurrences-and-organization-evidence');
   assert.equal(batch.records.find(record => record.kind === 'rendered-output')!.value, escaped.stdout);
-  const parents = await invoke(config, ['parents', requests.entityId, '--snapshot', initial.projection.snapshot]);
+  const parents = await invoke(config, ['parents', requests.handle]);
   const parentView = viewOf(parents);
   assert.deepEqual(parentView.requestResults, []);
   assert.deepEqual(parentView.recognitionCoverage, []);
@@ -107,10 +108,10 @@ test('opaque external endpoints render as leaves and never claim an established 
     assert.match(result.stdout, /opaque external/);
     const external = view.modules.find(module => module.opaque)!;
     assert.ok(!view.graph!.components.some(component => component.members.includes(external.id)));
-    const child = await invoke(config, ['children', external.entityId, '--snapshot', view.projection.snapshot]);
+    const child = await invoke(config, ['children', external.handle]);
     assert.match(child.stdout, /empty child set is not established/);
     assert.equal(viewOf(child).evaluations.organization!.availability, 'unavailable');
-    const parent = viewOf(await invoke(config, ['parents', external.entityId, '--snapshot', view.projection.snapshot]));
+    const parent = viewOf(await invoke(config, ['parents', external.handle]));
     assert.equal(parent.relationships.length, 1);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
@@ -140,13 +141,13 @@ test('cycle grouping retains internal edges and display depth omissions do not r
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('source-only context preparation keeps dependency navigation scoped where CommonJS observes extra inputs', async () => {
+test('inspection by handle works independently of additional CommonJS dependency inputs', async () => {
   const config = path.resolve('fixtures/dependency-contract/tsconfig.json');
   const initial = viewOf(await invoke(config, ['dependencies', '--json']));
   const selected = initial.modules.find(module => module.handle === 'requests')!;
-  const inspected = JSON.parse((await invoke(config, ['inspect', selected.entityId, '--snapshot', initial.projection.snapshot, '--dependency-context', '--json'])).stdout) as QualifiedView;
+  const inspected = JSON.parse((await invoke(config, ['inspect', selected.handle, '--json'])).stdout) as QualifiedView;
   assert.equal(inspected.projection.selection.matches, 1);
-  assert.equal(inspected.projection.snapshot, initial.projection.snapshot);
+  assert.notEqual(inspected.projection.session, initial.projection.session);
 });
 
 test('component bounds count disconnected omissions and terminal controls stay inert', async () => {

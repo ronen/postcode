@@ -64,6 +64,6 @@ if (opened.status !== 'opened') {
     projectModules: result.projectModules.length, occurrences: occurrences.length, relationships: result.relationships.length,
     mechanisms: counts(occurrences.map(item => item.mechanism)), targetStatuses: counts(occurrences.map(item => item.resolution.status!)),
     coverageCounts: counts(coverage.map(item => item.outcome)), coreCommonJS: core, surveyedRelationships: surveyed, coverage,
-    pathPolicy: 'Source paths are relative to the selected configuration directory. Snapshot IDs are retained and depend on absolute analysis inputs.',
+    pathPolicy: 'Source paths are relative to the selected configuration directory. Session IDs are retained and depend on absolute analysis inputs.',
   }, null, 2));
 }

@@ -1,7 +1,7 @@
 import ts from 'typescript';
 import { compare, methods, recordId } from '../identity.js';
 import type { DiscoveryResult } from '../evaluation.js';
-import type { ExportClaim, ModuleExpansion, ProgramRecord, RecordId, SnapshotId } from '../records.js';
+import type { ExportClaim, ModuleExpansion, ProgramRecord, RecordId, SessionId } from '../records.js';
 
 export interface ExpansionModule {
   readonly key: string;
@@ -25,7 +25,7 @@ function statements(module: ts.Symbol): readonly ts.Statement[] {
   });
 }
 
-/** Preparation completes compiler queries before the caller finalizes snapshot identity. */
+/** Preparation completes compiler queries before the caller finalizes session identity. */
 export function prepareExpansions(checker: ts.TypeChecker, modules: readonly ExpansionModule[], requested: readonly ModuleExpansion[]) {
   const resolve = (symbol: ts.Symbol): ts.Symbol => symbol.flags & ts.SymbolFlags.Alias ? checker.getAliasedSymbol(symbol) : symbol;
   const aliasAllowsValue = (symbol: ts.Symbol, seen = new Set<ts.Symbol>()): boolean => {
@@ -210,20 +210,20 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
     return { module, exports, issues: [...new Set(issues)], docs: requested.includes('documentation') ? docs(module.declarations) : [] };
   });
 
-  return (snapshot: SnapshotId, evidence: (node: ts.Node, compilerName: string | null) => RecordId) => {
+  return (session: SessionId, evidence: (node: ts.Node, compilerName: string | null) => RecordId) => {
     const method = `${methods.expansions};typescript@${ts.version}`;
     const records: ProgramRecord[] = [];
     const moduleId = (symbol: ts.Symbol | undefined) => {
       const module = symbol && moduleBySymbol.get(symbol);
-      return module ? recordId(snapshot, 'module', module.key) : null;
+      return module ? recordId(session, 'module', module.key) : null;
     };
-    const symbolId = (symbol: ts.Symbol) => recordId(snapshot, 'symbol', {
+    const symbolId = (symbol: ts.Symbol) => recordId(session, 'symbol', {
       name: symbol.getName(), declarations: (symbol.getDeclarations() ?? []).map(node =>
         [node.getSourceFile().fileName, node.pos, node.end]).sort((a, b) => compare(JSON.stringify(a), JSON.stringify(b))),
     });
     const context = (scope: RecordId, key: unknown, nodes: readonly ts.Node[], guarantee: string, limitations: readonly string[] = []) => {
-      const id = recordId(snapshot, 'expansion-context', key);
-      records.push({ kind: 'claim-context', id, snapshot, method, scope,
+      const id = recordId(session, 'expansion-context', key);
+      records.push({ kind: 'claim-context', id, session, method, scope,
         evidence: [...new Set(nodes.map(node => evidence(node, null)))], status: 'mechanically-derived', guarantee,
         limitations, diagnostics: [] });
       return id;
@@ -231,13 +231,13 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
     const putDocs = (subject: RecordId, contributions: ReturnType<typeof docs>, association: 'module' | 'origin-symbol' | 'export-alias'): RecordId[] => {
       return contributions.map(doc => {
         const key = [subject, doc.node.getSourceFile().fileName, doc.node.pos, association];
-        const assertion = recordId(snapshot, 'documentation', key);
-        const claim = recordId(snapshot, 'documentation-association', key);
+        const assertion = recordId(session, 'documentation', key);
+        const claim = recordId(session, 'documentation-association', key);
         const ctx = context(subject, key, [doc.node], 'TypeScript associates this recorded documentation with the subject.',
           ['The text is a recorded assertion; its truth, currency and completeness are not established.']);
-        records.push({ kind: 'recorded-assertion', id: assertion, snapshot, method, context: ctx,
+        records.push({ kind: 'recorded-assertion', id: assertion, session, method, context: ctx,
           status: 'recorded-assertion', text: doc.text, tags: doc.tags }, {
-          kind: 'claim', id: claim, snapshot, method, subject, context: ctx,
+          kind: 'claim', id: claim, session, method, subject, context: ctx,
           information: { type: 'documentation-association', assertion, association },
         });
         return claim;
@@ -248,22 +248,22 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
     const contexts: RecordId[] = [];
     const symbols = new Set<RecordId>();
     for (const item of prepared) {
-      const subject = recordId(snapshot, 'module', item.module.key);
+      const subject = recordId(session, 'module', item.module.key);
       contexts.push(context(subject, ['expansion', subject], item.module.declarations,
         'Effective exports and associated documentation obtained through the TypeScript compiler model.', item.issues));
       docClaims.push(...putDocs(subject, item.docs, 'module'));
       for (const exported of item.exports) {
-        const id = recordId(snapshot, 'export', [subject, exported.exported.getName()]);
+        const id = recordId(session, 'export', [subject, exported.exported.getName()]);
         const symbol = exported.symbol ? symbolId(exported.symbol) : null;
         const declarations = exported.symbol?.getDeclarations() ?? [];
         const targetRoles = exported.symbol ? { type: Boolean(exported.symbol.flags & ts.SymbolFlags.Type),
           value: Boolean(exported.symbol.flags & ts.SymbolFlags.Value) } : null;
         if (symbol && !symbols.has(symbol)) {
           symbols.add(symbol);
-          const claim = recordId(snapshot, 'symbol-claim', symbol);
+          const claim = recordId(session, 'symbol-claim', symbol);
           const ctx = context(symbol, symbol, declarations, 'One compiler semantic symbol with its contributing declarations.');
-          records.push({ kind: 'symbol', id: symbol, snapshot, method, claim }, {
-            kind: 'claim', id: claim, snapshot, method, subject: symbol, context: ctx,
+          records.push({ kind: 'symbol', id: symbol, session, method, claim }, {
+            kind: 'claim', id: claim, session, method, subject: symbol, context: ctx,
             information: { type: 'symbol', name: declarations.some(ts.isSourceFile) ? null : exported.symbol!.getName(), roles: targetRoles!, declarationCount: declarations.length },
           });
           docClaims.push(...putDocs(symbol, exported.originDocs, 'origin-symbol'));
@@ -273,7 +273,7 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
         const routes = exported.traced.routes.map(step => ({ kind: step.kind, typeOnly: step.typeOnly,
           aliased: step.aliased, via: moduleId(step.via) }));
         const origins = [...new Set(declarations.map(node => moduleId(owner(node, true))).filter(id => id !== null))];
-        records.push({ kind: 'claim', id, snapshot, method, subject, context: ctx, information: {
+        records.push({ kind: 'claim', id, session, method, subject, context: ctx, information: {
           type: 'export', exportedName: exported.exported.getName(), symbol,
           origin: origins.length === 1 ? origins[0]! : null,
           roles: targetRoles && exported.traced.routes.length ? { type: targetRoles.type, value: targetRoles.value
@@ -285,7 +285,7 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
     }
     const byId = new Map(records.map(record => [record.id, record]));
     const results: NonNullable<DiscoveryResult['expansions']>[number][] = prepared.flatMap((item, index) => {
-      const subject = recordId(snapshot, 'module', item.module.key);
+      const subject = recordId(session, 'module', item.module.key);
       const exports = exportClaims.filter(id => {
         const claim = byId.get(id);
         return claim?.kind === 'claim' && claim.subject === subject;

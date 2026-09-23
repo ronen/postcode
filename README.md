@@ -41,26 +41,25 @@ npm test
 npm run check
 ```
 
-The default configuration is `tsconfig.json` in the current directory. Inspection
-accepts one exact group/module name, module handle, or Entity ID from a view.
-One referent can match zero, one, or several entities; it never falls back to fuzzy
-matching. IDs and handles are scoped to the analyzed snapshot. Source-backed
-modules without a compiler-established conceptual name are shown as anonymous,
-with generated handles for recognition. Handles use language names, extensionless
-basenames, or declared exports, with an honest anonymous fallback. They preserve
-their generated provenance and do not claim responsibilities or conceptual names.
-Compact Entity IDs are precise within the full snapshot population, extending
-hash prefixes on collision. Handle and compact ID selection require
-`--snapshot <complete-snapshot-id>` supplied by the generated command or JSON;
-mismatched snapshots produce no current match. Exact names are current lookups.
+The default configuration is `tsconfig.json` in the current directory. Each
+invocation opens a short-lived session for one request, then releases its state.
+Inspection accepts one exact group/module name or generated module handle, with
+honest zero, one, or multiple matches. Handles retain their generated provenance
+and do not establish conceptual names or responsibilities. IDs belong only to
+the producing session; copying one into another invocation does not select it.
+The old `--snapshot` and `--dependency-context` options and generated next-command
+text have been removed.
 
-Normal output contains conceptual information and qualifications. Unicode and the
-experimental JSON presentations use the same qualified projection for each lens.
-The suggested inspection command includes the explicit CLI and selected-project
-paths as invocation context; replace only its subject. A short snapshot label is
-displayed in the header, while that command retains the full required snapshot.
-Place additional options before the generated command's `--` marker; text after
-it is the literal selector, including names such as `--json` or `-h`.
+This is the first checkpoint of the [session plan](docs/plans/transient-session-shell.md).
+Accumulation, change detection, and the interactive prompt follow independent
+review. Precise selection from an ambiguous lookup will become available within
+that prompt; the current one-shot surface displays all matches.
+
+Normal output contains conceptual information and qualifications. Unicode and
+experimental JSON retain the existing lens meanings and display bounds. Inputs
+are assumed unchanged during analysis and are captured as first observed,
+non-atomically. Use `--` before option-like literal selectors, for example
+`inspect --project path/to/tsconfig.json -- --json`.
 `--source-detail` is available for inspection and dependency views and shows supporting source
 locations and bounded excerpts grouped by displayed concepts, separately identified
 as source escape. File-level associations have no excerpt; it does not show full files.
@@ -115,7 +114,7 @@ group identities and direct relationships. Context-only siblings are labelled;
 pruning and omitted module leaves are disclosed. A shared group expands once,
 with subsequent occurrences marked as references.
 
-Inspect a group's `group-…` Entity ID with its full snapshot to see all direct
+Inspect a group's exact segment name to see all direct
 parents, subgroups, member modules, documentation availability, and counts of
 other unanalyzed artifacts. Exact names may match several groups and modules;
 inspection sections distinguish the kinds. Groups have directory-segment names,
@@ -133,17 +132,18 @@ repository organization.
 
 Group `--source-detail` shows captured paths and artifact/link metadata without
 file contents. Organization and group views use the experimental
-`postcode-organization-view/0` JSON schema. See the
+`postcode-organization-view/1` JSON schema. See the
 [command reference](docs/cli-reference.md#organization-and-group-inspection) for
 limits, scope, evidence qualifications, and navigation examples.
 
 ## Observability
 
 Normal view-producing invocations automatically submit one experimental
-version-zero observation batch to a timestamped local file under a UTC date
+version-one observation batch to a timestamped local file under a UTC date
 subdirectory of this PostCode checkout's `_observations/` directory. The CLI
 discloses that absolute root destination on stderr.
-The batch includes the request, analysis context, qualified view, exact output,
+The batch carries the session identifier and command order (1 for one-shot use),
+plus the request, analysis context, qualified view, exact output,
 and any source-escape event. It can contain repository-derived documentation and
 explicitly requested source locations and excerpts. Nothing is sent remotely. The local sink
 creates its root and dated directories with mode `0700` and files with mode `0600`.

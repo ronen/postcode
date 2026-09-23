@@ -34,7 +34,7 @@ commands and about 27–28 seconds for ordinary ts-node commands, with one retai
 about 420 seconds. This latency makes ordinary navigation costly and will impede
 interactive or visual use. Characterize where time is spent and evaluate bounded
 ways to reuse valid analysis within and across investigation steps while
-preserving snapshot identity, changed-input invalidation, qualification,
+preserving session reference bindings, captured evidence, changed-input invalidation, qualification,
 observation, and the distinction between cached results and current evidence. Do
 not assume that durable caching is the first or only remedy.
 

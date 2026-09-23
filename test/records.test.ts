@@ -2,50 +2,50 @@ import type { RecordId } from '../src/lib/records.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { evaluateModules } from '../src/lib/evaluation.js';
-import { methods, recordId, snapshotId } from '../src/lib/identity.js';
+import { recordId, sessionId } from '../src/lib/identity.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { inspect, modules } from '../src/lib/projections.js';
-import type { ClaimContextRecord, DocumentationAssociationClaim, EvaluationState, ModuleClaim, ModuleRecord, ProgramRecord, SnapshotRecord, SymbolClaim } from '../src/lib/records.js';
+import type { ClaimContextRecord, DocumentationAssociationClaim, EvaluationState, ModuleClaim, ModuleRecord, ProgramRecord, SessionRecord, SymbolClaim } from '../src/lib/records.js';
 import { discover } from './helpers.js';
 
 function context() {
-  const snapshot = snapshotId({ fixture: 'record-boundary', methods });
-  const record: SnapshotRecord = {
-    id: snapshot, snapshot, kind: 'snapshot', method: 'test@0', inputDigest: 'fixture', methods: ['test@0'],
+  const session = sessionId();
+  const record: SessionRecord = {
+    id: session, session, kind: 'session', method: 'test@0', methods: ['test@0'],
   };
   const store = new MemoryProgramRecordStore();
   store.put([record]);
-  return { store, snapshot, record };
+  return { store, session, record };
 }
 
-test('store rejects overwrites, missing/cross-snapshot/wrong-kind references and leaves batches atomic', () => {
-  const { store, snapshot, record } = context();
+test('store rejects overwrites, missing/cross-session/wrong-kind references and leaves batches atomic', () => {
+  const { store, session, record } = context();
   assert.throws(() => store.put([{ ...record, method: 'changed' }]), /collision/);
   const invalid: ModuleRecord = {
-    kind: 'module', id: recordId(snapshot, 'module', 'bad'), snapshot, method: 'test@0',
-    claim: recordId(snapshot, 'claim', 'missing'),
+    kind: 'module', id: recordId(session, 'module', 'bad'), session, method: 'test@0',
+    claim: recordId(session, 'claim', 'missing'),
   };
   assert.throws(() => store.put([invalid]), /reference/);
   assert.throws(() => store.get(invalid.id), /Missing/);
-  assert.throws(() => store.put([{ ...invalid, claim: snapshot }]), /Expected claim/);
-  const other = snapshotId('other');
-  store.put([{ ...record, id: other, snapshot: other }]);
+  assert.throws(() => store.put([{ ...invalid, claim: session }]), /Expected claim/);
+  const other = sessionId();
+  store.put([{ ...record, id: other, session: other }]);
   assert.throws(() => store.put([{ ...invalid, claim: other }]), /reference/);
-  assert.deepEqual(store.get(snapshot), record);
+  assert.deepEqual(store.get(session), record);
 });
 
-test('snapshot records require their own matching identity even when referencing a valid pending or stored snapshot', () => {
+test('session records require their own matching identity even when referencing a valid pending or stored session', () => {
   for (const existingTarget of [false, true]) {
     const { store, record } = context();
-    const targetId = snapshotId('valid-target');
-    const target: SnapshotRecord = { ...record, id: targetId, snapshot: targetId };
-    const malformed: SnapshotRecord = { ...target, id: snapshotId('orphan') };
+    const targetId = sessionId();
+    const target: SessionRecord = { ...record, id: targetId, session: targetId };
+    const malformed: SessionRecord = { ...target, id: sessionId() };
     const marker: ClaimContextRecord = { kind: 'claim-context', id: recordId(targetId, 'context', 'marker'),
-      snapshot: targetId, method: 'test@0', scope: 'configured-project', evidence: [],
+      session: targetId, method: 'test@0', scope: 'configured-project', evidence: [],
       status: 'mechanically-derived', guarantee: 'Synthetic fixture', limitations: [], diagnostics: [] };
     if (existingTarget) store.put([target]);
     const batch = [marker, malformed, ...(existingTarget ? [] : [target])];
-    assert.throws(() => store.put(batch), /invalid snapshot/i);
+    assert.throws(() => store.put(batch), /invalid session/i);
     for (const rejected of batch) assert.throws(() => store.get(rejected.id), /Missing/);
     assert.deepEqual(store.get(record.id), record);
     if (!existingTarget) store.put([target]);
@@ -59,9 +59,9 @@ test('entity claims require the matching discriminator and reciprocal subject be
   for (const kind of ['module', 'symbol'] as const) {
     for (const mismatch of ['discriminator', 'subject', 'export-claim'] as const) {
       for (const existingTarget of [false, true]) {
-        const { store, snapshot, record } = context();
-        const id = (key: string) => recordId(snapshot, 'test', key);
-        const base = { snapshot, method: 'test@0' };
+        const { store, session, record } = context();
+        const id = (key: string) => recordId(session, 'test', key);
+        const base = { session, method: 'test@0' };
         const claimContext: ClaimContextRecord = { ...base, kind: 'claim-context', id: id('context'),
           scope: 'configured-project', evidence: [], status: 'mechanically-derived',
           guarantee: 'Synthetic fixture', limitations: [], diagnostics: [] };
@@ -84,7 +84,7 @@ test('entity claims require the matching discriminator and reciprocal subject be
         for (const rejected of [marker, invalid, ...(existingTarget ? [] : valid)]) {
           assert.throws(() => store.get(rejected.id), /Missing/);
         }
-        assert.deepEqual(store.get(snapshot), record);
+        assert.deepEqual(store.get(session), record);
         if (!existingTarget) store.put(valid);
         for (const accepted of valid) assert.deepEqual(store.get(accepted.id), accepted);
       }
@@ -96,9 +96,9 @@ test('documentation associations validate subject kinds and export discriminator
   for (const association of ['module', 'origin-symbol', 'export-alias'] as const) {
     for (const target of ['module', 'symbol', 'export', 'module-claim', 'symbol-claim', 'context', 'assertion'] as const) {
       for (const existingTarget of [false, true]) {
-        const { store, snapshot, record } = context();
-        const id = (key: string) => recordId(snapshot, 'test', key);
-        const base = { snapshot, method: 'test@0' };
+        const { store, session, record } = context();
+        const id = (key: string) => recordId(session, 'test', key);
+        const base = { session, method: 'test@0' };
         const claimContext: ClaimContextRecord = { ...base, kind: 'claim-context', id: id('context'),
           scope: 'configured-project', evidence: [], status: 'mechanically-derived',
           guarantee: 'Synthetic fixture', limitations: [], diagnostics: [] };
@@ -128,7 +128,7 @@ test('documentation associations validate subject kinds and export discriminator
           assert.throws(() => store.put(batch), /documentation subject/);
           for (const rejected of batch) assert.throws(() => store.get(rejected.id), /Missing/);
         }
-        assert.deepEqual(store.get(snapshot), record);
+        assert.deepEqual(store.get(session), record);
         if (!existingTarget) store.put(valid);
         for (const accepted of valid) assert.deepEqual(store.get(accepted.id), accepted);
       }
@@ -137,32 +137,32 @@ test('documentation associations validate subject kinds and export discriminator
 });
 
 test('store owns immutable copies rather than sharing mutable producer values', () => {
-  const { store, snapshot } = context();
-  const record = store.get(snapshot);
+  const { store, session } = context();
+  const record = store.get(session);
   assert.ok(Object.isFrozen(record));
   assert.throws(() => Object.assign(record, { method: 'mutated' }), TypeError);
-  const input = { ...record, methods: ['test@0'] } as SnapshotRecord;
+  const input = { ...record, methods: ['test@0'] } as SessionRecord;
   store.put([input]);
   (input.methods as string[]).push('mutated');
-  assert.deepEqual((store.get(snapshot) as SnapshotRecord).methods, ['test@0']);
+  assert.deepEqual((store.get(session) as SessionRecord).methods, ['test@0']);
 });
 
 test('an export claim cannot serve as a module primary claim even with a reciprocal subject', () => {
-  const { store, snapshot } = context();
-  const module: ModuleRecord = { kind: 'module', id: recordId(snapshot, 'module', 'invalid-primary'),
-    snapshot, method: 'test@0', claim: recordId(snapshot, 'claim', 'invalid-primary') };
-  const claimContext: ClaimContextRecord = { kind: 'claim-context', id: recordId(snapshot, 'context', 'primary'),
-    snapshot, method: 'test@0', scope: module.id, evidence: [], status: 'mechanically-derived',
+  const { store, session } = context();
+  const module: ModuleRecord = { kind: 'module', id: recordId(session, 'module', 'invalid-primary'),
+    session, method: 'test@0', claim: recordId(session, 'claim', 'invalid-primary') };
+  const claimContext: ClaimContextRecord = { kind: 'claim-context', id: recordId(session, 'context', 'primary'),
+    session, method: 'test@0', scope: module.id, evidence: [], status: 'mechanically-derived',
     guarantee: 'Synthetic fixture', limitations: [], diagnostics: [] };
   assert.throws(() => store.put([module, claimContext, {
-    kind: 'claim', id: module.claim, snapshot, method: 'test@0', subject: module.id, context: claimContext.id,
+    kind: 'claim', id: module.claim, session, method: 'test@0', subject: module.id, context: claimContext.id,
     information: { type: 'export', exportedName: 'fixture', symbol: null, origin: null, roles: null, routes: [] },
   }]), /Invalid module entity claim/);
   for (const id of [module.id, module.claim, claimContext.id]) assert.throws(() => store.get(id), /Missing/);
 });
 
 test('unavailable, deferred, failed, stopped and partial outcomes survive without becoming an established empty population', () => {
-  const { store, snapshot } = context();
+  const { store, session } = context();
   const states: EvaluationState[] = [
     { applicability: 'applicable', availability: 'unavailable', execution: 'deferred', materialization: 'none', reason: 'Provider unavailable', cost: { measure: 'module-count', value: 0 } },
     { applicability: 'applicable', availability: 'available', execution: 'deferred', materialization: 'none', reason: 'Not scheduled', cost: { measure: 'module-count', value: 0 } },
@@ -170,16 +170,16 @@ test('unavailable, deferred, failed, stopped and partial outcomes survive withou
     { applicability: 'applicable', availability: 'available', execution: 'stopped', materialization: 'partial', reason: 'Stopped by caller', cost: { measure: 'module-count', value: 0 } },
   ];
   for (const state of states) {
-    const outcome = evaluateModules(store, { discover: () => ({ ...state, snapshot, modules: [], contexts: [] }) });
+    const outcome = evaluateModules(store, { discover: () => ({ ...state, session, modules: [], contexts: [] }) });
     const projection = modules(store, outcome);
     assert.equal(projection.selection.populationEstablished, false);
     assert.equal(projection.evaluations.length, 1);
     assert.equal((store.get(outcome.id) as typeof outcome).reason, state.reason);
   }
-  assert.equal(store.evaluations(snapshot).length, states.length);
-  const earlier = store.evaluations(snapshot)[0]!;
+  assert.equal(store.evaluations(session).length, states.length);
+  const earlier = store.evaluations(session)[0]!;
   const established = evaluateModules(store, { discover: () => ({
-    snapshot, modules: [], contexts: [], applicability: 'applicable', availability: 'available',
+    session, modules: [], contexts: [], applicability: 'applicable', availability: 'available',
     execution: 'completed', materialization: 'full', reason: null, cost: { measure: 'module-count', value: 0 },
   }) });
   assert.equal(modules(store, established).selection.populationEstablished, true);
@@ -194,26 +194,26 @@ test('compiler/implementation defects are not mislabeled as ordinary analysis fa
 });
 
 test('duplicate exact names and handles select multiple modules and only their contexts', () => {
-  const { store, snapshot } = context();
-  const ids = ['first', 'second', 'other'].map(key => recordId(snapshot, 'module', key));
+  const { store, session } = context();
+  const ids = ['first', 'second', 'other'].map(key => recordId(session, 'module', key));
   for (const [index, id] of ids.entries()) {
     const context: ClaimContextRecord = {
-      kind: 'claim-context', id: recordId(snapshot, 'context', id), snapshot, method: 'test@0', scope: id,
+      kind: 'claim-context', id: recordId(session, 'context', id), session, method: 'test@0', scope: id,
       evidence: [], status: 'mechanically-derived', guarantee: 'Synthetic fixture', limitations: [], diagnostics: [],
     };
     const claim: ModuleClaim = {
-      kind: 'claim', id: recordId(snapshot, 'claim', id), snapshot, method: 'test@0', subject: id, context: context.id,
+      kind: 'claim', id: recordId(session, 'claim', id), session, method: 'test@0', subject: id, context: context.id,
       information: { type: 'module', name: index < 2 ? 'duplicate' : 'other', handle: index < 2 ? 'shared-handle' : 'other-handle',
         handleStatus: 'generated-navigation-aid', handleProvenance: 'anonymous-fallback', discoveryFacets: [] },
     };
-    store.put([{ kind: 'module', id, snapshot, method: 'test@0', claim: claim.id }, context, claim]);
+    store.put([{ kind: 'module', id, session, method: 'test@0', claim: claim.id }, context, claim]);
   }
   const evaluation = evaluateModules(store, { discover: () => ({
-    snapshot, modules: ids, contexts: [], applicability: 'applicable', availability: 'available',
+    session, modules: ids, contexts: [], applicability: 'applicable', availability: 'available',
     execution: 'completed', materialization: 'full', reason: null, cost: { measure: 'module-count', value: 3 },
   }) });
   for (const selector of ['duplicate', 'shared-handle']) {
-    const projection = inspect(store, evaluation, selector, evaluation.snapshot);
+    const projection = inspect(store, evaluation, selector);
     assert.deepEqual(projection.modules, ids.slice(0, 2));
     assert.equal(projection.selection.matches, 2);
     assert.equal(projection.contexts.length, 2);
@@ -221,12 +221,12 @@ test('duplicate exact names and handles select multiple modules and only their c
   }
 });
 
-test('multiple snapshots coexist; stale IDs and scoped handles have no inferred successor', () => {
+test('multiple sessions coexist; old record IDs do not bind in another session', () => {
   const initial = discover('fixtures/module-population/tsconfig.json');
   const next = discover('fixtures/empty/tsconfig.json');
   evaluateModules(initial.store, next.analysis);
-  assert.equal(initial.store.evaluations(initial.evaluation.snapshot).length, 1);
-  assert.equal(initial.store.evaluations(next.evaluation.snapshot).length, 1);
+  assert.equal(initial.store.evaluations(initial.evaluation.session).length, 1);
+  assert.equal(initial.store.evaluations(next.evaluation.session).length, 1);
   assert.equal(inspect(initial.store, next.evaluation, initial.claims[0]!.subject).selection.matches, 0);
   assert.equal(inspect(initial.store, next.evaluation, initial.claims[0]!.information.handle).selection.matches, 0);
 });
@@ -234,7 +234,7 @@ test('multiple snapshots coexist; stale IDs and scoped handles have no inferred 
 test('compact module Entity IDs extend colliding prefixes across the complete population', async () => {
   const { moduleEntityIds } = await import('../src/lib/identity.js');
   const ids = ['12345678a', '12345678b', '12345679a'].map(prefix =>
-    `${snapshotId('collision-fixture')}:module:${prefix.padEnd(64, '0')}` as RecordId);
+    `${sessionId()}:module:${prefix.padEnd(64, '0')}` as RecordId);
   const compact = moduleEntityIds(ids);
   assert.deepEqual([...compact.values()], ['module-12345678a', 'module-12345678b', 'module-12345679']);
   assert.deepEqual([...moduleEntityIds([...ids].reverse())], [...compact]);

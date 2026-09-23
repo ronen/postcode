@@ -3,6 +3,7 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
+import { normalizeSession } from './helpers.js';
 import { digest } from '../src/lib/identity.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import type { ProgramRecord, SourceEvidenceRecord } from '../src/lib/records.js';
@@ -31,7 +32,7 @@ test('reused content digests preserve distinct captured evidence and refresh on 
       const records = new Map<string, ProgramRecord>();
       const result = analysis.discover({
         put: batch => { store.put(batch); for (const record of batch) records.set(record.id, record); },
-        get: id => store.get(id), evaluations: snapshot => store.evaluations(snapshot),
+        get: id => store.get(id), evaluations: session => store.evaluations(session),
       }, ['exports', 'documentation', 'composition'], true);
       const evidence = [...records.values()].filter((record): record is SourceEvidenceRecord => record.kind === 'source-evidence');
       return { result, records, evidence };
@@ -51,13 +52,13 @@ test('reused content digests preserve distinct captured evidence and refresh on 
     // Reusing captured compiler input must not combine later bytes with earlier spans.
     assert.deepEqual(collect(captured), before);
     const after = collect(open());
-    assert.notEqual(after.result.snapshot, before.result.snapshot);
+    assert.notEqual(after.result.session, before.result.session);
     for (const item of after.evidence) {
       assert.equal(item.contentDigest, digest(item.path === origin ? changed : forwarding));
     }
     assert.equal(after.evidence.length, before.evidence.length);
     assert.ok(after.evidence.some(item => item.path === origin && item.location.association === 'span'
       && item.location.excerpt.text.includes('first = 9')));
-    assert.deepEqual(collect(open()), after, 'equivalent new captures reproduce all records and outcomes');
+    assert.deepEqual(normalizeSession(collect(open())), normalizeSession(after), 'equivalent new captures reproduce all records and outcomes');
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

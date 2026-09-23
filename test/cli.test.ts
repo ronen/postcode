@@ -4,6 +4,7 @@ import { cpSync, mkdtempSync, mkdirSync, readFileSync, readdirSync, realpathSync
 import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
+import { normalizeSession } from './helpers.js';
 import { runCli } from '../src/lib/cli.js';
 import { localFileObservationSink } from '../src/lib/observations.js';
 import type { ObservationBatch, ObservationSink } from '../src/lib/observations.js';
@@ -48,9 +49,9 @@ test('Unicode and experimental JSON use the same qualified projection and automa
   assert.equal(json.exit, 0);
   const structured = JSON.parse(json.stdout) as QualifiedView;
   const unicodeArtifact = unicode.batches[0]!.records.find(record => record.kind === 'qualified-view')!.value as QualifiedView;
-  assert.deepEqual(structured.projection, unicodeArtifact.projection);
-  assert.deepEqual(structured.modules.map(module => module.id), unicodeArtifact.modules.map(module => module.id));
-  assert.equal(structured.schema, 'postcode-view/0-experimental');
+  assert.deepEqual(normalizeSession(structured.projection), normalizeSession(unicodeArtifact.projection));
+  assert.deepEqual(normalizeSession(structured.modules.map(module => module.id)), normalizeSession(unicodeArtifact.modules.map(module => module.id)));
+  assert.equal(structured.schema, 'postcode-view/1-experimental');
   assert.equal(unicode.stdout.includes('Documentation entries are recorded assertions'), false);
   assert.ok(unicode.stdout.includes('documentation for'));
   assert.equal(unicode.stdout.includes('[type]'), false);
@@ -59,7 +60,7 @@ test('Unicode and experimental JSON use the same qualified projection and automa
   for (const result of [unicode, json]) {
     assert.equal(result.batches.length, 1);
     const batch = result.batches[0]!;
-    assert.equal(batch.formatVersion, 0);
+    assert.equal(batch.formatVersion, 1);
     assert.equal(batch.records.find(record => record.kind === 'rendered-output')!.value, result.stdout);
     const ids = [batch.id, ...batch.records.map(record => record.id), ...batch.events.map(event => event.id)];
     assert.equal(new Set(ids).size, ids.length);
@@ -75,11 +76,11 @@ test('normal views omit source facets and raw evidence; inspection source escape
   const inventory = await invoke(['--project', config, '--json']);
   const view = JSON.parse(inventory.stdout) as QualifiedView;
   assert.equal(view.sourceDetail, undefined);
-  const { navigation: _navigation, ...presentation } = view.presentation;
+  const presentation = view.presentation;
   assert.equal(JSON.stringify({ ...view, presentation }).includes(process.cwd()), false);
   for (const key of ['"path":', '"compilerName":', '"contentDigest":', '"evidence":', '"start":']) assert.equal(inventory.stdout.includes(key), false);
   const selected = view.modules.find(module => module.name === 'documented')!;
-  const inspected = await invoke(['inspect', selected.handle, '--snapshot', view.projection.snapshot, '--project', config, '--source-detail', '--json']);
+  const inspected = await invoke(['inspect', selected.handle, '--project', config, '--source-detail', '--json']);
   const detail = JSON.parse(inspected.stdout) as QualifiedView;
   assert.equal(detail.modules.length, 1);
   assert.ok(detail.sourceDetail);
@@ -158,19 +159,19 @@ test('configuration diagnostics retain equal messages at different files or posi
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('modules usage errors identify the supported source-detail and snapshot views', async () => {
-  for (const lens of [[], ['modules']]) {
-    for (const options of [['--source-detail'], ['--snapshot', `snapshot:${'a'.repeat(64)}`],
-      ['--source-detail', '--snapshot', `snapshot:${'a'.repeat(64)}`]]) {
-      const result = await invoke([...lens, ...options]);
-      assert.equal(result.exit, 2);
-      assert.equal(result.stdout, '');
-      assert.equal(result.batches.length, 0);
-      assert.ok(result.stderr.includes('--snapshot requires inspect, children or parents'));
-      assert.ok(result.stderr.includes('--source-detail requires inspect or a dependency view'));
-    }
+test('retired scope options are rejected and source detail remains bounded to supported views', async () => {
+  for (const option of ['--snapshot', '--session', '--dependency-context']) {
+    const result = await invoke([option, 'unused']);
+    assert.equal(result.exit, 2);
+    assert.match(result.stderr, /unknown option/);
+    assert.equal(result.stdout, '');
+    assert.equal(result.batches.length, 0);
   }
+  const result = await invoke(['modules', '--source-detail']);
+  assert.equal(result.exit, 2);
+  assert.match(result.stderr, /--source-detail requires inspect or a dependency view/);
 });
+
 
 test('end-of-options preserves option-like exact names while keeping one-selector validation', async () => {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-option-names-'));
@@ -187,13 +188,7 @@ test('end-of-options preserves option-like exact names while keeping one-selecto
       assert.deepEqual(view.modules.map(module => module.name), [name]);
       assert.equal(result.batches.length, 1);
       assert.equal(view.sourceDetail, undefined);
-      if (name === '--json') {
-        const command = view.presentation.navigation!.inspect.replace('MODULE_HANDLE', name);
-        const output = execFileSync('/bin/sh', ['-c', command], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
-        assert.ok(output.includes('exact match for --json'));
-        assert.ok(output.includes('1 module selected from 6'));
-        assertRecordedOutput(checkout, output);
-      }
+      assert.equal('navigation' in view.presentation, false);
     }
     const invalid = await invoke(['inspect', '--project', config, '--', '--json', '-h']);
     assert.equal(invalid.exit, 2);
@@ -207,7 +202,7 @@ test('end-of-options preserves option-like exact names while keeping one-selecto
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('target directories named like PostCode output retain configured sources and input identity', async () => {
+test('target directories named like PostCode output retain configured sources and observe their changed exports', async () => {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-legitimate-inputs-'));
   try {
     for (const directory of ['_build', '_observations']) mkdirSync(path.join(root, directory));
@@ -222,14 +217,15 @@ test('target directories named like PostCode output retain configured sources an
       const view = JSON.parse(before.stdout) as QualifiedView;
       assert.equal(view.modules.length, 3);
       assert.ok(view.evaluations.every(outcome => outcome.materialization === 'full'));
-      const snapshots = [view.projection.snapshot];
+      let changedModules = 0;
       for (const directory of ['_build', '_observations']) {
         const filename = path.join(root, directory, 'legitimate.ts');
         writeFileSync(filename, readFileSync(filename, 'utf8') + '\nexport const extra = 2;');
         const changed = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
-        snapshots.push(changed.projection.snapshot);
+        changedModules++;
+        assert.equal(changed.modules.filter(module => module.exports.some(item => item.exportedName === 'extra')).length, changedModules);
       }
-      assert.equal(new Set(snapshots).size, 3);
+      assert.equal(changedModules, 2);
     }
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
@@ -241,10 +237,10 @@ test('independent CLI processes reproduce JSON while the local sink writes priva
     const cli = path.join(root, '_build/src/cli.js');
     const args = [cli, '--project', config, '--json'];
     const output = execFileSync(process.execPath, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
-    assert.equal(execFileSync(process.execPath, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }), output);
+    assert.deepEqual(normalizeSession(JSON.parse(execFileSync(process.execPath, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }))), normalizeSession(JSON.parse(output)));
     const unicodeArgs = [cli, '--project', config];
     const unicode = execFileSync(process.execPath, unicodeArgs, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
-    assert.equal(execFileSync(process.execPath, unicodeArgs, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }), unicode);
+    assert.equal(normalizeSession(execFileSync(process.execPath, unicodeArgs, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })), normalizeSession(unicode));
     const sink = path.join(root, '_observations');
     const datedDirectories = readdirSync(sink);
     assert.ok(datedDirectories.every(directory => /^date=\d{4}-\d{2}-\d{2}$/.test(directory)));
@@ -260,7 +256,7 @@ test('independent CLI processes reproduce JSON while the local sink writes priva
         /^timestamp=\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}\.\d{3}Z_[\da-f-]{36}\.json$/);
       assert.equal(statSync(file).mode & 0o777, 0o600);
       const batch = JSON.parse(readFileSync(file, 'utf8')) as ObservationBatch;
-      assert.ok([output, unicode].includes(batch.records.find(record => record.kind === 'rendered-output')!.value as string));
+      assert.ok([output, unicode].map(normalizeSession).includes(normalizeSession(batch.records.find(record => record.kind === 'rendered-output')!.value as string)));
     }
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
@@ -296,7 +292,7 @@ test('CLI explicitly excludes actual checkout output directories when analyzing 
     const before = await invoke(['--project', nested, '--json'], undefined, root);
     writeFileSync(path.join(root, '_observations/generated.ts'), 'export const fabricated = 1;');
     const after = await invoke(['--project', nested, '--json'], undefined, root);
-    assert.equal(after.stdout, before.stdout);
+    assert.equal(normalizeSession(after.stdout), normalizeSession(before.stdout));
     assert.equal((JSON.parse(after.stdout) as QualifiedView).modules.length, 1);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
@@ -344,7 +340,7 @@ test('Unicode distinguishes established empty exports from unresolved exports an
     const empty = await invoke(['--project', config]);
     assert.ok(empty.stdout.includes('(none)'));
     assert.ok(empty.stdout.includes('Analysis complete: modules, exports, documentation'));
-    assert.ok(empty.stdout.includes('Next · inspect a module:'));
+    assert.equal(empty.stdout.includes('Next ·'), false);
     writeFileSync(path.join(root, 'entry.ts'), 'export * from "./missing.js";');
     const unresolved = await invoke(['--project', config]);
     assert.ok(unresolved.stdout.includes('(not established; no exports displayed)'));
@@ -366,7 +362,7 @@ test('inventory counts omitted external documentation while exact inspection mak
     assert.ok(external);
     assert.equal(external.exports[0]!.documentation.length, 0);
     assert.equal(external.exports[0]!.omittedDocumentation, 1);
-    const inspected = await invoke(['inspect', external.handle, '--snapshot', view.projection.snapshot, '--project', config, '--json']);
+    const inspected = await invoke(['inspect', external.handle, '--project', config, '--json']);
     const detail = JSON.parse(inspected.stdout) as QualifiedView;
     assert.equal(detail.modules[0]!.exports[0]!.documentation[0]!.text, 'External responsibility.');
     const unicode = await invoke(['--project', config]);
@@ -376,9 +372,9 @@ test('inventory counts omitted external documentation while exact inspection mak
     assert.equal(unicode.stdout.includes('Origin this module'), false);
     assert.equal(unicode.stdout.includes('routes: direct'), false);
     assert.equal(unicode.stdout.includes('1 contributing declaration'), false);
-    assert.equal(unicode.stdout.split(view.projection.snapshot).length - 1, 1);
+    assert.equal(unicode.stdout.split('Session ').length - 1, 1);
     assert.ok(unicode.stdout.includes('Coverage: external-module SourceFiles'));
-    const inspectedUnicode = await invoke(['inspect', external.handle, '--snapshot', view.projection.snapshot, '--project', config]);
+    const inspectedUnicode = await invoke(['inspect', external.handle, '--project', config]);
     assert.ok(inspectedUnicode.stdout.includes('Documentation entries are recorded assertions'));
     assert.ok(inspectedUnicode.stdout.includes('External responsibility.'));
     assert.ok(inspectedUnicode.stdout.includes(`Entity ID: ${external.entityId}`));
@@ -391,7 +387,7 @@ test('inventory counts omitted external documentation while exact inspection mak
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('conceptual handles require their snapshot and never infer successors after changed inputs', async () => {
+test('handles repeat current lookups while IDs do not provide cross-invocation navigation', async () => {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-handle-'));
   try {
     const config = path.join(root, 'tsconfig.json');
@@ -402,18 +398,18 @@ test('conceptual handles require their snapshot and never infer successors after
     const module = before.modules[0]!;
     assert.equal(module.handle, 'run-cli');
     const unscoped = JSON.parse((await invoke(['inspect', module.handle, '--project', config, '--json'])).stdout) as QualifiedView;
-    assert.equal(unscoped.projection.selection.referenceStatus, 'snapshot-required');
-    assert.equal(unscoped.projection.selection.matches, 0);
+    assert.equal(unscoped.projection.selection.referenceStatus, 'current');
+    assert.equal(unscoped.projection.selection.matches, 1);
     writeFileSync(entry, 'export function runCli() { return 1; }');
     const after = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
     assert.equal(after.modules[0]!.handle, module.handle);
-    assert.notEqual(after.projection.snapshot, before.projection.snapshot);
-    const stale = JSON.parse((await invoke(['inspect', module.handle, '--snapshot', before.projection.snapshot, '--project', config, '--json'])).stdout) as QualifiedView;
-    assert.equal(stale.projection.selection.referenceStatus, 'snapshot-mismatch');
+    assert.notEqual(after.projection.session, before.projection.session);
+    const stale = JSON.parse((await invoke(['inspect', module.entityId, '--project', config, '--json'])).stdout) as QualifiedView;
+    assert.equal(stale.projection.selection.referenceStatus, 'current');
     assert.equal(stale.projection.selection.matches, 0);
     const staleId = JSON.parse((await invoke(['inspect', module.id, '--project', config, '--json'])).stdout) as QualifiedView;
     assert.equal(staleId.projection.selection.matches, 0);
-    const current = JSON.parse((await invoke(['inspect', module.handle, '--snapshot', after.projection.snapshot, '--project', config, '--json'])).stdout) as QualifiedView;
+    const current = JSON.parse((await invoke(['inspect', module.handle, '--project', config, '--json'])).stdout) as QualifiedView;
     assert.equal(current.projection.selection.matches, 1);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
@@ -425,7 +421,7 @@ test('inspection suppresses ordinary provenance but preserves aliases and merged
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
     writeFileSync(path.join(root, 'entry.ts'), 'export interface Merged {a: string}; export interface Merged {b: string}; export const ordinary = 1; export {ordinary as renamed};');
     const inventory = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
-    const result = await invoke(['inspect', inventory.modules[0]!.entityId, '--snapshot', inventory.projection.snapshot, '--project', config]);
+    const result = await invoke(['inspect', inventory.modules[0]!.handle, '--project', config]);
     assert.ok(result.stdout.includes('Merged [type] · 2 contributing declarations'));
     assert.ok(result.stdout.includes('renamed [value] · alias'));
     assert.equal(result.stdout.includes('ordinary: direct'), false);
@@ -474,8 +470,8 @@ test('compact inventory consolidates common labels and counts documentation beyo
     assert.ok(result.stdout.includes('not captured as an atomic filesystem snapshot'));
     assert.equal(view.analysis?.excludedOutputLocations, 2);
     assert.ok(result.stdout.includes("2 generated-output locations excluded by this run's input filter"));
-    assert.ok(result.stdout.includes(`Snapshot ${view.projection.snapshot.slice(9, 21)}\n`));
-    assert.equal(result.stdout.includes('Snapshot snapshot:'), false);
+    assert.ok(result.stdout.includes(`Session ${view.projection.session.replace(/^session:/, '')}\n`));
+    assert.equal(result.stdout.includes('Session session:'), false);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -490,61 +486,41 @@ test('a mostly-type module uses an exported type cue instead of a helper predica
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('the suggested command runs after replacing MODULE_HANDLE, including a quoted project path', async () => {
+test('one-shot lookup accepts project paths containing spaces and quotes without generated commands', async () => {
   const root = mkdtempSync(path.join(os.tmpdir(), "postcode-project's "));
   try {
     const checkout = copyTestCheckout(path.join(root, 'checkout'));
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
     writeFileSync(path.join(root, 'entry.ts'), 'export function runCli() {}');
-    const view = JSON.parse((await invoke(['--project', config, '--json'], undefined, checkout)).stdout) as QualifiedView;
-    const command = view.presentation.navigation!.inspect.replace('MODULE_HANDLE', 'run-cli');
-    const output = execFileSync('/bin/sh', ['-c', command], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+    const output = execFileSync(process.execPath, [path.join(checkout, '_build/src/cli.js'), 'inspect', 'run-cli', '--project', config], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
     assert.ok(output.includes('exact match for run-cli'));
     assert.ok(output.includes('1 module selected from 1'));
-    assert.equal(output.includes('No current match'), false);
+    assert.doesNotMatch(output, /Next ·|--snapshot/);
     assertRecordedOutput(checkout, output);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('generated navigation selects shared name-derived and basename handles; unscoped names and scoped IDs stay precise', async () => {
+
+test('one-shot name and handle collisions retain every match and do not accept copied IDs', async () => {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-shared-handle-'));
   try {
-    const checkout = copyTestCheckout(path.join(root, 'checkout'));
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["widget.ts","ambient.d.ts"]}');
     writeFileSync(path.join(root, 'widget.ts'), 'export const value = 1;');
     writeFileSync(path.join(root, 'ambient.d.ts'), 'declare module "widget" { export const named: number; }');
-    const inventory = JSON.parse((await invoke(['--project', config, '--json'], undefined, checkout)).stdout) as QualifiedView;
-    assert.equal(inventory.modules.length, 2);
-    const named = inventory.modules.find(module => module.name === 'widget')!;
-    const anonymous = inventory.modules.find(module => module.name === null)!;
-    assert.equal(named.handle, 'widget');
-    assert.equal(named.handleProvenance, 'language-name');
-    assert.equal(anonymous.handle, 'widget');
-    assert.equal(anonymous.handleProvenance, 'source-basename');
-
-    const command = inventory.presentation.navigation!.inspect.replace('MODULE_HANDLE', 'widget');
-    const output = execFileSync('/bin/sh', ['-c', command], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
-    assert.ok(output.includes('2 modules selected from 2 · exact matches for widget'));
-    for (const module of inventory.modules) assert.ok(output.includes(`Entity ID: ${module.entityId}`));
-    assertRecordedOutput(checkout, output);
-
-    const scoped = JSON.parse((await invoke(['inspect', '--project', config, '--json',
-      '--snapshot', inventory.projection.snapshot, '--', 'widget'], undefined, checkout)).stdout) as QualifiedView;
-    assert.deepEqual(scoped.modules.map(module => module.id), inventory.modules.map(module => module.id));
-    assert.equal(scoped.projection.selection.matches, 2);
-    const unscoped = JSON.parse((await invoke(['inspect', '--project', config, '--json', '--', 'widget'], undefined, checkout)).stdout) as QualifiedView;
-    assert.deepEqual(unscoped.modules.map(module => module.id), [named.id]);
-    assert.equal(unscoped.projection.selection.matches, 1);
+    const inventory = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+    const lookedUp = JSON.parse((await invoke(['inspect', 'widget', '--project', config, '--json'])).stdout) as QualifiedView;
+    assert.equal(lookedUp.projection.selection.matches, 2);
+    assert.deepEqual(normalizeSession(lookedUp.modules.map(module => module.id)), normalizeSession(inventory.modules.map(module => module.id)));
+    assert.deepEqual(new Set(lookedUp.modules.map(module => module.handleProvenance)), new Set(['language-name', 'source-basename']));
     for (const module of inventory.modules) {
-      const precise = JSON.parse((await invoke(['inspect', '--project', config, '--json',
-        '--snapshot', inventory.projection.snapshot, '--', module.entityId], undefined, checkout)).stdout) as QualifiedView;
-      assert.deepEqual(precise.modules.map(selected => selected.id), [module.id]);
-      assert.equal(precise.projection.selection.matches, 1);
+      const copied = await invoke(['inspect', module.entityId, '--project', config, '--json']);
+      assert.equal(JSON.parse(copied.stdout).projection.selection.matches, 0);
     }
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
+
 
 test('basename mnemonic evidence stays distinct from names and precise scoped Entity IDs', async () => {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-mnemonic-'));
@@ -565,11 +541,11 @@ test('basename mnemonic evidence stays distinct from names and precise scoped En
       assert.equal(module.handleProvenance, 'source-basename');
       assert.match(module.entityId, /^module-[a-f0-9]{8,64}$/);
       const unscoped = JSON.parse((await invoke(['inspect', module.entityId, '--project', config, '--json'])).stdout) as QualifiedView;
-      assert.equal(unscoped.projection.selection.referenceStatus, 'snapshot-required');
-      const selected = JSON.parse((await invoke(['inspect', module.entityId, '--snapshot', view.projection.snapshot, '--project', config, '--json'])).stdout) as QualifiedView;
-      assert.deepEqual(selected.modules.map(item => item.id), [module.id]);
+      assert.equal(unscoped.projection.selection.referenceStatus, 'current');
+      const selected = JSON.parse((await invoke(['inspect', module.handle, '--project', config, '--json'])).stdout) as QualifiedView;
+      assert.deepEqual(normalizeSession(selected.modules.map(item => item.id)), normalizeSession(matching.map(item => item.id)));
     }
-    const multiple = await invoke(['inspect', 'evaluation', '--snapshot', view.projection.snapshot, '--project', config]);
+    const multiple = await invoke(['inspect', 'evaluation', '--project', config]);
     assert.ok(multiple.stdout.includes('2 modules selected from 4 · exact matches for evaluation'));
     const zero = await invoke(['inspect', 'absent', '--project', config]);
     assert.ok(zero.stdout.includes('0 modules selected from 4 · no exact match for absent'));
@@ -588,7 +564,7 @@ test('basename mnemonic evidence stays distinct from names and precise scoped En
 test('exceptional inspections retain forwarding provenance, qualified failures, and truncated assertions', async () => {
   const view = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
   const selected = view.modules.find(module => module.handle === 'chain')!;
-  const reexport = await invoke(['inspect', selected.entityId, '--snapshot', view.projection.snapshot, '--project', config]);
+  const reexport = await invoke(['inspect', selected.handle, '--project', config]);
   assert.ok(reexport.stdout.includes('wildcard'));
   assert.match(reexport.stdout, /origin: origin \(module-[a-f0-9]+\)/);
   assert.ok(reexport.stdout.includes('not calls or dependencies'));
@@ -598,7 +574,7 @@ test('exceptional inspections retain forwarding provenance, qualified failures, 
     writeFileSync(project, '{"compilerOptions":{"noLib":true,"types":[]},"files":["index.ts"]}');
     writeFileSync(path.join(root, 'index.ts'), `/** ${'A'.repeat(2100)} */\nexport const documented=1;\nexport * from './missing.js';`);
     const inventory = JSON.parse((await invoke(['--project', project, '--json'])).stdout) as QualifiedView;
-    const detail = await invoke(['inspect', inventory.modules[0]!.entityId, '--snapshot', inventory.projection.snapshot, '--project', project, '--source-detail']);
+    const detail = await invoke(['inspect', inventory.modules[0]!.handle, '--project', project, '--source-detail']);
     assert.ok(detail.stdout.includes('materialization partial'));
     assert.ok(detail.stdout.includes('assertion character(s) omitted'));
     assert.ok(detail.stdout.includes('Documentation entries are recorded assertions'));
@@ -611,7 +587,7 @@ test('exceptional inspections retain forwarding provenance, qualified failures, 
 test('source expansion groups deduplicated evidence by displayed concepts with precise ranges and excerpts', async () => {
   const inventory = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
   const origin = inventory.modules.find(module => module.handle === 'origin')!;
-  const args = ['inspect', origin.entityId, '--snapshot', inventory.projection.snapshot, '--project', config];
+  const args = ['inspect', origin.handle, '--project', config];
   const plain = await invoke(args);
   assert.equal(plain.stdout.includes('export interface Merged'), false);
   const result = await invoke([...args, '--source-detail', '--json']);
@@ -640,7 +616,7 @@ test('source expansion groups deduplicated evidence by displayed concepts with p
   assert.ok(text.includes('export interface Merged { first: string; }'));
   assert.ok(text.includes('Source file:'));
   assert.ok(text.replace(/\s+/g, ' ').includes('Module source files are listed without full-file excerpts.'));
-  assert.equal(text.includes('Claim snapshot:'), false);
+  assert.equal(text.includes('Claim session:'), false);
   assert.equal(text.includes('offset '), false);
   assert.equal(view.sourceDetail!.level, 'declaration-locations-and-excerpts');
 });
@@ -654,7 +630,7 @@ test('documentation wraps without changing stored text and source excerpts stay 
     const source = `/** ${prose} */\r\nexport const a = "😀"; export const b = 2;\r\n${Array.from({ length: 50 }, (_, index) => `export const c${String(index).padStart(2, '0')}=${index};`).join('\r\n')}\r\nexport const zzzOmitted = 'DO_NOT_DISCLOSE';`;
     writeFileSync(path.join(root, 'sample.ts'), source);
     const inventory = JSON.parse((await invoke(['--project', project, '--json'])).stdout) as QualifiedView;
-    const view = JSON.parse((await invoke(['inspect', inventory.modules[0]!.entityId, '--snapshot', inventory.projection.snapshot, '--project', project, '--source-detail', '--json'])).stdout) as QualifiedView;
+    const view = JSON.parse((await invoke(['inspect', inventory.modules[0]!.handle, '--project', project, '--source-detail', '--json'])).stdout) as QualifiedView;
     const text = renderUnicode(view);
     const documentation = view.modules[0]!.exports[0]!.documentation[0]!;
     assert.equal(documentation.text, prose.slice(0, 2000));
@@ -680,11 +656,11 @@ test('source hierarchy preserves forwarding, defining syntax and mixed documenta
   const inventory = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
   for (const handle of ['origin', 'chain']) {
     const module = inventory.modules.find(item => item.handle === handle)!;
-    const result = await invoke(['inspect', module.entityId, '--snapshot', inventory.projection.snapshot, '--project', config, '--source-detail']);
+    const result = await invoke(['inspect', module.handle, '--project', config, '--source-detail']);
     const text = result.stdout;
     const source = text.slice(text.indexOf('SOURCE DETAIL'), text.indexOf('\nStatus\n'));
     assert.ok(text.indexOf('SOURCE DETAIL') < text.indexOf('\nStatus\n'));
-    assert.ok(text.indexOf('\nStatus\n') < text.indexOf('\nNext'));
+    assert.equal(text.includes('\nNext'), false);
     assert.equal(text.includes('More:'), false);
     assert.equal(text.match(/Documentation entries are recorded assertions/g)?.length, 1);
     assert.ok(text.includes(`Entity ID: ${module.entityId}\n\n  Exports:`));
@@ -715,7 +691,7 @@ test('Unicode bounds each assertion to eight wrapped content lines with exact ch
     const prose = Array.from({ length: 100 }, (_, index) => `TEST_SEGMENT_${index} 😀`).join('\n');
     writeFileSync(path.join(root, 'height.ts'), `/** ${prose.replace(/\n/g, '\n * ')}\n * @deprecated ${'tag '.repeat(100)}\n */\nexport const a=1;`);
     const inventory = JSON.parse((await invoke(['--project', project, '--json'])).stdout) as QualifiedView;
-    const args = ['inspect', inventory.modules[0]!.entityId, '--snapshot', inventory.projection.snapshot, '--project', project];
+    const args = ['inspect', inventory.modules[0]!.handle, '--project', project];
     const unicode = await invoke(args);
     const view = unicode.batches[0]!.records.find(record => record.kind === 'qualified-view')!.value as QualifiedView;
     const doc = view.modules[0]!.exports[0]!.documentation[0]!;
@@ -744,7 +720,7 @@ test('Unicode inline names and paths cannot inject structure while JSON and wrap
     const file = inventory.modules.find(module => module.exports.some(exported => exported.exportedName === name))!;
     const escaped = 'spoof\\u000aStatus\\u0009marker\\u2028tail\\u061c\\u200e\\u200f\\u202a\\u202b\\u202c\\u202d\\u202e\\u2066\\u2067\\u2068\\u2069';
     for (const module of [file]) {
-      const json = JSON.parse((await invoke(['inspect', module.entityId, '--snapshot', inventory.projection.snapshot,
+      const json = JSON.parse((await invoke(['inspect', module.handle,
         '--project', config, '--source-detail', '--json'])).stdout) as QualifiedView;
       const original = JSON.stringify(json);
       const output = renderUnicode(json);
@@ -774,7 +750,7 @@ test('Unicode inline names and paths cannot inject structure while JSON and wrap
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('control-bearing invocation paths omit the generated command instead of injecting or altering shell arguments', async () => {
+test('control-bearing invocation paths stay out of conceptual output without generated commands', async () => {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-command-controls-'));
   try {
     const config = path.join(root, 'config\nStatus\tspoof.json');
@@ -787,11 +763,11 @@ test('control-bearing invocation paths omit the generated command instead of inj
       const result = await invoke(['--project', selectedConfig!, '--json'], undefined, checkout!);
       assert.equal(result.exit, 0);
       const view = JSON.parse(result.stdout) as QualifiedView;
-      assert.equal(view.presentation.navigation, undefined);
+      assert.equal('navigation' in view.presentation, false);
       const unicode = renderUnicode(view);
       assert.equal(unicode.includes('config\nStatus\tspoof'), false);
       assert.equal(unicode.includes('checkout\nspoof'), false);
-      assert.ok(unicode.includes('Inspection requires an exact subject'));
+      assert.ok(unicode.includes('Entity references belong to this session'));
     }
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
@@ -882,7 +858,7 @@ test('composition remains a separately qualified property in inspection and orga
     const forward = inventory.modules.find(module => module.handle === 'forward')!;
     assert.equal(forward.composition.claims[0]!.property, 're-exports-only');
     assert.equal(forward.discoveryFacets.includes('re-exports-only'), false);
-    const inspection = await invoke(['inspect', forward.entityId, '--snapshot', inventory.projection.snapshot, '--project', project, '--source-detail']);
+    const inspection = await invoke(['inspect', forward.handle, '--project', project, '--source-detail']);
     assert.match(inspection.stdout, /re-exports only/);
     const organization = await invoke(['organization', '--project', project]);
     assert.match(organization.stdout, /forward.*re-exports only/);

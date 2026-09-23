@@ -10,7 +10,7 @@ const complete = (state: EvaluationState) => state.applicability === 'applicable
 
 /** These lenses select materialized relationships, never transitive reach or display bounds. */
 function project(store: ProgramRecordStore, evaluation: DependencyEvaluationRecord,
-  lens: DependencyProjectionRecord['lens'], selector: string | null, expectedSnapshot: string | null,
+  lens: DependencyProjectionRecord['lens'], selector: string | null, reference: boolean,
   organization: RecordId | null): DependencyProjectionRecord {
   const stored = store.get(evaluation.id);
   if (stored.kind !== 'dependency-evaluation') throw new Error('Expected dependency evaluation');
@@ -26,7 +26,7 @@ function project(store: ProgramRecordStore, evaluation: DependencyEvaluationReco
   });
   const population = moduleClaims.filter(claim => claim.information.discoveryFacets.includes('project')).map(claim => claim.subject);
   const projectModules = new Set(population);
-  const selected = selector === null ? null : inspect(store, basis, selector, expectedSnapshot);
+  const selected = selector === null ? null : inspect(store, basis, selector, reference);
   const subjects = selected?.modules ?? population;
   const subjectSet = new Set(subjects);
   const allRelationships = evaluation.relationships.map(id => {
@@ -51,7 +51,7 @@ function project(store: ProgramRecordStore, evaluation: DependencyEvaluationReco
     if (item.kind !== 'dependency-coverage') throw new Error('Expected coverage result');
     return lens === 'dependency-structure' || lens === 'dependency-children' && item.owner !== null && subjectSet.has(item.owner);
   });
-  const outcomes = store.evaluations(evaluation.snapshot).filter(outcome => outcome.basis === basis.id
+  const outcomes = store.evaluations(evaluation.session).filter(outcome => outcome.basis === basis.id
     && (outcome.modules.length === 0 || outcome.modules.some(id => included.has(id))));
   const moduleExpansionClaims = [...new Set(outcomes.flatMap(outcome => outcome.claims ?? []))];
   const contexts = new Set([...basis.contexts, ...evaluation.contexts.filter(id => {
@@ -69,9 +69,9 @@ function project(store: ProgramRecordStore, evaluation: DependencyEvaluationReco
   }
   const method = methods.dependencyProjection;
   const projection: DependencyProjectionRecord = {
-    kind: 'dependency-projection', method, snapshot: evaluation.snapshot,
-    id: recordId(evaluation.snapshot, 'dependency-projection', { method, evaluation: evaluation.id, lens, selector, expectedSnapshot, organization }),
-    lens, subject: selector === null ? 'configured-project' : 'selected-modules', parameters: { selector, expectedSnapshot },
+    kind: 'dependency-projection', method, session: evaluation.session,
+    id: recordId(evaluation.session, 'dependency-projection', { method, evaluation: evaluation.id, lens, selector, reference, organization }),
+    lens, subject: selector === null ? 'configured-project' : 'selected-modules', parameters: { selector, reference },
     evaluation: evaluation.id, subjects, modules: [...included].sort(compare), relationships: relationships.map(edge => edge.id),
     occurrences, nonEdgeRequests, coverage, contexts: [...contexts],
     opaqueSubjects: subjects.filter(id => !projectModules.has(id)),
@@ -85,13 +85,13 @@ function project(store: ProgramRecordStore, evaluation: DependencyEvaluationReco
 }
 
 export function dependencyStructure(store: ProgramRecordStore, evaluation: DependencyEvaluationRecord, organization: RecordId | null = null) {
-  return project(store, evaluation, 'dependency-structure', null, null, organization);
+  return project(store, evaluation, 'dependency-structure', null, false, organization);
 }
 export function dependencyChildren(store: ProgramRecordStore, evaluation: DependencyEvaluationRecord, selector: string,
-  expectedSnapshot: string | null = null, organization: RecordId | null = null) {
-  return project(store, evaluation, 'dependency-children', selector, expectedSnapshot, organization);
+  reference = false, organization: RecordId | null = null) {
+  return project(store, evaluation, 'dependency-children', selector, reference, organization);
 }
 export function dependencyParents(store: ProgramRecordStore, evaluation: DependencyEvaluationRecord, selector: string,
-  expectedSnapshot: string | null = null, organization: RecordId | null = null) {
-  return project(store, evaluation, 'dependency-parents', selector, expectedSnapshot, organization);
+  reference = false, organization: RecordId | null = null) {
+  return project(store, evaluation, 'dependency-parents', selector, reference, organization);
 }

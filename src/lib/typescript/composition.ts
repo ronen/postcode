@@ -1,7 +1,7 @@
 import ts from 'typescript';
 import { methods, recordId } from '../identity.js';
 import type { DiscoveryResult } from '../evaluation.js';
-import type { ProgramRecord, RecordId, SnapshotId } from '../records.js';
+import type { ProgramRecord, RecordId, SessionId } from '../records.js';
 import type { ExpansionModule } from './expansions.js';
 
 /** Exhaustive syntax property; no export traversal or purpose inference. */
@@ -25,20 +25,20 @@ export function prepareComposition(program: ts.Program, modules: readonly Expans
       ts.isExportDeclaration(statement) && statement.moduleSpecifier !== undefined && ts.isStringLiteralLike(statement.moduleSpecifier));
     return { module, complete, positive, diagnostics: relevant };
   });
-  return (snapshot: SnapshotId, evidence: (node: ts.Node, compilerName: string | null) => RecordId) => {
+  return (session: SessionId, evidence: (node: ts.Node, compilerName: string | null) => RecordId) => {
     const method = `${methods.composition};typescript@${ts.version}`;
     const records: ProgramRecord[] = [];
     const results: NonNullable<DiscoveryResult['expansions']>[number][] = prepared.map(item => {
-      const subject = recordId(snapshot, 'module', item.module.key);
-      const context = recordId(snapshot, 'composition-context', [method, subject]);
-      const claim = recordId(snapshot, 'composition-claim', [method, subject]);
-      records.push({ kind: 'claim-context', id: context, snapshot, method, scope: subject,
+      const subject = recordId(session, 'module', item.module.key);
+      const context = recordId(session, 'composition-context', [method, subject]);
+      const claim = recordId(session, 'composition-claim', [method, subject]);
+      records.push({ kind: 'claim-context', id: context, session, method, scope: subject,
         evidence: item.module.declarations.map(node => evidence(node, null)), status: 'mechanically-derived',
         guarantee: 'Composition tests every substantive top-level statement across all captured module declarations.',
         limitations: ['Only comments and EmptyStatement syntax are ignored. No barrel, facade, API, purity, safe-collapse, or transitive-side-effect claim.',
           ...(!item.complete ? ['Syntax diagnostics or unsupported declaration shape prevent complete composition evaluation.'] : [])],
         diagnostics: item.diagnostics });
-      if (item.positive) records.push({ kind: 'claim', id: claim, snapshot, method, subject, context,
+      if (item.positive) records.push({ kind: 'claim', id: claim, session, method, subject, context,
         information: { type: 'module-composition', property: 're-exports-only' } });
       return { requirement: 'composition', modules: [subject], claims: item.positive ? [claim] : [], contexts: [context],
         applicability: 'applicable', availability: 'available', execution: 'completed', materialization: item.complete ? 'full' : 'partial',

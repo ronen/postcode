@@ -13,12 +13,12 @@ export function evaluateOrganization(store: ProgramRecordStore, moduleEvaluation
   const stored = store.get(moduleEvaluation.id);
   if (stored.kind !== 'evaluation' || stored.requirement !== 'modules') throw new Error('Expected module evaluation');
   moduleEvaluation = stored;
-  const snapshot = store.get(moduleEvaluation.snapshot);
-  if (snapshot.kind !== 'snapshot' || !snapshot.repository) throw new Error('Expected captured repository in snapshot');
-  const repository = store.get(snapshot.repository);
+  const session = store.get(moduleEvaluation.session);
+  if (session.kind !== 'session' || !session.repository) throw new Error('Expected captured repository in session');
+  const repository = store.get(session.repository);
   if (repository.kind !== 'repository-evidence') throw new Error('Expected repository evidence');
-  const base = { snapshot: snapshot.snapshot, method: methods.organization };
-  const id = (kind: string, key: unknown) => recordId(base.snapshot, kind, key);
+  const base = { session: session.session, method: methods.organization };
+  const id = (kind: string, key: unknown) => recordId(base.session, kind, key);
   const evaluationId = id('organization-evaluation', { method: base.method, modules: moduleEvaluation.id, requested: [...new Set(requested)].sort(compare) });
   const records: ProgramRecord[] = [];
   const claims: OrganizationClaims[] = [];

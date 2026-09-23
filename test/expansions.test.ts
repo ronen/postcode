@@ -3,6 +3,7 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
+import { normalizeSession } from './helpers.js';
 import { evaluateModules } from '../src/lib/evaluation.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { createView, renderView } from '../src/lib/presentation.js';
@@ -181,6 +182,6 @@ test('layered wildcard diamonds retain linear route evidence and value reachabil
     assert.deepEqual(result.from('typed.ts')[0]!.information.roles, { type: true, value: false });
     assert.deepEqual(result.from('mixed.ts')[0]!.information.roles, { type: true, value: true });
     assert.ok(result.from('mixed.ts')[0]!.information.routes.length <= 4 * layers + 6);
-    assert.deepEqual(expanded(config).from('top.ts')[0], top);
+    assert.deepEqual(normalizeSession(expanded(config).from('top.ts')[0]), normalizeSession(top));
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

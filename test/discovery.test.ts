@@ -11,7 +11,7 @@ import { createView } from '../src/lib/presentation.js';
 import { inspect, modules } from '../src/lib/projections.js';
 import type { SourceEvidenceRecord } from '../src/lib/records.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
-import { discover } from './helpers.js';
+import { discover, inputBasis, normalizeSession } from './helpers.js';
 
 const fixture = (name: string) => path.resolve('fixtures', name, 'tsconfig.json');
 function temporary(run: (root: string) => void) {
@@ -104,8 +104,8 @@ test('encountered parse diagnostics qualify discovery without unrelated semantic
 test('inspect exact names, handles and IDs preserves zero/one selection and applicable context', () => {
   const { store, evaluation, claims } = discover(fixture('module-population'));
   const ambient = claims.find(claim => claim.information.name === 'ambient-one')!;
-  for (const selector of ['ambient-one', ambient.information.handle, ambient.subject]) {
-    const projection = inspect(store, evaluation, selector, evaluation.snapshot);
+  for (const selector of ['ambient-one', ambient.information.handle]) {
+    const projection = inspect(store, evaluation, selector);
     assert.deepEqual(projection.modules, [ambient.subject]);
     assert.equal(projection.selection.subset, true);
     assert.equal(projection.contexts.length, 2);
@@ -134,11 +134,11 @@ test('exact names remain usable when they collide with compact IDs; scoped IDs s
     assert.equal(currentName.selection.referenceStatus, 'current');
     assert.deepEqual(currentName.modules, [named.subject]);
     assert.ok(currentName.contexts.includes(named.context));
-    assert.deepEqual(inspect(store, evaluation, selector, evaluation.snapshot).modules, [ordinary.subject]);
-    assert.deepEqual(inspect(store, evaluation, ids.get(named.subject)!, evaluation.snapshot).modules, [named.subject]);
-    assert.equal(inspect(store, evaluation, ids.get(named.subject)!).selection.referenceStatus, 'snapshot-required');
-    const stale = inspect(store, evaluation, selector, before.evaluation.snapshot);
-    assert.equal(stale.selection.referenceStatus, 'snapshot-mismatch');
+    assert.deepEqual(inspect(store, evaluation, selector, true).modules, [ordinary.subject]);
+    assert.deepEqual(inspect(store, evaluation, ids.get(named.subject)!, true).modules, [named.subject]);
+    assert.equal(inspect(store, evaluation, ids.get(named.subject)!).selection.referenceStatus, 'current');
+    const stale = inspect(store, evaluation, 'module-00000000', true);
+    assert.equal(stale.selection.referenceStatus, 'unknown-reference');
     assert.deepEqual(stale.modules, []);
   });
 });
@@ -166,61 +166,61 @@ test('generated handles avoid compact Entity IDs across basename, language-name 
     assert.equal(rewritten.length, 4);
     assert.deepEqual(new Set(rewritten.map(claim => claim.information.handleProvenance)),
       new Set(['source-basename', 'language-name', 'declared-export']));
-    assert.deepEqual(inspect(store, evaluation, `handle-${selector}`, evaluation.snapshot).modules,
+    assert.deepEqual(inspect(store, evaluation, `handle-${selector}`).modules,
       rewritten.map(claim => claim.subject));
-    assert.equal(inspect(store, evaluation, `handle-${selector}`).selection.referenceStatus, 'snapshot-required');
-    assert.deepEqual(inspect(store, evaluation, selector, evaluation.snapshot).modules, [ordinary.subject]);
+    assert.equal(inspect(store, evaluation, `handle-${selector}`).selection.referenceStatus, 'current');
+    assert.deepEqual(inspect(store, evaluation, selector, true).modules, [ordinary.subject]);
     const named = claims.find(claim => claim.information.name === selector)!;
     assert.deepEqual(inspect(store, evaluation, selector).modules, [named.subject]);
     for (const claim of claims) {
       assert.equal(/^module-[a-f0-9]{8,64}$/.test(claim.information.handle), false);
-      assert.deepEqual(inspect(store, evaluation, ids.get(claim.subject)!, evaluation.snapshot).modules, [claim.subject]);
+      assert.deepEqual(inspect(store, evaluation, ids.get(claim.subject)!, true).modules, [claim.subject]);
     }
-    assert.deepEqual(discover(config).claims, claims);
+    assert.deepEqual(normalizeSession(discover(config).claims), normalizeSession(claims));
   });
 });
 
-test('equivalent separate processes reproduce snapshot, records, ordering and projection', () => {
+test('equivalent separate processes preserve semantic records, relationships and ordering', () => {
   const invoke = () => execFileSync(process.execPath, ['_build/test/process-probe.js', fixture('module-population')], { encoding: 'utf8' });
-  assert.equal(invoke(), invoke());
+  assert.deepEqual(normalizeSession(JSON.parse(invoke())), normalizeSession(JSON.parse(invoke())));
 });
 
-test('a changed method version produces a new snapshot in an independent process', () => {
+test('a changed method version remains attributable in an independent process', () => {
   temporary(root => {
     cpSync('_build', path.join(root, '_build'), { recursive: true });
     writeFileSync(path.join(root, 'package.json'), '{"type":"module"}');
     symlinkSync(path.resolve('node_modules'), path.join(root, 'node_modules'), 'dir');
     const probe = path.join(root, '_build/test/process-probe.js');
-    const invoke = () => JSON.parse(execFileSync(process.execPath, [probe, fixture('empty')], { encoding: 'utf8' })) as { evaluation: { snapshot: string } };
+    const invoke = () => JSON.parse(execFileSync(process.execPath, [probe, fixture('empty')], { encoding: 'utf8' })) as { projection: { method: string } };
     const before = invoke();
     const implementation = path.join(root, '_build/src/lib/identity.js');
     const original = readFileSync(implementation, 'utf8');
-    assert.ok(original.includes('postcode/projection@6'));
-    writeFileSync(implementation, original.replace('postcode/projection@6', 'postcode/projection@verification-change'));
-    assert.notEqual(invoke().evaluation.snapshot, before.evaluation.snapshot);
+    assert.ok(original.includes('postcode/projection@7'));
+    writeFileSync(implementation, original.replace('postcode/projection@7', 'postcode/projection@verification-change'));
+    assert.notEqual(invoke().projection.method, before.projection.method);
   });
 });
 
-test('source, inherited config, package metadata and missing-input resolution changes create new snapshots', () => {
+test('source, inherited config, package metadata and missing-input resolution changes remain in captured input support', () => {
   temporary(root => {
     cpSync('fixtures/module-population', root, { recursive: true });
     const config = path.join(root, 'tsconfig.json');
-    const identities = [discover(config).evaluation.snapshot];
+    const identities = [inputBasis(discover(config))];
     writeFileSync(path.join(root, 'transitive.ts'), 'export const transit = 2;');
-    identities.push(discover(config).evaluation.snapshot);
+    identities.push(inputBasis(discover(config)));
     writeFileSync(path.join(root, 'base.json'), '{"compilerOptions":{"noLib":true,"types":[],"allowJs":true,"strict":true,"module":"NodeNext","moduleResolution":"NodeNext","moduleDetection":"legacy"}}');
-    identities.push(discover(config).evaluation.snapshot);
+    identities.push(inputBasis(discover(config)));
     writeFileSync(path.join(root, 'package.json'), '{"type":"module"}');
-    identities.push(discover(config).evaluation.snapshot);
+    identities.push(inputBasis(discover(config)));
     writeFileSync(path.join(root, 'root.ts'), 'import {x} from "./missing.js"; export const result = x;');
-    identities.push(discover(config).evaluation.snapshot);
+    identities.push(inputBasis(discover(config)));
     writeFileSync(path.join(root, 'missing.ts'), 'export const x = 3;');
-    identities.push(discover(config).evaluation.snapshot);
+    identities.push(inputBasis(discover(config)));
     assert.equal(new Set(identities).size, identities.length);
   });
 });
 
-test('generated output is excluded from roots, imports, symlinks and snapshot inputs', () => {
+test('generated output is excluded from roots, imports, symlinks and session inputs', () => {
   temporary(root => {
     const output = path.join(root, '_observations');
     mkdirSync(output);
@@ -230,12 +230,12 @@ test('generated output is excluded from roots, imports, symlinks and snapshot in
     const before = discover(config, [output]);
     writeFileSync(path.join(output, 'generated.ts'), 'export const fabricated = 1;');
     writeFileSync(path.join(output, 'batch.json'), '{"formatVersion":0}');
-    assert.equal(discover(config, [output]).evaluation.snapshot, before.evaluation.snapshot);
+    assert.equal(inputBasis(discover(config, [output])), inputBasis(before));
     symlinkSync(output, path.join(root, 'alias'), 'dir');
     const linked = discover(config, [output]);
     assert.equal(linked.claims.length, 1);
     writeFileSync(path.join(output, 'generated.ts'), 'export const fabricated = 200;');
-    assert.equal(discover(config, [output]).evaluation.snapshot, linked.evaluation.snapshot);
+    assert.equal(inputBasis(discover(config, [output])), inputBasis(linked));
     assert.equal(linked.contexts.flatMap(context => context.evidence)
       .map(id => linked.store.get(id) as SourceEvidenceRecord).some(source => source.path.includes('_observations')), false);
   });
@@ -250,17 +250,17 @@ test('explicit output exclusion applies outside the default destination', () => 
     writeFileSync(path.join(root, 'entry.ts'), 'export const real = 1;');
     const before = discover(config, [output]);
     writeFileSync(path.join(output, 'fake.ts'), 'export const fake = 1;');
-    assert.equal(discover(config, [output]).evaluation.snapshot, before.evaluation.snapshot);
+    assert.equal(inputBasis(discover(config, [output])), inputBasis(before));
     assert.equal(discover(config).claims.length, 2);
   });
 });
 
-test('repeated evaluation retains distinct attempts without changing equivalent snapshot identity', () => {
+test('repeated evaluation retains distinct attempts without changing equivalent session identity', () => {
   const { store, evaluation, analysis } = discover(fixture('empty'));
   const next = evaluateModules(store, analysis);
-  assert.equal(next.snapshot, evaluation.snapshot);
+  assert.equal(next.session, evaluation.session);
   assert.notEqual(next.id, evaluation.id);
-  assert.equal(store.evaluations(evaluation.snapshot).length, 2);
+  assert.equal(store.evaluations(evaluation.session).length, 2);
   assert.deepEqual(store.get(evaluation.id), evaluation);
 });
 
@@ -268,13 +268,13 @@ test('expanded discovery attempts count root evaluations and preserve earlier ex
   const { store, analysis, evaluation } = discover(fixture('exports'));
   const expanded = evaluateModules(store, analysis, ['exports', 'documentation']);
   assert.equal(expanded.attempt, 2);
-  const earlier = store.evaluations(evaluation.snapshot);
+  const earlier = store.evaluations(evaluation.session);
   assert.ok(earlier.some(outcome => outcome.basis === expanded.id));
   const repeated = evaluateModules(store, analysis, ['exports']);
   assert.equal(repeated.attempt, 3);
-  assert.equal(repeated.snapshot, evaluation.snapshot);
+  assert.equal(repeated.session, evaluation.session);
   assert.notEqual(repeated.id, expanded.id);
-  assert.ok(store.evaluations(repeated.snapshot).filter(outcome => outcome.basis === repeated.id)
+  assert.ok(store.evaluations(repeated.session).filter(outcome => outcome.basis === repeated.id)
     .every(outcome => outcome.attempt === 3 && outcome.requirement === 'exports'));
   for (const outcome of earlier) assert.deepEqual(store.get(outcome.id), outcome);
 });
@@ -303,7 +303,7 @@ test('output-exclusion qualifications describe only filters actually supplied by
   }
 });
 
-test('exclusion order and duplicates preserve snapshots while different exclusion sets remain distinct', () => {
+test('exclusion order and duplicates preserve input support while different exclusion sets remain distinct', () => {
   temporary(root => {
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"include":["**/*.ts"]}');
@@ -314,18 +314,18 @@ test('exclusion order and duplicates preserve snapshots while different exclusio
     for (const exclusions of [[...outputs].reverse(), [outputs[1]!, outputs[0]!, outputs[1]!],
       [path.join(outputs[0]!, '.'), outputs[1]!]]) {
       const next = discover(config, exclusions);
-      assert.equal(next.evaluation.snapshot, before.evaluation.snapshot);
-      assert.deepEqual(next.claims, before.claims);
-      assert.deepEqual(next.contexts, before.contexts);
+      assert.equal(inputBasis(next), inputBasis(before));
+      assert.deepEqual(normalizeSession(next.claims), normalizeSession(before.claims));
+      assert.deepEqual(normalizeSession(next.contexts), normalizeSession(before.contexts));
     }
     assert.equal(before.claims.length, 1);
     const changed = discover(config, [outputs[0]!]);
-    assert.notEqual(changed.evaluation.snapshot, before.evaluation.snapshot);
+    assert.notEqual(inputBasis(changed), inputBasis(before));
     assert.equal(changed.claims.length, 2);
   });
 });
 
-test('missing descendants of symlinked exclusions stay outside snapshot inputs when generated output appears', () => {
+test('missing descendants of symlinked exclusions stay outside session inputs when generated output appears', () => {
   temporary(root => {
     const output = path.join(root, 'output');
     const ordinary = path.join(root, 'ordinary');
@@ -338,9 +338,9 @@ test('missing descendants of symlinked exclusions stay outside snapshot inputs w
     const before = discover(config, [output]);
     const verify = () => {
       const result = discover(config, [output]);
-      assert.equal(result.evaluation.snapshot, before.evaluation.snapshot);
-      assert.deepEqual(result.claims, before.claims);
-      assert.deepEqual(result.contexts, before.contexts);
+      assert.equal(inputBasis(result), inputBasis(before));
+      assert.deepEqual(normalizeSession(result.claims), normalizeSession(before.claims));
+      assert.deepEqual(normalizeSession(result.contexts), normalizeSession(before.contexts));
       assert.equal(result.claims.length, 1);
     };
     mkdirSync(path.join(output, 'deep')); verify();
@@ -350,7 +350,7 @@ test('missing descendants of symlinked exclusions stay outside snapshot inputs w
     rmSync(generated); verify();
     writeFileSync(path.join(ordinary, 'new.ts'), 'export const real=1;');
     const changed = discover(config, [output]);
-    assert.notEqual(changed.evaluation.snapshot, before.evaluation.snapshot);
+    assert.notEqual(inputBasis(changed), inputBasis(before));
     assert.equal(changed.claims.length, 2);
   });
 });

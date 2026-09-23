@@ -1,10 +1,10 @@
 import type { DependencyResult } from './dependencies/records.js';
 import { methods, recordId } from './identity.js';
-import type { EvaluationRecord, EvaluationState, ModuleExpansion, ProgramRecordStore, RecordId, SnapshotId } from './records.js';
+import type { EvaluationRecord, EvaluationState, ModuleExpansion, ProgramRecordStore, RecordId, SessionId } from './records.js';
 
 export interface DiscoveryResult extends EvaluationState {
   readonly dependencies?: DependencyResult;
-  readonly snapshot: SnapshotId;
+  readonly session: SessionId;
   readonly modules: readonly RecordId[];
   readonly contexts: readonly RecordId[];
   readonly expansions?: readonly (EvaluationState & {
@@ -28,17 +28,17 @@ export function evaluateModules(store: ProgramRecordStore, analysis: ModuleAnaly
 /** Shared recording path for discovery invoked by an additional lens requirement. */
 export function recordModuleEvaluation(store: ProgramRecordStore, discovery: DiscoveryResult): EvaluationRecord {
   const { expansions: expanded = [], dependencies: _dependencies, ...result } = discovery;
-  const attempt = store.evaluations(result.snapshot)
+  const attempt = store.evaluations(result.session)
     .filter(outcome => outcome.requirement === 'modules' && outcome.basis === undefined).length + 1;
   const method = methods.evaluation;
   const outcome: EvaluationRecord = {
     ...result, kind: 'evaluation', method, requirement: 'modules', attempt,
-    id: recordId(result.snapshot, 'evaluation', { method, attempt, requirement: 'modules' }),
+    id: recordId(result.session, 'evaluation', { method, attempt, requirement: 'modules' }),
   };
   store.put([outcome]);
-  store.put(expanded.map(expansion => ({ ...expansion, kind: 'evaluation', snapshot: result.snapshot,
+  store.put(expanded.map(expansion => ({ ...expansion, kind: 'evaluation', session: result.session,
     basis: outcome.id, method, attempt,
-    id: recordId(result.snapshot, 'evaluation', { method, attempt, requirement: expansion.requirement, modules: expansion.modules }),
+    id: recordId(result.session, 'evaluation', { method, attempt, requirement: expansion.requirement, modules: expansion.modules }),
   })));
   return outcome;
 }

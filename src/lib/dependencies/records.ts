@@ -90,7 +90,7 @@ export interface DependencyProjectionRecord extends RecordContext {
   readonly kind: 'dependency-projection';
   readonly lens: 'dependency-structure' | 'dependency-children' | 'dependency-parents';
   readonly subject: 'configured-project' | 'selected-modules';
-  readonly parameters: { readonly selector: string | null; readonly expectedSnapshot: string | null };
+  readonly parameters: { readonly selector: string | null; readonly reference: boolean };
   readonly evaluation: RecordId;
   readonly subjects: readonly RecordId[];
   readonly modules: readonly RecordId[];
@@ -105,7 +105,7 @@ export interface DependencyProjectionRecord extends RecordContext {
     readonly matches: number;
     readonly population: number;
     readonly populationEstablished: boolean;
-    readonly referenceStatus: 'current' | 'snapshot-required' | 'snapshot-mismatch';
+    readonly referenceStatus: 'current' | 'unknown-reference';
   };
   readonly expansions: {
     readonly moduleEvaluations: readonly RecordId[];

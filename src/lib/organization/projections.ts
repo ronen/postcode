@@ -1,4 +1,4 @@
-import { compare, groupEntityIds, methods, moduleEntityIds, recordId } from '../identity.js';
+import { compare, groupEntityIds, methods, recordId } from '../identity.js';
 import { inspect as inspectModules } from '../projections.js';
 import type { EvaluationRecord, ProgramRecordStore, RecordId } from '../records.js';
 import type { GroupClaim, OrganizationClaims, OrganizationEvaluationRecord, OrganizationProjectionRecord } from './records.js';
@@ -13,7 +13,7 @@ function groupClaim(store: ProgramRecordStore, id: RecordId): GroupClaim {
 
 /** Lenses read stored evaluations only. Selection never rewrites group relationships. */
 function project(store: ProgramRecordStore, evaluation: OrganizationEvaluationRecord,
-  subject: OrganizationProjectionRecord['subject'], selector: string | null, expectedSnapshot: string | null): OrganizationProjectionRecord {
+  subject: OrganizationProjectionRecord['subject'], selector: string | null, reference: boolean): OrganizationProjectionRecord {
   const stored = store.get(evaluation.id);
   if (stored.kind !== 'organization-evaluation') throw new Error('Expected organization evaluation');
   evaluation = stored;
@@ -39,20 +39,13 @@ function project(store: ProgramRecordStore, evaluation: OrganizationEvaluationRe
   } else if (subject === 'selected-entities') {
     if (selector === null) throw new Error('Inspection requires a selector');
     const groupIds = groupEntityIds(evaluation.groups);
-    const preciseGroup = evaluation.groups.find(id => selector === id || expectedSnapshot !== null && selector === groupIds.get(id));
-    const compactGroup = [...groupIds.values()].includes(selector);
-    const compactModule = [...moduleEntityIds(moduleEvaluation.modules).values()].includes(selector);
-    const namedGroups = evaluation.groups.filter(id => groupClaim(store, id).information.name === selector);
-    // A group address is handled here; no module language name can impersonate it.
-    const moduleView = preciseGroup
-      ? null : inspectModules(store, moduleEvaluation, selector, expectedSnapshot);
+    const preciseGroup = evaluation.groups.find(id => selector === id || reference && selector === groupIds.get(id));
+    const namedGroups = reference ? [] : evaluation.groups.filter(id => groupClaim(store, id).information.name === selector);
+    const moduleView = preciseGroup ? null : inspectModules(store, moduleEvaluation, selector, reference);
     moduleProjection = moduleView?.id ?? null;
-    referenceStatus = expectedSnapshot !== null && expectedSnapshot !== evaluation.snapshot ? 'snapshot-mismatch'
-      : preciseGroup || namedGroups.length > 0 && !(compactModule && expectedSnapshot !== null) ? 'current'
-      : compactGroup && expectedSnapshot === null && moduleView?.modules.length === 0 ? 'snapshot-required' : moduleView?.selection.referenceStatus ?? 'current';
-    selected = new Set(referenceStatus !== 'current' ? [] : preciseGroup ? [preciseGroup]
-      : compactModule && expectedSnapshot !== null ? [] : namedGroups);
-    selectedModules = referenceStatus === 'current' ? moduleView?.modules ?? [] : [];
+    selected = new Set(preciseGroup ? [preciseGroup] : namedGroups);
+    selectedModules = moduleView?.modules ?? [];
+    referenceStatus = reference && selected.size + selectedModules.length === 0 ? 'unknown-reference' : 'current';
   }
   const groups = evaluation.groups.filter(id => selected.has(id));
   // Investigation retains project modules and their placement exceptions, including outside-repository evidence.
@@ -85,15 +78,15 @@ function project(store: ProgramRecordStore, evaluation: OrganizationEvaluationRe
     }
   }
   const moduleSubjects = new Set([...selectedModules, ...expandedModules]);
-  const moduleExpansions = store.evaluations(evaluation.snapshot).filter(outcome => outcome.basis === moduleEvaluation.id
+  const moduleExpansions = store.evaluations(evaluation.session).filter(outcome => outcome.basis === moduleEvaluation.id
     && (outcome.modules.length === 0 || outcome.modules.some(id => moduleSubjects.has(id))));
   const method = `${methods.projection};${methods.organization}`;
   const populationEstablished = evaluation.execution === 'completed' && evaluation.materialization === 'full'
     && (subject === 'repository' || evaluation.placement.execution === 'completed' && evaluation.placement.materialization === 'full');
   const projection: OrganizationProjectionRecord = {
-    kind: 'organization-projection', method, snapshot: evaluation.snapshot,
-    id: recordId(evaluation.snapshot, 'organization-projection', { method, evaluation: evaluation.id, subject, selector, expectedSnapshot }),
-    lens: subject === 'selected-entities' ? 'inspect' : 'organization', subject, parameters: { selector, expectedSnapshot },
+    kind: 'organization-projection', method, session: evaluation.session,
+    id: recordId(evaluation.session, 'organization-projection', { method, evaluation: evaluation.id, subject, selector, reference }),
+    lens: subject === 'selected-entities' ? 'inspect' : 'organization', subject, parameters: { selector, reference },
     evaluation: evaluation.id, moduleProjection, groups, modules: selectedModules, claims: selectedClaims.map(claim => claim.id),
     contexts: [...new Set([...evaluation.contexts, ...selectedClaims.map(claim => claim.context),
       ...claims.filter(claim => expandedClaims.has(claim.id)).map(claim => claim.context)])],
@@ -110,10 +103,10 @@ function project(store: ProgramRecordStore, evaluation: OrganizationEvaluationRe
 
 export function organization(store: ProgramRecordStore, evaluation: OrganizationEvaluationRecord,
   subject: 'repository' | 'configured-project' = 'configured-project'): OrganizationProjectionRecord {
-  return project(store, evaluation, subject, null, null);
+  return project(store, evaluation, subject, null, false);
 }
 
 export function inspectOrganization(store: ProgramRecordStore, evaluation: OrganizationEvaluationRecord,
-  selector: string, expectedSnapshot: string | null = null): OrganizationProjectionRecord {
-  return project(store, evaluation, 'selected-entities', selector, expectedSnapshot);
+  selector: string, reference = false): OrganizationProjectionRecord {
+  return project(store, evaluation, 'selected-entities', selector, reference);
 }

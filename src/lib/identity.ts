@@ -1,20 +1,20 @@
-import { createHash } from 'node:crypto';
-import type { RecordId, SnapshotId } from './records.js';
+import { createHash, randomUUID } from 'node:crypto';
+import type { RecordId, SessionId } from './records.js';
 
 /** Bump the responsible method whenever its analysis/identity/projection semantics change. */
 export const methods = {
   inputs: 'postcode/observed-inputs@3',
-  records: 'postcode/program-records@16',
+  records: 'postcode/program-records@17',
   discovery: 'postcode/typescript-modules@10',
   evaluation: 'postcode/evaluate-modules@3',
   dependencies: 'postcode/typescript-dependencies@2',
   dependencyEvaluation: 'postcode/evaluate-dependencies@1',
-  dependencyProjection: 'postcode/dependency-projection@1',
+  dependencyProjection: 'postcode/dependency-projection@2',
   composition: 'postcode/typescript-composition@1',
   dependencyOrganization: 'postcode/dependency-organization@1',
-  projection: 'postcode/projection@6',
+  projection: 'postcode/projection@7',
   expansions: 'postcode/typescript-expansions@2',
-  presentation: 'postcode/presentation@20',
+  presentation: 'postcode/presentation@21',
   handles: 'postcode/module-handles@5',
   organization: 'postcode/organization@3',
 } as const;
@@ -35,14 +35,16 @@ export function compare(a: string, b: string): number { return a < b ? -1 : a > 
 export function digest(value: unknown): string {
   return createHash('sha256').update(canonical(value)).digest('hex');
 }
-export function snapshotId(input: unknown): SnapshotId {
-  return `snapshot:${digest(input)}` as SnapshotId;
+export function sessionId(): SessionId {
+  return `session:${randomUUID()}` as SessionId;
 }
-export function recordId(snapshot: SnapshotId, kind: string, key: unknown): RecordId {
-  return `${snapshot}:${kind}:${digest(key)}` as RecordId;
+export function recordId(session: SessionId, kind: string, key: unknown): RecordId {
+  // Reference spelling must not randomize semantic ordering of derived records.
+  const localKey = canonical(key).replaceAll(session, 'session');
+  return `${session}:${kind}:${createHash('sha256').update(localKey).digest('hex')}` as RecordId;
 }
 
-/** Precise module addresses, abbreviated against the complete snapshot population. */
+/** Precise module addresses, abbreviated against the complete session population. */
 export function moduleEntityIds(ids: readonly RecordId[]): ReadonlyMap<RecordId, string> {
   return entityIds(ids, 'module');
 }

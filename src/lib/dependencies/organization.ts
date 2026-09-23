@@ -22,8 +22,8 @@ export function evaluateDependencyOrganization(store: ProgramRecordStore, depend
   const capture = repository.capture.status === 'available' ? repository.capture.evidence : null;
   const layout = repository.layout;
   const records: ProgramRecord[] = [];
-  const base = { snapshot: dependency.snapshot, method: methods.dependencyOrganization };
-  const id = recordId(base.snapshot, 'dependency-organization-evaluation', [base.method, dependency.id, organization.id]);
+  const base = { session: dependency.session, method: methods.dependencyOrganization };
+  const id = recordId(base.session, 'dependency-organization-evaluation', [base.method, dependency.id, organization.id]);
   const claims = organization.claims.map(id => store.get(id));
   const placements = new Map(claims.filter((claim): claim is ModulePlacementClaim =>
     claim.kind === 'claim' && claim.information.type === 'module-placement').map(claim => [claim.subject, claim]));
@@ -129,8 +129,8 @@ export function evaluateDependencyOrganization(store: ProgramRecordStore, depend
     const answers = new Set(occurrences.map(item => item.classification));
     const classification = occurrences.every(item => item.status === 'established')
       ? answers.size === 1 ? occurrences[0]!.classification : 'varies-by-occurrence' : null;
-    const claimId = recordId(base.snapshot, 'dependency-organization', [base.method, id, relationshipId]);
-    const context = recordId(base.snapshot, 'dependency-organization-context', claimId);
+    const claimId = recordId(base.session, 'dependency-organization', [base.method, id, relationshipId]);
+    const context = recordId(base.session, 'dependency-organization-context', claimId);
     const supportingContexts = new Set(occurrences.flatMap(item => [...item.source.claims, ...item.target.claims,
       ...item.pairs.flatMap(pair => pair.containment)]).map(claimId => {
       const claim = store.get(claimId);

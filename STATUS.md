@@ -4,7 +4,7 @@ Last reviewed: 2026-09-23
 
 The development CLI supports module inventory, repository organization, and direct
 module dependencies, with Unicode and experimental JSON views. Module and group
-inspection, exports, documentation, source evidence, and scoped navigation support
+inspection, exports, documentation, source evidence, and exact name/handle lookup support
 exploration of program structure. Dependency views distinguish established
 relationships, unresolved requests, and analysis limits; they do not describe
 runtime behavior or architectural intent. See the [CLI reference](docs/cli-reference.md).
@@ -21,12 +21,13 @@ discovery call, with existing output semantics preserved. The
 [review disposition](records/reviews/analysis-latency/2026-09-21-integrated-disposition.md)
 provide measurements, verification, and remaining limits.
 
-[PR #5](https://github.com/ronen/postcode/pull/5) awaits merge. No further
-implementation is authorized by this task; subsequent work is subject to human
-selection from the [backlog](docs/backlog.md) and planning.
-
 The [transient interactive session shell plan](docs/plans/transient-session-shell.md)
-is approved, with [session decisions](docs/decisions/transient-analysis-sessions.md)
-and corresponding governing concepts and constraints adopted. Implementation has
-not begun; the current CLI still uses snapshots. CLI documentation and implementation
-conventions will be aligned during implementation.
+is being implemented under the [active task](records/tasks/2026-09-23-transient-session-shell.md).
+The one-shot conversion checkpoint replaces snapshots with short-lived sessions,
+retains captured input support independently of session identity, removes scope
+options and generated commands, and adds session/command observation correlation.
+The experimental view schemas and observation format are now version 1.
+
+Accumulating analysis, stable bindings under growth, input-change invalidation,
+and the interactive prompt remain ahead. The plan requires human-arranged
+independent review of this checkpoint before accumulation begins.

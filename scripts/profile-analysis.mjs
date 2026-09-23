@@ -42,9 +42,10 @@ const project = path.join(destination, 'src/lib/typescript/project.js');
 let code = readFileSync(project, 'utf8');
 for (const name of ['Expansions', 'Composition', 'Dependencies']) {
   const variable = `prepared${name}`;
-  const pattern = new RegExp(`${variable}\\?\\.\\(snapshot, evidence\\)`, 'g');
+  const scope = code.includes(`${variable}?.(session, evidence)`) ? 'session' : 'snapshot';
+  const pattern = new RegExp(`${variable}\\?\\.\\(${scope}, evidence\\)`, 'g');
   if ((code.match(pattern) ?? []).length !== 1) throw Error(`Missing materializer: ${variable}`);
-  code = code.replace(pattern, `${variable} ? globalThis.__analysisMeasure('materialize${name}', () => ${variable}(snapshot, evidence)) : undefined`);
+  code = code.replace(pattern, `${variable} ? globalThis.__analysisMeasure('materialize${name}', () => ${variable}(${scope}, evidence)) : undefined`);
 }
 writeFileSync(project, code);
 console.log(destination);
