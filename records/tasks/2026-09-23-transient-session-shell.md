@@ -30,9 +30,10 @@ Implementation conventions now describe session namespaces, retained input
 support, one-shot selection, consistent reference normalization in tests, and the
 new observation format instead of snapshot scope and generated commands.
 
-The task remains active at the explicitly required independent-review checkpoint.
-Accumulation, growth-safe bindings, change detection and the prompt have not begun.
-The next step is human-arranged review before proceeding to those stages.
+The one-shot review gate was cleared by the human after round 1. F1 was corrected
+in `3846f1f`; the [disposition](../reviews/transient-session-shell/2026-09-23-one-shot-disposition.md)
+records verification and treatment of the non-defect notes. The task remains
+active for accumulation, growth-safe bindings, change detection and the prompt.
 
 ## Verification
 
