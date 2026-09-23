@@ -22,7 +22,8 @@ discovery call, with existing output semantics preserved. The
 provide measurements, verification, and remaining limits.
 
 The [transient interactive session shell plan](docs/plans/transient-session-shell.md)
-is implemented under the [active task](records/tasks/2026-09-23-transient-session-shell.md).
+is complete; the [task record](records/tasks/2026-09-23-transient-session-shell.md)
+preserves implementation, verification and acceptance.
 The shell now keeps one project open, reuses completed analysis and stable partial work, preserves bound
 references and earlier results, detects relevant input changes, and records
 command outcomes. Compiler work runs in an interruptible worker. One-shot commands
@@ -31,5 +32,5 @@ version 1. Independent review is complete with no remaining actionable findings;
 the [disposition](records/reviews/transient-session-shell/2026-09-23-integrated-disposition.md)
 records the corrections, supplementary long-session evidence and residual limits.
 The human has completed the representative journey on a separate project and
-confirmed that it functions as expected. The task awaits final review-gate
-acceptance and is not yet closed.
+confirmed that it functions as expected. The human accepted the final review
+gate and authorized task closure.

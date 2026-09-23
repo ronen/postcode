@@ -5,7 +5,7 @@ Date: 2026-09-23
 Task: [Transient interactive session shell](../../tasks/2026-09-23-transient-session-shell.md)
 Handoff: [Integrated review assignment](2026-09-23-integrated-handoff.md)
 Findings: [Integrated round 1](2026-09-23-integrated-round-1-findings.md); [integrated round 2](2026-09-23-integrated-round-2-findings.md); [integrated round 3 and supplement](2026-09-23-integrated-round-3-findings.md); [integrated round 4, Copilot](2026-09-23-integrated-round-4-copilot-findings.md); [integrated round 5, Copilot](2026-09-23-integrated-round-5-copilot-findings.md); [integrated round 6, Copilot](2026-09-23-integrated-round-6-copilot-findings.md)
-State: no actionable findings remain; human inspection confirmed; final gate acceptance pending
+State: no actionable findings remain; human inspection and final gate accepted
 
 ## Round 1 findings and dispositions
 
@@ -587,6 +587,8 @@ This supplies the hands-on acceptance discussed above using that project in plac
 of the specified fixture/PostCode human inspection; it does not claim that the
 human used those repositories. No additional usability issue was reported.
 
-The task remains active pending explicit final review-gate acceptance and closure.
-No reviewer recommendation is treated as human acceptance of that gate; residual
-limits remain recorded with the supplement's updated long-session evidence.
+On 2026-09-23, the human explicitly accepted the final review gate and authorized
+task closure after confirming the hands-on journey. The gate is satisfied and
+no further review is required for this task. Residual limits remain recorded
+with the supplement's updated long-session evidence; acceptance does not turn
+those limits into broader verification claims.
