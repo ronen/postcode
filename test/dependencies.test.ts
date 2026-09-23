@@ -4,6 +4,7 @@ import { mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSy
 import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
+import { normalizeSession, inputBasis } from './helpers.js';
 import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
 import type { DependencyCoverageRecord, DependencyEvaluationRecord, DependencyOccurrenceRecord, DependencyRelationshipClaim } from '../src/lib/dependencies/records.js';
 import { evaluateModules } from '../src/lib/evaluation.js';
@@ -230,18 +231,18 @@ test('external interiors stay opaque and external augmentations do not become en
   });
 });
 
-test('dependency resolution uses the captured output exclusion boundary and changes snapshot with new resolution inputs', () => {
+test('dependency resolution uses the captured output exclusion boundary and retains changed resolution inputs independently of session identity', () => {
   temporary({ 'entry.cts': "export {}; require('./generated/target');", 'generated/target.ts': 'export {};' }, root => {
     const config = path.join(root, 'tsconfig.json');
     const excluded = analyze(config, [path.join(root, 'generated')]);
     assert.equal(excluded.occurrences[0]!.targetStatus, 'unresolved');
     const visible = analyze(config);
     assert.equal(visible.occurrences[0]!.targetStatus, 'outside-population');
-    assert.notEqual(visible.evaluation.snapshot, excluded.evaluation.snapshot);
+    assert.notEqual(inputBasis(visible), inputBasis(excluded));
     rmSync(path.join(root, 'generated/target.ts'));
     const removed = analyze(config);
     assert.equal(removed.occurrences[0]!.targetStatus, 'unresolved');
-    assert.notEqual(removed.evaluation.snapshot, visible.evaluation.snapshot);
+    assert.notEqual(inputBasis(removed), inputBasis(visible));
   }, {}, ['entry.cts']);
 });
 
@@ -277,7 +278,7 @@ test('dependency records reproduce in fresh processes without clock or invocatio
     const result = evaluateDependencies(store, opened.analysis);
     console.log(JSON.stringify([result, ...[...result.occurrences, ...result.relationships, ...result.coverage, ...result.contexts].map(id => store.get(id))]));`;
   const run = () => execFileSync(process.execPath, ['--input-type=module', '-e', script], { encoding: 'utf8', maxBuffer: 4 * 1024 * 1024 });
-  assert.equal(run(), run());
+  assert.deepEqual(normalizeSession(JSON.parse(run())), normalizeSession(JSON.parse(run())));
 });
 
 test('partial, stopped and failed dependency attempts retain qualified materialized results; defects propagate', () => {
@@ -319,12 +320,12 @@ test('captured request evidence survives later edits and dependency method versi
     assert.equal(result.source(result.occurrences[0]!), before);
     assert.equal(before.dependencyResolution!.writtenSpecifier, './target');
     const changed = analyze(path.join(root, 'tsconfig.json'));
-    assert.notEqual(result.evaluation.snapshot, changed.evaluation.snapshot);
-    const snapshot = result.store.get(result.evaluation.snapshot);
-    assert.equal(snapshot.kind, 'snapshot');
-    if (snapshot.kind !== 'snapshot') throw new Error('Expected snapshot');
-    assert.ok(snapshot.methods.includes('postcode/typescript-dependencies@2'));
-    assert.ok(snapshot.methods.includes('postcode/evaluate-dependencies@1'));
+    assert.notEqual(inputBasis(result), inputBasis(changed));
+    const session = result.store.get(result.evaluation.session);
+    assert.equal(session.kind, 'session');
+    if (session.kind !== 'session') throw new Error('Expected session');
+    assert.ok(session.methods.includes('postcode/typescript-dependencies@2'));
+    assert.ok(session.methods.includes('postcode/evaluate-dependencies@2'));
   });
 });
 

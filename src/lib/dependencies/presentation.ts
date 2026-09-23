@@ -1,6 +1,6 @@
 import { compositionAnnotation, compositionView } from '../composition-view.js';
 import type { CompositionView } from '../composition-view.js';
-import { methods, moduleEntityIds, recordId } from '../identity.js';
+import { methods, recordId } from '../identity.js';
 import type { Presentation } from '../presentation.js';
 import { moduleStandardExpansions } from '../records.js';
 import type { ClaimContextRecord, EvaluationState, ModuleClaim, ProgramRecord, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
@@ -9,7 +9,7 @@ import { dependencyLimitations } from './records.js';
 import type { DependencyCoverageRecord, DependencyGraph, DependencyOccurrenceRecord, DependencyOrganizationClaim, DependencyProjectionRecord, DependencyRelationshipClaim } from './records.js';
 
 export const dependencyPresentationRequirements = { modules: moduleStandardExpansions, organization: 'repository-layout' } as const;
-type Qualification = Omit<ClaimContextRecord, 'kind' | 'evidence'>;
+type Qualification = Omit<ClaimContextRecord, 'kind' | 'evidence' | 'inputs'>;
 type Outcome = Omit<EvaluationState, 'cost'>;
 type ModuleView = { readonly id: RecordId; readonly entityId: string; readonly name: string | null; readonly handle: string;
   readonly discoveryFacets: ModuleClaim['information']['discoveryFacets']; readonly opaque: boolean;
@@ -27,9 +27,9 @@ type EdgeView = { readonly id: RecordId; readonly parent: RecordId; readonly chi
 type Row = { readonly component: number; readonly depth: number; readonly reference: boolean; readonly pruned: boolean };
 
 export interface QualifiedDependencyView {
-  readonly schema: 'postcode-dependency-view/0-experimental'; readonly id: RecordId;
-  readonly projection: Pick<DependencyProjectionRecord, 'id' | 'snapshot' | 'lens' | 'subject' | 'parameters' | 'selection'>;
-  readonly presentation: Presentation & { readonly expansions: readonly string[]; readonly dependencyNavigation?: { readonly children: string; readonly parents: string; readonly source: string } };
+  readonly schema: 'postcode-dependency-view/1-experimental'; readonly id: RecordId;
+  readonly projection: Pick<DependencyProjectionRecord, 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
+  readonly presentation: Presentation & { readonly expansions: readonly string[] };
   readonly evaluations: { readonly modules: Outcome; readonly dependencies: Outcome; readonly organization: Outcome | null };
   readonly limitations: readonly string[]; readonly qualifications: readonly Qualification[];
   readonly modules: readonly ModuleView[]; readonly subjects: readonly RecordId[]; readonly relationships: readonly EdgeView[];
@@ -50,16 +50,16 @@ const full = (outcome: Outcome) => outcome.applicability === 'applicable' && out
 
 /** Materializes display bounds from the stored graph; rendering below only formats this value. */
 export function createDependencyView(store: ProgramRecordStore, projection: DependencyProjectionRecord,
-  presentation: Presentation & { readonly dependencyNavigation?: { readonly children: string; readonly parents: string; readonly source: string } }): QualifiedDependencyView {
+  presentation: Presentation): QualifiedDependencyView {
   const evaluation = store.get(projection.evaluation);
   if (evaluation.kind !== 'dependency-evaluation') throw new Error('Expected dependency evaluation');
   const basis = store.get(evaluation.moduleEvaluation);
   if (basis.kind !== 'evaluation') throw new Error('Expected module evaluation');
-  const ids = moduleEntityIds(basis.modules);
+  const ids = store.entityIds(basis.modules, 'module');
   const qualification = (id: RecordId): Qualification => {
     const context = store.get(id);
     if (context.kind !== 'claim-context') throw new Error('Expected qualification');
-    const { kind: _kind, evidence: _evidence, ...result } = context;
+    const { kind: _kind, evidence: _evidence, inputs: _inputs, ...result } = context;
     return result;
   };
   const expanded = projection.expansions.organization ? store.get(projection.expansions.organization) : null;
@@ -188,15 +188,15 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
     'Re-exports only is a syntax property, not a barrel, API, purity, or safe-collapse claim.',
     'Repository-layout labels compare all applicable occurrence endpoint placements: same-group means equal groups; into-descendants means a strict organization descendant; outward means outside the source group and its descendants.',
     'Variation labels preserve different established answers; unestablished organization is not a policy failure. Repository layout establishes no dependency policy or architectural violation.',
-    'Generated handles are navigation cues; exact names and snapshot-scoped Entity IDs retain their established meanings.'];
+    'Generated handles are navigation cues; exact names and session-local Entity IDs retain their established meanings.'];
   if (projection.lens === 'dependency-parents') limitations.push('A request without an established child cannot be attributed to the selected module and therefore cannot produce a parent result.');
   const sourcePriority = (item: typeof sourceItems[number]) => projection.nonEdgeRequests.includes(item.subject) ? 0
     : projection.coverage.includes(item.subject) ? 1 : item.role === 'target' ? 3 : 2;
   sourceItems.sort((a, b) => sourcePriority(a) - sourcePriority(b));
   const result: QualifiedDependencyView = {
-    schema: 'postcode-dependency-view/0-experimental',
-    id: recordId(projection.snapshot, 'dependency-view', { method: methods.presentation, projection: projection.id, presentation }),
-    projection: { id: projection.id, snapshot: projection.snapshot, lens: projection.lens, subject: projection.subject, parameters: projection.parameters, selection: projection.selection },
+    schema: 'postcode-dependency-view/1-experimental',
+    id: recordId(projection.session, 'dependency-view', { method: methods.presentation, projection: projection.id, presentation }),
+    projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject, parameters: projection.parameters, selection: projection.selection },
     presentation: { ...presentation, expansions: [...new Set(projection.expansions.moduleEvaluations.flatMap(id => {
       const outcome = store.get(id); return outcome.kind === 'evaluation' && outcome.requirement !== 'modules' ? [outcome.requirement] : [];
     })), ...(expanded ? ['repository-layout'] : [])] },
@@ -228,7 +228,7 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
   };
   const edgeText = (edge: EdgeView) => `${label(edge.parent, false)} → ${label(edge.child, false)}${edge.typeOnly ? ' · type-only' : ''} · ${edge.mechanisms.join(', ')}${edge.organization ? ` · ${edge.organization.classification ?? 'organization not established'}` : ''}`;
   const lines = [`Module dependency ${view.projection.lens === 'dependency-structure' ? 'structure' : view.projection.lens === 'dependency-children' ? 'children' : 'parents'}`,
-    `Snapshot ${view.projection.snapshot}`, 'Direction: dependency parent → dependency child (depends directly on).',
+    `Session ${view.projection.session.replace(/^session:/, '')}`, 'Direction: dependency parent → dependency child (depends directly on).',
     `${counted(view.summary.modules, 'module')} in this projection · ${counted(view.summary.relationships, 'direct relationship')}`,
     `Materialized population: ${counted(view.summary.projectModules, 'project module')}; ${counted(view.summary.discoveredModules, 'discovered module')} available for exact lookup.`,
     'Analysis outcomes below describe supported source requests, not complete runtime behavior.',
@@ -286,8 +286,5 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
     `  ${counted(view.display.omittedOccurrences, 'supporting occurrence')} omitted · ${counted(view.display.omittedRequestResults, 'request result')} summarized/omitted · ${counted(view.display.omittedCoverageOutcomes, 'recognition outcome')} summarized/omitted`,
     '  Display bounds do not reduce analysis coverage.', '', 'Qualifications', ...view.limitations.map(item => `  ${item}`));
   for (const code of new Set(view.qualifications.flatMap(context => context.diagnostics.map(item => item.code)))) lines.push(`  Encountered TypeScript diagnostic: TS${code}`);
-  if (view.presentation.navigation || view.presentation.dependencyNavigation) lines.push('', 'Navigation evaluates current inputs afresh. Scoped selectors reject snapshot mismatches; source detail uses evidence captured in the new invocation.');
-  if (view.presentation.navigation) lines.push('', 'Next · inspect a module:', view.presentation.navigation.inspect);
-  if (view.presentation.dependencyNavigation) lines.push('', 'Next · dependency children:', view.presentation.dependencyNavigation.children, '', 'Next · dependency parents:', view.presentation.dependencyNavigation.parents, '', 'Next · fresh evaluation with request and organization source detail (view-local Request/Coverage numbers are not entity selectors):', view.presentation.dependencyNavigation.source);
   return `${lines.join('\n')}\n`;
 }

@@ -1,22 +1,20 @@
 import { compositionView, compositionAnnotation } from './composition-view.js';
 import type { CompositionView } from './composition-view.js';
 import { inlineText, terminalText } from './terminal-text.js';
-import { methods, moduleEntityIds, recordId } from './identity.js';
+import { methods, recordId } from './identity.js';
 import { isModuleClaim, moduleStandardExpansions } from './records.js';
-import type { Claim, ClaimContextRecord, EvaluationRecord, ExportClaim, ModuleClaim, ModuleExpansion, ProgramRecordStore, ProjectionRecord, RecordId, RecordedAssertion, SnapshotRecord, SourceEvidenceRecord, SymbolClaim } from './records.js';
+import type { Claim, ClaimContextRecord, EvaluationRecord, ExportClaim, ModuleClaim, ModuleExpansion, ProgramRecordStore, ProjectionRecord, RecordId, RecordedAssertion, SessionRecord, SourceEvidenceRecord, SymbolClaim } from './records.js';
 
 export interface Presentation {
   readonly format: 'unicode' | 'json';
   readonly sourceDetail: boolean;
-  /** Operational invocation context supplied by the CLI, not repository source evidence. */
-  readonly navigation?: { readonly inspect: string };
 }
 
 export function presentationRequirements(_presentation: Presentation): readonly ModuleExpansion[] {
   return moduleStandardExpansions;
 }
 
-type Qualification = Omit<ClaimContextRecord, 'kind' | 'evidence'>;
+type Qualification = Omit<ClaimContextRecord, 'kind' | 'evidence' | 'inputs'>;
 type Documentation = Pick<RecordedAssertion, 'id' | 'status' | 'text'> & {
   omittedTextCharacters: number;
   tags: readonly { name: string; text: string; omittedTextCharacters: number }[];
@@ -31,11 +29,11 @@ type ExportView = ExportClaim['information'] & {
 };
 
 export interface QualifiedView {
-  readonly schema: 'postcode-view/0-experimental';
+  readonly schema: 'postcode-view/1-experimental';
   readonly id: RecordId;
-  readonly projection: Pick<ProjectionRecord, 'id' | 'snapshot' | 'lens' | 'subject' | 'parameters' | 'selection'>;
+  readonly projection: Pick<ProjectionRecord, 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
   readonly presentation: Presentation & { readonly expansions: readonly ModuleExpansion[] };
-  readonly analysis: SnapshotRecord['analysis'] | null;
+  readonly analysis: SessionRecord['analysis'] | null;
   readonly qualifications: readonly Qualification[];
   readonly evaluations: readonly Pick<EvaluationRecord, 'id' | 'requirement' | 'modules' | 'applicability' | 'availability' | 'execution' | 'materialization' | 'reason' | 'cost'>[];
   readonly modules: readonly {
@@ -56,15 +54,15 @@ export interface QualifiedView {
 /** Assembles a bounded view from already-materialized records. Neither this nor rendering evaluates. */
 export function createView(store: ProgramRecordStore, projection: ProjectionRecord, presentation: Presentation): QualifiedView {
   if (presentation.sourceDetail && projection.lens !== 'inspect') throw new Error('Source detail requires inspection');
-  const snapshot = store.get(projection.snapshot);
-  if (snapshot.kind !== 'snapshot') throw new Error('Expected analysis snapshot');
+  const session = store.get(projection.session);
+  if (session.kind !== 'session') throw new Error('Expected analysis session');
   const discovery = store.get(projection.evaluations[0]!);
   if (discovery.kind !== 'evaluation') throw new Error('Expected discovery evaluation');
-  const entityIds = moduleEntityIds(discovery.modules);
+  const entityIds = store.entityIds(discovery.modules, 'module');
   const qualification = (id: RecordId): Qualification => {
     const context = store.get(id);
     if (context.kind !== 'claim-context') throw new Error('Expected Claim context');
-    const { kind: _kind, evidence: _evidence, ...conceptual } = context;
+    const { kind: _kind, evidence: _evidence, inputs: _inputs, ...conceptual } = context;
     return conceptual;
   };
   const expanded = projection.expansions.claims.map(id => store.get(id)).filter((record): record is Claim => record.kind === 'claim');
@@ -173,11 +171,11 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
   const collapsed = compact ? modules.filter(module => !module.discoveryFacets.includes('project')) : [];
   const listed = compact ? modules.filter(module => module.discoveryFacets.includes('project')) : modules;
   return {
-    schema: 'postcode-view/0-experimental', id: recordId(projection.snapshot, 'view', { projection: projection.id, presentation, method: methods.presentation }),
-    projection: { id: projection.id, snapshot: projection.snapshot, lens: projection.lens, subject: projection.subject,
+    schema: 'postcode-view/1-experimental', id: recordId(projection.session, 'view', { projection: projection.id, presentation, method: methods.presentation }),
+    projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,
       parameters: projection.parameters, selection: projection.selection },
     presentation: { ...presentation, expansions: projection.expansions.requested },
-    analysis: snapshot.analysis ?? null,
+    analysis: session.analysis ?? null,
     qualifications: contexts, evaluations, modules: listed.map(({ omittedDocumentationInModule: _omittedDocumentation, ...module }) => module),
     display: { collapsedModules: collapsed.length,
       omittedExports: listed.reduce((count, module) => count + module.omittedExports, 0),
@@ -241,12 +239,10 @@ export function renderUnicode(view: QualifiedView): string {
   const selection = view.projection.selection;
   const inventory = view.projection.lens === 'modules';
   const lines = [`${inventory ? 'Modules' : 'Inspect'} · configured TypeScript project`,
-    `Snapshot ${view.projection.snapshot.replace(/^snapshot:/, '').slice(0, 12)}`,
+    `Session ${view.projection.session.replace(/^session:/, '')}`,
     inventory ? `${selection.population} module${selection.population === 1 ? '' : 's'} found · ${view.modules.length} listed${view.display.collapsedModules ? ` · ${view.display.collapsedModules} external module${view.display.collapsedModules === 1 ? '' : 's'} collapsed` : ''}`
-      : `${selection.matches} module${selection.matches === 1 ? '' : 's'} selected from ${selection.population} · ${selection.matches === 0 ? 'no exact match' : selection.matches === 1 ? 'exact match' : 'exact matches'} for ${inlineText(view.projection.parameters.selector ?? '')}`];
+      : `${selection.matches} module${selection.matches === 1 ? '' : 's'} selected from ${selection.population} · ${selection.matches === 0 ? 'no exact match' : selection.matches === 1 ? 'exact match' : 'exact matches'} for ${view.projection.parameters.reference ? '@' : ''}${inlineText(view.projection.parameters.selector ?? '')}${view.projection.parameters.reference ? ` · ${selection.referenceStatus}` : ''}`];
   if (!selection.populationEstablished) lines.push('Module population is not established.');
-  if (selection.referenceStatus === 'snapshot-required') lines.push('No current match: handle or compact Entity ID selection requires --snapshot from its inventory.');
-  if (selection.referenceStatus === 'snapshot-mismatch') lines.push('No current match: the supplied snapshot differs from this analysis; no successor is inferred.');
   const outcomeGroups = new Map<string, number>();
   for (const outcome of view.evaluations) {
     const label = `${outcome.requirement}: ${outcome.execution}, materialization ${outcome.materialization}${outcome.applicability !== 'applicable' ? `, ${outcome.applicability}` : ''}${outcome.availability !== 'available' ? `, ${outcome.availability}` : ''}${outcome.reason ? ` — ${inlineText(outcome.reason)}` : ''}`;
@@ -429,13 +425,7 @@ export function renderUnicode(view: QualifiedView): string {
       || context.diagnostics.some(diagnostic => !sharedDiagnostics.has(diagnostic.code)));
     if (exceptional.length) { lines.push(`- Collapsed ${inlineText(collapsed.handle)}:`); local(exceptional, '  '); }
   }
-  if (view.presentation.navigation) {
-    const next = inventory ? 'Next · inspect a module:' : selection.matches === 0
-      ? 'Next · choose a handle or Entity ID from modules and replace MODULE_HANDLE:'
-      : `Next · replace MODULE_HANDLE to inspect another module${view.sourceDetail ? '.' : '; add --source-detail for supporting source evidence.'}`;
-    lines.push('', next, view.presentation.navigation.inspect);
-  }
-  else lines.push('', 'Inspection requires an exact subject, the full snapshot ID from JSON, and the selected --project configuration.');
+  lines.push('', 'Entity references belong to this session. One-shot queries accept exact names or handles.');
   return `${lines.map(terminalText).join('\n')}\n`;
 }
 

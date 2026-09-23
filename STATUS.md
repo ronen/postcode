@@ -2,31 +2,33 @@
 
 Last reviewed: 2026-09-23
 
-The development CLI supports module inventory, repository organization, and direct
-module dependencies, with Unicode and experimental JSON views. Module and group
-inspection, exports, documentation, source evidence, and scoped navigation support
-exploration of program structure. Dependency views distinguish established
-relationships, unresolved requests, and analysis limits; they do not describe
-runtime behavior or architectural intent. See the [CLI reference](docs/cli-reference.md).
+PostCode is currently available as a development CLI for investigating one
+configured TypeScript project.
 
-The [module dependency slice](docs/plans/module-dependencies-plan.md) is complete,
-including evaluation on PostCode and an unfamiliar repository. Its
-[task record](records/tasks/2026-09-16-module-dependencies.md) preserves acceptance
-and evaluation details.
+## Implemented capabilities
 
-The [analysis-latency task](records/tasks/2026-09-21-analysis-latency.md) is complete.
-Fresh analysis on PostCode is substantially faster through reuse within each
-discovery call, with existing output semantics preserved. The
-[validation report](records/validation/2026-09-21-analysis-latency.md) and
-[review disposition](records/reviews/analysis-latency/2026-09-21-integrated-disposition.md)
-provide measurements, verification, and remaining limits.
+- **[Interactive investigation](docs/cli-reference.md#commands).**
+  A session shell supports successive questions, stable references to previously
+  displayed subjects, and reuse of accumulated analysis.
+- **[Module inventory and inspection](docs/cli-reference.md#inventory-and-inspection).**
+  Modules, exports, forwarding relationships and associated documentation can be
+  listed and examined.
+- **[Repository organization](docs/cli-reference.md#organization-and-group-inspection).**
+  Project and repository views expose groups, their relationships and module
+  membership, with group inspection and navigation.
+- **[Dependency investigation](docs/cli-reference.md#dependency-investigation).**
+  Dependency structure, cycles, direct dependencies and dependents are available,
+  with unresolved requests and analysis limits distinguished.
+- **[Supporting evidence](docs/cli-reference.md#source-detail-and-observations).**
+  Inspections can expose source locations and bounded excerpts supporting the
+  displayed information.
+- **[Local observation recording](README.md#observability).**
+  Commands record requests, outcomes and presented views for later examination.
 
-[PR #5](https://github.com/ronen/postcode/pull/5) awaits merge. No further
-implementation is authorized by this task; subsequent work is subject to human
-selection from the [backlog](docs/backlog.md) and planning.
+## Current limits
 
-The [transient interactive session shell plan](docs/plans/transient-session-shell.md)
-is approved, with [session decisions](docs/decisions/transient-analysis-sessions.md)
-and corresponding governing concepts and constraints adopted. Implementation has
-not begun; the current CLI still uses snapshots. CLI documentation and implementation
-conventions will be aligned during implementation.
+- **[Analysis scope](docs/cli-reference.md#supported-typescript-population-and-qualifications):**
+  TypeScript only, one configured project at a time, with explicit coverage limits.
+- **[Session lifetime](docs/cli-reference.md#input-stability-and-retained-work):**
+  investigations cannot be saved or resumed. Detected input changes require
+  reopening; long sessions can accumulate memory until closed.

@@ -1,6 +1,7 @@
 # Implemented architecture
 
-The development CLI opens one configured TypeScript project, evaluates module
+The development CLI opens one configured TypeScript project in a transient
+session (one request or an interactive investigation), evaluates module
 inventory and presentation-declared standard expansions, constructs stored
 `modules(project)`, repository/project organization, or exact-selection group/module inspection projections, and presents
 a qualified Unicode or experimental JSON view. Every produced view submits a
@@ -8,7 +9,10 @@ self-contained observation batch to a separate local sink. The initial slice's
 instrument validation and independent reviews are recorded in the
 [completed task](../../records/tasks/2026-09-12-initial-module-inventory.md).
 
-The governing choices are the accepted [projection architecture decisions](../decisions/initial-projection-architecture-decisions.md)
+The current lifecycle is governed by the [session decisions](../decisions/transient-analysis-sessions.md).
+The shell and one-shot CLI share request execution. The shell retains compiler
+state and program records in a private worker while the parent owns terminal
+interaction, publication and observation delivery. Other governing choices are the accepted [projection architecture decisions](../decisions/initial-projection-architecture-decisions.md)
 and [module inventory decisions](../decisions/initial-module-inventory-decisions.md).
 The governing cross-cutting terminology is maintained in [core concepts](../core-concepts.md), and binding cross-cutting rules are maintained in [architectural constraints](../architectural-constraints.md); this document describes how the current implementation realizes them.
 
@@ -22,9 +26,10 @@ files return project-open failure before a projection exists. Compiler objects
 remain inside that integration; input projects are never executed.
 
 The presentation declares module-standard exports, documentation and composition requirements
-before the evaluator requests discovery through a small language-analysis boundary. Discovery writes an atomic batch of snapshot, module entity, module
+before the evaluator requests discovery through a small language-analysis boundary. Discovery writes an atomic batch of session, captured analysis inputs, module entity, module
 claim, Claim context, and source-evidence records through `ProgramRecordStore`.
-Compiler expansion preparation completes before snapshot identity is finalized.
+Compiler expansion preparation completes before its supporting input record is captured.
+Session identity is allocated once after project opening, independently of that input record.
 Expansion materialization adds semantic symbol entities and claims, export
 relationship claims, recorded documentation assertions, and qualified association
 claims. The evaluator records an immutable discovery attempt and separate expansion
@@ -34,12 +39,15 @@ construction reads stored information, selects relevant subjects and context,
 and writes an addressable projection. It does not call TypeScript.
 
 The current store adapter uses private in-memory maps. It clones and freezes
-records, requires each snapshot record's own ID to equal its snapshot identity,
+records, requires each session record's own ID to equal its session identity,
 rejects conflicting replacements and invalid references (including entity
 claim discriminators and reciprocal subjects, and documentation-association
 subjects matching their module, origin-symbol or export-alias provenance), and
-supports multiple snapshots and evaluation attempts. No persistence, sessions, SQL query
-model, or general scheduling framework exists.
+supports session namespaces and immutable evaluation attempts. The request executor
+owns an opened provider and ephemeral store and releases them on close. Completed
+evaluations are reused by declared requirements, while newly requested work adds
+records. Each projection uses its own evaluation basis, never the entire store
+population. This establishes neither persistence nor a general scheduler.
 
 Module claims carry the information asserted. Claim context separately identifies
 evidence, method, scope, guarantee, limitations, and encountered diagnostic codes.
@@ -47,12 +55,12 @@ Source evidence carries compiler names, file paths, contributing declaration
 ranges, content digests, configured-root provenance, and written module-specifier
 occurrences with established resolution targets or explicit non-establishment. It is not a conceptual
 module label. SourceFile modules without an independently established module name
-are anonymous; their snapshot-scoped generated handles are navigation aids.
+are anonymous; their generated handles are navigation aids.
 
-Within each discovery call, the TypeScript integration computes a captured
-`SourceFile` object's content digest once and reuses it for snapshot source entries
+Within each opened provider, the TypeScript integration computes a captured
+`SourceFile` object's content digest once and reuses it for captured input source entries
 and source-evidence records. This avoids repeatedly serializing and hashing large
-declaration files during expansion materialization. The map is local to that call;
+declaration files during expansion materialization. The map is local to that provider;
 new project openings still capture and analyze inputs afresh. Evidence identity,
 spans, excerpts, qualification and store validation are unchanged. The
 [latency investigation](../../records/validation/2026-09-21-analysis-latency.md)
@@ -70,7 +78,7 @@ Unexpected defects propagate rather than becoming ordinary analysis failures.
 
 An explicit dependency evaluation can now request a bounded source-request pass
 through the same TypeScript integration. Compiler and file-resolution work
-finishes before snapshot identity is finalized. The pass materializes qualified
+finishes before its supporting inputs are recorded. The pass materializes qualified
 occurrences, separate recognition/ownership coverage results, and directed
 module-pair relationship claims retaining every resolved supporting occurrence.
 The evaluator records dependency work separately from its module-discovery basis;
@@ -95,31 +103,33 @@ into projections or presentation.
 
 ## Identity and evidence
 
-Snapshot identity hashes the compiler and PostCode method versions, Node and
-platform context, selected configuration and options, source population and
-contents, the observed filesystem inputs used by configuration and resolution,
-and the captured repository organization inputs and method versions.
-Those inputs include positive and negative reads/existence checks, directory
-queries, and realpath results. Each observation is memoized within an opened
-project. This is a snapshot of first-observed inputs, not an atomic filesystem
-transaction or a cache-validity contract. A changing repository should be reopened.
-The snapshot retains concise analysis coverage, consistency and enforced
-output-location counts for run-specific presentation. Exclusion counts identify
-filter boundaries, not generated files discovered or read.
+Session identity is a random UUID namespace, not a digest of program inputs.
+The analysis-input record retains compiler/PostCode method versions, Node and
+platform context, selected configuration and options, source population/content
+digests, observed configuration/resolution inputs, and repository evidence.
+Claim contexts produced by the provider reference that record; claims retain
+source and responsible method context. Repository-derived contexts retain their
+captured repository evidence. Neither session identity nor observation metadata
+establishes the evidential basis of a claim.
 
-The method registry must be bumped when the associated semantics change.
-Entity identity follows the configured compiler's source identities and ambient
-symbols. It makes no continuity claim across snapshots or relocated checkouts.
-Absolute paths contribute to internal snapshot identity, but are not conceptual
-names. Handles use language names, basenames or declared exports, with honest
-anonymous fallbacks. Basenames provide bounded mnemonic evidence without becoming
-conceptual names; generated provenance remains explicit. Handles that match compact
-Entity-ID syntax receive a `handle-` prefix, keeping those selectors distinct.
-Compact Entity IDs use
-record-key digest prefixes checked against the entire module population, extended
-on collision. Inspection requires explicit snapshot scope for handles and compact
-IDs, reporting no current match when scope is missing or stale. Internal record
-keys remain separate from the compact user-facing address.
+Positive and negative reads/existence checks, directory queries and realpath
+results are memoized within the opened project. Capture is first-observed and
+non-atomic. Inputs are assumed unchanged. Validation replays captured probes and
+compares repository capture and process environment at command boundaries; it
+never updates the supporting evidence or refreshes the session. The session record retains concise
+coverage, consistency and enforced output-location counts for presentation.
+Counts identify filter boundaries, not generated files found or read.
+
+The method registry is versioned with changes to the corresponding semantics.
+Entity identity follows compiler source identities and ambient symbols, without
+cross-session or relocation continuity. Internal keys belong to a session;
+reference spelling is excluded from the local key digest so random session IDs
+do not randomize semantic record ordering. Handles use language names, basenames
+or declared exports with honest anonymity, retaining generated provenance.
+Compact module/group IDs are allocated in a session-owned store map. Existing
+bindings remain fixed; new collisions extend only the new spelling. The one-shot CLI only performs exact name/handle lookups;
+its printed IDs cannot navigate another invocation. Library projections can
+select precise references in their existing session.
 
 Actual generated-output directories supplied by the caller are excluded before
 configuration discovery and compiler reads. A target directory named `_observations`
@@ -129,7 +139,7 @@ listings, and symlink targets, including missing descendants resolved through
 the nearest existing ancestor, so excluded contents do not enter evidence or its
 identity digest. Exclusion entries are normalized, sorted and deduplicated as
 lexical/real-path pairs before filtering and identity capture, so input order and
-repeated entries do not change the snapshot. Discovery contexts assert this exclusion only when at least one
+repeated entries do not change the captured input support. Discovery contexts assert this exclusion only when at least one
 output location was supplied; direct library runs may enforce none. The CLI supplies
 its actual checkout observation and build directories before opening a project,
 including when the selected configuration is nested elsewhere. Git-ignore rules
@@ -189,20 +199,23 @@ Analysis status, aggregate display omissions, and run limitations remain separat
 documentation omission counts include materialized exports outside the displayed
 cue. Stable explanations live in help and the command reference, while concise
 TypeScript coverage and non-atomic-input limitations remain in the view. The CLI
-supplies a quoted next-action command with the selected project and full snapshot.
-Options precede an end-of-options marker so exact selectors that resemble flags
-remain usable. The parser still accepts one exact selector.
-Its paths are explicit invocation context, distinct from analyzed source evidence.
+accepts options before an end-of-options marker so option-like exact names remain
+usable. Generated next-command text and its structured presentation fields have
+been removed. One selector can match multiple names/handles without choosing one.
 
 ## Observations and runtime boundaries
 
 The [observation decisions](../decisions/initial-observation-recording-decisions.md)
 require a separate `ObservationSink`. Observation batches are never inserted into
 `ProgramRecordStore` or read back as program truth. Each batch has format version
-zero and invocation-local UUIDs. Request context, repository/configuration/snapshot
+one, a session identifier, a command ordinal (1 for one-shot), and independent
+batch/event/context UUIDs. Request context, repository/configuration/session
 context, qualified view artifact and exact rendered output each appear once in the
 batch, referenced by the view-produced and optional source-escape events. They
-remain interpretable after the ephemeral store is discarded.
+remain interpretable after the ephemeral store is discarded. Command-outcome
+records preserve actual status stderr and supplied requests. Refusals, failures,
+invalidation and interruption can carry command events without view references;
+only actual produced views have view-produced/source-escape events.
 
 The CLI discloses the absolute local sink destination on stderr. The sink creates
 one private JSON file per accepted batch under a UTC `date=YYYY-MM-DD` subdirectory
@@ -224,9 +237,7 @@ corrections and the human-arranged rereview gate are tracked by the active
 
 Unicode rendering escapes controls at inline value boundaries before assembling
 layout. Documentation and source excerpts use structured wrapping; JSON and domain
-records retain their original text. Generated commands are omitted for invocation
-paths with controls rather than displaying a changed, non-executable argument.
-Re-export traversal guards module/exported-name pairs along each path, permitting
+records retain their original text. Re-export traversal guards module/exported-name pairs along each path, permitting
 renamed routes to revisit a module while bounding actual cycles.
 
 ## Repository organization
@@ -235,12 +246,12 @@ The completed [repository organization task](../../records/tasks/2026-09-15-modu
 added an internal repository-layout evidence boundary under `src/lib/repository/`,
 governed by the [organization decisions](../decisions/repository-organization-decisions.md).
 Repository evidence is captured after successful project opening and before
-snapshot identity is finalized. The snapshot references a stored capture result,
+requested discovery. The session references a stored capture result,
 including explicit unavailability outside a worktree. Organization evaluation
 reads that result and a stored module evaluation; it performs no filesystem or
 compiler work. Pure layout is prepared with capture and retained alongside it,
 so view construction never repeats layout analysis. Repository inputs contribute
-to snapshots across the module and organization CLI surfaces.
+to claim support across the module and organization CLI surfaces.
 
 Capture uses the enclosing Git worktree of a configuration path. Git supplies
 tracked membership, effective ignore decisions, and repository metadata; native
@@ -275,7 +286,7 @@ apparent artifact's placement.
 Organization evaluation materializes group entities, region and artifact evidence,
 qualified direct containment, artifact and module placement, and direct README
 associations through `ProgramRecordStore`. Group entities and direct layout
-relationships remain fixed within a snapshot. Root groups have no intrinsic name;
+relationships remain fixed within a session. Root groups have no intrinsic name;
 other names are single captured segments. Module placement retains established,
 multiple, unplaced, external, and unavailable outcomes with reasons. Candidate
 ambiguity is represented separately; this provider does not invent candidates.
@@ -302,7 +313,7 @@ remain available through a referenced module projection.
 
 The organization presentation declares group details and the common module
 standard expansions before evaluation. Using the same compiler preparation keeps
-navigation across lenses in a common snapshot. View construction reads stored
+navigation across lenses in a common captured analysis. View construction reads stored
 claims and captured paths, materializes bounded display rows and omission counts,
 and never invokes another lens or analysis. Rendering receives only that value.
 Repository/project trees retain direct contextual siblings, distinguish pruning
@@ -338,7 +349,7 @@ uses strongly connected components of project-to-project edges; generated compon
 indices are grouping data, never entity identities. Every internal relationship and
 cycle member remains available. Source components are established roots only with
 complete module and dependency evaluations. External endpoints remain opaque.
-Focused projections reuse exact, snapshot-scoped module selection and retain direct
+Focused projections reuse exact module selection within a session and retain direct
 relationships; non-edge requests remain attached to their source owners.
 
 Composition is a separately requested module expansion. The TypeScript integration
@@ -364,8 +375,39 @@ Parent views use reusable bounded-coverage disclosure without inventing source-o
 coverage records. Explicit source detail materializes captured request and organization
 evidence with separate bounds.
 
-Ordinary organization analysis remains independent of dependency evaluation. Since
-bounded dependency resolution may observe additional inputs, generated dependency-to-
-inspection commands request `--dependency-context` explicitly to reproduce the analysis
-context before selecting a scoped ID. This performs a fresh evaluation and introduces
-no cache or cross-invocation continuity.
+Ordinary organization analysis remains independent of dependency evaluation.
+Dependency resolution can acquire additional inputs. Its former
+`--dependency-context` scope-reproduction option has been retired; ordinary
+inspection uses current exact name/handle lookup. Accumulation reuses applicable
+completed work while preserving earlier captured input support. Discovery is
+retained per store; expansions and dependency analysis are acquired when requested.
+Completed results remain reusable across input acquisition. The TypeScript
+provider additionally retains partial work against the captured-input revision on
+which it was prepared. New acquisition makes that partial work eligible to retry;
+ordinary repetition on the same basis reuses its qualified outcome. Evaluation
+accepts that reuse only with an explicit provider assurance referencing captured
+analysis inputs. Providers without the assurance retain ordinary retry behavior.
+Session requests go through the provider/evaluation boundary so an outer cache
+cannot hide acquisition. Earlier outcomes remain unchanged.
+The compiler Program fixes this provider’s module population at opening, so
+additional dependency inputs do not add modules. Repeated contexts retain their
+first supporting input record; new contexts can reference a later input basis.
+Any conflicting record content still fails the store’s immutability check.
+
+Native SIGINT can terminate a one-shot process during synchronous compiler work.
+The shell instead runs the shared executor in a worker, allowing the parent to
+terminate an active compiler request and observe interruption without publishing a
+fabricated view. The session ends; safe worker-state recovery is not claimed.
+At an idle prompt, Ctrl-C cancels the line. EOF finishes accepted work and sink
+submission. Syntax errors and expected operational analysis failures retain
+sound state; unexpected defects terminate distinctly.
+
+Direct session execution checks inputs before and after work. CLI requests defer
+the latter check to the publisher, after worker delivery when applicable and
+before output, avoiding a duplicate scan while retaining the publication boundary.
+Before publication, detected input changes withhold the result. A check after
+output can instead report invalidation while retaining the actual emitted view
+in the observation. Validation is sequential, not atomic or continuous; transient
+changes and unobserved inputs may escape it. The [CLI reference](../cli-reference.md#input-stability-and-retained-work)
+states the implemented probe coverage and gaps. Worker messages are a private
+execution detail, not a public server or batch interface.

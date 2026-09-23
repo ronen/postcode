@@ -27,9 +27,10 @@ async function invoke(implementation, args, config) {
 }
 async function pair(args, config) {
   const a = await invoke(before, args, config), b = await invoke(after, args, config);
-  assert.deepEqual(b, a);
+  const normalize = value => JSON.parse(JSON.stringify(value).replace(/session:[a-f0-9-]{36}/g, 'session:normalized').replace(/Session [a-f0-9-]{36}/g, 'Session normalized'));
+  assert.deepEqual(normalize(b), normalize(a));
   results.push({ config, args, bytes: Buffer.byteLength(a.stdout), sha256: createHash('sha256').update(a.stdout).digest('hex'), equal: true,
-    snapshot: a.view.projection.snapshot, events: a.observation.events.map(event => event.type) });
+    session: a.view.projection.session, events: a.observation.events.map(event => event.type) });
   console.log(config, args.join(' '), 'equal');
   return a.view;
 }
@@ -38,13 +39,13 @@ for (const config of ['fixtures/dependency-journey/tsconfig.json', 'fixtures/dep
   const org = await pair(['organization', 'repository', '--json'], config);
   await pair(['organization', 'project'], config);
   const group = org.groups.find(group => group.name === 'src');
-  await pair(['inspect', group.entityId, '--snapshot', org.projection.snapshot, '--source-detail', '--json'], config);
+  await pair(['inspect', group.name, '--source-detail', '--json'], config);
   const deps = await pair(['dependencies', '--json'], config);
   await pair(['dependencies', '--source-detail'], config);
   const module = deps.modules.find(module => module.handle === (config.includes('journey') ? 'forward' : 'requests'));
-  for (const action of ['children', 'parents']) await pair([action, module.entityId, '--snapshot', deps.projection.snapshot, '--json', '--source-detail'], config);
-  await pair(['inspect', module.entityId, '--snapshot', deps.projection.snapshot, '--dependency-context', '--source-detail', '--json'], config);
-  const stale = await pair(['children', module.entityId, '--snapshot', `snapshot:${'0'.repeat(64)}`, '--json'], config);
+  for (const action of ['children', 'parents']) await pair([action, module.handle, '--json', '--source-detail'], config);
+  await pair(['inspect', module.handle, '--source-detail', '--json'], config);
+  const stale = await pair(['children', module.entityId, '--json'], config);
   assert.equal(stale.subjects.length, 0);
 }
 await pair(['modules', '--json'], 'tsconfig.json');

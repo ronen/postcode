@@ -1,8 +1,8 @@
 import path from 'node:path';
 import ts from 'typescript';
-import { compare, digest, methods, recordId, snapshotId } from '../identity.js';
+import { canonical, compare, digest, methods, recordId, sessionId } from '../identity.js';
 import type { DiscoveryResult, ModuleAnalysis } from '../evaluation.js';
-import type { ClaimContextRecord, ModuleClaim, ModuleExpansion, ModuleDiscoveryFacet, ProgramRecord, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
+import type { ClaimContextRecord, ModuleClaim, ModuleExpansion, ModuleDiscoveryFacet, ProgramRecord, ProgramRecordStore, RecordId, SessionId, SourceEvidenceRecord } from '../records.js';
 import { captureInputs } from './inputs.js';
 import { prepareComposition } from './composition.js';
 import { prepareDependencies } from './dependencies.js';
@@ -11,11 +11,11 @@ import { captureRepository, repositoryInputMethod } from '../repository/capture.
 import { deriveLayout, repositoryLayoutMethod } from '../repository/layout.js';
 
 const method = `${methods.discovery};typescript@${ts.version}`;
-const identityMethod = methods.inputs;
+const inputMethod = methods.inputs;
 const limitation = 'Population is configured Program external-module SourceFiles and visible named ambient-module symbols; other compiler module categories are not established.';
 
 export type ProjectOpenResult =
-  | { readonly status: 'opened'; readonly analysis: ModuleAnalysis }
+  | { readonly status: 'opened'; readonly session: SessionId; readonly analysis: ModuleAnalysis; readonly changed: () => boolean }
   | { readonly status: 'project-open-failed'; readonly diagnostics: readonly { readonly code: number; readonly message: string }[] };
 
 export interface ProjectOptions {
@@ -96,10 +96,24 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
   const repository = captureRepository(configPath, options.excludedOutputDirectories ?? []);
   const layout = repository.status === 'available' ? deriveLayout(repository.evidence) : null;
 
-  // Compiler state never escapes the language integration. Discovery writes domain records atomically.
-  return { status: 'opened', analysis: { discover: (store, expansions, dependencies) => discover(store, expansions ?? [], dependencies ?? false) } };
+  const session = sessionId();
+  const environment = canonical([process.cwd(), process.env, process.versions]);
 
-  function discover(store: ProgramRecordStore, requested: readonly ModuleExpansion[], dependencies: boolean): DiscoveryResult {
+  const materializers = new WeakMap<ProgramRecordStore, ReturnType<typeof prepareDiscovery>>();
+
+  // Compiler state never escapes the language integration. Discovery writes domain records atomically.
+  return { status: 'opened', session, changed: () =>
+    canonical([process.cwd(), process.env, process.versions]) !== environment || inputs.changed()
+      || canonical(captureRepository(configPath, options.excludedOutputDirectories ?? [])) !== canonical(repository),
+    analysis: { discover: (store, expansions, dependencies) => materialize(store, expansions ?? [], dependencies ?? false) } };
+
+  function materialize(store: ProgramRecordStore, expansions: readonly ModuleExpansion[], dependencies: boolean) {
+    let discovery = materializers.get(store);
+    if (!discovery) { discovery = prepareDiscovery(); materializers.set(store, discovery); }
+    return discovery(store, expansions, dependencies);
+  }
+
+  function prepareDiscovery() {
     const checker = program.getTypeChecker();
     const files = [...program.getSourceFiles()].sort((a, b) => compare(a.fileName, b.fileName));
     const encountered = program.getSyntacticDiagnostics();
@@ -145,10 +159,6 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       ts.forEachChild(node, visit);
     };
     files.forEach(visit);
-    const existingExpansions = requested.filter(requirement => requirement !== 'composition');
-    const preparedExpansions = existingExpansions.length ? prepareExpansions(checker, candidates, existingExpansions) : undefined;
-    const preparedComposition = requested.includes('composition') ? prepareComposition(program, candidates) : undefined;
-    const preparedDependencies = dependencies ? prepareDependencies(program, host, candidates) : undefined;
     // Evidence can refer to one captured file thousands of times. Reuse its
     // content digest only within this discovery, keyed by the compiler object
     // rather than a path that could denote different input in another opening.
@@ -161,135 +171,195 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
       }
       return value;
     };
-    const snapshot = snapshotId({
-      method, methods, configPath, cwd: base, node: process.versions.node,
-      repository, repositoryMethods: [repositoryInputMethod, repositoryLayoutMethod],
-      platform: process.platform, arch: process.arch, inputs: inputs.identity(),
-      options: parsed!.options, roots: program.getRootFileNames(),
-      sources: files.map(file => [file.fileName, sourceDigest(file)]),
-      population: candidates.map(candidate => candidate.key),
-    });
-    const repositoryId = recordId(snapshot, 'repository-evidence', repositoryInputMethod);
-    const records: ProgramRecord[] = [{
-      kind: 'snapshot', id: snapshot, snapshot, method: identityMethod,
-      inputDigest: snapshot.slice('snapshot:'.length), repository: repositoryId,
-      methods: [...Object.values(methods), method, repositoryInputMethod, repositoryLayoutMethod],
-      analysis: { provider: 'typescript', coverage: 'external-source-files-and-visible-named-ambient-modules',
-        inputConsistency: 'first-observed', excludedOutputLocations: inputs.excludedLocationCount },
-    }, { kind: 'repository-evidence', id: repositoryId, snapshot, method: `${repositoryInputMethod};${repositoryLayoutMethod}`, capture: repository, layout }];
-    const evidence = (declaration: ts.Node, compilerName: string | null, resolution?: SourceEvidenceRecord['resolution'], dependencyResolution?: SourceEvidenceRecord['dependencyResolution']): RecordId => {
-      // Retain enough enclosing syntax to show declaration/export/import relationships.
-      if (ts.isVariableDeclaration(declaration) || ts.isBindingElement(declaration)
-        || ts.isExportSpecifier(declaration) || ts.isImportSpecifier(declaration)) {
-        for (let parent: ts.Node | undefined = declaration.parent; parent && !ts.isSourceFile(parent); parent = parent.parent) {
-          if (ts.isVariableStatement(parent) || ts.isExportDeclaration(parent) || ts.isImportDeclaration(parent)) {
-            declaration = parent;
-            break;
+    let core: { globalContext: RecordId; moduleIds: RecordId[] } | undefined;
+    type Retained<T> = { value: T; revision: number | null };
+    const current = <T>(entry: Retained<T> | undefined): T | undefined =>
+      entry && (entry.revision === null || entry.revision === inputs.revision()) ? entry.value : undefined;
+    const keep = <T>(value: T, complete: boolean, revision: number): Retained<T> => ({ value, revision: complete ? null : revision });
+    const expansionCache = new Map<string, Retained<ReturnType<ReturnType<typeof prepareExpansions>>>>();
+    let compositionCache: Retained<ReturnType<ReturnType<typeof prepareComposition>>> | undefined;
+    let dependencyCache: Retained<ReturnType<ReturnType<typeof prepareDependencies>>> | undefined;
+    const support = new Map<RecordId, RecordId>();
+    const results = new Map<string, Retained<DiscoveryResult>>();
+    const complete = (state: { execution: string; materialization: string }) => state.execution === 'completed' && state.materialization === 'full';
+    return function discover(store: ProgramRecordStore, requested: readonly ModuleExpansion[], dependencies: boolean): DiscoveryResult {
+      const requestKey = canonical([[...new Set(requested)].sort(compare), dependencies]);
+      const prior = current(results.get(requestKey));
+      if (prior) return prior;
+      // Acquire dependency inputs before deciding whether partial expansions need another attempt.
+      const cachedDependencies = dependencies ? current(dependencyCache) : undefined;
+      const preparedDependencies = dependencies && !cachedDependencies ? prepareDependencies(program, host, candidates) : undefined;
+      const dependencyRevision = inputs.revision();
+      const existingExpansions = requested.filter(requirement => requirement !== 'composition');
+      const expansionKey = canonical([...new Set(existingExpansions)].sort(compare));
+      const cachedExpansions = current(expansionCache.get(expansionKey));
+      const preparedExpansions = existingExpansions.length && !cachedExpansions
+        ? prepareExpansions(checker, candidates, existingExpansions) : undefined;
+      const expansionRevision = inputs.revision();
+      const cachedComposition = requested.includes('composition') ? current(compositionCache) : undefined;
+      const preparedComposition = requested.includes('composition') && !cachedComposition ? prepareComposition(program, candidates) : undefined;
+      const compositionRevision = inputs.revision();
+      const capturedInputs = {
+        method, methods, configPath, cwd: base, node: process.versions.node,
+        repository, repositoryMethods: [repositoryInputMethod, repositoryLayoutMethod],
+        platform: process.platform, arch: process.arch, inputs: inputs.identity(),
+        options: parsed!.options, roots: program.getRootFileNames(),
+        sources: files.map(file => [file.fileName, sourceDigest(file)]),
+        population: candidates.map(candidate => candidate.key),
+      };
+      const inputId = recordId(session, 'analysis-inputs', capturedInputs);
+      const repositoryId = recordId(session, 'repository-evidence', repositoryInputMethod);
+      const records: ProgramRecord[] = [{
+        kind: 'session', id: session, session, method: methods.records,
+        repository: repositoryId,
+        methods: [...Object.values(methods), method, repositoryInputMethod, repositoryLayoutMethod],
+        analysis: { provider: 'typescript', coverage: 'external-source-files-and-visible-named-ambient-modules',
+          inputConsistency: 'first-observed', excludedOutputLocations: inputs.excludedLocationCount },
+      }, { kind: 'analysis-inputs', id: inputId, session, method: inputMethod, value: capturedInputs },
+      { kind: 'repository-evidence', id: repositoryId, session, method: `${repositoryInputMethod};${repositoryLayoutMethod}`, capture: repository, layout }];
+      const evidence = (declaration: ts.Node, compilerName: string | null, resolution?: SourceEvidenceRecord['resolution'], dependencyResolution?: SourceEvidenceRecord['dependencyResolution']): RecordId => {
+        // Retain enough enclosing syntax to show declaration/export/import relationships.
+        if (ts.isVariableDeclaration(declaration) || ts.isBindingElement(declaration)
+          || ts.isExportSpecifier(declaration) || ts.isImportSpecifier(declaration)) {
+          for (let parent: ts.Node | undefined = declaration.parent; parent && !ts.isSourceFile(parent); parent = parent.parent) {
+            if (ts.isVariableStatement(parent) || ts.isExportDeclaration(parent) || ts.isImportDeclaration(parent)) {
+              declaration = parent;
+              break;
+            }
+            if (ts.isFunctionLike(parent)) break;
           }
-          if (ts.isFunctionLike(parent)) break;
         }
+        const file = declaration.getSourceFile();
+        const start = ts.isSourceFile(declaration) ? 0 : declaration.getStart(file);
+        const position = (offset: number) => {
+          const point = file.getLineAndCharacterOfPosition(offset);
+          return { line: point.line + 1, column: point.character + 1 };
+        };
+        // Capture from the already-observed compiler input; presentation never rereads source.
+        const span = ts.isSourceFile(declaration) ? '' : file.text.slice(start, declaration.end);
+        const excerpt = [...span.split('\n').slice(0, 4).join('\n')].slice(0, 300).join('');
+        const detail: SourceEvidenceRecord = {
+          kind: 'source-evidence', id: recordId(session, 'source', [file.fileName, start, declaration.end, ts.isSourceFile(declaration) ? 'file' : 'span', compilerName, resolution ?? null, dependencyResolution ?? null]),
+          session, method, path: file.fileName, contentDigest: sourceDigest(file),
+          start, length: declaration.end - start,
+          location: ts.isSourceFile(declaration) ? { association: 'file' } : {
+            association: 'span', from: position(start), to: position(declaration.end),
+            excerpt: { text: excerpt, omittedCharacters: [...span].length - [...excerpt].length },
+          },
+          configuredRoot: roots.has(file.fileName), compilerName,
+          ...(resolution ? { resolution } : {}),
+          ...(dependencyResolution ? { dependencyResolution } : {}),
+        };
+        records.push(detail);
+        return detail.id;
+      };
+      const qualifications = (sourceFiles: readonly ts.SourceFile[], projectWide: boolean) => encountered
+        // Syntax diagnostics normally have files; a future file-less result belongs only to project context.
+        .filter(diagnostic => diagnostic.file === undefined ? projectWide : sourceFiles.includes(diagnostic.file))
+        .map(diagnostic => ({ code: diagnostic.code, category: ts.DiagnosticCategory[diagnostic.category]!.toLowerCase() }))
+        .sort((a, b) => a.code - b.code || compare(a.category, b.category));
+      const makeContext = (scope: 'configured-project' | RecordId, evidenceIds: readonly RecordId[], sourceFiles: readonly ts.SourceFile[]): RecordId => {
+        const relevant = qualifications(sourceFiles, scope === 'configured-project');
+        const context: ClaimContextRecord = {
+          kind: 'claim-context', id: recordId(session, 'context', scope), session, method,
+          scope, evidence: [...new Set(evidenceIds)], status: 'mechanically-derived',
+          guarantee: relevant.length > 0
+            ? 'Compiler-established module information with encountered syntax diagnostics; correctness is qualified.'
+            : 'Module membership established by the supported TypeScript compiler operations.',
+          limitations: [limitation,
+            ...(inputs.excludedLocationCount > 0 ? ['Configured generated-output locations are explicitly excluded from repository evidence.'] : []),
+            'No atomic filesystem snapshot is claimed; inputs are memoized as first observed.',
+            ...(relevant.length > 0 ? ['Encountered syntax diagnostics may limit the module interpretation.'] : [])],
+          diagnostics: relevant,
+        };
+        records.push(context);
+        return context.id;
+      };
+      const materializeCore = () => {
+        const resolutionEvidence = resolutions.map(({ node, targetKey }) => ({ node, id: evidence(node, null, {
+          writtenSpecifier: node.text, target: targetKey ? recordId(session, 'module', targetKey) : null,
+          status: targetKey ? 'established' : 'not-established',
+        }) }));
+        const globalContext = makeContext('configured-project', [...files.map(file => evidence(file, null)), ...resolutionEvidence.map(item => item.id)], files);
+        const moduleIds: RecordId[] = [];
+        const mnemonic = (candidate: typeof candidates[number]): Pick<ModuleClaim['information'], 'handle' | 'handleProvenance'> => {
+          // Declared export names are conceptual recognition evidence, not inferred module responsibilities.
+          const exported = [...(candidate.symbol?.exports?.values() ?? [])].filter(symbol => !symbol.getName().startsWith('__'));
+          exported.sort((a, b) => Number(Boolean(b.flags & (ts.SymbolFlags.Class | ts.SymbolFlags.Function)))
+            - Number(Boolean(a.flags & (ts.SymbolFlags.Class | ts.SymbolFlags.Function))) || compare(a.getName(), b.getName()));
+          const types = exported.filter(symbol => Boolean(symbol.flags & (ts.SymbolFlags.Interface | ts.SymbolFlags.TypeAlias)));
+          // A mostly-type module is better cued by an actual exported type than by a lone helper predicate.
+          const representative = types.length >= 3 && types.length * 2 > exported.length
+            ? [...types].sort((a, b) => compare(a.getName(), b.getName())) : exported;
+          const source = candidate.declarations.find(ts.isSourceFile);
+          const basename = source ? path.basename(source.fileName).replace(/(?:\.d)?\.[cm]?[jt]sx?$/i, '') : null;
+          const filename = basename && !['index', 'main', 'entry', 'mod'].includes(basename.toLowerCase()) ? basename : null;
+          const exportCue = representative.map(symbol => {
+            if (symbol.getName() !== 'default') return symbol.getName();
+            const named = symbol.getDeclarations()?.find(node => (ts.isClassDeclaration(node) || ts.isFunctionDeclaration(node)) && node.name);
+            return named && (ts.isClassDeclaration(named) || ts.isFunctionDeclaration(named)) ? named.name?.text : undefined;
+          }).find(Boolean);
+          const cue = candidate.name ?? filename ?? exportCue;
+          const handleProvenance = candidate.name ? 'language-name' : filename ? 'source-basename' : exportCue ? 'declared-export' : 'anonymous-fallback';
+          const slug = cue?.replace(/([A-Z])([A-Z][a-z])/g, '$1-$2').replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+            .normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+          // Reserve compact Entity-ID syntax so generated handles remain independently selectable.
+          const handle = slug && /^(?:module|group)-[a-f0-9]{8,64}$/.test(slug) ? `handle-${slug}` : slug || 'anonymous';
+          return { handle, handleProvenance: slug ? handleProvenance : 'anonymous-fallback' };
+        };
+        for (const candidate of candidates) {
+          const id = recordId(session, 'module', candidate.key);
+          const claim = recordId(session, 'claim', id);
+          const context = makeContext(id, [...candidate.declarations.map(declaration => evidence(declaration, candidate.compilerName)),
+            ...resolutionEvidence.filter(item => candidate.declarations.some(declaration => item.node.getSourceFile() === declaration.getSourceFile()
+              && item.node.pos >= declaration.pos && item.node.end <= declaration.end)).map(item => item.id)],
+            candidate.declarations.map(declaration => declaration.getSourceFile()));
+          records.push({ kind: 'module', id, session, method, claim }, {
+            kind: 'claim', id: claim, session, method, subject: id, context,
+            information: { type: 'module', name: candidate.name,
+              ...mnemonic(candidate), handleStatus: 'generated-navigation-aid',
+              discoveryFacets: candidate.discoveryFacets },
+          });
+          moduleIds.push(id);
+        }
+        return { globalContext, moduleIds };
+      };
+      const { globalContext, moduleIds } = core ?? materializeCore();
+      const expansions = preparedExpansions?.(session, evidence);
+      const composition = preparedComposition?.(session, evidence);
+      const dependencyResult = preparedDependencies?.(session, evidence);
+      store.put([...records, ...(expansions?.records ?? []), ...(dependencyResult?.records ?? []), ...(composition?.records ?? [])]
+        .map(record => {
+          if (record.kind !== 'claim-context') return record;
+          // A repeated claim keeps the input basis on which it was first established.
+          // The store still checks every other field for immutable-record collisions.
+          const basis = support.get(record.id) ?? inputId;
+          return { ...record, inputs: basis };
+        }));
+      for (const record of [...records, ...(expansions?.records ?? []), ...(dependencyResult?.records ?? []), ...(composition?.records ?? [])]) {
+        if (record.kind === 'claim-context' && !support.has(record.id)) support.set(record.id, inputId);
       }
-      const file = declaration.getSourceFile();
-      const start = ts.isSourceFile(declaration) ? 0 : declaration.getStart(file);
-      const position = (offset: number) => {
-        const point = file.getLineAndCharacterOfPosition(offset);
-        return { line: point.line + 1, column: point.character + 1 };
+      core ??= { globalContext, moduleIds };
+      if (expansions) expansionCache.set(expansionKey, keep(expansions, expansions.results.every(complete), expansionRevision));
+      if (composition) compositionCache = keep(composition, composition.results.every(complete), compositionRevision);
+      if (dependencyResult) dependencyCache = keep(dependencyResult, complete(dependencyResult.result), dependencyRevision);
+      const selectedExpansions = expansions ?? cachedExpansions;
+      const selectedComposition = composition ?? cachedComposition;
+      const selectedDependencies = dependencyResult ?? cachedDependencies;
+      // If later preparation acquired inputs, an earlier partial component must retry next time.
+      const stable = (!existingExpansions.length || current(expansionCache.get(expansionKey)) !== undefined)
+        && (!requested.includes('composition') || current(compositionCache) !== undefined)
+        && (!dependencies || current(dependencyCache) !== undefined);
+      const result: DiscoveryResult = {
+        ...(stable ? { retryBasis: inputId } : {}),
+        session, modules: moduleIds, contexts: [globalContext], applicability: 'applicable', availability: 'available',
+        execution: 'completed', materialization: 'full', reason: null, cost: { measure: 'module-count', value: moduleIds.length },
+        ...(requested.length ? { expansions: [...(selectedExpansions?.results ?? []), ...(requested.includes('composition') ? selectedComposition?.results ?? [] : [])] } : {}),
+        ...(dependencies && selectedDependencies ? { dependencies: selectedDependencies.result } : {}),
       };
-      // Capture from the already-observed compiler input; presentation never rereads source.
-      const span = ts.isSourceFile(declaration) ? '' : file.text.slice(start, declaration.end);
-      const excerpt = [...span.split('\n').slice(0, 4).join('\n')].slice(0, 300).join('');
-      const detail: SourceEvidenceRecord = {
-        kind: 'source-evidence', id: recordId(snapshot, 'source', [file.fileName, start, declaration.end, ts.isSourceFile(declaration) ? 'file' : 'span', compilerName, resolution ?? null, dependencyResolution ?? null]),
-        snapshot, method, path: file.fileName, contentDigest: sourceDigest(file),
-        start, length: declaration.end - start,
-        location: ts.isSourceFile(declaration) ? { association: 'file' } : {
-          association: 'span', from: position(start), to: position(declaration.end),
-          excerpt: { text: excerpt, omittedCharacters: [...span].length - [...excerpt].length },
-        },
-        configuredRoot: roots.has(file.fileName), compilerName,
-        ...(resolution ? { resolution } : {}),
-        ...(dependencyResolution ? { dependencyResolution } : {}),
-      };
-      records.push(detail);
-      return detail.id;
-    };
-    const qualifications = (sourceFiles: readonly ts.SourceFile[], projectWide: boolean) => encountered
-      // Syntax diagnostics normally have files; a future file-less result belongs only to project context.
-      .filter(diagnostic => diagnostic.file === undefined ? projectWide : sourceFiles.includes(diagnostic.file))
-      .map(diagnostic => ({ code: diagnostic.code, category: ts.DiagnosticCategory[diagnostic.category]!.toLowerCase() }))
-      .sort((a, b) => a.code - b.code || compare(a.category, b.category));
-    const makeContext = (scope: 'configured-project' | RecordId, evidenceIds: readonly RecordId[], sourceFiles: readonly ts.SourceFile[]): RecordId => {
-      const relevant = qualifications(sourceFiles, scope === 'configured-project');
-      const context: ClaimContextRecord = {
-        kind: 'claim-context', id: recordId(snapshot, 'context', scope), snapshot, method,
-        scope, evidence: [...new Set(evidenceIds)], status: 'mechanically-derived',
-        guarantee: relevant.length > 0
-          ? 'Compiler-established module information with encountered syntax diagnostics; correctness is qualified.'
-          : 'Module membership established by the supported TypeScript compiler operations.',
-        limitations: [limitation,
-          ...(inputs.excludedLocationCount > 0 ? ['Configured generated-output locations are explicitly excluded from repository evidence.'] : []),
-          'No atomic filesystem snapshot is claimed; inputs are memoized as first observed.',
-          ...(relevant.length > 0 ? ['Encountered syntax diagnostics may limit the module interpretation.'] : [])],
-        diagnostics: relevant,
-      };
-      records.push(context);
-      return context.id;
-    };
-    const resolutionEvidence = resolutions.map(({ node, targetKey }) => ({ node, id: evidence(node, null, {
-      writtenSpecifier: node.text, target: targetKey ? recordId(snapshot, 'module', targetKey) : null,
-      status: targetKey ? 'established' : 'not-established',
-    }) }));
-    const globalContext = makeContext('configured-project', [...files.map(file => evidence(file, null)), ...resolutionEvidence.map(item => item.id)], files);
-    const moduleIds: RecordId[] = [];
-    const mnemonic = (candidate: typeof candidates[number]): Pick<ModuleClaim['information'], 'handle' | 'handleProvenance'> => {
-      // Declared export names are conceptual recognition evidence, not inferred module responsibilities.
-      const exported = [...(candidate.symbol?.exports?.values() ?? [])].filter(symbol => !symbol.getName().startsWith('__'));
-      exported.sort((a, b) => Number(Boolean(b.flags & (ts.SymbolFlags.Class | ts.SymbolFlags.Function)))
-        - Number(Boolean(a.flags & (ts.SymbolFlags.Class | ts.SymbolFlags.Function))) || compare(a.getName(), b.getName()));
-      const types = exported.filter(symbol => Boolean(symbol.flags & (ts.SymbolFlags.Interface | ts.SymbolFlags.TypeAlias)));
-      // A mostly-type module is better cued by an actual exported type than by a lone helper predicate.
-      const representative = types.length >= 3 && types.length * 2 > exported.length
-        ? [...types].sort((a, b) => compare(a.getName(), b.getName())) : exported;
-      const source = candidate.declarations.find(ts.isSourceFile);
-      const basename = source ? path.basename(source.fileName).replace(/(?:\.d)?\.[cm]?[jt]sx?$/i, '') : null;
-      const filename = basename && !['index', 'main', 'entry', 'mod'].includes(basename.toLowerCase()) ? basename : null;
-      const exportCue = representative.map(symbol => {
-        if (symbol.getName() !== 'default') return symbol.getName();
-        const named = symbol.getDeclarations()?.find(node => (ts.isClassDeclaration(node) || ts.isFunctionDeclaration(node)) && node.name);
-        return named && (ts.isClassDeclaration(named) || ts.isFunctionDeclaration(named)) ? named.name?.text : undefined;
-      }).find(Boolean);
-      const cue = candidate.name ?? filename ?? exportCue;
-      const handleProvenance = candidate.name ? 'language-name' : filename ? 'source-basename' : exportCue ? 'declared-export' : 'anonymous-fallback';
-      const slug = cue?.replace(/([A-Z])([A-Z][a-z])/g, '$1-$2').replace(/([a-z0-9])([A-Z])/g, '$1-$2')
-        .normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-      // Reserve compact Entity-ID syntax so generated handles remain independently selectable.
-      const handle = slug && /^(?:module|group)-[a-f0-9]{8,64}$/.test(slug) ? `handle-${slug}` : slug || 'anonymous';
-      return { handle, handleProvenance: slug ? handleProvenance : 'anonymous-fallback' };
-    };
-    for (const candidate of candidates) {
-      const id = recordId(snapshot, 'module', candidate.key);
-      const claim = recordId(snapshot, 'claim', id);
-      const context = makeContext(id, [...candidate.declarations.map(declaration => evidence(declaration, candidate.compilerName)),
-        ...resolutionEvidence.filter(item => candidate.declarations.some(declaration => item.node.getSourceFile() === declaration.getSourceFile()
-          && item.node.pos >= declaration.pos && item.node.end <= declaration.end)).map(item => item.id)],
-        candidate.declarations.map(declaration => declaration.getSourceFile()));
-      records.push({ kind: 'module', id, snapshot, method, claim }, {
-        kind: 'claim', id: claim, snapshot, method, subject: id, context,
-        information: { type: 'module', name: candidate.name,
-          ...mnemonic(candidate), handleStatus: 'generated-navigation-aid',
-          discoveryFacets: candidate.discoveryFacets },
-      });
-      moduleIds.push(id);
-    }
-    const expansions = preparedExpansions?.(snapshot, evidence);
-    const composition = preparedComposition?.(snapshot, evidence);
-    const dependencyResult = preparedDependencies?.(snapshot, evidence);
-    store.put([...records, ...(expansions?.records ?? []), ...(dependencyResult?.records ?? []), ...(composition?.records ?? [])]);
-    return {
-      snapshot, modules: moduleIds, contexts: [globalContext], applicability: 'applicable', availability: 'available',
-      execution: 'completed', materialization: 'full', reason: null, cost: { measure: 'module-count', value: moduleIds.length },
-      ...(requested.length ? { expansions: [...(expansions?.results ?? []), ...(composition?.results ?? [])] } : {}),
-      ...(dependencyResult ? { dependencies: dependencyResult.result } : {}),
+      if (stable) results.set(requestKey, keep(result,
+        (result.expansions ?? []).every(complete) && (!result.dependencies || complete(result.dependencies)), inputs.revision()));
+      return result;
     };
   }
 }

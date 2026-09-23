@@ -4,11 +4,12 @@ import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node
 import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
+import { normalizeSession } from './helpers.js';
 import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
 import { evaluateDependencyOrganization } from '../src/lib/dependencies/organization.js';
 import { dependencyChildren, dependencyParents, dependencyStructure } from '../src/lib/dependencies/projections.js';
 import type { DependencyOrganizationClaim } from '../src/lib/dependencies/records.js';
-import { moduleEntityIds, recordId } from '../src/lib/identity.js';
+import { recordId } from '../src/lib/identity.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import type { ModulePlacementClaim } from '../src/lib/organization/records.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
@@ -74,21 +75,21 @@ test('focused lenses retain only direct edges, nonedges stay with their owner an
     'node_modules/outside/index.d.ts': 'export interface T {}',
   }, root => {
     const { store, evaluation, name, module, basis } = analyze(root);
-    const child = dependencyChildren(store, evaluation, 'a', evaluation.snapshot);
+    const child = dependencyChildren(store, evaluation, 'a');
     assert.deepEqual(child.modules.map(name).sort(), ['a', 'b', 't']);
     assert.equal(child.relationships.length, 2);
     assert.equal(child.nonEdgeRequests.length, 1);
-    assert.equal(dependencyParents(store, evaluation, 'b', evaluation.snapshot).relationships.length, 1);
-    assert.equal(dependencyParents(store, evaluation, 'a', evaluation.snapshot).nonEdgeRequests.length, 0);
+    assert.equal(dependencyParents(store, evaluation, 'b').relationships.length, 1);
+    assert.equal(dependencyParents(store, evaluation, 'a').nonEdgeRequests.length, 0);
     const external = dependencyChildren(store, evaluation, module('t'));
     assert.deepEqual(external.opaqueSubjects, [module('t')]);
     assert.equal(external.relationships.length, 0);
     assert.equal(dependencyParents(store, evaluation, module('t')).relationships.length, 1);
-    const compact = moduleEntityIds(basis.modules).get(module('a'))!;
-    assert.equal(dependencyChildren(store, evaluation, compact).selection.referenceStatus, 'snapshot-required');
-    assert.equal(dependencyChildren(store, evaluation, compact, 'old').subjects.length, 0);
-    assert.deepEqual(dependencyChildren(store, evaluation, compact, evaluation.snapshot).subjects, [module('a')]);
-    const partial = { ...evaluation, id: recordId(evaluation.snapshot, 'partial', 1), execution: 'stopped' as const, materialization: 'partial' as const };
+    const compact = store.entityIds(basis.modules, 'module').get(module('a'))!;
+    assert.equal(dependencyChildren(store, evaluation, compact).selection.referenceStatus, 'current');
+    assert.equal(dependencyChildren(store, evaluation, 'module-00000000', true).subjects.length, 0);
+    assert.deepEqual(dependencyChildren(store, evaluation, compact, true).subjects, [module('a')]);
+    const partial = { ...evaluation, id: recordId(evaluation.session, 'partial', 1), execution: 'stopped' as const, materialization: 'partial' as const };
     store.put([partial]);
     const incomplete = dependencyStructure(store, partial);
     assert.equal(incomplete.graph!.rootsEstablished, false);
@@ -110,7 +111,7 @@ test('composition is an independent exhaustive positive property across merged d
     'second.d.ts': "declare module 'merged' { export type { T } from 'target'; } declare module 'mixed' { export const local: number; }",
   }, root => {
     const { store, evaluation, basis, name, module } = analyze(root);
-    const outcomes = store.evaluations(evaluation.snapshot).filter(e => e.requirement === 'composition');
+    const outcomes = store.evaluations(evaluation.session).filter(e => e.requirement === 'composition');
     const positives = outcomes.flatMap(e => e.claims ?? []).map(id => store.get(id)).map(claim => {
       assert.ok(claim.kind === 'claim' && claim.information.type === 'module-composition');
       return name(claim.subject);
@@ -119,7 +120,7 @@ test('composition is an independent exhaustive positive property across merged d
     assert.equal(outcomes.find(e => e.modules.includes(module('broken')))!.materialization, 'partial');
     assert.equal(outcomes.find(e => e.modules.includes(module('empty')))!.materialization, 'full');
     assert.equal(outcomes.length, basis.modules.length);
-    const view = dependencyChildren(store, evaluation, 'positive', evaluation.snapshot);
+    const view = dependencyChildren(store, evaluation, 'positive');
     assert.ok(view.expansions.moduleClaims.length > 0);
     assert.ok(view.expansions.moduleEvaluations.every(id => store.get(id).kind === 'evaluation'));
   });
@@ -181,7 +182,7 @@ test('missing or partial organization weakens only expansion and cannot establis
   }, false);
   fixture(files, root => {
     const { store, evaluation, organization } = organizationResult(root);
-    const partial = { ...organization, id: recordId(evaluation.snapshot, 'partial-organization', 1), execution: 'stopped' as const, materialization: 'partial' as const };
+    const partial = { ...organization, id: recordId(evaluation.session, 'partial-organization', 1), execution: 'stopped' as const, materialization: 'partial' as const };
     store.put([partial]);
     const result = evaluateDependencyOrganization(store, evaluation, partial);
     const claim = store.get(result.claims[0]!) as DependencyOrganizationClaim;
@@ -198,23 +199,23 @@ test('fallback preserves partial and ambiguous target placement without inventin
     const relationship = store.get(evaluation.relationships[0]!);
     assert.ok(occurrence.kind === 'dependency-occurrence');
     assert.ok(relationship.kind === 'claim' && relationship.information.type === 'dependency');
-    const fallbackOccurrence = { ...occurrence, id: recordId(evaluation.snapshot, 'fallback-occurrence', 1), targetEvidence: [] };
-    const fallbackEdge = { ...relationship, id: recordId(evaluation.snapshot, 'fallback-edge', 1), information: {
+    const fallbackOccurrence = { ...occurrence, id: recordId(evaluation.session, 'fallback-occurrence', 1), targetEvidence: [] };
+    const fallbackEdge = { ...relationship, id: recordId(evaluation.session, 'fallback-edge', 1), information: {
       ...relationship.information, occurrences: [fallbackOccurrence.id] } };
-    const dependency = { ...evaluation, id: recordId(evaluation.snapshot, 'fallback-dependency', 1), occurrences: [fallbackOccurrence.id], relationships: [fallbackEdge.id] };
+    const dependency = { ...evaluation, id: recordId(evaluation.session, 'fallback-dependency', 1), occurrences: [fallbackOccurrence.id], relationships: [fallbackEdge.id] };
     store.put([fallbackOccurrence, fallbackEdge, dependency]);
     const placement = organization.claims.map(id => store.get(id)).find(claim => claim.kind === 'claim'
       && claim.subject === module('b') && claim.information.type === 'module-placement');
     assert.ok(placement?.kind === 'claim' && placement.information.type === 'module-placement');
     for (const mode of ['established', 'partial', 'ambiguous'] as const) {
-      const replacement: ModulePlacementClaim = { ...placement, id: recordId(evaluation.snapshot, 'fallback-placement', mode), information: {
+      const replacement: ModulePlacementClaim = { ...placement, id: recordId(evaluation.session, 'fallback-placement', mode), information: {
         ...placement.information, outcome: mode === 'ambiguous' ? 'ambiguous' as const : 'established' as const,
         groups: mode === 'ambiguous' ? [] : placement.information.groups,
         candidates: mode === 'ambiguous' ? organization.groups.slice(0, 2) : [],
         reasons: mode === 'partial' ? ['not-visible' as const] : [],
         materialization: mode === 'ambiguous' ? 'partial' as const : 'full' as const,
       } };
-      const changed = { ...organization, id: recordId(evaluation.snapshot, 'fallback-organization', mode),
+      const changed = { ...organization, id: recordId(evaluation.session, 'fallback-organization', mode),
         claims: organization.claims.map(id => id === placement.id ? replacement.id : id) };
       store.put([replacement, changed]);
       const result = evaluateDependencyOrganization(store, dependency, changed);
@@ -249,7 +250,7 @@ test('empty graph and composition evaluation are established empty results', () 
     const { store, evaluation } = analyze(root);
     const projection = dependencyStructure(store, evaluation);
     assert.deepEqual(projection.graph, { components: [], roots: [], rootsEstablished: true });
-    const composition = store.evaluations(evaluation.snapshot).filter(e => e.requirement === 'composition');
+    const composition = store.evaluations(evaluation.session).filter(e => e.requirement === 'composition');
     assert.equal(composition.length, 1);
     assert.equal(composition[0]!.materialization, 'full');
     assert.deepEqual(composition[0]!.claims, []);
@@ -268,18 +269,18 @@ test('graph and composition results reproduce across fresh processes', () => {
     console.log(JSON.stringify([projection, ...projection.expansions.moduleEvaluations.map(id => store.get(id)),
       ...projection.expansions.moduleClaims.map(id => store.get(id))]));`;
   const run = () => execFileSync(process.execPath, ['--input-type=module', '-e', script], { encoding: 'utf8', maxBuffer: 4 * 1024 * 1024 });
-  assert.equal(run(), run());
+  assert.deepEqual(normalizeSession(JSON.parse(run())), normalizeSession(JSON.parse(run())));
 });
 
 test('store rejects invalid component indices and missing organization occurrence support atomically', () => {
   fixture({ 'a.ts': "import './b'; export {};", 'b.ts': 'export {};' }, root => {
     const { store, evaluation, claims } = organizationResult(root);
     const view = dependencyStructure(store, evaluation);
-    const invalid = { ...view, id: recordId(evaluation.snapshot, 'invalid-graph', 1), graph: { ...view.graph!, roots: [100] } };
+    const invalid = { ...view, id: recordId(evaluation.session, 'invalid-graph', 1), graph: { ...view.graph!, roots: [100] } };
     assert.throws(() => store.put([invalid]), /Invalid dependency graph grouping/);
     assert.throws(() => store.get(invalid.id), /Missing program record/);
     const claim = claims[0]!;
-    assert.throws(() => store.put([{ ...claim, id: recordId(evaluation.snapshot, 'invalid-expansion', 1),
+    assert.throws(() => store.put([{ ...claim, id: recordId(evaluation.session, 'invalid-expansion', 1),
       information: { ...claim.information, occurrences: [] } }]), /every supporting occurrence/);
   });
 });

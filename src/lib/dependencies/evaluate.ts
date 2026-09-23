@@ -16,8 +16,8 @@ export function evaluateDependencies(store: ProgramRecordStore, analysis: Module
       reason: 'The module provider did not supply the requested dependency analysis.',
       cost: { measure: 'module-count', value: 0 }, projectModules: [], occurrences: [], relationships: [], coverage: [], contexts: [],
     }),
-    kind: 'dependency-evaluation', method, snapshot: result.snapshot, moduleEvaluation: basis.id,
-    id: recordId(result.snapshot, 'dependency-evaluation', { method, basis: basis.id }),
+    kind: 'dependency-evaluation', method, session: result.session, moduleEvaluation: basis.id,
+    id: recordId(result.session, 'dependency-evaluation', { method, basis: basis.id, result: result.dependencies ?? null }),
   };
   store.put([outcome]);
   return outcome;

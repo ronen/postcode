@@ -1,7 +1,7 @@
 import { compositionView, compositionAnnotation } from '../composition-view.js';
 import type { CompositionView } from '../composition-view.js';
 import path from 'node:path';
-import { groupEntityIds, methods, moduleEntityIds, recordId } from '../identity.js';
+import { methods, recordId } from '../identity.js';
 import { createView, renderUnicode } from '../presentation.js';
 import type { Presentation, QualifiedView } from '../presentation.js';
 import type { ClaimContextRecord, EvaluationState, ModuleClaim, ProgramRecordStore, ProjectionRecord, RecordId } from '../records.js';
@@ -13,11 +13,11 @@ import type { GroupPropertiesClaim, ModulePlacementClaim, OrganizationClaims, Or
 
 export const organizationPresentationRequirements = {
   groups: groupStandardExpansions,
-  // Common source capture keeps navigation between lenses in the same snapshot.
+  // Common source capture keeps navigation between lenses in the same session.
   modules: moduleStandardExpansions,
 };
 
-type Qualification = Omit<ClaimContextRecord, 'kind' | 'evidence'>;
+type Qualification = Omit<ClaimContextRecord, 'kind' | 'evidence' | 'inputs'>;
 interface EntityReference { readonly id: RecordId; readonly entityId: string; readonly name: string | null; readonly label: string }
 interface GroupReference extends EntityReference {
   readonly documented: boolean;
@@ -49,9 +49,9 @@ interface TreeRow {
 }
 
 export interface QualifiedOrganizationView {
-  readonly schema: 'postcode-organization-view/0-experimental';
+  readonly schema: 'postcode-organization-view/1-experimental';
   readonly id: RecordId;
-  readonly projection: Pick<OrganizationProjectionRecord, 'id' | 'snapshot' | 'lens' | 'subject' | 'parameters' | 'selection'>;
+  readonly projection: Pick<OrganizationProjectionRecord, 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
   readonly presentation: Presentation & { readonly expansions: readonly string[] };
   readonly evaluations: {
     readonly repository: Omit<EvaluationState, 'cost'> & { readonly id: RecordId; readonly cost: OrganizationEvaluationRecord['cost'] };
@@ -99,15 +99,15 @@ export function createOrganizationView(store: ProgramRecordStore, projection: Or
   const layout = captured.layout;
   const moduleEvaluation = store.get(outcome.moduleEvaluation);
   if (moduleEvaluation.kind !== 'evaluation') throw new Error('Expected module evaluation');
-  const groupIds = groupEntityIds(outcome.groups);
-  const moduleIds = moduleEntityIds(moduleEvaluation.modules);
+  const groupIds = store.entityIds(outcome.groups, 'group');
+  const moduleIds = store.entityIds(moduleEvaluation.modules, 'module');
   const claims = outcome.claims.map(id => store.get(id) as OrganizationClaims);
   const selectedClaims = new Set([...projection.claims, ...projection.expansions.claims]);
   const available = claims.filter(claim => selectedClaims.has(claim.id));
   const qualification = (id: RecordId): Qualification => {
     const context = store.get(id);
     if (context.kind !== 'claim-context') throw new Error('Expected Claim context');
-    const { kind: _kind, evidence: _evidence, ...result } = context;
+    const { kind: _kind, evidence: _evidence, inputs: _inputs, ...result } = context;
     return result;
   };
   const group = (id: RecordId): GroupReference => {
@@ -184,9 +184,9 @@ export function createOrganizationView(store: ProgramRecordStore, projection: Or
   const { applicability, availability, execution, materialization, reason, cost } = outcome;
   const externalModules = claims.filter(claim => claim.information.type === 'module-placement' && claim.information.reasons.includes('external-module')).length;
   return {
-    schema: 'postcode-organization-view/0-experimental',
-    id: recordId(projection.snapshot, 'organization-view', { projection: projection.id, presentation, method: methods.presentation }),
-    projection: { id: projection.id, snapshot: projection.snapshot, lens: projection.lens, subject: projection.subject,
+    schema: 'postcode-organization-view/1-experimental',
+    id: recordId(projection.session, 'organization-view', { projection: projection.id, presentation, method: methods.presentation }),
+    projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,
       parameters: projection.parameters, selection: projection.selection },
     presentation: { ...presentation, expansions: [...projection.expansions.requested, ...new Set(projection.expansions.moduleEvaluations.flatMap(id => {
       const outcome = store.get(id); return outcome.kind === 'evaluation' && outcome.requirement !== 'modules' ? [outcome.requirement] : [];
@@ -232,12 +232,10 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
   if (view.presentation.format === 'json') return `${JSON.stringify(view, null, 2)}\n`;
   const inspection = view.projection.lens === 'inspect';
   const lines = [inspection ? 'Inspect · groups and modules' : `Organization · ${view.projection.subject === 'repository' ? 'repository' : 'configured project'}`,
-    `Snapshot ${view.projection.snapshot.slice(9, 21)}`,
-    inspection ? `${view.projection.selection.matches} exact matches for ${inlineText(view.projection.parameters.selector ?? '')}`
+    `Session ${view.projection.session.replace(/^session:/, '')}`,
+    inspection ? `${view.projection.selection.matches} exact matches for ${view.projection.parameters.reference ? '@' : ''}${inlineText(view.projection.parameters.selector ?? '')}${view.projection.parameters.reference ? ` · ${view.projection.selection.referenceStatus}` : ''}`
       : `${view.display.selectedGroups} selected groups · ${view.repository.groups} repository groups`];
   if (!view.projection.selection.populationEstablished) lines.push('Selection population is not fully established.');
-  if (view.projection.selection.referenceStatus === 'snapshot-required') lines.push('No current match: compact Entity ID selection requires --snapshot.');
-  if (view.projection.selection.referenceStatus === 'snapshot-mismatch') lines.push('No current match: snapshot differs; no successor is inferred.');
   for (const [name, state] of Object.entries(view.evaluations)) {
     lines.push(`${name === 'repository' ? 'Repository layout' : 'Project placement'}: ${state.availability}, ${state.execution}, materialization ${state.materialization}${state.reason ? ` · ${inlineText(state.reason)}` : ''}`);
   }
@@ -305,6 +303,5 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
     '  Inputs are first-observed, not atomic; sparse-checkout completeness remains unresolved.');
   const diagnostics = new Set(view.qualifications.flatMap(context => context.diagnostics.map(diagnostic => diagnostic.code)));
   for (const code of diagnostics) lines.push(`  Encountered TypeScript diagnostic: TS${code}`);
-  if (view.presentation.navigation) lines.push('', 'Next · inspect a group or module by Entity ID:', view.presentation.navigation.inspect);
   return `${lines.join('\n')}\n`;
 }

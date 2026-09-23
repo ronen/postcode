@@ -2,7 +2,7 @@ import type { ClaimContextRecord, EvaluationRecord, ProgramRecordStore, RecordId
 
 export type CompositionView = {
   readonly claims: readonly { readonly id: RecordId; readonly property: 're-exports-only';
-    readonly qualification: Omit<ClaimContextRecord, 'kind' | 'evidence'> }[];
+    readonly qualification: Omit<ClaimContextRecord, 'kind' | 'evidence' | 'inputs'> }[];
   readonly evaluations: readonly Pick<EvaluationRecord, 'id' | 'applicability' | 'availability' | 'execution' | 'materialization' | 'reason'>[];
 };
 
@@ -14,7 +14,7 @@ export function compositionView(store: ProgramRecordStore, subject: RecordId,
     if (claim.kind !== 'claim' || claim.subject !== subject || claim.information.type !== 'module-composition') return [];
     const context = store.get(claim.context);
     if (context.kind !== 'claim-context') throw new Error('Expected composition qualification');
-    const { kind: _kind, evidence: _evidence, ...qualification } = context;
+    const { kind: _kind, evidence: _evidence, inputs: _inputs, ...qualification } = context;
     return [{ id, property: claim.information.property, qualification }];
   });
   const evaluations = evaluationIds.flatMap(id => {

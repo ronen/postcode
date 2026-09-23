@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import { compare, methods, recordId } from '../identity.js';
-import type { ClaimContextRecord, ModuleDiscoveryFacet, ProgramRecord, RecordId, SnapshotId, SourceEvidenceRecord } from '../records.js';
+import type { ClaimContextRecord, ModuleDiscoveryFacet, ProgramRecord, RecordId, SessionId, SourceEvidenceRecord } from '../records.js';
 import type { CommonJSRecognition, DependencyCoverageRecord, DependencyMechanism, DependencyOccurrenceRecord,
   DependencyRelationshipClaim, DependencyResult, DependencyTargetStatus } from '../dependencies/records.js';
 import { dependencyLimitations } from '../dependencies/records.js';
@@ -32,7 +32,7 @@ interface PreparedRequest {
 type Evidence = (node: ts.Node, compilerName: string | null, resolution?: SourceEvidenceRecord['resolution'],
   dependencyResolution?: SourceEvidenceRecord['dependencyResolution']) => RecordId;
 
-/** All compiler and captured-host queries finish before snapshot identity is finalized. */
+/** Prepares dependency queries before the caller captures input support and materializes records. */
 export function prepareDependencies(program: ts.Program, host: ts.CompilerHost, modules: readonly ModuleCandidate[]) {
   const checker = program.getTypeChecker();
   const diagnostics = program.getSyntacticDiagnostics();
@@ -141,21 +141,21 @@ export function prepareDependencies(program: ts.Program, host: ts.CompilerHost, 
   [...program.getSourceFiles()].filter(file => !program.isSourceFileFromExternalLibrary(file) && !program.isSourceFileDefaultLibrary(file))
     .sort((a, b) => compare(a.fileName, b.fileName)).forEach(visit);
 
-  return (snapshot: SnapshotId, evidence: Evidence): { records: ProgramRecord[]; result: DependencyResult } => {
+  return (session: SessionId, evidence: Evidence): { records: ProgramRecord[]; result: DependencyResult } => {
     const method = `${methods.dependencies};typescript@${ts.version}`;
     const records: ProgramRecord[] = [];
     const occurrences: DependencyOccurrenceRecord[] = [];
     const occurrenceFiles = new Map<RecordId, ts.SourceFile>();
     const coverage: DependencyCoverageRecord[] = [];
     const contexts = new Map<RecordId, ClaimContextRecord>();
-    const moduleId = (candidate: ModuleCandidate) => recordId(snapshot, 'module', candidate.key);
+    const moduleId = (candidate: ModuleCandidate) => recordId(session, 'module', candidate.key);
     const context = (key: unknown, scope: RecordId | 'configured-project', sources: readonly RecordId[],
       sourceFiles: readonly ts.SourceFile[]): RecordId => {
       const relevant = diagnostics.filter(diagnostic => diagnostic.file && sourceFiles.includes(diagnostic.file))
         .map(diagnostic => ({ code: diagnostic.code, category: ts.DiagnosticCategory[diagnostic.category]!.toLowerCase() }))
         .sort((a, b) => a.code - b.code || compare(a.category, b.category));
       const record: ClaimContextRecord = {
-        kind: 'claim-context', id: recordId(snapshot, 'dependency-context', key), snapshot, method, scope,
+        kind: 'claim-context', id: recordId(session, 'dependency-context', key), session, method, scope,
         evidence: [...new Set(sources)], status: 'mechanically-derived',
         guarantee: 'Bounded source-request evidence under the configured TypeScript environment; syntax diagnostics qualify interpretation.',
         limitations: dependencyLimitations, diagnostics: relevant,
@@ -170,15 +170,15 @@ export function prepareDependencies(program: ts.Program, host: ts.CompilerHost, 
       } : undefined);
       const targetEvidence = request.targetDeclarations.map(declaration => evidence(declaration, null));
       const support = [source, ...request.declarations.map(declaration => evidence(declaration, null)), ...targetEvidence];
-      const id = recordId(snapshot, request.coverage === null ? 'dependency-occurrence' : 'dependency-coverage', [method, source, owner]);
+      const id = recordId(session, request.coverage === null ? 'dependency-occurrence' : 'dependency-coverage', [method, source, owner]);
       const qualification = context(id, owner ?? 'configured-project', support, [request.node.getSourceFile()]);
       if (request.coverage !== null) {
-        coverage.push({ kind: 'dependency-coverage', id, snapshot, method, owner, context: qualification,
+        coverage.push({ kind: 'dependency-coverage', id, session, method, owner, context: qualification,
           evidence: source, outcome: request.coverage, commonjs: request.commonjs });
       } else {
         if (!owner) throw new Error('Recognized dependency occurrence lacks an owner');
         occurrenceFiles.set(id, request.node.getSourceFile());
-        occurrences.push({ kind: 'dependency-occurrence', id, snapshot, method, owner, context: qualification,
+        occurrences.push({ kind: 'dependency-occurrence', id, session, method, owner, context: qualification,
           evidence: source, targetEvidence, mechanism: request.mechanism, typeOnly: request.typeOnly,
           targetStatus: request.targetStatus, target: request.target ? moduleId(request.target) : null, commonjs: request.commonjs });
       }
@@ -193,14 +193,14 @@ export function prepareDependencies(program: ts.Program, host: ts.CompilerHost, 
     }
     const relationships: DependencyRelationshipClaim[] = [...pairs].sort(([a], [b]) => compare(a, b)).map(([, supporting]) => {
       const first = supporting[0]!;
-      const id = recordId(snapshot, 'dependency', [method, first.owner, first.target]);
+      const id = recordId(session, 'dependency', [method, first.owner, first.target]);
       // Select each captured diagnostic once across the contributing files.
       // Concatenating occurrence contexts multiplies file-wide diagnostics;
       // deduplicating projected code/category pairs would lose distinct errors.
       const sourceFiles = [...new Set(supporting.map(occurrence => occurrenceFiles.get(occurrence.id)!))];
       const qualification = context(id, first.owner,
         supporting.flatMap(occurrence => contexts.get(occurrence.context)!.evidence), sourceFiles);
-      return { kind: 'claim', id, snapshot, method, subject: first.owner, context: qualification,
+      return { kind: 'claim', id, session, method, subject: first.owner, context: qualification,
         information: { type: 'dependency', child: first.target!, occurrences: supporting.map(occurrence => occurrence.id),
           mechanisms: [...new Set(supporting.map(occurrence => occurrence.mechanism))].sort(compare),
           typeOnly: supporting.every(occurrence => occurrence.typeOnly) } };

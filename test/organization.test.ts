@@ -5,12 +5,12 @@ import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
 import { evaluateModules } from '../src/lib/evaluation.js';
-import { groupEntityIds, moduleEntityIds, recordId } from '../src/lib/identity.js';
+import { recordId } from '../src/lib/identity.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
 import { inspectOrganization, organization } from '../src/lib/organization/projections.js';
 import type { GroupPropertiesClaim, ModulePlacementClaim, OrganizationClaims, OrganizationEvaluationRecord } from '../src/lib/organization/records.js';
 import type { EvaluationRecord, ModuleClaim, ProgramRecordStore, RecordId } from '../src/lib/records.js';
-import { discover } from './helpers.js';
+import { discover, inputBasis } from './helpers.js';
 
 function fixture(run: (root: string, write: (name: string, text: string) => void) => void) {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-organization-'));
@@ -81,16 +81,16 @@ test('repository and project select the same groups, preserving direct relations
   });
 });
 
-test('group IDs require current scope and inspect artifact-only groups outside project selection', () => {
+test('explicit references select group IDs and inspect artifact-only groups outside project selection', () => {
   fixture(root => {
     const { store, outcome } = evaluated(root);
     const manual = groups(store, outcome).get('manual')!;
-    const compact = groupEntityIds(outcome.groups).get(manual)!;
+    const compact = store.entityIds(outcome.groups, 'group').get(manual)!;
     assert.match(compact, /^group-[a-f0-9]{8,64}$/);
-    assert.equal(inspectOrganization(store, outcome, compact).selection.referenceStatus, 'snapshot-required');
-    assert.deepEqual(inspectOrganization(store, outcome, compact, outcome.snapshot).groups, [manual]);
-    const stale = inspectOrganization(store, outcome, compact, 'old-snapshot');
-    assert.equal(stale.selection.referenceStatus, 'snapshot-mismatch');
+    assert.equal(inspectOrganization(store, outcome, compact).selection.referenceStatus, 'current');
+    assert.deepEqual(inspectOrganization(store, outcome, compact, true).groups, [manual]);
+    const stale = inspectOrganization(store, outcome, 'group-00000000', true);
+    assert.equal(stale.selection.referenceStatus, 'unknown-reference');
     assert.equal(stale.groups.length, 0);
     assert.deepEqual(inspectOrganization(store, outcome, manual).groups, [manual]);
     assert.deepEqual(inspectOrganization(store, outcome, 'manual').groups, [manual]);
@@ -103,7 +103,7 @@ test('partial and unavailable module evaluations retain layout and known placeme
   fixture(root => {
     const { store, outcome, evaluation } = evaluated(root);
     for (const available of [true, false]) {
-      const incomplete: EvaluationRecord = { ...evaluation, id: recordId(evaluation.snapshot, 'evaluation', ['incomplete', available]),
+      const incomplete: EvaluationRecord = { ...evaluation, id: recordId(evaluation.session, 'evaluation', ['incomplete', available]),
         attempt: available ? 2 : 3, availability: available ? 'available' : 'unavailable', execution: available ? 'stopped' : 'deferred',
         materialization: available ? 'partial' : 'none', modules: available ? evaluation.modules.slice(0, 1) : [], reason: 'Synthetic bounded provider outcome.' };
       store.put([incomplete]);
@@ -132,24 +132,24 @@ test('organization evaluation and lenses use captured inputs, with stable groups
     assert.ok(groups(store, first).has('manual'));
     assert.equal(groups(store, first).has('later'), false);
     assert.deepEqual(organization(store, first).groups, organization(store, second).groups);
-    assert.notEqual(first.id, second.id);
+    assert.equal(first.id, second.id);
   });
 });
 
-test('repository evidence participates in snapshot identity without reading ordinary artifact content', () => {
+test('repository evidence participates in captured input support without reading ordinary artifact content', () => {
   fixture((root, write) => {
     const initial = evaluated(root);
     write('manual/README.md', 'Completely different documentation bytes.');
     write('data/value.json', '{"changed":true}');
     const content = evaluated(root);
-    assert.equal(content.evaluation.snapshot, initial.evaluation.snapshot);
+    assert.equal(inputBasis(content), inputBasis(initial));
     write('manual/README.extra', 'new artifact');
     const added = evaluated(root);
-    assert.notEqual(added.evaluation.snapshot, initial.evaluation.snapshot);
+    assert.notEqual(inputBasis(added), inputBasis(initial));
     write('.gitignore', 'manual/README.extra\n');
     const excluded = evaluated(root);
-    assert.notEqual(excluded.evaluation.snapshot, added.evaluation.snapshot);
-    assert.notEqual(excluded.evaluation.snapshot, initial.evaluation.snapshot);
+    assert.notEqual(inputBasis(excluded), inputBasis(added));
+    assert.notEqual(inputBasis(excluded), inputBasis(initial));
   });
 });
 
@@ -163,8 +163,8 @@ test('a configured project outside Git remains usable with unavailable organizat
     assert.equal(outcome.groups.length, 0);
     assert.ok(placements(store, outcome).every(claim => claim.information.outcome === 'unavailable'));
     assert.equal(organization(store, outcome, 'repository').selection.populationEstablished, false);
-    const compact = moduleEntityIds(evaluation.modules).get(evaluation.modules[0]!)!;
-    assert.deepEqual(inspectOrganization(store, outcome, compact, outcome.snapshot).modules, [evaluation.modules[0]]);
+    const compact = store.entityIds(evaluation.modules, 'module').get(evaluation.modules[0]!)!;
+    assert.deepEqual(inspectOrganization(store, outcome, compact, true).modules, [evaluation.modules[0]]);
   });
 });
 
@@ -234,19 +234,19 @@ test('names can match groups and modules together; scoped Entity IDs are precise
     assert.ok(originalModule.kind === 'module');
     const originalClaim = store.get(originalModule.claim) as ModuleClaim;
     const group = inspection.groups[0]!;
-    const compactGroup = groupEntityIds(outcome.groups).get(group)!;
+    const compactGroup = store.entityIds(outcome.groups, 'group').get(group)!;
     // A later provider may report a literal language name equal to a navigation ID.
-    const renamed = { ...originalModule, id: recordId(outcome.snapshot, 'module', 'collision'), claim: recordId(outcome.snapshot, 'claim', 'collision') };
+    const renamed = { ...originalModule, id: recordId(outcome.session, 'module', 'collision'), claim: recordId(outcome.session, 'claim', 'collision') };
     const claim = { ...originalClaim, id: renamed.claim, subject: renamed.id, information: { ...originalClaim.information, name: compactGroup } };
-    const synthetic = { ...evaluation, id: recordId(outcome.snapshot, 'evaluation', 'collision'), modules: [renamed.id], attempt: 2 };
+    const synthetic = { ...evaluation, id: recordId(outcome.session, 'evaluation', 'collision'), modules: [renamed.id], attempt: 2 };
     store.put([renamed, claim, synthetic]);
     const next = evaluateOrganization(store, synthetic);
     assert.deepEqual(inspectOrganization(store, next, compactGroup).modules, [renamed.id]);
-    const precise = inspectOrganization(store, next, compactGroup, next.snapshot);
+    const precise = inspectOrganization(store, next, compactGroup, true);
     assert.deepEqual(precise.groups, [group]);
     assert.deepEqual(precise.modules, []);
-    const compactModule = moduleEntityIds(synthetic.modules).get(renamed.id)!;
-    assert.deepEqual(inspectOrganization(store, next, compactModule, next.snapshot).modules, [renamed.id]);
+    const compactModule = store.entityIds(synthetic.modules, 'module').get(renamed.id)!;
+    assert.deepEqual(inspectOrganization(store, next, compactModule, true).modules, [renamed.id]);
   });
 });
 
@@ -276,9 +276,9 @@ test('placement accepts the destination after 40 directory-link redirects and re
     write('d41/module.ts', 'export const linked = 1;');
     write('tsconfig.json', JSON.stringify({ compilerOptions: { noLib: true, types: [] }, files: ['d41/module.ts'] }));
     const { store, evaluation } = discover(path.join(root, 'tsconfig.json'));
-    const snapshot = store.get(evaluation.snapshot);
-    assert.ok(snapshot.kind === 'snapshot' && snapshot.repository);
-    const repository = store.get(snapshot.repository);
+    const session = store.get(evaluation.session);
+    assert.ok(session.kind === 'session' && session.repository);
+    const repository = store.get(session.repository);
     assert.ok(repository.kind === 'repository-evidence');
     assert.equal(repository.layout!.links.length, 41);
     assert.ok(repository.layout!.links.every(link => link.outcome === 'additional-parent'));
@@ -292,12 +292,12 @@ test('placement accepts the destination after 40 directory-link redirects and re
     // Use actual captured links with synthetic provider paths: host filesystem
     // traversal limits must not prevent exercising the evaluator's own bound.
     for (const redirects of [39, 40, 41]) {
-      const module: typeof original = { ...original, id: recordId(evaluation.snapshot, 'module', redirects), claim: recordId(evaluation.snapshot, 'claim', redirects) };
-      const aliasSource = { ...source, id: recordId(evaluation.snapshot, 'source-evidence', redirects),
+      const module: typeof original = { ...original, id: recordId(evaluation.session, 'module', redirects), claim: recordId(evaluation.session, 'claim', redirects) };
+      const aliasSource = { ...source, id: recordId(evaluation.session, 'source-evidence', redirects),
         path: path.join(root, `d${41 - redirects}`, ...Array<string>(redirects).fill('next'), 'module.ts') };
-      const aliasContext = { ...context, id: recordId(evaluation.snapshot, 'context', redirects), scope: module.id, evidence: [aliasSource.id] };
+      const aliasContext = { ...context, id: recordId(evaluation.session, 'context', redirects), scope: module.id, evidence: [aliasSource.id] };
       const aliasClaim = { ...claim, id: module.claim, subject: module.id, context: aliasContext.id };
-      const synthetic = { ...evaluation, id: recordId(evaluation.snapshot, 'evaluation', redirects), modules: [module.id], attempt: redirects };
+      const synthetic = { ...evaluation, id: recordId(evaluation.session, 'evaluation', redirects), modules: [module.id], attempt: redirects };
       store.put([module, aliasSource, aliasContext, aliasClaim, synthetic]);
       const outcome = evaluateOrganization(store, synthetic);
       const placement = placements(store, outcome)[0]!;
@@ -317,10 +317,10 @@ test('unavailable source evidence preserves usable placements and leaves absent 
     const claim = store.get(original.claim) as ModuleClaim;
     const context = store.get(claim.context);
     assert.ok(context.kind === 'claim-context');
-    const missing = { ...original, id: recordId(evaluation.snapshot, 'module', 'missing-source'), claim: recordId(evaluation.snapshot, 'claim', 'missing-source') };
-    const missingContext = { ...context, id: recordId(evaluation.snapshot, 'context', 'missing-source'), scope: missing.id, evidence: [] };
+    const missing = { ...original, id: recordId(evaluation.session, 'module', 'missing-source'), claim: recordId(evaluation.session, 'claim', 'missing-source') };
+    const missingContext = { ...context, id: recordId(evaluation.session, 'context', 'missing-source'), scope: missing.id, evidence: [] };
     const missingClaim = { ...claim, id: missing.claim, subject: missing.id, context: missingContext.id };
-    const synthetic = { ...evaluation, id: recordId(evaluation.snapshot, 'evaluation', 'missing-source'),
+    const synthetic = { ...evaluation, id: recordId(evaluation.session, 'evaluation', 'missing-source'),
       modules: [...evaluation.modules, missing.id], attempt: 2 };
     store.put([missing, missingContext, missingClaim, synthetic]);
     const outcome = evaluateOrganization(store, synthetic);
@@ -342,18 +342,18 @@ test('record boundary rejects malformed placement outcomes and negative properti
       { ...placement.information, outcome: 'unavailable' as const, groups: [] },
       { ...placement.information, groups: [evaluation.modules[0]!] },
     ]) {
-      const invalid = { ...placement, id: recordId(outcome.snapshot, 'claim', information), information };
+      const invalid = { ...placement, id: recordId(outcome.session, 'claim', information), information };
       assert.throws(() => store.put([invalid]), /placement|group reference/);
       assert.throws(() => store.get(invalid.id), /Missing/);
     }
-    const ambiguous = { ...placement, id: recordId(outcome.snapshot, 'claim', 'ambiguous'), information: {
+    const ambiguous = { ...placement, id: recordId(outcome.session, 'claim', 'ambiguous'), information: {
       ...placement.information, outcome: 'ambiguous' as const, groups: [], candidates: outcome.groups.slice(0, 2), materialization: 'partial' as const } };
     store.put([ambiguous]);
-    const partial = { ...outcome, id: recordId(outcome.snapshot, 'organization-evaluation', 'partial'),
+    const partial = { ...outcome, id: recordId(outcome.session, 'organization-evaluation', 'partial'),
       placement: { ...outcome.placement, execution: 'stopped' as const, materialization: 'partial' as const } };
     const property = claims(store, outcome).find((claim): claim is GroupPropertiesClaim => claim.information.type === 'group-properties'
       && claim.information.modulePresence === 'none')!;
-    const invalid = { ...property, id: recordId(outcome.snapshot, 'claim', 'false-negative'), information: { ...property.information, evaluation: partial.id } };
+    const invalid = { ...property, id: recordId(outcome.session, 'claim', 'false-negative'), information: { ...property.information, evaluation: partial.id } };
     assert.throws(() => store.put([partial, invalid]), /completed placement evaluation/);
     assert.throws(() => store.get(partial.id), /Missing/);
   });

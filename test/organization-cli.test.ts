@@ -4,6 +4,7 @@ import { cpSync, mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } fr
 import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
+import { normalizeSession } from './helpers.js';
 import { runCli } from '../src/lib/cli.js';
 import type { ObservationBatch, ObservationSink } from '../src/lib/observations.js';
 import { createOrganizationView, organizationPresentationRequirements, renderOrganizationView } from '../src/lib/organization/presentation.js';
@@ -48,11 +49,11 @@ test('representative organization journey selects, inspects, navigates, and esca
     const full = viewOf(repository);
     assert.equal(full.groups.length, 5);
     const project = viewOf(await invoke(root, ['organization', 'project', '--json']));
-    assert.equal(project.projection.snapshot, full.projection.snapshot);
+    assert.notEqual(project.projection.session, full.projection.session);
     assert.equal(project.display.selectedGroups, 3);
     assert.equal(project.groups.filter(group => !group.selected).length, 2);
     const src = full.groups.find(group => group.name === 'src')!;
-    const inspected = viewOf(await invoke(root, ['inspect', src.entityId, '--snapshot', full.projection.snapshot, '--json']));
+    const inspected = viewOf(await invoke(root, ['inspect', src.name!, '--json']));
     const detail = inspected.groups.find(group => group.selected)!;
     assert.equal(detail.name, 'src');
     assert.equal(detail.documented, true);
@@ -63,15 +64,15 @@ test('representative organization journey selects, inspects, navigates, and esca
     assert.equal(detail.modules[0]!.name, null);
     assert.equal(detail.modules[0]!.handleStatus, 'generated-navigation-aid');
     assert.equal(detail.modules[0]!.handleProvenance, 'source-basename');
-    const child = viewOf(await invoke(root, ['inspect', detail.subgroups[0]!.entityId, '--snapshot', full.projection.snapshot, '--json']));
+    const child = viewOf(await invoke(root, ['inspect', detail.subgroups[0]!.name!, '--json']));
     const childGroup = child.groups.find(group => group.selected)!;
     assert.equal(childGroup.modulePresence, 'direct');
     assert.equal(childGroup.documented, false);
-    const module = JSON.parse((await invoke(root, ['inspect', childGroup.modules[0]!.entityId, '--snapshot', full.projection.snapshot, '--json'])).stdout) as QualifiedView;
+    const module = JSON.parse((await invoke(root, ['inspect', childGroup.modules[0]!.handle, '--json'])).stdout) as QualifiedView;
     assert.equal(module.modules.length, 1);
     assert.equal(module.modules[0]!.entityId, childGroup.modules[0]!.entityId);
     assert.ok(module.modules[0]!.exports.some(item => item.exportedName === 'child'));
-    const source = await invoke(root, ['inspect', src.entityId, '--snapshot', full.projection.snapshot, '--source-detail', '--json']);
+    const source = await invoke(root, ['inspect', src.name!, '--source-detail', '--json']);
     const sourceView = viewOf(source);
     assert.equal(sourceView.sourceDetail!.groups.length, 1);
     assert.ok(sourceView.sourceDetail!.groups[0]!.path.endsWith('/src'));
@@ -85,7 +86,7 @@ test('representative organization journey selects, inspects, navigates, and esca
       assert.equal(JSON.stringify(withoutNavigation).includes('src/README'), false);
       assert.equal(JSON.stringify(withoutNavigation).includes('module.ts'), false);
     }
-    assert.deepEqual(source.batches[0]!.events.map(event => event.type), ['view-produced', 'source-escape']);
+    assert.deepEqual(source.batches[0]!.events.map(event => event.type), ['view-produced', 'source-escape', 'command-completed']);
     assert.equal(source.batches[0]!.events[1]!.sourceLevel, 'organization-paths');
     assert.equal(source.batches[0]!.records.find(record => record.kind === 'rendered-output')!.value, source.stdout);
   });
@@ -96,7 +97,7 @@ test('Unicode and JSON share selection, disclose project pruning, and show all d
     const unicode = await invoke(root, ['organization']);
     const json = viewOf(await invoke(root, ['organization', '--json']));
     const recorded = unicode.batches[0]!.records.find(record => record.kind === 'qualified-view')!.value as QualifiedOrganizationView;
-    assert.deepEqual(recorded.projection, json.projection);
+    assert.deepEqual(normalizeSession(recorded.projection), normalizeSession(json.projection));
     assert.ok(unicode.stdout.includes('manual'));
     assert.ok(unicode.stdout.includes('no project modules · context group · descent pruned'));
     assert.ok(unicode.stdout.includes('3 selected groups · 5 repository groups'));
@@ -123,8 +124,8 @@ test('group source detail retains incoming parent-link evidence without changing
     assert.equal(JSON.stringify(ordinary).includes('other/alias'), false);
     const source = await invoke(root, ['inspect', 'src', '--source-detail', '--json']);
     const detailed = viewOf(source);
-    assert.equal(detailed.projection.snapshot, ordinary.projection.snapshot);
-    assert.deepEqual(detailed.groups, ordinary.groups);
+    assert.notEqual(detailed.projection.session, ordinary.projection.session);
+    assert.deepEqual(normalizeSession(detailed.groups), normalizeSession(ordinary.groups));
     assert.deepEqual(detailed.sourceDetail!.groups[0]!.links, [
       { artifactPath: 'other/alias', outcome: 'additional-parent', targetRegion: 'src' },
       { artifactPath: 'other/second', outcome: 'existing-parent', targetRegion: 'src' },
@@ -144,7 +145,7 @@ test('group source detail retains incoming parent-link evidence without changing
   });
 });
 
-test('generic inspection displays every group/module name match, with precise scoped navigation and stale refusal', async () => {
+test('generic inspection displays every group/module name match, without accepting IDs copied from another invocation', async () => {
   await fixture(async (root, write) => {
     write('src/ambient.d.ts', "declare module 'src' { export const named: number; }");
     write('tsconfig.json', '{"compilerOptions":{"noLib":true,"types":[]},"files":["src/ambient.d.ts"]}');
@@ -157,10 +158,10 @@ test('generic inspection displays every group/module name match, with precise sc
     assert.ok(unicode.stdout.includes('Modules\n'));
     const group = both.groups.find(group => group.selected)!;
     const missingScope = viewOf(await invoke(root, ['inspect', group.entityId, '--json']));
-    assert.equal(missingScope.projection.selection.referenceStatus, 'snapshot-required');
+    assert.equal(missingScope.projection.selection.referenceStatus, 'current');
     write('new/artifact.txt', 'new input');
-    const stale = viewOf(await invoke(root, ['inspect', group.entityId, '--snapshot', both.projection.snapshot, '--json']));
-    assert.equal(stale.projection.selection.referenceStatus, 'snapshot-mismatch');
+    const stale = viewOf(await invoke(root, ['inspect', group.entityId, '--json']));
+    assert.equal(stale.projection.selection.referenceStatus, 'current');
     assert.equal(stale.projection.selection.matches, 0);
     const source = viewOf(await invoke(root, ['inspect', 'src', '--source-detail', '--json']));
     assert.equal(source.sourceDetail!.level, 'organization-and-module-source');
@@ -193,7 +194,7 @@ test('partial module evaluation preserves organization views and unknown propert
   await fixture(async root => {
     const { store, analysis } = discover(path.join(root, 'tsconfig.json'));
     const evaluation = evaluateModules(store, analysis, organizationPresentationRequirements.modules);
-    const partial = { ...evaluation, id: recordId(evaluation.snapshot, 'evaluation', 'partial-view'),
+    const partial = { ...evaluation, id: recordId(evaluation.session, 'evaluation', 'partial-view'),
       execution: 'stopped' as const, materialization: 'partial' as const, modules: evaluation.modules.slice(0, 1), reason: 'Stopped fixture.' };
     store.put([partial]);
     const outcome = evaluateOrganization(store, partial, organizationPresentationRequirements.groups);
@@ -255,7 +256,7 @@ test('organization output reproduces across processes and escapes control charac
       });`;
     const run = () => execFileSync(process.execPath, ['--input-type=module', '-e', script, config], { encoding: 'utf8' });
     const first = run();
-    assert.equal(run(), first);
+    assert.deepEqual(normalizeSession(JSON.parse(run())), normalizeSession(JSON.parse(first)));
     const json = viewOf({ stdout: first });
     assert.ok(json.groups.some(group => group.name === name));
     const unicode = await invoke(root, ['organization', 'repository']);
@@ -286,17 +287,17 @@ test('candidate ambiguity retains partial status and reachable candidate groups 
     const outcome = evaluateOrganization(store, evaluation);
     const claims = outcome.claims.map(id => store.get(id) as OrganizationClaims);
     const original = claims.find((claim): claim is ModulePlacementClaim => claim.information.type === 'module-placement')!;
-    const ambiguous: ModulePlacementClaim = { ...original, id: recordId(outcome.snapshot, 'claim', 'ambiguous-view'), information: {
+    const ambiguous: ModulePlacementClaim = { ...original, id: recordId(outcome.session, 'claim', 'ambiguous-view'), information: {
       ...original.information, outcome: 'ambiguous', groups: [], candidates: outcome.groups.slice(0, 2), artifacts: [], materialization: 'partial',
     } };
-    const nextId = recordId(outcome.snapshot, 'organization-evaluation', 'candidate-view');
+    const nextId = recordId(outcome.session, 'organization-evaluation', 'candidate-view');
     const properties = claims.filter((claim): claim is GroupPropertiesClaim => claim.information.type === 'group-properties')
-      .map(claim => ({ ...claim, id: recordId(outcome.snapshot, 'claim', ['candidate-property', claim.subject]),
+      .map(claim => ({ ...claim, id: recordId(outcome.session, 'claim', ['candidate-property', claim.subject]),
         information: { ...claim.information, evaluation: nextId, modulePresence: null } }));
     const next = { ...outcome, id: nextId, claims: [...claims.filter(claim => claim.id !== original.id && claim.information.type !== 'group-properties').map(claim => claim.id),
       ambiguous.id, ...properties.map(claim => claim.id)], placement: { ...outcome.placement, materialization: 'partial' as const, reason: 'Candidate membership not established.' } };
     store.put([ambiguous, ...properties, next]);
-    const projection = inspectOrganization(store, next, ambiguous.subject);
+    const projection = inspectOrganization(store, next, store.entityIds(evaluation.modules, 'module').get(ambiguous.subject)!, true);
     assert.ok(ambiguous.information.candidates.every(id => projection.expansions.groups.includes(id)));
     const view = createOrganizationView(store, projection, { format: 'unicode', sourceDetail: false });
     assert.equal(view.placementExceptions[0]!.placement.outcome, 'ambiguous');

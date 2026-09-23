@@ -1,9 +1,10 @@
-import { canonical } from './identity.js';
-import type { EvaluationRecord, ProgramRecord, ProgramRecordStore, RecordId, SnapshotId } from './records.js';
+import { canonical, EntityBindings } from './identity.js';
+import type { EvaluationRecord, ProgramRecord, ProgramRecordStore, RecordId, SessionId } from './records.js';
 
 function references(record: ProgramRecord): readonly RecordId[] {
   switch (record.kind) {
-    case 'snapshot': return record.repository ? [record.repository] : [];
+    case 'session': return record.repository ? [record.repository] : [];
+    case 'analysis-inputs': return [];
     case 'repository-evidence': return [];
     case 'repository-region':
     case 'repository-artifact': return [record.repository];
@@ -33,7 +34,7 @@ function references(record: ProgramRecord): readonly RecordId[] {
       ...(record.information.type === 'artifact-placement' || record.information.type === 'group-documentation' ? [record.information.artifact] : []),
       ...(record.information.type === 'module-placement' ? [...record.information.groups, ...record.information.candidates, ...record.information.artifacts] : []),
       ...(record.information.type === 'group-properties' ? [record.information.evaluation] : [])];
-    case 'claim-context': return [...record.evidence,
+    case 'claim-context': return [...record.evidence, ...(record.inputs ? [record.inputs] : []),
       ...(record.scope === 'configured-project' ? [] : [record.scope])];
     case 'source-evidence': return record.resolution?.target ? [record.resolution.target] : [];
     case 'evaluation': return [...record.modules, ...record.contexts, ...(record.claims ?? []), ...(record.basis ? [record.basis] : [])];
@@ -54,25 +55,26 @@ function freeze(value: unknown): void {
 
 /** Atomic batches permit mutually referring entity/claim/context records. */
 export class MemoryProgramRecordStore implements ProgramRecordStore {
+  readonly #bindings = new Map<SessionId, EntityBindings>();
   readonly #records = new Map<RecordId, ProgramRecord>();
 
   put(records: readonly ProgramRecord[]): void {
     const pending = new Map<RecordId, ProgramRecord>();
     for (const record of records) {
-      if (!record.id || !record.snapshot || !record.method) throw new Error('Missing record context');
+      if (!record.id || !record.session || !record.method) throw new Error('Missing record context');
       const prior = pending.get(record.id) ?? this.#records.get(record.id);
       if (prior && canonical(prior) !== canonical(record)) throw new Error('Immutable record collision');
       pending.set(record.id, structuredClone(record));
     }
     for (const record of pending.values()) {
-      const snapshot = pending.get(record.snapshot) ?? this.#records.get(record.snapshot);
-      if ((record.kind === 'snapshot' && record.id !== record.snapshot)
-        || snapshot?.kind !== 'snapshot' || snapshot.id !== snapshot.snapshot) {
-        throw new Error('Missing or invalid snapshot');
+      const session = pending.get(record.session) ?? this.#records.get(record.session);
+      if ((record.kind === 'session' && record.id !== record.session)
+        || session?.kind !== 'session' || session.id !== session.session) {
+        throw new Error('Missing or invalid session');
       }
       for (const id of references(record)) {
         const target = pending.get(id) ?? this.#records.get(id);
-        if (!target || target.snapshot !== record.snapshot) throw new Error('Invalid record reference');
+        if (!target || target.session !== record.session) throw new Error('Invalid record reference');
       }
       const requireKind = (id: RecordId, kind: ProgramRecord['kind']) => {
         if ((pending.get(id) ?? this.#records.get(id))?.kind !== kind) {
@@ -263,6 +265,7 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
           requireKind(record.context, 'claim-context');
           break;
         case 'claim-context':
+          if (record.inputs) requireKind(record.inputs, 'analysis-inputs');
           record.evidence.forEach(id => {
             const evidence = pending.get(id) ?? this.#records.get(id);
             if (!evidence || !['source-evidence', 'repository-evidence', 'repository-region', 'repository-artifact'].includes(evidence.kind)) {
@@ -286,7 +289,7 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
         case 'source-evidence':
           if (record.resolution?.target) requireKind(record.resolution.target, 'module');
           break;
-        case 'snapshot':
+        case 'session':
           if (record.repository) requireKind(record.repository, 'repository-evidence');
           break;
         case 'repository-evidence':
@@ -322,14 +325,26 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
     }
   }
 
+  entityIds(ids: readonly RecordId[], kind: 'module' | 'group'): ReadonlyMap<RecordId, string> {
+    const result = new Map<RecordId, string>();
+    for (const id of ids) {
+      const record = this.get(id);
+      if (record.kind !== kind) throw new Error('Expected matching entity kind');
+      let bindings = this.#bindings.get(record.session);
+      if (!bindings) { bindings = new EntityBindings(); this.#bindings.set(record.session, bindings); }
+      for (const pair of bindings.allocate([id], kind)) result.set(...pair);
+    }
+    return result;
+  }
+
   get(id: RecordId): ProgramRecord {
     const result = this.#records.get(id);
     if (!result) throw new Error(`Missing program record: ${id}`);
     return result;
   }
 
-  evaluations(snapshot: SnapshotId): readonly EvaluationRecord[] {
+  evaluations(session: SessionId): readonly EvaluationRecord[] {
     return [...this.#records.values()].filter((record): record is EvaluationRecord =>
-      record.kind === 'evaluation' && record.snapshot === snapshot);
+      record.kind === 'evaluation' && record.session === session);
   }
 }

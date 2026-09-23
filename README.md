@@ -20,47 +20,91 @@ For the current project state, see [`STATUS.md`](STATUS.md). For plans, architec
 
 Coding agents should begin with [`AGENTS.md`](AGENTS.md). The detailed development process is described in [`dev/workflow.md`](dev/workflow.md).
 
-The development CLI opens one configured TypeScript project and presents qualified
-`modules(project)`, repository/project organization, and exact-selection group or
-module inspection views, plus project dependency structure and direct dependency
-child/parent navigation. Use Node.js
-22.13 or later:
+## Development CLI
+
+The CLI opens one configured TypeScript project for an interactive investigation
+or a single view. It presents qualified module inventories, repository/project
+organization, group and module inspection, and direct dependency relationships.
+Use Node.js 22.13 or later:
 
 ```sh
 npm ci
 npm run build
-npm run --silent postcode
-npm run --silent postcode -- --project fixtures/exports/tsconfig.json
-npm run --silent postcode -- inspect documented --project fixtures/exports/tsconfig.json
-npm run --silent postcode -- inspect documented --project fixtures/exports/tsconfig.json --source-detail
-npm run --silent postcode -- --json
-npm run --silent postcode -- organization project
-npm run --silent postcode -- organization repository --json
-npm run --silent postcode -- dependencies --project fixtures/dependency-journey/tsconfig.json
-npm test
-npm run check
+npm run --silent postcode -- shell
 ```
 
-The default configuration is `tsconfig.json` in the current directory. Inspection
-accepts one exact group/module name, module handle, or Entity ID from a view.
-One referent can match zero, one, or several entities; it never falls back to fuzzy
-matching. IDs and handles are scoped to the analyzed snapshot. Source-backed
-modules without a compiler-established conceptual name are shown as anonymous,
-with generated handles for recognition. Handles use language names, extensionless
-basenames, or declared exports, with an honest anonymous fallback. They preserve
-their generated provenance and do not claim responsibilities or conceptual names.
-Compact Entity IDs are precise within the full snapshot population, extending
-hash prefixes on collision. Handle and compact ID selection require
-`--snapshot <complete-snapshot-id>` supplied by the generated command or JSON;
-mismatched snapshots produce no current match. Exact names are current lookups.
+The default configuration is `tsconfig.json` in the current directory, so this
+opens PostCode itself. Use `shell --project path/to/tsconfig.json` to choose another
+project; the project stays fixed for that session. Opening with `--json` makes
+JSON the default presentation for its commands. Run `npm test` and `npm run check`
+for the test suite and type checking.
 
-Normal output contains conceptual information and qualifications. Unicode and the
-experimental JSON presentations use the same qualified projection for each lens.
-The suggested inspection command includes the explicit CLI and selected-project
-paths as invocation context; replace only its subject. A short snapshot label is
-displayed in the header, while that command retains the full required snapshot.
-Place additional options before the generated command's `--` marker; text after
-it is the literal selector, including names such as `--json` or `-h`.
+For a small example, open the exports fixture:
+
+```sh
+npm run --silent postcode -- shell --project fixtures/exports/tsconfig.json
+```
+
+Then enter commands at the PostCode prompt:
+
+```text
+modules
+inspect documented
+inspect documented --source-detail
+dependencies
+children documented
+parents documented
+organization repository
+help
+exit
+```
+
+Choose subsequent subjects from the displayed output. Plain selectors match one
+exact group/module name or generated module handle, returning zero, one, or all
+matches. For precise navigation within the shell, prefix a displayed Entity ID
+with `@`: `inspect @module-…`, `children @module-…`, `parents @module-…`, or
+`inspect @group-…`. Replace the ellipsis with the actual displayed reference.
+Bindings stay fixed throughout that session. Handles are generated recognition
+cues and do not establish conceptual names or responsibilities. Matching ID
+spellings in another session do not restore the earlier investigation.
+
+The shell requires a terminal; piped and command-file input are refused. Quoted
+names and backslash escapes are supported. It does not execute target code or
+operating-system commands. Use `help` for command syntax and `exit` or EOF to
+close the session. EOF lets accepted work and its observation submission finish.
+
+Completed applicable analysis is reused. Partial results are also reused while
+their captured input basis is unchanged, retaining their qualifications. Later
+dependency requests can acquire additional resolution inputs and permit another
+partial attempt without rewriting earlier evidence or views. Sessions are
+transient: there is no save/resume or history eviction. Memory can grow as new
+requests and input bases accumulate; closing releases session state.
+
+For one-shot use, omit `shell`. Each invocation opens a short-lived session for
+one request; no arguments selects `modules`:
+
+```sh
+npm run --silent postcode
+npm run --silent postcode -- modules --json
+npm run --silent postcode -- inspect documented --project fixtures/exports/tsconfig.json
+npm run --silent postcode -- organization project
+npm run --silent postcode -- dependencies --project fixtures/dependency-journey/tsconfig.json
+```
+
+Use exact names/handles for one-shot selection. To navigate from a displayed ID,
+open a shell and obtain a reference there. The retired `--snapshot` and
+`--dependency-context` options are rejected, and output no longer includes
+generated follow-up commands.
+
+Normal output contains conceptual information and qualifications. Unicode and
+experimental JSON retain the existing lens meanings and display bounds. Inputs
+are assumed unchanged and captured as first observed, non-atomically. Best-effort
+checks at command boundaries detect relevant changes and end the session;
+restart explicitly to analyze changed inputs. There is no continuous file watch
+or automatic refresh. See the [input-stability reference](docs/cli-reference.md#input-stability-and-retained-work)
+for detection coverage and limits. Use `--` before literal selectors beginning
+with `@` or `--`, for example
+`inspect --project path/to/tsconfig.json -- --json`.
 `--source-detail` is available for inspection and dependency views and shows supporting source
 locations and bounded excerpts grouped by displayed concepts, separately identified
 as source escape. File-level associations have no excerpt; it does not show full files.
@@ -98,12 +142,17 @@ modules in the configured TypeScript Program, including external dependencies.
 Global scripts are not inventorial modules. Diagnostics and unavailable export
 routes qualify results; this command does not run a general type check. Exit code
 0 indicates a produced view, which can contain qualified/partial expansions;
-2 indicates a usage or project-open failure; 1 indicates an internal failure.
+2 indicates usage, project-open failure or invalidation; 3 indicates an expected
+analysis failure preventing a view; 1 indicates an internal failure; 130 indicates
+interactive interruption. The shell continues after syntax or expected analysis
+failures when state remains sound; internal failures and invalidation end it.
+Ctrl-C cancels an idle input line; during work it terminates the analysis worker
+and ends the session.
 
 See the [architecture overview](docs/architecture/README.md),
 [implementation conventions](docs/implementation-conventions.md),
 [development process conventions](dev/process-conventions.md), and
-[task record](records/tasks/2026-09-12-initial-module-inventory.md) for implementation
+[session-shell task record](records/tasks/2026-09-23-transient-session-shell.md) for implementation
 boundaries, verification and review dispositions.
 
 ## Organization
@@ -115,7 +164,7 @@ group identities and direct relationships. Context-only siblings are labelled;
 pruning and omitted module leaves are disclosed. A shared group expands once,
 with subsequent occurrences marked as references.
 
-Inspect a group's `group-…` Entity ID with its full snapshot to see all direct
+Inspect a group's exact segment name to see all direct
 parents, subgroups, member modules, documentation availability, and counts of
 other unanalyzed artifacts. Exact names may match several groups and modules;
 inspection sections distinguish the kinds. Groups have directory-segment names,
@@ -133,18 +182,20 @@ repository organization.
 
 Group `--source-detail` shows captured paths and artifact/link metadata without
 file contents. Organization and group views use the experimental
-`postcode-organization-view/0` JSON schema. See the
+`postcode-organization-view/1` JSON schema. See the
 [command reference](docs/cli-reference.md#organization-and-group-inspection) for
 limits, scope, evidence qualifications, and navigation examples.
 
 ## Observability
 
-Normal view-producing invocations automatically submit one experimental
-version-zero observation batch to a timestamped local file under a UTC date
+Each accepted shell command and each one-shot view request submits an experimental
+version-one observation batch to a timestamped local file under a UTC date
 subdirectory of this PostCode checkout's `_observations/` directory. The CLI
 discloses that absolute root destination on stderr.
-The batch includes the request, analysis context, qualified view, exact output,
-and any source-escape event. It can contain repository-derived documentation and
+The batch carries the session identifier and command order (1 for one-shot use),
+plus the request, analysis context, command outcome, exact output, and any
+produced view/source-escape event. Refusals, failures, interruption and invalidation
+are recorded where possible without inventing a view. It can contain repository-derived documentation and
 explicitly requested source locations and excerpts. Nothing is sent remotely. The local sink
 creates its root and dated directories with mode `0700` and files with mode `0600`.
 

@@ -3,17 +3,16 @@ import type { OrganizationClaims, OrganizationRecords } from './organization/rec
 
 /** Logical records; no compiler objects or storage-native identifiers cross this boundary. */
 export type RecordId = string & { readonly recordId: unique symbol };
-export type SnapshotId = RecordId & { readonly snapshotId: unique symbol };
+export type SessionId = RecordId & { readonly sessionId: unique symbol };
 
 export interface RecordContext {
   readonly id: RecordId;
-  readonly snapshot: SnapshotId;
+  readonly session: SessionId;
   readonly method: string;
 }
 
-export interface SnapshotRecord extends RecordContext {
-  readonly kind: 'snapshot';
-  readonly inputDigest: string;
+export interface SessionRecord extends RecordContext {
+  readonly kind: 'session';
   readonly methods: readonly string[];
   readonly repository?: RecordId;
   readonly analysis?: {
@@ -23,6 +22,12 @@ export interface SnapshotRecord extends RecordContext {
     /** Distinct output-location boundaries enforced by this run's input filter, not a count of files found. */
     readonly excludedOutputLocations: number;
   };
+}
+
+/** Captured inputs used by an analysis, independently of session identity. */
+export interface AnalysisInputsRecord extends RecordContext {
+  readonly kind: 'analysis-inputs';
+  readonly value: unknown;
 }
 
 export interface ModuleRecord extends RecordContext {
@@ -152,6 +157,7 @@ export interface SourceEvidenceRecord extends RecordContext {
 
 export interface ClaimContextRecord extends RecordContext {
   readonly kind: 'claim-context';
+  readonly inputs?: RecordId;
   readonly scope: 'configured-project' | RecordId;
   readonly evidence: readonly RecordId[];
   readonly status: 'mechanically-derived';
@@ -175,7 +181,7 @@ export interface EvaluationRecord extends RecordContext, EvaluationState {
   readonly requirement: 'modules' | ModuleExpansion;
   readonly basis?: RecordId;
   readonly claims?: readonly RecordId[];
-  /** One-based discovery attempt within this snapshot; its expansion outcomes share the ordinal. */
+  /** One-based discovery attempt within this session; its expansion outcomes share the ordinal. */
   readonly attempt: number;
   readonly modules: readonly RecordId[];
   readonly contexts: readonly RecordId[];
@@ -185,7 +191,7 @@ export interface ProjectionRecord extends RecordContext {
   readonly kind: 'projection';
   readonly lens: 'modules' | 'inspect';
   readonly subject: 'configured-project' | 'selected-modules';
-  readonly parameters: { readonly selector: string | null; readonly expectedSnapshot: string | null };
+  readonly parameters: { readonly selector: string | null; readonly reference: boolean };
   readonly modules: readonly RecordId[];
   readonly claims: readonly RecordId[];
   readonly contexts: readonly RecordId[];
@@ -196,16 +202,17 @@ export interface ProjectionRecord extends RecordContext {
     readonly population: number;
     readonly populationEstablished: boolean;
     readonly subset: boolean;
-    readonly referenceStatus: 'current' | 'snapshot-required' | 'snapshot-mismatch';
+    readonly referenceStatus: 'current' | 'unknown-reference';
   };
 }
 
-export type ProgramRecord = SnapshotRecord | ModuleRecord | SymbolRecord | Claim | RecordedAssertion
+export type ProgramRecord = SessionRecord | AnalysisInputsRecord | ModuleRecord | SymbolRecord | Claim | RecordedAssertion
   | SourceEvidenceRecord | ClaimContextRecord | EvaluationRecord | ProjectionRecord | OrganizationRecords | DependencyRecords;
 
 /** Only the domain operations currently used by discovery and lenses. */
 export interface ProgramRecordStore {
   put(records: readonly ProgramRecord[]): void;
   get(id: RecordId): ProgramRecord;
-  evaluations(snapshot: SnapshotId): readonly EvaluationRecord[];
+  evaluations(session: SessionId): readonly EvaluationRecord[];
+  entityIds(ids: readonly RecordId[], kind: 'module' | 'group'): ReadonlyMap<RecordId, string>;
 }
