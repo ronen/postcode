@@ -185,7 +185,57 @@ synthesis. It avoids treating the resulting prose as an authoritative model from
 which later answers follow without reconsidering evidence. This is a proposed
 boundary, not a settled schema or accepted architecture.
 
-## AI integration and a smaller first experiment
+## Interpretation contract and future follow-ups
+
+The human asked whether structured output should anticipate follow-ups. The
+assistant proposed a small envelope around natural-language explanation:
+
+- Identify the subject and captured evidence context.
+- Give coherent explanatory parts local identifiers, so a follow-up can refer to
+  the whole result or a particular part without relying on matching prose.
+- Associate each part with evidence references, its qualification, and material
+  limitations. Split parts when their support or qualification materially differs;
+  do not require a separate record for every clause.
+- Let PostCode assign result identities and attach actual execution metadata. The
+  interpreting model references supplied evidence identifiers; it cannot confer
+  mechanical certainty on its own interpretation.
+
+This is a proposed contract, not an agreed schema. It does not require rigid 5WH
+headings, predefined detail levels, an exhaustive decomposition, or a semantic
+ontology. Structural and reference validation cannot establish explanatory truth.
+
+### Revision rather than elaboration alone
+
+The human agreed that a follow-up must be able to correct an earlier account, then
+asked how supersession would be detected. Text differences alone do not reliably
+establish that relationship. The assistant proposed supplying the exact earlier
+result and asking the model to distinguish elaboration, qualification/correction,
+and an alternative interpretation. An explicit revision would identify the earlier
+part, its replacement, what changed, and the supporting reason and evidence.
+
+That revision relationship is itself interpretive. Validating its references does
+not prove the replacement correct, and the model can miss a contradiction. A
+reconciliation request may help without guaranteeing detection. An account of a
+changed code snapshot must also be distinguished from correction of an account of
+the same captured code.
+
+The human preferred an explicitly revised explanation to become the primary
+presentation, marked as revised, with the original still accessible. The assistant
+agreed: preserve the original and the reason for revision; do not treat every newer
+response as automatically superior. An unresolved alternative may coexist instead
+of replacing an earlier account. A complete revision interface is a future concern;
+referable parts would leave room for it without implementing it in the first slice.
+
+### Human contributions
+
+The human also raised whether users could weigh in and how their contributions
+would be retained. This remains a future design question, now recorded separately
+under [human contributions to interpretation and investigation](candidate-capabilities.md#human-contributions-to-interpretation-and-investigation).
+Feedback, author assertions, and presentation preferences have different meanings;
+a contribution and the interpretation changes it prompts should remain distinct.
+That capability does not imply a storage or retrieval design for this slice.
+
+## AI integration and the proposed first slice
 
 Source-based synthesis is expected to involve a language model. It does not
 necessarily require an autonomous tool-using agent. Alternatives discussed were:
@@ -201,23 +251,87 @@ could trigger another bounded request without requiring an autonomous loop.
 Provider/API versus external-agent integration, disclosure of repository content,
 cost, execution, and failure handling remain consequential open choices.
 
-When the human questioned the size of this new infrastructure, the assistant
-proposed separating the usefulness experiment from product integration:
+Earlier discussion proposed a separate usefulness experiment before product work.
+The discussion subsequently moved toward using **Astra Light/low as a provisional
+starting inference choice**, deferring exploration of inference configurations.
+The human proposed this simplification; the assistant recommended a first
+implementation slice with an early interpretive-contract check:
 
-1. Assemble a fixed evidence package for one module, including captured source,
-   documentation, exports, dependency context, and qualifications.
-2. Supply it with fixed instructions to a fresh external AI session.
-3. Retain the exact inputs, instructions, response, and available model metadata
-   as experimental artifacts.
-4. Compare the interpretation with an evidence-only account, and try one deeper
-   follow-up to discover what evidence or structure is missing.
+1. Review concrete explanations from three fixed evidence packages using the
+   starting configuration, checking useful content, structure, and evidence
+   references before committing to substantial integration infrastructure.
+2. Integrate a bounded module summary: evidence capture, inference, qualified
+   results, and textual presentation.
+3. Verify the investigation path, including traceability, failures, changed-input
+   handling, and observable usage cost.
 
-This could be a planning experiment before any product implementation. It would
-defer provider integration, autonomous tools, interpretation persistence, navigation
-machinery, and a general explanation schema. It has not been authorized for
-execution. The current planning conversation would be a poor clean evaluator or
-synthesis condition because it already contains architecture knowledge and the
-human's preferred explanation.
+This is still a proposal. The human explicitly said the conversation was discussion,
+not authorization. Neither an implementation slice nor an experiment has been
+approved. The uncommitted interpretation-experiments directory was removed at the
+human's direction; a separate experimental programme is no longer the proposed
+starting path. Full repeated follow-ups, autonomous investigation, and durable
+semantic memory need not be part of the first slice.
+
+### Deferred inference-configuration exploration
+
+Local inference means loading model weights and running inference on the human's
+machine, without calling an external inference service. For both local execution
+and service/model/effort combinations, the feasibility questions are interpretive
+value and sufficient value at acceptable cost. Local operation is an additional
+property, not evidence of interpretive quality.
+
+The configuration space includes prompts, evidence, tools, session context, and
+provider settings; local execution also involves hardware and runtime choices.
+Different configurations may benefit from different prompts. An exhaustive search
+is impractical, and no acceptable product-cost threshold has been agreed. A bounded
+learning budget would be distinct from that threshold. Usage, elapsed time, setup
+burden, and local resources could be recorded without inventing a monetary value
+where none is available.
+
+The newer proposal defers this comparison until an actual quality, cost, latency,
+or offline-use need warrants it. It does not call for a general provider framework,
+or make Astra part of the domain model. “Light/low” is discussion terminology;
+the exact supported setting and integration mechanism still need confirmation.
+Expected usefulness of the starting model is a working expectation, not a measured
+result. Bounded evidence, qualification, mechanical-analysis contribution, and
+usable output remain substantive uncertainties even if basic synthesis is useful.
+
+## Candidate subjects and selection
+
+The human proposed using three evidence packages from the start, to avoid tuning
+only to `evaluation`. The assistant agreed: keep the trio fixed while revising a
+shared prompt, inspect regressions on each subject, and avoid an aggregate score
+that conceals confident errors. Once used for tuning, these are development
+subjects, not untouched validation cases. A later unfamiliar check could test
+transfer without expanding the initial search indefinitely.
+
+Purposeful selection seems sufficient for initial learning; it is not a claim of
+representativeness. Useful dimensions include mechanism, local versus delegated
+responsibility, documentation, manageable complexity, evaluator familiarity, and a
+concrete comprehension question that can be assessed. Sparse documentation is a
+useful dimension, but was not made a priority over starting with a workable set.
+Record what documentation was actually supplied, separately from what exists.
+
+The assistant's provisional trio was `evaluation`, `fsm-engine`, and
+`merge-anything`. No final evidence boundaries or subject set have been approved.
+Candidates discussed were:
+
+| Subject | Potential learning value | Familiarity and limitations |
+| --- | --- | --- |
+| PostCode `evaluation` | Invocation and outcome recording versus caller-provided discovery implementation | Familiar to the human and this discussion; useful formative example, poor clean assessment |
+| [thingts/fsm-engine](https://github.com/thingts/fsm-engine/tree/main/src) | Meaningful branching, guards, transition actions, and queued reentrant requests | Human-authored; documented; organizational and style familiarity |
+| [thingts/execution](https://github.com/thingts/execution/tree/main/src) | Function transformation and shared internal implementation across timing wrappers | Human-authored; similar style confound; not every exported wrapper shares the same base |
+| [emittery](https://github.com/sindresorhus/emittery/blob/main/index.js) | Concurrent/serial emission, listener changes, and async-iterator lifecycle | Human used it as a client and once glanced at implementation; sparse comments, not absent; larger subject |
+| [merge-anything](https://github.com/mesqueeb/merge-anything/blob/main/src/merge.ts) | Recursion versus replacement and shared implementation with customization | No recalled human use or inspection; comments present; external predicate helpers affect evidence boundaries |
+| [async-mutex Semaphore](https://github.com/DirtyHairy/async-mutex/blob/master/src/Semaphore.ts) | Weight, priority, waiting, and release in compact, sparsely commented code | Possible prior human exposure while considering mutex libraries; generic semaphore expectations may bias interpretation |
+| [path-to-regexp](https://github.com/pillarjs/path-to-regexp/blob/master/src/index.ts) | Shared token representation across parsing, generation, and matching | No recalled human use or inspection; larger and documented, with higher assessment effort |
+
+The last three came from the assistant's search at the human's request. This
+reduces known human familiarity; it cannot establish absence of model exposure.
+Source screening did not establish PostCode compatibility or execute package
+behavior. Concrete source observations should be kept separate from synthesis
+instructions where supplying them would seed the answer. Subject revisions and
+exact captured inputs would need to be fixed before any meaningful comparison.
 
 ## Mechanical analysis as synthesis input
 
@@ -280,9 +394,8 @@ universal session policy has been chosen.
 
 ## Product integration questions retained for later
 
-These concerns arose before the smaller experiment was proposed. They remain
-important if product integration proceeds, but are not prerequisites for building
-a general framework now.
+These concerns remain relevant to the proposed bounded implementation slice.
+They do not justify building a general framework in advance.
 
 - **Lens and execution boundaries:** the assistant proposed one composite summary
   lens with an explicit synthesis operation coordinated by evaluation. Existing
@@ -337,8 +450,8 @@ tracing a consequential conclusion to evidence, resisting an unsupported runtime
 claim, and selecting a useful next subject. Record effort, corrections, and
 confidence alongside answer quality. Independent implementation inspection can
 assess consequential mistakes afterward; evaluator impressions are not program
-facts. PostCode's familiar `evaluation` module could be formative, followed by an
-unfamiliar subject before claiming broader usefulness.
+facts. The proposed fixed trio broadens formative assessment beyond familiar
+`evaluation`; it would still not establish broader usefulness on unseen subjects.
 
 Focused conflicting-documentation and changed-input cases could test qualification
 and stale-result handling. Better prose accompanied by poorer calibration should
@@ -352,14 +465,18 @@ autonomous workflow, durable semantic memory, canonical responsibility taxonomy,
 runtime/history/test-intent analysis, or GUI. New capabilities should follow a
 demonstrated investigation need.
 
-Before an experiment or implementation is selected, clarify:
+Before authorizing a slice, clarify:
 
-- What exact evidence package and question make the first experiment useful?
-- Which synthesis and session conditions are worth comparing first?
-- How much explanatory structure is needed to make one follow-up traceable?
-- What observations would justify proceeding to product integration?
-- Which identity, capture, provider, and lifecycle choices does that demonstrated
-  integration actually require?
+- What exact evidence boundaries and questions should the initial trio cover?
+- What minimum output contract makes interpretations useful and traceable while
+  leaving room for follow-ups and explicit revision?
+- What observations at the early contract check justify continuing or revising
+  the proposed integration?
+- Which identity, capture, invocation, and lifecycle choices does this bounded
+  integration require?
+
+Comparative inference configurations and session policies remain possible later
+investigations, rather than prerequisites to this proposed starting point.
 
 Related exploratory material: [candidate capabilities](candidate-capabilities.md).
 The completed [module dependency task](../records/tasks/2026-09-16-module-dependencies.md)
