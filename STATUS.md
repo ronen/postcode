@@ -30,4 +30,6 @@ use the same request executor. Experimental view schemas and observations remain
 version 1. Independent review is complete with no remaining actionable findings;
 the [disposition](records/reviews/transient-session-shell/2026-09-23-integrated-disposition.md)
 records the corrections, supplementary long-session evidence and residual limits.
-The task awaits human inspection and final acceptance and is not yet closed.
+The human has completed the representative journey on a separate project and
+confirmed that it functions as expected. The task awaits final review-gate
+acceptance and is not yet closed.

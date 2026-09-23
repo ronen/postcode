@@ -5,7 +5,7 @@ Date: 2026-09-23
 Task: [Transient interactive session shell](../../tasks/2026-09-23-transient-session-shell.md)
 Handoff: [Integrated review assignment](2026-09-23-integrated-handoff.md)
 Findings: [Integrated round 1](2026-09-23-integrated-round-1-findings.md); [integrated round 2](2026-09-23-integrated-round-2-findings.md); [integrated round 3 and supplement](2026-09-23-integrated-round-3-findings.md); [integrated round 4, Copilot](2026-09-23-integrated-round-4-copilot-findings.md); [integrated round 5, Copilot](2026-09-23-integrated-round-5-copilot-findings.md); [integrated round 6, Copilot](2026-09-23-integrated-round-6-copilot-findings.md)
-State: no actionable findings remain; human inspection and final gate acceptance pending
+State: no actionable findings remain; human inspection confirmed; final gate acceptance pending
 
 ## Round 1 findings and dispositions
 
@@ -523,7 +523,8 @@ not indicated by this report or a remaining actionable finding. This recommendat
 does not replace the human's gate decision. The approved plan and prior human
 decisions about corrections and retry policy do not need to be reconsidered.
 
-Two existing acceptance items remain unconfirmed:
+At round 6 assessment, two existing acceptance items remained unconfirmed
+(the subsequent human inspection confirmation is recorded below):
 
 1. The [plan's verification section](../../../docs/plans/transient-session-shell.md#implementation-stages-and-validation)
    calls for "the representative journey on fixtures and PostCode, with human
@@ -579,8 +580,13 @@ round 5 result. Human acceptance has not been inferred from this clean review.
 
 ## Gate conclusion
 
-Implementation, review and corrections through round 6 are complete,
-with no remaining actionable findings. The human has not yet accepted the final review gate or
-confirmed the required human inspection. The task remains active pending those
-decisions. No reviewer recommendation is treated as human acceptance; residual
+Implementation, review and corrections through round 6 are complete, with no
+remaining actionable findings. The human subsequently confirmed performing the
+representative journey on a separate project and that it functions as expected.
+This supplies the hands-on acceptance discussed above using that project in place
+of the specified fixture/PostCode human inspection; it does not claim that the
+human used those repositories. No additional usability issue was reported.
+
+The task remains active pending explicit final review-gate acceptance and closure.
+No reviewer recommendation is treated as human acceptance of that gate; residual
 limits remain recorded with the supplement's updated long-session evidence.
