@@ -12,7 +12,7 @@ export interface ObservationBatch {
   readonly command: number;
   readonly records: readonly { readonly id: string; readonly kind: 'request' | 'analysis-context' | 'qualified-view' | 'rendered-output' | 'command-outcome'; readonly value: unknown }[];
   readonly events: readonly {
-    readonly id: string; readonly type: 'view-produced' | 'source-escape' | 'command-completed' | 'command-refused' | 'session-invalidated' | 'command-failed' | 'command-interrupted';
+    readonly id: string; readonly type: 'view-produced' | 'source-escape' | 'command-completed' | 'command-refused' | 'session-invalidated' | 'command-failed' | 'command-defect' | 'command-interrupted';
     readonly request: string; readonly analysis: string; readonly view?: string; readonly rendered: string;
     readonly sourceLevel?: 'declaration-locations-and-excerpts' | 'organization-paths' | 'organization-and-module-source' | 'dependency-occurrences-and-organization-evidence';
   }[];
@@ -65,7 +65,7 @@ export function localFileObservationSink(
 
 /** Refusals and failures have no fabricated view or source-disclosure event. */
 export function commandObservation(session: string, command: number, requestValue: unknown,
-  status: 'completed' | 'refused' | 'invalidated' | 'failed' | 'interrupted',
+  status: 'completed' | 'refused' | 'invalidated' | 'failed' | 'defect' | 'interrupted',
   stdout: string, stderr: string, produced?: ObservationBatch): ObservationBatch {
   if (!Number.isSafeInteger(command) || command < 1) throw new Error('Invalid command order');
   const request = produced?.records.find(item => item.kind === 'request')?.id ?? randomUUID();

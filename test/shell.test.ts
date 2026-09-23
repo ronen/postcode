@@ -111,7 +111,7 @@ test('idle Ctrl-C discards its input line and EOF finishes the next accepted com
     stdout: text => {
       if (!started && text.includes('postcode> ')) {
         started = true;
-        setImmediate(() => { input.write('discard-this'); input.write('\x03'); setImmediate(() => input.end('modules\n')); });
+        setImmediate(() => { input.write('discard-this'); input.write('\x1b[D\x1b[D'); input.write('\x03'); setImmediate(() => input.end('modules\n')); });
       }
     },
     sink: { async submit(batch) {
@@ -129,19 +129,54 @@ test('expected analysis failure, defect and interruption are distinct and never 
   const { CommandInterrupted } = await import('../src/lib/interactive-session.js');
   for (const [error, expectedCode, expectedEvent] of [
     [new AnalysisFailure('temporarily unavailable'), 3, 'command-failed'],
-    [new Error('broken invariant\x1b[2J'), 1, 'command-failed'],
+    [new Error('broken invariant\x1b[2J'), 1, 'command-defect'],
     [new CommandInterrupted(), 130, 'command-interrupted'],
   ] as const) {
     let stderr = '';
+    let observed: ObservationBatch | undefined;
     const code = await publishCommand({ id: 'test-session', execute: () => { throw error; }, check: () => {} },
       { lens: 'modules', selector: null, presentation: { format: 'json', sourceDetail: false } }, 'modules', config, 1,
       { stdout: () => assert.fail('No output'), stderr: text => { stderr += text; } },
       { async submit(batch) {
-        assert.deepEqual(batch.events.map(event => event.type), [expectedEvent]);
-        assert.equal(batch.records.some(item => item.kind === 'qualified-view'), false);
+        observed = batch;
         return { accepted: true };
       } });
     assert.equal(code, expectedCode);
+    assert.deepEqual(observed!.events.map(event => event.type), [expectedEvent]);
+    assert.equal(observed!.records.some(item => item.kind === 'qualified-view'), false);
+    assert.equal((observed!.records.find(item => item.kind === 'command-outcome')!.value as { status: string }).status,
+      expectedEvent.slice('command-'.length));
     assert.equal(stderr.includes('\x1b'), false);
   }
 });
+
+for (const queued of [false, true]) {
+  test(`terminal EOF while busy leaves input paused and drains accepted commands (queued=${queued})`, { timeout: 30000 }, async () => {
+    const input = Object.assign(new PassThrough(), { isTTY: true });
+    const batches: ObservationBatch[] = [];
+    let started = false, afterEof = false, promptsAfterEof = 0;
+    try {
+      const code = await runCli(['shell', '--project', config], {
+        cwd: process.cwd(), checkout: process.cwd(), input, stderr: () => {},
+        stdout: text => {
+          if (afterEof && text.includes('postcode> ')) promptsAfterEof++;
+          if (!started && text.includes('postcode> ')) {
+            started = true;
+            setImmediate(() => {
+              input.write('modules\n');
+              if (queued) input.write('help\n\n');
+              input.write('\x04'); // Close readline without ending the underlying TTY-like stream.
+              afterEof = true;
+            });
+          }
+        },
+        sink: { async submit(batch) { batches.push(batch); return { accepted: true }; } },
+      });
+      assert.equal(code, 0);
+      assert.equal(batches.length, queued ? 2 : 1);
+      assert.ok(batches[0]!.events.some(event => event.type === 'view-produced'));
+      assert.equal(promptsAfterEof, 0);
+      assert.equal(input.isPaused(), true);
+    } finally { input.destroy(); }
+  });
+}

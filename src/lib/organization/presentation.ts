@@ -233,7 +233,7 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
   const inspection = view.projection.lens === 'inspect';
   const lines = [inspection ? 'Inspect · groups and modules' : `Organization · ${view.projection.subject === 'repository' ? 'repository' : 'configured project'}`,
     `Session ${view.projection.session.replace(/^session:/, '')}`,
-    inspection ? `${view.projection.selection.matches} exact matches for ${inlineText(view.projection.parameters.selector ?? '')}`
+    inspection ? `${view.projection.selection.matches} exact matches for ${view.projection.parameters.reference ? '@' : ''}${inlineText(view.projection.parameters.selector ?? '')}${view.projection.parameters.reference ? ` · ${view.projection.selection.referenceStatus}` : ''}`
       : `${view.display.selectedGroups} selected groups · ${view.repository.groups} repository groups`];
   if (!view.projection.selection.populationEstablished) lines.push('Selection population is not fully established.');
   for (const [name, state] of Object.entries(view.evaluations)) {

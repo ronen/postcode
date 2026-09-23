@@ -101,3 +101,22 @@ test('growing reference allocations cannot steal or lengthen earlier bindings', 
   assert.equal(new Set(later.values()).size, 3);
   assert.deepEqual(bindings.allocate([...later.keys()].reverse(), 'module').get(colliding('b')), first);
 });
+
+test('Unicode reference misses preserve reference syntax and status in organization and module inspection', async () => {
+  const opened = openSession({ configPath });
+  if (opened.status !== 'opened') throw new Error('Expected project');
+  const inspection = { ...request, lens: 'inspect' as const, selector: 'forward', presentation: { format: 'unicode' as const, sourceDetail: false } };
+  try {
+    const exact = opened.session.execute(inspection);
+    assert.equal(exact.view.projection.selection.matches, 1);
+    const miss = opened.session.execute({ ...inspection, reference: true });
+    assert.equal(miss.view.projection.selection.matches, 0);
+    assert.match(miss.rendered, /0 exact matches for @forward · unknown-reference/);
+    assert.equal(miss.view.schema, 'postcode-organization-view/1-experimental');
+    const { inspect } = await import('../src/lib/projections.js');
+    const { createView, renderUnicode } = await import('../src/lib/presentation.js');
+    const { store, evaluation } = discover(configPath);
+    const moduleMiss = createView(store, inspect(store, evaluation, 'forward', true), inspection.presentation);
+    assert.match(renderUnicode(moduleMiss), /no exact match for @forward · unknown-reference/);
+  } finally { opened.session.close(); }
+});

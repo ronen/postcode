@@ -14,7 +14,7 @@ export const methods = {
   dependencyOrganization: 'postcode/dependency-organization@1',
   projection: 'postcode/projection@8',
   expansions: 'postcode/typescript-expansions@2',
-  presentation: 'postcode/presentation@22',
+  presentation: 'postcode/presentation@23',
   handles: 'postcode/module-handles@5',
   organization: 'postcode/organization@3',
 } as const;

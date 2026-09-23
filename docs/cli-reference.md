@@ -286,6 +286,9 @@ submission timestamp and ends with the batch UUID. The root destination is discl
 on stderr. Format-version-1 batches carry `session` and `command` (1 for one-shot),
 with independent batch/event UUIDs. They contain request/context, the qualified view and exact output;
 they may contain repository-derived text and explicitly requested source detail.
+Expected analysis failures use outcome `failed` and event `command-failed`;
+unexpected defects use outcome `defect` and event `command-defect`. Neither
+invents a view when no output was published.
 Nothing is sent remotely. Files are created with private permissions and ignored
 by Git. The producer does not read historical batches or prescribe retention.
 
@@ -408,7 +411,9 @@ configuration contents, observed package metadata, negative resolution probes,
 and configured include patterns (including newly matching files). It recaptures
 the repository manifest, effective exclusion policy, links, opaque boundaries and
 relevant Git policy, and checks the analysis process's environment, working
-directory and runtime versions. These checks do not replace captured claim inputs.
+directory and runtime versions. The worker checks its own environment copy, so
+this detects in-process mutation, not changes to the parent shell's environment.
+These checks do not replace captured claim inputs.
 
 Checks are sequential and non-atomic: changes reverted between checks, changes
 after the final check, unobserved files outside configured selection/resolution,
@@ -419,7 +424,8 @@ is first-observed at acquisition, never asserted to have had those contents at
 session opening. Excluded generated output is filtered during later acquisition
 and validation as well as opening.
 
-Detection before publication withholds the view. Detection after output reports
+Expected operational errors also trigger a stability check before the session
+is allowed to continue. Detection before publication withholds the view. Detection after output reports
 invalidation and records the view/output actually emitted. Further investigation
 is refused; the shell exits without silently reopening. Writing the configured
 observation output does not invalidate its own session.

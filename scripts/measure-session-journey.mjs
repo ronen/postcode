@@ -20,8 +20,12 @@ let first;
 const run = (lens, selector = null, extra = {}) => {
   const started = performance.now();
   const result = opened.session.execute({ lens, selector, presentation, ...extra });
+  const milliseconds = performance.now() - started;
+  const validationStarted = performance.now();
+  opened.session.check();
+  const validationCheckMs = performance.now() - validationStarted;
   samples.push({ lens, selector, sourceDetail: extra.presentation?.sourceDetail ?? false,
-    milliseconds: performance.now() - started, memory: process.memoryUsage(), schema: result.view.schema,
+    milliseconds, validationCheckMs, memory: process.memoryUsage(), schema: result.view.schema,
     selection: result.view.projection.selection });
   return result;
 };
@@ -80,6 +84,6 @@ const shellExit = await runCli(['shell', '--project', configPath, '--json'], {
 assert.equal(shellExit, 0);
 const afterWorkerClose = await collect();
 const report = { configPath, node: process.versions.node, gcAvailable: Boolean(global.gc), baseline, openingMs, samples, journeyMs, live, closed, shellOpenMs, shellSamples, afterWorkerClose,
-  note: 'Executor measurements include its two validation passes but exclude publication checks, worker startup, prompt and sink delivery. Shell measurements include worker/prompt/publication checks through observation submission to a no-op sink; opening is separate. Earlier view objects remain referenced during the closed measurement; compiler/store release is inferred from heap changes, not RSS high-water marks.' };
+  note: 'Executor measurements include its two validation passes. validationCheckMs samples one additional check immediately after each request, outside its measured duration; it estimates per-pass cost rather than attributing time inside execution. Executor measurements exclude publication checks, worker startup, prompt and sink delivery. Shell measurements include worker/prompt/publication checks through observation submission to a no-op sink; opening is separate. Earlier view objects remain referenced during the closed measurement; compiler/store release is inferred from heap changes, not RSS high-water marks.' };
 if (output) writeFileSync(output, JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify(report, null, 2));

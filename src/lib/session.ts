@@ -67,7 +67,10 @@ export function openSession(options: ProjectOptions) {
         check();
         return result;
       } catch (error) {
-        if (operational(error)) throw new AnalysisFailure(error.message);
+        if (operational(error)) {
+          check();
+          throw new AnalysisFailure(error.message);
+        }
         throw error;
       }
     },

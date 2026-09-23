@@ -12,7 +12,7 @@ inspect accepts one exact group/module name or module handle; zero/one/multiple 
 Groups have segment names and group Entity IDs, with no handles or path selectors. The root has no intrinsic name.
 Place options before -- to pass an option-like selector literally: inspect --json -- --help.
 Exact names and generated handles are current lookups with zero, one, or multiple matches.
-Entity references belong only to the session that produced them; one-shot IDs cannot navigate another invocation.
+Entity references establish continuity only within their session; matching spellings in another session do not restore earlier work.
 --source-detail supports inspect and dependency views and discloses source locations and bounded excerpts supporting displayed claims.
 Group source detail shows captured paths and artifact metadata without documentation or other file contents.
 JSON uses experimental postcode-view/1, postcode-organization-view/1 or postcode-dependency-view/1 schemas. Standard expansions are declared before evaluation.

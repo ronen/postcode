@@ -15,10 +15,16 @@ export async function runShell(options: { configPath: string; json: boolean }, e
   const sink = environment.sink ?? localFileObservationSink(destination);
   const remote = interactiveSession({ configPath: options.configPath, excludedOutputDirectories: [destination, path.resolve(environment.checkout, '_build')] });
   let busy = true;
+  let inputClosed = false;
   let readline: ReturnType<typeof createInterface> | undefined;
+  const prompt = () => { if (!inputClosed) readline?.prompt(); };
   const interrupt = () => {
     if (busy) void remote.interrupt();
-    else { readline?.write(null, { ctrl: true, name: 'u' }); environment.stdout('\n'); readline?.prompt(); }
+    else {
+      readline?.write(null, { ctrl: true, name: 'e' });
+      readline?.write(null, { ctrl: true, name: 'u' });
+      environment.stdout('\n'); prompt();
+    }
   };
   process.on('SIGINT', interrupt);
   try {
@@ -38,12 +44,13 @@ export async function runShell(options: { configPath: string; json: boolean }, e
     const terminalOutput = new Writable({ write(chunk, _encoding, done) { environment.stdout(String(chunk)); done(); } });
     readline = createInterface({ input, output: terminalOutput, terminal: true, prompt: 'postcode> ', historySize: 0 });
     readline.on('SIGINT', interrupt);
+    readline.on('close', () => { inputClosed = true; });
     let command = 0, code = 0;
     busy = false;
-    readline.prompt();
+    prompt();
     // readline's iterator queues accepted lines; EOF does not cancel a running command.
     for await (const line of readline) {
-      if (!line.trim()) { readline.prompt(); continue; }
+      if (!line.trim()) { prompt(); continue; }
       busy = true;
       command++;
       let parsed;
@@ -71,7 +78,7 @@ export async function runShell(options: { configPath: string; json: boolean }, e
         break;
       }
       busy = false;
-      readline.prompt();
+      prompt();
     }
     return code;
   } finally {

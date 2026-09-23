@@ -4,12 +4,13 @@ import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { test } from 'node:test';
+import ts from 'typescript';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { evaluateModules } from '../src/lib/evaluation.js';
 import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
 import { modules } from '../src/lib/projections.js';
-import { openSession, SessionInvalidated } from '../src/lib/session.js';
+import { openSession, SessionInvalidated, AnalysisFailure } from '../src/lib/session.js';
 import type { ProgramRecord } from '../src/lib/records.js';
 import { moduleStandardExpansions } from '../src/lib/records.js';
 
@@ -200,3 +201,33 @@ test('validation refuses retargeted output boundaries before replaying captured 
     assert.equal(captured.changed(), true);
   });
 });
+
+for (const changed of [false, true]) {
+  test(`operational analysis errors check input stability before allowing continuation (changed=${changed})`, t => {
+    temporary((root, configPath) => {
+      mkdirSync(path.join(root, 'later'));
+      writeFileSync(path.join(root, 'later/target.ts'), 'export const target = 1;');
+      const opened = openSession({ configPath });
+      if (opened.status !== 'opened') throw new Error('Expected project');
+      const { session } = opened;
+      try {
+        const before = session.execute(request);
+        const exists = ts.sys.fileExists;
+        let attempted = false;
+        const probe = t.mock.method(ts.sys, 'fileExists', (name: string) => {
+          if (name === path.join(root, 'later/target.ts')) {
+            attempted = true;
+            if (changed) writeFileSync(path.join(root, 'entry.cts'), 'export const changed = 2;');
+            throw Object.assign(new Error('Controlled resolution I/O failure'), { code: 'EIO' });
+          }
+          return exists(name);
+        });
+        assert.throws(() => session.execute({ ...request, lens: 'dependencies' }), changed ? SessionInvalidated : AnalysisFailure);
+        assert.equal(attempted, true);
+        probe.mock.restore();
+        if (changed) assert.throws(() => session.execute(request), SessionInvalidated);
+        else assert.deepEqual(session.execute(request), before);
+      } finally { session.close(); }
+    });
+  });
+}

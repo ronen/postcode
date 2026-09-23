@@ -27,7 +27,7 @@ export async function publishCommand(session: {
   check(): void | Promise<void>;
 }, request: ViewRequest, supplied: unknown, configPath: string, command: number, output: Output, sink: ObservationSink): Promise<number> {
   let published: ExecutedView | undefined, stdout = '', stderr = '';
-  let status: 'completed' | 'invalidated' | 'failed' | 'interrupted' = 'completed', code = 0;
+  let status: 'completed' | 'invalidated' | 'failed' | 'defect' | 'interrupted' = 'completed', code = 0;
   try {
     const result = await session.execute(request);
     await session.check();
@@ -35,9 +35,10 @@ export async function publishCommand(session: {
     stdout = result.rendered; published = result;
     await session.check();
   } catch (error) {
-    status = error instanceof SessionInvalidated ? 'invalidated' : error instanceof CommandInterrupted ? 'interrupted' : 'failed';
+    status = error instanceof SessionInvalidated ? 'invalidated' : error instanceof CommandInterrupted ? 'interrupted'
+      : error instanceof AnalysisFailure ? 'failed' : 'defect';
     code = status === 'interrupted' ? 130 : status === 'invalidated' ? 2 : error instanceof AnalysisFailure ? 3 : 1;
-    stderr = `${status === 'failed' ? error instanceof AnalysisFailure ? 'Analysis failed: ' : 'Internal failure: ' : ''}${inlineText(error instanceof Error ? error.message : 'unknown defect')}\n`;
+    stderr = `${status === 'failed' ? 'Analysis failed: ' : status === 'defect' ? 'Internal failure: ' : ''}${inlineText(error instanceof Error ? error.message : 'unknown defect')}\n`;
     output.stderr(stderr);
   }
   const produced = published ? observationBatch(published.view, stdout,
