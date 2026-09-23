@@ -34,6 +34,11 @@ Context: selected in response to the R2-F1 question asking whether to narrow
 retries to when the provider has acquired additional inputs, preserving partial
 results otherwise, instead of retaining the previously approved repeated retries.
 
+not yet.  can you update the top-level README.md to conform its description of the CLI to the new behavior?
+
+Context: human inspection and final review-gate acceptance remain pending. This
+follow-up requests the README update within the active implementation task.
+
 ## Outcome
 
 2026-09-23: implemented the plan's one-shot conversion checkpoint in
