@@ -41,6 +41,8 @@ follow-up requests the README update within the active implementation task.
 
 Copilot has performed a review, please fetch and preserve it as per the governing workflow.  All findings seem to be about documentation.  Please assess in each case whether the documentation simply needs updating, in which case do so, or whether the mismatch between documentation and copilot's analysis of functionality indicate a deeper issue.
 
+Another round of Copilot review has uncovered another issue; please fetch and preserve the review, and assess and act on it, unless there's something that warrants my input.
+
 ## Outcome
 
 2026-09-23: implemented the plan's one-shot conversion checkpoint in
