@@ -152,7 +152,8 @@ groups and known direct placements. The current eager TypeScript provider's
 incomplete states are covered by synthetic-provider tests. This view establishes
 layout relationships rather than dependencies or architectural responsibilities.
 
-Every CLI invocation opens and evaluates afresh. Earlier latency evidence is
+Each one-shot invocation opens and evaluates afresh; shell commands share a
+session and reuse applicable analysis. Earlier latency evidence is
 preserved in the [measurements](../records/validation/2026-09-21-analysis-latency.md);
 those measurements do not establish session reuse.
 

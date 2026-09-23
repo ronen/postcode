@@ -20,52 +20,90 @@ For the current project state, see [`STATUS.md`](STATUS.md). For plans, architec
 
 Coding agents should begin with [`AGENTS.md`](AGENTS.md). The detailed development process is described in [`dev/workflow.md`](dev/workflow.md).
 
-The development CLI opens one configured TypeScript project and presents qualified
-`modules(project)`, repository/project organization, and exact-selection group or
-module inspection views, plus project dependency structure and direct dependency
-child/parent navigation. Use Node.js
-22.13 or later:
+## Development CLI
+
+The CLI opens one configured TypeScript project for an interactive investigation
+or a single view. It presents qualified module inventories, repository/project
+organization, group and module inspection, and direct dependency relationships.
+Use Node.js 22.13 or later:
 
 ```sh
 npm ci
 npm run build
-npm run --silent postcode
 npm run --silent postcode -- shell
-npm run --silent postcode -- --project fixtures/exports/tsconfig.json
-npm run --silent postcode -- inspect documented --project fixtures/exports/tsconfig.json
-npm run --silent postcode -- inspect documented --project fixtures/exports/tsconfig.json --source-detail
-npm run --silent postcode -- --json
-npm run --silent postcode -- organization project
-npm run --silent postcode -- organization repository --json
-npm run --silent postcode -- dependencies --project fixtures/dependency-journey/tsconfig.json
-npm test
-npm run check
 ```
 
-The default configuration is `tsconfig.json` in the current directory. Each
-one-shot invocation opens a short-lived session for one request. `shell` keeps
-that project and its accumulated analysis available until exit, EOF, interruption
-or detected input change.
-Inspection accepts one exact group/module name or generated module handle, with
-honest zero, one, or multiple matches. Handles retain their generated provenance
-and do not establish conceptual names or responsibilities. IDs belong only to
-the producing session; copying one into another invocation does not select it.
-The old `--snapshot` and `--dependency-context` options and generated next-command
-text have been removed.
+The default configuration is `tsconfig.json` in the current directory, so this
+opens PostCode itself. Use `shell --project path/to/tsconfig.json` to choose another
+project; the project stays fixed for that session. Opening with `--json` makes
+JSON the default presentation for its commands. Run `npm test` and `npm run check`
+for the test suite and type checking.
 
-Open `postcode shell --project path/to/tsconfig.json` in a terminal for an adaptive
-investigation. Commands use the same lenses and presentation options. After a
-lookup such as `inspect widget` displays several matches, select one with
-`inspect @module-…` using its displayed reference. Group references work the same
-way. Use `help` or `exit`; quoted names and backslash escapes are supported.
-Piped and command-file input are refused. No target code or operating-system
-commands are executed. Completed applicable work is reused; later dependency
-requests can capture additional resolution inputs without rewriting earlier views.
+For a small example, open the exports fixture:
+
+```sh
+npm run --silent postcode -- shell --project fixtures/exports/tsconfig.json
+```
+
+Then enter commands at the PostCode prompt:
+
+```text
+modules
+inspect documented
+inspect documented --source-detail
+dependencies
+children documented
+parents documented
+organization repository
+help
+exit
+```
+
+Choose subsequent subjects from the displayed output. Plain selectors match one
+exact group/module name or generated module handle, returning zero, one, or all
+matches. For precise navigation within the shell, prefix a displayed Entity ID
+with `@`: `inspect @module-…`, `children @module-…`, `parents @module-…`, or
+`inspect @group-…`. Replace the ellipsis with the actual displayed reference.
+Bindings stay fixed throughout that session. Handles are generated recognition
+cues and do not establish conceptual names or responsibilities. Matching ID
+spellings in another session do not restore the earlier investigation.
+
+The shell requires a terminal; piped and command-file input are refused. Quoted
+names and backslash escapes are supported. It does not execute target code or
+operating-system commands. Use `help` for command syntax and `exit` or EOF to
+close the session. EOF lets accepted work and its observation submission finish.
+
+Completed applicable analysis is reused. Partial results are also reused while
+their captured input basis is unchanged, retaining their qualifications. Later
+dependency requests can acquire additional resolution inputs and permit another
+partial attempt without rewriting earlier evidence or views. Sessions are
+transient: there is no save/resume or history eviction. Memory can grow as new
+requests and input bases accumulate; closing releases session state.
+
+For one-shot use, omit `shell`. Each invocation opens a short-lived session for
+one request; no arguments selects `modules`:
+
+```sh
+npm run --silent postcode
+npm run --silent postcode -- modules --json
+npm run --silent postcode -- inspect documented --project fixtures/exports/tsconfig.json
+npm run --silent postcode -- organization project
+npm run --silent postcode -- dependencies --project fixtures/dependency-journey/tsconfig.json
+```
+
+Use exact names/handles for one-shot selection. To navigate from a displayed ID,
+open a shell and obtain a reference there. The retired `--snapshot` and
+`--dependency-context` options are rejected, and output no longer includes
+generated follow-up commands.
 
 Normal output contains conceptual information and qualifications. Unicode and
 experimental JSON retain the existing lens meanings and display bounds. Inputs
-are assumed unchanged during analysis and are captured as first observed,
-non-atomically. Use `--` before option-like literal selectors, for example
+are assumed unchanged and captured as first observed, non-atomically. Best-effort
+checks at command boundaries detect relevant changes and end the session;
+restart explicitly to analyze changed inputs. There is no continuous file watch
+or automatic refresh. See the [input-stability reference](docs/cli-reference.md#input-stability-and-retained-work)
+for detection coverage and limits. Use `--` before literal selectors beginning
+with `@` or `--`, for example
 `inspect --project path/to/tsconfig.json -- --json`.
 `--source-detail` is available for inspection and dependency views and shows supporting source
 locations and bounded excerpts grouped by displayed concepts, separately identified
@@ -107,13 +145,14 @@ routes qualify results; this command does not run a general type check. Exit cod
 2 indicates usage, project-open failure or invalidation; 3 indicates an expected
 analysis failure preventing a view; 1 indicates an internal failure; 130 indicates
 interactive interruption. The shell continues after syntax or expected analysis
-failures when state remains sound. Ctrl-C cancels an idle input line; during work
-it terminates the analysis worker and ends the session.
+failures when state remains sound; internal failures and invalidation end it.
+Ctrl-C cancels an idle input line; during work it terminates the analysis worker
+and ends the session.
 
 See the [architecture overview](docs/architecture/README.md),
 [implementation conventions](docs/implementation-conventions.md),
 [development process conventions](dev/process-conventions.md), and
-[task record](records/tasks/2026-09-12-initial-module-inventory.md) for implementation
+[session-shell task record](records/tasks/2026-09-23-transient-session-shell.md) for implementation
 boundaries, verification and review dispositions.
 
 ## Organization
