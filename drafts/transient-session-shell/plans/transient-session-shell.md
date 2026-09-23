@@ -24,7 +24,11 @@ A separately planned summary lens will let an interpreting AI agent produce an
 account, follow it with examinations, and potentially augment or supersede that
 account using further evidence. This shell establishes the continuing analysis
 context that such examinations need, using existing lenses to exercise it first.
-It does not implement interpretation or define summary supersession semantics.
+This establishes an internal foundation for agent investigations, not access for
+an external agent to participate in the same live session. Adaptive investigation
+does not inherently require a terminal; this slice exposes the state through a
+human-operated shell. It does not implement agent access, interpretation, or
+summary supersession semantics.
 
 The one-shot CLI, language analysis, module inventory, inspection, organization,
 dependency lenses, qualification, source detail, and observation sink are
@@ -117,6 +121,10 @@ implicit current module, navigation stack, managed view collection, or workspace
   per-command full-input scan, or exhaustive validation algorithm is prescribed.
 - A detected relevant change invalidates the session and prevents further
   investigation. Restarting is the recovery path; no silent reopening occurs.
+  If detection occurs during a command before its view is published, that view
+  is withheld and invalidation is reported and observed instead. If output has
+  already been emitted, the invalidation is reported explicitly and observations
+  retain what was actually emitted; output cannot be retroactively withdrawn.
 
 ### Selection and presentation
 
@@ -131,7 +139,10 @@ implicit current module, navigation stack, managed view collection, or workspace
   Reassess --dependency-context as part of this removal: retire it if no
   independently useful behavior remains beyond reproducing snapshot scope.
 - One-shot name/handle queries remain useful without recreating cross-invocation
-  ID navigation. Help explains the lifetime of references.
+  ID navigation. A user facing ambiguous one-shot matches opens a shell, repeats
+  the lookup, and selects a displayed reference within that session. Help explains
+  this recovery path and the lifetime of references; an ID copied from the
+  one-shot output does not provide cross-invocation navigation.
 - Existing Unicode and experimental JSON view presentations remain available.
   Exact shell syntax, quoting, and selection behavior are implementation choices,
   preserving stable bindings and honest selection cardinality. No separate
@@ -171,7 +182,7 @@ implicit current module, navigation stack, managed view collection, or workspace
 | Partial/unavailable analysis with a usable view | Show the qualified result; permit further commands. |
 | Expected analysis failure preventing a result | Record the outcome, retain independently usable completed work, and return to the prompt if state is sound. |
 | Unexpected defect or broken invariant | Terminate distinctly; do not disguise it as ordinary unavailability. |
-| Detected input change | Mark the session invalid, report restart required, and permit no further investigation commands. |
+| Detected input change | Mark the session invalid, withhold any not-yet-published view from the in-flight command, report and observe invalidation, and require restart. Already emitted output remains recorded as emitted, with explicit invalidation reporting. |
 | Interrupt during a command | Interrupt the running work. Ending the session is an allowed fallback; return to the prompt only when completed work and session state can be preserved safely. |
 | Interrupt at an idle prompt | Cancel the input line; explicit exit or EOF ends the session. |
 | EOF or explicit exit | Finish any already accepted command and its observation submission, then release transient state. |
@@ -190,7 +201,8 @@ reference binding, interactive command processing, corresponding one-shot change
 and the observation/documentation/test changes needed to preserve existing contracts.
 
 Exclude persistent sessions, durable caching, a daemon, GUI integration, a public
-server protocol, public stdin/file execution, scripting variables, new lenses,
+server protocol, external-agent access to the live session, public stdin/file
+execution, scripting variables, new lenses,
 summary interpretation, interpretation-revision machinery, new languages,
 cross-project aggregation, evolving-worktree tracking, automatic refresh,
 workspace management, fuzzy selectors, operating-system command execution, and a
@@ -201,8 +213,12 @@ general analysis scheduler.
 1. Convert one-shot operation to a short-lived session. Replace snapshot-dependent
    record, reference, and schema assumptions while preserving existing lens
    behavior and the ProgramRecordStore/ObservationSink boundaries. Demonstrate
-   semantic equivalence, then pause for human-arranged independent review before
-   proceeding to accumulation.
+   semantic equivalence and run a small real-compiler interruption experiment
+   within this checkpoint, before settling the execution arrangement for
+   accumulation and the shell. The experiment must show that running compiler
+   work can be interrupted; ending the session is an acceptable fallback and
+   worker isolation is not prescribed. Then pause for human-arranged independent
+   review before proceeding to accumulation.
 2. Add accumulating analysis and stable bindings. Exercise a narrower request
    followed by dependencies acquiring additional inputs; demonstrate completed-work
    reuse, immutable earlier projections, and independence from unrelated work.
@@ -217,9 +233,17 @@ Verification includes:
   immutability of earlier results and evaluation outcomes;
 - reference collision, ambiguous lookup, reserved-looking exact names, and invalid
   references, plus growing name/handle ambiguity where supported discovery can
-  expand the lookup population;
-- relevant detected source/configuration/resolution/repository changes and
-  honest statements of undetected-change limitations;
+  expand the lookup population, and the recovery journey from an ambiguous
+  one-shot lookup to an in-session lookup and precise selection;
+- relevant detected source/configuration/resolution/repository changes, including
+  an absent dependency becoming present and a new file entering the configured
+  population. Demonstrate detection where the chosen strategy covers these cases
+  and explicitly document uncovered cases as limitations of its best-effort
+  contract; the examples do not mandate exhaustive detection;
+- writing excluded observation output without invalidating its own session;
+- detected changes during a command before publication, with no successful view
+  emitted, and detection after output has already been emitted, with truthful
+  invalidation reporting and observation of the actual output;
 - source detail after accumulated work, generated-output exclusion, terminal
   controls, observations, sink failure, non-terminal input refusal, EOF, and
   interruption on the real compiler-backed path;

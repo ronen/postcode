@@ -193,6 +193,13 @@ invalidates the session for further investigation, with restart as recovery. Abs
 is not proof of unchanged inputs. Tracking an evolving worktree and automatic
 refresh are outside this lifecycle contract.
 
+A command whose session is invalidated before its view is published does not
+publish that view as a successful investigation result. Invalidation is reported
+and recorded in observations instead. If output has already been emitted when
+the change is detected, it cannot be withdrawn: invalidation is reported
+explicitly, and observations retain the actual output and invalidation. This
+handles known violations without implying comprehensive change detection.
+
 #### Rationale
 
 Comprehensive concurrent-change detection would introduce a substantial validity
