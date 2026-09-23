@@ -87,6 +87,23 @@ The original integrated handoff is unchanged; review target `cafbd9c` includes
 both correction commits, with new review scope `6dd42cb..cafbd9c`. The task
 remains active for human-arranged rereview and human inspection/acceptance.
 
+2026-09-23: integrated round 2 confirmed the prior corrections and identified
+R2-F1, the latency and retained-memory cost of retrying project-wide expansions
+for every request when any expansion is partial. The human approved narrowing
+retries to additional input acquisition. Implemented in
+`441772648cbd550b108c1060cc8dfb1df883edc4`: the provider retains stable partial work
+against its acquisition revision, evaluation reuses identical partial outcomes
+only with an explicit captured-input basis, and session-level module/dependency
+caches no longer hide that boundary. Providers without the assurance continue to
+retry incomplete work. Changed inputs still invalidate; earlier outcomes are
+preserved. Runtime documentation and implementation conventions describe the
+established policy and the discovery/evaluation method changes.
+
+The integrated disposition covers the new finding, the approved policy change,
+remaining notes and round 3 focus. Round 3 is ready under the unchanged original
+handoff at target `4417726`, with correction scope `cafbd9c..4417726`. The task
+remains active for human-arranged review and human inspection/acceptance.
+
 ## Verification
 
 At the one-shot checkpoint: `npm run check` and all 197 tests passed. Controlled
@@ -125,3 +142,15 @@ view and exited 130 after awaited teardown. The final PostCode journey completed
 validation samples were 348–396 ms per pass and focused shell requests were
 about 1.07–1.20 seconds. The integrated disposition retains full measurements and
 the unexplained earlier outlier, with the human-approved remaining limits.
+
+At the round 3 target: `npm run check`, `npm test` (228 tests), diff checking and
+162 complete view/output comparisons passed. Focused tests cover stable partial
+reuse, additional dependency acquisition permitting a new attempt, earlier
+outcome/binding preservation and retry behavior without a provider assurance.
+The real compiler interruption probe again exited 130 with no fabricated view.
+The [partial-reuse validation](../validation/transient-session-shell/2026-09-23-partial-reuse.md)
+records a paired PostCode-sized clean/partial probe: partial-project focused
+inspection improved from 2630–2706 ms to 576–600 ms, and collected heap across
+20 mixed requests changed from 273.6 → 368.6 MiB before to 237.9 → 237.6 MiB after.
+Full repeated results matched exactly. These descriptive measurements do not
+establish a general latency or memory bound; previously approved limits remain.
