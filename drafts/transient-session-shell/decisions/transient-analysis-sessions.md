@@ -306,8 +306,9 @@ context remains attributable and narrower context is not erased. Evaluation
 outcomes separately describe applicability, availability, execution,
 materialization, relevant cost, and failure or stopping reasons. They remain
 available when no entity or claim is produced, distinguishing established emptiness
-from absence of a result. Projections are stored addressable domain objects;
-evaluation outcomes are distinct records or immutable domain values associated
+from absence of a result. A projection is an addressable program-domain object
+rather than only a transient return value; evaluation outcomes are distinct
+records or immutable domain values associated
 with the relevant request or materialization. Repeated attempts do not overwrite
 earlier outcomes. Projection qualification selects relevant evaluation outcomes
 rather than inheriting unrelated work or failures from shared evaluation.
