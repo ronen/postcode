@@ -23,13 +23,14 @@ async function invoke(implementation, args, config) {
   assert.equal(batches[0].records.find(record => record.kind === 'rendered-output').value, stdout);
   return { view, stdout, batches };
 }
-function comparable(value) {
+function comparable(value, location = 'view') {
   if (typeof value === 'string') return value.replace(/view\/[01]-experimental/g, 'view/converted-experimental')
     .replaceAll('snapshot-scoped Entity IDs', 'session-local Entity IDs');
-  if (Array.isArray(value)) return value.map(comparable);
+  if (Array.isArray(value)) return value.map((item, index) => comparable(item, `${location}[${index}]`));
   if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value)
-    .filter(([key]) => !['navigation', 'dependencyNavigation', 'expectedSnapshot', 'reference'].includes(key))
-    .map(([key, item]) => [key === 'snapshot' ? 'session' : key, comparable(item)]));
+    .filter(([key]) => !['navigation', 'dependencyNavigation'].includes(key)
+      && !(location === 'view.projection.parameters' && ['expectedSnapshot', 'reference'].includes(key)))
+    .map(([key, item]) => [key === 'snapshot' ? 'session' : key, comparable(item, `${location}.${key}`)]));
   return value;
 }
 // Containment references and organization evidence are supporting collections, historically ordered by
