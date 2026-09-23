@@ -4,7 +4,7 @@ Record type: disposition
 Date: 2026-09-23
 Task: [Transient interactive session shell](../../tasks/2026-09-23-transient-session-shell.md)
 Handoff: [Integrated review assignment](2026-09-23-integrated-handoff.md)
-Findings: [Integrated round 1](2026-09-23-integrated-round-1-findings.md); [integrated round 2](2026-09-23-integrated-round-2-findings.md); [integrated round 3 and supplement](2026-09-23-integrated-round-3-findings.md); [integrated round 4, Copilot](2026-09-23-integrated-round-4-copilot-findings.md); [integrated round 5, Copilot](2026-09-23-integrated-round-5-copilot-findings.md)
+Findings: [Integrated round 1](2026-09-23-integrated-round-1-findings.md); [integrated round 2](2026-09-23-integrated-round-2-findings.md); [integrated round 3 and supplement](2026-09-23-integrated-round-3-findings.md); [integrated round 4, Copilot](2026-09-23-integrated-round-4-copilot-findings.md); [integrated round 5, Copilot](2026-09-23-integrated-round-5-copilot-findings.md); [integrated round 6, Copilot](2026-09-23-integrated-round-6-copilot-findings.md)
 State: no actionable findings remain; human inspection and final gate acceptance pending
 
 ## Round 1 findings and dispositions
@@ -508,6 +508,53 @@ the exact corrected target is `579a57e` if the human arranges further scrutiny
 under the unchanged integrated handoff. Human inspection and final gate acceptance
 remain pending. The review itself does not authorize closure.
 
+## Round 6 disposition: clean Copilot review and remaining human acceptance
+
+The [third Copilot review](2026-09-23-integrated-round-6-copilot-findings.md)
+targets `21eb46d33fd3b4fc31d9f01f555432b4b0899ccb` and reports no findings. No new
+inline comments, replies or PR conversation comments were returned. Its reminder
+about human inspection explicitly refers to the inspection already pending for
+the cross-cutting changes; it identifies no additional defect, disputed design
+choice or new review procedure. No correction results from this round.
+
+The implementing agent recommends accepting the accumulated technical review as
+sufficient. A further line-by-line human code review or another agent review is
+not indicated by this report or a remaining actionable finding. This recommendation
+does not replace the human's gate decision. The approved plan and prior human
+decisions about corrections and retry policy do not need to be reconsidered.
+
+Two existing acceptance items remain unconfirmed:
+
+1. The [plan's verification section](../../../docs/plans/transient-session-shell.md#implementation-stages-and-validation)
+   calls for "the representative journey on fixtures and PostCode, with human
+   inspection". Its practical purpose is to assess the implemented navigation,
+   qualification, source detail, revisiting results and usable latency by choosing
+   subjects from preceding output. The human reported testing another repository
+   and elected to leave selector-UI clarity for a later cleanup pass. That is
+   relevant firsthand evidence, but does not establish completion of the specified
+   fixture/PostCode journey. The human may confirm that inspection or explicitly
+   accept the testing already done as sufficient in its place; no substitution or
+   waiver is inferred here.
+2. The [development workflow](../../../dev/workflow.md#7-verification) requires
+   the human to say the final review gate is sufficient before closure. Approval
+   of the plan and individual review responses is preserved as given, without
+   treating it as final acceptance of the implemented task. No new approval of
+   already settled policy choices is requested.
+
+Previously recorded limits remain relevant to overall acceptance, rather than
+becoming a new review assignment: input validation is best-effort and non-atomic;
+new distinct requests can grow retained memory until close; the earlier latency
+outlier remains unexplained despite non-recurrence; and the specified platform
+and interaction coverage limits remain. The human previously approved carrying
+those limits through review, and the later supplement strengthens the long-session
+evidence. This round adds no new uncertainty to investigate.
+
+Verification for this disposition was complete paginated retrieval, byte-for-byte
+preservation of the new body, and confirmation that all five earlier review/comment
+bodies remain unchanged in their existing records. No implementation changed and
+no runtime checks were rerun; the latest runtime verification remains the 229-test
+round 5 result. Human acceptance has not been inferred from this clean review.
+
 ## Review rounds
 
 - Round 1 reviewed `6dd42cb6426cf21d56cbeab4745e179354007576`, scope
@@ -526,10 +573,13 @@ remain pending. The review itself does not authorize closure.
 - Round 5 is Copilot review 5294207644 of
   `88f66b1f99d93694afc920fa12434c44f9118a7c`. It confirms the round 4 corrections
   and identifies the observation-provenance defect, corrected in `579a57e`.
+- Round 6 is Copilot review 5296036666 of
+  `21eb46d33fd3b4fc31d9f01f555432b4b0899ccb`. It reports no findings and reiterates
+  the existing requirement for human inspection.
 
 ## Gate conclusion
 
-Implementation, review and corrections through round 5 are complete,
+Implementation, review and corrections through round 6 are complete,
 with no remaining actionable findings. The human has not yet accepted the final review gate or
 confirmed the required human inspection. The task remains active pending those
 decisions. No reviewer recommendation is treated as human acceptance; residual
