@@ -143,6 +143,17 @@ defect was established, and no runtime semantics changed. The integrated
 disposition records evidence and resolution separately for every finding. Human
 inspection and final review-gate acceptance remain pending; the task stays active.
 
+2026-09-23: preserved the second Copilot PR review as
+[round 5 findings](../reviews/transient-session-shell/2026-09-23-integrated-round-5-copilot-findings.md),
+including the medium-severity issue embedded in its overview. Accepted R5-F1 as
+an observation-content defect: focused reference requests selected correctly but
+recorded navigation text denying continuity. Correction `579a57e` derives that
+text from the projection's reference flag, distinguishing session references
+from exact lookups without claiming that an unknown reference resolved. The
+observation shape, selection and rendered views are unchanged. The integrated
+disposition records the assessment and checks. No policy question arose; human
+inspection and final gate acceptance remain pending, and the task stays active.
+
 ## Verification
 
 At the one-shot checkpoint: `npm run check` and all 197 tests passed. Controlled
@@ -224,3 +235,14 @@ provider probe completed on the dependency-contract fixture with full
 materialization and the corrected policy text. Diff checking passed for the
 corrections. No new tests or full-suite rerun were needed for the two comments
 and one descriptive output string; no broader runtime verification is claimed.
+
+For the second Copilot follow-up: paginated retrieval covered both overall reviews,
+all three prior inline comments/replies, and the empty PR conversation. The new
+review body was preserved verbatim; all four earlier bodies were verified unchanged
+against round 4. The new publication regression reproduced the incorrect metadata
+before correction. After the fix, type checking, build, all 229 tests and diff
+checking passed. Coverage includes ten parsed/published request cases across
+module/group references, dependency children/parents, ordinary handles, unknown
+references, literal `@` selectors and one-shot lookup, plus the existing adaptive
+worker-backed shell's observation. No performance or view-comparison rerun was
+needed for this isolated metadata change.
