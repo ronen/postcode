@@ -156,6 +156,19 @@ observation shape, selection and rendered views are unchanged. The integrated
 disposition records the assessment and checks. No policy question arose; human
 inspection and final gate acceptance remain pending, and the task stays active.
 
+2026-09-23: preserved and assessed the third Copilot PR review as
+[round 6 findings](../reviews/transient-session-shell/2026-09-23-integrated-round-6-copilot-findings.md).
+It reports no findings and reiterates the already pending human inspection.
+No implementation work or new policy decision results. The implementing agent
+recommends accepting the accumulated technical review as sufficient without
+another code-review round. The integrated disposition distinguishes that
+recommendation from the remaining human acceptance: confirmation of the plan's
+fixture/PostCode inspection, or explicit acceptance of the human's other-repository
+testing in its place, and the final review-gate decision. Earlier plan/correction
+approvals remain effective; no repeat approval is requested. The task remains
+active because neither final acceptance nor a change to the inspection requirement
+has yet been given.
+
 ## Verification
 
 At the one-shot checkpoint: `npm run check` and all 197 tests passed. Controlled
@@ -248,3 +261,11 @@ module/group references, dependency children/parents, ordinary handles, unknown
 references, literal `@` selectors and one-shot lookup, plus the existing adaptive
 worker-backed shell's observation. No performance or view-comparison rerun was
 needed for this isolated metadata change.
+
+For the clean Copilot follow-up: paginated retrieval found three overall reviews,
+three prior inline comments and no conversation comments. Verified the new body
+verbatim and all five previously preserved component bodies unchanged. Checked
+the outstanding acceptance items against the approved plan, development/review
+workflow, prior human directions and recorded verification. Diff checking passed.
+No code changed and no runtime tests were rerun; the latest 229-test result remains
+the applicable runtime verification.
