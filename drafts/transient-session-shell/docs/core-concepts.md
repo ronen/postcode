@@ -104,7 +104,7 @@ A transient session ends with its process. References have meaning within the ac
 
 ### Lens
 
-*[decision: [Initial core concepts](../../../docs/decisions/initial-core-concepts-decisions.md#preserve-the-lens-projection-presentation-and-view-distinction)]*
+*[decision: [Transient analysis sessions](../decisions/transient-analysis-sessions.md#retained-domain-and-storage-boundaries)]*
 
 A **Lens** describes the aspect of a subject being investigated: the question being asked. Lens parameters refine the information requested, such as direct versus transitive callers. A composite lens selects and combines information from other qualified projections while remaining a lens over its subject.
 
@@ -114,11 +114,11 @@ A **Lens** describes the aspect of a subject being investigated: the question be
 
 A **Projection** is the qualified information produced by applying a lens to a particular program state and subject, with particular lens parameter values. It includes its content and the qualifications needed to understand what that content establishes.
 
-A projection is an addressable program-domain object identifying its subject, lens, lens parameters, and session context, with references to its claims, supporting evidence and method context, and relevant evaluation outcomes. A produced projection retains the information selected for that result; later accumulation does not silently change it. For the current mechanically derived views, repeating a request with unchanged inputs and completed evaluation yields the same information. Reconstructing or rendering a projection need not establish a different answer. A later evaluation may add information when earlier work was incomplete, without changing the earlier projection or outcome. It is distinct from both an evaluation attempt and a rendering of its result. Presentation choices describe how the information is shown; they do not redefine the question asked by the lens.
+A projection is an addressable program-domain object within its session identifying its subject, lens, lens parameters, and session context, with references to its claims, supporting evidence and method context, and relevant evaluation outcomes. A produced projection retains the information selected for that result; later accumulation does not silently change it. For the current mechanically derived views, repeating a request with unchanged inputs and completed evaluation yields the same information. Reconstructing or rendering a projection need not establish a different answer. A later evaluation may add information when earlier work was incomplete, without changing the earlier projection or outcome. It is distinct from both an evaluation attempt and a rendering of its result. Presentation choices describe how the information is shown; they do not redefine the question asked by the lens.
 
 ### Presentation and View
 
-*[decision: [Initial core concepts](../../../docs/decisions/initial-core-concepts-decisions.md#preserve-the-lens-projection-presentation-and-view-distinction)]*
+*[decision: [Transient analysis sessions](../decisions/transient-analysis-sessions.md#retained-domain-and-storage-boundaries)]*
 
 A **Presentation** describes how a projection is rendered, interacted with, or exposed through a PostCode interface. Presentation parameters describe choices such as layout, sorting, grouping, filtering, and disclosure of detail. A presentation can be graphical, human-readable text, or structured machine-readable data.
 

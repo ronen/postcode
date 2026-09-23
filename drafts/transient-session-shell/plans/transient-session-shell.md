@@ -2,6 +2,7 @@
 
 Status: in preparation
 Created: 2026-09-22
+Updated: 2026-09-23
 
 This is a provisional plan, not implementation authorization. Read it with the
 [proposed decisions](../decisions/transient-analysis-sessions.md) and the complete
@@ -81,6 +82,14 @@ implicit current module, navigation stack, managed view collection, or workspace
 - One configured project is opened for the session; no project switching or
   repository-only fallback is introduced.
 - Existing lenses and presentations retain their meaning and bounded coverage.
+  Unrelated accumulated work does not change a lens's selected population or
+  meaning. Reuse satisfies the request's declared requirements and expansions;
+  a projection does not indiscriminately select everything in the session store.
+- For current mechanical analyses, equivalent inputs, methods, requirements,
+  completed evaluations, and presentation choices produce deterministic semantic
+  content, ordering, and presentation, apart from session-local references and
+  observation metadata. Identical reference spellings across sessions are not
+  required. This does not impose determinism on future interpreting analyses.
 - A view request supplies lens requirements and declared standard expansions to
   evaluation. Rendering never requests analysis or reads live source.
 - Completed applicable analysis is reused across commands. Missing work can
@@ -101,7 +110,11 @@ implicit current module, navigation stack, managed view collection, or workspace
 - The unchanged-input assumption is documented.
   Detection is best-effort across relevant source, configuration, resolution,
   repository, and environment inputs; its actual coverage and limitations are
-  documented. No mandatory watcher or exhaustive validation algorithm is prescribed.
+  documented. An implemented, meaningful detection strategy is required; merely
+  documenting that changes may go undetected is insufficient. Verification
+  demonstrates detection and invalidation for representative changes within its
+  stated coverage and identifies uncovered input classes. No mandatory watcher,
+  per-command full-input scan, or exhaustive validation algorithm is prescribed.
 - A detected relevant change invalidates the session and prevents further
   investigation. Restarting is the recovery path; no silent reopening occurs.
 
@@ -110,7 +123,9 @@ implicit current module, navigation stack, managed view collection, or workspace
 - Bound entity references never rebind or change merely because analysis grows.
   New allocations cannot steal earlier spellings, including on collisions.
 - Exact name and generated-handle lookups preserve honest zero/one/many outcomes.
-  Lookup ambiguity must not silently choose a subject.
+  Lookup ambiguity must not silently choose a subject. If supported additional
+  discovery expands a lookup population, a name or handle may acquire further
+  matches; help explains this distinction from stable bound references.
 - Remove --snapshot and generated next-command text from both shell and one-shot
   surfaces, including structured navigation fields that exist only to carry it.
   Reassess --dependency-context as part of this removal: retire it if no
@@ -123,8 +138,7 @@ implicit current module, navigation stack, managed view collection, or workspace
   selector-mode UI is required.
 - Source disclosure remains explicit. The implementation may use a repeated view
   request with a source-detail option or another simple interaction. The
-  disclosed evidence must support
-  the claims shown. Qualification and omission remain visible in each view,
+  disclosed evidence must support the claims shown. Qualification and omission remain visible in each view,
   without relying on earlier output.
 
 ### Observations and safety
@@ -150,6 +164,7 @@ implicit current module, navigation stack, managed view collection, or workspace
 
 | Event | Behavior |
 | --- | --- |
+| Shell requested with non-terminal stdin | Report unsupported interactive input and exit without opening a shell; do not interpret piped commands. |
 | Initial project-open failure | Report operational failure and exit without opening a shell. |
 | Syntax error | Report the command error, leave valid session state intact, and return to the prompt. |
 | Zero or multiple name/handle matches | Preserve honest existing selection results; do not choose implicitly. |
@@ -157,7 +172,7 @@ implicit current module, navigation stack, managed view collection, or workspace
 | Expected analysis failure preventing a result | Record the outcome, retain independently usable completed work, and return to the prompt if state is sound. |
 | Unexpected defect or broken invariant | Terminate distinctly; do not disguise it as ordinary unavailability. |
 | Detected input change | Mark the session invalid, report restart required, and permit no further investigation commands. |
-| Interrupt during a command | Stop the command; preserve safe completed work and return to the prompt only if consistent state can be guaranteed, otherwise end the session. |
+| Interrupt during a command | Interrupt the running work. Ending the session is an allowed fallback; return to the prompt only when completed work and session state can be preserved safely. |
 | Interrupt at an idle prompt | Cancel the input line; explicit exit or EOF ends the session. |
 | EOF or explicit exit | Finish any already accepted command and its observation submission, then release transient state. |
 | Observation delivery failure | Warn and preserve the successful result. |
@@ -183,15 +198,17 @@ general analysis scheduler.
 
 ## Implementation stages and validation
 
-1. Establish session ownership and immutable accumulation beneath the existing
-   CLI. Replace snapshot-dependent record and reference assumptions coherently;
-   retain ProgramRecordStore and ObservationSink responsibility boundaries.
-2. Exercise a narrower request followed by dependencies that acquire additional
-   inputs. Demonstrate stable bindings and useful reuse before adding prompt UX.
-3. Route interactive and one-shot requests through shared execution, preserving
-   existing lenses, views, source disclosure, and error distinctions.
-4. Add per-command observations, invalidation, and real interruption behavior.
-5. Update runtime documentation and exercise the complete investigation.
+1. Convert one-shot operation to a short-lived session. Replace snapshot-dependent
+   record, reference, and schema assumptions while preserving existing lens
+   behavior and the ProgramRecordStore/ObservationSink boundaries. Demonstrate
+   semantic equivalence, then pause for human-arranged independent review before
+   proceeding to accumulation.
+2. Add accumulating analysis and stable bindings. Exercise a narrower request
+   followed by dependencies acquiring additional inputs; demonstrate completed-work
+   reuse, immutable earlier projections, and independence from unrelated work.
+3. Add the prompt over shared request execution, with command observations,
+   invalidation, and verified interruption behavior.
+4. Update runtime documentation and exercise the complete investigation.
 
 Verification includes:
 
@@ -199,23 +216,39 @@ Verification includes:
 - additional-input acquisition, completed-work reuse, repeated requests, and
   immutability of earlier results and evaluation outcomes;
 - reference collision, ambiguous lookup, reserved-looking exact names, and invalid
-  references;
+  references, plus growing name/handle ambiguity where supported discovery can
+  expand the lookup population;
 - relevant detected source/configuration/resolution/repository changes and
   honest statements of undetected-change limitations;
 - source detail after accumulated work, generated-output exclusion, terminal
-  controls, observations, sink failure, EOF, and cancellation;
-- equivalent semantic results between one-shot and shell requests, allowing
-  session-local identity differences while preserving evidence and qualification;
+  controls, observations, sink failure, non-terminal input refusal, EOF, and
+  interruption on the real compiler-backed path;
+- equivalent semantic results between one-shot and shell requests and between
+  reordered independent requests. Tests control the relevant inputs and compare
+  selected populations, relationships, evidence, qualification, omissions, and
+  presentation ordering, normalizing only session-local references and observation
+  metadata through consistent mappings, not by dropping referenced relationships;
+- repeated requests after unrelated analysis, and separate cases where a later
+  attempt completes previously incomplete evaluation. No aggregate input-set
+  digest or general historical-run comparison feature is required;
 - existing semantic fixtures and appropriate type checks and full tests;
 - separately measured first-view and follow-up costs, with work-reuse evidence
   and no unstable timing thresholds in ordinary tests.
 
 Follow the development workflow's human-arranged independent review gates.
-Review session/reference/accumulation boundaries before broad integration if their
-risk warrants it, then prepare the final integrated review handoff. Existing
+The one-shot conversion checkpoint above precedes accumulation. Further
+intermediate review is proportional to risk; prepare the final integrated review
+handoff after verification. Existing
 slice validation need not be repeated wholesale absent a changed semantic boundary.
 
 ## Risks and open decisions
+
+The compiler-backed path includes synchronous work such as ts.createProgram.
+A signal handler on the same blocked event loop may not run until analysis ends.
+Interruption must therefore be verified during actual work; ending the session
+is an acceptable fallback. Worker isolation or another cancellation mechanism is
+an implementation choice, not an architectural prerequisite.
+
 
 Session growth may increase memory use. This slice need not add eviction or
 budgets that silently discard required history; measure representative use and
@@ -228,7 +261,9 @@ anticipation of that work.
 ## Documentation
 
 Implementation updates the CLI reference, architecture overview, README, status,
-experimental schemas, and affected tests. It also updates implementation
+experimental schemas, and affected tests. Review current backlog wording for
+obsolete snapshot requirements, preserving descriptions of historical work and
+without reprioritizing backlog entries. It also updates implementation
 conventions to remove obsolete snapshot and generated-command practices and
 document the session practices actually established by the implementation.
 
