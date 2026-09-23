@@ -3,12 +3,59 @@ import path from 'node:path';
 import { test } from 'node:test';
 import { openSession } from '../src/lib/session.js';
 import { observationBatch } from '../src/lib/observations.js';
+import type { ObservationBatch } from '../src/lib/observations.js';
+import { publishCommand } from '../src/lib/command-execution.js';
+import { commandWords, parseCommand } from '../src/lib/commands.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { recordId } from '../src/lib/identity.js';
 import { discover, normalizeSession } from './helpers.js';
 
 const configPath = path.resolve('fixtures/dependency-journey/tsconfig.json');
 const request = { lens: 'dependencies' as const, selector: null, presentation: { format: 'json' as const, sourceDetail: true } };
+
+test('published navigation observations distinguish session references from exact lookups', async () => {
+  const opened = openSession({ configPath });
+  if (opened.status !== 'opened') throw new Error('Expected project');
+  const { session } = opened;
+  try {
+    const inventory = session.execute({ ...request, lens: 'modules', presentation: { format: 'json', sourceDetail: false } });
+    if (inventory.view.schema !== 'postcode-view/1-experimental') throw new Error('Expected inventory');
+    const reference = inventory.view.modules.find(module => module.handle === 'forward')!.entityId;
+    const organization = session.execute({ ...request, lens: 'organization', subject: 'repository',
+      presentation: { format: 'json', sourceDetail: false } });
+    if (organization.view.schema !== 'postcode-organization-view/1-experimental') throw new Error('Expected organization');
+    const group = organization.view.groups[0]!.entityId;
+    const cases = [
+      ...['inspect', 'children', 'parents'].map(lens => ({ command: `${lens} @${reference}`, interactive: true, reference: true, matches: 1 })),
+      { command: `inspect @${group}`, interactive: true, reference: true, matches: 1 },
+      { command: 'inspect @module-unknown', interactive: true, reference: true, matches: 0 },
+      ...['inspect', 'children', 'parents'].map(lens => ({ command: `${lens} forward`, interactive: true, reference: false, matches: 1 })),
+      { command: `inspect -- @${reference}`, interactive: true, reference: false, matches: 0 },
+      { command: `inspect @${reference}`, interactive: false, reference: false, matches: 0 },
+    ];
+    for (const [index, item] of cases.entries()) {
+      const parsed = parseCommand(commandWords(item.command), process.cwd(), item.interactive, true);
+      if (parsed.kind !== 'view') throw new Error('Expected view command');
+      let observed: ObservationBatch | undefined;
+      const code = await publishCommand(session, parsed.request, item.command, configPath, index + 1,
+        { stdout: () => {}, stderr: () => {} },
+        { async submit(batch) { observed = batch; return { accepted: true }; } });
+      assert.equal(code, 0, item.command);
+      assert.equal(observed!.session, session.id);
+      const recorded = observed!.records.find(record => record.kind === 'request')!.value as {
+        lensParameters: { reference: boolean }; navigation: string;
+      };
+      assert.equal(recorded.lensParameters.reference, item.reference, item.command);
+      assert.match(recorded.navigation, item.reference ? /Session-local entity reference supplied/ : /Exact name or handle supplied for lookup/, item.command);
+      assert.doesNotMatch(recorded.navigation, /no previous view/, item.command);
+      const view = observed!.records.find(record => record.kind === 'qualified-view')!.value as {
+        projection: { selection: { matches: number; referenceStatus: string } };
+      };
+      assert.equal(view.projection.selection.matches, item.matches, item.command);
+      if (item.reference && item.matches === 0) assert.equal(view.projection.selection.referenceStatus, 'unknown-reference');
+    }
+  } finally { session.close(); }
+});
 
 test('one-shot sessions own a project, produce correlated views, and release their state', () => {
   const open = () => {

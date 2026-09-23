@@ -36,7 +36,9 @@ export function observationBatch(view: QualifiedView | QualifiedOrganizationView
     { id: request, kind: 'request', value: {
       lens: view.projection.lens, subject: view.projection.subject, lensParameters: view.projection.parameters,
       presentation: view.presentation, navigation: ['inspect', 'dependency-children', 'dependency-parents'].includes(view.projection.lens)
-        ? 'Exact selector supplied in this invocation; no previous view or cross-invocation continuity is established.'
+        ? view.projection.parameters.reference
+          ? 'Session-local entity reference supplied; resolution is within this session only, with no cross-invocation continuity.'
+          : 'Exact name or handle supplied for lookup; no session-reference or cross-invocation continuity is asserted.'
         : view.projection.lens === 'organization' ? 'Organization investigation requested for the stated subject.' : view.projection.lens === 'dependency-structure' ? 'Project dependency structure requested.' : 'Configured-project inventory requested.',
     } },
     { id: analysis, kind: 'analysis-context', value: { ...context, session: view.projection.session } },

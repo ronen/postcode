@@ -67,6 +67,8 @@ test('adaptive shell uses prior references, records syntax refusals, finishes on
   const inspection = batches[2]!.records.find(item => item.kind === 'qualified-view')!.value as QualifiedView;
   assert.equal(inspection.projection.selection.matches, 1);
   assert.ok(inspection.sourceDetail);
+  const navigation = batches[2]!.records.find(item => item.kind === 'request')!.value as { navigation: string };
+  assert.match(navigation.navigation, /Session-local entity reference supplied/);
   let oneShot: ObservationBatch | undefined;
   await runCli(['dependencies', '--project', config, '--json'], {
     cwd: process.cwd(), checkout: process.cwd(), stdout: () => {}, stderr: () => {},
