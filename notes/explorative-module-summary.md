@@ -1,6 +1,6 @@
 # Explorative module summary
 
-Discussion captured: 2026-09-22, from exploration on 2026-09-21–22.
+Discussion captured through 2026-09-23, from exploration on 2026-09-21–23.
 
 This note preserves exploratory product reasoning, not an approved plan, accepted
 decision, implementation task, or authorization to run an experiment. The human
@@ -30,9 +30,9 @@ The human clarified that:
 
 The human also raised whether explicit knowledge representation is needed, whether
 new AI infrastructure warrants a smaller first experiment, and when clean sessions
-or accumulated understanding should be used. These questions remain open; the
-assistant's proposed answers are recorded below as recommendations rather than
-accepted decisions.
+or accumulated understanding should be used. The later discussion chose fresh
+requests with explicit context as the starting continuity policy. Other proposed
+answers remain recommendations rather than accepted architectural decisions.
 
 ## Evidence and the initial subject
 
@@ -224,7 +224,8 @@ presentation, marked as revised, with the original still accessible. The assista
 agreed: preserve the original and the reason for revision; do not treat every newer
 response as automatically superior. An unresolved alternative may coexist instead
 of replacing an earlier account. A complete revision interface is a future concern;
-referable parts would leave room for it without implementing it in the first slice.
+referable parts would leave room for it. Later scope discussion below considers
+including one follow-up and explicit revision in the first slice.
 
 ### Human contributions
 
@@ -271,6 +272,77 @@ approved. The uncommitted interpretation-experiments directory was removed at th
 human's direction; a separate experimental programme is no longer the proposed
 starting path. Full repeated follow-ups, autonomous investigation, and durable
 semantic memory need not be part of the first slice.
+
+### Interpreter boundary and access to additional source
+
+The human raised letting the interpreter read the repository to obtain additional
+source when needed and avoid supplying oversized inputs upfront. Repository access
+and inference location are separate choices: a hosted model can request reads
+through local tools, while a local model also needs a tool interface and execution
+loop to obtain files. A repository need not be public for the hosted arrangement,
+but requested content would be sent to the service. Public URLs alone do not
+establish complete access to a fixed repository state.
+
+Selective reads reduce the need for a large initial package but still require
+bounds on investigation and retained context. The evidence actually read and its
+captured repository state must remain traceable. The assistant recommended bounded
+requests for additional source; the exact tools, limits, and initial evidence
+package remain open.
+
+The human specified that the interpreter should sit behind an internal API so it
+can be replaced fairly easily. The assistant proposed keeping provider-specific
+settings, authentication, and tool-call formats behind that boundary, with evidence
+access a distinct responsibility usable by either hosted or local inference.
+This does not require a general plugin framework or multiple implementations in
+the first slice.
+
+The human independently installed Ollama and tried `qwen3.6:27b` on the current
+development machine. They reported only a few tokens per second on a simple
+question and judged it too slow for practical use. This is a reported limitation
+of that configuration on that machine, not a benchmark of local models generally.
+Hosted inference remains the provisional starting direction; trying smaller local
+models is not a prerequisite.
+
+### Follow-up scope and the shell prerequisite
+
+The human supported a small initial interpretation of one module, and asked
+whether follow-up capabilities would reveal enough about its contract to belong
+in the same slice. The assistant proposed an initial explanation followed by one
+selected-part question, potentially requesting more source and explicitly revising
+the earlier account. This would exercise addressability, evidence sufficiency, and
+correction. Investigation across related modules and long histories can remain
+later work.
+
+The human challenged acceptance bias in the assistant's recommendations. The
+material tradeoff is that follow-ups add context selection, earlier-result
+references, and revision behavior. Their value in testing the initial contract
+does not by itself establish that they belong in the slice. The human also
+clarified that slice scope is set before the coding agent starts: an implementation
+milestone cannot be used to defer the decision about what the plan includes.
+Output review can inform execution within an agreed plan; a scope-changing
+experiment would need separate planning and authorization.
+
+The existing CLI does not retain results for a later invocation. Fresh inference
+requests still require PostCode to retain the earlier investigation context. The
+human suggested implementing and testing internal follow-ups without CLI exposure
+as one option. Tests could hold the earlier result in memory; deterministic checks
+would verify context assembly and revision references, while actual inference
+would be needed to assess interpretive value.
+
+The human then introduced a proposed prerequisite from a separate roadmap
+discussion: implement a CLI shell in a separate slice first, allowing a sequence
+of views with state retained in memory. This interpretation slice could then
+presume the shell exists. The assistant recommended exposing the initial
+interpretation and one follow-up through that shell, instead of limiting the
+follow-up to tests.
+
+Planning must confirm that the shell's session lifetime can host retained
+interpretation results and references, not merely preserve a workspace between
+commands. Interpretation-specific context and revision behavior can belong to
+this slice. Persistence after shell exit, elaborate conversation management, and
+unlimited recursive expansion remain deferred. This is the latest proposed slice
+shape, superseding the earlier one-shot-only recommendation; no implementation
+has been authorized here.
 
 ### Deferred inference-configuration exploration
 
@@ -388,9 +460,20 @@ effect from the rest of the conversation. Conditions must record what each sessi
 actually received; these comparisons answer different questions and are not
 automatically equivalent-input tests.
 
-Possible later policies include continuing context for elaboration, fresh assessment
-for challenging an explanation, and explicit revalidation after code changes. No
-universal session policy has been chosen.
+The human subsequently agreed to start with **fresh requests and explicit
+PostCode-controlled context**, citing variability in agents' memory retention.
+Each follow-up must receive its question, relevant earlier interpretation and
+selected part, and the evidence context needed to continue. Earlier interpretations
+remain revisable; including them can still anchor the model, so a fresh request is
+not an independent assessment.
+
+The retained investigation record and the context sent for a particular request
+are distinct: retaining results does not mean sending the whole history every
+time. Selection can initially be simple for one explanation and one follow-up.
+Long-history summarization and comparisons with continuing sessions are deferred.
+The human suggested revisiting the policy if actual use feels limited by loss of
+continuity or memory. This is a starting policy, not a claim that fresh sessions
+are universally better.
 
 ## Product integration questions retained for later
 
@@ -470,8 +553,10 @@ Before authorizing a slice, clarify:
 - What exact evidence boundaries and questions should the initial trio cover?
 - What minimum output contract makes interpretations useful and traceable while
   leaving room for follow-ups and explicit revision?
-- What observations at the early contract check justify continuing or revising
-  the proposed integration?
+- Does the plan include the proposed initial explanation and one user-facing
+  follow-up, and what shell session facilities can it presume?
+- What verification demonstrates useful elaboration and explicit correction,
+  beyond deterministic checks of context and result structure?
 - Which identity, capture, invocation, and lifecycle choices does this bounded
   integration require?
 
