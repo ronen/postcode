@@ -52,6 +52,11 @@ option to accept that testing in place of the plan's specified fixture/PostCode
 inspection. Final review-gate acceptance and task closure have not yet been
 explicitly confirmed.
 
+yes you may close the task
+
+Context: accepts the final review gate and authorizes task closure after confirmed
+hands-on acceptance of the representative journey on a separate project.
+
 ## Outcome
 
 2026-09-23: implemented the plan's one-shot conversion checkpoint in
