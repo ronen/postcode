@@ -49,6 +49,18 @@ reuse, binding, validation, observation and interruption practices.
 The task remains active for final human-arranged integrated review and human
 inspection/acceptance. It is not closed.
 
+2026-09-23: integrated round 1 findings were assessed. Clear lifecycle,
+reference-presentation, structured-defect and operational-error corrections are
+committed in `c6ece7e85cb5e56041247c5fb793e587d47763cd`. The
+[integrated disposition](../reviews/transient-session-shell/2026-09-23-integrated-disposition.md)
+covers every actionable finding, non-defect observation, nit and residual limit.
+Human direction is pending on partial-expansion retry policy, the placement of
+one redundant validation pass, and proceeding to rereview with the unexplained
+latency outlier and listed verification limits. No finding has been rejected or
+materially qualified without direction. The next round retains the original
+integrated handoff; its final corrected target awaits those choices. The task
+remains active.
+
 ## Verification
 
 At the one-shot checkpoint: `npm run check` and all 197 tests passed. Controlled
@@ -70,3 +82,10 @@ PostCode journeys measured first/follow-up costs and memory release, including a
 unexplained latency outlier retained in the report. See the
 [integrated validation](../validation/transient-session-shell/2026-09-23-integrated.md)
 for coverage, measurements and remaining human verification.
+
+At the first integrated-review corrections: type checking, all 221 tests and
+162 complete view/output comparisons passed. A real pseudo-terminal EOF during
+PostCode analysis completed output and exited 0 without a trailing prompt. The
+compiler interruption probe still exited 130 without a fabricated view. Separate
+validation samples measured 299–336 ms per check. The disposition preserves the
+measurement method, full request timings, heap observations and unresolved limits.
