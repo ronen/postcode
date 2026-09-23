@@ -45,6 +45,13 @@ Another round of Copilot review has uncovered another issue; please fetch and pr
 
 Another round of Copilot review has completed, with no findings; it does recommend human review.  fetch and preserve it, and assess it,  and let me know whether there's anything that does need my review, given that i reviewed and approved the plan and the review cycle responses until now.
 
+confirming i have performed the representative journey (on a separate project) and it functions as expected
+
+Context: confirms the hands-on acceptance using a separate project, following the
+option to accept that testing in place of the plan's specified fixture/PostCode
+inspection. Final review-gate acceptance and task closure have not yet been
+explicitly confirmed.
+
 ## Outcome
 
 2026-09-23: implemented the plan's one-shot conversion checkpoint in
