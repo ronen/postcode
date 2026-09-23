@@ -2,35 +2,27 @@
 
 Last reviewed: 2026-09-23
 
-The development CLI supports module inventory, repository organization, and direct
-module dependencies, with Unicode and experimental JSON views. Module and group
-inspection, exports, documentation, source evidence, and exact name/handle lookup support
-exploration of program structure. Dependency views distinguish established
-relationships, unresolved requests, and analysis limits; they do not describe
-runtime behavior or architectural intent. See the [CLI reference](docs/cli-reference.md).
+PostCode is a development CLI for read-only exploration of one configured
+TypeScript project. It supports module inventories, repository organization,
+module and group inspection, and direct dependency navigation. Views expose
+exports, recorded documentation and analysis qualifications; supporting source
+locations and bounded excerpts are available on request. Output is Unicode text
+or experimental JSON. These views describe program structure, not runtime
+behavior or architectural intent.
 
-The [module dependency slice](docs/plans/module-dependencies-plan.md) is complete,
-including evaluation on PostCode and an unfamiliar repository. Its
-[task record](records/tasks/2026-09-16-module-dependencies.md) preserves acceptance
-and evaluation details.
+The interactive shell keeps a project open across commands, with stable entity
+references, reusable analysis and preserved earlier results. One-shot commands
+provide the same views in separate sessions. Commands record local observations,
+and active analysis can be interrupted. See the [README](README.md#development-cli)
+for a runnable walkthrough and the [CLI reference](docs/cli-reference.md) for
+supported commands and limits.
 
-The [analysis-latency task](records/tasks/2026-09-21-analysis-latency.md) is complete.
-Fresh analysis on PostCode is substantially faster through reuse within each
-discovery call, with existing output semantics preserved. The
-[validation report](records/validation/2026-09-21-analysis-latency.md) and
-[review disposition](records/reviews/analysis-latency/2026-09-21-integrated-disposition.md)
-provide measurements, verification, and remaining limits.
+Sessions are transient and assume unchanged inputs. Detected relevant changes
+end the session and require reopening; detection is best-effort, not a continuous
+file watch. Retained memory can grow as new requests accumulate until the session
+closes. There is no persistent investigation, graphical interface or interpreting
+lens yet.
 
-The [transient interactive session shell plan](docs/plans/transient-session-shell.md)
-is complete; the [task record](records/tasks/2026-09-23-transient-session-shell.md)
-preserves implementation, verification and acceptance.
-The shell now keeps one project open, reuses completed analysis and stable partial work, preserves bound
-references and earlier results, detects relevant input changes, and records
-command outcomes. Compiler work runs in an interruptible worker. One-shot commands
-use the same request executor. Experimental view schemas and observations remain
-version 1. Independent review is complete with no remaining actionable findings;
-the [disposition](records/reviews/transient-session-shell/2026-09-23-integrated-disposition.md)
-records the corrections, supplementary long-session evidence and residual limits.
-The human has completed the representative journey on a separate project and
-confirmed that it functions as expected. The human accepted the final review
-gate and authorized task closure.
+No implementation task is currently active. The [documentation guide](docs/README.md)
+links to plans, decisions and historical records; the [backlog](docs/backlog.md)
+contains candidates for future work, not an approved next implementation.
