@@ -2,27 +2,30 @@
 
 Last reviewed: 2026-09-23
 
-PostCode is a development CLI for read-only exploration of one configured
-TypeScript project. It supports module inventories, repository organization,
-module and group inspection, and direct dependency navigation. Views expose
-exports, recorded documentation and analysis qualifications; supporting source
-locations and bounded excerpts are available on request. Output is Unicode text
-or experimental JSON. These views describe program structure, not runtime
-behavior or architectural intent.
+## Implemented capabilities
 
-The interactive shell keeps a project open across commands, with stable entity
-references, reusable analysis and preserved earlier results. One-shot commands
-provide the same views in separate sessions. Commands record local observations,
-and active analysis can be interrupted. See the [README](README.md#development-cli)
-for a runnable walkthrough and the [CLI reference](docs/cli-reference.md) for
-supported commands and limits.
+- **[Interactive investigation](docs/cli-reference.md#commands) — latest addition.**
+  A session shell supports successive questions, stable references to previously
+  displayed subjects, and reuse of accumulated analysis.
+- **[Module inventory and inspection](docs/cli-reference.md#inventory-and-inspection).**
+  Modules, exports, forwarding relationships and associated documentation can be
+  listed and examined.
+- **[Repository organization](docs/cli-reference.md#organization-and-group-inspection).**
+  Project and repository views expose groups, their relationships and module
+  membership, with group inspection and navigation.
+- **[Dependency investigation](docs/cli-reference.md#dependency-investigation).**
+  Dependency structure, cycles, direct dependencies and dependents are available,
+  with unresolved requests and analysis limits distinguished.
+- **[Supporting evidence](docs/cli-reference.md#source-detail-and-observations).**
+  Inspections can expose source locations and bounded excerpts supporting the
+  displayed information.
+- **[Local observation recording](README.md#observability).**
+  Commands record requests, outcomes and presented views for later examination.
 
-Sessions are transient and assume unchanged inputs. Detected relevant changes
-end the session and require reopening; detection is best-effort, not a continuous
-file watch. Retained memory can grow as new requests accumulate until the session
-closes. There is no persistent investigation, graphical interface or interpreting
-lens yet.
+## Current limits
 
-No implementation task is currently active. The [documentation guide](docs/README.md)
-links to plans, decisions and historical records; the [backlog](docs/backlog.md)
-contains candidates for future work, not an approved next implementation.
+- **[Analysis scope](docs/cli-reference.md#supported-typescript-population-and-qualifications):**
+  TypeScript only, one configured project at a time, with explicit coverage limits.
+- **[Session lifetime](docs/cli-reference.md#input-stability-and-retained-work):**
+  investigations cannot be saved or resumed. Detected input changes require
+  reopening; long sessions can accumulate memory until closed.
