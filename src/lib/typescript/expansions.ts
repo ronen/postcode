@@ -25,7 +25,7 @@ function statements(module: ts.Symbol): readonly ts.Statement[] {
   });
 }
 
-/** Preparation completes compiler queries before the caller finalizes session identity. */
+/** Prepares expansion queries before the caller captures input support and materializes records. */
 export function prepareExpansions(checker: ts.TypeChecker, modules: readonly ExpansionModule[], requested: readonly ModuleExpansion[]) {
   const resolve = (symbol: ts.Symbol): ts.Symbol => symbol.flags & ts.SymbolFlags.Alias ? checker.getAliasedSymbol(symbol) : symbol;
   const aliasAllowsValue = (symbol: ts.Symbol, seen = new Set<ts.Symbol>()): boolean => {

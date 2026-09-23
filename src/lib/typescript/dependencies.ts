@@ -32,7 +32,7 @@ interface PreparedRequest {
 type Evidence = (node: ts.Node, compilerName: string | null, resolution?: SourceEvidenceRecord['resolution'],
   dependencyResolution?: SourceEvidenceRecord['dependencyResolution']) => RecordId;
 
-/** All compiler and captured-host queries finish before session identity is finalized. */
+/** Prepares dependency queries before the caller captures input support and materializes records. */
 export function prepareDependencies(program: ts.Program, host: ts.CompilerHost, modules: readonly ModuleCandidate[]) {
   const checker = program.getTypeChecker();
   const diagnostics = program.getSyntacticDiagnostics();
