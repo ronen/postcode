@@ -4,8 +4,8 @@ Record type: disposition
 Date: 2026-09-23
 Task: [Transient interactive session shell](../../tasks/2026-09-23-transient-session-shell.md)
 Handoff: [Integrated review assignment](2026-09-23-integrated-handoff.md)
-Findings: [Integrated round 1](2026-09-23-integrated-round-1-findings.md)
-State: all round 1 findings dispositioned; ready for round 2
+Findings: [Integrated round 1](2026-09-23-integrated-round-1-findings.md); [integrated round 2](2026-09-23-integrated-round-2-findings.md)
+State: round 2 assessed; human direction required for R2-F1
 
 ## Findings and dispositions
 
@@ -216,18 +216,76 @@ latency guarantee. The prior outlier did not recur; its cause is still unknown.
 Long-session growth and the other explicitly approved residual limits remain
 unresolved, not silently treated as verified.
 
+## Round 2 disposition
+
+The human returned [round 2](2026-09-23-integrated-round-2-findings.md) and
+requested correction and another review round. The report is preserved unchanged.
+The reviewer confirms round 1 F1–F5 were corrected as approved, including real
+terminal reproduction of EOF, queued input and interruption. Its checks passed
+226 tests and 162 comparisons. Those are the reviewer's results, not new checks
+run by the implementing agent during this disposition.
+
+### R2-F1 — accepted finding; resolution requires human direction
+
+The measured cost follows from the retry policy approved after round 1. A partial
+expansion prevents caching a module basis in every lens that requests it. The
+provider also declines to cache partial expansion work, so focused requests
+repeat project-wide expansion and retain new attempts even when their displayed
+subject is complete. The report's PostCode-sized probe found roughly threefold
+shell inspection latency and about 3 MiB retained per repeated inspection; these
+are descriptive single-machine measurements, not guarantees.
+
+The implementing agent accepts the finding and recommends narrowing retries to
+when the provider has acquired additional inputs since the partial attempt.
+That would preserve truthful partial results and earlier attempts while avoiding
+identical work and new attempt records on an unchanged basis. Newly acquired
+inputs would remain distinct from changed inputs: detected changes must still
+invalidate the session, with no refresh or reopening. Such a correction needs
+coverage of both unchanged partial work and acquisition permitting another
+attempt, plus a PostCode-sized partial-expansion measurement.
+
+This recommendation changes the human-approved retry policy. The implementing
+agent therefore asked the human to choose between that narrower retry condition
+and retaining retries with explicit documentation of their project-wide latency
+and retained-memory cost. No runtime or product-documentation change has been
+made while the choice is pending. No finding is rejected or considered resolved.
+
+### Other round 2 observations
+
+- The acceptable idle Ctrl-C redraw, type-ahead transcript clarity and existing
+  singular/plural grammar are recorded as cosmetic/usability notes. They do not
+  change the truthful command ordering in observations or the R2-F1 policy choice;
+  no additional runtime changes are included in this pending disposition.
+- The confirmation of validation placement, cache invalidation, EOF behavior,
+  reference rendering and defect observations is acknowledged. No stale result
+  may be published after invalidation, even if its reuse cache was populated
+  before the publication check.
+- Previously approved residual limits remain explicit: opening interruption and
+  other platform/non-Git paths not interactively verified; sink failure and
+  defects checked through code/tests; no human acceptance inferred from reviewer
+  inspection; and the unexplained 257-second outlier. R2-F1 is new measured
+  evidence about partial-project memory growth and is not silently absorbed into
+  that earlier approval. Its disposition specifically awaits the choice above.
+- The reviewer recommends documenting accepted cost or narrowing retries before
+  closure. The implementing agent will prepare the requested next review target
+  under the original assignment after the human-directed resolution and its
+  verification. The reviewer’s suggestion that a documentation-only resolution
+  might not need full rereview does not waive the human's request for another
+  round.
+
 ## Review rounds
 
 - Round 1 reviewed `6dd42cb6426cf21d56cbeab4745e179354007576`, scope
   `8dccbfd..6dd42cb`, with new scrutiny on `45205c5..6dd42cb`.
-- Round 2 remains under the original integrated handoff. Its exact corrected
-  target is `cafbd9c0b99016ecf9a1575bf9a8ddd67f009b0a`, with the corrections and
-  verification above. Human arrangement and returned findings remain pending;
-  no replacement assignment is needed.
+- Round 2 reviewed `cafbd9c0b99016ecf9a1575bf9a8ddd67f009b0a`, with new scrutiny
+  on `6dd42cb..cafbd9c`. Its [findings](2026-09-23-integrated-round-2-findings.md)
+  confirm the prior corrections and introduce R2-F1.
+- Round 3 retains the original integrated handoff. Its corrected target awaits
+  the human's R2-F1 policy direction and the resulting correction/verification.
 
 ## Gate conclusion
 
-Further independent review is required. The human approved all three proposed
-dispositions; no policy question remains pending from round 1. The
-implementation task remains active; the review gate and human inspection have
-not been accepted or waived.
+Human direction is required on R2-F1 before preparing the final round 3 target.
+The original handoff and returned findings are unchanged. The task remains active;
+no review recommendation constitutes human acceptance or waives the required
+human inspection. The previously approved residual limits remain recorded.
