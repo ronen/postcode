@@ -119,6 +119,15 @@ remains `441772648cbd550b108c1060cc8dfb1df883edc4`. The task remains active pend
 the human's final review-gate acceptance and confirmation of the required human
 inspection. The reviewer recommendation does not supply either acceptance.
 
+2026-09-23: updated the top-level README at the human's request. It now leads
+with interactive shell use, includes a runnable fixture journey, separates
+one-shot examples, and explains precise references, stable partial reuse,
+additional-input retries, invalidation, termination and transient memory lifetime.
+Corrected one stale statement in the linked CLI reference that described all
+invocations as fresh evaluations. No runtime behavior changed. Human inspection
+and final review-gate acceptance remain pending as explicitly confirmed by the
+human; the task stays active.
+
 ## Verification
 
 At the one-shot checkpoint: `npm run check` and all 197 tests passed. Controlled
@@ -184,3 +193,10 @@ These are reviewer measurements with the limits preserved in the
 The implementing agent changed only records and project status in response;
 diff checking passed, and runtime checks were not rerun for these documentation
 changes. Human inspection and acceptance remain unconfirmed.
+
+For the README follow-up: checked the revised syntax against CLI help and the
+current command reference. Ran the documented exports-fixture shell sequence
+in a real pseudo-terminal: all nine commands recorded completed outcomes and
+the process exited 0. Diff checking passed. No runtime or test code changed,
+and the full suite was not rerun for this documentation update. This smoke
+check does not replace the pending human inspection.
