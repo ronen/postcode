@@ -17,6 +17,8 @@ Context: the pre-existing note edit was committed by the human before task openi
 
 the first review round is complete; it has a low priority finding that you may as well fix, and a few notes that you can address or keep in mind for later.  handle these as you see fit, record the disposition and then you're clear to continue implementation
 
+The review is complete.  Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.  When complete, prepare handoff for next review round
+
 ## Outcome
 
 2026-09-23: implemented the plan's one-shot conversion checkpoint in
