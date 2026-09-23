@@ -15,6 +15,8 @@ That file has been committed, the worktree is now clean.  You may proceed
 
 Context: the pre-existing note edit was committed by the human before task opening.
 
+the first review round is complete; it has a low priority finding that you may as well fix, and a few notes that you can address or keep in mind for later.  handle these as you see fit, record the disposition and then you're clear to continue implementation
+
 ## Outcome
 
 2026-09-23: implemented the plan's one-shot conversion checkpoint in
