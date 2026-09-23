@@ -19,6 +19,13 @@ the first review round is complete; it has a low priority finding that you may a
 
 The review is complete.  Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.  When complete, prepare handoff for next review round
 
+yes proceed with those
+
+Context: approved retrying partial expansions (F3), retaining the publisher's
+pre-output check while removing the duplicate post-execution check for CLI
+requests (F4), and carrying the unexplained latency outlier and verification
+limits explicitly into rereview.
+
 ## Outcome
 
 2026-09-23: implemented the plan's one-shot conversion checkpoint in
