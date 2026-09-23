@@ -130,6 +130,17 @@ invocations as fresh evaluations. No runtime behavior changed. Human inspection
 and final review-gate acceptance remain pending as explicitly confirmed by the
 human; the task stays active.
 
+2026-09-23: fetched and preserved the complete Copilot review of PR #6 in
+[round 4 findings](../reviews/transient-session-shell/2026-09-23-integrated-round-4-copilot-findings.md),
+including the overall review and all three inline comments; no conversation
+comments were present. Each finding was accepted as stale descriptive text after
+checking the actual session-allocation and captured-input preparation sequence.
+Correction `60c33a4` updates the dependency/expansion preparation comments and the
+manual probe's identity explanation. No underlying identity or input-support
+defect was established, and no runtime semantics changed. The integrated
+disposition records evidence and resolution separately for every finding. Human
+inspection and final review-gate acceptance remain pending; the task stays active.
+
 ## Verification
 
 At the one-shot checkpoint: `npm run check` and all 197 tests passed. Controlled
@@ -202,3 +213,12 @@ in a real pseudo-terminal: all nine commands recorded completed outcomes and
 the process exited 0. Diff checking passed. No runtime or test code changed,
 and the full suite was not rerun for this documentation update. This smoke
 check does not replace the pending human inspection.
+
+For the Copilot follow-up: paginated GitHub REST retrieval covered reviews,
+inline comments/replies and PR conversation comments. Verified all four retrieved
+bodies and their source links against the preserved record. `npm run build` and
+five existing focused identity/input-support tests passed. The manual dependency
+provider probe completed on the dependency-contract fixture with full
+materialization and the corrected policy text. Diff checking passed for the
+corrections. No new tests or full-suite rerun were needed for the two comments
+and one descriptive output string; no broader runtime verification is claimed.
