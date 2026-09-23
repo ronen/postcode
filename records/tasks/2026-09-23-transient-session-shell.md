@@ -32,8 +32,20 @@ new observation format instead of snapshot scope and generated commands.
 
 The one-shot review gate was cleared by the human after round 1. F1 was corrected
 in `3846f1f`; the [disposition](../reviews/transient-session-shell/2026-09-23-one-shot-disposition.md)
-records verification and treatment of the non-defect notes. The task remains
-active for accumulation, growth-safe bindings, change detection and the prompt.
+records verification and treatment of the non-defect notes.
+
+2026-09-23: implemented the integrated session shell in
+`6dd42cb6426cf21d56cbeab4745e179354007576`. The provider retains discovery and
+completed requested work; projections preserve their evaluation bases and earlier
+input support. Append-only bindings support precise in-session selection.
+Compiler/repository/environment validation invalidates changed sessions. The
+terminal shell shares request publication with one-shot use, isolates compiler
+work in a terminable worker, and records truthful command outcomes and disclosures.
+Runtime documentation and implementation conventions describe the established
+reuse, binding, validation, observation and interruption practices.
+
+The task remains active for final human-arranged integrated review and human
+inspection/acceptance. It is not closed.
 
 ## Verification
 
@@ -46,3 +58,13 @@ dependencies and explicit source detail. See the
 for methods, timings, memory observations, normalization details and remaining
 verification. This is implementation-agent evidence, not independent review or
 human acceptance of the complete plan.
+
+
+At the integrated implementation: all 216 tests, type checking and diff checking
+passed; 162 complete view/output comparisons passed across fresh, accumulated,
+repeated and reordered requests. Actual compiler-backed shell interruption
+produced an interruption observation without a view and awaited worker termination.
+PostCode journeys measured first/follow-up costs and memory release, including an
+unexplained latency outlier retained in the report. See the
+[integrated validation](../validation/transient-session-shell/2026-09-23-integrated.md)
+for coverage, measurements and remaining human verification.
