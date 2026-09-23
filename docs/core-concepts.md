@@ -88,33 +88,37 @@ An **evaluation outcome** describes what occurred in that attempt: applicability
 
 An outcome can exist without a produced claim or entity, and an incomplete attempt can have usable qualified results. An established empty result is therefore different from the absence of a result. Evaluation outcome and Claim context describe different things even when an outcome helps explain a projection's coverage or limitations.
 
-### Analysis snapshot
+### Session
 
-*[decision: [Initial core concepts](decisions/initial-core-concepts-decisions.md#include-only-the-analysis-and-identity-context-needed-by-the-definitions)]*
+*[decision: [Transient analysis sessions](decisions/transient-analysis-sessions.md#session-as-the-analysis-and-reference-context)]*
 
-An **analysis snapshot** identifies the analysis-defining inputs and method context for a body of program information. It distinguishes the state and analytical basis of that information from the particular invocation or evaluation attempt that produced it. It is more specific than a revision name alone.
+A **Session** is a continuing context for investigation, retaining subject-reference bindings, captured evidence, analysis results, evaluation outcomes, and projections. Its accumulated information can grow as requests require additional analysis or inputs. A session is not an immutable description of a fixed, completely observed input set, a workspace of managed views, or a promise to follow changing program inputs.
 
-Snapshot-scoped references identify records within that analysis context. Correspondence across snapshots is a separate qualified relationship, not semantic continuity implied by matching identifier spellings.
+Within a session, a reference once bound to an entity cannot be rebound. Evidence and published results retain their content, supporting context, and qualifications when later work adds information. Session membership alone does not establish a claim's evidence, completeness, or guarantee.
+
+The initial session opens one configured project and assumes its relevant inputs remain unchanged. Detection of a relevant change invalidates the session for further investigation; detection is best-effort and capture remains non-atomic. This does not establish earlier contents of an input first observed later.
+
+A transient session ends with its process. References have meaning within the active session. Observations carry a session identifier to correlate commands within the session; this identifier does not establish the evidential basis or consistency of program claims. Persistence and any future validity policy for reopening a session are separate decisions.
 
 ## Investigation and representation
 
 ### Lens
 
-*[decision: [Initial core concepts](decisions/initial-core-concepts-decisions.md#preserve-the-lens-projection-presentation-and-view-distinction)]*
+*[decision: [Transient analysis sessions](decisions/transient-analysis-sessions.md#retained-domain-and-storage-boundaries)]*
 
 A **Lens** describes the aspect of a subject being investigated: the question being asked. Lens parameters refine the information requested, such as direct versus transitive callers. A composite lens selects and combines information from other qualified projections while remaining a lens over its subject.
 
 ### Projection
 
-*[decision: [Initial core concepts](decisions/initial-core-concepts-decisions.md#preserve-the-lens-projection-presentation-and-view-distinction)]*
+*[decision: [Transient analysis sessions](decisions/transient-analysis-sessions.md#immutable-information-within-an-accumulating-session)]*
 
 A **Projection** is the qualified information produced by applying a lens to a particular program state and subject, with particular lens parameter values. It includes its content and the qualifications needed to understand what that content establishes.
 
-A projection is an addressable program-domain object identifying its subject, lens, lens parameters, and analysis snapshot, with references to its claims and relevant evaluation outcomes. It is distinct from both an evaluation attempt and a rendering of its result. Presentation choices describe how the information is shown; they do not redefine the question asked by the lens.
+A projection is a program-domain object, addressable within its session, identifying its subject, lens, lens parameters, and session context, with references to its claims, supporting evidence and method context, and relevant evaluation outcomes. A produced projection retains the information selected for that result; later accumulation does not silently change it. For the current mechanically derived views, repeating a request with unchanged inputs and completed evaluation yields the same information. Reconstructing or rendering a projection need not establish a different answer. A later evaluation may add information when earlier work was incomplete, without changing the earlier projection or outcome. It is distinct from both an evaluation attempt and a rendering of its result. Presentation choices describe how the information is shown; they do not redefine the question asked by the lens.
 
 ### Presentation and View
 
-*[decision: [Initial core concepts](decisions/initial-core-concepts-decisions.md#preserve-the-lens-projection-presentation-and-view-distinction)]*
+*[decision: [Transient analysis sessions](decisions/transient-analysis-sessions.md#retained-domain-and-storage-boundaries)]*
 
 A **Presentation** describes how a projection is rendered, interacted with, or exposed through a PostCode interface. Presentation parameters describe choices such as layout, sorting, grouping, filtering, and disclosure of detail. A presentation can be graphical, human-readable text, or structured machine-readable data.
 

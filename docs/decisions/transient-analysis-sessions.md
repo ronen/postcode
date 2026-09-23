@@ -1,26 +1,27 @@
 # Transient analysis sessions
 
-Status: in preparation
+Status: accepted
+Decided: 2026-09-23
 Arising from: [Transient interactive session shell](../plans/transient-session-shell.md)
 Scope: session context, reference binding, accumulated analysis, and CLI/observation lifecycle
 Supersedes:
 
-- [Initial core concepts — Include only the analysis and identity context needed by the definitions](../../../docs/decisions/initial-core-concepts-decisions.md#include-only-the-analysis-and-identity-context-needed-by-the-definitions)
-- [Initial core concepts — Preserve the lens, projection, presentation, and view distinction](../../../docs/decisions/initial-core-concepts-decisions.md#preserve-the-lens-projection-presentation-and-view-distinction)
-- [Projection architecture — Use a record-oriented program-information model](../../../docs/decisions/initial-projection-architecture-decisions.md#use-a-record-oriented-program-information-model)
-- [Projection architecture — Isolate storage behind ProgramRecordStore](../../../docs/decisions/initial-projection-architecture-decisions.md#isolate-storage-behind-programrecordstore)
-- [Projection architecture — Use deterministic logical identity independently of persistence](../../../docs/decisions/initial-projection-architecture-decisions.md#use-deterministic-logical-identity-independently-of-persistence)
-- [Module inventory — Represent modules as qualified domain entities](../../../docs/decisions/initial-module-inventory-decisions.md#represent-modules-as-qualified-domain-entities)
-- [Module inventory — Make references repeatable but snapshot-scoped](../../../docs/decisions/initial-module-inventory-decisions.md#make-references-repeatable-but-snapshot-scoped)
-- [Identity constraints — Make analysis identity independent of invocation identity](../../../docs/decisions/adopt-identity-evidence-and-observation-constraints.md#make-analysis-identity-independent-of-invocation-identity)
-- [Repository organization — Represent groups and placement with qualified identities and relationships](../../../docs/decisions/repository-organization-decisions.md#represent-groups-and-placement-with-qualified-identities-and-relationships)
-- [Repository organization — Extend snapshot identity only with claim-relevant organization inputs](../../../docs/decisions/repository-organization-decisions.md#extend-snapshot-identity-only-with-claim-relevant-organization-inputs)
-- [Module dependencies — Preserve external, diagnostic, evaluation, and observation boundaries](../../../docs/decisions/module-dependency-structure-decisions.md#preserve-external-diagnostic-evaluation-and-observation-boundaries)
-- [Observation recording — Submit self-contained, invocation-scoped observation batches](../../../docs/decisions/initial-observation-recording-decisions.md#submit-self-contained-invocation-scoped-observation-batches)
-- [Projection architecture — Make projection and evaluation state first-class records](../../../docs/decisions/initial-projection-architecture-decisions.md#make-projection-and-evaluation-state-first-class-records)
-- [Module inventory — Preserve Claim context and evaluation outcomes distinctly](../../../docs/decisions/initial-module-inventory-decisions.md#preserve-claim-context-and-evaluation-outcomes-distinctly)
-- [Observation recording — Record normal view production automatically](../../../docs/decisions/initial-observation-recording-decisions.md#record-normal-view-production-automatically)
-- [Repository organization — Keep organization schemes explicit and separate](../../../docs/decisions/repository-organization-decisions.md#keep-organization-schemes-explicit-and-separate)
+- [Initial core concepts — Include only the analysis and identity context needed by the definitions](initial-core-concepts-decisions.md#include-only-the-analysis-and-identity-context-needed-by-the-definitions)
+- [Initial core concepts — Preserve the lens, projection, presentation, and view distinction](initial-core-concepts-decisions.md#preserve-the-lens-projection-presentation-and-view-distinction)
+- [Projection architecture — Use a record-oriented program-information model](initial-projection-architecture-decisions.md#use-a-record-oriented-program-information-model)
+- [Projection architecture — Isolate storage behind ProgramRecordStore](initial-projection-architecture-decisions.md#isolate-storage-behind-programrecordstore)
+- [Projection architecture — Use deterministic logical identity independently of persistence](initial-projection-architecture-decisions.md#use-deterministic-logical-identity-independently-of-persistence)
+- [Module inventory — Represent modules as qualified domain entities](initial-module-inventory-decisions.md#represent-modules-as-qualified-domain-entities)
+- [Module inventory — Make references repeatable but snapshot-scoped](initial-module-inventory-decisions.md#make-references-repeatable-but-snapshot-scoped)
+- [Identity constraints — Make analysis identity independent of invocation identity](adopt-identity-evidence-and-observation-constraints.md#make-analysis-identity-independent-of-invocation-identity)
+- [Repository organization — Represent groups and placement with qualified identities and relationships](repository-organization-decisions.md#represent-groups-and-placement-with-qualified-identities-and-relationships)
+- [Repository organization — Extend snapshot identity only with claim-relevant organization inputs](repository-organization-decisions.md#extend-snapshot-identity-only-with-claim-relevant-organization-inputs)
+- [Module dependencies — Preserve external, diagnostic, evaluation, and observation boundaries](module-dependency-structure-decisions.md#preserve-external-diagnostic-evaluation-and-observation-boundaries)
+- [Observation recording — Submit self-contained, invocation-scoped observation batches](initial-observation-recording-decisions.md#submit-self-contained-invocation-scoped-observation-batches)
+- [Projection architecture — Make projection and evaluation state first-class records](initial-projection-architecture-decisions.md#make-projection-and-evaluation-state-first-class-records)
+- [Module inventory — Preserve Claim context and evaluation outcomes distinctly](initial-module-inventory-decisions.md#preserve-claim-context-and-evaluation-outcomes-distinctly)
+- [Observation recording — Record normal view production automatically](initial-observation-recording-decisions.md#record-normal-view-production-automatically)
+- [Repository organization — Keep organization schemes explicit and separate](repository-organization-decisions.md#keep-organization-schemes-explicit-and-separate)
 
 ## Context
 
@@ -332,11 +333,11 @@ retains zero/one/many outcomes, with no fuzzy, wildcard, list, or successor
 inference introduced by this slice.
 
 Module standard expansions retain effective exports and associated recorded
-documentation; the accepted [composition expansion](../../../docs/decisions/module-composition-property-decision.md) remains applicable.
+documentation; the accepted [composition expansion](module-composition-property-decision.md) remains applicable.
 Dependency children and parents remain separate lens questions, not module
 standard expansions. Presentation requirements are declared before evaluation;
 rendering consumes materialized information and discloses consequential omissions.
-The accepted [subject-kind expansion definition](../../../docs/decisions/subject-kind-standard-expansion-decision.md) remains in force.
+The accepted [subject-kind expansion definition](subject-kind-standard-expansion-decision.md) remains in force.
 
 Groups remain entities with provider-established segment names and bound Entity
 IDs, without generated handles or path selectors. The repository root has a
@@ -435,9 +436,9 @@ historical; this record supplies the bounded answer needed for accumulated resul
 
 ## Governing and implementation impact
 
-The [core concepts](../docs/core-concepts.md) replace Analysis snapshot with
+The [core concepts](../core-concepts.md) replace Analysis snapshot with
 Session and describe projections in that context. The
-[architectural constraints](../docs/architectural-constraints.md) replace
+[architectural constraints](../architectural-constraints.md) replace
 snapshot-based identity requirements with stable session references and retained
 evidence and method context.
 

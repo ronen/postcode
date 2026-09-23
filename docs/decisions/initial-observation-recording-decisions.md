@@ -1,9 +1,13 @@
 # Initial observation recording decisions
 
-Status: accepted
+Status: partially superseded
 Decided: 2026-09-12
 Arising from: [Initial module inventory plan](../plans/initial-module-inventory-plan.md)
 Scope: automatic observation production in the initial PostCode slice
+Superseded in part:
+
+- [Submit self-contained, invocation-scoped observation batches](#submit-self-contained-invocation-scoped-observation-batches) is replaced by [Command-scoped observations with session correlation](transient-analysis-sessions.md#command-scoped-observations-with-session-correlation).
+- [Record normal view production automatically](#record-normal-view-production-automatically) is replaced by [Command-scoped observations with session correlation](transient-analysis-sessions.md#command-scoped-observations-with-session-correlation).
 
 ## Context
 

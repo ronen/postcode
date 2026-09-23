@@ -1,21 +1,21 @@
 # Transient interactive session shell
 
-Status: in preparation
+Status: approved
 Created: 2026-09-22
 Updated: 2026-09-23
+Superseded by:
 
-This is a provisional plan, not implementation authorization. Read it with the
-[proposed decisions](../decisions/transient-analysis-sessions.md) and the complete
-proposed revisions to [core concepts](../docs/core-concepts.md) and
-[architectural constraints](../docs/architectural-constraints.md).
+This plan is governed by the [session decisions](../decisions/transient-analysis-sessions.md),
+[core concepts](../core-concepts.md), and
+[architectural constraints](../architectural-constraints.md).
 
 ## Motivation and strongest alternative
 
 The strongest argument against a shell now is that it adds lifecycle complexity
 without adding a program-understanding capability. The completed
-[performance task](../../../records/tasks/2026-09-21-analysis-latency.md)
+[performance task](../../records/tasks/2026-09-21-analysis-latency.md)
 already reduced ordinary analysis cost through discovery-local digest reuse.
-Its [measurements](../../../records/validation/2026-09-21-analysis-latency.md)
+Its [measurements](../../records/validation/2026-09-21-analysis-latency.md)
 report fresh PostCode dependency analysis falling from 39.09 to 4.82 seconds and
 organization from 39.00 to 4.35 seconds. Those results do not measure session reuse.
 

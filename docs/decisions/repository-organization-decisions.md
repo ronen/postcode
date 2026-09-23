@@ -1,9 +1,14 @@
 # Repository organization slice decisions
 
-Status: accepted
+Status: partially superseded
 Decided: 2026-09-15
 Arising from: [Repository organization plan](../plans/repository-organization-plan.md)
 Scope: the initial repository-layout organization slice
+Superseded in part:
+
+- [Represent groups and placement with qualified identities and relationships](#represent-groups-and-placement-with-qualified-identities-and-relationships) is replaced by [Stable reference bindings within a session](transient-analysis-sessions.md#stable-reference-bindings-within-a-session), [Retained domain and storage boundaries](transient-analysis-sessions.md#retained-domain-and-storage-boundaries).
+- [Extend snapshot identity only with claim-relevant organization inputs](#extend-snapshot-identity-only-with-claim-relevant-organization-inputs) is replaced by [Stable inputs as the session precondition](transient-analysis-sessions.md#stable-inputs-as-the-session-precondition), [Retained domain and storage boundaries](transient-analysis-sessions.md#retained-domain-and-storage-boundaries).
+- [Keep organization schemes explicit and separate](#keep-organization-schemes-explicit-and-separate) is replaced by [Retained domain and storage boundaries](transient-analysis-sessions.md#retained-domain-and-storage-boundaries).
 
 ## Context
 

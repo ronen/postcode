@@ -4,7 +4,10 @@ Status: partially superseded
 Decided: 2026-09-16
 Arising from: [Module dependencies plan](../plans/module-dependencies-plan.md)
 Scope: direct TypeScript module-dependency evidence, graph semantics, project and focused navigation, and analysis boundaries
-Superseded in part: [Include bounded CommonJS-form requests without loader claims](#include-bounded-commonjs-form-requests-without-loader-claims) is replaced by [Bounded CommonJS source evidence](bounded-commonjs-source-evidence-decision.md); all other headed decisions remain accepted.
+Superseded in part:
+
+- [Include bounded CommonJS-form requests without loader claims](#include-bounded-commonjs-form-requests-without-loader-claims) is replaced by [Bounded CommonJS source evidence](bounded-commonjs-source-evidence-decision.md).
+- [Preserve external, diagnostic, evaluation, and observation boundaries](#preserve-external-diagnostic-evaluation-and-observation-boundaries) is replaced by [Immutable information within an accumulating session](transient-analysis-sessions.md#immutable-information-within-an-accumulating-session), [Retained domain and storage boundaries](transient-analysis-sessions.md#retained-domain-and-storage-boundaries).
 
 ## Context
 

@@ -1,9 +1,12 @@
 # Adopt identity, evidence, and observation constraints
 
-Status: accepted
+Status: partially superseded
 Decided: 2026-09-14
 Arising from: the adopted [product design](../../foundation/product-design.md), [initial projection architecture decisions](initial-projection-architecture-decisions.md), [initial module inventory decisions](initial-module-inventory-decisions.md), and [initial observation recording decisions](initial-observation-recording-decisions.md)
 Scope: identity, generated output, observations, and source evidence across PostCode
+Superseded in part:
+
+- [Make analysis identity independent of invocation identity](#make-analysis-identity-independent-of-invocation-identity) is replaced by [Session as the analysis and reference context](transient-analysis-sessions.md#session-as-the-analysis-and-reference-context), [Command-scoped observations with session correlation](transient-analysis-sessions.md#command-scoped-observations-with-session-correlation).
 
 ## Context
 
