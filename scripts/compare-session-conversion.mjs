@@ -32,13 +32,13 @@ function comparable(value) {
     .map(([key, item]) => [key === 'snapshot' ? 'session' : key, comparable(item)]));
   return value;
 }
-// Containment evidence is a set of supporting claims, historically ordered by
+// Containment references and organization evidence are supporting collections, historically ordered by
 // snapshot-derived hashes. Compare its membership after binding other references;
-// preserve all presentation row, population and relationship ordering.
+// preserve every evidence field/reference and all presentation row, population and relationship ordering.
 // Establish a bijection, not a blanket redaction: every repeated relationship
 // reference must keep pointing to the same paired record in the other view.
 function compareViews(left, right, beforeText, afterText) {
-  const forward = new Map(), backward = new Map(), referenceSets = [];
+  const forward = new Map(), backward = new Map(), referenceSets = [], evidenceSets = [];
   const reference = value => typeof value === 'string' && /^(?:snapshot:[a-f0-9]{64}|session:[a-f0-9-]{36}|(?:module|group)-[a-f0-9]{8,64})(?::|$)/.test(value);
   function visit(a, b, location) {
     if (reference(a) || reference(b)) {
@@ -49,6 +49,7 @@ function compareViews(left, right, beforeText, afterText) {
     }
     if (Array.isArray(a)) {
       assert.ok(Array.isArray(b), location); assert.equal(a.length, b.length, location);
+      if (location.endsWith('.organizationEvidence')) { evidenceSets.push([a, b, location]); return; }
       if (location.endsWith('.containment')) { referenceSets.push([a, b, location]); return; }
       a.forEach((item, i) => visit(item, b[i], `${location}[${i}]`)); return;
     }
@@ -61,6 +62,26 @@ function compareViews(left, right, beforeText, afterText) {
     assert.deepEqual(b, a, location);
   }
   visit(comparable(left), comparable(right), 'view');
+  for (const [a, b, location] of evidenceSets) {
+    const remaining = new Set(b);
+    for (const record of a) {
+      let matched = false;
+      for (const candidate of remaining) {
+        const oldForward = new Map(forward), oldBackward = new Map(backward), oldSetCount = referenceSets.length;
+        try {
+          visit(record, candidate, location);
+          remaining.delete(candidate); matched = true; break;
+        } catch (error) {
+          if (!(error instanceof assert.AssertionError)) throw error;
+          forward.clear(); backward.clear();
+          oldForward.forEach((value, key) => forward.set(key, value));
+          oldBackward.forEach((value, key) => backward.set(key, value));
+          referenceSets.length = oldSetCount;
+        }
+      }
+      assert.ok(matched, `No equivalent supporting record at ${location}: ${record.kind}`);
+    }
+  }
   for (const [a, b, location] of referenceSets) {
     const unmatched = new Set(b);
     for (const id of a.filter(id => forward.has(id))) {
