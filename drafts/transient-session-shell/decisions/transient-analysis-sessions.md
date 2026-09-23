@@ -17,6 +17,10 @@ Supersedes:
 - [Repository organization — Extend snapshot identity only with claim-relevant organization inputs](../../../docs/decisions/repository-organization-decisions.md#extend-snapshot-identity-only-with-claim-relevant-organization-inputs)
 - [Module dependencies — Preserve external, diagnostic, evaluation, and observation boundaries](../../../docs/decisions/module-dependency-structure-decisions.md#preserve-external-diagnostic-evaluation-and-observation-boundaries)
 - [Observation recording — Submit self-contained, invocation-scoped observation batches](../../../docs/decisions/initial-observation-recording-decisions.md#submit-self-contained-invocation-scoped-observation-batches)
+- [Projection architecture — Make projection and evaluation state first-class records](../../../docs/decisions/initial-projection-architecture-decisions.md#make-projection-and-evaluation-state-first-class-records)
+- [Module inventory — Preserve Claim context and evaluation outcomes distinctly](../../../docs/decisions/initial-module-inventory-decisions.md#preserve-claim-context-and-evaluation-outcomes-distinctly)
+- [Observation recording — Record normal view production automatically](../../../docs/decisions/initial-observation-recording-decisions.md#record-normal-view-production-automatically)
+- [Repository organization — Keep organization schemes explicit and separate](../../../docs/decisions/repository-organization-decisions.md#keep-organization-schemes-explicit-and-separate)
 
 ## Context
 
@@ -218,8 +222,19 @@ self-contained and carries a session identifier and command order. The identifie
 is constant within a session and distinguishes it from other sessions; its format
 is an implementation choice. One-shot invocations use the same model.
 
-Each batch remains interpretable without earlier batches or the transient program
-store. Events refer to shared context and artifacts included once within the
+Normal view production automatically records repository and session context;
+lens, subject, lens parameters, presentation, presentation parameters, and declared
+expansions; selector input and resolved subjects; available navigation or focus
+provenance; relevant evaluation outcomes, qualifications, refusals, unavailability,
+and failures; projection and view identity; the qualified machine-readable view
+artifact and exact rendered output; and actual source disclosure. The record of
+what was presented remains distinct from analysis that was available but not shown.
+Observation artifacts may contain sensitive repository information, under the
+existing sink privacy contract.
+
+Each batch has its own UUID, independently of the session correlation identifier.
+Event and context records retain their UUIDs. Each batch remains interpretable
+without earlier batches or the transient program store. Events refer to shared context and artifacts included once within the
 batch, and those references resolve within the submitted batch. Batch-local
 event and context identifiers remain distinct from content identity and the
 session correlation identifier. Delivery occurs at command completion rather
@@ -273,6 +288,9 @@ qualification, or materialization. The store is ephemeral; its engine remains an
 implementation choice. Durable caching, durable investigation state, and
 observation storage are separate lifecycle concerns. Retaining an ephemeral
 store would not by itself establish a durable cache-validity contract.
+Cross-process caching remains deferred until all analysis-defining inputs can be
+validated and retention, migration, concurrency, cleanup, and recovery are
+addressed.
 
 Lens, projection, presentation, and view retain distinct meanings. A lens defines
 the question; lens parameters refine requested information. A projection is
@@ -282,20 +300,35 @@ parameters distinct from lens parameters. A view instantiates a presentation of
 a projection. These distinctions do not require separately materialized pipeline
 stages or a universal projection-key formula.
 
+A Claim supplies asserted information; Claim context supplies supporting evidence,
+provenance and method, scope, epistemological guarantee, and limitations. Shared
+context remains attributable and narrower context is not erased. Evaluation
+outcomes separately describe applicability, availability, execution,
+materialization, relevant cost, and failure or stopping reasons. They remain
+available when no entity or claim is produced, distinguishing established emptiness
+from absence of a result. Projections are stored addressable domain objects;
+evaluation outcomes are distinct records or immutable domain values associated
+with the relevant request or materialization. Repeated attempts do not overwrite
+earlier outcomes. Projection qualification selects relevant evaluation outcomes
+rather than inheriting unrelated work or failures from shared evaluation.
+
 Modules remain qualified domain entities with established names or honest
-anonymity, generated mnemonic handles, bound Entity IDs, and overlapping
+anonymity, simple deterministic generated mnemonic handles, bound Entity IDs, and overlapping
 established facets. The supported population and TypeScript identity rules are
-unchanged. Lens-wide and narrower Claim context remain attributable. Inspection
+unchanged. Handle generation is deterministic for equivalent supporting inputs;
+the freedom to allocate session-local references does not relax that requirement.
+Language-specific evidence is retained without presenting TypeScript categories
+as universal PostCode facts. Lens-wide and narrower Claim context remain attributable. Inspection
 selects subjects rather than exposing arbitrary stored records. Exact lookup
 retains zero/one/many outcomes, with no fuzzy, wildcard, list, or successor
 inference introduced by this slice.
 
 Module standard expansions retain effective exports and associated recorded
-documentation; later accepted composition expansion remains applicable.
+documentation; the accepted [composition expansion](../../../docs/decisions/module-composition-property-decision.md) remains applicable.
 Dependency children and parents remain separate lens questions, not module
 standard expansions. Presentation requirements are declared before evaluation;
 rendering consumes materialized information and discloses consequential omissions.
-The later subject-kind expansion definition remains in force.
+The accepted [subject-kind expansion definition](../../../docs/decisions/subject-kind-standard-expansion-decision.md) remains in force.
 
 Groups remain entities with provider-established segment names and bound Entity
 IDs, without generated handles or path selectors. The repository root has a
@@ -306,6 +339,15 @@ placements use the same module identity. Multiple placement, candidate ambiguity
 unplaced results, unavailable analysis, and out-of-population modules remain
 distinct. Exact group/module name collisions retain all matches, sectioned by
 kind, and displayed entities retain their precise references.
+
+Organization schemes remain explicitly identified, distinct qualified accounts.
+Repository layout is the initial method, not canonical architecture. Future
+package, namespace, build-target, declared, user-defined, or inferred schemes are
+not silently merged with it. Groups, claims, method context, and projection
+identity retain sufficient qualification to prevent accidental combination.
+Neither an organization aggregate entity nor a particular bundling of organization
+records within the session is required. Later comparison or composition requires
+explicit semantics.
 
 Repository evidence retains the claim-relevant visible artifact manifest, kinds,
 effective exclusions, generated-output boundaries, links, and opaque repository
@@ -321,9 +363,15 @@ unexamined external children are not an established empty set. Resolved opaque
 targets, unresolved requests, indeterminate targets, platform-provided targets,
 and unavailable analysis remain distinct wherever established by the provider.
 
+Dependency cycle groupings remain presentation structures within the session,
+not entities or independently selectable subjects.
+
 Project-open failures, qualified results with encountered diagnostics, partial or
 unavailable evaluation, failures preventing results, and unexpected defects remain
-distinct. Unrelated compiler checking is not required to discover diagnostics.
+distinct. Project-open failure precedes an investigation projection. After
+opening, diagnostics encountered on the requested analysis path qualify the
+relevant information; unrelated compiler checks are not run merely to search
+for diagnostics.
 Dependency methods and evidence remain attributable to their claims, and source
 disclosure, generated-output exclusion, and observations cover the resulting
 views, navigation, omissions, and actual disclosures.
@@ -369,6 +417,10 @@ Every entry in Supersedes denotes a whole headed decision. The replacements are:
 | Organization: snapshot inputs | Stable inputs as the session precondition; Retained domain and storage boundaries |
 | Dependencies: boundaries | Immutable information within an accumulating session; Retained domain and storage boundaries |
 | Observations: invocation batches | Command-scoped observations with session correlation |
+| Projection architecture: first-class projection and evaluation records | Immutable information within an accumulating session; Retained domain and storage boundaries |
+| Inventory: Claim context and evaluation outcomes | Immutable information within an accumulating session; Retained domain and storage boundaries |
+| Observations: automatic view recording | Command-scoped observations with session correlation |
+| Organization: explicit separate schemes | Retained domain and storage boundaries |
 
 The earlier unresolved logical/materialized projection identity discussion remains
 historical; this record supplies the bounded answer needed for accumulated results.
