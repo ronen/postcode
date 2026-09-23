@@ -68,6 +68,17 @@ materially qualified without direction. The next round retains the original
 integrated handoff; its final corrected target awaits those choices. The task
 remains active.
 
+2026-09-23: the human approved the three pending dispositions. F3 and F4 are
+corrected in `cafbd9c0b99016ecf9a1575bf9a8ddd67f009b0a`: module and dependency
+reuse require complete requested expansions; CLI execution defers its final
+validation to the publisher while direct execution retains both checks.
+Implementation conventions, the CLI reference and architecture describe these
+established practices. The integrated disposition now records all findings and
+notes, approved residual limits, final measurements and the exact round 2 target.
+The original integrated handoff is unchanged; review target `cafbd9c` includes
+both correction commits, with new review scope `6dd42cb..cafbd9c`. The task
+remains active for human-arranged rereview and human inspection/acceptance.
+
 ## Verification
 
 At the one-shot checkpoint: `npm run check` and all 197 tests passed. Controlled
@@ -96,3 +107,13 @@ PostCode analysis completed output and exited 0 without a trailing prompt. The
 compiler interruption probe still exited 130 without a fabricated view. Separate
 validation samples measured 299–336 ms per check. The disposition preserves the
 measurement method, full request timings, heap observations and unresolved limits.
+
+At the final round 2 target: build and type checking, all 226 tests, diff checking
+and 162 complete view/output comparisons passed. New regressions verify retries
+of real partial expansions, preservation of earlier views/bindings, two direct
+versus three publication checks, and before/after-output invalidation through
+actual worker delivery. Real compiler interruption again recorded no fabricated
+view and exited 130 after awaited teardown. The final PostCode journey completed;
+validation samples were 348–396 ms per pass and focused shell requests were
+about 1.07–1.20 seconds. The integrated disposition retains full measurements and
+the unexplained earlier outlier, with the human-approved remaining limits.
