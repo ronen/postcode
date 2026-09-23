@@ -26,6 +26,8 @@ pre-output check while removing the duplicate post-execution check for CLI
 requests (F4), and carrying the unexplained latency outlier and verification
 limits explicitly into rereview.
 
+The second round review is complete.  Address its new finding,  record the disposition, and prepare for next review round.  Ask me if  a substantial question arises.  When complete, prepare handoff for next review round.
+
 ## Outcome
 
 2026-09-23: implemented the plan's one-shot conversion checkpoint in
