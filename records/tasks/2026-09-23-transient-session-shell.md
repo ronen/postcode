@@ -104,6 +104,16 @@ remaining notes and round 3 focus. Round 3 is ready under the unchanged original
 handoff at target `4417726`, with correction scope `cafbd9c..4417726`. The task
 remains active for human-arranged review and human inspection/acceptance.
 
+2026-09-23: integrated round 3 and its supplementary long-session experiment were
+received and assessed. The reviewer reports no remaining actionable findings from
+rounds 1–3 and recommends no further round. The
+[integrated disposition](../reviews/transient-session-shell/2026-09-23-integrated-disposition.md)
+records every non-defect observation, the updated long-session evidence and the
+remaining limits. No runtime changes were required; the reviewed implementation
+remains `441772648cbd550b108c1060cc8dfb1df883edc4`. The task remains active pending
+the human's final review-gate acceptance and confirmation of the required human
+inspection. The reviewer recommendation does not supply either acceptance.
+
 ## Verification
 
 At the one-shot checkpoint: `npm run check` and all 197 tests passed. Controlled
@@ -154,3 +164,18 @@ inspection improved from 2630–2706 ms to 576–600 ms, and collected heap acro
 20 mixed requests changed from 273.6 → 368.6 MiB before to 237.9 → 237.6 MiB after.
 Full repeated results matched exactly. These descriptive measurements do not
 establish a general latency or memory bound; previously approved limits remain.
+
+At round 3 disposition: the independent reviewer reports passing type checking,
+228 tests, 162 comparisons, real compiler interruption, stable partial reuse,
+additional-acquisition retry, negative-resolution invalidation and a real
+partial-project shell journey. Its supplementary clean PostCode experiment ran
+800 direct commands with 238 distinct requests; every second-pass rendering
+digest matched the first pass. Collected heap grew with new distinct requests
+(about 135 KB each in that workload), stayed at 257.3–258.0 MiB during repetition,
+and fell to 39.2 MiB after close. No latency growth with store size was observed.
+The unexplained earlier outlier did not recur, but its cause remains unknown.
+These are reviewer measurements with the limits preserved in the
+[round 3 report](../reviews/transient-session-shell/2026-09-23-integrated-round-3-findings.md).
+The implementing agent changed only records and project status in response;
+diff checking passed, and runtime checks were not rerun for these documentation
+changes. Human inspection and acceptance remain unconfirmed.
