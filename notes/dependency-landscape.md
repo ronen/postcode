@@ -129,21 +129,12 @@ open.
 
 ## Explorative capability
 
-Candidate core terminology:
+The [explorative capability note](explorative-capabilities.md) defines this
+candidate planning term and discusses possible later promotion to a core
+concept. The dependency landscape and local dependency structure are candidate
+explorative capabilities.
 
-> **Explorative:** an analysis or capability whose results have an explicit,
-> qualified epistemological basis, but whose usefulness for human understanding
-> has not yet been established. An explorative capability is implemented and
-> visibly identified so that formative use can reveal where its results are
-> informative, irrelevant, misleading, or require refinement.
-
-Explorative describes product maturity and purpose, not weaker confidence in a
-result. Claims produced by an explorative capability retain the ordinary
-requirements for evidence, provenance and method, scope, epistemological
-guarantee, limitations, and evaluation outcomes. Formative use does not itself
-strengthen a claim or establish an interpretation.
-
-Use `[explorative]` as the candidate compact human-facing label. The uncommon word
+`[explorative]` is the candidate compact human-facing label. The uncommon word
 is intentional: it can carry a precise PostCode meaning without colliding with
 experimental schemas, experimental trials, or general exploratory activity.
 
@@ -158,11 +149,8 @@ Alternatives considered in discussion:
 - leaving the status implicit could make an exact result look like an adopted
   architectural interpretation.
 
-The dependency landscape and local dependency structure are candidate
-explorative capabilities. This core term should not be adopted merely to support
-working notes. If a later proposal uses it, the proposal should include the exact
-capability semantics, visible qualification, formative evaluation plan, and the
-corresponding core-concept decision.
+If a later proposal uses a visible status, it should specify the capability's
+semantics, what the label qualifies, and how formative use will assess its value.
 
 ## Relationship to conceptual units
 
