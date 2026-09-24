@@ -102,12 +102,12 @@ Added: 2026-09-24
 Origin: module investigation planning discussion of execution containment and usage allowances
 Area: investigation usage and budgeting
 
-Consider accumulated usage reporting and user-set allowances for hosted inference,
-separate from the per-evaluation mechanism that contains runaway investigations.
-The initial module investigation slice does not require a budgeting interface;
-users can consult usage information supplied by their provider. Future support
-could report session totals and, at coarse granularity, prevent a new investigation
-from starting once an allowance is exhausted without interrupting work in progress.
+Consider user-set allowances for hosted inference, separate from the per-evaluation
+mechanism that contains runaway investigations. The module investigation draft
+includes basic per-investigation and session usage reporting, with explicit coverage
+limits, but no budgeting interface. Future support could use those measurements
+to prevent a new investigation from starting once an allowance is exhausted,
+at coarse granularity without interrupting work in progress.
 Define allowance scope, configuration, measured units, and enforcement limitations;
 a token allowance is not a guaranteed monetary ceiling, and admission checks can
 permit an in-flight investigation to exceed the remaining allowance.
