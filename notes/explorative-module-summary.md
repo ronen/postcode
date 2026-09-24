@@ -1,12 +1,227 @@
 # Explorative module summary
 
-Discussion captured through 2026-09-23, from exploration on 2026-09-21–23.
+Discussion captured through 2026-09-24, from exploration on 2026-09-21–24.
 
 This note preserves exploratory product reasoning, not an approved plan, accepted
 decision, implementation task, or authorization to run an experiment. The human
 authorized recording the discussion in `notes/`. Directions expressed by the human
 are distinguished below from assistant recommendations and unresolved alternatives.
 The note may evolve or be discarded under the [notes conventions](README.md).
+The latest synthesis below supersedes earlier alternatives where they differ;
+earlier sections retain the reasoning that led to it.
+
+## Latest synthesis: operations, investigons, and interpreter dialogue
+
+The human tentatively chose to include `summary` and all three follow-up operations
+in the first slice. They appear useful to try together and share a result structure
+and interpretation machinery. Each still needs verification of its distinct
+purpose. Command spellings here are working names, not an approved CLI contract.
+This discussion authorizes recording notes, not implementation.
+
+### Working term: investigon
+
+The human and assistant settled on **investigon**, plural **investigons**, as the
+working name for the common interpretation artifact previously called an
+“account” or “part.” Earlier terminology below preserves the discussion; it does
+not imply separate account and part domain types.
+
+Working definition:
+
+> An investigon is an immutable, addressable interpretation artifact carrying
+> prose, referent information, evidence context, and investigation provenance.
+> Further operations produce new investigons linked to their predecessors.
+
+An investigon may contain a broad account and have subparts that are themselves
+investigons. It need not express an atomic claim or correspond to exactly one
+program entity. Its immutability concerns the retained artifact: decomposition
+creates finer investigons without splitting or changing the original, and a
+correction creates a new investigon explicitly linked to what it revises.
+
+The naming discussion sought a term for retained, qualified information that
+responds to an investigative question, at varying breadth and granularity:
+
+- **Account** has a strong competing meaning as a user, service, or computer
+  account; **part** implies a fragment rather than naming the common object.
+- **Interpretation** describes the epistemic character well, but did not convey
+  answering a question to the human. **Answer** felt too generic.
+- **Opinion** suggests weakly grounded subjectivity; **pronouncement** suggests
+  excessive authority or finality. Finding, assessment, explanation, description,
+  reading, and characterization each emphasized only some of the intended role.
+- Coinages considered included **investigum**, **investigus**, and
+  **investigatum**, alongside **investigon**. These were naming associations,
+  not claims about correct Latin. Investigum was briefly favored as an artifact
+  name, but raised a plural choice; the longer forms added little clarity.
+- The human identified the particle-like association of **investigon** as useful:
+  investigons are immutable units retained and passed between operations. This
+  does not imply indivisible semantic content. **Investigons** provides an easy,
+  unsurprising plural.
+
+The human agreed that this is a candidate **core concept**, not merely a CLI label
+or implementation class name. The planning package should propose a core-concepts
+definition and a corresponding decision explaining its relationship to subjects,
+claims, projections, and interpretation lineage. The decision should preserve the
+rationale for the name; the core-concepts entry should focus on meaning and
+relationships. Adoption requires approval of that package. Recording the term
+here neither changes governing terminology nor authorizes implementation.
+
+### Four operations over shared interpretation machinery
+
+| Operation | Intended request |
+| --- | --- |
+| `summary(module)` | Give a deliberately terse account of apparent functionality and responsibility, including significant mechanisms, cases, and delegation where useful. |
+| `explain(part)` | Make the selected account of this program easier to understand, unpacking useful detail omitted for brevity. |
+| `decompose(part)` | Refine the selected aspect into smaller, tersely described selectable aspects. |
+| `examine(part)` | Investigate the selected aspect more deeply and report substantive findings, sharper limits, or revisions. |
+
+The human accepted the proposed initial-summary content. No rigid headings or
+exhaustive branching are required. Parts should initially lean broad and coherent;
+they need not be atomic claims. Decomposition lets a user narrow their focus before
+requesting a deeper investigation.
+
+`explain` is not a general programming tutorial. Brief background may help clarify
+this program, but the operation remains grounded in the selected program context.
+A clearer explanation can be useful without a new finding. By contrast, mere
+wordier restatement would not demonstrate the value of `examine`. The earlier
+imagined `evaluation` transcript was illustrative, not verified implementation
+behavior, and the human found several of its purported deeper explanations to be
+restatements rather than substantive additions.
+
+Decomposition is interpretive: changing “assembles configuration” into activities
+such as reading files, environment values, and arguments introduces claims needing
+support. It is not sentence splitting. Its purpose is finer selectability, typically
+using the existing investigation, while examination typically extends that
+investigation. These are objectives, not absolute prohibitions on acquiring more
+evidence. Finer granularity and investigation depth are distinct dimensions.
+
+A hypothetical `summary --fine-grain` could satisfy the same refinement need but
+produce unwanted detail throughout the module. Local `decompose(part)` focuses the
+refinement. A whole-summary granularity option is not needed for the initial
+interaction. Shared interpretation machinery could accept granularity and an
+operation objective; this does not require exposing granularity as a lens parameter.
+
+All operations produce parts with associated metadata. Parts produced by any
+operation can become targets of subsequent operations. Origin records provenance,
+not a restriction on which operation may follow. There is no artificial one-level
+limit, although execution bounds and verification depth still need specification.
+The precise mapping of these operations to lenses and lens subjects remains for
+planning; common machinery does not by itself establish their domain classification.
+
+### A part as the retained unit of interpretation
+
+The discussion converged on a common conceptual structure for a part:
+
+- Prose expressing the account.
+- A free-form description of its referent or investigative focus, understandable
+  to a fresh interpreter request.
+- Optional structured references to known entities or other supported subjects.
+- The operation and request context that generated it.
+- Evidence context, including support, provenance, and qualifications.
+- Stable addressability and links into the interpretation chain.
+
+The referent need not be exactly one entity. It might be a module, collaborating
+entities, functionality spread across source, or a captured source region. The
+originating module remains baseline context when nothing more precise is known.
+What the account concerns is distinct from the evidence supporting it, even when
+a source region plays both roles.
+
+The free-form referent description guides interpretation; it is not a reference
+PostCode must resolve or a formal semantic representation. Optional structured
+references can support UI navigation. PostCode validates their targets before
+exposing actions; validity does not prove the interpreter's attribution of
+relevance. Such references need not exhaust the description's meaning. Evidence
+references and retained program context remain distinct from arbitrary strings.
+
+An “account” and a “part” need not be separate data types. An account can be a part
+with subparts. The hierarchy is an **interpretive chain**, not a module-functionality
+hierarchy: children arise through explanation, decomposition, or examination.
+Parent/child links do not assert program containment, delegation, execution order,
+or logical dependence. Exact record layout and metadata sharing are implementation
+choices, provided the lineage and context remain recoverable.
+
+### Corrections can reach earlier accounts
+
+A deeper investigation may contradict an ancestor or another earlier part supplied
+or retrieved as context. For example, examining a submodule may show that an
+activity attributed to it in a parent's division of responsibilities actually
+belongs elsewhere. Restricting corrections to the immediate selected part would
+miss that consequence.
+
+The interpreter can follow interpretation links to identify the affected earlier
+account, inspect its evidence, and report an explicitly targeted correction and
+reason. It can instead report an unresolved inconsistency when evidence does not
+support a replacement. PostCode validates references and records the relationship;
+it does not infer semantic contradiction from a text diff. Detection remains
+interpretive and fallible.
+
+The working revision semantics are:
+
+- Preserve original parts, their context, and interpretation ancestry.
+- Identify explicitly which earlier part a correction replaces and why.
+- Present the replacement as current, with the original accessible; later
+  follow-ups use the replacement by default.
+- Keep existing descendants attached to their original context. Do not silently
+  treat them as corrected or move them beneath the replacement. Indicate that
+  their originating account was revised where relevant.
+- Do not infer revision or logical dependence merely from ancestry.
+
+The earlier proposal of replacing a whole affected part, rather than patching its
+individual sentences, remains a possible simple implementation. Precise replacement
+cardinality, record shape, and traversal mechanics can be worked out during
+implementation while preserving these semantics. Corrections may make a literal
+tree inadequate; no “forest” domain concept is required merely to choose storage.
+
+### Fresh operations, with a dialogue inside each operation
+
+A fresh request does not mean a single model call. Each user operation starts a
+new interpreter session with initial data and instructions. Within that operation:
+
+1. PostCode supplies the objective, selected subject/part, and initial context.
+2. The interpreter requests additional interpretation context, evidence, or source.
+3. PostCode returns the requested material; steps 2 and 3 repeat as needed.
+4. The interpreter returns parts, corrections, or a qualified inability to proceed,
+   or execution reaches a limit.
+
+The selected part is a starting focus, not a boundary on accessible interpretation
+context. The interpreter can follow parent, child, and revision links on demand
+within the current investigation, both to understand the focus and to spot
+inconsistencies. Prior prose is a revisable interpretation, not independent evidence.
+
+There are two lifetimes: the PostCode shell session retains program evidence and
+interpretation results across commands; the interpreter session retains its
+conversation only for one operation. The next operation starts fresh with explicit
+context and access to the retained investigation. Supplying the whole tree or the
+entire previous conversation is not required. A result should retain attributable
+evidence and method context without depending on hidden interpreter memory.
+
+This is bounded tool-using interpretation, superseding the earlier single-call
+synthesis suggestion. It adds a request/response loop, context and source tools,
+and execution limits, shared by all four operations. The exact hosted invocation
+route and initial configuration may be chosen by the implementing agent, as the
+human directed, within the replaceable internal boundary and fresh-operation policy.
+Astra Light/low remains the provisional starting preference, not a domain dependency.
+
+### Shell integration and planning status
+
+The shell has been implemented and merged. Inspection found an accumulating
+session-owned record store, stable subject references, immutable retained results,
+and shared publication handling. The accepted
+[session decisions](../docs/decisions/transient-analysis-sessions.md) explicitly
+leave interpretation augmentation and supersession semantics to this work.
+Interpretation part references and records still need implementing; existing
+module/group references do not supply them automatically.
+
+The publication path already awaits execution, but the session executor and worker
+handler inspected were synchronous. Asynchronous inference and cancellation need
+integration. Detected relevant input changes invalidate the session; additional
+source acquisition must participate in its evidence and validity machinery.
+Persistence after shell exit remains outside the proposed slice.
+
+“Explorative” remains [planning shorthand](explorative-capabilities.md): we want to
+build a capability but do not yet know whether it will prove useful. The human
+distinguished the foundational commitment to summary from the formative content
+choices and candidate follow-up operations. No status field, CLI label, presentation
+requirement, or core-concept promotion follows from this discussion. Ordinary
+claim qualification applies regardless.
 
 ## Product question and direction expressed in discussion
 
@@ -336,12 +551,12 @@ presume the shell exists. The assistant recommended exposing the initial
 interpretation and one follow-up through that shell, instead of limiting the
 follow-up to tests.
 
-Planning must confirm that the shell's session lifetime can host retained
+At that point, planning still needed to confirm that the shell's session lifetime could host retained
 interpretation results and references, not merely preserve a workspace between
 commands. Interpretation-specific context and revision behavior can belong to
 this slice. Persistence after shell exit, elaborate conversation management, and
-unlimited recursive expansion remain deferred. This is the latest proposed slice
-shape, superseding the earlier one-shot-only recommendation; no implementation
+unlimited recursive expansion remain deferred. This was the proposed slice
+shape before the later four-operation discussion recorded above; no implementation
 has been authorized here.
 
 ### Deferred inference-configuration exploration
@@ -469,7 +684,8 @@ not an independent assessment.
 
 The retained investigation record and the context sent for a particular request
 are distinct: retaining results does not mean sending the whole history every
-time. Selection can initially be simple for one explanation and one follow-up.
+time. The later dialogue model above allows context to be retrieved on demand within
+each operation, rather than requiring a fixed package for every follow-up.
 Long-history summarization and comparisons with continuing sessions are deferred.
 The human suggested revisiting the policy if actual use feels limited by loss of
 continuity or memory. This is a starting policy, not a claim that fresh sessions
@@ -548,17 +764,24 @@ autonomous workflow, durable semantic memory, canonical responsibility taxonomy,
 runtime/history/test-intent analysis, or GUI. New capabilities should follow a
 demonstrated investigation need.
 
-Before authorizing a slice, clarify:
+The latest discussion settles the tentative four-operation scope, a common part
+model, fresh per-operation interpreter dialogue, and the main correction semantics.
+A draft plan still needs to make concrete:
 
-- What exact evidence boundaries and questions should the initial trio cover?
-- What minimum output contract makes interpretations useful and traceable while
-  leaving room for follow-ups and explicit revision?
-- Does the plan include the proposed initial explanation and one user-facing
-  follow-up, and what shell session facilities can it presume?
-- What verification demonstrates useful elaboration and explicit correction,
-  beyond deterministic checks of context and result structure?
-- Which identity, capture, invocation, and lifecycle choices does this bounded
-  integration require?
+- Initial evidence assembly, available context/source tools, access boundaries,
+  execution limits, and the behavior when evidence or execution is insufficient.
+- How these interpretation operations and their subjects fit the governing lens,
+  projection, claim, and evidence concepts; any consequential changes require the
+  appropriate proposed decisions, not implicit implementation choices.
+- Observable navigation and revision behavior consistent with the semantics above.
+- Verification of terse summary, clarification, local refinement, substantive
+  examination, repeated operations, ancestor correction, and failure/invalidation.
+- Concrete boundaries for the candidate subjects and formative assessment of value.
+
+Exact schemas, storage topology, command spelling, worker plumbing, and the concrete
+inference invocation/configuration are delegated implementation choices within the
+planned behavior. Planning defines scope before coding starts; formative checks do
+not silently authorize the implementing agent to change it.
 
 Comparative inference configurations and session policies remain possible later
 investigations, rather than prerequisites to this proposed starting point.
