@@ -318,8 +318,8 @@ of the operation result; all new content is validated and accepted together.
 
 Conflicting corrections, including corrections to already superseded targets, are
 retained without invalidating an otherwise valid result. When showing one account,
-select the most recently accepted explicit correction, following replacement
-chains to their endpoints and marking unresolved conflicts. Recency is only a
+select the endpoint produced by the most recently accepted correction across all
+reachable correction branches, marking unresolved conflicts. Recency is only a
 display heuristic. A presentation may instead show attributed excerpts and
 references as a conflict overview; it does not synthesize a new interpretation.
 `inspect()` exposes all conflicting accounts, relationships, and the primary
@@ -342,8 +342,7 @@ Exact references continue to select their original investigons. Follow-ups on a
 superseded subject warn and identify replacements without redirecting or requiring
 confirmation. Repeated follow-ups display their retained results with revised-subject
 context; they do not investigate a replacement implicitly. Original and replacement
-subjects identify distinct retained requests. Reference spelling remains independent
-of these rules.
+subjects identify distinct retained requests.
 
 ## Interpreter execution and evidence access
 
@@ -587,9 +586,11 @@ Verify public boundaries and journeys, including:
   their qualifications without a parallel interpreter file-reading path;
 - conflict acceptance without losing useful results, latest-accepted primary selection
   with conflict annotations, conflict overviews and complete inspection access;
-  a two-step replacement chain, simultaneous alternatives with stable selection,
+  a two-step replacement chain and branching A → B, A → C, B → D sequence
+  selecting D; simultaneous alternatives with stable selection,
   and corrections in displaced trees, including ancestor/descendant corrections;
-- recursive accompanying corrections, rejection of same-result or missing targets,
+- at most one composition position per investigon across all result trees;
+  recursive accompanying corrections, rejection of same-result or missing targets,
   unresolved-inconsistency content and session-derived investigon facets;
 - accompanying corrections with replacements outside the reporting investigon's
   composition, replacement provenance and subject associations, atomic acceptance,

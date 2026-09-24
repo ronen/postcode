@@ -36,7 +36,7 @@ Claim does not mean proven fact. PostCode's qualified information distinguishes 
 
 ### Property
 
-*[decision: [Initial core concepts](../../../docs/decisions/initial-core-concepts-decisions.md#define-facet-as-a-classification-role-played-by-a-property)]*
+*[decision: [Subject facets](../decisions/module-investigation-decisions.md#apply-facets-to-subjects-including-investigons)]*
 
 A **Property** is a characteristic of a subject about which information can be requested or asserted. A claim supplies information about such a characteristic in a particular context; naming the property alone does not establish its value or whether it holds. For example, rejection of duplicate identifiers may be investigated as a behavioral property, while test evidence and interpretation support different claims about it.
 
@@ -52,9 +52,9 @@ Participants are not necessarily all entities: a documentation association can c
 
 ### Facet
 
-*[decision: [Initial core concepts](../../../docs/decisions/initial-core-concepts-decisions.md#define-facet-as-a-classification-role-played-by-a-property)]*
+*[decision: [Subject facets](../decisions/module-investigation-decisions.md#apply-facets-to-subjects-including-investigons)]*
 
-A **Facet** is a property used as a compact classification dimension for describing, filtering, grouping, or comparing subjects, including entities and investigons. A claim supplies its value, and Claim context supplies its qualification. Different facets may overlap and need not share one representation or value type. For example, a module may be both external and declaration-only. [[Subject facets](../decisions/module-investigation-decisions.md#apply-facets-to-subjects-including-investigons)]
+A **Facet** is a property used as a compact classification dimension for describing, filtering, grouping, or comparing subjects, including entities and investigons. A claim supplies its value, and Claim context supplies its qualification. Different facets may overlap and need not share one representation or value type. For example, a module may be both external and declaration-only.
 
 Facet names a role played by a property, not a separate record category or a special epistemological status. It does not imply a universal facet schema.
 

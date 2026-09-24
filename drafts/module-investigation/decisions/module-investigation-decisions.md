@@ -3,7 +3,8 @@
 Status: in review
 Decided: [needs-review — set adoption date at promotion]
 Arising from: [Module investigation](../plans/module-investigation.md)
-Scope: retained interpretation, lens focus, composition, investigation provenance, correction, and interpreter execution
+Scope: retained interpretation, lens focus, composition, investigation provenance, correction, subject facets, and interpreter execution
+Supersedes: [Define Facet as a classification role played by a property](../../../docs/decisions/initial-core-concepts-decisions.md#define-facet-as-a-classification-role-played-by-a-property)
 
 ## Context
 
@@ -23,8 +24,9 @@ or a canonical model of program responsibilities.
 
 The decisions extend the existing concepts, including broadening facet applicability
 from entities to subjects. Existing definitions of Entity, Subject, Claim,
-Evaluation, Lens, Projection, and Session retain their meanings. The entity-only scope of the initial facet decision is amended by
-[subject facets](#apply-facets-to-subjects-including-investigons); its remaining meaning is retained. The lens mapping below makes explicit how an interpretation artifact can be
+Evaluation, Lens, Projection, and Session retain their meanings. The entity-only scope of the initial facet decision is replaced by
+[subject facets](#apply-facets-to-subjects-including-investigons), which restates the
+carried-forward meaning. The lens mapping below makes explicit how an interpretation artifact can be
 a subject of further investigation while retaining its program context.
 
 ## Decisions
@@ -230,6 +232,9 @@ from the reporting investigon's composition tree. This is a construction invaria
 not a restriction on which program aspects can be described. The replacement's
 provenance identifies the actual generating operation and selected subject.
 
+Each investigon occupies at most one composition position across all trees in the
+result.
+
 Replacement investigons may themselves carry corrections. Every correction target
 must have been retained before acceptance of this operation's result; it cannot
 be another investigon produced by the same operation. This separates new replacements
@@ -240,8 +245,10 @@ accepted together. Corrections take effect on acceptance, not display.
 A correction targeting an already superseded investigon, or competing with another
 correction, does not invalidate an otherwise valid result. Retain its replacement
 and mark the conflict. Where a presentation selects one account, the default is
-the most recently accepted explicit correction among the competing alternatives,
-following replacement chains through to their endpoints. Simultaneously accepted
+the endpoint produced by the most recently accepted correction among all endpoints
+reachable from the displayed investigon through explicit correction links. Selection
+considers every branch, not only direct corrections. For example, after A → B,
+A → C, and then B → D, display selects D rather than C. Simultaneously accepted
 alternatives require a stable presentation tie-break, whose form is an
 implementation choice. Selecting a primary account does not resolve the conflict.
 A newer correction alone does not establish that it addresses intervening corrections.
@@ -295,7 +302,9 @@ a replacement. Requests identify the resolved subject, not merely the handle tex
 The initial correction contract replaces one whole investigon
 with one replacement investigon, optionally containing subparts. An operation may
 correct several earlier targets. Competing accounts remain available without
-automatic merging or erasure.
+automatic merging or erasure. This slice has no operation for declaring conflicting
+accounts reconciled. Later corrections may improve the primary account while
+recorded conflicts remain visible.
 
 #### Rationale, alternatives, and consequences
 
@@ -318,15 +327,34 @@ does not guarantee detection of every inconsistency or correctness of a revision
 
 ### Apply facets to subjects, including investigons
 
-Facets classify subjects, including entities and investigons. This broadens the
-entity-only wording of the initial facet definition while preserving facets as a
-role of properties whose values and qualifications come from claims. Properties
-already apply to subjects; no universal facet schema is introduced.
+Use Property for a characteristic of a subject about which information can be
+requested or asserted. Distinguish the characteristic from claims about its value
+or whether it holds. A Facet is a property used as a compact classification dimension
+for describing, filtering, grouping, or comparing subjects, including entities and
+investigons. A claim supplies its value, and Claim context supplies its qualification.
+Different facets may overlap and need not share a representation or value type.
 
-Investigon facets such as superseded, supersedes, and conflicting are derived from
-retained correction relationships in the current session. They expose session
-context without modifying immutable investigon content. A recorded correction or
-conflict does not establish which program interpretation is true.
+Facet names a role played by a property, not a separate record category or a special
+epistemological status. A conceptual facet describes the subject in terms useful to
+investigation; a source facet describes its source-level representation or
+implementation mapping. Language-specific knowledge can establish a conceptual
+facet and does not by itself make that facet source-level. Facet names do not
+determine claim strength. Adopt no universal Property or Facet schema,
+implementation subtype hierarchy, or generic facet machinery.
+
+Investigon facets such as superseded, supersedes, and conflicting have values
+supplied by session-scoped claims derived from retained correction relationships.
+New session context yields new derived claims without modifying immutable
+investigon content. A recorded correction or conflict does not establish which
+program interpretation is true.
+
+#### Rationale, alternatives, and consequences
+
+Properties already apply to subjects. Broadening facets from entities to subjects
+allows the same descriptive classification role for investigons. Describing their
+revision and conflict states is useful by itself; this slice does not require new
+filtering or grouping operations. Presentation-only annotations would describe the
+same characteristics without recognizing their existing conceptual role as facets.
 
 ### Integrate interpretation with evaluation and qualified evidence access
 
@@ -470,7 +498,10 @@ investigon-reference, composition, provenance, and revision rules. Existing qual
 evaluation, session, and observation decisions continue to govern.
 
 Plan-specific review choices are resolved with the plan before adoption. Set the decision date at adoption,
-update canonical indexes, and rewrite links for their destination paths. No
-existing decision is superseded by this additive package; if review instead changes
-an existing defined meaning, include the exact supersession mapping and corresponding
-replacement text before promotion.
+update canonical indexes, and rewrite links for their destination paths. Facet's
+general definition now applies to subjects. The subject-facets decision above fully
+replaces the initial decision's headed Property/Facet definition, preserving its
+other distinctions. At promotion, add a `Superseded in part` mapping from that
+heading in `initial-core-concepts-decisions.md` to
+[Apply facets to subjects, including investigons](#apply-facets-to-subjects-including-investigons).
+The earlier record remains partially superseded. No other headed decision is replaced.
