@@ -241,6 +241,12 @@ Broad investigons may contain multiple related claims. Qualification must remain
 attributable where it differs. The implementation need not atomize every sentence
 or store a formal semantic representation of the prose.
 
+An investigon view may present a retained mechanical claim with its existing
+qualification when a validated reference identifies that claim. Present it as the
+retained claim, with its qualification derived from its evidence and method.
+The interpreter cannot assign mechanical status to its own prose merely by citing
+supporting evidence; synthesis and additional conclusions remain interpretation.
+
 A decomposition identifies finer aspects without inherently establishing that they
 are exhaustive or mutually exclusive. Such claims require their own support; the
 number or arrangement of subordinate investigons does not establish them.
@@ -725,6 +731,10 @@ mocked tests with established interpretive value.
 ## Verification and formative assessment
 
 ### Deterministic behavioral checks
+
+Verify that views preserve the qualification of referenced retained mechanical
+claims while keeping generated synthesis interpretive. Model-assigned status or
+a supporting citation alone must not confer mechanical status on generated prose.
 
 Verify public boundaries and journeys, including:
 
