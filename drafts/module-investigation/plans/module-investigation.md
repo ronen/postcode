@@ -86,16 +86,25 @@ formative exercise is completed with retained artifacts reporting semantic
 findings, limitations, and operational reliability. A blocked required case remains
 incomplete unless the human explicitly approves its deferral.
 
-Assessment findings distinguish defects from product learning. Violations of the
-promised behavior, such as hiding conflicts or presenting interpretation as
-established fact, are defects to address. Correctly functioning operations whose
-explanations prove less useful than hoped produce product findings; those findings
-do not automatically expand the slice or require indefinite prompt tuning. There
-is no numeric usefulness threshold or intermediate usefulness gate that changes
-the agreed scope.
+Investigate observed shortfalls enough to distinguish implementation defects from
+limitations of the configured interpreter. Violations of implementation-controlled
+invariants, such as reference validity, conflict visibility, provenance, and
+qualification, are defects to address. Poor prose can also expose a defect, such as
+omitted required evidence, incorrect operation instructions, or broken context
+delivery; the form of the symptom does not determine its classification.
+
+Generative-content expectations guide interpretation design and formative
+assessment. For limitations of the configured interpreter, make a bounded,
+documented improvement effort and reassess across all three subjects. Record the
+chosen adjustment, or why none is justified, and the reassessment evidence. An
+adjustment need not be a prompt revision. Persistent shortfalls after that effort
+are product findings; they do not automatically expand the slice or require
+indefinite tuning. There is no numeric usefulness threshold or intermediate
+usefulness gate that changes the agreed scope.
 
 If findings undermine the slice's premise, stop and seek human direction under the
-unexpected-findings workflow. The human may authorize a plan revision, further
+[unexpected-findings workflow](../../../dev/workflow.md#5-unexpected-findings).
+The human may authorize a plan revision, further
 work, or closure with the limitations recorded. The agent must not dismiss such
 findings merely because mechanical checks pass.
 
