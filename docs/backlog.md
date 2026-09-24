@@ -36,37 +36,24 @@ attention, what should be progressively disclosed, and what belongs in a later
 visual interface. Preserve precise navigation, evidence, qualifications, and
 consequential omission disclosure while improving readability.
 
-## Reduce repeated investigation latency
+## Investigate analysis parallelism and asynchronous I/O
 
-Added: 2026-09-21
-Origin: completed repository-organization and module-dependencies validation
-Area: analysis execution and interaction
+Added: 2026-09-24
+Origin: human observation that PostCode appears to use one CPU during analysis
+Area: analysis execution and responsiveness
 
-Fresh CLI invocations repeat project opening, repository capture, TypeScript
-analysis, projection construction, presentation, and observation work. Recorded
-validation measured roughly 39–42 seconds for ordinary PostCode dependency
-commands and about 27–28 seconds for ordinary ts-node commands, with one retained
-975-second outlier; an earlier five-command PostCode organization journey took
-about 420 seconds. This latency makes ordinary navigation costly and will impede
-interactive or visual use. Characterize where time is spent and evaluate bounded
-ways to reuse valid analysis within and across investigation steps while
-preserving session reference bindings, captured evidence, changed-input invalidation, qualification,
-observation, and the distinction between cached results and current evidence. Do
-not assume that durable caching is the first or only remedy.
-
-The [authorized latency task](../records/tasks/2026-09-21-analysis-latency.md)
-removed repeated source-text hashing within discovery. Its
-[paired measurements](../records/validation/2026-09-21-analysis-latency.md)
-reduced ordinary PostCode dependency/organization invocations to about 4.4–4.8
-seconds, with unchanged outputs and current-input capture. Claude's independent
-review found no actionable defects. Copilot's benchmark retry finding is corrected;
-its separate test-count allegation was rejected with human approval. Final review-gate
-acceptance remains before task closure. The small fixture remained near 0.9 seconds.
-Further reduction remains a
-candidate: project opening, complete record materialization/validation, startup
-and repository capture still cost time, and navigation continues to analyze afresh.
-The historical outlier is not explained by this result. Any later reuse lifecycle
-still needs its own measured justification and validity contract.
+Measure CPU use and stage-level wall time on representative projects to identify
+work that could run independently or overlap without changing results. The
+interactive shell currently runs one command at a time in one analysis worker;
+TypeScript program construction and much of discovery use synchronous compiler
+APIs, while repository capture and input probes perform synchronous filesystem
+and Git reads. Evaluate whether parallel analysis or asynchronous I/O would
+materially improve latency, throughput, or responsiveness, accounting for worker
+startup and communication, memory use, deterministic output, captured-input
+consistency, session reference bindings, and cancellation. Do not assume that
+switching file reads to async will accelerate CPU-bound compiler work. Use the
+[completed latency investigation](../records/validation/2026-09-21-analysis-latency.md)
+as a baseline and account for reuse in the interactive session.
 
 ## Evaluate independent TypeScript versions for building and analysis
 
