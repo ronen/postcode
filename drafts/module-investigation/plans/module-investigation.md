@@ -112,7 +112,8 @@ use is not yet established. Forced regeneration likewise has no established need
 
 Restarting the shell is the recovery path for a retained failed or incomplete
 request, with loss of accumulated investigation context. The CLI documents that
-cost. Frequent disruption by transient failures would justify reconsidering retry.
+cost. Communication failures leave no reusable result, as specified below, and
+therefore do not require restarting the shell before another request.
 The separate [retry](../../../docs/backlog.md#retry-failed-or-incomplete-interpretation-without-restarting-the-session)
 and [successful-rerun](../../../docs/backlog.md#explicitly-rerun-a-successful-interpretation)
 backlog entries are candidates, not commitments or prerequisites for this slice.
@@ -121,7 +122,8 @@ PostCode reports configuration or structural unavailability distinctly from runt
 investigation failure, sufficiently clearly for a human or assessment agent to
 identify why work cannot proceed. When investigation is enabled, check prerequisites
 that can be established during project opening and fail before starting the shell
-if they are unsatisfied. Failures discoverable only during execution remain explicit
+if they are unsatisfied. The same preflight applies to one-shot investigation.
+Failures discoverable only during execution remain explicit
 outcomes; preflight does not guarantee provider availability. The reporting mechanism
 (startup failure, exit status, or a discernible shell outcome) is an implementation
 choice. Do not silently substitute mechanical-only output for a failed investigation.
@@ -238,10 +240,28 @@ reference. Exact syntax, labels, and formatting are implementation choices.
 Repeating a summary or follow-up
 command displays its retained result, selecting explicit replacements in the
 displayed result, rather than invoking the interpreter again. On the first request,
-when no attempt is retained for that operation and target, the command runs the
-investigation. Repeated requests with a retained partial or failed attempt show
+when no reusable result or retained investigation-failure outcome exists for that
+operation and target, the command runs the investigation. Repeated requests with
+a retained partial result or investigation-failure outcome show
 that outcome and any usable result; they do not silently retry. Availability of
 more context does not by itself authorize new generation.
+
+An agent-communication failure ends the request and closes its interpreter session
+with a reported null result. Keep execution diagnostics and observations, but no
+reusable result or failure outcome that satisfies or blocks later request selection.
+This applies even when the first provider exchange fails. A later request follows
+ordinary selection: if no reusable result or retained investigation-failure outcome
+exists, start a fresh interpreter dialogue. PostCode neither detects a repeat for
+this purpose nor resumes the failed dialogue. The shell and previously acquired
+evidence remain usable subject to normal validity checks. Reject late responses
+from the finished attempt; lack of a response does not establish lack of provider
+work or cost.
+
+Communication that completes with malformed output or invalid references instead
+produces a retained investigation-failure outcome. Execution-limit stops remain
+separately identified retained outcomes. Other investigations can proceed in the
+shell, but repetition of these requests redisplays their outcomes under the existing
+no-regeneration policy.
 
 A follow-up on a different investigon, including a replacement, is a distinct
 request and can still run normally. This boundary does not prevent new
@@ -448,8 +468,9 @@ repository content is transmitted to that service. The enablement and announceme
 mechanisms are implementation choices. Deliberately configuring a PostCode-specific
 hosted provider can constitute opt-in; an explicit invocation option is another
 possibility. A separate per-request confirmation is not required. Configuration
-and help make the effect of enablement clear. Existing mechanical commands remain usable without inference
-credentials. Missing authentication produces explicit unavailability, not an
+and help make the effect of enablement clear. With investigation disabled, existing mechanical commands remain usable without
+inference credentials. Enabled investigation with unsatisfied prerequisites fails
+preflight, even if the intended shell commands are mechanical. Missing authentication produces explicit unavailability, not an
 invented summary. Credential material does not enter investigons or observations.
 Exact setup steps and authentication storage follow the selected integration.
 
@@ -575,7 +596,10 @@ Verify public boundaries and journeys, including:
   references, retain their bindings;
 - stable CLI selection of roots and subordinate investigons after session growth, changed
   display order, and revision; repeat-display with no model calls; exact historical
-  inspection; retained failure/partiality on repetition and documented restart recovery;
+  inspection; retained investigation failure/partiality on repetition and documented
+  restart recovery; communication-failure null results, closed interpreter sessions,
+  preserved diagnostics, rejection of late responses, and ordinary subsequent
+  requests in the same shell without repeat detection;
 - subject inspection and interpreter retrieval of qualified prior investigons,
   association roles, bounded display, no automatic generation, and non-corroborating
   reuse of earlier interpretation across investigations;
@@ -780,23 +804,33 @@ no universal acceptable-cost or usefulness threshold has been established.
 
 Configuration or structural unavailability stops the exercise for correction or
 human direction; repeated invocations are not a recovery strategy for these failures.
-When PostCode reports a transient runtime failure, abort that run and permit a
-bounded number of reruns of the affected investigation sequence. Record the finite
-rerun allowance before execution. Each rerun starts a fresh PostCode CLI session
-and selects references afresh. This is assessment-harness recovery, not a product
-retry capability. If only an assessment agent fails while inspecting captured views,
-restart that assessment with the same views in a fresh agent context; regenerating
-the PostCode investigation is unnecessary.
+Distinguish agent-communication failures from completed exchanges yielding invalid
+investigation results and from execution-limit stops. Record the classification and
+finite repeat allowance before execution. For plausibly transient communication
+failures, the harness may issue the affected request again in the same PostCode
+shell, with a fresh interpreter dialogue, up to that allowance. Earlier completed
+investigations need not be regenerated. Authentication rejection or other known
+configuration or structural failures stop the exercise rather than consuming the
+repeat allowance. This policy belongs to the assessment harness; PostCode applies
+ordinary request selection without repeat detection or an automatic retry loop.
+
+Malformed or invalid investigation results and execution-limit stops are assessment
+findings, not triggers for these repeated requests. Continue independent cases and
+record dependent steps as blocked when a needed result is unavailable. If only an
+assessment agent fails while inspecting captured views, restart that assessment
+with the same views in a fresh agent context; regenerating the PostCode
+investigation is unnecessary.
 
 Preserve every attempt's inputs, outputs, diagnostics, configuration, evidence
 access, failure point, elapsed time, and available usage information, excluding
-credentials. A completed run supplies semantic validation evidence; earlier runtime
-failures do not invalidate it. Exhausting recovery without completing a required
+credentials. A completed run supplies semantic validation evidence; earlier agent-communication
+failures do not invalidate it. Invalid-result and limit-stop findings remain part
+of the assessment even if later work succeeds. Exhausting recovery without completing a required
 case leaves that validation incomplete, rather than establishing poor interpretive
 quality. Report runtime failure frequency and recovery cost separately from the
 semantic assessment, including failed attempts rather than only completed runs.
 
-If transient failures exhaust the recorded rerun allowance or otherwise make the
+If communication failures exhaust the recorded repeat allowance or otherwise make the
 exercise impractical, stop and request human instructions with the completed
 validation, failure evidence, and recovery costs. Do not add product retries or
 silently waive required validation. The human may approve a plan amendment and

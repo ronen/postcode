@@ -373,6 +373,14 @@ A retained interpretation's reuse and an explicit request for a new attempt rema
 distinct from mechanical reuse rules. More available context alone does not require
 regeneration of every earlier investigon.
 
+An agent-communication failure closes the interpreter session and returns no
+reusable investigation result. Execution diagnostics remain attributable but do
+not satisfy or block later request selection. A subsequent request with no retained
+result starts an ordinary fresh investigation, without detecting repetition or
+resuming the failed dialogue. Completed communication yielding invalid output is
+instead a retained investigation-failure outcome; execution-limit stops remain
+separately identified. Reject late responses from finished attempts.
+
 The interpreter has domain-level access to supported qualified entities and
 relationships. Queries go through evaluation, which reuses retained analysis or
 performs missing mechanical analysis. Results retain their scope, method, evidence,
