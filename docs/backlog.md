@@ -69,11 +69,13 @@ Added: 2026-09-24
 Origin: module investigation planning discussion
 Area: investigation execution and recovery
 
-The module investigation draft currently retains failed and incomplete outcomes;
-repeating a command would display that outcome rather than invoke the interpreter
-again. Under that design, recovery requires restarting the shell, losing accumulated
-investigation context. Consider an explicit retry that preserves the session, especially if
-formative use shows transient failures disrupting useful investigations. Define
+The module investigation draft retains investigation-failure, partial-result, and
+execution-limit outcomes; repeating a command displays those outcomes rather than
+invoking the interpreter again. Communication/service failures leave no reusable
+result, so later requests already proceed through ordinary selection in the same
+shell. This candidate concerns explicit retry of retained outcomes, whose current
+recovery requires restarting the shell and losing accumulated investigation context.
+Consider supporting that retry if formative use establishes its value. Define
 which outcomes qualify, how retained evidence and partial results are used, and
 which attempt is displayed afterward. Preserve earlier outcomes and qualification;
 a retry does not itself establish that earlier claims are superseded. This concerns
