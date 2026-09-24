@@ -367,6 +367,17 @@ revision and conflict states is useful by itself; this slice does not require ne
 filtering or grouping operations. Presentation-only annotations would describe the
 same characteristics without recognizing their existing conceptual role as facets.
 
+### Attribute usage to execution independently of interpretation retention
+
+Provider-reported usage belongs to actual execution attempts, including unsuccessful
+ones, independently of whether an interpretation result is retained. Displaying a
+retained result adds no inference usage. Session totals aggregate each reported
+call once with model, units, and category relationships preserved. Missing usage
+remains explicit, and totals are not asserted to be complete billed usage.
+Usage reporting does not invoke inference, affect retained-result selection, or
+establish a spending allowance. The initial slice exposes attempt and session
+usage; monetary estimation for formative assessment remains assessment tooling.
+
 ### Integrate interpretation with evaluation and qualified evidence access
 
 Language analysis and interpretation produce qualified information through the
@@ -403,6 +414,11 @@ Runtime authentication rejection is configuration unavailability and leaves no
 reusable investigation outcome. Unrecognized provider errors are reported as
 unclassified communication/service failures with credential-safe diagnostics;
 this classification does not establish that they are transient.
+
+Provider-identified spending-limit or quota exhaustion is service unavailability
+with no reusable investigation outcome. Preserve the provider error code and
+credential-safe diagnostic, distinguishing exhaustion from transient rate limiting
+when supported and reporting uncertainty when the precise restriction is unclear.
 
 Communication failure discards the dialogue's unaccepted interpretation content;
 it does not retain a partial investigation result that would block later selection.

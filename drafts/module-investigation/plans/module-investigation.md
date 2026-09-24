@@ -313,6 +313,12 @@ investigation outcome. Report unrecognized provider errors as unclassified
 communication/service failures with credential-safe diagnostics; do not infer
 transience merely from that classification.
 
+Identify spending-limit or quota exhaustion explicitly when reported by the
+provider, preserving its error code and credential-safe diagnostic. Such service
+unavailability leaves no reusable investigation result. Do not label it transient
+rate limiting unless the provider's response supports that distinction; expose
+uncertainty when the precise restriction cannot be determined.
+
 Communication that completes with malformed output or invalid references instead
 produces a retained investigation-failure outcome. Execution-limit stops remain
 separately identified retained outcomes. Other investigations can proceed in the
@@ -454,7 +460,7 @@ choices.
 
 One real hosted implementation is sufficient. The implementing agent
 chooses the concrete invocation route, dependency, authentication mechanism, and
-supported initial configuration. OpenAI's GPT-6 Astra with low reasoning effort is
+supported initial configuration. OpenAI's GPT-6 Sol with medium reasoning effort is
 the starting preference; verify the available model identifier and supported setting.
 Record the provider and dependency choices and their rationale in the task record;
 selection remains delegated and does not require a separate approval pause.
@@ -563,6 +569,13 @@ equivalent to PostCode's. Explain that limitation before the human supplies
 credentials; stronger isolation requires a mechanism that actually restricts
 credential access, such as a separately authorized broker.
 
+During setup, document whether the invocation route incurs separate API charges
+and confirm the provider's available spending controls and their enforcement
+behavior. Do not assume a subscription covers API use or that an alert is a hard
+cap. No separate spending allowance is imposed on the formative exercise in this
+slice; retain available usage information and revisit budgeting if observed usage
+makes it a concern.
+
 ## Bounds, outcomes, and result acceptance
 
 Each new investigation evaluation has a finite runaway-containment guard covering
@@ -578,12 +591,12 @@ in-flight provider or mechanical work are disclosed; the guard does not guarante
 immediate termination or a monetary ceiling. It applies to hosted and future local
 inference alike. Bounds constrain execution, not the lens question.
 
-Session-wide usage reporting, user-set spending or resource allowances, and
-allowance-based admission checks are outside this slice and recorded as
+User-set spending or resource allowances and allowance-based admission checks
+remain outside this slice and are recorded as
 [budgeting support](../../../docs/backlog.md#investigation-usage-and-budgeting-support).
-Available provider usage metadata remains attributable in outcomes and observations;
-unknown measures remain unknown. Retaining that metadata does not require a
-cumulative budgeting interface. No silent provider/model fallback is required.
+Basic usage reporting is included; it does not require pricing tables, provider
+administration credentials, or billing queries in PostCode. No silent provider/model
+fallback is required.
 
 The outcome distinguishes stopping with sufficient support for the requested
 account, stopping because further investigation appears unlikely to be useful,
@@ -618,6 +631,27 @@ publication and after output. Active interruption keeps the existing end-session
 behavior; terminate/cancel inference where the chosen provider permits it and
 truthfully report limits on remote cancellation or cost. No late response is
 published after interruption or invalidation.
+
+## Basic inference usage reporting
+
+PostCode exposes provider-reported usage for each investigation attempt and totals
+for the current session, in both human-readable and structured output. Retain model,
+provider, reported units, and relevant usage categories, including input/output,
+cached input, and reasoning tokens where supplied. Preserve category relationships
+so subsets such as reasoning tokens are not added again to inclusive output totals.
+Keep unlike units and model/provider breakdowns distinguishable. Exact report
+commands and formatting are implementation choices; session totals remain available
+without issuing another investigation, including after a failed request and before
+shell exit. One-shot investigations expose their own usage.
+
+Count actual provider calls once, including calls from unsuccessful investigations
+where usage was returned. Repeated display of retained results does not add usage;
+attribute the original usage separately from any new work. Communication-failure
+null results do not erase recorded usage. Identify attempts or calls whose usage
+is missing, and label accumulated figures as reported totals with incomplete
+coverage when appropriate. Unknown usage is not zero; PostCode does not claim
+that reported totals equal billed usage, especially after interrupted or failed
+communication. Reporting never triggers inference or changes request selection.
 
 ## Observations and execution provenance
 
@@ -753,6 +787,10 @@ Verify public boundaries and journeys, including:
   provider-reported truncation, malformed output and invalid references; guard expiry
   during a provider call; discarded interpretation content but preserved acquired
   evidence on communication failure;
+- per-investigation and session usage in human-readable and structured output;
+  multiple model/category breakdowns, subset accounting, failed-attempt usage,
+  missing usage disclosure, no double counting on redisplay, one-shot reporting,
+  and totals available after communication failure without inference;
 - provider unavailability, failures, malformed output, exhausted bounds, usage
   unknown, acceptance of a single-operation result as a unit at the domain boundary,
   sink failure, and
@@ -913,6 +951,32 @@ regression in an aggregate score or replace an inconvenient subject. No broad
 prompt/model optimization search is required. The human reviews the combined formative results after the automated exercise;
 no universal acceptable-cost or usefulness threshold has been established.
 
+#### Assessment usage and cost report
+
+Log each PostCode session's usage report, including one-shot runs and incomplete
+or failed sessions, alongside its investigation-attempt records. Produce a final
+report of PostCode's API session costs across repetitions and milestones, with
+per-session breakdowns.
+
+Evaluator activity is expected to use the human's GPT subscription. Record the
+actual invocation route for reference preparation, comprehension evaluation, and
+source-informed assessment, and report their available usage separately from
+PostCode sessions. Do not apply API token prices to subscription-covered activity
+or include it in the session-cost total. If an assessment stage instead uses a
+separately billed API, identify and report that cost separately. Unavailable
+subscription usage or monetary attribution remains explicit, not a zero-cost claim.
+
+Calculate estimated API cost from reported usage and the applicable published rates,
+recording the pricing source, retrieval date, model, service tier, currency, and
+relevant caching or other billing distinctions. Avoid double counting usage
+categories. Distinguish estimated cost from provider-confirmed charges. Missing
+usage, uncertain rates, and potentially billed failed calls are explicit coverage
+limits, not zero-cost assumptions. If a complete total cannot be established,
+report the accounted-for amount and what is missing. Provider-side reconciliation
+may be used when separately configured access is available, but an Admin API key
+or billing integration is not a prerequisite. The cost calculation belongs to
+assessment tooling, not PostCode's product reporting in this slice.
+
 #### Assessment failure recovery and reliability
 
 Configuration or structural unavailability stops the exercise for correction or
@@ -924,7 +988,14 @@ failures, the harness may issue the affected request again in the same PostCode
 shell, with a fresh interpreter dialogue, up to that allowance. Earlier completed
 investigations need not be regenerated. Authentication rejection or other known
 configuration or structural failures stop the exercise rather than consuming the
-repeat allowance. An unclassified provider error is not automatically eligible
+repeat allowance. Provider-identified spending-limit or quota exhaustion also stops
+the exercise, leaving affected validation incomplete. Preserve the provider error
+code and credential-safe diagnostic in the logged results and assessment report.
+Distinguish exhaustion from transient rate limiting where the provider permits;
+if it does not distinguish a spending cap from another quota restriction, report
+that uncertainty and retain the diagnostic for checking against the provider's
+dashboard. Do not repeatedly issue requests against an exhausted allowance.
+An unclassified provider error is not automatically eligible
 for repetition; without evidence that it is plausibly transient, stop for diagnosis
 or human direction. This policy belongs to the assessment harness; PostCode applies
 ordinary request selection without repeat detection or an automatic retry loop.
@@ -958,7 +1029,8 @@ introduce automated or manual retries in PostCode, but do not authorize them.
 
 The delivered capability includes the four operations, stable session-long CLI
 references, retained/current and historical viewing, subject-associated investigon
-inspection and retrieval, and correction-aware navigation. Retry and forced
+inspection and retrieval, correction-aware navigation, and basic per-investigation
+and session usage reporting. Retry and forced
 regeneration remain outside the slice, with restart recovery documented.
 CLI documentation describes these behaviors with examples and documents inference
 setup, actual input-change coverage, and provider/cancellation limits. The
