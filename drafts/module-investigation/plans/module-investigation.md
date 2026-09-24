@@ -77,6 +77,35 @@ improve or clarify the account and stops when that is unlikely to be fruitful.
 Consequential remaining gaps are disclosed. The policy complements hard execution
 bounds rather than replacing them.
 
+## Success criteria and completion
+
+Completion requires the four operations and their agreed behavior to work through
+the supported CLI flows, the required automated and behavioral checks to pass,
+and the implementation and user documentation to be complete. The prescribed
+formative exercise is completed with retained artifacts reporting semantic
+findings, limitations, and operational reliability. A blocked required case remains
+incomplete unless the human explicitly approves its deferral.
+
+Assessment findings distinguish defects from product learning. Violations of the
+promised behavior, such as hiding conflicts or presenting interpretation as
+established fact, are defects to address. Correctly functioning operations whose
+explanations prove less useful than hoped produce product findings; those findings
+do not automatically expand the slice or require indefinite prompt tuning. There
+is no numeric usefulness threshold or intermediate usefulness gate that changes
+the agreed scope.
+
+If findings undermine the slice's premise, stop and seek human direction under the
+unexpected-findings workflow. The human may authorize a plan revision, further
+work, or closure with the limitations recorded. The agent must not dismiss such
+findings merely because mechanical checks pass.
+
+At completion review, the human considers the combined formative artifacts and
+findings alongside the final integrated review and decides whether the review gate
+is sufficient. Conclude the task through the task protocol only after the required
+work and verification are satisfied, any required deferrals are explicitly approved,
+and the human has accepted the review gate. Preserve material limitations and
+follow-up candidates in the outcome.
+
 ## Scope and boundaries
 
 Include all four operations, repeatable follow-ups, evidence inspection, explicit
