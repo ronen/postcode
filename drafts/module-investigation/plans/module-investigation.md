@@ -454,8 +454,10 @@ choices.
 
 One real hosted implementation is sufficient. The implementing agent
 chooses the concrete invocation route, dependency, authentication mechanism, and
-supported initial configuration. Astra Light/low is the starting preference;
-verify the actual supported setting rather than assuming a UI/API naming mapping.
+supported initial configuration. OpenAI's GPT-6 Astra with low reasoning effort is
+the starting preference; verify the available model identifier and supported setting.
+Record the provider and dependency choices and their rationale in the task record;
+selection remains delegated and does not require a separate approval pause.
 Document material departures and their reason. Do not build a general provider
 registry or comparative benchmark as a prerequisite.
 
