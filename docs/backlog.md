@@ -93,3 +93,25 @@ up on a new target, and displaying an explicit correction. Any later design must
 account for inference cost and preserve earlier results without treating a newer
 generation as automatically more correct. This is separate from retrying failed
 or incomplete interpretation.
+
+## Investigation usage and budgeting support
+
+Added: 2026-09-24
+Origin: module investigation planning discussion of execution containment and usage allowances
+Area: investigation usage and budgeting
+
+Consider accumulated usage reporting and user-set allowances for hosted inference,
+separate from the per-evaluation mechanism that contains runaway investigations.
+The initial module investigation slice does not require a budgeting interface;
+users can consult usage information supplied by their provider. Future support
+could report session totals and, at coarse granularity, prevent a new investigation
+from starting once an allowance is exhausted without interrupting work in progress.
+Define allowance scope, configuration, measured units, and enforcement limitations;
+a token allowance is not a guaranteed monetary ceiling, and admission checks can
+permit an in-flight investigation to exceed the remaining allowance.
+
+Local inference may remove the need for provider-spending controls, but runaway
+containment remains useful for responsiveness and resource use. Keep that mechanism
+independent of budgeting support so it applies to either hosted or local execution.
+Retain available provider usage metadata without assuming every integration reports
+the same measures or supports precise cost accounting.
