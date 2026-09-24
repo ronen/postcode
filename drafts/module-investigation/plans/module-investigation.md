@@ -661,6 +661,14 @@ whether to implement the remaining operations.
    Run the summary-only formative assessment on all three fixed subjects using
    the applicable questions and protocol below. Retain the results as an early
    baseline for subsequent implementation and assessment, not a scope-selection gate.
+   Before proceeding to milestone 2, prepare a committed handoff and pause for
+   independent architectural review arranged by the human under the review workflow.
+   Review the domain and agent-communication boundaries, investigon retention and
+   evaluation integration, asynchronous dialogue and worker coordination, interruption,
+   input invalidation, and rejection of late results. Resolve findings and obtain
+   the human's direction to proceed. This checkpoint assesses whether the
+   implementation supports the agreed architecture; summary usefulness does not
+   determine whether the remaining operations stay in scope.
 2. **Progressive investigation.** Expose explain, decompose, and examine over the
    same results. Support on-demand context traversal, repeated operations,
    evidence inspection, subject-associated retrieval and inspection, and access to
