@@ -62,3 +62,34 @@ Origin: human-directed process review of implementation conventions
 Area: toolchain and TypeScript language integration
 
 The current dependency layout uses one installed TypeScript version both to build and type-check PostCode and to analyze subject projects at runtime. Evaluate whether to separate those roles so the build-time compiler can evolve for development convenience while the runtime analyzer remains deliberately pinned and changes only with semantic fixtures and analysis-identity review. Preserve a clear account of which analyzer version establishes each result. If the roles are separated, revise the implementation convention so build-only TypeScript upgrades no longer require runtime-analyzer semantic verification.
+
+## Retry failed or incomplete interpretation without restarting the session
+
+Added: 2026-09-24
+Origin: module investigation planning discussion
+Area: investigation execution and recovery
+
+The module investigation draft currently retains failed and incomplete outcomes;
+repeating a command would display that outcome rather than invoke the interpreter
+again. Under that design, recovery requires restarting the shell, losing accumulated
+investigation context. Consider an explicit retry that preserves the session, especially if
+formative use shows transient failures disrupting useful investigations. Define
+which outcomes qualify, how retained evidence and partial results are used, and
+which attempt is displayed afterward. Preserve earlier outcomes and qualification;
+a retry does not itself establish that earlier claims are superseded. This concerns
+interpretation requests, not a change to existing mechanical-analysis retry rules.
+
+## Explicitly rerun a successful interpretation
+
+Added: 2026-09-24
+Origin: module investigation planning discussion
+Area: investigation execution and retained results
+
+The module investigation draft currently reuses a retained successful result when
+its command is repeated. Consider whether an explicit action to regenerate a
+successful interpretation would be useful; no concrete need has yet been
+established. Distinguish regeneration from inspecting a retained result, following
+up on a new target, and displaying an explicit correction. Any later design must
+account for inference cost and preserve earlier results without treating a newer
+generation as automatically more correct. This is separate from retrying failed
+or incomplete interpretation.
