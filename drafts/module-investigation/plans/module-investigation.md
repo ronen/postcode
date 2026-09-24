@@ -59,6 +59,10 @@ are divided; it does not replace explaining what the combined work accomplishes.
 If the functionality cannot be established, the result identifies that gap rather
 than treating a structural label as a sufficient answer.
 
+A module need not have one coherent responsibility. A supported account of mixed
+responsibilities or an unclear role is a legitimate summary; the interpreter must
+not invent a unifying purpose merely to make the explanation tidy.
+
 The selected module defines the question, not a fixed dependency-depth cutoff.
 Investigation may follow multiple layers of delegation and inspect related subjects
 through PostCode's evidence interface when that can materially improve the account.
@@ -151,7 +155,7 @@ retained results that satisfy the request, accounts for explicit revisions, and
 identifies investigations that must run to supply missing information. It invokes
 the interpreter where needed and retains validated results before projection
 construction. Projection construction and rendering do not invoke investigation.
-The retained-result and explicit-new-attempt policies below determine whether
+The retained-result policy and retry exclusions below determine whether
 interpretation is required; newly available context alone does not silently
 invalidate a retained interpretation or force another model call.
 
@@ -182,6 +186,10 @@ reference. A valid reference establishes a target, not interpretive correctness.
 Broad investigons may contain multiple related claims. Qualification must remain
 attributable where it differs. The implementation need not atomize every sentence
 or store a formal semantic representation of the prose.
+
+A decomposition identifies finer aspects without inherently establishing that they
+are exhaustive or mutually exclusive. Such claims require their own support; the
+number or arrangement of subordinate investigons does not establish them.
 
 Every selectable investigon is displayed with a reference that the human can type
 into subsequent CLI commands. Root results and subordinate investigons are both
@@ -632,8 +640,33 @@ follow-ups, including a follow-up on a generated investigon. Assess whether:
   result rather than rewarding sheer output length;
 - consequential claims are traceable, contrary evidence is not ignored, and
   interpretation is not presented as mechanical certainty;
+- a focused case with mixed responsibilities does not acquire an invented unifying
+  purpose; an unclear role remains explicit when the evidence does not support one;
+- a focused case with documentation that conflicts with implementation preserves
+  the attributed assertion and exposes the discrepancy, rather than silently
+  reconciling it or treating documentation as proof of behavior;
+- decomposition of overlapping or non-exhaustive cases does not imply mutual
+  exclusion or completeness merely because it produces an enumerated set of
+  subordinate investigons; any stronger claim is assessed against its evidence;
 - context retrieval enables correction of earlier results through composition and
   investigation-provenance traversal without erasing earlier results.
+
+#### Focused cases and controlled fixtures
+
+The three selected repositories provide realistic formative investigation sequences;
+they need not contain every focused verification case. Use an appropriate case from
+those repositories when available. Otherwise, use a small controlled fixture with
+reviewable source and known evidence for mixed responsibilities, conflicting
+documentation, overlapping or non-exhaustive cases, delegated functionality, or
+unproductive further investigation. Keep fixture results distinct from the three
+repository assessments. Do not replace a selected repository or spend an open-ended
+search trying to make it satisfy every case.
+
+Exercise interpretation-sensitive fixture cases through the real interpreter and
+assess the resulting views against their source-grounded reference material using
+the protocol below. Deterministic tests verify orchestration and invariants but do
+not substitute for assessment of the generated interpretation. Record fixture
+construction and any deliberately injected assertions or earlier interpretations.
 
 #### Clean-agent comprehension exercise
 
