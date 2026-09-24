@@ -21,9 +21,10 @@ supersession semantics to summary work. This record extends that model without
 requiring persisted investigations, semantic identities across program states,
 or a canonical model of program responsibilities.
 
-The decisions are additive. Existing definitions of Entity, Subject, Claim,
-Evaluation, Lens, Projection, and Session retain their meanings. No earlier headed
-decision is superseded. The lens mapping below makes explicit how an interpretation artifact can be
+The decisions extend the existing concepts, including broadening facet applicability
+from entities to subjects. Existing definitions of Entity, Subject, Claim,
+Evaluation, Lens, Projection, and Session retain their meanings. The entity-only scope of the initial facet decision is amended by
+[subject facets](#apply-facets-to-subjects-including-investigons); its remaining meaning is retained. The lens mapping below makes explicit how an interpretation artifact can be
 a subject of further investigation while retaining its program context.
 
 ## Decisions
@@ -221,43 +222,62 @@ implementation choices.
 
 ### Record explicit corrections without rewriting earlier interpretation
 
-An operation may identify corrections to its selected investigon or an earlier
-investigon acquired as context. Each correction explicitly identifies the earlier
-target, replacement, reason, and evidence context. An investigon carries a list of
-accompanying corrections as part of its immutable content. Each correction contains
-its replacement investigon; that replacement cannot be a composition child of the
-reporting investigon. It may have its own fixed composition tree. Replacement
+An investigon may carry accompanying corrections and unresolved inconsistencies as
+immutable content. Each correction identifies a previously retained target, carries
+a new replacement investigon, and records its reason and evidence context. Each
+replacement is constructed through its correction, with a composition tree disjoint
+from the reporting investigon's composition tree. This is a construction invariant,
+not a restriction on which program aspects can be described. The replacement's
 provenance identifies the actual generating operation and selected subject.
-Accompanying corrections are distinct from composition and investigation provenance.
-The entire operation result, including replacements and their composition trees,
-is validated and accepted together. Corrections take effect on acceptance, not display.
 
-If the evidence supports only an inconsistency or an alternative, retain that
-qualification with the reporting investigation and explicit references to affected
-investigons, without asserting replacement. Inspection of affected investigons exposes
-it, and redisplay flags it. Obsolete-target and competing-replacement conflicts use
-this same unresolved-inconsistency behavior. PostCode validates references and structure; semantic inconsistency
-and the replacement account are interpretive judgments.
+Replacement investigons may themselves carry corrections. Every correction target
+must have been retained before acceptance of this operation's result; it cannot
+be another investigon produced by the same operation. This separates new replacements
+from their targets' composition and prevents same-result correction cycles. The
+entire result, including recursively accompanying corrections, is validated and
+accepted together. Corrections take effect on acceptance, not display.
 
-When retained results are displayed again, an explicit replacement is primary, with the original
-accessible and the revision disclosed. Presentation identifies what was replaced
-and provides access to the reason and evidence context, preserving the replacement's
-interpretive qualification. The primary display changes without a human acceptance
-step; this does not confer greater epistemic authority. Previously produced projections remain
-unchanged. Original subparts stay in their original composition tree. Separate
-investigations that selected a revised investigon retain that exact subject in
-their provenance, with its revision disclosed where relevant. Neither subparts nor
-subsequent investigations are silently corrected, reattached, or regenerated.
-Composition and provenance alone do not propagate a correction.
+A correction targeting an already superseded investigon, or competing with another
+correction, does not invalidate an otherwise valid result. Retain its replacement
+and mark the conflict. Where a presentation selects one account, the default is
+the most recently accepted explicit correction among the competing alternatives,
+following replacement chains through to their endpoints. Simultaneously accepted
+alternatives require a stable presentation tie-break, whose form is an
+implementation choice. Selecting a primary account does not resolve the conflict.
+A newer correction alone does not establish that it addresses intervening corrections.
 
-Redisplay follows the current explicit replacement of each displayed node and then
-that replacement's own composition, applying the same rule to its sub-investigons.
-A corrected child is displayed in place under the old root, annotated as an update.
-When the root is replaced, its replacement's composition is displayed; corrected
-children from the old tree are not spliced into it. This substitution is presentation,
-not a composition relationship. Correction links apply throughout the session;
-exact inspection still exposes the selected original, and repeating a follow-up
-preserves its original subject and displays its retained result with a revision warning.
+An unresolved inconsistency without an asserted replacement is also accompanying
+content, referencing the affected investigons. Inspection of the reporting and
+affected investigons exposes it, and redisplay flags it. PostCode validates
+structure and references; semantic inconsistency remains an interpretive judgment.
+A missing target or other structurally invalid reference still rejects the unit.
+
+The reporting operation's view shows its accompanying corrections with targets,
+selectable replacement references, reasons, and access to support. Redisplay marks
+updates and conflicts, preserves qualification, and provides access to originals.
+A presentation may instead show an overview of conflicting accounts through
+attributed excerpts and references, without generating a synthesized interpretation.
+Inspection explicitly exposes all conflicting accounts and correction relationships,
+identifying the primary selection; bounded listings disclose omissions and provide
+access to the remaining accounts.
+
+Redisplay follows explicit replacement chains to the selected endpoint and displays
+that investigon's own composition, applying the same rule to its sub-investigons.
+Annotations identify the original and provide access to the replacement chain.
+A corrected child appears in place under the old root, marked as an update. When
+the root is replaced, corrected children from its old tree are not spliced into the
+replacement tree. Disclose corrections in displaced trees that are not shown,
+with references. An operation may correct both an ancestor and a descendant; a
+node in a superseded tree remains a valid target. Neither disclosure nor primary
+selection establishes that the replacement root incorporates those corrections.
+
+Presentation substitution creates no composition relationship. Original investigons,
+composition trees, and historical projections remain unchanged. Correction links
+apply throughout the session; exact inspection exposes the selected original.
+Separate investigations retain their exact subjects and provenance. Repeating a
+follow-up displays its retained result with a revised-subject warning, without
+redirecting, reattaching, or regenerating it. Composition and provenance alone do
+not propagate corrections.
 
 A follow-up targets the exact investigon reference supplied, including when it is
 superseded. The interface warns and identifies its replacement without redirecting
@@ -274,8 +294,8 @@ a replacement. Requests identify the resolved subject, not merely the handle tex
 
 The initial correction contract replaces one whole investigon
 with one replacement investigon, optionally containing subparts. An operation may
-replace several distinct current targets. Obsolete-target and competing-replacement
-corrections remain unresolved conflicts rather than automatic overwrites or merges.
+correct several earlier targets. Competing accounts remain available without
+automatic merging or erasure.
 
 #### Rationale, alternatives, and consequences
 
@@ -285,9 +305,28 @@ investigons mistakes composition or provenance for logical implication. Editing 
 interpretations and observed views. Explicit targeted replacement supports upstream
 correction while preserving what was actually asserted and why.
 
+When a view presents one account, recency supplies a practical default. A newer
+correction may incorporate more evidence or other investigations, but this is not
+guaranteed: acceptance order is a display heuristic, not credibility. Showing no
+account would withhold useful information. A conflict overview is another
+presentation option; synthesizing agreement and differences would itself require
+an investigation, not ordinary redisplay.
+
 A sentence-level patch language or arbitrary many-to-many replacement could express
 more cases but is not necessary to test this slice. Its detailed encoding and indices are implementation choices. The mechanism
 does not guarantee detection of every inconsistency or correctness of a revision.
+
+### Apply facets to subjects, including investigons
+
+Facets classify subjects, including entities and investigons. This broadens the
+entity-only wording of the initial facet definition while preserving facets as a
+role of properties whose values and qualifications come from claims. Properties
+already apply to subjects; no universal facet schema is introduced.
+
+Investigon facets such as superseded, supersedes, and conflicting are derived from
+retained correction relationships in the current session. They expose session
+context without modifying immutable investigon content. A recorded correction or
+conflict does not establish which program interpretation is true.
 
 ### Integrate interpretation with evaluation and qualified evidence access
 

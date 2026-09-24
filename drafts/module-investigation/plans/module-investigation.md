@@ -294,7 +294,8 @@ requirements, not a required grammar.
 2. `decompose @i7` generates a separate root and finer selectable subparts. Its
    provenance identifies `@i7` as the subject; it does not add children to `@i7`.
 3. `examine @i12` discovers that an earlier summary point `@i7` needs correction
-   and retains a replacement `@i20` with a reason and supporting evidence.
+   and retains a replacement `@i20` with a reason and supporting evidence. The
+   reporting view shows the target, replacement reference, reason, and support access.
 4. `summary M` displays the retained result with `@i20` marked as a
    replacement of `@i7`, without another model call. Unaffected points retain IDs.
 5. `inspect M` exposes associated investigons and their revision relationships.
@@ -308,57 +309,41 @@ requirements, not a required grammar.
 
 ## Correction and display of retained results
 
-Any operation can uncover a correction. The interpreter can traverse composition,
-investigation provenance, and revision relationships, inspect support, and explicitly identify an earlier
-investigon that needs replacement. A correction records the affected investigon,
-replacement, reason, and evidence context. An investigon includes any accompanying
-corrections as part of its immutable content. Each correction carries its replacement
-investigon, which cannot be a composition child of the reporting investigon. The
-replacement may have its own fixed composition tree. Its provenance identifies the
-actual generating operation and selected subject, even when it corrects another
-subject's account.
+Any operation can uncover corrections or unresolved inconsistencies. Apply the
+[correction semantics](../decisions/module-investigation-decisions.md#record-explicit-corrections-without-rewriting-earlier-interpretation):
+investigons carry these as immutable accompanying content. Replacements are
+constructed through corrections, with composition trees disjoint from the reporting
+tree, and may themselves carry corrections. Every target must predate acceptance
+of the operation result; all new content is validated and accepted together.
 
-A suspected inconsistency without a supported replacement is retained with the
-reporting investigation and explicit references to the affected investigons. It is
-exposed on inspection of those investigons and flagged on redisplay, without
-selecting a replacement.
+Conflicting corrections, including corrections to already superseded targets, are
+retained without invalidating an otherwise valid result. When showing one account,
+select the most recently accepted explicit correction, following replacement
+chains to their endpoints and marking unresolved conflicts. Recency is only a
+display heuristic. A presentation may instead show attributed excerpts and
+references as a conflict overview; it does not synthesize a new interpretation.
+`inspect()` exposes all conflicting accounts, relationships, and the primary
+selection. Bounded listings disclose omissions and provide access to the remainder.
 
-Original investigons and their composition trees remain intact. When retained
-results are displayed again, explicit replacements are primary and marked as
-revised, with originals available. The displayed result makes the change apparent:
-it identifies the replaced and replacement investigons and makes the correction's
-reason and supporting context accessible. The replacement retains its interpretive
-qualification; becoming primary does not establish greater certainty. No human
-acceptance step is required. Earlier views remain historical results.
-Replacement selection in a new view does not rewrite the stored composition tree.
-Display follows the current explicit replacement of each displayed node, then its
-own composition, applying the same rule to its sub-investigons. A superseded child
-therefore appears as its replacement under the old root, annotated as an update.
-If the root itself is superseded, display uses the replacement root's composition;
-corrected children of the old root are not spliced into the new tree. Presentation
-substitution creates no composition relationship. Correction links are session-wide;
-exact inspection and selection still identify the original artifact.
-Original subparts remain in that tree; separate investigations based on a corrected
-investigon retain their original subject references and disclose its revision where
-relevant. Neither relationship silently transfers to the replacement.
+The reporting view lists accompanying corrections with targets, replacement
+references, reasons, and access to supporting context. Unresolved inconsistencies
+are visible through inspection of both reporting and affected investigons and
+flagged on redisplay. Session-derived facets such as superseded, supersedes, and
+conflicting expose correction relationships without mutating investigons.
 
-A follow-up using a precise reference targets exactly that investigon. If it is superseded,
-the CLI warns and displays the replacement's reference without redirecting the request or
-requiring confirmation. The user can investigate the historical interpretation or
-select the replacement explicitly. Retained request identity uses the operation,
-resolved subject identity, and semantic parameters; the two subjects have distinct requests.
+Redisplay substitutes corrected children under an old root, annotated as updates.
+A corrected root instead supplies its own composition. Disclose further corrections
+in displaced trees with references, without splicing their children into the new
+tree or implying those corrections were incorporated. Both ancestor and descendant
+may be corrected in one operation. Original composition and historical views remain
+unchanged; presentation substitution creates no composition relationship.
 
-Summary redisplay selects explicit replacements and labels them with their own precise references.
-Inspection exposes retained history, including superseded investigons and their references.
-A precise reference remains bound to its original investigon regardless of display selection.
-
-For the initial slice, a
-correction replaces one entire investigon with one new investigon, which may have
-subparts. One operation can correct multiple distinct earlier targets. A new
-correction must target the current replacement if a prior revision exists; an
-attempt to revise an obsolete target or create competing current replacements is
-reported as an unresolved conflict. There is no automatic merge or cascading
-rewrite. This bounds conflict behavior without preventing ancestor corrections.
+Exact references continue to select their original investigons. Follow-ups on a
+superseded subject warn and identify replacements without redirecting or requiring
+confirmation. Repeated follow-ups display their retained results with revised-subject
+context; they do not investigate a replacement implicitly. Original and replacement
+subjects identify distinct retained requests. Reference spelling remains independent
+of these rules.
 
 ## Interpreter execution and evidence access
 
@@ -499,7 +484,8 @@ in the result, including their replacement investigons and composition trees. Ac
 this entire result as a unit at the domain interpretation boundary, only after
 validation succeeds. Corrections take effect on acceptance, independently of display. Validation
 checks identity, reference existence, permitted relationships, qualifications, and
-revision targets; it does not establish the prose's truth. On failure, record the
+revision targets predating this result. Conflicting corrections are valid retained
+content, not structural validation failures. Validation does not establish the prose's truth. On failure, record the
 evaluation outcome without retaining invalid investigons or applying their
 corrections. Bounded repair within the same evaluation's execution limits is an
 implementation choice. Acceptance is distinct from displaying a view, which remains
@@ -599,12 +585,18 @@ Verify public boundaries and journeys, including:
 - shared acquisition enforces generated-output and validity boundaries; bounded
   omissions, prompt-like repository text, and captured-source inspection preserve
   their qualifications without a parallel interpreter file-reading path;
+- conflict acceptance without losing useful results, latest-accepted primary selection
+  with conflict annotations, conflict overviews and complete inspection access;
+  a two-step replacement chain, simultaneous alternatives with stable selection,
+  and corrections in displaced trees, including ancestor/descendant corrections;
+- recursive accompanying corrections, rejection of same-result or missing targets,
+  unresolved-inconsistency content and session-derived investigon facets;
 - accompanying corrections with replacements outside the reporting investigon's
   composition, replacement provenance and subject associations, atomic acceptance,
   child replacement under an old root, and root replacement using its own composition;
 - correction of the selected investigon and an ancestor, unresolved disagreement
   discoverable through affected-investigon inspection and redisplay,
-  obsolete revision targets, preserved old output and composition trees, revised-subject
+  conflicting corrections to superseded targets, preserved old output and composition trees, revised-subject
   warnings on subsequent investigations, and
   precise-reference targeting with supersession warnings and no redirection, distinct
   retained requests for original and replacement subjects, corrected

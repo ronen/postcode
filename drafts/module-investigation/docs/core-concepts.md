@@ -6,7 +6,7 @@ This document states PostCode's governing cross-cutting architectural terminolog
 
 This document is not an exhaustive ontology or an inventory of implementation types. It defines only concepts and distinctions that need to remain stable across plans and slices. Definitions do not prescribe classes, interfaces, schemas, storage, module boundaries, or language-specific representations. Examples illustrate meanings, not a list of implemented capabilities.
 
-Semantic changes require explicit human agreement and a corresponding accepted decision record, with both updated in the same commit. For every defined term, include a term-level `*[decision: ...]*` link to the decision that established or most recently changed its general definition. When a later decision makes a localized semantic addition or change without replacing that term-level provenance, add a paragraph-scoped `[[...]]` decision link immediately after the affected paragraph. Follow the [development workflow](../../../dev/workflow.md#documentation) when changing this document. If this document and an accepted decision disagree, treat the inconsistency as an unexpected finding rather than silently choosing or reconciling them.
+Semantic changes require explicit human agreement and a corresponding accepted decision record, with both updated in the same commit. For every defined term, include a term-level `*[decision: ...]*` link to the decision that established or most recently changed its general definition. When a later decision makes a localized semantic addition or change without replacing that term-level provenance, add a `[[...]]` decision link at the end of the affected sentence or paragraph. Follow the [development workflow](../../../dev/workflow.md#documentation) when changing this document. If this document and an accepted decision disagree, treat the inconsistency as an unexpected finding rather than silently choosing or reconciling them.
 
 ## Subjects and program information
 
@@ -54,11 +54,11 @@ Participants are not necessarily all entities: a documentation association can c
 
 *[decision: [Initial core concepts](../../../docs/decisions/initial-core-concepts-decisions.md#define-facet-as-a-classification-role-played-by-a-property)]*
 
-A **Facet** is a property used as a compact classification dimension for describing, filtering, grouping, or comparing entities. A claim supplies its value, and Claim context supplies its qualification. Different facets may overlap and need not share one representation or value type. For example, a module may be both external and declaration-only.
+A **Facet** is a property used as a compact classification dimension for describing, filtering, grouping, or comparing subjects, including entities and investigons. A claim supplies its value, and Claim context supplies its qualification. Different facets may overlap and need not share one representation or value type. For example, a module may be both external and declaration-only. [[Subject facets](../decisions/module-investigation-decisions.md#apply-facets-to-subjects-including-investigons)]
 
 Facet names a role played by a property, not a separate record category or a special epistemological status. It does not imply a universal facet schema.
 
-A conceptual facet describes the entity in terms useful to the investigation. A source facet describes its source-level representation or implementation mapping. Language-specific knowledge can establish a conceptual facet; language-specific does not by itself mean source-level. Facet names do not determine the strength of the supporting claim.
+A conceptual facet describes the subject in terms useful to the investigation. A source facet describes its source-level representation or implementation mapping. Language-specific knowledge can establish a conceptual facet; language-specific does not by itself mean source-level. Facet names do not determine the strength of the supporting claim.
 
 ## Evidence and qualification
 
@@ -144,9 +144,10 @@ structure by itself.
 [[Composition and investigation provenance](../decisions/module-investigation-decisions.md#distinguish-fixed-composition-from-investigation-provenance)]
 
 An investigon may carry accompanying corrections identifying earlier targets,
-replacement investigons, reasons, and evidence context. A replacement is carried
-by its correction, not as a composition child of the reporting investigon, and may
-have its own composition tree.
+replacement investigons, reasons, and evidence context, as well as unresolved
+inconsistencies. Each replacement is constructed through its correction with a
+composition tree disjoint from the reporting tree. Replacements may themselves
+carry corrections; correction targets predate acceptance of the new result.
 [[Corrections](../decisions/module-investigation-decisions.md#record-explicit-corrections-without-rewriting-earlier-interpretation)]
 
 ### Presentation and View
