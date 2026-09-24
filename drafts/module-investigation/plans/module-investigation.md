@@ -34,6 +34,14 @@ This slice implements four operations using shared interpretation infrastructure
 | `decompose(investigon)` | Smaller, tersely described selectable aspects of the selected functionality | More precise focus without requiring a deeper investigation of each aspect |
 | `examine(investigon)` | A deeper investigation of the selected aspect | Substantive findings, sharper limitations, corrections, or an explicit report that no useful addition was established |
 
+The expected implementation uses one interpretation mechanism for all four
+operations: the same dialogue loop, evidence-access tools, result structure, and
+validation and retention flow. The operations differ through their prompting and
+input data: the requested objective, selected module or investigon, and relevant
+investigation context. Prompt wording and context assembly are implementation
+choices guided by the behaviors above; separate execution pipelines are not
+expected for each operation.
+
 For a summary saying that a module “assembles configuration and starts the
 application,” decomposition can expose those two activities separately. Examining
 configuration assembly can investigate input precedence and validation. Explanation
@@ -41,10 +49,6 @@ can clarify what assembly means in this program. All three return investigons
 that can be used with any subsequent operation. Decomposition may discover new
 claims while reasoning over existing evidence; examination may need additional
 source. Their objectives, not exclusive tool permissions, distinguish them.
-
-“Explorative” describes the formative purpose of trying these interactions; it is
-not a domain status or a required CLI label. Useful summary content and the value
-of each follow-up remain questions for formative use.
 
 ### Summary substance and investigation reach
 
@@ -66,9 +70,8 @@ may require substantial investigation to produce.
 The interpreter's investigation policy weighs the expected explanatory value of
 further inspection. It continues where additional evidence is likely to materially
 improve or clarify the account and stops when that is unlikely to be fruitful.
-Consequential remaining gaps are disclosed. This is a behavioral requirement, not
-prescribed prompt text; its instructions and implementation are design choices.
-The policy complements hard execution bounds rather than replacing them.
+Consequential remaining gaps are disclosed. The policy complements hard execution
+bounds rather than replacing them.
 
 ## Scope and boundaries
 
@@ -428,13 +431,27 @@ credentials. Missing authentication produces explicit unavailability, not an
 invented summary. Credential material does not enter investigons or observations.
 Exact setup steps and authentication storage follow the selected integration.
 
-## Bounds, outcomes, and publication
+## Bounds, outcomes, and result acceptance
 
-**[proposed P6 — human review before promotion]** Bound model turns/tool requests,
-source bytes supplied, elapsed time, and generated output using explicit defaults
-chosen and documented by implementation. Report measured usage where available;
-unknown cost remains unknown. Bounds constrain execution, not the meaning of the
-lens. No automatic paid retry loop or silent provider/model fallback is required.
+Each new investigation evaluation has a finite runaway-containment guard covering
+the entire interpreter dialogue and work triggered through its tools, including
+mechanical analysis. Implementation chooses and documents practical bounds, such
+as elapsed time, dialogue/tool-call count, and input/output volume. The guard is
+a usability backstop against uncontrolled continuation, not a spending budget or
+an attempt to optimize the amount of useful investigation.
+
+Reaching the guard produces an explicit stopped outcome with the reason and any
+usable validated partial results. Cancellation coverage and delays in interrupting
+in-flight provider or mechanical work are disclosed; the guard does not guarantee
+immediate termination or a monetary ceiling. It applies to hosted and future local
+inference alike. Bounds constrain execution, not the lens question.
+
+Session-wide usage reporting, user-set spending or resource allowances, and
+allowance-based admission checks are outside this slice and recorded as
+[budgeting support](../../../docs/backlog.md#investigation-usage-and-budgeting-support).
+Available provider usage metadata remains attributable in outcomes and observations;
+unknown measures remain unknown. Retaining that metadata does not require a
+cumulative budgeting interface. No silent provider/model fallback is required.
 
 The outcome distinguishes stopping with sufficient support for the requested
 account, stopping because further investigation appears unlikely to be useful,
@@ -450,12 +467,15 @@ accepted interpretation result. Already captured evidence and earlier results
 remain usable when the session itself remains valid. Completed generation is not
 proof of exhaustive investigation or correct interpretation.
 
-**[proposed P7 — human review before promotion]** Publish each validated result and
-its correction links as one coherent batch. Structural validation checks identity,
-reference existence, permitted relationships, qualifications, and revision targets;
-it does not establish the prose's truth. If a structural defect prevents accepting
-the batch, preserve the failure outcome without activating its corrections.
-Bounded repair using the same operation budget is an implementation choice.
+The result of a single interpretation operation consists of a root investigon,
+its subordinate investigons, and optional correction links. Accept this result as
+a unit at the domain interpretation boundary, only after validation succeeds. Validation
+checks identity, reference existence, permitted relationships, qualifications, and
+revision targets; it does not establish the prose's truth. On failure, record the
+evaluation outcome without retaining invalid investigons or applying their
+corrections. Bounded repair within the same evaluation's execution limits is an
+implementation choice. Acceptance is distinct from displaying a view, which remains
+subject to the session-validity checks below.
 
 The shell remains single-operation-at-a-time. Adapt its synchronous executor and
 worker handling for asynchronous interpretation, retaining input checks before
@@ -463,6 +483,8 @@ publication and after output. Active interruption keeps the existing end-session
 behavior; terminate/cancel inference where the chosen provider permits it and
 truthfully report limits on remote cancellation or cost. No late response is
 published after interruption or invalidation.
+
+## Observations and execution provenance
 
 Normal command observations include the exact selected target, any superseded-target
 warning and displayed replacement reference, operation,
@@ -556,8 +578,12 @@ Verify public boundaries and journeys, including:
   retained requests for original and replacement subjects, corrected
   retained summary redisplay that visibly identifies changes and preserves
   interpretive qualification, and unchanged historical projections;
+- runaway containment across tool-triggered mechanical work and the dialogue loop,
+  stopped outcomes, and documented in-flight cancellation limits;
 - provider unavailability, failures, malformed output, exhausted bounds, usage
-  unknown, publication integrity, sink failure, and no inference during inspection;
+  unknown, acceptance of a single-operation result as a unit at the domain boundary,
+  sink failure, and
+  no inference during inspection;
 - input change during asynchronous work, new evidence acquisition, excluded output,
   interruption, and rejection of late results;
 - preserved stopping reasons and material limitations for sufficient-account,
@@ -568,7 +594,7 @@ Verify public boundaries and journeys, including:
 
 ### Formative investigation assessment
 
-**[proposed P8 — human review before promotion]** Use three fixed formative subjects:
+Use three fixed formative subjects:
 PostCode `evaluation`, `thingts/fsm-engine`, and `mesqueeb/merge-anything`. Before
 live runs, the implementing agent records revisions, module boundaries, supplied
 and accessible documentation, provider compatibility, and evaluator familiarity.
@@ -577,6 +603,18 @@ recalled. These are purposeful development subjects, not an unbiased sample or
 untouched validation set. If a subject cannot be exercised in the supported
 configured-project scope, report the obstacle for human choice rather than
 silently replacing an awkward result.
+
+The subjects exercise complementary aspects of source-based understanding:
+
+| Subject | Relevant code characteristics | Assessment purpose |
+| --- | --- | --- |
+| PostCode `evaluation` | Invocation and outcome recording are separated from discovery supplied by the caller through an analysis interface | Test whether summaries identify what a module contributes and what it delegates |
+| `thingts/fsm-engine` | Meaningful cases, guards, transition actions, and reentrant-request handling | Test terse accounts of branching behavior and useful local decomposition |
+| `mesqueeb/merge-anything` | Related operations share implementation, with recursion versus replacement and customization | Test whether investigation explains substantive mechanisms beyond a generic package description |
+
+These are selection rationales, not expected answers supplied to the interpreter
+or view-only evaluator. Capture the exact modules and revisions used; source-based
+assessment establishes which conclusions those captures actually support.
 
 For each subject, record the initial summary and a sequence exercising all three
 follow-ups, including a follow-up on a generated investigon. Assess whether:
@@ -597,6 +635,73 @@ follow-ups, including a follow-up on a generated investigon. Assess whether:
 - context retrieval enables correction of earlier results through composition and
   investigation-provenance traversal without erasing earlier results.
 
+#### Clean-agent comprehension exercise
+
+Supply captured user-facing results to fresh evaluator agents using consistent
+structured questions, following the approach established by the
+[module inventory exercise](../../../records/validation/initial-module-inventory-questions.md).
+Evaluators have no implementation-task or interpreter conversation history and use
+only the supplied views, including any explicitly supplied evidence-inspection view.
+They do not independently read source, repository documentation, plans, or the
+internet. Record evaluator configuration, prior familiarity where known, supplied
+artifacts, and any context limits. Fresh context does not establish absence of
+model prior knowledge or independent corroboration of generated claims.
+
+For each formative subject, assess the initial summary separately from the captured
+follow-up sequence. Use separate fresh contexts for summary-only and sequence
+conditions so later explanations do not inform the summary-only answers. The
+sequence includes the selected references and relevant prior output, allowing an
+evaluator to assess what each operation added. Fix the question set before
+assessment and apply it consistently across subjects. Questions cover:
+
+- What functionality and division of responsibility does the view communicate?
+- Which conclusions are interpretations, which have other qualified support, and
+  what consequential information remains unestablished?
+- What became clearer after explanation, more precisely selectable after
+  decomposition, or substantively different after examination?
+- Which investigon would you select next, by displayed reference, with which
+  operation, and what would you expect to learn?
+- Where correction is shown, what changed, which references identify original and
+  replacement, and what remains uncertain? Can composition be distinguished from
+  the provenance of a later investigation?
+- What wording, omissions, repetition, or presentation could mislead or impede use?
+
+Responses use a consistent structured format with references to supplied output,
+explicit unknowns, and a qualitative usefulness judgment rather than a single
+numeric score. Retain exact questions, inputs, and responses. Compare summary-only
+and sequence responses for conveyed understanding, not just length or agreement.
+
+#### Source-grounded comparison and automated execution
+
+Establish reference material independently of the generated investigons, using the
+captured source and qualified mechanical evidence for each subject. It records
+consequential supported conclusions, evidence references, material limits, and
+acceptable qualified interpretations. Apparent responsibility or purpose need not
+have one uniquely correct phrasing; reference material distinguishes established
+facts from interpretive judgments and unresolved questions. Freeze the reference
+material before evaluating generated results, recording any later corrections.
+
+The comprehension evaluators remain view-only: source-grounded reference material
+and selection rationales are not supplied to them. A separate assessment stage
+compares both generated investigons and evaluator responses against that material,
+as well as checking what the supplied views actually support. Distinguish:
+
+- generation errors faithfully repeated by the evaluator;
+- communication failures where supported information was present but misunderstood;
+- successful communication of source-supported understanding and qualifications;
+- unsupported evaluator extrapolation, including conclusions that happen to match
+  source but were not established by the supplied view;
+- material omissions and cases where the reference evidence cannot settle a claim.
+
+Run the assessment automatically across the formative subjects and investigation
+sequences, retaining outputs and assessment findings for human review after the
+exercise completes. Human inspection is not a per-subject or per-sequence step.
+Automated comparison can use a separate source-informed assessor with a consistent
+rubric; its judgments remain attributable and reviewable rather than authoritative
+program truth. Record the reference material, rubric, assessor conditions, evidence
+for discrepancies, and uncertainty alongside the view-only responses. No particular
+evaluator model comparison is required.
+
 Use a controlled retained misinterpretation against unchanged source to exercise
 correction explicitly, both with deterministic tests and a live interpreter. Mark
 that setup as injected test context, not a natural model error. Do not change source
@@ -606,7 +711,7 @@ Retain exact explicit inputs, outputs, configuration, evidence access, failures,
 observed usage, elapsed time, and assessment findings in an appropriate validation
 artifact. Prompt revisions are assessed on all three subjects; do not hide a
 regression in an aggregate score or replace an inconvenient subject. No broad
-prompt/model optimization search is required. The human reviews formative results;
+prompt/model optimization search is required. The human reviews the combined formative results after the automated exercise;
 no universal acceptable-cost or usefulness threshold has been established.
 
 ## Deliverables and remaining design choices
@@ -622,6 +727,5 @@ conventions describe the implemented boundaries and lifecycle.
 
 Schemas, record layout, tool signatures, reference spelling, command grammar,
 provider setup, numerical limits, and asynchronous worker plumbing remain
-implementation choices within the reviewed behavior. The marked choices in this
-plan and its decision record remain review items; the package review index collects
-them for resolution before promotion.
+implementation choices within the behavior specified by this plan and its
+associated decisions.
