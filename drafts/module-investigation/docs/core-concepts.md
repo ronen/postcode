@@ -22,7 +22,7 @@ Addressability alone does not make something an entity. Claims, evidence, evalua
 
 *[decision: [Initial core concepts](../../../docs/decisions/initial-core-concepts-decisions.md#define-entities-subjects-claims-and-relationships-by-their-meaning)]*
 
-A **subject** is what a lens investigates or a claim concerns. This is a role, not another entity kind. A subject may be an entity, a collection of entities, a relationship, a change between revisions, or an investigon. *[decision: [Investigons as subjects](../decisions/module-investigation-decisions.md#separate-program-referents-from-interpretive-focus)]*
+A **subject** is what a lens investigates or a claim concerns. This is a role, not another entity kind. A subject may be an entity, a collection of entities, a relationship, a change between revisions, or an investigon. [[Investigons as subjects](../decisions/module-investigation-decisions.md#separate-program-referents-from-interpretive-focus)]
 
 A configured project can provide the subject for a module inventory without denoting an executable entry point or the human's current workspace.
 

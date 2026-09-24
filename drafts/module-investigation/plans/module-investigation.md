@@ -95,6 +95,21 @@ in one-shot CLI use and in the shell; follow-ups require a live shell session.
 A future default of `summary(project)` is outside this slice. Summarizing a root
 module does not implicitly request coverage of every subject in the project.
 
+### Retry and forced regeneration are out of scope
+
+Explicit retry of failed or incomplete interpretation and forced regeneration of
+successful results are outside this slice. Retry may be straightforward to invoke,
+but introduces outcome eligibility, partial-result reuse, attempt selection, and
+additional interaction and verification requirements. Its practical value in early
+use is not yet established. Forced regeneration likewise has no established need.
+
+Restarting the shell is the recovery path for a retained failed or incomplete
+request, with loss of accumulated investigation context. The CLI documents that
+cost. Frequent disruption by transient failures would justify reconsidering retry.
+The separate [retry](../../../docs/backlog.md#retry-failed-or-incomplete-interpretation-without-restarting-the-session)
+and [successful-rerun](../../../docs/backlog.md#explicitly-rerun-a-successful-interpretation)
+backlog entries are candidates, not commitments or prerequisites for this slice.
+
 ## Architectural basis
 
 The [module investigation decisions](../decisions/module-investigation-decisions.md)
@@ -174,6 +189,13 @@ and cross-session references are explicit selection failures. Exact spelling
 (compact IDs, qualified paths, or another scheme) is an implementation choice; a
 visible ordinal that shifts when results grow is not a valid persistent reference.
 
+Lookup handles, including path-like selectors, may resolve to zero, one, or several
+investigons. The CLI reports missing or ambiguous matches rather than silently
+choosing a replacement. A version-distinguishing path such as `1.2a` and `1.2b`
+can instead serve as a precise reference if each spelling retains its binding for
+the session. UID syntax is not required. Once selection resolves, the request
+identifies the exact retained subject independently of the selector's spelling.
+
 The human can select displayed investigons, inspect their retained content and
 support without generating a new result, and use any follow-up operation on them.
 A follow-up receives the selected prose, referent description, references, and
@@ -198,14 +220,6 @@ investigation. Repeated requests with a retained partial or failed attempt show
 that outcome and any usable result; they do not silently retry. Availability of
 more context does not by itself authorize new generation.
 
-Explicit retry of failed or incomplete interpretation and forced regeneration of
-successful results are outside this slice. Restarting the shell is the recovery
-path for a retained failed or incomplete request, with loss of the accumulated
-session. The CLI documents this limitation. These capabilities are separate
-[backlog candidates](../../../docs/backlog.md#retry-failed-or-incomplete-interpretation-without-restarting-the-session),
-including [rerunning successful interpretation](../../../docs/backlog.md#explicitly-rerun-a-successful-interpretation),
-not prerequisites or commitments to later implementation.
-
 A follow-up on a different investigon, including a replacement, is a distinct
 request and can still run normally. This boundary does not prevent new
 investigation through the four supported operations.
@@ -216,7 +230,7 @@ identifies whether information was retained or newly generated, which attempt it
 comes from, and any explicit replacements selected for display. If the request's
 original target has since been revised, its old follow-up result remains available
 with that context disclosed; repetition does not secretly investigate the new target.
-A new follow-up resolves the effective target as described below.
+A new follow-up also targets the exact supplied investigon reference.
 
 Retain explicit
 associations between investigons and the subjects they describe. `inspect(subject)`
@@ -289,15 +303,25 @@ replacement.
 
 Original investigons and their composition trees remain intact. When retained
 results are displayed again, explicit replacements are primary and marked as
-revised, with originals available. Earlier views remain historical results.
+revised, with originals available. The displayed result makes the change apparent:
+it identifies the replaced and replacement investigons and makes the correction's
+reason and supporting context accessible. The replacement retains its interpretive
+qualification; becoming primary does not establish greater certainty. No human
+acceptance step is required. Earlier views remain historical results.
 Replacement selection in a new view does not rewrite the stored composition tree.
 Original subparts remain in that tree; separate investigations based on a corrected
 investigon retain their original subject references and disclose its revision where
 relevant. Neither relationship silently transfers to the replacement.
 
-A newly evaluated follow-up resolves a superseded target to its current replacement while
-disclosing both the selected and effective references. This resolution does not
-rebind the old reference. Exact historical content remains inspectable.
+A follow-up using a precise reference targets exactly that investigon. If it is superseded,
+the CLI warns and displays the replacement's reference without redirecting the request or
+requiring confirmation. The user can investigate the historical interpretation or
+select the replacement explicitly. Retained request identity uses the operation,
+resolved subject identity, and semantic parameters; the two subjects have distinct requests.
+
+Summary redisplay selects explicit replacements and labels them with their own precise references.
+Inspection exposes retained history, including superseded investigons and their references.
+A precise reference remains bound to its original investigon regardless of display selection.
 
 For the initial slice, a
 correction replaces one entire investigon with one new investigon, which may have
@@ -394,8 +418,12 @@ input-validity machinery. Evidence shown later comes from those captures, not a
 new filesystem read. Detectable changes invalidate rather than refresh the session.
 The first-observed, non-atomic capture limitation remains visible.
 
-Provider setup documents that selected repository content is transmitted to the
-hosted service. Existing mechanical commands remain usable without inference
+Hosted-service use is intentionally enabled, with disclosure that selected
+repository content is transmitted to that service. The enablement and announcement
+mechanisms are implementation choices. Deliberately configuring a PostCode-specific
+hosted provider can constitute opt-in; an explicit invocation option is another
+possibility. A separate per-request confirmation is not required. Configuration
+and help make the effect of enablement clear. Existing mechanical commands remain usable without inference
 credentials. Missing authentication produces explicit unavailability, not an
 invented summary. Credential material does not enter investigons or observations.
 Exact setup steps and authentication storage follow the selected integration.
@@ -436,7 +464,8 @@ behavior; terminate/cancel inference where the chosen provider permits it and
 truthfully report limits on remote cancellation or cost. No late response is
 published after interruption or invalidation.
 
-Normal command observations include the selected and effective target, operation,
+Normal command observations include the exact selected target, any superseded-target
+warning and displayed replacement reference, operation,
 selected retained or newly produced investigons and revisions needed to interpret
 the view, prior interpretations retrieved by the interpreter, qualifications,
 outcomes, actual output, and available usage. Keep the batch self-contained and
@@ -455,9 +484,14 @@ are implementation choices; secrets must not be recorded.
 
 ## Milestones
 
-All milestones are in scope before implementation starts. Findings can motivate
-an explicit human-directed plan revision; a milestone is not authorization for
-the executing agent to decide which operations to omit.
+All milestones are in scope before implementation starts. They verify progress
+against the agreed capability, not decide whether the later milestones should be
+built. There is no planned usefulness gate after the first milestone that changes
+the remaining scope. Formative findings assess the complete slice and inform future
+planning. Unexpected findings that invalidate the plan's assumptions still follow
+the normal development workflow; that exception is not a planned scope-selection
+stage. If a capability requires an earlier usefulness result before committing to
+its implementation, it belongs in a separately planned slice.
 
 1. **Terse module summary through the real interpreter boundary.** Establish
    investigon records and references, qualified evidence assembly, bounded tool
@@ -489,6 +523,9 @@ Verify public boundaries and journeys, including:
   module selections, unknown/cross-session references, and preserved qualifications;
 - multi-level composition produced in one evaluation; follow-ups produce separate
   roots with subject provenance, without modifying the selected investigon's tree;
+- path-like or other lookup handles with zero/one/multiple matches, without silently
+  preferring a replacement; version-distinguishing paths, if used as precise
+  references, retain their bindings;
 - stable CLI selection of roots and subordinate investigons after session growth, changed
   display order, and revision; repeat-display with no model calls; exact historical
   inspection; retained failure/partiality on repetition and documented restart recovery;
@@ -515,8 +552,10 @@ Verify public boundaries and journeys, including:
 - correction of the selected investigon and an ancestor, unresolved disagreement,
   obsolete revision targets, preserved old output and composition trees, revised-subject
   warnings on subsequent investigations, and
-  disclosed effective-target selection without reference rebinding, corrected
-  retained summary redisplay, and unchanged historical projections;
+  precise-reference targeting with supersession warnings and no redirection, distinct
+  retained requests for original and replacement subjects, corrected
+  retained summary redisplay that visibly identifies changes and preserves
+  interpretive qualification, and unchanged historical projections;
 - provider unavailability, failures, malformed output, exhausted bounds, usage
   unknown, publication integrity, sink failure, and no inference during inspection;
 - input change during asynchronous work, new evidence acquisition, excluded output,

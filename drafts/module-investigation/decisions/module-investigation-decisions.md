@@ -195,7 +195,6 @@ Composition records the organization of one interpretation; investigation proven
 records how separate investigations build on selected subjects. Neither relationship
 by itself establishes program containment, delegation, execution order, or logical
 dependence. Claims about constituent functionality require their own support.
-Correction relationships are separate from both composition and provenance.
 
 The interpreter can traverse composition to understand surrounding and subordinate
 parts, and provenance links in either direction to inspect prior and subsequent
@@ -218,22 +217,35 @@ implementation choices.
 
 An operation may identify corrections to its selected investigon or an earlier
 investigon acquired as context. Each correction explicitly identifies the earlier
-target, replacement, reason, and evidence context. If the evidence supports only
+target, replacement, reason, and evidence context. This replacement relationship
+is distinct from composition and investigation provenance. If the evidence supports only
 an inconsistency or an alternative, retain that qualification without asserting
 replacement. PostCode validates references and structure; semantic inconsistency
 and the replacement account are interpretive judgments.
 
 When retained results are displayed again, an explicit replacement is primary, with the original
-accessible and the revision disclosed. Previously produced projections remain
+accessible and the revision disclosed. Presentation identifies what was replaced
+and provides access to the reason and evidence context, preserving the replacement's
+interpretive qualification. The primary display changes without a human acceptance
+step; this does not confer greater epistemic authority. Previously produced projections remain
 unchanged. Original subparts stay in their original composition tree. Separate
 investigations that selected a revised investigon retain that exact subject in
 their provenance, with its revision disclosed where relevant. Neither subparts nor
 subsequent investigations are silently corrected, reattached, or regenerated.
 Composition and provenance alone do not propagate a correction.
 
-A newly evaluated follow-up can resolve an earlier selection to its current replacement,
-but must record and disclose that resolution. This does not rebind the earlier
-reference. Historical inspection always identifies the exact retained artifact.
+A follow-up targets the exact investigon reference supplied, including when it is
+superseded. The interface warns and identifies its replacement without redirecting
+the request or requiring confirmation. Original and replacement subjects identify
+different retained requests. Summary redisplay can select replacements, labeled
+with their own precise references; inspection exposes superseded investigons and their references.
+Display selection never changes the referent of a precise reference.
+
+Reference syntax is independent of these semantics. A path with a version-distinct
+spelling can be a precise reference if its binding is stable. A path or other
+selector can instead be a lookup handle, with zero, one, or multiple matches.
+Missing and ambiguous selections remain explicit; lookup does not silently prefer
+a replacement. Requests identify the resolved subject, not merely the handle text.
 
 The initial correction contract replaces one whole investigon
 with one replacement investigon, optionally containing subparts. An operation may
