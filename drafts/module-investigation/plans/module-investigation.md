@@ -135,7 +135,7 @@ and a formal ontology of responsibilities or functionality. Reading source does
 not establish runtime behavior or author intent. No capability for saving and
 resuming interpreter conversations is introduced.
 
-Existing default commands remain unchanged. Explicit module summary is available
+Existing default command selection remains unchanged. Explicit module summary is available
 in one-shot CLI use and in the shell; follow-ups require a live shell session.
 A future default of `summary(project)` is outside this slice. Summarizing a root
 module does not implicitly request coverage of every subject in the project.
@@ -275,7 +275,9 @@ to that subject. Retain operation provenance on the whole produced set. Existing
 can navigate to a module; investigon selection uses a distinguishable session-local
 reference. Exact syntax, labels, and formatting are implementation choices.
 
-## Retained results and subject inspection
+## Retained results and inspection
+
+### Retained request results
 
 Repeating a summary or follow-up
 command displays its retained result, selecting explicit replacements in the
@@ -329,14 +331,23 @@ original target has since been revised, its old follow-up result remains availab
 with that context disclosed; repetition does not secretly investigate the new target.
 A new follow-up also targets the exact supplied investigon reference.
 
-Retain explicit
-associations between investigons and the subjects they describe. `inspect(subject)`
+### Subject inspection and associations
+
+Retain explicit associations between investigons and the subjects they describe. `inspect(subject)`
 displays a bounded listing of associated investigons, their operations, qualification,
 revision state, and selectable references. It provides access to fuller retained
 content, evidence, and originals without inference. Absence of an association means
 no retained associated account, not that the subject has no such functionality.
 Any omitted associated results are disclosed. Inspection does not generate a missing
 summary automatically.
+
+The investigon listing in `inspect(subject)` answers which retained investigons
+explicitly describe the subject in the current session. Its contents depend on
+session investigation history:
+later associated investigons and corrections can change the listing. Selection
+uses validated associations, not incidental mentions or evidence citations. The
+mechanical portion of inspection retains its existing determinism guarantee;
+that guarantee does not apply to the generated content of associated investigons.
 
 The same `inspect` lens may also accept an investigon reference. This is a candidate
 CLI expression of the required exact-result inspection, not another generative

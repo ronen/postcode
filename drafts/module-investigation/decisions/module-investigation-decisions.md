@@ -154,6 +154,15 @@ and their provenance, support, and revision state; it neither generates missing
 interpretations nor adopts the most recent prose as truth. Several investigations
 can yield different qualified accounts of the same subject.
 
+The investigon section of `inspect(subject)` answers which retained investigons
+explicitly describe that subject in the current session, with their support,
+provenance, and correction context. Selection uses validated subject associations,
+not incidental prose mentions or evidence citations. Its contents depend on the
+session's investigation history as well as the selected subject. New associated
+investigons or correction relationships can therefore change this section on a
+later inspection. The mechanical determinism guarantee applies to the mechanical
+portion of inspection, not to the generated content of associated investigons.
+
 An interpreter can retrieve such accounts on encountering a subject, even outside
 its chain of prior investigations. The resulting context is explicitly labeled
 as prior interpretation. Its provenance and supplied support remain attributable;
@@ -184,8 +193,10 @@ investigons to subject inspection is an explicit addition to its presentation
 requirements, not a reason to broaden dependency or organization populations.
 The inspection association can be implemented as a named standard expansion
 or an explicit related-result section, preserving the declared selection,
-qualifications, and no-inference behavior. No general change
-to Property, Session, or mechanical determinism is made by this decision.
+qualifications, and no-inference behavior. Session-dependent association selection
+is part of the declared inspection question; unrelated accumulated work still
+does not broaden the view. No general change to Property, Session, or mechanical
+determinism is made by this decision.
 
 ### Distinguish fixed composition from investigation provenance
 
