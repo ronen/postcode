@@ -104,8 +104,10 @@ module does not implicitly request coverage of every subject in the project.
 
 ### Retry and forced regeneration are out of scope
 
-Explicit retry of failed or incomplete interpretation and forced regeneration of
-successful results are outside this slice. Retry may be straightforward to invoke,
+Explicit retry of retained investigation failures, partial results, and limit-stop
+outcomes, and forced regeneration of successful results, are outside this slice.
+A request after communication failure follows ordinary selection without special
+retry behavior. Retry may be straightforward to invoke,
 but introduces outcome eligibility, partial-result reuse, attempt selection, and
 additional interaction and verification requirements. Its practical value in early
 use is not yet established. Forced regeneration likewise has no established need.
@@ -256,6 +258,15 @@ this purpose nor resumes the failed dialogue. The shell and previously acquired
 evidence remain usable subject to normal validity checks. Reject late responses
 from the finished attempt; lack of a response does not establish lack of provider
 work or cost.
+
+Classification follows failure meaning rather than receipt of a complete protocol
+response: transport errors, request timeouts, rate limits, and provider unavailability
+are communication/service failures, even after earlier successful tool exchanges.
+Provider refusal and provider-reported output truncation are retained investigation
+outcomes. PostCode guard expiry is always a limit stop, including during a provider
+call. Communication failure discards unaccepted interpretation content rather than
+retaining a partial investigation result; acquired mechanical results and evidence
+remain available under normal validity rules.
 
 Communication that completes with malformed output or invalid references instead
 produces a retained investigation-failure outcome. Execution-limit stops remain
@@ -641,6 +652,11 @@ Verify public boundaries and journeys, including:
   interpretive qualification, and unchanged historical projections;
 - runaway containment across tool-triggered mechanical work and the dialogue loop,
   stopped outcomes, and documented in-flight cancellation limits;
+- failure classification for transport errors, request timeouts, rate limits and
+  provider unavailability after successful tool exchanges; retained refusal,
+  provider-reported truncation, malformed output and invalid references; guard expiry
+  during a provider call; discarded interpretation content but preserved acquired
+  evidence on communication failure;
 - provider unavailability, failures, malformed output, exhausted bounds, usage
   unknown, acceptance of a single-operation result as a unit at the domain boundary,
   sink failure, and
@@ -804,8 +820,8 @@ no universal acceptable-cost or usefulness threshold has been established.
 
 Configuration or structural unavailability stops the exercise for correction or
 human direction; repeated invocations are not a recovery strategy for these failures.
-Distinguish agent-communication failures from completed exchanges yielding invalid
-investigation results and from execution-limit stops. Record the classification and
+Use the product failure classification above to distinguish communication/service
+failures from retained investigation outcomes and execution-limit stops. Record the classification and
 finite repeat allowance before execution. For plausibly transient communication
 failures, the harness may issue the affected request again in the same PostCode
 shell, with a fresh interpreter dialogue, up to that allowance. Earlier completed
@@ -814,7 +830,8 @@ configuration or structural failures stop the exercise rather than consuming the
 repeat allowance. This policy belongs to the assessment harness; PostCode applies
 ordinary request selection without repeat detection or an automatic retry loop.
 
-Malformed or invalid investigation results and execution-limit stops are assessment
+Refusals, provider-reported truncation, malformed or invalid investigation results,
+and execution-limit stops are assessment
 findings, not triggers for these repeated requests. Continue independent cases and
 record dependent steps as blocked when a needed result is unavailable. If only an
 assessment agent fails while inspecting captured views, restart that assessment

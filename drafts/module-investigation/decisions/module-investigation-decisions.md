@@ -381,6 +381,18 @@ resuming the failed dialogue. Completed communication yielding invalid output is
 instead a retained investigation-failure outcome; execution-limit stops remain
 separately identified. Reject late responses from finished attempts.
 
+Classification follows the failure's meaning, not whether a complete protocol
+response arrived. Transport errors, request timeouts, rate limiting, and provider
+unavailability are communication/service failures, including after successful tool
+exchanges. Provider refusals, provider-reported output truncation, malformed output,
+and invalid references are retained investigation outcomes. Expiry of PostCode's
+execution guard is always a limit stop, including while a provider call is in flight.
+
+Communication failure discards the dialogue's unaccepted interpretation content;
+it does not retain a partial investigation result that would block later selection.
+Qualified mechanical results and evidence acquired through tools remain available
+under the normal session-validity rules.
+
 The interpreter has domain-level access to supported qualified entities and
 relationships. Queries go through evaluation, which reuses retained analysis or
 performs missing mechanical analysis. Results retain their scope, method, evidence,
