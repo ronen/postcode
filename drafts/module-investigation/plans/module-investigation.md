@@ -264,7 +264,10 @@ These associations are subject-oriented access to qualified information, not a
 silent conversion of interpretation into an intrinsic property of the subject.
 Distinguish the subject on which an investigation originated from additional
 subjects explicitly described by an investigon, and from subjects merely cited as
-evidence. A prose mention alone does not create an association. A module can have
+evidence. A prose mention alone does not create an association. Replacement associations
+are independent of composition placement: preserve association with the subject
+whose account is corrected, and explicitly attribute any other described subjects.
+Do not blindly inherit all associations from the original. A module can have
 several associated investigons from different investigations, none automatically
 more authoritative because it is newer or more frequently retrieved.
 
@@ -308,9 +311,17 @@ requirements, not a required grammar.
 Any operation can uncover a correction. The interpreter can traverse composition,
 investigation provenance, and revision relationships, inspect support, and explicitly identify an earlier
 investigon that needs replacement. A correction records the affected investigon,
-replacement, reason, and evidence context. A suspected inconsistency without a
-supported replacement is recorded as unresolved, not silently promoted to a
-replacement.
+replacement, reason, and evidence context. An investigon includes any accompanying
+corrections as part of its immutable content. Each correction carries its replacement
+investigon, which cannot be a composition child of the reporting investigon. The
+replacement may have its own fixed composition tree. Its provenance identifies the
+actual generating operation and selected subject, even when it corrects another
+subject's account.
+
+A suspected inconsistency without a supported replacement is retained with the
+reporting investigation and explicit references to the affected investigons. It is
+exposed on inspection of those investigons and flagged on redisplay, without
+selecting a replacement.
 
 Original investigons and their composition trees remain intact. When retained
 results are displayed again, explicit replacements are primary and marked as
@@ -320,6 +331,13 @@ reason and supporting context accessible. The replacement retains its interpreti
 qualification; becoming primary does not establish greater certainty. No human
 acceptance step is required. Earlier views remain historical results.
 Replacement selection in a new view does not rewrite the stored composition tree.
+Display follows the current explicit replacement of each displayed node, then its
+own composition, applying the same rule to its sub-investigons. A superseded child
+therefore appears as its replacement under the old root, annotated as an update.
+If the root itself is superseded, display uses the replacement root's composition;
+corrected children of the old root are not spliced into the new tree. Presentation
+substitution creates no composition relationship. Correction links are session-wide;
+exact inspection and selection still identify the original artifact.
 Original subparts remain in that tree; separate investigations based on a corrected
 investigon retain their original subject references and disclose its revision where
 relevant. Neither relationship silently transfers to the replacement.
@@ -345,7 +363,7 @@ rewrite. This bounds conflict behavior without preventing ancestor corrections.
 ## Interpreter execution and evidence access
 
 The domain interpretation boundary accepts operations, subjects, and investigation
-context and returns investigons, corrections, and evaluation outcomes. An inner
+context and returns investigons carrying any accompanying corrections, and evaluation outcomes. An inner
 agent communication boundary handles instructions, messages, tool exchanges,
 completion/failure signals, and provider-specific authentication and transport.
 Dialogue coordination between them assembles instructions, dispatches tool requests
@@ -476,8 +494,10 @@ remain usable when the session itself remains valid. Completed generation is not
 proof of exhaustive investigation or correct interpretation.
 
 The result of a single interpretation operation consists of a root investigon,
-its subordinate investigons, and optional correction links. Accept this result as
-a unit at the domain interpretation boundary, only after validation succeeds. Validation
+its subordinate investigons, and any accompanying corrections carried by investigons
+in the result, including their replacement investigons and composition trees. Accept
+this entire result as a unit at the domain interpretation boundary, only after
+validation succeeds. Corrections take effect on acceptance, independently of display. Validation
 checks identity, reference existence, permitted relationships, qualifications, and
 revision targets; it does not establish the prose's truth. On failure, record the
 evaluation outcome without retaining invalid investigons or applying their
@@ -579,7 +599,11 @@ Verify public boundaries and journeys, including:
 - shared acquisition enforces generated-output and validity boundaries; bounded
   omissions, prompt-like repository text, and captured-source inspection preserve
   their qualifications without a parallel interpreter file-reading path;
-- correction of the selected investigon and an ancestor, unresolved disagreement,
+- accompanying corrections with replacements outside the reporting investigon's
+  composition, replacement provenance and subject associations, atomic acceptance,
+  child replacement under an old root, and root replacement using its own composition;
+- correction of the selected investigon and an ancestor, unresolved disagreement
+  discoverable through affected-investigon inspection and redisplay,
   obsolete revision targets, preserved old output and composition trees, revised-subject
   warnings on subsequent investigations, and
   precise-reference targeting with supersession warnings and no redirection, distinct

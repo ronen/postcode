@@ -135,13 +135,19 @@ entities or identify captured source. Investigons can be associated with the
 subjects they describe for subsequent inspection and investigation.
 [[Subject associations](../decisions/module-investigation-decisions.md#associate-investigons-with-subjects-and-select-retained-results)]
 
-One interpretation produces a root investigon and any subordinate investigons as
-a fixed composition tree, which may have multiple levels. A subsequent investigation
+An investigon and its subordinate investigons form a fixed composition tree, which
+may have multiple levels. A subsequent investigation
 produces a separate root whose provenance identifies the investigon selected as
 its subject. Composition describes the parts of one result; investigation provenance
 connects separate results through their subjects. Neither describes the program's
 structure by itself.
 [[Composition and investigation provenance](../decisions/module-investigation-decisions.md#distinguish-fixed-composition-from-investigation-provenance)]
+
+An investigon may carry accompanying corrections identifying earlier targets,
+replacement investigons, reasons, and evidence context. A replacement is carried
+by its correction, not as a composition child of the reporting investigon, and may
+have its own composition tree.
+[[Corrections](../decisions/module-investigation-decisions.md#record-explicit-corrections-without-rewriting-earlier-interpretation)]
 
 ### Presentation and View
 

@@ -138,6 +138,12 @@ mention is not automatically an assertion that an investigon describes that subj
 Association validation establishes the referenced subject, not the correctness of
 the description. Association records do not mutate the subject entity.
 
+A replacement's associations are independent of its composition placement. It
+remains associated with the subject whose account it corrects; other described
+subjects require explicit attribution rather than wholesale inheritance of the
+original's associations. Correcting an attribution from one module to another can
+concern both modules.
+
 Associated investigons are retained information about a subject rather than
 unqualified intrinsic properties. This permits subject-oriented access without
 introducing a new universal property schema. Inspection selects associated accounts
@@ -217,10 +223,20 @@ implementation choices.
 
 An operation may identify corrections to its selected investigon or an earlier
 investigon acquired as context. Each correction explicitly identifies the earlier
-target, replacement, reason, and evidence context. This replacement relationship
-is distinct from composition and investigation provenance. If the evidence supports only
-an inconsistency or an alternative, retain that qualification without asserting
-replacement. PostCode validates references and structure; semantic inconsistency
+target, replacement, reason, and evidence context. An investigon carries a list of
+accompanying corrections as part of its immutable content. Each correction contains
+its replacement investigon; that replacement cannot be a composition child of the
+reporting investigon. It may have its own fixed composition tree. Replacement
+provenance identifies the actual generating operation and selected subject.
+Accompanying corrections are distinct from composition and investigation provenance.
+The entire operation result, including replacements and their composition trees,
+is validated and accepted together. Corrections take effect on acceptance, not display.
+
+If the evidence supports only an inconsistency or an alternative, retain that
+qualification with the reporting investigation and explicit references to affected
+investigons, without asserting replacement. Inspection of affected investigons exposes
+it, and redisplay flags it. Obsolete-target and competing-replacement conflicts use
+this same unresolved-inconsistency behavior. PostCode validates references and structure; semantic inconsistency
 and the replacement account are interpretive judgments.
 
 When retained results are displayed again, an explicit replacement is primary, with the original
@@ -233,6 +249,15 @@ investigations that selected a revised investigon retain that exact subject in
 their provenance, with its revision disclosed where relevant. Neither subparts nor
 subsequent investigations are silently corrected, reattached, or regenerated.
 Composition and provenance alone do not propagate a correction.
+
+Redisplay follows the current explicit replacement of each displayed node and then
+that replacement's own composition, applying the same rule to its sub-investigons.
+A corrected child is displayed in place under the old root, annotated as an update.
+When the root is replaced, its replacement's composition is displayed; corrected
+children from the old tree are not spliced into it. This substitution is presentation,
+not a composition relationship. Correction links apply throughout the session;
+exact inspection still exposes the selected original, and repeating a follow-up
+preserves its original subject and displays its retained result with a revision warning.
 
 A follow-up targets the exact investigon reference supplied, including when it is
 superseded. The interface warns and identifies its replacement without redirecting
@@ -358,7 +383,7 @@ Two internal boundaries separate domain interpretation from agent communication:
 
 - The outer **domain interpretation boundary** accepts an operation, subject, and
   investigation context; coordinates subject-based evidence access and validation;
-  and returns investigons, corrections, and evaluation outcomes.
+  and returns investigons carrying any accompanying corrections, and evaluation outcomes.
 - The inner **agent communication boundary** exchanges instructions, messages,
   tool requests and responses, and completion or failure signals. It encapsulates
   provider protocols, authentication, and transport details without defining
