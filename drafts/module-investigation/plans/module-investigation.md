@@ -815,6 +815,12 @@ untouched validation set. If a subject cannot be exercised in the supported
 configured-project scope, report the obstacle for human choice rather than
 silently replacing an awkward result.
 
+Pin all three subjects to recorded revisions for the entire formative exercise,
+including the milestone-1 baseline and later assessments. Exercise PostCode's
+`evaluation` subject from a separate checkout of a recorded commit predating this
+slice's implementation, rather than the changing implementation working tree.
+Prepare reference material against these same pinned revisions.
+
 The subjects exercise complementary aspects of source-based understanding:
 
 | Subject | Relevant code characteristics | Assessment purpose |
