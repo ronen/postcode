@@ -15,4 +15,3 @@ Use [`drafts/`](../drafts/) for canonical-shaped proposals, an ignored root unde
 - [Candidate capabilities](candidate-capabilities.md)
 - [Dependency landscape](dependency-landscape.md)
 - [Explorative capabilities](explorative-capabilities.md)
-- [Explorative module summary](explorative-module-summary.md)
