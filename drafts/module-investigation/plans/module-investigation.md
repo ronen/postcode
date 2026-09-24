@@ -626,11 +626,19 @@ the normal development workflow; that exception is not a planned scope-selection
 stage. If a capability requires an earlier usefulness result before committing to
 its implementation, it belongs in a separately planned slice.
 
+The four operations exercise complementary uses of shared interpretation
+infrastructure. Their combined value, including progressive investigation, is
+what this slice assesses; summary quality alone is not the basis for deciding
+whether to implement the remaining operations.
+
 1. **Terse module summary through the real interpreter boundary.** Establish
    investigon records and references, qualified evidence assembly, bounded tool
    dialogue, async execution, stable user-selectable references, and a usable summary
    in the shell. Repeating the request displays retained results without inference. Include expected
    failure paths and source traceability rather than a prose-only demonstration.
+   Run the summary-only formative assessment on all three fixed subjects using
+   the applicable questions and protocol below. Retain the results as an early
+   baseline for subsequent implementation and assessment, not a scope-selection gate.
 2. **Progressive investigation.** Expose explain, decompose, and examine over the
    same results. Support on-demand context traversal, repeated operations,
    evidence inspection, subject-associated retrieval and inspection, and access to
@@ -639,6 +647,8 @@ its implementation, it belongs in a separately planned slice.
    current-versus-historical presentation, preserved composition and prior
    investigation context, invalidation,
    interruption, observations, and formative investigation on the fixed subjects.
+   Compare the completed assessment with the milestone-1 summary baseline,
+   recording changes in configuration or evidence that affect the comparison.
    Complete documentation and prepare the integrated review handoff.
 
 Use deterministic interpreter doubles to verify orchestration, but exercise the
@@ -829,13 +839,14 @@ and sequence responses for conveyed understanding, not just length or agreement.
 
 #### Source-grounded comparison and automated execution
 
-Establish reference material independently of the generated investigons, using the
-captured source and qualified mechanical evidence for each subject. It records
+Establish and freeze reference material before any live interpreter run on a
+formative subject, including the milestone-1 summary assessment. Use the
+captured source and qualified mechanical evidence for each subject. The material records
 consequential supported conclusions, evidence references, material limits, and
 acceptable qualified interpretations. Apparent responsibility or purpose need not
 have one uniquely correct phrasing; reference material distinguishes established
-facts from interpretive judgments and unresolved questions. Freeze the reference
-material before evaluating generated results, recording any later corrections.
+facts from interpretive judgments and unresolved questions. Record any later
+corrections to the reference material with their evidence and rationale.
 
 The comprehension evaluators remain view-only: source-grounded reference material
 and selection rationales are not supplied to them. A separate assessment stage
