@@ -117,11 +117,23 @@ The separate [retry](../../../docs/backlog.md#retry-failed-or-incomplete-interpr
 and [successful-rerun](../../../docs/backlog.md#explicitly-rerun-a-successful-interpretation)
 backlog entries are candidates, not commitments or prerequisites for this slice.
 
+PostCode reports configuration or structural unavailability distinctly from runtime
+investigation failure, sufficiently clearly for a human or assessment agent to
+identify why work cannot proceed. When investigation is enabled, check prerequisites
+that can be established during project opening and fail before starting the shell
+if they are unsatisfied. Failures discoverable only during execution remain explicit
+outcomes; preflight does not guarantee provider availability. The reporting mechanism
+(startup failure, exit status, or a discernible shell outcome) is an implementation
+choice. Do not silently substitute mechanical-only output for a failed investigation.
+
 ## Architectural basis
 
 The [module investigation decisions](../decisions/module-investigation-decisions.md)
-establish investigons, their composition, investigation provenance, revisions, and fresh per-operation
-interpreter dialogues. The accompanying [core concepts](../docs/core-concepts.md)
+establish investigons, their composition, investigation provenance, revisions, and
+fresh per-operation interpreter dialogues. They also supersede the initial
+Property/Facet decision, extending facet applicability from entities to subjects
+while preserving the other Property/Facet distinctions.
+The accompanying [core concepts](../docs/core-concepts.md)
 and [constraints](../docs/architectural-constraints.md) carry the cross-cutting
 meaning and invariants.
 
@@ -763,6 +775,34 @@ artifact. Prompt revisions are assessed on all three subjects; do not hide a
 regression in an aggregate score or replace an inconvenient subject. No broad
 prompt/model optimization search is required. The human reviews the combined formative results after the automated exercise;
 no universal acceptable-cost or usefulness threshold has been established.
+
+#### Assessment failure recovery and reliability
+
+Configuration or structural unavailability stops the exercise for correction or
+human direction; repeated invocations are not a recovery strategy for these failures.
+When PostCode reports a transient runtime failure, abort that run and permit a
+bounded number of reruns of the affected investigation sequence. Record the finite
+rerun allowance before execution. Each rerun starts a fresh PostCode CLI session
+and selects references afresh. This is assessment-harness recovery, not a product
+retry capability. If only an assessment agent fails while inspecting captured views,
+restart that assessment with the same views in a fresh agent context; regenerating
+the PostCode investigation is unnecessary.
+
+Preserve every attempt's inputs, outputs, diagnostics, configuration, evidence
+access, failure point, elapsed time, and available usage information, excluding
+credentials. A completed run supplies semantic validation evidence; earlier runtime
+failures do not invalidate it. Exhausting recovery without completing a required
+case leaves that validation incomplete, rather than establishing poor interpretive
+quality. Report runtime failure frequency and recovery cost separately from the
+semantic assessment, including failed attempts rather than only completed runs.
+
+If transient failures exhaust the recorded rerun allowance or otherwise make the
+exercise impractical, stop and request human instructions with the completed
+validation, failure evidence, and recovery costs. Do not add product retries or
+silently waive required validation. The human may approve a plan amendment and
+authorize further work; during an active task, record and commit that direction
+as a task follow-up before acting. Reliability findings can inform whether to
+introduce automated or manual retries in PostCode, but do not authorize them.
 
 ## Deliverables and remaining design choices
 
