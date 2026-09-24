@@ -539,6 +539,28 @@ preflight, even if the intended shell commands are mechanical. Missing authentic
 invented summary. Credential material does not enter investigons or observations.
 Exact setup steps and authentication storage follow the selected integration.
 
+### Credential setup for live inference
+
+Prefer the OS credential store for provider credentials, with PostCode retrieving
+them at runtime. The human supplies credentials through a separate setup flow,
+not through the coding or assessment agent's conversation. Keep credential values
+out of agent-visible commands, output, prompts, logs, and assessment artifacts.
+Report authentication availability and failures without exposing secrets.
+
+The implementing agent documents the selected provider, credential mechanism,
+setup steps, and access guarantees and limitations, then pauses for the human to
+configure access before live inference or assessment. Provider-specific storage
+and authentication details remain implementation choices. Document expiration,
+revocation, and any refresh requirements; credential storage alone does not remove
+those concerns. Subsequent assessment runs use the configured mechanism without
+asking the human to disclose credentials to an agent.
+
+Avoid claiming enforced isolation merely because credentials use an OS store.
+An agent able to execute commands under the same OS account may have access
+equivalent to PostCode's. Explain that limitation before the human supplies
+credentials; stronger isolation requires a mechanism that actually restricts
+credential access, such as a separately authorized broker.
+
 ## Bounds, outcomes, and result acceptance
 
 Each new investigation evaluation has a finite runaway-containment guard covering
