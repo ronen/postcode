@@ -388,6 +388,11 @@ exchanges. Provider refusals, provider-reported output truncation, malformed out
 and invalid references are retained investigation outcomes. Expiry of PostCode's
 execution guard is always a limit stop, including while a provider call is in flight.
 
+Runtime authentication rejection is configuration unavailability and leaves no
+reusable investigation outcome. Unrecognized provider errors are reported as
+unclassified communication/service failures with credential-safe diagnostics;
+this classification does not establish that they are transient.
+
 Communication failure discards the dialogue's unaccepted interpretation content;
 it does not retain a partial investigation result that would block later selection.
 Qualified mechanical results and evidence acquired through tools remain available

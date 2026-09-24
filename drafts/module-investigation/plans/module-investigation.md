@@ -268,6 +268,11 @@ call. Communication failure discards unaccepted interpretation content rather th
 retaining a partial investigation result; acquired mechanical results and evidence
 remain available under normal validity rules.
 
+Runtime authentication rejection is configuration unavailability, with no reusable
+investigation outcome. Report unrecognized provider errors as unclassified
+communication/service failures with credential-safe diagnostics; do not infer
+transience merely from that classification.
+
 Communication that completes with malformed output or invalid references instead
 produces a retained investigation-failure outcome. Execution-limit stops remain
 separately identified retained outcomes. Other investigations can proceed in the
@@ -827,7 +832,9 @@ failures, the harness may issue the affected request again in the same PostCode
 shell, with a fresh interpreter dialogue, up to that allowance. Earlier completed
 investigations need not be regenerated. Authentication rejection or other known
 configuration or structural failures stop the exercise rather than consuming the
-repeat allowance. This policy belongs to the assessment harness; PostCode applies
+repeat allowance. An unclassified provider error is not automatically eligible
+for repetition; without evidence that it is plausibly transient, stop for diagnosis
+or human direction. This policy belongs to the assessment harness; PostCode applies
 ordinary request selection without repeat detection or an automatic retry loop.
 
 Refusals, provider-reported truncation, malformed or invalid investigation results,
