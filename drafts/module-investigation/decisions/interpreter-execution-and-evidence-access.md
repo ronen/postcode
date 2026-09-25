@@ -218,9 +218,9 @@ to apply.
 
 ## Governing impact and promotion
 
-The accompanying [core concepts](../docs/core-concepts.md) explicitly include
+The accompanying [core concepts](../core-concepts.md) explicitly include
 interpretation among applicable analyses. The
-[architectural constraints](../docs/architectural-constraints.md) record the
+[architectural constraints](../architectural-constraints.md) record the
 interpreter access boundary. Existing qualification, evaluation, session, and
 observation decisions continue to govern. This record does not supersede an
 earlier headed decision.

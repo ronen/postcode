@@ -460,9 +460,9 @@ without claiming that downstream accounts were themselves reassessed.
 
 ## Governing impact and promotion
 
-The accompanying [core concepts](../docs/core-concepts.md) add Investigon and
+The accompanying [core concepts](../core-concepts.md) add Investigon and
 explicitly include investigons among subjects, preserving Subject as a role rather
-than an entity kind. The [architectural constraints](../docs/architectural-constraints.md)
+than an entity kind. The [architectural constraints](../architectural-constraints.md)
 add stable investigon-reference, composition, provenance, and revision rules.
 Existing qualification and session decisions continue to govern. This record
 does not supersede an earlier headed decision.

@@ -53,7 +53,7 @@ existing conceptual role as facets.
 
 ## Governing impact and promotion
 
-The accompanying [core concepts](../docs/core-concepts.md) extend Facet from
+The accompanying [core concepts](../core-concepts.md) extend Facet from
 entities to subjects and link the Property and Facet definitions to this record.
 The decision above fully replaces the initial decision's headed Property/Facet
 definition, preserving its other distinctions.

@@ -167,9 +167,9 @@ request, with loss of accumulated investigation context. The CLI documents that
 cost. Communication failures leave no reusable result, as specified below, and
 therefore do not require restarting the shell before another request. The
 separate
-[retry](../../../docs/backlog.md#retry-failed-or-incomplete-interpretation-without-restarting-the-session)
+[retry](../backlog.md#retry-failed-or-incomplete-interpretation-without-restarting-the-session)
 and
-[successful-rerun](../../../docs/backlog.md#explicitly-rerun-a-successful-interpretation)
+[successful-rerun](../backlog.md#explicitly-rerun-a-successful-interpretation)
 backlog entries are candidates, not commitments or prerequisites for this slice.
 
 PostCode reports configuration or structural unavailability distinctly from
@@ -194,8 +194,8 @@ boundaries, failure outcomes, and usage attribution.
 [Facets for subjects](../decisions/facets-for-subjects.md) supersedes the initial
 Property/Facet decision, extending facet applicability from entities to subjects
 while preserving the other Property/Facet distinctions. The accompanying
-[core concepts](../docs/core-concepts.md) and
-[constraints](../docs/architectural-constraints.md) carry the cross-cutting
+[core concepts](../core-concepts.md) and
+[constraints](../architectural-constraints.md) carry the cross-cutting
 meaning and invariants.
 
 The adopted [product
@@ -512,7 +512,7 @@ Derive "needs reconsideration" through direct and transitive citations when cont
 is corrected. Display the warning without suppressing the account, and expose
 causal paths in inspection and interpreter retrieval. Keep citation indexes and
 original content immutable. Warnings do not trigger regeneration or change exact
-selection. This slice has no clearing operation; [explicit reconsideration](../../../docs/backlog.md#reconsider-investigons-after-context-corrections)
+selection. This slice has no clearing operation; [explicit reconsideration](../backlog.md#reconsider-investigons-after-context-corrections)
 is deferred. Another investigation does not silently clear an earlier account.
 
 If B corrects A, B's citation index necessarily includes A, because A must have
@@ -688,7 +688,7 @@ question.
 
 User-set spending or resource allowances and allowance-based admission checks
 remain outside this slice and are recorded as [budgeting
-support](../../../docs/backlog.md#investigation-usage-and-budgeting-support).
+support](../backlog.md#investigation-usage-and-budgeting-support).
 Basic usage reporting is included; it does not require pricing tables, provider
 administration credentials, or billing queries in PostCode. No silent
 provider/model fallback is required.
