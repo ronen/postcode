@@ -12,7 +12,7 @@ For CLI use, begin with the [command and concepts reference](cli-reference.md).
 
 ### Drafts
 
-[`drafts/`](../drafts/) contains proposed plans, decisions, governing-document revisions, and other canonical-shaped documents being prepared for approval and promotion. Draft artifacts are durable but non-governing: committing them records their development without approving their contents.
+[`drafts/`](../drafts/) contains canonical-shaped proposals being prepared for approval and promotion.
 
 ### Durable notes
 

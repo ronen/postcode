@@ -15,7 +15,7 @@ This document contains human-maintained conventions governing how development wo
 
 ## Provisional Draft Material
 
-- Use [`drafts/`](../drafts/) for proposed plans, decisions, governing-document revisions, and other canonical-shaped documents being prepared for approval and promotion.
+- Use [`drafts/`](../drafts/) for canonical-shaped proposals being prepared for approval and promotion.
 - Treat draft artifacts as durable but non-governing. Neither committing them nor placing approval language within them gives them the role of a plan, decision, or other canonical project document.
 - Agents may use draft artifacts as planning context, but not as binding requirements.
 - Keep canonical project material independent of draft artifacts. Do not cite or link to draft artifacts from canonical project material.
