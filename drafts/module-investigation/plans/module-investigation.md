@@ -185,13 +185,16 @@ output for a failed investigation.
 
 ## Architectural basis
 
-The [module investigation
-decisions](../decisions/module-investigation-decisions.md) establish
-investigons, their composition, investigation provenance, revisions, and fresh
-per-operation interpreter dialogues. They also supersede the initial
+[Investigons and progressive investigation](../decisions/investigons-and-progressive-investigation.md)
+establishes the artifact, lens focus, subject associations, composition,
+investigation provenance, and revisions.
+[Interpreter execution and evidence access](../decisions/interpreter-execution-and-evidence-access.md)
+establishes evaluation integration, fresh per-operation dialogues, access
+boundaries, failure outcomes, and usage attribution.
+[Facets for subjects](../decisions/facets-for-subjects.md) supersedes the initial
 Property/Facet decision, extending facet applicability from entities to subjects
-while preserving the other Property/Facet distinctions. The accompanying [core
-concepts](../docs/core-concepts.md) and
+while preserving the other Property/Facet distinctions. The accompanying
+[core concepts](../docs/core-concepts.md) and
 [constraints](../docs/architectural-constraints.md) carry the cross-cutting
 meaning and invariants.
 
@@ -457,7 +460,7 @@ requirements, not a required grammar.
 
 Any operation can uncover corrections or unresolved inconsistencies. Apply the
 [correction
-semantics](../decisions/module-investigation-decisions.md#record-explicit-corrections-without-rewriting-earlier-interpretation):
+semantics](../decisions/investigons-and-progressive-investigation.md#record-explicit-corrections-without-rewriting-earlier-interpretation):
 investigons carry these as immutable accompanying content. Replacements are
 constructed through corrections, with composition trees disjoint from the
 reporting tree, and may themselves carry corrections. Every target must predate
