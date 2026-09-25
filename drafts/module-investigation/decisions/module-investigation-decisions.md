@@ -117,6 +117,18 @@ relevant evaluation outcomes, and evidence/method context. A
 projection can select investigons as result information, but an investigon is
 not synonymous with that projection or its rendering.
 
+`inspect(investigon)` exposes the retained artifact: its prose, referent information,
+evidence, composition, provenance, and corrections.
+
+Explain, decompose, and examine use the selected investigon's prose and program
+context to focus further interpretation. Explain clarifies what the account means;
+decompose identifies finer aspects of what it describes; examine investigates its
+subject more deeply. Each may acquire additional evidence and qualify or correct
+the original account.
+
+The lens determines the question asked of the investigon as a subject; subject
+status does not imply applicability of every lens.
+
 #### Rationale, alternatives, and consequences
 
 Using only a module ID loses the user's intended aspect. Requiring each aspect
