@@ -20,6 +20,21 @@ Describe the need, why it matters, and relevant constraints without designing th
 
 ## Candidates
 
+## Investigate multi-project repositories
+
+Added: 2026-09-25
+Origin: human request to understand interrelated projects in a monorepo
+Area: project scope and repository-wide investigation
+
+PostCode currently opens one configured project per session, even though the
+enclosing repository may contain several related projects. Investigate how to
+identify and present those projects as useful organizational boundaries while
+also reasoning about the behavior and dependencies of the collection as a whole.
+Account for relationships that cross project boundaries, shared or overlapping
+module populations, and differing project configurations without treating
+repository layout alone as proof of a project's semantic boundary. Preserve the
+scope and evidence behind both project-level and collection-level conclusions.
+
 ## Review the investigation UI and UX as a whole
 
 Added: 2026-09-23
