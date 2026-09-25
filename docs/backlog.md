@@ -117,3 +117,24 @@ containment remains useful for responsiveness and resource use. Keep that mechan
 independent of budgeting support so it applies to either hosted or local execution.
 Retain available provider usage metadata without assuming every integration reports
 the same measures or supports precise cost accounting.
+
+## Reconsider investigons after context corrections
+
+Added: 2026-09-25
+Origin: module investigation planning discussion of citation exposure
+Area: investigation revision and qualification
+
+Consider an explicit reconsider operation for accounts marked as needing
+reconsideration after cited context changes. The module investigation draft records
+conservative citation indexes and discloses direct and transitive warnings, but
+provides no clearing operation. Evaluate the need using correction frequency,
+citation breadth, and the practical burden of uncleared warnings.
+
+A reassessment could retain a new account or record that the earlier account remains
+unchanged against specified updated context. Preserve the original artifact and
+record the reassessment basis. Define how clearing a cause affects downstream
+warnings without erasing independent causes or implying downstream reassessment.
+Track no-change outcomes as a possible sign of overly broad citation exposure,
+not proof that the original citations were irrelevant. Interpreter-reported
+relevance may eventually refine selection while full delivery history remains
+available as provenance.
