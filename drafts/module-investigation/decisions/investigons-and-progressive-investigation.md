@@ -278,6 +278,12 @@ cycles. The entire result, including recursively accompanying corrections, is
 validated and accepted together. Corrections take effect on acceptance, not
 display.
 
+The target's retained prose, referent information, and qualifications must have
+been delivered during the current interpreter dialogue, initially or through
+permitted context retrieval. PostCode checks actual delivery; a known or reachable
+identifier alone is insufficient. Targets need not belong to the selected
+subject's composition or provenance chain.
+
 #### Conflicts and primary selection
 
 A correction targeting an already superseded investigon, or competing with
@@ -371,6 +377,86 @@ A sentence-level patch language or arbitrary many-to-many replacement could
 express more cases but is not necessary to test this slice. Its detailed
 encoding and indices are implementation choices. The mechanism does not
 guarantee detection of every inconsistency or correctness of a revision.
+
+### Record citation exposure and derive reconsideration status
+
+Each investigon has a citation index of prior investigons delivered to the
+interpreter during its generating evaluation. PostCode constructs it from actual
+context delivery, including initial context and traversal or association retrieval.
+All investigons produced by that evaluation share its conservative exposure index;
+shared storage is permitted. A citation records exposure, not endorsement, proven
+reliance, or independent corroboration. Merely discovering an identifier without
+receiving investigon content does not constitute a citation.
+
+If B corrects A, A necessarily occurs in B's citation index, since correcting an
+account requires receiving it first. Do not remove correction targets from the
+index to suppress warnings.
+
+When delivering an investigon that has been corrected, PostCode supplies the exact
+requested artifact together with an explicit correction notice, the replacement
+accounts and correction reasons, and the applicable correction chain and conflicting
+alternatives. This applies to initial context as well as subsequent retrieval.
+Preserve exact identities; do not silently redirect the request to the primary
+replacement. Replacement content actually delivered also enters the citation index.
+If bounds prevent full delivery, disclose the omitted content and permit further
+retrieval within the operation's limits. A notice or reference alone does not count
+as delivery of the corresponding account or complete correction context.
+
+Retain the identities of corrections whose target, replacement content, reasons,
+and qualification were fully delivered during the dialogue. Record completeness
+per correction so later session changes cannot retrospectively make unseen
+corrections appear known. This establishes available context, not comprehension
+or agreement, and does not require interpreter-reported acknowledgment.
+
+"Needs reconsideration" is a derived, session-scoped property of an investigon.
+When a cited investigon is corrected, expose that status on the citing investigon
+and propagate it transitively through citation indexes. Preserve the causal paths
+and distinguish multiple outstanding causes. Composition and investigation
+provenance alone do not establish a citation or propagate this status. The artifact
+and its citation index remain immutable; session-derived claims express its current
+reconsideration status.
+
+Display the qualification on affected accounts and expose its causes through
+inspection and interpreter context retrieval. It means that an account used context
+that has been corrected, directly or through earlier interpretations, and has not
+been reassessed against that change. It does not assert that the account is wrong,
+remove it from use, invalidate the session, or trigger new inference. Existing
+replacement selection and exact-reference behavior remain unchanged.
+
+The initial slice detects and discloses the condition but has no operation for
+clearing it. Another explain, decompose, or examine operation does not implicitly
+certify the old account. Explicit reconsideration is future work.
+
+Apply two cause-specific exceptions to propagation:
+
+- The correction A → B does not mark B as needing reconsideration merely because
+  B cites A, and that cause does not propagate through B. B's citation remains
+  intact. A later, different correction of A is not exempt by this rule.
+- A correction whose complete context was delivered during the generating dialogue
+  does not trigger reconsideration of that dialogue's results, directly or through
+  citation paths. The qualification is that revised context was available when
+  they were generated, not that the interpretation handled it correctly.
+
+Apply these exceptions separately to each correction cause. Partial delivery does
+not qualify. Other unseen corrections and later corrections still propagate, and
+an exemption on one path does not suppress another unexempted path. These rules do
+not clear warnings on earlier artifacts or confer a general "reconsidered" status.
+
+#### Rationale, alternatives, and consequences
+
+A corrected account may have influenced later interpretations even when it was not
+their selected subject. Exposing those paths preserves qualifications that direct
+revision warnings alone miss. Recording all delivered investigons is verifiable;
+asking the interpreter to report actual relevance may be more selective but risks
+missing dependencies. The conservative policy can over-flag incidental context.
+Assess citation breadth, apparent irrelevant inclusions, correction frequency,
+and the burden of uncleared warnings before refining the policy.
+
+After explicit reconsideration exists, its frequency of "no change" outcomes can
+provide another signal. Such outcomes do not prove irrelevant citations: a relevant
+correction can leave a dependent conclusion unchanged. Reassessment records and
+clearance propagation require separate design, preserving other outstanding causes
+without claiming that downstream accounts were themselves reassessed.
 
 ## Governing impact and promotion
 

@@ -249,6 +249,7 @@ Investigons carry or resolve to:
 - the originating module context, with optional validated references to more
   specific entities or supported subjects, including captured source regions;
 - evidence and narrower qualifications, including consequential missing context;
+- a citation index of prior investigons actually delivered during the evaluation;
 - generating operation, selected target, and actual method/execution provenance;
 - stable session-local identity, fixed composition, and investigation-provenance links.
 
@@ -497,6 +498,35 @@ superseded subject warn and identify replacements without redirecting or
 requiring confirmation. Repeated follow-ups display their retained results with
 revised-subject context; they do not investigate a replacement implicitly.
 Original and replacement subjects identify distinct retained requests.
+
+### Citation indexes and needs reconsideration
+
+Implement the [citation and reconsideration contract](../decisions/investigons-and-progressive-investigation.md#record-citation-exposure-and-derive-reconsideration-status).
+Construct citation indexes from actual delivered investigon context, conservatively
+shared across results of an evaluation. A correction target's retained prose,
+referent information, and qualifications must have been delivered in that dialogue;
+validate delivery rather than mere existence or reachability. Retrieval may extend
+beyond the selected subject's composition or provenance chain.
+
+Derive "needs reconsideration" through direct and transitive citations when context
+is corrected. Display the warning without suppressing the account, and expose
+causal paths in inspection and interpreter retrieval. Keep citation indexes and
+original content immutable. Warnings do not trigger regeneration or change exact
+selection. This slice has no clearing operation; [explicit reconsideration](../../../docs/backlog.md#reconsider-investigons-after-context-corrections)
+is deferred. Another investigation does not silently clear an earlier account.
+
+If B corrects A, B's citation index necessarily includes A, because A must have
+been delivered for B to target it. Exempt B from the specific A → B
+reconsideration cause, without removing that citation or exempting later
+corrections of A. When supplying corrected investigons, provide the exact requested
+artifact together with correction notices, replacement accounts, reasons, chains,
+and conflicting alternatives. Record actual delivery and disclose omissions.
+
+Record complete correction-context delivery per correction identity. Those specific
+corrections do not trigger reconsideration of the new results generated with that
+context available; partial delivery does not qualify. Apply exceptions per cause
+and path, preserving other outstanding causes. This does not certify comprehension
+or clear warnings on previously retained artifacts.
 
 ## Interpreter execution and evidence access
 
@@ -867,6 +897,22 @@ Verify public boundaries and journeys, including:
   their qualifications without a parallel interpreter file-reading path;
 #### Corrections and conflicts
 
+- rejection of correction targets not delivered in the current dialogue; successful
+  targeting after initial delivery or permitted traversal and association retrieval;
+- complete conservative citation indexes for all results of an evaluation, including
+  replacements; IDs encountered without delivered content are not citations;
+- direct and transitive reconsideration warnings, multiple causes and visible paths,
+  unchanged artifacts and selection, no inference on disclosure, and no implicit
+  clearing by a later investigation;
+- A → B requires A in B's citations without flagging B for that correction; later
+  corrections of A still propagate, and an exempt path does not hide another cause;
+- correction-aware initial and retrieved context, exact originals plus replacements,
+  chains and conflicting alternatives; actual delivery indexes include supplied
+  replacement content, with bounded omissions explicit;
+- complete correction-context delivery exempts only the delivered correction causes
+  for new results; partial delivery and corrections arriving after delivery remain
+  unexempted, and earlier artifacts' warnings remain unchanged;
+
 - conflict acceptance without losing useful results, latest-accepted primary selection
   with conflict annotations, conflict overviews and complete inspection access;
   a two-step replacement chain and branching A → B, A → C, B → D sequence
@@ -971,7 +1017,12 @@ follow-ups, including a follow-up on a generated investigon. Assess whether:
   exclusion or completeness merely because it produces an enumerated set of
   subordinate investigons; any stronger claim is assessed against its evidence;
 - context retrieval enables correction of earlier results through composition and
-  investigation-provenance traversal without erasing earlier results.
+  investigation-provenance traversal without erasing earlier results;
+- citation-index breadth and apparently irrelevant inclusions, correction frequency,
+  and the burden of uncleared reconsideration warnings. Large indexes alone do not
+  demonstrate a problem; assess whether incidental context makes warnings unhelpful.
+  Use controlled correction cases to exercise transitive warning propagation even
+  when natural corrections are rare.
 
 #### Focused cases and controlled fixtures
 

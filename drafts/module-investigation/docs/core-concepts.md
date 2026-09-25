@@ -156,6 +156,12 @@ composition tree disjoint from the reporting tree. Replacements may themselves
 carry corrections; correction targets predate acceptance of the new result.
 [[Corrections](../decisions/investigons-and-progressive-investigation.md#record-explicit-corrections-without-rewriting-earlier-interpretation)]
 
+An investigon's citation index records prior investigons delivered during its
+generating evaluation, without asserting reliance or endorsement. "Needs
+reconsideration" is a session-derived property indicating corrected context reached
+through those citations; the artifact and its index remain immutable.
+[[Citation exposure and reconsideration](../decisions/investigons-and-progressive-investigation.md#record-citation-exposure-and-derive-reconsideration-status)]
+
 ### Presentation and View
 
 *[decision: [Transient analysis sessions](../../../docs/decisions/transient-analysis-sessions.md#retained-domain-and-storage-boundaries)]*
