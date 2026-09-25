@@ -88,6 +88,8 @@ An observation about the investigated program concerns a particular observed exe
 
 **Evaluation** is PostCode's attempt to materialize requested information through applicable analyses. The information requirements arise from lenses and any standard expansions requested by presentations. Execution constraints describe the conditions under which the attempt is made, rather than the question the lens asks.
 
+Applicable analyses include interpretation, which produces investigons and their supporting context. [[Interpretation and evaluation](../decisions/module-investigation-decisions.md#integrate-interpretation-with-evaluation-and-qualified-evidence-access)]
+
 An **evaluation outcome** describes what occurred in that attempt: applicability and availability, execution state, result materialization, relevant cost, and reasons for failure or stopping. **Materialization** is how much of the requested information has been produced. These dimensions are distinct from the epistemological status of any produced claim.
 
 An outcome can exist without a produced claim or entity, and an incomplete attempt can have usable qualified results. An established empty result is therefore different from the absence of a result. Evaluation outcome and Claim context describe different things even when an outcome helps explain a projection's coverage or limitations.
@@ -99,6 +101,8 @@ An outcome can exist without a produced claim or entity, and an incomplete attem
 A **Session** is a continuing context for investigation, retaining subject-reference bindings, captured evidence, analysis results, evaluation outcomes, and projections. Its accumulated information can grow as requests require additional analysis or inputs. A session is not an immutable description of a fixed, completely observed input set, a workspace of managed views, or a promise to follow changing program inputs.
 
 Within a session, a reference once bound to an entity cannot be rebound. Evidence and published results retain their content, supporting context, and qualifications when later work adds information. Session membership alone does not establish a claim's evidence, completeness, or guarantee.
+
+References bound to investigons likewise retain their original targets throughout the session, including after correction. [[Investigon references](../decisions/module-investigation-decisions.md#represent-retained-interpretation-as-investigons)]
 
 The initial session opens one configured project and assumes its relevant inputs remain unchanged. Detection of a relevant change invalidates the session for further investigation; detection is best-effort and capture remains non-atomic. This does not establish earlier contents of an input first observed later.
 
@@ -119,6 +123,8 @@ A **Lens** describes the aspect of a subject being investigated: the question be
 A **Projection** is the qualified information produced by applying a lens to a particular program state and subject, with particular lens parameter values. It includes its content and the qualifications needed to understand what that content establishes.
 
 A projection is a program-domain object, addressable within its session, identifying its subject, lens, lens parameters, and session context, with references to its claims, supporting evidence and method context, and relevant evaluation outcomes. A produced projection retains the information selected for that result; later accumulation does not silently change it. For the current mechanically derived views, repeating a request with unchanged inputs and completed evaluation yields the same information. Reconstructing or rendering a projection need not establish a different answer. A later evaluation may add information when earlier work was incomplete, without changing the earlier projection or outcome. It is distinct from both an evaluation attempt and a rendering of its result. Presentation choices describe how the information is shown; they do not redefine the question asked by the lens.
+
+Redisplay of an investigation result can select retained investigons and explicit replacements into a new projection while preserving earlier projections. [[Retained interpretation selection](../decisions/module-investigation-decisions.md#associate-investigons-with-subjects-and-select-retained-results)]
 
 ### Investigon
 
