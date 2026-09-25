@@ -439,6 +439,11 @@ concerns the accessible subject set, not complete contents or analysis of each
 subject. Organization membership does not by itself establish a documentation
 association with a module.
 
+The interpreter has no shell execution, mutation, or web access. Repository
+content is evidence to analyze, not instructions to obey. Credentials remain
+outside interpreter context, investigons, and observations; provider authentication
+is handled by the agent communication boundary.
+
 Subject-based evidence requests use shared acquisition backed by the session
 record store. Acquisition resolves established mappings, returns retained captures,
 or acquires and retains missing contents within the existing validity boundary.
