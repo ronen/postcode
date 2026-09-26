@@ -43,6 +43,10 @@ yields new derived claims without modifying immutable investigram content. A
 recorded correction or conflict does not establish which program interpretation
 is true.
 
+Claims about an investigram's correction, conflict, or reconsideration state
+concern that session artifact. Their scope is the relevant session state, and
+their support comes from retained relationships and evaluation context.
+
 #### Rationale, alternatives, and consequences
 
 Properties already apply to subjects. Broadening facets from entities to
