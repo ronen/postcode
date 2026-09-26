@@ -24,9 +24,9 @@ architectural units.
 
 The human explores the code through these operations. The Investigator gathers
 evidence and produces interpretations to support that exploration. Existing
-mechanical analyses, such as
-organization and dependencies, continue to produce qualified projections. They
-can supply evidence for investigrams without themselves becoming investigrams.
+mechanical analyses, such as organization and dependencies, continue to produce
+qualified projections. They can supply evidence for investigrams without
+themselves becoming investigrams.
 
 This slice implements four operations using shared interpretation
 infrastructure:
@@ -1015,8 +1015,8 @@ Verify public boundaries and journeys, including:
 - failure classification for transport errors, request timeouts, rate limits and
   provider unavailability after successful tool exchanges; retained refusal,
   unrecovered provider-reported truncation, malformed output and invalid references;
-  guard expiry during a provider call; discarded interpretation content but preserved acquired
-  evidence on communication failure;
+  guard expiry during a provider call; discarded interpretation content but
+  preserved acquired evidence on communication failure;
 - submission and acceptance within configured execution limits, exercising a soft
   threshold or remaining-limit information if implemented;
 - dialogue termination without submission, absent another terminal failure cause,

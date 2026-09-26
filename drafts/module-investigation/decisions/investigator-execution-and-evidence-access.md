@@ -38,9 +38,8 @@ remains assessment tooling.
 An **Investigator** investigates a subject through a dialogue with PostCode and
 submits an interpretation for validation. PostCode supplies context and handles
 the investigator's evidence requests through its qualified evidence interfaces.
-The role
-serves summary, explain, decompose, and examine. The inference model and provider
-are integration choices behind this role.
+The role serves summary, explain, decompose, and examine. The inference model and
+provider are integration choices behind this role.
 
 Language analysis and interpretation produce qualified information through the
 existing evaluation and session record-store architecture. Interpretation adds

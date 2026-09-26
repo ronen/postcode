@@ -57,9 +57,9 @@ An outcome can exist without a produced claim or entity, and an incomplete attem
 
 *[decision: [Investigator execution and evidence access](decisions/investigator-execution-and-evidence-access.md#integrate-interpretation-with-evaluation-and-qualified-evidence-access)]*
 
-An **Investigator** is a component that investigates a subject through a dialogue with
-PostCode, using supplied context and requesting additional evidence as needed, and
-submits an interpretation for validation.
+An **Investigator** is an AI agent that investigates a subject through a dialogue
+with PostCode, using supplied context and requesting additional evidence as needed,
+and submits an interpretation for validation.
 
 ## Replace definition: Session
 
