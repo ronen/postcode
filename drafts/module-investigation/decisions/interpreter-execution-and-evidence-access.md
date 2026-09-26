@@ -65,7 +65,7 @@ Classification follows the failure's meaning, not whether a complete protocol
 response arrived. Transport errors, request timeouts, rate limiting, and
 provider unavailability are communication/service failures, including after
 successful tool exchanges. Provider refusals, provider-reported output
-truncation, malformed output, and invalid references are retained investigation
+truncation that remains unrecovered, malformed output, and invalid references are retained investigation
 outcomes. Expiry of PostCode's execution guard is always a limit stop, including
 while a provider call is in flight.
 
@@ -154,18 +154,34 @@ including any bounded repair turns. Delivery during the evaluation and delivery
 during that dialogue refer to the same exposure history. Reading retained
 results does not invoke the interpreter. PostCode provides the objective and
 initial context, the interpreter requests additional context or source, and
-PostCode returns it. Request and response continue until the result is assembled
-or execution ends. Conversation can accumulate within the operation; opaque
+PostCode returns it. Request and response continue until a result is submitted
+for acceptance or execution ends. Conversation can accumulate within the operation; opaque
 conversational memory does not carry over to the next operation.
 
 The result contract applies to the assembled dialogue result, not necessarily one
 final response. Delivery may span exchanges; validation and acceptance remain
-atomic. An execution-limit stop may retain an already assembled valid result,
+atomic. The protocol must establish that the interpreter submitted the result for
+acceptance; structural validity alone does not establish readiness. Submission
+mechanics remain an implementation choice and do not assert exhaustive
+investigation. An execution-limit stop may retain an already submitted valid result,
 but incomplete structures and fragments are not investigons, and no extra turn
 beyond the guard is required. The interpreter describes investigation coverage in
 prose; epistemological qualifications remain separately identifiable and
 attributable. Neither requires a structured completeness or interpretive
 stopping-reason classification.
+
+A result accepted at an execution limit carries PostCode's qualification that it
+was accepted at the limit and may be incomplete, in views and later interpreter
+context. Model-written qualifications can caveat an account but cannot raise its
+epistemological status; validation checks their required presence, structure, and
+attribution rather than their truth.
+
+Unavailable evidence from an individual acquisition is normally a qualified tool
+response the dialogue can continue past, not an investigation failure. Existing
+configuration and service failure classifications still apply. Continuation or
+repair of a truncated exchange is permitted within the evaluation's limits as an
+implementation choice. Unrecovered truncation yields a retained failure; guard
+expiry during recovery remains an execution-limit stop.
 
 The minimum initial request supplies the operation and module reference for a
 summary, or the selected investigon's prose, referent information, and context

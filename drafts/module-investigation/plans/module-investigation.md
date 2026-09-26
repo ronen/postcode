@@ -342,7 +342,7 @@ attempt; lack of a response does not establish lack of provider work or cost.
 Classification follows failure meaning rather than receipt of a complete
 protocol response: transport errors, request timeouts, rate limits, and provider
 unavailability are communication/service failures, even after earlier successful
-tool exchanges. Provider refusal and provider-reported output truncation are
+tool exchanges. Provider refusal and unrecovered provider-reported output truncation are
 retained investigation outcomes. PostCode guard expiry is always a limit stop,
 including during a provider call. Communication failure discards unaccepted
 interpretation content rather than retaining an investigation result;
@@ -571,7 +571,7 @@ general provider registry or comparative benchmark as a prerequisite.
 Each new evaluation starts a fresh interpreter session; viewing retained results
 does not start one. PostCode supplies an initial request; the interpreter
 requests evidence or interpretation context; PostCode returns it; this dialogue
-continues until the result is assembled or execution ends. A fresh operation does
+continues until a result is submitted for acceptance or execution ends. A fresh operation does
 not inherit an opaque conversation or hidden memory. The PostCode session
 retains evidence and results across operations. An interpreter's working
 conversation lives within one operation.
@@ -705,6 +705,12 @@ not guarantee immediate termination or a monetary ceiling. It applies to hosted
 and future local inference alike. Bounds constrain execution, not the lens
 question.
 
+Consider a soft threshold inside the guard that asks the interpreter to finish
+with available evidence, or supplying remaining-limit information during the
+dialogue. These are implementation recommendations, not required mechanisms;
+any wrap-up or repair remains within the guard. Verify the selected approach,
+including production of a qualified result within normal execution limits.
+
 User-set spending or resource allowances and allowance-based admission checks
 remain outside this slice and are recorded as [budgeting
 support](../backlog.md#investigation-usage-and-budgeting-support).
@@ -714,9 +720,12 @@ provider/model fallback is required.
 
 ### Outcomes and result acceptance
 
-Execution outcomes distinguish a valid result, an execution limit, unavailable
-tools, communication/service failure, and invalid output under the failure policy
-above. Investigation coverage and the interpreter's judgment about whether further
+Execution outcomes distinguish a valid result, an execution limit,
+communication/service failure, and invalid output under the failure policy above.
+An individual evidence acquisition that reports unavailable content normally
+returns a qualified tool response; the dialogue can continue and produce a valid
+account with appropriate limitations. This is not itself an investigation failure.
+Configuration or service failures still follow their established classifications. Investigation coverage and the interpreter's judgment about whether further
 work would be useful are expressed in prose, not a completion flag or structured
 interpretive stopping reason. A limited investigation can yield an ordinary valid
 result. Completed generation is not proof of exhaustive investigation or correct
@@ -727,15 +736,37 @@ the accounts they qualify. Their wording may be free-form; PostCode preserves an
 exposes their association without mechanically interpreting their meaning.
 Coverage limitations belong in those qualifications when they materially affect
 how a claim should be understood.
+Model-written qualifications can limit or caveat an account but cannot promote
+its epistemological status. PostCode derives that status from method and evidence;
+wording such as "established from source" does not confer mechanical status.
+Validation checks required qualification presence, structure, and attribution,
+not the truth of the wording.
 
 Result delivery and assembly are dialogue-protocol choices: content can arrive in
-one response or across multiple exchanges. At a guard stop, accept an already
-assembled result only if it meets the entire result contract and passes validation;
+one response or across multiple exchanges. An assembled result is ready for
+acceptance only when the dialogue protocol establishes that the interpreter has
+submitted it for that purpose. A structurally valid intermediate tree alone is
+insufficient. Submission does not assert exhaustive investigation, and bounded
+repair may follow. The submission mechanism is an implementation choice.
+At a guard stop, accept an already submitted result only if it meets the entire
+result contract and passes validation;
 otherwise retain the stopped outcome without an investigon. Do not accept fragments
 or incomplete structures as investigons. Communication failure still discards
 unaccepted interpretation content under its separate failure policy. Already
 captured evidence and earlier accepted results remain usable when the session
 itself remains valid.
+
+A result accepted at an execution limit carries a PostCode-derived qualification
+that it was accepted at the limit and the account may be incomplete. Preserve this
+qualification in human and JSON views and subsequent interpreter retrieval, not
+only in the execution outcome.
+
+Provider-reported truncation of an exchange may be recovered through continuation
+or repair within the same evaluation's limits, as an implementation choice. Only
+unrecovered truncation becomes a retained investigation-failure outcome. Truncated
+content is not accepted merely because some structure can be recovered from it;
+submission and whole-result validation still apply. If the guard expires during
+recovery, the outcome is an execution-limit stop.
 
 The result of a single interpretation operation consists of a root investigon,
 its subordinate investigons, and any accompanying corrections carried by
@@ -988,7 +1019,7 @@ Verify public boundaries and journeys, including:
   stopped outcomes, and documented in-flight cancellation limits;
 - failure classification for transport errors, request timeouts, rate limits and
   provider unavailability after successful tool exchanges; retained refusal,
-  provider-reported truncation, malformed output and invalid references; guard expiry
+  unrecovered provider-reported truncation, malformed output and invalid references; guard expiry
   during a provider call; discarded interpretation content but preserved acquired
   evidence on communication failure;
 - per-investigation and session usage in human-readable and structured output;
@@ -1003,7 +1034,14 @@ Verify public boundaries and journeys, including:
   interruption, and rejection of late results;
 - result assembly from dialogue exchanges and atomic acceptance without retaining
   individual fragments or applying their corrections; guard stops with and without
-  an assembled valid result, with no required interpreter turn beyond the guard;
+  a submitted valid result, rejecting a structurally valid but unsubmitted tree;
+  no required interpreter turn beyond the guard;
+- PostCode-derived limit qualification on results accepted at a limit, preserved in
+  human and JSON views and later interpreter retrieval;
+- recovery from truncated exchanges when supported, retained failure on unrecovered
+  truncation, and limit-stop classification when recovery exhausts the guard;
+- qualified unavailable-evidence tool responses permit continued investigation;
+  model-written qualifications cannot promote interpretation to mechanical status;
 - execution outcomes distinguished from prose describing investigation coverage;
   attributable epistemological qualifications preserved in views and subsequent
   interpreter context, without a structured completeness classification;
@@ -1241,7 +1279,7 @@ without evidence that it is plausibly transient, stop for diagnosis or human
 direction. This policy belongs to the assessment harness; PostCode applies
 ordinary request selection without repeat detection or an automatic retry loop.
 
-Refusals, provider-reported truncation, malformed or invalid investigation
+Refusals, unrecovered provider-reported truncation, malformed or invalid investigation
 results, and execution-limit stops are assessment findings, not triggers for
 these repeated requests. Continue independent cases and record dependent steps
 as blocked when a needed result is unavailable. If only an assessment agent
