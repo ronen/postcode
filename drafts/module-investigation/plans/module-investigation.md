@@ -1191,8 +1191,9 @@ or agreement.
 
 #### Source-grounded comparison and automated execution
 
-Establish and freeze reference material before any live investigator run on a
-formative subject, including the milestone-1 summary assessment. Use the
+The implementing agent or a designated subagent prepares the reference material.
+Establish and freeze it before any live investigator run on a formative subject,
+including the milestone-1 summary assessment. Use the
 captured source and qualified mechanical evidence for each subject. The material
 records consequential supported conclusions, evidence references, material
 limits, and acceptable qualified interpretations. Apparent responsibility or
@@ -1217,14 +1218,17 @@ support. Distinguish:
 Run the assessment automatically across the formative subjects and investigation
 sequences, retaining outputs and assessment findings for human review after the
 exercise completes. Human inspection is not a per-subject or per-sequence step.
-Automated comparison can use a separate source-informed assessor with a
-consistent rubric; its judgments remain attributable and reviewable rather than
-authoritative program truth. Record the reference material, rubric, assessor
+The implementing agent invokes a separate fresh subagent as the source-informed
+assessor, supplying the reference material, captured views, evaluator responses,
+and a consistent rubric. Its judgments remain attributable and reviewable rather
+than authoritative program truth. Record the reference material, rubric, assessor
 conditions, evidence for discrepancies, and uncertainty alongside the view-only
-responses. Record the actual model identifiers and families used by the
-investigator, comprehension evaluators, and source-informed assessor. Treat
-shared-family overlap as an assessment limitation: fresh contexts do not remove
-shared blind spots or possible preferences for similar output styles. A
+responses. Record the actual model identifiers, families, and configurations for
+the implementing/orchestrating agent, reference preparer, investigator,
+comprehension evaluators, and source-informed assessor; disclose unavailable
+identifiers. Record shared orchestration and model-family overlap across these
+roles as assessment limitations. Fresh contexts do not remove shared blind spots,
+reference-selection bias, or possible preferences for similar output styles. A
 cross-family comparison remains optional; no particular evaluator model
 comparison is required.
 
@@ -1249,14 +1253,21 @@ Commit reusable assessment runners, question sets, and cost-reporting code under
 as development tooling for later comparisons. The implementing agent orchestrates
 clean evaluator subagents through its available agent tools; assessment scripts
 support capture, comparison, and reporting rather than requiring a separate
-evaluator-service integration.
+evaluator-service integration. Record each run's orchestration steps and exact
+subagent prompts as sent, alongside the supplied artifacts and responses. Later
+comparisons require equivalent agent orchestration as well as the committed
+tooling; scripts alone do not reproduce the agent execution environment.
 
-Retain reviewable assessment records under `records/validation/`. Keep transient
+Retain reviewable assessment records under
+`records/validation/module-investigation/`. Keep transient
 working files in a root underscore directory under the disposable-scratch
 conventions. Before committing records, check captured repository content and
 transcripts for private, sensitive, or third-party material and follow the
-applicable approval requirements. Retained records must be self-contained rather
-than depending on disposable files.
+applicable approval requirements. Prefer references to pinned source revisions and
+locations where practical. Any copied third-party source excerpts must be
+compatible with the source repository's license, including applicable attribution
+requirements. Retained records must be self-contained rather than depending on
+disposable files.
 
 #### Assessment usage and cost report
 
