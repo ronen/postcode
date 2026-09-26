@@ -948,6 +948,7 @@ Verify public boundaries and journeys, including:
 - subject inspection and investigator retrieval of qualified prior investigrams,
   association roles, bounded display, no automatic generation, and non-corroborating
   reuse of earlier interpretation across investigations;
+
 #### Evaluation and evidence access
 
 - evaluation-driven selection of missing interpretation work, retained-outcome reuse,
@@ -967,6 +968,7 @@ Verify public boundaries and journeys, including:
 - shared acquisition enforces generated-output and validity boundaries; bounded
   omissions, prompt-like repository text, and captured-source inspection preserve
   their qualifications without a parallel investigator file-reading path;
+
 #### Corrections and conflicts
 
 - correction eligibility after complete initial delivery or permitted retrieval,
@@ -1018,6 +1020,7 @@ Verify public boundaries and journeys, including:
   retained requests for original and replacement subjects, corrected
   retained summary redisplay that visibly identifies changes and preserves
   interpretive qualification, and unchanged historical projections;
+
 #### Execution, failure, usage, and regression checks
 
 - runaway containment across tool-triggered mechanical work and the dialogue loop,
@@ -1259,14 +1262,14 @@ comparisons require equivalent agent orchestration as well as the committed
 tooling; scripts alone do not reproduce the agent execution environment.
 
 Retain reviewable assessment records under
-`records/validation/module-investigation/`. Keep transient
-working files in a root underscore directory under the disposable-scratch
-conventions. Before committing records, check captured repository content and
-transcripts for private, sensitive, or third-party material and follow the
-applicable approval requirements. Prefer references to pinned source revisions and
-locations where practical. Any copied third-party source excerpts must be
-compatible with the source repository's license, including applicable attribution
-requirements. Retained records must be self-contained apart from pinned source references,
+`records/validation/module-investigation/`. Keep transient working files in a
+root underscore directory under the disposable-scratch conventions. Before
+committing records, check captured repository content and transcripts for
+private, sensitive, or third-party material and follow the applicable approval
+requirements. Prefer references to pinned source revisions and locations where
+practical. Any copied third-party source excerpts must be compatible with the
+source repository's license, including applicable attribution requirements.
+Retained records must be self-contained apart from pinned source references,
 without depending on disposable files.
 
 #### Assessment usage and cost report

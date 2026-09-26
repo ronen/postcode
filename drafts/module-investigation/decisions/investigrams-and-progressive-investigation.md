@@ -499,7 +499,10 @@ extends inspection without superseding an earlier headed decision. The
 [initial inspection decision](../../../docs/decisions/initial-module-inventory-decisions.md#begin-with-a-typescript-module-inventory)
 establishes qualified inspection and initial module support, rather than an
 exhaustive set of subject kinds or related information. Explicit subject
-associations preserve its selected-subject meaning. The
+associations preserve its selected-subject meaning. They also respect the
+[qualified-inspection requirement](../../../docs/decisions/initial-module-inventory-decisions.md#make-references-repeatable-but-snapshot-scoped)
+that inspection returns selected subjects and applicable Claim context rather
+than arbitrary store records. The
 [standard-expansion decision](../../../docs/decisions/subject-kind-standard-expansion-decision.md#define-standard-expansions-for-kinds-of-subject)
 defines related information by subject kind; it does not require that information
 to be independent of session history. A standard expansion or an explicit related
