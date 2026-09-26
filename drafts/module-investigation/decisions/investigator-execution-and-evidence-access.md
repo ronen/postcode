@@ -3,7 +3,7 @@
 Status: in review
 Decided: [needs-review — set adoption date at promotion]
 Arising from: [Module investigation](../plans/module-investigation.md)
-Scope: evaluation integration, investigator dialogue, evidence access, failure outcomes, and usage attribution
+Scope: evaluation integration, investigator dialogue, evidence access, hosted-service enablement, credentials, failure outcomes, and usage attribution
 
 ## Context
 
@@ -118,9 +118,9 @@ contents or analysis of each subject. Organization membership does not by itself
 establish a documentation association with a module.
 
 The investigator has no shell execution, mutation, or web access. Repository
-content is evidence to analyze, not instructions to obey. Credentials remain
-outside investigator context, investigrams, and observations; provider
-authentication is handled by the agent communication boundary.
+content is evidence to analyze, not instructions to obey. The agent communication
+boundary handles provider authentication under the
+[credential rules](#require-intentional-hosted-service-enablement-and-protect-credentials).
 
 Subject-based evidence requests use shared acquisition backed by the session
 record store. Acquisition resolves established mappings, returns retained
@@ -280,13 +280,50 @@ model/configuration, and generated results remain attributable without requiring
 access to model-private reasoning. Normal session invalidation and generated-output boundaries continue
 to apply.
 
+### Require intentional hosted-service enablement and protect credentials
+
+Transmission of repository content to a hosted inference service requires
+intentional enablement and disclosure of that transmission. Deliberately
+configuring a PostCode-specific hosted provider can constitute enablement;
+separate per-request confirmation is not required. Configuration and help make
+the effect of enablement clear.
+
+With investigation disabled, mechanical commands remain usable without inference
+credentials. Enabled investigation reports unavailable prerequisites and
+execution failures explicitly, distinguishing configuration unavailability from
+runtime failure. A failed investigation is not silently replaced with
+mechanical-only output.
+
+Keep provider credential values outside investigator context, agent-visible
+commands, output and prompts, investigrams, observations, logs, and assessment
+records. The human supplies credentials through a separate setup mechanism;
+agents receive availability and failure information without credential values.
+Unavailable credential access is reported as configuration unavailability,
+rather than silently falling back to a mechanism that exposes credentials.
+
+Disclose the credential mechanism's actual access guarantees and limitations
+before credentials are supplied. An OS credential store alone does not establish
+isolation from an agent executing under the same OS account. Provider selection,
+storage mechanisms, and setup details remain implementation choices.
+
+#### Rationale, alternatives, and consequences
+
+Hosted inference introduces repository-content transmission and credential
+handling beyond mechanical analysis. Intentional enablement makes that choice
+visible while allowing subsequent investigations to use the configured service
+without repeated confirmation. Explicit failures preserve the requested
+operation's meaning. Credential exclusion protects operational records and agent
+context, while disclosure distinguishes that exclusion from stronger isolation
+the mechanism may not provide.
+
 ## Governing impact and promotion
 
 The accompanying [core concepts](../core-concepts.md) define Investigator and explicitly
 include interpretation among applicable analyses. The
 [architectural constraints](../architectural-constraints.md) record the
-investigator access boundary. Existing qualification, evaluation, session, and
-observation decisions continue to govern. This record does not supersede an
+investigator access, hosted-transmission, and credential boundaries. Existing
+qualification, evaluation, session, and observation decisions continue to govern.
+This record does not supersede an
 earlier headed decision.
 
 At adoption, set the decision date, update canonical indexes, and rewrite links
