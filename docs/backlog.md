@@ -20,6 +20,25 @@ Describe the need, why it matters, and relevant constraints without designing th
 
 ## Candidates
 
+## Audit existing generic functionality for library reuse
+
+Added: 2026-09-26
+Origin: human-directed adoption of library-reuse engineering guidance
+Area: dependencies and maintenance burden
+
+Conduct a one-time, read-only audit of substantial generic functionality already
+implemented in PostCode to identify where established external libraries could
+meaningfully reduce implementation, testing, or maintenance burden. For each
+candidate, identify the current code and tests, plausible libraries, their
+fitness, maturity, maintenance posture, adoption, and license, the bespoke code
+and tests that could be removed, and integration and migration costs. Assess
+whether external assumptions would intrude on PostCode's core concepts, and
+recommend strong candidates, marginal candidates, or keeping the existing code.
+Exclude trivial utilities where a dependency would cost more than it saves, and
+treat PostCode-specific concepts and semantics as presumptively bespoke. The
+audit should report findings without changing code or adding dependencies;
+adoption of any recommendation requires separate human direction.
+
 ## Investigate multi-project repositories
 
 Added: 2026-09-25

@@ -21,7 +21,7 @@ This document may be changed only through separate human-directed process mainte
 - Keep transformations that require no external state independent of external I/O when those concerns are conceptually distinct.
 - Translate external data and failure models at the boundary when they should not become part of domain behavior.
 - Preserve language-specific semantics rather than forcing them into a falsely universal model.
-- Treat a new third-party dependency as a design choice: confirm its purpose, maintenance posture, and operational implications before adding it.
+- Before implementing substantial generic functionality, check whether a suitable established library already exists. Prefer using one when it meaningfully reduces implementation, testing, or maintenance burden. Assess its fitness, maturity, maintenance posture, license, and integration cost. Avoid dependencies for trivial functionality, and keep external assumptions from unnecessarily shaping the application’s core concepts.
 
 ## Tests and fixtures
 
