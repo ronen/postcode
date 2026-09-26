@@ -1389,6 +1389,24 @@ broad prompt/model optimization search is required. The human reviews the
 combined formative results after the automated exercise; no universal
 acceptable-cost or usefulness threshold has been established.
 
+#### Assessment runs and generative variation
+
+Run each subject once for each prescribed assessment condition: the summary
+baseline, progressive sequence, and completed integrated sequence. Apply the
+same default to focused cases at their assigned milestones. Differences between
+runs may reflect generative variation, changed context, or implementation and
+configuration changes. Record these as limitations; a single comparison cannot
+isolate their effects.
+
+The implementing agent may conduct additional unchanged-configuration runs to
+investigate a specific finding. Record the diagnostic question and a finite run
+count before those runs. Use a fresh PostCode session for each new run; repeating
+a command in an existing session follows ordinary outcome reuse. Preserve all
+results, including failures; a later success does not replace an earlier
+finding. These diagnostic runs are distinct from the bounded communication-failure
+recovery below. Reassessment after prompt revisions still covers all three
+subjects.
+
 #### Shell driving and controlled investigator inputs
 
 The development-only harness invokes the existing CLI entry point in-process,
@@ -1453,8 +1471,8 @@ without depending on disposable files.
 
 Log each PostCode session's usage report, including one-shot runs and incomplete
 or failed sessions, alongside its investigation-attempt records. Produce a final
-report of PostCode's API session costs across repetitions and milestones, with
-per-session breakdowns.
+report of PostCode's API session costs across all assessment runs and recovery
+attempts, with per-session breakdowns.
 
 Report available usage for reference preparation, comprehension evaluation, and
 source-informed assessment separately from PostCode sessions. Keep any known
