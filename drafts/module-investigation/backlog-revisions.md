@@ -76,5 +76,5 @@ record the reassessment basis. Define how clearing a cause affects downstream
 warnings without erasing independent causes or implying downstream reassessment.
 Track no-change outcomes as a possible sign of overly broad citation exposure,
 not proof that the original citations were irrelevant. Investigator-reported
-relevance may eventually refine selection while full delivery history remains
-available as provenance.
+relevance may eventually refine selection while the full history of context
+supplied to the investigator remains available as provenance.

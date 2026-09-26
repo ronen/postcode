@@ -50,7 +50,9 @@ requiring entities and investigrams to be the same record kind.
 
 Lenses declare requested information. Evaluation selects retained outcomes and
 explicit revisions and determines what missing analysis or investigation must
-run. Validated results are retained before projection construction; rendering
+run. It invokes the domain interpretation boundary and applies retention policy
+to the returned outcome. Successful results and their accompanying corrections
+are retained atomically before projection construction; rendering
 and projection construction consume materialized information without invoking
 analysis. A retained interpretation's reuse and an explicit request for a new
 attempt remain distinct from mechanical reuse rules. More available context
@@ -148,9 +150,9 @@ New content acquisition participates in the session's existing change-detection
 contract.
 
 Source supplied to an investigator is analysis input, not a human source escape.
-Its delivery is retained for provenance and resource accounting; a source-escape
-observation records source actually disclosed to the human through the
-interface. Provider transmission remains an operational disclosure distinct from
+Record what source was supplied for provenance and resource accounting; a
+source-escape observation records source actually disclosed to the human through
+the interface. Provider transmission remains an operational disclosure distinct from
 both human source presentation and the evidential qualification of an
 interpretation.
 
@@ -181,18 +183,20 @@ replacing them.
 ### Start each operation fresh and permit bounded investigator dialogue
 
 Each new interpretation evaluation uses one fresh investigator dialogue,
-including any bounded repair turns. Delivery during the evaluation and delivery
-during that dialogue refer to the same exposure history. PostCode provides the
-objective and initial context, the investigator requests additional context or
-source, and PostCode returns it. Request and response continue until the
-investigator submits a result for acceptance or execution ends. Conversation can
+including any bounded repair turns. Context supplied to the investigator during
+the evaluation and during that dialogue has the same exposure history. PostCode
+provides the objective and initial context, the investigator makes context
+requests for additional evidence or prior interpretations, and PostCode supplies
+context responses. These context exchanges continue until the investigator
+submits a result for acceptance or execution ends. Conversation can
 accumulate within the operation; opaque conversational memory does not carry
 over to the next operation.
 
 The result contract applies to the assembled dialogue result, not necessarily
-one final response. Delivery may span exchanges; validation and acceptance
-remain atomic. The protocol must establish that the investigator submitted the
-result for acceptance; structural validity alone does not establish readiness.
+one final response. The investigator may transmit result content across
+exchanges; validation and acceptance remain atomic. The protocol must establish
+that the investigator submitted the result for acceptance; structural validity
+alone does not establish readiness.
 Submission mechanics remain an implementation choice and do not assert
 exhaustive investigation. Submission before the guard stops execution
 transitions the result to ordinary whole-result validation. A stop before
@@ -218,7 +222,7 @@ references for a follow-up. Further evidence is acquired through the shared
 subject-based interface. Prefetching is an execution choice, not a separate
 evidence contract; initially supplied and subsequently requested material obey
 the same capture, qualification, and provenance rules. The actual context
-delivered remains attributable in either case.
+supplied to the investigator remains attributable in either case.
 
 The Investigator is the dialogue participant reached through the agent
 communication boundary. PostCode's dialogue coordinator is its counterpart:
@@ -235,6 +239,11 @@ Two internal boundaries separate domain interpretation from agent communication:
   tool requests and responses, and completion or failure signals. It encapsulates
   provider protocols, authentication, and transport details without defining
   investigation semantics.
+
+The domain interpretation boundary returns outcomes; evaluation and session
+handling apply retention and reuse policy. Acceptance establishes that the
+submitted result passed whole-result validation. Retention makes its correction
+relationships effective in the session.
 
 Dialogue coordination between these boundaries translates domain requests into
 agent instructions, dispatches tool requests through PostCode's subject-based
@@ -266,9 +275,9 @@ interpretation contract.
 
 The plan specifies the initial integration and practical bounds. Execution bounds
 constrain evaluation rather than changing the lens question. Context selection,
-explicit instructions, tool-delivered evidence, model/configuration, and
-generated results remain attributable without requiring access to model-private
-reasoning. Normal session invalidation and generated-output boundaries continue
+explicit instructions, evidence supplied in context responses,
+model/configuration, and generated results remain attributable without requiring
+access to model-private reasoning. Normal session invalidation and generated-output boundaries continue
 to apply.
 
 ## Governing impact and promotion

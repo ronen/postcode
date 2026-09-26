@@ -221,9 +221,11 @@ record kind merely because they share these features.
 Investigation lenses declare their information requirements. Evaluation selects
 retained results that satisfy the request, accounts for explicit revisions, and
 identifies investigations that must run to supply missing information. It
-invokes the investigator where needed and retains validated results before
-projection construction. Projection construction and rendering do not invoke
-investigation. The outcome-retention policy and retry exclusions below determine
+invokes the domain interpretation boundary where needed and applies the
+outcome-retention policy to the returned outcome. Successful results and their
+accompanying corrections are retained atomically before projection construction.
+Projection construction and rendering do not invoke investigation. The
+outcome-retention policy and retry exclusions below determine
 whether interpretation is required; newly available context alone does not
 silently invalidate a retained interpretation or invoke the investigator again.
 
@@ -242,7 +244,7 @@ Investigrams carry or resolve to:
 - the originating module context, with optional validated references to more
   specific entities or supported subjects, including captured source regions;
 - evidence and narrower qualifications, including consequential missing context;
-- a citation index of prior investigrams actually delivered during the evaluation;
+- a citation index of prior investigrams supplied to the investigator during the evaluation;
 - generating operation, selected target, and actual method/execution provenance;
 - stable session-local identity, fixed composition, and investigation-provenance links.
 
@@ -492,18 +494,20 @@ Original and replacement subjects identify distinct retained requests.
 ### Citation indexes and needs reconsideration
 
 Implement the [citation and reconsideration contract](../decisions/investigrams-and-progressive-investigation.md#record-citation-exposure-and-derive-reconsideration-status).
-Construct citation indexes from actual delivered investigram context,
-conservatively shared across investigrams produced by an evaluation. Any substantive content,
-including excerpts and descriptive listings, creates a citation; identifiers
+Construct citation indexes from investigram context actually supplied to the
+investigator, conservatively shared across investigrams produced by an
+evaluation. Any substantive content, including excerpts and descriptive listings,
+creates a citation; identifiers
 alone do not. Correction eligibility requires complete retained prose, referent
 information, and qualifications, with no omitted or truncated elements. Delivery
 can accumulate across exchanges. Retrieval may extend beyond the selected
 subject's composition or provenance chain.
 
-Delivery means exposure at any point in the evaluation, even if context is later
-trimmed or summarized. It does not guarantee continued internal retention or
-comprehension. Preservation or re-supply during PostCode-managed trimming is an
-implementation choice.
+Context delivery means PostCode supplying content to the investigator, initially
+or in context responses, at any point in the evaluation. Later context trimming
+or summarization does not erase that exposure. It does not guarantee continued
+internal retention or comprehension. Preservation or re-supply during
+PostCode-managed trimming is an implementation choice.
 
 Derive "needs reconsideration" through direct and transitive citations when
 context is corrected. Display the warning without suppressing the account.
@@ -526,9 +530,9 @@ can still inherit the cause through other, non-exempt citations. Other
 correction causes remain independent, and earlier investigrams' warnings are not
 cleared.
 
-When supplying corrected investigrams, provide the exact requested investigram
-together with correction notices, replacement accounts, reasons, chains, and
-conflicting alternatives. Record actual delivery and disclose omissions. Record
+When supplying corrected investigrams to the investigator, provide the exact
+requested investigram together with correction notices, replacement accounts,
+reasons, chains, and conflicting alternatives. Record actual delivery and disclose omissions. Record
 complete correction-context delivery per correction identity: both the target's
 and replacement's own prose, referent information, and qualifications, plus
 correction reasons and qualifications. Their subordinate composition trees are
@@ -539,8 +543,10 @@ Partial delivery does not qualify for exemption.
 ## Investigator execution and evidence access
 
 The domain interpretation boundary accepts operations, subjects, and
-investigation context and returns evaluation outcomes, carrying a result when accepted. An inner agent communication boundary
-handles instructions, messages, tool exchanges, completion/failure signals, and
+investigation context and returns evaluation outcomes, carrying a result when
+accepted. Evaluation and session handling apply retention and reuse policy to
+those outcomes. An inner agent communication boundary handles instructions,
+messages, tool exchanges, completion/failure signals, and
 provider-specific authentication and transport. Dialogue coordination between
 them assembles instructions, dispatches tool requests through PostCode's
 subject-based APIs, and validates results. The four operations share these
@@ -558,8 +564,9 @@ general provider registry or comparative benchmark as a prerequisite.
 ### Per-operation dialogue and context
 
 Each new interpretation evaluation starts a fresh investigator dialogue; viewing
-retained outcomes does not start one. PostCode supplies an initial request; the
-investigator requests evidence or interpretation context; PostCode returns it;
+retained outcomes does not start one. PostCode supplies the investigation
+instructions and initial context; the investigator makes context requests for
+evidence or prior interpretation; PostCode supplies context responses;
 this dialogue continues until the investigator submits a result for acceptance or
 execution ends. A fresh operation does not inherit an opaque conversation or
 hidden memory. The PostCode session retains evidence, results, and outcomes
@@ -749,11 +756,11 @@ source" does not confer mechanical status. Validation checks required
 qualification presence, structure, and attribution, not the truth of the
 wording.
 
-Result delivery and assembly are dialogue-protocol choices: content can arrive
-in one response or across multiple exchanges. An assembled result is ready for
-acceptance only when the dialogue protocol establishes that the investigator has
-submitted it for that purpose. A structurally valid intermediate tree alone is
-insufficient. Submission does not assert exhaustive investigation, and bounded
+Transmission of result content from the investigator and its assembly are
+dialogue-protocol choices: content can arrive in one message or across multiple
+exchanges. An assembled result is ready for acceptance only when the dialogue
+protocol establishes that the investigator has submitted it for that purpose. A
+structurally valid intermediate tree alone is insufficient. Submission does not assert exhaustive investigation, and bounded
 repair may follow. The submission mechanism is an implementation choice.
 Submission before the guard stops execution transitions the result to ordinary
 whole-result validation. If validation fails, the implementation may request
@@ -773,27 +780,29 @@ communication/configuration failure ended recovery.
 
 Accept the submitted root investigram, including its composition and accompanying
 corrections, as a unit at the domain interpretation boundary after validation
-succeeds. Corrections take effect on acceptance, independently of display.
-Atomic acceptance does not require atomic delivery; individual dialogue
-exchanges do not independently retain investigrams or apply corrections.
+succeeds. Return the accepted result in the outcome; evaluation and session
+handling retain the result and its corrections atomically. Correction
+relationships take effect in the session on retention, independently of display.
+Atomic acceptance and retention do not require the investigator to transmit the
+result in a single exchange; individual dialogue exchanges do not independently
+retain investigrams or apply corrections.
 Validation checks identity, reference existence, permitted relationships,
 qualifications, and revision targets predating this result. Conflicting
 corrections are valid retained content, not structural validation failures.
 Validation does not establish the prose's truth. Optional repair also applies to
-corrections targeting investigrams whose required content was not delivered. If
-that validation error remains unrepaired, reject the entire submission and
-classify the outcome by the taxonomy, preserving any guard stop or
+corrections targeting investigrams whose required content was not supplied to the
+investigator. If that validation error remains unrepaired, reject the entire
+submission and classify the outcome by the taxonomy, preserving any guard stop or
 communication/configuration failure that ended repair. No correction takes
 effect from a rejected submission. Acceptance is distinct from displaying a
 view, which remains subject to the session-validity checks below.
 
 ### Asynchronous execution and interruption
 
-The shell remains single-operation-at-a-time. Adapt its synchronous executor and
-worker handling for asynchronous interpretation, retaining input checks before
-publication and after output. Active interruption keeps the existing end-session
-behavior; terminate/cancel inference where the chosen provider permits it and
-truthfully report limits on remote cancellation or cost. No late response is
+The shell remains single-operation-at-a-time. Support asynchronous interpretation,
+retaining input checks before publication and after output. Active interruption
+keeps the existing end-session behavior; terminate/cancel inference where the
+chosen provider permits it and truthfully report limits on remote cancellation or cost. No late response is
 published after interruption or invalidation.
 
 ## Basic inference usage reporting
@@ -828,16 +837,16 @@ interpret the view, prior interpretations retrieved by the investigator,
 qualifications, outcomes, actual output, and available usage. Keep the batch
 self-contained and distinguish source sent to inference from source shown to the
 human. Supplying full source to the investigator is analysis-input access and
-does not emit a human source-escape event. Retain actual source/context delivery
-for provenance and usage accounting. A source-escape observation records source
-actually disclosed to the human through the interface, including source excerpts
-in a displayed result. Observation files are not restored as operational session
+does not emit a human source-escape event. Record the source and context supplied
+to the investigator for provenance and usage accounting. A source-escape
+observation records source actually disclosed to the human through the interface,
+including source excerpts in a displayed result. Observation files are not restored as operational session
 state.
 
 Retain explicit request instructions, actual model/configuration identifiers,
-method versions, context/evidence IDs delivered during the dialogue, and
+method versions, IDs of context and evidence supplied to the investigator, and
 generated results for attribution. Record citation indexes and per-correction
-delivery completeness in observations and expose them through structured
+context completeness in observations and expose them through structured
 inspection output so reconsideration causes and exemptions can be audited.
 This does not require access to model-private
 reasoning. Exact transcript serialization and whether raw provider envelopes are
@@ -848,7 +857,7 @@ retained are implementation choices; secrets must not be recorded.
 At the end of each milestone, prepare a committed milestone-specific review
 handoff and pause for independent review arranged by the human under the
 development workflow. Resolve findings and obtain the human's direction before
-starting the next milestone. After the milestone-4 review is complete, prepare a
+starting the next milestone. After the milestone-5 review is complete, prepare a
 separate integrated review handoff and pause for final review and the completion
 gate. The integrated handoff may reference earlier milestone evidence; preparing
 it does not itself require rerunning completed checks.
@@ -863,10 +872,11 @@ infrastructure. Their combined value, including progressive investigation, is
 what this slice assesses; summary quality alone is not the basis for deciding
 whether to implement the remaining operations.
 
-Milestone 1 establishes the full investigram result contract, including
-accompanying corrections, using the double. Milestones 2–3 exercise it through
-live summary and follow-up operations. Milestone 4 adds correction-aware
-selection and display, conflict handling, and reconsideration propagation.
+Milestone 1 implements interpretation execution and the full result contract
+using the double. Milestone 2 integrates returned outcomes with evaluation,
+session handling, and the shell. Milestones 3–4 exercise live summary and
+follow-up operations. Milestone 5 adds correction-aware selection and display,
+conflict handling, and reconsideration propagation.
 
 Use deterministic investigator doubles in the regular test suite. The double and
 real adapter implement the same agent communication contract. Tests exercise
@@ -878,50 +888,78 @@ responses to exercise the real adapter without live inference.
 
 Live inference requires credentials and consumes limited provider usage, so
 routine tests remain credential-free. Exercise the real investigator in the
-formative assessments in milestones 2–4. A small, separately invoked live
+formative assessments in milestones 3–5. A small, separately invoked live
 integration check may verify the provider connection; exclude it from routine
 test runs. The double and offline adapter checks do not establish live provider
 behavior or interpretive value.
 
-### Milestone 1: Summary execution and retention with a scripted investigator
+### Milestone 1: Domain interpretation execution
 
-Establish the shell-to-investigator path using a deterministic test double:
-investigram records and stable references, qualified evidence requests, bounded
-asynchronous dialogue, submission and validation, retained-outcome reuse,
-interruption, and session invalidation. Include usage recording with synthetic
-provider-reported usage. Demonstrate a complete `summarize` journey in the shell,
-including expected failure paths and source traceability, without credentials or
-live inference.
+Implement the domain interpretation boundary using an investigator double
+at the agent communication boundary. Exercise real dialogue coordination,
+qualified evidence requests, bounded asynchronous execution, submission and
+validation, and returned outcomes. Verify handling of cancellation and
+invalidation signals, rejection of late results, and attempt usage attribution
+with synthetic provider-reported usage through domain-level tests.
 
 Exercise the full result structure: the root and subordinate investigrams,
 qualifications, referent information, evidence context, citation indexes, and
-accompanying corrections. Accept corrections in the result root, including
-replacement investigrams, target references, reasons, and supporting context.
-Apply whole-result validation and retain corrections atomically with the result.
-Expose accompanying corrections in the reporting view and through basic
-inspection, keeping original and replacement investigrams addressable.
-Conflicting corrections remain valid retained content; conflict-aware selection
-and presentation arrive in milestone 4.
+accompanying corrections, including corrections carried by replacements.
+Verify whole-result validation and the returned outcomes. Conflicting corrections
+are valid result content; conflict-aware selection and presentation arrive in
+milestone 5.
 
 Provide the full program-evidence interface: source acquisition by subject
 reference, qualified entity and relationship queries, and organization and
 documentation access. Exercise navigation across modules and multiple layers of
-delegation through the double. This evidence access is available to the live
-summary baseline in milestone 2.
+delegation through the double.
 
-### Milestone 2: Live summary and baseline assessment
+Handle investigator requests for investigram context by supplying responses
+through the context and evidence interfaces. Record which content was supplied
+to the investigator and whether correction context was complete. Use fixtures
+representing earlier investigrams, including corrected ones, to exercise these
+context exchanges and validate the resulting outcomes. Broader investigram
+discovery and navigation arrive in milestone 4.
+
+The milestone review covers the domain and agent-communication contracts,
+context requests and responses, complete-result validation, and returned
+outcomes. The working domain capability is demonstrated through behavioral tests
+without requiring new CLI behavior.
+
+### Milestone 2: Shell and session integration
+
+Integrate interpretation outcomes with evaluation and session handling. Apply
+retention policy, retain successful results and their accompanying corrections
+atomically, establish stable session references, and reuse retained outcomes.
+Exercise successive evaluations in one session, including supplying earlier
+retained investigrams to the investigator in context responses and retaining
+later results that correct them.
+
+Connect investigation to the shell. Demonstrate a complete `summarize`
+journey using the investigator double, including stable references, human and
+JSON views, retained-outcome reuse, expected failure paths, and source
+traceability. Implement `inspect(investigram)` by exact reference to expose
+retained content and support, including accompanying corrections. Display the
+result's accompanying corrections with selectable references to their targets
+and replacements.
+
+Verify asynchronous coordination, active interruption ending the session,
+input invalidation, rejection of late results, observations, and attempt and
+session usage reporting end to end. Keep these tests credential-free and use
+synthetic provider-reported usage. The milestone review checks integration of
+the domain lifecycle with the shell and session lifecycle.
+
+### Milestone 3: Live summary and baseline assessment
 
 Connect the summary path to the hosted integration. Implement credential setup
 and verify usage reporting against actual provider responses. Prepare the frozen
 source references, summary evaluator, source-informed assessor, and cost-reporting
 tooling, then run the summary-only baseline on all three fixed subjects. Live
-execution may reveal adjustments needed to the boundaries exercised in milestone 1.
+execution may reveal adjustments needed to the boundaries exercised in milestones
+1–2.
 
-The hosted integration supports the full result contract, including accompanying
-corrections. Any corrections produced are validated, retained, and exposed through
-the reporting and inspection support established in milestone 1. The summary-only
-baseline does not require corrections to occur; deliberate live correction
-assessment begins in milestone 3.
+The summary-only baseline does not require corrections to occur; deliberate live
+correction assessment begins in milestone 4.
 
 Observe these dependencies when scheduling the work:
 
@@ -936,40 +974,44 @@ Observe these dependencies when scheduling the work:
   retain its usage and cost records. This is an early baseline for subsequent
   implementation and assessment, not a scope-selection gate.
 - Include the baseline views, assessment findings, usage and cost records in the
-  milestone-2 review handoff. The review covers the domain and agent-communication
+  milestone-3 review handoff. The review covers the domain and agent-communication
   boundaries, investigram retention and evaluation integration, asynchronous
-  dialogue and worker coordination, interruption, input invalidation, and rejection
-  of late results.
+  coordination, interruption, input invalidation, and rejection of late results.
 
-### Milestone 3: Progressive investigation
+### Milestone 4: Progressive investigation
 
 Expose `explain`, `decompose`, and `examine` over the same results. Support on-demand
 investigram composition and investigation-provenance traversal, repeated
 operations, investigram evidence inspection, and subject-associated investigram
 retrieval and inspection.
 
-Run a small formative live sequence exercising `explain`, `decompose`, and
+Verify the follow-up operations and context navigation with the investigator
+double before running the formative assessment. Then run a small formative live
+sequence exercising `explain`, `decompose`, and
 `examine` under the assessment protocol, using the pinned subjects and frozen
 references. Assess whether examination notices and explains inconsistencies in
 earlier accounts and can submit accompanying corrections. Repeated views still
-show the original accounts without replacement substitution or derived revision
-warnings. Record these presentation limits when assessing milestone-3 views;
-they are not failed milestone-4 checks. Include the views, assessment findings,
-and usage records in the milestone review handoff.
+show the original accounts without replacement substitution or human-facing
+derived revision warnings. Correction context is supplied to the investigator
+under the milestone-1 contract. Record these presentation limits when assessing
+milestone-4 views; they are not failed milestone-5 checks. Include the views,
+assessment findings, and usage records in the milestone review handoff.
 
-### Milestone 4: Corrections and integrated lifecycle
+### Milestone 5: Corrections and integrated lifecycle
 
 Implement correction-aware selection and display, conflict handling, and
 citation-based reconsideration propagation. Exercise ancestor
 corrections, current-versus-historical presentation, preserved
 composition and prior investigation context, invalidation, interruption,
-observations, and formative investigation on the fixed subjects. Compare the
-completed assessment with the milestone-2 summary baseline, recording changes in
+and observations with deterministic tests using the investigator double. After
+these checks pass, run the integrated formative assessment on the fixed subjects
+to assess the completed investigation sequence and its user-facing views. Compare the
+completed assessment with the milestone-3 summary baseline, recording changes in
 configuration or evidence that affect the comparison. The completed sequence has
 access to prior investigrams and corrections that the initial summary did not;
 the comparison assesses what progressive investigation adds, rather than
 isolating improvement in the summary generator. Complete documentation and
-prepare the milestone-4 review handoff. After that review, the integrated handoff
+prepare the milestone-5 review handoff. After that review, the integrated handoff
 covers interactions across milestones, governing-document alignment, assessment
 findings, and documentation for the completed slice.
 
@@ -1029,9 +1071,9 @@ Verify public boundaries and journeys, including:
 
 #### Corrections and conflicts
 
-- correction eligibility after complete initial delivery or permitted retrieval,
-  including accumulated delivery across exchanges; excerpts, descriptive listings,
-  truncated prose, and missing qualifications create citations but do not establish
+- correction eligibility after complete context is supplied to the investigator,
+  initially or through permitted context responses, including across exchanges;
+  excerpts, descriptive listings, truncated prose, and missing qualifications create citations but do not establish
   eligibility; identifiers alone create neither;
 - complete conservative citation indexes for all investigrams from an evaluation, including
   replacements, unchanged by later dialogue trimming or summarization;
@@ -1057,7 +1099,8 @@ Verify public boundaries and journeys, including:
   and separate completeness and causes when a replacement is itself corrected;
 - revised-subject disclosure and reconsideration reporting do not duplicate a cause
   in repeated follow-up displays; observations and structured inspection expose
-  citation indexes and per-correction delivery completeness for audit;
+  citation indexes and completeness of correction context supplied to the
+  investigator for audit;
 
 - conflict acceptance without losing useful results, latest-accepted primary selection
   with conflict annotations, conflict overviews and complete inspection access;
@@ -1150,7 +1193,7 @@ configured-project scope, report the obstacle for human choice rather than
 silently replacing an awkward result.
 
 Pin all three subjects to recorded revisions for the entire formative exercise,
-including the milestone-2 baseline and later assessments. Prepare reference
+including the milestone-3 baseline and later assessments. Prepare reference
 material against these same pinned revisions. For Cockatiel, start at
 `src/common/Executor.ts` with surrounding repository evidence accessible through
 the normal subject-based interface.
@@ -1268,7 +1311,7 @@ or agreement.
 
 The implementing agent or a designated subagent prepares the reference material.
 Establish and freeze it before any live investigator run on a formative subject,
-including the milestone-2 summary assessment. Use the
+including the milestone-3 summary assessment. Use the
 captured source and qualified mechanical evidence for each subject. The material
 records consequential supported conclusions, evidence references, material
 limits, and acceptable qualified interpretations. Apparent responsibility or
@@ -1309,13 +1352,15 @@ comparison is required.
 
 Use a controlled retained misinterpretation against unchanged source to exercise
 correction explicitly, both with deterministic tests and a live investigator.
-In milestone 1, verify correction submission, validation, retention, and basic
-inspection through the double. Exercise these with the live investigator in
-milestone 3; in milestone 4, extend the exercise to correction-aware selection,
-display, conflicts, and reconsideration propagation.
-Mark that setup as injected test context, not a natural investigator error. Do not
-change source mid-session to simulate correction; that tests invalidation
-instead.
+Mark that setup as injected test context, not a natural investigator error.
+
+| Milestone | Double-based testing | Live testing |
+| --- | --- | --- |
+| 1 | Domain-level submission, validation, context requests and responses, and returned outcomes, using supplied context fixtures. | None. |
+| 2 | Retention, reuse, and successive evaluations with retained context; reporting and `inspect(investigram)` through the shell. | None. |
+| 3 | Retain the deterministic correction tests; run offline adapter contract checks. | Summary baseline; no deliberate live correction case required. |
+| 4 | Follow-up operations and context navigation, including accompanying corrections, before formative assessment. | Assess correction through follow-up operations. |
+| 5 | Correction-aware selection, display, conflicts, and reconsideration propagation, before formative assessment. | Integrated assessment of the completed sequence and views; mechanical correctness is established by deterministic checks. |
 
 Retain exact explicit inputs, outputs, configuration, evidence access, failures,
 observed usage, elapsed time, and assessment findings in an appropriate
@@ -1438,6 +1483,6 @@ overview, README, status, schemas, and applicable implementation conventions
 describe the implemented boundaries and lifecycle.
 
 Schemas, record layout, tool signatures, reference spelling, command grammar,
-provider setup, numerical limits, and asynchronous worker plumbing remain
+provider setup, numerical limits, and asynchronous coordination mechanisms remain
 implementation choices within the behavior specified by this plan and its
 associated decisions.

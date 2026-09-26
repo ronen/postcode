@@ -121,8 +121,8 @@ composition tree disjoint from the reporting tree. Replacements may themselves
 carry corrections; correction targets predate acceptance of the new result.
 [[Corrections](decisions/investigrams-and-progressive-investigation.md#record-explicit-corrections-without-rewriting-earlier-interpretation)]
 
-An investigram's citation index records prior investigrams delivered during its
-generating evaluation, without asserting reliance or endorsement. "Needs
-reconsideration" is a session-derived property indicating corrected context reached
-through those citations; the investigram and its index remain immutable.
+An investigram's citation index records prior investigrams supplied to the
+investigator during its generating evaluation, without asserting reliance or
+endorsement. "Needs reconsideration" is a session-derived property indicating
+corrected context reached through those citations; the investigram and its index remain immutable.
 [[Citation exposure and reconsideration](decisions/investigrams-and-progressive-investigation.md#record-citation-exposure-and-derive-reconsideration-status)]

@@ -273,14 +273,15 @@ target must have been retained before acceptance of this operation's result; it
 cannot be another investigram produced by the same operation. This separates new
 replacements from their targets' composition and prevents same-result correction
 cycles. The entire result, including recursively accompanying corrections, is
-validated and accepted together. Corrections take effect on acceptance, not
-display.
+validated and accepted together, then retained atomically by evaluation and
+session handling. Correction relationships take effect in the session on
+retention, independently of display.
 
 The target's retained prose, referent information, and qualifications must have
-been delivered in full during the current investigator dialogue, initially or through
-permitted context retrieval. PostCode checks actual delivery; a known or reachable
-identifier alone is insufficient. Targets need not belong to the selected
-subject's composition or provenance chain.
+been supplied in full to the investigator during the current dialogue, initially
+or through permitted context responses. PostCode checks what was actually
+supplied; a known or reachable identifier alone is insufficient. Targets need
+not belong to the selected subject's composition or provenance chain.
 
 #### Conflicts and primary selection
 
@@ -380,12 +381,12 @@ guarantee detection of every inconsistency or correctness of a revision.
 
 ### Record citation exposure and derive reconsideration status
 
-Each investigram has a citation index of prior investigrams delivered to the
+Each investigram has a citation index of prior investigrams supplied to the
 investigator during its generating evaluation. PostCode constructs it from actual
-context delivery, including initial context and traversal or association
-retrieval. All investigrams produced by that evaluation share its conservative
-exposure index; shared storage is permitted. A citation records exposure, not
-endorsement, proven reliance, or independent corroboration. Merely discovering
+context supplied initially or in context responses, including traversal or
+association queries. All investigrams produced by that evaluation share its
+conservative exposure index; shared storage is permitted. A citation records
+exposure, not endorsement, proven reliance, or independent corroboration. Merely discovering
 an identifier without receiving investigram content does not constitute a
 citation. Any substantive content from an investigram, including an excerpt or
 descriptive listing, creates a citation. Correction eligibility requires its
@@ -393,20 +394,21 @@ complete retained prose, referent information, and qualifications; truncation or
 omission of any of these is insufficient. Delivery may accumulate across
 exchanges in the same dialogue.
 
-Delivery means exposure at any point during the current evaluation. Later
+Context delivery means PostCode supplying content to the investigator, initially
+or in context responses, at any point during the current evaluation. Later
 context trimming or summarization does not erase citations or revoke
 delivery-based eligibility or exemptions. PostCode records what it supplies, not
-the investigator's internal retention. Delivery guarantees neither continued
-availability nor comprehension; preservation or re-supply during
+the investigator's internal retention. Context delivery guarantees neither
+continued availability nor comprehension; preservation or re-supply during
 PostCode-managed trimming remains an implementation choice.
 
 If B corrects A, A necessarily occurs in B's citation index, since correcting an
 account requires receiving it first. Do not remove correction targets from the
 index to suppress warnings.
 
-When delivering an investigram that has been corrected, PostCode supplies the
-exact requested investigram together with an explicit correction notice, the
-replacement accounts and correction reasons, and the applicable correction chain
+When supplying a corrected investigram to the investigator, PostCode includes
+the exact requested investigram with an explicit correction notice, replacement
+accounts and correction reasons, and the applicable correction chain
 and conflicting alternatives. This applies to initial context as well as
 subsequent retrieval. Preserve exact identities; do not silently redirect the
 request to the primary replacement. Replacement content actually delivered also
@@ -421,10 +423,10 @@ correction-context delivery.
 
 Retain the identities of corrections for which both the target's and
 replacement's own prose, referent information, and qualifications, together with
-the correction reasons and qualifications, were fully delivered during the
-dialogue. Complete delivery does not require the target or replacement's
-subordinate composition tree. A later correction of the replacement is a
-separate cause and does not make delivery of the earlier correction incomplete.
+the correction reasons and qualifications, were fully supplied to the
+investigator during the dialogue. Complete delivery does not require the target
+or replacement's subordinate composition tree. A later correction of the
+replacement is a separate cause and does not make delivery of the earlier correction incomplete.
 Record completeness per correction so later session changes cannot
 retrospectively make unseen corrections appear known. This records exposure, not
 comprehension or agreement, and does not require investigator-reported
@@ -473,8 +475,8 @@ confer a general "reconsidered" status.
 
 A corrected account may have influenced later interpretations even when it was
 not their selected subject. Exposing those paths preserves qualifications that
-direct revision warnings alone miss. Recording all delivered investigrams is
-verifiable; asking the investigator to report actual relevance may be more
+direct revision warnings alone miss. Recording all investigrams supplied to the
+investigator is verifiable; asking the investigator to report actual relevance may be more
 selective but risks missing dependencies. The conservative policy can over-flag
 incidental context. Assess citation breadth, apparent irrelevant inclusions,
 correction frequency, and the burden of uncleared warnings before refining the
