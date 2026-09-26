@@ -978,15 +978,17 @@ summary-only baseline on all three fixed subjects. Live execution may reveal
 adjustments needed to the boundaries exercised in milestones 1–2.
 
 The summary-only baseline does not require corrections to occur; deliberate live
-correction assessment begins in milestone 4.
+correction assessment begins in milestone 4. Complete the milestone-3 focused
+cases assigned below alongside the baseline.
 
 Observe these dependencies when scheduling the work:
 
 - Before live inference, document the credential mechanism and pause for the human
   to configure access. Reference preparation may proceed independently.
 - Before any live run on a formative subject, pin its revision and freeze its
-  source-grounded reference material. Earlier live development runs may use other
-  subjects or fixtures after credential setup.
+  source-grounded reference material. The same freeze-before-live-run rule applies
+  to assessment fixtures. Earlier live development runs may use other subjects or
+  fixtures outside the assessment set after credential setup.
 - Before the baseline assessment, complete session usage reporting and the
   summary evaluator and assessor pipeline. Run the summary-only assessment on all
   three fixed subjects using the applicable questions and protocol below, and
@@ -1011,7 +1013,8 @@ double before running the formative assessment. Then run a small formative live
 sequence exercising `explain`, `decompose`, and
 `examine` under the assessment protocol, using the pinned subjects and frozen
 references. Assess whether examination notices and explains inconsistencies in
-earlier accounts and can submit accompanying corrections. Repeated views still
+earlier accounts and can submit accompanying corrections. Complete the
+milestone-4 focused cases assigned below. Repeated views still
 show the original accounts without replacement substitution or human-facing
 derived revision warnings. Correction context is supplied to the investigator
 under the milestone-1 contract. Record these presentation limits when assessing
@@ -1285,6 +1288,20 @@ fixture results distinct from the three repository assessments. Do not replace a
 selected repository or spend an open-ended search trying to make it satisfy
 every case.
 
+Record which focused cases each repository subject or fixture covers; one
+subject may cover several cases. Schedule the live assessments as follows:
+
+| Milestone | Focused cases |
+| --- | --- |
+| 3 — Live summary | Mixed responsibilities, conflicting documentation, delegated functionality, and unproductive further investigation contrasted with a hard-limit stop. |
+| 4 — Progressive investigation | Overlapping or non-exhaustive decomposition, and controlled correction of an earlier interpretation. |
+| 5 — Integrated lifecycle | Correction-aware views, conflicts, and transitive reconsideration, using the controlled correction cases. |
+
+Verify the corresponding mechanical invariants with deterministic tests before
+the live assessments. Before the first live run on an assessment fixture, freeze
+its source, documentation, any injected setup, and source-grounded reference
+material.
+
 Exercise interpretation-sensitive fixture cases through the real investigator and
 assess the resulting views against their source-grounded reference material
 using the protocol below. Deterministic tests verify orchestration and
@@ -1337,8 +1354,8 @@ or agreement.
 The implementing agent or a designated subagent prepares the reference material.
 Record who prepared it, including whether the preparer was the implementing
 agent; disclose that overlap as an assessment limitation.
-Establish and freeze it before any live investigator run on a formative subject,
-including the milestone-3 summary assessment. Use the
+Establish and freeze it before any live investigator run on a formative subject
+or assessment fixture, including the milestone-3 summary assessment. Use the
 captured source and qualified mechanical evidence for each subject. The material
 records consequential supported conclusions, evidence references, material
 limits, and acceptable qualified interpretations. Apparent responsibility or
