@@ -9,7 +9,7 @@ Supersedes: [Define Facet as a classification role played by a property](../../.
 ## Context
 
 The initial Property/Facet decision defines properties of subjects but limits
-facets to classifying entities. [Investigons](investigons-and-progressive-investigation.md)
+facets to classifying entities. [Investigrams](investigrams-and-progressive-investigation.md)
 are non-entity subjects whose revision and conflict states also serve as compact
 classification dimensions. This record broadens facet applicability to subjects
 and restates the other Property/Facet distinctions so that the replacement
@@ -17,13 +17,13 @@ decision is self-contained.
 
 ## Decisions
 
-### Apply facets to subjects, including investigons
+### Apply facets to subjects, including investigrams
 
 Use Property for a characteristic of a subject about which information can be
 requested or asserted. Distinguish the characteristic from claims about its
 value or whether it holds. A Facet is a property used as a compact
 classification dimension for describing, filtering, grouping, or comparing
-subjects, including entities and investigons. A claim supplies its value, and
+subjects, including entities and investigrams. A claim supplies its value, and
 Claim context supplies its qualification. Different facets may overlap and need
 not share a representation or value type.
 
@@ -36,17 +36,17 @@ source-level. Facet names do not determine claim strength. Adopt no universal
 Property or Facet schema, implementation subtype hierarchy, or generic facet
 machinery.
 
-Investigon facets such as superseded, supersedes, conflicting, and needs
+Investigram facets such as superseded, supersedes, conflicting, and needs
 reconsideration have values supplied by session-scoped claims derived from
 retained corrections, citations, and evaluation context. New session context
-yields new derived claims without modifying immutable investigon content. A
+yields new derived claims without modifying immutable investigram content. A
 recorded correction or conflict does not establish which program interpretation
 is true.
 
 #### Rationale, alternatives, and consequences
 
 Properties already apply to subjects. Broadening facets from entities to
-subjects allows the same descriptive classification role for investigons.
+subjects allows the same descriptive classification role for investigrams.
 Describing their revision and conflict states is useful by itself; this slice
 does not require new filtering or grouping operations. Presentation-only
 annotations would describe the same characteristics without recognizing their
@@ -61,6 +61,6 @@ definition, preserving its other distinctions.
 
 At promotion, add a `Superseded in part` mapping from
 [Define Facet as a classification role played by a property](../../../docs/decisions/initial-core-concepts-decisions.md#define-facet-as-a-classification-role-played-by-a-property)
-to [Apply facets to subjects, including investigons](#apply-facets-to-subjects-including-investigons).
+to [Apply facets to subjects, including investigrams](#apply-facets-to-subjects-including-investigrams).
 The earlier record remains partially superseded. Set the decision date at
 adoption, update canonical indexes, and rewrite links for their destination paths.

@@ -14,10 +14,10 @@ the investigation, its evidence, and earlier interpretations. A deeper
 investigation can correct an earlier explanation without erasing what was
 previously presented.
 
-The retained prose unit is an **investigon**: an immutable, addressable artifact
+The retained prose unit is an **investigram**: an immutable, addressable artifact
 of program investigation containing a qualified interpretation, with referent
 information, evidence context, and provenance. One result has a fixed
-composition tree of investigons. A later investigation produces a separate tree
+composition tree of investigrams. A later investigation produces a separate tree
 whose root references the selected subject through investigation provenance.
 Neither structure establishes a decomposition of the program into canonical
 architectural units.
@@ -25,22 +25,22 @@ architectural units.
 The human explores the code through these operations. The Investigator gathers
 evidence and produces interpretations to support that exploration. Existing mechanical investigations, such as
 organization and dependencies, continue to produce qualified projections. They
-can supply evidence for investigons without themselves becoming investigons.
+can supply evidence for investigrams without themselves becoming investigrams.
 
 This slice implements four operations using shared interpretation
 infrastructure:
 
 | Operation | Requested information | Observable distinction |
 | --- | --- | --- |
-| `summary(module)` | A deliberately terse account of apparent functionality and responsibility, including significant mechanisms, cases, and delegation | Broad, coherent selectable investigons; no mandatory 5WH template or exhaustive branch inventory |
-| `explain(investigon)` | A more understandable account of the selected aspect of this program | Useful clarification and detail omitted for brevity; new findings are not required |
-| `decompose(investigon)` | Smaller, tersely described selectable aspects of the selected functionality | More precise focus without requiring a deeper investigation of each aspect |
-| `examine(investigon)` | A deeper investigation of the selected aspect | Substantive findings, sharper limitations, corrections, or an explicit report that no useful addition was established |
+| `summary(module)` | A deliberately terse account of apparent functionality and responsibility, including significant mechanisms, cases, and delegation | Broad, coherent selectable investigrams; no mandatory 5WH template or exhaustive branch inventory |
+| `explain(investigram)` | A more understandable account of the selected aspect of this program | Useful clarification and detail omitted for brevity; new findings are not required |
+| `decompose(investigram)` | Smaller, tersely described selectable aspects of the selected functionality | More precise focus without requiring a deeper investigation of each aspect |
+| `examine(investigram)` | A deeper investigation of the selected aspect | Substantive findings, sharper limitations, corrections, or an explicit report that no useful addition was established |
 
 The expected implementation uses one interpretation mechanism for all four
 operations: the same dialogue loop, evidence-access tools, result structure, and
 validation and retention flow. The operations differ through their prompting and
-input data: the requested objective, selected module or investigon, and relevant
+input data: the requested objective, selected module or investigram, and relevant
 investigation context. Prompt wording and context assembly are implementation
 choices guided by the behaviors above; separate execution pipelines are not
 expected for each operation.
@@ -49,7 +49,7 @@ For a summary saying that a module “assembles configuration and starts the
 application,” decomposition can expose those two activities separately.
 Examining configuration assembly can investigate input precedence and
 validation. Explanation can clarify what assembly means in this program. All
-three return investigons that can be used with any subsequent operation.
+three return investigrams that can be used with any subsequent operation.
 Decomposition may discover new claims while reasoning over existing evidence;
 examination may need additional source. Their objectives, not exclusive tool
 permissions, distinguish them.
@@ -125,7 +125,7 @@ material limitations and follow-up candidates in the account.
 ## Scope and boundaries
 
 Include all four operations, repeatable follow-ups, evidence inspection,
-explicit corrections to the selected or an earlier investigon, Unicode and
+explicit corrections to the selected or an earlier investigram, Unicode and
 structured JSON presentation, basic per-investigation and session usage
 reporting, provider credential setup, and integration with the existing shell
 and observation lifecycle. There is no fixed single-follow-up depth. Each
@@ -185,7 +185,7 @@ output for a failed investigation.
 
 ## Architectural basis
 
-[Investigons and progressive investigation](../decisions/investigons-and-progressive-investigation.md)
+[Investigrams and progressive investigation](../decisions/investigrams-and-progressive-investigation.md)
 establishes the artifact, lens focus, subject associations, composition,
 investigation provenance, and revisions.
 [Investigator execution and evidence access](../decisions/investigator-execution-and-evidence-access.md)
@@ -210,19 +210,19 @@ boundaries](../../../docs/decisions/adopt-identity-evidence-and-observation-cons
 continue to apply. No foundation revision is required.
 
 Summary, explain, decompose, and examine are lenses. Summary selects a module;
-follow-up lenses select an investigon as their subject, using its prose and
+follow-up lenses select an investigram as their subject, using its prose and
 underlying program context to focus the investigation. The projection identifies
-both that selection and the retained result. An investigon is a valid subject in
+both that selection and the retained result. An investigram is a valid subject in
 its own right; it is not an entity.
 
 ### Evaluation and retained program information
 
 Language analysis and interpretation are parallel producers of qualified program
 information in the session record store. Language analysis produces entities,
-relationship claims, evidence, and context; interpretation produces investigons,
+relationship claims, evidence, and context; interpretation produces investigrams,
 their supporting context, composition, investigation provenance, and revisions.
 Shared evidence, qualification, evaluation-outcome, and storage mechanisms
-retain their existing meanings. Entities and investigons do not require a common
+retain their existing meanings. Entities and investigrams do not require a common
 record kind merely because they share these features.
 
 Investigation lenses declare their information requirements. Evaluation selects
@@ -243,13 +243,13 @@ direct storage-engine access or a second analysis pipeline.
 
 ## Result and navigation behavior
 
-Investigons carry or resolve to:
+Investigrams carry or resolve to:
 
 - prose and a free-form referent description intelligible to a fresh investigator;
 - the originating module context, with optional validated references to more
   specific entities or supported subjects, including captured source regions;
 - evidence and narrower qualifications, including consequential missing context;
-- a citation index of prior investigons actually delivered during the evaluation;
+- a citation index of prior investigrams actually delivered during the evaluation;
 - generating operation, selected target, and actual method/execution provenance;
 - stable session-local identity, fixed composition, and investigation-provenance links.
 
@@ -259,11 +259,11 @@ known material; PostCode assigns retained identities and validates links. A
 free-form string containing an entity ID does not by itself create a navigable
 reference. A valid reference establishes a target, not interpretive correctness.
 
-Broad investigons may contain multiple related claims. Qualification must remain
+Broad investigrams may contain multiple related claims. Qualification must remain
 attributable where it differs. The implementation need not atomize every
 sentence or store a formal semantic representation of the prose.
 
-An investigon view may present a retained mechanical claim with its existing
+An investigram view may present a retained mechanical claim with its existing
 qualification when a validated reference identifies that claim. Present it as
 the retained claim, with its qualification derived from its evidence and method.
 The investigator cannot assign mechanical status to its own prose merely by
@@ -272,30 +272,30 @@ interpretation.
 
 A decomposition identifies finer aspects without inherently establishing that
 they are exhaustive or mutually exclusive. Such claims require their own
-support; the number or arrangement of subordinate investigons does not establish
+support; the number or arrangement of subordinate investigrams does not establish
 them.
 
 ### Stable references and selection
 
-Every selectable investigon is displayed with a reference that the human can
-type into subsequent CLI commands. Root results and subordinate investigons are
+Every selectable investigram is displayed with a reference that the human can
+type into subsequent CLI commands. Root results and subordinate investigrams are
 both addressable. References remain valid for the lifetime of the session: later
 investigations, new siblings, reordered presentation, and corrections never
-change their referents. A historical or superseded investigon remains
+change their referents. A historical or superseded investigram remains
 selectable. Unknown and cross-session references are explicit selection
 failures. Exact spelling (compact IDs, qualified paths, or another scheme) is an
 implementation choice; a visible ordinal that shifts when results grow is not a
 valid persistent reference.
 
 Lookup handles, including path-like selectors, may resolve to zero, one, or
-several investigons. The CLI reports missing or ambiguous matches rather than
+several investigrams. The CLI reports missing or ambiguous matches rather than
 silently choosing a replacement. A version-distinguishing path such as `1.2a`
 and `1.2b` can instead serve as a precise reference if each spelling retains its
 binding for the session. UID syntax is not required. Once selection resolves,
 the request identifies the exact retained subject independently of the
 selector's spelling.
 
-The human can select displayed investigons, inspect their retained content and
+The human can select displayed investigrams, inspect their retained content and
 support without generating a new result, and use any follow-up operation on
 them. A follow-up receives the selected prose, referent description, references,
 and context, rather than only a module identifier. General conceptual background
@@ -304,12 +304,12 @@ it.
 
 ### Fixed composition and follow-up results
 
-Present each operation's result through a root investigon and selectable
-subordinate investigons where useful. The composition tree may be several levels
+Present each operation's result through a root investigram and selectable
+subordinate investigrams where useful. The composition tree may be several levels
 deep and is fixed when retained. A follow-up produces a separate root and fixed
 tree, with provenance linking it to the selected subject; it does not add
 composition children to that subject. Retain operation provenance on the whole
-produced set. Existing subject selection can navigate to a module; investigon
+produced set. Existing subject selection can navigate to a module; investigram
 selection uses a distinguishable session-local reference. Exact syntax, labels,
 and formatting are implementation choices.
 
@@ -319,7 +319,7 @@ and formatting are implementation choices.
 
 Repeating a summary or follow-up command displays its retained outcome and, when
 present, its result, selecting explicit replacements for display rather than
-invoking the investigator again. A result is the accepted root investigon; an
+invoking the investigator again. A result is the accepted root investigram; an
 outcome records how the evaluation ended, as defined by the [evaluation outcome
 taxonomy](../decisions/investigator-execution-and-evidence-access.md#evaluation-outcomes-and-later-requests).
 When no reusable outcome exists for that operation and target, the command runs
@@ -368,7 +368,7 @@ existing no-regeneration policy.
 
 #### Request identity
 
-A follow-up on a different investigon, including a replacement, is a distinct
+A follow-up on a different investigram, including a replacement, is a distinct
 request and can still run normally. This boundary does not prevent new
 investigation through the four supported operations.
 
@@ -379,29 +379,29 @@ attempt it comes from, and any explicit replacements selected for display. If
 the request's original target has since been revised, its old follow-up result
 remains available with that context disclosed; repetition does not secretly
 investigate the new target. A new follow-up also targets the exact supplied
-investigon reference.
+investigram reference.
 
 ### Subject inspection and associations
 
-Retain explicit associations between investigons and the subjects they describe.
-`inspect(subject)` displays a bounded listing of associated investigons, their
+Retain explicit associations between investigrams and the subjects they describe.
+`inspect(subject)` displays a bounded listing of associated investigrams, their
 operations, qualification, revision state, and selectable references. It
 provides access to fuller retained content, evidence, and originals without
 inference. Absence of an association means no retained associated account, not
 that the subject has no such functionality. Any omitted associated results are
 disclosed. Inspection does not generate a missing summary automatically.
 
-The investigon listing in `inspect(subject)` answers which retained investigons
+The investigram listing in `inspect(subject)` answers which retained investigrams
 explicitly describe the subject in the current session. Its contents depend on
-session investigation history: later associated investigons and corrections can
+session investigation history: later associated investigrams and corrections can
 change the listing. Selection uses validated associations, not incidental
 mentions or evidence citations. The mechanical portion of inspection retains its
 existing determinism guarantee; that guarantee does not apply to the generated
-content of associated investigons.
+content of associated investigrams.
 
-The same `inspect` lens may also accept an investigon reference. This is a
+The same `inspect` lens may also accept an investigram reference. This is a
 candidate CLI expression of the required exact-result inspection, not another
-generative operation: it shows that immutable investigon's prose, referent
+generative operation: it shows that immutable investigram's prose, referent
 information, evidence, composition, investigation provenance, and revision
 links. A superseded reference shows the original with its replacement linked,
 rather than silently selecting the replacement. The exact inspection command
@@ -410,17 +410,17 @@ arrangement remains an implementation choice.
 These associations are subject-oriented access to qualified information, not a
 silent conversion of interpretation into an intrinsic property of the subject.
 Distinguish the subject on which an investigation originated from additional
-subjects explicitly described by an investigon, and from subjects merely cited
+subjects explicitly described by an investigram, and from subjects merely cited
 as evidence. A prose mention alone does not create an association. Replacement
 associations are independent of composition placement: preserve association with
 the subject whose account is corrected, and explicitly attribute any other
 described subjects. Do not blindly inherit all associations from the original. A
-module can have several associated investigons from different investigations,
+module can have several associated investigrams from different investigations,
 none automatically more authoritative because it is newer or more frequently
 retrieved.
 
 An investigator encountering a known subject can retrieve its associated
-investigons from earlier investigations in the same session, beyond its current
+investigrams from earlier investigations in the same session, beyond its current
 chain of prior investigations. Retrieval exposes provenance, evidence links,
 limitations, and revision state. It records which prior interpretations were
 supplied. Repeated use of an interpretation is not independent corroboration;
@@ -430,7 +430,7 @@ independent support.
 A view produced by a repeated request selects retained results and explicit
 revision relationships. It is a newly constructed projection of the current
 retained account, not mutation of the projection or view originally produced.
-Unrelated accumulated investigons do not enter the view merely because they
+Unrelated accumulated investigrams do not enter the view merely because they
 exist. Only the declared operation/target and revision selection, or the
 subject-association selection of `inspect`, determine its contents.
 
@@ -439,7 +439,7 @@ subject-association selection of `inspect`, determine its contents.
 Reference spelling below is illustrative; stable selection and the behaviors are
 requirements, not a required grammar.
 
-1. `summary M` generates a root and broad investigons with displayed references.
+1. `summary M` generates a root and broad investigrams with displayed references.
 2. `decompose @i7` generates a separate root and finer selectable subparts. Its
    provenance identifies `@i7` as the subject; it does not add children to `@i7`.
 3. `examine @i12` discovers that an earlier summary point `@i7` needs correction
@@ -447,7 +447,7 @@ requirements, not a required grammar.
    reporting view shows the target, replacement reference, reason, and support access.
 4. `summary M` displays the retained result with `@i20` marked as a
    replacement of `@i7`, without invoking the investigator again. Unaffected points retain IDs.
-5. `inspect M` exposes associated investigons and their revision relationships.
+5. `inspect M` exposes associated investigrams and their revision relationships.
    Inspecting `@i7` shows the exact original and a link to `@i20`.
 6. A repeated `decompose @i7` shows its retained decomposition with a revised-origin
    warning. An explicit new follow-up on the current replacement can produce a
@@ -460,8 +460,8 @@ requirements, not a required grammar.
 
 Any operation can uncover corrections or unresolved inconsistencies. Apply the
 [correction
-semantics](../decisions/investigons-and-progressive-investigation.md#record-explicit-corrections-without-rewriting-earlier-interpretation):
-investigons carry these as immutable accompanying content. Replacements are
+semantics](../decisions/investigrams-and-progressive-investigation.md#record-explicit-corrections-without-rewriting-earlier-interpretation):
+investigrams carry these as immutable accompanying content. Replacements are
 constructed through corrections, with composition trees disjoint from the
 reporting tree, and may themselves carry corrections. Every target must predate
 acceptance of the operation result; all new content is validated and accepted
@@ -480,9 +480,9 @@ the remainder.
 The reporting view lists accompanying corrections with targets, replacement
 references, reasons, and access to supporting context. Unresolved
 inconsistencies are visible through inspection of both reporting and affected
-investigons and flagged on redisplay. Session-derived facets such as superseded,
+investigrams and flagged on redisplay. Session-derived facets such as superseded,
 supersedes, and conflicting expose correction relationships without mutating
-investigons.
+investigrams.
 
 Redisplay substitutes corrected children under an old root, annotated as
 updates. A corrected root instead supplies its own composition. Disclose further
@@ -492,7 +492,7 @@ and descendant may be corrected in one operation. Original composition and
 historical views remain unchanged; presentation substitution creates no
 composition relationship.
 
-Exact references continue to select their original investigons. Follow-ups on a
+Exact references continue to select their original investigrams. Follow-ups on a
 superseded subject warn and identify replacements without redirecting or
 requiring confirmation. Repeated follow-ups display their retained results with
 revised-subject context; they do not investigate a replacement implicitly.
@@ -500,9 +500,9 @@ Original and replacement subjects identify distinct retained requests.
 
 ### Citation indexes and needs reconsideration
 
-Implement the [citation and reconsideration contract](../decisions/investigons-and-progressive-investigation.md#record-citation-exposure-and-derive-reconsideration-status).
-Construct citation indexes from actual delivered investigon context,
-conservatively shared across investigons produced by an evaluation. Any substantive content,
+Implement the [citation and reconsideration contract](../decisions/investigrams-and-progressive-investigation.md#record-citation-exposure-and-derive-reconsideration-status).
+Construct citation indexes from actual delivered investigram context,
+conservatively shared across investigrams produced by an evaluation. Any substantive content,
 including excerpts and descriptive listings, creates a citation; identifiers
 alone do not. Correction eligibility requires complete retained prose, referent
 information, and qualifications, with no omitted or truncated elements. Delivery
@@ -523,19 +523,19 @@ reconsideration cause, when applicable, rather than a duplicate warning. Keep
 citation indexes and original content immutable. Warnings do not trigger
 regeneration or change exact selection. This slice has no clearing operation;
 [explicit
-reconsideration](../backlog.md#reconsider-investigons-after-context-corrections)
+reconsideration](../backlog.md#reconsider-investigrams-after-context-corrections)
 is deferred. Another investigation does not silently clear an earlier account.
 
 If B corrects A, B's citation index necessarily includes A. Exempt every
-investigon produced by an evaluation from each correction cause that evaluation
-produced or received in full. For each cause, a non-exempt investigon needs
-reconsideration if it cites the target or an investigon needing reconsideration
-for that cause. Exemption applies at the investigon on every path; later citers
+investigram produced by an evaluation from each correction cause that evaluation
+produced or received in full. For each cause, a non-exempt investigram needs
+reconsideration if it cites the target or an investigram needing reconsideration
+for that cause. Exemption applies at the investigram on every path; later citers
 can still inherit the cause through other, non-exempt citations. Other
 correction causes remain independent, and earlier artifacts' warnings are not
 cleared.
 
-When supplying corrected investigons, provide the exact requested artifact
+When supplying corrected investigrams, provide the exact requested artifact
 together with correction notices, replacement accounts, reasons, chains, and
 conflicting alternatives. Record actual delivery and disclose omissions. Record
 complete correction-context delivery per correction identity: both the target's
@@ -576,13 +576,13 @@ across operations. An investigator's working conversation lives within one
 operation.
 
 A summary request starts with the module reference and operation instructions. A
-follow-up starts with the selected investigon, its prose and referent
+follow-up starts with the selected investigram, its prose and referent
 information, and references to its evidence and investigation context. This
 establishes the subject and objective without prescribing a fixed upfront
 evidence package.
 
 The investigator requests source, qualified mechanical results, documentation,
-and prior investigons through the shared subject-based interface as needed.
+and prior investigrams through the shared subject-based interface as needed.
 Prefetching likely-needed material is an execution optimization left to
 implementation. Whether material is supplied initially or retrieved during the
 dialogue, it uses the same acquisition, qualification, coverage, and provenance
@@ -596,7 +596,7 @@ evidence, method, coverage, and limitations. These queries use evaluation to
 reuse retained results or perform missing mechanical analysis. The investigator
 need not reconstruct established relationships from source; interpreting their
 role remains separate from the mechanical claims. Tools also retrieve
-investigons, their support, and composition, investigation-provenance, and
+investigrams, their support, and composition, investigation-provenance, and
 revision links and subject associations within the session.
 
 The investigator can request full source for a module reference, or contents for
@@ -654,7 +654,7 @@ investigation disabled, existing mechanical commands remain usable without
 inference credentials. Enabled investigation with unsatisfied prerequisites
 fails preflight, even if the intended shell commands are mechanical. Missing
 authentication produces explicit unavailability, not an invented summary.
-Credential material does not enter investigons or observations. Exact setup
+Credential material does not enter investigrams or observations. Exact setup
 steps and authentication storage follow the selected integration.
 
 ### Credential setup for live inference
@@ -697,7 +697,7 @@ The guard is a usability backstop against uncontrolled continuation, not a
 spending budget or an attempt to optimize the amount of useful investigation.
 
 Reaching the guard before result submission produces an explicit stopped outcome
-with the reason and no investigon. No investigator turn continues beyond the guard
+with the reason and no investigram. No investigator turn continues beyond the guard
 to finish or submit a result. Cancellation coverage and delays in
 interrupting in-flight provider or mechanical work are disclosed; the guard does
 not guarantee immediate termination or a monetary ceiling. It applies to hosted
@@ -753,7 +753,7 @@ repair may follow. The submission mechanism is an implementation choice.
 Submission before the guard stops execution transitions the result to ordinary
 whole-result validation. If validation fails, the implementation may request
 repair within the same dialogue, subject to the execution guard. A guard stop
-before submission retains a stopped outcome without an investigon; reject
+before submission retains a stopped outcome without an investigram; reject
 submissions arriving after the stop. Communication failure still discards
 unaccepted interpretation content under its separate failure policy. Already
 captured evidence and earlier accepted results remain usable when the session
@@ -766,16 +766,16 @@ If recovery ends unsuccessfully, classify its cause under the outcome taxonomy:
 unrecovered truncation is an investigation failure unless a guard stop or
 communication/configuration failure ended recovery.
 
-Accept the submitted root investigon, including its composition and accompanying
+Accept the submitted root investigram, including its composition and accompanying
 corrections, as a unit at the domain interpretation boundary after validation
 succeeds. Corrections take effect on acceptance, independently of display.
 Atomic acceptance does not require atomic delivery; individual dialogue
-exchanges do not independently retain investigons or apply corrections.
+exchanges do not independently retain investigrams or apply corrections.
 Validation checks identity, reference existence, permitted relationships,
 qualifications, and revision targets predating this result. Conflicting
 corrections are valid retained content, not structural validation failures.
 Validation does not establish the prose's truth. Optional repair also applies to
-corrections targeting investigons whose required content was not delivered. If
+corrections targeting investigrams whose required content was not delivered. If
 that validation error remains unrepaired, reject the entire submission and
 classify the outcome by the taxonomy, preserving any guard stop or
 communication/configuration failure that ended repair. No correction takes
@@ -818,7 +818,7 @@ inference or changes request selection.
 
 Normal command observations include the exact selected target, any
 superseded-target warning and displayed replacement reference, operation,
-selected retained or newly produced investigons and revisions needed to
+selected retained or newly produced investigrams and revisions needed to
 interpret the view, prior interpretations retrieved by the investigator,
 qualifications, outcomes, actual output, and available usage. Keep the batch
 self-contained and distinguish source sent to inference from source shown to the
@@ -857,7 +857,7 @@ whether to implement the remaining operations.
 
 ### Milestone 1: Terse module summary through the real investigator boundary
 
-Establish investigon records and references, qualified evidence assembly,
+Establish investigram records and references, qualified evidence assembly,
 bounded tool dialogue, async execution, stable user-selectable references, and a
 usable summary in the shell. Repeating the request displays retained outcomes
 without inference. Include expected failure paths and source traceability rather
@@ -879,7 +879,7 @@ Observe these dependencies when scheduling the work:
   implementation and assessment, not a scope-selection gate.
 - After the baseline assessment and before milestone 2, prepare a committed handoff
   and pause for independent architectural review arranged by the human under the
-  review workflow. Review the domain and agent-communication boundaries, investigon
+  review workflow. Review the domain and agent-communication boundaries, investigram
   retention and evaluation integration, asynchronous dialogue and worker
   coordination, interruption, input invalidation, and rejection of late results.
   Resolve findings and obtain the human's direction to proceed.
@@ -921,20 +921,20 @@ Verify public boundaries and journeys, including:
 
 #### Results, references, and retention
 
-- broad summary investigons, attributable mixed evidence, unsupported and ambiguous
+- broad summary investigrams, attributable mixed evidence, unsupported and ambiguous
   module selections, unknown/cross-session references, and preserved qualifications;
 - multi-level composition produced in one evaluation; follow-ups produce separate
-  roots with subject provenance, without modifying the selected investigon's tree;
+  roots with subject provenance, without modifying the selected investigram's tree;
 - path-like or other lookup handles with zero/one/multiple matches, without silently
   preferring a replacement; version-distinguishing paths, if used as precise
   references, retain their bindings;
-- stable CLI selection of roots and subordinate investigons after session growth, changed
+- stable CLI selection of roots and subordinate investigrams after session growth, changed
   display order, and revision; repeat-display without invoking the investigator; exact historical
   inspection; retained investigation failure/limit stops on repetition and documented
   restart recovery; communication failures without reusable outcomes, closed investigator dialogues,
   preserved diagnostics, rejection of late responses, and ordinary subsequent
   requests in the same shell without repeat detection;
-- subject inspection and investigator retrieval of qualified prior investigons,
+- subject inspection and investigator retrieval of qualified prior investigrams,
   association roles, bounded display, no automatic generation, and non-corroborating
   reuse of earlier interpretation across investigations;
 #### Evaluation and evidence access
@@ -962,7 +962,7 @@ Verify public boundaries and journeys, including:
   including accumulated delivery across exchanges; excerpts, descriptive listings,
   truncated prose, and missing qualifications create citations but do not establish
   eligibility; identifiers alone create neither;
-- complete conservative citation indexes for all investigons from an evaluation, including
+- complete conservative citation indexes for all investigrams from an evaluation, including
   replacements, unchanged by later dialogue trimming or summarization;
 - direct and transitive reconsideration warnings, multiple causes, unchanged
   artifacts and selection, no inference on disclosure, and no implicit clearing
@@ -970,16 +970,16 @@ Verify public boundaries and journeys, including:
 - bounded cause presentation in human and JSON views and investigator retrieval
   over a graph with combinatorially many paths, with further detail accessible
   without requiring full-path display or enumeration;
-- A → B requires A in B's citations; all investigons from the generating evaluation are
+- A → B requires A in B's citations; all investigrams from the generating evaluation are
   exempt from that cause, including the reporting root, composition children, other
   replacements, and recursively accompanying corrections; an indirect citation
-  through Y citing A does not reintroduce that cause into exempt investigons;
-- later citers do not inherit a cause through exempt investigons but do inherit it
+  through Y citing A does not reintroduce that cause into exempt investigrams;
+- later citers do not inherit a cause through exempt investigrams but do inherit it
   through other non-exempt citations; later corrections of A propagate independently;
 - correction-aware initial and retrieved context, exact originals plus replacements,
   chains and conflicting alternatives; actual delivery indexes include supplied
   replacement content, with bounded omissions explicit;
-- complete correction-context delivery exempts new investigons from that specific cause,
+- complete correction-context delivery exempts new investigrams from that specific cause,
   including indirect paths; partial delivery and unseen later corrections remain
   unexempted, and earlier artifacts' warnings remain unchanged;
 - complete correction-context delivery for replacements with composition children,
@@ -993,14 +993,14 @@ Verify public boundaries and journeys, including:
   a two-step replacement chain and branching A → B, A → C, B → D sequence
   selecting D; simultaneous alternatives with stable selection,
   and corrections in displaced trees, including ancestor/descendant corrections;
-- at most one composition position per investigon across all result trees;
+- at most one composition position per investigram across all result trees;
   recursive accompanying corrections, rejection of same-result or missing targets,
-  unresolved-inconsistency content and session-derived investigon facets;
-- accompanying corrections with replacements outside the reporting investigon's
+  unresolved-inconsistency content and session-derived investigram facets;
+- accompanying corrections with replacements outside the reporting investigram's
   composition, replacement provenance and subject associations, atomic acceptance,
   child replacement under an old root, and root replacement using its own composition;
-- correction of the selected investigon and an ancestor, unresolved disagreement
-  discoverable through affected-investigon inspection and redisplay,
+- correction of the selected investigram and an ancestor, unresolved disagreement
+  discoverable through affected-investigram inspection and redisplay,
   conflicting corrections to superseded targets, preserved old output and composition trees, revised-subject
   warnings on subsequent investigations, and
   precise-reference targeting with supersession warnings and no redirection, distinct
@@ -1028,7 +1028,7 @@ Verify public boundaries and journeys, including:
   interruption, and rejection of late results;
 - result assembly from dialogue exchanges and atomic acceptance without retaining
   individual fragments or applying their corrections; a guard stop before submission
-  retains no investigon, even if an intermediate tree is structurally valid;
+  retains no investigram, even if an intermediate tree is structurally valid;
 - submission before the stop proceeds to ordinary validation; submissions after
   the stop are rejected, and any investigator repair remains within the guard;
 - recovery from truncated exchanges when supported, retained failure on unrecovered
@@ -1077,7 +1077,7 @@ support.
 #### Investigation sequences and assessment targets
 
 For each subject, record the initial summary and a sequence exercising all three
-follow-ups, including a follow-up on a generated investigon. Assess whether:
+follow-ups, including a follow-up on a generated investigram. Assess whether:
 
 - summary conveys specific apparent functionality and division of responsibility;
   a root/delegating-module case requires tracing multiple layers to explain the
@@ -1099,7 +1099,7 @@ follow-ups, including a follow-up on a generated investigon. Assess whether:
   reconciling it or treating documentation as proof of behavior;
 - decomposition of overlapping or non-exhaustive cases does not imply mutual
   exclusion or completeness merely because it produces an enumerated set of
-  subordinate investigons; any stronger claim is assessed against its evidence;
+  subordinate investigrams; any stronger claim is assessed against its evidence;
 - context retrieval enables correction of earlier results through composition and
   investigation-provenance traversal without erasing earlier results;
 - citation-index breadth and apparently irrelevant inclusions, correction frequency,
@@ -1154,7 +1154,7 @@ Questions cover:
   what consequential information remains unestablished?
 - What became clearer after explanation, more precisely selectable after
   decomposition, or substantively different after examination?
-- Which investigon would you select next, by displayed reference, with which
+- Which investigram would you select next, by displayed reference, with which
   operation, and what would you expect to learn?
 - Where correction is shown, what changed, which references identify original and
   replacement, and what remains uncertain? Can composition be distinguished from
@@ -1181,7 +1181,7 @@ evidence and rationale.
 
 The comprehension evaluators remain view-only: source-grounded reference
 material and selection rationales are not supplied to them. A separate
-assessment stage compares both generated investigons and evaluator responses
+assessment stage compares both generated investigrams and evaluator responses
 against that material, as well as checking what the supplied views actually
 support. Distinguish:
 
@@ -1305,7 +1305,7 @@ authorize them.
 
 The delivered capability includes the four operations, stable session-long CLI
 references, retained/current and historical viewing, subject-associated
-investigon inspection and retrieval, correction-aware navigation, and basic
+investigram inspection and retrieval, correction-aware navigation, and basic
 per-investigation and session usage reporting. Retry and forced regeneration
 remain outside the slice, with restart recovery documented. CLI documentation
 describes these behaviors with examples and documents inference setup, actual

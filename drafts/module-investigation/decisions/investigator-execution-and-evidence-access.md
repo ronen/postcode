@@ -7,7 +7,7 @@ Scope: evaluation integration, investigator dialogue, evidence access, failure o
 
 ## Context
 
-[Investigons and progressive investigation](investigons-and-progressive-investigation.md)
+[Investigrams and progressive investigation](investigrams-and-progressive-investigation.md)
 defines the retained artifacts and their relationships. Producing those artifacts
 requires interpretation to participate in PostCode's existing evaluation, evidence,
 and session architecture. This record establishes execution and access boundaries,
@@ -43,10 +43,10 @@ are integration choices behind this role.
 
 Language analysis and interpretation produce qualified information through the
 existing evaluation and session record-store architecture. Interpretation adds
-investigons and their support and relationships; it does not establish a
+investigrams and their support and relationships; it does not establish a
 separate storage or projection pipeline. Shared evidence, Claim context, and
 evaluation outcomes preserve their meaning across both kinds of analysis without
-requiring entities and investigons to be the same record kind.
+requiring entities and investigrams to be the same record kind.
 
 Lenses declare requested information. Evaluation selects retained outcomes and
 explicit revisions and determines what missing analysis or investigation must
@@ -54,15 +54,15 @@ run. Validated results are retained before projection construction; rendering
 and projection construction consume materialized information without invoking
 analysis. A retained interpretation's reuse and an explicit request for a new
 attempt remain distinct from mechanical reuse rules. More available context
-alone does not require regeneration of every earlier investigon.
+alone does not require regeneration of every earlier investigram.
 
 #### Evaluation outcomes and later requests
 
 Each interpretation evaluation ends with one outcome, describing whether it
 produced an accepted result or why it did not. A result is the accepted root
-investigon; only a successful outcome carries one.
+investigram; only a successful outcome carries one.
 
-| Outcome | Meaning | Accepted investigon? | Retains outcome? |
+| Outcome | Meaning | Accepted investigram? | Retains outcome? |
 | --- | --- | --- | --- |
 | Accepted result | The investigator submits the result before execution is stopped, and whole-result validation passes. | Yes | Yes, with its result. |
 | Execution-limit stop | PostCode's guard ends investigation or required repair before an acceptable result is submitted, including while a provider call is in flight. | No | Yes. |
@@ -114,7 +114,7 @@ establish a documentation association with a module.
 
 The investigator has no shell execution, mutation, or web access. Repository
 content is evidence to analyze, not instructions to obey. Credentials remain
-outside investigator context, investigons, and observations; provider
+outside investigator context, investigrams, and observations; provider
 authentication is handled by the agent communication boundary.
 
 Subject-based evidence requests use shared acquisition backed by the session
@@ -131,10 +131,10 @@ Unavailable evidence from an individual acquisition is normally a qualified tool
 response the dialogue can continue past, not an investigation failure.
 Configuration and service failures follow the evaluation outcome taxonomy above.
 
-The surrounding PostCode session retains investigons, evidence, and outcomes.
+The surrounding PostCode session retains investigrams, evidence, and outcomes.
 The investigator can follow composition, investigation-provenance, and revision
 links on demand, including reverse lookup of operations that selected an
-investigon. The selected investigon directs attention without restricting access
+investigram. The selected investigram directs attention without restricting access
 to its composition tree or its own chain of prior investigations. Retrieved
 prior interpretations are distinguished from source and mechanical evidence.
 
@@ -193,7 +193,7 @@ result for acceptance; structural validity alone does not establish readiness.
 Submission mechanics remain an implementation choice and do not assert
 exhaustive investigation. Submission before the guard stops execution
 transitions the result to ordinary whole-result validation. A stop before
-submission retains no investigon; submissions arriving after the stop are
+submission retains no investigram; submissions arriving after the stop are
 rejected. If validation fails, the implementation may request repair within the
 same dialogue, subject to the execution guard. The investigator describes
 investigation coverage in prose; epistemological qualifications remain
@@ -210,7 +210,7 @@ including guard expiry during repair. Communication failure discards unaccepted
 dialogue content rather than submitting it for validation.
 
 The minimum initial request supplies the operation and module reference for a
-summary, or the selected investigon's prose, referent information, and context
+summary, or the selected investigram's prose, referent information, and context
 references for a follow-up. Further evidence is acquired through the shared
 subject-based interface. Prefetching is an execution choice, not a separate
 evidence contract; initially supplied and subsequently requested material obey

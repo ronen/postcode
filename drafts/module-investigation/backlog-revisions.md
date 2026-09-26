@@ -58,7 +58,7 @@ independent of budgeting support so it applies to either hosted or local executi
 Retain available provider usage metadata without assuming every integration reports
 the same measures or supports precise cost accounting.
 
-## Reconsider investigons after context corrections
+## Reconsider investigrams after context corrections
 
 Added: 2026-09-25
 Origin: module investigation planning discussion of citation exposure
