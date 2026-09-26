@@ -123,7 +123,7 @@ Report what was verified, what was not verified, and any residual uncertainty. N
 
 Unless the approved plan or human explicitly directs otherwise, substantive implementation of an approved plan uses these independent-review defaults:
 
-- If the implementation becomes sufficiently complex that intermediate review would materially reduce risk, pause for independent review after appropriate key developments.
+- <a id="intermediate-review"></a> If the implementation becomes sufficiently complex that intermediate review would materially reduce risk, pause for independent review after appropriate key developments.
 - After implementation and planned verification are substantially complete, prepare and commit a final integrated-review handoff. Pause for one or more final review rounds, and do not close the task until the human says that the review gate is sufficient.
 
 Follow the [independent review workflow](review.md) whenever these defaults, an approved plan, or an authorized task require review. The human arranges the reviewer and review mechanism unless the approved plan expressly assigns that responsibility to the agent or the human explicitly directs the agent to do so.
