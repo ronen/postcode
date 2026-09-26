@@ -210,7 +210,7 @@ and [evidence
 boundaries](../../../docs/decisions/adopt-identity-evidence-and-observation-constraints.md)
 continue to apply. No foundation revision is required.
 
-Summarize, explain, decompose, and examine are lenses. Summarize selects a module;
+`summarize`, `explain`, `decompose`, and `examine` are lenses. `summarize` selects a module;
 follow-up lenses select an investigram as their subject, using its prose and
 underlying program context to focus the investigation. The projection identifies
 both that selection and the retained result. An investigram is a valid subject in
@@ -318,7 +318,7 @@ and formatting are implementation choices.
 
 ### Retained request outcomes
 
-Repeating a summarize or follow-up command displays its retained outcome and, when
+Repeating a `summarize` or follow-up command displays its retained outcome and, when
 present, its result, selecting explicit replacements for display rather than
 invoking the investigator again. A result is the accepted root investigram; an
 outcome records how the evaluation ended, as defined by the [evaluation outcome
@@ -574,7 +574,7 @@ hidden memory. The PostCode session retains evidence, results, and outcomes
 across operations. An investigator's working conversation lives within one
 operation.
 
-A summarize request starts with the module reference and operation instructions. A
+A `summarize` request starts with the module reference and operation instructions. A
 follow-up starts with the selected investigram, its prose and referent
 information, and references to its evidence and investigation context. This
 establishes the subject and objective without prescribing a fixed upfront
@@ -899,7 +899,7 @@ operations stay in scope.
 
 ### Milestone 2: Progressive investigation
 
-Expose explain, decompose, and examine over the same results. Support on-demand
+Expose `explain`, `decompose`, and `examine` over the same results. Support on-demand
 context traversal, repeated operations, evidence inspection, subject-associated
 retrieval and inspection, and access to additional permitted source.
 

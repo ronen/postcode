@@ -111,8 +111,8 @@ responsibility to it. An arbitrary ID in prose or the free-form description does
 not acquire reference semantics. Referent and evidence remain different roles,
 even where the same captured source region serves both.
 
-Summarize, explain, decompose, and examine are lenses. A successful evaluation
-provides a root investigram with optional subordinate investigrams for the projection. Summarize
+`summarize`, `explain`, `decompose`, and `examine` are lenses. A successful evaluation
+provides a root investigram with optional subordinate investigrams for the projection. `summarize`
 selects a module. A follow-up selects an investigram as its subject, retaining
 its underlying program context and referent description. Its prose is part of
 the explicit interpretive input, not a mechanically established premise. A
@@ -124,9 +124,9 @@ projection or its rendering.
 `inspect(investigram)` exposes the retained investigram: its prose, referent
 information, evidence, composition, provenance, and corrections.
 
-Explain, decompose, and examine use the selected investigram's prose and program
-context to focus further interpretation. Explain clarifies what the account
-means; decompose identifies finer aspects of what it describes; examine
+`explain`, `decompose`, and `examine` use the selected investigram's prose and program
+context to focus further interpretation. `explain` clarifies what the account
+means; `decompose` identifies finer aspects of what it describes; `examine`
 investigates its subject more deeply. Each may acquire additional evidence and
 qualify or correct the original account.
 
@@ -451,7 +451,7 @@ inference. Existing replacement selection and exact-reference behavior remain
 unchanged.
 
 The initial slice detects and discloses the condition but has no operation for
-clearing it. Another explain, decompose, or examine operation does not
+clearing it. Another `explain`, `decompose`, or `examine` operation does not
 implicitly certify the old account. Explicit reconsideration is future work.
 
 An investigram is exempt from a specific correction cause when its generating
