@@ -668,12 +668,19 @@ assessment artifacts. Report authentication availability and failures without
 exposing secrets.
 
 The implementing agent documents the selected provider, credential mechanism,
-setup steps, and access guarantees and limitations, then pauses for the human to
+supported platforms, setup steps, and access guarantees and limitations, then
+pauses for the human to
 configure access before live inference or assessment. Provider-specific storage
 and authentication details remain implementation choices. Document expiration,
 revocation, and any refresh requirements; credential storage alone does not
 remove those concerns. Subsequent assessment runs use the configured mechanism
 without asking the human to disclose credentials to an agent.
+
+If the selected platform lacks the credential mechanism or secure credential
+access is unavailable, report configuration unavailability. Do not silently fall
+back to a mechanism that exposes credential values to the coding or assessment
+agent. A cross-platform credential abstraction and a fallback mechanism are not
+required for this slice.
 
 Avoid claiming enforced isolation merely because credentials use an OS store. An
 agent able to execute commands under the same OS account may have access
@@ -1021,6 +1028,8 @@ Verify public boundaries and journeys, including:
   threshold or remaining-limit information if implemented;
 - dialogue termination without submission, absent another terminal failure cause,
   produces a retained investigation failure;
+- unavailable credential mechanisms on unsupported platforms or failed secure
+  credential access produce configuration unavailability without an exposing fallback;
 - runtime authentication rejection and provider spending-limit or quota exhaustion
   leave no reusable outcome; later requests start fresh evaluations;
 - repeated requests follow the retention column for every taxonomy row, reusing
