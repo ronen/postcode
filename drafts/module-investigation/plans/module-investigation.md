@@ -859,6 +859,15 @@ This does not require access to model-private
 reasoning. Exact transcript serialization and whether raw provider envelopes are
 retained are implementation choices; secrets must not be recorded.
 
+## Risks and uncertainties
+
+| Risk or uncertainty | How and when it is addressed |
+| --- | --- |
+| Interpretation quality and generative variation | The implementing agent assesses these in milestones 3–5, records limitations, and makes [bounded improvements](#success-criteria-and-completion). The human considers the evidence at milestone and final reviews. [Assessment runs and variation](#assessment-runs-and-generative-variation) define the comparison limits. |
+| Provider, credential, and assessment-tool availability | The implementing agent verifies the concrete integration and [assessment tooling](#assessment-tooling-and-artifact-lifecycle) before live assessment; the human configures credentials after the [setup disclosure](#credential-setup-for-live-inference). |
+| Usage, cost, and reliability | Record [usage](#basic-inference-usage-reporting) and failures throughout assessment, including incomplete usage after interruption. Report [assessment costs](#assessment-usage-and-cost-report) and escalate obstacles under the [recovery policy](#assessment-failure-recovery-and-reliability). |
+| Correction complexity and usefulness | [Deterministic checks](#corrections-and-conflicts) verify the mechanics; milestone 5 assesses correction-aware views and the burden of reconsideration warnings through the [formative assessment](#investigation-sequences-and-assessment-targets). |
+
 ## Milestones
 
 At the end of each milestone, prepare a committed milestone-specific review
