@@ -1,8 +1,8 @@
 # Transient interactive session shell
 
-Status: approved
+Status: completed
 Created: 2026-09-22
-Updated: 2026-09-23
+Updated: 2026-09-26
 Superseded by:
 
 This plan is governed by the [session decisions](../decisions/transient-analysis-sessions.md),
