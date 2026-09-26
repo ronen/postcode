@@ -36,9 +36,9 @@ source-level. Facet names do not determine claim strength. Adopt no universal
 Property or Facet schema, implementation subtype hierarchy, or generic facet
 machinery.
 
-Investigon facets such as superseded, supersedes, and conflicting have values
-supplied by session-scoped claims derived from retained correction
-relationships. New session context yields new derived claims without modifying
+Investigon facets such as superseded, supersedes, conflicting, and needs
+reconsideration have values supplied by session-scoped claims derived from
+retained corrections, citations, and evaluation context. New session context yields new derived claims without modifying
 immutable investigon content. A recorded correction or conflict does not
 establish which program interpretation is true.
 

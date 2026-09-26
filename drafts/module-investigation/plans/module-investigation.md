@@ -503,30 +503,45 @@ Original and replacement subjects identify distinct retained requests.
 
 Implement the [citation and reconsideration contract](../decisions/investigons-and-progressive-investigation.md#record-citation-exposure-and-derive-reconsideration-status).
 Construct citation indexes from actual delivered investigon context, conservatively
-shared across results of an evaluation. A correction target's retained prose,
-referent information, and qualifications must have been delivered in that dialogue;
-validate delivery rather than mere existence or reachability. Retrieval may extend
-beyond the selected subject's composition or provenance chain.
+shared across results of an evaluation. Any substantive content, including excerpts
+and descriptive listings, creates a citation; identifiers alone do not. Correction
+eligibility requires complete retained prose, referent information, and
+qualifications, with no omitted or truncated elements. Delivery can accumulate
+across exchanges. Retrieval may extend beyond the selected subject's composition
+or provenance chain.
+
+Delivery means exposure at any point in the evaluation, even if context is later
+trimmed or summarized. It does not guarantee continued internal retention or
+comprehension. Preservation or re-supply during PostCode-managed trimming is an
+implementation choice.
 
 Derive "needs reconsideration" through direct and transitive citations when context
-is corrected. Display the warning without suppressing the account, and expose
-causal paths in inspection and interpreter retrieval. Keep citation indexes and
+is corrected. Display the warning without suppressing the account. Preserve the
+causal graph and expose causes within bounds in inspection and interpreter
+retrieval, with access to further detail. No full-path presentation or enumeration
+is required. Revised-subject disclosure presents the same reconsideration cause,
+when applicable, rather than a duplicate warning. Keep citation indexes and
 original content immutable. Warnings do not trigger regeneration or change exact
 selection. This slice has no clearing operation; [explicit reconsideration](../backlog.md#reconsider-investigons-after-context-corrections)
 is deferred. Another investigation does not silently clear an earlier account.
 
-If B corrects A, B's citation index necessarily includes A, because A must have
-been delivered for B to target it. Exempt B from the specific A → B
-reconsideration cause, without removing that citation or exempting later
-corrections of A. When supplying corrected investigons, provide the exact requested
-artifact together with correction notices, replacement accounts, reasons, chains,
-and conflicting alternatives. Record actual delivery and disclose omissions.
+If B corrects A, B's citation index necessarily includes A. Exempt every investigon
+produced by an evaluation from each correction cause that evaluation produced or
+received in full. For each cause, a non-exempt investigon needs reconsideration if
+it cites the target or an investigon needing reconsideration for that cause.
+Exemption applies at the investigon on every path; later citers can still inherit
+the cause through other, non-exempt citations. Other correction causes remain
+independent, and earlier artifacts' warnings are not cleared.
 
-Record complete correction-context delivery per correction identity. Those specific
-corrections do not trigger reconsideration of the new results generated with that
-context available; partial delivery does not qualify. Apply exceptions per cause
-and path, preserving other outstanding causes. This does not certify comprehension
-or clear warnings on previously retained artifacts.
+When supplying corrected investigons, provide the exact requested artifact together
+with correction notices, replacement accounts, reasons, chains, and conflicting
+alternatives. Record actual delivery and disclose omissions. Record complete
+correction-context delivery per correction identity: both the target's and
+replacement's own prose, referent information, and qualifications, plus correction reasons and
+qualifications. Their subordinate composition trees are not required for
+completeness. A subsequent correction of the replacement is a separate cause;
+it does not invalidate completeness for the earlier correction. Partial delivery
+does not qualify for exemption.
 
 ## Interpreter execution and evidence access
 
@@ -773,7 +788,10 @@ state.
 
 Retain explicit request instructions, actual model/configuration identifiers,
 method versions, context/evidence IDs delivered during the dialogue, and
-generated results for attribution. This does not require access to model-private
+generated results for attribution. Record citation indexes and per-correction
+delivery completeness in observations and expose them through structured
+inspection output so reconsideration causes and exemptions can be audited.
+This does not require access to model-private
 reasoning. Exact transcript serialization and whether raw provider envelopes are
 retained are implementation choices; secrets must not be recorded.
 
@@ -897,21 +915,35 @@ Verify public boundaries and journeys, including:
   their qualifications without a parallel interpreter file-reading path;
 #### Corrections and conflicts
 
-- rejection of correction targets not delivered in the current dialogue; successful
-  targeting after initial delivery or permitted traversal and association retrieval;
+- correction eligibility after complete initial delivery or permitted retrieval,
+  including accumulated delivery across exchanges; excerpts, descriptive listings,
+  truncated prose, and missing qualifications create citations but do not establish
+  eligibility; identifiers alone create neither;
 - complete conservative citation indexes for all results of an evaluation, including
-  replacements; IDs encountered without delivered content are not citations;
-- direct and transitive reconsideration warnings, multiple causes and visible paths,
-  unchanged artifacts and selection, no inference on disclosure, and no implicit
-  clearing by a later investigation;
-- A → B requires A in B's citations without flagging B for that correction; later
-  corrections of A still propagate, and an exempt path does not hide another cause;
+  replacements, unchanged by later dialogue trimming or summarization;
+- direct and transitive reconsideration warnings, multiple causes, unchanged
+  artifacts and selection, no inference on disclosure, and no implicit clearing
+  by a later investigation;
+- bounded cause presentation in human and JSON views and interpreter retrieval
+  over a graph with combinatorially many paths, with further detail accessible
+  without requiring full-path display or enumeration;
+- A → B requires A in B's citations; all results of the generating evaluation are
+  exempt from that cause, including the reporting root, composition children, other
+  replacements, and recursively accompanying corrections; an indirect citation
+  through Y citing A does not reintroduce that cause into exempt results;
+- later citers do not inherit a cause through exempt results but do inherit it
+  through other non-exempt citations; later corrections of A propagate independently;
 - correction-aware initial and retrieved context, exact originals plus replacements,
   chains and conflicting alternatives; actual delivery indexes include supplied
   replacement content, with bounded omissions explicit;
-- complete correction-context delivery exempts only the delivered correction causes
-  for new results; partial delivery and corrections arriving after delivery remain
+- complete correction-context delivery exempts new results from that specific cause,
+  including indirect paths; partial delivery and unseen later corrections remain
   unexempted, and earlier artifacts' warnings remain unchanged;
+- complete correction-context delivery for replacements with composition children,
+  and separate completeness and causes when a replacement is itself corrected;
+- revised-subject disclosure and reconsideration reporting do not duplicate a cause
+  in repeated follow-up displays; observations and structured inspection expose
+  citation indexes and per-correction delivery completeness for audit;
 
 - conflict acceptance without losing useful results, latest-accepted primary selection
   with conflict annotations, conflict overviews and complete inspection access;
