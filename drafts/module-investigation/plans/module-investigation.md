@@ -152,7 +152,7 @@ session. A future default of `summarize(project)` is outside this slice.
 Summarizing a root module does not implicitly request coverage of every subject
 in the project.
 
-### Retry and forced regeneration are out of scope
+### Correction scope and deferred retry controls
 
 Corrections are part of the progressive-investigation workflow being assessed.
 Repeated investigation can produce correction chains, conflicting replacements,
@@ -644,7 +644,7 @@ required. Configuration and help make the effect of enablement clear. With
 investigation disabled, existing mechanical commands remain usable without
 inference credentials. Enabled investigation with unsatisfied prerequisites
 fails preflight, even if the intended shell commands are mechanical. Check
-available prerequisites during project opening, before starting the shell, and
+prerequisites that can be checked during project opening, before starting the shell, and
 apply the same preflight to one-shot investigation. Report failures clearly enough
 for a human or assessment agent to distinguish configuration unavailability from
 runtime failure. Do not silently substitute mechanical-only output for a failed
@@ -948,6 +948,10 @@ Verify public boundaries and journeys, including:
 
 #### Results, references, and retention
 
+- mechanical lenses applied to investigram references report unsupported
+  subject/lens combinations without coercing the reference to a program entity or
+  invoking the investigator; `inspect(investigram)` remains supported;
+
 - broad summary investigrams, attributable mixed evidence, unsupported and ambiguous
   module selections, unknown/cross-session references, and preserved qualifications;
 - multi-level composition produced in one evaluation; follow-ups produce separate
@@ -1038,6 +1042,15 @@ Verify public boundaries and journeys, including:
   interpretive qualification, and unchanged historical projections;
 
 #### Execution, failure, usage, and regression checks
+
+- enabled investigation with unsatisfied prerequisites fails before the shell
+  starts, including when intended commands are mechanical; equivalent preflight
+  failure in one-shot use;
+- disabled investigation leaves mechanical commands usable without credentials;
+  configuration and help disclose enablement and repository-content transmission;
+- synthetic sentinel credentials never appear in observations, diagnostics, logs,
+  investigator context, or assessment artifacts across setup and execution success
+  and failure paths; run these checks without real credentials;
 
 - runaway containment across tool-triggered mechanical work and the dialogue loop,
   stopped outcomes, and documented in-flight cancellation limits;
