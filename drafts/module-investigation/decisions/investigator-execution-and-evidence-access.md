@@ -263,9 +263,8 @@ corrections. It therefore forgoes potentially useful unfinished interpretation;
 independently acquired mechanical evidence remains retainable under its own
 validity and qualification rules.
 
-A later local integration can
-implement the agent communication boundary while preserving the domain
-interpretation contract.
+A later local integration can implement the agent communication boundary while
+preserving the domain interpretation contract.
 
 Execution bounds constrain evaluation rather than changing the lens question.
 Context selection, explicit instructions, evidence supplied in context responses,

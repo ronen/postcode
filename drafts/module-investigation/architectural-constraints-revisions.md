@@ -2,7 +2,7 @@
 
 Add the following bullet under `Session references and retained information`:
 
-- When presenting references that will expire before they can be used as subjects of a subsequent request, make that limitation clear in the surrounding presentation. [[Reference lifetime disclosure](decisions/reference-lifetime-disclosure.md#decision)]
+- When presenting references that will expire before they can be used as subjects of a subsequent request, make that limitation clear in the surrounding presentation. [[Reference lifetime disclosure](decisions/reference-lifetime-disclosure.md)]
 
 Add the following constraint groups after `Session references and retained
 information` and before `Generated-output evidence boundary`. Existing constraints

@@ -492,7 +492,9 @@ reassessed.
 
 The accompanying [core concepts](../core-concepts.md) add Investigram and
 explicitly include investigrams among subjects, preserving Subject as a role rather
-than an entity kind. The [architectural constraints](../architectural-constraints.md)
+than an entity kind. They also extend Session reference stability to investigrams
+and Projection to cover redisplay with retained revisions. The
+[architectural constraints](../architectural-constraints.md)
 add stable investigram-reference, composition, provenance, and revision rules.
 Existing qualification and session decisions continue to govern. This record
 extends inspection without superseding an earlier headed decision. The
