@@ -33,6 +33,11 @@ outcome reuse, or establish a spending allowance. The initial slice
 exposes attempt and session usage; monetary estimation for formative assessment
 remains assessment tooling.
 
+Preserve usage as it becomes available independently of disposable investigation
+and session state. When interruption or invalidation ends the session, final
+reporting and observations include recorded attempt and session usage, with
+missing usage identified explicitly.
+
 ### Integrate interpretation with evaluation and qualified evidence access
 
 An **Investigator** is an AI agent that investigates a subject through a dialogue
@@ -75,8 +80,10 @@ investigram; only a successful outcome carries one.
 Classification reflects what actually ended the evaluation, including when
 optional repair is attempted.
 
-Interruption and session invalidation follow the existing termination rules and
-leave no reusable outcome for the interrupted evaluation.
+Interruption and invalidation end the session under the existing termination
+rules. Execution diagnostics and recorded usage remain available for final
+reporting and observations, without retaining a reusable outcome for the
+interrupted evaluation.
 
 Repeating a request returns its retained outcome without new investigation,
 displaying the result when present. If no reusable outcome is retained, the

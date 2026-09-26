@@ -818,6 +818,13 @@ choices; session totals remain available without issuing another investigation,
 including after a failed request and before shell exit. One-shot investigations
 expose their own usage.
 
+Preserve provider-reported usage as it becomes available, independently of
+disposable investigation and session state. Interruption or invalidation ends
+the session without erasing usage already recorded. Final reporting and
+observations include available attempt and session totals and identify calls
+whose usage was not obtained. The recording and reporting mechanisms remain
+implementation choices.
+
 Count actual provider calls once, including calls from unsuccessful
 investigations where usage was returned. Repeated display of retained outcomes
 does not add usage; attribute the original usage separately from any new work.
@@ -947,8 +954,9 @@ and replacements.
 
 Verify asynchronous coordination, active interruption ending the session,
 input invalidation, rejection of late results, observations, and attempt and
-session usage reporting end to end. Keep these tests credential-free and use
-synthetic provider-reported usage. The milestone review checks integration of
+session usage reporting end to end, including final usage reports and
+observations after interruption or invalidation. Keep these tests credential-free
+and use synthetic provider-reported usage. The milestone review checks integration of
 the domain lifecycle with the shell and session lifecycle.
 
 Drive these journeys through the in-process CLI entry point with injected input
@@ -1167,6 +1175,10 @@ Verify public boundaries and journeys, including:
   multiple model/category breakdowns, subset accounting, failed-attempt usage,
   missing usage disclosure, no double counting on redisplay, one-shot reporting,
   and totals available after communication failure without inference;
+- interruption and invalidation after earlier calls have reported usage, including
+  while a later call is in flight: final reporting and observations preserve the
+  earlier usage and session totals, mark unavailable usage explicitly, and retain
+  no late investigation result;
 - provider unavailability, failures, malformed output, exhausted bounds, usage
   unknown, acceptance of a single-operation result as a unit at the domain boundary,
   visible observation-delivery failure without invalidating a successfully
