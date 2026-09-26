@@ -153,11 +153,11 @@ in the project.
 
 ### Retry and forced regeneration are out of scope
 
-Explicit retry of retained investigation failures, partial results, and
+Explicit retry of retained investigation failures and
 limit-stop outcomes, and forced regeneration of successful results, are outside
 this slice. A request after communication failure follows ordinary selection
 without special retry behavior. Retry may be straightforward to invoke, but
-introduces outcome eligibility, partial-result reuse, attempt selection, and
+introduces outcome eligibility, retained-result reuse, attempt selection, and
 additional interaction and verification requirements. Its practical value in
 early use is not yet established. Forced regeneration likewise has no
 established need.
@@ -321,8 +321,8 @@ Repeating a summary or follow-up command displays its retained result, selecting
 explicit replacements in the displayed result, rather than invoking the
 interpreter again. On the first request, when no reusable result or retained
 investigation-failure outcome exists for that operation and target, the command
-runs the investigation. Repeated requests with a retained partial result or
-investigation-failure outcome show that outcome and any usable result; they do
+runs the investigation. Repeated requests with a retained execution-limit or
+investigation-failure outcome show that outcome and any accepted result; they do
 not silently retry. Availability of more context does not by itself authorize
 new generation.
 
@@ -345,7 +345,7 @@ unavailability are communication/service failures, even after earlier successful
 tool exchanges. Provider refusal and provider-reported output truncation are
 retained investigation outcomes. PostCode guard expiry is always a limit stop,
 including during a provider call. Communication failure discards unaccepted
-interpretation content rather than retaining a partial investigation result;
+interpretation content rather than retaining an investigation result;
 acquired mechanical results and evidence remain available under normal validity
 rules.
 
@@ -571,7 +571,7 @@ general provider registry or comparative benchmark as a prerequisite.
 Each new evaluation starts a fresh interpreter session; viewing retained results
 does not start one. PostCode supplies an initial request; the interpreter
 requests evidence or interpretation context; PostCode returns it; this dialogue
-repeats until a structured result or an execution limit. A fresh operation does
+continues until the result is assembled or execution ends. A fresh operation does
 not inherit an opaque conversation or hidden memory. The PostCode session
 retains evidence and results across operations. An interpreter's working
 conversation lives within one operation.
@@ -698,7 +698,8 @@ The guard is a usability backstop against uncontrolled continuation, not a
 spending budget or an attempt to optimize the amount of useful investigation.
 
 Reaching the guard produces an explicit stopped outcome with the reason and any
-usable validated partial results. Cancellation coverage and delays in
+assembled result that passes validation. No extra interpreter turn beyond the
+guard is required to finish that result. Cancellation coverage and delays in
 interrupting in-flight provider or mechanical work are disclosed; the guard does
 not guarantee immediate termination or a monetary ceiling. It applies to hosted
 and future local inference alike. Bounds constrain execution, not the lens
@@ -713,27 +714,37 @@ provider/model fallback is required.
 
 ### Outcomes and result acceptance
 
-The outcome distinguishes stopping with sufficient support for the requested
-account, stopping because further investigation appears unlikely to be useful,
-and stopping because an execution limit is reached. The first two are
-interpretive assessments, not proofs of completeness; the last is an execution
-constraint. A reported stopping reason does not erase material gaps in the
-returned account.
+Execution outcomes distinguish a valid result, an execution limit, unavailable
+tools, communication/service failure, and invalid output under the failure policy
+above. Investigation coverage and the interpreter's judgment about whether further
+work would be useful are expressed in prose, not a completion flag or structured
+interpretive stopping reason. A limited investigation can yield an ordinary valid
+result. Completed generation is not proof of exhaustive investigation or correct
+interpretation.
 
-A limit, unavailable tool, provider failure, malformed result, invalid
-reference, and lack of useful new findings have distinct outcomes. Do not
-publish streaming fragments or invalid references as established investigons. A
-validated, explicitly partial result may be retained with its outcome; malformed
-output produces no accepted interpretation result. Already captured evidence and
-earlier results remain usable when the session itself remains valid. Completed
-generation is not proof of exhaustive investigation or correct interpretation.
+Epistemological qualifications remain separately identifiable and attributable to
+the accounts they qualify. Their wording may be free-form; PostCode preserves and
+exposes their association without mechanically interpreting their meaning.
+Coverage limitations belong in those qualifications when they materially affect
+how a claim should be understood.
+
+Result delivery and assembly are dialogue-protocol choices: content can arrive in
+one response or across multiple exchanges. At a guard stop, accept an already
+assembled result only if it meets the entire result contract and passes validation;
+otherwise retain the stopped outcome without an investigon. Do not accept fragments
+or incomplete structures as investigons. Communication failure still discards
+unaccepted interpretation content under its separate failure policy. Already
+captured evidence and earlier accepted results remain usable when the session
+itself remains valid.
 
 The result of a single interpretation operation consists of a root investigon,
 its subordinate investigons, and any accompanying corrections carried by
 investigons in the result, including their replacement investigons and
 composition trees. Accept this entire result as a unit at the domain
 interpretation boundary, only after validation succeeds. Corrections take effect
-on acceptance, independently of display. Validation checks identity, reference
+on acceptance, independently of display. Atomic acceptance does not require
+atomic delivery; individual dialogue exchanges do not independently retain
+investigons or apply corrections. Validation checks identity, reference
 existence, permitted relationships, qualifications, and revision targets
 predating this result. Conflicting corrections are valid retained content, not
 structural validation failures. Validation does not establish the prose's truth.
@@ -894,7 +905,7 @@ Verify public boundaries and journeys, including:
   references, retain their bindings;
 - stable CLI selection of roots and subordinate investigons after session growth, changed
   display order, and revision; repeat-display with no model calls; exact historical
-  inspection; retained investigation failure/partiality on repetition and documented
+  inspection; retained investigation failure/limit stops on repetition and documented
   restart recovery; communication-failure null results, closed interpreter sessions,
   preserved diagnostics, rejection of late responses, and ordinary subsequent
   requests in the same shell without repeat detection;
@@ -990,9 +1001,12 @@ Verify public boundaries and journeys, including:
   no inference during inspection;
 - input change during asynchronous work, new evidence acquisition, excluded output,
   interruption, and rejection of late results;
-- preserved stopping reasons and material limitations for sufficient-account,
-  low-expected-value, and execution-limit outcomes, without treating model-reported
-  sufficiency as mechanical completeness;
+- result assembly from dialogue exchanges and atomic acceptance without retaining
+  individual fragments or applying their corrections; guard stops with and without
+  an assembled valid result, with no required interpreter turn beyond the guard;
+- execution outcomes distinguished from prose describing investigation coverage;
+  attributable epistemological qualifications preserved in views and subsequent
+  interpreter context, without a structured completeness classification;
 - retained existing mechanical CLI behavior, type checks, and the full relevant
   test suite. Do not assert exact wording from live generative results.
 

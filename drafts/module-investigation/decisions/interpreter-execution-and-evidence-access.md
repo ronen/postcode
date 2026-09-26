@@ -81,7 +81,7 @@ limiting when supported and reporting uncertainty when the precise restriction
 is unclear.
 
 Communication failure discards the dialogue's unaccepted interpretation content;
-it does not retain a partial investigation result that would block later
+it does not retain an investigation result that would block later
 selection. Qualified mechanical results and evidence acquired through tools
 remain available under the normal session-validity rules.
 
@@ -154,9 +154,18 @@ including any bounded repair turns. Delivery during the evaluation and delivery
 during that dialogue refer to the same exposure history. Reading retained
 results does not invoke the interpreter. PostCode provides the objective and
 initial context, the interpreter requests additional context or source, and
-PostCode returns it. Request and response repeat until a structured result or an
-execution limit. Conversation can accumulate within the operation; opaque
+PostCode returns it. Request and response continue until the result is assembled
+or execution ends. Conversation can accumulate within the operation; opaque
 conversational memory does not carry over to the next operation.
+
+The result contract applies to the assembled dialogue result, not necessarily one
+final response. Delivery may span exchanges; validation and acceptance remain
+atomic. An execution-limit stop may retain an already assembled valid result,
+but incomplete structures and fragments are not investigons, and no extra turn
+beyond the guard is required. The interpreter describes investigation coverage in
+prose; epistemological qualifications remain separately identifiable and
+attributable. Neither requires a structured completeness or interpretive
+stopping-reason classification.
 
 The minimum initial request supplies the operation and module reference for a
 summary, or the selected investigon's prose, referent information, and context

@@ -9,14 +9,14 @@ Added: 2026-09-24
 Origin: module investigation planning discussion
 Area: investigation execution and recovery
 
-Module investigation retains investigation-failure, partial-result, and
+Module investigation retains investigation-failure and
 execution-limit outcomes; repeating a command displays those outcomes rather than
 invoking the interpreter again. Communication/service failures leave no reusable
 result, so later requests already proceed through ordinary selection in the same
 shell. This candidate concerns explicit retry of retained outcomes, whose current
 recovery requires restarting the shell and losing accumulated investigation context.
 Consider supporting that retry if formative use establishes its value. Define
-which outcomes qualify, how retained evidence and partial results are used, and
+which outcomes qualify, how retained evidence and accepted results are used, and
 which attempt is displayed afterward. Preserve earlier outcomes and qualification;
 a retry does not itself establish that earlier claims are superseded. This concerns
 interpretation requests, not a change to existing mechanical-analysis retry rules.
