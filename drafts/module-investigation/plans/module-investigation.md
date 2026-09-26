@@ -1386,6 +1386,17 @@ earlier results in the same session. Exercise production command parsing,
 session handling, dialogue coordination, validation, retention, and presentation.
 The harness leaves normal CLI input behavior unchanged.
 
+For live sequences, the implementing agent selects follow-up targets and
+operations from captured views to exercise the prescribed assessment objectives.
+Controlled correction cases use their designated target. Record each selection
+and its rationale, and identify adaptive target selection as a limitation of the
+formative findings. Selection remains separate from the clean comprehension
+evaluators' assessment of captured views.
+
+The harness supports incremental command submission while keeping the same
+PostCode session alive across the implementing agent's inspections and choices.
+The control mechanism is an implementation choice.
+
 For live controlled correction cases, use the investigator double to produce the
 earlier misinterpretation through ordinary submission, validation, and retention.
 Use the live investigator for subsequent evaluations in that same session.
@@ -1393,6 +1404,8 @@ Provide internal dependency injection at the agent communication boundary so
 the harness can select scripted or live investigation for each evaluation.
 The injection mechanism is a test/assessment dependency, not a public command or
 normal configuration option. Its implementation remains delegated.
+The injection route must reach the investigator through the production session
+execution path, wherever the session executes.
 
 Identify injected interpretations in views, observations, and assessment records
 through attributable test-origin metadata. Preserve the distinction between
