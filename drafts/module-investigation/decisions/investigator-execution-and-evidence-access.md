@@ -35,8 +35,8 @@ remains assessment tooling.
 
 ### Integrate interpretation with evaluation and qualified evidence access
 
-An **Investigator** investigates a subject through a dialogue with PostCode and
-submits an interpretation for validation. PostCode supplies context and handles
+An **Investigator** is an AI agent that investigates a subject through a dialogue
+with PostCode and submits an interpretation for validation. PostCode supplies context and handles
 the investigator's evidence requests through its qualified evidence interfaces.
 The role serves summary, explain, decompose, and examine. The inference model and
 provider are integration choices behind this role.
