@@ -265,17 +265,17 @@ agent conversation would hide selection and revision assumptions. A bounded
 per-operation dialogue supports selective acquisition without either
 restriction.
 
-The implementing agent selects the concrete hosted integration and initial
-settings; a universal provider framework and local-model comparison are
-unnecessary. The user's Ollama trial of qwen3.6:27b on the development machine
-was reported too slow for practical use; that observation does not establish
+The implementing agent selects the concrete hosted integration, initial
+settings, and practical execution bounds; a universal provider framework and
+local-model comparison are unnecessary. The user's Ollama trial of qwen3.6:27b
+on the development machine was reported too slow for practical use; that
+observation does not establish
 performance of other local configurations. A later local integration can
 implement the agent communication boundary while preserving the domain
 interpretation contract.
 
-The plan specifies the initial integration and practical bounds. Execution bounds
-constrain evaluation rather than changing the lens question. Context selection,
-explicit instructions, evidence supplied in context responses,
+Execution bounds constrain evaluation rather than changing the lens question.
+Context selection, explicit instructions, evidence supplied in context responses,
 model/configuration, and generated results remain attributable without requiring
 access to model-private reasoning. Normal session invalidation and generated-output boundaries continue
 to apply.

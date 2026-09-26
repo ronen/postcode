@@ -501,7 +501,7 @@ extends inspection without superseding an earlier headed decision. The
 establishes qualified inspection and initial module support, rather than an
 exhaustive set of subject kinds or related information. Explicit subject
 associations preserve its selected-subject meaning. They also respect the
-[qualified-inspection requirement](../../../docs/decisions/initial-module-inventory-decisions.md#make-references-repeatable-but-snapshot-scoped)
+[qualified-inspection requirement](../../../docs/decisions/transient-analysis-sessions.md#retained-domain-and-storage-boundaries)
 that inspection returns selected subjects and applicable Claim context rather
 than arbitrary store records. The
 [standard-expansion decision](../../../docs/decisions/subject-kind-standard-expansion-decision.md#define-standard-expansions-for-kinds-of-subject)
