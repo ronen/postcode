@@ -667,10 +667,13 @@ credential values out of agent-visible commands, output, prompts, logs, and
 assessment artifacts. Report authentication availability and failures without
 exposing secrets.
 
-The implementing agent documents the selected provider, credential mechanism,
-supported platforms, setup steps, and access guarantees and limitations, then
-pauses for the human to
-configure access before live inference or assessment. Provider-specific storage
+At the credential-setup handoff, the implementing agent presents the selected
+provider, invocation and repository-content transmission route, added dependencies,
+and rationale for those choices, together with the credential mechanism, supported
+platforms, setup steps, and access guarantees and limitations. The human sees this
+concrete integration before configuring access for live inference or assessment.
+Integration selection remains delegated; this uses the existing credential-setup
+pause rather than a separate selection-approval gate. Provider-specific storage
 and authentication details remain implementation choices. Document expiration,
 revocation, and any refresh requirements; credential storage alone does not
 remove those concerns. Subsequent assessment runs use the configured mechanism
