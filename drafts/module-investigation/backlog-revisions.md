@@ -3,6 +3,39 @@
 Add the following entries under `Candidates` when the module investigation package
 is promoted.
 
+## Assess reference-lifetime disclosure in existing views
+
+Added: 2026-09-26
+Origin: module investigation review and reference-lifetime disclosure decision
+Area: presentation and session references
+
+Assess views introduced by earlier slices against the
+[reference-lifetime disclosure requirement](decisions/investigrams-and-progressive-investigation.md#disclose-reference-expiry-before-follow-up-use):
+when references expire before they can be used as subjects of a subsequent
+request, their surrounding presentation must make that limitation clear.
+Check one-shot output in particular and bring nonconforming presentations into
+conformance. A shared notice can cover affected references; ordinary follow-up
+references in a continuing session need no repeated caveats.
+
+The earlier implemented slices to assess are:
+
+- [Initial module inventory](plans/initial-module-inventory-plan.md): module lists,
+  module inspection, exports, and forwarding relationships.
+- [Repository organization](plans/repository-organization-plan.md): repository
+  and project organization views, group inspection, and membership references.
+- [Module dependencies](plans/module-dependencies-plan.md): dependency overview,
+  direct dependencies and dependents, and references in supporting source detail.
+- [Transient interactive session shell](plans/transient-session-shell.md): shared
+  presentation and help for one-shot commands versus continuing shell sessions.
+
+Cover human and JSON output, including ambiguous-selection results, as these
+views currently behave after the shell integration.
+
+Conformance is currently unknown. The potential impact is confusion about which
+displayed references support further navigation, rather than a change to
+reference binding or the underlying program claims. This is a deferred usability
+assessment, not a prerequisite for the module investigation slice.
+
 ## Retry failed or incomplete interpretation without restarting the session
 
 Added: 2026-09-24

@@ -1,7 +1,11 @@
 # Proposed revisions to docs/architectural-constraints.md
 
+Add the following bullet under `Session references and retained information`:
+
+- When presenting references that will expire before they can be used as subjects of a subsequent request, make that limitation clear in the surrounding presentation. [[Reference lifetime disclosure](decisions/investigrams-and-progressive-investigation.md#disclose-reference-expiry-before-follow-up-use)]
+
 Add the following constraint groups after `Session references and retained
-information` and before `Generated-output evidence boundary`. Existing groups
+information` and before `Generated-output evidence boundary`. Existing constraints
 are unchanged.
 
 ## Retained interpretation

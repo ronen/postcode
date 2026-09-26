@@ -179,8 +179,9 @@ backlog entries are candidates, not commitments or prerequisites for this slice.
 ## Architectural basis
 
 [Investigrams and progressive investigation](../decisions/investigrams-and-progressive-investigation.md)
-establishes the investigram, lens focus, subject associations, composition,
-investigation provenance, and revisions.
+establishes the investigram, lens focus, subject associations,
+[reference-lifetime disclosure](../decisions/investigrams-and-progressive-investigation.md#disclose-reference-expiry-before-follow-up-use),
+composition, investigation provenance, and revisions.
 [Investigator execution and evidence access](../decisions/investigator-execution-and-evidence-access.md)
 establishes evaluation integration, fresh per-operation dialogues, access
 boundaries, failure outcomes, and usage attribution.
@@ -912,6 +913,9 @@ retention, with scripted evidence requests and submissions at that boundary.
 Retain the double as reusable test infrastructure. Run shared contract checks
 against both implementations where feasible, using representative provider
 responses to exercise the real adapter without live inference.
+Before retaining captured provider responses as test fixtures, remove credential
+values and account identifiers, and retain third-party source content only as
+permitted by its license.
 
 Live inference requires credentials and consumes limited provider usage, so
 routine tests remain credential-free. Exercise the real investigator in the

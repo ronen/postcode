@@ -21,23 +21,6 @@ separate storage pipeline or committing to a particular inference provider.
 
 ## Decisions
 
-### Attribute usage to execution independently of interpretation retention
-
-Provider-reported usage belongs to actual execution attempts, including
-unsuccessful ones, independently of whether an interpretation result is
-retained. Displaying a retained outcome adds no inference usage. Session totals
-aggregate each reported call once with model, units, and category relationships
-preserved. Missing usage remains explicit, and totals are not asserted to be
-complete billed usage. Usage reporting does not invoke inference, affect
-outcome reuse, or establish a spending allowance. The initial slice
-exposes attempt and session usage; monetary estimation for formative assessment
-remains assessment tooling.
-
-Preserve usage as it becomes available independently of disposable investigation
-and session state. When interruption or invalidation ends the session, final
-reporting and observations include recorded attempt and session usage, with
-missing usage identified explicitly.
-
 ### Integrate interpretation with evaluation and qualified evidence access
 
 An **Investigator** is an AI agent that investigates a subject through a dialogue
@@ -282,7 +265,7 @@ validity and qualification rules.
 
 The implementing agent selects the concrete hosted integration, initial
 settings, and practical execution bounds; a universal provider framework and
-local-model comparison are unnecessary. The user's Ollama trial of qwen3.6:27b
+local-model comparison are unnecessary. The human's Ollama trial of qwen3.6:27b
 on the development machine was reported too slow for practical use; that
 observation does not establish
 performance of other local configurations. A later local integration can
@@ -337,6 +320,23 @@ establish intent to transmit repository content. A mechanical-only fallback
 would silently change the requested operation. These alternatives are rejected;
 credential storage and transport mechanisms remain implementation choices
 subject to the exclusion and disclosure requirements above.
+
+### Attribute usage to execution independently of interpretation retention
+
+Provider-reported usage belongs to actual execution attempts, including
+unsuccessful ones, independently of whether an interpretation result is
+retained. Displaying a retained outcome adds no inference usage. Session totals
+aggregate each reported call once with model, units, and category relationships
+preserved. Missing usage remains explicit, and totals are not asserted to be
+complete billed usage. Usage reporting does not invoke inference, affect
+outcome reuse, or establish a spending allowance. The initial slice
+exposes attempt and session usage; monetary estimation for formative assessment
+remains assessment tooling.
+
+Preserve usage as it becomes available independently of disposable investigation
+and session state. When interruption or invalidation ends the session, final
+reporting and observations include recorded attempt and session usage, with
+missing usage identified explicitly.
 
 ## Governing impact and promotion
 

@@ -3,7 +3,7 @@
 Status: in review
 Decided: [needs-review — set adoption date at promotion]
 Arising from: [Module investigation](../plans/module-investigation.md)
-Scope: retained interpretation, lens focus, subject associations, composition, investigation provenance, and corrections
+Scope: retained interpretation, lens focus, subject associations, reference lifetime disclosure, composition, investigation provenance, and corrections
 
 ## Context
 
@@ -217,6 +217,29 @@ selection, qualifications, and no-inference behavior. Session-dependent
 association selection is part of the declared inspection question; unrelated
 accumulated work still does not broaden the view. No general change to Property,
 Session, or mechanical determinism is made by this decision.
+
+### Disclose reference expiry before follow-up use
+
+When presenting references that will expire before they can be used as subjects
+of a subsequent request, make that limitation clear in the surrounding
+presentation. This applies to references generally, including entities and
+investigrams. A shared notice can cover the affected references.
+
+#### Rationale, alternatives, and consequences
+
+Displayed references can suggest a route to further inspection even when their
+session ends with the operation producing the view. Disclosure preserves their
+usefulness for connecting items within the output without implying later
+resolvability. Suppressing references would lose those connections; caveating
+every reference in an active session would add noise where follow-up remains
+available.
+
+Conformance of views from earlier slices has not been assessed. Defer that
+assessment and any needed presentation changes to the
+[reference-lifetime backlog entry](../backlog.md#assess-reference-lifetime-disclosure-in-existing-views).
+The potential impact is misleading navigation guidance; this disclosure rule
+does not change reference binding or program-claim semantics. Assessment can
+therefore follow separately from this slice.
 
 ### Distinguish fixed composition from investigation provenance
 
@@ -494,7 +517,8 @@ reassessed.
 The accompanying [core concepts](../core-concepts.md) add Investigram and
 explicitly include investigrams among subjects, preserving Subject as a role rather
 than an entity kind. The [architectural constraints](../architectural-constraints.md)
-add stable investigram-reference, composition, provenance, and revision rules.
+add general reference-lifetime disclosure and stable investigram-reference,
+composition, provenance, and revision rules.
 Existing qualification and session decisions continue to govern. This record
 extends inspection without superseding an earlier headed decision. The
 [initial inspection decision](../../../docs/decisions/initial-module-inventory-decisions.md#begin-with-a-typescript-module-inventory)
