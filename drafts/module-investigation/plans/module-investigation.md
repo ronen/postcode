@@ -1150,10 +1150,11 @@ interpretations.
 
 #### Clean-agent comprehension exercise
 
-Supply captured user-facing results to fresh evaluator agents using consistent
-structured questions, following the approach established by the [module
-inventory
-exercise](../../../records/validation/initial-module-inventory-questions.md).
+The implementing agent orchestrates fresh evaluator subagents using its available
+agent tools, supplying captured user-facing views and consistent structured
+questions. Follow the approach established by the [module inventory
+exercise](../../../records/validation/initial-module-inventory-questions.md) and
+[module organization assessment](../../../records/tasks/2026-09-15-module-organization.md#bounded-instrument-validation).
 Evaluators have no implementation-task or investigator conversation history and
 use only the supplied views, including any explicitly supplied
 evidence-inspection view. They do not independently read source, repository
@@ -1248,14 +1249,10 @@ or failed sessions, alongside its investigation-attempt records. Produce a final
 report of PostCode's API session costs across repetitions and milestones, with
 per-session breakdowns.
 
-Evaluator activity is expected to use the human's GPT subscription. Record the
-actual invocation route for reference preparation, comprehension evaluation, and
-source-informed assessment, and report their available usage separately from
-PostCode sessions. Do not apply API token prices to subscription-covered
-activity or include it in the session-cost total. If an assessment stage instead
-uses a separately billed API, identify and report that cost separately.
-Unavailable subscription usage or monetary attribution remains explicit, not a
-zero-cost claim.
+Report available usage for reference preparation, comprehension evaluation, and
+source-informed assessment separately from PostCode sessions. Keep any known
+assessment costs separate from the PostCode session-cost total. Unavailable usage
+or monetary attribution remains explicit rather than being reported as zero.
 
 Calculate estimated API cost from reported usage and the applicable published
 rates, recording the pricing source, retrieval date, model, service tier,
