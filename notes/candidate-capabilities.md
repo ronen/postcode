@@ -4,6 +4,80 @@ This non-governing inventory keeps possible future analyses, lenses, presentatio
 
 The [backlog](../docs/backlog.md) records broader worthwhile work and concerns; this inventory gives exploratory product capabilities room to retain their questions, evidence distinctions, and open alternatives. Inclusion here assigns no priority. Any selected capability still needs the applicable planning, decision, and task authorization before implementation.
 
+## Investigation across changing repository states
+
+PostCode could continue an investigation as the repository or worktree changes,
+showing which earlier findings remain applicable and which need reconsideration.
+When an input changes, analyses that depended on it need reconsideration before
+their results can be treated as accounts of the new state. That status could
+propagate through results derived from those analyses. The existing mechanism
+that marks interpretations for reconsideration after a cited account is
+corrected offers a related pattern, but its citation links do not establish
+which analyses depended on an input. A changed input is not itself a correction
+of a prior result, which can remain valid for the state it analyzed.
+
+This would require a qualified relationship between program states, captured
+inputs, and subjects across those states, plus a policy for new analysis and
+earlier results. Distinguish a result about the old state, a result known to be
+affected by a change, and a result whose continued applicability has not been
+established. The current session instead assumes unchanged relevant inputs and
+invalidates on detected change. Open questions include change detection,
+dependency tracking (including negative lookups and configuration), subject
+correspondence, selective re-evaluation, and whether continuity belongs within
+one session or across sessions.
+
+## Visual and structured qualification
+
+A graphical interface could use a consistent visual vocabulary for
+epistemological qualifications, such as badges or symbols for mechanically
+derived results, recorded assertions, observations, and interpretations, with
+additional signals for scope, partiality, and limitations. The aim is to make
+important distinctions legible at a glance without repeating explanatory prose
+beside every result. Visual marks would still need accessible names and a way
+to inspect their precise meaning, evidence, and exceptions; one icon cannot
+stand for all dimensions of a claim's qualification.
+
+Explore whether investigators should report some qualifications using a small,
+well-defined set of fields or categories in addition to prose. Such a vocabulary
+could support consistent display, filtering, and validation. Possible dimensions
+include which evidence sources were examined, how deeply an investigator
+followed relevant relationships, whether behavior was observed in executions,
+and how much of a defined population was covered. Depth and coverage may admit
+grades; evidence kinds need not form a stronger-to-weaker order. A graphical
+view might show these dimensions with compact marks or gauges, provided their
+meaning includes method and scope rather than implying a single overall strength.
+
+The useful dimensions and grades need investigation. A name alone can support a
+claim about the name but little about behavior; examining code and documentation
+can support an interpretation without establishing that it is correct; executing
+the program establishes observations about those runs, not complete knowledge of
+all behavior. Likewise, "one level deep" depends on which relationships were
+followed, and "the entire codebase" requires a defined, demonstrably covered
+population. A generic 1–10 confidence score used as the sole qualification
+would collapse these distinctions.
+
+A graded self-reported confidence score could still be useful as its own
+dimension: it would say how confident the investigator is in its interpretation,
+not how much evidence was examined or what guarantee that evidence supplies.
+Its scale, calibration, and presentation would need testing; a high score would
+not strengthen what the evidence and method establish.
+
+For mechanical analyses, some method-specific grades can be defined before
+formative use: for example, whether a declared population was completely
+processed, whether a relationship was resolved, or whether an evaluation
+materialized fully or partially. These report distinct properties, not one
+universal strength ranking. A provider contract could report grades intrinsic
+to its method; a higher-level summary analysis could derive grades that combine
+qualified results or assess coverage for a particular question. A summary's
+grade would need its own method and qualification and could not silently turn
+provider results into a stronger guarantee. Which grades belong at either
+boundary remains open.
+
+Formative use of qualified views and investigator reports can show which
+distinctions people find informative, confusing, or missing, and guide any
+broader categories, subjective-confidence scale, or visual marks. There is no
+need to settle a universal vocabulary or iconography in advance.
+
 ## Explorative dependency landscape
 
 A dependency-landscape lens could show how organizational regions depend on one
