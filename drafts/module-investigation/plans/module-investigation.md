@@ -502,46 +502,49 @@ Original and replacement subjects identify distinct retained requests.
 ### Citation indexes and needs reconsideration
 
 Implement the [citation and reconsideration contract](../decisions/investigons-and-progressive-investigation.md#record-citation-exposure-and-derive-reconsideration-status).
-Construct citation indexes from actual delivered investigon context, conservatively
-shared across results of an evaluation. Any substantive content, including excerpts
-and descriptive listings, creates a citation; identifiers alone do not. Correction
-eligibility requires complete retained prose, referent information, and
-qualifications, with no omitted or truncated elements. Delivery can accumulate
-across exchanges. Retrieval may extend beyond the selected subject's composition
-or provenance chain.
+Construct citation indexes from actual delivered investigon context,
+conservatively shared across results of an evaluation. Any substantive content,
+including excerpts and descriptive listings, creates a citation; identifiers
+alone do not. Correction eligibility requires complete retained prose, referent
+information, and qualifications, with no omitted or truncated elements. Delivery
+can accumulate across exchanges. Retrieval may extend beyond the selected
+subject's composition or provenance chain.
 
 Delivery means exposure at any point in the evaluation, even if context is later
 trimmed or summarized. It does not guarantee continued internal retention or
 comprehension. Preservation or re-supply during PostCode-managed trimming is an
 implementation choice.
 
-Derive "needs reconsideration" through direct and transitive citations when context
-is corrected. Display the warning without suppressing the account. Preserve the
-causal graph and expose causes within bounds in inspection and interpreter
-retrieval, with access to further detail. No full-path presentation or enumeration
-is required. Revised-subject disclosure presents the same reconsideration cause,
-when applicable, rather than a duplicate warning. Keep citation indexes and
-original content immutable. Warnings do not trigger regeneration or change exact
-selection. This slice has no clearing operation; [explicit reconsideration](../backlog.md#reconsider-investigons-after-context-corrections)
+Derive "needs reconsideration" through direct and transitive citations when
+context is corrected. Display the warning without suppressing the account.
+Preserve the causal graph and expose causes within bounds in inspection and
+interpreter retrieval, with access to further detail. No full-path presentation
+or enumeration is required. Revised-subject disclosure presents the same
+reconsideration cause, when applicable, rather than a duplicate warning. Keep
+citation indexes and original content immutable. Warnings do not trigger
+regeneration or change exact selection. This slice has no clearing operation;
+[explicit
+reconsideration](../backlog.md#reconsider-investigons-after-context-corrections)
 is deferred. Another investigation does not silently clear an earlier account.
 
-If B corrects A, B's citation index necessarily includes A. Exempt every investigon
-produced by an evaluation from each correction cause that evaluation produced or
-received in full. For each cause, a non-exempt investigon needs reconsideration if
-it cites the target or an investigon needing reconsideration for that cause.
-Exemption applies at the investigon on every path; later citers can still inherit
-the cause through other, non-exempt citations. Other correction causes remain
-independent, and earlier artifacts' warnings are not cleared.
+If B corrects A, B's citation index necessarily includes A. Exempt every
+investigon produced by an evaluation from each correction cause that evaluation
+produced or received in full. For each cause, a non-exempt investigon needs
+reconsideration if it cites the target or an investigon needing reconsideration
+for that cause. Exemption applies at the investigon on every path; later citers
+can still inherit the cause through other, non-exempt citations. Other
+correction causes remain independent, and earlier artifacts' warnings are not
+cleared.
 
-When supplying corrected investigons, provide the exact requested artifact together
-with correction notices, replacement accounts, reasons, chains, and conflicting
-alternatives. Record actual delivery and disclose omissions. Record complete
-correction-context delivery per correction identity: both the target's and
-replacement's own prose, referent information, and qualifications, plus correction reasons and
-qualifications. Their subordinate composition trees are not required for
-completeness. A subsequent correction of the replacement is a separate cause;
-it does not invalidate completeness for the earlier correction. Partial delivery
-does not qualify for exemption.
+When supplying corrected investigons, provide the exact requested artifact
+together with correction notices, replacement accounts, reasons, chains, and
+conflicting alternatives. Record actual delivery and disclose omissions. Record
+complete correction-context delivery per correction identity: both the target's
+and replacement's own prose, referent information, and qualifications, plus
+correction reasons and qualifications. Their subordinate composition trees are
+not required for completeness. A subsequent correction of the replacement is a
+separate cause; it does not invalidate completeness for the earlier correction.
+Partial delivery does not qualify for exemption.
 
 ## Interpreter execution and evidence access
 

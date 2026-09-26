@@ -384,103 +384,110 @@ guarantee detection of every inconsistency or correctness of a revision.
 
 Each investigon has a citation index of prior investigons delivered to the
 interpreter during its generating evaluation. PostCode constructs it from actual
-context delivery, including initial context and traversal or association retrieval.
-All investigons produced by that evaluation share its conservative exposure index;
-shared storage is permitted. A citation records exposure, not endorsement, proven
-reliance, or independent corroboration. Merely discovering an identifier without
-receiving investigon content does not constitute a citation. Any substantive content
-from an investigon, including an excerpt or descriptive listing, creates a citation.
-Correction eligibility requires its complete retained prose, referent information,
-and qualifications; truncation or omission of any of these is insufficient.
-Delivery may accumulate across exchanges in the same dialogue.
+context delivery, including initial context and traversal or association
+retrieval. All investigons produced by that evaluation share its conservative
+exposure index; shared storage is permitted. A citation records exposure, not
+endorsement, proven reliance, or independent corroboration. Merely discovering
+an identifier without receiving investigon content does not constitute a
+citation. Any substantive content from an investigon, including an excerpt or
+descriptive listing, creates a citation. Correction eligibility requires its
+complete retained prose, referent information, and qualifications; truncation or
+omission of any of these is insufficient. Delivery may accumulate across
+exchanges in the same dialogue.
 
-Delivery means exposure at any point during the current evaluation. Later context
-trimming or summarization does not erase citations or revoke delivery-based
-eligibility or exemptions. PostCode records what it supplies, not the interpreter's
-internal retention. Delivery guarantees neither continued availability nor
-comprehension; preservation or re-supply during PostCode-managed trimming remains
-an implementation choice.
+Delivery means exposure at any point during the current evaluation. Later
+context trimming or summarization does not erase citations or revoke
+delivery-based eligibility or exemptions. PostCode records what it supplies, not
+the interpreter's internal retention. Delivery guarantees neither continued
+availability nor comprehension; preservation or re-supply during
+PostCode-managed trimming remains an implementation choice.
 
 If B corrects A, A necessarily occurs in B's citation index, since correcting an
 account requires receiving it first. Do not remove correction targets from the
 index to suppress warnings.
 
-When delivering an investigon that has been corrected, PostCode supplies the exact
-requested artifact together with an explicit correction notice, the replacement
-accounts and correction reasons, and the applicable correction chain and conflicting
-alternatives. This applies to initial context as well as subsequent retrieval.
-Preserve exact identities; do not silently redirect the request to the primary
-replacement. Replacement content actually delivered also enters the citation index.
-If bounds prevent full delivery, disclose the omitted content and permit further
-retrieval within the operation's limits. A notice or reference alone does not count
-as delivery of the corresponding account or complete correction context.
-Excerpt and descriptive-listing delivery follows the same bounds rule: include
-at least a correction notice and replacement references, disclose omitted
-correction context, and permit further retrieval. Such exposure creates a citation
-but does not by itself establish complete correction-context delivery.
+When delivering an investigon that has been corrected, PostCode supplies the
+exact requested artifact together with an explicit correction notice, the
+replacement accounts and correction reasons, and the applicable correction chain
+and conflicting alternatives. This applies to initial context as well as
+subsequent retrieval. Preserve exact identities; do not silently redirect the
+request to the primary replacement. Replacement content actually delivered also
+enters the citation index. If bounds prevent full delivery, disclose the omitted
+content and permit further retrieval within the operation's limits. A notice or
+reference alone does not count as delivery of the corresponding account or
+complete correction context. Excerpt and descriptive-listing delivery follows
+the same bounds rule: include at least a correction notice and replacement
+references, disclose omitted correction context, and permit further retrieval.
+Such exposure creates a citation but does not by itself establish complete
+correction-context delivery.
 
-Retain the identities of corrections for which both the target's and replacement's
-own prose, referent information, and qualifications, together with the correction
-reasons and qualifications, were fully delivered during the dialogue. Complete delivery
-does not require the target or replacement's subordinate composition tree. A later
-correction of the replacement is a separate cause and does not make delivery of
-the earlier correction incomplete. Record completeness per correction so later
-session changes cannot retrospectively make unseen corrections appear known.
-This records exposure, not comprehension or agreement, and does not require
-interpreter-reported acknowledgment.
+Retain the identities of corrections for which both the target's and
+replacement's own prose, referent information, and qualifications, together with
+the correction reasons and qualifications, were fully delivered during the
+dialogue. Complete delivery does not require the target or replacement's
+subordinate composition tree. A later correction of the replacement is a
+separate cause and does not make delivery of the earlier correction incomplete.
+Record completeness per correction so later session changes cannot
+retrospectively make unseen corrections appear known. This records exposure, not
+comprehension or agreement, and does not require interpreter-reported
+acknowledgment.
 
 "Needs reconsideration" is a derived, session-scoped property of an investigon.
-When a cited investigon is corrected, expose that status on the citing investigon
-and propagate it transitively through citation indexes, subject to the exemptions
-below. Preserve the causal graph and distinguish multiple outstanding causes.
-Present causes within bounds, with access to further detail; no enumeration or
-display of complete paths is required. Presentation may identify proximal affected
-citations, corrected originals, or other useful portions of the graph. Composition
-and investigation provenance alone do not establish a citation or propagate this status. The artifact
-and its citation index remain immutable; session-derived claims express its current
+When a cited investigon is corrected, expose that status on the citing
+investigon and propagate it transitively through citation indexes, subject to
+the exemptions below. Preserve the causal graph and distinguish multiple
+outstanding causes. Present causes within bounds, with access to further detail;
+no enumeration or display of complete paths is required. Presentation may
+identify proximal affected citations, corrected originals, or other useful
+portions of the graph. Composition and investigation provenance alone do not
+establish a citation or propagate this status. The artifact and its citation
+index remain immutable; session-derived claims express its current
 reconsideration status.
 
 Display the qualification on affected accounts and expose its causes through
-inspection and interpreter context retrieval. It means that an account used context
-that has been corrected, directly or through earlier interpretations, and has not
-been reassessed against that change. It does not assert that the account is wrong,
-remove it from use, invalidate the session, or trigger new inference. Existing
-replacement selection and exact-reference behavior remain unchanged.
+inspection and interpreter context retrieval. It means that an account used
+context that has been corrected, directly or through earlier interpretations,
+and has not been reassessed against that change. It does not assert that the
+account is wrong, remove it from use, invalidate the session, or trigger new
+inference. Existing replacement selection and exact-reference behavior remain
+unchanged.
 
 The initial slice detects and discloses the condition but has no operation for
-clearing it. Another explain, decompose, or examine operation does not implicitly
-certify the old account. Explicit reconsideration is future work.
+clearing it. Another explain, decompose, or examine operation does not
+implicitly certify the old account. Explicit reconsideration is future work.
 
 An investigon is exempt from a specific correction cause when its generating
 evaluation either produced that correction or received its complete correction
 context. This applies to every investigon produced by the evaluation, including
 the reporting root, composition children, and all accompanying replacements.
 
-For each cause, an investigon needs reconsideration if it cites that correction's
-target or an investigon needing reconsideration for that cause, unless it is
-exempt. Exemption applies at the investigon regardless of the citation path, so
-that cause does not propagate through it. A later citer can still inherit the
-cause through another, non-exempt citation. Other unseen or later correction
-causes remain independent. Partial correction-context delivery does not qualify
-for exemption. These rules leave citation indexes intact, do not clear warnings
-on earlier artifacts, and do not certify comprehension or confer a general
-"reconsidered" status.
+For each cause, an investigon needs reconsideration if it cites that
+correction's target or an investigon needing reconsideration for that cause,
+unless it is exempt. Exemption applies at the investigon regardless of the
+citation path, so that cause does not propagate through it. A later citer can
+still inherit the cause through another, non-exempt citation. Other unseen or
+later correction causes remain independent. Partial correction-context delivery
+does not qualify for exemption. These rules leave citation indexes intact, do
+not clear warnings on earlier artifacts, and do not certify comprehension or
+confer a general "reconsidered" status.
 
 #### Rationale, alternatives, and consequences
 
-A corrected account may have influenced later interpretations even when it was not
-their selected subject. Exposing those paths preserves qualifications that direct
-revision warnings alone miss. Recording all delivered investigons is verifiable;
-asking the interpreter to report actual relevance may be more selective but risks
-missing dependencies. The conservative policy can over-flag incidental context.
-Assess citation breadth, apparent irrelevant inclusions, correction frequency,
-and the burden of uncleared warnings before refining the policy.
+A corrected account may have influenced later interpretations even when it was
+not their selected subject. Exposing those paths preserves qualifications that
+direct revision warnings alone miss. Recording all delivered investigons is
+verifiable; asking the interpreter to report actual relevance may be more
+selective but risks missing dependencies. The conservative policy can over-flag
+incidental context. Assess citation breadth, apparent irrelevant inclusions,
+correction frequency, and the burden of uncleared warnings before refining the
+policy.
 
 After explicit reconsideration exists, its frequency of "no change" outcomes can
-provide another signal. Such outcomes do not prove irrelevant citations: a relevant
-correction can leave a dependent conclusion unchanged. Reassessment records and
-clearance propagation require separate design, preserving other outstanding causes
-without claiming that downstream accounts were themselves reassessed.
+provide another signal. Such outcomes do not prove irrelevant citations: a
+relevant correction can leave a dependent conclusion unchanged. Reassessment
+records and clearance propagation require separate design, preserving other
+outstanding causes without claiming that downstream accounts were themselves
+reassessed.
 
 ## Governing impact and promotion
 

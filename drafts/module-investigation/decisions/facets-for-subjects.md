@@ -38,9 +38,10 @@ machinery.
 
 Investigon facets such as superseded, supersedes, conflicting, and needs
 reconsideration have values supplied by session-scoped claims derived from
-retained corrections, citations, and evaluation context. New session context yields new derived claims without modifying
-immutable investigon content. A recorded correction or conflict does not
-establish which program interpretation is true.
+retained corrections, citations, and evaluation context. New session context
+yields new derived claims without modifying immutable investigon content. A
+recorded correction or conflict does not establish which program interpretation
+is true.
 
 #### Rationale, alternatives, and consequences
 

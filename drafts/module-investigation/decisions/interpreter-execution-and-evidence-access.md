@@ -149,14 +149,14 @@ replacing them.
 
 ### Start each operation fresh and permit bounded interpreter dialogue
 
-Each new interpretation evaluation uses one fresh interpreter dialogue, including
-any bounded repair turns. Delivery during the evaluation and delivery during that
-dialogue refer to the same exposure history. Reading
-retained results does not invoke the interpreter. PostCode provides the
-objective and initial context, the interpreter requests additional context or
-source, and PostCode returns it. Request and response repeat until a structured
-result or an execution limit. Conversation can accumulate within the operation;
-opaque conversational memory does not carry over to the next operation.
+Each new interpretation evaluation uses one fresh interpreter dialogue,
+including any bounded repair turns. Delivery during the evaluation and delivery
+during that dialogue refer to the same exposure history. Reading retained
+results does not invoke the interpreter. PostCode provides the objective and
+initial context, the interpreter requests additional context or source, and
+PostCode returns it. Request and response repeat until a structured result or an
+execution limit. Conversation can accumulate within the operation; opaque
+conversational memory does not carry over to the next operation.
 
 The minimum initial request supplies the operation and module reference for a
 summary, or the selected investigon's prose, referent information, and context
