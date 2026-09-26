@@ -1242,6 +1242,22 @@ broad prompt/model optimization search is required. The human reviews the
 combined formative results after the automated exercise; no universal
 acceptable-cost or usefulness threshold has been established.
 
+#### Assessment tooling and artifact lifecycle
+
+Commit reusable assessment runners, question sets, and cost-reporting code under
+`scripts/module-investigation/`, with instructions for running them. Retain them
+as development tooling for later comparisons. The implementing agent orchestrates
+clean evaluator subagents through its available agent tools; assessment scripts
+support capture, comparison, and reporting rather than requiring a separate
+evaluator-service integration.
+
+Retain reviewable assessment records under `records/validation/`. Keep transient
+working files in a root underscore directory under the disposable-scratch
+conventions. Before committing records, check captured repository content and
+transcripts for private, sensitive, or third-party material and follow the
+applicable approval requirements. Retained records must be self-contained rather
+than depending on disposable files.
+
 #### Assessment usage and cost report
 
 Log each PostCode session's usage report, including one-shot runs and incomplete
