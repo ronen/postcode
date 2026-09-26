@@ -1096,12 +1096,11 @@ Verify public boundaries and journeys, including:
 Use three fixed formative subjects: Cockatiel’s `src/common/Executor.ts`,
 `thingts/fsm-engine`, and `mesqueeb/merge-anything`. Before live runs, the
 implementing agent records revisions, module boundaries, supplied and accessible
-documentation, provider
-compatibility, and supplied assessment context. These are purposeful development
-subjects, not an unbiased sample or untouched validation set. If a subject cannot
-be exercised in the supported configured-project scope,
-report the obstacle for human choice rather than silently replacing an awkward
-result.
+documentation, provider compatibility, and supplied assessment context. These
+are purposeful development subjects, not an unbiased sample or untouched
+validation set. If a subject cannot be exercised in the supported
+configured-project scope, report the obstacle for human choice rather than
+silently replacing an awkward result.
 
 Pin all three subjects to recorded revisions for the entire formative exercise,
 including the milestone-2 baseline and later assessments. Prepare reference
@@ -1190,8 +1189,7 @@ use only the supplied views, including any explicitly supplied
 evidence-inspection view. They do not independently read source, repository
 documentation, plans, or the internet. Record evaluator configuration, supplied
 artifacts, and any context limits. Fresh context does not establish absence of
-model prior knowledge or independent
-corroboration of generated claims.
+model prior knowledge or independent corroboration of generated claims.
 
 For each formative subject, assess the initial summary separately from the
 captured follow-up sequence. Use separate fresh contexts for summary-only and
