@@ -154,35 +154,27 @@ in the project.
 
 ### Retry and forced regeneration are out of scope
 
-Explicit retry of retained investigation failures and
-limit-stop outcomes, and forced regeneration of successful results, are outside
-this slice. A request after communication failure follows ordinary selection
-without special retry behavior. Retry may be straightforward to invoke, but
-introduces outcome eligibility, retained-result reuse, attempt selection, and
-additional interaction and verification requirements. Its practical value in
-early use is not yet established. Forced regeneration likewise has no
-established need.
+Corrections are part of the progressive-investigation workflow being assessed.
+Repeated investigation can produce correction chains, conflicting replacements,
+and corrections to subordinate accounts, so the slice defines their behavior
+together. Explicit retry of retained investigation failures and limit-stop
+outcomes, and forced regeneration of successful results, add recovery and
+repetition controls that are deferred to separate work.
 
-Restarting the shell is the recovery path for a retained failed or incomplete
-request, with loss of accumulated investigation context. The CLI documents that
-cost. Communication failures leave no reusable outcome, as specified below, and
-therefore do not require restarting the shell before another request. The
-separate
+Communication failures leave no reusable outcome, so another request can run in
+the same session through ordinary selection. This supports robustness of the
+formative assessments without requiring explicit product retry controls.
+
+Recovery from a retained investigation failure or limit-stop outcome requires
+restarting the shell, losing accumulated investigation context. The CLI documents
+that cost. The assessment protocol records these failures as findings rather than
+automatically restarting to replace them with successful runs.
+
+The separate
 [retry](../backlog.md#retry-failed-or-incomplete-interpretation-without-restarting-the-session)
 and
 [successful-rerun](../backlog.md#explicitly-rerun-a-successful-interpretation)
 backlog entries are candidates, not commitments or prerequisites for this slice.
-
-PostCode reports configuration or structural unavailability distinctly from
-runtime investigation failure, sufficiently clearly for a human or assessment
-agent to identify why work cannot proceed. When investigation is enabled, check
-prerequisites that can be established during project opening and fail before
-starting the shell if they are unsatisfied. The same preflight applies to
-one-shot investigation. Failures discoverable only during execution remain
-explicit outcomes; preflight does not guarantee provider availability. The
-reporting mechanism (startup failure, exit status, or a discernible shell
-outcome) is an implementation choice. Do not silently substitute mechanical-only
-output for a failed investigation.
 
 ## Architectural basis
 
@@ -651,8 +643,12 @@ option is another possibility. A separate per-request confirmation is not
 required. Configuration and help make the effect of enablement clear. With
 investigation disabled, existing mechanical commands remain usable without
 inference credentials. Enabled investigation with unsatisfied prerequisites
-fails preflight, even if the intended shell commands are mechanical. Missing
-authentication produces explicit unavailability, not an invented summary.
+fails preflight, even if the intended shell commands are mechanical. Check
+available prerequisites during project opening, before starting the shell, and
+apply the same preflight to one-shot investigation. Report failures clearly enough
+for a human or assessment agent to distinguish configuration unavailability from
+runtime failure. Do not silently substitute mechanical-only output for a failed
+investigation.
 Credential material does not enter investigrams or observations. Exact setup
 steps and authentication storage follow the selected integration.
 
