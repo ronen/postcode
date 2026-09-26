@@ -124,5 +124,5 @@ carry corrections; correction targets predate acceptance of the new result.
 An investigram's citation index records prior investigrams delivered during its
 generating evaluation, without asserting reliance or endorsement. "Needs
 reconsideration" is a session-derived property indicating corrected context reached
-through those citations; the artifact and its index remain immutable.
+through those citations; the investigram and its index remain immutable.
 [[Citation exposure and reconsideration](decisions/investigrams-and-progressive-investigation.md#record-citation-exposure-and-derive-reconsideration-status)]

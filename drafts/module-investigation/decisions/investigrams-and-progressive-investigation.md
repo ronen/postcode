@@ -22,10 +22,9 @@ semantics to summary work. This record extends that model without requiring
 persisted investigations, semantic identities across program states, or a
 canonical model of program responsibilities.
 
-Existing definitions of Entity, Subject, Claim, Evaluation, Lens, Projection, and
-Session retain their meanings. The lens mapping below makes explicit how an
-interpretation artifact can be a subject of further investigation while retaining
-its program context. Investigator execution is addressed in
+Subject is extended to explicitly include investigrams while remaining a role
+rather than an entity kind. The lens mapping below explains how an investigram serves as a subject of further investigation while retaining its program
+context. Investigator execution is addressed in
 [Investigator execution and evidence access](investigator-execution-and-evidence-access.md);
 the broader facet definition is addressed in [Facets for subjects](facets-for-subjects.md).
 
@@ -54,11 +53,11 @@ investigram or failed. These distinctions do not prescribe separate
 storage records for every sentence or require a new type system for every claim.
 
 Investigation is the product activity; interpretation is the character of this
-artifact's content. Organization and dependency operations also support
+investigram's content. Organization and dependency operations also support
 investigation, but their qualified mechanical projections are not investigrams.
 Projection remains the general lens-result concept. Mechanical results can
 provide evidence or a starting point for an investigram without being converted
-into prose artifacts.
+into investigrams.
 
 #### Rationale and naming
 
@@ -68,7 +67,7 @@ and a part. Broad initial units can be refined through use rather than being
 atomized upfront.
 
 The coined name **investigram** suggests a recorded account produced by an
-Investigator. It connects the artifact to its producer while remaining visually
+Investigator. It connects the investigram to its producer while remaining visually
 distinct from "investigation". Its definition preserves the interpretive character
 of the account. Decomposing an investigram produces new investigrams without
 splitting or modifying the original.
@@ -112,8 +111,8 @@ responsibility to it. An arbitrary ID in prose or the free-form description does
 not acquire reference semantics. Referent and evidence remain different roles,
 even where the same captured source region serves both.
 
-Summary, explain, decompose, and examine are lenses. A successful evaluation
-provides a root investigram with optional subordinate investigrams for the projection. Summary
+Summarize, explain, decompose, and examine are lenses. A successful evaluation
+provides a root investigram with optional subordinate investigrams for the projection. Summarize
 selects a module. A follow-up selects an investigram as its subject, retaining
 its underlying program context and referent description. Its prose is part of
 the explicit interpretive input, not a mechanically established premise. A
@@ -122,7 +121,7 @@ evaluation outcomes, and evidence/method context. A projection can select
 investigrams as result information, but an investigram is not synonymous with that
 projection or its rendering.
 
-`inspect(investigram)` exposes the retained artifact: its prose, referent
+`inspect(investigram)` exposes the retained investigram: its prose, referent
 information, evidence, composition, provenance, and corrections.
 
 Explain, decompose, and examine use the selected investigram's prose and program
@@ -406,7 +405,7 @@ account requires receiving it first. Do not remove correction targets from the
 index to suppress warnings.
 
 When delivering an investigram that has been corrected, PostCode supplies the
-exact requested artifact together with an explicit correction notice, the
+exact requested investigram together with an explicit correction notice, the
 replacement accounts and correction reasons, and the applicable correction chain
 and conflicting alternatives. This applies to initial context as well as
 subsequent retrieval. Preserve exact identities; do not silently redirect the
@@ -439,7 +438,7 @@ outstanding causes. Present causes within bounds, with access to further detail;
 no enumeration or display of complete paths is required. Presentation may
 identify proximal affected citations, corrected originals, or other useful
 portions of the graph. Composition and investigation provenance alone do not
-establish a citation or propagate this status. The artifact and its citation
+establish a citation or propagate this status. The investigram and its citation
 index remain immutable; session-derived claims express its current
 reconsideration status.
 
@@ -467,7 +466,7 @@ citation path, so that cause does not propagate through it. A later citer can
 still inherit the cause through another, non-exempt citation. Other unseen or
 later correction causes remain independent. Partial correction-context delivery
 does not qualify for exemption. These rules leave citation indexes intact, do
-not clear warnings on earlier artifacts, and do not certify comprehension or
+not clear warnings on earlier investigrams, and do not certify comprehension or
 confer a general "reconsidered" status.
 
 #### Rationale, alternatives, and consequences

@@ -44,7 +44,7 @@ recorded correction or conflict does not establish which program interpretation
 is true.
 
 Claims about an investigram's correction, conflict, or reconsideration state
-concern that session artifact. Their scope is the relevant session state, and
+concern that investigram. Their scope is the relevant session state, and
 their support comes from retained relationships and evaluation context.
 
 #### Rationale, alternatives, and consequences

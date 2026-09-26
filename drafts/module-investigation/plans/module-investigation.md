@@ -33,7 +33,7 @@ infrastructure:
 
 | Operation | Requested information | Observable distinction |
 | --- | --- | --- |
-| `summary(module)` | A deliberately terse account of apparent functionality and responsibility, including significant mechanisms, cases, and delegation | Broad, coherent selectable investigrams; no mandatory 5WH template or exhaustive branch inventory |
+| `summarize(module)` | A deliberately terse account of apparent functionality and responsibility, including significant mechanisms, cases, and delegation | Broad, coherent selectable investigrams; no mandatory 5WH template or exhaustive branch inventory |
 | `explain(investigram)` | A more understandable account of the selected aspect of this program | Useful clarification and detail omitted for brevity; new findings are not required |
 | `decompose(investigram)` | Smaller, tersely described selectable aspects of the selected functionality | More precise focus without requiring a deeper investigation of each aspect |
 | `examine(investigram)` | A deeper investigation of the selected aspect | Substantive findings, sharper limitations, corrections, or an explicit report that no useful addition was established |
@@ -148,7 +148,7 @@ introduced.
 
 Existing default command selection remains unchanged. Explicit module summary is
 available in one-shot CLI use and in the shell; follow-ups require a live shell
-session. A future default of `summary(project)` is outside this slice.
+session. A future default of `summarize(project)` is outside this slice.
 Summarizing a root module does not implicitly request coverage of every subject
 in the project.
 
@@ -187,7 +187,7 @@ output for a failed investigation.
 ## Architectural basis
 
 [Investigrams and progressive investigation](../decisions/investigrams-and-progressive-investigation.md)
-establishes the artifact, lens focus, subject associations, composition,
+establishes the investigram, lens focus, subject associations, composition,
 investigation provenance, and revisions.
 [Investigator execution and evidence access](../decisions/investigator-execution-and-evidence-access.md)
 establishes evaluation integration, fresh per-operation dialogues, access
@@ -210,7 +210,7 @@ and [evidence
 boundaries](../../../docs/decisions/adopt-identity-evidence-and-observation-constraints.md)
 continue to apply. No foundation revision is required.
 
-Summary, explain, decompose, and examine are lenses. Summary selects a module;
+Summarize, explain, decompose, and examine are lenses. Summarize selects a module;
 follow-up lenses select an investigram as their subject, using its prose and
 underlying program context to focus the investigation. The projection identifies
 both that selection and the retained result. An investigram is a valid subject in
@@ -318,7 +318,7 @@ and formatting are implementation choices.
 
 ### Retained request outcomes
 
-Repeating a summary or follow-up command displays its retained outcome and, when
+Repeating a summarize or follow-up command displays its retained outcome and, when
 present, its result, selecting explicit replacements for display rather than
 invoking the investigator again. A result is the accepted root investigram; an
 outcome records how the evaluation ended, as defined by the [evaluation outcome
@@ -400,13 +400,11 @@ mentions or evidence citations. The mechanical portion of inspection retains its
 existing determinism guarantee; that guarantee does not apply to the generated
 content of associated investigrams.
 
-The same `inspect` lens may also accept an investigram reference. This is a
-candidate CLI expression of the required exact-result inspection, not another
-generative operation: it shows that immutable investigram's prose, referent
+The `inspect` lens accepts an investigram reference and shows that immutable
+investigram's prose, referent
 information, evidence, composition, investigation provenance, and revision
 links. A superseded reference shows the original with its replacement linked,
-rather than silently selecting the replacement. The exact inspection command
-arrangement remains an implementation choice.
+rather than silently selecting the replacement. Exact CLI syntax remains an implementation choice.
 
 These associations are subject-oriented access to qualified information, not a
 silent conversion of interpretation into an intrinsic property of the subject.
@@ -440,13 +438,13 @@ subject-association selection of `inspect`, determine its contents.
 Reference spelling below is illustrative; stable selection and the behaviors are
 requirements, not a required grammar.
 
-1. `summary M` generates a root and broad investigrams with displayed references.
+1. `summarize M` generates a root and broad investigrams with displayed references.
 2. `decompose @i7` generates a separate root and finer selectable subparts. Its
    provenance identifies `@i7` as the subject; it does not add children to `@i7`.
 3. `examine @i12` discovers that an earlier summary point `@i7` needs correction
    and retains a replacement `@i20` with a reason and supporting evidence. The
    reporting view shows the target, replacement reference, reason, and support access.
-4. `summary M` displays the retained result with `@i20` marked as a
+4. `summarize M` displays the retained result with `@i20` marked as a
    replacement of `@i7`, without invoking the investigator again. Unaffected points retain IDs.
 5. `inspect M` exposes associated investigrams and their revision relationships.
    Inspecting `@i7` shows the exact original and a link to `@i20`.
@@ -533,10 +531,10 @@ produced or received in full. For each cause, a non-exempt investigram needs
 reconsideration if it cites the target or an investigram needing reconsideration
 for that cause. Exemption applies at the investigram on every path; later citers
 can still inherit the cause through other, non-exempt citations. Other
-correction causes remain independent, and earlier artifacts' warnings are not
+correction causes remain independent, and earlier investigrams' warnings are not
 cleared.
 
-When supplying corrected investigrams, provide the exact requested artifact
+When supplying corrected investigrams, provide the exact requested investigram
 together with correction notices, replacement accounts, reasons, chains, and
 conflicting alternatives. Record actual delivery and disclose omissions. Record
 complete correction-context delivery per correction identity: both the target's
@@ -576,7 +574,7 @@ hidden memory. The PostCode session retains evidence, results, and outcomes
 across operations. An investigator's working conversation lives within one
 operation.
 
-A summary request starts with the module reference and operation instructions. A
+A summarize request starts with the module reference and operation instructions. A
 follow-up starts with the selected investigram, its prose and referent
 information, and references to its evidence and investigation context. This
 establishes the subject and objective without prescribing a fixed upfront
@@ -978,7 +976,7 @@ Verify public boundaries and journeys, including:
 - complete conservative citation indexes for all investigrams from an evaluation, including
   replacements, unchanged by later dialogue trimming or summarization;
 - direct and transitive reconsideration warnings, multiple causes, unchanged
-  artifacts and selection, no inference on disclosure, and no implicit clearing
+  investigrams and selection, no inference on disclosure, and no implicit clearing
   by a later investigation;
 - bounded cause presentation in human and JSON views and investigator retrieval
   over a graph with combinatorially many paths, with further detail accessible
@@ -994,7 +992,7 @@ Verify public boundaries and journeys, including:
   replacement content, with bounded omissions explicit;
 - complete correction-context delivery exempts new investigrams from that specific cause,
   including indirect paths; partial delivery and unseen later corrections remain
-  unexempted, and earlier artifacts' warnings remain unchanged;
+  unexempted, and earlier investigrams' warnings remain unchanged;
 - complete correction-context delivery for replacements with composition children,
   and separate completeness and causes when a replacement is itself corrected;
 - revised-subject disclosure and reconsideration reporting do not duplicate a cause

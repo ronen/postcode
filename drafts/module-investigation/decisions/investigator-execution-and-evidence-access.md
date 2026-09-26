@@ -8,7 +8,7 @@ Scope: evaluation integration, investigator dialogue, evidence access, failure o
 ## Context
 
 [Investigrams and progressive investigation](investigrams-and-progressive-investigation.md)
-defines the retained artifacts and their relationships. Producing those artifacts
+defines investigrams and their relationships. Producing investigrams
 requires interpretation to participate in PostCode's existing evaluation, evidence,
 and session architecture. This record establishes execution and access boundaries,
 including which outcomes affect subsequent requests and how usage remains
@@ -38,7 +38,7 @@ remains assessment tooling.
 An **Investigator** is an AI agent that investigates a subject through a dialogue
 with PostCode and submits an interpretation for validation. PostCode supplies context and handles
 the investigator's evidence requests through its qualified evidence interfaces.
-The role serves summary, explain, decompose, and examine. The inference model and
+The role serves summarize, explain, decompose, and examine. The inference model and
 provider are integration choices behind this role.
 
 Language analysis and interpretation produce qualified information through the
@@ -213,7 +213,7 @@ including guard expiry during repair. Communication failure discards unaccepted
 dialogue content rather than submitting it for validation.
 
 The minimum initial request supplies the operation and module reference for a
-summary, or the selected investigram's prose, referent information, and context
+summarize, or the selected investigram's prose, referent information, and context
 references for a follow-up. Further evidence is acquired through the shared
 subject-based interface. Prefetching is an execution choice, not a separate
 evidence contract; initially supplied and subsequently requested material obey

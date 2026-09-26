@@ -71,7 +71,7 @@ provides no clearing operation. Evaluate the need using correction frequency,
 citation breadth, and the practical burden of uncleared warnings.
 
 A reassessment could retain a new account or record that the earlier account remains
-unchanged against specified updated context. Preserve the original artifact and
+unchanged against specified updated context. Preserve the original investigram and
 record the reassessment basis. Define how clearing a cause affects downstream
 warnings without erasing independent causes or implying downstream reassessment.
 Track no-change outcomes as a possible sign of overly broad citation exposure,
