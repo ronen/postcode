@@ -7,7 +7,7 @@ Superseded by:
 
 ## Outcome and use narrative
 
-A human investigating one configured TypeScript project requests a terse summary
+A human exploring one configured TypeScript project requests a terse summary
 of a module, selects a point of interest, and clarifies, decomposes, or examines
 it without translating that point back into source locations. The shell retains
 the investigation, its evidence, and earlier interpretations. A deeper
@@ -22,8 +22,8 @@ whose root references the selected subject through investigation provenance.
 Neither structure establishes a decomposition of the program into canonical
 architectural units.
 
-Investigation is the user-facing activity; interpretation is the capability that
-supports these operations. Existing mechanical investigations, such as
+The human explores the code through these operations. The Investigator gathers
+evidence and produces interpretations to support that exploration. Existing mechanical investigations, such as
 organization and dependencies, continue to produce qualified projections. They
 can supply evidence for investigons without themselves becoming investigons.
 
@@ -65,7 +65,7 @@ identifies that gap rather than treating a structural label as a sufficient
 answer.
 
 A module need not have one coherent responsibility. A supported account of mixed
-responsibilities or an unclear role is a legitimate summary; the interpreter
+responsibilities or an unclear role is a legitimate summary; the investigator
 must not invent a unifying purpose merely to make the explanation tidy.
 
 The selected module defines the question, not a fixed dependency-depth cutoff.
@@ -76,7 +76,7 @@ application's functionality. Unrelated project functionality remains outside the
 requested subject; reachable dependencies are not an exhaustive checklist. A
 terse result may require substantial investigation to produce.
 
-The interpreter's investigation policy weighs the expected explanatory value of
+The investigator's investigation policy weighs the expected explanatory value of
 further inspection. It continues where additional evidence is likely to
 materially improve or clarify the account and stops when that is unlikely to be
 fruitful. Consequential remaining gaps are disclosed. The policy complements
@@ -92,7 +92,7 @@ semantic findings, limitations, and operational reliability. A blocked required
 case remains incomplete unless the human explicitly approves its deferral.
 
 Investigate observed shortfalls enough to distinguish implementation defects
-from limitations of the configured interpreter. Violations of
+from limitations of the configured investigator. Violations of
 implementation-controlled invariants, such as reference validity, conflict
 visibility, provenance, and qualification, are defects to address. Poor prose
 can also expose a defect, such as omitted required evidence, incorrect operation
@@ -100,7 +100,7 @@ instructions, or broken context delivery; the form of the symptom does not
 determine its classification.
 
 Generative-content expectations guide interpretation design and formative
-assessment. For limitations of the configured interpreter, make a bounded,
+assessment. For limitations of the configured investigator, make a bounded,
 documented improvement effort and reassess across all three subjects. Record the
 chosen adjustment, or why none is justified, and the reassessment evidence. An
 adjustment need not be a prompt revision. Persistent shortfalls after that
@@ -133,7 +133,7 @@ operation has bounded execution.
 
 The initial subject is one supported module in the configured project. Source,
 qualified mechanical results, and attributed documentation provide the evidence.
-The interpreter can acquire more permitted source and inspect interpretation
+The investigator can acquire more permitted source and inspect interpretation
 context while satisfying the selected operation.
 
 Exclude repository-wide summaries, a whole-summary granularity control,
@@ -142,7 +142,7 @@ mutation, running the target program, runtime/test execution, Git-history
 investigation, a GUI, persistence after shell exit, model-comparison campaigns,
 local-model deployment, and a formal ontology of responsibilities or
 functionality. Reading source does not establish runtime behavior or author
-intent. No capability for saving and resuming interpreter conversations is
+intent. No capability for saving and resuming investigator conversations is
 introduced.
 
 Existing default command selection remains unchanged. Explicit module summary is
@@ -188,7 +188,7 @@ output for a failed investigation.
 [Investigons and progressive investigation](../decisions/investigons-and-progressive-investigation.md)
 establishes the artifact, lens focus, subject associations, composition,
 investigation provenance, and revisions.
-[Interpreter execution and evidence access](../decisions/interpreter-execution-and-evidence-access.md)
+[Investigator execution and evidence access](../decisions/investigator-execution-and-evidence-access.md)
 establishes evaluation integration, fresh per-operation dialogues, access
 boundaries, failure outcomes, and usage attribution.
 [Facets for subjects](../decisions/facets-for-subjects.md) supersedes the initial
@@ -228,13 +228,13 @@ record kind merely because they share these features.
 Investigation lenses declare their information requirements. Evaluation selects
 retained results that satisfy the request, accounts for explicit revisions, and
 identifies investigations that must run to supply missing information. It
-invokes the interpreter where needed and retains validated results before
+invokes the investigator where needed and retains validated results before
 projection construction. Projection construction and rendering do not invoke
 investigation. The outcome-retention policy and retry exclusions below determine
 whether interpretation is required; newly available context alone does not
-silently invalidate a retained interpretation or force another model call.
+silently invalidate a retained interpretation or invoke the investigator again.
 
-The interpreter can query supported entities and relationships through that same
+The investigator can query supported entities and relationships through that same
 evaluation boundary. It is not limited to records already materialized before
 the operation began: a query can reuse qualified analysis or request missing
 mechanical analysis. Internal queries retain their outcomes and provenance
@@ -245,7 +245,7 @@ direct storage-engine access or a second analysis pipeline.
 
 Investigons carry or resolve to:
 
-- prose and a free-form referent description intelligible to a fresh interpreter;
+- prose and a free-form referent description intelligible to a fresh investigator;
 - the originating module context, with optional validated references to more
   specific entities or supported subjects, including captured source regions;
 - evidence and narrower qualifications, including consequential missing context;
@@ -254,7 +254,7 @@ Investigons carry or resolve to:
 - stable session-local identity, fixed composition, and investigation-provenance links.
 
 These are semantic requirements, not a prescribed object layout. Context may be
-shared where it remains attributable. The model supplies local references to
+shared where it remains attributable. The investigator supplies local references to
 known material; PostCode assigns retained identities and validates links. A
 free-form string containing an entity ID does not by itself create a navigable
 reference. A valid reference establishes a target, not interpretive correctness.
@@ -266,7 +266,7 @@ sentence or store a formal semantic representation of the prose.
 An investigon view may present a retained mechanical claim with its existing
 qualification when a validated reference identifies that claim. Present it as
 the retained claim, with its qualification derived from its evidence and method.
-The interpreter cannot assign mechanical status to its own prose merely by
+The investigator cannot assign mechanical status to its own prose merely by
 citing supporting evidence; synthesis and additional conclusions remain
 interpretation.
 
@@ -319,9 +319,9 @@ and formatting are implementation choices.
 
 Repeating a summary or follow-up command displays its retained outcome and, when
 present, its result, selecting explicit replacements for display rather than
-invoking the interpreter again. A result is the accepted root investigon; an
+invoking the investigator again. A result is the accepted root investigon; an
 outcome records how the evaluation ended, as defined by the [evaluation outcome
-taxonomy](../decisions/interpreter-execution-and-evidence-access.md#evaluation-outcomes-and-later-requests).
+taxonomy](../decisions/investigator-execution-and-evidence-access.md#evaluation-outcomes-and-later-requests).
 When no reusable outcome exists for that operation and target, the command runs
 the investigation. Retained execution-limit and investigation-failure outcomes
 have no result and are displayed without silently retrying. Availability of more
@@ -329,12 +329,12 @@ context does not by itself authorize new generation.
 
 #### Communication failures and retained outcomes
 
-An agent-communication failure ends the request and closes its interpreter
+An agent-communication failure ends the request and closes its investigator
 dialogue with a reported communication/service failure. Keep execution
 diagnostics and observations, but no reusable outcome that satisfies or blocks
 later request selection. This applies even when the first provider exchange
 fails. A later request follows ordinary selection: if no reusable outcome
-exists, start a fresh interpreter dialogue. PostCode neither detects a repeat
+exists, start a fresh investigator dialogue. PostCode neither detects a repeat
 for this purpose nor resumes the failed dialogue. The shell and previously
 acquired evidence remain usable subject to normal validity checks. Reject late
 responses from the finished attempt; lack of a response does not establish lack
@@ -419,7 +419,7 @@ module can have several associated investigons from different investigations,
 none automatically more authoritative because it is newer or more frequently
 retrieved.
 
-An interpreter encountering a known subject can retrieve its associated
+An investigator encountering a known subject can retrieve its associated
 investigons from earlier investigations in the same session, beyond its current
 chain of prior investigations. Retrieval exposes provenance, evidence links,
 limitations, and revision state. It records which prior interpretations were
@@ -446,7 +446,7 @@ requirements, not a required grammar.
    and retains a replacement `@i20` with a reason and supporting evidence. The
    reporting view shows the target, replacement reference, reason, and support access.
 4. `summary M` displays the retained result with `@i20` marked as a
-   replacement of `@i7`, without another model call. Unaffected points retain IDs.
+   replacement of `@i7`, without invoking the investigator again. Unaffected points retain IDs.
 5. `inspect M` exposes associated investigons and their revision relationships.
    Inspecting `@i7` shows the exact original and a link to `@i20`.
 6. A repeated `decompose @i7` shows its retained decomposition with a revised-origin
@@ -517,7 +517,7 @@ implementation choice.
 Derive "needs reconsideration" through direct and transitive citations when
 context is corrected. Display the warning without suppressing the account.
 Preserve the causal graph and expose causes within bounds in inspection and
-interpreter retrieval, with access to further detail. No full-path presentation
+investigator retrieval, with access to further detail. No full-path presentation
 or enumeration is required. Revised-subject disclosure presents the same
 reconsideration cause, when applicable, rather than a duplicate warning. Keep
 citation indexes and original content immutable. Warnings do not trigger
@@ -545,7 +545,7 @@ not required for completeness. A subsequent correction of the replacement is a
 separate cause; it does not invalidate completeness for the earlier correction.
 Partial delivery does not qualify for exemption.
 
-## Interpreter execution and evidence access
+## Investigator execution and evidence access
 
 The domain interpretation boundary accepts operations, subjects, and
 investigation context and returns evaluation outcomes, carrying a result when accepted. An inner agent communication boundary
@@ -566,13 +566,13 @@ general provider registry or comparative benchmark as a prerequisite.
 
 ### Per-operation dialogue and context
 
-Each new interpretation evaluation starts a fresh interpreter dialogue; viewing
+Each new interpretation evaluation starts a fresh investigator dialogue; viewing
 retained outcomes does not start one. PostCode supplies an initial request; the
-interpreter requests evidence or interpretation context; PostCode returns it;
-this dialogue continues until the interpreter submits a result for acceptance or
+investigator requests evidence or interpretation context; PostCode returns it;
+this dialogue continues until the investigator submits a result for acceptance or
 execution ends. A fresh operation does not inherit an opaque conversation or
 hidden memory. The PostCode session retains evidence, results, and outcomes
-across operations. An interpreter's working conversation lives within one
+across operations. An investigator's working conversation lives within one
 operation.
 
 A summary request starts with the module reference and operation instructions. A
@@ -581,7 +581,7 @@ information, and references to its evidence and investigation context. This
 establishes the subject and objective without prescribing a fixed upfront
 evidence package.
 
-The interpreter requests source, qualified mechanical results, documentation,
+The investigator requests source, qualified mechanical results, documentation,
 and prior investigons through the shared subject-based interface as needed.
 Prefetching likely-needed material is an execution optimization left to
 implementation. Whether material is supplied initially or retrieved during the
@@ -590,16 +590,16 @@ rules. Actual supplied context remains attributable; equivalent access rules do
 not imply identical generated answers under different context-selection
 strategies.
 
-Interpreter tools expose supported entities and relationships, including module
+Investigator tools expose supported entities and relationships, including module
 exports, dependencies, dependents, and organization membership, with their
 evidence, method, coverage, and limitations. These queries use evaluation to
-reuse retained results or perform missing mechanical analysis. The interpreter
+reuse retained results or perform missing mechanical analysis. The investigator
 need not reconstruct established relationships from source; interpreting their
 role remains separate from the mechanical claims. Tools also retrieve
 investigons, their support, and composition, investigation-provenance, and
 revision links and subject associations within the session.
 
-The interpreter can request full source for a module reference, or contents for
+The investigator can request full source for a module reference, or contents for
 an organization artifact/documentation reference, not merely human-facing
 source-detail excerpts. A subject can map to multiple captured files or regions;
 responses identify the supporting captures and actual coverage. Range selection
@@ -610,8 +610,8 @@ coverage limit.
 
 ### Subject-based evidence access
 
-The PostCode subject population is the interpreter's complete program-access
-surface. The interpreter navigates existing organization groups, entities,
+The PostCode subject population is the investigator's complete program-access
+surface. The investigator navigates existing organization groups, entities,
 relationships, and opaque documentation/artifact records, then requests evidence
 by subject or artifact reference. It has no independent filesystem-discovery or
 path-based file-reading interface. This is completeness of the access surface,
@@ -628,12 +628,12 @@ retains its own qualification.
 
 Capture identity, generated-output exclusions, permitted mappings, and
 filesystem validity belong to the shared acquisition layer, not a second
-interpreter-specific filesystem policy. Content requests must respect that
+investigator-specific filesystem policy. Content requests must respect that
 layer's established boundary; a reference does not by itself authorize an
 unsupported acquisition. Unavailable content, unresolved mappings, and
 incomplete coverage are explicit tool responses, not a reason to fall back to arbitrary
 file access. Source remains task data, not instructions that expand the
-interpreter's authority. The dialogue has no unrestricted shell, file mutation,
+investigator's authority. The dialogue has no unrestricted shell, file mutation,
 or web-browsing tool.
 
 New acquisitions register captured content and relevant probes with the
@@ -690,25 +690,25 @@ usage makes it a concern.
 ## Bounds, outcomes, and result acceptance
 
 Each new investigation evaluation has a finite runaway-containment guard
-covering the entire interpreter dialogue and work triggered through its tools,
+covering the entire investigator dialogue and work triggered through its tools,
 including mechanical analysis. Implementation chooses and documents practical
 bounds, such as elapsed time, dialogue/tool-call count, and input/output volume.
 The guard is a usability backstop against uncontrolled continuation, not a
 spending budget or an attempt to optimize the amount of useful investigation.
 
 Reaching the guard before result submission produces an explicit stopped outcome
-with the reason and no investigon. No interpreter turn continues beyond the guard
+with the reason and no investigon. No investigator turn continues beyond the guard
 to finish or submit a result. Cancellation coverage and delays in
 interrupting in-flight provider or mechanical work are disclosed; the guard does
 not guarantee immediate termination or a monetary ceiling. It applies to hosted
 and future local inference alike. Bounds constrain execution, not the lens
 question.
 
-Consider a soft threshold inside the guard that asks the interpreter to finish
+Consider a soft threshold inside the guard that asks the investigator to finish
 with available evidence, or supplying remaining-limit information during the
 dialogue. These are implementation recommendations, not required mechanisms;
 any wrap-up or repair remains within the guard. A soft threshold helps the
-interpreter reach submission before the hard stop; it neither stops execution nor
+investigator reach submission before the hard stop; it neither stops execution nor
 creates a special result category. Verify the selected approach,
 including production of a qualified result within normal execution limits.
 
@@ -722,13 +722,13 @@ provider/model fallback is required.
 ### Outcomes and result acceptance
 
 Use the [evaluation outcome
-taxonomy](../decisions/interpreter-execution-and-evidence-access.md#evaluation-outcomes-and-later-requests).
+taxonomy](../decisions/investigator-execution-and-evidence-access.md#evaluation-outcomes-and-later-requests).
 A retained outcome carries either an accepted result or a failure/stop report.
 Communication/service and configuration failures leave no reusable outcome.
 Diagnostics and usage remain separately attributable. Unavailable content from
 an individual evidence request is normally a qualified tool response the
 dialogue can continue past, not a terminal investigation outcome. Investigation
-coverage and the interpreter's judgment about whether further work would be
+coverage and the investigator's judgment about whether further work would be
 useful are expressed in prose. A limited investigation can yield an ordinary
 valid result. Completed generation is not proof of exhaustive investigation or
 correct interpretation.
@@ -737,7 +737,7 @@ Epistemological qualifications remain separately identifiable and attributable
 to the accounts they qualify. Their wording may be free-form; PostCode preserves
 and exposes their association without mechanically interpreting their meaning.
 Coverage limitations belong in those qualifications when they materially affect
-how a claim should be understood. Model-written qualifications can limit or
+how a claim should be understood. Investigator-written qualifications can limit or
 caveat an account but cannot promote its epistemological status. PostCode
 derives that status from method and evidence; wording such as "established from
 source" does not confer mechanical status. Validation checks required
@@ -746,7 +746,7 @@ wording.
 
 Result delivery and assembly are dialogue-protocol choices: content can arrive
 in one response or across multiple exchanges. An assembled result is ready for
-acceptance only when the dialogue protocol establishes that the interpreter has
+acceptance only when the dialogue protocol establishes that the investigator has
 submitted it for that purpose. A structurally valid intermediate tree alone is
 insufficient. Submission does not assert exhaustive investigation, and bounded
 repair may follow. The submission mechanism is an implementation choice.
@@ -819,10 +819,10 @@ inference or changes request selection.
 Normal command observations include the exact selected target, any
 superseded-target warning and displayed replacement reference, operation,
 selected retained or newly produced investigons and revisions needed to
-interpret the view, prior interpretations retrieved by the interpreter,
+interpret the view, prior interpretations retrieved by the investigator,
 qualifications, outcomes, actual output, and available usage. Keep the batch
 self-contained and distinguish source sent to inference from source shown to the
-human. Supplying full source to the interpreter is analysis-input access and
+human. Supplying full source to the investigator is analysis-input access and
 does not emit a human source-escape event. Retain actual source/context delivery
 for provenance and usage accounting. A source-escape observation records source
 actually disclosed to the human through the interface, including source excerpts
@@ -855,7 +855,7 @@ infrastructure. Their combined value, including progressive investigation, is
 what this slice assesses; summary quality alone is not the basis for deciding
 whether to implement the remaining operations.
 
-### Milestone 1: Terse module summary through the real interpreter boundary
+### Milestone 1: Terse module summary through the real investigator boundary
 
 Establish investigon records and references, qualified evidence assembly,
 bounded tool dialogue, async execution, stable user-selectable references, and a
@@ -903,8 +903,8 @@ completed assessment with the milestone-1 summary baseline, recording changes in
 configuration or evidence that affect the comparison. Complete documentation and
 prepare the integrated review handoff.
 
-Use deterministic interpreter doubles to verify orchestration, but exercise the
-real interpreter during each useful end-to-end milestone. Arrange independent
+Use deterministic investigator doubles to verify orchestration, but exercise the
+real investigator during each useful end-to-end milestone. Arrange independent
 review through the human under the development workflow; do not confuse passing
 mocked tests with established interpretive value.
 
@@ -913,7 +913,7 @@ mocked tests with established interpretive value.
 ### Deterministic behavioral checks
 
 Verify that views preserve the qualification of referenced retained mechanical
-claims while keeping generated synthesis interpretive. Model-assigned status or
+claims while keeping generated synthesis interpretive. Investigator-assigned status or
 a supporting citation alone must not confer mechanical status on generated
 prose.
 
@@ -929,21 +929,21 @@ Verify public boundaries and journeys, including:
   preferring a replacement; version-distinguishing paths, if used as precise
   references, retain their bindings;
 - stable CLI selection of roots and subordinate investigons after session growth, changed
-  display order, and revision; repeat-display with no model calls; exact historical
+  display order, and revision; repeat-display without invoking the investigator; exact historical
   inspection; retained investigation failure/limit stops on repetition and documented
-  restart recovery; communication failures without reusable outcomes, closed interpreter dialogues,
+  restart recovery; communication failures without reusable outcomes, closed investigator dialogues,
   preserved diagnostics, rejection of late responses, and ordinary subsequent
   requests in the same shell without repeat detection;
-- subject inspection and interpreter retrieval of qualified prior investigons,
+- subject inspection and investigator retrieval of qualified prior investigons,
   association roles, bounded display, no automatic generation, and non-corroborating
   reuse of earlier interpretation across investigations;
 #### Evaluation and evidence access
 
 - evaluation-driven selection of missing interpretation work, retained-outcome reuse,
-  and interpreter queries that acquire missing mechanical results without changing
+  and investigator queries that acquire missing mechanical results without changing
   their qualification or generating nested human-command observations;
 - full captured source supplied independently of human excerpt limits, explicit
-  chunking/coverage, no human source-escape event for interpreter-only reads, and
+  chunking/coverage, no human source-escape event for investigator-only reads, and
   correct disclosure observations when source is actually shown to the human;
 - fresh sessions per new evaluation with multiple tool exchanges within an operation;
   on-demand composition traversal, prior investigations, reverse subject lookup,
@@ -955,7 +955,7 @@ Verify public boundaries and journeys, including:
   unknown references and arbitrary path requests cannot bypass subject-based access;
 - shared acquisition enforces generated-output and validity boundaries; bounded
   omissions, prompt-like repository text, and captured-source inspection preserve
-  their qualifications without a parallel interpreter file-reading path;
+  their qualifications without a parallel investigator file-reading path;
 #### Corrections and conflicts
 
 - correction eligibility after complete initial delivery or permitted retrieval,
@@ -967,7 +967,7 @@ Verify public boundaries and journeys, including:
 - direct and transitive reconsideration warnings, multiple causes, unchanged
   artifacts and selection, no inference on disclosure, and no implicit clearing
   by a later investigation;
-- bounded cause presentation in human and JSON views and interpreter retrieval
+- bounded cause presentation in human and JSON views and investigator retrieval
   over a graph with combinatorially many paths, with further detail accessible
   without requiring full-path display or enumeration;
 - A → B requires A in B's citations; all investigons from the generating evaluation are
@@ -1030,14 +1030,14 @@ Verify public boundaries and journeys, including:
   individual fragments or applying their corrections; a guard stop before submission
   retains no investigon, even if an intermediate tree is structurally valid;
 - submission before the stop proceeds to ordinary validation; submissions after
-  the stop are rejected, and any interpreter repair remains within the guard;
+  the stop are rejected, and any investigator repair remains within the guard;
 - recovery from truncated exchanges when supported, retained failure on unrecovered
   truncation, and limit-stop classification when recovery exhausts the guard;
 - qualified unavailable-evidence tool responses permit continued investigation;
-  model-written qualifications cannot promote interpretation to mechanical status;
+  investigator-written qualifications cannot promote interpretation to mechanical status;
 - execution outcomes distinguished from prose describing investigation coverage;
   attributable epistemological qualifications preserved in views and subsequent
-  interpreter context;
+  investigator context;
 - retained existing mechanical CLI behavior, type checks, and the full relevant
   test suite. Do not assert exact wording from live generative results.
 
@@ -1069,7 +1069,7 @@ The subjects exercise complementary aspects of source-based understanding:
 | `thingts/fsm-engine` | Meaningful cases, guards, transition actions, and reentrant-request handling | Test terse accounts of branching behavior and useful local decomposition |
 | `mesqueeb/merge-anything` | Related operations share implementation, with recursion versus replacement and customization | Test whether investigation explains substantive mechanisms beyond a generic package description |
 
-These are selection rationales, not expected answers supplied to the interpreter
+These are selection rationales, not expected answers supplied to the investigator
 or view-only evaluator. Capture the exact modules and revisions used;
 source-based assessment establishes which conclusions those captures actually
 support.
@@ -1120,7 +1120,7 @@ fixture results distinct from the three repository assessments. Do not replace a
 selected repository or spend an open-ended search trying to make it satisfy
 every case.
 
-Exercise interpretation-sensitive fixture cases through the real interpreter and
+Exercise interpretation-sensitive fixture cases through the real investigator and
 assess the resulting views against their source-grounded reference material
 using the protocol below. Deterministic tests verify orchestration and
 invariants but do not substitute for assessment of the generated interpretation.
@@ -1133,7 +1133,7 @@ Supply captured user-facing results to fresh evaluator agents using consistent
 structured questions, following the approach established by the [module
 inventory
 exercise](../../../records/validation/initial-module-inventory-questions.md).
-Evaluators have no implementation-task or interpreter conversation history and
+Evaluators have no implementation-task or investigator conversation history and
 use only the supplied views, including any explicitly supplied
 evidence-inspection view. They do not independently read source, repository
 documentation, plans, or the internet. Record evaluator configuration, prior
@@ -1169,7 +1169,7 @@ or agreement.
 
 #### Source-grounded comparison and automated execution
 
-Establish and freeze reference material before any live interpreter run on a
+Establish and freeze reference material before any live investigator run on a
 formative subject, including the milestone-1 summary assessment. Use the
 captured source and qualified mechanical evidence for each subject. The material
 records consequential supported conclusions, evidence references, material
@@ -1200,15 +1200,15 @@ consistent rubric; its judgments remain attributable and reviewable rather than
 authoritative program truth. Record the reference material, rubric, assessor
 conditions, evidence for discrepancies, and uncertainty alongside the view-only
 responses. Record the actual model identifiers and families used by the
-interpreter, comprehension evaluators, and source-informed assessor. Treat
+investigator, comprehension evaluators, and source-informed assessor. Treat
 shared-family overlap as an assessment limitation: fresh contexts do not remove
 shared blind spots or possible preferences for similar output styles. A
 cross-family comparison remains optional; no particular evaluator model
 comparison is required.
 
 Use a controlled retained misinterpretation against unchanged source to exercise
-correction explicitly, both with deterministic tests and a live interpreter.
-Mark that setup as injected test context, not a natural model error. Do not
+correction explicitly, both with deterministic tests and a live investigator.
+Mark that setup as injected test context, not a natural investigator error. Do not
 change source mid-session to simulate correction; that tests invalidation
 instead.
 
@@ -1257,7 +1257,7 @@ communication/service failures from retained investigation outcomes and
 execution-limit stops. Record the classification and finite repeat allowance
 before execution. For plausibly transient communication failures, the harness
 may issue the affected request again in the same PostCode shell, with a fresh
-interpreter dialogue, up to that allowance. Earlier completed investigations
+investigator dialogue, up to that allowance. Earlier completed investigations
 need not be regenerated. Authentication rejection or other known configuration
 or structural failures stop the exercise rather than consuming the repeat
 allowance. Provider-identified spending-limit or quota exhaustion also stops the
@@ -1272,7 +1272,7 @@ without evidence that it is plausibly transient, stop for diagnosis or human
 direction. This policy belongs to the assessment harness; PostCode applies
 ordinary request selection without repeat detection or an automatic retry loop.
 
-Refusals, unrecovered provider-reported truncation, malformed or invalid interpreter
+Refusals, unrecovered provider-reported truncation, malformed or invalid investigator
 submissions, and execution-limit stops are assessment findings, not triggers for
 these repeated requests. Continue independent cases and record dependent steps
 as blocked when a needed result is unavailable. If only an assessment agent

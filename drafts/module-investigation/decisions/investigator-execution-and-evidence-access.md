@@ -1,9 +1,9 @@
-# Interpreter execution and evidence access
+# Investigator execution and evidence access
 
 Status: in review
 Decided: [needs-review — set adoption date at promotion]
 Arising from: [Module investigation](../plans/module-investigation.md)
-Scope: evaluation integration, interpreter dialogue, evidence access, failure outcomes, and usage attribution
+Scope: evaluation integration, investigator dialogue, evidence access, failure outcomes, and usage attribution
 
 ## Context
 
@@ -35,6 +35,12 @@ remains assessment tooling.
 
 ### Integrate interpretation with evaluation and qualified evidence access
 
+An **Investigator** investigates a subject through a dialogue with PostCode and submits
+an interpretation for validation. PostCode supplies context and handles the
+investigator's evidence requests through its qualified evidence interfaces. The role
+serves summary, explain, decompose, and examine. The inference model and provider
+are integration choices behind this role.
+
 Language analysis and interpretation produce qualified information through the
 existing evaluation and session record-store architecture. Interpretation adds
 investigons and their support and relationships; it does not establish a
@@ -58,7 +64,7 @@ investigon; only a successful outcome carries one.
 
 | Outcome | Meaning | Accepted investigon? | Retains outcome? |
 | --- | --- | --- | --- |
-| Accepted result | The interpreter submits the result before execution is stopped, and whole-result validation passes. | Yes | Yes, with its result. |
+| Accepted result | The investigator submits the result before execution is stopped, and whole-result validation passes. | Yes | Yes, with its result. |
 | Execution-limit stop | PostCode's guard ends investigation or required repair before an acceptable result is submitted, including while a provider call is in flight. | No | Yes. |
 | Investigation failure | The dialogue ends without submission, or submitted-result validation fails, without an execution-limit, communication/service, or configuration failure causing the termination. This includes refusal, unrecovered output truncation, and unrepaired structural or reference errors. | No | Yes. |
 | Communication/service failure | Communication breaks down or the provider cannot serve the request, including transport errors, request timeouts, rate limiting, provider unavailability, and spending-limit or quota exhaustion. | No | No. |
@@ -91,14 +97,14 @@ under the normal session-validity rules regardless of interpretation outcome.
 
 #### Subject-based evidence access
 
-The interpreter has domain-level access to supported qualified entities and
+The investigator has domain-level access to supported qualified entities and
 relationships. Queries go through evaluation, which reuses retained analysis or
 performs missing mechanical analysis. Results retain their scope, method,
 evidence, and limitations. An established dependency does not establish the
 responsibility it serves; source interpretation can contribute that account
 separately.
 
-The interpreter's complete program-access surface is PostCode's subject
+The investigator's complete program-access surface is PostCode's subject
 population. It navigates entities, relationships, organization groups, and
 opaque documentation or artifact records, requesting source or contents by
 reference. There is no independent filesystem discovery or path-based read
@@ -106,9 +112,9 @@ interface. Completeness here concerns the accessible subject set, not complete
 contents or analysis of each subject. Organization membership does not by itself
 establish a documentation association with a module.
 
-The interpreter has no shell execution, mutation, or web access. Repository
+The investigator has no shell execution, mutation, or web access. Repository
 content is evidence to analyze, not instructions to obey. Credentials remain
-outside interpreter context, investigons, and observations; provider
+outside investigator context, investigons, and observations; provider
 authentication is handled by the agent communication boundary.
 
 Subject-based evidence requests use shared acquisition backed by the session
@@ -118,7 +124,7 @@ boundary. One subject can map to several files or regions. Unsupported mappings
 or unavailable contents yield qualified tool responses rather than falling back to
 arbitrary reads. Filesystem I/O need not be performed by the store itself.
 Capture, output exclusion, and validity enforcement remain responsibilities of
-shared acquisition, without introducing a second interpreter-specific
+shared acquisition, without introducing a second investigator-specific
 file-access policy.
 
 Unavailable evidence from an individual acquisition is normally a qualified tool
@@ -126,7 +132,7 @@ response the dialogue can continue past, not an investigation failure.
 Configuration and service failures follow the evaluation outcome taxonomy above.
 
 The surrounding PostCode session retains investigons, evidence, and outcomes.
-The interpreter can follow composition, investigation-provenance, and revision
+The investigator can follow composition, investigation-provenance, and revision
 links on demand, including reverse lookup of operations that selected an
 investigon. The selected investigon directs attention without restricting access
 to its composition tree or its own chain of prior investigations. Retrieved
@@ -138,7 +144,7 @@ acquisition and coverage remain attributable, including chunking and omissions.
 New content acquisition participates in the session's existing change-detection
 contract.
 
-Source supplied to an interpreter is analysis input, not a human source escape.
+Source supplied to an investigator is analysis input, not a human source escape.
 Its delivery is retained for provenance and resource accounting; a source-escape
 observation records source actually disclosed to the human through the
 interface. Provider transmission remains an operational disclosure distinct from
@@ -147,8 +153,15 @@ interpretation.
 
 #### Rationale, alternatives, and consequences
 
-A separate interpreter pipeline would duplicate evaluation, retention, failure,
-and qualification responsibilities. Restricting the interpreter to source would
+Investigator names evidence gathering and interpretation without implying a
+judgment of correctness. Interpreter suggests source execution; examiner can
+suggest assessment or certification. Analyst and analyzer overlap with the
+mechanical analysis machinery, while inspector conflicts with inspect's
+retrieval-only role. In user journeys, describe the human as exploring or seeking
+to understand the code, reserving Investigator for this component.
+
+A separate investigator pipeline would duplicate evaluation, retention, failure,
+and qualification responsibilities. Restricting the investigator to source would
 require it to reconstruct relationships already established by language
 analysis. Restricting it to currently retained records would prevent useful
 on-demand analysis. The shared evaluation boundary supports both acquisition and
@@ -157,36 +170,36 @@ established information.
 
 Full source access is often needed to understand apparent functionality; human
 presentation bounds address a different concern. Conflating those bounds would
-silently reduce analysis coverage, while labeling interpreter reads as human
+silently reduce analysis coverage, while labeling investigator reads as human
 source escapes would misreport the user's interaction. These distinctions
 specialize the existing evaluation and source-disclosure contracts rather than
 replacing them.
 
-### Start each operation fresh and permit bounded interpreter dialogue
+### Start each operation fresh and permit bounded investigator dialogue
 
-Each new interpretation evaluation uses one fresh interpreter dialogue,
+Each new interpretation evaluation uses one fresh investigator dialogue,
 including any bounded repair turns. Delivery during the evaluation and delivery
 during that dialogue refer to the same exposure history. PostCode provides the
-objective and initial context, the interpreter requests additional context or
+objective and initial context, the investigator requests additional context or
 source, and PostCode returns it. Request and response continue until the
-interpreter submits a result for acceptance or execution ends. Conversation can
+investigator submits a result for acceptance or execution ends. Conversation can
 accumulate within the operation; opaque conversational memory does not carry
 over to the next operation.
 
 The result contract applies to the assembled dialogue result, not necessarily
 one final response. Delivery may span exchanges; validation and acceptance
-remain atomic. The protocol must establish that the interpreter submitted the
+remain atomic. The protocol must establish that the investigator submitted the
 result for acceptance; structural validity alone does not establish readiness.
 Submission mechanics remain an implementation choice and do not assert
 exhaustive investigation. Submission before the guard stops execution
 transitions the result to ordinary whole-result validation. A stop before
 submission retains no investigon; submissions arriving after the stop are
 rejected. If validation fails, the implementation may request repair within the
-same dialogue, subject to the execution guard. The interpreter describes
+same dialogue, subject to the execution guard. The investigator describes
 investigation coverage in prose; epistemological qualifications remain
 separately identifiable and attributable.
 
-Model-written qualifications can caveat an account but cannot raise its
+Investigator-written qualifications can caveat an account but cannot raise its
 epistemological status; validation checks their required presence, structure,
 and attribution rather than their truth.
 
@@ -251,10 +264,10 @@ to apply.
 
 ## Governing impact and promotion
 
-The accompanying [core concepts](../core-concepts.md) explicitly include
-interpretation among applicable analyses. The
+The accompanying [core concepts](../core-concepts.md) define Investigator and explicitly
+include interpretation among applicable analyses. The
 [architectural constraints](../architectural-constraints.md) record the
-interpreter access boundary. Existing qualification, evaluation, session, and
+investigator access boundary. Existing qualification, evaluation, session, and
 observation decisions continue to govern. This record does not supersede an
 earlier headed decision.
 

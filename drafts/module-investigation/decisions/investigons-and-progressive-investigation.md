@@ -25,8 +25,8 @@ canonical model of program responsibilities.
 Existing definitions of Entity, Subject, Claim, Evaluation, Lens, Projection, and
 Session retain their meanings. The lens mapping below makes explicit how an
 interpretation artifact can be a subject of further investigation while retaining
-its program context. Interpreter execution is addressed in
-[Interpreter execution and evidence access](interpreter-execution-and-evidence-access.md);
+its program context. Investigator execution is addressed in
+[Investigator execution and evidence access](investigator-execution-and-evidence-access.md);
 the broader facet definition is addressed in [Facets for subjects](facets-for-subjects.md).
 
 ## Decisions
@@ -101,7 +101,7 @@ working choice while terminology is evaluated in use.
 ### Separate program referents from interpretive focus
 
 An investigon carries a free-form referent description intelligible to a fresh
-interpreter request, originating module context, and optional structured
+investigator request, originating module context, and optional structured
 references to supported subjects. The description can concern several
 collaborating entities or a source region rather than exactly one entity.
 Structured references can support navigation; they need not exhaust the
@@ -153,7 +153,7 @@ turn conceptual background into an independent programming-tutorial subject.
 ### Associate investigons with subjects and select retained results
 
 Investigons have explicit qualified associations with the subjects they
-describe, allowing human inspection and interpreter retrieval by subject.
+describe, allowing human inspection and investigator retrieval by subject.
 Originating investigation context, additional referents, and supporting evidence
 are distinct roles. A source citation or prose mention is not automatically an
 assertion that an investigon describes that subject. Association validation
@@ -183,7 +183,7 @@ section on a later inspection. The mechanical determinism guarantee applies to
 the mechanical portion of inspection, not to the generated content of associated
 investigons.
 
-An interpreter can retrieve such accounts on encountering a subject, even
+An investigator can retrieve such accounts on encountering a subject, even
 outside its chain of prior investigations. The resulting context is explicitly
 labeled as prior interpretation. Its provenance and supplied support remain
 attributable; retrieval does not make it independently established evidence, and
@@ -204,9 +204,9 @@ an explicit action.
 If retained accounts can only be seen as immediate operation output, replacement
 as the “primary display” has little meaning. Subject association and repeat
 viewing make revisions useful for continuing investigation and avoid unnecessary
-model calls. An always-generate command hides a material cost and does not
+investigator invocations. An always-generate command hides a material cost and does not
 provide stable access to accumulated understanding. Treating interpretations as
-intrinsic model properties would obscure qualification and multiple accounts;
+intrinsic subject properties would obscure qualification and multiple accounts;
 access restricted to investigation provenance would hide relevant work performed
 through another investigative path.
 
@@ -239,7 +239,7 @@ Neither relationship by itself establishes program containment, delegation,
 execution order, or logical dependence. Claims about constituent functionality
 require their own support.
 
-The interpreter can traverse composition to understand surrounding and
+The investigator can traverse composition to understand surrounding and
 subordinate parts, and provenance links in either direction to inspect prior and
 subsequent investigations. A reference continues to identify the same investigon
 after any later investigation or correction. Retained projections and
@@ -279,7 +279,7 @@ validated and accepted together. Corrections take effect on acceptance, not
 display.
 
 The target's retained prose, referent information, and qualifications must have
-been delivered in full during the current interpreter dialogue, initially or through
+been delivered in full during the current investigator dialogue, initially or through
 permitted context retrieval. PostCode checks actual delivery; a known or reachable
 identifier alone is insufficient. Targets need not belong to the selected
 subject's composition or provenance chain.
@@ -383,7 +383,7 @@ guarantee detection of every inconsistency or correctness of a revision.
 ### Record citation exposure and derive reconsideration status
 
 Each investigon has a citation index of prior investigons delivered to the
-interpreter during its generating evaluation. PostCode constructs it from actual
+investigator during its generating evaluation. PostCode constructs it from actual
 context delivery, including initial context and traversal or association
 retrieval. All investigons produced by that evaluation share its conservative
 exposure index; shared storage is permitted. A citation records exposure, not
@@ -398,7 +398,7 @@ exchanges in the same dialogue.
 Delivery means exposure at any point during the current evaluation. Later
 context trimming or summarization does not erase citations or revoke
 delivery-based eligibility or exemptions. PostCode records what it supplies, not
-the interpreter's internal retention. Delivery guarantees neither continued
+the investigator's internal retention. Delivery guarantees neither continued
 availability nor comprehension; preservation or re-supply during
 PostCode-managed trimming remains an implementation choice.
 
@@ -429,7 +429,7 @@ subordinate composition tree. A later correction of the replacement is a
 separate cause and does not make delivery of the earlier correction incomplete.
 Record completeness per correction so later session changes cannot
 retrospectively make unseen corrections appear known. This records exposure, not
-comprehension or agreement, and does not require interpreter-reported
+comprehension or agreement, and does not require investigator-reported
 acknowledgment.
 
 "Needs reconsideration" is a derived, session-scoped property of an investigon.
@@ -445,7 +445,7 @@ index remain immutable; session-derived claims express its current
 reconsideration status.
 
 Display the qualification on affected accounts and expose its causes through
-inspection and interpreter context retrieval. It means that an account used
+inspection and investigator context retrieval. It means that an account used
 context that has been corrected, directly or through earlier interpretations,
 and has not been reassessed against that change. It does not assert that the
 account is wrong, remove it from use, invalidate the session, or trigger new
@@ -476,7 +476,7 @@ confer a general "reconsidered" status.
 A corrected account may have influenced later interpretations even when it was
 not their selected subject. Exposing those paths preserves qualifications that
 direct revision warnings alone miss. Recording all delivered investigons is
-verifiable; asking the interpreter to report actual relevance may be more
+verifiable; asking the investigator to report actual relevance may be more
 selective but risks missing dependencies. The conservative policy can over-flag
 incidental context. Assess citation breadth, apparent irrelevant inclusions,
 correction frequency, and the burden of uncleared warnings before refining the

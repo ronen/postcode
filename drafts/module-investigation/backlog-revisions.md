@@ -11,7 +11,7 @@ Area: investigation execution and recovery
 
 Module investigation retains investigation-failure and
 execution-limit outcomes; repeating a command displays those outcomes rather than
-invoking the interpreter again. Communication/service failures leave no reusable
+invoking the investigator again. Communication/service failures leave no reusable
 outcome, so later requests already proceed through ordinary selection in the same
 shell. This candidate concerns explicit retry of retained outcomes, whose current
 recovery requires restarting the shell and losing accumulated investigation context.
@@ -75,6 +75,6 @@ unchanged against specified updated context. Preserve the original artifact and
 record the reassessment basis. Define how clearing a cause affects downstream
 warnings without erasing independent causes or implying downstream reassessment.
 Track no-change outcomes as a possible sign of overly broad citation exposure,
-not proof that the original citations were irrelevant. Interpreter-reported
+not proof that the original citations were irrelevant. Investigator-reported
 relevance may eventually refine selection while full delivery history remains
 available as provenance.

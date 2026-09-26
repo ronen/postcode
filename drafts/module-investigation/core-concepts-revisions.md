@@ -2,7 +2,8 @@
 
 Replace the complete definitions identified below, preserving the surrounding
 canonical sections. Add Investigon under `Investigation and representation`,
-after Projection and before Presentation and View. Unlisted content is unchanged.
+after Projection and before Presentation and View. Add Investigator after Evaluation.
+Unlisted content is unchanged.
 
 ## Replace definition: Subject
 
@@ -44,11 +45,21 @@ A conceptual facet describes the subject in terms useful to the investigation. A
 
 **Evaluation** is PostCode's attempt to materialize requested information through applicable analyses. The information requirements arise from lenses and any standard expansions requested by presentations. Execution constraints describe the conditions under which the attempt is made, rather than the question the lens asks.
 
-Applicable analyses include interpretation, which produces investigons and their supporting context. [[Interpretation and evaluation](decisions/interpreter-execution-and-evidence-access.md#integrate-interpretation-with-evaluation-and-qualified-evidence-access)]
+Applicable analyses include interpretation, which produces investigons and their supporting context. [[Interpretation and evaluation](decisions/investigator-execution-and-evidence-access.md#integrate-interpretation-with-evaluation-and-qualified-evidence-access)]
 
 An **evaluation outcome** describes what occurred in that attempt: applicability and availability, execution state, result materialization, relevant cost, and reasons for failure or stopping. **Materialization** is how much of the requested information has been produced. These dimensions are distinct from the epistemological status of any produced claim.
 
 An outcome can exist without a produced claim or entity, and an incomplete attempt can have usable qualified results. An established empty result is therefore different from the absence of a result. Evaluation outcome and Claim context describe different things even when an outcome helps explain a projection's coverage or limitations.
+
+## Add definition: Investigator
+
+### Investigator
+
+*[decision: [Investigator execution and evidence access](decisions/investigator-execution-and-evidence-access.md#integrate-interpretation-with-evaluation-and-qualified-evidence-access)]*
+
+An **Investigator** is a component that investigates a subject through a dialogue with
+PostCode, using supplied context and requesting additional evidence as needed, and
+submits an interpretation for validation.
 
 ## Replace definition: Session
 
