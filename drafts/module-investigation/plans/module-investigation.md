@@ -938,7 +938,9 @@ later results that correct them.
 Connect investigation to the shell. Demonstrate a complete `summarize`
 journey using the investigator double, including stable references, human and
 JSON views, retained-outcome reuse, expected failure paths, and source
-traceability. Implement `inspect(investigram)` by exact reference to expose
+traceability. Implement and verify one-shot `summarize` with the double as well,
+including its output, failure behavior, and usage reporting.
+Implement `inspect(investigram)` by exact reference to expose
 retained content and support, including accompanying corrections. Display the
 result's accompanying corrections with selectable references to their targets
 and replacements.
@@ -949,14 +951,17 @@ session usage reporting end to end. Keep these tests credential-free and use
 synthetic provider-reported usage. The milestone review checks integration of
 the domain lifecycle with the shell and session lifecycle.
 
+Drive these journeys through the in-process CLI entry point with injected input
+and captured output, using the development-only harness described below.
+
 ### Milestone 3: Live summary and baseline assessment
 
 Connect the summary path to the hosted integration. Implement credential setup
 and verify usage reporting against actual provider responses. Prepare the frozen
 source references, summary evaluator, source-informed assessor, and cost-reporting
-tooling, then run the summary-only baseline on all three fixed subjects. Live
-execution may reveal adjustments needed to the boundaries exercised in milestones
-1–2.
+tooling. Connect the shell harness to the live investigator, then run the
+summary-only baseline on all three fixed subjects. Live execution may reveal
+adjustments needed to the boundaries exercised in milestones 1–2.
 
 The summary-only baseline does not require corrections to occur; deliberate live
 correction assessment begins in milestone 4.
@@ -974,9 +979,11 @@ Observe these dependencies when scheduling the work:
   retain its usage and cost records. This is an early baseline for subsequent
   implementation and assessment, not a scope-selection gate.
 - Include the baseline views, assessment findings, usage and cost records in the
-  milestone-3 review handoff. The review covers the domain and agent-communication
-  boundaries, investigram retention and evaluation integration, asynchronous
-  coordination, interruption, input invalidation, and rejection of late results.
+  milestone-3 review handoff. The review covers the hosted adapter and offline
+  contract checks; enablement, preflight, credential setup and disclosure, and
+  credential-exclusion checks; live usage reporting; assessment tooling; and
+  baseline findings. Include any changes to the earlier boundaries or session
+  integration prompted by live execution.
 
 ### Milestone 4: Progressive investigation
 
@@ -1369,6 +1376,30 @@ hide a regression in an aggregate score or replace an inconvenient subject. No
 broad prompt/model optimization search is required. The human reviews the
 combined formative results after the automated exercise; no universal
 acceptable-cost or usefulness threshold has been established.
+
+#### Shell driving and controlled investigator inputs
+
+The development-only harness invokes the existing CLI entry point in-process,
+supplies terminal-like input, and captures output and observations. Follow the
+existing shell-test approach to issue later commands using references from
+earlier results in the same session. Exercise production command parsing,
+session handling, dialogue coordination, validation, retention, and presentation.
+The harness leaves normal CLI input behavior unchanged.
+
+For live controlled correction cases, use the investigator double to produce the
+earlier misinterpretation through ordinary submission, validation, and retention.
+Use the live investigator for subsequent evaluations in that same session.
+Provide internal dependency injection at the agent communication boundary so
+the harness can select scripted or live investigation for each evaluation.
+The injection mechanism is a test/assessment dependency, not a public command or
+normal configuration option. Its implementation remains delegated.
+
+Identify injected interpretations in views, observations, and assessment records
+through attributable test-origin metadata. Preserve the distinction between
+scripted setup and live findings. Scripted exchanges contribute no provider
+usage; record actual live usage normally. Synthetic usage used in deterministic
+tests remains identified as test data and excluded from live usage and cost
+totals.
 
 #### Assessment tooling and artifact lifecycle
 
