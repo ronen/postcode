@@ -272,6 +272,14 @@ agent conversation would hide selection and revision assumptions. A bounded
 per-operation dialogue supports selective acquisition without either
 restriction.
 
+The [partial-results constraint](../../../docs/architectural-constraints.md#evaluation-and-failure)
+applies when the analysis method permits safe retention. This investigation
+method requires whole-result submission and validation: accepting fragments
+could expose incomplete qualifications or inconsistent references and
+corrections. It therefore forgoes potentially useful unfinished interpretation;
+independently acquired mechanical evidence remains retainable under its own
+validity and qualification rules.
+
 The implementing agent selects the concrete hosted integration, initial
 settings, and practical execution bounds; a universal provider framework and
 local-model comparison are unnecessary. The user's Ollama trial of qwen3.6:27b
@@ -322,6 +330,13 @@ without repeated confirmation. Explicit failures preserve the requested
 operation's meaning. Credential exclusion protects operational records and agent
 context, while disclosure distinguishes that exclusion from stronger isolation
 the mechanism may not provide.
+
+Per-request confirmation would repeatedly interrupt already authorized use.
+Enabling hosted inference merely because a credential is available would not
+establish intent to transmit repository content. A mechanical-only fallback
+would silently change the requested operation. These alternatives are rejected;
+credential storage and transport mechanisms remain implementation choices
+subject to the exclusion and disclosure requirements above.
 
 ## Governing impact and promotion
 

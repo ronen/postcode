@@ -46,6 +46,11 @@ is true.
 Claims about an investigram's correction, conflict, or reconsideration state
 concern that investigram. Their scope is the relevant session state, and
 their support comes from retained relationships and evaluation context.
+Their qualification identifies the versioned mechanical derivation method;
+their guarantee concerns recorded session relationships, not the truth of the
+underlying interpretations. A projection captures the selected facet values and
+their qualification at construction time, so later session changes do not alter
+an earlier projection.
 
 #### Rationale, alternatives, and consequences
 

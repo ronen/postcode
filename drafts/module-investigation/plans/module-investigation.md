@@ -474,8 +474,8 @@ The reporting view lists accompanying corrections with targets, replacement
 references, reasons, and access to supporting context. Unresolved
 inconsistencies are visible through inspection of both reporting and affected
 investigrams and flagged on redisplay. Session-derived facets such as superseded,
-supersedes, and conflicting expose correction relationships without mutating
-investigrams.
+supersedes, conflicting, and needs reconsideration expose correction relationships
+and their consequences without mutating investigrams.
 
 Redisplay substitutes corrected children under an old root, annotated as
 updates. A corrected root instead supplies its own composition. Disclose further
@@ -878,8 +878,13 @@ separate integrated review handoff and pause for final review and the completion
 gate. The integrated handoff may reference earlier milestone evidence; preparing
 it does not itself require rerunning completed checks.
 
-Each handoff identifies the recorded formative assessment evidence and instructs
-the reviewer to assess it without independently rerunning live assessments.
+The milestone-end gates do not replace the development workflow's provision for
+[intermediate review](../../../dev/workflow.md#intermediate-review) when complexity
+warrants it.
+
+Handoffs for milestones with live assessment evidence (3–5), and the integrated
+handoff, identify that evidence and instruct the reviewer to assess it without
+independently rerunning live assessments.
 The reviewer independently examines the pinned source underlying consequential
 claims and compares its own analysis with the generated accounts, source-grounded
 reference material, and assessment findings. Review covers result quality and
@@ -1310,6 +1315,11 @@ Verify the corresponding mechanical invariants with deterministic tests before
 the live assessments. Before the first live run on an assessment fixture, freeze
 its source, documentation, any injected setup, and source-grounded reference
 material.
+
+To exercise a hard-limit stop reliably, the harness may use an assessment-only
+execution-bound override through internal test configuration. Identify the run
+as controlled setup and record the override value; this does not add a normal
+configuration option. The internal mechanism remains an implementation choice.
 
 Exercise interpretation-sensitive fixture cases through the real investigator and
 assess the resulting views against their source-grounded reference material
