@@ -106,6 +106,13 @@ preserved in the [dependency-landscape notes](dependency-landscape.md).
 
 ## Explorative 5WH summary
 
+The approved [module investigation plan](../docs/plans/module-investigation.md)
+includes a terse `summarize(module)` focused on apparent functionality,
+responsibility, significant mechanisms, cases, and delegation, with selectable
+follow-up investigations. That covers much of **What** and some **How** without
+requiring a 5WH template. This entry retains the broader candidate questions
+and possible forms beyond the plan's scope.
+
 A 5WH-style summary could help a human explore an entity through several complementary questions:
 
 - **What:** What behavior, responsibility, or capability does it provide?
