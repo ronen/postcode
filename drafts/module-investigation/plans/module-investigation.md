@@ -871,6 +871,12 @@ it does not itself require rerunning completed checks.
 
 Each handoff identifies the recorded formative assessment evidence and instructs
 the reviewer to assess it without independently rerunning live assessments.
+The reviewer independently examines the pinned source underlying consequential
+claims and compares its own analysis with the generated accounts, source-grounded
+reference material, and assessment findings. Review covers result quality and
+usefulness as well as adherence to the assessment protocol. Report disagreements,
+unsupported conclusions, and material omissions with source evidence and any
+remaining uncertainty.
 Reviewers may rerun deterministic tests and offline adapter checks. If additional
 live evidence is needed, they report the gap and request human direction.
 
