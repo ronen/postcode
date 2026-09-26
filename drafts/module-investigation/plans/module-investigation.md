@@ -849,15 +849,18 @@ retained are implementation choices; secrets must not be recorded.
 
 ## Milestones
 
-All milestones are in scope before implementation starts. They verify progress
-against the agreed capability, not decide whether the later milestones should be
-built. There is no planned usefulness gate after the first milestone that
-changes the remaining scope. Formative findings assess the complete slice and
-inform future planning. Unexpected findings that invalidate the plan's
-assumptions still follow the normal development workflow; that exception is not
-a planned scope-selection stage. If a capability requires an earlier usefulness
-result before committing to its implementation, it belongs in a separately
-planned slice.
+At the end of each milestone, prepare a committed milestone-specific review
+handoff and pause for independent review arranged by the human under the
+development workflow. Resolve findings and obtain the human's direction before
+starting the next milestone. After the milestone-4 review is complete, prepare a
+separate integrated review handoff and pause for final review and the completion
+gate. The integrated handoff may reference earlier milestone evidence; preparing
+it does not itself require rerunning completed checks.
+
+Each handoff identifies the recorded formative assessment evidence and instructs
+the reviewer to assess it without independently rerunning live assessments.
+Reviewers may rerun deterministic tests and offline adapter checks. If additional
+live evidence is needed, they report the gap and request human direction.
 
 The four operations exercise complementary uses of shared interpretation
 infrastructure. Their combined value, including progressive investigation, is
@@ -877,8 +880,7 @@ routine tests remain credential-free. Exercise the real investigator in the
 formative assessments in milestones 2–4. A small, separately invoked live
 integration check may verify the provider connection; exclude it from routine
 test runs. The double and offline adapter checks do not establish live provider
-behavior or interpretive value. Arrange independent review through the human
-under the development workflow.
+behavior or interpretive value.
 
 ### Milestone 1: Summary execution and retention with a scripted investigator
 
@@ -910,22 +912,21 @@ Observe these dependencies when scheduling the work:
   three fixed subjects using the applicable questions and protocol below, and
   retain its usage and cost records. This is an early baseline for subsequent
   implementation and assessment, not a scope-selection gate.
-- After the baseline assessment and before milestone 3, prepare a committed handoff
-  and pause for independent architectural review arranged by the human under the
-  review workflow. Review the domain and agent-communication boundaries, investigram
-  retention and evaluation integration, asynchronous dialogue and worker
-  coordination, interruption, input invalidation, and rejection of late results.
-  Resolve findings and obtain the human's direction to proceed.
-
-The checkpoint assesses whether the implementation supports the agreed
-architecture; summary usefulness does not determine whether the remaining
-operations stay in scope.
+- Include the baseline views, assessment findings, usage and cost records in the
+  milestone-2 review handoff. The review covers the domain and agent-communication
+  boundaries, investigram retention and evaluation integration, asynchronous
+  dialogue and worker coordination, interruption, input invalidation, and rejection
+  of late results.
 
 ### Milestone 3: Progressive investigation
 
 Expose `explain`, `decompose`, and `examine` over the same results. Support on-demand
 context traversal, repeated operations, evidence inspection, subject-associated
 retrieval and inspection, and access to additional permitted source.
+Run a small formative live sequence exercising `explain`, `decompose`, and
+`examine` under the assessment protocol, using the pinned subjects and frozen
+references. Include the views, assessment findings, and usage records in the
+milestone review handoff.
 
 ### Milestone 4: Corrections and integrated lifecycle
 
@@ -934,7 +935,9 @@ composition and prior investigation context, invalidation, interruption,
 observations, and formative investigation on the fixed subjects. Compare the
 completed assessment with the milestone-2 summary baseline, recording changes in
 configuration or evidence that affect the comparison. Complete documentation and
-prepare the integrated review handoff.
+prepare the milestone-4 review handoff. After that review, the integrated handoff
+covers interactions across milestones, governing-document alignment, assessment
+findings, and documentation for the completed slice.
 
 ## Verification and formative assessment
 
@@ -1059,7 +1062,10 @@ Verify public boundaries and journeys, including:
   retained outcomes and starting fresh evaluations when no reusable outcome exists;
 - shared agent communication contract checks for the double and real adapter where
   feasible, including representative provider responses processed by the real
-  adapter offline; routine tests require neither credentials nor live inference;
+  adapter offline; include simulated transport errors and request timeouts, rate
+  limiting, quota or spending-limit exhaustion, authentication rejection, refusal,
+  truncation, and unrecognized provider errors to verify taxonomy mappings;
+  routine tests require neither credentials nor live inference;
 - per-investigation and session usage in human-readable and structured output;
   multiple model/category breakdowns, subset accounting, failed-attempt usage,
   missing usage disclosure, no double counting on redisplay, one-shot reporting,
@@ -1088,11 +1094,12 @@ Verify public boundaries and journeys, including:
 ### Formative investigation assessment
 
 Use three fixed formative subjects: Cockatiel’s `src/common/Executor.ts`,
-`thingts/fsm-engine`,
-and `mesqueeb/merge-anything`. Before live runs, the implementing agent records
-revisions, module boundaries, supplied and accessible documentation, provider
+`thingts/fsm-engine`, and `mesqueeb/merge-anything`. Before live runs, the
+implementing agent records revisions, module boundaries, supplied and accessible
+documentation, provider
 compatibility, and supplied assessment context. These are purposeful development
-subjects, not an unbiased sample or untouched validation set. If a subject cannot be exercised in the supported configured-project scope,
+subjects, not an unbiased sample or untouched validation set. If a subject cannot
+be exercised in the supported configured-project scope,
 report the obstacle for human choice rather than silently replacing an awkward
 result.
 
@@ -1115,7 +1122,8 @@ The subjects exercise complementary aspects of source-based understanding:
 These are selection rationales, not expected answers supplied to the investigator
 or view-only evaluator. Capture the exact modules and revisions used;
 source-based assessment establishes which conclusions those captures actually
-support.
+support. The Cockatiel branch link identifies the candidate file; the recorded
+revision pin governs the assessment and its source references.
 
 #### Investigation sequences and assessment targets
 
@@ -1180,8 +1188,9 @@ exercise](../../../records/validation/initial-module-inventory-questions.md) and
 Evaluators have no implementation-task or investigator conversation history and
 use only the supplied views, including any explicitly supplied
 evidence-inspection view. They do not independently read source, repository
-documentation, plans, or the internet. Record evaluator configuration, supplied artifacts, and any context limits. Fresh
-context does not establish absence of model prior knowledge or independent
+documentation, plans, or the internet. Record evaluator configuration, supplied
+artifacts, and any context limits. Fresh context does not establish absence of
+model prior knowledge or independent
 corroboration of generated claims.
 
 For each formative subject, assess the initial summary separately from the
