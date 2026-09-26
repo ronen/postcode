@@ -57,9 +57,7 @@ An outcome can exist without a produced claim or entity, and an incomplete attem
 
 *[decision: [Investigator execution and evidence access](decisions/investigator-execution-and-evidence-access.md#integrate-interpretation-with-evaluation-and-qualified-evidence-access)]*
 
-An **Investigator** is an AI agent that investigates a subject through a dialogue
-with PostCode, using supplied context and requesting additional evidence as needed,
-and submits an interpretation for validation.
+An **Investigator** is an AI agent that investigates a subject through a dialogue with PostCode, using supplied context and requesting additional evidence as needed, and submits an interpretation for validation.
 
 ## Replace definition: Session
 
@@ -71,7 +69,7 @@ A **Session** is a continuing context for investigation, retaining subject-refer
 
 Within a session, a reference once bound to an entity cannot be rebound. Evidence and published results retain their content, supporting context, and qualifications when later work adds information. Session membership alone does not establish a claim's evidence, completeness, or guarantee.
 
-References bound to investigrams likewise retain their original targets throughout the session, including after correction. [[Investigram references](decisions/investigrams-and-progressive-investigation.md#represent-retained-interpretation-as-investigrams)]
+References bound to investigrams likewise retain their original targets throughout the session, including after correction. [[Investigram references](decisions/investigrams-and-progressive-investigation.md#record-explicit-corrections-without-rewriting-earlier-interpretation)]
 
 The initial session opens one configured project and assumes its relevant inputs remain unchanged. Detection of a relevant change invalidates the session for further investigation; detection is best-effort and capture remains non-atomic. This does not establish earlier contents of an input first observed later.
 
@@ -95,34 +93,12 @@ Redisplay of an investigation result can select retained investigrams and explic
 
 *[decision: [Investigrams and progressive investigation](decisions/investigrams-and-progressive-investigation.md#represent-retained-interpretation-as-investigrams)]*
 
-An **Investigram** is an immutable, addressable artifact of program investigation
-containing a qualified interpretation in prose, with referent information, evidence
-context, and provenance. Its provenance identifies the operation and selected
-subject that produced it. It may contain multiple related claims.
+An **Investigram** is an immutable, addressable artifact of program investigation containing a qualified interpretation in prose, with referent information, evidence context, and provenance. Its provenance identifies the operation and selected subject that produced it. It may contain multiple related claims.
 
-Referent information describes what the interpretation concerns in its program
-context and may include references to specific subjects. A referent may span
-entities or identify captured source. Investigrams can be associated with the
-subjects they describe for subsequent inspection and investigation.
-[[Subject associations](decisions/investigrams-and-progressive-investigation.md#associate-investigrams-with-subjects-and-select-retained-results)]
+Referent information describes what the interpretation concerns in its program context and may include references to specific subjects. A referent may span entities or identify captured source. Investigrams can be associated with the subjects they describe for subsequent inspection and investigation. [[Subject associations](decisions/investigrams-and-progressive-investigation.md#associate-investigrams-with-subjects-and-select-retained-results)]
 
-An investigram and its subordinate investigrams form a fixed composition tree, which
-may have multiple levels. A subsequent investigation
-produces a separate root whose provenance identifies the investigram selected as
-its subject. Composition describes the parts of one result; investigation provenance
-connects separate results through their subjects. Neither describes the program's
-structure by itself.
-[[Composition and investigation provenance](decisions/investigrams-and-progressive-investigation.md#distinguish-fixed-composition-from-investigation-provenance)]
+An investigram and its subordinate investigrams form a fixed composition tree, which may have multiple levels. A subsequent investigation produces a separate root whose provenance identifies the investigram selected as its subject. Composition describes the parts of one result; investigation provenance connects separate results through their subjects. Neither describes the program's structure by itself. [[Composition and investigation provenance](decisions/investigrams-and-progressive-investigation.md#distinguish-fixed-composition-from-investigation-provenance)]
 
-An investigram may carry accompanying corrections identifying earlier targets,
-replacement investigrams, reasons, and evidence context, as well as unresolved
-inconsistencies. Each replacement is constructed through its correction with a
-composition tree disjoint from the reporting tree. Replacements may themselves
-carry corrections; correction targets predate acceptance of the new result.
-[[Corrections](decisions/investigrams-and-progressive-investigation.md#record-explicit-corrections-without-rewriting-earlier-interpretation)]
+An investigram may carry accompanying corrections identifying earlier targets, replacement investigrams, reasons, and evidence context, as well as unresolved inconsistencies. Each replacement is constructed through its correction with a composition tree disjoint from the reporting tree. Replacements may themselves carry corrections; correction targets predate acceptance of the new result. [[Corrections](decisions/investigrams-and-progressive-investigation.md#record-explicit-corrections-without-rewriting-earlier-interpretation)]
 
-An investigram's citation index records prior investigrams supplied to the
-investigator during its generating evaluation, without asserting reliance or
-endorsement. "Needs reconsideration" is a session-derived property indicating
-corrected context reached through those citations; the investigram and its index remain immutable.
-[[Citation exposure and reconsideration](decisions/investigrams-and-progressive-investigation.md#record-citation-exposure-and-derive-reconsideration-status)]
+An investigram's citation index records prior investigrams supplied to the investigator during its generating evaluation, without asserting reliance or endorsement. "Needs reconsideration" is a session-derived property indicating corrected context reached through those citations; the investigram and its index remain immutable. [[Citation exposure and reconsideration](decisions/investigrams-and-progressive-investigation.md#record-citation-exposure-and-derive-reconsideration-status)]

@@ -263,12 +263,7 @@ corrections. It therefore forgoes potentially useful unfinished interpretation;
 independently acquired mechanical evidence remains retainable under its own
 validity and qualification rules.
 
-The implementing agent selects the concrete hosted integration, initial
-settings, and practical execution bounds; a universal provider framework and
-local-model comparison are unnecessary. The human's Ollama trial of qwen3.6:27b
-on the development machine was reported too slow for practical use; that
-observation does not establish
-performance of other local configurations. A later local integration can
+A later local integration can
 implement the agent communication boundary while preserving the domain
 interpretation contract.
 
@@ -337,6 +332,16 @@ Preserve usage as it becomes available independently of disposable investigation
 and session state. When interruption or invalidation ends the session, final
 reporting and observations include recorded attempt and session usage, with
 missing usage identified explicitly.
+
+#### Rationale, alternatives, and consequences
+
+Provider usage can accrue without a retained result. Attaching usage only to
+investigrams or retained outcomes would omit failed attempts, while discarding
+usage on abnormal session termination would hide work already performed.
+Execution attribution preserves those costs and distinguishes reuse from new
+inference. Product-side monetary estimation would additionally require pricing
+and billing assumptions; keeping it in assessment tooling lets the product
+report measured units and coverage without asserting a billed cost.
 
 ## Governing impact and promotion
 

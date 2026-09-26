@@ -10,7 +10,7 @@ Origin: module investigation review and reference-lifetime disclosure decision
 Area: presentation and session references
 
 Assess views introduced by earlier slices against the
-[reference-lifetime disclosure requirement](decisions/investigrams-and-progressive-investigation.md#disclose-reference-expiry-before-follow-up-use):
+[reference-lifetime disclosure requirement](decisions/reference-lifetime-disclosure.md#decision):
 when references expire before they can be used as subjects of a subsequent
 request, their surrounding presentation must make that limitation clear.
 Check one-shot output in particular and bring nonconforming presentations into

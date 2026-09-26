@@ -179,9 +179,10 @@ backlog entries are candidates, not commitments or prerequisites for this slice.
 ## Architectural basis
 
 [Investigrams and progressive investigation](../decisions/investigrams-and-progressive-investigation.md)
-establishes the investigram, lens focus, subject associations,
-[reference-lifetime disclosure](../decisions/investigrams-and-progressive-investigation.md#disclose-reference-expiry-before-follow-up-use),
-composition, investigation provenance, and revisions.
+establishes the investigram, lens focus, subject associations, composition,
+investigation provenance, and revisions.
+[Reference lifetime disclosure](../decisions/reference-lifetime-disclosure.md)
+establishes the presentation rule for references that expire before follow-up use.
 [Investigator execution and evidence access](../decisions/investigator-execution-and-evidence-access.md)
 establishes evaluation integration, fresh per-operation dialogues, access
 boundaries, failure outcomes, and usage attribution.
@@ -274,9 +275,10 @@ them.
 ### Stable references and selection
 
 Every selectable investigram is displayed with a reference that the human can
-type into subsequent CLI commands. Root results and subordinate investigrams are
-both addressable. References remain valid for the lifetime of the session: later
-investigations, new siblings, reordered presentation, and corrections never
+type into subsequent CLI commands within the same session. Root results and
+subordinate investigrams are both addressable. References remain valid for the
+lifetime of the session: later investigations, new siblings, reordered
+presentation, and corrections never
 change their referents. A historical or superseded investigram remains
 selectable. Unknown and cross-session references are explicit selection
 failures. Exact spelling (compact IDs, qualified paths, or another scheme) is an
@@ -440,11 +442,12 @@ requirements, not a required grammar.
    and retains a replacement `@i20` with a reason and supporting evidence. The
    reporting view shows the target, replacement reference, reason, and support access.
 4. `summarize M` displays the retained result with `@i20` marked as a
-   replacement of `@i7`, without invoking the investigator again. Unaffected points retain IDs.
+   replacement of `@i7`, without invoking the investigator again. Unaffected points
+   are displayed unchanged.
 5. `inspect M` exposes associated investigrams and their revision relationships.
    Inspecting `@i7` shows the exact original and a link to `@i20`.
-6. A repeated `decompose @i7` shows its retained decomposition with a revised-origin
-   warning. An explicit new follow-up on the current replacement can produce a
+6. A repeated `decompose @i7` shows its retained decomposition with revised-subject
+   disclosure. An explicit new follow-up on the current replacement can produce a
    new decomposition; the older decomposition still names `@i7` as its subject
    and retains its own original composition tree.
 7. An investigation of another subject encounters M and retrieves these qualified
@@ -561,6 +564,10 @@ setting. Record the provider and dependency choices and their rationale in the
 task record; selection remains delegated and does not require a separate
 approval pause. Document material departures and their reason. Do not build a
 general provider registry or comparative benchmark as a prerequisite.
+
+The human's Ollama trial of qwen3.6:27b on the development machine was
+reported too slow for practical use, motivating the hosted starting point.
+That observation does not establish the performance of other local configurations.
 
 ### Per-operation dialogue and context
 
@@ -867,6 +874,7 @@ retained are implementation choices; secrets must not be recorded.
 | Interpretation quality and generative variation | The implementing agent assesses these in milestones 3–5, records limitations, and makes [bounded improvements](#success-criteria-and-completion). The human considers the evidence at milestone and final reviews. [Assessment runs and variation](#assessment-runs-and-generative-variation) define the comparison limits. |
 | Provider, credential, and assessment-tool availability | The implementing agent verifies the concrete integration and [assessment tooling](#assessment-tooling-and-artifact-lifecycle) before live assessment; the human configures credentials after the [setup disclosure](#credential-setup-for-live-inference). |
 | Usage, cost, and reliability | Record [usage](#basic-inference-usage-reporting) and failures throughout assessment, including incomplete usage after interruption. Report [assessment costs](#assessment-usage-and-cost-report) and escalate obstacles under the [recovery policy](#assessment-failure-recovery-and-reliability). |
+| Recovery loses accumulated context | Retained investigation failures and limit stops require restarting the shell to attempt the request again. Record the impact on formative sequences under the [recovery policy](#assessment-failure-recovery-and-reliability); the [retry candidate](../backlog.md#retry-failed-or-incomplete-interpretation-without-restarting-the-session) tracks future recovery within a session. |
 | Correction complexity and usefulness | [Deterministic checks](#corrections-and-conflicts) verify the mechanics; milestone 5 assesses correction-aware views and the burden of reconsideration warnings through the [formative assessment](#investigation-sequences-and-assessment-targets). |
 
 ## Milestones
@@ -1073,7 +1081,8 @@ Verify public boundaries and journeys, including:
 - mechanical lenses applied to investigram references report unsupported
   subject/lens combinations without coercing the reference to a program entity or
   invoking the investigator; `inspect(investigram)` remains supported;
-
+- reference-lifetime disclosure in this slice's human and JSON presentations when
+  displayed references expire before follow-up use, including one-shot output;
 - broad summary investigrams, attributable mixed evidence, unsupported and ambiguous
   module selections, unknown/cross-session references, and preserved qualifications;
 - multi-level composition produced in one evaluation; follow-ups produce separate
@@ -1099,7 +1108,8 @@ Verify public boundaries and journeys, including:
 - full captured source supplied independently of human excerpt limits, explicit
   chunking/coverage, no human source-escape event for investigator-only reads, and
   correct disclosure observations when source is actually shown to the human;
-- fresh sessions per new evaluation with multiple tool exchanges within an operation;
+- fresh investigator dialogues per new evaluation with multiple tool exchanges
+  within an operation;
   on-demand composition traversal, prior investigations, reverse subject lookup,
   revision context, and additional source;
 - explain/decompose/examine on outputs of each other, including more than one
@@ -1143,7 +1153,6 @@ Verify public boundaries and journeys, including:
   in repeated follow-up displays; observations and structured inspection expose
   citation indexes and completeness of correction context supplied to the
   investigator for audit;
-
 - conflict acceptance without losing useful results, latest-accepted primary selection
   with conflict annotations, conflict overviews and complete inspection access;
   a two-step replacement chain and branching A → B, A → C, B → D sequence
@@ -1174,7 +1183,6 @@ Verify public boundaries and journeys, including:
 - synthetic sentinel credentials never appear in observations, diagnostics, logs,
   investigator context, or assessment artifacts across setup and execution success
   and failure paths; run these checks without real credentials;
-
 - runaway containment across tool-triggered mechanical work and the dialogue loop,
   stopped outcomes, and documented in-flight cancellation limits;
 - failure classification for transport errors, request timeouts, rate limits and
