@@ -49,8 +49,8 @@ validates.
 
 An investigon is not a program entity merely because it is addressable. Claim
 content is the asserted information within it; Claim context qualifies that
-content. Evaluation outcomes describe the attempt that produced it, including
-failure or no materialized result. These distinctions do not prescribe separate
+content. Evaluation outcomes describe how an attempt ended, whether it produced an
+investigon or failed. These distinctions do not prescribe separate
 storage records for every sentence or require a new type system for every claim.
 
 Investigation is the product activity; interpretation is the character of this
@@ -113,8 +113,8 @@ responsibility to it. An arbitrary ID in prose or the free-form description does
 not acquire reference semantics. Referent and evidence remain different roles,
 even where the same captured source region serves both.
 
-Summary, explain, decompose, and examine are lenses, each producing a projection
-containing a root investigon with optional subordinate investigons. Summary
+Summary, explain, decompose, and examine are lenses. A successful evaluation
+provides a root investigon with optional subordinate investigons for the projection. Summary
 selects a module. A follow-up selects an investigon as its subject, retaining
 its underlying program context and referent description. Its prose is part of
 the explicit interpretive input, not a mechanically established premise. A

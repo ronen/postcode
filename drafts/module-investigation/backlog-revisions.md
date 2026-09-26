@@ -12,7 +12,7 @@ Area: investigation execution and recovery
 Module investigation retains investigation-failure and
 execution-limit outcomes; repeating a command displays those outcomes rather than
 invoking the interpreter again. Communication/service failures leave no reusable
-result, so later requests already proceed through ordinary selection in the same
+outcome, so later requests already proceed through ordinary selection in the same
 shell. This candidate concerns explicit retry of retained outcomes, whose current
 recovery requires restarting the shell and losing accumulated investigation context.
 Consider supporting that retry if formative use establishes its value. Define

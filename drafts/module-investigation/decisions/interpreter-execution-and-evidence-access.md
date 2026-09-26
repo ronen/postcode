@@ -25,11 +25,11 @@ separate storage pipeline or committing to a particular inference provider.
 
 Provider-reported usage belongs to actual execution attempts, including
 unsuccessful ones, independently of whether an interpretation result is
-retained. Displaying a retained result adds no inference usage. Session totals
+retained. Displaying a retained outcome adds no inference usage. Session totals
 aggregate each reported call once with model, units, and category relationships
 preserved. Missing usage remains explicit, and totals are not asserted to be
 complete billed usage. Usage reporting does not invoke inference, affect
-retained-result selection, or establish a spending allowance. The initial slice
+outcome reuse, or establish a spending allowance. The initial slice
 exposes attempt and session usage; monetary estimation for formative assessment
 remains assessment tooling.
 
@@ -42,7 +42,7 @@ separate storage or projection pipeline. Shared evidence, Claim context, and
 evaluation outcomes preserve their meaning across both kinds of analysis without
 requiring entities and investigons to be the same record kind.
 
-Lenses declare requested information. Evaluation selects retained results and
+Lenses declare requested information. Evaluation selects retained outcomes and
 explicit revisions and determines what missing analysis or investigation must
 run. Validated results are retained before projection construction; rendering
 and projection construction consume materialized information without invoking
@@ -50,40 +50,44 @@ analysis. A retained interpretation's reuse and an explicit request for a new
 attempt remain distinct from mechanical reuse rules. More available context
 alone does not require regeneration of every earlier investigon.
 
-#### Failure outcomes and later requests
+#### Evaluation outcomes and later requests
 
-An agent-communication failure closes the interpreter session and returns no
-reusable investigation result. Execution diagnostics remain attributable but do
-not satisfy or block later request selection. A subsequent request with no
-retained result starts an ordinary fresh investigation, without detecting
-repetition or resuming the failed dialogue. Completed communication yielding
-invalid output is instead a retained investigation-failure outcome;
-execution-limit stops remain separately identified. Reject late responses from
-finished attempts.
+Each interpretation evaluation ends with one outcome, describing whether it
+produced an accepted result or why it did not. A result is the accepted root
+investigon; only a successful outcome carries one.
 
-Classification follows the failure's meaning, not whether a complete protocol
-response arrived. Transport errors, request timeouts, rate limiting, and
-provider unavailability are communication/service failures, including after
-successful tool exchanges. Provider refusals, provider-reported output
-truncation that remains unrecovered, malformed output, and invalid references are retained investigation
-outcomes. Expiry of PostCode's execution guard is always a limit stop, including
-while a provider call is in flight.
+| Outcome | Meaning | Accepted investigon? | Retains outcome? |
+| --- | --- | --- | --- |
+| Accepted result | The interpreter submits the result before execution is stopped, and whole-result validation passes. | Yes | Yes, with its result. |
+| Execution-limit stop | PostCode's guard ends investigation or required repair before an acceptable result is submitted, including while a provider call is in flight. | No | Yes. |
+| Investigation failure | The dialogue ends without submission, or submitted-result validation fails, without an execution-limit, communication/service, or configuration failure causing the termination. This includes refusal, unrecovered output truncation, and unrepaired structural or reference errors. | No | Yes. |
+| Communication/service failure | Communication breaks down or the provider cannot serve the request, including transport errors, request timeouts, rate limiting, provider unavailability, and spending-limit or quota exhaustion. | No | No. |
+| Configuration unavailability | Required setup or access is unavailable, including runtime authentication rejection. | No | No. |
 
-Runtime authentication rejection is configuration unavailability and leaves no
-reusable investigation outcome. Unrecognized provider errors are reported as
+Interruption and session invalidation follow the existing termination rules and
+leave no reusable outcome for the interrupted evaluation.
+
+Repeating a request returns its retained outcome without new investigation,
+displaying the result when present. If no reusable outcome is retained, the
+request attempts a new investigation through ordinary selection, without detecting
+repetition or resuming the previous dialogue. Diagnostic and usage records alone
+do not count as retained reusable outcomes.
+
+Limited coverage, uncertainty, and no useful new findings do not constitute
+investigation failure: a submitted account describing them can be an accepted
+result.
+
+Unrecognized provider errors are reported as
 unclassified communication/service failures with credential-safe diagnostics;
 this classification does not establish that they are transient.
 
-Provider-identified spending-limit or quota exhaustion is service unavailability
-with no reusable investigation outcome. Preserve the provider error code and
+For spending-limit or quota exhaustion, preserve the provider error code and
 credential-safe diagnostic, distinguishing exhaustion from transient rate
 limiting when supported and reporting uncertainty when the precise restriction
 is unclear.
 
-Communication failure discards the dialogue's unaccepted interpretation content;
-it does not retain an investigation result that would block later
-selection. Qualified mechanical results and evidence acquired through tools
-remain available under the normal session-validity rules.
+Qualified mechanical results and evidence acquired through tools remain available
+under the normal session-validity rules regardless of interpretation outcome.
 
 #### Subject-based evidence access
 
@@ -111,11 +115,22 @@ Subject-based evidence requests use shared acquisition backed by the session
 record store. Acquisition resolves established mappings, returns retained
 captures, or acquires and retains missing contents within the existing validity
 boundary. One subject can map to several files or regions. Unsupported mappings
-or unavailable contents remain qualified outcomes rather than falling back to
+or unavailable contents yield qualified tool responses rather than falling back to
 arbitrary reads. Filesystem I/O need not be performed by the store itself.
 Capture, output exclusion, and validity enforcement remain responsibilities of
 shared acquisition, without introducing a second interpreter-specific
 file-access policy.
+
+Unavailable evidence from an individual acquisition is normally a qualified tool
+response the dialogue can continue past, not an investigation failure.
+Configuration and service failures follow the evaluation outcome taxonomy above.
+
+The surrounding PostCode session retains investigons, evidence, and outcomes.
+The interpreter can follow composition, investigation-provenance, and revision
+links on demand, including reverse lookup of operations that selected an
+investigon. The selected investigon directs attention without restricting access
+to its composition tree or its own chain of prior investigations. Retrieved
+prior interpretations are distinguished from source and mechanical evidence.
 
 Full captured source is available through this interface within execution
 limits; bounded human-facing excerpts do not constrain analysis. Source
@@ -151,37 +166,35 @@ replacing them.
 
 Each new interpretation evaluation uses one fresh interpreter dialogue,
 including any bounded repair turns. Delivery during the evaluation and delivery
-during that dialogue refer to the same exposure history. Reading retained
-results does not invoke the interpreter. PostCode provides the objective and
-initial context, the interpreter requests additional context or source, and
-PostCode returns it. Request and response continue until a result is submitted
-for acceptance or execution ends. Conversation can accumulate within the operation; opaque
-conversational memory does not carry over to the next operation.
+during that dialogue refer to the same exposure history. PostCode provides the
+objective and initial context, the interpreter requests additional context or
+source, and PostCode returns it. Request and response continue until the
+interpreter submits a result for acceptance or execution ends. Conversation can
+accumulate within the operation; opaque conversational memory does not carry
+over to the next operation.
 
-The result contract applies to the assembled dialogue result, not necessarily one
-final response. Delivery may span exchanges; validation and acceptance remain
-atomic. The protocol must establish that the interpreter submitted the result for
-acceptance; structural validity alone does not establish readiness. Submission
-mechanics remain an implementation choice and do not assert exhaustive
-investigation. An execution-limit stop may retain an already submitted valid result,
-but incomplete structures and fragments are not investigons, and no extra turn
-beyond the guard is required. The interpreter describes investigation coverage in
-prose; epistemological qualifications remain separately identifiable and
-attributable. Neither requires a structured completeness or interpretive
-stopping-reason classification.
+The result contract applies to the assembled dialogue result, not necessarily
+one final response. Delivery may span exchanges; validation and acceptance
+remain atomic. The protocol must establish that the interpreter submitted the
+result for acceptance; structural validity alone does not establish readiness.
+Submission mechanics remain an implementation choice and do not assert
+exhaustive investigation. Submission before the guard stops execution
+transitions the result to ordinary whole-result validation. A stop before
+submission retains no investigon; submissions arriving after the stop are
+rejected. If validation fails, the implementation may request repair within the
+same dialogue, subject to the execution guard. The interpreter describes
+investigation coverage in prose; epistemological qualifications remain
+separately identifiable and attributable.
 
-A result accepted at an execution limit carries PostCode's qualification that it
-was accepted at the limit and may be incomplete, in views and later interpreter
-context. Model-written qualifications can caveat an account but cannot raise its
-epistemological status; validation checks their required presence, structure, and
-attribution rather than their truth.
+Model-written qualifications can caveat an account but cannot raise its
+epistemological status; validation checks their required presence, structure,
+and attribution rather than their truth.
 
-Unavailable evidence from an individual acquisition is normally a qualified tool
-response the dialogue can continue past, not an investigation failure. Existing
-configuration and service failure classifications still apply. Continuation or
-repair of a truncated exchange is permitted within the evaluation's limits as an
-implementation choice. Unrecovered truncation yields a retained failure; guard
-expiry during recovery remains an execution-limit stop.
+Continuation or repair of a truncated exchange is permitted within the
+evaluation's limits as an implementation choice. Any terminal failure follows
+the [evaluation outcome taxonomy](#evaluation-outcomes-and-later-requests),
+including guard expiry during repair. Communication failure discards unaccepted
+dialogue content rather than submitting it for validation.
 
 The minimum initial request supplies the operation and module reference for a
 summary, or the selected investigon's prose, referent information, and context
@@ -191,18 +204,11 @@ evidence contract; initially supplied and subsequently requested material obey
 the same capture, qualification, and provenance rules. The actual context
 delivered remains attributable in either case.
 
-The surrounding PostCode session retains investigons, evidence, and outcomes.
-The interpreter can follow composition, investigation-provenance, and revision
-links on demand, including reverse lookup of operations that selected an
-investigon. The selected investigon directs attention without restricting access
-to its composition tree or its own chain of prior investigations. Retrieved
-prior interpretations are distinguished from source and mechanical evidence.
-
 Two internal boundaries separate domain interpretation from agent communication:
 
 - The outer **domain interpretation boundary** accepts an operation, subject, and
   investigation context; coordinates subject-based evidence access and validation;
-  and returns investigons carrying any accompanying corrections, and evaluation outcomes.
+  and returns an evaluation outcome, carrying a result when accepted.
 - The inner **agent communication boundary** exchanges instructions, messages,
   tool requests and responses, and completion or failure signals. It encapsulates
   provider protocols, authentication, and transport details without defining
@@ -236,7 +242,7 @@ performance of other local configurations. A later local integration can
 implement the agent communication boundary while preserving the domain
 interpretation contract.
 
-The plan defines the initial access and outcome policy. Execution bounds
+The plan specifies the initial integration and practical bounds. Execution bounds
 constrain evaluation rather than changing the lens question. Context selection,
 explicit instructions, tool-delivered evidence, model/configuration, and
 generated results remain attributable without requiring access to model-private
