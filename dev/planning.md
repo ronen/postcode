@@ -18,6 +18,8 @@ A useful implementation plan should state:
 - unresolved consequential decisions, including when and by whom they must be resolved; and
 - governing core-concept or architectural-constraint changes associated with the work, if any.
 
+When a proposed architectural constraint may affect existing implementation, consider whether conformance must be assessed or established as part of the associated work. Make that determination proportionate to the risk. If known nonconformance may acceptably be deferred, acknowledge it in the corresponding decision and add a backlog entry describing its impact and urgency. If conformance is unknown and immediate assessment is not warranted, the backlog entry may instead call for that assessment. Do not defer assessment or remediation when the uncertainty or nonconformance would make current behavior unsafe or materially undermine current claims.
+
 Keep plans at the level needed to guide work. Do not use planning documents to settle architecture implicitly: record consequential accepted choices under [`docs/decisions/`](../docs/decisions/).
 
 ## Planning material
