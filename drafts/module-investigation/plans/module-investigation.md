@@ -1335,6 +1335,8 @@ or agreement.
 #### Source-grounded comparison and automated execution
 
 The implementing agent or a designated subagent prepares the reference material.
+Record who prepared it, including whether the preparer was the implementing
+agent; disclose that overlap as an assessment limitation.
 Establish and freeze it before any live investigator run on a formative subject,
 including the milestone-3 summary assessment. Use the
 captured source and qualified mechanical evidence for each subject. The material
@@ -1344,6 +1346,22 @@ purpose need not have one uniquely correct phrasing; reference material
 distinguishes established facts from interpretive judgments and unresolved
 questions. Record any later corrections to the reference material with their
 evidence and rationale.
+
+Keep investigator instructions and context-selection rules general across
+subjects. Do not insert subject-specific expected answers or hints derived from
+assessment references or selection rationales. Source, documentation, qualified
+mechanical evidence, and prior investigrams remain legitimate context under the
+normal evidence-access rules. Assessment reference material is not supplied to
+the live investigator. Controlled cases may supply the documented injected
+misinterpretations as test context; this does not permit supplying the reference
+answers used to assess their correction.
+
+Freeze the investigator prompt set and context-selection rules before each
+assessment pass, including shared instructions and operation-specific templates.
+Apply that version consistently across all subjects and investigation sequences.
+Any revision begins a separately identified assessment pass; preserve earlier
+results and record the changes. Subject evidence and operation-specific context
+vary under those fixed templates and rules.
 
 The comprehension evaluators remain view-only: source-grounded reference
 material and selection rationales are not supplied to them. A separate
@@ -1389,8 +1407,10 @@ Mark that setup as injected test context, not a natural investigator error.
 
 Retain exact explicit inputs, outputs, configuration, evidence access, failures,
 observed usage, elapsed time, and assessment findings in an appropriate
-validation artifact. Prompt revisions are assessed on all three subjects; do not
-hide a regression in an aggregate score or replace an inconvenient subject. No
+validation artifact. Record changes to investigator prompts and context-selection
+rules with each reassessment. Prompt revisions are assessed on all three
+subjects; do not hide a regression in an aggregate score or replace an
+inconvenient subject. No
 broad prompt/model optimization search is required. The human reviews the
 combined formative results after the automated exercise; no universal
 acceptable-cost or usefulness threshold has been established.
