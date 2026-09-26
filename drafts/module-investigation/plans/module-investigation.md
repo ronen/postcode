@@ -863,6 +863,11 @@ infrastructure. Their combined value, including progressive investigation, is
 what this slice assesses; summary quality alone is not the basis for deciding
 whether to implement the remaining operations.
 
+Milestone 1 establishes the full investigram result contract, including
+accompanying corrections, using the double. Milestones 2–3 exercise it through
+live summary and follow-up operations. Milestone 4 adds correction-aware
+selection and display, conflict handling, and reconsideration propagation.
+
 Use deterministic investigator doubles in the regular test suite. The double and
 real adapter implement the same agent communication contract. Tests exercise
 PostCode's actual dialogue coordination, evidence handling, validation, and
@@ -888,6 +893,22 @@ provider-reported usage. Demonstrate a complete `summarize` journey in the shell
 including expected failure paths and source traceability, without credentials or
 live inference.
 
+Exercise the full result structure: the root and subordinate investigrams,
+qualifications, referent information, evidence context, citation indexes, and
+accompanying corrections. Accept corrections in the result root, including
+replacement investigrams, target references, reasons, and supporting context.
+Apply whole-result validation and retain corrections atomically with the result.
+Expose accompanying corrections in the reporting view and through basic
+inspection, keeping original and replacement investigrams addressable.
+Conflicting corrections remain valid retained content; conflict-aware selection
+and presentation arrive in milestone 4.
+
+Provide the full program-evidence interface: source acquisition by subject
+reference, qualified entity and relationship queries, and organization and
+documentation access. Exercise navigation across modules and multiple layers of
+delegation through the double. This evidence access is available to the live
+summary baseline in milestone 2.
+
 ### Milestone 2: Live summary and baseline assessment
 
 Connect the summary path to the hosted integration. Implement credential setup
@@ -895,6 +916,12 @@ and verify usage reporting against actual provider responses. Prepare the frozen
 source references, summary evaluator, source-informed assessor, and cost-reporting
 tooling, then run the summary-only baseline on all three fixed subjects. Live
 execution may reveal adjustments needed to the boundaries exercised in milestone 1.
+
+The hosted integration supports the full result contract, including accompanying
+corrections. Any corrections produced are validated, retained, and exposed through
+the reporting and inspection support established in milestone 1. The summary-only
+baseline does not require corrections to occur; deliberate live correction
+assessment begins in milestone 3.
 
 Observe these dependencies when scheduling the work:
 
@@ -917,20 +944,31 @@ Observe these dependencies when scheduling the work:
 ### Milestone 3: Progressive investigation
 
 Expose `explain`, `decompose`, and `examine` over the same results. Support on-demand
-context traversal, repeated operations, evidence inspection, subject-associated
-retrieval and inspection, and access to additional permitted source.
+investigram composition and investigation-provenance traversal, repeated
+operations, investigram evidence inspection, and subject-associated investigram
+retrieval and inspection.
+
 Run a small formative live sequence exercising `explain`, `decompose`, and
 `examine` under the assessment protocol, using the pinned subjects and frozen
-references. Include the views, assessment findings, and usage records in the
-milestone review handoff.
+references. Assess whether examination notices and explains inconsistencies in
+earlier accounts and can submit accompanying corrections. Repeated views still
+show the original accounts without replacement substitution or derived revision
+warnings. Record these presentation limits when assessing milestone-3 views;
+they are not failed milestone-4 checks. Include the views, assessment findings,
+and usage records in the milestone review handoff.
 
 ### Milestone 4: Corrections and integrated lifecycle
 
-Exercise ancestor corrections, current-versus-historical presentation, preserved
+Implement correction-aware selection and display, conflict handling, and
+citation-based reconsideration propagation. Exercise ancestor
+corrections, current-versus-historical presentation, preserved
 composition and prior investigation context, invalidation, interruption,
 observations, and formative investigation on the fixed subjects. Compare the
 completed assessment with the milestone-2 summary baseline, recording changes in
-configuration or evidence that affect the comparison. Complete documentation and
+configuration or evidence that affect the comparison. The completed sequence has
+access to prior investigrams and corrections that the initial summary did not;
+the comparison assesses what progressive investigation adds, rather than
+isolating improvement in the summary generator. Complete documentation and
 prepare the milestone-4 review handoff. After that review, the integrated handoff
 covers interactions across milestones, governing-document alignment, assessment
 findings, and documentation for the completed slice.
@@ -1271,6 +1309,10 @@ comparison is required.
 
 Use a controlled retained misinterpretation against unchanged source to exercise
 correction explicitly, both with deterministic tests and a live investigator.
+In milestone 1, verify correction submission, validation, retention, and basic
+inspection through the double. Exercise these with the live investigator in
+milestone 3; in milestone 4, extend the exercise to correction-aware selection,
+display, conflicts, and reconsideration propagation.
 Mark that setup as injected test context, not a natural investigator error. Do not
 change source mid-session to simulate correction; that tests invalidation
 instead.
