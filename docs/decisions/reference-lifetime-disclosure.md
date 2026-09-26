@@ -1,7 +1,7 @@
 # Reference lifetime disclosure
 
-Status: in review
-Decided: [needs-review — set adoption date at promotion]
+Status: accepted
+Decided: 2026-09-26
 Arising from: [Module investigation](../plans/module-investigation.md)
 Scope: presentation of references whose validity ends before follow-up use
 
@@ -37,10 +37,8 @@ impact is misleading navigation guidance; this disclosure rule does not change
 reference binding or program-claim semantics. Assessment can therefore follow
 separately from the module investigation slice.
 
-## Governing impact and promotion
+## Governing impact
 
 The accompanying [architectural constraints](../architectural-constraints.md)
 add the disclosure rule under session references. Existing reference-binding and
 session-lifetime decisions remain in force.
-
-At adoption, set the decision date and update the canonical decision index.

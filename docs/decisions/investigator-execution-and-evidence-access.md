@@ -1,7 +1,7 @@
 # Investigator execution and evidence access
 
-Status: in review
-Decided: [needs-review — set adoption date at promotion]
+Status: accepted
+Decided: 2026-09-26
 Arising from: [Module investigation](../plans/module-investigation.md)
 Scope: evaluation integration, investigator dialogue, evidence access, hosted-service enablement, credentials, failure outcomes, and usage attribution
 
@@ -14,7 +14,7 @@ and session architecture. This record establishes execution and access boundarie
 including which outcomes affect subsequent requests and how usage remains
 attributable independently of result retention.
 
-The existing [session decisions](../../../docs/decisions/transient-analysis-sessions.md)
+The existing [session decisions](transient-analysis-sessions.md)
 provide the accumulating session, input-validity, and retained-result context.
 These decisions specialize that context for interpretation without requiring a
 separate storage pipeline or committing to a particular inference provider.
@@ -255,7 +255,7 @@ agent conversation would hide selection and revision assumptions. A bounded
 per-operation dialogue supports selective acquisition without either
 restriction.
 
-The [partial-results constraint](../../../docs/architectural-constraints.md#evaluation-and-failure)
+The [partial-results constraint](../architectural-constraints.md#evaluation-and-failure)
 applies when the analysis method permits safe retention. This investigation
 method requires whole-result submission and validation: accepting fragments
 could expose incomplete qualifications or inconsistent references and
@@ -342,7 +342,7 @@ inference. Product-side monetary estimation would additionally require pricing
 and billing assumptions; keeping it in assessment tooling lets the product
 report measured units and coverage without asserting a billed cost.
 
-## Governing impact and promotion
+## Governing impact
 
 The accompanying [core concepts](../core-concepts.md) define Investigator and explicitly
 include interpretation among applicable analyses. The
@@ -351,6 +351,3 @@ investigator access, hosted-transmission, and credential boundaries. Existing
 qualification, evaluation, session, and observation decisions continue to govern.
 This record does not supersede an
 earlier headed decision.
-
-At adoption, set the decision date, update canonical indexes, and rewrite links
-for their destination paths.

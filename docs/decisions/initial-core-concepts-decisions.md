@@ -8,6 +8,7 @@ Superseded in part:
 
 - [Include only the analysis and identity context needed by the definitions](#include-only-the-analysis-and-identity-context-needed-by-the-definitions) is replaced by [Session as the analysis and reference context](transient-analysis-sessions.md#session-as-the-analysis-and-reference-context), [Stable reference bindings within a session](transient-analysis-sessions.md#stable-reference-bindings-within-a-session), [Retained domain and storage boundaries](transient-analysis-sessions.md#retained-domain-and-storage-boundaries).
 - [Preserve the lens, projection, presentation, and view distinction](#preserve-the-lens-projection-presentation-and-view-distinction) is replaced by [Immutable information within an accumulating session](transient-analysis-sessions.md#immutable-information-within-an-accumulating-session), [Retained domain and storage boundaries](transient-analysis-sessions.md#retained-domain-and-storage-boundaries).
+- [Define Facet as a classification role played by a property](#define-facet-as-a-classification-role-played-by-a-property) is replaced by [Apply facets to subjects, including investigrams](facets-for-subjects.md#apply-facets-to-subjects-including-investigrams).
 
 ## Context
 

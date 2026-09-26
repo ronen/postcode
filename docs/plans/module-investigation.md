@@ -1,6 +1,6 @@
 # Module investigation
 
-Status: in review
+Status: approved
 Created: 2026-09-24
 Updated: 2026-09-26
 Superseded by:
@@ -111,7 +111,7 @@ intermediate usefulness gate that changes the agreed scope.
 
 If findings undermine the slice's premise, stop and seek human direction under
 the [unexpected-findings
-workflow](../../../dev/workflow.md#5-unexpected-findings). The human may
+workflow](../../dev/workflow.md#5-unexpected-findings). The human may
 authorize a plan revision, further work, or closure with the limitations
 recorded. The agent must not dismiss such findings merely because mechanical
 checks pass.
@@ -194,14 +194,14 @@ while preserving the other Property/Facet distinctions. The accompanying
 meaning and invariants.
 
 The adopted [product
-design](../../../foundation/product-design.md#32-summary-as-initial-view-and-recursive-navigation)
+design](../../foundation/product-design.md#32-summary-as-initial-view-and-recursive-navigation)
 establishes qualified summary and recursive investigation. The existing [session
-decisions](../../../docs/decisions/transient-analysis-sessions.md) supply
+decisions](../decisions/transient-analysis-sessions.md) supply
 accumulating immutable records, stable references, transient lifetime, input
 invalidation, and command-scoped observations. The [qualification
-decisions](../../../docs/decisions/adopt-qualification-and-evaluation-constraints.md)
+decisions](../decisions/adopt-qualification-and-evaluation-constraints.md)
 and [evidence
-boundaries](../../../docs/decisions/adopt-identity-evidence-and-observation-constraints.md)
+boundaries](../decisions/adopt-identity-evidence-and-observation-constraints.md)
 continue to apply. No foundation revision is required.
 
 `summarize`, `explain`, `decompose`, and `examine` are lenses. `summarize` selects a module;
@@ -888,7 +888,7 @@ gate. The integrated handoff may reference earlier milestone evidence; preparing
 it does not itself require rerunning completed checks.
 
 The milestone-end gates do not replace the development workflow's provision for
-[intermediate review](../../../dev/workflow.md#intermediate-review) when complexity
+[intermediate review](../../dev/workflow.md#intermediate-review) when complexity
 warrants it.
 
 Handoffs for milestones with live assessment evidence (3–5), and the integrated
@@ -1345,8 +1345,8 @@ interpretations.
 The implementing agent orchestrates fresh evaluator subagents using its available
 agent tools, supplying captured user-facing views and consistent structured
 questions. Follow the approach established by the [module inventory
-exercise](../../../records/validation/initial-module-inventory-questions.md) and
-[module organization assessment](../../../records/tasks/2026-09-15-module-organization.md#bounded-instrument-validation).
+exercise](../../records/validation/initial-module-inventory-questions.md) and
+[module organization assessment](../../records/tasks/2026-09-15-module-organization.md#bounded-instrument-validation).
 Evaluators have no implementation-task or investigator conversation history and
 use only the supplied views, including any explicitly supplied
 evidence-inspection view. They do not independently read source, repository

@@ -1,10 +1,10 @@
 # Facets for subjects
 
-Status: in review
-Decided: [needs-review — set adoption date at promotion]
+Status: accepted
+Decided: 2026-09-26
 Arising from: [Module investigation](../plans/module-investigation.md)
 Scope: Property and Facet definitions, including facets of non-entity subjects
-Supersedes: [Define Facet as a classification role played by a property](../../../docs/decisions/initial-core-concepts-decisions.md#define-facet-as-a-classification-role-played-by-a-property)
+Supersedes: [Define Facet as a classification role played by a property](initial-core-concepts-decisions.md#define-facet-as-a-classification-role-played-by-a-property)
 
 ## Context
 
@@ -61,15 +61,11 @@ does not require new filtering or grouping operations. Presentation-only
 annotations would describe the same characteristics without recognizing their
 existing conceptual role as facets.
 
-## Governing impact and promotion
+## Governing impact
 
 The accompanying [core concepts](../core-concepts.md) extend Facet from
 entities to subjects and link the Property and Facet definitions to this record.
 The decision above fully replaces the initial decision's headed Property/Facet
 definition, preserving its other distinctions.
 
-At promotion, add a `Superseded in part` mapping from
-[Define Facet as a classification role played by a property](../../../docs/decisions/initial-core-concepts-decisions.md#define-facet-as-a-classification-role-played-by-a-property)
-to [Apply facets to subjects, including investigrams](#apply-facets-to-subjects-including-investigrams).
-The earlier record remains partially superseded. Set the decision date at
-adoption, update canonical indexes, and rewrite links for their destination paths.
+The earlier record remains partially superseded.

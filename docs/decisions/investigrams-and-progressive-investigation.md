@@ -1,7 +1,7 @@
 # Investigrams and progressive investigation
 
-Status: in review
-Decided: [needs-review — set adoption date at promotion]
+Status: accepted
+Decided: 2026-09-26
 Arising from: [Module investigation](../plans/module-investigation.md)
 Scope: retained interpretation, lens focus, subject associations, composition, investigation provenance, and corrections
 
@@ -15,7 +15,7 @@ entity. They must also be able to correct earlier accounts when further
 investigation changes the interpretation.
 
 [Transient analysis
-sessions](../../../docs/decisions/transient-analysis-sessions.md) already retain
+sessions](transient-analysis-sessions.md) already retain
 immutable information and stable references while additional analysis
 accumulates. They explicitly leave interpretation augmentation and supersession
 semantics to summary work. This record extends that model without requiring
@@ -488,7 +488,7 @@ records and clearance propagation require separate design, preserving other
 outstanding causes without claiming that downstream accounts were themselves
 reassessed.
 
-## Governing impact and promotion
+## Governing impact
 
 The accompanying [core concepts](../core-concepts.md) add Investigram and
 explicitly include investigrams among subjects, preserving Subject as a role rather
@@ -498,18 +498,15 @@ and Projection to cover redisplay with retained revisions. The
 add stable investigram-reference, composition, provenance, and revision rules.
 Existing qualification and session decisions continue to govern. This record
 extends inspection without superseding an earlier headed decision. The
-[initial inspection decision](../../../docs/decisions/initial-module-inventory-decisions.md#begin-with-a-typescript-module-inventory)
+[initial inspection decision](initial-module-inventory-decisions.md#begin-with-a-typescript-module-inventory)
 establishes qualified inspection and initial module support, rather than an
 exhaustive set of subject kinds or related information. Explicit subject
 associations preserve its selected-subject meaning. They also respect the
-[qualified-inspection requirement](../../../docs/decisions/transient-analysis-sessions.md#retained-domain-and-storage-boundaries)
+[qualified-inspection requirement](transient-analysis-sessions.md#retained-domain-and-storage-boundaries)
 that inspection returns selected subjects and applicable Claim context rather
 than arbitrary store records. The
-[standard-expansion decision](../../../docs/decisions/subject-kind-standard-expansion-decision.md#define-standard-expansions-for-kinds-of-subject)
+[standard-expansion decision](subject-kind-standard-expansion-decision.md#define-standard-expansions-for-kinds-of-subject)
 defines related information by subject kind; it does not require that information
 to be independent of session history. A standard expansion or an explicit related
 section can therefore provide the declared investigram information without
 changing those definitions.
-
-At adoption, set the decision date, update canonical indexes, and rewrite links
-for their destination paths.

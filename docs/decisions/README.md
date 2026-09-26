@@ -58,6 +58,10 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 
 ## Accepted decisions
 
+- [Investigrams and progressive investigation](investigrams-and-progressive-investigation.md)
+- [Investigator execution and evidence access](investigator-execution-and-evidence-access.md)
+- [Facets for subjects](facets-for-subjects.md)
+- [Reference lifetime disclosure](reference-lifetime-disclosure.md)
 - [Transient analysis sessions](transient-analysis-sessions.md)
 - [Initial core-concepts decisions](initial-core-concepts-decisions.md) — partially superseded; see the record’s heading mappings.
 - [Identity, evidence, and observation constraints](adopt-identity-evidence-and-observation-constraints.md) — partially superseded; see the record’s heading mappings.
