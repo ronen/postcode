@@ -495,7 +495,16 @@ explicitly include investigrams among subjects, preserving Subject as a role rat
 than an entity kind. The [architectural constraints](../architectural-constraints.md)
 add stable investigram-reference, composition, provenance, and revision rules.
 Existing qualification and session decisions continue to govern. This record
-does not supersede an earlier headed decision.
+extends inspection without superseding an earlier headed decision. The
+[initial inspection decision](../../../docs/decisions/initial-module-inventory-decisions.md#begin-with-a-typescript-module-inventory)
+establishes qualified inspection and initial module support, rather than an
+exhaustive set of subject kinds or related information. Explicit subject
+associations preserve its selected-subject meaning. The
+[standard-expansion decision](../../../docs/decisions/subject-kind-standard-expansion-decision.md#define-standard-expansions-for-kinds-of-subject)
+defines related information by subject kind; it does not require that information
+to be independent of session history. A standard expansion or an explicit related
+section can therefore provide the declared investigram information without
+changing those definitions.
 
 At adoption, set the decision date, update canonical indexes, and rewrite links
 for their destination paths.

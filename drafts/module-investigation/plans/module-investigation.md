@@ -1266,8 +1266,8 @@ transcripts for private, sensitive, or third-party material and follow the
 applicable approval requirements. Prefer references to pinned source revisions and
 locations where practical. Any copied third-party source excerpts must be
 compatible with the source repository's license, including applicable attribution
-requirements. Retained records must be self-contained rather than depending on
-disposable files.
+requirements. Retained records must be self-contained apart from pinned source references,
+without depending on disposable files.
 
 #### Assessment usage and cost report
 
