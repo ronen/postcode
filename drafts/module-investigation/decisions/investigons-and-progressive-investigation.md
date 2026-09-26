@@ -414,6 +414,10 @@ replacement. Replacement content actually delivered also enters the citation ind
 If bounds prevent full delivery, disclose the omitted content and permit further
 retrieval within the operation's limits. A notice or reference alone does not count
 as delivery of the corresponding account or complete correction context.
+Excerpt and descriptive-listing delivery follows the same bounds rule: include
+at least a correction notice and replacement references, disclose omitted
+correction context, and permit further retrieval. Such exposure creates a citation
+but does not by itself establish complete correction-context delivery.
 
 Retain the identities of corrections for which both the target's and replacement's
 own prose, referent information, and qualifications, together with the correction

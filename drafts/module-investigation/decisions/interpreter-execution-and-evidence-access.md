@@ -149,7 +149,9 @@ replacing them.
 
 ### Start each operation fresh and permit bounded interpreter dialogue
 
-Each new interpretation evaluation starts a fresh interpreter session. Reading
+Each new interpretation evaluation uses one fresh interpreter dialogue, including
+any bounded repair turns. Delivery during the evaluation and delivery during that
+dialogue refer to the same exposure history. Reading
 retained results does not invoke the interpreter. PostCode provides the
 objective and initial context, the interpreter requests additional context or
 source, and PostCode returns it. Request and response repeat until a structured

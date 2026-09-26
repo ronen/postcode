@@ -736,8 +736,12 @@ predating this result. Conflicting corrections are valid retained content, not
 structural validation failures. Validation does not establish the prose's truth.
 On failure, record the evaluation outcome without retaining invalid investigons
 or applying their corrections. Bounded repair within the same evaluation's
-execution limits is an implementation choice. Acceptance is distinct from
-displaying a view, which remains subject to the session-validity checks below.
+execution limits is an implementation choice, including for corrections targeting
+investigons whose required content was not delivered. If repair is absent or
+unsuccessful, that error rejects the whole result and produces a retained
+investigation-failure outcome; repeating the request redisplays that outcome.
+Acceptance is distinct from displaying a view, which remains subject to the
+session-validity checks below.
 
 ### Asynchronous execution and interruption
 
