@@ -22,7 +22,7 @@ whose root references the selected subject through investigation provenance.
 Neither structure establishes a decomposition of the program into canonical
 architectural units.
 
-The human explores the code through these operations. The Investigator gathers
+The human explores the code through these operations. The investigator gathers
 evidence and produces interpretations to support that exploration. Existing
 mechanical analyses, such as organization and dependencies, continue to produce
 qualified projections. They can supply evidence for investigrams without
@@ -864,15 +864,39 @@ infrastructure. Their combined value, including progressive investigation, is
 what this slice assesses; summary quality alone is not the basis for deciding
 whether to implement the remaining operations.
 
-### Milestone 1: Terse module summary through the real investigator boundary
+Use deterministic investigator doubles in the regular test suite. The double and
+real adapter implement the same agent communication contract. Tests exercise
+PostCode's actual dialogue coordination, evidence handling, validation, and
+retention, with scripted evidence requests and submissions at that boundary.
+Retain the double as reusable test infrastructure. Run shared contract checks
+against both implementations where feasible, using representative provider
+responses to exercise the real adapter without live inference.
 
-Establish investigram records and references, qualified evidence assembly,
-bounded tool dialogue, async execution, stable user-selectable references, and a
-usable summary in the shell. Repeating the request displays retained outcomes
-without inference. Include expected failure paths and source traceability rather
-than a prose-only demonstration. Implement credential setup, basic usage
-reporting, and the summary evaluator and source-informed assessor tooling in
-this milestone.
+Live inference requires credentials and consumes limited provider usage, so
+routine tests remain credential-free. Exercise the real investigator in the
+formative assessments in milestones 2–4. A small, separately invoked live
+integration check may verify the provider connection; exclude it from routine
+test runs. The double and offline adapter checks do not establish live provider
+behavior or interpretive value. Arrange independent review through the human
+under the development workflow.
+
+### Milestone 1: Summary execution and retention with a scripted investigator
+
+Establish the shell-to-investigator path using a deterministic test double:
+investigram records and stable references, qualified evidence requests, bounded
+asynchronous dialogue, submission and validation, retained-outcome reuse,
+interruption, and session invalidation. Include usage recording with synthetic
+provider-reported usage. Demonstrate a complete `summarize` journey in the shell,
+including expected failure paths and source traceability, without credentials or
+live inference.
+
+### Milestone 2: Live summary and baseline assessment
+
+Connect the summary path to the hosted integration. Implement credential setup
+and verify usage reporting against actual provider responses. Prepare the frozen
+source references, summary evaluator, source-informed assessor, and cost-reporting
+tooling, then run the summary-only baseline on all three fixed subjects. Live
+execution may reveal adjustments needed to the boundaries exercised in milestone 1.
 
 Observe these dependencies when scheduling the work:
 
@@ -886,7 +910,7 @@ Observe these dependencies when scheduling the work:
   three fixed subjects using the applicable questions and protocol below, and
   retain its usage and cost records. This is an early baseline for subsequent
   implementation and assessment, not a scope-selection gate.
-- After the baseline assessment and before milestone 2, prepare a committed handoff
+- After the baseline assessment and before milestone 3, prepare a committed handoff
   and pause for independent architectural review arranged by the human under the
   review workflow. Review the domain and agent-communication boundaries, investigram
   retention and evaluation integration, asynchronous dialogue and worker
@@ -897,25 +921,20 @@ The checkpoint assesses whether the implementation supports the agreed
 architecture; summary usefulness does not determine whether the remaining
 operations stay in scope.
 
-### Milestone 2: Progressive investigation
+### Milestone 3: Progressive investigation
 
 Expose `explain`, `decompose`, and `examine` over the same results. Support on-demand
 context traversal, repeated operations, evidence inspection, subject-associated
 retrieval and inspection, and access to additional permitted source.
 
-### Milestone 3: Corrections and integrated lifecycle
+### Milestone 4: Corrections and integrated lifecycle
 
 Exercise ancestor corrections, current-versus-historical presentation, preserved
 composition and prior investigation context, invalidation, interruption,
 observations, and formative investigation on the fixed subjects. Compare the
-completed assessment with the milestone-1 summary baseline, recording changes in
+completed assessment with the milestone-2 summary baseline, recording changes in
 configuration or evidence that affect the comparison. Complete documentation and
 prepare the integrated review handoff.
-
-Use deterministic investigator doubles to verify orchestration, but exercise the
-real investigator during each useful end-to-end milestone. Arrange independent
-review through the human under the development workflow; do not confuse passing
-mocked tests with established interpretive value.
 
 ## Verification and formative assessment
 
@@ -1038,6 +1057,9 @@ Verify public boundaries and journeys, including:
   leave no reusable outcome; later requests start fresh evaluations;
 - repeated requests follow the retention column for every taxonomy row, reusing
   retained outcomes and starting fresh evaluations when no reusable outcome exists;
+- shared agent communication contract checks for the double and real adapter where
+  feasible, including representative provider responses processed by the real
+  adapter offline; routine tests require neither credentials nor live inference;
 - per-investigation and session usage in human-readable and structured output;
   multiple model/category breakdowns, subset accounting, failed-attempt usage,
   missing usage disclosure, no double counting on redisplay, one-shot reporting,
@@ -1065,21 +1087,20 @@ Verify public boundaries and journeys, including:
 
 ### Formative investigation assessment
 
-Use three fixed formative subjects: PostCode `evaluation`, `thingts/fsm-engine`,
+Use three fixed formative subjects: Cockatiel’s `src/common/Executor.ts`,
+`thingts/fsm-engine`,
 and `mesqueeb/merge-anything`. Before live runs, the implementing agent records
 revisions, module boundaries, supplied and accessible documentation, provider
-compatibility, and evaluator familiarity. The first two are
-human-authored/familiar; no human use of merge-anything was recalled. These are
-purposeful development subjects, not an unbiased sample or untouched validation
-set. If a subject cannot be exercised in the supported configured-project scope,
+compatibility, and supplied assessment context. These are purposeful development
+subjects, not an unbiased sample or untouched validation set. If a subject cannot be exercised in the supported configured-project scope,
 report the obstacle for human choice rather than silently replacing an awkward
 result.
 
 Pin all three subjects to recorded revisions for the entire formative exercise,
-including the milestone-1 baseline and later assessments. Exercise PostCode's
-`evaluation` subject from a separate checkout of a recorded commit predating
-this slice's implementation, rather than the changing implementation working
-tree. Prepare reference material against these same pinned revisions.
+including the milestone-2 baseline and later assessments. Prepare reference
+material against these same pinned revisions. For Cockatiel, start at
+`src/common/Executor.ts` with surrounding repository evidence accessible through
+the normal subject-based interface.
 
 #### Subject selection rationale
 
@@ -1087,7 +1108,7 @@ The subjects exercise complementary aspects of source-based understanding:
 
 | Subject | Relevant code characteristics | Assessment purpose |
 | --- | --- | --- |
-| PostCode `evaluation` | Invocation and outcome recording are separated from discovery supplied by the caller through an analysis interface | Test whether summaries identify what a module contributes and what it delegates |
+| [Cockatiel `src/common/Executor.ts`](https://github.com/connor4312/cockatiel/blob/master/src/common/Executor.ts) | Invokes caller-supplied work, classifies values and errors through supplied filters, and reports outcomes through return values and timed events; retry policy lives in a caller | Test whether summaries separate execution and outcome classification from the supplied work and surrounding policy |
 | `thingts/fsm-engine` | Meaningful cases, guards, transition actions, and reentrant-request handling | Test terse accounts of branching behavior and useful local decomposition |
 | `mesqueeb/merge-anything` | Related operations share implementation, with recursion versus replacement and customization | Test whether investigation explains substantive mechanisms beyond a generic package description |
 
@@ -1159,8 +1180,7 @@ exercise](../../../records/validation/initial-module-inventory-questions.md) and
 Evaluators have no implementation-task or investigator conversation history and
 use only the supplied views, including any explicitly supplied
 evidence-inspection view. They do not independently read source, repository
-documentation, plans, or the internet. Record evaluator configuration, prior
-familiarity where known, supplied artifacts, and any context limits. Fresh
+documentation, plans, or the internet. Record evaluator configuration, supplied artifacts, and any context limits. Fresh
 context does not establish absence of model prior knowledge or independent
 corroboration of generated claims.
 
@@ -1194,7 +1214,7 @@ or agreement.
 
 The implementing agent or a designated subagent prepares the reference material.
 Establish and freeze it before any live investigator run on a formative subject,
-including the milestone-1 summary assessment. Use the
+including the milestone-2 summary assessment. Use the
 captured source and qualified mechanical evidence for each subject. The material
 records consequential supported conclusions, evidence references, material
 limits, and acceptable qualified interpretations. Apparent responsibility or
