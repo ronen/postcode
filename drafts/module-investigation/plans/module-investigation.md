@@ -23,7 +23,8 @@ Neither structure establishes a decomposition of the program into canonical
 architectural units.
 
 The human explores the code through these operations. The Investigator gathers
-evidence and produces interpretations to support that exploration. Existing mechanical investigations, such as
+evidence and produces interpretations to support that exploration. Existing
+mechanical analyses, such as
 organization and dependencies, continue to produce qualified projections. They
 can supply evidence for investigrams without themselves becoming investigrams.
 
@@ -710,7 +711,7 @@ dialogue. These are implementation recommendations, not required mechanisms;
 any wrap-up or repair remains within the guard. A soft threshold helps the
 investigator reach submission before the hard stop; it neither stops execution nor
 creates a special result category. Verify the selected approach,
-including production of a qualified result within normal execution limits.
+including production of an accepted result within normal execution limits.
 
 User-set spending or resource allowances and allowance-based admission checks
 remain outside this slice and are recorded as [budgeting
@@ -1013,17 +1014,25 @@ Verify public boundaries and journeys, including:
   stopped outcomes, and documented in-flight cancellation limits;
 - failure classification for transport errors, request timeouts, rate limits and
   provider unavailability after successful tool exchanges; retained refusal,
-  unrecovered provider-reported truncation, malformed output and invalid references; guard expiry
-  during a provider call; discarded interpretation content but preserved acquired
+  unrecovered provider-reported truncation, malformed output and invalid references;
+  guard expiry during a provider call; discarded interpretation content but preserved acquired
   evidence on communication failure;
+- submission and acceptance within configured execution limits, exercising a soft
+  threshold or remaining-limit information if implemented;
+- dialogue termination without submission, absent another terminal failure cause,
+  produces a retained investigation failure;
+- runtime authentication rejection and provider spending-limit or quota exhaustion
+  leave no reusable outcome; later requests start fresh evaluations;
+- repeated requests follow the retention column for every taxonomy row, reusing
+  retained outcomes and starting fresh evaluations when no reusable outcome exists;
 - per-investigation and session usage in human-readable and structured output;
   multiple model/category breakdowns, subset accounting, failed-attempt usage,
   missing usage disclosure, no double counting on redisplay, one-shot reporting,
   and totals available after communication failure without inference;
 - provider unavailability, failures, malformed output, exhausted bounds, usage
   unknown, acceptance of a single-operation result as a unit at the domain boundary,
-  sink failure, and
-  no inference during inspection;
+  visible observation-delivery failure without invalidating a successfully
+  produced view, and no inference during inspection;
 - input change during asynchronous work, new evidence acquisition, excluded output,
   interruption, and rejection of late results;
 - result assembly from dialogue exchanges and atomic acceptance without retaining

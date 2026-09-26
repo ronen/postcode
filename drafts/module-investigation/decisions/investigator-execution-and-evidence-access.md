@@ -35,9 +35,10 @@ remains assessment tooling.
 
 ### Integrate interpretation with evaluation and qualified evidence access
 
-An **Investigator** investigates a subject through a dialogue with PostCode and submits
-an interpretation for validation. PostCode supplies context and handles the
-investigator's evidence requests through its qualified evidence interfaces. The role
+An **Investigator** investigates a subject through a dialogue with PostCode and
+submits an interpretation for validation. PostCode supplies context and handles
+the investigator's evidence requests through its qualified evidence interfaces.
+The role
 serves summary, explain, decompose, and examine. The inference model and provider
 are integration choices behind this role.
 
@@ -65,10 +66,13 @@ investigram; only a successful outcome carries one.
 | Outcome | Meaning | Accepted investigram? | Retains outcome? |
 | --- | --- | --- | --- |
 | Accepted result | The investigator submits the result before execution is stopped, and whole-result validation passes. | Yes | Yes, with its result. |
-| Execution-limit stop | PostCode's guard ends investigation or required repair before an acceptable result is submitted, including while a provider call is in flight. | No | Yes. |
+| Execution-limit stop | PostCode's guard ends investigation or repair in progress before an acceptable result is submitted, including while a provider call is in flight. | No | Yes. |
 | Investigation failure | The dialogue ends without submission, or submitted-result validation fails, without an execution-limit, communication/service, or configuration failure causing the termination. This includes refusal, unrecovered output truncation, and unrepaired structural or reference errors. | No | Yes. |
 | Communication/service failure | Communication breaks down or the provider cannot serve the request, including transport errors, request timeouts, rate limiting, provider unavailability, and spending-limit or quota exhaustion. | No | No. |
 | Configuration unavailability | Required setup or access is unavailable, including runtime authentication rejection. | No | No. |
+
+Classification reflects what actually ended the evaluation, including when
+optional repair is attempted.
 
 Interruption and session invalidation follow the existing termination rules and
 leave no reusable outcome for the interrupted evaluation.
@@ -216,6 +220,12 @@ subject-based interface. Prefetching is an execution choice, not a separate
 evidence contract; initially supplied and subsequently requested material obey
 the same capture, qualification, and provenance rules. The actual context
 delivered remains attributable in either case.
+
+The Investigator is the dialogue participant reached through the agent
+communication boundary. PostCode's dialogue coordinator is its counterpart:
+it supplies context, handles evidence requests, and validates submissions.
+An investigator test double replaces that participant while exercising PostCode's
+coordination. These roles are independent of local or hosted model execution.
 
 Two internal boundaries separate domain interpretation from agent communication:
 
