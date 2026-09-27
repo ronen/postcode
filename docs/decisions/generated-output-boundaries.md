@@ -1,7 +1,7 @@
 # Generated-output boundary resolution
 
-Status: in review
-Decided:
+Status: accepted
+Decided: 2026-09-27
 Arising from: [Foundation readiness](../plans/foundation-readiness.md)
 Scope: live generated-output exclusion during compiler and repository acquisition
 

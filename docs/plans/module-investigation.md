@@ -2,7 +2,7 @@
 
 Status: approved
 Created: 2026-09-24
-Updated: 2026-09-26
+Updated: 2026-09-27
 Superseded by:
 
 ## Outcome and use narrative
@@ -209,6 +209,12 @@ follow-up lenses select an investigram as their subject, using its prose and
 underlying program context to focus the investigation. The projection identifies
 both that selection and the retained result. An investigram is a valid subject in
 its own right; it is not an entity.
+
+### Established foundation
+
+This plan assumes the [foundation-readiness work](foundation-readiness.md) is complete and builds on its established immutable publication, reference identity, output-exclusion, graph, execution and validation boundaries.
+
+Foundation readiness covers the needs of the existing commands. This plan extends those shared foundations with investigation-specific evidence access, dialogue, result acceptance, corrections and usage reporting.
 
 ### Evaluation and retained program information
 

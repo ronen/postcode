@@ -1,7 +1,7 @@
 # Local observation acceptance contract
 
-Status: in review
-Decided:
+Status: accepted
+Decided: 2026-09-27
 Arising from: [Foundation readiness](../plans/foundation-readiness.md)
 Scope: acceptance and delivery guarantees of the development filesystem observation sink
 

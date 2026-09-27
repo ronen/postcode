@@ -1,7 +1,7 @@
 # Execution ownership and cancellation semantics
 
-Status: in review
-Decided:
+Status: accepted
+Decided: 2026-09-27
 Arising from: [Foundation readiness](../plans/foundation-readiness.md)
 Scope: ownership and cancellation contract for command opening, Git acquisition, validation and disposal
 

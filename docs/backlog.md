@@ -129,25 +129,6 @@ not proof that the original citations were irrelevant. Investigator-reported
 relevance may eventually refine selection while the full history of context
 supplied to the investigator remains available as provenance.
 
-## Audit existing generic functionality for library reuse
-
-Added: 2026-09-26
-Origin: human-directed adoption of library-reuse engineering guidance
-Area: dependencies and maintenance burden
-
-Conduct a one-time, read-only audit of substantial generic functionality already
-implemented in PostCode to identify where established external libraries could
-meaningfully reduce implementation, testing, or maintenance burden. For each
-candidate, identify the current code and tests, plausible libraries, their
-fitness, maturity, maintenance posture, adoption, and license, the bespoke code
-and tests that could be removed, and integration and migration costs. Assess
-whether external assumptions would intrude on PostCode's core concepts, and
-recommend strong candidates, marginal candidates, or keeping the existing code.
-Exclude trivial utilities where a dependency would cost more than it saves, and
-treat PostCode-specific concepts and semantics as presumptively bespoke. The
-audit should report findings without changing code or adding dependencies;
-adoption of any recommendation requires separate human direction.
-
 ## Investigate multi-project repositories
 
 Added: 2026-09-25
@@ -185,18 +166,11 @@ Added: 2026-09-24
 Origin: human observation that PostCode appears to use one CPU during analysis
 Area: analysis execution and responsiveness
 
-Measure CPU use and stage-level wall time on representative projects to identify
-work that could run independently or overlap without changing results. The
-interactive shell currently runs one command at a time in one analysis worker;
-TypeScript program construction and much of discovery use synchronous compiler
-APIs, while repository capture and input probes perform synchronous filesystem
-and Git reads. Evaluate whether parallel analysis or asynchronous I/O would
-materially improve latency, throughput, or responsiveness, accounting for worker
-startup and communication, memory use, deterministic output, captured-input
-consistency, session reference bindings, and cancellation. Do not assume that
-switching file reads to async will accelerate CPU-bound compiler work. Use the
-[completed latency investigation](../records/validation/2026-09-21-analysis-latency.md)
-as a baseline and account for reuse in the interactive session.
+The interactive shell currently runs one command at a time in one analysis worker. TypeScript program construction and much of discovery use synchronous compiler APIs; repository capture and input probes currently use synchronous filesystem and Git reads. The [foundation-readiness plan](plans/foundation-readiness.md) changes Git execution to support cancellation and removes repeated scans through local indexes; it does not establish general analysis parallelism.
+
+After that slice, measure remaining CPU use and stage-level wall time on representative projects to identify work that could run independently or overlap without changing results. Account for the implemented execution model rather than assuming the current synchronous Git path remains.
+
+Evaluate further parallel analysis or asynchronous I/O against worker startup and communication, memory use, deterministic output, captured-input consistency, session reference bindings and cancellation. Do not assume that asynchronous reads accelerate CPU-bound compiler work. Use the [completed latency investigation](../records/validation/2026-09-21-analysis-latency.md), the [processing audits](../records/audits/2026-09-27-foundation-readiness/README.md), and the foundation plan's integrated measurements as evidence, accounting separately for opening, first use, reuse and full CLI publication.
 
 ## Evaluate independent TypeScript versions for building and analysis
 
