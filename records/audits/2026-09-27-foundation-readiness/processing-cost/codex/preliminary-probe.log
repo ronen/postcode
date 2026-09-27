@@ -1,0 +1,27 @@
+Starting postcode
+{"name":"postcode","population":{"modules":215,"groups":48,"artifacts":325,"expansionClaims":5674,"expansionEvaluations":646,"relationships":372,"dependencyOrganizationMaterialization":"partial"},"stages":{"open":{"ms":1855.1923210000002,"cpuMs":3275.35,"wallMs":1855},"moduleEvaluation":{"ms":2967.9849600000002,"cpuMs":4281.1,"wallMs":2968},"dependencyEvaluation":{"ms":359.91582500000004,"cpuMs":459.051,"wallMs":359},"organizationEvaluation":{"ms":58.16032399999949,"cpuMs":118.479,"wallMs":59},"dependencyOrganizationEvaluation":{"ms":73.12199200000032,"cpuMs":87.899,"wallMs":73},"moduleProjection":{"ms":29.60388899999998,"cpuMs":32.272,"wallMs":30},"organizationProjection":{"ms":11.422104000000218,"cpuMs":17.51,"wallMs":11},"dependencyProjection":{"ms":21.61005800000021,"cpuMs":22.554,"wallMs":22}},"counts":{"moduleViewJson":{"storeGets":1371867},"moduleViewUnicode":{"storeGets":1370267},"organizationViewUnicode":{"storeGets":32171},"dependencyViewJson":{"storeGets":223578},"dependencyViewUnicode":{"storeGets":219952},"repeatedDependencyOrganization":{"storeGets":4196},"repeatedModuleEvaluation":{"storeGets":1},"placement":{"lookups":59,"placementComparisons":17405,"artifactComparisons":17405}}}
+Starting dependency-journey
+{"name":"dependency-journey","population":{"modules":6,"groups":48,"artifacts":325,"expansionClaims":7,"expansionEvaluations":19,"relationships":6,"dependencyOrganizationMaterialization":"full"},"stages":{"open":{"ms":315.8435559999998,"cpuMs":81.35,"wallMs":316},"moduleEvaluation":{"ms":12.87494400000287,"cpuMs":15.8,"wallMs":13},"dependencyEvaluation":{"ms":13.294012999998813,"cpuMs":13.157,"wallMs":13},"organizationEvaluation":{"ms":32.901143000002776,"cpuMs":42.344,"wallMs":33},"dependencyOrganizationEvaluation":{"ms":1.688006000000314,"cpuMs":1.69,"wallMs":2},"moduleProjection":{"ms":0.36865100000068196,"cpuMs":0.36,"wallMs":0},"organizationProjection":{"ms":2.3888699999988603,"cpuMs":2.38,"wallMs":2},"dependencyProjection":{"ms":1.6123850000003586,"cpuMs":1.598,"wallMs":2}},"counts":{"moduleViewJson":{"storeGets":296},"moduleViewUnicode":{"storeGets":296},"organizationViewUnicode":{"storeGets":1612},"dependencyViewJson":{"storeGets":779},"dependencyViewUnicode":{"storeGets":779},"repeatedDependencyOrganization":{"storeGets":1073},"repeatedModuleEvaluation":{"storeGets":1},"placement":{"lookups":6,"placementComparisons":447,"artifactComparisons":447}}}
+Starting generated-250
+node:internal/modules/run_main:122
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ 'project-open-failed'
+- 'opened'
+
+    at file:///Users/ronen/postcode/app/_codex-processing-cost-audit-2026-09-27/probe.mjs:73:10
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:547:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'project-open-failed',
+  expected: 'opened',
+  operator: 'strictEqual'
+}
+
+Node.js v22.13.1

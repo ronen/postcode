@@ -1,0 +1,20 @@
+TAP version 13
+# Subtest: publication observes invalidation before and after output without fabricating or erasing views
+ok 1 - publication observes invalidation before and after output without fabricating or erasing views
+  ---
+  duration_ms: 157.481177
+  ...
+# Subtest: idle Ctrl-C discards its input line and EOF finishes the next accepted command
+ok 2 - idle Ctrl-C discards its input line and EOF finishes the next accepted command
+  ---
+  duration_ms: 955.857372
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1710.14704

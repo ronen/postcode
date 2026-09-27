@@ -1,0 +1,682 @@
+{
+  "archived_on": "2026-09-27",
+  "original_directory": "_codex-library-reuse-audit",
+  "files": [
+    {
+      "original_path": "_codex-library-reuse-audit/audit.md",
+      "archived_path": "REPORT.md",
+      "original_sha256": "310b12f9d7e98934344a0cddad0ceff4bade5240ad9bbbd021cfe2752b1a280c",
+      "archived_sha256": "3209ec67ea6c7fa805a4ed15d5e0187a415eb833634c94687f6788a1371afa20",
+      "bytes": 44897,
+      "link_adjustments": [
+        {
+          "old": "/Users/ronen/postcode/app/docs/backlog.md:132",
+          "new": "../../../../../docs/backlog.md#L132",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/docs/decisions/transient-analysis-sessions.md",
+          "new": "../../../../../docs/decisions/transient-analysis-sessions.md",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/docs/decisions/module-dependency-structure-decisions.md",
+          "new": "../../../../../docs/decisions/module-dependency-structure-decisions.md",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/docs/decisions/repository-organization-decisions.md",
+          "new": "../../../../../docs/decisions/repository-organization-decisions.md",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/docs/decisions/initial-module-inventory-decisions.md",
+          "new": "../../../../../docs/decisions/initial-module-inventory-decisions.md",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/docs/decisions/initial-observation-recording-decisions.md",
+          "new": "../../../../../docs/decisions/initial-observation-recording-decisions.md",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/presentation.ts:209",
+          "new": "../../../../../src/lib/presentation.ts#L209",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/presentation.ts:301",
+          "new": "../../../../../src/lib/presentation.ts#L301",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/organization/presentation.ts:262",
+          "new": "../../../../../src/lib/organization/presentation.ts#L262",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/cli.test.ts:624",
+          "new": "../../../../../test/cli.test.ts#L624",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/cli.test.ts:686",
+          "new": "../../../../../test/cli.test.ts#L686",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/cli.test.ts:710",
+          "new": "../../../../../test/cli.test.ts#L710",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/organization-cli.test.ts:247",
+          "new": "../../../../../test/organization-cli.test.ts#L247",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/commands.ts:53",
+          "new": "../../../../../src/lib/commands.ts#L53",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/commands.ts:90",
+          "new": "../../../../../src/lib/commands.ts#L90",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/cli.test.ts:108",
+          "new": "../../../../../test/cli.test.ts#L108",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/cli.test.ts:162",
+          "new": "../../../../../test/cli.test.ts#L162",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/cli.test.ts:176",
+          "new": "../../../../../test/cli.test.ts#L176",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/shell.test.ts:13",
+          "new": "../../../../../test/shell.test.ts#L13",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/dependencies/graph.ts",
+          "new": "../../../../../src/lib/dependencies/graph.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/repository/layout.ts:31",
+          "new": "../../../../../src/lib/repository/layout.ts#L31",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/dependencies/organization.ts:84",
+          "new": "../../../../../src/lib/dependencies/organization.ts#L84",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/dependency-projections.test.ts:46",
+          "new": "../../../../../test/dependency-projections.test.ts#L46",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/dependency-projections.test.ts:248",
+          "new": "../../../../../test/dependency-projections.test.ts#L248",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/dependency-projections.test.ts:260",
+          "new": "../../../../../test/dependency-projections.test.ts#L260",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/dependency-presentation.test.ts:119",
+          "new": "../../../../../test/dependency-presentation.test.ts#L119",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/repository.test.ts:256",
+          "new": "../../../../../test/repository.test.ts#L256",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/repository.test.ts:268",
+          "new": "../../../../../test/repository.test.ts#L268",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/dependency-projections.test.ts:236",
+          "new": "../../../../../test/dependency-projections.test.ts#L236",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/memory-store.ts:4",
+          "new": "../../../../../src/lib/memory-store.ts#L4",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/memory-store.ts:57",
+          "new": "../../../../../src/lib/memory-store.ts#L57",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/records.test.ts:20",
+          "new": "../../../../../test/records.test.ts#L20",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/records.test.ts:57",
+          "new": "../../../../../test/records.test.ts#L57",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/records.test.ts:94",
+          "new": "../../../../../test/records.test.ts#L94",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/records.test.ts:138",
+          "new": "../../../../../test/records.test.ts#L138",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/organization.test.ts:335",
+          "new": "../../../../../test/organization.test.ts#L335",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/dependency-projections.test.ts:275",
+          "new": "../../../../../test/dependency-projections.test.ts#L275",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/repository/capture.ts:25",
+          "new": "../../../../../src/lib/repository/capture.ts#L25",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/repository/layout.ts:8",
+          "new": "../../../../../src/lib/repository/layout.ts#L8",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/repository.test.ts:71",
+          "new": "../../../../../test/repository.test.ts#L71",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/repository.test.ts:116",
+          "new": "../../../../../test/repository.test.ts#L116",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/repository.test.ts:153",
+          "new": "../../../../../test/repository.test.ts#L153",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/repository.test.ts:166",
+          "new": "../../../../../test/repository.test.ts#L166",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/repository.test.ts:183",
+          "new": "../../../../../test/repository.test.ts#L183",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/repository.test.ts:201",
+          "new": "../../../../../test/repository.test.ts#L201",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/repository.test.ts:287",
+          "new": "../../../../../test/repository.test.ts#L287",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/repository.test.ts:369",
+          "new": "../../../../../test/repository.test.ts#L369",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/repository.test.ts:424",
+          "new": "../../../../../test/repository.test.ts#L424",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/organization.test.ts",
+          "new": "../../../../../test/organization.test.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/repository/capture.ts:41",
+          "new": "../../../../../src/lib/repository/capture.ts#L41",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/repository.test.ts:391",
+          "new": "../../../../../test/repository.test.ts#L391",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/repository.test.ts:424",
+          "new": "../../../../../test/repository.test.ts#L424",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/repository.test.ts:445",
+          "new": "../../../../../test/repository.test.ts#L445",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/typescript/project.ts:28",
+          "new": "../../../../../src/lib/typescript/project.ts#L28",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/typescript/dependencies.ts:36",
+          "new": "../../../../../src/lib/typescript/dependencies.ts#L36",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/typescript/expansions.ts:29",
+          "new": "../../../../../src/lib/typescript/expansions.ts#L29",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/typescript/commonjs.ts:5",
+          "new": "../../../../../src/lib/typescript/commonjs.ts#L5",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/typescript/composition.ts:8",
+          "new": "../../../../../src/lib/typescript/composition.ts#L8",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/discovery.test.ts",
+          "new": "../../../../../test/discovery.test.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/expansions.test.ts",
+          "new": "../../../../../test/expansions.test.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/dependency-contract.test.ts",
+          "new": "../../../../../test/dependency-contract.test.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/dependencies.test.ts",
+          "new": "../../../../../test/dependencies.test.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/source-evidence.test.ts",
+          "new": "../../../../../test/source-evidence.test.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/typescript/inputs.ts:6",
+          "new": "../../../../../src/lib/typescript/inputs.ts#L6",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/typescript/project.ts:104",
+          "new": "../../../../../src/lib/typescript/project.ts#L104",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/evaluation.ts:32",
+          "new": "../../../../../src/lib/evaluation.ts#L32",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/session.ts:85",
+          "new": "../../../../../src/lib/session.ts#L85",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/inputs.test.ts",
+          "new": "../../../../../test/inputs.test.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/session-inputs.test.ts",
+          "new": "../../../../../test/session-inputs.test.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/discovery.test.ts:204",
+          "new": "../../../../../test/discovery.test.ts#L204",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/discovery.test.ts:223",
+          "new": "../../../../../test/discovery.test.ts#L223",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/discovery.test.ts:328",
+          "new": "../../../../../test/discovery.test.ts#L328",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/interactive-session.ts:17",
+          "new": "../../../../../src/lib/interactive-session.ts#L17",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/session-worker.ts",
+          "new": "../../../../../src/lib/session-worker.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/shell.ts",
+          "new": "../../../../../src/lib/shell.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/shell.test.ts:38",
+          "new": "../../../../../test/shell.test.ts#L38",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/shell.test.ts:108",
+          "new": "../../../../../test/shell.test.ts#L108",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/shell.test.ts:128",
+          "new": "../../../../../test/shell.test.ts#L128",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/session-inputs.test.ts:293",
+          "new": "../../../../../test/session-inputs.test.ts#L293",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/observations.ts",
+          "new": "../../../../../src/lib/observations.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/command-execution.ts:15",
+          "new": "../../../../../src/lib/command-execution.ts#L15",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/cli.test.ts:45",
+          "new": "../../../../../test/cli.test.ts#L45",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/cli.test.ts:96",
+          "new": "../../../../../test/cli.test.ts#L96",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/cli.test.ts:233",
+          "new": "../../../../../test/cli.test.ts#L233",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/cli.test.ts:264",
+          "new": "../../../../../test/cli.test.ts#L264",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/cli.test.ts:775",
+          "new": "../../../../../test/cli.test.ts#L775",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/session.test.ts:16",
+          "new": "../../../../../test/session.test.ts#L16",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/scripts/benchmark-analysis.mjs",
+          "new": "../../../../../scripts/benchmark-analysis.mjs",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/scripts/measure-analysis.mjs",
+          "new": "../../../../../scripts/measure-analysis.mjs",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/helpers.ts",
+          "new": "../../../../../test/helpers.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/benchmark-analysis.test.ts",
+          "new": "../../../../../test/benchmark-analysis.test.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/identity.ts:26",
+          "new": "../../../../../src/lib/identity.ts#L26",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/records.test.ts",
+          "new": "../../../../../test/records.test.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/discovery.test.ts:183",
+          "new": "../../../../../test/discovery.test.ts#L183",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/test/session.test.ts:138",
+          "new": "../../../../../test/session.test.ts#L138",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/terminal-text.ts",
+          "new": "../../../../../src/lib/terminal-text.ts",
+          "reason": "Relocated local link."
+        }
+      ]
+    },
+    {
+      "original_path": "_codex-library-reuse-audit/collect-evidence.py",
+      "archived_path": "collect-evidence.py",
+      "original_sha256": "06575f52af6578baf0526d8e3301a374f9cb23220e9041bc40dbc0ed9c9580f5",
+      "archived_sha256": "06575f52af6578baf0526d8e3301a374f9cb23220e9041bc40dbc0ed9c9580f5",
+      "bytes": 2429,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-library-reuse-audit/graph-library-research.md",
+      "archived_path": "graph-library-research.md",
+      "original_sha256": "7fb77e96b6b20243e45beb2d9a7f618dbff146a2ead4f0cd496aee1250e23dd0",
+      "archived_sha256": "f7a791ac0502a81d351ccae1b9991fc205d2f224f3982b275ecb922eed27146d",
+      "bytes": 13751,
+      "link_adjustments": [
+        {
+          "old": "audit.md",
+          "new": "REPORT.md",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/dependencies/graph.ts",
+          "new": "../../../../../src/lib/dependencies/graph.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/repository/layout.ts:31",
+          "new": "../../../../../src/lib/repository/layout.ts#L31",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/dependencies/organization.ts:84",
+          "new": "../../../../../src/lib/dependencies/organization.ts#L84",
+          "reason": "Relocated local link."
+        }
+      ]
+    },
+    {
+      "original_path": "_codex-library-reuse-audit/graph-research/github-evidence.json",
+      "archived_path": "graph-research/github-evidence.json",
+      "original_sha256": "e35d9849fb3d3ba014e05db99dc2e46d1cb0ec4ee26df2f5e289421acf2b51c6",
+      "archived_sha256": "e35d9849fb3d3ba014e05db99dc2e46d1cb0ec4ee26df2f5e289421acf2b51c6",
+      "bytes": 91551,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-library-reuse-audit/graph-research/package-evidence.json",
+      "archived_path": "graph-research/package-evidence.json",
+      "original_sha256": "2bf0355f833e68cc2abaef3e2ea997f481cbc75e109ba53e06888eb93a820793",
+      "archived_sha256": "2bf0355f833e68cc2abaef3e2ea997f481cbc75e109ba53e06888eb93a820793",
+      "bytes": 23235,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-library-reuse-audit/graph-research/probe/package-lock.json",
+      "archived_path": "graph-research/probe/package-lock.json",
+      "original_sha256": "c77081bbc25928f74d77b1f680df15ddc7444b6907d8b89b2aa7d3cce9cf51c3",
+      "archived_sha256": "c77081bbc25928f74d77b1f680df15ddc7444b6907d8b89b2aa7d3cce9cf51c3",
+      "bytes": 7334,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-library-reuse-audit/graph-research/probe/package.json",
+      "archived_path": "graph-research/probe/package.json",
+      "original_sha256": "cf334a485eeb3c8fc7d9d6f6e5278a6659ccd2bc023c7e632ef714ceaabe1a7f",
+      "archived_sha256": "cf334a485eeb3c8fc7d9d6f6e5278a6659ccd2bc023c7e632ef714ceaabe1a7f",
+      "bytes": 301,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-library-reuse-audit/graph-research/probe/probe.mjs",
+      "archived_path": "graph-research/probe/probe.mjs",
+      "original_sha256": "f41f912d55a5ab367e75aebfb3b8ce98bc6ab70b023d04570342fd51770624a6",
+      "archived_sha256": "f41f912d55a5ab367e75aebfb3b8ce98bc6ab70b023d04570342fd51770624a6",
+      "bytes": 7045,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-library-reuse-audit/graph-research/probe/scc-adapter.mts",
+      "archived_path": "graph-research/probe/scc-adapter.mts",
+      "original_sha256": "3cf0d7ab3aa647504e1552b74be1545cb15161e1a25a813ade469fdf4bf6510e",
+      "archived_sha256": "3cf0d7ab3aa647504e1552b74be1545cb15161e1a25a813ade469fdf4bf6510e",
+      "bytes": 707,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-library-reuse-audit/graph-research/probe/scc.d.ts",
+      "archived_path": "graph-research/probe/scc.d.ts",
+      "original_sha256": "a8144bfdc52d14b4827233142e81f3a8bb05ad873003532ff7517b4c9b938348",
+      "archived_sha256": "a8144bfdc52d14b4827233142e81f3a8bb05ad873003532ff7517b4c9b938348",
+      "bytes": 157,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-library-reuse-audit/graph-research/probe/traversal.mjs",
+      "archived_path": "graph-research/probe/traversal.mjs",
+      "original_sha256": "fd5d5b52aa0afb9369b970ce56313bd38fb336fe42a31aa45db2a20d43ece906",
+      "archived_sha256": "fd5d5b52aa0afb9369b970ce56313bd38fb336fe42a31aa45db2a20d43ece906",
+      "bytes": 1896,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-library-reuse-audit/graph-research/probe/types-check.mts",
+      "archived_path": "graph-research/probe/types-check.mts",
+      "original_sha256": "01d7090cc4b17af721ddb9127f6ad31a8896b4c998062a10981a7449f2ead97f",
+      "archived_sha256": "01d7090cc4b17af721ddb9127f6ad31a8896b4c998062a10981a7449f2ead97f",
+      "bytes": 444,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-library-reuse-audit/graph-research/probe-results.json",
+      "archived_path": "graph-research/probe-results.json",
+      "original_sha256": "9d5b4d1b702bbada1792dc345772876d2bc1e4733367d8439edde45e711a8916",
+      "archived_sha256": "9d5b4d1b702bbada1792dc345772876d2bc1e4733367d8439edde45e711a8916",
+      "bytes": 5269,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-library-reuse-audit/graph-research/traversal-results.json",
+      "archived_path": "graph-research/traversal-results.json",
+      "original_sha256": "f08289021e0bf04f3e865d251a4b705b7cc011aabbd208c4dd3045e2cbe0a7ae",
+      "archived_sha256": "f08289021e0bf04f3e865d251a4b705b7cc011aabbd208c4dd3045e2cbe0a7ae",
+      "bytes": 413,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-library-reuse-audit/inspect-package-source.py",
+      "archived_path": "inspect-package-source.py",
+      "original_sha256": "48d0d06ae0aad147299ddd8925952cfc193de34e9a367a2b70aec5de999e5a7e",
+      "archived_sha256": "48d0d06ae0aad147299ddd8925952cfc193de34e9a367a2b70aec5de999e5a7e",
+      "bytes": 1714,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-library-reuse-audit/library-evidence.md",
+      "archived_path": "library-evidence.md",
+      "original_sha256": "baad1d7c989bc43d951fc8b2956acb85b339a1a42ea48027ffc5038910f1709d",
+      "archived_sha256": "22402d2cc696ee5252f760adb5d3be43ea517f2dd1b95137d02beaa256c9b5cf",
+      "bytes": 12513,
+      "link_adjustments": [
+        {
+          "old": "audit.md",
+          "new": "REPORT.md",
+          "reason": "Relocated local link."
+        }
+      ]
+    },
+    {
+      "original_path": "_codex-library-reuse-audit/package-evidence.json",
+      "archived_path": "package-evidence.json",
+      "original_sha256": "e1ff196f2ff6c9722104b5d0eaf3cf3e4ba82303c8ff700ae9d79613b22b61b1",
+      "archived_sha256": "e1ff196f2ff6c9722104b5d0eaf3cf3e4ba82303c8ff700ae9d79613b22b61b1",
+      "bytes": 14838,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-library-reuse-audit/research-graphs.py",
+      "archived_path": "research-graphs.py",
+      "original_sha256": "74e76e0a43508ae0c561fb6a420ec1f85dcdc3f1eb7330c48adfe950f34d0a75",
+      "archived_sha256": "74e76e0a43508ae0c561fb6a420ec1f85dcdc3f1eb7330c48adfe950f34d0a75",
+      "bytes": 2372,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-library-reuse-audit/source-checks.md",
+      "archived_path": "source-checks.md",
+      "original_sha256": "bf46ded12276b1a8a672172683b5a000dcc36a41bb1e64de34dbc86ff534f544",
+      "archived_sha256": "bf46ded12276b1a8a672172683b5a000dcc36a41bb1e64de34dbc86ff534f544",
+      "bytes": 2406,
+      "link_adjustments": []
+    }
+  ],
+  "omitted_artifacts": [
+    {
+      "path": "implementation-brief.md",
+      "reason": "Separate unapproved planning proposal, not an audit finding; left in scratch.",
+      "bytes": 27952,
+      "sha256": "d1169a26fd4dc3b179b389b4043fbfeef4ca36bb06e087210a7fc20635de08a1"
+    },
+    {
+      "path": "graph-research/sources/",
+      "reason": "Published third-party source copies; exact package evidence is retained."
+    },
+    {
+      "path": "graph-research/probe/node_modules/",
+      "reason": "Installed dependencies; manifests/lockfiles are retained."
+    }
+  ]
+}

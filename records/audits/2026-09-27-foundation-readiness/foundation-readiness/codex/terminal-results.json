@@ -1,0 +1,86 @@
+{
+  "node": "v22.13.1",
+  "versions": {
+    "wrapAnsi": "10.0.2",
+    "stringWidth": "8.3.0"
+  },
+  "normalizationChangesCodePoints": true,
+  "indivisibleWideGraphemeAtWidth1": "古",
+  "results": [
+    {
+      "raw": "é",
+      "escaped": "é",
+      "output": "é",
+      "widths": [
+        1
+      ]
+    },
+    {
+      "raw": "古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古",
+      "escaped": "古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古古",
+      "output": "古古古古古\n古古古古古\n古古古古古\n古古古古古\n古古古古古\n古古古古古\n古古古古古\n古古古古古\n古古古古古",
+      "widths": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ]
+    },
+    {
+      "raw": "👩‍💻👩‍💻👩‍💻👩‍💻👩‍💻👩‍💻👩‍💻👩‍💻",
+      "escaped": "👩‍💻👩‍💻👩‍💻👩‍💻👩‍💻👩‍💻👩‍💻👩‍💻",
+      "output": "👩‍💻👩‍💻👩‍💻👩‍💻👩‍💻\n👩‍💻👩‍💻👩‍💻",
+      "widths": [
+        10,
+        6
+      ]
+    },
+    {
+      "raw": "a  b   c",
+      "escaped": "a  b   c",
+      "output": "a  b   c",
+      "widths": [
+        8
+      ]
+    },
+    {
+      "raw": "a\tb",
+      "escaped": "a\tb",
+      "output": "a       b",
+      "widths": [
+        9
+      ]
+    },
+    {
+      "raw": "x\r\ny",
+      "escaped": "x\ny",
+      "output": "x\ny",
+      "widths": [
+        1,
+        1
+      ]
+    },
+    {
+      "raw": "\u001b[31mRED",
+      "escaped": "\\u001b[31mRED",
+      "output": "\\u001b[31m\nRED",
+      "widths": [
+        10,
+        3
+      ]
+    },
+    {
+      "raw": "‮evil",
+      "escaped": "\\u202eevil",
+      "output": "\\u202eevil",
+      "widths": [
+        10
+      ]
+    }
+  ]
+}

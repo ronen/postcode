@@ -1,0 +1,55 @@
+{
+  "archived_on": "2026-09-27",
+  "original_directory": "_claude-guidelines-audit",
+  "files": [
+    {
+      "original_path": "_claude-guidelines-audit/experiments/exclusion-resolver-divergence.mjs",
+      "archived_path": "experiments/exclusion-resolver-divergence.mjs",
+      "original_sha256": "04a2ff6f58e9136e368bf8fe11a968ebb996c83960316f6dddf47ae8218b520e",
+      "archived_sha256": "04a2ff6f58e9136e368bf8fe11a968ebb996c83960316f6dddf47ae8218b520e",
+      "bytes": 2264,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-guidelines-audit/experiments/logging-git/git",
+      "archived_path": "experiments/logging-git/git",
+      "original_sha256": "af101b6fbb7d7ea742ccfd9da8e62b8147fcbf8c24693b7968dfd621cb2ca773",
+      "archived_sha256": "af101b6fbb7d7ea742ccfd9da8e62b8147fcbf8c24693b7968dfd621cb2ca773",
+      "bytes": 61,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-guidelines-audit/experiments/sink-assertions-swallowed.mjs",
+      "archived_path": "experiments/sink-assertions-swallowed.mjs",
+      "original_sha256": "0026d28b1ea42e8bcaf8eb325c0e7ae53d29e0b34944ca79669f12104f98338d",
+      "archived_sha256": "0026d28b1ea42e8bcaf8eb325c0e7ae53d29e0b34944ca79669f12104f98338d",
+      "bytes": 953,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-guidelines-audit/experiments/slow-git/git",
+      "archived_path": "experiments/slow-git/git",
+      "original_sha256": "ee3a47ffae92060075f9681399af5759089fc01aa0f6153a4e373bd12271bc5a",
+      "archived_sha256": "ee3a47ffae92060075f9681399af5759089fc01aa0f6153a4e373bd12271bc5a",
+      "bytes": 72,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-guidelines-audit/experiments/worker-termination-during-git.mjs",
+      "archived_path": "experiments/worker-termination-during-git.mjs",
+      "original_sha256": "2bc0c11eb41c588388e3c9b780d34e2666b6a683baacfeaac61da198956fd007",
+      "archived_sha256": "2bc0c11eb41c588388e3c9b780d34e2666b6a683baacfeaac61da198956fd007",
+      "bytes": 1514,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-guidelines-audit/report.md",
+      "archived_path": "REPORT.md",
+      "original_sha256": "e077caeee6f7f169e706ef4d1c59f6b1695c256c48b026bbe4a0ae2a35b7ab91",
+      "archived_sha256": "e077caeee6f7f169e706ef4d1c59f6b1695c256c48b026bbe4a0ae2a35b7ab91",
+      "bytes": 29288,
+      "link_adjustments": []
+    }
+  ],
+  "omitted_artifacts": []
+}

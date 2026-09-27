@@ -1,0 +1,5 @@
+Audited HEAD: 5c048694fa10dc19addcbaf5825bc9c9a9719c9a
+Initial status:
+ M dev/engineering-guidelines.md
+Node: v22.13.1
+Verification uses a tracked-file working-copy snapshot in checkout/, with its own Git index and shared installed node_modules. No product fixes applied.

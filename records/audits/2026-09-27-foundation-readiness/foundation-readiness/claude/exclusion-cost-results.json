@@ -1,0 +1,40 @@
+{
+  "withoutExclusions": {
+    "openAndDiscover": {
+      "ms": 3517,
+      "liveCalls": {
+        "fileExists": 414,
+        "directoryExists": 139,
+        "realpath": 4
+      }
+    },
+    "oneValidation": {
+      "changed": false,
+      "ms": 262,
+      "liveCalls": {
+        "fileExists": 414,
+        "directoryExists": 139,
+        "realpath": 4
+      }
+    }
+  },
+  "withCliExclusions": {
+    "openAndDiscover": {
+      "ms": 3109,
+      "liveCalls": {
+        "fileExists": 5299,
+        "directoryExists": 4216,
+        "realpath": 3099
+      }
+    },
+    "oneValidation": {
+      "changed": false,
+      "ms": 301,
+      "liveCalls": {
+        "fileExists": 1736,
+        "directoryExists": 1083,
+        "realpath": 855
+      }
+    }
+  }
+}

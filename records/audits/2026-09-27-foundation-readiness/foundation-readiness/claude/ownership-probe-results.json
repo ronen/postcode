@@ -1,0 +1,9 @@
+{
+  "returnedIsStored": false,
+  "returnedFrozen": false,
+  "storedFrozen": true,
+  "providerModulesAliasReturnedEvaluation": true,
+  "laterDiscoverySeesCallerMutation": true,
+  "organizationReturnedIsStored": false,
+  "organizationReturnedFrozen": false
+}

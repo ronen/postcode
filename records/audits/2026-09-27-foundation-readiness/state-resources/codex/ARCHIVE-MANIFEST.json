@@ -1,0 +1,233 @@
+{
+  "archived_on": "2026-09-27",
+  "original_directory": "_codex_state_resource_audit",
+  "files": [
+    {
+      "original_path": "_codex_state_resource_audit/REPORT.md",
+      "archived_path": "REPORT.md",
+      "original_sha256": "1d6a1866f2fbb7d63bcc42348e174db8178a6654b8715241553eed2443369db8",
+      "archived_sha256": "9bbe55e85aabea9cb807193b34feac74480bd7e024c8cf20af45b27e93aafe23",
+      "bytes": 23836,
+      "link_adjustments": [
+        {
+          "old": "../src/lib/repository/capture.ts",
+          "new": "../../../../../src/lib/repository/capture.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "../src/lib/typescript/project.ts",
+          "new": "../../../../../src/lib/typescript/project.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "../src/lib/interactive-session.ts",
+          "new": "../../../../../src/lib/interactive-session.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "../src/lib/shell.ts",
+          "new": "../../../../../src/lib/shell.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "../src/lib/command-execution.ts",
+          "new": "../../../../../src/lib/command-execution.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "../test/session-inputs.test.ts",
+          "new": "../../../../../test/session-inputs.test.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "../test/shell.test.ts",
+          "new": "../../../../../test/shell.test.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "../src/lib/observations.ts",
+          "new": "../../../../../src/lib/observations.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "../src/lib/memory-store.ts",
+          "new": "../../../../../src/lib/memory-store.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "../src/lib/evaluation.ts",
+          "new": "../../../../../src/lib/evaluation.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "../src/lib/projections.ts",
+          "new": "../../../../../src/lib/projections.ts",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "../src/lib/interactive-session.ts",
+          "new": "../../../../../src/lib/interactive-session.ts",
+          "reason": "Relocated local link."
+        }
+      ]
+    },
+    {
+      "original_path": "_codex_state_resource_audit/existing-compiler-interruption.log",
+      "archived_path": "existing-compiler-interruption.log",
+      "original_sha256": "80d674806622b8558cda73d00010d6a8a9d4a8e57a64e8be97b1de06fc09baec",
+      "archived_sha256": "80d674806622b8558cda73d00010d6a8a9d4a8e57a64e8be97b1de06fc09baec",
+      "bytes": 2836,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex_state_resource_audit/existing-session-interruption.log",
+      "archived_path": "existing-session-interruption.log",
+      "original_sha256": "41d7480e1c688f64d8dda574c4e01251e44bead0afce09cff7fa1d2508750d24",
+      "archived_sha256": "41d7480e1c688f64d8dda574c4e01251e44bead0afce09cff7fa1d2508750d24",
+      "bytes": 509,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex_state_resource_audit/final-status.txt",
+      "archived_path": "final-status.txt",
+      "original_sha256": "efc40b0ca57481564b74d3de0a360d1633879f224335b049f6e3638554124347",
+      "archived_sha256": "efc40b0ca57481564b74d3de0a360d1633879f224335b049f6e3638554124347",
+      "bytes": 33,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex_state_resource_audit/probes.json",
+      "archived_path": "probes.json",
+      "original_sha256": "860f950613db2f788058b4ce5dfb9913b1a4825b19bc6aaa37b584c56396adc1",
+      "archived_sha256": "860f950613db2f788058b4ce5dfb9913b1a4825b19bc6aaa37b584c56396adc1",
+      "bytes": 525,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex_state_resource_audit/probes.mjs",
+      "archived_path": "probes.mjs",
+      "original_sha256": "03e2d7567f5e7aba9957c121fd9cb5ca0d63997fa749ceced8cb9a77a9293bb1",
+      "archived_sha256": "03e2d7567f5e7aba9957c121fd9cb5ca0d63997fa749ceced8cb9a77a9293bb1",
+      "bytes": 4510,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex_state_resource_audit/probes.stderr",
+      "archived_path": "probes.stderr",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archived_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex_state_resource_audit/scope.txt",
+      "archived_path": "scope.txt",
+      "original_sha256": "3817b32214fab9cc2663bbd40d630c55dceea2f8bbcaeef5c45b7bfc640f346b",
+      "archived_sha256": "3817b32214fab9cc2663bbd40d630c55dceea2f8bbcaeef5c45b7bfc640f346b",
+      "bytes": 272,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex_state_resource_audit/source-integrity.json",
+      "archived_path": "source-integrity.json",
+      "original_sha256": "7726de8dd597f3e335d03e366d195f5b838b543a72069d4c544a3ad27bde9201",
+      "archived_sha256": "7726de8dd597f3e335d03e366d195f5b838b543a72069d4c544a3ad27bde9201",
+      "bytes": 11373,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex_state_resource_audit/source-inventory.txt",
+      "archived_path": "source-inventory.txt",
+      "original_sha256": "96bec4b474878704b7bc98218c2a49aa150642daff68a2d0dd1d3096014bdbc1",
+      "archived_sha256": "96bec4b474878704b7bc98218c2a49aa150642daff68a2d0dd1d3096014bdbc1",
+      "bytes": 1960,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex_state_resource_audit/test-assertion-probe.json",
+      "archived_path": "test-assertion-probe.json",
+      "original_sha256": "aaa770ea406137b35d52375589a08b7f3fc8e72df42e1271e07b07e5bc84778f",
+      "archived_sha256": "aaa770ea406137b35d52375589a08b7f3fc8e72df42e1271e07b07e5bc84778f",
+      "bytes": 289,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex_state_resource_audit/test-assertion-probe.log",
+      "archived_path": "test-assertion-probe.log",
+      "original_sha256": "e81c053ecfa14867c58db2cb83c6e95e2b6dbc8f344dbb305eecadedd4d46ef8",
+      "archived_sha256": "e81c053ecfa14867c58db2cb83c6e95e2b6dbc8f344dbb305eecadedd4d46ef8",
+      "bytes": 579,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex_state_resource_audit/test-assertion-probe.mjs",
+      "archived_path": "test-assertion-probe.mjs",
+      "original_sha256": "db5c2e1b949328b7b26f5823fa31c9563589ef77457edea65c4721aabf359c4c",
+      "archived_sha256": "db5c2e1b949328b7b26f5823fa31c9563589ef77457edea65c4721aabf359c4c",
+      "bytes": 1401,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex_state_resource_audit/test-assertion-probe.stderr",
+      "archived_path": "test-assertion-probe.stderr",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archived_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex_state_resource_audit/tests.log",
+      "archived_path": "tests.log",
+      "original_sha256": "d2a71a4c6f64dfdbc71d44b41c4a0f2ff3a556a981120b972c82a4da94349a3d",
+      "archived_sha256": "d2a71a4c6f64dfdbc71d44b41c4a0f2ff3a556a981120b972c82a4da94349a3d",
+      "bytes": 55518,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex_state_resource_audit/typecheck.log",
+      "archived_path": "typecheck.log",
+      "original_sha256": "e954a8a71b635559128ddb6e4daa620bf85912d04a9f68c9a586540ea4c55aae",
+      "archived_sha256": "e954a8a71b635559128ddb6e4daa620bf85912d04a9f68c9a586540ea4c55aae",
+      "bytes": 57,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex_state_resource_audit/worker-send-probe.json",
+      "archived_path": "worker-send-probe.json",
+      "original_sha256": "fee5df098c72915a4d95cbc9ce2d1601b5ab8566117fab6bb6a8e840d93ce143",
+      "archived_sha256": "fee5df098c72915a4d95cbc9ce2d1601b5ab8566117fab6bb6a8e840d93ce143",
+      "bytes": 166,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex_state_resource_audit/worker-send-probe.mjs",
+      "archived_path": "worker-send-probe.mjs",
+      "original_sha256": "8f6404c342d632d852a7ecfca49ba4baca1644155c70f8df14326fbfcce65349",
+      "archived_sha256": "8f6404c342d632d852a7ecfca49ba4baca1644155c70f8df14326fbfcce65349",
+      "bytes": 1341,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex_state_resource_audit/worker-send-probe.stderr",
+      "archived_path": "worker-send-probe.stderr",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archived_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "link_adjustments": []
+    }
+  ],
+  "omitted_artifacts": [
+    {
+      "path": "checkout/",
+      "reason": "Duplicate source/build checkout; baseline and evidence are retained."
+    },
+    {
+      "path": "probe-data/",
+      "reason": "Generated failure fixtures; probe and result records are retained."
+    },
+    {
+      "path": "runtime-tmp/",
+      "reason": "Ephemeral runtime inputs."
+    }
+  ]
+}

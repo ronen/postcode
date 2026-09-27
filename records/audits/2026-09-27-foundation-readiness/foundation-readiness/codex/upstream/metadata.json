@@ -1,0 +1,14 @@
+[
+  {
+    "package": "wrap-ansi",
+    "version": "10.0.2",
+    "url": "https://registry.npmjs.org/wrap-ansi/-/wrap-ansi-10.0.2.tgz",
+    "sha256": "5d1fc28097b70d3dc986a7fcd5b847828089a40502b9e1ab0b36e692d0520193"
+  },
+  {
+    "package": "string-width",
+    "version": "8.3.0",
+    "url": "https://registry.npmjs.org/string-width/-/string-width-8.3.0.tgz",
+    "sha256": "b9332abee5a45017221999b9133d77f092b81d0b1d747fc030abe1119a148339"
+  }
+]

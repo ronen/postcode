@@ -1,0 +1,481 @@
+diff --git a/src/lib/composition-view.ts b/_claude-processing-cost-audit/prototype/src/lib/composition-view.ts
+index ef13d14..9d32599 100644
+--- a/src/lib/composition-view.ts
++++ b/_claude-processing-cost-audit/prototype/src/lib/composition-view.ts
+@@ -6,24 +6,32 @@ export type CompositionView = {
+   readonly evaluations: readonly Pick<EvaluationRecord, 'id' | 'applicability' | 'availability' | 'execution' | 'materialization' | 'reason'>[];
+ };
+ 
+-/** Reads only the expansion records selected by the caller's projection. */
+-export function compositionView(store: ProgramRecordStore, subject: RecordId,
+-  claimIds: readonly RecordId[], evaluationIds: readonly RecordId[]): CompositionView {
+-  const claims = claimIds.flatMap(id => {
++/** Reads only the expansion records selected by the caller's projection. Indexes them once per view. */
++export function compositionViews(store: ProgramRecordStore, claimIds: readonly RecordId[],
++  evaluationIds: readonly RecordId[]): (subject: RecordId) => CompositionView {
++  const claims = new Map<RecordId, CompositionView['claims'][number][]>();
++  for (const id of claimIds) {
+     const claim = store.get(id);
+-    if (claim.kind !== 'claim' || claim.subject !== subject || claim.information.type !== 'module-composition') return [];
++    if (claim.kind !== 'claim' || claim.information.type !== 'module-composition') continue;
+     const context = store.get(claim.context);
+     if (context.kind !== 'claim-context') throw new Error('Expected composition qualification');
+     const { kind: _kind, evidence: _evidence, inputs: _inputs, ...qualification } = context;
+-    return [{ id, property: claim.information.property, qualification }];
+-  });
+-  const evaluations = evaluationIds.flatMap(id => {
++    const list = claims.get(claim.subject) ?? [];
++    list.push({ id, property: claim.information.property, qualification });
++    claims.set(claim.subject, list);
++  }
++  const evaluations = new Map<RecordId, CompositionView['evaluations'][number][]>();
++  for (const id of evaluationIds) {
+     const outcome = store.get(id);
+-    if (outcome.kind !== 'evaluation' || outcome.requirement !== 'composition' || !outcome.modules.includes(subject)) return [];
++    if (outcome.kind !== 'evaluation' || outcome.requirement !== 'composition') continue;
+     const { applicability, availability, execution, materialization, reason } = outcome;
+-    return [{ id, applicability, availability, execution, materialization, reason }];
+-  });
+-  return { claims, evaluations };
++    for (const subject of new Set(outcome.modules)) {
++      const list = evaluations.get(subject) ?? [];
++      list.push({ id, applicability, availability, execution, materialization, reason });
++      evaluations.set(subject, list);
++    }
++  }
++  return subject => ({ claims: claims.get(subject) ?? [], evaluations: evaluations.get(subject) ?? [] });
+ }
+ 
+ export function compositionAnnotation(composition: CompositionView): string {
+diff --git a/src/lib/dependencies/organization.ts b/_claude-processing-cost-audit/prototype/src/lib/dependencies/organization.ts
+index 2bc7766..83dd34f 100644
+--- a/src/lib/dependencies/organization.ts
++++ b/_claude-processing-cost-audit/prototype/src/lib/dependencies/organization.ts
+@@ -1,5 +1,5 @@
+ import { compare, methods, recordId } from '../identity.js';
+-import { locate } from '../organization/placement.js';
++import { locator } from '../organization/placement.js';
+ import type { ContainmentClaim, ModulePlacementClaim, OrganizationEvaluationRecord } from '../organization/records.js';
+ import type { EvaluationState, ProgramRecord, ProgramRecordStore, RecordId } from '../records.js';
+ import type { DependencyEndpointPlacement, DependencyEvaluationRecord, DependencyOrganizationClaim,
+@@ -21,6 +21,7 @@ export function evaluateDependencyOrganization(store: ProgramRecordStore, depend
+   if (repository.kind !== 'repository-evidence') throw new Error('Expected repository capture');
+   const capture = repository.capture.status === 'available' ? repository.capture.evidence : null;
+   const layout = repository.layout;
++  const locate = capture && layout ? locator(capture, layout) : null;
+   const records: ProgramRecord[] = [];
+   const base = { session: dependency.session, method: methods.dependencyOrganization };
+   const id = recordId(base.session, 'dependency-organization-evaluation', [base.method, dependency.id, organization.id]);
+@@ -66,7 +67,7 @@ export function evaluateDependencyOrganization(store: ProgramRecordStore, depend
+     for (const evidenceId of evidenceIds) {
+       const source = store.get(evidenceId);
+       if (source.kind !== 'source-evidence') throw new Error('Expected source evidence for endpoint');
+-      const placed = locate(source.path, capture, layout);
++      const placed = locate!(source.path);
+       if ('reason' in placed) reasons.add(placed.reason);
+       else {
+         const group = groupPaths.get(placed.group);
+diff --git a/src/lib/dependencies/presentation.ts b/_claude-processing-cost-audit/prototype/src/lib/dependencies/presentation.ts
+index c6bf3a2..1746d76 100644
+--- a/src/lib/dependencies/presentation.ts
++++ b/_claude-processing-cost-audit/prototype/src/lib/dependencies/presentation.ts
+@@ -1,4 +1,4 @@
+-import { compositionAnnotation, compositionView } from '../composition-view.js';
++import { compositionAnnotation, compositionViews } from '../composition-view.js';
+ import type { CompositionView } from '../composition-view.js';
+ import { methods, recordId } from '../identity.js';
+ import type { Presentation } from '../presentation.js';
+@@ -8,6 +8,12 @@ import { inlineText } from '../terminal-text.js';
+ import { dependencyLimitations } from './records.js';
+ import type { DependencyCoverageRecord, DependencyGraph, DependencyOccurrenceRecord, DependencyOrganizationClaim, DependencyProjectionRecord, DependencyRelationshipClaim } from './records.js';
+ 
++function append<K, V>(map: Map<K, V[]>, key: K, value: V): void {
++  const list = map.get(key);
++  if (list) list.push(value); else map.set(key, [value]);
++}
++
++
+ export const dependencyPresentationRequirements = { modules: moduleStandardExpansions, organization: 'repository-layout' } as const;
+ type Qualification = Omit<ClaimContextRecord, 'kind' | 'evidence' | 'inputs'>;
+ type Outcome = Omit<EvaluationState, 'cost'>;
+@@ -66,6 +72,9 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
+   if (expanded && expanded.kind !== 'dependency-organization-evaluation') throw new Error('Expected organization expansion');
+   const organizationClaims = expanded?.claims.map(id => store.get(id) as DependencyOrganizationClaim) ?? [];
+   const allEdges = projection.relationships.map(id => store.get(id) as DependencyRelationshipClaim);
++  const organizationBySubject = new Map<RecordId, DependencyOrganizationClaim>();
++  for (const claim of organizationClaims) if (!organizationBySubject.has(claim.subject)) organizationBySubject.set(claim.subject, claim);
++  const compositionView = compositionViews(store, projection.expansions.moduleClaims, projection.expansions.moduleEvaluations);
+   const graph = projection.graph;
+   const rows: Row[] = [];
+   const displayed = new Set<RecordId>();
+@@ -74,6 +83,11 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
+   const maximumComponents = presentation.format === 'unicode' ? 60 : Infinity;
+   const maximumDepth = presentation.format === 'unicode' ? 6 : Infinity;
+   const componentOf = new Map(graph?.components.flatMap((component, index) => component.members.map(id => [id, index] as const)) ?? []);
++  const edgesByComponent = new Map<number, DependencyRelationshipClaim[]>();
++  for (const edge of allEdges) {
++    const component = componentOf.get(edge.subject);
++    if (component !== undefined) append(edgesByComponent, component, edge);
++  }
+   if (graph) {
+     const seen = new Set<number>();
+     // Incomplete evaluation cannot name roots: show known components as a flat inventory.
+@@ -89,7 +103,7 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
+       seen.add(next.component);
+       component.members.forEach(id => displayed.add(id));
+       // Opaque external endpoints come from projection edges, not the project-only SCC graph.
+-      for (const edge of allEdges.filter(edge => componentOf.get(edge.subject) === next.component)) {
++      for (const edge of edgesByComponent.get(next.component) ?? []) {
+         if (selectedEdges.size >= maximumEdges) break;
+         selectedEdges.add(edge.id); displayed.add(edge.subject); displayed.add(edge.information.child);
+       }
+@@ -116,7 +130,7 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
+     return { id, owner, target, mechanism, typeOnly, targetStatus, commonjs, qualification: qualification(item.context) };
+   };
+   const relationships: EdgeView[] = allEdges.filter(edge => selectedEdges.has(edge.id)).map(edge => {
+-    const organization = organizationClaims.find(claim => claim.subject === edge.id);
++    const organization = organizationBySubject.get(edge.id);
+     const endpoint = (item: DependencyOrganizationClaim['information']['occurrences'][number]['source']) => ({
+       outcome: item.outcome, materialization: item.materialization, groups: item.groups, candidates: item.candidates });
+     return { id: edge.id, parent: edge.subject, child: edge.information.child, typeOnly: edge.information.typeOnly,
+@@ -144,7 +158,7 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
+     const module = store.get(id);
+     if (module.kind !== 'module') throw new Error('Expected module');
+     const claim = store.get(module.claim) as ModuleClaim;
+-    const composition = compositionView(store, id, projection.expansions.moduleClaims, projection.expansions.moduleEvaluations);
++    const composition = compositionView(id);
+     for (const property of composition.claims) {
+       const context = store.get(property.qualification.id);
+       if (context.kind === 'claim-context') for (const evidence of context.evidence) source(property.id, 'composition', evidence);
+diff --git a/src/lib/organization/evaluate.ts b/_claude-processing-cost-audit/prototype/src/lib/organization/evaluate.ts
+index 24d1a4f..2f64521 100644
+--- a/src/lib/organization/evaluate.ts
++++ b/_claude-processing-cost-audit/prototype/src/lib/organization/evaluate.ts
+@@ -1,4 +1,4 @@
+-import { locate } from './placement.js';
++import { locator } from './placement.js';
+ import { compare, methods, recordId } from '../identity.js';
+ import type { ClaimContextRecord, EvaluationRecord, EvaluationState, ProgramRecord, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
+ import type { GroupExpansion, ModulePlacementClaim, OrganizationClaims, OrganizationEvaluationRecord, PlacementReason } from './records.js';
+@@ -85,6 +85,7 @@ export function evaluateOrganization(store: ProgramRecordStore, moduleEvaluation
+   }
+ 
+   const placements: ModulePlacementClaim[] = [];
++  const locate = evidence && layout ? locator(evidence, layout) : null;
+   for (const moduleId of moduleEvaluation.modules) {
+     const module = store.get(moduleId);
+     if (module.kind !== 'module') throw new Error('Expected module entity');
+@@ -112,7 +113,7 @@ export function evaluateOrganization(store: ProgramRecordStore, moduleEvaluation
+       reasons.add('source-unavailable');
+     } else {
+       for (const source of sources) {
+-        const association = locate(source.path, evidence, layout);
++        const association = locate!(source.path);
+         if ('reason' in association) reasons.add(association.reason);
+         else {
+           placed.add(groups.get(association.group)!);
+@@ -128,7 +129,8 @@ export function evaluateOrganization(store: ProgramRecordStore, moduleEvaluation
+     const placementId = addClaim(moduleId, claimContext, { type: 'module-placement', outcome,
+       groups: [...placed].sort(compare), candidates: [], artifacts: [...sourceArtifacts].sort(compare),
+       reasons: [...reasons].sort(compare), materialization }, ['module-placement', evaluationId]);
+-    placements.push(claims.find(item => item.id === placementId) as ModulePlacementClaim);
++    placements.push(claims[claims.length - 1]! as ModulePlacementClaim);
++    if (claims[claims.length - 1]!.id !== placementId) throw new Error('Unexpected placement claim order');
+   }
+   const moduleComplete = complete(moduleEvaluation);
+   const placementComplete = evidence !== null && moduleComplete && placements.every(claim => claim.information.materialization === 'full');
+diff --git a/src/lib/organization/placement.ts b/_claude-processing-cost-audit/prototype/src/lib/organization/placement.ts
+index 9d3c8f7..637bc1d 100644
+--- a/src/lib/organization/placement.ts
++++ b/_claude-processing-cost-audit/prototype/src/lib/organization/placement.ts
+@@ -2,9 +2,34 @@ import path from 'node:path';
+ import type { LayoutEvidence, RepositoryEvidence } from '../repository/evidence.js';
+ import type { PlacementReason } from './records.js';
+ 
++type Placement = { group: string; artifact: string } | { reason: PlacementReason };
++
++/** Prepares path lookups once for repeated placement of sources in one captured layout. */
++export function locator(evidence: RepositoryEvidence, layout: LayoutEvidence): (sourcePath: string) => Placement {
++  const placements = new Map<string, LayoutEvidence['placements'][number]>();
++  for (const item of layout.placements) if (!placements.has(item.artifactPath)) placements.set(item.artifactPath, item);
++  const artifacts = new Map<string, RepositoryEvidence['artifacts'][number]>();
++  for (const item of evidence.artifacts) if (!artifacts.has(item.path)) artifacts.set(item.path, item);
++  const boundaries = new Set(evidence.artifacts.filter(item => item.boundary).map(item => item.path));
++  const links = new Map<string, LayoutEvidence['links'][number]>();
++  for (const item of layout.links) if (!links.has(item.artifactPath)) links.set(item.artifactPath, item);
++  // Proper ancestors of a relative path, longest first.
++  const ancestors = (relative: string) => {
++    const result: string[] = [];
++    for (let index = relative.lastIndexOf('/'); index > 0; index = relative.lastIndexOf('/', index - 1)) result.push(relative.slice(0, index));
++    return result;
++  };
++  return sourcePath => locateWith(sourcePath, evidence, placements, artifacts, boundaries, links, ancestors);
++}
++
+ /** Resolve directory-link regions without changing the identity of an apparent-path module. */
+-export function locate(sourcePath: string, evidence: RepositoryEvidence, layout: LayoutEvidence):
+-  { group: string; artifact: string } | { reason: PlacementReason } {
++export function locate(sourcePath: string, evidence: RepositoryEvidence, layout: LayoutEvidence): Placement {
++  return locator(evidence, layout)(sourcePath);
++}
++
++function locateWith(sourcePath: string, evidence: RepositoryEvidence,
++  placements: ReadonlyMap<string, LayoutEvidence['placements'][number]>, artifacts: ReadonlyMap<string, RepositoryEvidence['artifacts'][number]>,
++  boundaries: ReadonlySet<string>, links: ReadonlyMap<string, LayoutEvidence['links'][number]>, ancestors: (relative: string) => string[]): Placement {
+   const source = path.resolve(sourcePath);
+   let relative: string | undefined;
+   for (const root of evidence.rootPaths) {
+@@ -20,16 +45,16 @@ export function locate(sourcePath: string, evidence: RepositoryEvidence, layout:
+   for (let redirects = 0; redirects <= 40; redirects++) {
+     if (seen.has(relative)) return { reason: 'link-not-established' };
+     seen.add(relative);
+-    const direct = layout.placements.find(item => item.artifactPath === relative);
++    const direct = placements.get(relative);
+     if (direct) {
+-      const artifact = evidence.artifacts.find(item => item.path === relative)!;
++      const artifact = artifacts.get(relative)!;
+       if (artifact.boundary) return { reason: 'opaque-boundary' };
+       if (artifact.link?.status === 'excluded-output') return { reason: 'link-not-established' };
+       return { group: direct.groupPath, artifact: direct.artifactPath };
+     }
+-    if (evidence.artifacts.some(item => item.boundary && relative!.startsWith(`${item.path}/`))) return { reason: 'opaque-boundary' };
+-    const link = layout.links.filter(item => relative!.startsWith(`${item.artifactPath}/`))
+-      .sort((a, b) => b.artifactPath.length - a.artifactPath.length)[0];
++    const prefixes = ancestors(relative);
++    if (prefixes.some(prefix => boundaries.has(prefix))) return { reason: 'opaque-boundary' };
++    const link = prefixes.map(prefix => links.get(prefix)).find(item => item !== undefined);
+     if (!link) return { reason: 'not-visible' };
+     if (link.targetRegion === null || redirects === 40) return { reason: 'link-not-established' };
+     relative = [link.targetRegion, relative.slice(link.artifactPath.length + 1)].filter(Boolean).join('/');
+diff --git a/src/lib/organization/presentation.ts b/_claude-processing-cost-audit/prototype/src/lib/organization/presentation.ts
+index 3c53122..975bd32 100644
+--- a/src/lib/organization/presentation.ts
++++ b/_claude-processing-cost-audit/prototype/src/lib/organization/presentation.ts
+@@ -1,4 +1,4 @@
+-import { compositionView, compositionAnnotation } from '../composition-view.js';
++import { compositionViews, compositionAnnotation } from '../composition-view.js';
+ import type { CompositionView } from '../composition-view.js';
+ import path from 'node:path';
+ import { methods, recordId } from '../identity.js';
+@@ -11,6 +11,12 @@ import { inlineText } from '../terminal-text.js';
+ import { groupStandardExpansions } from './records.js';
+ import type { GroupPropertiesClaim, ModulePlacementClaim, OrganizationClaims, OrganizationEvaluationRecord, OrganizationProjectionRecord } from './records.js';
+ 
++function append<K, V>(map: Map<K, V[]>, key: K, value: V): void {
++  const list = map.get(key);
++  if (list) list.push(value); else map.set(key, [value]);
++}
++
++
+ export const organizationPresentationRequirements = {
+   groups: groupStandardExpansions,
+   // Common source capture keeps navigation between lenses in the same session.
+@@ -104,6 +110,20 @@ export function createOrganizationView(store: ProgramRecordStore, projection: Or
+   const claims = outcome.claims.map(id => store.get(id) as OrganizationClaims);
+   const selectedClaims = new Set([...projection.claims, ...projection.expansions.claims]);
+   const available = claims.filter(claim => selectedClaims.has(claim.id));
++  const compositionView = compositionViews(store, projection.expansions.moduleClaims, projection.expansions.moduleEvaluations);
++  const groupClaims = new Map<RecordId, OrganizationClaims>();
++  const groupProperties = new Map<RecordId, OrganizationClaims>();
++  for (const claim of claims) {
++    if (claim.information.type === 'group' && !groupClaims.has(claim.subject)) groupClaims.set(claim.subject, claim);
++    if (claim.information.type === 'group-properties' && !groupProperties.has(claim.subject)) groupProperties.set(claim.subject, claim);
++  }
++  const availableBySubject = new Map<RecordId, OrganizationClaims[]>();
++  const availableParents = new Map<RecordId, RecordId[]>();
++  for (const claim of available) {
++    append(availableBySubject, claim.subject, claim);
++    if (claim.information.type === 'group-containment') append(availableParents, claim.information.child, claim.subject);
++  }
++  const selectedGroups = new Set(projection.groups);
+   const qualification = (id: RecordId): Qualification => {
+     const context = store.get(id);
+     if (context.kind !== 'claim-context') throw new Error('Expected Claim context');
+@@ -111,8 +131,8 @@ export function createOrganizationView(store: ProgramRecordStore, projection: Or
+     return result;
+   };
+   const group = (id: RecordId): GroupReference => {
+-    const claim = claims.find(claim => claim.subject === id && claim.information.type === 'group');
+-    const properties = claims.find(claim => claim.subject === id && claim.information.type === 'group-properties');
++    const claim = groupClaims.get(id);
++    const properties = groupProperties.get(id);
+     if (claim?.information.type !== 'group' || properties?.information.type !== 'group-properties') throw new Error('Missing group properties');
+     return { id, entityId: groupIds.get(id)!, name: claim.information.name,
+       label: claim.information.name ?? '[repository root]', documented: properties.information.documented,
+@@ -123,26 +143,28 @@ export function createOrganizationView(store: ProgramRecordStore, projection: Or
+     if (entity.kind !== 'module') throw new Error('Expected module');
+     const claim = store.get(entity.claim) as ModuleClaim;
+     const { artifacts: _artifacts, reasons, ...information } = placement.information;
+-    return { composition: compositionView(store, entity.id, projection.expansions.moduleClaims, projection.expansions.moduleEvaluations), id: entity.id, entityId: moduleIds.get(entity.id)!, name: claim.information.name,
++    return { composition: compositionView(entity.id), id: entity.id, entityId: moduleIds.get(entity.id)!, name: claim.information.name,
+       label: claim.information.name ?? claim.information.handle, handle: claim.information.handle,
+       handleStatus: claim.information.handleStatus, handleProvenance: claim.information.handleProvenance,
+       placement: { ...information, reasons: reasons.map(reason => reason === 'link-not-established' ? 'relationship-not-established' : reason) },
+       locations: information.groups.map(group), candidates: information.candidates.map(group), qualification: qualification(placement.context) };
+   };
+   const placements = available.filter((claim): claim is ModulePlacementClaim => claim.information.type === 'module-placement');
++  const membersByGroup = new Map<RecordId, ModulePlacementClaim[]>();
++  for (const claim of placements) for (const group of new Set(claim.information.groups)) append(membersByGroup, group, claim);
+   const groupPopulation = [...new Set([...projection.groups, ...projection.expansions.groups])];
+   const groups: GroupView[] = groupPopulation.map(id => {
+-    const ownClaims = available.filter(claim => claim.subject === id);
+-    const primary = claims.find(claim => claim.subject === id && claim.information.type === 'group')!;
++    const ownClaims = availableBySubject.get(id) ?? [];
++    const primary = groupClaims.get(id)!;
+     const artifactClaims = ownClaims.filter(claim => claim.information.type === 'artifact-placement');
+     const documentation = ownClaims.filter(claim => claim.information.type === 'group-documentation');
+-    const members = placements.filter(claim => claim.information.groups.includes(id));
++    const members = membersByGroup.get(id) ?? [];
+     const moduleArtifacts = new Set(members.flatMap(claim => claim.information.artifacts));
+     const documentationArtifacts = new Set(documentation.flatMap(claim => claim.information.type === 'group-documentation' ? [claim.information.artifact] : []));
+     const other = artifactClaims.flatMap(claim => claim.information.type === 'artifact-placement'
+       && !moduleArtifacts.has(claim.information.artifact) && !documentationArtifacts.has(claim.information.artifact) ? [claim.information.artifact] : []);
+-    return { ...group(id), selected: projection.groups.includes(id), detail: projection.groups.includes(id) ? 'materialized' : 'not-requested', qualification: qualification(primary.context),
+-      parents: [...new Set(available.flatMap(claim => claim.information.type === 'group-containment' && claim.information.child === id ? [claim.subject] : []))].map(group),
++    return { ...group(id), selected: selectedGroups.has(id), detail: selectedGroups.has(id) ? 'materialized' : 'not-requested', qualification: qualification(primary.context),
++      parents: [...new Set(availableParents.get(id) ?? [])].map(group),
+       subgroups: [...new Set(ownClaims.flatMap(claim => claim.information.type === 'group-containment' ? [claim.information.child] : []))].map(group),
+       modules: members.map(module), documentationCount: documentation.length,
+       artifacts: { total: artifactClaims.length, moduleAssociated: artifactClaims.filter(claim => claim.information.type === 'artifact-placement' && moduleArtifacts.has(claim.information.artifact)).length,
+diff --git a/src/lib/presentation.ts b/_claude-processing-cost-audit/prototype/src/lib/presentation.ts
+index 84bfba1..3f40e54 100644
+--- a/src/lib/presentation.ts
++++ b/_claude-processing-cost-audit/prototype/src/lib/presentation.ts
+@@ -1,4 +1,4 @@
+-import { compositionView, compositionAnnotation } from './composition-view.js';
++import { compositionViews, compositionAnnotation } from './composition-view.js';
+ import type { CompositionView } from './composition-view.js';
+ import { inlineText, terminalText } from './terminal-text.js';
+ import { methods, recordId } from './identity.js';
+@@ -66,6 +66,17 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
+     return conceptual;
+   };
+   const expanded = projection.expansions.claims.map(id => store.get(id)).filter((record): record is Claim => record.kind === 'claim');
++  const bySubject = new Map<RecordId, Claim[]>();
++  const position = new Map<Claim, number>(expanded.map((record, index) => [record, index]));
++  // Preserve the projection's claim order when gathering several subjects.
++  const claimsFor = (subjects: Iterable<RecordId>) => [...new Set(subjects)].flatMap(subject => bySubject.get(subject) ?? [])
++    .sort((a, b) => position.get(a)! - position.get(b)!);
++  for (const record of expanded) {
++    const list = bySubject.get(record.subject) ?? [];
++    list.push(record);
++    bySubject.set(record.subject, list);
++  }
++  const compositionView = compositionViews(store, projection.expansions.claims, projection.evaluations);
+   const compact = presentation.format === 'unicode' && projection.lens === 'modules';
+   const displayedClaims = new Map<RecordId, Claim>();
+   type SourceGroup = Omit<NonNullable<QualifiedView['sourceDetail']>['items'][number], 'evidence'>;
+@@ -80,7 +91,7 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
+     return { text: characters.slice(0, maximum).join(''), omittedTextCharacters: Math.max(0, characters.length - maximum) };
+   };
+   const documentation = (subjects: readonly RecordId[], maximumDocs: number, label: string, module: RecordId, subject: RecordId) => {
+-    const associations = expanded.filter(record => record.information.type === 'documentation-association' && subjects.includes(record.subject));
++    const associations = claimsFor(subjects).filter(record => record.information.type === 'documentation-association');
+     const shown = associations.slice(0, maximumDocs);
+     const items: Documentation[] = shown.map(claim => {
+       if (claim.information.type !== 'documentation-association') throw new Error('Expected documentation association');
+@@ -120,13 +131,14 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
+     const maximumDocs = compact ? 0 : projection.lens === 'inspect' ? 3 : claim.information.discoveryFacets.includes('project') ? 1 : 0;
+     const sourceLabel = `${claim.information.handle} (${entityIds.get(id)!})`;
+     sourceGroup({ label: `Module ${sourceLabel}`, module: id, subject: id, role: 'module' }, [claim]);
+-    const composition = compositionView(store, id, projection.expansions.claims, projection.evaluations);
+-    for (const property of expanded.filter(record => record.subject === id && record.information.type === 'module-composition')) {
++    const composition = compositionView(id);
++    const own = bySubject.get(id) ?? [];
++    for (const property of own.filter(record => record.information.type === 'module-composition')) {
+       sourceGroup({ label: `Composition ${sourceLabel}`, module: id, subject: id, role: 'module' }, [property]);
+     }
+-    const allExports = expanded.filter((record): record is ExportClaim => record.information.type === 'export' && record.subject === id);
++    const allExports = own.filter((record): record is ExportClaim => record.information.type === 'export');
+     const allSubjects = new Set([id, ...allExports.map(exported => exported.id), ...allExports.flatMap(exported => exported.information.symbol ? [exported.information.symbol] : [])]);
+-    const allDocumentation = expanded.flatMap(record => record.information.type === 'documentation-association' && allSubjects.has(record.subject) ? [record.information.assertion] : []);
++    const allDocumentation = claimsFor(allSubjects).flatMap(record => record.information.type === 'documentation-association' ? [record.information.assertion] : []);
+     const maximumExports = compact ? 3 : projection.lens === 'inspect' ? 50 : 6;
+     const exports = allExports.slice(0, maximumExports).map(exported => {
+       sourceGroup({ label: `Export ${exported.information.exportedName}`, module: id, subject: exported.id, role: 'export' }, [exported]);
+@@ -159,12 +171,13 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
+     return { id, requirement, modules, applicability, availability, execution, materialization, reason, cost };
+   });
+   const contextIds = new Set(projection.contexts);
++  const projectedModules = new Set(projection.modules);
+   for (const id of projection.evaluations) {
+     const outcome = store.get(id);
+     if (outcome.kind !== 'evaluation') continue;
+     for (const contextId of outcome.contexts) {
+       const context = store.get(contextId);
+-      if (context.kind === 'claim-context' && (context.scope === 'configured-project' || projection.modules.includes(context.scope))) contextIds.add(contextId);
++      if (context.kind === 'claim-context' && (context.scope === 'configured-project' || projectedModules.has(context.scope))) contextIds.add(contextId);
+     }
+   }
+   const contexts = [...contextIds].map(qualification);
+diff --git a/src/lib/typescript/expansions.ts b/_claude-processing-cost-audit/prototype/src/lib/typescript/expansions.ts
+index dfb8680..e806764 100644
+--- a/src/lib/typescript/expansions.ts
++++ b/_claude-processing-cost-audit/prototype/src/lib/typescript/expansions.ts
+@@ -284,21 +284,30 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
+       }
+     }
+     const byId = new Map(records.map(record => [record.id, record]));
++    const exportsBySubject = new Map<RecordId, RecordId[]>();
++    for (const id of exportClaims) {
++      const claim = byId.get(id);
++      if (claim?.kind !== 'claim') continue;
++      const list = exportsBySubject.get(claim.subject);
++      if (list) list.push(id); else exportsBySubject.set(claim.subject, [id]);
++    }
++    const docPosition = new Map(docClaims.map((id, index) => [id, index]));
++    const docsBySubject = new Map<RecordId, RecordId[]>();
++    for (const id of docClaims) {
++      const claim = byId.get(id);
++      if (claim?.kind !== 'claim') continue;
++      const list = docsBySubject.get(claim.subject);
++      if (list) list.push(id); else docsBySubject.set(claim.subject, [id]);
++    }
+     const results: NonNullable<DiscoveryResult['expansions']>[number][] = prepared.flatMap((item, index) => {
+       const subject = recordId(session, 'module', item.module.key);
+-      const exports = exportClaims.filter(id => {
+-        const claim = byId.get(id);
+-        return claim?.kind === 'claim' && claim.subject === subject;
+-      });
++      const exports = exportsBySubject.get(subject) ?? [];
+       const related = new Set([subject, ...exports]);
+       for (const id of exports) {
+         const claim = byId.get(id);
+         if (claim?.kind === 'claim' && claim.information.type === 'export' && claim.information.symbol) related.add(claim.information.symbol);
+       }
+-      const docs = docClaims.filter(id => {
+-        const claim = byId.get(id);
+-        return claim?.kind === 'claim' && related.has(claim.subject);
+-      });
++      const docs = [...related].flatMap(id => docsBySubject.get(id) ?? []).sort((a, b) => docPosition.get(a)! - docPosition.get(b)!);
+       return requested.map(requirement => ({
+         requirement, modules: [subject], claims: requirement === 'exports' ? exports : [...exports, ...docs], contexts: [contexts[index]!],
+         applicability: 'applicable', availability: 'available', execution: 'completed',
+diff --git a/src/lib/typescript/project.ts b/_claude-processing-cost-audit/prototype/src/lib/typescript/project.ts
+index b62ba8d..755fedb 100644
+--- a/src/lib/typescript/project.ts
++++ b/_claude-processing-cost-audit/prototype/src/lib/typescript/project.ts
+@@ -282,6 +282,12 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
+         }) }));
+         const globalContext = makeContext('configured-project', [...files.map(file => evidence(file, null)), ...resolutionEvidence.map(item => item.id)], files);
+         const moduleIds: RecordId[] = [];
++        const resolutionPosition = new Map(resolutionEvidence.map((item, index) => [item, index]));
++        const resolutionsByFile = new Map<ts.SourceFile, typeof resolutionEvidence>();
++        for (const item of resolutionEvidence) {
++          const list = resolutionsByFile.get(item.node.getSourceFile());
++          if (list) list.push(item); else resolutionsByFile.set(item.node.getSourceFile(), [item]);
++        }
+         const mnemonic = (candidate: typeof candidates[number]): Pick<ModuleClaim['information'], 'handle' | 'handleProvenance'> => {
+           // Declared export names are conceptual recognition evidence, not inferred module responsibilities.
+           const exported = [...(candidate.symbol?.exports?.values() ?? [])].filter(symbol => !symbol.getName().startsWith('__'));
+@@ -311,7 +317,9 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
+           const id = recordId(session, 'module', candidate.key);
+           const claim = recordId(session, 'claim', id);
+           const context = makeContext(id, [...candidate.declarations.map(declaration => evidence(declaration, candidate.compilerName)),
+-            ...resolutionEvidence.filter(item => candidate.declarations.some(declaration => item.node.getSourceFile() === declaration.getSourceFile()
++            ...[...new Set(candidate.declarations.map(declaration => declaration.getSourceFile()))].flatMap(file => resolutionsByFile.get(file) ?? [])
++              .sort((a, b) => resolutionPosition.get(a)! - resolutionPosition.get(b)!)
++              .filter(item => candidate.declarations.some(declaration => item.node.getSourceFile() === declaration.getSourceFile()
+               && item.node.pos >= declaration.pos && item.node.end <= declaration.end)).map(item => item.id)],
+             candidate.declarations.map(declaration => declaration.getSourceFile()));
+           records.push({ kind: 'module', id, session, method, claim }, {

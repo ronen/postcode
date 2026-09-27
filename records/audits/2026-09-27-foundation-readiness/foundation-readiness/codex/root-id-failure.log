@@ -1,0 +1,14 @@
+file:///Users/ronen/postcode/app/_codex-library-reuse-audit/graph-research/sources/@statelyai__graph/dist/config-CYtzGpTh.mjs:48
+	if (!config.id) throw new Error("Node id must be a non-empty string");
+	                      ^
+
+Error: Node id must be a non-empty string
+    at createGraphNode (file:///Users/ronen/postcode/app/_codex-library-reuse-audit/graph-research/sources/@statelyai__graph/dist/config-CYtzGpTh.mjs:48:24)
+    at Array.map (<anonymous>)
+    at createGraph (file:///Users/ronen/postcode/app/_codex-library-reuse-audit/graph-research/sources/@statelyai__graph/dist/config-CYtzGpTh.mjs:122:32)
+    at deriveLayout (file:///Users/ronen/postcode/app/_foundation-readiness-review-codex/layout-prototype.mjs:30:19)
+    at file:///Users/ronen/postcode/app/_foundation-readiness-review-codex/probes.mjs:65:22
+    at check (file:///Users/ronen/postcode/app/_foundation-readiness-review-codex/probes.mjs:16:44)
+    at file:///Users/ronen/postcode/app/_foundation-readiness-review-codex/probes.mjs:54:1
+
+Node.js v22.13.1

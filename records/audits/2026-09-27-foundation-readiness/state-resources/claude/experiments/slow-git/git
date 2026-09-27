@@ -1,0 +1,4 @@
+#!/bin/sh
+echo "$$ $*" >> "$FAKEGIT_LOG"
+sleep 6
+exec /usr/bin/git "$@"

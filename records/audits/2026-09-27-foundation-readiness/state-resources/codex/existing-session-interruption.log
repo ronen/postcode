@@ -1,0 +1,24 @@
+{
+  "compiler": "typescript@6.0.3",
+  "declarations": 80000,
+  "control": {
+    "openingMs": 1174.301558,
+    "commandMs": 1129.9619069999999,
+    "exitCode": 0,
+    "viewReturned": true,
+    "events": [
+      "view-produced",
+      "command-completed"
+    ]
+  },
+  "interrupted": {
+    "openingMs": 1209.0495730000002,
+    "commandMs": 306.59947999999986,
+    "interruptionToExitMs": 19.704627999999502,
+    "exitCode": 130,
+    "viewReturned": false,
+    "events": [
+      "command-interrupted"
+    ]
+  }
+}

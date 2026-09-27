@@ -52,6 +52,10 @@ Create architecture documentation under `architecture/` when there is implemente
 
 [`records/reviews/`](../records/reviews/) preserves durable handoffs, returned findings, and dispositions for independent implementation reviews required by approved plans or authorized tasks. New review series are grouped by their governing plan, or by task when no plan applies; filenames identify each record's role.
 
+### Audit records
+
+[`records/audits/`](../records/audits/README.md) preserves exploratory audits and selected supporting evidence against stated baselines. Plans may cite these durable findings; the audits do not themselves authorize implementation or establish review-gate acceptance. Each collection identifies its reports, retained evidence, and archival limits.
+
 ### Backlog
 
 [`backlog.md`](backlog.md) records worthwhile work and concerns that are not part of an active plan or authorized task. Backlog entries are candidates rather than commitments. Substantial entries should be promoted into plans before implementation.

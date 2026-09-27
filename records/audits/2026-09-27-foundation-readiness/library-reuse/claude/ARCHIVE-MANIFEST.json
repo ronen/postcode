@@ -1,0 +1,26 @@
+{
+  "archived_on": "2026-09-27",
+  "original_directory": "_library-reuse-audit",
+  "files": [
+    {
+      "original_path": "_library-reuse-audit/audit.md",
+      "archived_path": "REPORT.md",
+      "original_sha256": "6361c5800caa982ec533f26b77cbd7be9a6287bce82075ad2b06adcc6e24fd92",
+      "archived_sha256": "5533bae6452b20829db186d7efd393c9feddb57fd0542f80d2c5789d1713620d",
+      "bytes": 20074,
+      "link_adjustments": [
+        {
+          "old": "../docs/backlog.md#audit-existing-generic-functionality-for-library-reuse",
+          "new": "../../../../../docs/backlog.md#audit-existing-generic-functionality-for-library-reuse",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "../dev/engineering-guidelines.md",
+          "new": "../../../../../dev/engineering-guidelines.md",
+          "reason": "Relocated local link."
+        }
+      ]
+    }
+  ],
+  "omitted_artifacts": []
+}

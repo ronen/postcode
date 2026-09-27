@@ -1,0 +1,14 @@
+{
+  "archived_on": "2026-09-27",
+  "reports": 8,
+  "source_files_moved": 132,
+  "markdown_links_relocated": 140,
+  "original_hashes_reconstructed_and_verified": 132,
+  "archived_hashes_verified": 132,
+  "local_markdown_targets_checked": 286,
+  "missing_local_targets": [],
+  "durable_links_to_scratch": [],
+  "ignored_archive_files": [],
+  "application_tests_or_probes_rerun": false,
+  "verification_scope": "Archive integrity and relocation, not independent revalidation of audit findings."
+}

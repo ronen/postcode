@@ -1,0 +1,77 @@
+TAP version 13
+# Subtest: representative journey preserves direct intermediates, shared parents, composition and fresh exact lookups
+not ok 1 - representative journey preserves direct intermediates, shared parents, composition and fresh exact lookups
+  ---
+  duration_ms: 1102.218054
+  location: '/Users/ronen/postcode/app/_claude-processing-cost-audit/baseline-copy/_build/test/dependency-presentation.test.js:23:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(view.relationships.some(edge => edge.organization?.classification === 'outward'))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///Users/ronen/postcode/app/_claude-processing-cost-audit/baseline-copy/_build/test/dependency-presentation.test.js:35:12)
+    async Test.run (node:internal/test_runner/test:932:9)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: source-owned request results and recognition outcomes are separate and parent disclosure does not fabricate them
+not ok 2 - source-owned request results and recognition outcomes are separate and parent disclosure does not fabricate them
+  ---
+  duration_ms: 4149.8032
+  location: '/Users/ronen/postcode/app/_claude-processing-cost-audit/baseline-copy/_build/test/dependency-presentation.test.js:56:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(source.organizationEvidence.some(item => item.kind === 'repository-region'))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///Users/ronen/postcode/app/_claude-processing-cost-audit/baseline-copy/_build/test/dependency-presentation.test.js:83:12)
+    async Test.run (node:internal/test_runner/test:932:9)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: opaque external endpoints render as leaves and never claim an established empty interior
+ok 3 - opaque external endpoints render as leaves and never claim an established empty interior
+  ---
+  duration_ms: 298.884135
+  ...
+# Subtest: cycle grouping retains internal edges and display depth omissions do not remove JSON graph facts
+ok 4 - cycle grouping retains internal edges and display depth omissions do not remove JSON graph facts
+  ---
+  duration_ms: 1437.097321
+  ...
+# Subtest: inspection by handle works independently of additional CommonJS dependency inputs
+ok 5 - inspection by handle works independently of additional CommonJS dependency inputs
+  ---
+  duration_ms: 2044.966152
+  ...
+# Subtest: component bounds count disconnected omissions and terminal controls stay inert
+ok 6 - component bounds count disconnected omissions and terminal controls stay inert
+  ---
+  duration_ms: 371.809242
+  ...
+# Subtest: dependency rendering pluralizes each independent count including omissions
+ok 7 - dependency rendering pluralizes each independent count including omissions
+  ---
+  duration_ms: 1025.844014
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 5
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 11134.715239

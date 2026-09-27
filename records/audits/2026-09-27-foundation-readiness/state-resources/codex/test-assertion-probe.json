@@ -1,0 +1,14 @@
+{
+  "deliberateAssertionFailures": 2,
+  "exitStatus": 0,
+  "edits": [
+    [
+      "session-inputs.test.js",
+      "assert.equal(batch.records.some(record => record.kind === 'qualified-view'), after);"
+    ],
+    [
+      "shell.test.js",
+      "assert.equal(batch.command, 1);"
+    ]
+  ]
+}

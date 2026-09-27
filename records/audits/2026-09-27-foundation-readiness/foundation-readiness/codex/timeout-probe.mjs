@@ -1,0 +1,13 @@
+import {spawnSync} from 'node:child_process';
+import {writeFileSync,readFileSync} from 'node:fs';
+import assert from 'node:assert/strict';
+const signalFile = new URL('./timeout-signal.txt',import.meta.url);
+writeFileSync(signalFile,'');
+const start=performance.now();
+const result=spawnSync(process.execPath,['-e',`const fs=require('node:fs');process.on('SIGTERM',()=>fs.appendFileSync(${JSON.stringify(signalFile.pathname)},'handled'));process.stdout.write('ready\\n');setTimeout(()=>process.exit(0),1200);`],{timeout:500,encoding:'utf8'});
+const elapsed=performance.now()-start;
+assert.equal(readFileSync(signalFile,'utf8'),'handled');
+assert.equal(result.error.code,'ETIMEDOUT');
+assert.ok(elapsed>900);
+writeFileSync(new URL('./timeout-results.json',import.meta.url),JSON.stringify({node:process.version,configuredTimeoutMs:500,elapsedMs:elapsed,stdout:result.stdout,error:result.error.code,status:result.status,signal:result.signal},null,2)+'\n');
+console.log('Timeout signal was handled; spawnSync returned only after child exited:',Math.round(elapsed),'ms');

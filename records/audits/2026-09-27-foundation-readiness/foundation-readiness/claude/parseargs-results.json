@@ -1,0 +1,292 @@
+[
+  {
+    "args": [
+      "inspect",
+      "foo",
+      "--json"
+    ],
+    "current": {
+      "kind": "view",
+      "configPath": "/cwd/tsconfig.json",
+      "request": {
+        "lens": "inspect",
+        "selector": "foo",
+        "subject": "project",
+        "presentation": {
+          "format": "json",
+          "sourceDetail": false
+        }
+      }
+    },
+    "library": {
+      "values": {
+        "json": true
+      },
+      "positionals": [
+        "inspect",
+        "foo"
+      ],
+      "terminator": false
+    }
+  },
+  {
+    "args": [
+      "inspect",
+      "-x"
+    ],
+    "current": {
+      "kind": "view",
+      "configPath": "/cwd/tsconfig.json",
+      "request": {
+        "lens": "inspect",
+        "selector": "-x",
+        "subject": "project",
+        "presentation": {
+          "format": "unicode",
+          "sourceDetail": false
+        }
+      }
+    },
+    "library": {
+      "error": "ERR_PARSE_ARGS_UNKNOWN_OPTION",
+      "message": "Unknown option '-x'. To specify a positional argument starting with a '-', place it at the end of the command after '--', as in '-- \"-x\""
+    }
+  },
+  {
+    "args": [
+      "inspect",
+      "--",
+      "-x"
+    ],
+    "current": {
+      "kind": "view",
+      "configPath": "/cwd/tsconfig.json",
+      "request": {
+        "lens": "inspect",
+        "selector": "-x",
+        "subject": "project",
+        "presentation": {
+          "format": "unicode",
+          "sourceDetail": false
+        }
+      }
+    },
+    "library": {
+      "values": {},
+      "positionals": [
+        "inspect",
+        "-x"
+      ],
+      "terminator": true
+    }
+  },
+  {
+    "args": [
+      "inspect",
+      "--",
+      "--help"
+    ],
+    "current": {
+      "kind": "view",
+      "configPath": "/cwd/tsconfig.json",
+      "request": {
+        "lens": "inspect",
+        "selector": "--help",
+        "subject": "project",
+        "presentation": {
+          "format": "unicode",
+          "sourceDetail": false
+        }
+      }
+    },
+    "library": {
+      "values": {},
+      "positionals": [
+        "inspect",
+        "--help"
+      ],
+      "terminator": true
+    }
+  },
+  {
+    "args": [
+      "--project",
+      "a/tsconfig.json",
+      "modules"
+    ],
+    "current": {
+      "kind": "view",
+      "configPath": "/cwd/a/tsconfig.json",
+      "request": {
+        "lens": "modules",
+        "selector": null,
+        "subject": "project",
+        "presentation": {
+          "format": "unicode",
+          "sourceDetail": false
+        }
+      }
+    },
+    "library": {
+      "values": {
+        "project": "a/tsconfig.json"
+      },
+      "positionals": [
+        "modules"
+      ],
+      "terminator": false
+    }
+  },
+  {
+    "args": [
+      "--project=a/tsconfig.json",
+      "modules"
+    ],
+    "current": {
+      "kind": "error",
+      "message": "Usage error: unknown option --project=a/tsconfig.json.\n"
+    },
+    "library": {
+      "values": {
+        "project": "a/tsconfig.json"
+      },
+      "positionals": [
+        "modules"
+      ],
+      "terminator": false
+    }
+  },
+  {
+    "args": [
+      "--project",
+      "--json"
+    ],
+    "current": {
+      "kind": "error",
+      "message": "Usage error: --project requires a configuration path.\n"
+    },
+    "library": {
+      "error": "ERR_PARSE_ARGS_INVALID_OPTION_VALUE",
+      "message": "Option '--project' argument is ambiguous."
+    }
+  },
+  {
+    "args": [
+      "--project",
+      "-p"
+    ],
+    "current": {
+      "kind": "view",
+      "configPath": "/cwd/-p",
+      "request": {
+        "lens": "modules",
+        "selector": null,
+        "subject": "project",
+        "presentation": {
+          "format": "unicode",
+          "sourceDetail": false
+        }
+      }
+    },
+    "library": {
+      "error": "ERR_PARSE_ARGS_INVALID_OPTION_VALUE",
+      "message": "Option '--project' argument is ambiguous."
+    }
+  },
+  {
+    "args": [
+      "-h"
+    ],
+    "current": {
+      "kind": "help"
+    },
+    "library": {
+      "values": {
+        "help": true
+      },
+      "positionals": [],
+      "terminator": false
+    }
+  },
+  {
+    "args": [
+      "inspect",
+      "x",
+      "--unknown"
+    ],
+    "current": {
+      "kind": "error",
+      "message": "Usage error: unknown option --unknown.\n"
+    },
+    "library": {
+      "error": "ERR_PARSE_ARGS_UNKNOWN_OPTION",
+      "message": "Unknown option '--unknown'. To specify a positional argument starting with a '-', place it at the end of the command after '--', as in '-- \"--unknown\""
+    }
+  },
+  {
+    "args": [
+      "inspect",
+      "@ref"
+    ],
+    "current": {
+      "kind": "view",
+      "configPath": "/cwd/tsconfig.json",
+      "request": {
+        "lens": "inspect",
+        "selector": "@ref",
+        "subject": "project",
+        "presentation": {
+          "format": "unicode",
+          "sourceDetail": false
+        }
+      }
+    },
+    "library": {
+      "values": {},
+      "positionals": [
+        "inspect",
+        "@ref"
+      ],
+      "terminator": false
+    }
+  },
+  {
+    "args": [
+      "-jh"
+    ],
+    "current": {
+      "kind": "error",
+      "message": "Usage error: use modules, organization [project | repository], inspect <selector>, dependencies, children <selector>, or parents <selector>; --source-detail requires inspect or a dependency view.\n"
+    },
+    "library": {
+      "error": "ERR_PARSE_ARGS_UNKNOWN_OPTION",
+      "message": "Unknown option '-j'. To specify a positional argument starting with a '-', place it at the end of the command after '--', as in '-- \"-j\""
+    }
+  },
+  {
+    "args": [
+      "--json=true"
+    ],
+    "current": {
+      "kind": "error",
+      "message": "Usage error: unknown option --json=true.\n"
+    },
+    "library": {
+      "error": "ERR_PARSE_ARGS_INVALID_OPTION_VALUE",
+      "message": "Option '--json' does not take an argument"
+    }
+  },
+  {
+    "args": [
+      "--no-json"
+    ],
+    "current": {
+      "kind": "error",
+      "message": "Usage error: unknown option --no-json.\n"
+    },
+    "library": {
+      "error": "ERR_PARSE_ARGS_UNKNOWN_OPTION",
+      "message": "Unknown option '--no-json'. To specify a positional argument starting with a '-', place it at the end of the command after '--', as in '-- \"--no-json\""
+    }
+  }
+]

@@ -1,0 +1,25 @@
+[
+  {
+    "probe": "evaluation-cache-alias",
+    "storedModules": 1,
+    "cachedModules": 0,
+    "projectedModules": 1,
+    "populationEstablished": true
+  },
+  {
+    "probe": "partial-observation-write",
+    "names": [
+      "timestamp=2026-09-27T00-00-00.000Z_probe.json"
+    ],
+    "content": "{\"formatV",
+    "bytes": 9
+  },
+  {
+    "probe": "interrupt-during-git",
+    "openingResult": {
+      "error": "CommandInterrupted"
+    },
+    "rejectedAfterMs": 0.46822400000019115,
+    "terminationAfterMs": 3016.565315
+  }
+]

@@ -1,0 +1,1 @@
+{"name":"codex-graph-research","private":true,"type":"module","dependencies":{"@dagrejs/graphlib":"4.0.5","@rtsao/scc":"1.1.0","@statelyai/graph":"2.4.0","cytoscape":"3.34.3","directed-graph-typed":"2.6.0","graphology":"0.26.0","graphology-components":"1.5.4","strongly-connected-components":"1.0.1"}}

@@ -1,0 +1,35 @@
+node:internal/modules/run_main:122
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The input did not match the regular expression /host.getSourceFile/. Input:
+
+'Error\n' +
+  '    at ts.sys.readFile (file:///Users/ronen/postcode/app/_codex_state_resource_audit/checkout/scripts/probe-compiler-interruption.mjs:15:90)\n' +
+  '    at file:///Users/ronen/postcode/app/_codex_state_resource_audit/checkout/_build/src/lib/typescript/inputs.js:50:163\n' +
+  '    at Object.changed (file:///Users/ronen/postcode/app/_codex_state_resource_audit/checkout/_build/src/lib/typescript/inputs.js:67:63)\n' +
+  '    at Object.changed (file:///Users/ronen/postcode/app/_codex_state_resource_audit/checkout/_build/src/lib/typescript/project.js:91:140)\n' +
+  '    at Object.check (file:///Users/ronen/postcode/app/_codex_state_resource_audit/checkout/_build/src/lib/session.js:36:33)\n' +
+  '    at publishCommand (file:///Users/ronen/postcode/app/_codex_state_resource_audit/checkout/_build/src/lib/command-execution.js:25:23)\n' +
+  '    at async runCli (file:///Users/ronen/postcode/app/_codex_state_resource_audit/checkout/_build/src/lib/cli.js:30:16)\n' +
+  '    at async file:///Users/ronen/postcode/app/_codex_state_resource_audit/checkout/scripts/probe-compiler-interruption.mjs:19:16'
+
+    at ChildProcess.<anonymous> (file:///Users/ronen/postcode/app/_codex_state_resource_audit/checkout/scripts/probe-compiler-interruption.mjs:49:18)
+    at ChildProcess.emit (node:events:524:28)
+    at ChildProcess._handle.onexit (node:internal/child_process:293:12) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'Error\n' +
+    '    at ts.sys.readFile (file:///Users/ronen/postcode/app/_codex_state_resource_audit/checkout/scripts/probe-compiler-interruption.mjs:15:90)\n' +
+    '    at file:///Users/ronen/postcode/app/_codex_state_resource_audit/checkout/_build/src/lib/typescript/inputs.js:50:163\n' +
+    '    at Object.changed (file:///Users/ronen/postcode/app/_codex_state_resource_audit/checkout/_build/src/lib/typescript/inputs.js:67:63)\n' +
+    '    at Object.changed (file:///Users/ronen/postcode/app/_codex_state_resource_audit/checkout/_build/src/lib/typescript/project.js:91:140)\n' +
+    '    at Object.check (file:///Users/ronen/postcode/app/_codex_state_resource_audit/checkout/_build/src/lib/session.js:36:33)\n' +
+    '    at publishCommand (file:///Users/ronen/postcode/app/_codex_state_resource_audit/checkout/_build/src/lib/command-execution.js:25:23)\n' +
+    '    at async runCli (file:///Users/ronen/postcode/app/_codex_state_resource_audit/checkout/_build/src/lib/cli.js:30:16)\n' +
+    '    at async file:///Users/ronen/postcode/app/_codex_state_resource_audit/checkout/scripts/probe-compiler-interruption.mjs:19:16',
+  expected: /host.getSourceFile/,
+  operator: 'match'
+}
+
+Node.js v22.13.1

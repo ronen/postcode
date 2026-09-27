@@ -1,0 +1,250 @@
+{
+  "ascii": {
+    "current": {
+      "lines": 2,
+      "maxDisplayColumns": 86
+    },
+    "widthAware": {
+      "lines": 2,
+      "maxDisplayColumns": 86,
+      "sameAsCurrent": true
+    },
+    "wrapAnsi": {
+      "lines": 2,
+      "maxDisplayColumns": 86,
+      "sameAsCurrent": false,
+      "sameAsWidthAware": false
+    },
+    "sample": {
+      "current": [
+        "  PostCode supervises development by presenting qualified structural information about",
+        "  ↪ modules, organization and dependencies."
+      ],
+      "wrapAnsi": [
+        "  PostCode supervises development by presenting qualified structural information about",
+        "  ↪  modules, organization and dependencies."
+      ]
+    }
+  },
+  "doubleSpaces": {
+    "current": {
+      "lines": 2,
+      "maxDisplayColumns": 85
+    },
+    "widthAware": {
+      "lines": 2,
+      "maxDisplayColumns": 85,
+      "sameAsCurrent": true
+    },
+    "wrapAnsi": {
+      "lines": 2,
+      "maxDisplayColumns": 86,
+      "sameAsCurrent": false,
+      "sameAsWidthAware": false
+    },
+    "sample": {
+      "current": [
+        "  Two  spaces  between  words  should  be  preserved  exactly  as  recorded  in  the ",
+        "  ↪ assertion  text  of  this  documentation."
+      ],
+      "wrapAnsi": [
+        "  Two  spaces  between  words  should  be  preserved  exactly  as  recorded  in  the  ",
+        "  ↪ assertion  text  of  this  documentation."
+      ]
+    }
+  },
+  "leadingIndent": {
+    "current": {
+      "lines": 2,
+      "maxDisplayColumns": 86
+    },
+    "widthAware": {
+      "lines": 2,
+      "maxDisplayColumns": 86,
+      "sameAsCurrent": true
+    },
+    "wrapAnsi": {
+      "lines": 2,
+      "maxDisplayColumns": 86,
+      "sameAsCurrent": false,
+      "sameAsWidthAware": false
+    },
+    "sample": {
+      "current": [
+        "      indented code-like line that is long enough to wrap beyond the available display",
+        "  ↪ width of the terminal renderer."
+      ],
+      "wrapAnsi": [
+        "      indented code-like line that is long enough to wrap beyond the available display",
+        "  ↪  width of the terminal renderer."
+      ]
+    }
+  },
+  "longWord": {
+    "current": {
+      "lines": 3,
+      "maxDisplayColumns": 88
+    },
+    "widthAware": {
+      "lines": 3,
+      "maxDisplayColumns": 88,
+      "sameAsCurrent": true
+    },
+    "wrapAnsi": {
+      "lines": 3,
+      "maxDisplayColumns": 88,
+      "sameAsCurrent": true,
+      "sameAsWidthAware": true,
+      "contentPreserved": "n/a"
+    },
+    "sample": {
+      "current": [
+        "  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "  ↪ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      ],
+      "wrapAnsi": [
+        "  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "  ↪ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      ]
+    }
+  },
+  "cjk": {
+    "current": {
+      "lines": 2,
+      "maxDisplayColumns": 170
+    },
+    "widthAware": {
+      "lines": 3,
+      "maxDisplayColumns": 88,
+      "sameAsCurrent": false
+    },
+    "wrapAnsi": {
+      "lines": 3,
+      "maxDisplayColumns": 88,
+      "sameAsCurrent": false,
+      "sameAsWidthAware": true,
+      "contentPreserved": "n/a"
+    },
+    "sample": {
+      "current": [
+        "  这个模块负责解析配置文件并提供类型安全的访问接口，同时保留所有来源信息和限定条件以便后续展示和审查使用。这个模块负责解析配置文件并提供类型安全的访问接口，同时保留所有来",
+        "  ↪ 源信息和限定条件以便后续展示和审查使用。"
+      ],
+      "wrapAnsi": [
+        "  这个模块负责解析配置文件并提供类型安全的访问接口，同时保留所有来源信息和限定条件以便",
+        "  ↪ 后续展示和审查使用。这个模块负责解析配置文件并提供类型安全的访问接口，同时保留所有来"
+      ]
+    }
+  },
+  "combining": {
+    "current": {
+      "lines": 3,
+      "maxDisplayColumns": 46
+    },
+    "widthAware": {
+      "lines": 2,
+      "maxDisplayColumns": 86,
+      "sameAsCurrent": false
+    },
+    "wrapAnsi": {
+      "lines": 2,
+      "maxDisplayColumns": 86,
+      "sameAsCurrent": false,
+      "sameAsWidthAware": false
+    },
+    "sample": {
+      "current": [
+        "  éééééééééééééééééééééééééééééééééééééééééé",
+        "  ↪ éééééééééééééééééééééééééééééééééééééééééé"
+      ],
+      "wrapAnsi": [
+        "  éééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé",
+        "  ↪ éééééééééééééééé"
+      ]
+    }
+  },
+  "emojiZwj": {
+    "current": {
+      "lines": 3,
+      "maxDisplayColumns": 45
+    },
+    "widthAware": {
+      "lines": 2,
+      "maxDisplayColumns": 85,
+      "sameAsCurrent": false
+    },
+    "wrapAnsi": {
+      "lines": 2,
+      "maxDisplayColumns": 86,
+      "sameAsCurrent": false,
+      "sameAsWidthAware": false
+    },
+    "sample": {
+      "current": [
+        "  👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧",
+        "  ↪ 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧"
+      ],
+      "wrapAnsi": [
+        "  👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 ",
+        "  ↪ 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 👩‍👩‍👧 "
+      ]
+    }
+  },
+  "tabs": {
+    "current": {
+      "lines": 2,
+      "maxDisplayColumns": 70
+    },
+    "widthAware": {
+      "lines": 2,
+      "maxDisplayColumns": 86,
+      "sameAsCurrent": false
+    },
+    "wrapAnsi": {
+      "lines": 3,
+      "maxDisplayColumns": 88,
+      "sameAsCurrent": false,
+      "sameAsWidthAware": false
+    },
+    "sample": {
+      "current": [
+        "  col1\tcol2\tcol3\tcol1\tcol2\tcol3\tcol1\tcol2\tcol3\tcol1\tcol2\tcol3\tcol1\tcol2\tcol3\tcol1\tcol2",
+        "  ↪ \tcol3\tcol1\tcol2\tcol3\tcol1\tcol2\tcol3\tcol1\tcol2\tcol3\tcol1\tcol2\tcol3\t"
+      ],
+      "wrapAnsi": [
+        "  col1    col2    col3    col1    col2    col3    col1    col2    col3    col1    col2",
+        "  ↪     col3    col1    col2    col3    col1    col2    col3    col1    col2    col3    "
+      ]
+    }
+  },
+  "escapedControl": {
+    "current": {
+      "lines": 2,
+      "maxDisplayColumns": 86
+    },
+    "widthAware": {
+      "lines": 2,
+      "maxDisplayColumns": 86,
+      "sameAsCurrent": true
+    },
+    "wrapAnsi": {
+      "lines": 2,
+      "maxDisplayColumns": 86,
+      "sameAsCurrent": false,
+      "sameAsWidthAware": false
+    },
+    "sample": {
+      "current": [
+        "  danger \\u001b[31mred\\u001b[0m word word word word word word word word word word word",
+        "  ↪ word word word word word word word word word "
+      ],
+      "wrapAnsi": [
+        "  danger \\u001b[31mred\\u001b[0m word word word word word word word word word word word",
+        "  ↪  word word word word word word word word word "
+      ]
+    }
+  },
+  "stringWidthOfTab": 0,
+  "stringWidthOfEscapedControlText": 10,
+  "stringWidthOfRawAnsi": 3
+}

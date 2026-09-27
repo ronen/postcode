@@ -1,0 +1,198 @@
+{
+  "node": "v22.13.1",
+  "graphVersion": "2.4.0",
+  "results": [
+    {
+      "name": "normalizer collapses inconsistent reference namespaces and literal evidence text",
+      "maskedReferenceDifference": true,
+      "maskedTextDifference": true
+    },
+    {
+      "name": "record key textual namespace removal also rewrites literal data",
+      "distinctLiteralKeysCollide": true
+    },
+    {
+      "name": "module outcome recording is split across atomic store batches",
+      "orphanRootAttempts": 1,
+      "nextAttempt": 2
+    },
+    {
+      "name": "incremental layout graph adapter preserves full deterministic cycle-refusal records",
+      "fullLayoutComparisons": 128
+    },
+    {
+      "name": "incoming traversal retains reflexive ancestry and every parallel containment claim",
+      "groups": [
+        "leaf",
+        "left",
+        "right",
+        "root"
+      ],
+      "claims": [
+        "claim0",
+        "claim1",
+        "claim2",
+        "claim3",
+        "claim4"
+      ]
+    },
+    {
+      "name": "graph index ownership requires mutation APIs or explicit invalidation",
+      "directFieldEditMissed": true,
+      "explicitInvalidationCorrect": true,
+      "missingReflexivePath": true
+    },
+    {
+      "name": "standard parser compatibility deltas",
+      "cases": [
+        {
+          "args": [
+            "inspect",
+            "--",
+            "@literal"
+          ],
+          "current": {
+            "kind": "view",
+            "configPath": "tsconfig.json",
+            "request": {
+              "lens": "inspect",
+              "selector": "@literal",
+              "subject": "project",
+              "presentation": {
+                "format": "unicode",
+                "sourceDetail": false
+              }
+            }
+          },
+          "platform": {
+            "values": {},
+            "positionals": [
+              "inspect",
+              "@literal"
+            ],
+            "tokens": [
+              {
+                "kind": "positional",
+                "index": 0,
+                "value": "inspect"
+              },
+              {
+                "kind": "option-terminator",
+                "index": 1
+              },
+              {
+                "kind": "positional",
+                "index": 2,
+                "value": "@literal"
+              }
+            ]
+          }
+        },
+        {
+          "args": [
+            "modules",
+            "--project=foo"
+          ],
+          "current": {
+            "kind": "error",
+            "message": "Usage error: unknown option --project=foo.\n"
+          },
+          "platform": {
+            "values": {
+              "project": "foo"
+            },
+            "positionals": [
+              "modules"
+            ],
+            "tokens": [
+              {
+                "kind": "positional",
+                "index": 0,
+                "value": "modules"
+              },
+              {
+                "kind": "option",
+                "name": "project",
+                "rawName": "--project",
+                "index": 1,
+                "value": "foo",
+                "inlineValue": true
+              }
+            ]
+          }
+        },
+        {
+          "args": [
+            "modules",
+            "--project",
+            "-x"
+          ],
+          "current": {
+            "kind": "view",
+            "configPath": "/Users/ronen/postcode/app/-x",
+            "request": {
+              "lens": "modules",
+              "selector": null,
+              "subject": "project",
+              "presentation": {
+                "format": "unicode",
+                "sourceDetail": false
+              }
+            }
+          },
+          "platform": {
+            "code": "ERR_PARSE_ARGS_INVALID_OPTION_VALUE"
+          }
+        },
+        {
+          "args": [
+            "inspect",
+            "-x"
+          ],
+          "current": {
+            "kind": "view",
+            "configPath": "tsconfig.json",
+            "request": {
+              "lens": "inspect",
+              "selector": "-x",
+              "subject": "project",
+              "presentation": {
+                "format": "unicode",
+                "sourceDetail": false
+              }
+            }
+          },
+          "platform": {
+            "code": "ERR_PARSE_ARGS_UNKNOWN_OPTION"
+          }
+        },
+        {
+          "args": [
+            "--help",
+            "--unknown"
+          ],
+          "current": {
+            "kind": "help"
+          },
+          "platform": {
+            "code": "ERR_PARSE_ARGS_UNKNOWN_OPTION"
+          }
+        },
+        {
+          "args": [
+            "modules",
+            "--project",
+            "--json"
+          ],
+          "current": {
+            "kind": "error",
+            "message": "Usage error: --project requires a configuration path.\n"
+          },
+          "platform": {
+            "code": "ERR_PARSE_ARGS_INVALID_OPTION_VALUE"
+          }
+        }
+      ]
+    }
+  ]
+}

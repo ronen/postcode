@@ -1,0 +1,194 @@
+{
+  "node": "v22.13.1",
+  "platform": "darwin",
+  "arch": "x64",
+  "date": "2026-09-27T07:25:33.542Z",
+  "source_sha256": "4cc3582f4ec36a1d6752257730626707c4319a7aa7dbe5848c81ccb5c17c764d",
+  "tests": [
+    {
+      "name": "strongly-connected-components",
+      "test": "506 fixtures and seeded random graphs versus independent reachability oracle",
+      "passed": true
+    },
+    {
+      "name": "@statelyai/graph",
+      "test": "506 fixtures and seeded random graphs versus independent reachability oracle",
+      "passed": true
+    },
+    {
+      "name": "@rtsao/scc",
+      "test": "506 fixtures and seeded random graphs versus independent reachability oracle",
+      "passed": true
+    },
+    {
+      "name": "@dagrejs/graphlib",
+      "test": "506 fixtures and seeded random graphs versus independent reachability oracle",
+      "passed": true
+    },
+    {
+      "name": "graphology-components",
+      "test": "506 fixtures and seeded random graphs versus independent reachability oracle",
+      "passed": true
+    },
+    {
+      "name": "directed-graph-typed",
+      "test": "506 fixtures and seeded random graphs versus independent reachability oracle",
+      "passed": true
+    },
+    {
+      "name": "cytoscape",
+      "test": "506 fixtures and seeded random graphs versus independent reachability oracle",
+      "passed": true
+    },
+    {
+      "name": "PostCode",
+      "test": "506 fixtures and seeded random graphs versus independent reachability oracle",
+      "passed": true
+    },
+    {
+      "name": "strongly-connected-components",
+      "test": "all 65,536 directed graphs on four vertices, including self-loops",
+      "passed": true
+    },
+    {
+      "name": "@statelyai/graph",
+      "test": "all 65,536 directed graphs on four vertices, including self-loops",
+      "passed": true
+    },
+    {
+      "name": "PostCode",
+      "test": "all 65,536 directed graphs on four vertices, including self-loops",
+      "passed": true
+    },
+    {
+      "name": "strongly-connected-components",
+      "test": "20,000-node chain",
+      "passed": true
+    },
+    {
+      "name": "strongly-connected-components",
+      "test": "20,000-node cycle",
+      "passed": true
+    },
+    {
+      "name": "@statelyai/graph",
+      "test": "20,000-node chain",
+      "passed": true
+    },
+    {
+      "name": "@statelyai/graph",
+      "test": "20,000-node cycle",
+      "passed": true
+    },
+    {
+      "name": "@rtsao/scc",
+      "test": "20,000-node chain",
+      "passed": false,
+      "error": "RangeError: Maximum call stack size exceeded"
+    },
+    {
+      "name": "@rtsao/scc",
+      "test": "20,000-node cycle",
+      "passed": false,
+      "error": "RangeError: Maximum call stack size exceeded"
+    },
+    {
+      "name": "@dagrejs/graphlib",
+      "test": "20,000-node chain",
+      "passed": false,
+      "error": "RangeError: Maximum call stack size exceeded"
+    },
+    {
+      "name": "@dagrejs/graphlib",
+      "test": "20,000-node cycle",
+      "passed": false,
+      "error": "RangeError: Maximum call stack size exceeded"
+    },
+    {
+      "name": "graphology-components",
+      "test": "20,000-node chain",
+      "passed": false,
+      "error": "RangeError: Maximum call stack size exceeded"
+    },
+    {
+      "name": "graphology-components",
+      "test": "20,000-node cycle",
+      "passed": false,
+      "error": "RangeError: Maximum call stack size exceeded"
+    },
+    {
+      "name": "directed-graph-typed",
+      "test": "20,000-node chain",
+      "passed": false,
+      "error": "RangeError: Maximum call stack size exceeded"
+    },
+    {
+      "name": "directed-graph-typed",
+      "test": "20,000-node cycle",
+      "passed": false,
+      "error": "RangeError: Maximum call stack size exceeded"
+    },
+    {
+      "name": "cytoscape",
+      "test": "20,000-node chain",
+      "passed": false,
+      "error": "RangeError: Maximum call stack size exceeded"
+    },
+    {
+      "name": "cytoscape",
+      "test": "20,000-node cycle",
+      "passed": false,
+      "error": "RangeError: Maximum call stack size exceeded"
+    },
+    {
+      "name": "PostCode",
+      "test": "20,000-node chain",
+      "passed": true
+    },
+    {
+      "name": "PostCode",
+      "test": "20,000-node cycle",
+      "passed": true
+    },
+    {
+      "name": "strongly-connected-components",
+      "test": "100,000-node chain",
+      "passed": true
+    },
+    {
+      "name": "strongly-connected-components",
+      "test": "100,000-node cycle",
+      "passed": true
+    },
+    {
+      "name": "@statelyai/graph",
+      "test": "100,000-node chain",
+      "passed": true
+    },
+    {
+      "name": "@statelyai/graph",
+      "test": "100,000-node cycle",
+      "passed": true
+    },
+    {
+      "name": "PostCode",
+      "test": "100,000-node chain",
+      "passed": true
+    },
+    {
+      "name": "PostCode",
+      "test": "100,000-node cycle",
+      "passed": true
+    },
+    {
+      "name": "strongly-connected-components",
+      "test": "full DependencyGraph output, complete/incomplete, duplicates, external endpoints, reversed inputs",
+      "passed": true
+    },
+    {
+      "name": "@statelyai/graph",
+      "test": "full DependencyGraph output, complete/incomplete, duplicates, external endpoints, reversed inputs",
+      "passed": true
+    }
+  ]
+}

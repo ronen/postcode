@@ -1,0 +1,629 @@
+{
+  "retrieved_at": "2026-09-27T07:22:40.000095+00:00",
+  "packages": [
+    {
+      "name": "strongly-connected-components",
+      "version": "1.0.1",
+      "license": "MIT",
+      "engines": null,
+      "dependencies": {},
+      "peerDependencies": null,
+      "peerDependenciesMeta": null,
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/mikolalysenko/strongly-connected-components.git"
+      },
+      "types": null,
+      "main": "scc.js",
+      "module": null,
+      "exports": null,
+      "dist": {
+        "shasum": "0920e2b4df67c8eaee96c6b6234fe29e873dba99",
+        "tarball": "https://registry.npmjs.org/strongly-connected-components/-/strongly-connected-components-1.0.1.tgz",
+        "integrity": "sha512-i0TFx4wPcO0FwX+4RkLJi1MxmcTv90jNZgxMu9XRnMXMeFUY1VJlIoXpZunPUvUUqbCT1pg5PEkFqqpcaElNaA==",
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEUCIQCUb0En5aNY21EYyJIi2w48JNUyxNEaMQ9X8EAaH0fb+AIgCX9nqAAqQxhAEr+hnDiBOHYwSiewTC6bYfqkdsjhDHk="
+          }
+        ]
+      },
+      "registry_url": "https://registry.npmjs.org/strongly-connected-components",
+      "created": "2013-10-31T14:25:37.481Z",
+      "published": "2014-03-31T14:25:56.083Z",
+      "downloads": {
+        "downloads": 787707,
+        "start": "2026-09-19",
+        "end": "2026-09-25",
+        "package": "strongly-connected-components"
+      }
+    },
+    {
+      "name": "@rtsao/scc",
+      "version": "1.1.0",
+      "license": "MIT",
+      "engines": null,
+      "dependencies": null,
+      "peerDependencies": null,
+      "peerDependenciesMeta": null,
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rtsao/scc.git"
+      },
+      "types": null,
+      "main": "index.js",
+      "module": null,
+      "exports": null,
+      "dist": {
+        "integrity": "sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==",
+        "shasum": "927dd2fae9bc3361403ac2c7a00c32ddce9ad7e8",
+        "tarball": "https://registry.npmjs.org/@rtsao/scc/-/scc-1.1.0.tgz",
+        "fileCount": 6,
+        "unpackedSize": 3611,
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEYCIQDM/VgostUA7JQ4ls21v2V1wmAUSso2hgvqHZsUwvhpUwIhANjKSY3m/wk3011dDbO6TueU9aAz764vHI9hp4JUJBFE"
+          }
+        ],
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v4.10.10\r\nComment: https://openpgpjs.org\r\n\r\nwsFzBAEBCAAGBQJiTcjYACEJED1NWxICdlZqFiEECWMYAoorWMhJKdjhPU1b\r\nEgJ2VmrnAA/8CVSDMeQ2gPuL16pPCker5EMMfm4SkL6EgEsErZX1momfXzwj\r\nuHFID5/zTKc31W9/+CB1oEeACE4/wTNuoCAChXc2lyCO1QP9khqSF2D+b3l+\r\nlYH1summQvLjQJsVUR5OkyORBdkNmoeMyIgGEpE9zzxH5MDl13bDfvPggnEa\r\novIf8JBOUU7UeuIVaTUs7JQiV8q8+vwQjz4eJrgR2/PCQBTNeIesoz2u5o+k\r\nOhIzqPHQKoMoSFf/0a6nkk6PQfkaNwrKwmX5jQDrUUcYbRFLuiwvxnO5b2on\r\nCnlvHG+FAU5LIlpXPClBBX7MNRgcT3ZPhWFWSqezHi3cQiRVST7AL56RuUcf\r\n6wMGduW43SQ1YmH1P+c8w0BlrZeOPnh00HcdYXauJyUhh7bX8NzoPGlxic3j\r\n6nBsiSuNf2c2y/JejeZ8/1fR6WB4jMtwHVMwlTIK8ISrQODXF2DuybMSS15s\r\nizwvg9u3uPPfuAyT1XP1GJa0DefU4wlt4xEiS4l+j+7AvCJWzJYcyTJ8K/V4\r\nelQ5d3ArKG52eoUIGARLH23wZ1S0XOXJIcxM9zKGNJ9LvMa2TDsnYDFzli7q\r\ndEHdnbWfzd/z7Xgcso25D77aQDSovJRy5HvSnq4MJK6UcP1esnLt8QSyRxcJ\r\nem/5GzCr4vEBsec54TM2bUhPJGAEb0Pej40=\r\n=nlZA\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "registry_url": "https://registry.npmjs.org/%40rtsao%2Fscc",
+      "created": "2019-04-15T16:39:12.732Z",
+      "published": "2022-04-06T17:07:36.584Z",
+      "downloads": {
+        "downloads": 56873315,
+        "start": "2026-09-19",
+        "end": "2026-09-25",
+        "package": "@rtsao/scc"
+      }
+    },
+    {
+      "name": "@dagrejs/graphlib",
+      "version": "4.0.5",
+      "license": "MIT",
+      "engines": null,
+      "dependencies": null,
+      "peerDependencies": null,
+      "peerDependenciesMeta": null,
+      "repository": {
+        "url": "git+https://github.com/dagrejs/graphlib.git",
+        "type": "git"
+      },
+      "types": "./dist/types/index.d.ts",
+      "main": "dist/graphlib.cjs",
+      "module": "dist/graphlib.esm.js",
+      "exports": {
+        ".": {
+          "types": "./dist/types/index.d.ts",
+          "import": "./dist/graphlib.esm.js",
+          "require": "./dist/graphlib.cjs"
+        },
+        "./package.json": "./package.json"
+      },
+      "dist": {
+        "shasum": "1ae7a93a4640a9e50117439d23327e27d6b698d3",
+        "tarball": "https://registry.npmjs.org/@dagrejs/graphlib/-/graphlib-4.0.5.tgz",
+        "fileCount": 59,
+        "integrity": "sha512-7xrBTqIts3o+PMUZX97wSc+7TUbW+/rULzGNCTP6yooNVDXbzw4Wutg/H/xOutTB/c/k0YqOAavgPh4/Zk9PFA==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCJ7EKZfzmHvJ5khgInp9Aorknmia7685MyQ7QzxADB9QIhAK/yDTI7K7veOGF1kFNJ3W5OzclFGfSmNDuZbuuE4l+9",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEQCIAkd1i26z6PpykfN0Hed/a7C1vfICVK7i7TBbJqvrjmtAiAaQNYtSJt6ijCg/Q+cPXSHLsSoPuV6JfTkA1mJ1alD+w=="
+          }
+        ],
+        "unpackedSize": 472554
+      },
+      "registry_url": "https://registry.npmjs.org/%40dagrejs%2Fgraphlib",
+      "created": "2017-12-26T13:29:16.884Z",
+      "published": "2026-08-03T19:39:24.069Z",
+      "downloads": {
+        "downloads": 5414294,
+        "start": "2026-09-19",
+        "end": "2026-09-25",
+        "package": "@dagrejs/graphlib"
+      }
+    },
+    {
+      "name": "graphology",
+      "version": "0.26.0",
+      "license": "MIT",
+      "engines": null,
+      "dependencies": {
+        "events": "^3.3.0"
+      },
+      "peerDependencies": {
+        "graphology-types": ">=0.24.0"
+      },
+      "peerDependenciesMeta": null,
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/graphology/graphology.git"
+      },
+      "types": "dist/graphology.d.ts",
+      "main": "dist/graphology.cjs.js",
+      "module": "dist/graphology.esm.js",
+      "exports": {
+        "require": "./dist/graphology.cjs.js",
+        "import": "./dist/graphology.mjs",
+        "types": "./dist/graphology.d.ts"
+      },
+      "dist": {
+        "integrity": "sha512-8SSImzgUUYC89Z042s+0r/vMibY7GX/Emz4LDO5e7jYXhuoWfHISPFJYjpRLUSJGq6UQ6xlenvX1p/hJdfXuXg==",
+        "shasum": "7f866a831feaa364af750f141a7bf40489533336",
+        "tarball": "https://registry.npmjs.org/graphology/-/graphology-0.26.0.tgz",
+        "fileCount": 30,
+        "unpackedSize": 2729833,
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQDxngzXapvTgY9r2Qj7gbZ3+gho84RlC9cOMPL/TBRQkQIhAPVnha/5Ig6QvOHxbVJV+reEIxjYJEWEuqu7kpn5JEaH"
+          }
+        ]
+      },
+      "registry_url": "https://registry.npmjs.org/graphology",
+      "created": "2016-08-24T17:40:52.126Z",
+      "published": "2025-01-26T10:25:05.589Z",
+      "downloads": {
+        "downloads": 1683596,
+        "start": "2026-09-19",
+        "end": "2026-09-25",
+        "package": "graphology"
+      }
+    },
+    {
+      "name": "graphology-components",
+      "version": "1.5.4",
+      "license": "MIT",
+      "engines": null,
+      "dependencies": {
+        "graphology-indices": "^0.17.0",
+        "graphology-utils": "^2.1.2"
+      },
+      "peerDependencies": {
+        "graphology-types": ">=0.19.0"
+      },
+      "peerDependenciesMeta": null,
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/graphology/graphology.git"
+      },
+      "types": "index.d.ts",
+      "main": "index.js",
+      "module": null,
+      "exports": null,
+      "dist": {
+        "integrity": "sha512-O37vC226wgnN0C6FUWHNe4fbTzaF51CcQjwX3naId/QTzH/PkUtXaanCShj9ws5Vju+z4u3zvSeEZE84Bo9jlA==",
+        "shasum": "74a118e0800f85fecbb57816da35d5caa4961b67",
+        "tarball": "https://registry.npmjs.org/graphology-components/-/graphology-components-1.5.4.tgz",
+        "fileCount": 5,
+        "unpackedSize": 13554,
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEUCIGIUrcD6jPCv0Pq7XY3aJ4YammSBr+J6hFDYo7Nfs4/SAiEAsbcSVLl7mdDo2FULrUHwuXyxQYHSw8OlZvviLIgULhk="
+          }
+        ],
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v4.10.10\r\nComment: https://openpgpjs.org\r\n\r\nwsFzBAEBCAAGBQJiYVZcACEJED1NWxICdlZqFiEECWMYAoorWMhJKdjhPU1b\r\nEgJ2VmpuQQ/9Fg1UeERYFnLwKW2pMmMfAlWgpzzDof2KcOKE/DJy/sby+c1T\r\nv3Wbcw/5T+g5HB0z4fH0sfAm7XLYg9UGpYqWHXQaahKmAXPOlcO1CIugukZc\r\nj8ZtEMOH7M2kzkGZxPCm41a2pZUNmSY0WCvnUzjSzdrdHr131gxafNw7w6RJ\r\nUZdpFE498hLB4EQCE9defk//lDfVCfc99BUyz0/pejb3zufhpyqs256ktK1Q\r\n0RLfG82PKsk5u4wBBqlpf/jQsBKVRLSVavfaqf6VAy9F0WlxNscM/7ElOLQR\r\nfrPskIlkqLEgX82vWbSukGxo8siG8iJXQVItDtXccDmFqFVrY8OotTimHTaf\r\njfbOEkBqeclQzxqvzJofP8i7qWHb4sMNECG43T4ckNitJ2IidYt+m5DY9mQB\r\ngAI1wnnBHcLIjgCMUo9x7/NJ7wE3rCzxLmnZcyYDKeT4INyEi6ZGTeqvOnAp\r\nImmuMS8UvvDoMsd2jtCEtFUxnD5zRQd+ihllCvjTTBmVqyOtiAmzI0ZO48wB\r\nZ9WjO/l1ZKnrdpjDlPwOVv1yYWYZCtEhHDMKzvEIGTOvoHZBFyXg0za8xidc\r\nV6+DV60+ZTjeiebd4DPu5VELy7Ype3ev7hZ5W+BRQ1aTluf55LC1v51zKksa\r\nBPZxq5HZhAodv2VckBkQDcgOHfmoLdya2SY=\r\n=WdjL\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "registry_url": "https://registry.npmjs.org/graphology-components",
+      "created": "2016-11-04T20:40:37.290Z",
+      "published": "2022-04-21T13:04:28.478Z",
+      "downloads": {
+        "downloads": 78216,
+        "start": "2026-09-19",
+        "end": "2026-09-25",
+        "package": "graphology-components"
+      }
+    },
+    {
+      "name": "@statelyai/graph",
+      "version": "2.4.0",
+      "license": "MIT",
+      "engines": null,
+      "dependencies": null,
+      "peerDependencies": {
+        "@dagrejs/dagre": "^3.0.0 || ^4.0.0",
+        "@hpcc-js/wasm-graphviz": "^1.0.0",
+        "cytoscape": "^3.0.0",
+        "d3-force": "^3.0.0",
+        "d3-hierarchy": "^3.0.0",
+        "dotparser": "^1.0.0",
+        "elkjs": "^0.9.0 || ^0.10.0 || ^0.11.0",
+        "fast-xml-parser": "^5.0.0",
+        "graphology": "^0.26.0",
+        "graphology-layout-forceatlas2": "^0.10.0",
+        "webcola": "^3.4.0",
+        "zod": "^4.0.0"
+      },
+      "peerDependenciesMeta": {
+        "@dagrejs/dagre": {
+          "optional": true
+        },
+        "@hpcc-js/wasm-graphviz": {
+          "optional": true
+        },
+        "cytoscape": {
+          "optional": true
+        },
+        "d3-force": {
+          "optional": true
+        },
+        "d3-hierarchy": {
+          "optional": true
+        },
+        "dotparser": {
+          "optional": true
+        },
+        "elkjs": {
+          "optional": true
+        },
+        "fast-xml-parser": {
+          "optional": true
+        },
+        "graphology": {
+          "optional": true
+        },
+        "graphology-layout-forceatlas2": {
+          "optional": true
+        },
+        "webcola": {
+          "optional": true
+        },
+        "zod": {
+          "optional": true
+        }
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/statelyai/graph.git"
+      },
+      "types": "./dist/index.d.mts",
+      "main": "./dist/index.mjs",
+      "module": "./dist/index.mjs",
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./algorithms": "./dist/algorithms.mjs",
+        "./format-support": "./dist/format-support.mjs",
+        "./adjacency-list": "./dist/formats/adjacency-list/index.mjs",
+        "./converter": "./dist/formats/converter/index.mjs",
+        "./cytoscape": "./dist/formats/cytoscape/index.mjs",
+        "./d2": "./dist/formats/d2/index.mjs",
+        "./d3": "./dist/formats/d3/index.mjs",
+        "./dot": "./dist/formats/dot/index.mjs",
+        "./edge-list": "./dist/formats/edge-list/index.mjs",
+        "./elk": "./dist/formats/elk/index.mjs",
+        "./gexf": "./dist/formats/gexf/index.mjs",
+        "./gml": "./dist/formats/gml/index.mjs",
+        "./graphml": "./dist/formats/graphml/index.mjs",
+        "./jgf": "./dist/formats/jgf/index.mjs",
+        "./mermaid": "./dist/formats/mermaid/index.mjs",
+        "./tgf": "./dist/formats/tgf/index.mjs",
+        "./xyflow": "./dist/formats/xyflow/index.mjs",
+        "./kernel": "./dist/kernel.mjs",
+        "./layout": "./dist/layout/index.mjs",
+        "./layout/cytoscape": "./dist/layout/cytoscape.mjs",
+        "./layout/d3-force": "./dist/layout/d3-force.mjs",
+        "./layout/d3-hierarchy": "./dist/layout/d3-hierarchy.mjs",
+        "./layout/dagre": "./dist/layout/dagre.mjs",
+        "./layout/elk": "./dist/layout/elk.mjs",
+        "./layout/forceatlas2": "./dist/layout/forceatlas2.mjs",
+        "./layout/graphviz": "./dist/layout/graphviz.mjs",
+        "./layout/webcola": "./dist/layout/webcola.mjs",
+        "./queries": "./dist/queries.mjs",
+        "./schemas": "./dist/schemas.mjs",
+        "./package.json": "./package.json"
+      },
+      "dist": {
+        "integrity": "sha512-bJfR7s7q2s/0fyM17qJl3QBVBnYj38OzmWYkpXstkD8DVTuFNvwfpGXtkOAbHWqDmdLerRGmcRRS+mUsJYC7gQ==",
+        "shasum": "316e2576b4ea9e9f2f40d9e58c3c2ca681e40d8a",
+        "tarball": "https://registry.npmjs.org/@statelyai/graph/-/graph-2.4.0.tgz",
+        "fileCount": 81,
+        "unpackedSize": 825058,
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@statelyai%2fgraph@2.4.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQDTFoUoFt59K9dkbJ60Wpw+cQhiK7eFBkIvGSAhk/G0cgIhAJKVzuekExievhRWiY9Yw+5Bfa6iG64XZky8NuYHKdol"
+          }
+        ]
+      },
+      "registry_url": "https://registry.npmjs.org/%40statelyai%2Fgraph",
+      "created": "2026-02-11T21:13:29.747Z",
+      "published": "2026-08-27T15:08:15.944Z",
+      "downloads": {
+        "downloads": 8142,
+        "start": "2026-09-19",
+        "end": "2026-09-25",
+        "package": "@statelyai/graph"
+      }
+    },
+    {
+      "name": "directed-graph-typed",
+      "version": "2.6.0",
+      "license": "MIT",
+      "engines": {
+        "node": ">=12.20.0",
+        "npm": ">=6.14.0"
+      },
+      "dependencies": {
+        "data-structure-typed": "^2.6.0"
+      },
+      "peerDependencies": null,
+      "peerDependenciesMeta": null,
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/zrwusa/data-structure-typed.git"
+      },
+      "types": "dist/types/index.d.ts",
+      "main": "dist/cjs/index.cjs",
+      "module": "dist/esm/index.mjs",
+      "exports": {
+        ".": {
+          "types": "./dist/types/index.d.ts",
+          "node": {
+            "import": "./dist/esm/index.mjs",
+            "require": "./dist/cjs/index.cjs"
+          },
+          "browser": {
+            "import": "./dist/esm-legacy/index.mjs",
+            "require": "./dist/cjs-legacy/index.cjs"
+          },
+          "import": "./dist/esm-legacy/index.mjs",
+          "require": "./dist/cjs-legacy/index.cjs"
+        },
+        "./modern": {
+          "types": "./dist/types/index.d.ts",
+          "import": "./dist/esm/index.mjs",
+          "require": "./dist/cjs/index.cjs"
+        },
+        "./legacy": {
+          "types": "./dist/types/index.d.ts",
+          "import": "./dist/esm-legacy/index.mjs",
+          "require": "./dist/cjs-legacy/index.cjs"
+        }
+      },
+      "dist": {
+        "integrity": "sha512-RQZdu6ll9634fGnsxyOLDzzke/pND2bfXkqJqgRFUfxxvfpH91tj/9MhgOJoPgNINl5QFGNYfKRkCGJM4w70kA==",
+        "shasum": "db63fb5b8d1a1ff5f73b708d681e3cdba236adde",
+        "tarball": "https://registry.npmjs.org/directed-graph-typed/-/directed-graph-typed-2.6.0.tgz",
+        "fileCount": 277,
+        "unpackedSize": 4342499,
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQCOfm2ZSoa9DwsYrjb9jJWt2jHMqzUQW4BWTOhw6aMMMwIhANYe9ldjyrxdYTddjkSSX4Ee5oNvsj+PM7KioHSxcNEp"
+          }
+        ]
+      },
+      "registry_url": "https://registry.npmjs.org/directed-graph-typed",
+      "created": "2023-08-30T06:45:21.804Z",
+      "published": "2026-03-31T08:50:33.947Z",
+      "downloads": {
+        "downloads": 2946,
+        "start": "2026-09-19",
+        "end": "2026-09-25",
+        "package": "directed-graph-typed"
+      }
+    },
+    {
+      "name": "graph-data-structure",
+      "version": "4.5.0",
+      "license": "MIT",
+      "engines": null,
+      "dependencies": null,
+      "peerDependencies": null,
+      "peerDependenciesMeta": null,
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/datavis-tech/graph-data-structure.git"
+      },
+      "types": "dist/index.d.cts",
+      "main": "./dist/index.cjs",
+      "module": "./dist/index.mjs",
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./dist/index.d.mts",
+            "default": "./dist/index.mjs"
+          },
+          "require": {
+            "types": "./dist/index.d.cts",
+            "default": "./dist/index.cjs"
+          },
+          "umd": {
+            "types": "./dist/index.umd.d.ts",
+            "default": "./dist/index.umd.js"
+          }
+        }
+      },
+      "dist": {
+        "integrity": "sha512-OCeIzpK9JnV5js4gtDJgwebRbcOsZpoN9CNIwEooHkV/FNol+OykWPOugSTXBH/QICEW2N6U+6L2d9DcK4YBcw==",
+        "shasum": "33cb18e1f4bd3d813d8dfeb351b72af808062cd9",
+        "tarball": "https://registry.npmjs.org/graph-data-structure/-/graph-data-structure-4.5.0.tgz",
+        "fileCount": 12,
+        "unpackedSize": 94905,
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIQCUJRn7sPZp621V6fi688UAVDB0XUYZJu1SvhFaGDOs5QIgEyARX0PDy85Glwy3i+Ym5VTJU8QJkJTwElyCiRKymbI="
+          }
+        ]
+      },
+      "registry_url": "https://registry.npmjs.org/graph-data-structure",
+      "created": "2016-02-21T05:23:41.654Z",
+      "published": "2025-03-05T14:52:40.800Z",
+      "downloads": {
+        "downloads": 585822,
+        "start": "2026-09-19",
+        "end": "2026-09-25",
+        "package": "graph-data-structure"
+      }
+    },
+    {
+      "name": "cytoscape",
+      "version": "3.34.3",
+      "license": "MIT",
+      "engines": {
+        "node": ">=0.10"
+      },
+      "dependencies": null,
+      "peerDependencies": null,
+      "peerDependenciesMeta": null,
+      "repository": {
+        "url": "git+https://github.com/cytoscape/cytoscape.js.git",
+        "type": "git"
+      },
+      "types": "index.d.ts",
+      "main": "dist/cytoscape.cjs.js",
+      "module": "dist/cytoscape.esm.mjs",
+      "exports": {
+        ".": {
+          "types": "./index.d.ts",
+          "import": "./dist/cytoscape.esm.mjs",
+          "require": "./dist/cytoscape.cjs.js"
+        },
+        "./dist/cytoscape.esm": {
+          "import": "./dist/cytoscape.esm.mjs"
+        },
+        "./dist/cytoscape.cjs.js": {
+          "require": "./dist/cytoscape.cjs.js"
+        },
+        "./dist/cytoscape.min.js": {
+          "require": "./dist/cytoscape.min.js"
+        },
+        "./dist/cytoscape.umd.js": {
+          "require": "./dist/cytoscape.umd.js"
+        },
+        "./dist/cytoscape.esm.min": {
+          "import": "./dist/cytoscape.esm.min.mjs"
+        },
+        "./dist/cytoscape.esm.mjs": {
+          "import": "./dist/cytoscape.esm.mjs"
+        },
+        "./dist/cytoscape.esm.min.mjs": {
+          "import": "./dist/cytoscape.esm.min.mjs"
+        }
+      },
+      "dist": {
+        "shasum": "1503996ba0b59b901d86310a1f612e92dc464f51",
+        "tarball": "https://registry.npmjs.org/cytoscape/-/cytoscape-3.34.3.tgz",
+        "fileCount": 205,
+        "integrity": "sha512-yfYGhRcGAntq6YBD583j4n0Eg3jIxvWmZtz/5uz9UYkeIStSlMxuUja+ec5j3iBD8nv1rwaOAYMW09tBdkSeaQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCLoPNzJAzOccKPcketYZtGbMCx8DZ/S7ZRI9MWzDSfJwIgTfB6FjCFRpQDY+uGfWdpbmZTYk5zZHNn86W6X4cU8ds=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIQDNmNk/xtQuewhbJlGgizq1eyqPOPrf9YheHGm+Dbk3xwIgH4BrKcLTwiHuYuxRhbPHMHAYZoTAbdDSD9GYZQ2mkhA="
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/cytoscape@3.34.3",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 5699359
+      },
+      "registry_url": "https://registry.npmjs.org/cytoscape",
+      "created": "2012-10-18T20:28:28.001Z",
+      "published": "2026-09-07T16:01:53.123Z",
+      "downloads": {
+        "downloads": 18398472,
+        "start": "2026-09-19",
+        "end": "2026-09-25",
+        "package": "cytoscape"
+      }
+    },
+    {
+      "name": "@thi.ng/adjacency",
+      "version": "3.0.92",
+      "license": "Apache-2.0",
+      "engines": {
+        "node": ">=18"
+      },
+      "dependencies": {
+        "@thi.ng/api": "^8.12.28",
+        "@thi.ng/arrays": "^2.14.26",
+        "@thi.ng/bitfield": "^2.4.44",
+        "@thi.ng/dcons": "^3.2.203",
+        "@thi.ng/disjoint-set": "^1.1.54",
+        "@thi.ng/errors": "^2.6.17",
+        "@thi.ng/sparse": "^1.1.50"
+      },
+      "peerDependencies": null,
+      "peerDependenciesMeta": null,
+      "repository": {
+        "type": "git",
+        "url": "git+https://codeberg.org/thi.ng/umbrella.git",
+        "directory": "packages/adjacency"
+      },
+      "types": null,
+      "main": null,
+      "module": "./index.js",
+      "exports": {
+        ".": {
+          "default": "./index.js"
+        },
+        "./api": {
+          "default": "./api.js"
+        },
+        "./bfs": {
+          "default": "./bfs.js"
+        },
+        "./binary": {
+          "default": "./binary.js"
+        },
+        "./dfs": {
+          "default": "./dfs.js"
+        },
+        "./floyd-warshall": {
+          "default": "./floyd-warshall.js"
+        },
+        "./list": {
+          "default": "./list.js"
+        },
+        "./mst": {
+          "default": "./mst.js"
+        },
+        "./sparse": {
+          "default": "./sparse.js"
+        }
+      },
+      "dist": {
+        "integrity": "sha512-lqy+HWcHhveS80jJGS6o47QIQH1rPLfOZLmvA9MJgsm2GYEwpTDhRxL3b+vCd1VfFdU3oHAUDT2Z09Gp3Ab3mA==",
+        "shasum": "6c2e1a452450a5025a705752a3d3141ef4be96d1",
+        "tarball": "https://registry.npmjs.org/@thi.ng/adjacency/-/adjacency-3.0.92.tgz",
+        "fileCount": 23,
+        "unpackedSize": 52991,
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIAdxz0t/7IzkMum3B+0vGPppKutHIFT1cfpzvnwMBt48AiEA2P1JIFKL2oG5z4IUC7EuEe45hIqIJ1XEnRgIdo9iWe8="
+          }
+        ]
+      },
+      "registry_url": "https://registry.npmjs.org/%40thi.ng%2Fadjacency",
+      "created": "2019-02-17T22:51:31.915Z",
+      "published": "2026-09-01T10:57:28.323Z",
+      "downloads": {
+        "downloads": 1747,
+        "start": "2026-09-19",
+        "end": "2026-09-25",
+        "package": "@thi.ng/adjacency"
+      }
+    }
+  ]
+}

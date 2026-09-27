@@ -1,0 +1,306 @@
+{
+  "archived_on": "2026-09-27",
+  "original_directory": "_claude-processing-cost-audit",
+  "files": [
+    {
+      "original_path": "_claude-processing-cost-audit/REPORT.md",
+      "archived_path": "REPORT.md",
+      "original_sha256": "15771f1c7f32d41220cad6b2e25f5c8fb0771a8cf6653cebbfcf35fda0bb799c",
+      "archived_sha256": "15771f1c7f32d41220cad6b2e25f5c8fb0771a8cf6653cebbfcf35fda0bb799c",
+      "bytes": 31934,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/prototype.diff",
+      "archived_path": "prototype.diff",
+      "original_sha256": "87f730e68bc6451518460d040a0481316524bbd18759bd60e78b5d503e7af2d2",
+      "archived_sha256": "87f730e68bc6451518460d040a0481316524bbd18759bd60e78b5d503e7af2d2",
+      "bytes": 35014,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/results/baseline-copy-dependency-presentation.log",
+      "archived_path": "results/baseline-copy-dependency-presentation.log",
+      "original_sha256": "bf49eee7fea9c2860c5d3532473b1713c10b4c57a8330ccf43f01e0d860a4200",
+      "archived_sha256": "bf49eee7fea9c2860c5d3532473b1713c10b4c57a8330ccf43f01e0d860a4200",
+      "bytes": 3277,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/results/baseline-copy-tests.log",
+      "archived_path": "results/baseline-copy-tests.log",
+      "original_sha256": "9ddaacb54eef6c5a8bb1de887e0ff6a4cf472fdabb1e85f6aeac333793c3f87f",
+      "archived_sha256": "9ddaacb54eef6c5a8bb1de887e0ff6a4cf472fdabb1e85f6aeac333793c3f87f",
+      "bytes": 56853,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/results/baseline-postcode.json",
+      "archived_path": "results/baseline-postcode.json",
+      "original_sha256": "6d422b6d635ff8c7e34a9642a52be193d4f4d55d2189d86a4aefb71364429dce",
+      "archived_sha256": "6d422b6d635ff8c7e34a9642a52be193d4f4d55d2189d86a4aefb71364429dce",
+      "bytes": 2373,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/results/baseline-s1.json",
+      "archived_path": "results/baseline-s1.json",
+      "original_sha256": "1c429443e54e2549b1b98112e83575283c7d293e51fc1f4d3f829282545ae3e9",
+      "archived_sha256": "1c429443e54e2549b1b98112e83575283c7d293e51fc1f4d3f829282545ae3e9",
+      "bytes": 2426,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/results/baseline-s2.json",
+      "archived_path": "results/baseline-s2.json",
+      "original_sha256": "487b9f9c10453853c076e4de59d824d81612f7f44eb5dcc4b04bbe2235d85fa7",
+      "archived_sha256": "487b9f9c10453853c076e4de59d824d81612f7f44eb5dcc4b04bbe2235d85fa7",
+      "bytes": 2417,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/results/baseline-s4.json",
+      "archived_path": "results/baseline-s4.json",
+      "original_sha256": "4bf52307945b283ae2b0866baab4a368791da5dbd8803c4e0b951d79a4945411",
+      "archived_sha256": "4bf52307945b283ae2b0866baab4a368791da5dbd8803c4e0b951d79a4945411",
+      "bytes": 2416,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/results/baseline-s4a.json",
+      "archived_path": "results/baseline-s4a.json",
+      "original_sha256": "de86b256e8f4fcf1bcd794f63059c205c05f7cb3d50cef40fde70dd4552b14f5",
+      "archived_sha256": "de86b256e8f4fcf1bcd794f63059c205c05f7cb3d50cef40fde70dd4552b14f5",
+      "bytes": 2444,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/results/equivalence.txt",
+      "archived_path": "results/equivalence.txt",
+      "original_sha256": "c70885225b1c47280afa4e082314b1c2513fca61a378876caed506adc50228bd",
+      "archived_sha256": "c70885225b1c47280afa4e082314b1c2513fca61a378876caed506adc50228bd",
+      "bytes": 10866,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/results/prototype-postcode.json",
+      "archived_path": "results/prototype-postcode.json",
+      "original_sha256": "4b4ea00ae7ed53700f4374b71ff15649b746d0384ea19e7c8319f6e8eea557cd",
+      "archived_sha256": "4b4ea00ae7ed53700f4374b71ff15649b746d0384ea19e7c8319f6e8eea557cd",
+      "bytes": 2390,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/results/prototype-s1.json",
+      "archived_path": "results/prototype-s1.json",
+      "original_sha256": "011e51784a5bc4310e42e6a94b0b0902971ca9433342b1277ad4b6b5f1e5c346",
+      "archived_sha256": "011e51784a5bc4310e42e6a94b0b0902971ca9433342b1277ad4b6b5f1e5c346",
+      "bytes": 2433,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/results/prototype-s2.json",
+      "archived_path": "results/prototype-s2.json",
+      "original_sha256": "bfb536b63d7f77164115ea147cb2beef7cd355ba8bc305ff2de6f32d64036a8f",
+      "archived_sha256": "bfb536b63d7f77164115ea147cb2beef7cd355ba8bc305ff2de6f32d64036a8f",
+      "bytes": 2437,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/results/prototype-s4.json",
+      "archived_path": "results/prototype-s4.json",
+      "original_sha256": "6fb924a6231a74c9513ad07a5b3390d1de26a5bd682680729fb4c53f82286199",
+      "archived_sha256": "6fb924a6231a74c9513ad07a5b3390d1de26a5bd682680729fb4c53f82286199",
+      "bytes": 2438,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/results/prototype-s4a.json",
+      "archived_path": "results/prototype-s4a.json",
+      "original_sha256": "df23120d7a137afa0f0b9e39fb3dda4f18840da96c11244c53fe2e03c3604db5",
+      "archived_sha256": "df23120d7a137afa0f0b9e39fb3dda4f18840da96c11244c53fe2e03c3604db5",
+      "bytes": 2446,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/results/prototype-tests.log",
+      "archived_path": "results/prototype-tests.log",
+      "original_sha256": "a434f25fd59c00df15dd323b4eb2620a5efa00e7d04f851cb1abc8795ebd32d5",
+      "archived_sha256": "a434f25fd59c00df15dd323b4eb2620a5efa00e7d04f851cb1abc8795ebd32d5",
+      "bytes": 56859,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/results/summary-table.txt",
+      "archived_path": "results/summary-table.txt",
+      "original_sha256": "b7cc8f429571e334b5025b804610df0156c03d3acdd845457dc274a1c545eb64",
+      "archived_sha256": "b7cc8f429571e334b5025b804610df0156c03d3acdd845457dc274a1c545eb64",
+      "bytes": 2200,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/scripts/compare-outputs.mjs",
+      "archived_path": "scripts/compare-outputs.mjs",
+      "original_sha256": "3592075dda891ad22e74dedef1cc2f42a630f92514df0af9f9984fb8c68b098e",
+      "archived_sha256": "3592075dda891ad22e74dedef1cc2f42a630f92514df0af9f9984fb8c68b098e",
+      "bytes": 2161,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/scripts/generate-synthetic.mjs",
+      "archived_path": "scripts/generate-synthetic.mjs",
+      "original_sha256": "e41a982e250ff0045f18d7ec1ae3d9469b686063c44f745ed8e7d1d49dfdd18e",
+      "archived_sha256": "e41a982e250ff0045f18d7ec1ae3d9469b686063c44f745ed8e7d1d49dfdd18e",
+      "bytes": 2885,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/scripts/measure-requests.mjs",
+      "archived_path": "scripts/measure-requests.mjs",
+      "original_sha256": "8929f635c16d700605bf9cd32df191f5c570379dcd645e1095cb4da71b5d6963",
+      "archived_sha256": "8929f635c16d700605bf9cd32df191f5c570379dcd645e1095cb4da71b5d6963",
+      "bytes": 2603,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/scripts/profile-check.mjs",
+      "archived_path": "scripts/profile-check.mjs",
+      "original_sha256": "1dd66dec0a77b8cbf3373a4ba8cf3de80fa8d118c5abcbdf946937c1319971f9",
+      "archived_sha256": "1dd66dec0a77b8cbf3373a4ba8cf3de80fa8d118c5abcbdf946937c1319971f9",
+      "bytes": 923,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/scripts/profile-request.mjs",
+      "archived_path": "scripts/profile-request.mjs",
+      "original_sha256": "8c32e70e0d365cd29b52e56c8b8badf9a4f7cbed32b0f1170554d121c269ab79",
+      "archived_sha256": "8c32e70e0d365cd29b52e56c8b8badf9a4f7cbed32b0f1170554d121c269ab79",
+      "bytes": 1199,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/scripts/profile-set.sh",
+      "archived_path": "scripts/profile-set.sh",
+      "original_sha256": "3abd17fd4bc830f9a0f058c718042eeb5619ab1622b7d780d962780a9b440820",
+      "archived_sha256": "3abd17fd4bc830f9a0f058c718042eeb5619ab1622b7d780d962780a9b440820",
+      "bytes": 566,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_claude-processing-cost-audit/scripts/summarize-profile.mjs",
+      "archived_path": "scripts/summarize-profile.mjs",
+      "original_sha256": "c2ba0e299072ca0b71c8fd21e1e2d5adeeae18deada4fe5d671494c02983a8d5",
+      "archived_sha256": "c2ba0e299072ca0b71c8fd21e1e2d5adeeae18deada4fe5d671494c02983a8d5",
+      "bytes": 1774,
+      "link_adjustments": []
+    }
+  ],
+  "omitted_artifacts": [
+    {
+      "path": "baseline-copy/",
+      "reason": "Duplicate baseline checkout/build; results are retained."
+    },
+    {
+      "path": "instrumented/",
+      "reason": "Instrumented source/build copy; report describes the instrumentation."
+    },
+    {
+      "path": "prototype/",
+      "reason": "Duplicate prototype source/build; prototype.diff is retained."
+    },
+    {
+      "path": "synthetic/",
+      "reason": "Generated input repositories; generator is retained."
+    },
+    {
+      "path": "results/check-postcode.cpuprofile",
+      "reason": "Raw CPU profile left in scratch; summary measurements and profiling scripts are retained.",
+      "bytes": 17745,
+      "sha256": "31253bf5b3cefc678ea1320c72e380b543e6ed72c211df270807e8756c35992e"
+    },
+    {
+      "path": "results/check-s4a.cpuprofile",
+      "reason": "Raw CPU profile left in scratch; summary measurements and profiling scripts are retained.",
+      "bytes": 36509,
+      "sha256": "d6d28038e609ac2efb5661f85e769ef83d799ddba4ee6563421a98067a7dcc2a"
+    },
+    {
+      "path": "results/postcode-first-modules-prototype.cpuprofile",
+      "reason": "Raw CPU profile left in scratch; summary measurements and profiling scripts are retained.",
+      "bytes": 1390173,
+      "sha256": "53f04f846a5fe616efa8426811593bd0a5c2f4b5fd7c3081356d673f8b712417"
+    },
+    {
+      "path": "results/s4-deps-json.cpuprofile",
+      "reason": "Raw CPU profile left in scratch; summary measurements and profiling scripts are retained.",
+      "bytes": 83155,
+      "sha256": "b896c589fffc6a92042c914299b6732985e20b19a22baf93a7aa938addfc29ef"
+    },
+    {
+      "path": "results/s4-deps-unicode.cpuprofile",
+      "reason": "Raw CPU profile left in scratch; summary measurements and profiling scripts are retained.",
+      "bytes": 85555,
+      "sha256": "67102420e326376c04fceba1038fb71c0019b85e51142c241da8bf9c0348f26e"
+    },
+    {
+      "path": "results/s4-first-modules-json.cpuprofile",
+      "reason": "Raw CPU profile left in scratch; summary measurements and profiling scripts are retained.",
+      "bytes": 397465,
+      "sha256": "92421b5291b3eb901dc7d8d6d60078e6ec3a2fb26886f85e3c775f43c77bd5d8"
+    },
+    {
+      "path": "results/s4-modules-unicode.cpuprofile",
+      "reason": "Raw CPU profile left in scratch; summary measurements and profiling scripts are retained.",
+      "bytes": 169410,
+      "sha256": "211e54f17a0219d7aa50eaae40d3a3fea88bcaf2d6a7e408d27124b8ff870b23"
+    },
+    {
+      "path": "results/s4-org-project.cpuprofile",
+      "reason": "Raw CPU profile left in scratch; summary measurements and profiling scripts are retained.",
+      "bytes": 83299,
+      "sha256": "a36171df999a27e2ee99217c01ea50774a4198cf854392e24d583c70fa9d959e"
+    },
+    {
+      "path": "results/s4-org-repo-json.cpuprofile",
+      "reason": "Raw CPU profile left in scratch; summary measurements and profiling scripts are retained.",
+      "bytes": 76560,
+      "sha256": "87000f042c8b402496586cffb12358fde0d8bb50989c133a9a7f9863eb954ddd"
+    },
+    {
+      "path": "results/s4a-first-deps-json.cpuprofile",
+      "reason": "Raw CPU profile left in scratch; summary measurements and profiling scripts are retained.",
+      "bytes": 542227,
+      "sha256": "15cd3264330c0e673aa99f7fcd7e35d30c4a49767f2a4143c467462e7c33fb74"
+    },
+    {
+      "path": "results/s4a-first-deps-unicode.cpuprofile",
+      "reason": "Raw CPU profile left in scratch; summary measurements and profiling scripts are retained.",
+      "bytes": 551011,
+      "sha256": "3870546aec1fee37774156f4080bf57cfdf4ff6206c4908799538104cb9d78ca"
+    },
+    {
+      "path": "results/s4a-first-org-project.cpuprofile",
+      "reason": "Raw CPU profile left in scratch; summary measurements and profiling scripts are retained.",
+      "bytes": 408460,
+      "sha256": "ea08db3eea497201c96dc338e1535b23fcdf22e5b5da60fc006edbbf9fc16aa8"
+    },
+    {
+      "path": "results/s4a-first-org-repo-json.cpuprofile",
+      "reason": "Raw CPU profile left in scratch; summary measurements and profiling scripts are retained.",
+      "bytes": 391732,
+      "sha256": "d2e93cee9b2eac5df2865652eb880939ae748375944b1fc8c2dec1eee043aa97"
+    },
+    {
+      "path": "results/sdirs-first-org-repo-app.cpuprofile",
+      "reason": "Raw CPU profile left in scratch; summary measurements and profiling scripts are retained.",
+      "bytes": 376615,
+      "sha256": "e5204dd6d864e535d1055065169023aad4bea0dd8d3e47ae62665fba10ae670b"
+    },
+    {
+      "path": "results/sdirs-first-org-repo-prototype.cpuprofile",
+      "reason": "Raw CPU profile left in scratch; summary measurements and profiling scripts are retained.",
+      "bytes": 306937,
+      "sha256": "2710fd9d0571de0c2f82d804a5b3633852712ef016db34d1a8292e8b031a2dcd"
+    }
+  ]
+}

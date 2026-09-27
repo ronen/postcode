@@ -1,0 +1,30 @@
+
+pass 1
+request                        | s1 base | s1 proto | s2 base | s2 proto | s4 base | s4 proto | s4a base | s4a proto | postcode base | postcode proto
+modules unicode                | 1285 | 724 | 3158 | 1275 | 16957 | 2378 | 12003 | 3207 | 3686 | 2474
+modules json                   | 779 | 286 | 2136 | 409 | 20037 | 721 | 9648 | 1367 | 1474 | 364
+organization project unicode   | 408 | 250 | 1068 | 323 | 5237 | 523 | 7502 | 1513 | 333 | 330
+organization repository json   | 404 | 236 | 1128 | 306 | 4856 | 569 | 7372 | 1489 | 330 | 298
+dependencies unicode           | 759 | 519 | 1764 | 877 | 9108 | 1727 | 16860 | 3012 | 648 | 583
+dependencies json              | 429 | 315 | 1075 | 470 | 6692 | 882 | 5070 | 1666 | 491 | 421
+children mod1 json             | 246 | 237 | 333 | 318 | 610 | 582 | 1304 | 1348 | 421 | 371
+
+pass 2
+request                        | s1 base | s1 proto | s2 base | s2 proto | s4 base | s4 proto | s4a base | s4a proto | postcode base | postcode proto
+modules unicode                | 631 | 257 | 1772 | 343 | 14347 | 665 | 8419 | 1423 | 1246 | 355
+modules json                   | 691 | 283 | 2072 | 373 | 17141 | 714 | 10165 | 1321 | 1420 | 339
+organization project unicode   | 411 | 212 | 1053 | 322 | 5028 | 601 | 7393 | 1578 | 336 | 313
+organization repository json   | 419 | 214 | 1155 | 343 | 4904 | 605 | 7165 | 1597 | 322 | 305
+dependencies unicode           | 454 | 268 | 945 | 385 | 6240 | 694 | 4942 | 1456 | 472 | 403
+dependencies json              | 426 | 314 | 1063 | 452 | 5667 | 793 | 5047 | 1650 | 484 | 420
+children mod1 json             | 254 | 252 | 332 | 315 | 626 | 606 | 1354 | 1331 | 395 | 382
+baseline s1 checks 263/220/238 open 618 heapMB 163
+prototype s1 checks 205/218/199 open 537 heapMB 170
+baseline s2 checks 295/261/266 open 719 heapMB 214
+prototype s2 checks 264/258/252 open 669 heapMB 276
+baseline s4 checks 478/477/445 open 1126 heapMB 554
+prototype s4 checks 467/410/398 open 1255 heapMB 578
+baseline s4a checks 1169/1131/1098 open 1603 heapMB 1388
+prototype s4a checks 1130/1095/1083 open 1747 heapMB 1428
+baseline postcode checks 300/324/314 open 1156 heapMB 396
+prototype postcode checks 299/273/285 open 1190 heapMB 428

@@ -1,0 +1,370 @@
+TAP version 13
+# Subtest: representative journey preserves direct intermediates, shared parents, composition and fresh exact lookups
+ok 1 - representative journey preserves direct intermediates, shared parents, composition and fresh exact lookups
+  ---
+  duration_ms: 8889.800456
+  ...
+# Subtest: source-owned request results and recognition outcomes are separate and parent disclosure does not fabricate them
+ok 2 - source-owned request results and recognition outcomes are separate and parent disclosure does not fabricate them
+  ---
+  duration_ms: 5782.930563
+  ...
+# Subtest: opaque external endpoints render as leaves and never claim an established empty interior
+ok 3 - opaque external endpoints render as leaves and never claim an established empty interior
+  ---
+  duration_ms: 303.034242
+  ...
+# Subtest: cycle grouping retains internal edges and display depth omissions do not remove JSON graph facts
+ok 4 - cycle grouping retains internal edges and display depth omissions do not remove JSON graph facts
+  ---
+  duration_ms: 1973.712298
+  ...
+# Subtest: inspection by handle works independently of additional CommonJS dependency inputs
+ok 5 - inspection by handle works independently of additional CommonJS dependency inputs
+  ---
+  duration_ms: 2596.017333
+  ...
+# Subtest: component bounds count disconnected omissions and terminal controls stay inert
+ok 6 - component bounds count disconnected omissions and terminal controls stay inert
+  ---
+  duration_ms: 487.035063
+  ...
+# Subtest: dependency rendering pluralizes each independent count including omissions
+ok 7 - dependency rendering pluralizes each independent count including omissions
+  ---
+  duration_ms: 1191.533718
+  ...
+# Subtest: effective surfaces include direct/default/aliased/wildcard/chained exports and preserve origin identity
+ok 8 - effective surfaces include direct/default/aliased/wildcard/chained exports and preserve origin identity
+  ---
+  duration_ms: 502.914214
+  ...
+# Subtest: type, value and dual roles survive type-only direct and chained forwarding
+ok 9 - type, value and dual roles survive type-only direct and chained forwarding
+  ---
+  duration_ms: 371.784207
+  ...
+# Subtest: overloads and merged declarations are one semantic symbol with separate evidence
+ok 10 - overloads and merged declarations are one semantic symbol with separate evidence
+  ---
+  duration_ms: 366.671251
+  ...
+# Subtest: module and symbol documentation, tags and independent contributions remain recorded assertions
+ok 11 - module and symbol documentation, tags and independent contributions remain recorded assertions
+  ---
+  duration_ms: 302.013341
+  ...
+# Subtest: export assignments are represented explicitly
+ok 12 - export assignments are represented explicitly
+  ---
+  duration_ms: 336.890406
+  ...
+# Subtest: expansions are requested before evaluation and inspect includes only selected expansion subjects
+ok 13 - expansions are requested before evaluation and inspect includes only selected expansion subjects
+  ---
+  duration_ms: 650.480448
+  ...
+# Subtest: unresolved export targets produce partial expansion outcomes even when no export entity is available
+ok 14 - unresolved export targets produce partial expansion outcomes even when no export entity is available
+  ---
+  duration_ms: 29.771779
+  ...
+# Subtest: requested expansion kinds are unique while qualified evaluation scopes remain per module
+ok 15 - requested expansion kinds are unique while qualified evaluation scopes remain per module
+  ---
+  duration_ms: 347.863065
+  ...
+# Subtest: renamed re-export traversal revisits a module under another name and still terminates true cycles
+ok 16 - renamed re-export traversal revisits a module under another name and still terminates true cycles
+  ---
+  duration_ms: 33.402131
+  ...
+# Subtest: layered wildcard diamonds retain linear route evidence and value reachability through mixed cyclic branches
+ok 17 - layered wildcard diamonds retain linear route evidence and value reachability through mixed cyclic branches
+  ---
+  duration_ms: 187.846442
+  ...
+# Subtest: repository and project select the same groups, preserving direct relationships and typed properties
+ok 18 - repository and project select the same groups, preserving direct relationships and typed properties
+  ---
+  duration_ms: 424.598027
+  ...
+# Subtest: explicit references select group IDs and inspect artifact-only groups outside project selection
+ok 19 - explicit references select group IDs and inspect artifact-only groups outside project selection
+  ---
+  duration_ms: 369.157
+  ...
+# Subtest: partial and unavailable module evaluations retain layout and known placements without false negative presence
+ok 20 - partial and unavailable module evaluations retain layout and known placements without false negative presence
+  ---
+  duration_ms: 385.597925
+  ...
+# Subtest: organization evaluation and lenses use captured inputs, with stable groups across module attempts
+ok 21 - organization evaluation and lenses use captured inputs, with stable groups across module attempts
+  ---
+  duration_ms: 328.339545
+  ...
+# Subtest: repository evidence participates in captured input support without reading ordinary artifact content
+ok 22 - repository evidence participates in captured input support without reading ordinary artifact content
+  ---
+  duration_ms: 1144.739158
+  ...
+# Subtest: a configured project outside Git remains usable with unavailable organization
+ok 23 - a configured project outside Git remains usable with unavailable organization
+  ---
+  duration_ms: 85.944467
+  ...
+# Subtest: directory aliases share a group and retain all parents while module identities remain apparent-path identities
+ok 24 - directory aliases share a group and retain all parents while module identities remain apparent-path identities
+  ---
+  duration_ms: 366.225296
+  ...
+# Subtest: multiple declarations establish multiple placements; external and invisible modules retain distinct exceptions
+ok 25 - multiple declarations establish multiple placements; external and invisible modules retain distinct exceptions
+  ---
+  duration_ms: 389.948734
+  ...
+# Subtest: names can match groups and modules together; scoped Entity IDs are precise across kinds
+ok 26 - names can match groups and modules together; scoped Entity IDs are precise across kinds
+  ---
+  duration_ms: 321.466343
+  ...
+# Subtest: nested directory-link traversal maps to captured regions and refuses cyclic containment paths
+ok 27 - nested directory-link traversal maps to captured regions and refuses cyclic containment paths
+  ---
+  duration_ms: 337.497831
+  ...
+# Subtest: placement accepts the destination after 40 directory-link redirects and refuses a 41st
+ok 28 - placement accepts the destination after 40 directory-link redirects and refuses a 41st
+  ---
+  duration_ms: 445.781726
+  ...
+# Subtest: unavailable source evidence preserves usable placements and leaves absent presence unknown
+ok 29 - unavailable source evidence preserves usable placements and leaves absent presence unknown
+  ---
+  duration_ms: 309.716449
+  ...
+# Subtest: record boundary rejects malformed placement outcomes and negative properties without completed evidence atomically
+ok 30 - record boundary rejects malformed placement outcomes and negative properties without completed evidence atomically
+  ---
+  duration_ms: 290.96891
+  ...
+# Subtest: project modules outside the worktree are unplaced with an outside-repository reason
+ok 31 - project modules outside the worktree are unplaced with an outside-repository reason
+  ---
+  duration_ms: 349.846781
+  ...
+# Subtest: completed empty module population establishes none; expansions require an explicit declaration
+ok 32 - completed empty module population establishes none; expansions require an explicit declaration
+  ---
+  duration_ms: 311.618934
+  ...
+# Subtest: generated module handles cannot impersonate group navigation IDs
+ok 33 - generated module handles cannot impersonate group navigation IDs
+  ---
+  duration_ms: 288.185058
+  ...
+# Subtest: opaque README boundaries remain unanalyzed artifacts without documentation availability
+ok 34 - opaque README boundaries remain unanalyzed artifacts without documentation availability
+  ---
+  duration_ms: 298.127121
+  ...
+# Subtest: intermediate invocation links do not invent worktree-root aliases from path depth
+ok 35 - intermediate invocation links do not invent worktree-root aliases from path depth
+  ---
+  duration_ms: 331.970332
+  ...
+# Subtest: store rejects overwrites, missing/cross-session/wrong-kind references and leaves batches atomic
+ok 36 - store rejects overwrites, missing/cross-session/wrong-kind references and leaves batches atomic
+  ---
+  duration_ms: 5.759869
+  ...
+# Subtest: session records require their own matching identity even when referencing a valid pending or stored session
+ok 37 - session records require their own matching identity even when referencing a valid pending or stored session
+  ---
+  duration_ms: 2.177292
+  ...
+# Subtest: entity claims require the matching discriminator and reciprocal subject before any batch is committed
+ok 38 - entity claims require the matching discriminator and reciprocal subject before any batch is committed
+  ---
+  duration_ms: 9.764594
+  ...
+# Subtest: documentation associations validate subject kinds and export discriminators atomically for pending and existing targets
+ok 39 - documentation associations validate subject kinds and export discriminators atomically for pending and existing targets
+  ---
+  duration_ms: 29.856099
+  ...
+# Subtest: store owns immutable copies rather than sharing mutable producer values
+ok 40 - store owns immutable copies rather than sharing mutable producer values
+  ---
+  duration_ms: 0.465418
+  ...
+# Subtest: an export claim cannot serve as a module primary claim even with a reciprocal subject
+ok 41 - an export claim cannot serve as a module primary claim even with a reciprocal subject
+  ---
+  duration_ms: 0.751965
+  ...
+# Subtest: unavailable, deferred, failed, stopped and partial outcomes survive without becoming an established empty population
+ok 42 - unavailable, deferred, failed, stopped and partial outcomes survive without becoming an established empty population
+  ---
+  duration_ms: 3.471889
+  ...
+# Subtest: compiler/implementation defects are not mislabeled as ordinary analysis failure
+ok 43 - compiler/implementation defects are not mislabeled as ordinary analysis failure
+  ---
+  duration_ms: 0.443791
+  ...
+# Subtest: duplicate exact names and handles select multiple modules and only their contexts
+ok 44 - duplicate exact names and handles select multiple modules and only their contexts
+  ---
+  duration_ms: 3.075947
+  ...
+# Subtest: multiple sessions coexist; old record IDs do not bind in another session
+ok 45 - multiple sessions coexist; old record IDs do not bind in another session
+  ---
+  duration_ms: 775.451619
+  ...
+# Subtest: dependency acquisition adds captured inputs while completed core work and earlier support remain unchanged
+ok 46 - dependency acquisition adds captured inputs while completed core work and earlier support remain unchanged
+  ---
+  duration_ms: 407.202582
+  ...
+# Subtest: session invalidates after detected source changes
+ok 47 - session invalidates after detected source changes
+  ---
+  duration_ms: 787.60042
+  ...
+# Subtest: session invalidates after detected configuration changes
+ok 48 - session invalidates after detected configuration changes
+  ---
+  duration_ms: 644.682261
+  ...
+# Subtest: session invalidates after detected resolution changes
+ok 49 - session invalidates after detected resolution changes
+  ---
+  duration_ms: 123.274658
+  ...
+# Subtest: session invalidates after detected population changes
+ok 50 - session invalidates after detected population changes
+  ---
+  duration_ms: 123.576953
+  ...
+# Subtest: session invalidates after detected repository changes
+ok 51 - session invalidates after detected repository changes
+  ---
+  duration_ms: 971.362899
+  ...
+# Subtest: session invalidates after detected environment changes
+ok 52 - session invalidates after detected environment changes
+  ---
+  duration_ms: 750.054121
+  ...
+# Subtest: excluded observation creation does not invalidate the session
+ok 53 - excluded observation creation does not invalidate the session
+  ---
+  duration_ms: 1196.120288
+  ...
+# Subtest: a later completed evaluation preserves the earlier incomplete outcome and projection
+ok 54 - a later completed evaluation preserves the earlier incomplete outcome and projection
+  ---
+  duration_ms: 291.458302
+  ...
+# Subtest: publication observes invalidation before and after output without fabricating or erasing views
+ok 55 - publication observes invalidation before and after output without fabricating or erasing views
+  ---
+  duration_ms: 141.297519
+  ...
+# Subtest: dependency completion keeps earlier partial outcomes even when the module basis is reused
+ok 56 - dependency completion keeps earlier partial outcomes even when the module basis is reused
+  ---
+  duration_ms: 284.237517
+  ...
+# Subtest: validation refuses retargeted output boundaries before replaying captured reads
+ok 57 - validation refuses retargeted output boundaries before replaying captured reads
+  ---
+  duration_ms: 47.785686
+  ...
+# Subtest: operational analysis errors check input stability before allowing continuation (changed=false)
+ok 58 - operational analysis errors check input stability before allowing continuation (changed=false)
+  ---
+  duration_ms: 1535.300628
+  ...
+# Subtest: operational analysis errors check input stability before allowing continuation (changed=true)
+ok 59 - operational analysis errors check input stability before allowing continuation (changed=true)
+  ---
+  duration_ms: 833.269449
+  ...
+# Subtest: session reuses partial expansions through modules until additional inputs are acquired
+ok 60 - session reuses partial expansions through modules until additional inputs are acquired
+  ---
+  duration_ms: 1227.716697
+  ...
+# Subtest: session reuses partial expansions through inspect until additional inputs are acquired
+ok 61 - session reuses partial expansions through inspect until additional inputs are acquired
+  ---
+  duration_ms: 1298.175967
+  ...
+# Subtest: session reuses partial expansions through dependencies until additional inputs are acquired
+ok 62 - session reuses partial expansions through dependencies until additional inputs are acquired
+  ---
+  duration_ms: 1281.588384
+  ...
+# Subtest: direct execution keeps two checks while publication performs three without a duplicate
+ok 63 - direct execution keeps two checks while publication performs three without a duplicate
+  ---
+  duration_ms: 133.593325
+  ...
+# Subtest: worker delivery is validated before publication and emitted output survives later invalidation
+ok 64 - worker delivery is validated before publication and emitted output survives later invalidation
+  ---
+  duration_ms: 1370.372738
+  ...
+# Subtest: additional dependency inputs permit one new partial attempt and preserve the earlier basis
+ok 65 - additional dependency inputs permit one new partial attempt and preserve the earlier basis
+  ---
+  duration_ms: 294.804845
+  ...
+# Subtest: session reevaluates partial work after new dependency acquisition, then reuses it across lenses
+ok 66 - session reevaluates partial work after new dependency acquisition, then reuses it across lenses
+  ---
+  duration_ms: 3759.967499
+  ...
+# Subtest: published navigation observations distinguish session references from exact lookups
+ok 67 - published navigation observations distinguish session references from exact lookups
+  ---
+  duration_ms: 10385.536777
+  ...
+# Subtest: one-shot sessions own a project, produce correlated views, and release their state
+ok 68 - one-shot sessions own a project, produce correlated views, and release their state
+  ---
+  duration_ms: 2165.923699
+  ...
+# Subtest: claim input support is a retained record distinct from session identity and validates at the store boundary
+ok 69 - claim input support is a retained record distinct from session identity and validates at the store boundary
+  ---
+  duration_ms: 307.972812
+  ...
+# Subtest: accumulation preserves complete earlier views and precise references across independent requests
+ok 70 - accumulation preserves complete earlier views and precise references across independent requests
+  ---
+  duration_ms: 6093.813092
+  ...
+# Subtest: growing reference allocations cannot steal or lengthen earlier bindings
+ok 71 - growing reference allocations cannot steal or lengthen earlier bindings
+  ---
+  duration_ms: 0.892865
+  ...
+# Subtest: Unicode reference misses preserve reference syntax and status in organization and module inspection
+ok 72 - Unicode reference misses preserve reference syntax and status in organization and module inspection
+  ---
+  duration_ms: 1903.242418
+  ...
+1..72
+# tests 72
+# suites 0
+# pass 72
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 22283.242054

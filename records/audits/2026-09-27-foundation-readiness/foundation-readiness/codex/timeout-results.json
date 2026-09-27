@@ -1,0 +1,9 @@
+{
+  "node": "v22.13.1",
+  "configuredTimeoutMs": 500,
+  "elapsedMs": 1330.979513,
+  "stdout": "ready\n",
+  "error": "ETIMEDOUT",
+  "status": 0,
+  "signal": null
+}

@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {writeFileSync} from 'node:fs';
+import {createGraph,addEdge} from '@statelyai/graph';
+import {genDFS,hasPath} from '@statelyai/graph/algorithms';
+const results=[];
+const check=(name,fn)=>{fn();results.push({name,passed:true});};
+const nodes=['root','left','right','leaf','isolate'].map(id=>({id}));
+const edges=[['root','left'],['root','right'],['left','leaf'],['right','leaf'],['right','leaf']].map(([sourceId,targetId],i)=>({id:'claim'+i,sourceId,targetId}));
+const graph=createGraph({mode:'directed',nodes,edges});
+check('multi-parent ancestry includes self, both parents, root and every supporting claim',()=>{const groups=new Set([...genDFS(graph,{from:['leaf'],direction:'incoming'})].map(n=>n.id));assert.deepEqual([...groups].sort(),['leaf','left','right','root']);const claims=graph.edges.filter(e=>groups.has(e.targetId)).map(e=>e.id).sort();assert.deepEqual(claims,edges.map(e=>e.id));});
+check('reachability respects direction, isolates, and updates through mutation API',()=>{assert.equal(hasPath(graph,'root','leaf'),true);assert.equal(hasPath(graph,'leaf','root'),false);assert.equal(hasPath(graph,'isolate','leaf'),false);addEdge(graph,{id:'new',sourceId:'isolate',targetId:'root'});assert.equal(hasPath(graph,'isolate','leaf'),true);});
+check('100,000-node incoming traversal and forward reachability',()=>{const n=100000;const g=createGraph({mode:'directed',nodes:Array.from({length:n},(_,i)=>({id:String(i)})),edges:Array.from({length:n-1},(_,i)=>({id:'e'+i,sourceId:String(i),targetId:String(i+1)}))});assert.equal([...genDFS(g,{from:[String(n-1)],direction:'incoming'})].length,n);assert.equal(hasPath(g,'0',String(n-1)),true);assert.equal(hasPath(g,String(n-1),'0'),false);});
+writeFileSync(new URL('../traversal-results.json',import.meta.url),JSON.stringify({node:process.version,results},null,2)+'\n');console.log(results);

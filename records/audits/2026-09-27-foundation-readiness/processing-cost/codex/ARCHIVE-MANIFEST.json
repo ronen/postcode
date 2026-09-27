@@ -1,0 +1,264 @@
+{
+  "archived_on": "2026-09-27",
+  "original_directory": "_codex-processing-cost-audit-2026-09-27",
+  "files": [
+    {
+      "original_path": "_codex-processing-cost-audit-2026-09-27/REPORT.md",
+      "archived_path": "REPORT.md",
+      "original_sha256": "b52c4551ead40168df0b92f8f46cdb1a8fbcae21d1ba708e613755150fc7d04b",
+      "archived_sha256": "e8628d1cdc8162d02fa3df381ea77e8dd9f93ac03448c7890e94959d6ce515f5",
+      "bytes": 24049,
+      "link_adjustments": [
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/composition-view.ts:10",
+          "new": "../../../../../src/lib/composition-view.ts#L10",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/presentation.ts:114",
+          "new": "../../../../../src/lib/presentation.ts#L114",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/organization/presentation.ts:121",
+          "new": "../../../../../src/lib/organization/presentation.ts#L121",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/dependencies/presentation.ts:147",
+          "new": "../../../../../src/lib/dependencies/presentation.ts#L147",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/presentation.ts:82",
+          "new": "../../../../../src/lib/presentation.ts#L82",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/session.ts:85",
+          "new": "../../../../../src/lib/session.ts#L85",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/dependencies/organization.ts:153",
+          "new": "../../../../../src/lib/dependencies/organization.ts#L153",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/memory-store.ts:62",
+          "new": "../../../../../src/lib/memory-store.ts#L62",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/organization/placement.ts:23",
+          "new": "../../../../../src/lib/organization/placement.ts#L23",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/organization/evaluate.ts:114",
+          "new": "../../../../../src/lib/organization/evaluate.ts#L114",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/dependencies/organization.ts:69",
+          "new": "../../../../../src/lib/dependencies/organization.ts#L69",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/organization/evaluate.ts:128",
+          "new": "../../../../../src/lib/organization/evaluate.ts#L128",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/typescript/expansions.ts:43",
+          "new": "../../../../../src/lib/typescript/expansions.ts#L43",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/typescript/project.ts:105",
+          "new": "../../../../../src/lib/typescript/project.ts#L105",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/organization/presentation.ts:114",
+          "new": "../../../../../src/lib/organization/presentation.ts#L114",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/dependencies/presentation.ts:95",
+          "new": "../../../../../src/lib/dependencies/presentation.ts#L95",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/memory-store.ts:346",
+          "new": "../../../../../src/lib/memory-store.ts#L346",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/typescript/expansions.ts:286",
+          "new": "../../../../../src/lib/typescript/expansions.ts#L286",
+          "reason": "Relocated local link."
+        },
+        {
+          "old": "/Users/ronen/postcode/app/src/lib/typescript/project.ts:314",
+          "new": "../../../../../src/lib/typescript/project.ts#L314",
+          "reason": "Relocated local link."
+        }
+      ]
+    },
+    {
+      "original_path": "_codex-processing-cost-audit-2026-09-27/REPRODUCE.md",
+      "archived_path": "REPRODUCE.md",
+      "original_sha256": "2a971c0d6bfa9b531e2b3de9511392273637a894243ab4b9a1bf50bc0ee07daf",
+      "archived_sha256": "2a971c0d6bfa9b531e2b3de9511392273637a894243ab4b9a1bf50bc0ee07daf",
+      "bytes": 6140,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-processing-cost-audit-2026-09-27/build.log",
+      "archived_path": "build.log",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archived_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-processing-cost-audit-2026-09-27/dependency-tests.log",
+      "archived_path": "dependency-tests.log",
+      "original_sha256": "2902942709f53997b23c6cbe4c26bc89a84c5c163e66627f8accd27e27e79ec0",
+      "archived_sha256": "2902942709f53997b23c6cbe4c26bc89a84c5c163e66627f8accd27e27e79ec0",
+      "bytes": 7617,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-processing-cost-audit-2026-09-27/export-measurements.json",
+      "archived_path": "export-measurements.json",
+      "original_sha256": "64205b9637026d601806eab615505e6f61a8907dc14e663c81790ad98c043f92",
+      "archived_sha256": "64205b9637026d601806eab615505e6f61a8907dc14e663c81790ad98c043f92",
+      "bytes": 590,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-processing-cost-audit-2026-09-27/export-probe.log",
+      "archived_path": "export-probe.log",
+      "original_sha256": "ded1017007686e68daedd727b9c6be36b0223620dc40465e97ac083d2149e280",
+      "archived_sha256": "ded1017007686e68daedd727b9c6be36b0223620dc40465e97ac083d2149e280",
+      "bytes": 389,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-processing-cost-audit-2026-09-27/export-probe.mjs",
+      "archived_path": "export-probe.mjs",
+      "original_sha256": "b7c41c4edb156dda8eb1384a496f05c4e7410e6429a46a461ba49e90a81fbff4",
+      "archived_sha256": "b7c41c4edb156dda8eb1384a496f05c4e7410e6429a46a461ba49e90a81fbff4",
+      "bytes": 1675,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-processing-cost-audit-2026-09-27/final-status.txt",
+      "archived_path": "final-status.txt",
+      "original_sha256": "efc40b0ca57481564b74d3de0a360d1633879f224335b049f6e3638554124347",
+      "archived_sha256": "efc40b0ca57481564b74d3de0a360d1633879f224335b049f6e3638554124347",
+      "bytes": 33,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-processing-cost-audit-2026-09-27/final-verification.json",
+      "archived_path": "final-verification.json",
+      "original_sha256": "af2137df7582a0c61dcc73b1b965de6ef20359f78d9a1b624a74a3fd1b198d08",
+      "archived_sha256": "af2137df7582a0c61dcc73b1b965de6ef20359f78d9a1b624a74a3fd1b198d08",
+      "bytes": 274,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-processing-cost-audit-2026-09-27/guideline-update.diff",
+      "archived_path": "guideline-update.diff",
+      "original_sha256": "3f908a9e6a53547f95b0f7fb13d4c12fef1ebd53e508376a11a53a2fbc9b15e9",
+      "archived_sha256": "3f908a9e6a53547f95b0f7fb13d4c12fef1ebd53e508376a11a53a2fbc9b15e9",
+      "bytes": 1687,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-processing-cost-audit-2026-09-27/initial-status.txt",
+      "archived_path": "initial-status.txt",
+      "original_sha256": "efc40b0ca57481564b74d3de0a360d1633879f224335b049f6e3638554124347",
+      "archived_sha256": "efc40b0ca57481564b74d3de0a360d1633879f224335b049f6e3638554124347",
+      "bytes": 33,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-processing-cost-audit-2026-09-27/measurements.json",
+      "archived_path": "measurements.json",
+      "original_sha256": "c52586f0cb9d5b761283f53945dd868c9acd69a140dc42e1786c1af30fefdb22",
+      "archived_sha256": "c52586f0cb9d5b761283f53945dd868c9acd69a140dc42e1786c1af30fefdb22",
+      "bytes": 33419,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-processing-cost-audit-2026-09-27/preliminary-measurements.json",
+      "archived_path": "preliminary-measurements.json",
+      "original_sha256": "a80f14d9fd3972ad2bcde30df5b48a04f37d69ea86c5dfb7dabd2b4188c76360",
+      "archived_sha256": "a80f14d9fd3972ad2bcde30df5b48a04f37d69ea86c5dfb7dabd2b4188c76360",
+      "bytes": 11544,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-processing-cost-audit-2026-09-27/preliminary-probe.log",
+      "archived_path": "preliminary-probe.log",
+      "original_sha256": "c62a7b7589fcacedd8ec60c9ed8f3aeb385e8af5f688ae251059f8ff4b9641f0",
+      "archived_sha256": "c62a7b7589fcacedd8ec60c9ed8f3aeb385e8af5f688ae251059f8ff4b9641f0",
+      "bytes": 3147,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-processing-cost-audit-2026-09-27/probe.log",
+      "archived_path": "probe.log",
+      "original_sha256": "9ac08a428da39b793f4b181844824e612227eb397f4a0619151da7ffcc4a9e56",
+      "archived_sha256": "9ac08a428da39b793f4b181844824e612227eb397f4a0619151da7ffcc4a9e56",
+      "bytes": 6147,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-processing-cost-audit-2026-09-27/probe.mjs",
+      "archived_path": "probe.mjs",
+      "original_sha256": "33c95f575374117938f971a07e3048e7efaa05972ec731b691b5cf98aa5927fc",
+      "archived_sha256": "33c95f575374117938f971a07e3048e7efaa05972ec731b691b5cf98aa5927fc",
+      "bytes": 9414,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-processing-cost-audit-2026-09-27/source-manifest.json",
+      "archived_path": "source-manifest.json",
+      "original_sha256": "5e4e5b04a0b8e2c895065518f473cdd1452c1131ac2f673ae046b990280a3d79",
+      "archived_sha256": "5e4e5b04a0b8e2c895065518f473cdd1452c1131ac2f673ae046b990280a3d79",
+      "bytes": 6222,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-processing-cost-audit-2026-09-27/tests.log",
+      "archived_path": "tests.log",
+      "original_sha256": "836497bac428acc4c17d3304c618f5cd965b91e804a4c7e0bba7e8dc3a86f11c",
+      "archived_sha256": "836497bac428acc4c17d3304c618f5cd965b91e804a4c7e0bba7e8dc3a86f11c",
+      "bytes": 16963,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_codex-processing-cost-audit-2026-09-27/typecheck.log",
+      "archived_path": "typecheck.log",
+      "original_sha256": "e954a8a71b635559128ddb6e4daa620bf85912d04a9f68c9a586540ea4c55aae",
+      "archived_sha256": "e954a8a71b635559128ddb6e4daa620bf85912d04a9f68c9a586540ea4c55aae",
+      "bytes": 57,
+      "link_adjustments": []
+    }
+  ],
+  "omitted_artifacts": [
+    {
+      "path": "build/",
+      "reason": "Compiled output; rebuild from the recorded source baseline."
+    },
+    {
+      "path": "inputs/",
+      "reason": "Generated experiment inputs; probe source is retained."
+    }
+  ]
+}

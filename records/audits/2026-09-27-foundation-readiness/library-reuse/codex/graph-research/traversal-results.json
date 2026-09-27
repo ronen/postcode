@@ -1,0 +1,17 @@
+{
+  "node": "v22.13.1",
+  "results": [
+    {
+      "name": "multi-parent ancestry includes self, both parents, root and every supporting claim",
+      "passed": true
+    },
+    {
+      "name": "reachability respects direction, isolates, and updates through mutation API",
+      "passed": true
+    },
+    {
+      "name": "100,000-node incoming traversal and forward reachability",
+      "passed": true
+    }
+  ]
+}

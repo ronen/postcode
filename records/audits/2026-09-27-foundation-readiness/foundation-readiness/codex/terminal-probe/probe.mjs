@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import {writeFileSync} from 'node:fs';
+import wrap from 'wrap-ansi';
+import width from 'string-width';
+import {terminalText} from '../build/src/lib/terminal-text.js';
+const options={hard:true,trim:false};
+const cases=['e\u0301','古'.repeat(45),'👩‍💻'.repeat(8),'a  b   c','a\tb','x\r\ny','\u001b[31mRED','\u202Eevil'];
+const results=cases.map(raw=>{const escaped=terminalText(raw.replaceAll('\r\n','\n'));const output=wrap(escaped,10,options);return {raw,escaped,output,widths:output.split('\n').map(width)};});
+assert.equal(wrap('e\u0301',80,options),'é');
+assert.equal(width('古'),2);
+assert.equal(width('e\u0301'),1);
+assert.equal(width('👩‍💻'),2);
+assert.equal(results.some(x=>/[\u001b\u202e]/u.test(x.output)),false);
+const narrow=wrap('古',1,options);
+assert.equal(width(narrow),2);
+writeFileSync(new URL('../terminal-results.json',import.meta.url),JSON.stringify({node:process.version,versions:{wrapAnsi:'10.0.2',stringWidth:'8.3.0'},normalizationChangesCodePoints:true,indivisibleWideGraphemeAtWidth1:narrow,results},null,2)+'\n');
+console.log('Verified width cases, control escaping, NFC normalization, and indivisible grapheme overflow.');

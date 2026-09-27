@@ -1,0 +1,3 @@
+#!/bin/sh
+echo "$*" >> "$FAKEGIT_LOG"
+exec /usr/bin/git "$@"

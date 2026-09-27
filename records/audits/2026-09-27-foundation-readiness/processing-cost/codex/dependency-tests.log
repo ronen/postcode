@@ -1,0 +1,160 @@
+TAP version 13
+# Subtest: production dependencies retain supported mechanisms, direct intermediates and every aggregated occurrence
+ok 1 - production dependencies retain supported mechanisms, direct intermediates and every aggregated occurrence
+  ---
+  duration_ms: 354.734299
+  ...
+# Subtest: production recognition applies classic, mixed and preserve context precedence
+ok 2 - production recognition applies classic, mixed and preserve context precedence
+  ---
+  duration_ms: 3012.076902
+  ...
+# Subtest: production declaration evidence distinguishes same-kind implementations, named annotations, conflicts and insufficiency
+ok 3 - production declaration evidence distinguishes same-kind implementations, named annotations, conflicts and insufficiency
+  ---
+  duration_ms: 295.735053
+  ...
+# Subtest: production missing declaration evidence permits CommonJS but not preserve or unset-mode fallback
+ok 4 - production missing declaration evidence permits CommonJS but not preserve or unset-mode fallback
+  ---
+  duration_ms: 121.387329
+  ...
+# Subtest: production lexical completion rejects parse recovery, with scopes and all tested local binding shapes
+ok 5 - production lexical completion rejects parse recovery, with scopes and all tested local binding shapes
+  ---
+  duration_ms: 233.284695
+  ...
+# Subtest: type-only is whole-edge evidence; adding a require never produces a runtime claim
+ok 6 - type-only is whole-edge evidence; adding a require never produces a runtime claim
+  ---
+  duration_ms: 19.153944
+  ...
+# Subtest: literal resolution honors package conditions, import-type mode attributes and exact ambient declarations
+ok 7 - literal resolution honors package conditions, import-type mode attributes and exact ambient declarations
+  ---
+  duration_ms: 28.231052
+  ...
+# Subtest: ownership respects named modules, namespaces and unresolved augmentations without guessing enclosing ownership
+ok 8 - ownership respects named modules, namespaces and unresolved augmentations without guessing enclosing ownership
+  ---
+  duration_ms: 26.747091
+  ...
+# Subtest: external interiors stay opaque and external augmentations do not become enclosing module requests
+ok 9 - external interiors stay opaque and external augmentations do not become enclosing module requests
+  ---
+  duration_ms: 24.655768
+  ...
+# Subtest: dependency resolution uses the captured output exclusion boundary and retains changed resolution inputs independently of session identity
+ok 10 - dependency resolution uses the captured output exclusion boundary and retains changed resolution inputs independently of session identity
+  ---
+  duration_ms: 60.526229
+  ...
+# Subtest: empty and unavailable dependency evaluations are distinct; ordinary discovery does not request dependencies
+ok 11 - empty and unavailable dependency evaluations are distinct; ordinary discovery does not request dependencies
+  ---
+  duration_ms: 539.57211
+  ...
+# Subtest: partial, stopped and failed dependency attempts retain qualified materialized results; defects propagate
+ok 12 - partial, stopped and failed dependency attempts retain qualified materialized results; defects propagate
+  ---
+  duration_ms: 557.773638
+  ...
+# Subtest: store rejects unsupported relationship edges and false whole-edge qualifications atomically
+ok 13 - store rejects unsupported relationship edges and false whole-edge qualifications atomically
+  ---
+  duration_ms: 264.72409
+  ...
+# Subtest: captured request evidence survives later edits and dependency method versions are retained
+ok 14 - captured request evidence survives later edits and dependency method versions are retained
+  ---
+  duration_ms: 40.621458
+  ...
+# Subtest: direct relationships preserve self requests and every edge around a cycle
+ok 15 - direct relationships preserve self requests and every edge around a cycle
+  ---
+  duration_ms: 36.054892
+  ...
+# Subtest: file resolver evidence never narrows a different ambient target declaration
+ok 16 - file resolver evidence never narrows a different ambient target declaration
+  ---
+  duration_ms: 25.655089
+  ...
+# Subtest: relationship diagnostics count source diagnostics once without collapsing distinct same-code errors
+ok 17 - relationship diagnostics count source diagnostics once without collapsing distinct same-code errors
+  ---
+  duration_ms: 44.650785
+  ...
+# Subtest: merged module relationships retain distinct diagnostics across files without multiplying shared file diagnostics
+ok 18 - merged module relationships retain distinct diagnostics across files without multiplying shared file diagnostics
+  ---
+  duration_ms: 28.715375
+  ...
+# Subtest: dependency evaluations partition resolved occurrences exactly and reject inconsistent batches atomically
+ok 19 - dependency evaluations partition resolved occurrences exactly and reject inconsistent batches atomically
+  ---
+  duration_ms: 282.292575
+  ...
+# Subtest: dependency evaluations reject disjoint relationships for one ordered pair atomically
+ok 20 - dependency evaluations reject disjoint relationships for one ordered pair atomically
+  ---
+  duration_ms: 24.949849
+  ...
+# Subtest: structure retains isolated modules, source SCC roots, self loops and shared children
+ok 21 - structure retains isolated modules, source SCC roots, self loops and shared children
+  ---
+  duration_ms: 258.601293
+  ...
+# Subtest: focused lenses retain only direct edges, nonedges stay with their owner and opaque endpoints remain selectable
+ok 22 - focused lenses retain only direct edges, nonedges stay with their owner and opaque endpoints remain selectable
+  ---
+  duration_ms: 259.928549
+  ...
+# Subtest: composition is an independent exhaustive positive property across merged declarations
+ok 23 - composition is an independent exhaustive positive property across merged declarations
+  ---
+  duration_ms: 241.638069
+  ...
+# Subtest: organization expansion distinguishes same group, descendants and outward without transitive dependencies
+ok 24 - organization expansion distinguishes same group, descendants and outward without transitive dependencies
+  ---
+  duration_ms: 248.074841
+  ...
+# Subtest: merged owners use occurrence-specific source placement; target declarations preserve variation
+ok 25 - merged owners use occurrence-specific source placement; target declarations preserve variation
+  ---
+  duration_ms: 532.998182
+  ...
+# Subtest: missing or partial organization weakens only expansion and cannot establish outward
+ok 26 - missing or partial organization weakens only expansion and cannot establish outward
+  ---
+  duration_ms: 239.748002
+  ...
+# Subtest: fallback preserves partial and ambiguous target placement without inventing endpoint associations
+ok 27 - fallback preserves partial and ambiguous target placement without inventing endpoint associations
+  ---
+  duration_ms: 260.407683
+  ...
+# Subtest: directory links preserve multiple containment parents and their common ancestor evidence
+ok 28 - directory links preserve multiple containment parents and their common ancestor evidence
+  ---
+  duration_ms: 246.08848
+  ...
+# Subtest: empty graph and composition evaluation are established empty results
+ok 29 - empty graph and composition evaluation are established empty results
+  ---
+  duration_ms: 228.321099
+  ...
+# Subtest: store rejects invalid component indices and missing organization occurrence support atomically
+ok 30 - store rejects invalid component indices and missing organization occurrence support atomically
+  ---
+  duration_ms: 208.527408
+  ...
+1..30
+# tests 30
+# suites 0
+# pass 30
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6759.836772

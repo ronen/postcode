@@ -1,0 +1,61 @@
+[
+  {
+    "before": [
+      [
+        "b"
+      ],
+      [
+        "a"
+      ]
+    ]
+  },
+  {
+    "afterInPlaceMutation": [
+      [
+        "b"
+      ],
+      [
+        "a"
+      ]
+    ],
+    "freshWouldBe": [
+      [
+        "a",
+        "b"
+      ]
+    ]
+  },
+  {
+    "width": 10000,
+    "genDFS": {
+      "found": false,
+      "ms": 1.7
+    },
+    "hasPath": {
+      "found": false,
+      "ms": 17.5
+    }
+  },
+  {
+    "width": 50000,
+    "genDFS": {
+      "found": false,
+      "ms": 1.6
+    },
+    "hasPath": {
+      "found": false,
+      "ms": 1295
+    }
+  },
+  {
+    "width": 100000,
+    "genDFS": {
+      "found": false,
+      "ms": 3.9
+    },
+    "hasPath": {
+      "found": false,
+      "ms": 1169.8
+    }
+  }
+]

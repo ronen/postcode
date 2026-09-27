@@ -1,0 +1,47 @@
+{
+  "node": "v22.13.1",
+  "stately": "2.4.0",
+  "results": [
+    {
+      "name": "directory-link containment acceptance matches deriveLayout",
+      "cases": 1500,
+      "cyclicRefusals": 2676,
+      "acceptedLinks": 8053,
+      "passed": true
+    },
+    {
+      "name": "multi-parent ancestry with all supporting claims matches oracle",
+      "graphs": 1000,
+      "passed": true
+    },
+    {
+      "name": "empty node id (repository root region path) is rejected",
+      "error": "Node id must be a non-empty string",
+      "passed": true
+    },
+    {
+      "name": "in-place edge field mutation leaves a stale index",
+      "staleAnswerAfterMutation": false,
+      "expectedFresh": false,
+      "passed": false
+    },
+    {
+      "name": "hasPath star traversal",
+      "width": 10000,
+      "found": false,
+      "milliseconds": 21.5
+    },
+    {
+      "name": "hasPath star traversal",
+      "width": 50000,
+      "found": false,
+      "milliseconds": 277.2
+    },
+    {
+      "name": "hasPath star traversal",
+      "width": 100000,
+      "found": false,
+      "milliseconds": 1171.2
+    }
+  ]
+}

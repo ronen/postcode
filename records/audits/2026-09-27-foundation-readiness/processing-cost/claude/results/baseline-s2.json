@@ -1,0 +1,117 @@
+{
+  "config": "synthetic/s2/tsconfig.json",
+  "openMs": 718.9199060000001,
+  "requests": [
+    {
+      "label": "modules unicode",
+      "pass": 1,
+      "ms": 3158.2027080000003,
+      "renderedBytes": 24545
+    },
+    {
+      "label": "modules unicode",
+      "pass": 2,
+      "ms": 1771.9644909999997,
+      "renderedBytes": 24545
+    },
+    {
+      "label": "modules json",
+      "pass": 1,
+      "ms": 2136.1398099999997,
+      "renderedBytes": 9821451
+    },
+    {
+      "label": "modules json",
+      "pass": 2,
+      "ms": 2072.196086,
+      "renderedBytes": 9821451
+    },
+    {
+      "label": "inspect mod1 unicode",
+      "pass": 1,
+      "ms": 502.9205389999988,
+      "renderedBytes": 1331
+    },
+    {
+      "label": "inspect mod1 unicode",
+      "pass": 2,
+      "ms": 285.39414299999953,
+      "renderedBytes": 1331
+    },
+    {
+      "label": "organization project unicode",
+      "pass": 1,
+      "ms": 1068.382971000001,
+      "renderedBytes": 19905
+    },
+    {
+      "label": "organization project unicode",
+      "pass": 2,
+      "ms": 1053.2182359999988,
+      "renderedBytes": 19905
+    },
+    {
+      "label": "organization repository json",
+      "pass": 1,
+      "ms": 1128.0985830000009,
+      "renderedBytes": 2984694
+    },
+    {
+      "label": "organization repository json",
+      "pass": 2,
+      "ms": 1154.6708990000006,
+      "renderedBytes": 2984694
+    },
+    {
+      "label": "dependencies unicode",
+      "pass": 1,
+      "ms": 1763.691168999998,
+      "renderedBytes": 28846
+    },
+    {
+      "label": "dependencies unicode",
+      "pass": 2,
+      "ms": 945.361485999998,
+      "renderedBytes": 28846
+    },
+    {
+      "label": "dependencies json",
+      "pass": 1,
+      "ms": 1074.5065649999997,
+      "renderedBytes": 21842868
+    },
+    {
+      "label": "dependencies json",
+      "pass": 2,
+      "ms": 1062.7780109999985,
+      "renderedBytes": 21842868
+    },
+    {
+      "label": "children mod1 json",
+      "pass": 1,
+      "ms": 333.4127090000002,
+      "renderedBytes": 3154403
+    },
+    {
+      "label": "children mod1 json",
+      "pass": 2,
+      "ms": 331.92982600000323,
+      "renderedBytes": 3154403
+    }
+  ],
+  "checks": [
+    {
+      "label": "initial",
+      "ms": 295.41552
+    },
+    {
+      "label": "after requests",
+      "ms": 261.4423130000032
+    },
+    {
+      "label": "repeat",
+      "ms": 266.16616799999974
+    }
+  ],
+  "memoryMB": 214
+}

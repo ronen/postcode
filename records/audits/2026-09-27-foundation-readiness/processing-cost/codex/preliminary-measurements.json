@@ -1,0 +1,486 @@
+{
+  "environment": {
+    "node": "v22.13.1",
+    "platform": "darwin",
+    "arch": "x64",
+    "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz"
+  },
+  "cases": [
+    {
+      "name": "postcode",
+      "configPath": "/Users/ronen/postcode/app/tsconfig.json",
+      "stages": {
+        "open": {
+          "ms": 1855.1923210000002,
+          "cpuMs": 3275.35,
+          "wallMs": 1855
+        },
+        "moduleEvaluation": {
+          "ms": 2967.9849600000002,
+          "cpuMs": 4281.1,
+          "wallMs": 2968
+        },
+        "dependencyEvaluation": {
+          "ms": 359.91582500000004,
+          "cpuMs": 459.051,
+          "wallMs": 359
+        },
+        "organizationEvaluation": {
+          "ms": 58.16032399999949,
+          "cpuMs": 118.479,
+          "wallMs": 59
+        },
+        "dependencyOrganizationEvaluation": {
+          "ms": 73.12199200000032,
+          "cpuMs": 87.899,
+          "wallMs": 73
+        },
+        "moduleProjection": {
+          "ms": 29.60388899999998,
+          "cpuMs": 32.272,
+          "wallMs": 30
+        },
+        "organizationProjection": {
+          "ms": 11.422104000000218,
+          "cpuMs": 17.51,
+          "wallMs": 11
+        },
+        "dependencyProjection": {
+          "ms": 21.61005800000021,
+          "cpuMs": 22.554,
+          "wallMs": 22
+        }
+      },
+      "repeated": {
+        "moduleViewJson": [
+          {
+            "ms": 1371.2484820000009,
+            "cpuMs": 1375.962,
+            "wallMs": 1371
+          },
+          {
+            "ms": 1557.5189840000003,
+            "cpuMs": 1449.826,
+            "wallMs": 1558
+          },
+          {
+            "ms": 1232.9788000000008,
+            "cpuMs": 1252.895,
+            "wallMs": 1233
+          }
+        ],
+        "moduleViewUnicode": [
+          {
+            "ms": 1120.301051999999,
+            "cpuMs": 1119.515,
+            "wallMs": 1120
+          },
+          {
+            "ms": 1260.6182419999986,
+            "cpuMs": 1238.727,
+            "wallMs": 1261
+          },
+          {
+            "ms": 1345.012262999997,
+            "cpuMs": 1338.123,
+            "wallMs": 1345
+          }
+        ],
+        "organizationViewUnicode": [
+          {
+            "ms": 13.870229000000108,
+            "cpuMs": 14.262,
+            "wallMs": 14
+          },
+          {
+            "ms": 15.252942999999505,
+            "cpuMs": 15.175,
+            "wallMs": 15
+          },
+          {
+            "ms": 11.869787999999971,
+            "cpuMs": 12.208,
+            "wallMs": 12
+          }
+        ],
+        "dependencyViewJson": [
+          {
+            "ms": 107.65472600000066,
+            "cpuMs": 108.479,
+            "wallMs": 108
+          },
+          {
+            "ms": 89.45991499999946,
+            "cpuMs": 88.406,
+            "wallMs": 90
+          },
+          {
+            "ms": 112.21049299999868,
+            "cpuMs": 112.028,
+            "wallMs": 112
+          }
+        ],
+        "dependencyViewUnicode": [
+          {
+            "ms": 68.2203490000029,
+            "cpuMs": 67.776,
+            "wallMs": 68
+          },
+          {
+            "ms": 87.91819000000032,
+            "cpuMs": 88.096,
+            "wallMs": 88
+          },
+          {
+            "ms": 118.67202300000281,
+            "cpuMs": 119.353,
+            "wallMs": 119
+          }
+        ],
+        "repeatedDependencyOrganization": [
+          {
+            "ms": 163.74866999999722,
+            "cpuMs": 316.088,
+            "wallMs": 164
+          },
+          {
+            "ms": 114.20067099999869,
+            "cpuMs": 139.626,
+            "wallMs": 114
+          },
+          {
+            "ms": 120.48572000000058,
+            "cpuMs": 218.944,
+            "wallMs": 121
+          }
+        ],
+        "repeatedModuleEvaluation": [
+          {
+            "ms": 15.017202999999427,
+            "cpuMs": 15.887,
+            "wallMs": 15
+          },
+          {
+            "ms": 13.385041999998066,
+            "cpuMs": 13.781,
+            "wallMs": 13
+          },
+          {
+            "ms": 17.471098999998503,
+            "cpuMs": 17.453,
+            "wallMs": 17
+          }
+        ],
+        "renderModuleUnicode": [
+          {
+            "ms": 6.859895000001416,
+            "cpuMs": 6.774,
+            "wallMs": 7
+          },
+          {
+            "ms": 5.077875999999378,
+            "cpuMs": 5.028,
+            "wallMs": 5
+          },
+          {
+            "ms": 4.544419999998354,
+            "cpuMs": 5.196,
+            "wallMs": 5
+          }
+        ],
+        "inputValidation": [
+          {
+            "ms": 496.9060219999992,
+            "cpuMs": 261.052,
+            "wallMs": 497
+          },
+          {
+            "ms": 555.485267,
+            "cpuMs": 278.076,
+            "wallMs": 555
+          },
+          {
+            "ms": 576.3379349999996,
+            "cpuMs": 285.066,
+            "wallMs": 576
+          }
+        ]
+      },
+      "counts": {
+        "moduleViewJson": {
+          "storeGets": 1371867
+        },
+        "moduleViewUnicode": {
+          "storeGets": 1370267
+        },
+        "organizationViewUnicode": {
+          "storeGets": 32171
+        },
+        "dependencyViewJson": {
+          "storeGets": 223578
+        },
+        "dependencyViewUnicode": {
+          "storeGets": 219952
+        },
+        "repeatedDependencyOrganization": {
+          "storeGets": 4196
+        },
+        "repeatedModuleEvaluation": {
+          "storeGets": 1
+        },
+        "placement": {
+          "lookups": 59,
+          "placementComparisons": 17405,
+          "artifactComparisons": 17405
+        }
+      },
+      "population": {
+        "modules": 215,
+        "groups": 48,
+        "artifacts": 325,
+        "expansionClaims": 5674,
+        "expansionEvaluations": 646,
+        "relationships": 372,
+        "dependencyOrganizationMaterialization": "partial"
+      }
+    },
+    {
+      "name": "dependency-journey",
+      "configPath": "/Users/ronen/postcode/app/fixtures/dependency-journey/tsconfig.json",
+      "stages": {
+        "open": {
+          "ms": 315.8435559999998,
+          "cpuMs": 81.35,
+          "wallMs": 316
+        },
+        "moduleEvaluation": {
+          "ms": 12.87494400000287,
+          "cpuMs": 15.8,
+          "wallMs": 13
+        },
+        "dependencyEvaluation": {
+          "ms": 13.294012999998813,
+          "cpuMs": 13.157,
+          "wallMs": 13
+        },
+        "organizationEvaluation": {
+          "ms": 32.901143000002776,
+          "cpuMs": 42.344,
+          "wallMs": 33
+        },
+        "dependencyOrganizationEvaluation": {
+          "ms": 1.688006000000314,
+          "cpuMs": 1.69,
+          "wallMs": 2
+        },
+        "moduleProjection": {
+          "ms": 0.36865100000068196,
+          "cpuMs": 0.36,
+          "wallMs": 0
+        },
+        "organizationProjection": {
+          "ms": 2.3888699999988603,
+          "cpuMs": 2.38,
+          "wallMs": 2
+        },
+        "dependencyProjection": {
+          "ms": 1.6123850000003586,
+          "cpuMs": 1.598,
+          "wallMs": 2
+        }
+      },
+      "repeated": {
+        "moduleViewJson": [
+          {
+            "ms": 0.29951100000107544,
+            "cpuMs": 0.299,
+            "wallMs": 1
+          },
+          {
+            "ms": 0.22372700000050827,
+            "cpuMs": 0.225,
+            "wallMs": 0
+          },
+          {
+            "ms": 0.17555299999730778,
+            "cpuMs": 0.176,
+            "wallMs": 0
+          }
+        ],
+        "moduleViewUnicode": [
+          {
+            "ms": 0.17241199999989476,
+            "cpuMs": 0.172,
+            "wallMs": 0
+          },
+          {
+            "ms": 0.16526499999963562,
+            "cpuMs": 0.166,
+            "wallMs": 0
+          },
+          {
+            "ms": 0.1666830000031041,
+            "cpuMs": 0.167,
+            "wallMs": 0
+          }
+        ],
+        "organizationViewUnicode": [
+          {
+            "ms": 6.7358469999999215,
+            "cpuMs": 8.489,
+            "wallMs": 7
+          },
+          {
+            "ms": 6.193782000002102,
+            "cpuMs": 6.169,
+            "wallMs": 6
+          },
+          {
+            "ms": 8.28893700000117,
+            "cpuMs": 8.216,
+            "wallMs": 8
+          }
+        ],
+        "dependencyViewJson": [
+          {
+            "ms": 0.5281779999968421,
+            "cpuMs": 0.53,
+            "wallMs": 1
+          },
+          {
+            "ms": 0.48478500000055647,
+            "cpuMs": 0.486,
+            "wallMs": 1
+          },
+          {
+            "ms": 0.4552589999984775,
+            "cpuMs": 0.451,
+            "wallMs": 0
+          }
+        ],
+        "dependencyViewUnicode": [
+          {
+            "ms": 0.42762600000060047,
+            "cpuMs": 0.428,
+            "wallMs": 1
+          },
+          {
+            "ms": 0.39552999999796157,
+            "cpuMs": 0.397,
+            "wallMs": 0
+          },
+          {
+            "ms": 0.3938400000006368,
+            "cpuMs": 0.395,
+            "wallMs": 0
+          }
+        ],
+        "repeatedDependencyOrganization": [
+          {
+            "ms": 2.659413000001223,
+            "cpuMs": 2.623,
+            "wallMs": 3
+          },
+          {
+            "ms": 2.831711999999243,
+            "cpuMs": 2.815,
+            "wallMs": 3
+          },
+          {
+            "ms": 4.124476000000868,
+            "cpuMs": 4.769,
+            "wallMs": 4
+          }
+        ],
+        "repeatedModuleEvaluation": [
+          {
+            "ms": 0.3566019999998389,
+            "cpuMs": 0.345,
+            "wallMs": 0
+          },
+          {
+            "ms": 0.20300700000007055,
+            "cpuMs": 0.203,
+            "wallMs": 1
+          },
+          {
+            "ms": 0.29801299999962794,
+            "cpuMs": 0.284,
+            "wallMs": 0
+          }
+        ],
+        "renderModuleUnicode": [
+          {
+            "ms": 0.19565000000147847,
+            "cpuMs": 0.195,
+            "wallMs": 0
+          },
+          {
+            "ms": 0.13826800000242656,
+            "cpuMs": 0.131,
+            "wallMs": 0
+          },
+          {
+            "ms": 0.1339829999997164,
+            "cpuMs": 0.135,
+            "wallMs": 1
+          }
+        ],
+        "inputValidation": [
+          {
+            "ms": 280.7434439999997,
+            "cpuMs": 84.715,
+            "wallMs": 281
+          },
+          {
+            "ms": 274.846461000001,
+            "cpuMs": 57.394,
+            "wallMs": 275
+          },
+          {
+            "ms": 290.8247330000013,
+            "cpuMs": 72.445,
+            "wallMs": 291
+          }
+        ]
+      },
+      "counts": {
+        "moduleViewJson": {
+          "storeGets": 296
+        },
+        "moduleViewUnicode": {
+          "storeGets": 296
+        },
+        "organizationViewUnicode": {
+          "storeGets": 1612
+        },
+        "dependencyViewJson": {
+          "storeGets": 779
+        },
+        "dependencyViewUnicode": {
+          "storeGets": 779
+        },
+        "repeatedDependencyOrganization": {
+          "storeGets": 1073
+        },
+        "repeatedModuleEvaluation": {
+          "storeGets": 1
+        },
+        "placement": {
+          "lookups": 6,
+          "placementComparisons": 447,
+          "artifactComparisons": 447
+        }
+      },
+      "population": {
+        "modules": 6,
+        "groups": 48,
+        "artifacts": 325,
+        "expansionClaims": 7,
+        "expansionEvaluations": 19,
+        "relationships": 6,
+        "dependencyOrganizationMaterialization": "full"
+      }
+    }
+  ]
+}

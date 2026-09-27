@@ -1,0 +1,7 @@
+{
+  "sendError": "DataCloneError",
+  "nextCommandError": "Concurrent session command",
+  "unhandledRejections": [
+    "Analysis worker exited unexpectedly (1)"
+  ]
+}

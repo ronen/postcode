@@ -1,0 +1,176 @@
+{
+  "archived_on": "2026-09-27",
+  "original_directory": "_foundation-readiness-review-claude",
+  "files": [
+    {
+      "original_path": "_foundation-readiness-review-claude/REPORT.md",
+      "archived_path": "REPORT.md",
+      "original_sha256": "a7be9294ee2e0388e351017c634c022a2ae5f17d6d67c46854307c87e2c67b03",
+      "archived_sha256": "a7be9294ee2e0388e351017c634c022a2ae5f17d6d67c46854307c87e2c67b03",
+      "bytes": 63344,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_foundation-readiness-review-claude/baseline-commit.txt",
+      "archived_path": "baseline-commit.txt",
+      "original_sha256": "180becfdffa24b85bfb5f2567039eef8a5ebe8c47cf1e150402d8687cf7ee25e",
+      "archived_sha256": "180becfdffa24b85bfb5f2567039eef8a5ebe8c47cf1e150402d8687cf7ee25e",
+      "bytes": 41,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_foundation-readiness-review-claude/exclusion-cost-probe.mjs",
+      "archived_path": "exclusion-cost-probe.mjs",
+      "original_sha256": "e1eded19ca247b0d482f04439cf1d11b10b5cf6e9ce4ef6d2ba2260d9a2ecbc6",
+      "archived_sha256": "e1eded19ca247b0d482f04439cf1d11b10b5cf6e9ce4ef6d2ba2260d9a2ecbc6",
+      "bytes": 1809,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_foundation-readiness-review-claude/exclusion-cost-results.json",
+      "archived_path": "exclusion-cost-results.json",
+      "original_sha256": "1268eb93281a374b43da5c69544d071fd6c7faf36579efbd0196c399adb08702",
+      "archived_sha256": "1268eb93281a374b43da5c69544d071fd6c7faf36579efbd0196c399adb08702",
+      "bytes": 752,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_foundation-readiness-review-claude/graph-probe-results.json",
+      "archived_path": "graph-probe-results.json",
+      "original_sha256": "87a00c4545e9f54ac397b16866910e5288656c5aeeae85ecc75ddcd1cb56e90d",
+      "archived_sha256": "87a00c4545e9f54ac397b16866910e5288656c5aeeae85ecc75ddcd1cb56e90d",
+      "bytes": 1102,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_foundation-readiness-review-claude/graph-probe-staleness-results.json",
+      "archived_path": "graph-probe-staleness-results.json",
+      "original_sha256": "02386b4736672d6fd49cd9ae0e462c677df2a66110719e2cf767ab62c5dfce33",
+      "archived_sha256": "02386b4736672d6fd49cd9ae0e462c677df2a66110719e2cf767ab62c5dfce33",
+      "bytes": 722,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_foundation-readiness-review-claude/graph-probe-staleness.mjs",
+      "archived_path": "graph-probe-staleness.mjs",
+      "original_sha256": "26b507abd76ee08d57e8b08502c3b50834bf4a68beee5faedbd807d8a1514607",
+      "archived_sha256": "26b507abd76ee08d57e8b08502c3b50834bf4a68beee5faedbd807d8a1514607",
+      "bytes": 2187,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_foundation-readiness-review-claude/graph-probe.mjs",
+      "archived_path": "graph-probe.mjs",
+      "original_sha256": "81e44bc1eef0fa7af16402f800e8a971c8ebbc9dabe2d849a06a4590298ba399",
+      "archived_sha256": "81e44bc1eef0fa7af16402f800e8a971c8ebbc9dabe2d849a06a4590298ba399",
+      "bytes": 9083,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_foundation-readiness-review-claude/guideline-worktree.diff",
+      "archived_path": "guideline-worktree.diff",
+      "original_sha256": "3f908a9e6a53547f95b0f7fb13d4c12fef1ebd53e508376a11a53a2fbc9b15e9",
+      "archived_sha256": "3f908a9e6a53547f95b0f7fb13d4c12fef1ebd53e508376a11a53a2fbc9b15e9",
+      "bytes": 1687,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_foundation-readiness-review-claude/initial-status.txt",
+      "archived_path": "initial-status.txt",
+      "original_sha256": "efc40b0ca57481564b74d3de0a360d1633879f224335b049f6e3638554124347",
+      "archived_sha256": "efc40b0ca57481564b74d3de0a360d1633879f224335b049f6e3638554124347",
+      "bytes": 33,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_foundation-readiness-review-claude/layout-probe/package-lock.json",
+      "archived_path": "layout-probe/package-lock.json",
+      "original_sha256": "434914851db425e22bf9c582407850042ae2b1aeb223daa6b7bd876b5bc9cae3",
+      "archived_sha256": "434914851db425e22bf9c582407850042ae2b1aeb223daa6b7bd876b5bc9cae3",
+      "bytes": 3118,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_foundation-readiness-review-claude/layout-probe/package.json",
+      "archived_path": "layout-probe/package.json",
+      "original_sha256": "3d907254599479d7b751cbf885ff415c0d81dc8567bd10aebaf60f928ee21943",
+      "archived_sha256": "3d907254599479d7b751cbf885ff415c0d81dc8567bd10aebaf60f928ee21943",
+      "bytes": 115,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_foundation-readiness-review-claude/layout-probe/probe.mjs",
+      "archived_path": "layout-probe/probe.mjs",
+      "original_sha256": "2aa22cc15972d26dbaeb2dd226d14e756ba7a22ea3718090295d1144afb96b41",
+      "archived_sha256": "2aa22cc15972d26dbaeb2dd226d14e756ba7a22ea3718090295d1144afb96b41",
+      "bytes": 5121,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_foundation-readiness-review-claude/layout-probe/results.json",
+      "archived_path": "layout-probe/results.json",
+      "original_sha256": "8c940d2088aedfda749c46a764c7e7acbb9c12612da8c500892b6af0d9cf2694",
+      "archived_sha256": "8c940d2088aedfda749c46a764c7e7acbb9c12612da8c500892b6af0d9cf2694",
+      "bytes": 8407,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_foundation-readiness-review-claude/ownership-probe-results.json",
+      "archived_path": "ownership-probe-results.json",
+      "original_sha256": "8b48e6f0340e4c0aa3f573b4b54389af1709f2d7928b221b77d44a526b7b15e6",
+      "archived_sha256": "8b48e6f0340e4c0aa3f573b4b54389af1709f2d7928b221b77d44a526b7b15e6",
+      "bytes": 257,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_foundation-readiness-review-claude/ownership-probe.mjs",
+      "archived_path": "ownership-probe.mjs",
+      "original_sha256": "a6242665f8f5a38652bb769e9b80784d44963c42f4c1c2a9d9f0a45b02862351",
+      "archived_sha256": "a6242665f8f5a38652bb769e9b80784d44963c42f4c1c2a9d9f0a45b02862351",
+      "bytes": 1836,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_foundation-readiness-review-claude/parseargs-probe.mjs",
+      "archived_path": "parseargs-probe.mjs",
+      "original_sha256": "475c5be8ebee1481a5f305ddc649ca39c6c9ef50a8d5c7364bce65b27b637302",
+      "archived_sha256": "475c5be8ebee1481a5f305ddc649ca39c6c9ef50a8d5c7364bce65b27b637302",
+      "bytes": 1909,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_foundation-readiness-review-claude/parseargs-results.json",
+      "archived_path": "parseargs-results.json",
+      "original_sha256": "fedc5c3ffc895cac231922c7d40a97f201f722630f7e67e9f10f8e3ac786190b",
+      "archived_sha256": "fedc5c3ffc895cac231922c7d40a97f201f722630f7e67e9f10f8e3ac786190b",
+      "bytes": 6214,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_foundation-readiness-review-claude/source-manifest.sha256",
+      "archived_path": "source-manifest.sha256",
+      "original_sha256": "0f8365e3c51871f49d6df04a46497059116352eb2add5fb34840b839fad477b4",
+      "archived_sha256": "0f8365e3c51871f49d6df04a46497059116352eb2add5fb34840b839fad477b4",
+      "bytes": 6757,
+      "link_adjustments": []
+    },
+    {
+      "original_path": "_foundation-readiness-review-claude/tests.log",
+      "archived_path": "tests.log",
+      "original_sha256": "ce016fe55f498b6197f5e304731ce70ff6e1e0b4023698b1b1a575114f2e8790",
+      "archived_sha256": "ce016fe55f498b6197f5e304731ce70ff6e1e0b4023698b1b1a575114f2e8790",
+      "bytes": 55390,
+      "link_adjustments": []
+    }
+  ],
+  "omitted_artifacts": [
+    {
+      "path": "build/",
+      "reason": "Compiled output; rebuild from the recorded source baseline."
+    },
+    {
+      "path": "layout-probe/node_modules/",
+      "reason": "Installed dependencies; manifests/lockfiles are retained."
+    }
+  ]
+}

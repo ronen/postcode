@@ -1,0 +1,1352 @@
+{
+  "environment": {
+    "node": "v22.13.1",
+    "platform": "darwin",
+    "arch": "x64",
+    "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz"
+  },
+  "cases": [
+    {
+      "name": "postcode",
+      "configPath": "/Users/ronen/postcode/app/tsconfig.json",
+      "stages": {
+        "open": {
+          "ms": 1904.596642,
+          "cpuMs": 3364.937,
+          "wallMs": 1905
+        },
+        "moduleEvaluation": {
+          "ms": 3221.7732190000006,
+          "cpuMs": 4611.795,
+          "wallMs": 3222
+        },
+        "dependencyEvaluation": {
+          "ms": 352.5024190000004,
+          "cpuMs": 435.235,
+          "wallMs": 352
+        },
+        "organizationEvaluation": {
+          "ms": 51.964554000000135,
+          "cpuMs": 106.154,
+          "wallMs": 52
+        },
+        "dependencyOrganizationEvaluation": {
+          "ms": 70.25907299999926,
+          "cpuMs": 82.67,
+          "wallMs": 71
+        },
+        "moduleProjection": {
+          "ms": 34.799605000000156,
+          "cpuMs": 37.528,
+          "wallMs": 34
+        },
+        "organizationProjection": {
+          "ms": 10.768635999999788,
+          "cpuMs": 16.575,
+          "wallMs": 11
+        },
+        "dependencyProjection": {
+          "ms": 29.019881999999598,
+          "cpuMs": 29.711,
+          "wallMs": 29
+        }
+      },
+      "repeated": {
+        "moduleViewJson": [
+          {
+            "ms": 1699.4344709999987,
+            "cpuMs": 1698.522,
+            "wallMs": 1700
+          },
+          {
+            "ms": 1697.1953109999995,
+            "cpuMs": 1698.368,
+            "wallMs": 1697
+          },
+          {
+            "ms": 1438.123544,
+            "cpuMs": 1455.721,
+            "wallMs": 1438
+          }
+        ],
+        "moduleViewUnicode": [
+          {
+            "ms": 1416.139008,
+            "cpuMs": 1412.704,
+            "wallMs": 1416
+          },
+          {
+            "ms": 1191.723188,
+            "cpuMs": 1192.403,
+            "wallMs": 1192
+          },
+          {
+            "ms": 1049.4711590000006,
+            "cpuMs": 1047.245,
+            "wallMs": 1049
+          }
+        ],
+        "organizationViewUnicode": [
+          {
+            "ms": 9.69004700000005,
+            "cpuMs": 10.138,
+            "wallMs": 9
+          },
+          {
+            "ms": 10.542825000000448,
+            "cpuMs": 11.026,
+            "wallMs": 11
+          },
+          {
+            "ms": 10.96091399999932,
+            "cpuMs": 11.339,
+            "wallMs": 11
+          }
+        ],
+        "dependencyViewJson": [
+          {
+            "ms": 45.980844999998226,
+            "cpuMs": 47.773,
+            "wallMs": 46
+          },
+          {
+            "ms": 44.48525199999858,
+            "cpuMs": 44.295,
+            "wallMs": 44
+          },
+          {
+            "ms": 51.93115599999874,
+            "cpuMs": 52.874,
+            "wallMs": 52
+          }
+        ],
+        "dependencyViewUnicode": [
+          {
+            "ms": 44.60607700000037,
+            "cpuMs": 44.78,
+            "wallMs": 45
+          },
+          {
+            "ms": 42.435936999998376,
+            "cpuMs": 43.06,
+            "wallMs": 42
+          },
+          {
+            "ms": 45.56741099999999,
+            "cpuMs": 47.307,
+            "wallMs": 46
+          }
+        ],
+        "repeatedDependencyOrganization": [
+          {
+            "ms": 106.27906499999881,
+            "cpuMs": 220.909,
+            "wallMs": 106
+          },
+          {
+            "ms": 98.04494300000079,
+            "cpuMs": 115.392,
+            "wallMs": 98
+          },
+          {
+            "ms": 101.64854900000137,
+            "cpuMs": 185.146,
+            "wallMs": 102
+          }
+        ],
+        "repeatedModuleEvaluation": [
+          {
+            "ms": 13.831782999997813,
+            "cpuMs": 15.134,
+            "wallMs": 14
+          },
+          {
+            "ms": 12.63185500000327,
+            "cpuMs": 13.117,
+            "wallMs": 12
+          },
+          {
+            "ms": 13.983793999999762,
+            "cpuMs": 14.031,
+            "wallMs": 14
+          }
+        ],
+        "renderModuleUnicode": [
+          {
+            "ms": 4.155050000001211,
+            "cpuMs": 4.157,
+            "wallMs": 4
+          },
+          {
+            "ms": 4.022347999998601,
+            "cpuMs": 4.008,
+            "wallMs": 4
+          },
+          {
+            "ms": 4.130322000000888,
+            "cpuMs": 4.732,
+            "wallMs": 4
+          }
+        ],
+        "inputValidation": [
+          {
+            "ms": 398.8270190000003,
+            "cpuMs": 214.479,
+            "wallMs": 399
+          },
+          {
+            "ms": 377.9146240000009,
+            "cpuMs": 201.722,
+            "wallMs": 378
+          },
+          {
+            "ms": 348.73213899999973,
+            "cpuMs": 173.007,
+            "wallMs": 349
+          }
+        ]
+      },
+      "counts": {
+        "moduleViewJson": {
+          "storeGets": 1371867
+        },
+        "moduleViewUnicode": {
+          "storeGets": 1370267
+        },
+        "organizationViewUnicode": {
+          "storeGets": 32171
+        },
+        "dependencyViewJson": {
+          "storeGets": 223578
+        },
+        "dependencyViewUnicode": {
+          "storeGets": 219952
+        },
+        "repeatedDependencyOrganization": {
+          "storeGets": 4196
+        },
+        "repeatedModuleEvaluation": {
+          "storeGets": 1
+        },
+        "placement": {
+          "lookups": 59,
+          "placementComparisons": 17405,
+          "artifactComparisons": 17405
+        }
+      },
+      "population": {
+        "modules": 215,
+        "groups": 48,
+        "artifacts": 325,
+        "expansionClaims": 5674,
+        "expansionEvaluations": 646,
+        "relationships": 372,
+        "dependencyOrganizationMaterialization": "partial"
+      }
+    },
+    {
+      "name": "dependency-journey",
+      "configPath": "/Users/ronen/postcode/app/fixtures/dependency-journey/tsconfig.json",
+      "stages": {
+        "open": {
+          "ms": 243.57945599999948,
+          "cpuMs": 56.698,
+          "wallMs": 244
+        },
+        "moduleEvaluation": {
+          "ms": 8.095511999999871,
+          "cpuMs": 11.434,
+          "wallMs": 8
+        },
+        "dependencyEvaluation": {
+          "ms": 8.887960000000021,
+          "cpuMs": 8.817,
+          "wallMs": 9
+        },
+        "organizationEvaluation": {
+          "ms": 22.077816000000894,
+          "cpuMs": 24.6,
+          "wallMs": 22
+        },
+        "dependencyOrganizationEvaluation": {
+          "ms": 2.02061600000161,
+          "cpuMs": 2.017,
+          "wallMs": 2
+        },
+        "moduleProjection": {
+          "ms": 0.35473499999716296,
+          "cpuMs": 0.356,
+          "wallMs": 1
+        },
+        "organizationProjection": {
+          "ms": 2.194986999998946,
+          "cpuMs": 2.194,
+          "wallMs": 2
+        },
+        "dependencyProjection": {
+          "ms": 0.8174980000003416,
+          "cpuMs": 0.819,
+          "wallMs": 1
+        }
+      },
+      "repeated": {
+        "moduleViewJson": [
+          {
+            "ms": 0.14538700000048266,
+            "cpuMs": 0.146,
+            "wallMs": 0
+          },
+          {
+            "ms": 0.13607000000047265,
+            "cpuMs": 0.136,
+            "wallMs": 0
+          },
+          {
+            "ms": 0.13758700000107638,
+            "cpuMs": 0.139,
+            "wallMs": 0
+          }
+        ],
+        "moduleViewUnicode": [
+          {
+            "ms": 0.13480700000218349,
+            "cpuMs": 0.135,
+            "wallMs": 0
+          },
+          {
+            "ms": 0.12993999999889638,
+            "cpuMs": 0.13,
+            "wallMs": 0
+          },
+          {
+            "ms": 0.13179200000013225,
+            "cpuMs": 0.133,
+            "wallMs": 0
+          }
+        ],
+        "organizationViewUnicode": [
+          {
+            "ms": 4.580464000002394,
+            "cpuMs": 6.001,
+            "wallMs": 4
+          },
+          {
+            "ms": 4.448335000000952,
+            "cpuMs": 4.438,
+            "wallMs": 5
+          },
+          {
+            "ms": 4.935919999999896,
+            "cpuMs": 4.87,
+            "wallMs": 5
+          }
+        ],
+        "dependencyViewJson": [
+          {
+            "ms": 0.42937499999970896,
+            "cpuMs": 0.407,
+            "wallMs": 0
+          },
+          {
+            "ms": 0.37388600000122096,
+            "cpuMs": 0.374,
+            "wallMs": 0
+          },
+          {
+            "ms": 0.33219699999972363,
+            "cpuMs": 0.333,
+            "wallMs": 1
+          }
+        ],
+        "dependencyViewUnicode": [
+          {
+            "ms": 0.3283899999987625,
+            "cpuMs": 0.329,
+            "wallMs": 1
+          },
+          {
+            "ms": 0.4204780000000028,
+            "cpuMs": 0.409,
+            "wallMs": 0
+          },
+          {
+            "ms": 0.40802700000131154,
+            "cpuMs": 0.409,
+            "wallMs": 1
+          }
+        ],
+        "repeatedDependencyOrganization": [
+          {
+            "ms": 1.942030000001978,
+            "cpuMs": 1.942,
+            "wallMs": 2
+          },
+          {
+            "ms": 1.8375190000006114,
+            "cpuMs": 1.839,
+            "wallMs": 2
+          },
+          {
+            "ms": 2.2400410000009288,
+            "cpuMs": 2.611,
+            "wallMs": 2
+          }
+        ],
+        "repeatedModuleEvaluation": [
+          {
+            "ms": 0.2331800000029034,
+            "cpuMs": 0.234,
+            "wallMs": 0
+          },
+          {
+            "ms": 0.22034500000154367,
+            "cpuMs": 0.222,
+            "wallMs": 1
+          },
+          {
+            "ms": 0.2017539999978908,
+            "cpuMs": 0.202,
+            "wallMs": 0
+          }
+        ],
+        "renderModuleUnicode": [
+          {
+            "ms": 0.08004900000014459,
+            "cpuMs": 0.08,
+            "wallMs": 1
+          },
+          {
+            "ms": 0.0751780000027793,
+            "cpuMs": 0.076,
+            "wallMs": 0
+          },
+          {
+            "ms": 0.0694500000026892,
+            "cpuMs": 0.07,
+            "wallMs": 0
+          }
+        ],
+        "inputValidation": [
+          {
+            "ms": 250.77244099999734,
+            "cpuMs": 69.076,
+            "wallMs": 251
+          },
+          {
+            "ms": 251.77291599999808,
+            "cpuMs": 45.394,
+            "wallMs": 251
+          },
+          {
+            "ms": 249.24739699999918,
+            "cpuMs": 49.004,
+            "wallMs": 250
+          }
+        ]
+      },
+      "counts": {
+        "moduleViewJson": {
+          "storeGets": 296
+        },
+        "moduleViewUnicode": {
+          "storeGets": 296
+        },
+        "organizationViewUnicode": {
+          "storeGets": 1612
+        },
+        "dependencyViewJson": {
+          "storeGets": 779
+        },
+        "dependencyViewUnicode": {
+          "storeGets": 779
+        },
+        "repeatedDependencyOrganization": {
+          "storeGets": 1073
+        },
+        "repeatedModuleEvaluation": {
+          "storeGets": 1
+        },
+        "placement": {
+          "lookups": 6,
+          "placementComparisons": 447,
+          "artifactComparisons": 447
+        }
+      },
+      "population": {
+        "modules": 6,
+        "groups": 48,
+        "artifacts": 325,
+        "expansionClaims": 7,
+        "expansionEvaluations": 19,
+        "relationships": 6,
+        "dependencyOrganizationMaterialization": "full"
+      }
+    },
+    {
+      "name": "generated-250",
+      "configPath": "/Users/ronen/postcode/app/_codex-processing-cost-audit-2026-09-27/inputs/250/tsconfig.json",
+      "stages": {
+        "open": {
+          "ms": 262.665183000001,
+          "cpuMs": 163.234,
+          "wallMs": 263
+        },
+        "moduleEvaluation": {
+          "ms": 188.8549810000004,
+          "cpuMs": 359.876,
+          "wallMs": 189
+        },
+        "dependencyEvaluation": {
+          "ms": 107.57373300000108,
+          "cpuMs": 449.364,
+          "wallMs": 108
+        },
+        "organizationEvaluation": {
+          "ms": 45.10548199999903,
+          "cpuMs": 99.377,
+          "wallMs": 45
+        },
+        "dependencyOrganizationEvaluation": {
+          "ms": 42.5637080000015,
+          "cpuMs": 90.897,
+          "wallMs": 42
+        },
+        "moduleProjection": {
+          "ms": 6.667278000000806,
+          "cpuMs": 6.641,
+          "wallMs": 7
+        },
+        "organizationProjection": {
+          "ms": 5.437893999998778,
+          "cpuMs": 5.565,
+          "wallMs": 6
+        },
+        "dependencyProjection": {
+          "ms": 8.616738000000623,
+          "cpuMs": 10.3,
+          "wallMs": 8
+        }
+      },
+      "repeated": {
+        "moduleViewJson": [
+          {
+            "ms": 70.82418200000029,
+            "cpuMs": 101.567,
+            "wallMs": 70
+          },
+          {
+            "ms": 68.51855599999908,
+            "cpuMs": 69.106,
+            "wallMs": 68
+          },
+          {
+            "ms": 69.19632600000114,
+            "cpuMs": 69.674,
+            "wallMs": 69
+          }
+        ],
+        "moduleViewUnicode": [
+          {
+            "ms": 66.7766530000008,
+            "cpuMs": 66.76,
+            "wallMs": 67
+          },
+          {
+            "ms": 67.47063499999786,
+            "cpuMs": 69.087,
+            "wallMs": 67
+          },
+          {
+            "ms": 65.55792599999768,
+            "cpuMs": 65.516,
+            "wallMs": 66
+          }
+        ],
+        "organizationViewUnicode": [
+          {
+            "ms": 53.32393400000001,
+            "cpuMs": 53.951,
+            "wallMs": 53
+          },
+          {
+            "ms": 44.446508000000904,
+            "cpuMs": 54.611,
+            "wallMs": 44
+          },
+          {
+            "ms": 42.669857000000775,
+            "cpuMs": 46.509,
+            "wallMs": 43
+          }
+        ],
+        "dependencyViewJson": [
+          {
+            "ms": 42.386475999999675,
+            "cpuMs": 43.201,
+            "wallMs": 43
+          },
+          {
+            "ms": 39.30048499999975,
+            "cpuMs": 40.11,
+            "wallMs": 39
+          },
+          {
+            "ms": 44.54649300000165,
+            "cpuMs": 45.543,
+            "wallMs": 45
+          }
+        ],
+        "dependencyViewUnicode": [
+          {
+            "ms": 3.5000229999968724,
+            "cpuMs": 3.5,
+            "wallMs": 3
+          },
+          {
+            "ms": 3.90553600000203,
+            "cpuMs": 4.404,
+            "wallMs": 4
+          },
+          {
+            "ms": 3.0412230000001728,
+            "cpuMs": 3.431,
+            "wallMs": 3
+          }
+        ],
+        "repeatedDependencyOrganization": [
+          {
+            "ms": 47.816420999999536,
+            "cpuMs": 77.911,
+            "wallMs": 48
+          },
+          {
+            "ms": 48.14367400000265,
+            "cpuMs": 56.24,
+            "wallMs": 48
+          },
+          {
+            "ms": 47.78285799999867,
+            "cpuMs": 61.901,
+            "wallMs": 48
+          }
+        ],
+        "repeatedModuleEvaluation": [
+          {
+            "ms": 5.506246999997529,
+            "cpuMs": 5.501,
+            "wallMs": 5
+          },
+          {
+            "ms": 5.539562999998452,
+            "cpuMs": 5.534,
+            "wallMs": 6
+          },
+          {
+            "ms": 7.07622099999935,
+            "cpuMs": 7.712,
+            "wallMs": 7
+          }
+        ],
+        "renderModuleUnicode": [
+          {
+            "ms": 11.26933199999985,
+            "cpuMs": 12.268,
+            "wallMs": 11
+          },
+          {
+            "ms": 11.332502000001114,
+            "cpuMs": 12.056,
+            "wallMs": 12
+          },
+          {
+            "ms": 23.638223999998445,
+            "cpuMs": 13.273,
+            "wallMs": 23
+          }
+        ],
+        "inputValidation": [
+          {
+            "ms": 216.6593630000025,
+            "cpuMs": 43.952,
+            "wallMs": 217
+          },
+          {
+            "ms": 200.43894200000068,
+            "cpuMs": 63.2,
+            "wallMs": 200
+          },
+          {
+            "ms": 183.36809100000028,
+            "cpuMs": 42.911,
+            "wallMs": 184
+          }
+        ]
+      },
+      "counts": {
+        "moduleViewJson": {
+          "storeGets": 319006
+        },
+        "moduleViewUnicode": {
+          "storeGets": 318506
+        },
+        "organizationViewUnicode": {
+          "storeGets": 377972
+        },
+        "dependencyViewJson": {
+          "storeGets": 318828
+        },
+        "dependencyViewUnicode": {
+          "storeGets": 14634
+        },
+        "repeatedDependencyOrganization": {
+          "storeGets": 2983
+        },
+        "repeatedModuleEvaluation": {
+          "storeGets": 1
+        },
+        "placement": {
+          "lookups": 250,
+          "placementComparisons": 31375,
+          "artifactComparisons": 31375
+        }
+      },
+      "population": {
+        "modules": 250,
+        "groups": 27,
+        "artifacts": 251,
+        "expansionClaims": 500,
+        "expansionEvaluations": 751,
+        "relationships": 249,
+        "dependencyOrganizationMaterialization": "full"
+      }
+    },
+    {
+      "name": "generated-500",
+      "configPath": "/Users/ronen/postcode/app/_codex-processing-cost-audit-2026-09-27/inputs/500/tsconfig.json",
+      "stages": {
+        "open": {
+          "ms": 310.48968100000275,
+          "cpuMs": 235.02,
+          "wallMs": 310
+        },
+        "moduleEvaluation": {
+          "ms": 371.4093799999973,
+          "cpuMs": 579.93,
+          "wallMs": 372
+        },
+        "dependencyEvaluation": {
+          "ms": 140.03917,
+          "cpuMs": 390.365,
+          "wallMs": 140
+        },
+        "organizationEvaluation": {
+          "ms": 81.12476400000014,
+          "cpuMs": 91.168,
+          "wallMs": 81
+        },
+        "dependencyOrganizationEvaluation": {
+          "ms": 68.95740099999966,
+          "cpuMs": 74.725,
+          "wallMs": 69
+        },
+        "moduleProjection": {
+          "ms": 9.348256000001129,
+          "cpuMs": 10.405,
+          "wallMs": 9
+        },
+        "organizationProjection": {
+          "ms": 10.969198999999207,
+          "cpuMs": 16.428,
+          "wallMs": 11
+        },
+        "dependencyProjection": {
+          "ms": 20.40495500000179,
+          "cpuMs": 21.384,
+          "wallMs": 21
+        }
+      },
+      "repeated": {
+        "moduleViewJson": [
+          {
+            "ms": 276.127794,
+            "cpuMs": 279.301,
+            "wallMs": 276
+          },
+          {
+            "ms": 281.56469300000026,
+            "cpuMs": 301.359,
+            "wallMs": 282
+          },
+          {
+            "ms": 288.8490349999993,
+            "cpuMs": 308.764,
+            "wallMs": 289
+          }
+        ],
+        "moduleViewUnicode": [
+          {
+            "ms": 272.2752099999998,
+            "cpuMs": 275.046,
+            "wallMs": 272
+          },
+          {
+            "ms": 271.3195029999988,
+            "cpuMs": 273.785,
+            "wallMs": 271
+          },
+          {
+            "ms": 263.77104300000065,
+            "cpuMs": 266.282,
+            "wallMs": 264
+          }
+        ],
+        "organizationViewUnicode": [
+          {
+            "ms": 187.68361600000208,
+            "cpuMs": 188.179,
+            "wallMs": 188
+          },
+          {
+            "ms": 193.89295500000298,
+            "cpuMs": 197.904,
+            "wallMs": 194
+          },
+          {
+            "ms": 194.7829120000024,
+            "cpuMs": 195.684,
+            "wallMs": 195
+          }
+        ],
+        "dependencyViewJson": [
+          {
+            "ms": 172.8304829999979,
+            "cpuMs": 179.583,
+            "wallMs": 173
+          },
+          {
+            "ms": 184.4633199999953,
+            "cpuMs": 186.374,
+            "wallMs": 184
+          },
+          {
+            "ms": 172.84354300000268,
+            "cpuMs": 174.34,
+            "wallMs": 173
+          }
+        ],
+        "dependencyViewUnicode": [
+          {
+            "ms": 7.3701880000007804,
+            "cpuMs": 7.35,
+            "wallMs": 8
+          },
+          {
+            "ms": 7.072541000001365,
+            "cpuMs": 7.063,
+            "wallMs": 7
+          },
+          {
+            "ms": 7.344701999994868,
+            "cpuMs": 7.334,
+            "wallMs": 7
+          }
+        ],
+        "repeatedDependencyOrganization": [
+          {
+            "ms": 110.39007000000129,
+            "cpuMs": 117.031,
+            "wallMs": 111
+          },
+          {
+            "ms": 104.19947699999466,
+            "cpuMs": 111.135,
+            "wallMs": 104
+          },
+          {
+            "ms": 105.22774900000513,
+            "cpuMs": 114.272,
+            "wallMs": 105
+          }
+        ],
+        "repeatedModuleEvaluation": [
+          {
+            "ms": 12.527523000004294,
+            "cpuMs": 12.265,
+            "wallMs": 13
+          },
+          {
+            "ms": 12.588219999997818,
+            "cpuMs": 12.661,
+            "wallMs": 13
+          },
+          {
+            "ms": 11.01072700000077,
+            "cpuMs": 10.962,
+            "wallMs": 11
+          }
+        ],
+        "renderModuleUnicode": [
+          {
+            "ms": 32.4820069999987,
+            "cpuMs": 31.947,
+            "wallMs": 32
+          },
+          {
+            "ms": 30.722970000002533,
+            "cpuMs": 30.641,
+            "wallMs": 31
+          },
+          {
+            "ms": 33.73285499999474,
+            "cpuMs": 40.256,
+            "wallMs": 33
+          }
+        ],
+        "inputValidation": [
+          {
+            "ms": 231.9420950000058,
+            "cpuMs": 93.831,
+            "wallMs": 232
+          },
+          {
+            "ms": 229.65312599999743,
+            "cpuMs": 67.191,
+            "wallMs": 230
+          },
+          {
+            "ms": 217.83629400000063,
+            "cpuMs": 67.036,
+            "wallMs": 218
+          }
+        ]
+      },
+      "counts": {
+        "moduleViewJson": {
+          "storeGets": 1263006
+        },
+        "moduleViewUnicode": {
+          "storeGets": 1262006
+        },
+        "organizationViewUnicode": {
+          "storeGets": 1505922
+        },
+        "dependencyViewJson": {
+          "storeGets": 1262653
+        },
+        "dependencyViewUnicode": {
+          "storeGets": 29209
+        },
+        "repeatedDependencyOrganization": {
+          "storeGets": 5958
+        },
+        "repeatedModuleEvaluation": {
+          "storeGets": 1
+        },
+        "placement": {
+          "lookups": 500,
+          "placementComparisons": 125250,
+          "artifactComparisons": 125250
+        }
+      },
+      "population": {
+        "modules": 500,
+        "groups": 52,
+        "artifacts": 501,
+        "expansionClaims": 1000,
+        "expansionEvaluations": 1501,
+        "relationships": 499,
+        "dependencyOrganizationMaterialization": "full"
+      }
+    },
+    {
+      "name": "generated-1000",
+      "configPath": "/Users/ronen/postcode/app/_codex-processing-cost-audit-2026-09-27/inputs/1000/tsconfig.json",
+      "stages": {
+        "open": {
+          "ms": 463.3496410000007,
+          "cpuMs": 452.41,
+          "wallMs": 464
+        },
+        "moduleEvaluation": {
+          "ms": 835.352337999997,
+          "cpuMs": 1039.958,
+          "wallMs": 835
+        },
+        "dependencyEvaluation": {
+          "ms": 253.32249299999967,
+          "cpuMs": 305.025,
+          "wallMs": 253
+        },
+        "organizationEvaluation": {
+          "ms": 223.21772300000157,
+          "cpuMs": 240.122,
+          "wallMs": 223
+        },
+        "dependencyOrganizationEvaluation": {
+          "ms": 201.12320599999657,
+          "cpuMs": 275.637,
+          "wallMs": 201
+        },
+        "moduleProjection": {
+          "ms": 64.98167699999613,
+          "cpuMs": 159.445,
+          "wallMs": 65
+        },
+        "organizationProjection": {
+          "ms": 21.527932999997574,
+          "cpuMs": 30.559,
+          "wallMs": 21
+        },
+        "dependencyProjection": {
+          "ms": 40.24034300000494,
+          "cpuMs": 47.984,
+          "wallMs": 41
+        }
+      },
+      "repeated": {
+        "moduleViewJson": [
+          {
+            "ms": 1714.997365999996,
+            "cpuMs": 1751.87,
+            "wallMs": 1715
+          },
+          {
+            "ms": 1636.4132329999993,
+            "cpuMs": 1643.789,
+            "wallMs": 1637
+          },
+          {
+            "ms": 1815.275413000003,
+            "cpuMs": 1792.185,
+            "wallMs": 1815
+          }
+        ],
+        "moduleViewUnicode": [
+          {
+            "ms": 2034.4642759999988,
+            "cpuMs": 2022.174,
+            "wallMs": 2034
+          },
+          {
+            "ms": 2047.0300909999933,
+            "cpuMs": 2031.409,
+            "wallMs": 2047
+          },
+          {
+            "ms": 2373.1998969999986,
+            "cpuMs": 2342.524,
+            "wallMs": 2373
+          }
+        ],
+        "organizationViewUnicode": [
+          {
+            "ms": 1901.7424610000016,
+            "cpuMs": 1874.856,
+            "wallMs": 1902
+          },
+          {
+            "ms": 1665.096427000004,
+            "cpuMs": 1646.461,
+            "wallMs": 1665
+          },
+          {
+            "ms": 1743.833393000008,
+            "cpuMs": 1722.165,
+            "wallMs": 1744
+          }
+        ],
+        "dependencyViewJson": [
+          {
+            "ms": 1656.348171000005,
+            "cpuMs": 1495.264,
+            "wallMs": 1657
+          },
+          {
+            "ms": 1531.7508709999966,
+            "cpuMs": 1520.015,
+            "wallMs": 1532
+          },
+          {
+            "ms": 1248.1290510000108,
+            "cpuMs": 1242.166,
+            "wallMs": 1248
+          }
+        ],
+        "dependencyViewUnicode": [
+          {
+            "ms": 27.23223799999687,
+            "cpuMs": 27.037,
+            "wallMs": 27
+          },
+          {
+            "ms": 25.371397999988403,
+            "cpuMs": 25.485,
+            "wallMs": 26
+          },
+          {
+            "ms": 25.854653000002145,
+            "cpuMs": 25.56,
+            "wallMs": 25
+          }
+        ],
+        "repeatedDependencyOrganization": [
+          {
+            "ms": 293.9447589999909,
+            "cpuMs": 304.24,
+            "wallMs": 294
+          },
+          {
+            "ms": 285.3636129999941,
+            "cpuMs": 295.378,
+            "wallMs": 285
+          },
+          {
+            "ms": 289.6542840000038,
+            "cpuMs": 300.251,
+            "wallMs": 290
+          }
+        ],
+        "repeatedModuleEvaluation": [
+          {
+            "ms": 33.87512399999832,
+            "cpuMs": 33.168,
+            "wallMs": 34
+          },
+          {
+            "ms": 35.379083000007086,
+            "cpuMs": 36.067,
+            "wallMs": 36
+          },
+          {
+            "ms": 32.769312999997055,
+            "cpuMs": 34.379,
+            "wallMs": 33
+          }
+        ],
+        "renderModuleUnicode": [
+          {
+            "ms": 154.58288000000175,
+            "cpuMs": 152.704,
+            "wallMs": 155
+          },
+          {
+            "ms": 148.3108590000047,
+            "cpuMs": 147.252,
+            "wallMs": 148
+          },
+          {
+            "ms": 148.0353940000059,
+            "cpuMs": 147.304,
+            "wallMs": 148
+          }
+        ],
+        "inputValidation": [
+          {
+            "ms": 356.00047499999346,
+            "cpuMs": 144.063,
+            "wallMs": 356
+          },
+          {
+            "ms": 332.33871100000397,
+            "cpuMs": 182.332,
+            "wallMs": 332
+          },
+          {
+            "ms": 312.6274919999996,
+            "cpuMs": 135.42,
+            "wallMs": 313
+          }
+        ]
+      },
+      "counts": {
+        "moduleViewJson": {
+          "storeGets": 5026006
+        },
+        "moduleViewUnicode": {
+          "storeGets": 5024006
+        },
+        "organizationViewUnicode": {
+          "storeGets": 6011822
+        },
+        "dependencyViewJson": {
+          "storeGets": 5025303
+        },
+        "dependencyViewUnicode": {
+          "storeGets": 58359
+        },
+        "repeatedDependencyOrganization": {
+          "storeGets": 11908
+        },
+        "repeatedModuleEvaluation": {
+          "storeGets": 1
+        },
+        "placement": {
+          "lookups": 1000,
+          "placementComparisons": 500500,
+          "artifactComparisons": 500500
+        }
+      },
+      "population": {
+        "modules": 1000,
+        "groups": 102,
+        "artifacts": 1001,
+        "expansionClaims": 2000,
+        "expansionEvaluations": 3001,
+        "relationships": 999,
+        "dependencyOrganizationMaterialization": "full"
+      }
+    }
+  ],
+  "sessionReuse": [
+    {
+      "external": false,
+      "runs": [
+        {
+          "puts": {
+            "session": 1,
+            "analysis-inputs": 1,
+            "repository-evidence": 1,
+            "source-evidence": 1097,
+            "claim-context": 1136,
+            "module": 100,
+            "claim": 834,
+            "symbol": 100,
+            "recorded-assertion": 100,
+            "dependency-occurrence": 99,
+            "evaluation": 301,
+            "dependency-evaluation": 1,
+            "repository-region": 12,
+            "group": 12,
+            "repository-artifact": 101,
+            "organization-evaluation": 1,
+            "dependency-organization-evaluation": 1,
+            "dependency-projection": 1
+          },
+          "putMs": 55.42911900000763,
+          "ms": 565.9990890000045,
+          "cpuMs": 270.049,
+          "wallMs": 566,
+          "organization": {
+            "applicability": "applicable",
+            "availability": "available",
+            "execution": "completed",
+            "materialization": "full",
+            "reason": null
+          }
+        },
+        {
+          "puts": {
+            "dependency-evaluation": 1,
+            "dependency-projection": 1
+          },
+          "putMs": 7.01276900000812,
+          "ms": 438.97339799998736,
+          "cpuMs": 74.217,
+          "wallMs": 439,
+          "organization": {
+            "applicability": "applicable",
+            "availability": "available",
+            "execution": "completed",
+            "materialization": "full",
+            "reason": null
+          }
+        },
+        {
+          "puts": {
+            "dependency-evaluation": 1,
+            "dependency-projection": 1
+          },
+          "putMs": 7.3903060000011465,
+          "ms": 481.24266299999726,
+          "cpuMs": 104.377,
+          "wallMs": 482,
+          "organization": {
+            "applicability": "applicable",
+            "availability": "available",
+            "execution": "completed",
+            "materialization": "full",
+            "reason": null
+          }
+        }
+      ]
+    },
+    {
+      "external": true,
+      "runs": [
+        {
+          "puts": {
+            "session": 1,
+            "analysis-inputs": 1,
+            "repository-evidence": 1,
+            "source-evidence": 1107,
+            "claim-context": 1146,
+            "module": 101,
+            "claim": 841,
+            "symbol": 101,
+            "recorded-assertion": 100,
+            "dependency-occurrence": 100,
+            "evaluation": 304,
+            "dependency-evaluation": 1,
+            "repository-region": 12,
+            "group": 12,
+            "repository-artifact": 102,
+            "organization-evaluation": 1,
+            "dependency-organization-evaluation": 1,
+            "dependency-projection": 1
+          },
+          "putMs": 66.67012400001113,
+          "ms": 684.5291469999938,
+          "cpuMs": 267.52,
+          "wallMs": 685,
+          "organization": {
+            "applicability": "applicable",
+            "availability": "available",
+            "execution": "completed",
+            "materialization": "partial",
+            "reason": "Some requested organization context is unavailable or incomplete."
+          }
+        },
+        {
+          "puts": {
+            "dependency-evaluation": 1,
+            "claim-context": 100,
+            "claim": 100,
+            "dependency-organization-evaluation": 1,
+            "dependency-projection": 1
+          },
+          "putMs": 22.818555999998352,
+          "ms": 499.0391310000123,
+          "cpuMs": 122.04,
+          "wallMs": 499,
+          "organization": {
+            "applicability": "applicable",
+            "availability": "available",
+            "execution": "completed",
+            "materialization": "partial",
+            "reason": "Some requested organization context is unavailable or incomplete."
+          }
+        },
+        {
+          "puts": {
+            "dependency-evaluation": 1,
+            "claim-context": 100,
+            "claim": 100,
+            "dependency-organization-evaluation": 1,
+            "dependency-projection": 1
+          },
+          "putMs": 20.225029000022914,
+          "ms": 477.26571700000204,
+          "cpuMs": 105.722,
+          "wallMs": 477,
+          "organization": {
+            "applicability": "applicable",
+            "availability": "available",
+            "execution": "completed",
+            "materialization": "partial",
+            "reason": "Some requested organization context is unavailable or incomplete."
+          }
+        }
+      ]
+    }
+  ]
+}

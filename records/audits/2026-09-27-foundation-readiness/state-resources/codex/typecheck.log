@@ -1,0 +1,4 @@
+
+> postcode@0.0.0 check
+> tsc -p tsconfig.json --noEmit
+
