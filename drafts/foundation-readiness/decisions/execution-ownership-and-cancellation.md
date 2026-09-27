@@ -37,6 +37,8 @@ An owner that survives disposable computation can complete or truthfully report 
 
 ## Consequences
 
+If Git times out during opening and later succeeds during validation, the capture changes from unavailable to available and the session invalidates. The user must restart; recovery does not silently add a new repository basis to the existing session. Intermittent latency can therefore cause repeated restarts. This is the conservative consequence of the unchanged-input contract, and limit selection must account for representative acquisition times.
+
 Opening and validation become asynchronous for current direct session users as well as CLI callers. Command completion and cleanup reporting must remain distinguishable at their interfaces. The [implementation plan](../plans/foundation-readiness.md#4-shared-acquisition-policy-and-dependable-execution-ownership) specifies protocol changes, failure mappings, limit selection and verification.
 
 This decision preserves [transient-session ownership](transient-analysis-sessions.md#retained-domain-and-storage-boundaries), [input stability](transient-analysis-sessions.md#stable-inputs-as-the-session-precondition), and the [distinction between project opening and analysis availability](repository-organization-decisions.md#keep-project-opening-distinct-from-later-analysis-availability). Investigation builds on this ownership boundary and remains responsible for its evidence interface, dialogue, result acceptance and a non-disposable owner for incremental usage reporting.
