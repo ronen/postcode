@@ -46,6 +46,7 @@ This document may be changed only through separate human-directed process mainte
 
 ## Implementation anomalies
 
+- When work reveals code that conflicts with these guidelines, assess its significance. Consider correcting it when the correction supports the authorized task and introduces no separate design decision or material scope expansion. Otherwise, report material concerns through the workflow's [unexpected-findings process](workflow.md#5-unexpected-findings).
 - When fixing a defect, establish the intended behavior and investigate the cause using a reproducing example or other concrete evidence where practical. Keep the investigation proportional to the defect and its risks, and verify that the correction addresses the identified cause. If the cause remains uncertain, distinguish a mitigation from a verified fix. Do not weaken tests, suppress errors, or add special cases merely to make the observed failure disappear; changes to tests or expected behavior need an independent justification.
 - Treat implementation elements made newly unused by a change as evidence to investigate before deleting or retaining them. Determine whether the change legitimately removed their responsibility or accidentally disconnected required behavior; keep the investigation proportional to that question.
 - Treat recurring violations of an intended boundary as possible evidence that the implementation or the boundary is wrong; do not conceal the mismatch through repeated exceptions.
