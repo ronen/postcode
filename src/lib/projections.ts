@@ -1,4 +1,5 @@
-import { methods, recordId } from './identity.js';
+import { completedMaterialization } from './evaluation-state.js';
+import { identityReference, methods, recordId } from './identity.js';
 import type { EvaluationRecord, ModuleClaim, ProgramRecordStore, ProjectionRecord, RecordId } from './records.js';
 import { isModuleClaim } from './records.js';
 
@@ -42,10 +43,12 @@ function project(store: ProgramRecordStore, evaluation: EvaluationRecord, select
     const claim = store.get(id);
     return claim.kind === 'claim' && selected.has(claim.subject);
   });
+  const selectedReference = modules.find(id => id === selector);
+  const selectorKey = selectedReference ? identityReference(evaluation.session, selectedReference) : selector;
   const method = methods.projection;
   const projection: ProjectionRecord = {
     kind: 'projection', method, session: evaluation.session,
-    id: recordId(evaluation.session, 'projection', { method, lens, selector, reference, evaluation: evaluation.id }),
+    id: recordId(evaluation.session, 'projection', { method, lens, selector: selectorKey, reference, evaluation: identityReference(evaluation.session, evaluation.id) }),
     lens, subject: selector === null ? 'configured-project' : 'selected-modules',
     parameters: { selector, reference }, modules, claims: claims.map(claim => claim.id),
     contexts: [...new Set([...evaluation.contexts, ...claims.map(claim => claim.context)])],
@@ -53,7 +56,7 @@ function project(store: ProgramRecordStore, evaluation: EvaluationRecord, select
     expansions: { requested: [...new Set(expansions.flatMap(outcome => outcome.requirement === 'modules' ? [] : [outcome.requirement]))], claims: [...new Set(expansionClaims)] },
     selection: {
       matches: modules.length, population: evaluation.modules.length,
-      populationEstablished: evaluation.execution === 'completed' && evaluation.materialization === 'full',
+      populationEstablished: completedMaterialization(evaluation),
       subset: selector !== null && modules.length < evaluation.modules.length,
       referenceStatus,
     },

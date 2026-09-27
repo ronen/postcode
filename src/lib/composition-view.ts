@@ -1,3 +1,4 @@
+import { completedMaterialization } from './evaluation-state.js';
 import type { ClaimContextRecord, EvaluationRecord, ProgramRecordStore, RecordId } from './records.js';
 
 export type CompositionView = {
@@ -29,6 +30,6 @@ export function compositionView(store: ProgramRecordStore, subject: RecordId,
 export function compositionAnnotation(composition: CompositionView): string {
   if (composition.claims.length) return ' · re-exports only';
   if (composition.evaluations.length && !composition.evaluations.some(e => e.applicability === 'applicable'
-    && e.availability === 'available' && e.execution === 'completed' && e.materialization === 'full')) return ' · composition not established';
+    && e.availability === 'available' && completedMaterialization(e))) return ' · composition not established';
   return '';
 }

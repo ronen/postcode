@@ -23,6 +23,9 @@ export async function runShell(options: { configPath: string; json: boolean }, e
     else {
       readline?.write(null, { ctrl: true, name: 'e' });
       readline?.write(null, { ctrl: true, name: 'u' });
+      // Node's dumb-terminal mode ignores editing keys. Clear the retained input
+      // as well as requesting the normal terminal's visual line deletion.
+      if (readline) Object.assign(readline, { line: '', cursor: 0 });
       environment.stdout('\n'); prompt();
     }
   };

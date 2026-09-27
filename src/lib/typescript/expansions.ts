@@ -1,5 +1,5 @@
 import ts from 'typescript';
-import { compare, methods, recordId } from '../identity.js';
+import { identityReference, compare, methods, recordId } from '../identity.js';
 import type { DiscoveryResult } from '../evaluation.js';
 import type { ExportClaim, ModuleExpansion, ProgramRecord, RecordId, SessionId } from '../records.js';
 
@@ -230,7 +230,7 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
     };
     const putDocs = (subject: RecordId, contributions: ReturnType<typeof docs>, association: 'module' | 'origin-symbol' | 'export-alias'): RecordId[] => {
       return contributions.map(doc => {
-        const key = [subject, doc.node.getSourceFile().fileName, doc.node.pos, association];
+        const key = [identityReference(session, subject), doc.node.getSourceFile().fileName, doc.node.pos, association];
         const assertion = recordId(session, 'documentation', key);
         const claim = recordId(session, 'documentation-association', key);
         const ctx = context(subject, key, [doc.node], 'TypeScript associates this recorded documentation with the subject.',
@@ -249,26 +249,26 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
     const symbols = new Set<RecordId>();
     for (const item of prepared) {
       const subject = recordId(session, 'module', item.module.key);
-      contexts.push(context(subject, ['expansion', subject], item.module.declarations,
+      contexts.push(context(subject, ['expansion', identityReference(session, subject)], item.module.declarations,
         'Effective exports and associated documentation obtained through the TypeScript compiler model.', item.issues));
       docClaims.push(...putDocs(subject, item.docs, 'module'));
       for (const exported of item.exports) {
-        const id = recordId(session, 'export', [subject, exported.exported.getName()]);
+        const id = recordId(session, 'export', [identityReference(session, subject), exported.exported.getName()]);
         const symbol = exported.symbol ? symbolId(exported.symbol) : null;
         const declarations = exported.symbol?.getDeclarations() ?? [];
         const targetRoles = exported.symbol ? { type: Boolean(exported.symbol.flags & ts.SymbolFlags.Type),
           value: Boolean(exported.symbol.flags & ts.SymbolFlags.Value) } : null;
         if (symbol && !symbols.has(symbol)) {
           symbols.add(symbol);
-          const claim = recordId(session, 'symbol-claim', symbol);
-          const ctx = context(symbol, symbol, declarations, 'One compiler semantic symbol with its contributing declarations.');
+          const claim = recordId(session, 'symbol-claim', identityReference(session, symbol));
+          const ctx = context(symbol, identityReference(session, symbol), declarations, 'One compiler semantic symbol with its contributing declarations.');
           records.push({ kind: 'symbol', id: symbol, session, method, claim }, {
             kind: 'claim', id: claim, session, method, subject: symbol, context: ctx,
             information: { type: 'symbol', name: declarations.some(ts.isSourceFile) ? null : exported.symbol!.getName(), roles: targetRoles!, declarationCount: declarations.length },
           });
           docClaims.push(...putDocs(symbol, exported.originDocs, 'origin-symbol'));
         }
-        const ctx = context(subject, id, [...declarations, ...exported.traced.routes.map(step => step.node)],
+        const ctx = context(subject, identityReference(session, id), [...declarations, ...exported.traced.routes.map(step => step.node)],
           'The compiler exposes this exported name; roles and forwarding are qualified by the recorded route.', item.issues);
         const routes = exported.traced.routes.map(step => ({ kind: step.kind, typeOnly: step.typeOnly,
           aliased: step.aliased, via: moduleId(step.via) }));

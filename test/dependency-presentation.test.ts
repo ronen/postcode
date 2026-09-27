@@ -32,9 +32,9 @@ test('representative journey preserves direct intermediates, shared parents, com
   assert.ok(view.relationships.some(edge => edge.organization?.classification === 'same-group'));
   const session = view.projection.session;
   const children = viewOf(await invoke(config, ['children', module('right').handle, '--json']));
-  assert.deepEqual(normalizeSession(children.relationships.map(edge => edge.child)), normalizeSession([module('forward').id]));
+  assert.deepEqual(normalizeSession(children.relationships.map(edge => edge.child), children.projection.session), normalizeSession([module('forward').id], session));
   const parents = viewOf(await invoke(config, ['parents', module('shared').handle, '--json']));
-  assert.deepEqual(normalizeSession(parents.relationships.map(edge => edge.parent).sort()), normalizeSession([module('left').id, module('forward').id].sort()));
+  assert.deepEqual(normalizeSession(parents.relationships.map(edge => edge.parent).sort(), parents.projection.session), normalizeSession([module('left').id, module('forward').id].sort(), session));
   assert.notEqual(parents.projection.session, session);
   assert.equal(parents.recognitionCoverage.length, 0);
   assert.ok(parents.limitations.some(text => text.includes('cannot produce a parent result')));
@@ -47,7 +47,7 @@ test('representative journey preserves direct intermediates, shared parents, com
   assert.equal(viewOf(await invoke(config, ['parents', module('shared').entityId, '--json'])).subjects.length, 0);
   const json = viewOf(await invoke(config, ['dependencies', '--json']));
   assert.deepEqual(normalizeSession(json.projection), normalizeSession(view.projection));
-  assert.deepEqual(normalizeSession(json.relationships.map(edge => edge.id)), normalizeSession(view.relationships.map(edge => edge.id)));
+  assert.deepEqual(normalizeSession(json.relationships.map(edge => edge.id), json.projection.session), normalizeSession(view.relationships.map(edge => edge.id), view.projection.session));
 });
 
 test('source-owned request results and recognition outcomes are separate and parent disclosure does not fabricate them', async () => {

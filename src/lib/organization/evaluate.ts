@@ -1,11 +1,9 @@
+import { completedMaterialization } from '../evaluation-state.js';
 import { locate } from './placement.js';
-import { compare, methods, recordId } from '../identity.js';
+import { identityReference, compare, methods, recordId } from '../identity.js';
 import type { ClaimContextRecord, EvaluationRecord, EvaluationState, ProgramRecord, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
 import type { GroupExpansion, ModulePlacementClaim, OrganizationClaims, OrganizationEvaluationRecord, PlacementReason } from './records.js';
 import { groupStandardExpansions } from './records.js';
-
-const complete = (state: Pick<EvaluationState, 'execution' | 'materialization'>) =>
-  state.execution === 'completed' && state.materialization === 'full';
 
 /** Materializes organization from captured inputs and a stored module outcome. No I/O. */
 export function evaluateOrganization(store: ProgramRecordStore, moduleEvaluation: EvaluationRecord,
@@ -18,8 +16,14 @@ export function evaluateOrganization(store: ProgramRecordStore, moduleEvaluation
   const repository = store.get(session.repository);
   if (repository.kind !== 'repository-evidence') throw new Error('Expected repository evidence');
   const base = { session: session.session, method: methods.organization };
+  const reference = (id: RecordId) => identityReference(base.session, id);
   const id = (kind: string, key: unknown) => recordId(base.session, kind, key);
-  const evaluationId = id('organization-evaluation', { method: base.method, modules: moduleEvaluation.id, requested: [...new Set(requested)].sort(compare) });
+  const evaluationId = id('organization-evaluation', { method: base.method, modules: reference(moduleEvaluation.id), requested: [...new Set(requested)].sort(compare) });
+  const retained = store.lookup(evaluationId);
+  if (retained) {
+    if (retained.kind !== 'organization-evaluation') throw new Error('Unexpected derived record kind');
+    return retained;
+  }
   const records: ProgramRecord[] = [];
   const claims: OrganizationClaims[] = [];
   const contexts: RecordId[] = [];
@@ -33,11 +37,11 @@ export function evaluateOrganization(store: ProgramRecordStore, moduleEvaluation
     contexts.push(record.id);
     return record.id;
   };
-  const addClaim = (subject: RecordId, claimContext: RecordId, information: OrganizationClaims['information'], key: unknown = information) => {
+  const addClaim = (subject: RecordId, claimContext: RecordId, information: OrganizationClaims['information'], key: unknown) => {
     const claim = { ...base, kind: 'claim' as const, subject, context: claimContext,
-      id: id('organization-claim', [subject, key]), information } as OrganizationClaims;
+      id: id('organization-claim', [reference(subject), key]), information } as OrganizationClaims;
     claims.push(claim);
-    return claim.id;
+    return claim;
   };
   const capture = repository.capture;
   const evidence = capture.status === 'available' ? capture.evidence : null;
@@ -55,10 +59,10 @@ export function evaluateOrganization(store: ProgramRecordStore, moduleEvaluation
     const source = id('repository-region', region.path);
     regionEvidence.set(region.path, source);
     records.push({ ...base, kind: 'repository-region', id: source, repository: repository.id, path: region.path });
-    const claimContext = context(['group', group], group, [source],
+    const claimContext = context(['group', reference(group)], group, [source],
       'The group name is its captured directory segment; the repository root has no intrinsic segment name.', []);
-    const claim = addClaim(group, claimContext, { type: 'group', name: region.name });
-    records.push({ ...base, kind: 'group', id: group, claim });
+    const claim = addClaim(group, claimContext, { type: 'group', name: region.name }, { type: 'group', name: region.name });
+    records.push({ ...base, kind: 'group', id: group, claim: claim.id });
   }
   for (const artifact of evidence?.artifacts ?? []) {
     records.push({ ...base, kind: 'repository-artifact', id: artifacts.get(artifact.path)!, repository: repository.id, artifact });
@@ -73,14 +77,14 @@ export function evaluateOrganization(store: ProgramRecordStore, moduleEvaluation
   for (const placement of layout?.placements ?? []) {
     const group = groups.get(placement.groupPath)!;
     const artifact = artifacts.get(placement.artifactPath)!;
-    const claimContext = context(['artifact', artifact], group, [artifact], 'Direct artifact placement in its captured group.', []);
-    addClaim(group, claimContext, { type: 'artifact-placement', artifact });
+    const claimContext = context(['artifact', reference(artifact)], group, [artifact], 'Direct artifact placement in its captured group.', []);
+    addClaim(group, claimContext, { type: 'artifact-placement', artifact }, { type: 'artifact-placement', artifact: reference(artifact) });
     if (placement.documentation) {
       documented.add(group);
-      const documentationContext = context(['documentation', artifact], group, [artifact],
+      const documentationContext = context(['documentation', reference(artifact)], group, [artifact],
         'A directly placed README or README.* artifact establishes documentation existence only.',
         ['Documentation content, correctness, currency, completeness, applicability, and inheritance are not evaluated.']);
-      addClaim(group, documentationContext, { type: 'group-documentation', artifact });
+      addClaim(group, documentationContext, { type: 'group-documentation', artifact }, { type: 'group-documentation', artifact: reference(artifact) });
     }
   }
 
@@ -121,16 +125,16 @@ export function evaluateOrganization(store: ProgramRecordStore, moduleEvaluation
       }
       outcome = placed.size > 1 ? 'multiple' : placed.size === 1 ? 'established' : 'unplaced';
     }
-    const claimContext = context(['module-placement', evaluationId, moduleId], moduleId,
+    const claimContext = context(['module-placement', reference(evaluationId), reference(moduleId)], moduleId,
       [...sources.map(source => source.id), ...sourceArtifacts],
       'Placement relates the configured module entity to groups through its apparent captured source paths.',
       ['Module identity remains the configured TypeScript identity; no realpath, inode, or content-based module merging is performed.'], original);
-    const placementId = addClaim(moduleId, claimContext, { type: 'module-placement', outcome,
+    const placement = addClaim(moduleId, claimContext, { type: 'module-placement', outcome,
       groups: [...placed].sort(compare), candidates: [], artifacts: [...sourceArtifacts].sort(compare),
-      reasons: [...reasons].sort(compare), materialization }, ['module-placement', evaluationId]);
-    placements.push(claims.find(item => item.id === placementId) as ModulePlacementClaim);
+      reasons: [...reasons].sort(compare), materialization }, ['module-placement', reference(evaluationId)]);
+    placements.push(placement as ModulePlacementClaim);
   }
-  const moduleComplete = complete(moduleEvaluation);
+  const moduleComplete = completedMaterialization(moduleEvaluation);
   const placementComplete = evidence !== null && moduleComplete && placements.every(claim => claim.information.materialization === 'full');
   const placementState: EvaluationState = {
     applicability: moduleEvaluation.applicability,
@@ -154,13 +158,13 @@ export function evaluateOrganization(store: ProgramRecordStore, moduleEvaluation
     }
   }
   for (const group of groups.values()) {
-    const propertyContext = context(['group-properties', evaluationId, group], group, [repository.id],
+    const propertyContext = context(['group-properties', reference(evaluationId), reference(group)], group, [repository.id],
       'Direct documentation existence and module presence are derived from captured layout and this module-placement evaluation.',
       ['Module presence describes only the selected configured project.',
         ...(!placementComplete ? ['Incomplete placement evaluation leaves descendant-only and absent module presence unknown.'] : [])]);
     addClaim(group, propertyContext, { type: 'group-properties', documented: documented.has(group),
       modulePresence: direct.has(group) ? 'direct' : placementComplete ? containing.has(group) ? 'descendant-only' : 'none' : null,
-      evaluation: evaluationId }, ['group-properties', evaluationId]);
+      evaluation: evaluationId }, ['group-properties', reference(evaluationId)]);
   }
   const result: OrganizationEvaluationRecord = { ...base, kind: 'organization-evaluation', id: evaluationId,
     repository: repository.id, moduleEvaluation: moduleEvaluation.id, groups: [...groups.values()], claims: claims.map(claim => claim.id),
@@ -170,5 +174,7 @@ export function evaluateOrganization(store: ProgramRecordStore, moduleEvaluation
     reason: capture.status === 'unavailable' ? `${capture.reason}: ${capture.operation}` : null,
     placement: placementState, cost: { measure: 'group-count', value: groups.size } };
   store.put([...records, ...claims, result]);
-  return result;
+  const owned = store.get(result.id);
+  if (owned.kind !== 'organization-evaluation') throw new Error('Expected retained organization-evaluation');
+  return owned;
 }

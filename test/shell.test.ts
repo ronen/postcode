@@ -114,7 +114,10 @@ test('ambiguous one-shot lookup recovers through an in-session lookup and precis
   assert.equal(views[1]!.projection.selection.matches, 1);
 });
 
-test('idle Ctrl-C discards its input line and EOF finishes the next accepted command', { timeout: 30000 }, async () => {
+for (const terminal of ['dumb', 'xterm']) test(`idle Ctrl-C discards its input line and EOF finishes the next accepted command (${terminal})`, { timeout: 30000 }, async t => {
+  const previous = process.env.TERM;
+  t.after(() => { if (previous === undefined) delete process.env.TERM; else process.env.TERM = previous; });
+  process.env.TERM = terminal;
   const input = Object.assign(new PassThrough(), { isTTY: true });
   let started = false;
   const batches: ObservationBatch[] = [];

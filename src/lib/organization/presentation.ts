@@ -1,7 +1,7 @@
 import { compositionView, compositionAnnotation } from '../composition-view.js';
 import type { CompositionView } from '../composition-view.js';
 import path from 'node:path';
-import { methods, recordId } from '../identity.js';
+import { identityReference, methods, recordId } from '../identity.js';
 import { createView, renderUnicode } from '../presentation.js';
 import type { Presentation, QualifiedView } from '../presentation.js';
 import type { ClaimContextRecord, EvaluationState, ModuleClaim, ProgramRecordStore, ProjectionRecord, RecordId } from '../records.js';
@@ -185,7 +185,7 @@ export function createOrganizationView(store: ProgramRecordStore, projection: Or
   const externalModules = claims.filter(claim => claim.information.type === 'module-placement' && claim.information.reasons.includes('external-module')).length;
   return {
     schema: 'postcode-organization-view/1-experimental',
-    id: recordId(projection.session, 'organization-view', { projection: projection.id, presentation, method: methods.presentation }),
+    id: recordId(projection.session, 'organization-view', { projection: identityReference(projection.session, projection.id), presentation, method: methods.presentation }),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,
       parameters: projection.parameters, selection: projection.selection },
     presentation: { ...presentation, expansions: [...projection.expansions.requested, ...new Set(projection.expansions.moduleEvaluations.flatMap(id => {

@@ -1,7 +1,9 @@
+import { moduleLimitations, isCompositionContext } from './qualification-policy.js';
+import { completedMaterialization } from './evaluation-state.js';
 import { compositionView, compositionAnnotation } from './composition-view.js';
 import type { CompositionView } from './composition-view.js';
 import { inlineText, terminalText } from './terminal-text.js';
-import { methods, recordId } from './identity.js';
+import { identityReference, methods, recordId } from './identity.js';
 import { isModuleClaim, moduleStandardExpansions } from './records.js';
 import type { Claim, ClaimContextRecord, EvaluationRecord, ExportClaim, ModuleClaim, ModuleExpansion, ProgramRecordStore, ProjectionRecord, RecordId, RecordedAssertion, SessionRecord, SourceEvidenceRecord, SymbolClaim } from './records.js';
 
@@ -171,7 +173,7 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
   const collapsed = compact ? modules.filter(module => !module.discoveryFacets.includes('project')) : [];
   const listed = compact ? modules.filter(module => module.discoveryFacets.includes('project')) : modules;
   return {
-    schema: 'postcode-view/1-experimental', id: recordId(projection.session, 'view', { projection: projection.id, presentation, method: methods.presentation }),
+    schema: 'postcode-view/1-experimental', id: recordId(projection.session, 'view', { projection: identityReference(projection.session, projection.id), presentation, method: methods.presentation }),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,
       parameters: projection.parameters, selection: projection.selection },
     presentation: { ...presentation, expansions: projection.expansions.requested },
@@ -249,7 +251,7 @@ export function renderUnicode(view: QualifiedView): string {
     outcomeGroups.set(label, (outcomeGroups.get(label) ?? 0) + 1);
   }
   const complete = view.evaluations.length > 0 && view.evaluations.every(outcome => outcome.applicability === 'applicable'
-    && outcome.availability === 'available' && outcome.execution === 'completed' && outcome.materialization === 'full');
+    && outcome.availability === 'available' && completedMaterialization(outcome));
   if (complete) lines.push(`Analysis complete: ${[...new Set(view.evaluations.map(outcome => outcome.requirement))].join(', ')}`);
   else for (const [label, count] of outcomeGroups) lines.push(`Analysis ${label} (${count} scope${count === 1 ? '' : 's'})`);
   const projectContexts = view.qualifications.filter(context => context.scope === 'configured-project');
@@ -317,7 +319,7 @@ export function renderUnicode(view: QualifiedView): string {
     }
     const total = module.exports.length + module.omittedExports;
     const established = view.evaluations.some(outcome => outcome.requirement === 'exports'
-      && outcome.modules.includes(module.id) && outcome.availability === 'available' && outcome.applicability === 'applicable' && outcome.execution === 'completed' && outcome.materialization === 'full');
+      && outcome.modules.includes(module.id) && outcome.availability === 'available' && outcome.applicability === 'applicable' && completedMaterialization(outcome));
     if (inventory) {
       const names = module.exports.map(exported => inlineText(exported.exportedName));
       if (module.omittedExports) names.push(`+${module.omittedExports}`);
@@ -339,8 +341,8 @@ export function renderUnicode(view: QualifiedView): string {
     }
 
     local([...view.qualifications.filter(context => context.scope === module.id
-      && (!context.method.startsWith(methods.composition) || module.composition.claims.length > 0
-        || !module.composition.evaluations.some(outcome => outcome.execution === 'completed' && outcome.materialization === 'full'))), ...module.exports.map(exported => exported.qualification)], '  ');
+      && (!isCompositionContext(context) || module.composition.claims.length > 0
+        || !module.composition.evaluations.some(outcome => completedMaterialization(outcome)))), ...module.exports.map(exported => exported.qualification)], '  ');
   }
   if (view.sourceDetail) {
     lines.push('', 'SOURCE DETAIL — explicit source escape', ...wrapText(view.sourceDetail.notice, ''));
@@ -399,7 +401,7 @@ export function renderUnicode(view: QualifiedView): string {
   lines.push('', 'Status');
   if (view.analysis?.provider === 'typescript') {
     const exportsComplete = view.evaluations.filter(outcome => outcome.requirement === 'exports');
-    const establishedExports = exportsComplete.length > 0 && exportsComplete.every(outcome => outcome.execution === 'completed' && outcome.materialization === 'full' && outcome.availability === 'available' && outcome.applicability === 'applicable');
+    const establishedExports = exportsComplete.length > 0 && exportsComplete.every(outcome => completedMaterialization(outcome) && outcome.availability === 'available' && outcome.applicability === 'applicable');
     lines.push(selection.populationEstablished && establishedExports
       ? '  Module membership and effective exports established by TypeScript analysis.'
       : selection.populationEstablished ? exportsComplete.length === 0 ? '  Module membership established by TypeScript analysis.'
@@ -408,11 +410,7 @@ export function renderUnicode(view: QualifiedView): string {
       '  Coverage: external-module SourceFiles and visible named ambient modules; other compiler module categories are not established.');
   } else for (const guarantee of new Set(projectContexts.map(context => context.guarantee))) lines.push(`  ${inlineText(guarantee)}`);
   for (const code of sharedDiagnostics) lines.push(`  Encountered TypeScript diagnostic: TS${code}`);
-  const representedLimitations = view.analysis ? new Set([
-    'Population is configured Program external-module SourceFiles and visible named ambient-module symbols; other compiler module categories are not established.',
-    'Configured generated-output locations are explicitly excluded from repository evidence.',
-    'No atomic filesystem snapshot is claimed; inputs are memoized as first observed.',
-  ]) : new Set<string>();
+  const representedLimitations = view.analysis ? new Set<string>(Object.values(moduleLimitations)) : new Set<string>();
   const extraLimitations = [...sharedLimitations].filter(limitation => !representedLimitations.has(limitation));
   if (view.analysis || extraLimitations.length) {
     lines.push('', 'Run limitations');

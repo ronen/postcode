@@ -1,6 +1,7 @@
+import { completedMaterialization } from '../evaluation-state.js';
 import { compositionAnnotation, compositionView } from '../composition-view.js';
 import type { CompositionView } from '../composition-view.js';
-import { methods, recordId } from '../identity.js';
+import { identityReference, methods, recordId } from '../identity.js';
 import type { Presentation } from '../presentation.js';
 import { moduleStandardExpansions } from '../records.js';
 import type { ClaimContextRecord, EvaluationState, ModuleClaim, ProgramRecord, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
@@ -46,7 +47,7 @@ export interface QualifiedDependencyView {
 }
 
 const state = ({ applicability, availability, execution, materialization, reason }: Outcome): Outcome => ({ applicability, availability, execution, materialization, reason });
-const full = (outcome: Outcome) => outcome.applicability === 'applicable' && outcome.availability === 'available' && outcome.execution === 'completed' && outcome.materialization === 'full';
+const full = (outcome: Outcome) => outcome.applicability === 'applicable' && outcome.availability === 'available' && completedMaterialization(outcome);
 
 /** Materializes display bounds from the stored graph; rendering below only formats this value. */
 export function createDependencyView(store: ProgramRecordStore, projection: DependencyProjectionRecord,
@@ -195,7 +196,7 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
   sourceItems.sort((a, b) => sourcePriority(a) - sourcePriority(b));
   const result: QualifiedDependencyView = {
     schema: 'postcode-dependency-view/1-experimental',
-    id: recordId(projection.session, 'dependency-view', { method: methods.presentation, projection: projection.id, presentation }),
+    id: recordId(projection.session, 'dependency-view', { method: methods.presentation, projection: identityReference(projection.session, projection.id), presentation }),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject, parameters: projection.parameters, selection: projection.selection },
     presentation: { ...presentation, expansions: [...new Set(projection.expansions.moduleEvaluations.flatMap(id => {
       const outcome = store.get(id); return outcome.kind === 'evaluation' && outcome.requirement !== 'modules' ? [outcome.requirement] : [];

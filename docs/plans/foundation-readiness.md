@@ -1,6 +1,6 @@
 # Foundation readiness
 
-Status: approved
+Status: active
 Created: 2026-09-27
 Updated: 2026-09-27
 Superseded by:

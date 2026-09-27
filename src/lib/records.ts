@@ -213,6 +213,7 @@ export type ProgramRecord = SessionRecord | AnalysisInputsRecord | ModuleRecord 
 export interface ProgramRecordStore {
   put(records: readonly ProgramRecord[]): void;
   get(id: RecordId): ProgramRecord;
+  lookup(id: RecordId): ProgramRecord | undefined;
   evaluations(session: SessionId): readonly EvaluationRecord[];
   entityIds(ids: readonly RecordId[], kind: 'module' | 'group'): ReadonlyMap<RecordId, string>;
 }

@@ -1,5 +1,5 @@
 import ts from 'typescript';
-import { methods, recordId } from '../identity.js';
+import { identityReference, methods, recordId } from '../identity.js';
 import type { DiscoveryResult } from '../evaluation.js';
 import type { ProgramRecord, RecordId, SessionId } from '../records.js';
 import type { ExpansionModule } from './expansions.js';
@@ -30,8 +30,8 @@ export function prepareComposition(program: ts.Program, modules: readonly Expans
     const records: ProgramRecord[] = [];
     const results: NonNullable<DiscoveryResult['expansions']>[number][] = prepared.map(item => {
       const subject = recordId(session, 'module', item.module.key);
-      const context = recordId(session, 'composition-context', [method, subject]);
-      const claim = recordId(session, 'composition-claim', [method, subject]);
+      const context = recordId(session, 'composition-context', [method, identityReference(session, subject)]);
+      const claim = recordId(session, 'composition-claim', [method, identityReference(session, subject)]);
       records.push({ kind: 'claim-context', id: context, session, method, scope: subject,
         evidence: item.module.declarations.map(node => evidence(node, null)), status: 'mechanically-derived',
         guarantee: 'Composition tests every substantive top-level statement across all captured module declarations.',

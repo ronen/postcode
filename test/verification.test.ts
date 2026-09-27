@@ -79,3 +79,48 @@ test('interaction failures complete cleanup and rethrow their assertion', async 
   assert.equal(cleaned, true);
   assert.throws(() => driver.verify(), assert.AssertionError);
 });
+
+test('CLI collection surfaces swallowed sink assertions unless a warning is explicitly expected', async () => {
+  const { invokeCli } = await import('./cli-helpers.js');
+  const args = ['modules', '--project', 'fixtures/empty/tsconfig.json'];
+  await assert.rejects(invokeCli(args, { sink: { async submit() { assert.fail('deliberately falsified sink expectation'); } } }), assert.AssertionError);
+  const expected = await invokeCli(args, { expectedWarning: true,
+    sink: { async submit() { return { accepted: false, reason: 'controlled rejection' }; } } });
+  assert.equal(expected.exit, 0);
+  assert.match(expected.stderr, /WARNING: observation not recorded: controlled rejection/);
+});
+
+test('bare reference comparison requires the declared producer and retains foreign namespaces', () => {
+  assert.throws(() => normalizeSession([`${a}:module:x`]), /producing session/);
+  assert.deepEqual(normalizeSession([`${a}:module:x`], a), normalizeSession([`${b}:module:x`], b));
+  assert.notDeepEqual(normalizeSession([`${a}:module:x`], a), normalizeSession([`${b}:module:x`], a));
+});
+
+test('comparison retains complete mixed group/module inspection and embedded session headings', async t => {
+  const { invokeCli, temporaryDirectory } = await import('./cli-helpers.js');
+  const { writeFileSync, mkdirSync } = await import('node:fs');
+  const { execFileSync } = await import('node:child_process');
+  const path = await import('node:path');
+  const root = temporaryDirectory(t, 'postcode-mixed-comparison-');
+  execFileSync('git', ['init', '--quiet', root]);
+  mkdirSync(path.join(root, 'mixed'));
+  writeFileSync(path.join(root, 'mixed/README.md'), 'Directory documentation');
+  writeFileSync(path.join(root, 'mixed.ts'), '/** Literal session:11111111-1111-1111-1111-111111111111 */\nexport const value = 1;');
+  writeFileSync(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"noLib":true,"types":[]},"files":["mixed.ts"]}');
+  for (const format of [[], ['--json']]) {
+    const args = ['inspect', 'mixed', '--source-detail', '--project', path.join(root, 'tsconfig.json'), ...format];
+    const first = await invokeCli(args), second = await invokeCli(args);
+    assert.equal(first.exit, 0, first.stderr); assert.equal(second.exit, 0, second.stderr);
+    const view = (result: typeof first) => result.batches[0]!.records.find(record => record.kind === 'qualified-view')!.value as {
+      schema: string; groups: { name: string | null; selected: boolean }[]; moduleDetail: { modules: unknown[] };
+    };
+    assert.equal(view(first).schema, 'postcode-organization-view/1-experimental');
+    assert.deepEqual(view(first).groups.map(({ name, selected }) => ({ name, selected })),
+      [{ name: 'mixed', selected: true }, { name: null, selected: false }]);
+    assert.equal(view(first).moduleDetail.modules.length, 1);
+    assert.deepEqual(normalizeSession(view(first)), normalizeSession(view(second)));
+    assert.equal(normalizeSession(first.stdout), normalizeSession(second.stdout));
+  }
+  assert.notEqual(normalizeSession(`Session ${a.slice(8)}\nSession ${b.slice(8)}\n`),
+    normalizeSession(`Session ${a.slice(8)}\nSession ${a.slice(8)}\n`));
+});

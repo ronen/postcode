@@ -30,8 +30,8 @@ async function fixture(run: (root: string, write: (name: string, text: string) =
   } finally { rmSync(root, { recursive: true, force: true }); }
 }
 
-function invoke(root: string, args: string[], sink?: ObservationSink) {
-  return invokeCli([...args, '--project', path.join(root, 'tsconfig.json')], { cwd: root, ...(sink ? { sink, expectedWarning: true } : {}) });
+function invoke(root: string, args: string[], options: { sink?: ObservationSink; expectedWarning?: boolean } = {}) {
+  return invokeCli([...args, '--project', path.join(root, 'tsconfig.json')], { cwd: root, ...options });
 }
 const viewOf = (result: { stdout: string }) => JSON.parse(result.stdout) as QualifiedOrganizationView;
 
@@ -206,7 +206,7 @@ test('partial module evaluation preserves organization views and unknown propert
 test('unavailable repository and observation-sink failure remain visible after opening; invalid projects produce no view', async () => {
   await fixture(async (root, write) => {
     rmSync(path.join(root, '.git'), { recursive: true });
-    const unavailable = await invoke(root, ['organization', 'repository'], { async submit() { return { accepted: false, reason: 'fixture rejection' }; } });
+    const unavailable = await invoke(root, ['organization', 'repository'], { expectedWarning: true, sink: { async submit() { return { accepted: false, reason: 'fixture rejection' }; } } });
     assert.equal(unavailable.exit, 0);
     assert.ok(unavailable.stdout.includes('Repository layout: unavailable'));
     assert.ok(unavailable.stderr.includes('WARNING: observation not recorded: fixture rejection'));

@@ -15,7 +15,7 @@ export async function invokeCli(args: string[], options: {
     stdout: text => { stdout += text; }, stderr: text => { stderr += text; },
     sink: options.sink ?? { async submit(batch) { batches.push(batch); return { accepted: true }; } },
   });
-  if (!options.expectedWarning) assert.doesNotMatch(stderr, /Observation warning:/);
+  if (!options.expectedWarning) assert.doesNotMatch(stderr, /WARNING: observation/);
   return { stdout, stderr, exit, batches };
 }
 

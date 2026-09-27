@@ -12,6 +12,7 @@ const [beforeBuild, afterBuild, report] = process.argv.slice(2);
 if (!beforeBuild || !afterBuild || !report) throw Error('Expected two builds and a report path');
 const before = await import(pathToFileURL(path.resolve(beforeBuild, 'src/lib/cli.js')));
 const after = await import(pathToFileURL(path.resolve(afterBuild, 'src/lib/cli.js')));
+const identities = { before: buildIdentity(beforeBuild), after: buildIdentity(afterBuild) };
 const results = [];
 async function invoke(implementation, args, config) {
   let stdout = '', stderr = ''; const batches = [];
@@ -40,4 +41,5 @@ for (const fixture of fixtures) {
     for (const command of commands(selector)) await pair(command, path.join(root, 'tsconfig.json'));
   });
 }
-writeFileSync(report, JSON.stringify({ before: buildIdentity(beforeBuild), after: buildIdentity(afterBuild), results }, null, 2) + '\n');
+assert.deepEqual({ before: buildIdentity(beforeBuild), after: buildIdentity(afterBuild) }, identities, 'Builds changed during comparison');
+writeFileSync(report, JSON.stringify({ ...identities, results }, null, 2) + '\n');

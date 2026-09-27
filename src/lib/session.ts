@@ -9,9 +9,7 @@ import { modules } from './projections.js';
 import { evaluateOrganization } from './organization/evaluate.js';
 import { inspectOrganization, organization } from './organization/projections.js';
 import { createOrganizationView, organizationPresentationRequirements, renderOrganizationView } from './organization/presentation.js';
-import { canonical } from './identity.js';
-import type { OrganizationEvaluationRecord } from './organization/records.js';
-import type { EvaluationState, EvaluationRecord, ProjectionRecord } from './records.js';
+import type { EvaluationRecord, ProjectionRecord } from './records.js';
 
 import type { ModuleAnalysis } from './evaluation.js';
 import type { SessionId } from './records.js';
@@ -83,19 +81,6 @@ export function openSession(options: ProjectOptions) {
 }
 
 function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalysis) {
-  const organizationOutcomes = new Map<string, OrganizationEvaluationRecord>();
-  const dependencyOrganizations = new Map<string, ReturnType<typeof evaluateDependencyOrganization>>();
-  const complete = (outcome: Pick<EvaluationState, 'execution' | 'materialization'>) =>
-    outcome.execution === 'completed' && outcome.materialization === 'full';
-  const reuse = <T extends Pick<EvaluationState, 'execution' | 'materialization'>>(cache: Map<string, T>, key: unknown,
-    compute: () => T): T => {
-    const encoded = canonical(key);
-    const previous = cache.get(encoded);
-    if (previous) return previous;
-    const outcome = compute();
-    if (complete(outcome)) cache.set(encoded, outcome);
-    return outcome;
-  };
   return (request: ViewRequest) => {
     const { lens, selector, presentation } = request;
     const dependencyLens = ['dependencies', 'children', 'parents'].includes(lens);
@@ -104,10 +89,8 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
     const expansions = lens === 'modules' ? presentationRequirements(presentation) : organizationPresentationRequirements.modules;
     const evaluation = dependencyOutcome ? store.get(dependencyOutcome.moduleEvaluation) as EvaluationRecord
       : evaluateModules(store, analysis, expansions);
-    const organizationOutcome = lens === 'modules' ? null : reuse(organizationOutcomes, [evaluation.id, organizationPresentationRequirements.groups],
-      () => evaluateOrganization(store, evaluation, organizationPresentationRequirements.groups));
-    const dependencyOrganization = dependencyLens ? reuse(dependencyOrganizations, [dependencyOutcome!.id, organizationOutcome!.id],
-      () => evaluateDependencyOrganization(store, dependencyOutcome!, organizationOutcome!)) : null;
+    const organizationOutcome = lens === 'modules' ? null : evaluateOrganization(store, evaluation, organizationPresentationRequirements.groups);
+    const dependencyOrganization = dependencyLens ? evaluateDependencyOrganization(store, dependencyOutcome!, organizationOutcome!) : null;
     const projection = dependencyLens
       ? lens === 'dependencies' ? dependencyStructure(store, dependencyOutcome!, dependencyOrganization!.id)
         : lens === 'children' ? dependencyChildren(store, dependencyOutcome!, selector!, request.reference ?? false, dependencyOrganization!.id)

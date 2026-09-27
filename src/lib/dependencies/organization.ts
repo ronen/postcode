@@ -1,4 +1,5 @@
-import { compare, methods, recordId } from '../identity.js';
+import { completedMaterialization } from '../evaluation-state.js';
+import { identityReference, compare, methods, recordId } from '../identity.js';
 import { locate } from '../organization/placement.js';
 import type { ContainmentClaim, ModulePlacementClaim, OrganizationEvaluationRecord } from '../organization/records.js';
 import type { EvaluationState, ProgramRecord, ProgramRecordStore, RecordId } from '../records.js';
@@ -6,7 +7,7 @@ import type { DependencyEndpointPlacement, DependencyEvaluationRecord, Dependenc
   DependencyOrganizationEvaluation, DependencyPlacementClassification } from './records.js';
 
 const complete = (state: Pick<EvaluationState, 'availability' | 'execution' | 'materialization'>) =>
-  state.availability === 'available' && state.execution === 'completed' && state.materialization === 'full';
+  state.availability === 'available' && completedMaterialization(state);
 
 /** Requested relationship expansion. Uses captured placement/containment only; no I/O. */
 export function evaluateDependencyOrganization(store: ProgramRecordStore, dependency: DependencyEvaluationRecord,
@@ -23,7 +24,12 @@ export function evaluateDependencyOrganization(store: ProgramRecordStore, depend
   const layout = repository.layout;
   const records: ProgramRecord[] = [];
   const base = { session: dependency.session, method: methods.dependencyOrganization };
-  const id = recordId(base.session, 'dependency-organization-evaluation', [base.method, dependency.id, organization.id]);
+  const id = recordId(base.session, 'dependency-organization-evaluation', [base.method, identityReference(base.session, dependency.id), identityReference(base.session, organization.id)]);
+  const retained = store.lookup(id);
+  if (retained) {
+    if (retained.kind !== 'dependency-organization-evaluation') throw new Error('Unexpected derived record kind');
+    return retained;
+  }
   const claims = organization.claims.map(id => store.get(id));
   const placements = new Map(claims.filter((claim): claim is ModulePlacementClaim =>
     claim.kind === 'claim' && claim.information.type === 'module-placement').map(claim => [claim.subject, claim]));
@@ -129,8 +135,8 @@ export function evaluateDependencyOrganization(store: ProgramRecordStore, depend
     const answers = new Set(occurrences.map(item => item.classification));
     const classification = occurrences.every(item => item.status === 'established')
       ? answers.size === 1 ? occurrences[0]!.classification : 'varies-by-occurrence' : null;
-    const claimId = recordId(base.session, 'dependency-organization', [base.method, id, relationshipId]);
-    const context = recordId(base.session, 'dependency-organization-context', claimId);
+    const claimId = recordId(base.session, 'dependency-organization', [base.method, identityReference(base.session, id), identityReference(base.session, relationshipId)]);
+    const context = recordId(base.session, 'dependency-organization-context', identityReference(base.session, claimId));
     const supportingContexts = new Set(occurrences.flatMap(item => [...item.source.claims, ...item.target.claims,
       ...item.pairs.flatMap(pair => pair.containment)]).map(claimId => {
       const claim = store.get(claimId);
@@ -159,5 +165,7 @@ export function evaluateDependencyOrganization(store: ProgramRecordStore, depend
     reason: fullyEstablished ? null : 'Some requested organization context is unavailable or incomplete.',
     cost: { measure: 'relationship-count', value: expanded.length } };
   store.put([...records, ...expanded, result]);
-  return result;
+  const owned = store.get(result.id);
+  if (owned.kind !== 'dependency-organization-evaluation') throw new Error('Expected retained dependency-organization-evaluation');
+  return owned;
 }

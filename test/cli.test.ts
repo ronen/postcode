@@ -12,8 +12,8 @@ import { renderUnicode } from '../src/lib/presentation.js';
 import type { QualifiedView } from '../src/lib/presentation.js';
 
 const config = path.resolve('fixtures/exports/tsconfig.json');
-function invoke(args: string[], sink?: ObservationSink, checkout = process.cwd()) {
-  return invokeCli(args, { checkout, ...(sink ? { sink, expectedWarning: true } : {}) });
+function invoke(args: string[], options: { sink?: ObservationSink; checkout?: string; expectedWarning?: boolean } = {}) {
+  return invokeCli(args, options);
 }
 
 function copyTestCheckout(checkout: string) {
@@ -43,7 +43,7 @@ test('Unicode and experimental JSON use the same qualified projection and automa
   const structured = JSON.parse(json.stdout) as QualifiedView;
   const unicodeArtifact = unicode.batches[0]!.records.find(record => record.kind === 'qualified-view')!.value as QualifiedView;
   assert.deepEqual(normalizeSession(structured.projection), normalizeSession(unicodeArtifact.projection));
-  assert.deepEqual(normalizeSession(structured.modules.map(module => module.id)), normalizeSession(unicodeArtifact.modules.map(module => module.id)));
+  assert.deepEqual(normalizeSession(structured.modules.map(module => module.id), structured.projection.session), normalizeSession(unicodeArtifact.modules.map(module => module.id), unicodeArtifact.projection.session));
   assert.equal(structured.schema, 'postcode-view/1-experimental');
   assert.equal(unicode.stdout.includes('Documentation entries are recorded assertions'), false);
   assert.ok(unicode.stdout.includes('documentation for'));
@@ -91,7 +91,7 @@ test('delivery rejection and thrown sink failure visibly report the observation 
     { async submit() { return { accepted: false as const, reason: 'rejected fixture' }; } },
     { async submit(): Promise<never> { throw new Error('offline fixture'); } },
   ]) {
-    const result = await invoke(['--project', config, '--json'], sink);
+    const result = await invoke(['--project', config, '--json'], { sink, expectedWarning: true });
     assert.equal(result.exit, 0);
     assert.ok(result.stderr.includes('WARNING: observation not recorded'));
     assert.equal((JSON.parse(result.stdout) as QualifiedView).projection.selection.populationEstablished, true);
@@ -175,7 +175,7 @@ test('end-of-options preserves option-like exact names while keeping one-selecto
     const names = ['--json', '-h', '--help', '--project', '--source-detail', '--'];
     writeFileSync(path.join(root, 'ambient.d.ts'), names.map(name => `declare module "${name}" { export const value: number; }`).join('\n'));
     for (const name of names) {
-      const result = await invoke(['inspect', '--project', config, '--json', '--', name], undefined, checkout);
+      const result = await invoke(['inspect', '--project', config, '--json', '--', name], { checkout });
       assert.equal(result.exit, 0, result.stderr);
       const view = JSON.parse(result.stdout) as QualifiedView;
       assert.deepEqual(view.modules.map(module => module.name), [name]);
@@ -249,7 +249,7 @@ test('independent CLI processes reproduce JSON while the local sink writes priva
         /^timestamp=\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}\.\d{3}Z_[\da-f-]{36}\.json$/);
       assert.equal(statSync(file).mode & 0o777, 0o600);
       const batch = JSON.parse(readFileSync(file, 'utf8')) as ObservationBatch;
-      assert.ok([output, unicode].map(normalizeSession).includes(normalizeSession(batch.records.find(record => record.kind === 'rendered-output')!.value as string)));
+      assert.ok([output, unicode].map(value => normalizeSession(value)).includes(normalizeSession(batch.records.find(record => record.kind === 'rendered-output')!.value as string)));
     }
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
@@ -282,9 +282,9 @@ test('CLI explicitly excludes actual checkout output directories when analyzing 
     const nested = path.join(root, 'nested/tsconfig.json');
     writeFileSync(nested, '{"compilerOptions":{"noLib":true,"types":[]},"include":["../**/*.ts"]}');
     writeFileSync(path.join(root, 'entry.ts'), 'export const actual = 1;');
-    const before = await invoke(['--project', nested, '--json'], undefined, root);
+    const before = await invoke(['--project', nested, '--json'], { checkout: root });
     writeFileSync(path.join(root, '_observations/generated.ts'), 'export const fabricated = 1;');
-    const after = await invoke(['--project', nested, '--json'], undefined, root);
+    const after = await invoke(['--project', nested, '--json'], { checkout: root });
     assert.equal(normalizeSession(after.stdout), normalizeSession(before.stdout));
     assert.equal((JSON.parse(after.stdout) as QualifiedView).modules.length, 1);
   } finally { rmSync(root, { recursive: true, force: true }); }
@@ -505,7 +505,7 @@ test('one-shot name and handle collisions retain every match and do not accept c
     const inventory = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
     const lookedUp = JSON.parse((await invoke(['inspect', 'widget', '--project', config, '--json'])).stdout) as QualifiedView;
     assert.equal(lookedUp.projection.selection.matches, 2);
-    assert.deepEqual(normalizeSession(lookedUp.modules.map(module => module.id)), normalizeSession(inventory.modules.map(module => module.id)));
+    assert.deepEqual(normalizeSession(lookedUp.modules.map(module => module.id), lookedUp.projection.session), normalizeSession(inventory.modules.map(module => module.id), inventory.projection.session));
     assert.deepEqual(new Set(lookedUp.modules.map(module => module.handleProvenance)), new Set(['language-name', 'source-basename']));
     for (const module of inventory.modules) {
       const copied = await invoke(['inspect', module.entityId, '--project', config, '--json']);
@@ -536,7 +536,7 @@ test('basename mnemonic evidence stays distinct from names and precise scoped En
       const unscoped = JSON.parse((await invoke(['inspect', module.entityId, '--project', config, '--json'])).stdout) as QualifiedView;
       assert.equal(unscoped.projection.selection.referenceStatus, 'current');
       const selected = JSON.parse((await invoke(['inspect', module.handle, '--project', config, '--json'])).stdout) as QualifiedView;
-      assert.deepEqual(normalizeSession(selected.modules.map(item => item.id)), normalizeSession(matching.map(item => item.id)));
+      assert.deepEqual(normalizeSession(selected.modules.map(item => item.id), selected.projection.session), normalizeSession(matching.map(item => item.id), view.projection.session));
     }
     const multiple = await invoke(['inspect', 'evaluation', '--project', config]);
     assert.ok(multiple.stdout.includes('2 modules selected from 4 · exact matches for evaluation'));
@@ -753,7 +753,7 @@ test('control-bearing invocation paths stay out of conceptual output without gen
     writeFileSync(ordinaryConfig, readFileSync(config));
     for (const [selectedConfig, checkout] of [[config, root], [ordinaryConfig, path.join(root, 'checkout\nspoof')],
       ...['\u061c', '\u200e', '\u200f', '\u202a', '\u202b', '\u202c', '\u202d', '\u202e', '\u2066', '\u2067', '\u2068', '\u2069'].map(control => [ordinaryConfig, path.join(root, `checkout${control}spoof`)])]) {
-      const result = await invoke(['--project', selectedConfig!, '--json'], undefined, checkout!);
+      const result = await invoke(['--project', selectedConfig!, '--json'], { checkout: checkout! });
       assert.equal(result.exit, 0);
       const view = JSON.parse(result.stdout) as QualifiedView;
       assert.equal('navigation' in view.presentation, false);
@@ -800,7 +800,7 @@ test('CLI error and observation-warning values cannot introduce diagnostic lines
     { async submit() { return { accepted: false as const, reason: text }; } },
     { async submit(): Promise<never> { throw new Error(text); } },
   ]) {
-    const result = await invoke(['--project', config], sink);
+    const result = await invoke(['--project', config], { sink, expectedWarning: true });
     assert.equal(result.exit, 0);
     assert.equal(result.stderr.trimEnd().split('\n').length, 2);
     assert.equal(result.stderr.includes(text), false);

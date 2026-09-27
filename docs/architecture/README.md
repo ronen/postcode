@@ -33,7 +33,7 @@ Session identity is allocated once after project opening, independently of that 
 Expansion materialization adds semantic symbol entities and claims, export
 relationship claims, recorded documentation assertions, and qualified association
 claims. The evaluator records an immutable discovery attempt and separate expansion
-outcomes scoped to each module, so inspection does not inherit unrelated expansion
+outcomes scoped to each module in one atomic outcome batch, so inspection does not inherit unrelated expansion
 failures. Lens
 construction reads stored information, selects relevant subjects and context,
 and writes an addressable projection. It does not call TypeScript.
@@ -43,7 +43,7 @@ records, requires each session record's own ID to equal its session identity,
 rejects conflicting replacements and invalid references (including entity
 claim discriminators and reciprocal subjects, and documentation-association
 subjects matching their module, origin-symbol or export-alias provenance), and
-supports session namespaces and immutable evaluation attempts. The request executor
+supports session namespaces and immutable evaluation attempts. Evaluators return immutable store-owned outcomes; provider discovery results are also frozen before crossing the provider boundary. A session evaluation index is published only after batch validation, while selected projections still determine their own populations. The request executor
 owns an opened provider and ephemeral store and releases them on close. Completed
 evaluations are reused by declared requirements, while newly requested work adds
 records. Each projection uses its own evaluation basis, never the entire store
@@ -249,7 +249,7 @@ Repository evidence is captured after successful project opening and before
 requested discovery. The session references a stored capture result,
 including explicit unavailability outside a worktree. Organization evaluation
 reads that result and a stored module evaluation; it performs no filesystem or
-compiler work. Pure layout is prepared with capture and retained alongside it,
+compiler work. Pure organization and relationship-organization derivations reuse deterministic stored outcomes over their immutable bases, including unavailable and partial results. Provider acquisition and retry remain a separate responsibility. Pure layout is prepared with capture and retained alongside it,
 so view construction never repeats layout analysis. Repository inputs contribute
 to claim support across the module and organization CLI surfaces.
 
@@ -390,8 +390,8 @@ analysis inputs. Providers without the assurance retain ordinary retry behavior.
 Session requests go through the provider/evaluation boundary so an outer cache
 cannot hide acquisition. Earlier outcomes remain unchanged.
 The compiler Program fixes this provider’s module population at opening, so
-additional dependency inputs do not add modules. Repeated contexts retain their
-first supporting input record; new contexts can reference a later input basis.
+additional dependency inputs do not add modules. Repeated contexts read their
+first supporting input record from the stored Claim context; new contexts can reference a later input basis.
 Any conflicting record content still fails the store’s immutability check.
 
 Native SIGINT can terminate a one-shot process during synchronous compiler work.

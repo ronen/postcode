@@ -16,9 +16,8 @@ const references = new Set([
 
 function producingSession(value: unknown): string | undefined {
   if (Array.isArray(value)) {
-    // Bare reference collections are an explicitly supported comparison input.
     for (const item of value) {
-      const found = typeof item === 'string' ? item.match(namespace)?.[0] : producingSession(item);
+      const found = producingSession(item);
       if (found) return found;
     }
   } else if (value && typeof value === 'object') {
@@ -34,11 +33,14 @@ function producingSession(value: unknown): string | undefined {
   return undefined;
 }
 
-export function normalizeSession<T>(value: T): T {
-  if (typeof value === 'string') return normalizeRendered(value) as T;
+export function normalizeSession<T>(value: T, declaredSession?: string): T {
+  if (typeof value === 'string') return normalizeRendered(value, declaredSession) as T;
   const serializable = JSON.parse(JSON.stringify(value, (_key, item: unknown) =>
     item instanceof Map ? { entries: [...item] } : item instanceof Set ? { values: [...item] } : item)) as unknown;
-  const session = producingSession(serializable);
+  const session = declaredSession ?? producingSession(serializable);
+  if (!session && Array.isArray(serializable) && serializable.some(item => typeof item === 'string' && namespace.test(item))) {
+    throw new Error('Bare references require the producing session');
+  }
   const reference = (item: string) => session && (item === session || item.startsWith(`${session}:`))
     ? `session:normalized${item.slice(session.length)}` : item;
   function visit(item: unknown, field: string): unknown {
@@ -60,8 +62,7 @@ export function normalizeSession<T>(value: T): T {
 }
 
 function normalizeRendered(text: string, session?: string): string {
-  // JSON rendering is compared structurally; whitespace is retained by replacing
-  // only JSON string tokens at the corresponding reference positions.
+  // Require the exact production JSON layout, then normalize reference positions.
   if (text.trimStart().startsWith('{')) {
     const parsed: unknown = JSON.parse(text);
     if (session) assert.equal(producingSession(parsed), session, 'Rendered JSON must use the producing session');
@@ -70,8 +71,9 @@ function normalizeRendered(text: string, session?: string): string {
     // Production JSON output has one documented pretty-print layout.
     return JSON.stringify(normalized, null, 2) + (text.endsWith('\n') ? '\n' : '');
   }
-  // Unicode prints the namespace only in its unindented session heading. Literal
+  // Unicode prints the namespace in unindented session headings (including embedded module detail). Literal
   // evidence in labels/documentation is never substituted, even if it resembles it.
-  return text.replace(/^Session ([a-f0-9-]{36})$/m, (heading, uuid: string) =>
-    !session || session === `session:${uuid}` ? 'Session normalized' : heading);
+  const producer = session ?? `session:${text.match(/^Session ([a-f0-9-]{36})$/m)?.[1]}`;
+  return text.replace(/^Session ([a-f0-9-]{36})$/gm, (heading, uuid: string) =>
+    producer === `session:${uuid}` ? 'Session normalized' : heading);
 }

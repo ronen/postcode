@@ -33,7 +33,7 @@ test('reused content digests preserve distinct captured evidence and refresh on 
       const result = analysis.discover({
         put: batch => { store.put(batch); for (const record of batch) records.set(record.id, record); },
         entityIds: (ids, kind) => store.entityIds(ids, kind),
-        get: id => store.get(id), evaluations: session => store.evaluations(session),
+        get: id => store.get(id), lookup: id => store.lookup(id), evaluations: session => store.evaluations(session),
       }, ['exports', 'documentation', 'composition'], true);
       const evidence = [...records.values()].filter((record): record is SourceEvidenceRecord => record.kind === 'source-evidence');
       return { result, records, evidence };
