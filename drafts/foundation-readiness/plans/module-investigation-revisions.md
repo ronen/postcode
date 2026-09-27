@@ -8,6 +8,6 @@ Add the subsection below at the end of `Architectural basis`, immediately before
 
 ### Established foundation
 
-The completed [foundation-readiness programme](foundation-readiness.md) established the immutable publication, reference identity, output-exclusion, graph, execution and validation boundaries on which investigation builds.
+This plan assumes the [foundation-readiness work](foundation-readiness.md) is complete and builds on its established immutable publication, reference identity, output-exclusion, graph, execution and validation boundaries.
 
-That work addressed the needs of the existing commands. This plan extends those shared foundations with investigation-specific evidence access, dialogue, result acceptance, corrections and usage reporting.
+Foundation readiness covers the needs of the existing commands. This plan extends those shared foundations with investigation-specific evidence access, dialogue, result acceptance, corrections and usage reporting.

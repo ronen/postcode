@@ -13,11 +13,11 @@ The [generated-output constraint](../architectural-constraints.md#generated-outp
 
 One shared live policy resolves caller-supplied output locations and supplies the exclusion decisions used by compiler and repository acquisition. Snapshot caller options. Account for lexical and resolved locations, link aliases, missing descendants and dangling-link targets without requiring generated output to exist. Retain path-segment-aware containment and distinguish platform paths, repository-relative paths, and apparent source identities.
 
-Resolution must establish the boundary before potentially affected source acquisition. A cyclic or otherwise unverifiable boundary must not silently fall back to a guessed path or an empty exclusion. Retain evidence sufficient to revalidate the policy at the existing input-validation phases. Detected changes invalidate the session rather than silently revising its captured basis. Deduplicate equivalent enforced boundaries consistently for qualification counts.
+Resolution must establish the boundary before potentially affected source acquisition. A cyclic or otherwise unverifiable boundary must not silently fall back to a guessed path or an empty exclusion. Retain evidence sufficient to revalidate the policy at the existing input-validation phases. Detected changes invalidate the session rather than silently revising its captured basis. When the same excluded location is supplied through equivalent paths, count it once in the reported number of enforced output boundaries; do not count path aliases as additional exclusions.
 
-Refuse session opening with a distinct operational boundary-resolution failure when an explicit boundary cannot be established. Both CLI entry paths report `Project open failed: generated-output boundary could not be resolved`, with an escaped path and operational reason, and return status 2. Keep this failure separate from TypeScript diagnostics; it has no invented TS diagnostic code. No command view or view-produced observation exists before a session opens.
+Refuse session opening with a distinct operational boundary-resolution failure when an explicit boundary cannot be established. Keep this failure separate from TypeScript diagnostics; compiler analysis cannot safely proceed with an unknown exclusion boundary.
 
-If revalidation fails or detects retargeting, invalidate the session through the existing invalidation path: command status `invalidated`, CLI status 2, and restart required. Preserve any output already emitted before a post-output check, along with its truthful observation. Unexpected defects retain the defect path; they are not reclassified as ordinary boundary failures.
+If revalidation fails or detects retargeting, invalidate the session and require restart. Preserve any output already emitted before a post-output check, along with its truthful observation. Unexpected defects retain the defect path rather than becoming ordinary boundary failures. Diagnostic formatting and status mapping belong to the [implementation plan](../plans/foundation-readiness.md#4-shared-acquisition-policy-and-dependable-execution-ownership).
 
 This is best-effort, non-atomic filesystem observation. Memoization may remove repeated work within a stable check but must not suppress later retargeting detection. It is not a claim of protection against every concurrent filesystem race.
 
@@ -32,8 +32,6 @@ One authority prevents divergent evidence boundaries. Conservative refusal is pr
 - Apply lexical exclusion only, or cache forever: insufficient for aliases and later boundary changes.
 - Reuse the live resolver for captured source links: would mix current filesystem state with captured evidence.
 
-## Consequences and verification
+## Consequences
 
-Exercise equivalent aliases, missing descendants, dangling and cyclic links, retargeting, reordered/duplicate exclusions, and outside-worktree locations across both acquisition consumers. Preserve apparent paths and existing tracked/ignored distinctions. Assess identity-method versions for any changed evidence or qualification semantics.
-
-This specializes the existing output-boundary and stable-input decisions; it neither changes the captured-source constraint nor promises comprehensive freshness. No core-concept or architectural-constraint text change is required unless review identifies a substantive conflict.
+This specializes the existing [output-boundary decision](adopt-identity-evidence-and-observation-constraints.md#exclude-generated-output-through-an-explicit-evidence-boundary) and [stable-input decision](transient-analysis-sessions.md#stable-inputs-as-the-session-precondition). It preserves the [captured-source rule](adopt-identity-evidence-and-observation-constraints.md#present-source-evidence-from-captured-analysis-input) and does not promise comprehensive freshness. No core-concept or architectural-constraint text change is required.

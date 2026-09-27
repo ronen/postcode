@@ -29,6 +29,6 @@ Complete publication prevents a partially written file from appearing to be a us
 
 ## Consequences
 
-The sink must distinguish unsuccessful publication from successful publication with a cleanup problem. Its implementation and tests must establish that distinction on supported filesystems. The [implementation plan](../plans/foundation-readiness.md#5-organized-observation-files-and-truthful-delivery-outcomes) specifies publication mechanics, project grouping, filenames, permissions and failure checks.
+The sink must distinguish unsuccessful publication from successful publication with a cleanup problem. The implementation must preserve that distinction wherever it provides publication, and refuse delivery where the required filesystem behavior is unavailable. The [implementation plan](../plans/foundation-readiness.md#5-organized-observation-files-and-truthful-delivery-outcomes) specifies publication mechanics, project grouping, filenames, permissions and failure checks.
 
 This specializes the local sink's contract without changing producer ownership, observation meaning or the separation between sink selection and archive policy.

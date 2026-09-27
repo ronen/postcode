@@ -17,13 +17,15 @@ Preserve one active operation and terminal interruption of the session. Interrup
 
 Git operations have deadlines. Cancellation initiates termination, with escalation where supported. If cleanup cannot be confirmed within its reporting deadline, report incomplete cleanup separately from the command outcome and retain resource ownership and exit monitoring. Request cancellation, command settlement and actual child/worker exit are distinct events; none may be presented as proof of another. Numeric limits and platform-specific termination mechanics are implementation choices.
 
-A deadline during opening is an expected operational opening failure. During input validation, inability to verify the retained basis invalidates the session rather than refreshing its evidence. Unexpected defects retain their distinct failure path. A cleanup problem must not conceal the triggering interruption or failure.
+A Git acquisition deadline during opening produces qualified unavailable repository evidence, as other expected Git acquisition failures do, once child cleanup is confirmed. It does not by itself prevent opening a compiler-backed session. Unconfirmed cleanup remains a resource failure and must not be hidden by degrading repository evidence.
+
+During validation, preserve the existing captured-basis comparison: loss or change of retained evidence invalidates the session rather than refreshing it. An initially unavailable repository capture may remain consistently unavailable without pretending that repository contents were verified; it must not become established empty evidence. Unexpected defects retain their distinct failure path, and cleanup problems remain separately visible.
 
 These guarantees do not establish a deadline for an entire analysis, universal prompt exit of native filesystem/compiler work, or termination of every descendant process. Report supported-platform limits explicitly.
 
 ## Rationale
 
-An owner that survives disposable computation can complete or truthfully report its cleanup. Asynchrony makes Git waits interruptible; ownership and confirmed exit make that interruption dependable. Retaining the compiler worker preserves the existing isolation and active-work termination boundary.
+An owner that survives disposable computation can complete or truthfully report its cleanup. Asynchrony makes Git waits interruptible; ownership and confirmed exit make that interruption dependable. Retaining the compiler worker preserves the existing isolation and active-work termination boundary. Treating an initial timeout like another acquisition failure preserves the distinction between project opening and optional repository evidence; a latency threshold should not impose a stronger prerequisite than a missing Git executable. Validation is different when repository evidence was already retained: failure to re-establish that basis cannot silently weaken the earlier result.
 
 ## Alternatives considered
 
@@ -31,9 +33,10 @@ An owner that survives disposable computation can complete or truthfully report 
 - Launch asynchronous Git inside the disposable worker: worker termination can discard the only owner of outstanding children.
 - Move compiler work into the parent: loses the existing active-work interruption boundary.
 - Replace the worker with a supervised process: introduces a larger execution-boundary change without a demonstrated need for it.
+- Refuse opening on every Git timeout: makes slow optional evidence acquisition a stricter opening prerequisite than other Git failures. Use qualified unavailability after cleanup instead; preserve invalidation for a changed or unverifiable retained basis.
 
 ## Consequences
 
 Opening and validation become asynchronous for current direct session users as well as CLI callers. Command completion and cleanup reporting must remain distinguishable at their interfaces. The [implementation plan](../plans/foundation-readiness.md#4-shared-acquisition-policy-and-dependable-execution-ownership) specifies protocol changes, failure mappings, limit selection and verification.
 
-This decision preserves transient-session and input-stability semantics. Investigation builds on this ownership boundary and remains responsible for its evidence interface, dialogue, result acceptance and a non-disposable owner for incremental usage reporting.
+This decision preserves [transient-session ownership](transient-analysis-sessions.md#retained-domain-and-storage-boundaries), [input stability](transient-analysis-sessions.md#stable-inputs-as-the-session-precondition), and the [distinction between project opening and analysis availability](repository-organization-decisions.md#keep-project-opening-distinct-from-later-analysis-availability). Investigation builds on this ownership boundary and remains responsible for its evidence interface, dialogue, result acceptance and a non-disposable owner for incremental usage reporting.

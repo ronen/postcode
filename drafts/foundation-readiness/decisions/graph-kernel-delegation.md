@@ -28,11 +28,14 @@ The adapter centralizes package-specific representation and mutation requirement
 ## Alternatives considered
 
 - Retain bespoke algorithms: viable but leaves several independently maintained generic traversals and their proof obligations in PostCode.
-- Adopt a larger graph framework: no demonstrated need for its broader concepts or lifecycle.
+- `@dagrejs/graphlib` 4.0.5: established, but the audited recursive SCC implementation overflowed the stack on the deep-graph probes, weakening existing depth robustness.
+- `graphology` 0.26.0 with `graphology-components` 1.5.4: its audited SCC implementation had the same recursive-depth problem despite iterative helpers elsewhere in the ecosystem.
+- `cytoscape` 3.34.3: a substantially broader framework whose audited headless SCC implementation also failed the depth probes.
+- `strongly-connected-components` 1.0.1: passed the depth probes and remains a credible focused SCC alternative, but does not cover the other current traversal responsibilities; its dormant maintenance and local typing requirement also favor Stately for the combined use.
 - Treat the package as a universal domain graph: would conflate graph topology with evidence and qualification.
 
-## Consequences and verification
+The [archived library comparison](../../records/audits/2026-09-27-foundation-readiness/library-reuse/codex/graph-library-research.md) records the tested releases and probe conditions. These are selection-time findings, not claims about every release or a universal failure depth.
 
-Test isolates, unknown/root nodes, self-loops, deep chains, cycles, incremental updates, multi-parent diamonds, parallel supporting claims and deterministic ordering against independent expected results. Compare full qualified outputs after the intentional identity correction establishes its new baseline.
+## Consequences
 
-Verify each chosen operation against the same semantic and scale requirements, whether delegated or local. An operation-level exception does not reopen library selection. If the combined evidence undermines the overall adoption rationale, report that material finding for reconsideration rather than silently replacing the selected library or building a parallel generic graph framework. No graph database, all-pairs cache, or future correction traversal is introduced by this decision. Existing dependency and organization decisions retain their domain meanings; this decision specializes implementation ownership without superseding them.
+Delegated and local operations remain subject to the same semantic and scale requirements. An operation-level exception does not reopen library selection. If every operation would remain local, do not install an unused library or describe the work as library adoption. If the combined evidence undermines the overall adoption rationale, report that material finding for reconsideration rather than silently replacing the selected library or building a parallel generic graph framework. No graph database, all-pairs cache, or future correction traversal is introduced by this decision. The [derived dependency-graph boundary](module-dependency-structure-decisions.md#derive-graph-structure-without-making-a-graph-the-canonical-store), [qualified group and placement relationships](repository-organization-decisions.md#represent-groups-and-placement-with-qualified-identities-and-relationships), and [conservative organization classification](dependency-organization-integration-decisions.md#classify-organization-relationships-conservatively-from-occurrence-evidence) retain their meanings. This decision specializes implementation ownership without superseding them.
