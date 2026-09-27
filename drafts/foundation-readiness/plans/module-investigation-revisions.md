@@ -1,13 +1,13 @@
 # Proposed revisions to docs/plans/module-investigation.md
 
-Add the following complete subsection at the end of `Architectural basis`, immediately before `Evaluation and retained program information`:
+## Revision instructions
 
-### Foundation readiness dependency
+Add the subsection below at the end of `Architectural basis`, immediately before `Evaluation and retained program information`. At promotion, update the plan's `Updated` date to the actual promotion date and preserve its existing lifecycle status. These editing instructions are not part of the canonical addition.
 
-Complete and review the [foundation-readiness programme](foundation-readiness.md) before beginning this plan's substantive implementation. Reuse its verified immutable publication, reference identity, output-exclusion, graph, execution and validation boundaries. Do not create a second acquisition or cancellation policy for investigation.
+## Canonical addition
 
-Foundation readiness implements the concrete changes required by existing commands. This plan remains responsible for subject-based full-content evidence access, internal mechanical queries, investigator dialogue, unknown-payload validation, atomic corrections, cause-specific citation reconsideration and a non-disposable owner for incremental usage reporting. Validator decomposition follows actual record responsibilities as these features are added; no speculative investigator infrastructure is required in the foundation programme.
+### Established foundation
 
-The dependency does not itself authorize either plan's implementation, change the investigation milestones, or replace their formative assessment and review requirements.
+The completed [foundation-readiness programme](foundation-readiness.md) established the immutable publication, reference identity, output-exclusion, graph, execution and validation boundaries on which investigation builds.
 
-At promotion, update the plan's `Updated` date to the actual promotion date and preserve its existing lifecycle status.
+That work addressed the needs of the existing commands. This plan extends those shared foundations with investigation-specific evidence access, dialogue, result acceptance, corrections and usage reporting.

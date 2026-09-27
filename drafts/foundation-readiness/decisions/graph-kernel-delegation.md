@@ -9,11 +9,13 @@ Scope: existing directed-graph algorithms for dependency components and organiza
 
 PostCode owns several generic graph mechanisms: strongly connected components, cycle prevention during deterministic containment-link acceptance, multi-parent ancestry, and upward closure. Their results carry PostCode-specific evidence, qualification and ordering. The [paired library audits and supplementary reviews](../../records/audits/2026-09-27-foundation-readiness/README.md) establish concrete current uses for a library; adoption does not depend on speculative investigation features.
 
-The human's preference for Stately is conditional on external delegation being warranted. The recommendation here is that it is warranted, because maintaining several general graph algorithms is a responsibility that can be delegated while preserving the domain policy.
+The audits establish that external graph delegation is worthwhile, and Stately is the selected library. Operation-level implementation choices remain subject to the exception rule below; they do not require repeating the overall adoption analysis.
 
 ## Decision
 
-Use `@statelyai/graph` behind a narrow application-owned adapter for the existing SCC and directed-reachability responsibilities, including containment ancestry and upward closure. Keep library imports, types, mutation and graph lifetime within that boundary. Expose only the operations required by current callers, using PostCode-owned inputs and results.
+For each existing generic graph operation—SCC, containment cycle checks, ancestry and upward closure—adopt `@statelyai/graph` unless a local implementation is demonstrably simpler to maintain, preserves required semantics more directly, or avoids a demonstrated performance problem. Judge simplicity across the adapter and its callers, not by comparing isolated line counts. Existing code and migration effort alone do not justify an exception.
+
+Keep library imports, types, mutation and graph lifetime behind a narrow application-owned adapter. Expose only the operations required by current callers, using PostCode-owned inputs and results. Record a brief rationale and relevant verification for each operation retained locally. These are implementation choices within this decision, not separate adoption approval gates.
 
 PostCode retains population selection, deterministic edge acceptance and output sorting, self-loop classification, incomplete-root qualification, display traversal, and every supporting relationship or claim. Traversal-tree edges are insufficient evidence when parallel claims or multiple parents exist.
 
@@ -33,4 +35,4 @@ The adapter centralizes package-specific representation and mutation requirement
 
 Test isolates, unknown/root nodes, self-loops, deep chains, cycles, incremental updates, multi-parent diamonds, parallel supporting claims and deterministic ordering against independent expected results. Compare full qualified outputs after the intentional identity correction establishes its new baseline.
 
-If integration requires recreating the delegated algorithms or materially compromises semantics, bring that evidence back for reconsideration before proceeding. The human preference is not unconditional approval of any integration. No graph database, all-pairs cache, or future correction traversal is introduced by this decision. Existing dependency and organization decisions retain their domain meanings; this decision specializes implementation ownership without superseding them.
+Verify each chosen operation against the same semantic and scale requirements, whether delegated or local. An operation-level exception does not reopen library selection. If the combined evidence undermines the overall adoption rationale, report that material finding for reconsideration rather than silently replacing the selected library or building a parallel generic graph framework. No graph database, all-pairs cache, or future correction traversal is introduced by this decision. Existing dependency and organization decisions retain their domain meanings; this decision specializes implementation ownership without superseding them.

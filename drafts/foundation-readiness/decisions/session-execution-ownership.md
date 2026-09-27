@@ -1,39 +1,39 @@
-# Session execution and subprocess ownership
+# Execution ownership and cancellation semantics
 
 Status: in review
 Decided:
 Arising from: [Foundation readiness](../plans/foundation-readiness.md)
-Scope: current command opening, Git acquisition, validation, interruption and disposal
+Scope: ownership and cancellation contract for command opening, Git acquisition, validation and disposal
 
 ## Context
 
-Synchronous Git calls can prevent the worker from responding to cancellation. A timeout that sends SIGTERM alone does not establish a deadline: the archived probe demonstrated a child continuing after that signal. Terminating a worker also does not by itself prove that children it launched have exited. Upcoming investigation needs a coherent execution boundary, but this programme must solve the concrete current ownership problem first.
+Synchronous Git calls can prevent the analysis worker from responding to cancellation. The archived timeout probe demonstrated a child continuing after a termination signal; terminating a worker also does not establish that its children have exited. Investigation needs an execution boundary whose resource ownership survives interruption of the computation.
 
 ## Decision
 
-Use owned asynchronous Git execution and asynchronous opening/validation orchestration while retaining compiler work in the private analysis worker. Preserve one active operation, terminal interruption and parent-owned observation delivery. The process owning Git handles must remain alive through worker termination and retain responsibility for signalling and observing child exit; use parent-owned execution or a narrowly scoped supervisor. Do not rely on cleanup callbacks inside a terminated worker.
+Use asynchronous Git execution and asynchronous opening/validation orchestration, retaining compiler work in the private analysis worker. The parent owns Git subprocesses and monitors their exit, including when the worker requests them. Direct session users use the same ownership model in their calling process. Terminating disposable computation must not discard responsibility for its resources. Observation delivery remains parent-owned.
 
-Give asynchronous operations identities sufficient to reject stale replies and prevent late publication. Synchronous message-send failure, close while pending, unexpected worker exit and cancellation must each settle the pending operation once and release its resources. Share execution contracts and interruption errors through a neutral boundary. If graceful close is required, make it a real invoked and tested protocol; otherwise remove the unused close-message branch.
+Preserve one active operation and terminal interruption of the session. Interruption or disposal prevents further work and late publication; it does not transparently restart the worker or continue under discarded session state. Each pending operation settles once, independently of the time required to confirm resource cleanup.
 
-Preserve Git environment sanitation, bounded output, decoding checks, expected operational-error classification and input invalidation. Async propagation covers current direct session users and CLI publishers, not only a wrapper around the shell. No transparent restart, worker pool or general scheduler is introduced.
+Git operations have deadlines. Cancellation initiates termination, with escalation where supported. If cleanup cannot be confirmed within its reporting deadline, report incomplete cleanup separately from the command outcome and retain resource ownership and exit monitoring. Request cancellation, command settlement and actual child/worker exit are distinct events; none may be presented as proof of another. Numeric limits and platform-specific termination mechanics are implementation choices.
 
-[Needs review] Before promotion, select numeric limits and escalation policy separately for Git operation duration, initial termination grace, force-termination handling, and owner shutdown. Specify whether each limit bounds caller settlement, child exit, worker exit, or the whole operation. The default direction is prompt cancellation followed by a bounded graceful period and forced termination where supported, with explicit reporting when cleanup cannot be confirmed. Set values using controlled readiness/termination probes and representative opening/validation measurements; do not claim an arbitrary timeout is established by the existing audits.
+A deadline during opening is an expected operational opening failure. During input validation, inability to verify the retained basis invalidates the session rather than refreshing its evidence. Unexpected defects retain their distinct failure path. A cleanup problem must not conceal the triggering interruption or failure.
 
-Do not promise a universal wall-clock bound for native filesystem/compiler work or an OS process in uninterruptible state. Distinguish supported-platform behavior and observed cleanup from request rejection. Preserve current publication-check phases and coverage; these are not removed to make cancellation or performance tests pass.
+These guarantees do not establish a deadline for an entire analysis, universal prompt exit of native filesystem/compiler work, or termination of every descendant process. Report supported-platform limits explicitly.
 
 ## Rationale
 
-An owner that survives the disposable computation can finish cleanup. Asynchrony enables cancellation during Git waits but is insufficient without ownership, operation identity and explicit exit evidence. Compiler integration can remain direct and synchronous inside its existing isolation boundary.
+An owner that survives disposable computation can complete or truthfully report its cleanup. Asynchrony makes Git waits interruptible; ownership and confirmed exit make that interruption dependable. Retaining the compiler worker preserves the existing isolation and active-work termination boundary.
 
 ## Alternatives considered
 
-- Add only a `spawnSync` timeout: useful mitigation, insufficient lifetime guarantee.
-- Use `spawn` inside a worker and immediately terminate the worker: can discard the only owner of outstanding children.
-- Move all compiler work into the parent: loses the existing active-work interruption fallback.
-- Replace the worker with a supervised process: retain as a concrete fallback if parent/supervisor ownership cannot meet the chosen limits coherently; reconsider the decision with evidence before making that larger change.
+- Add only a synchronous Git timeout: does not provide responsive cancellation or prove child exit after a signal.
+- Launch asynchronous Git inside the disposable worker: worker termination can discard the only owner of outstanding children.
+- Move compiler work into the parent: loses the existing active-work interruption boundary.
+- Replace the worker with a supervised process: introduces a larger execution-boundary change without a demonstrated need for it.
 
-## Consequences and verification
+## Consequences
 
-Use controlled readiness markers and watchdogs to test cancellation during opening and validation, a child ignoring graceful termination, worker failure with an outstanding child, close while pending, send failure, and late replies. Assert command settlement and actual process/worker exit separately. The one-shot native compiler interruption probe must retain its first phase marker and interrupt once; its control case must still pass.
+Opening and validation become asynchronous for current direct session users as well as CLI callers. Command completion and cleanup reporting must remain distinguishable at their interfaces. The [implementation plan](../plans/foundation-readiness.md#4-shared-acquisition-policy-and-dependable-execution-ownership) specifies protocol changes, failure mappings, limit selection and verification.
 
-An intermediate review must assess the actual ownership implementation and platform limits. This decision extends current execution mechanics without superseding transient-session semantics. Investigation remains responsible for its subject-based evidence interface, dialogue, acceptance, and a non-disposable owner for usage reporting.
+This decision preserves transient-session and input-stability semantics. Investigation builds on this ownership boundary and remains responsible for its evidence interface, dialogue, result acceptance and a non-disposable owner for incremental usage reporting.

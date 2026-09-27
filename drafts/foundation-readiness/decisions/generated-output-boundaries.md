@@ -15,7 +15,9 @@ One shared live policy resolves caller-supplied output locations and supplies th
 
 Resolution must establish the boundary before potentially affected source acquisition. A cyclic or otherwise unverifiable boundary must not silently fall back to a guessed path or an empty exclusion. Retain evidence sufficient to revalidate the policy at the existing input-validation phases. Detected changes invalidate the session rather than silently revising its captured basis. Deduplicate equivalent enforced boundaries consistently for qualification counts.
 
-[Needs review] Refuse session opening with an expected operational boundary-resolution error when an explicit boundary cannot be established. If revalidation fails or detects retargeting, invalidate the session and refuse further commands. Do not turn these failures into compiler syntax diagnostics or continue with unqualified repository evidence. The exact user-facing wording and mapping to existing command outcomes must be checked against current opening and invalidation contracts before promotion.
+Refuse session opening with a distinct operational boundary-resolution failure when an explicit boundary cannot be established. Both CLI entry paths report `Project open failed: generated-output boundary could not be resolved`, with an escaped path and operational reason, and return status 2. Keep this failure separate from TypeScript diagnostics; it has no invented TS diagnostic code. No command view or view-produced observation exists before a session opens.
+
+If revalidation fails or detects retargeting, invalidate the session through the existing invalidation path: command status `invalidated`, CLI status 2, and restart required. Preserve any output already emitted before a post-output check, along with its truthful observation. Unexpected defects retain the defect path; they are not reclassified as ordinary boundary failures.
 
 This is best-effort, non-atomic filesystem observation. Memoization may remove repeated work within a stable check but must not suppress later retargeting detection. It is not a claim of protection against every concurrent filesystem race.
 

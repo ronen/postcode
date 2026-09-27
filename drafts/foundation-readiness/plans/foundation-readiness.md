@@ -5,25 +5,26 @@ Created: 2026-09-27
 Updated: 2026-09-27
 Superseded by:
 
-## Planning package and approval boundary
-
-This plan establishes the foundation programme before module investigation implementation. The programme includes the eight work packages and C01–C23 below. Plan approval does not authorize implementation; open implementation tasks only after explicit human direction under the [task protocol](../../foundation/task-protocol.md).
-
-Review this plan with the draft decisions on [graph delegation](../decisions/graph-kernel-delegation.md), [generated-output boundaries](../decisions/generated-output-boundaries.md), [execution ownership](../decisions/session-execution-ownership.md), [local observation publication](../decisions/local-observation-publication.md), and [terminal and option semantics](../decisions/terminal-and-option-semantics.md). The package also includes revisions to the plans index, the module-investigation plan, and the backlog. Links use their intended canonical destinations, as required by the planning workflow.
-
-[Needs review] Resolve the locally marked execution limits, boundary-failure mapping, and visible terminal/option choices before promotion. Reviewers should challenge the policy and responsibilities, not merely confirm that every audit finding has a matching item. No new core concept or cross-cutting architectural constraint is proposed: the scoped decisions operationalize existing constraints. If review identifies a conflict, add the necessary decision and governing revision to this package before approval rather than silently overriding it.
-
-## Governing basis
-
-Preserve the [core concepts](../core-concepts.md), [architectural constraints](../architectural-constraints.md), [transient-session decisions](../decisions/transient-analysis-sessions.md), [qualification distinctions](../decisions/adopt-qualification-and-evaluation-constraints.md), [identity/evidence boundaries](../decisions/adopt-identity-evidence-and-observation-constraints.md), and [observation lifecycle](../decisions/initial-observation-recording-decisions.md). Existing [dependency structure](../decisions/module-dependency-structure-decisions.md), [organization](../decisions/repository-organization-decisions.md), and [dependency/organization integration](../decisions/dependency-organization-integration-decisions.md) govern the meanings retained by the graph adapter and indexes. The [module-investigation plan](module-investigation.md) and [investigator execution decision](../decisions/investigator-execution-and-evidence-access.md) define the upcoming integration boundary.
-
-Follow the [engineering guidelines](../../dev/engineering-guidelines.md), [implementation conventions](../implementation-conventions.md), and [development workflow](../../dev/workflow.md). The current audited application baseline is `5c048694fa10dc19addcbaf5825bc9c9a9719c9a`; subsequent guideline and archival commits do not change application behavior.
-
 ## Objective and outcome
 
 Establish a solid, well-implemented foundation for ongoing PostCode development. Reduce ongoing ownership of generic mechanisms; make shared policies authoritative; make state and resource ownership dependable; remove demonstrated avoidable processing; and make verification capable of detecting meaningful regressions. Current migration effort receives less weight than long-term fit and maintainability.
 
 Success is an integrated implementation with suitable library boundaries, clear ownership and qualification rules, exercised failure paths, credible equivalence checks, and representative scale measurements. A collection of closed audit findings alone is insufficient.
+
+Success also requires preserving current analysis content, evidence, qualifications, selection, ordering, presentation and command outcomes, except for the CLI invocation syntax changes and the explicit behavioral fixes below. Library adoption, helper consolidation and indexing must not introduce incidental behavior changes.
+
+| Intended change | Boundary of the exception |
+| --- | --- |
+| CLI option grammar | The grammar in [option grammar in package 8](#option-grammar), including inline values, option-like selectors, duplicate options and help/error precedence. Lens and selector meanings remain unchanged. |
+| Reference identity | Preserve literal session-shaped text in identity keys; change affected IDs, method versions and ID-derived ordering only as required by this correction. |
+| Immutable and atomic results | Prevent producer/consumer mutation of retained outcomes and prevent root-only publication when a coupled expansion is rejected. |
+| Acquisition and execution failures | Apply one output boundary; refuse unverifiable boundaries; cancel owned Git work and enforce the specified per-call deadline; settle failed sends and late work correctly. Retain existing failure distinctions and input-validation coverage. |
+| Observation files | Group new files by observed project and UTC date with simpler time/UUID filenames. Expose only complete final files, preserve existing files on collision, and distinguish published-with-cleanup-warning from non-delivery. Existing files retain their paths. |
+| Terminal layout | Correct display width and grapheme splitting, visibly escape tabs, and disclose omissions under the specified layout policy. Preserve stored text, source coordinates and original-code-point omission accounting. |
+
+Verify each intended difference explicitly, then compare all unaffected behavior against the relevant baseline. Do not broaden these exceptions to cover regressions found during migration.
+
+The [module-investigation plan](module-investigation.md) and [investigator execution decision](../decisions/investigator-execution-and-evidence-access.md) define the upcoming integration boundary.
 
 This document reconciles the supplementary [Codex review](../../records/audits/2026-09-27-foundation-readiness/foundation-readiness/codex/REPORT.md) and [Claude review](../../records/audits/2026-09-27-foundation-readiness/foundation-readiness/claude/REPORT.md), including their use of the six earlier audits. Application code did not change between the earlier audit baselines. The source excerpts checked during this synthesis agree with the principal findings; experiments were not rerun.
 
@@ -31,7 +32,7 @@ This document reconciles the supplementary [Codex review](../../records/audits/2
 
 Both reviews endorse the core architecture: qualified records, immutable storage, selected projections, direct TypeScript integration, Git-backed evidence, transient sessions, and parent-owned observations. Their different opening verdicts do not represent a major architectural disagreement. Both identify specific work needed before those implementation patterns are extended to investigation.
 
-The human's preference for Stately is conditional on external graph-library adoption being warranted. This synthesis recommends adoption: SCC, incremental containment cycle checks, multi-parent ancestry, and upward closure are concrete existing uses of generic directed-graph algorithms. Delegation reduces responsibility for several independently maintained traversals, while a narrow adapter preserves PostCode's evidence and ordering policies. This rationale does not depend on future investigation features or immediate line-count savings. The audited root-ID, mutation, and API-selection obligations are manageable adapter responsibilities; if integrated implementation requires recreating the algorithms or materially compromises semantics, reconsider adoption rather than treating the preference as unconditional authorization. Pin and verify the assessed release during implementation, confine imports and mutable library objects to the adapter, and preserve domain semantics outside it.
+External graph delegation is worthwhile, and Stately is the selected library for the existing graph operations, subject to the per-operation exceptions in [package 6](#6-adopt-stately-for-existing-graph-responsibilities).
 
 Proceed with a bounded foundation programme. Prepare execution and acquisition policies with the accepted investigation plan in mind, without implementing the investigator, its new lenses, or speculative infrastructure in this programme.
 
@@ -44,7 +45,7 @@ Proceed with a bounded foundation programme. Prepare execution and acquisition p
 | Evaluators return mutable objects and can expose provider-retained arrays | Apply one ownership rule across evaluators and provider boundaries. Return store-owned records; protect retained provider data; make coupled root/expansion publication one atomic batch. |
 | Pure partial derivations are repeatedly recomputed | Prefer lookup by deterministic record ID through a small non-throwing store lookup, removing duplicate session caches. Preserve provider acquisition/retry rules separately. Organization itself mainly repeats when repository evidence is unavailable; relationship organization also repeats for ordinary external endpoints. |
 | Three variants of complete/established predicates | Inspect every use by meaning and write a state/consumer matrix. Share identical decisions. Do not infer a universal validity rule solely from today's eager provider. A single reuse/established predicate would conflate different questions. Resolve any actual contradiction explicitly. |
-| Stately graph integration | Adopt for SCC, incremental containment cycle checks, ancestry, and upward closure. Encode empty root IDs; use supported mutation operations; preserve all parallel supporting claims; prefer explicit-direction DFS reachability. Preserve deterministic acceptance and output ordering. |
+| Stately graph integration | Adopt for each SCC, incremental containment cycle-check, ancestry and upward-closure operation unless the documented simplicity, semantic-fit or performance exception applies. Encode empty root IDs; use supported mutation operations; preserve all parallel supporting claims; prefer explicit-direction DFS reachability. Preserve deterministic acceptance and output ordering. |
 | Terminal wrapping | Adopt `string-width` and `Intl.Segmenter`; retain the small PostCode wrapping/continuation policy. The assessed `wrap-ansi` changes whitespace/tabs and normalizes Unicode. This is a semantic-fit reason, independent of migration cost. |
 | Git timeout recommendation | A timeout signal alone does not guarantee a deadline: the Codex probe's child handled SIGTERM and exited later. Separate request rejection, child exit, worker exit, and whole-operation deadline claims. |
 | Exclusion resolution | Establish one live output-exclusion authority shared by compiler and repository acquisition. Keep captured source-link resolution separate. Memoization must retain boundary-retargeting detection. |
@@ -57,7 +58,7 @@ The supplementary reviews were complementary again. Codex added comparator and i
 
 ## Implementation work packages
 
-These are coherent work packages within one programme, not a requirement for separate tasks or arbitrary approval gates for each item. Task boundaries should follow independently meaningful implementation goals under the task protocol. Independent integrated review remains required under the repository workflow. The smaller-cleanup checklist below is explicit scope within these packages, not optional work left over after the larger changes.
+The eight work packages form one programme. The smaller-cleanup checklist below is explicit scope within these packages. The milestones group delivery and review around the responsibility boundaries established by the work.
 
 ### 1. Verification that can reject incorrect results
 
@@ -84,12 +85,12 @@ Scope:
 - Add a non-throwing record lookup. Pure organization derivations reuse deterministic IDs over complete immutable bases, including partial/unavailable results; remove redundant session derivation maps.
 - Preserve provider `retryBasis`, acquisition revision checks, first-established supporting inputs, and historical records.
 - Use the new store lookup to retrieve already-established claim-context input support, removing the provider's duplicate `support` map where the same first-established basis can be read directly. Never replace historical support with the latest input basis.
-- Consolidate equivalent outcome/error predicates by their meaning; resolve the evaluation-state matrix before imposing new validity constraints.
+- Consolidate identical outcome predicates by their meaning, retaining the current availability/applicability conditions at each consumer. Preserve the independent state dimensions and current store validity rules; no new global validity restriction is introduced. Record the call-site matrix as verification of this preservation.
 - Add a private evaluation query index only for the concrete existing query, with publication after successful validation. Validate whole entity batches before allocating bindings.
 
 Acceptance: producer/consumer mutation cannot affect stored or reused results or later provider discovery; invalid coupled publication leaves no root-only outcome; rejected batches leave no index/binding residue; repeated pure partial results perform no resubmission; a genuinely different basis derives a new result. Existing partial-provider retries still work.
 
-Dependency: package 1. State semantics are a focused decision checkpoint within this package, not a reason to block independent ownership repairs.
+Dependency: package 1. The state/consumer matrix verifies preserved semantics; it does not establish new state constraints.
 
 ### 3. Reference identity and authoritative presentation policy
 
@@ -110,36 +111,84 @@ Scope:
 
 - Resolve caller-supplied generated-output boundaries once into a shared policy, snapshot caller options, share equivalent containment/error classification, and preserve subsequent verification of the boundary.
 - Keep platform paths, repository-relative paths, apparent identities, and captured source-link semantics distinct.
-- Adopt an explicit deadline/cancellation policy. Preferred design direction: owned asynchronous Git subprocesses coordinated with asynchronous command validation, keeping compiler work in the private worker and parent-owned observation delivery.
-- Make ownership survive worker termination: the owner must be able to signal and reap children before disposal, or a supervisor must retain that responsibility. Merely changing `spawnSync` to `spawn` inside a worker that is then terminated is insufficient.
+- Use parent-owned asynchronous Git subprocesses and asynchronous command validation under the [execution policy](../decisions/session-execution-ownership.md), keeping compiler work in the private worker and parent-owned observation delivery.
+- Keep Git handles and exit monitoring in the parent so ownership survives worker termination. Direct session users use the same execution owner in their calling process. Propagate asynchronous opening and validation through both direct callers and CLI publishers, not only the shell wrapper. Preserve Git environment sanitation, bounded output and decoding checks.
 - Repair synchronous send failure, close-while-pending, unexpected exit, and late-response handling; identify operations across asynchronous messages where required.
 - Put common execution errors/contracts at a neutral boundary. Keep one active operation and terminal interruption behavior; no worker pool or transparent restart.
-- Remove the unused worker `close` message and handler if termination remains the actual disposal protocol. If the chosen child-ownership design needs graceful close, make it a real exercised protocol with callers and failure cleanup instead of retaining an unused branch.
+- Retain worker termination as disposal and remove the unused worker `close` message and handler. The parent-owned Git lifecycle handles child cancellation independently.
 - Preserve current validation/publication phases and coverage. Precompute retained snapshot serialization, compare primitive values directly, and memoize only where replay still detects changes.
 
-Acceptance: controlled child readiness and watchdog tests cover opening and validation; both command settlement and actual child/worker exit are checked. Late work cannot publish. Send failures cannot leave phantom pending operations or unhandled rejections. Boundary aliases, missing descendants, dangling/cyclic links, retargeting, reordered exclusions, and outside-worktree locations are exercised. Changed inputs invalidate rather than refresh retained evidence.
+#### Timeouts and cleanup
 
-Dependency: package 1; coordinate with package 2. Agree the execution policy before implementation of async propagation. No arbitrary timeout number is selected by this synthesis. A timeout guard may be an interim mitigation, but does not close the execution-lifetime work by itself.
+Apply the following timeout and cleanup behavior. Choose and justify reasonable numeric limits during implementation, accounting for representative Git workloads, interactive responsiveness and supported-platform behavior.
 
-### 5. Complete observation files and truthful delivery outcomes
+| Event | Required response |
+| --- | --- |
+| A Git invocation exceeds its operation deadline | Fail that invocation as an expected operational timeout, prevent its late result from being accepted, and begin cancellation. The timer covers one invocation, not all Git calls in an operation. |
+| User interruption, disposal, worker exit, or Git timeout | Stop accepting work for the affected operation and request graceful termination of its owned Git children immediately. User interruption remains terminal for the session and uses the existing interrupted outcome/status 130. |
+| A child has not exited within the termination grace period | Request forced termination of that owned child. On POSIX use SIGTERM followed by SIGKILL; on a platform without that graceful distinction use the supported forced-termination operation directly. Do not claim descendant-tree termination from a child-handle signal. |
+| Cleanup remains unconfirmed when the cleanup-reporting deadline expires | Settle the cleanup wait with an explicit incomplete-cleanup failure identifying the still-owned resource. Report it separately from the triggering interruption/failure; never report successful cleanup. Retain ownership and exit monitoring until actual exit, and forbid further work on the disposed session. |
 
-Scope:
+Document the selected per-invocation deadline, termination grace period and cleanup-reporting deadline, including when each clock starts and the rationale for its value. Verify escalation and incomplete-cleanup reporting with controlled failure cases. Tests may use controlled clocks or shorter injected limits while separately checking production configuration. Numeric tuning is an implementation choice within this policy.
 
-- Own a private staging file through creation, write, close, no-overwrite publication, and staging removal. Use same-directory link-and-unlink publication as specified by the local observation decision; validate supported-filesystem behavior.
-- Preserve existing files on collision, private permissions, visible delivery failure, and successful command output.
-- Define what happens if publication succeeds but staging cleanup fails; do not misreport a published batch as absent or delete another writer's file.
-- Keep acceptance separate from an unrequested promise of power-loss durability. Do not introduce a retry queue or archival subsystem.
+During opening, a Git deadline uses a distinct operational project-open failure and CLI status 2, with no invented TypeScript diagnostic. During input validation, timeout means the retained basis could not be verified and uses the existing invalidated outcome/status 2. Ordinary non-timeout Git failures retain their existing qualified-evidence behavior. A cleanup-reporting timeout does not overwrite an interrupted command's status 130 or imply that an OS process has exited. It bounds the wait for a cleanup report, not process lifetime.
 
-Acceptance: controlled failures before creation, after partial write, on close, publication, and cleanup; pre-existing destination untouched; no incomplete file appears under a final batch name; actual output/exit semantics remain correct. Exception tests do not certify hard-kill or power-loss behavior.
+#### Verification
 
-Dependency: package 1; otherwise independent. Atomic visibility and cleanup are in scope; fsync durability requires a separate explicit requirement.
+Use controlled child-readiness markers and watchdogs to test cancellation during opening and validation, a child ignoring graceful termination, worker failure with an outstanding child, close while pending, send failure and late replies. Assert command settlement and actual child/worker exit separately. Late work cannot publish; send failures cannot leave phantom pending operations or unhandled rejections. Verify escalation and incomplete-cleanup reporting on each supported platform and disclose any unsupported termination behavior. Preserve the first phase marker in the one-shot native compiler interruption probe, interrupt once, and require its control case to pass.
+
+Exercise boundary aliases, missing descendants, dangling/cyclic links, retargeting, reordered exclusions and outside-worktree locations. Changed or unverifiable inputs invalidate rather than refresh retained evidence. Preserve current publication-check phases and coverage.
+
+Dependency: package 1; coordinate with package 2. Implement timeouts, termination escalation and incomplete-cleanup reporting together with ownership and asynchronous propagation. The intermediate review covers actual ownership, timer behavior, cleanup reporting and platform limits.
+
+### 5. Organized observation files and truthful delivery outcomes
+
+Implement the [local sink acceptance contract](../decisions/local-observation-publication.md) with the following publication and file-organization behavior.
+
+#### Publication mechanics
+
+Write a batch to an exclusively created private staging file in the destination filesystem, complete and close it, then publish its final name without replacement. The final name becomes visible only for a complete batch. Existing destinations remain untouched on collision. Keep current private file/directory creation permissions and destination policy.
+
+Use same-directory hard-link publication followed by staging unlink when supported and verified. Successful creation of the final link is the publication commit point. Before that point, failure means the batch was not published; after it, failure to remove staging means the batch was published with a cleanup problem. Preserve and report that distinction instead of reporting an observation gap or retrying a delivered batch. Only remove staging paths owned by this attempt. A cleanup warning must not turn a successful view into an analysis failure.
+
+Unsupported no-overwrite publication fails visibly through the sink-delivery path. Do not silently use overwriting rename or copying into a partially visible final file as a fallback. Hard kill may leave staging residue; normal exception cleanup does not certify crash cleanup. Automatic scavenging is outside this change.
+
+#### Project grouping and filenames
+
+Store new batches using this layout beneath the existing local observation destination:
+
+```text
+_observations/<project-label>-<project-key>/YYYY-MM-DD/HH-mm-ss.sssZ_<batch-uuid>.json
+```
+
+The project is the configured project being observed, not the PostCode checkout hosting the sink. Choose a recognizable project label and slugify it into a safe directory component. The label source, fallback and slugification details are implementation choices: a suitable directory name or an available `package.json` name are reasonable candidates. Missing or unusable naming metadata must have a fallback and must not prevent observation delivery.
+
+Append a six-character hexadecimal suffix derived from SHA-256 over the normalized absolute configuration-file path. This provides a compact disambiguator for same-named projects and different configurations. Repeated sessions with the same label and normalized configuration path share a directory; changes to the label or path may produce a different directory. This is local sink organization, not a domain project identity or cross-machine identifier.
+
+Bind the project grouping when constructing the local sink so successful views, refusals, failures and interruptions from that session share it. Do not infer project grouping from the presence of a qualified view in a batch. The generic observation-sink contract and batch schema remain unchanged.
+
+Use one UTC submission timestamp for the date directory and time component. Remove the `date=` and `timestamp=` prefixes and the redundant date in the filename. The batch UUID remains the collision-resistant suffix. Stage within the selected project/date directory and create new directories with mode `0700` and files with mode `0600`, leaving pre-existing permissions unchanged. Disclose the project-specific destination on stderr.
+
+Write only new batches in this layout. Existing files remain at their current paths; this work introduces no migration, historical reader or cleanup of prior observations. The entire observation destination remains excluded from analyzed evidence.
+
+Project-first grouping keeps each project's observations together across dates. The label aids browsing and the stable path-derived suffix disambiguates similar names without a project registry.
+
+#### Verification and documentation
+
+Inject creation, partial-write, close, publication and cleanup failures. Verify final-name completeness, preservation of a pre-existing destination, ownership of cleanup, truthful delivery diagnostics and unchanged successful command output/status. Test the publication mechanism on supported filesystems. Exception tests do not certify hard-kill cleanup or power-loss durability.
+
+Test repeated sessions, different projects sharing a directory basename, multiple configurations in one directory, unsafe or empty labels, batches without views and UTC date rollover. Verify project-specific destination disclosure, staging/publication within the selected directory, permissions on newly created levels and exclusion of the full observation tree. Update the local-sink naming convention, CLI documentation and affected tests.
+
+Dependency: package 1; otherwise independent. Atomic visibility and cleanup are in scope; no retry queue, historical reader or archival subsystem is introduced.
 
 ### 6. Adopt Stately for existing graph responsibilities
+
+For each operation—SCC, containment cycle checks, ancestry and upward closure—adopt Stately unless a local implementation is demonstrably simpler to maintain, preserves required semantics more directly, or avoids a demonstrated performance problem. Record a brief rationale and relevant verification for each exception; existing code and migration effort alone are insufficient reasons. Implementation verifies the selected operations and adapter rather than repeating the overall adoption analysis. The [graph decision](../decisions/graph-kernel-delegation.md) records the rationale and exception criteria.
 
 Scope:
 
 - Pin/review the audited Stately release and its resolved dependency/license requirements. Keep library imports/types and ephemeral graph ownership inside a narrow adapter.
-- Delegate SCC and directed reachability. Retain project-only populations, isolates, all relationship IDs, deterministic sorting, self-loop classification, and incomplete-root gating.
+- Retain project-only populations, isolates, all relationship IDs, deterministic sorting, self-loop classification, and incomplete-root gating.
 - Preserve sorted sequential containment-link acceptance using sanctioned mutation APIs. Encode the empty repository-root node without changing stored paths.
 - Consolidate ancestry and upward closures over selected containment information; retain every supporting edge, including parallel claims, rather than just traversal-tree edges.
 - Use explicit-direction, membership-checked DFS for reachability; avoid the assessed `hasPath` queue behavior and recursive/path-enumeration APIs.
@@ -147,7 +196,7 @@ Scope:
 
 Acceptance: independent graph-order fixtures, deep chains/cycles, unknown/root node cases, incremental updates, multi-parent diamonds and parallel evidence, full qualified output equivalence, and bounded randomized/oracle comparisons. Validate the actual selected APIs, not only the package's SCC implementation.
 
-Dependency: packages 1 and 3's baseline where identity changes occur; share immutable ownership conventions with package 2. Stately is the human's preferred candidate if delegation is warranted; the current evidence supports that recommendation, subject to integrated verification of the adapter and maintained responsibility reduction.
+Dependency: packages 1 and 3's baseline where identity changes occur; share immutable ownership conventions with package 2. Stately adoption is established; operation-level exceptions and integrated verification follow the graph decision.
 
 ### 7. Processing improvements over selected immutable inputs
 
@@ -166,16 +215,42 @@ Dependency: packages 1–2, established identity baseline, and agreed exclusion 
 
 ### 8. Terminal layout and standard option parsing
 
-Scope:
+#### Terminal layout
 
-- Adopt display-width measurement and grapheme segmentation. Retain exact Unicode text apart from deliberate control escaping, wrapping, and disclosed truncation; keep local continuation/whitespace rules.
-- Use one layout calculation for fitting and rendering. Preserve source UTF-16 coordinates and original-code-point omission counts unless an explicit decision changes them.
-- Adopt `util.parseArgs` for standard scanning; retain lens/selector semantics, literal tokenization, conceptual help, controlled errors, observations, and shell project restrictions.
-- Review responsible presentation/method versions and document intentional behavior changes independently of optimization equivalence.
+Use `string-width` for terminal width and `Intl.Segmenter` for grapheme boundaries, with a thin local policy for wrapping, continuation and disclosure. Preserve original Unicode code-point spelling, apart from deliberate control escaping, wrapping and disclosed truncation. Keep source positions in UTF-16 and omission counts in original code points. Use the same layout calculation for fit checks and actual rendering.
 
-Acceptance: CJK, combining marks, ZWJ emoji, tabs, CRLF, narrow budgets, control escapes, continuation prefixes, exact omission counts, and unchanged source evidence. Exercise grammar in one-shot and shell paths, including `--`, literal `@`, option-looking selectors, repeated/empty options, and help/error precedence.
+Visibly escape tabs in terminal layout so their width is deterministic; retain exact stored text. Treat ambiguous-width characters as narrow. When an indivisible grapheme exceeds the available budget, disclose omission rather than splitting it or overflowing without qualification. Use the existing visible Unicode-escape spelling (`\u0009`) for tabs. Preserve current control escaping: CR is escaped, LF remains a structured line break in multiline layout, and inline values escape both. Count omitted source code points, not characters introduced by escaping; retained escape tokens and graphemes are indivisible during layout.
 
-Dependency: package 1; can progress independently of graph/performance implementation after behavior choices below are agreed.
+Width and segmentation are generic mechanisms; exact evidence spelling and qualification remain application policy. The audited `wrap-ansi` behavior changes whitespace/tabs and normalizes Unicode, so retain the thin local wrapping policy. Pin and verify the selected width-library release during implementation.
+
+#### Option grammar
+
+Use Node's `util.parseArgs` for option scanning. PostCode retains lens and selector interpretation, shell tokenization, conceptual help, controlled errors, observation production and shell project restrictions.
+
+Apply the following grammar consistently to one-shot and shell paths where the option is permitted:
+
+| Input case | Behavior |
+| --- | --- |
+| `--project=value` | Accept the inline value. |
+| Option-looking selector | Require `--` before the literal selector. |
+| Dash-prefixed option value | Require inline `--option=-value` form. |
+| Literal reserved-looking `@` selector | Preserve literal selection through the existing terminator convention. |
+| Unknown/invalid option alongside help | Parse the full input strictly and report the error. |
+| Repeated value option | Reject duplicates instead of silently selecting a value. |
+| Empty value for a required nonempty option | Report a controlled invocation error. |
+| Repeated boolean flag | Treat as idempotent. |
+
+Validate scanner output against the existing lens/selector rules. Help bypasses command-operand validation only after all option scanning and option-value checks succeed; it does not hide unknown options, missing/empty values, duplicate value options, or the shell restriction on `--project`. Both `-h` and `--help` remain supported. No additional short aliases or shell interpolation are introduced.
+
+The runtime scanner replaces bespoke option mechanics; its defaults do not determine PostCode's selection or command policy.
+
+#### Verification and documentation
+
+Test CJK, combining sequences, ZWJ emoji, tabs, CRLF, control escapes, narrow budgets, continuation prefixes and exact omitted-code-point counts. Verify that stored source evidence and UTF-16 coordinates remain unchanged. Exercise the grammar matrix, project restrictions, quoting/tokenization, literal selectors and observation/error behavior in both one-shot and shell interfaces.
+
+Assess affected presentation/method versions and document intentional differences separately from optimization equivalence. Update the CLI reference and relevant implementation conventions to describe the implemented behavior.
+
+Dependency: package 1; can progress independently of graph/performance implementation.
 
 ## Smaller cleanups explicitly included
 
@@ -195,7 +270,7 @@ Source locations identify the audited baseline, not immutable line numbers. The 
 | C08 | Name and share equivalent completed-materialization predicates; explicitly compose stronger availability/applicability conditions where required. | 2: each audited call site has a justified meaning in the state/consumer matrix. No universal reuse predicate replaces the distinct provider and pure-derivation rules. |
 | C09 | Remove redundant organization-result session maps in favor of immutable store lookup. Remove the duplicate provider claim-context `support` map using that same lookup when retrieving historical support. | 2: repeated partial results reuse their basis; new acquisition never overwrites the first support of an existing context; rejected publication does not install false support. |
 | C10 | Combine the root module evaluation and its expansion outcomes into one `put`. | 2: failure of any coupled outcome leaves no root-only attempt; previously stored evidence remains intact. |
-| C11 | Resolve the unused worker `close` message, union member, and handler as part of the actual selected disposal protocol. | 4: remove dead protocol code, or wire and test a needed graceful-close path. Do not retain a misleading unused branch. |
+| C11 | Remove the unused worker `close` message, union member and handler; retain worker termination and parent-owned Git cleanup. | 4: no dead close protocol remains; disposal tests verify both worker exit and independently owned child cleanup. |
 | C12 | Allocate entity IDs as a validated batch per session/kind rather than one at a time. | 2–3: same-batch allocation respects deterministic ordering; previous references remain bound; no claim of order independence across separate allocation calls. |
 | C13 | Keep the placement claim just created in `organization/evaluate.ts` instead of searching the growing claims array to retrieve it. | 7: identical records and ordering without the redundant scan. |
 | C14 | Precompute the canonical retained repository snapshot and compare primitive probe values directly before structural serialization. | 4/7: current change-detection behavior and publication phases preserved; no repeated serialization of an unchanged retained snapshot. |
@@ -219,25 +294,23 @@ The audit suggestions deliberately not turned into automatic cleanup are also ex
 - Do not turn repeated lens-name strings into a broad registry as incidental cleanup. A neutral shared lens definition may be introduced if needed by the concrete command/execution boundary; per-lens async staging belongs with its actual execution redesign.
 - Changes to human-maintained review checklists under `dev/` remain separate process maintenance. Implementation conventions can describe practices actually established by authorized product work.
 
-## Decision checkpoints
+## Implementation policies
 
-The accompanying decisions supply the durable choices. Their unsettled passages must be resolved before promotion. The table summarizes the implementation checkpoints; routine adapter names and version pinning do not require separate permission questions.
-
-| Choice | Recommended planning position |
+| Area | Policy |
 | --- | --- |
-| Evaluation states and establishment | Write a matrix of valid producer states and what each consumer may conclude. Share minimal completed-materialization checks and explicitly stronger population/availability checks. Keep pure-derivation reuse separate. Add store rejection only for combinations established to be invalid; do not outlaw states merely because today's provider never emits them. |
-| Exclusion resolution | Use one live link-aware resolver capable of accounting for dangling targets and missing suffixes; refuse unverifiable/cyclic boundaries under the accompanying decision instead of guessing. Retain explicit revalidation and captured-source resolution separately. Specify exact failure mapping and method-version impact before coding. |
-| Cancellation and execution | Prefer async owned Git plus the existing compiler worker, with operation identity and tested child ownership through interruption. Set numeric deadlines, escalation/cleanup behavior, and supported-platform limits explicitly. Evaluate a supervised-process alternative if these guarantees cannot be achieved coherently. |
-| Observation persistence | Publish complete files without overwriting, with owned cleanup. Do not promise persistence after power loss; add fsync only if that is an actual product requirement. |
-| Terminal text | Preserve code-point spelling, use grapheme-safe breaks, retain code-point omission counts. Proposed tab policy: visibly escape tabs in terminal layout so width is deterministic while stored text remains exact. Use narrow ambiguous-width treatment; explicitly handle an indivisible grapheme that exceeds a narrow budget through qualified omission. These are proposed visible changes. |
-| CLI grammar | Accept `--project=value`; require `--` for option-looking selectors and an inline value for dash-prefixed option values; preserve literal `@` through terminator tokens. Prefer strict full parsing, so invalid options are errors even alongside help. Publish and test the grammar matrix. |
-| Validation cost | Keep current documented phases and coverage for this programme. Revisit detection strategy only against remaining measured cost and an explicit description of changed coverage. The session decision allows mechanism changes; it does not require full recapture forever. |
+| Evaluation states and establishment | Share identical completed/full checks. Preserve the current stronger availability and applicability conditions at their consumers. Keep pure immutable derivation reuse separate from provider acquisition/retry rules. No new global validity constraint or rejection of currently valid states. The call-site matrix verifies these distinctions. |
+| [Output boundaries](../decisions/generated-output-boundaries.md) | One live link-aware resolver accounts for dangling targets and missing suffixes. Unverifiable boundaries refuse opening as an operational failure; later inability to verify invalidates the session. Captured-source resolution remains separate. |
+| [Execution ownership](../decisions/session-execution-ownership.md) | The parent owns asynchronous Git and operation identities; the private worker retains compiler work. Git invocations have deadlines; cancellation requests immediate graceful termination and escalates after a grace period. Cleanup still unconfirmed at its reporting deadline is reported as incomplete, while the owner retains exit monitoring. Implementation chooses, justifies and tests reasonable numeric limits. No whole-analysis deadline or universal process-exit guarantee. |
+| [Observation organization and publication](#5-organized-observation-files-and-truthful-delivery-outcomes) | Group new batches by configured project, then UTC date, with time/UUID filenames. Stage and close a complete private file, publish by no-overwrite link creation, then remove staging. Final-link creation commits delivery; later cleanup failure produces a cleanup warning. No power-loss durability guarantee. |
+| [Terminal text](#terminal-layout) | Preserve code-point spelling and stored text; use display-cell widths and grapheme-safe breaks. Escape tabs visibly, use narrow ambiguous-width treatment, preserve original-code-point omission counts, and disclose omission of indivisible graphemes that exceed the available budget. |
+| [CLI grammar](#option-grammar) | Accept inline values; require `--` for option-looking selectors and inline values for dash-prefixed paths. Preserve literal `@` via the terminator. Parse all options before honoring help; reject duplicate value options and empty required values. Repeated boolean flags remain idempotent. |
+| Validation cost | Preserve the current documented validation phases and coverage. Precompute retained serialization and use local lookups without suppressing revalidation. A different detection strategy is outside this programme. |
 
-Identity literal/reference separation is included as a correctness improvement with a method-version assessment. It does not require choosing a new identity framework. No claim of RFC 8785 conformance is introduced.
+The reference-identity correction retains the existing identity framework and canonical serialization. Update affected method versions; no claim of RFC 8785 conformance is introduced.
 
 ## Relationship to module investigation
 
-Settle the execution/acquisition policy during this programme so investigation does not establish a second one. Implement only the concrete changes needed by current commands here. The accepted investigation milestones remain responsible for subject-based full-content acquisition, internal mechanical-query access, investigator dialogue, external payload validation, atomic corrections, cause-specific citation reconsideration, and a non-disposable owner for incremental usage reporting.
+The shared execution and acquisition policies established here provide the basis for investigation. This programme implements the concrete changes needed by current commands. The accepted investigation milestones remain responsible for subject-based full-content acquisition, internal mechanical-query access, investigator dialogue, external payload validation, atomic corrections, cause-specific citation reconsideration, and a non-disposable owner for incremental usage reporting.
 
 Record-family validator decomposition can accompany actual investigation record additions. A schema validator may be appropriate at the unknown investigator-payload boundary; neither a global ban on schema libraries nor replacing the existing relational store follows from these reviews.
 
@@ -247,9 +320,9 @@ Do not add a provider registry, general scheduler, graph database, persistent se
 
 Run the required type check and full test suite on the actual final checkout/build. Control fresh-process test paths so they cannot accidentally execute stale shared build output. Run relevant failure probes and comparisons after their owning changes; preserve the baseline and report intentional semantic/version differences explicitly.
 
-Measure the integrated result after individual improvements, including complete CLI publication and representative scale. Do not add together gains from differently scoped experiments or claim the earlier prototype's 21x result for the final application.
+Retain the before/after build identities with semantic comparisons and measurement results. Measure the integrated result after individual improvements, including complete CLI publication and representative scale. Do not add together gains from differently scoped experiments or claim the earlier prototype's 21x result for the final application.
 
-Update descriptive architecture, CLI behavior/limits, implementation conventions, method versions, and user-facing status where the implemented behavior warrants it. Proposed consequential decisions and any necessary core-concept/constraint revisions must be reviewed together. Do not alter `dev/` or `foundation/` as incidental product work. Human-maintained material and existing audit artifacts remain untouched.
+Update descriptive architecture, CLI behavior/limits, implementation conventions, method versions, and user-facing status where the implemented behavior warrants it. Document the changed runtime ownership and the explicitly listed behavioral fixes, including the bounds and limits of cancellation and observation publication.
 
 Prepare an independent integrated-review handoff that tests the combined responsibility boundaries, ownership, qualification, failure behavior, and upcoming-plan compatibility. Close implementation only under the repository's review/task protocol. Carry material open concerns explicitly rather than marking foundation readiness complete through audit-item counts.
 
@@ -257,7 +330,7 @@ The handoff must include dispositions for C01–C23 as well as the major package
 
 ## Evidence traceability and limits
 
-The [durable audit collection](../../records/audits/2026-09-27-foundation-readiness/README.md), committed as `c44ddef`, preserves eight reports and selected evidence with original/archived hashes, mechanical link-adjustment metadata, and omission inventories. It is exploratory evidence, not a completed implementation review. Historical probes and prototype patches describe their stated baselines; restore them to a disposable matching checkout to reproduce them. Do not run them in place or mistake a prototype for the final implementation.
+The audited application baseline is `5c048694fa10dc19addcbaf5825bc9c9a9719c9a`; subsequent guideline and archival commits did not change application behavior. The [durable audit collection](../../records/audits/2026-09-27-foundation-readiness/README.md), committed as `c44ddef`, preserves eight reports and selected evidence with original/archived hashes, mechanical link-adjustment metadata, and omission inventories. It is exploratory evidence, not a completed implementation review. Historical probes and prototype patches describe their stated baselines; restore them to a disposable matching checkout to reproduce them. Do not run them in place or mistake a prototype for the final implementation.
 
 | Package | Supplementary Codex findings | Supplementary Claude findings |
 | --- | --- | --- |
@@ -281,18 +354,8 @@ Planning checked the supplied reports, selected probe results, relevant governan
 | --- | --- | --- |
 | M1: Trustworthy verification | Package 1, including negative comparator controls, graph ordering oracle, and reliable probes. | Demonstrate that the harness rejects deliberate relationship/literal/order changes before using it to certify migrations. |
 | M2: State and identity | Packages 2–3; C08–C10, C12, C16 and C22 as applicable. Depends on M1. | Establish the state/consumer matrix, immutable publication guarantees, and explicit identity/version baseline. Prepare an independent intermediate review before extending these patterns into later migrations. |
-| M3: Acquisition and lifetime | Packages 4–5, including the async API propagation for existing direct and CLI users. Depends on M1 and approved execution/boundary policies. May overlap M2 where responsibilities are independent. | Independently review actual ownership through opening, validation, interruption, unexpected worker exit, and observation publication. Pause at this boundary before dependent work relies on it. |
-| M4: Delegation, indexing and CLI | Packages 6–8. Graph and indexing require M2's settled baseline; path indexing requires M3's policy. Terminal/option work can proceed independently after M1 and its decision approval. | Package-specific equivalence, failure and scale checks pass; intentional semantic changes are separately documented. |
+| M3: Acquisition and lifetime | Packages 4–5, including the async API propagation for existing direct and CLI users. Depends on M1. May overlap M2 where responsibilities are independent. | Independently review actual ownership through opening, validation, interruption, unexpected worker exit, and observation publication. Pause at this boundary before dependent work relies on it. |
+| M4: Delegation, indexing and CLI | Packages 6–8. Graph and indexing require M2's settled baseline; path indexing requires M3's policy. Terminal/option work can proceed independently after M1. | Package-specific equivalence, failure and scale checks pass; intentional semantic changes are separately documented. |
 | M5: Integrated foundation readiness | Final build, all package outcomes, C01–C23 dispositions, measurements, and documentation. Depends on M1–M4. | Commit a final integrated-review handoff; pause until the human determines the review gate is sufficient. Only then conclude the authorized task(s). |
 
-An intermediate review covers the completed responsibility boundary, not merely one file. M2 and M3 may share a handoff if implemented together and both are complete; do not skip either scope. The human arranges independent review under the [review workflow](../../dev/review.md), and determines gate sufficiency. Reviewers do not authorize implementation or promotion. Ordinary work within an authorized milestone does not need repeated permission.
-
-Keep evidence sufficient to review each boundary: before/after build identities, semantic-baseline changes, the state/consumer matrix, structured/rendered comparisons, failure outcomes, operation-count trends, and separate opening/first-use/steady-state/publication measurements. Commit reproducible sources and compact results to suitable validation records; generated builds and bulky profiles remain disposable.
-
-## Risks and completion discipline
-
-The main integration risks are comparator over-normalization; state predicates that erase qualification; graph traversal that loses supporting claims or changes deterministic ordering; stale selected-basis indexes; asynchronous replies or child processes outliving their owner; and treating successful publication followed by cleanup failure as failed delivery. Each has explicit acceptance checks in its owning package.
-
-Stately's relative youth warrants a verified pin and adapter contract tests. Its audited design and concrete fit justify delegation despite that risk. A failed fit must return to human planning review with evidence; it must not lead to a hidden custom graph framework. Library choice remains conditional on the responsibility reduction and semantic fit stated in its decision.
-
-Do not mark the programme complete solely because all audits have dispositions. Demonstrate the integrated maintained responsibilities and failure behavior, and include C01–C23 individually in the final review. A material deferral requires explicit human scope direction and its durable record. The broader parallelism backlog remains open: this programme fixes demonstrated processing and lifetime problems without promising a general throughput architecture.
+M2 and M3 may share a single review if implemented together and both are complete; the review must cover both scopes.
