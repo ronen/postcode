@@ -1,3 +1,4 @@
+import { invokeCli } from './cli-helpers.js';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { cpSync, mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
@@ -5,8 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
 import { normalizeSession } from './helpers.js';
-import { runCli } from '../src/lib/cli.js';
-import type { ObservationBatch, ObservationSink } from '../src/lib/observations.js';
+import type { ObservationSink } from '../src/lib/observations.js';
 import { createOrganizationView, organizationPresentationRequirements, renderOrganizationView } from '../src/lib/organization/presentation.js';
 import type { QualifiedOrganizationView } from '../src/lib/organization/presentation.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
@@ -30,15 +30,8 @@ async function fixture(run: (root: string, write: (name: string, text: string) =
   } finally { rmSync(root, { recursive: true, force: true }); }
 }
 
-async function invoke(root: string, args: string[], sink?: ObservationSink) {
-  let stdout = '';
-  let stderr = '';
-  const batches: ObservationBatch[] = [];
-  const exit = await runCli([...args, '--project', path.join(root, 'tsconfig.json')], {
-    cwd: root, checkout: process.cwd(), stdout: text => { stdout += text; }, stderr: text => { stderr += text; },
-    sink: sink ?? { async submit(batch) { batches.push(batch); return { accepted: true }; } },
-  });
-  return { exit, stdout, stderr, batches };
+function invoke(root: string, args: string[], sink?: ObservationSink) {
+  return invokeCli([...args, '--project', path.join(root, 'tsconfig.json')], { cwd: root, ...(sink ? { sink, expectedWarning: true } : {}) });
 }
 const viewOf = (result: { stdout: string }) => JSON.parse(result.stdout) as QualifiedOrganizationView;
 
@@ -249,7 +242,7 @@ test('organization output reproduces across processes and escapes control charac
     const name = 'group\nwith\tcontrols';
     write(`${name}/README`, 'not disclosed');
     const config = path.join(root, 'tsconfig.json');
-    const script = `import { runCli } from './_build/src/lib/cli.js';
+    const script = `import { runCli } from '${new URL('../src/lib/cli.js', import.meta.url).href}';
       await runCli(['organization','repository','--json','--project',process.argv[1]], {
         cwd:process.cwd(), checkout:process.cwd(), stdout:s=>process.stdout.write(s), stderr:()=>{},
         sink:{ async submit(){return {accepted:true};} }

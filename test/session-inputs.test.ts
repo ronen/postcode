@@ -1,3 +1,4 @@
+import { temporaryDirectory } from './cli-helpers.js';
 import assert from 'node:assert/strict';
 import { mkdtempSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import os from 'node:os';
@@ -124,12 +125,12 @@ test('a later completed evaluation preserves the earlier incomplete outcome and 
   });
 });
 
-test('publication observes invalidation before and after output without fabricating or erasing views', async () => {
+test('publication observes invalidation before and after output without fabricating or erasing views', async t => {
   const { publishCommand } = await import('../src/lib/command-execution.js');
   const cases: Promise<void>[] = [];
   // Keep each temporary directory alive through asynchronous observation submission.
   for (const after of [false, true]) {
-    const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-publication-'));
+    const root = temporaryDirectory(t, 'postcode-publication-');
     const configPath = path.join(root, 'tsconfig.json');
     writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
     const source = path.join(root, 'entry.ts');
@@ -138,6 +139,7 @@ test('publication observes invalidation before and after output without fabricat
     if (opened.status !== 'opened') throw new Error('Expected project');
     const { session } = opened;
     let output = '', error = '';
+    let observed: ObservationBatch | undefined;
     cases.push((async () => {
       try {
         const code = await publishCommand({ id: session.id, check: session.check, execute: (command, execution) => {
@@ -147,14 +149,12 @@ test('publication observes invalidation before and after output without fabricat
         } }, request, 'modules --json', configPath, 1, {
           stdout: text => { output += text; if (after) writeFileSync(source, 'export const changed = 2;'); },
           stderr: text => { error += text; },
-        }, { async submit(batch) {
-          assert.equal(batch.records.some(record => record.kind === 'qualified-view'), after);
-          assert.equal(batch.records.find(record => record.kind === 'rendered-output')!.value, output);
-          assert.ok(batch.events.some(event => event.type === 'session-invalidated'));
-          assert.equal(batch.events.some(event => event.type === 'view-produced'), after);
-          assert.equal(batch.events.some(event => event.type === 'source-escape'), false);
-          return { accepted: true };
-        } });
+        }, { async submit(batch) { observed = batch; return { accepted: true }; } });
+          assert.equal(observed!.records.some(record => record.kind === 'qualified-view'), after);
+          assert.equal(observed!.records.find(record => record.kind === 'rendered-output')!.value, output);
+          assert.ok(observed!.events.some(event => event.type === 'session-invalidated'));
+          assert.equal(observed!.events.some(event => event.type === 'view-produced'), after);
+          assert.equal(observed!.events.some(event => event.type === 'source-escape'), false);
         assert.equal(code, 2);
         assert.match(error, /invalidated/);
         assert.equal(output.length > 0, after);
@@ -262,7 +262,7 @@ for (const lens of ['modules', 'inspect', 'dependencies'] as const) {
 
 test('direct execution keeps two checks while publication performs three without a duplicate', async t => {
   const { publishCommand } = await import('../src/lib/command-execution.js');
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-check-count-'));
+  const root = temporaryDirectory(t, 'postcode-check-count-');
   const configPath = path.join(root, 'tsconfig.json');
   const source = path.join(root, 'entry.ts');
   writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
@@ -290,11 +290,11 @@ test('direct execution keeps two checks while publication performs three without
   } finally { session.close(); rmSync(root, { recursive: true, force: true }); }
 });
 
-test('worker delivery is validated before publication and emitted output survives later invalidation', async () => {
+test('worker delivery is validated before publication and emitted output survives later invalidation', async t => {
   const { publishCommand } = await import('../src/lib/command-execution.js');
   const { interactiveSession } = await import('../src/lib/interactive-session.js');
   for (const after of [false, true]) {
-    const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-worker-publication-'));
+    const root = temporaryDirectory(t, 'postcode-worker-publication-');
     const configPath = path.join(root, 'tsconfig.json');
     const source = path.join(root, 'entry.ts');
     writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');

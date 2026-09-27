@@ -1,7 +1,7 @@
+import { invokeCli, temporaryDirectory } from './cli-helpers.js';
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { cpSync, mkdtempSync, mkdirSync, readFileSync, readdirSync, realpathSync, rmSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
-import os from 'node:os';
+import { cpSync, mkdirSync, readFileSync, readdirSync, realpathSync, rmSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { test } from 'node:test';
 import { normalizeSession } from './helpers.js';
@@ -12,19 +12,12 @@ import { renderUnicode } from '../src/lib/presentation.js';
 import type { QualifiedView } from '../src/lib/presentation.js';
 
 const config = path.resolve('fixtures/exports/tsconfig.json');
-async function invoke(args: string[], sink?: ObservationSink, checkout = process.cwd()) {
-  let stdout = '';
-  let stderr = '';
-  const batches: ObservationBatch[] = [];
-  const exit = await runCli(args, { cwd: process.cwd(), checkout,
-    stdout: text => { stdout += text; }, stderr: text => { stderr += text; },
-    sink: sink ?? { async submit(batch) { batches.push(batch); return { accepted: true }; } },
-  });
-  return { stdout, stderr, exit, batches };
+function invoke(args: string[], sink?: ObservationSink, checkout = process.cwd()) {
+  return invokeCli(args, { checkout, ...(sink ? { sink, expectedWarning: true } : {}) });
 }
 
 function copyTestCheckout(checkout: string) {
-  cpSync('_build/src', path.join(checkout, '_build/src'), { recursive: true });
+  cpSync(new URL('../src', import.meta.url), path.join(checkout, '_build/src'), { recursive: true });
   writeFileSync(path.join(checkout, 'package.json'), '{"type":"module"}');
   symlinkSync(path.resolve('node_modules'), path.join(checkout, 'node_modules'), 'dir');
   // Node resolves the entry point's real path; use that same checkout for generated scope.
@@ -114,8 +107,8 @@ test('invalid CLI requests and project-open failures produce no view or misleadi
   }
 });
 
-test('malformed root and inherited configurations report each syntax diagnostic once', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-config-diagnostics-'));
+test('malformed root and inherited configurations report each syntax diagnostic once', async t => {
+  const root = temporaryDirectory(t, 'postcode-config-diagnostics-');
   try {
     const config = path.join(root, 'tsconfig.json');
     const malformed = '{"compilerOptions":{"noLib":true,"types":[]},"files":[]';
@@ -132,8 +125,8 @@ test('malformed root and inherited configurations report each syntax diagnostic 
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('configuration diagnostics retain equal messages at different files or positions', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-distinct-diagnostics-'));
+test('configuration diagnostics retain equal messages at different files or positions', async t => {
+  const root = temporaryDirectory(t, 'postcode-distinct-diagnostics-');
   try {
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"extends":["./first.json","./second.json"],"files":[]}');
@@ -173,8 +166,8 @@ test('retired scope options are rejected and source detail remains bounded to su
 });
 
 
-test('end-of-options preserves option-like exact names while keeping one-selector validation', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-option-names-'));
+test('end-of-options preserves option-like exact names while keeping one-selector validation', async t => {
+  const root = temporaryDirectory(t, 'postcode-option-names-');
   try {
     const checkout = copyTestCheckout(path.join(root, 'checkout'));
     const config = path.join(root, 'tsconfig.json');
@@ -202,8 +195,8 @@ test('end-of-options preserves option-like exact names while keeping one-selecto
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('target directories named like PostCode output retain configured sources and observe their changed exports', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-legitimate-inputs-'));
+test('target directories named like PostCode output retain configured sources and observe their changed exports', async t => {
+  const root = temporaryDirectory(t, 'postcode-legitimate-inputs-');
   try {
     for (const directory of ['_build', '_observations']) mkdirSync(path.join(root, directory));
     const config = path.join(root, 'tsconfig.json');
@@ -230,8 +223,8 @@ test('target directories named like PostCode output retain configured sources an
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('independent CLI processes reproduce JSON while the local sink writes private self-contained batches', () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-cli-'));
+test('independent CLI processes reproduce JSON while the local sink writes private self-contained batches', t => {
+  const root = temporaryDirectory(t, 'postcode-cli-');
   try {
     copyTestCheckout(root);
     const cli = path.join(root, '_build/src/cli.js');
@@ -261,8 +254,8 @@ test('independent CLI processes reproduce JSON while the local sink writes priva
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('local observation paths use one UTC clock reading for their date directory and timestamped filename', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-observation-path-'));
+test('local observation paths use one UTC clock reading for their date directory and timestamped filename', async t => {
+  const root = temporaryDirectory(t, 'postcode-observation-path-');
   try {
     const result = await invoke(['--project', config, '--json']);
     const batch = result.batches[0]!;
@@ -281,8 +274,8 @@ test('local observation paths use one UTC clock reading for their date directory
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('CLI explicitly excludes actual checkout output directories when analyzing a nested configuration', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-nested-'));
+test('CLI explicitly excludes actual checkout output directories when analyzing a nested configuration', async t => {
+  const root = temporaryDirectory(t, 'postcode-nested-');
   try {
     mkdirSync(path.join(root, 'nested'));
     mkdirSync(path.join(root, '_observations'));
@@ -297,8 +290,8 @@ test('CLI explicitly excludes actual checkout output directories when analyzing 
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('bounded exports and documentation disclose every material omission in both presentations', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-omission-'));
+test('bounded exports and documentation disclose every material omission in both presentations', async t => {
+  const root = temporaryDirectory(t, 'postcode-omission-');
   try {
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["large.ts"]}');
@@ -314,8 +307,8 @@ test('bounded exports and documentation disclose every material omission in both
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('conceptual documentation excerpts omit source examples and source-oriented tags with counts', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-source-docs-'));
+test('conceptual documentation excerpts omit source examples and source-oriented tags with counts', async t => {
+  const root = temporaryDirectory(t, 'postcode-source-docs-');
   try {
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["docs.ts"]}');
@@ -331,8 +324,8 @@ test('conceptual documentation excerpts omit source examples and source-oriented
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('Unicode distinguishes established empty exports from unresolved exports and explains display limits', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-empty-exports-'));
+test('Unicode distinguishes established empty exports from unresolved exports and explains display limits', async t => {
+  const root = temporaryDirectory(t, 'postcode-empty-exports-');
   try {
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
@@ -348,8 +341,8 @@ test('Unicode distinguishes established empty exports from unresolved exports an
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('inventory counts omitted external documentation while exact inspection makes it available', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-external-docs-'));
+test('inventory counts omitted external documentation while exact inspection makes it available', async t => {
+  const root = temporaryDirectory(t, 'postcode-external-docs-');
   try {
     const config = path.join(root, 'tsconfig.json');
     mkdirSync(path.join(root, 'node_modules/dependency'), { recursive: true });
@@ -387,8 +380,8 @@ test('inventory counts omitted external documentation while exact inspection mak
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('handles repeat current lookups while IDs do not provide cross-invocation navigation', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-handle-'));
+test('handles repeat current lookups while IDs do not provide cross-invocation navigation', async t => {
+  const root = temporaryDirectory(t, 'postcode-handle-');
   try {
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
@@ -414,8 +407,8 @@ test('handles repeat current lookups while IDs do not provide cross-invocation n
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('inspection suppresses ordinary provenance but preserves aliases and merged declarations', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-provenance-'));
+test('inspection suppresses ordinary provenance but preserves aliases and merged declarations', async t => {
+  const root = temporaryDirectory(t, 'postcode-provenance-');
   try {
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
@@ -448,8 +441,8 @@ test('common success state is compact but abnormal capability states remain expl
   assert.equal(unavailable.includes('Analysis complete:'), false);
 });
 
-test('compact inventory consolidates common labels and counts documentation beyond its export cues', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-display-scopes-'));
+test('compact inventory consolidates common labels and counts documentation beyond its export cues', async t => {
+  const root = temporaryDirectory(t, 'postcode-display-scopes-');
   try {
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"include":["*.ts"]}');
@@ -475,8 +468,8 @@ test('compact inventory consolidates common labels and counts documentation beyo
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('a mostly-type module uses an exported type cue instead of a helper predicate', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-type-handle-'));
+test('a mostly-type module uses an exported type cue instead of a helper predicate', async t => {
+  const root = temporaryDirectory(t, 'postcode-type-handle-');
   try {
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
@@ -486,8 +479,8 @@ test('a mostly-type module uses an exported type cue instead of a helper predica
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('one-shot lookup accepts project paths containing spaces and quotes without generated commands', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), "postcode-project's "));
+test('one-shot lookup accepts project paths containing spaces and quotes without generated commands', async t => {
+  const root = temporaryDirectory(t, "postcode-project's ");
   try {
     const checkout = copyTestCheckout(path.join(root, 'checkout'));
     const config = path.join(root, 'tsconfig.json');
@@ -502,8 +495,8 @@ test('one-shot lookup accepts project paths containing spaces and quotes without
 });
 
 
-test('one-shot name and handle collisions retain every match and do not accept copied IDs', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-shared-handle-'));
+test('one-shot name and handle collisions retain every match and do not accept copied IDs', async t => {
+  const root = temporaryDirectory(t, 'postcode-shared-handle-');
   try {
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["widget.ts","ambient.d.ts"]}');
@@ -522,8 +515,8 @@ test('one-shot name and handle collisions retain every match and do not accept c
 });
 
 
-test('basename mnemonic evidence stays distinct from names and precise scoped Entity IDs', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-mnemonic-'));
+test('basename mnemonic evidence stays distinct from names and precise scoped Entity IDs', async t => {
+  const root = temporaryDirectory(t, 'postcode-mnemonic-');
   try {
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"include":["**/*.ts"]}');
@@ -561,14 +554,14 @@ test('basename mnemonic evidence stays distinct from names and precise scoped En
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('exceptional inspections retain forwarding provenance, qualified failures, and truncated assertions', async () => {
+test('exceptional inspections retain forwarding provenance, qualified failures, and truncated assertions', async t => {
   const view = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
   const selected = view.modules.find(module => module.handle === 'chain')!;
   const reexport = await invoke(['inspect', selected.handle, '--project', config]);
   assert.ok(reexport.stdout.includes('wildcard'));
   assert.match(reexport.stdout, /origin: origin \(module-[a-f0-9]+\)/);
   assert.ok(reexport.stdout.includes('not calls or dependencies'));
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-inspection-'));
+  const root = temporaryDirectory(t, 'postcode-inspection-');
   try {
     const project = path.join(root, 'tsconfig.json');
     writeFileSync(project, '{"compilerOptions":{"noLib":true,"types":[]},"files":["index.ts"]}');
@@ -621,8 +614,8 @@ test('source expansion groups deduplicated evidence by displayed concepts with p
   assert.equal(view.sourceDetail!.level, 'declaration-locations-and-excerpts');
 });
 
-test('documentation wraps without changing stored text and source excerpts stay bounded to displayed subjects', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-source-bounds-'));
+test('documentation wraps without changing stored text and source excerpts stay bounded to displayed subjects', async t => {
+  const root = temporaryDirectory(t, 'postcode-source-bounds-');
   try {
     const project = path.join(root, 'tsconfig.json');
     writeFileSync(project, '{"compilerOptions":{"noLib":true,"types":[]},"files":["sample.ts"]}');
@@ -683,8 +676,8 @@ test('source hierarchy preserves forwarding, defining syntax and mixed documenta
   }
 });
 
-test('Unicode bounds each assertion to eight wrapped content lines with exact character and tag omissions', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-doc-height-'));
+test('Unicode bounds each assertion to eight wrapped content lines with exact character and tag omissions', async t => {
+  const root = temporaryDirectory(t, 'postcode-doc-height-');
   try {
     const project = path.join(root, 'tsconfig.json');
     writeFileSync(project, '{"compilerOptions":{"noLib":true,"types":[]},"files":["height.ts"]}');
@@ -707,8 +700,8 @@ test('Unicode bounds each assertion to eight wrapped content lines with exact ch
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('Unicode inline names and paths cannot inject structure while JSON and wrapped content retain source text', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-inline-controls-'));
+test('Unicode inline names and paths cannot inject structure while JSON and wrapped content retain source text', async t => {
+  const root = temporaryDirectory(t, 'postcode-inline-controls-');
   try {
     const config = path.join(root, 'tsconfig.json');
     const name = 'spoof\nStatus\tmarker\u2028tail\u061c\u200e\u200f\u202a\u202b\u202c\u202d\u202e\u2066\u2067\u2068\u2069';
@@ -750,8 +743,8 @@ test('Unicode inline names and paths cannot inject structure while JSON and wrap
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('control-bearing invocation paths stay out of conceptual output without generated commands', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-command-controls-'));
+test('control-bearing invocation paths stay out of conceptual output without generated commands', async t => {
+  const root = temporaryDirectory(t, 'postcode-command-controls-');
   try {
     const config = path.join(root, 'config\nStatus\tspoof.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
@@ -772,8 +765,8 @@ test('control-bearing invocation paths stay out of conceptual output without gen
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('observation destination disclosure escapes controls while the sink uses the original path', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-stderr-controls-'));
+test('observation destination disclosure escapes controls while the sink uses the original path', async t => {
+  const root = temporaryDirectory(t, 'postcode-stderr-controls-');
   try {
     const checkout = path.join(root, 'checkout-\n\t\u001b[2J\u0085\u2028\u2029\u202e\u2066\u2069');
     let stdout = '', stderr = '';
@@ -816,8 +809,8 @@ test('CLI error and observation-warning values cannot introduce diagnostic lines
   }
 });
 
-test('the executable escapes unexpected failure messages without changing exit status', () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-entry-error-'));
+test('the executable escapes unexpected failure messages without changing exit status', t => {
+  const root = temporaryDirectory(t, 'postcode-entry-error-');
   try {
     const checkout = copyTestCheckout(root);
     const message = 'failure\nFORGED\t\u001b[2J\u0085\u2028\u2029';
@@ -832,8 +825,8 @@ test('the executable escapes unexpected failure messages without changing exit s
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('configuration diagnostic locations are one-based across lines and safely escaped on stderr', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-config-location-'));
+test('configuration diagnostic locations are one-based across lines and safely escaped on stderr', async t => {
+  const root = temporaryDirectory(t, 'postcode-config-location-');
   try {
     const config = path.join(root, 'multiline\nStatus.json');
     writeFileSync(config, '{\n  "compilerOptions": {\n    "noLib": true\n    "types": []\n  },\n  "files": []\n}');
@@ -846,8 +839,8 @@ test('configuration diagnostic locations are one-based across lines and safely e
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('composition remains a separately qualified property in inspection and organization leaves', async () => {
-  const directory = mkdtempSync(path.join(os.tmpdir(), 'postcode-composition-view-'));
+test('composition remains a separately qualified property in inspection and organization leaves', async t => {
+  const directory = temporaryDirectory(t, 'postcode-composition-view-');
   try {
     execFileSync('git', ['init', '--quiet', directory]);
     writeFileSync(path.join(directory, 'tsconfig.json'), JSON.stringify({ compilerOptions: { noLib: true, types: [] }, files: ['forward.ts', 'target.ts'] }));

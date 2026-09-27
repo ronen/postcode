@@ -181,13 +181,13 @@ test('generated handles avoid compact Entity IDs across basename, language-name 
 });
 
 test('equivalent separate processes preserve semantic records, relationships and ordering', () => {
-  const invoke = () => execFileSync(process.execPath, ['_build/test/process-probe.js', fixture('module-population')], { encoding: 'utf8' });
+  const invoke = () => execFileSync(process.execPath, [new URL('./process-probe.js', import.meta.url).pathname, fixture('module-population')], { encoding: 'utf8' });
   assert.deepEqual(normalizeSession(JSON.parse(invoke())), normalizeSession(JSON.parse(invoke())));
 });
 
 test('a changed method version remains attributable in an independent process', () => {
   temporary(root => {
-    cpSync('_build', path.join(root, '_build'), { recursive: true });
+    cpSync(new URL('../', import.meta.url), path.join(root, '_build'), { recursive: true });
     writeFileSync(path.join(root, 'package.json'), '{"type":"module"}');
     symlinkSync(path.resolve('node_modules'), path.join(root, 'node_modules'), 'dir');
     const probe = path.join(root, '_build/test/process-probe.js');

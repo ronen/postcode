@@ -436,7 +436,7 @@ test('separate processes reproduce the same capture and prepared layout', () => 
   fixture((root, write) => {
     write('src/README');
     write('src/module.ts');
-    const probe = path.resolve('_build/test/repository-probe.js');
+    const probe = new URL('./repository-probe.js', import.meta.url).pathname;
     const run = () => execFileSync(process.execPath, [probe, path.join(root, 'tsconfig.json')], { encoding: 'utf8' });
     assert.equal(run(), run());
   });

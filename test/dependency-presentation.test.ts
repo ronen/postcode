@@ -1,21 +1,15 @@
+import { invokeCli, temporaryDirectory } from './cli-helpers.js';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
-import os from 'node:os';
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { test } from 'node:test';
 import { normalizeSession } from './helpers.js';
-import { runCli } from '../src/lib/cli.js';
-import type { ObservationBatch } from '../src/lib/observations.js';
 import { renderDependencyView, type QualifiedDependencyView } from '../src/lib/dependencies/presentation.js';
 import type { QualifiedView } from '../src/lib/presentation.js';
 
-async function invoke(config: string, args: string[]) {
-  let stdout = ''; let stderr = ''; const batches: ObservationBatch[] = [];
-  const exit = await runCli([...args, '--project', config], { cwd: process.cwd(), checkout: process.cwd(),
-    stdout: text => { stdout += text; }, stderr: text => { stderr += text; },
-    sink: { async submit(batch) { batches.push(batch); return { accepted: true }; } } });
-  return { stdout, stderr, exit, batches };
+function invoke(config: string, args: string[]) {
+  return invokeCli([...args, '--project', config]);
 }
 const viewOf = (result: Awaited<ReturnType<typeof invoke>>) => {
   assert.equal(result.exit, 0, result.stderr);
@@ -94,8 +88,8 @@ test('source-owned request results and recognition outcomes are separate and par
   assert.match(parents.stdout, /CommonJS coverage/);
 });
 
-test('opaque external endpoints render as leaves and never claim an established empty interior', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-dependency-external-'));
+test('opaque external endpoints render as leaves and never claim an established empty interior', async t => {
+  const root = temporaryDirectory(t, 'postcode-dependency-external-');
   try {
     mkdirSync(path.join(root, 'node_modules/outside'), { recursive: true });
     writeFileSync(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"module":"NodeNext","moduleResolution":"NodeNext","noLib":true,"types":[]},"files":["entry.ts"]}');
@@ -116,8 +110,8 @@ test('opaque external endpoints render as leaves and never claim an established 
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('cycle grouping retains internal edges and display depth omissions do not remove JSON graph facts', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-dependency-depth-'));
+test('cycle grouping retains internal edges and display depth omissions do not remove JSON graph facts', async t => {
+  const root = temporaryDirectory(t, 'postcode-dependency-depth-');
   try {
     execFileSync('git', ['init', '--quiet', root]);
     writeFileSync(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"noLib":true,"types":[]},"include":["*.ts"]}');
@@ -150,8 +144,8 @@ test('inspection by handle works independently of additional CommonJS dependency
   assert.notEqual(inspected.projection.session, initial.projection.session);
 });
 
-test('component bounds count disconnected omissions and terminal controls stay inert', async () => {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-dependency-bounds-'));
+test('component bounds count disconnected omissions and terminal controls stay inert', async t => {
+  const root = temporaryDirectory(t, 'postcode-dependency-bounds-');
   try {
     writeFileSync(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"noLib":true,"types":[]},"include":["*.ts"]}');
     for (let index = 0; index < 65; index++) writeFileSync(path.join(root, `m${index}.ts`), 'export const value = 1;');

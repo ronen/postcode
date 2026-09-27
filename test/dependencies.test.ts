@@ -270,9 +270,9 @@ test('empty and unavailable dependency evaluations are distinct; ordinary discov
 });
 
 test('dependency records reproduce in fresh processes without clock or invocation identity', () => {
-  const script = `import { openTypeScriptProject } from './_build/src/lib/typescript/project.js';
-    import { MemoryProgramRecordStore } from './_build/src/lib/memory-store.js';
-    import { evaluateDependencies } from './_build/src/lib/dependencies/evaluate.js';
+  const script = `import { openTypeScriptProject } from '${new URL('../src/lib/typescript/project.js', import.meta.url).href}';
+    import { MemoryProgramRecordStore } from '${new URL('../src/lib/memory-store.js', import.meta.url).href}';
+    import { evaluateDependencies } from '${new URL('../src/lib/dependencies/evaluate.js', import.meta.url).href}';
     const store = new MemoryProgramRecordStore();
     const opened = openTypeScriptProject({ configPath: 'fixtures/dependency-contract/tsconfig.json' });
     const result = evaluateDependencies(store, opened.analysis);

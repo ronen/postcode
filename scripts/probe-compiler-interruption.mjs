@@ -31,20 +31,20 @@ if (process.argv[2] === '--child') {
     writeFileSync(path.join(root, 'project/large.ts'), Array.from({ length: 80000 }, (_, i) => `const value${i} = ${i};`).join('\n') + '\nexport { value0 };\n');
     const run = interrupt => new Promise((resolve, reject) => {
       const child = fork(fileURLToPath(import.meta.url), ['--child', config], { stdio: ['ignore', 'ignore', 'pipe', 'ipc'] });
-      const phases = []; let compilerStack = ''; let signalledAt; let errors = '';
+      const phases = []; let compilerStack = ''; let signalledAt; let interruptTimer; let errors = '';
       const started = performance.now();
       const timer = setTimeout(() => { child.kill('SIGKILL'); reject(new Error('Compiler probe timed out')); }, 60000);
       child.stderr.on('data', text => { errors += text; });
       child.on('error', reject);
       child.on('message', message => {
         phases.push(message.phase);
-        if (message.phase === 'compiler-source-read') {
+        if (message.phase === 'compiler-source-read' && !compilerStack) {
           compilerStack = message.stack;
-          if (interrupt) setTimeout(() => { signalledAt = performance.now(); child.kill('SIGINT'); }, 20);
+          if (interrupt) interruptTimer = setTimeout(() => { signalledAt = performance.now(); child.kill('SIGINT'); }, 20);
         }
       });
       child.on('exit', (code, signal) => {
-        clearTimeout(timer);
+        clearTimeout(timer); clearTimeout(interruptTimer);
         try {
           assert.match(compilerStack, /host.getSourceFile/);
           assert.equal(errors, '');

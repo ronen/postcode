@@ -17,10 +17,8 @@ export function discover(configPath: string, excludedOutputDirectories: readonly
   return { store, evaluation, projection, claims, contexts, analysis: opened.analysis };
 }
 
-/** Only rename the session namespace; retain record relationships, content and ordering. */
-export function normalizeSession<T>(value: T): T {
-  return JSON.parse(JSON.stringify(value, (_key, item: unknown) => item instanceof Map ? { entries: [...item] } : item instanceof Set ? { values: [...item] } : item).replace(/session:[a-f0-9-]{36}/g, 'session:normalized').replace(/Session [a-f0-9-]{36}/g, 'Session normalized')) as T;
-}
+export { normalizeSession } from './comparison.js';
+import { normalizeSession } from './comparison.js';
 export function inputBasis(result: { store: ProgramRecordStore; evaluation: { contexts: readonly RecordId[] } }): string {
   const context = result.store.get(result.evaluation.contexts[0]!);
   if (context.kind !== 'claim-context' || !context.inputs) throw new Error('Expected captured analysis inputs');
