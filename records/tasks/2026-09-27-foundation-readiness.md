@@ -90,4 +90,20 @@ the re-review is complete, no further findings.  OK to defer those filesystem de
 
 ## Outcome
 
+Implementation checkpoint, 2026-09-28 (task remains active): M4 is implemented in
+`5e732dfcfeffb700570c7a5fd7591b4486a72446`. Stately owns the four planned generic
+graph operations behind a private adapter. Selected immutable inputs supply the
+processing indexes. Terminal layout uses display cells and grapheme boundaries;
+strict Node option scanning implements the approved grammar. Presentation advances
+to version 26. The implementation conventions now describe the graph boundary,
+index lifetime/order, strict scanner, and shared terminal fit/layout calculation.
+These operationalize the approved plan and graph decision without changing the
+governing architecture. M3's two filesystem defects remain explicitly deferred.
+Integrated comparisons, measurements and the M5 review gate remain outstanding.
+
 ## Verification
+
+M4 checkpoint: type checking and all 294 tests pass on the final application source.
+The graph/index checkpoint matched 72 CLI comparisons against accepted M3 before
+the intentional terminal version change. Final version-aligned and session-order
+comparisons are in progress; this is not final acceptance or task closure.
