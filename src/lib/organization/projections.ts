@@ -82,7 +82,8 @@ function project(store: ProgramRecordStore, evaluation: OrganizationEvaluationRe
   const moduleExpansions = store.evaluations(evaluation.session).filter(outcome => outcome.basis === moduleEvaluation.id
     && (outcome.modules.length === 0 || outcome.modules.some(id => moduleSubjects.has(id))));
   const selectedReference = [...groups, ...selectedModules].find(id => id === selector);
-  const selectorKey = selectedReference ? identityReference(evaluation.session, selectedReference) : selector;
+  // A resolved reference and a literal selector must occupy disjoint key spaces.
+  const selectorKey = selectedReference ? { reference: identityReference(evaluation.session, selectedReference) } : selector;
   const method = `${methods.projection};${methods.organization}`;
   const populationEstablished = completedMaterialization(evaluation)
     && (subject === 'repository' || completedMaterialization(evaluation.placement));

@@ -69,7 +69,8 @@ function project(store: ProgramRecordStore, evaluation: DependencyEvaluationReco
     expansion.contexts.forEach(id => contexts.add(id));
   }
   const selectedReference = subjects.find(id => id === selector);
-  const selectorKey = selectedReference ? identityReference(evaluation.session, selectedReference) : selector;
+  // A resolved reference and a literal selector must occupy disjoint key spaces.
+  const selectorKey = selectedReference ? { reference: identityReference(evaluation.session, selectedReference) } : selector;
   const method = methods.dependencyProjection;
   const projection: DependencyProjectionRecord = {
     kind: 'dependency-projection', method, session: evaluation.session,

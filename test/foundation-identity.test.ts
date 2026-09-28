@@ -1,4 +1,5 @@
 import crypto from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import { syncBuiltinESMExports } from 'node:module';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -10,6 +11,10 @@ import type { RecordId, SessionId } from '../src/lib/records.js';
 import { isCompositionContext, moduleLimitations } from '../src/lib/qualification-policy.js';
 import { createView, renderUnicode } from '../src/lib/presentation.js';
 import { inspect } from '../src/lib/projections.js';
+import { inspectOrganization } from '../src/lib/organization/projections.js';
+import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
+import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
+import { dependencyChildren, dependencyParents } from '../src/lib/dependencies/projections.js';
 import { discover } from './helpers.js';
 
 const a = 'session:11111111-1111-1111-1111-111111111111' as SessionId;
@@ -41,6 +46,68 @@ test('literal selectors containing the producing session cannot collide with the
   assert.equal(literal.parameters.selector, evaluation.session);
   assert.equal(word.parameters.selector, 'session');
 });
+
+test('resolved internal selectors cannot collide with literal normalized spellings in any projection family', t => {
+  const directory = temporaryDirectory(t, 'postcode-selector-collision-');
+  execFileSync('git', ['init', '--quiet', directory]);
+  const configPath = path.join(directory, 'tsconfig.json');
+  writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"include":["*.ts"]}');
+  writeFileSync(path.join(directory, 'a.ts'), 'export const value = 1;');
+  const initial = discover(configPath);
+  const spelling = identityReference(initial.evaluation.session, initial.evaluation.modules[0]!)!;
+  writeFileSync(path.join(directory, 'ambient.d.ts'), `declare module "${spelling}" { export const other: 2; }`);
+  const { store, evaluation, analysis, claims } = discover(configPath);
+  const file = claims.find(claim => claim.information.handle === 'a')!.subject;
+  const ambient = claims.find(claim => claim.information.name === spelling)!.subject;
+  const organization = evaluateOrganization(store, evaluation);
+  const dependency = evaluateDependencies(store, analysis);
+  for (const project of [
+    (selector: string) => inspect(store, evaluation, selector),
+    (selector: string) => inspectOrganization(store, organization, selector),
+    (selector: string) => dependencyChildren(store, dependency, selector),
+    (selector: string) => dependencyParents(store, dependency, selector),
+  ]) {
+    const resolved = project(file), literal = project(spelling);
+    assert.notEqual(resolved.id, literal.id);
+    assert.deepEqual(resolved.modules, [file]);
+    assert.deepEqual(literal.modules, [ambient]);
+    assert.equal(resolved.parameters.selector, file);
+    assert.equal(literal.parameters.selector, spelling);
+  }
+});
+
+for (const family of ['module', 'organization-module', 'organization-group', 'dependency-children', 'dependency-parents'] as const) {
+  test(`${family} projection normalizes resolved internal IDs across sessions and retains compact selection`, t => {
+    const directory = temporaryDirectory(t, 'postcode-selector-sessions-');
+    execFileSync('git', ['init', '--quiet', directory]);
+    const configPath = path.join(directory, 'tsconfig.json');
+    writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"files":["a.ts"]}');
+    writeFileSync(path.join(directory, 'a.ts'), 'export const value = 1;');
+    const projections = [discover(configPath), discover(configPath)].map(({ store, evaluation, analysis }) => {
+      const organization = evaluateOrganization(store, evaluation);
+      const dependency = evaluateDependencies(store, analysis);
+      const group = family === 'organization-group';
+      const selected = group ? organization.groups[0]! : evaluation.modules[0]!;
+      const compact = store.entityIds(group ? organization.groups : evaluation.modules, group ? 'group' : 'module').get(selected)!;
+      const project = (selector: string, reference = false) => family === 'module' ? inspect(store, evaluation, selector, reference)
+        : family.startsWith('organization') ? inspectOrganization(store, organization, selector, reference)
+          : family === 'dependency-children' ? dependencyChildren(store, dependency, selector, reference)
+            : dependencyParents(store, dependency, selector, reference);
+      const internal = project(selected), precise = project(compact, true);
+      assert.equal(internal.selection.matches, 1);
+      assert.equal(precise.selection.matches, 1);
+      assert.deepEqual(precise.modules, internal.modules);
+      if ('groups' in internal && 'groups' in precise) assert.deepEqual(precise.groups, internal.groups);
+      assert.equal(internal.parameters.selector, selected);
+      assert.equal(precise.parameters.selector, compact);
+      assert.notEqual(internal.id, precise.id);
+      return { internal, precise };
+    });
+    assert.notEqual(projections[0]!.internal.session, projections[1]!.internal.session);
+    assert.equal(suffix(projections[0]!.internal.id), suffix(projections[1]!.internal.id));
+    assert.equal(suffix(projections[0]!.precise.id), suffix(projections[1]!.precise.id));
+  });
+}
 
 test('qualification classification uses exact registered method identity, independent of limitation prose', () => {
   assert.equal(isCompositionContext({ method: `${methods.composition};typescript@6.0.3` }), true);

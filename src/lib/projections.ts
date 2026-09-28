@@ -44,7 +44,8 @@ function project(store: ProgramRecordStore, evaluation: EvaluationRecord, select
     return claim.kind === 'claim' && selected.has(claim.subject);
   });
   const selectedReference = modules.find(id => id === selector);
-  const selectorKey = selectedReference ? identityReference(evaluation.session, selectedReference) : selector;
+  // A resolved reference and a literal selector must occupy disjoint key spaces.
+  const selectorKey = selectedReference ? { reference: identityReference(evaluation.session, selectedReference) } : selector;
   const method = methods.projection;
   const projection: ProjectionRecord = {
     kind: 'projection', method, session: evaluation.session,

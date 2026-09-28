@@ -195,8 +195,8 @@ test('a changed method version remains attributable in an independent process', 
     const before = invoke();
     const implementation = path.join(root, '_build/src/lib/identity.js');
     const original = readFileSync(implementation, 'utf8');
-    assert.ok(original.includes('postcode/projection@8'));
-    writeFileSync(implementation, original.replace('postcode/projection@8', 'postcode/projection@verification-change'));
+    assert.ok(original.includes(methods.projection));
+    writeFileSync(implementation, original.replace(methods.projection, 'postcode/projection@verification-change'));
     assert.notEqual(invoke().projection.method, before.projection.method);
   });
 });
