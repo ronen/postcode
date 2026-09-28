@@ -14,15 +14,15 @@ const configPath = path.resolve('fixtures/dependency-journey/tsconfig.json');
 const request = { lens: 'dependencies' as const, selector: null, presentation: { format: 'json' as const, sourceDetail: true } };
 
 test('published navigation observations distinguish session references from exact lookups', async () => {
-  const opened = openSession({ configPath });
+  const opened = (await openSession({ configPath }));
   if (opened.status !== 'opened') throw new Error('Expected project');
   const { session } = opened;
   try {
-    const inventory = session.execute({ ...request, lens: 'modules', presentation: { format: 'json', sourceDetail: false } });
+    const inventory = (await session.execute({ ...request, lens: 'modules', presentation: { format: 'json', sourceDetail: false } }));
     if (inventory.view.schema !== 'postcode-view/1-experimental') throw new Error('Expected inventory');
     const reference = inventory.view.modules.find(module => module.handle === 'forward')!.entityId;
-    const organization = session.execute({ ...request, lens: 'organization', subject: 'repository',
-      presentation: { format: 'json', sourceDetail: false } });
+    const organization = (await session.execute({ ...request, lens: 'organization', subject: 'repository',
+      presentation: { format: 'json', sourceDetail: false } }));
     if (organization.view.schema !== 'postcode-organization-view/1-experimental') throw new Error('Expected organization');
     const group = organization.view.groups[0]!.entityId;
     const cases = [
@@ -54,21 +54,21 @@ test('published navigation observations distinguish session references from exac
       assert.equal(view.projection.selection.matches, item.matches, item.command);
       if (item.reference && item.matches === 0) assert.equal(view.projection.selection.referenceStatus, 'unknown-reference');
     }
-  } finally { session.close(); }
+  } finally { await session.close(); }
 });
 
-test('one-shot sessions own a project, produce correlated views, and release their state', () => {
-  const open = () => {
-    const result = openSession({ configPath });
+test('one-shot sessions own a project, produce correlated views, and release their state', async () => {
+  const open = async () => {
+    const result = (await openSession({ configPath }));
     assert.equal(result.status, 'opened');
     if (result.status !== 'opened') throw new Error('Expected project');
     return result.session;
   };
-  const first = open();
-  const second = open();
+  const first = (await open());
+  const second = (await open());
   try {
     assert.notEqual(first.id, second.id);
-    const a = first.execute(request), b = second.execute(request);
+    const a = (await first.execute(request)), b = (await second.execute(request));
     assert.equal(a.view.projection.session, first.id);
     assert.equal(b.view.projection.session, second.id);
     assert.deepEqual(normalizeSession(a.view), normalizeSession(b.view));
@@ -79,15 +79,15 @@ test('one-shot sessions own a project, produce correlated views, and release the
     assert.equal(batch.formatVersion, 1);
     assert.deepEqual(batch.events.map(event => event.type), ['view-produced', 'source-escape']);
     assert.equal(batch.records.find(record => record.kind === 'rendered-output')!.value, a.rendered);
-    assert.deepEqual(first.execute(request), a);
+    assert.deepEqual((await first.execute(request)), a);
     assert.throws(() => observationBatch(a.view, a.rendered, { configPath, repositoryRoot: a.repositoryRoot, methods: a.methods }, 0), /command order/);
-  } finally { first.close(); second.close(); }
-  assert.throws(() => first.execute(request), /closed/);
-  first.close();
+  } finally { await first.close(); await second.close(); }
+  await assert.rejects(async () => (await first.execute(request)), /closed/);
+  await first.close();
 });
 
-test('claim input support is a retained record distinct from session identity and validates at the store boundary', () => {
-  const result = discover(configPath);
+test('claim input support is a retained record distinct from session identity and validates at the store boundary', async () => {
+  const result = (await discover(configPath));
   const context = result.contexts[0]!;
   assert.ok(context.inputs);
   const inputs = result.store.get(context.inputs);
@@ -107,32 +107,32 @@ test('claim input support is a retained record distinct from session identity an
   assert.throws(() => unrelated.put([inputs]), /invalid session/);
 });
 
-test('accumulation preserves complete earlier views and precise references across independent requests', () => {
-  const opened = openSession({ configPath });
+test('accumulation preserves complete earlier views and precise references across independent requests', async () => {
+  const opened = (await openSession({ configPath }));
   assert.equal(opened.status, 'opened');
   if (opened.status !== 'opened') return;
   const { session } = opened;
   try {
-    const inventory = session.execute({ ...request, lens: 'modules', presentation: { format: 'json', sourceDetail: false } });
-    const before = structuredClone(inventory);
-    const dependency = session.execute(request);
-    assert.deepEqual(session.execute({ ...request, lens: 'modules', presentation: { format: 'json', sourceDetail: false } }), before);
+    const inventory = (await session.execute({ ...request, lens: 'modules', presentation: { format: 'json', sourceDetail: false } }));
+    const before = (await structuredClone(inventory));
+    const dependency = (await session.execute(request));
+    assert.deepEqual((await session.execute({ ...request, lens: 'modules', presentation: { format: 'json', sourceDetail: false } })), before);
     assert.deepEqual(inventory, before);
-    assert.deepEqual(session.execute(request), dependency);
+    assert.deepEqual((await session.execute(request)), dependency);
     if (inventory.view.schema !== 'postcode-view/1-experimental') throw new Error('Expected inventory');
     const module = inventory.view.modules.find(item => item.handle === 'forward')!;
-    const selected = session.execute({ ...request, lens: 'inspect', selector: module.entityId, reference: true });
+    const selected = (await session.execute({ ...request, lens: 'inspect', selector: module.entityId, reference: true }));
     assert.equal(selected.view.projection.selection.matches, 1);
     assert.ok(selected.rendered.includes(module.entityId));
-    session.execute({ ...request, lens: 'organization', subject: 'repository', presentation: { format: 'json', sourceDetail: false } });
-    assert.deepEqual(session.execute(request), dependency);
-    const fresh = openSession({ configPath });
+    await session.execute({ ...request, lens: 'organization', subject: 'repository', presentation: { format: 'json', sourceDetail: false } });
+    assert.deepEqual((await session.execute(request)), dependency);
+    const fresh = (await openSession({ configPath }));
     if (fresh.status !== 'opened') throw new Error('Expected project');
     try {
-      assert.deepEqual(normalizeSession(fresh.session.execute(request)), normalizeSession(dependency));
-      assert.deepEqual(normalizeSession(fresh.session.execute({ ...request, lens: 'modules', presentation: { format: 'json', sourceDetail: false } })), normalizeSession(inventory));
-    } finally { fresh.session.close(); }
-  } finally { session.close(); }
+      assert.deepEqual((await normalizeSession((await fresh.session.execute(request)))), (await normalizeSession(dependency)));
+      assert.deepEqual((await normalizeSession((await fresh.session.execute({ ...request, lens: 'modules', presentation: { format: 'json', sourceDetail: false } })))), (await normalizeSession(inventory)));
+    } finally { await fresh.session.close(); }
+  } finally { await session.close(); }
 });
 
 test('growing reference allocations cannot steal or lengthen earlier bindings', async () => {
@@ -150,20 +150,20 @@ test('growing reference allocations cannot steal or lengthen earlier bindings', 
 });
 
 test('Unicode reference misses preserve reference syntax and status in organization and module inspection', async () => {
-  const opened = openSession({ configPath });
+  const opened = (await openSession({ configPath }));
   if (opened.status !== 'opened') throw new Error('Expected project');
   const inspection = { ...request, lens: 'inspect' as const, selector: 'forward', presentation: { format: 'unicode' as const, sourceDetail: false } };
   try {
-    const exact = opened.session.execute(inspection);
+    const exact = (await opened.session.execute(inspection));
     assert.equal(exact.view.projection.selection.matches, 1);
-    const miss = opened.session.execute({ ...inspection, reference: true });
+    const miss = (await opened.session.execute({ ...inspection, reference: true }));
     assert.equal(miss.view.projection.selection.matches, 0);
     assert.match(miss.rendered, /0 exact matches for @forward · unknown-reference/);
     assert.equal(miss.view.schema, 'postcode-organization-view/1-experimental');
     const { inspect } = await import('../src/lib/projections.js');
     const { createView, renderUnicode } = await import('../src/lib/presentation.js');
-    const { store, evaluation } = discover(configPath);
+    const { store, evaluation } = (await discover(configPath));
     const moduleMiss = createView(store, inspect(store, evaluation, 'forward', true), inspection.presentation);
     assert.match(renderUnicode(moduleMiss), /no exact match for @forward · unknown-reference/);
-  } finally { opened.session.close(); }
+  } finally { await opened.session.close(); }
 });

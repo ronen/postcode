@@ -2,10 +2,11 @@ import path from 'node:path';
 import type { Readable } from 'node:stream';
 import { localFileObservationSink } from './observations.js';
 import type { ObservationSink } from './observations.js';
-import { openSession } from './session.js';
+import { interactiveSession } from './interactive-session.js';
+import { CommandInterrupted, CleanupIncomplete } from './execution-errors.js';
 import { inlineText } from './terminal-text.js';
 import { help, parseCommand } from './commands.js';
-import { publishCommand } from './command-execution.js';
+import { publishCommand, openFailureText } from './command-execution.js';
 import { runShell } from './shell.js';
 
 export interface CliEnvironment {
@@ -24,14 +25,25 @@ export async function runCli(args: readonly string[], environment: CliEnvironmen
   if (parsed.kind === 'exit') return 0;
   if (parsed.kind === 'shell') return runShell(parsed, environment);
   const destination = path.resolve(environment.checkout, '_observations');
-  const opened = openSession({ configPath: parsed.configPath, excludedOutputDirectories: [destination, path.resolve(environment.checkout, '_build')] });
-  if (opened.status !== 'opened') {
-    environment.stderr(`Project open failed:\n${opened.diagnostics.map(diagnostic => `  TS${diagnostic.code}: ${inlineText(diagnostic.message)}`).join('\n')}\n`);
-    return 2;
-  }
+  const localSink = localFileObservationSink(destination, parsed.configPath);
+  const remote = interactiveSession({ configPath: parsed.configPath, excludedOutputDirectories: [destination, path.resolve(environment.checkout, '_build')] });
+  const interrupt = () => { void remote.interrupt().catch(() => {}); };
+  process.on('SIGINT', interrupt);
   try {
-    environment.stderr(`Local observations: ${inlineText(destination)} (may contain repository-derived text and explicitly requested source locations).\n`);
-    return await publishCommand(opened.session, parsed.request, args, parsed.configPath, 1,
-      environment, environment.sink ?? localFileObservationSink(destination));
-  } finally { opened.session.close(); }
+    let opened;
+    try { opened = await remote.opening; }
+    catch (error) {
+      if (error instanceof CommandInterrupted) { environment.stderr(`${error.message}\n`); return 130; }
+      if (error instanceof CleanupIncomplete) { environment.stderr(`Project open failed:\n  ${inlineText(error.message)}\n`); return 2; }
+      throw error;
+    }
+    if (opened.status !== 'opened') { environment.stderr(openFailureText(opened)); return 2; }
+    environment.stderr(`Local observations: ${inlineText(localSink.destination)} (may contain repository-derived text and explicitly requested source locations).\n`);
+    return await publishCommand({ id: opened.id, execute: remote.execute, check: remote.check }, parsed.request, args, parsed.configPath, 1,
+      environment, environment.sink ?? localSink);
+  } finally {
+    process.removeListener('SIGINT', interrupt);
+    try { await remote.close(); }
+    catch (error) { environment.stderr(`WARNING: ${inlineText(error instanceof Error ? error.message : 'Cleanup unconfirmed')}\n`); }
+  }
 }

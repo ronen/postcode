@@ -160,7 +160,6 @@ identified as necessary. The composition-policy uncertainty has been resolved by
 human direction and independently verified. No findings have been rejected or
 materially qualified.
 
-The implementing agent has requested the human's gate decision before proceeding
-to M3, as the plan and review workflow require; reviewer recommendation alone is
-not recorded as human acceptance. Pending that decision, the task remains active
-and M3–M5 work has not resumed.
+On 2026-09-28, the human explicitly accepted M2 and directed implementation to
+proceed to M3, as preserved in the task record. The M2 gate is satisfied. The task
+remains active; M3 has its own independent-review gate, and M4–M5 remain outstanding.

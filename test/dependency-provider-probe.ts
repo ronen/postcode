@@ -10,7 +10,7 @@ const configPath = path.resolve(process.argv[2]!);
 const base = path.dirname(configPath);
 const relative = (file: string) => path.relative(base, file).split(path.sep).join('/');
 const started = performance.now();
-const opened = openTypeScriptProject({ configPath, excludedOutputDirectories: [path.resolve('_build'), path.resolve('_observations')] });
+const opened = (await openTypeScriptProject({ configPath, excludedOutputDirectories: [path.resolve('_build'), path.resolve('_observations')] }));
 if (opened.status !== 'opened') {
   console.log(JSON.stringify(opened, null, 2));
 } else {

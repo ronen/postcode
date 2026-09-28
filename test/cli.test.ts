@@ -28,7 +28,10 @@ function assertRecordedOutput(checkout: string, output: string) {
   const sink = path.join(checkout, '_observations');
   const directories = readdirSync(sink);
   assert.equal(directories.length, 1);
-  const datedDirectory = path.join(sink, directories[0]!);
+  const projectDirectory = path.join(sink, directories[0]!);
+  const dates = readdirSync(projectDirectory);
+  assert.equal(dates.length, 1);
+  const datedDirectory = path.join(projectDirectory, dates[0]!);
   const files = readdirSync(datedDirectory);
   assert.equal(files.length, 1);
   const batch = JSON.parse(readFileSync(path.join(datedDirectory, files[0]!), 'utf8')) as ObservationBatch;
@@ -235,10 +238,14 @@ test('independent CLI processes reproduce JSON while the local sink writes priva
     const unicode = execFileSync(process.execPath, unicodeArgs, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
     assert.equal(normalizeSession(execFileSync(process.execPath, unicodeArgs, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })), normalizeSession(unicode));
     const sink = path.join(root, '_observations');
-    const datedDirectories = readdirSync(sink);
-    assert.ok(datedDirectories.every(directory => /^date=\d{4}-\d{2}-\d{2}$/.test(directory)));
+    const projects = readdirSync(sink);
+    assert.equal(projects.length, 1);
+    const projectDirectory = path.join(sink, projects[0]!);
+    assert.equal(statSync(projectDirectory).mode & 0o777, 0o700);
+    const datedDirectories = readdirSync(projectDirectory);
+    assert.ok(datedDirectories.every(directory => /^\d{4}-\d{2}-\d{2}$/.test(directory)));
     const files = datedDirectories.flatMap(directory => {
-      const datedDirectory = path.join(sink, directory);
+      const datedDirectory = path.join(projectDirectory, directory);
       assert.equal(statSync(datedDirectory).mode & 0o777, 0o700);
       return readdirSync(datedDirectory).map(file => path.join(datedDirectory, file));
     });
@@ -246,7 +253,7 @@ test('independent CLI processes reproduce JSON while the local sink writes priva
     assert.equal(statSync(sink).mode & 0o777, 0o700);
     for (const file of files) {
       assert.match(path.basename(file),
-        /^timestamp=\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}\.\d{3}Z_[\da-f-]{36}\.json$/);
+        /^\d{2}-\d{2}-\d{2}\.\d{3}Z_[\da-f-]{36}\.json$/);
       assert.equal(statSync(file).mode & 0o777, 0o600);
       const batch = JSON.parse(readFileSync(file, 'utf8')) as ObservationBatch;
       assert.ok([output, unicode].map(value => normalizeSession(value)).includes(normalizeSession(batch.records.find(record => record.kind === 'rendered-output')!.value as string)));
@@ -260,14 +267,14 @@ test('local observation paths use one UTC clock reading for their date directory
     const result = await invoke(['--project', config, '--json']);
     const batch = result.batches[0]!;
     let clockReads = 0;
-    const sink = localFileObservationSink(path.join(root, '_observations'), () => {
+    const sink = localFileObservationSink(path.join(root, '_observations'), config, { now: () => {
       clockReads++;
       return new Date('2026-09-14T23:45:06.007Z');
-    });
+    } });
     await sink.submit(batch);
     assert.equal(clockReads, 1);
-    const datedDirectory = path.join(root, '_observations/date=2026-09-14');
-    const filename = `timestamp=2026-09-14T23-45-06.007Z_${batch.id}.json`;
+    const datedDirectory = path.join(sink.destination, '2026-09-14');
+    const filename = `23-45-06.007Z_${batch.id}.json`;
     assert.deepEqual(JSON.parse(readFileSync(path.join(datedDirectory, filename), 'utf8')), batch);
     assert.equal(statSync(datedDirectory).mode & 0o777, 0o700);
     assert.equal(statSync(path.join(datedDirectory, filename)).mode & 0o777, 0o600);
@@ -779,7 +786,10 @@ test('observation destination disclosure escapes controls while the sink uses th
     const destination = path.join(checkout, '_observations');
     const directories = readdirSync(destination);
     assert.equal(directories.length, 1);
-    const datedDirectory = path.join(destination, directories[0]!);
+    const projectDirectory = path.join(destination, directories[0]!);
+    const dates = readdirSync(projectDirectory);
+    assert.equal(dates.length, 1);
+    const datedDirectory = path.join(projectDirectory, dates[0]!);
     const files = readdirSync(datedDirectory);
     assert.equal(files.length, 1);
     const batch = JSON.parse(readFileSync(path.join(datedDirectory, files[0]!), 'utf8')) as ObservationBatch;

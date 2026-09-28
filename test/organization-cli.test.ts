@@ -185,7 +185,7 @@ test('shared groups expand once; link mechanics stay in source detail and placem
 
 test('partial module evaluation preserves organization views and unknown properties without I/O on construction', async () => {
   await fixture(async root => {
-    const { store, analysis } = discover(path.join(root, 'tsconfig.json'));
+    const { store, analysis } = await discover(path.join(root, 'tsconfig.json'));
     const evaluation = evaluateModules(store, analysis, organizationPresentationRequirements.modules);
     const partial = { ...evaluation, id: recordId(evaluation.session, 'evaluation', 'partial-view'),
       execution: 'stopped' as const, materialization: 'partial' as const, modules: evaluation.modules.slice(0, 1), reason: 'Stopped fixture.' };
@@ -247,7 +247,7 @@ test('organization output reproduces across processes and escapes control charac
         cwd:process.cwd(), checkout:process.cwd(), stdout:s=>process.stdout.write(s), stderr:()=>{},
         sink:{ async submit(){return {accepted:true};} }
       });`;
-    const run = () => execFileSync(process.execPath, ['--input-type=module', '-e', script, config], { encoding: 'utf8' });
+    const run = () => execFileSync(process.execPath, ['--expose-gc', '--input-type=module', '-e', script, config], { encoding: 'utf8' });
     const first = run();
     assert.deepEqual(normalizeSession(JSON.parse(run())), normalizeSession(JSON.parse(first)));
     const json = viewOf({ stdout: first });
@@ -276,7 +276,7 @@ test('group expansion limit is a display omission while root inspection retains 
 
 test('candidate ambiguity retains partial status and reachable candidate groups without asserting placements', async () => {
   await fixture(async root => {
-    const { store, evaluation } = discover(path.join(root, 'tsconfig.json'));
+    const { store, evaluation } = await discover(path.join(root, 'tsconfig.json'));
     const outcome = evaluateOrganization(store, evaluation);
     const claims = outcome.claims.map(id => store.get(id) as OrganizationClaims);
     const original = claims.find((claim): claim is ModulePlacementClaim => claim.information.type === 'module-placement')!;

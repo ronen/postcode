@@ -11,8 +11,8 @@ import { inspect, modules } from '../src/lib/projections.js';
 import type { ClaimContextRecord, ExportClaim, ModuleExpansion, RecordedAssertion, SourceEvidenceRecord, SymbolClaim, SymbolRecord } from '../src/lib/records.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
 
-function expanded(configPath = path.resolve('fixtures/exports/tsconfig.json'), requested: readonly ModuleExpansion[] = ['exports', 'documentation']) {
-  const opened = openTypeScriptProject({ configPath });
+async function expanded(configPath = path.resolve('fixtures/exports/tsconfig.json'), requested: readonly ModuleExpansion[] = ['exports', 'documentation']) {
+  const opened = (await openTypeScriptProject({ configPath }));
   assert.equal(opened.status, 'opened');
   if (opened.status !== 'opened') throw new Error('Open failure');
   const store = new MemoryProgramRecordStore();
@@ -33,8 +33,8 @@ function expanded(configPath = path.resolve('fixtures/exports/tsconfig.json'), r
   return { store, evaluation, projection, exports, from, symbolClaim };
 }
 
-test('effective surfaces include direct/default/aliased/wildcard/chained exports and preserve origin identity', () => {
-  const { from } = expanded();
+test('effective surfaces include direct/default/aliased/wildcard/chained exports and preserve origin identity', async () => {
+  const { from } = (await expanded());
   assert.deepEqual(from('origin.ts').map(claim => claim.information.exportedName), ['Dual', 'Merged', 'default', 'overloaded', 'value']);
   assert.deepEqual(from('barrel.ts').map(claim => claim.information.exportedName), ['Dual', 'Merged', 'Renamed', 'default', 'overloaded', 'value']);
   assert.deepEqual(from('chain.ts').map(claim => claim.information.exportedName), ['Dual', 'Merged', 'Renamed', 'overloaded', 'value']);
@@ -46,8 +46,8 @@ test('effective surfaces include direct/default/aliased/wildcard/chained exports
   assert.equal(from('chain.ts').find(claim => claim.information.exportedName === 'Dual')!.information.routes.filter(route => route.kind === 'wildcard').length, 2);
 });
 
-test('type, value and dual roles survive type-only direct and chained forwarding', () => {
-  const { from } = expanded();
+test('type, value and dual roles survive type-only direct and chained forwarding', async () => {
+  const { from } = (await expanded());
   const roles = (file: string, name: string) => from(file).find(claim => claim.information.exportedName === name)!.information.roles;
   assert.deepEqual(roles('origin.ts', 'Dual'), { type: true, value: true });
   assert.deepEqual(roles('origin.ts', 'Merged'), { type: true, value: false });
@@ -57,14 +57,14 @@ test('type, value and dual roles survive type-only direct and chained forwarding
   assert.deepEqual(roles('import-alias.ts', 'ImportedType'), { type: true, value: false });
 });
 
-test('overloads and merged declarations are one semantic symbol with separate evidence', () => {
-  const { from, symbolClaim } = expanded();
+test('overloads and merged declarations are one semantic symbol with separate evidence', async () => {
+  const { from, symbolClaim } = (await expanded());
   assert.equal(symbolClaim(from('origin.ts').find(claim => claim.information.exportedName === 'Merged')!).information.declarationCount, 2);
   assert.equal(symbolClaim(from('origin.ts').find(claim => claim.information.exportedName === 'overloaded')!).information.declarationCount, 3);
 });
 
-test('module and symbol documentation, tags and independent contributions remain recorded assertions', () => {
-  const { store, projection } = expanded();
+test('module and symbol documentation, tags and independent contributions remain recorded assertions', async () => {
+  const { store, projection } = (await expanded());
   const assertions = projection.expansions.claims.map(id => store.get(id)).flatMap(record =>
     record.kind === 'claim' && record.information.type === 'documentation-association'
       ? [store.get(record.information.assertion) as RecordedAssertion] : []);
@@ -76,8 +76,8 @@ test('module and symbol documentation, tags and independent contributions remain
   assert.ok(assertions.some(assertion => assertion.text === 'Alias-specific documentation.'));
 });
 
-test('export assignments are represented explicitly', () => {
-  const { from } = expanded();
+test('export assignments are represented explicitly', async () => {
+  const { from } = (await expanded());
   const assignment = from('assignment.cts').find(claim => claim.information.exportedName === 'export=');
   assert.ok(assignment);
   assert.ok(assignment.information.routes.some(route => route.kind === 'export-assignment'));
@@ -87,11 +87,11 @@ test('export assignments are represented explicitly', () => {
   assert.deepEqual(property.information.roles, { type: false, value: true });
 });
 
-test('expansions are requested before evaluation and inspect includes only selected expansion subjects', () => {
-  const unexpanded = expanded(undefined, []);
+test('expansions are requested before evaluation and inspect includes only selected expansion subjects', async () => {
+  const unexpanded = (await expanded(undefined, []));
   assert.deepEqual(unexpanded.projection.expansions.requested, []);
   assert.deepEqual(unexpanded.projection.expansions.claims, []);
-  const { store, evaluation, from } = expanded();
+  const { store, evaluation, from } = (await expanded());
   const selected = from('origin.ts')[0]!.subject;
   const projection = inspect(store, evaluation, selected);
   const relationships = projection.expansions.claims.map(id => store.get(id)).filter(record => record.kind === 'claim' && record.information.type === 'export');
@@ -99,13 +99,13 @@ test('expansions are requested before evaluation and inspect includes only selec
   assert.ok(relationships.every(record => record.kind === 'claim' && record.subject === selected));
 });
 
-test('unresolved export targets produce partial expansion outcomes even when no export entity is available', () => {
+test('unresolved export targets produce partial expansion outcomes even when no export entity is available', async () => {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-unresolved-'));
   try {
     writeFileSync(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"noLib":true,"types":[]},"files":["missing.ts","healthy.ts"]}');
     writeFileSync(path.join(root, 'healthy.ts'), 'export const healthy = 1;');
     writeFileSync(path.join(root, 'missing.ts'), 'export * from "./absent"; export { no } from "./absent";');
-    const { store, projection, evaluation, from } = expanded(path.join(root, 'tsconfig.json'));
+    const { store, projection, evaluation, from } = (await expanded(path.join(root, 'tsconfig.json')));
     assert.equal(evaluation.materialization, 'full');
     assert.ok(projection.evaluations.map(id => store.get(id)).some(record => record.kind === 'evaluation' && record.materialization === 'partial'));
     const healthy = inspect(store, evaluation, from('healthy.ts')[0]!.subject);
@@ -114,8 +114,8 @@ test('unresolved export targets produce partial expansion outcomes even when no 
 });
 
 
-test('requested expansion kinds are unique while qualified evaluation scopes remain per module', () => {
-  const { store, evaluation, projection } = expanded();
+test('requested expansion kinds are unique while qualified evaluation scopes remain per module', async () => {
+  const { store, evaluation, projection } = (await expanded());
   assert.ok(projection.modules.length > 1);
   for (const selected of [projection, inspect(store, evaluation, projection.modules[0]!), inspect(store, evaluation, 'absent')]) {
     assert.deepEqual(selected.expansions.requested, ['exports', 'documentation']);
@@ -133,7 +133,7 @@ test('requested expansion kinds are unique while qualified evaluation scopes rem
   }
 });
 
-test('renamed re-export traversal revisits a module under another name and still terminates true cycles', () => {
+test('renamed re-export traversal revisits a module under another name and still terminates true cycles', async () => {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-reexport-cycle-'));
   try {
     const config = path.join(root, 'tsconfig.json');
@@ -143,7 +143,7 @@ test('renamed re-export traversal revisits a module under another name and still
     writeFileSync(path.join(root, 'c.ts'), "export * from './d.js'; export * from './e.js';");
     writeFileSync(path.join(root, 'd.ts'), "export * from './c.js';");
     writeFileSync(path.join(root, 'e.ts'), 'export const value=1;');
-    const { from, store } = expanded(config);
+    const { from, store } = (await expanded(config));
     const alias = from('a.ts').find(claim => claim.information.exportedName === 'a')!;
     const local = from('a.ts').find(claim => claim.information.exportedName === 'b')!;
     assert.deepEqual(alias.information.routes.map(route => route.kind), ['reexport', 'reexport', 'direct']);
@@ -158,7 +158,7 @@ test('renamed re-export traversal revisits a module under another name and still
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('layered wildcard diamonds retain linear route evidence and value reachability through mixed cyclic branches', () => {
+test('layered wildcard diamonds retain linear route evidence and value reachability through mixed cyclic branches', async () => {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-export-diamond-'));
   try {
     const config = path.join(root, 'tsconfig.json');
@@ -174,7 +174,7 @@ test('layered wildcard diamonds retain linear route evidence and value reachabil
     writeFileSync(path.join(root, 'typed.ts'), "export type * from './top.js';");
     writeFileSync(path.join(root, 'mixed.ts'), "export type * from './typed.js'; export * from './loop.js';");
     writeFileSync(path.join(root, 'loop.ts'), "export * from './mixed.js'; export * from './top.js';");
-    const result = expanded(config);
+    const result = (await expanded(config));
     const top = result.from('top.ts')[0]!;
     // Two root edges, four per non-leaf layer, two leaf edges and one declaration.
     assert.equal(top.information.routes.length, 4 * layers + 1);
@@ -182,6 +182,6 @@ test('layered wildcard diamonds retain linear route evidence and value reachabil
     assert.deepEqual(result.from('typed.ts')[0]!.information.roles, { type: true, value: false });
     assert.deepEqual(result.from('mixed.ts')[0]!.information.roles, { type: true, value: true });
     assert.ok(result.from('mixed.ts')[0]!.information.routes.length <= 4 * layers + 6);
-    assert.deepEqual(normalizeSession(expanded(config).from('top.ts')[0]), normalizeSession(top));
+    assert.deepEqual(normalizeSession((await expanded(config)).from('top.ts')[0]), normalizeSession(top));
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

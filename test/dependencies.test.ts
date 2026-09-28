@@ -12,8 +12,8 @@ import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import type { ModuleClaim, ProgramRecord, RecordId, SourceEvidenceRecord } from '../src/lib/records.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
 
-function analyze(config: string, excludedOutputDirectories: readonly string[] = []) {
-  const opened = openTypeScriptProject({ configPath: config, excludedOutputDirectories });
+async function analyze(config: string, excludedOutputDirectories: readonly string[] = []) {
+  const opened = (await openTypeScriptProject({ configPath: config, excludedOutputDirectories }));
   assert.equal(opened.status, 'opened');
   if (opened.status !== 'opened') throw new Error(JSON.stringify(opened));
   const store = new MemoryProgramRecordStore();
@@ -31,7 +31,7 @@ function analyze(config: string, excludedOutputDirectories: readonly string[] = 
   };
   return { store, evaluation, occurrences, relationships, coverage, source, name };
 }
-function temporary(files: Record<string, string>, run: (root: string) => void, options: object = {}, roots?: string[]) {
+async function temporary(files: Record<string, string>, run: (root: string) => void | Promise<void>, options: object = {}, roots?: string[]) {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-dependencies-'));
   try {
     for (const [name, text] of Object.entries(files)) {
@@ -43,13 +43,13 @@ function temporary(files: Record<string, string>, run: (root: string) => void, o
       compilerOptions: { target: 'ES2022', module: 'NodeNext', moduleResolution: 'NodeNext', noLib: true, types: [], ...options },
       files: roots ?? Object.keys(files).filter(name => /\.[cm]?[jt]s$/.test(name) && !name.includes('node_modules')),
     }));
-    run(root);
+    await run(root);
   } finally { rmSync(root, { recursive: true, force: true }); }
 }
 const fixture = (name: string) => path.resolve('fixtures', name, 'tsconfig.json');
 
-test('production dependencies retain supported mechanisms, direct intermediates and every aggregated occurrence', () => {
-  const result = analyze(fixture('dependency-contract'));
+test('production dependencies retain supported mechanisms, direct intermediates and every aggregated occurrence', async () => {
+  const result = (await analyze(fixture('dependency-contract')));
   const { occurrences, relationships, coverage, source, name, evaluation } = result;
   assert.equal(evaluation.execution, 'completed');
   assert.equal(evaluation.materialization, 'full');
@@ -85,15 +85,15 @@ test('production dependencies retain supported mechanisms, direct intermediates 
   assert.equal(ambient.information.occurrences.length, 4);
 });
 
-test('production recognition applies classic, mixed and preserve context precedence', () => {
+test('production recognition applies classic, mixed and preserve context precedence', async () => {
   for (const [mode, format] of [['classic', 'commonjs-option'], ['mixed', 'commonjs-file'], ['preserve', 'preserve-option']] as const) {
-    const { occurrences, coverage } = analyze(fixture(`dependency-context/${mode}`));
+    const { occurrences, coverage } = (await analyze(fixture(`dependency-context/${mode}`)));
     assert.ok(occurrences.some(item => item.commonjs?.format === format && item.commonjs.binding === 'callable-ambient'));
     if (mode !== 'classic') assert.ok(coverage.some(item => item.commonjs?.format === 'esm-file' && item.outcome === 'unsupported-format'));
   }
 });
 
-test('production declaration evidence distinguishes same-kind implementations, named annotations, conflicts and insufficiency', () => {
+test('production declaration evidence distinguishes same-kind implementations, named annotations, conflicts and insufficiency', async () => {
   const cases = [
     ['', 'recognized', 'absent'],
     ['var require = (name) => name;', 'alternative-binding', 'alternative'],
@@ -109,8 +109,8 @@ test('production declaration evidence distinguishes same-kind implementations, n
     ['declare var require;', 'insufficient-binding-evidence', 'insufficient'],
   ];
   for (const [declarations, outcome, binding] of cases) {
-    temporary({ 'entry.ts': "export {}; require('./target');", 'target.ts': 'export {};', 'globals.ts': declarations! }, root => {
-      const result = analyze(path.join(root, 'tsconfig.json'));
+    await temporary({ 'entry.ts': "export {}; require('./target');", 'target.ts': 'export {};', 'globals.ts': declarations! }, async root => {
+      const result = (await analyze(path.join(root, 'tsconfig.json')));
       const records = [...result.occurrences, ...result.coverage];
       assert.equal(records.length, 1, declarations);
       assert.equal(records[0]!.commonjs?.outcome, outcome, declarations);
@@ -120,27 +120,27 @@ test('production declaration evidence distinguishes same-kind implementations, n
   }
 });
 
-test('production missing declaration evidence permits CommonJS but not preserve or unset-mode fallback', () => {
+test('production missing declaration evidence permits CommonJS but not preserve or unset-mode fallback', async () => {
   for (const [module, expected] of [['CommonJS', 'recognized'], ['Preserve', 'insufficient-context'], [null, 'insufficient-context']] as const) {
-    temporary({ 'entry.ts': "export {}; require('./target');", 'target.ts': 'export {};' }, root => {
+    await temporary({ 'entry.ts': "export {}; require('./target');", 'target.ts': 'export {};' }, async root => {
       const config = path.join(root, 'tsconfig.json');
       if (module === null) {
         const parsed = JSON.parse(readFileSync(config, 'utf8'));
         delete parsed.compilerOptions.module;
         writeFileSync(config, JSON.stringify(parsed));
       }
-      const result = analyze(config);
+      const result = (await analyze(config));
       assert.equal([...result.occurrences, ...result.coverage][0]!.commonjs?.outcome, expected);
     }, { module: module ?? 'CommonJS', moduleResolution: module === 'Preserve' ? 'Bundler' : 'Node10', target: 'ES5', ignoreDeprecations: '6.0' });
   }
-  for (const extension of ['cts', 'cjs']) temporary({ [`entry.${extension}`]: "export {}; require('./target');", 'target.ts': 'export {};' }, root => {
-    const result = analyze(path.join(root, 'tsconfig.json'));
+  for (const extension of ['cts', 'cjs']) await temporary({ [`entry.${extension}`]: "export {}; require('./target');", 'target.ts': 'export {};' }, async root => {
+    const result = (await analyze(path.join(root, 'tsconfig.json')));
     assert.equal(result.occurrences[0]!.commonjs?.binding, 'absent');
     assert.equal(result.occurrences[0]!.targetStatus, 'resolved');
   }, { allowJs: true });
 });
 
-test('production lexical completion rejects parse recovery, with scopes and all tested local binding shapes', () => {
+test('production lexical completion rejects parse recovery, with scopes and all tested local binding shapes', async () => {
   const bodies = [
     "require('./target'); const = ;", "with ({}) { require('./target'); }",
     "function f(require) { require('./target'); }", "function f() { require('./target'); var require; }",
@@ -148,13 +148,13 @@ test('production lexical completion rejects parse recovery, with scopes and all 
     "for (const require of []) { require('./target'); }", "function f({ require }) { require('./target'); }",
     "declare const require: (s: string) => unknown; require('./target');",
   ];
-  for (const [index, body] of bodies.entries()) temporary({ 'entry.cts': `export {}; ${body}`, 'target.ts': 'export {};' }, root => {
-    const result = analyze(path.join(root, 'tsconfig.json'));
+  for (const [index, body] of bodies.entries()) await temporary({ 'entry.cts': `export {}; ${body}`, 'target.ts': 'export {};' }, async root => {
+    const result = (await analyze(path.join(root, 'tsconfig.json')));
     assert.equal(result.occurrences.length, 0, body);
     assert.equal(result.coverage[0]!.outcome, index < 2 ? 'insufficient-lexical-evidence' : 'alternative-binding', body);
   });
-  temporary({ 'entry.cjs': "export {}; require(require('./target')); function f(require) { require(require('./target')); }", 'target.ts': 'export {};' }, root => {
-    const result = analyze(path.join(root, 'tsconfig.json'));
+  await temporary({ 'entry.cjs': "export {}; require(require('./target')); function f(require) { require(require('./target')); }", 'target.ts': 'export {};' }, async root => {
+    const result = (await analyze(path.join(root, 'tsconfig.json')));
     assert.equal(result.occurrences.length, 2);
     assert.deepEqual(result.occurrences.map(item => item.targetStatus), ['target-indeterminate', 'resolved']);
     assert.equal(result.coverage.length, 2);
@@ -162,13 +162,13 @@ test('production lexical completion rejects parse recovery, with scopes and all 
   }, { allowJs: true });
 });
 
-test('type-only is whole-edge evidence; adding a require never produces a runtime claim', () => {
-  temporary({
+test('type-only is whole-edge evidence; adding a require never produces a runtime claim', async () => {
+  await temporary({
     'types.cts': "import type { T } from './target'; export type U = import('./target').T;",
     'mixed.cts': "export type U = import('./target').T; require('./target');",
     'target.ts': 'export interface T {}',
-  }, root => {
-    const result = analyze(path.join(root, 'tsconfig.json'));
+  }, async root => {
+    const result = (await analyze(path.join(root, 'tsconfig.json')));
     const types = result.relationships.find(item => result.name(item.subject) === 'types')!;
     const mixed = result.relationships.find(item => result.name(item.subject) === 'mixed')!;
     assert.equal(types.information.typeOnly, true);
@@ -178,16 +178,16 @@ test('type-only is whole-edge evidence; adding a require never produces a runtim
   });
 });
 
-test('literal resolution honors package conditions, import-type mode attributes and exact ambient declarations', () => {
-  temporary({
+test('literal resolution honors package conditions, import-type mode attributes and exact ambient declarations', async () => {
+  await temporary({
     'entry.cts': `export {}; require('dual'); type T = import('dual', { with: { 'resolution-mode': 'import' } }).T;
       require('ambient'); import('ambient');`,
     'ambient.d.ts': "declare module 'ambient' { export const a: number; }",
     'node_modules/dual/package.json': JSON.stringify({ name: 'dual', type: 'module', exports: { import: './esm.d.mts', require: './cjs.d.cts' } }),
     'node_modules/dual/esm.d.mts': 'export interface T {}',
     'node_modules/dual/cjs.d.cts': 'export interface T {}',
-  }, root => {
-    const result = analyze(path.join(root, 'tsconfig.json'));
+  }, async root => {
+    const result = (await analyze(path.join(root, 'tsconfig.json')));
     // Require alone does not populate a TS-only file. Select it via a type request.
     const commonjs = result.occurrences[0]!;
     assert.equal(commonjs.targetStatus, 'outside-population');
@@ -198,16 +198,16 @@ test('literal resolution honors package conditions, import-type mode attributes 
   });
 });
 
-test('ownership respects named modules, namespaces and unresolved augmentations without guessing enclosing ownership', () => {
-  temporary({
+test('ownership respects named modules, namespaces and unresolved augmentations without guessing enclosing ownership', async () => {
+  await temporary({
     'ambient.d.ts': "declare module 'named' { namespace Nested { type T = import('target').T; } } declare module 'target' { export interface T {} }",
     'entry.ts': "export {}; declare module 'not-resolved' { type T = import('target').T; }",
     'script.ts': "type T = import('target').T;",
     'global.ts': "export {}; declare global { interface Global { t: import('target').T } }",
     'wildcard.d.ts': "declare module '*.data' { export const data: unknown; }",
     'wild.ts': "import { data } from './something.data'; export { data };",
-  }, root => {
-    const result = analyze(path.join(root, 'tsconfig.json'));
+  }, async root => {
+    const result = (await analyze(path.join(root, 'tsconfig.json')));
     assert.ok(result.occurrences.some(item => result.name(item.owner) === 'named' && result.name(item.target!) === 'target'));
     assert.deepEqual(result.coverage.filter(item => item.outcome === 'ownership-unestablished').map(item => path.basename(result.source(item).path)).sort(), ['entry.ts', 'global.ts', 'script.ts']);
     assert.ok(result.occurrences.some(item => result.name(item.owner) === 'wild' && item.target !== null && result.name(item.target) === '*.data'));
@@ -215,15 +215,15 @@ test('ownership respects named modules, namespaces and unresolved augmentations 
   }, { moduleDetection: 'legacy' });
 });
 
-test('external interiors stay opaque and external augmentations do not become enclosing module requests', () => {
-  temporary({
+test('external interiors stay opaque and external augmentations do not become enclosing module requests', async () => {
+  await temporary({
     'entry.ts': "import { T } from 'outside'; export {}; declare module 'outside' { interface Added { t: import('./target').T } }",
     'target.ts': 'export interface T {}',
     'node_modules/outside/package.json': '{"types":"index.d.ts"}',
     'node_modules/outside/index.d.ts': "export interface T { t: import('./other').U }",
     'node_modules/outside/other.d.ts': 'export interface U {}',
-  }, root => {
-    const result = analyze(path.join(root, 'tsconfig.json'));
+  }, async root => {
+    const result = (await analyze(path.join(root, 'tsconfig.json')));
     assert.equal(result.occurrences.length, 1);
     assert.equal(result.relationships.length, 1);
     assert.equal(result.coverage[0]!.outcome, 'external-owner');
@@ -231,27 +231,27 @@ test('external interiors stay opaque and external augmentations do not become en
   });
 });
 
-test('dependency resolution uses the captured output exclusion boundary and retains changed resolution inputs independently of session identity', () => {
-  temporary({ 'entry.cts': "export {}; require('./generated/target');", 'generated/target.ts': 'export {};' }, root => {
+test('dependency resolution uses the captured output exclusion boundary and retains changed resolution inputs independently of session identity', async () => {
+  await temporary({ 'entry.cts': "export {}; require('./generated/target');", 'generated/target.ts': 'export {};' }, async root => {
     const config = path.join(root, 'tsconfig.json');
-    const excluded = analyze(config, [path.join(root, 'generated')]);
+    const excluded = (await analyze(config, [path.join(root, 'generated')]));
     assert.equal(excluded.occurrences[0]!.targetStatus, 'unresolved');
-    const visible = analyze(config);
+    const visible = (await analyze(config));
     assert.equal(visible.occurrences[0]!.targetStatus, 'outside-population');
     assert.notEqual(inputBasis(visible), inputBasis(excluded));
     rmSync(path.join(root, 'generated/target.ts'));
-    const removed = analyze(config);
+    const removed = (await analyze(config));
     assert.equal(removed.occurrences[0]!.targetStatus, 'unresolved');
     assert.notEqual(inputBasis(removed), inputBasis(visible));
   }, {}, ['entry.cts']);
 });
 
-test('empty and unavailable dependency evaluations are distinct; ordinary discovery does not request dependencies', () => {
-  const empty = analyze(fixture('empty'));
+test('empty and unavailable dependency evaluations are distinct; ordinary discovery does not request dependencies', async () => {
+  const empty = (await analyze(fixture('empty')));
   assert.equal(empty.evaluation.materialization, 'full');
   assert.equal(empty.occurrences.length, 0);
   assert.equal(empty.relationships.length, 0);
-  const opened = openTypeScriptProject({ configPath: fixture('module-population') });
+  const opened = (await openTypeScriptProject({ configPath: fixture('module-population') }));
   assert.equal(opened.status, 'opened');
   if (opened.status !== 'opened') return;
   const store = new MemoryProgramRecordStore();
@@ -269,21 +269,21 @@ test('empty and unavailable dependency evaluations are distinct; ordinary discov
   assert.equal(unavailable.materialization, 'none');
 });
 
-test('dependency records reproduce in fresh processes without clock or invocation identity', () => {
+test('dependency records reproduce in fresh processes without clock or invocation identity', async () => {
   const script = `import { openTypeScriptProject } from '${new URL('../src/lib/typescript/project.js', import.meta.url).href}';
     import { MemoryProgramRecordStore } from '${new URL('../src/lib/memory-store.js', import.meta.url).href}';
     import { evaluateDependencies } from '${new URL('../src/lib/dependencies/evaluate.js', import.meta.url).href}';
     const store = new MemoryProgramRecordStore();
-    const opened = openTypeScriptProject({ configPath: 'fixtures/dependency-contract/tsconfig.json' });
+    const opened = await openTypeScriptProject({ configPath: 'fixtures/dependency-contract/tsconfig.json' });
     const result = evaluateDependencies(store, opened.analysis);
     console.log(JSON.stringify([result, ...[...result.occurrences, ...result.relationships, ...result.coverage, ...result.contexts].map(id => store.get(id))]));`;
   const run = () => execFileSync(process.execPath, ['--input-type=module', '-e', script], { encoding: 'utf8', maxBuffer: 4 * 1024 * 1024 });
   assert.deepEqual(normalizeSession(JSON.parse(run())), normalizeSession(JSON.parse(run())));
 });
 
-test('partial, stopped and failed dependency attempts retain qualified materialized results; defects propagate', () => {
+test('partial, stopped and failed dependency attempts retain qualified materialized results; defects propagate', async () => {
   for (const execution of ['stopped', 'failed'] as const) {
-    const opened = openTypeScriptProject({ configPath: fixture('dependency-contract') });
+    const opened = (await openTypeScriptProject({ configPath: fixture('dependency-contract') }));
     assert.equal(opened.status, 'opened');
     if (opened.status !== 'opened') throw new Error('Expected open');
     const store = new MemoryProgramRecordStore();
@@ -300,8 +300,8 @@ test('partial, stopped and failed dependency attempts retain qualified materiali
   assert.throws(() => evaluateDependencies(new MemoryProgramRecordStore(), { discover: () => { throw new Error('Unexpected checker defect'); } }), /Unexpected checker defect/);
 });
 
-test('store rejects unsupported relationship edges and false whole-edge qualifications atomically', () => {
-  const result = analyze(fixture('dependency-contract'));
+test('store rejects unsupported relationship edges and false whole-edge qualifications atomically', async () => {
+  const result = (await analyze(fixture('dependency-contract')));
   const relationship = result.relationships.find(item => !item.information.typeOnly)!;
   const id = `${relationship.id}-invalid` as RecordId;
   assert.throws(() => result.store.put([{ ...relationship, id, information: { ...relationship.information, occurrences: [] } }]), /matching occurrences/);
@@ -312,14 +312,14 @@ test('store rejects unsupported relationship edges and false whole-edge qualific
   assert.throws(() => result.store.put([{ ...nonedge, id, target: relationship.information.child }]), /Invalid dependency occurrence/);
 });
 
-test('captured request evidence survives later edits and dependency method versions are retained', () => {
-  temporary({ 'entry.cts': "export {}; require('./target');", 'target.ts': 'export {};' }, root => {
-    const result = analyze(path.join(root, 'tsconfig.json'));
+test('captured request evidence survives later edits and dependency method versions are retained', async () => {
+  await temporary({ 'entry.cts': "export {}; require('./target');", 'target.ts': 'export {};' }, async root => {
+    const result = (await analyze(path.join(root, 'tsconfig.json')));
     const before = result.source(result.occurrences[0]!);
     writeFileSync(path.join(root, 'entry.cts'), "export {}; require('./missing');");
     assert.equal(result.source(result.occurrences[0]!), before);
     assert.equal(before.dependencyResolution!.writtenSpecifier, './target');
-    const changed = analyze(path.join(root, 'tsconfig.json'));
+    const changed = (await analyze(path.join(root, 'tsconfig.json')));
     assert.notEqual(inputBasis(result), inputBasis(changed));
     const session = result.store.get(result.evaluation.session);
     assert.equal(session.kind, 'session');
@@ -329,9 +329,9 @@ test('captured request evidence survives later edits and dependency method versi
   });
 });
 
-test('direct relationships preserve self requests and every edge around a cycle', () => {
-  temporary({ 'a.ts': "export {} from './a'; export * from './b';", 'b.ts': "export * from './c';", 'c.ts': "export * from './a';" }, root => {
-    const result = analyze(path.join(root, 'tsconfig.json'));
+test('direct relationships preserve self requests and every edge around a cycle', async () => {
+  await temporary({ 'a.ts': "export {} from './a'; export * from './b';", 'b.ts': "export * from './c';", 'c.ts': "export * from './a';" }, async root => {
+    const result = (await analyze(path.join(root, 'tsconfig.json')));
     assert.deepEqual(result.relationships.map(item => [result.name(item.subject), result.name(item.information.child)]).sort(),
       [['a', 'a'], ['a', 'b'], ['b', 'c'], ['c', 'a']]);
     assert.equal(result.occurrences.length, 4);
@@ -339,14 +339,14 @@ test('direct relationships preserve self requests and every edge around a cycle'
   });
 });
 
-test('file resolver evidence never narrows a different ambient target declaration', () => {
-  temporary({
+test('file resolver evidence never narrows a different ambient target declaration', async () => {
+  await temporary({
     'entry.cts': "export type T = import('both').T; require('both');",
     'ambient.d.ts': "declare module 'both' { export interface T {} }",
     'node_modules/both/package.json': '{"types":"index.d.ts"}',
     'node_modules/both/index.d.ts': 'export interface T {}',
-  }, root => {
-    const result = analyze(path.join(root, 'tsconfig.json'));
+  }, async root => {
+    const result = (await analyze(path.join(root, 'tsconfig.json')));
     const typed = result.occurrences.find(item => item.mechanism === 'import-type')!;
     assert.equal(result.name(typed.target!), 'both');
     assert.equal(result.source(typed).dependencyResolution!.targetBasis, 'checker-symbol');
@@ -367,14 +367,14 @@ test('file resolver evidence never narrows a different ambient target declaratio
   });
 });
 
-test('relationship diagnostics count source diagnostics once without collapsing distinct same-code errors', () => {
-  for (const diagnosticCount of [1, 2]) temporary({
+test('relationship diagnostics count source diagnostics once without collapsing distinct same-code errors', async () => {
+  for (const diagnosticCount of [1, 2]) await temporary({
     'entry.ts': `import { value as first } from './target'; import { value as second } from './target';
       const broken = ; ${diagnosticCount === 2 ? 'const alsoBroken = ;' : ''}`,
     'target.ts': 'export const value = 1;',
     'unrelated.ts': 'export {}; const unrelatedError = ;',
-  }, root => {
-    const result = analyze(path.join(root, 'tsconfig.json'));
+  }, async root => {
+    const result = (await analyze(path.join(root, 'tsconfig.json')));
     assert.equal(result.occurrences.length, 2);
     assert.equal(result.relationships.length, 1);
     const expected = Array.from({ length: diagnosticCount }, () => ({ code: 1109, category: 'error' }));
@@ -389,8 +389,8 @@ test('relationship diagnostics count source diagnostics once without collapsing 
   });
 });
 
-test('merged module relationships retain distinct diagnostics across files without multiplying shared file diagnostics', () => {
-  temporary({
+test('merged module relationships retain distinct diagnostics across files without multiplying shared file diagnostics', async () => {
+  await temporary({
     'first.d.ts': `declare module 'parent' {
       export type A = import('child').T;
       export type B = import('child').T;
@@ -402,8 +402,8 @@ test('merged module relationships retain distinct diagnostics across files witho
     }`,
     'child.d.ts': "declare module 'child' { export interface T {} }",
     'unrelated.ts': 'export {}; const unrelatedError = ;',
-  }, root => {
-    const result = analyze(path.join(root, 'tsconfig.json'));
+  }, async root => {
+    const result = (await analyze(path.join(root, 'tsconfig.json')));
     assert.equal(result.relationships.length, 1);
     const relationship = result.relationships[0]!;
     assert.equal(result.name(relationship.subject), 'parent');
@@ -432,8 +432,8 @@ test('merged module relationships retain distinct diagnostics across files witho
 });
 
 
-test('dependency evaluations partition resolved occurrences exactly and reject inconsistent batches atomically', () => {
-  const { store, evaluation, relationships, occurrences } = analyze(fixture('dependency-contract'));
+test('dependency evaluations partition resolved occurrences exactly and reject inconsistent batches atomically', async () => {
+  const { store, evaluation, relationships, occurrences } = (await analyze(fixture('dependency-contract')));
   const edge = relationships[0]!;
   const occurrence = occurrences.find(item => item.id === edge.information.occurrences[0])!;
   let sequence = 0;
@@ -469,12 +469,12 @@ test('dependency evaluations partition resolved occurrences exactly and reject i
 });
 
 
-test('dependency evaluations reject disjoint relationships for one ordered pair atomically', () => {
-  temporary({
+test('dependency evaluations reject disjoint relationships for one ordered pair atomically', async () => {
+  await temporary({
     'entry.cts': "import { value } from './target.cjs'; export { value } from './target.cjs';",
     'target.cts': "import './entry.cjs'; export const value = 1;",
-  }, root => {
-    const { store, evaluation, relationships, occurrences } = analyze(path.join(root, 'tsconfig.json'));
+  }, async root => {
+    const { store, evaluation, relationships, occurrences } = (await analyze(path.join(root, 'tsconfig.json')));
     const edge = relationships.find(item => item.information.occurrences.length === 2)!;
     assert.equal(edge.information.occurrences.length, 2);
     // Reverse direction is a different ordered pair and is accepted in the original evaluation.

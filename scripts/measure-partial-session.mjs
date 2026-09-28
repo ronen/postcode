@@ -28,12 +28,12 @@ for (const partial of [false, true]) {
     execFileSync('git', ['init', '--quiet', root]);
     const baseline = await collect();
     const started = performance.now();
-    const opened = openSession({ configPath: path.join(root, 'tsconfig.json') });
+    const opened = await openSession({ configPath: path.join(root, 'tsconfig.json') });
     assert.equal(opened.status, 'opened');
     session = opened.session;
     const openingMs = performance.now() - started;
     const request = { lens: 'modules', selector: null, presentation: { format: 'json', sourceDetail: false } };
-    let inventory = session.execute(request);
+    let inventory = await session.execute(request);
     assert.equal(inventory.view.schema, 'postcode-view/1-experimental');
     assert.equal(inventory.view.evaluations.some(item => item.materialization === 'partial'), partial);
     const population = inventory.view.modules.length;
@@ -43,15 +43,16 @@ for (const partial of [false, true]) {
       { ...request, lens: 'inspect', selector: subject.entityId, reference: true },
       { ...request, lens: 'children', selector: subject.entityId, reference: true }];
     // First acquire every requested lens, then establish comparison views on that basis.
-    for (const command of commands) session.execute(command);
-    let retained = commands.map(command => session.execute(command));
+    for (const command of commands) await session.execute(command);
+    let retained = [];
+    for (const command of commands) retained.push(await session.execute(command));
     const beforeRepeats = await collect();
     const samples = [];
     const projections = commands.map(() => new Set());
     for (let round = 0; round < 4; round++) {
       for (const [index, command] of commands.entries()) {
         const began = performance.now();
-        const result = session.execute(command);
+        const result = await session.execute(command);
         const milliseconds = performance.now() - began;
         if (expectReuse) assert.deepEqual(result, retained[index], `Unexpected retry: ${partial ? 'partial' : 'clean'} ${command.lens}`);
         projections[index].add(result.view.projection.id);
@@ -63,10 +64,12 @@ for (const partial of [false, true]) {
     const afterRepeats = await collect();
     // Release views and session state before measuring teardown; samples contain only scalars.
     retained = undefined; inventory = undefined;
-    session.close(); session = undefined;
+    await session.close(); session = undefined;
     const closed = await collect();
     report.projects.push({ partial, population, openingMs, baseline, beforeRepeats, afterRepeats, closed, samples,
       distinctProjections: commands.map((command, index) => ({ lens: command.lens, count: projections[index].size })) });
-  } finally { session?.close(); rmSync(root, { recursive: true, force: true }); }
+  } finally {
+    try { await session?.close(); } finally { rmSync(root, { recursive: true, force: true }); }
+  }
 }
 console.log(JSON.stringify(report, null, 2));

@@ -10,9 +10,12 @@ instrument validation and independent reviews are recorded in the
 [completed task](../../records/tasks/2026-09-12-initial-module-inventory.md).
 
 The current lifecycle is governed by the [session decisions](../decisions/transient-analysis-sessions.md).
-The shell and one-shot CLI share request execution. The shell retains compiler
-state and program records in a private worker while the parent owns terminal
-interaction, publication and observation delivery. Other governing choices are the accepted [projection architecture decisions](../decisions/initial-projection-architecture-decisions.md)
+The shell and one-shot CLI share request execution in a private compiler worker.
+The parent owns terminal interaction, asynchronous Git subprocesses, publication
+and observation delivery; child ownership survives worker disposal. Direct session
+users own Git in their calling process and await opening, execution, validation and
+close. The [execution decision](../decisions/execution-ownership-and-cancellation.md)
+governs this lifetime boundary. Other governing choices are the accepted [projection architecture decisions](../decisions/initial-projection-architecture-decisions.md)
 and [module inventory decisions](../decisions/initial-module-inventory-decisions.md).
 The governing cross-cutting terminology is maintained in [core concepts](../core-concepts.md), and binding cross-cutting rules are maintained in [architectural constraints](../architectural-constraints.md); this document describes how the current implementation realizes them.
 
@@ -135,11 +138,15 @@ Actual generated-output directories supplied by the caller are excluded before
 configuration discovery and compiler reads. A target directory named `_observations`
 or `_build` remains an ordinary configured input unless it is an explicitly
 supplied output destination. Exclusion applies to roots, imported files, directory
-listings, and symlink targets, including missing descendants resolved through
-the nearest existing ancestor, so excluded contents do not enter evidence or its
-identity digest. Exclusion entries are normalized, sorted and deduplicated as
-lexical/real-path pairs before filtering and identity capture, so input order and
-repeated entries do not change the captured input support. Discovery contexts assert this exclusion only when at least one
+listings, and symlink targets, including dangling targets and missing descendants.
+One shared live policy supplies compiler and repository exclusion and retains
+lexical and resolved locations. Equivalent aliases count once; sorted, deduplicated
+entries make caller ordering and repetition immaterial. Unverifiable explicit
+boundaries refuse opening with an operational failure, separately from compiler
+diagnostics. Revalidation detects retargeting or resolution failure and invalidates
+the session. Captured repository source links retain their separate historical
+resolver. The changed acquisition policy advances `postcode/observed-inputs` to
+version 4. This implements the [output-boundary decision](../decisions/generated-output-boundaries.md). Discovery contexts assert this exclusion only when at least one
 output location was supplied; direct library runs may enforce none. The CLI supplies
 its actual checkout observation and build directories before opening a project,
 including when the selected configuration is nested elsewhere. Git-ignore rules
@@ -217,13 +224,19 @@ records preserve actual status stderr and supplied requests. Refusals, failures,
 invalidation and interruption can carry command events without view references;
 only actual produced views have view-produced/source-escape events.
 
-The CLI discloses the absolute local sink destination on stderr. The sink creates
-one private JSON file per accepted batch under a UTC `date=YYYY-MM-DD` subdirectory
-of the PostCode checkout's ignored `_observations/` directory. Filenames carry a
-filesystem-safe UTC submission timestamp and the batch UUID. It exposes no
-historical-read API and supplies no producer retention or migration policy.
-Rejection or delivery failure emits a
-warning without changing the successful view or its exit status. No remote/shared
+The CLI discloses the project-specific sink destination on stderr. New batches
+are grouped by configured project and UTC date under the checkout’s ignored
+`_observations/` root, with time/UUID filenames. The project directory combines a
+safe configuration-directory label and a short hash of the absolute configuration
+path; batches without views use the same grouping. A private, complete, closed
+staging file is published through a no-overwrite hard link, then staging is
+removed. Final-link creation commits acceptance. Failure before publication is
+non-delivery; staging cleanup failure afterward is a distinct warning. Both
+preserve successful views and their exit status. Unsupported hard-link publication
+fails without a weaker fallback. Acceptance does not promise power-loss durability;
+crashes can leave staging residue. Existing files remain in place, with no
+historical reader, migration or scavenging. These guarantees implement
+[local observation acceptance](../decisions/local-observation-acceptance.md). No remote/shared
 sink or contemporaneous-note command exists. Privacy and exclusion details are in
 [implementation conventions](../implementation-conventions.md#local-observation-sink).
 
@@ -394,10 +407,22 @@ additional dependency inputs do not add modules. Repeated contexts read their
 first supporting input record from the stored Claim context; new contexts can reference a later input basis.
 Any conflicting record content still fails the store’s immutability check.
 
-Native SIGINT can terminate a one-shot process during synchronous compiler work.
-The shell instead runs the shared executor in a worker, allowing the parent to
-terminate an active compiler request and observe interruption without publishing a
-fabricated view. The session ends; safe worker-state recovery is not claimed.
+Both CLI entry paths keep compiler work in a worker so the parent can interrupt
+active work, reject the command with status 130, and independently dispose of the
+worker and owned Git children. Operation identities reject stale replies; failed
+sends, pending close and unexpected worker exit settle the current operation.
+The session ends; safe worker-state recovery is not claimed.
+
+Each Git invocation has a 30-second deadline and a combined 64 MiB output bound.
+On cancellation, POSIX children receive SIGTERM, then SIGKILL after 250 ms if
+still running. Cleanup reporting waits at most 2 seconds; an unconfirmed child or
+worker is reported separately while exit monitoring remains owned. These bounds
+do not establish a whole-analysis deadline, descendant-tree termination, or
+universal native-work exit. After confirmed cleanup an opening Git timeout yields
+qualified unavailable repository evidence under `postcode/repository-inputs@4`.
+Recovery to available evidence, or loss of a previously available basis, invalidates
+the session. Consistently unavailable evidence stays qualified as unavailable.
+Unconfirmed opening cleanup is a resource failure, never a usable degraded session.
 At an idle prompt, Ctrl-C cancels the line. EOF finishes accepted work and sink
 submission. Syntax errors and expected operational analysis failures retain
 sound state; unexpected defects terminate distinctly.

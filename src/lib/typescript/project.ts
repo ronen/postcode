@@ -1,3 +1,5 @@
+import { outputBoundary, OutputBoundaryFailure } from '../output-boundary.js';
+import type { RunGit } from '../git-execution.js';
 import { moduleLimitations } from '../qualification-policy.js';
 import { completedMaterialization } from '../evaluation-state.js';
 import { freezeOwned } from '../immutable.js';
@@ -17,8 +19,8 @@ const method = `${methods.discovery};typescript@${ts.version}`;
 const inputMethod = methods.inputs;
 
 export type ProjectOpenResult =
-  | { readonly status: 'opened'; readonly session: SessionId; readonly analysis: ModuleAnalysis; readonly changed: () => boolean }
-  | { readonly status: 'project-open-failed'; readonly diagnostics: readonly { readonly code: number; readonly message: string }[] };
+  | { readonly status: 'opened'; readonly session: SessionId; readonly analysis: ModuleAnalysis; readonly changed: () => Promise<boolean> }
+  | { readonly status: 'project-open-failed'; readonly operational?: { readonly operation: string; readonly path: string; readonly reason: string }; readonly diagnostics: readonly { readonly code: number; readonly message: string }[] };
 
 export interface ProjectOptions {
   readonly configPath: string;
@@ -27,10 +29,20 @@ export interface ProjectOptions {
 }
 
 /** Operational setup follows TS config inheritance/selection/resolution without executing target code. */
-export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResult {
+export async function openTypeScriptProject(options: ProjectOptions, runGit?: RunGit): Promise<ProjectOpenResult> {
+  options = { ...options, excludedOutputDirectories: [...(options.excludedOutputDirectories ?? [])] };
+  const environment = canonical([process.cwd(), process.env, process.versions]);
   const configPath = path.resolve(options.configPath);
   const base = path.dirname(configPath);
-  const inputs = captureInputs(options.excludedOutputDirectories ?? []);
+  let policy;
+  try { policy = outputBoundary(options.excludedOutputDirectories ?? []); }
+  catch (error) {
+    if (!(error instanceof OutputBoundaryFailure)) throw error;
+    return { status: 'project-open-failed', diagnostics: [], operational: {
+      operation: 'resolve generated-output boundary', path: error.path, reason: error.reason,
+    } };
+  }
+  const inputs = captureInputs(policy);
   const diagnostics: ts.Diagnostic[] = [];
   const parsed = ts.getParsedCommandLineOfConfigFile(configPath, { noEmit: true }, {
     ...inputs.system,
@@ -95,18 +107,18 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
 
   // Repository capture begins only after the configured project opens. Its
   // result is retained independently of later requested module evaluation.
-  const repository = captureRepository(configPath, options.excludedOutputDirectories ?? []);
+  const repository = await captureRepository(configPath, policy, runGit);
+  const repositoryBasis = canonical(repository);
   const layout = repository.status === 'available' ? deriveLayout(repository.evidence) : null;
 
   const session = sessionId();
-  const environment = canonical([process.cwd(), process.env, process.versions]);
 
   const materializers = new WeakMap<ProgramRecordStore, ReturnType<typeof prepareDiscovery>>();
 
   // Compiler state never escapes the language integration. Discovery writes domain records atomically.
-  return { status: 'opened', session, changed: () =>
+  return { status: 'opened', session, changed: async () =>
     canonical([process.cwd(), process.env, process.versions]) !== environment || inputs.changed()
-      || canonical(captureRepository(configPath, options.excludedOutputDirectories ?? [])) !== canonical(repository),
+      || canonical(await captureRepository(configPath, policy, runGit)) !== repositoryBasis,
     analysis: { discover: (store, expansions, dependencies) => materialize(store, expansions ?? [], dependencies ?? false) } };
 
   function materialize(store: ProgramRecordStore, expansions: readonly ModuleExpansion[], dependencies: boolean) {

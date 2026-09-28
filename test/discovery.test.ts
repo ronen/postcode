@@ -14,13 +14,13 @@ import { openTypeScriptProject } from '../src/lib/typescript/project.js';
 import { discover, inputBasis, normalizeSession } from './helpers.js';
 
 const fixture = (name: string) => path.resolve('fixtures', name, 'tsconfig.json');
-function temporary(run: (root: string) => void) {
+async function temporary(run: (root: string) => void | Promise<void>) {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-test-'));
-  try { run(root); } finally { rmSync(root, { recursive: true, force: true }); }
+  try { await run(root); } finally { rmSync(root, { recursive: true, force: true }); }
 }
 
-test('enumerates the exact supported population, with merged ambient evidence and transitively resolved identity', () => {
-  const { store, claims, contexts, evaluation } = discover(fixture('module-population'));
+test('enumerates the exact supported population, with merged ambient evidence and transitively resolved identity', async () => {
+  const { store, claims, contexts, evaluation } = (await discover(fixture('module-population')));
   assert.equal(claims.length, 6);
   assert.deepEqual(claims.map(claim => claim.information.name).filter(name => name !== null), ['ambient-one', 'ambient-two']);
   const sources = contexts.flatMap(context => context.scope === 'configured-project' ? [] : context.evidence)
@@ -38,34 +38,34 @@ test('enumerates the exact supported population, with merged ambient evidence an
   assert.ok(resolution.every(source => source.resolution!.status === 'established'));
 });
 
-test('source-derived compiler names do not become conceptual names', () => {
-  const { claims } = discover(fixture('module-population'));
+test('source-derived compiler names do not become conceptual names', async () => {
+  const { claims } = (await discover(fixture('module-population')));
   assert.equal(claims.filter(claim => claim.information.name === null).length, 4);
   assert.equal(JSON.stringify(claims).includes(process.cwd()), false);
 });
 
-test('named ambient declarations in ordinary TypeScript have declaration-only facets', () => {
-  temporary(root => {
+test('named ambient declarations in ordinary TypeScript have declaration-only facets', async () => {
+  await temporary(async root => {
     writeFileSync(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"noLib":true,"types":[]},"files":["ambient.ts"]}');
     writeFileSync(path.join(root, 'ambient.ts'), 'declare module "ordinary-ambient" { export const value: number; }');
-    const { claims } = discover(path.join(root, 'tsconfig.json'));
+    const { claims } = (await discover(path.join(root, 'tsconfig.json')));
     assert.equal(claims.length, 1);
     assert.equal(claims[0]!.information.name, 'ordinary-ambient');
     assert.deepEqual(claims[0]!.information.discoveryFacets, ['ambient', 'project', 'declaration-only']);
   });
 });
 
-test('TypeScript automatic module detection is honored even without written imports or exports', () => {
-  temporary(root => {
+test('TypeScript automatic module detection is honored even without written imports or exports', async () => {
+  await temporary(async root => {
     writeFileSync(path.join(root, 'package.json'), '{"type":"module"}');
     writeFileSync(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"noLib":true,"types":[],"module":"NodeNext"},"files":["implicit.ts"]}');
     writeFileSync(path.join(root, 'implicit.ts'), 'const value = 1;');
-    assert.equal(discover(path.join(root, 'tsconfig.json')).claims.length, 1);
+    assert.equal((await discover(path.join(root, 'tsconfig.json'))).claims.length, 1);
   });
 });
 
-test('empty population has a stored projection and fully materialized evaluation', () => {
-  const { store, projection, evaluation } = discover(fixture('empty'));
+test('empty population has a stored projection and fully materialized evaluation', async () => {
+  const { store, projection, evaluation } = (await discover(fixture('empty')));
   assert.equal(projection.modules.length, 0);
   assert.equal(projection.selection.populationEstablished, true);
   assert.equal(evaluation.execution, 'completed');
@@ -74,24 +74,24 @@ test('empty population has a stored projection and fully materialized evaluation
   assert.equal(projection.evaluations.length, 1);
 });
 
-test('missing, malformed, unusable config and missing configured source fail operationally', () => {
-  temporary(root => {
+test('missing, malformed, unusable config and missing configured source fail operationally', async () => {
+  await temporary(async root => {
     const configPath = path.join(root, 'tsconfig.json');
-    assert.equal(openTypeScriptProject({ configPath }).status, 'project-open-failed');
+    assert.equal((await openTypeScriptProject({ configPath })).status, 'project-open-failed');
     for (const text of ['{', '{"compilerOptions":{"target":"bogus"}}', '{"files":["missing.ts"]}']) {
       writeFileSync(configPath, text);
-      assert.equal(openTypeScriptProject({ configPath }).status, 'project-open-failed', text);
+      assert.equal((await openTypeScriptProject({ configPath })).status, 'project-open-failed', text);
     }
     writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"files":[]}');
-    assert.equal(discover(configPath).evaluation.modules.length, 0);
+    assert.equal((await discover(configPath)).evaluation.modules.length, 0);
     writeFileSync(path.join(root, 'base.json'), '{');
     writeFileSync(configPath, '{"extends":"./base.json","files":[]}');
-    assert.equal(openTypeScriptProject({ configPath }).status, 'project-open-failed');
+    assert.equal((await openTypeScriptProject({ configPath })).status, 'project-open-failed');
   });
 });
 
-test('encountered parse diagnostics qualify discovery without unrelated semantic checking', () => {
-  const { evaluation, contexts, claims } = discover(fixture('diagnostics'));
+test('encountered parse diagnostics qualify discovery without unrelated semantic checking', async () => {
+  const { evaluation, contexts, claims } = (await discover(fixture('diagnostics')));
   assert.equal(evaluation.execution, 'completed');
   assert.equal(evaluation.modules.length, 2);
   const global = contexts.find(context => context.scope === 'configured-project')!;
@@ -101,8 +101,8 @@ test('encountered parse diagnostics qualify discovery without unrelated semantic
     .filter(context => context.diagnostics.length > 0).length, 1);
 });
 
-test('inspect exact names, handles and IDs preserves zero/one selection and applicable context', () => {
-  const { store, evaluation, claims } = discover(fixture('module-population'));
+test('inspect exact names, handles and IDs preserves zero/one selection and applicable context', async () => {
+  const { store, evaluation, claims } = (await discover(fixture('module-population')));
   const ambient = claims.find(claim => claim.information.name === 'ambient-one')!;
   for (const selector of ['ambient-one', ambient.information.handle]) {
     const projection = inspect(store, evaluation, selector);
@@ -116,15 +116,15 @@ test('inspect exact names, handles and IDs preserves zero/one selection and appl
   }
 });
 
-test('exact names remain usable when they collide with compact IDs; scoped IDs stay precise', () => {
-  temporary(root => {
+test('exact names remain usable when they collide with compact IDs; scoped IDs stay precise', async () => {
+  await temporary(async root => {
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, JSON.stringify({ compilerOptions: { noLib: true, types: [] }, include: ['*.ts'] }));
     writeFileSync(path.join(root, 'ordinary.ts'), 'export const value = 1;');
-    const before = discover(config);
+    const before = (await discover(config));
     const selector = before.store.entityIds(before.evaluation.modules, 'module').get(before.evaluation.modules[0]!)!;
     writeFileSync(path.join(root, 'ambient.d.ts'), `declare module "${selector}" { export const named: number; }`);
-    const { store, evaluation, claims } = discover(config);
+    const { store, evaluation, claims } = (await discover(config));
     const named = claims.find(claim => claim.information.name === selector)!;
     const ordinary = claims.find(claim => claim.information.name === null)!;
     const ids = store.entityIds(evaluation.modules, 'module');
@@ -143,12 +143,12 @@ test('exact names remain usable when they collide with compact IDs; scoped IDs s
   });
 });
 
-test('generated handles avoid compact Entity IDs across basename, language-name and export cues', () => {
-  temporary(root => {
+test('generated handles avoid compact Entity IDs across basename, language-name and export cues', async () => {
+  await temporary(async root => {
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, JSON.stringify({ compilerOptions: { noLib: true, types: [] }, include: ['**/*.ts'] }));
     writeFileSync(path.join(root, 'ordinary.ts'), 'export const value = 1;');
-    const before = discover(config);
+    const before = (await discover(config));
     const selector = before.store.entityIds(before.evaluation.modules, 'module').get(before.evaluation.modules[0]!)!;
     for (const directory of ['first', 'second']) {
       mkdirSync(path.join(root, directory));
@@ -158,7 +158,7 @@ test('generated handles avoid compact Entity IDs across basename, language-name 
     writeFileSync(path.join(root, 'index.ts'), `export const ${selector.replace('-', '_')} = 1;`);
     // Reserve the entire compact-ID grammar, including prefixes extended on collision.
     for (const length of [9, 64]) writeFileSync(path.join(root, `module-${'a'.repeat(length)}.ts`), 'export const value = 1;');
-    const { store, evaluation, claims } = discover(config);
+    const { store, evaluation, claims } = (await discover(config));
     const ids = store.entityIds(evaluation.modules, 'module');
     const ordinary = claims.find(claim => claim.information.handle === 'ordinary')!;
     assert.equal(ids.get(ordinary.subject), selector);
@@ -176,17 +176,17 @@ test('generated handles avoid compact Entity IDs across basename, language-name 
       assert.equal(/^module-[a-f0-9]{8,64}$/.test(claim.information.handle), false);
       assert.deepEqual(inspect(store, evaluation, ids.get(claim.subject)!, true).modules, [claim.subject]);
     }
-    assert.deepEqual(normalizeSession(discover(config).claims), normalizeSession(claims));
+    assert.deepEqual(normalizeSession((await discover(config)).claims), normalizeSession(claims));
   });
 });
 
-test('equivalent separate processes preserve semantic records, relationships and ordering', () => {
+test('equivalent separate processes preserve semantic records, relationships and ordering', async () => {
   const invoke = () => execFileSync(process.execPath, [new URL('./process-probe.js', import.meta.url).pathname, fixture('module-population')], { encoding: 'utf8' });
   assert.deepEqual(normalizeSession(JSON.parse(invoke())), normalizeSession(JSON.parse(invoke())));
 });
 
-test('a changed method version remains attributable in an independent process', () => {
-  temporary(root => {
+test('a changed method version remains attributable in an independent process', async () => {
+  await temporary(root => {
     cpSync(new URL('../', import.meta.url), path.join(root, '_build'), { recursive: true });
     writeFileSync(path.join(root, 'package.json'), '{"type":"module"}');
     symlinkSync(path.resolve('node_modules'), path.join(root, 'node_modules'), 'dir');
@@ -201,62 +201,62 @@ test('a changed method version remains attributable in an independent process', 
   });
 });
 
-test('source, inherited config, package metadata and missing-input resolution changes remain in captured input support', () => {
-  temporary(root => {
+test('source, inherited config, package metadata and missing-input resolution changes remain in captured input support', async () => {
+  await temporary(async root => {
     cpSync('fixtures/module-population', root, { recursive: true });
     const config = path.join(root, 'tsconfig.json');
-    const identities = [inputBasis(discover(config))];
+    const identities = [inputBasis((await discover(config)))];
     writeFileSync(path.join(root, 'transitive.ts'), 'export const transit = 2;');
-    identities.push(inputBasis(discover(config)));
+    identities.push(inputBasis((await discover(config))));
     writeFileSync(path.join(root, 'base.json'), '{"compilerOptions":{"noLib":true,"types":[],"allowJs":true,"strict":true,"module":"NodeNext","moduleResolution":"NodeNext","moduleDetection":"legacy"}}');
-    identities.push(inputBasis(discover(config)));
+    identities.push(inputBasis((await discover(config))));
     writeFileSync(path.join(root, 'package.json'), '{"type":"module"}');
-    identities.push(inputBasis(discover(config)));
+    identities.push(inputBasis((await discover(config))));
     writeFileSync(path.join(root, 'root.ts'), 'import {x} from "./missing.js"; export const result = x;');
-    identities.push(inputBasis(discover(config)));
+    identities.push(inputBasis((await discover(config))));
     writeFileSync(path.join(root, 'missing.ts'), 'export const x = 3;');
-    identities.push(inputBasis(discover(config)));
+    identities.push(inputBasis((await discover(config))));
     assert.equal(new Set(identities).size, identities.length);
   });
 });
 
-test('generated output is excluded from roots, imports, symlinks and session inputs', () => {
-  temporary(root => {
+test('generated output is excluded from roots, imports, symlinks and session inputs', async () => {
+  await temporary(async root => {
     const output = path.join(root, '_observations');
     mkdirSync(output);
     writeFileSync(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"noLib":true,"types":[]},"include":["**/*.ts"]}');
     writeFileSync(path.join(root, 'entry.ts'), 'import "./_observations/generated"; export const value = 1;');
     const config = path.join(root, 'tsconfig.json');
-    const before = discover(config, [output]);
+    const before = (await discover(config, [output]));
     writeFileSync(path.join(output, 'generated.ts'), 'export const fabricated = 1;');
     writeFileSync(path.join(output, 'batch.json'), '{"formatVersion":0}');
-    assert.equal(inputBasis(discover(config, [output])), inputBasis(before));
+    assert.equal(inputBasis((await discover(config, [output]))), inputBasis(before));
     symlinkSync(output, path.join(root, 'alias'), 'dir');
-    const linked = discover(config, [output]);
+    const linked = (await discover(config, [output]));
     assert.equal(linked.claims.length, 1);
     writeFileSync(path.join(output, 'generated.ts'), 'export const fabricated = 200;');
-    assert.equal(inputBasis(discover(config, [output])), inputBasis(linked));
+    assert.equal(inputBasis((await discover(config, [output]))), inputBasis(linked));
     assert.equal(linked.contexts.flatMap(context => context.evidence)
       .map(id => linked.store.get(id) as SourceEvidenceRecord).some(source => source.path.includes('_observations')), false);
   });
 });
 
-test('explicit output exclusion applies outside the default destination', () => {
-  temporary(root => {
+test('explicit output exclusion applies outside the default destination', async () => {
+  await temporary(async root => {
     const output = path.join(root, 'generated');
     mkdirSync(output);
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"include":["**/*.ts"]}');
     writeFileSync(path.join(root, 'entry.ts'), 'export const real = 1;');
-    const before = discover(config, [output]);
+    const before = (await discover(config, [output]));
     writeFileSync(path.join(output, 'fake.ts'), 'export const fake = 1;');
-    assert.equal(inputBasis(discover(config, [output])), inputBasis(before));
-    assert.equal(discover(config).claims.length, 2);
+    assert.equal(inputBasis((await discover(config, [output]))), inputBasis(before));
+    assert.equal((await discover(config)).claims.length, 2);
   });
 });
 
-test('repeated completed evaluation reuses the retained outcome', () => {
-  const { store, evaluation, analysis } = discover(fixture('empty'));
+test('repeated completed evaluation reuses the retained outcome', async () => {
+  const { store, evaluation, analysis } = (await discover(fixture('empty')));
   const next = evaluateModules(store, analysis);
   assert.equal(next.session, evaluation.session);
   assert.equal(next.id, evaluation.id);
@@ -264,8 +264,8 @@ test('repeated completed evaluation reuses the retained outcome', () => {
   assert.deepEqual(store.get(evaluation.id), evaluation);
 });
 
-test('expanded discovery attempts count root evaluations and preserve earlier expansion outcomes', () => {
-  const { store, analysis, evaluation } = discover(fixture('exports'));
+test('expanded discovery attempts count root evaluations and preserve earlier expansion outcomes', async () => {
+  const { store, analysis, evaluation } = (await discover(fixture('exports')));
   const expanded = evaluateModules(store, analysis, ['exports', 'documentation']);
   assert.equal(expanded.attempt, 2);
   const earlier = store.evaluations(evaluation.session);
@@ -279,10 +279,10 @@ test('expanded discovery attempts count root evaluations and preserve earlier ex
   for (const outcome of earlier) assert.deepEqual(store.get(outcome.id), outcome);
 });
 
-test('output-exclusion qualifications describe only filters actually supplied by the caller', () => {
+test('output-exclusion qualifications describe only filters actually supplied by the caller', async () => {
   for (const excludedOutputDirectories of [undefined, [], [path.resolve('_observations')]]) {
-    const opened = openTypeScriptProject({ configPath: fixture('module-population'),
-      ...(excludedOutputDirectories === undefined ? {} : { excludedOutputDirectories }) });
+    const opened = (await openTypeScriptProject({ configPath: fixture('module-population'),
+      ...(excludedOutputDirectories === undefined ? {} : { excludedOutputDirectories }) }));
     assert.equal(opened.status, 'opened');
     if (opened.status !== 'opened') throw new Error('Project did not open');
     const store = new MemoryProgramRecordStore();
@@ -303,30 +303,30 @@ test('output-exclusion qualifications describe only filters actually supplied by
   }
 });
 
-test('exclusion order and duplicates preserve input support while different exclusion sets remain distinct', () => {
-  temporary(root => {
+test('exclusion order and duplicates preserve input support while different exclusion sets remain distinct', async () => {
+  await temporary(async root => {
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"include":["**/*.ts"]}');
     writeFileSync(path.join(root, 'entry.ts'), 'export const value=1;');
     const outputs = ['first', 'second'].map(name => path.join(root, name));
     for (const output of outputs) { mkdirSync(output); writeFileSync(path.join(output, 'generated.ts'), 'export const fake=1;'); }
-    const before = discover(config, outputs);
+    const before = (await discover(config, outputs));
     for (const exclusions of [[...outputs].reverse(), [outputs[1]!, outputs[0]!, outputs[1]!],
       [path.join(outputs[0]!, '.'), outputs[1]!]]) {
-      const next = discover(config, exclusions);
+      const next = (await discover(config, exclusions));
       assert.equal(inputBasis(next), inputBasis(before));
       assert.deepEqual(normalizeSession(next.claims), normalizeSession(before.claims));
       assert.deepEqual(normalizeSession(next.contexts), normalizeSession(before.contexts));
     }
     assert.equal(before.claims.length, 1);
-    const changed = discover(config, [outputs[0]!]);
+    const changed = (await discover(config, [outputs[0]!]));
     assert.notEqual(inputBasis(changed), inputBasis(before));
     assert.equal(changed.claims.length, 2);
   });
 });
 
-test('missing descendants of symlinked exclusions stay outside session inputs when generated output appears', () => {
-  temporary(root => {
+test('missing descendants of symlinked exclusions stay outside session inputs when generated output appears', async () => {
+  await temporary(async root => {
     const output = path.join(root, 'output');
     const ordinary = path.join(root, 'ordinary');
     mkdirSync(output); mkdirSync(ordinary);
@@ -335,21 +335,21 @@ test('missing descendants of symlinked exclusions stay outside session inputs wh
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
     writeFileSync(path.join(root, 'entry.ts'), "import './alias/deep/generated.js'; import './visible/new.js'; export const value=1;");
-    const before = discover(config, [output]);
-    const verify = () => {
-      const result = discover(config, [output]);
+    const before = (await discover(config, [output]));
+    const verify = async () => {
+      const result = (await discover(config, [output]));
       assert.equal(inputBasis(result), inputBasis(before));
       assert.deepEqual(normalizeSession(result.claims), normalizeSession(before.claims));
       assert.deepEqual(normalizeSession(result.contexts), normalizeSession(before.contexts));
       assert.equal(result.claims.length, 1);
     };
-    mkdirSync(path.join(output, 'deep')); verify();
+    mkdirSync(path.join(output, 'deep')); await verify();
     const generated = path.join(output, 'deep/generated.ts');
-    writeFileSync(generated, 'export const generated=1;'); verify();
-    writeFileSync(generated, 'export const generated=2;'); verify();
-    rmSync(generated); verify();
+    writeFileSync(generated, 'export const generated=1;'); await verify();
+    writeFileSync(generated, 'export const generated=2;'); await verify();
+    rmSync(generated); await verify();
     writeFileSync(path.join(ordinary, 'new.ts'), 'export const real=1;');
-    const changed = discover(config, [output]);
+    const changed = (await discover(config, [output]));
     assert.notEqual(inputBasis(changed), inputBasis(before));
     assert.equal(changed.claims.length, 2);
   });

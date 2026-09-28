@@ -71,8 +71,8 @@ test('pure unavailable derivations are reused without submission and different i
   assert.deepEqual(store.get(organization.id), organization);
 });
 
-test('provider discovery cannot be mutated to affect retained results or later discovery', () => {
-  const opened = openTypeScriptProject({ configPath: 'fixtures/exports/tsconfig.json' });
+test('provider discovery cannot be mutated to affect retained results or later discovery', async () => {
+  const opened = (await openTypeScriptProject({ configPath: 'fixtures/exports/tsconfig.json' }));
   if (opened.status !== 'opened') throw new Error('Expected opened project');
   const store = new MemoryProgramRecordStore();
   const first = opened.analysis.discover(store, ['exports', 'documentation', 'composition'], true);

@@ -38,8 +38,8 @@ test('identity normalizes only explicitly identified local references and retain
   assert.equal(identityReference(a, `${a}-foreign:key` as RecordId), `${a}-foreign:key`);
 });
 
-test('literal selectors containing the producing session cannot collide with the word session', () => {
-  const { store, evaluation } = discover('fixtures/empty/tsconfig.json');
+test('literal selectors containing the producing session cannot collide with the word session', async () => {
+  const { store, evaluation } = (await discover('fixtures/empty/tsconfig.json'));
   const literal = inspect(store, evaluation, evaluation.session);
   const word = inspect(store, evaluation, 'session');
   assert.notEqual(literal.id, word.id);
@@ -47,16 +47,16 @@ test('literal selectors containing the producing session cannot collide with the
   assert.equal(word.parameters.selector, 'session');
 });
 
-test('resolved internal selectors cannot collide with literal normalized spellings in any projection family', t => {
+test('resolved internal selectors cannot collide with literal normalized spellings in any projection family', async t => {
   const directory = temporaryDirectory(t, 'postcode-selector-collision-');
   execFileSync('git', ['init', '--quiet', directory]);
   const configPath = path.join(directory, 'tsconfig.json');
   writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"include":["*.ts"]}');
   writeFileSync(path.join(directory, 'a.ts'), 'export const value = 1;');
-  const initial = discover(configPath);
+  const initial = (await discover(configPath));
   const spelling = identityReference(initial.evaluation.session, initial.evaluation.modules[0]!)!;
   writeFileSync(path.join(directory, 'ambient.d.ts'), `declare module "${spelling}" { export const other: 2; }`);
-  const { store, evaluation, analysis, claims } = discover(configPath);
+  const { store, evaluation, analysis, claims } = (await discover(configPath));
   const file = claims.find(claim => claim.information.handle === 'a')!.subject;
   const ambient = claims.find(claim => claim.information.name === spelling)!.subject;
   const organization = evaluateOrganization(store, evaluation);
@@ -77,13 +77,13 @@ test('resolved internal selectors cannot collide with literal normalized spellin
 });
 
 for (const family of ['module', 'organization-module', 'organization-group', 'dependency-children', 'dependency-parents'] as const) {
-  test(`${family} projection normalizes resolved internal IDs across sessions and retains compact selection`, t => {
+  test(`${family} projection normalizes resolved internal IDs across sessions and retains compact selection`, async t => {
     const directory = temporaryDirectory(t, 'postcode-selector-sessions-');
     execFileSync('git', ['init', '--quiet', directory]);
     const configPath = path.join(directory, 'tsconfig.json');
     writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"files":["a.ts"]}');
     writeFileSync(path.join(directory, 'a.ts'), 'export const value = 1;');
-    const projections = [discover(configPath), discover(configPath)].map(({ store, evaluation, analysis }) => {
+    const projections = [(await discover(configPath)), (await discover(configPath))].map(({ store, evaluation, analysis }) => {
       const organization = evaluateOrganization(store, evaluation);
       const dependency = evaluateDependencies(store, analysis);
       const group = family === 'organization-group';
@@ -109,13 +109,13 @@ for (const family of ['module', 'organization-module', 'organization-group', 'de
   });
 }
 
-test('qualification classification uses only the exact primary producer and preserves derived limitations', () => {
+test('qualification classification uses only the exact primary producer and preserves derived limitations', async () => {
   assert.equal(isCompositionContext({ method: methods.composition }), true);
   assert.equal(isCompositionContext({ method: `${methods.composition};typescript@6.0.3` }), true);
   assert.equal(isCompositionContext({ method: `${methods.organization};${methods.composition};typescript@6.0.3` }), false);
   assert.equal(isCompositionContext({ method: `${methods.composition}-unrelated` }), false);
   assert.equal(isCompositionContext({ method: `${methods.composition}0` }), false);
-  const { store, evaluation } = discover('fixtures/exports/tsconfig.json');
+  const { store, evaluation } = (await discover('fixtures/exports/tsconfig.json'));
   const view = createView(store, inspect(store, evaluation, 'origin'), { format: 'unicode', sourceDetail: false });
   const module = view.modules[0]!;
   const extra = { ...module.qualification, id: recordId(evaluation.session, 'unrelated-context', 1),
@@ -134,7 +134,7 @@ test('qualification classification uses only the exact primary producer and pres
 });
 
 
-test('real provider keeps ambient names containing its own session distinct from literal session', t => {
+test('real provider keeps ambient names containing its own session distinct from literal session', async t => {
   const directory = temporaryDirectory(t, 'postcode-literal-session-');
   const configPath = path.join(directory, 'tsconfig.json');
   writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"files":["ambient.d.ts"]}');
@@ -144,7 +144,7 @@ test('real provider keeps ambient names containing its own session distinct from
   t.mock.method(crypto, 'randomUUID', () => a.slice('session:'.length) as ReturnType<typeof crypto.randomUUID>);
   syncBuiltinESMExports();
   t.after(() => { crypto.randomUUID = original; syncBuiltinESMExports(); });
-  const result = discover(configPath);
+  const result = (await discover(configPath));
   assert.equal(result.evaluation.session, a);
   assert.equal(result.claims.length, 2);
   assert.equal(new Set(result.claims.map(claim => claim.subject)).size, 2);

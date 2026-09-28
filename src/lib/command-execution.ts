@@ -1,9 +1,9 @@
 import { commandObservation, observationBatch } from './observations.js';
 import type { ObservationSink } from './observations.js';
-import { AnalysisFailure, SessionInvalidated } from './session.js';
+import { AnalysisFailure, SessionInvalidated } from './execution-errors.js';
 import type { ViewRequest, ExecutionOptions } from './session.js';
-import { CommandInterrupted } from './interactive-session.js';
-import type { ExecutedView } from './interactive-session.js';
+import { CommandInterrupted } from './execution-errors.js';
+import type { ExecutedView } from './session-protocol.js';
 import { inlineText } from './terminal-text.js';
 
 interface Output {
@@ -12,12 +12,16 @@ interface Output {
 }
 
 export async function submitObservation(sink: ObservationSink, batch: ReturnType<typeof commandObservation>, output: Output) {
-  try {
-    const acknowledgement = await sink.submit(batch);
-    if (!acknowledgement.accepted) output.stderr(`WARNING: observation not recorded: ${inlineText(acknowledgement.reason)}\n`);
-  } catch (error) {
+  let acknowledgement;
+  try { acknowledgement = await sink.submit(batch); }
+  catch (error) {
     output.stderr(`WARNING: observation not recorded: ${inlineText(error instanceof Error ? error.message : 'sink delivery failed')}\n`);
+    return;
   }
+  if (acknowledgement.accepted && 'cleanupWarning' in acknowledgement && typeof acknowledgement.cleanupWarning === 'string') {
+    output.stderr(`WARNING: ${inlineText(acknowledgement.cleanupWarning)}\n`);
+  }
+  if (!acknowledgement.accepted) output.stderr(`WARNING: observation not recorded: ${inlineText(acknowledgement.reason)}\n`);
 }
 
 /** Shared publication and observation boundary for one-shot and interactive requests. */
@@ -45,4 +49,14 @@ export async function publishCommand(session: {
     { configPath, repositoryRoot: published.repositoryRoot, methods: published.methods }, command) : undefined;
   await submitObservation(sink, commandObservation(session.id, command, { supplied, request, configPath }, status, stdout, stderr, produced), output);
   return code;
+}
+
+export function openFailureText(failure: {
+  diagnostics: readonly { code: number; message: string }[];
+  operational?: { operation: string; path: string; reason: string };
+}): string {
+  const detail = failure.operational
+    ? `  ${inlineText(failure.operational.operation)}: ${inlineText(failure.operational.path)}: ${inlineText(failure.operational.reason)}`
+    : failure.diagnostics.map(item => `  TS${item.code}: ${inlineText(item.message)}`).join('\n');
+  return `Project open failed:\n${detail}\n`;
 }

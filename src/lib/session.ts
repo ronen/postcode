@@ -1,3 +1,7 @@
+import { AnalysisFailure, SessionInvalidated, SessionClosed, CommandInterrupted, CleanupIncomplete, operationalIO } from './execution-errors.js';
+import { GitExecutionOwner } from './git-execution.js';
+import type { RunGit } from './git-execution.js';
+import { OutputBoundaryFailure } from './output-boundary.js';
 import { evaluateModules } from './evaluation.js';
 import { evaluateDependencies } from './dependencies/evaluate.js';
 import { evaluateDependencyOrganization } from './dependencies/organization.js';
@@ -17,14 +21,7 @@ import type { Presentation } from './presentation.js';
 import { openTypeScriptProject } from './typescript/project.js';
 import type { ProjectOptions } from './typescript/project.js';
 
-export class AnalysisFailure extends Error {}
-
-const operational = (error: unknown): error is Error => error instanceof Error && 'code' in error
-  && ['EACCES', 'EPERM', 'ENOENT', 'ENOTDIR', 'ELOOP', 'EIO', 'EMFILE', 'ENFILE'].includes(String(error.code));
-
-export class SessionInvalidated extends Error {
-  constructor() { super('Session invalidated: relevant inputs changed or could not be verified. Restart to continue.'); }
-}
+export { AnalysisFailure, SessionInvalidated } from './execution-errors.js';
 
 export interface ViewRequest {
   readonly lens: 'modules' | 'inspect' | 'organization' | 'dependencies' | 'children' | 'parents';
@@ -40,43 +37,78 @@ export interface ExecutionOptions {
 }
 
 /** One configured project and its accumulating transient program records. */
-export function openSession(options: ProjectOptions) {
-  const opened = openTypeScriptProject(options);
-  if (opened.status !== 'opened') return opened;
+export async function openSession(options: ProjectOptions, lifetime: { runGit?: RunGit; signal?: AbortSignal } = {}) {
+  const owner = lifetime.runGit ? undefined : new GitExecutionOwner();
+  let disposed: Error | undefined;
+  let busy = false;
+  const dispose = (reason: Error) => { disposed ??= reason; return owner?.close(reason) ?? Promise.resolve(); };
+  const interrupt = () => { void dispose(new CommandInterrupted()).catch(() => {}); };
+  lifetime.signal?.addEventListener('abort', interrupt, { once: true });
+  if (lifetime.signal?.aborted) interrupt();
+  const alive = () => { if (disposed) throw disposed; };
+  let opened;
+  try {
+    alive();
+    opened = await openTypeScriptProject(options, lifetime.runGit ?? owner!.run);
+    alive();
+  } catch (error) {
+    lifetime.signal?.removeEventListener('abort', interrupt);
+    await dispose(error instanceof Error ? error : new Error('Opening failed'));
+    if (!operationalIO(error)) throw error;
+    return { status: 'project-open-failed' as const, diagnostics: [], operational: {
+      operation: 'project input acquisition', path: options.configPath, reason: error.message,
+    } };
+  }
+  if (opened.status !== 'opened') {
+    lifetime.signal?.removeEventListener('abort', interrupt);
+    await dispose(new SessionClosed());
+    return opened;
+  }
   const id: SessionId = opened.session;
-  let state: { execute: ReturnType<typeof requestExecutor>; changed: () => boolean } | undefined = {
+  let state: { execute: ReturnType<typeof requestExecutor>; changed: () => Promise<boolean> } | undefined = {
     execute: requestExecutor(new MemoryProgramRecordStore(), opened.analysis), changed: opened.changed,
   };
   let invalid = false;
-  const check = () => {
-    if (!state) throw new Error('Session is closed');
+  const check = async () => {
+    alive();
+    if (!state) throw new SessionClosed();
     if (!invalid) {
-      try { invalid = state.changed(); }
+      try { invalid = await state.changed(); }
       catch (error) {
-        if (!operational(error)) throw error;
+        // The owner reports cleanup separately when closed; an unverified basis
+        // cannot continue or be relabelled as an internal programming defect.
+        if (!operationalIO(error) && !(error instanceof OutputBoundaryFailure) && !(error instanceof CleanupIncomplete)) throw error;
         invalid = true;
       }
     }
+    alive();
     if (invalid) throw new SessionInvalidated();
   };
+  const operation = async <T>(run: () => Promise<T>): Promise<T> => {
+    alive();
+    if (busy) throw new Error('Concurrent session command');
+    busy = true;
+    try { return await run(); } finally { busy = false; }
+  };
   return { status: 'opened' as const, session: {
-    id, check,
-    execute(request: ViewRequest, execution: ExecutionOptions = {}) {
-      if (!state) throw new Error('Session is closed');
-      check();
+    id, check: () => operation(check),
+    execute: (request: ViewRequest, execution: ExecutionOptions = {}) => operation(async () => {
+      await check();
       try {
-        const result = state.execute(request);
-        if (!execution.deferPublicationCheck) check();
+        const result = state!.execute(request);
+        if (!execution.deferPublicationCheck) await check();
+        alive();
         return result;
       } catch (error) {
-        if (operational(error)) {
-          check();
-          throw new AnalysisFailure(error.message);
-        }
+        if (operationalIO(error)) { await check(); throw new AnalysisFailure(error.message); }
         throw error;
       }
+    }),
+    async close() {
+      state = undefined;
+      lifetime.signal?.removeEventListener('abort', interrupt);
+      await dispose(new SessionClosed());
     },
-    close() { state = undefined; },
   } };
 }
 

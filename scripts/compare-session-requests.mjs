@@ -38,14 +38,14 @@ for (const fixture of fixtures) {
       assert.equal((await reversed.opening).status, 'opened');
       const expected = [];
       for (const command of commands) {
-        const fresh = openSession(options);
+        const fresh = await openSession(options);
         assert.equal(fresh.status, 'opened');
         try {
           const single = await execute(fresh.session, command);
           const accumulated = await execute(shell, command);
           assert.deepEqual(normalize(accumulated), normalize(single), `${fixture}: ${JSON.stringify(command)}`);
           expected.push(accumulated);
-        } finally { fresh.session.close(); }
+        } finally { await fresh.session.close(); }
       }
       for (const index of [...commands.keys()].reverse()) {
         assert.deepEqual(normalize(await execute(reversed, commands[index])), normalize(expected[index]), `${fixture}: reordered ${index}`);
