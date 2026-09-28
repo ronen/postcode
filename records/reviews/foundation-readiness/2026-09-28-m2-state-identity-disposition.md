@@ -52,7 +52,7 @@ reversed and retained-repeat paths remain compared in full.
 
 | Reviewer observation | Disposition |
 | --- | --- |
-| Composition classification may mean any component or primary producer | Requires human direction. The reviewer identifies a future qualification-suppression ambiguity. Asked whether to retain any-token classification or restrict it to the primary producer; recommended primary producer to preserve derived limitations. No policy resolution is inferred from passing current fixtures. |
+| Composition classification may mean any component or primary producer | Accepted and resolved by human direction on 2026-09-28: only the primary producer. Classification now requires the first method token to exactly match the registered composition method. Inherited composition provenance leaves a derived context's limitations visible. The direction is preserved in the task record; verification is recorded below. |
 | Ordinary identity equivalence and proportionate method versions | Accepted. Existing reference spelling remains; F1 adds a distinct representation only at resolved-selector positions and advances the responsible projection methods. No new domain codes or view fields. |
 | Identity-caller inventory is accurate; selector is the mixed position | Accepted. Documented the disjoint object/string representation for mixed identity positions in implementation conventions. No other caller transformation is needed for the reviewed inventory. |
 | Other reference-normalization mutation coverage is good | Accepted. Retained those controls and added mutations targeting F1 and each of the three previously uncovered projection families. |
@@ -71,7 +71,7 @@ outside this review assignment and are still required by the active task.
 
 ## Corrections and verification
 
-Correction commit: `f63d3d35ffbcaa120b38945c8ace93a8cab2d08d`.
+F1/F2 correction commit: `f63d3d35ffbcaa120b38945c8ace93a8cab2d08d`.
 
 - `npm run check`: passed.
 - `npm test`: 254 passed, no failures/skips/cancellations.
@@ -103,17 +103,44 @@ constants in a disposable copy, then run
 The original validation record and round-1 findings remain historical evidence of
 the original target; neither has been rewritten to describe these corrections.
 
+### Primary-producer policy follow-up
+
+Policy correction and current implementation target:
+`d84b102102f5abbd851d1a0bd9221f1e9b2f9018`.
+
+The human chose primary-producer classification after the F1/F2 correction. The
+classifier compares the first semicolon-separated token with the exact registered
+composition method. It does not classify derived contexts from inherited methods.
+The presentation method advances from `presentation@24` to `@25` because the
+limitation-suppression policy changes; the projection and record methods remain
+unchanged from the F1/F2 correction. The policy is stated at its implementation and
+in implementation conventions.
+
+`npm run check` and the full `npm test` pass on this target: 254 tests, no failures,
+skips or cancellations. The expanded qualification test covers standalone and
+leading composition tokens, an inherited composition token, and unrelated method
+names sharing its prefix. Its rendering checks retain independent and derived
+limitations while preserving the existing suppression for the primary composition
+context after completed composition.
+
+The 72 before/after comparisons, 288 session comparisons and four mutation controls
+above describe the earlier F1/F2 target. They were not rerun for this local policy
+follow-up and are not represented as final-target comparison evidence. The full
+suite and explicit classification/rendering regression verify this follow-up.
+
 ## Review rounds
 
 Round 1 reviewed `0037eaff2d7dcd17fdb9186bed8511011f1eb9b6`, with findings committed
 as `1bab0c1`. The corrections belong to the original M2 handoff; no new assignment
 or edited handoff is required. A lightweight second review should check the tagged
-selector encoding, version assessment, collision and positive controls, and expanded
-comparison requests against the exact correction target above.
+selector encoding, version assessment, collision and positive controls, expanded
+comparison requests, and the human-directed primary-producer policy against the
+current implementation target `d84b102102f5abbd851d1a0bd9221f1e9b2f9018`.
 
 ## Gate conclusion
 
 The human has not declared the M2 gate sufficient. Further review of the corrections
-is required, as recommended in round 1, and the composition-policy uncertainty still
-requires human direction. No findings have been rejected or materially qualified.
+is required, as recommended in round 1. The human has resolved the composition-policy
+uncertainty; that direction has been implemented and verified. No findings have been
+rejected or materially qualified.
 The task remains active and M3–M5 work has not resumed.
