@@ -1,4 +1,5 @@
 import { livePath, outputBoundary } from '../output-boundary.js';
+import { operationalIO } from '../execution-errors.js';
 import type { OutputBoundary } from '../output-boundary.js';
 import path from 'node:path';
 import ts from 'typescript';
@@ -8,11 +9,30 @@ import { canonical, compare, digest } from '../identity.js';
 export function captureInputs(excludedDirectories: readonly string[] | OutputBoundary) {
   const policy = Array.isArray(excludedDirectories) ? outputBoundary(excludedDirectories) : excludedDirectories as OutputBoundary;
   const absolute = (name: string) => path.resolve(name);
-  const real = livePath;
   const exclusions = policy.locations;
-  const excluded = policy.excluded;
   const observations = new Map<string, unknown>();
   const probes = new Map<string, () => unknown>();
+  const unavailable = (name: string) => canonical(['unavailablePath', absolute(name)]);
+  const recordUnavailable = (name: string, error: unknown) => {
+    if (!operationalIO(error)) throw error;
+    const key = unavailable(name);
+    observations.set(key, true);
+    probes.set(key, () => {
+      try { livePath(name); return false; }
+      catch (error) { if (!operationalIO(error)) throw error; return true; }
+    });
+  };
+  // Explicit boundaries were resolved before this host exists. An operationally
+  // unreadable candidate is absent, but its later recovery must still be replayed.
+  const excluded = (name: string) => {
+    if (observations.has(unavailable(name))) return true;
+    try { return policy.excluded(name); }
+    catch (error) { recordUnavailable(name, error); return true; }
+  };
+  const real = (name: string) => {
+    try { return livePath(name); }
+    catch (error) { recordUnavailable(name, error); return absolute(name); }
+  };
   const memo = <T>(operation: string, args: unknown, run: () => T): T => {
     const key = canonical([operation, args]);
     if (observations.has(key)) return observations.get(key) as T;

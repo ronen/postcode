@@ -10,7 +10,7 @@ import path from 'node:path';
 import { canonical, compare, digest } from '../identity.js';
 import type { ExclusionEvidence, RepositoryArtifact, RepositoryCapture } from './evidence.js';
 
-export const repositoryInputMethod = 'postcode/repository-inputs@4';
+export const repositoryInputMethod = 'postcode/repository-inputs@5';
 
 class CaptureFailure extends Error {
   constructor(readonly operation: string, readonly code: string | number | null) { super(operation); }

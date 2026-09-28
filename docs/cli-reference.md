@@ -311,7 +311,9 @@ does not establish this exclusion. Keep additional generated views in the exclud
 acquisition share this boundary, including aliases and dangling links. An explicit
 cyclic or otherwise unverifiable boundary refuses opening with `Project open failed:`
 and operational detail, status 2, and no view. Later retargeting or failed
-revalidation requires restart; it never silently removes an exclusion.
+revalidation requires restart; it never silently removes an exclusion. An unreadable
+or cyclic ordinary compiler candidate remains absent, with recovery detected at
+validation. It does not make an otherwise resolvable explicit output boundary fail.
 
 Unicode inline values (names, selectors, qualifications and source paths) display
 line-breaking, indentation and Unicode bidirectional formatting controls as visible
@@ -419,7 +421,11 @@ parent during worker disposal. Each Git invocation has a 30-second deadline and
 to forced termination after 250 ms on POSIX. Cleanup still unconfirmed after
 2 seconds produces a separate warning and retains exit monitoring; that warning
 does not replace status 130 or prove exit. No whole-analysis deadline or termination
-of every descendant is promised. Native checks cover macOS and local APFS; other
+of every descendant is promised. Opening and the three publication checks can each
+incur the per-call Git deadline, so consistently hung Git can add roughly two
+minutes to a one-shot command. Only SIGINT has the described CLI interruption
+handling; killing the owning process (including with SIGTERM or SIGKILL) does not
+guarantee cleanup of its children. Native checks cover macOS and local APFS; other
 operating systems and network filesystems have not been certified in this slice.
 
 An opening Git timeout can leave a usable compiler-backed session with explicitly

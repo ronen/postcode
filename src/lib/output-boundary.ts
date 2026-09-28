@@ -1,4 +1,4 @@
-import { lstatSync, readlinkSync, realpathSync } from 'node:fs';
+import { lstatSync, readdirSync, readlinkSync, realpathSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { canonical, compare } from './identity.js';
 import { errorCode, operationalIO } from './execution-errors.js';
@@ -42,24 +42,73 @@ export class OutputBoundaryFailure extends Error {
   constructor(readonly path: string, readonly reason: string) { super(`resolve generated-output boundary ${path}: ${reason}`); }
 }
 
+/** Observe case handling on the actual filesystem, without creating probe files. */
+function caseInsensitive(name: string, devices: Map<number, boolean>): boolean {
+  let directory = name;
+  for (;;) {
+    try { if (statSync(directory).isDirectory()) break; }
+    catch (error) { if (!['ENOENT', 'ENOTDIR'].includes(errorCode(error) ?? '')) throw error; }
+    const parent = path.dirname(directory);
+    if (parent === directory) throw new OutputBoundaryFailure(name, 'Cannot establish filesystem case handling');
+    directory = parent;
+  }
+  const device = statSync(directory).dev;
+  const known = devices.get(device);
+  if (known !== undefined) return known;
+  for (;;) {
+    const names = readdirSync(directory);
+    const spellings = new Set(names);
+    for (const entry of names) {
+      const alternate = entry.replace(/[a-zA-Z]/, letter => letter === letter.toLowerCase() ? letter.toUpperCase() : letter.toLowerCase());
+      // An explicitly present second spelling could be a separate file or link.
+      if (alternate === entry || spellings.has(alternate)) continue;
+      const original = lstatSync(path.join(directory, entry));
+      let insensitive = false;
+      try {
+        const other = lstatSync(path.join(directory, alternate));
+        insensitive = original.dev === other.dev && original.ino === other.ino;
+      } catch (error) { if (errorCode(error) !== 'ENOENT') throw error; }
+      devices.set(device, insensitive);
+      return insensitive;
+    }
+    const parent = path.dirname(directory);
+    if (parent === directory || statSync(parent).dev !== device) {
+      throw new OutputBoundaryFailure(name, 'Cannot establish filesystem case handling');
+    }
+    directory = parent;
+  }
+}
+
 /** One immutable boundary basis, re-resolved at each existing validation phase. */
 export function outputBoundary(directories: readonly string[]) {
   const requested = [...new Set(directories.map(name => path.resolve(name)))].sort(compare);
-  const resolve = () => requested.map(lexical => {
-    try { return { lexical, real: livePath(lexical) }; }
-    catch (error) {
-      if (!operationalIO(error)) throw error;
-      throw new OutputBoundaryFailure(lexical, errorCode(error) ?? error.message);
-    }
-  });
-  const locations = Object.freeze(resolve().map(item => Object.freeze(item)));
-  const basis = canonical(locations);
-  const contains = (name: string) => locations.some(item => within(path.resolve(name), item.lexical) || within(path.resolve(name), item.real));
+  const resolve = () => {
+    const devices = new Map<number, boolean>();
+    return requested.map(lexical => {
+      try {
+        const real = livePath(lexical);
+        return { lexical, real, lexicalInsensitive: caseInsensitive(path.dirname(lexical), devices), realInsensitive: caseInsensitive(real, devices) };
+      }
+      catch (error) {
+        if (!operationalIO(error)) throw error;
+        throw new OutputBoundaryFailure(lexical, errorCode(error) ?? error.message);
+      }
+    });
+  };
+  const resolved = resolve();
+  const key = (name: string, insensitive: boolean) => insensitive ? name.toLowerCase() : name;
+  const snapshot = (items: typeof resolved) => canonical(items.map(item => [item.lexical,
+    key(item.real, item.realInsensitive), item.lexicalInsensitive, item.realInsensitive]));
+  const locations = Object.freeze(resolved.map(({ lexical, real }) => Object.freeze({ lexical, real })));
+  const basis = snapshot(resolved);
+  const contains = (name: string) => resolved.some(item =>
+    within(key(path.resolve(name), item.lexicalInsensitive), key(item.lexical, item.lexicalInsensitive))
+    || within(key(path.resolve(name), item.realInsensitive), key(item.real, item.realInsensitive)));
   return {
-    locations, count: new Set(locations.map(item => item.real)).size,
+    locations, count: new Set(resolved.map(item => key(item.real, item.realInsensitive))).size,
     contains,
     excluded(name: string) { return contains(name) || locations.length > 0 && contains(livePath(name)); },
-    changed() { return canonical(resolve()) !== basis; },
+    changed() { return snapshot(resolve()) !== basis; },
   };
 }
 export type OutputBoundary = ReturnType<typeof outputBoundary>;

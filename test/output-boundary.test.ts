@@ -64,3 +64,28 @@ test('unverifiable explicit boundaries refuse both CLI entry paths and later ret
   unlinkSync(output); symlinkSync(output, output);
   await assert.rejects(opened.session.check(), SessionInvalidated);
 });
+
+test('missing output suffixes follow observed filesystem case handling before and after materialization', async t => {
+  const { captureInputs } = await import('../src/lib/typescript/inputs.js');
+  const { captureRepository } = await import('../src/lib/repository/capture.js');
+  const { execFileSync } = await import('node:child_process');
+  const root = temporaryDirectory(t, 'postcode-missing-case-');
+  execFileSync('git', ['init', '--quiet', root]);
+  mkdirSync(path.join(root, 'CaseProbe'));
+  const insensitive = existsSync(path.join(root, 'caseprobe'));
+  const upper = path.join(root, 'GENERATED/deep');
+  const lower = path.join(root, 'generated/deep');
+  const policy = outputBoundary([upper]);
+  assert.equal(outputBoundary([upper, lower]).count, insensitive ? 1 : 2);
+  assert.equal(policy.excluded(path.join(lower, 'file.ts')), insensitive);
+  assert.equal(policy.excluded(path.join(root, 'generated/deeper/file.ts')), false);
+  const inputs = captureInputs(policy);
+  mkdirSync(lower, { recursive: true });
+  const file = path.join(lower, 'file.ts'); writeFileSync(file, 'export const generated = true;');
+  assert.equal(policy.excluded(file), insensitive);
+  assert.equal(inputs.system.readFile(file), insensitive ? undefined : 'export const generated = true;');
+  assert.equal(policy.changed(), false);
+  const capture = await captureRepository(path.join(root, 'tsconfig.json'), policy);
+  assert.equal(capture.status, 'available'); if (capture.status !== 'available') return;
+  assert.equal(capture.evidence.artifacts.some(item => item.path === 'generated/deep/file.ts'), !insensitive);
+});

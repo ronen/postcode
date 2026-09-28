@@ -28,3 +28,9 @@ test('exclusion checks resolve a missing candidate once regardless of exclusion 
     assert.deepEqual(counts(), before);
   } finally { context.mock.restoreAll(); syncBuiltinESMExports(); rmSync(root, { recursive: true, force: true }); }
 });
+
+test('unexpected candidate resolution defects propagate rather than becoming absence', t => {
+  const inputs = captureInputs([path.resolve('_observations')]);
+  t.mock.method(fs.realpathSync, 'native', () => { throw new Error('controlled resolution defect'); });
+  assert.throws(() => inputs.system.fileExists(path.resolve('source.ts')), /controlled resolution defect/);
+});

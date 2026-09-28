@@ -146,7 +146,12 @@ boundaries refuse opening with an operational failure, separately from compiler
 diagnostics. Revalidation detects retargeting or resolution failure and invalidates
 the session. Captured repository source links retain their separate historical
 resolver. The changed acquisition policy advances `postcode/observed-inputs` to
-version 4. This implements the [output-boundary decision](../decisions/generated-output-boundaries.md). Discovery contexts assert this exclusion only when at least one
+version 5. Ordinary candidate paths that fail operational resolution remain absent
+to the compiler, with a retained recovery probe; they do not turn a resolved output
+boundary into an opening refusal. Missing output suffixes use filesystem case
+handling observed by a read-only spelling probe on the same device, shared within
+each boundary-resolution pass. Case-equivalent materialization does not itself
+retarget the boundary. This implements the [output-boundary decision](../decisions/generated-output-boundaries.md). Discovery contexts assert this exclusion only when at least one
 output location was supplied; direct library runs may enforce none. The CLI supplies
 its actual checkout observation and build directories before opening a project,
 including when the selected configuration is nested elsewhere. Git-ignore rules
@@ -419,7 +424,7 @@ still running. Cleanup reporting waits at most 2 seconds; an unconfirmed child o
 worker is reported separately while exit monitoring remains owned. These bounds
 do not establish a whole-analysis deadline, descendant-tree termination, or
 universal native-work exit. After confirmed cleanup an opening Git timeout yields
-qualified unavailable repository evidence under `postcode/repository-inputs@4`.
+qualified unavailable repository evidence under `postcode/repository-inputs@5`.
 Recovery to available evidence, or loss of a previously available basis, invalidates
 the session. Consistently unavailable evidence stays qualified as unavailable.
 Unconfirmed opening cleanup is a resource failure, never a usable degraded session.
