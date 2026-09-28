@@ -1,0 +1,48 @@
+{
+  "args": [
+    "organization",
+    "repository",
+    "--project",
+    "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-MHsSMp/tsconfig.json",
+    "--json"
+  ],
+  "build": {
+    "build": "/Users/ronen/postcode/app/_foundation-readiness/m4-final",
+    "sha256": "b0630b801b78f6f708bd47af63e1be607422cfa0f1f0fb2c8f5f3d2d1191bdd6"
+  },
+  "conditions": {
+    "node": "v22.13.1",
+    "platform": "darwin",
+    "arch": "x64",
+    "cpus": 16,
+    "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+    "loadBefore": [
+      5.35302734375,
+      6.88623046875,
+      6.57861328125
+    ],
+    "freeMemoryBefore": 3839713280,
+    "loadAfter": [
+      5.24462890625,
+      6.837890625,
+      6.5634765625
+    ],
+    "freeMemoryAfter": 3757805568
+  },
+  "exitCode": 0,
+  "wallMs": 6347,
+  "monotonicMs": 6345.874345,
+  "wallMinusMonotonicMs": 1.1256549999998242,
+  "cpu": {
+    "user": 6379343,
+    "system": 405216
+  },
+  "firstOutputMs": 6071.9884010000005,
+  "observationMs": 9.667978000000403,
+  "stages": {},
+  "workerStages": {},
+  "outputBytes": 640848,
+  "outputDigest": "57a7f01d88f06a6b707adc5e6a638ab14612aa57806862b51c6b06915204db9a",
+  "warning": false,
+  "disposition": "unreviewed"
+}

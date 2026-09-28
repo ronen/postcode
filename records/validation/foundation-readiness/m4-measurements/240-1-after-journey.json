@@ -1,0 +1,351 @@
+{
+  "configPath": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-MHsSMp/tsconfig.json",
+  "build": {
+    "build": "/Users/ronen/postcode/app/_foundation-readiness/m4-final",
+    "sha256": "b0630b801b78f6f708bd47af63e1be607422cfa0f1f0fb2c8f5f3d2d1191bdd6"
+  },
+  "node": "22.13.1",
+  "gcAvailable": true,
+  "baseline": {
+    "rss": 149458944,
+    "heapTotal": 51437568,
+    "heapUsed": 32565528,
+    "external": 2224779,
+    "arrayBuffers": 16623
+  },
+  "openingMs": 363.20342200000005,
+  "samples": [
+    {
+      "lens": "modules",
+      "selector": null,
+      "sourceDetail": false,
+      "milliseconds": 5651.897829,
+      "validationCheckMs": 306.1248569999998,
+      "memory": {
+        "rss": 431124480,
+        "heapTotal": 301019136,
+        "heapUsed": 268328800,
+        "external": 2252760,
+        "arrayBuffers": 42516
+      },
+      "schema": "postcode-view/1-experimental",
+      "selection": {
+        "matches": 80,
+        "population": 80,
+        "populationEstablished": true,
+        "subset": false,
+        "referenceStatus": "current"
+      }
+    },
+    {
+      "lens": "inspect",
+      "selector": "module-9c9ed296",
+      "sourceDetail": false,
+      "milliseconds": 518.6245830000007,
+      "validationCheckMs": 247.85383399999955,
+      "memory": {
+        "rss": 438452224,
+        "heapTotal": 306802688,
+        "heapUsed": 272392896,
+        "external": 2278241,
+        "arrayBuffers": 67997
+      },
+      "schema": "postcode-view/1-experimental",
+      "selection": {
+        "matches": 1,
+        "population": 80,
+        "populationEstablished": true,
+        "subset": true,
+        "referenceStatus": "current"
+      }
+    },
+    {
+      "lens": "dependencies",
+      "selector": null,
+      "sourceDetail": false,
+      "milliseconds": 550.2656589999997,
+      "validationCheckMs": 232.03789400000096,
+      "memory": {
+        "rss": 451977216,
+        "heapTotal": 315543552,
+        "heapUsed": 286639448,
+        "external": 2308478,
+        "arrayBuffers": 98234
+      },
+      "schema": "postcode-dependency-view/1-experimental",
+      "selection": {
+        "matches": 80,
+        "population": 80,
+        "populationEstablished": true,
+        "referenceStatus": "current"
+      }
+    },
+    {
+      "lens": "children",
+      "selector": "module-9c9ed296",
+      "sourceDetail": false,
+      "milliseconds": 465.6513130000003,
+      "validationCheckMs": 234.33468299999913,
+      "memory": {
+        "rss": 453136384,
+        "heapTotal": 316911616,
+        "heapUsed": 290495672,
+        "external": 2334871,
+        "arrayBuffers": 124627
+      },
+      "schema": "postcode-dependency-view/1-experimental",
+      "selection": {
+        "matches": 1,
+        "population": 80,
+        "populationEstablished": true,
+        "subset": true,
+        "referenceStatus": "current"
+      }
+    },
+    {
+      "lens": "parents",
+      "selector": "module-cb9ee545",
+      "sourceDetail": false,
+      "milliseconds": 466.98582499999975,
+      "validationCheckMs": 232.91719399999965,
+      "memory": {
+        "rss": 455245824,
+        "heapTotal": 318017536,
+        "heapUsed": 292042400,
+        "external": 2360262,
+        "arrayBuffers": 150018
+      },
+      "schema": "postcode-dependency-view/1-experimental",
+      "selection": {
+        "matches": 1,
+        "population": 80,
+        "populationEstablished": true,
+        "subset": true,
+        "referenceStatus": "current"
+      }
+    },
+    {
+      "lens": "inspect",
+      "selector": "module-9c9ed296",
+      "sourceDetail": true,
+      "milliseconds": 467.8280539999996,
+      "validationCheckMs": 234.03647999999885,
+      "memory": {
+        "rss": 471302144,
+        "heapTotal": 323207168,
+        "heapUsed": 297427400,
+        "external": 2385665,
+        "arrayBuffers": 175421
+      },
+      "schema": "postcode-view/1-experimental",
+      "selection": {
+        "matches": 1,
+        "population": 80,
+        "populationEstablished": true,
+        "subset": true,
+        "referenceStatus": "current"
+      }
+    },
+    {
+      "lens": "organization",
+      "selector": null,
+      "sourceDetail": false,
+      "milliseconds": 464.0755449999997,
+      "validationCheckMs": 235.7548110000007,
+      "memory": {
+        "rss": 474238976,
+        "heapTotal": 326426624,
+        "heapUsed": 300518288,
+        "external": 2411670,
+        "arrayBuffers": 201426
+      },
+      "schema": "postcode-organization-view/1-experimental",
+      "selection": {
+        "matches": 2,
+        "population": 2,
+        "populationEstablished": true,
+        "materialization": "full",
+        "referenceStatus": "current"
+      }
+    },
+    {
+      "lens": "organization",
+      "selector": null,
+      "sourceDetail": false,
+      "milliseconds": 500.64218600000095,
+      "validationCheckMs": 213.46429900000112,
+      "memory": {
+        "rss": 477872128,
+        "heapTotal": 329170944,
+        "heapUsed": 303902440,
+        "external": 2453419,
+        "arrayBuffers": 243175
+      },
+      "schema": "postcode-organization-view/1-experimental",
+      "selection": {
+        "matches": 27,
+        "population": 27,
+        "populationEstablished": true,
+        "materialization": "full",
+        "referenceStatus": "current"
+      }
+    },
+    {
+      "lens": "inspect",
+      "selector": "group-344f71b8",
+      "sourceDetail": false,
+      "milliseconds": 452.2177120000015,
+      "validationCheckMs": 198.63671800000157,
+      "memory": {
+        "rss": 478728192,
+        "heapTotal": 330035200,
+        "heapUsed": 300769216,
+        "external": 2485884,
+        "arrayBuffers": 275640
+      },
+      "schema": "postcode-organization-view/1-experimental",
+      "selection": {
+        "matches": 1,
+        "population": 107,
+        "populationEstablished": true,
+        "materialization": "full",
+        "referenceStatus": "current"
+      }
+    },
+    {
+      "lens": "modules",
+      "selector": null,
+      "sourceDetail": false,
+      "milliseconds": 550.5296579999995,
+      "validationCheckMs": 232.25058499999977,
+      "memory": {
+        "rss": 487407616,
+        "heapTotal": 334245888,
+        "heapUsed": 299125032,
+        "external": 2517121,
+        "arrayBuffers": 306877
+      },
+      "schema": "postcode-view/1-experimental",
+      "selection": {
+        "matches": 80,
+        "population": 80,
+        "populationEstablished": true,
+        "subset": false,
+        "referenceStatus": "current"
+      }
+    },
+    {
+      "lens": "dependencies",
+      "selector": null,
+      "sourceDetail": false,
+      "milliseconds": 507.18396400000165,
+      "validationCheckMs": 232.00660999999855,
+      "memory": {
+        "rss": 497131520,
+        "heapTotal": 343896064,
+        "heapUsed": 307128440,
+        "external": 2563865,
+        "arrayBuffers": 333944
+      },
+      "schema": "postcode-dependency-view/1-experimental",
+      "selection": {
+        "matches": 80,
+        "population": 80,
+        "populationEstablished": true,
+        "referenceStatus": "current"
+      }
+    }
+  ],
+  "journeyMs": 13224.076573999999,
+  "live": {
+    "rss": 474533888,
+    "heapTotal": 195973120,
+    "heapUsed": 140392088,
+    "external": 2254736,
+    "arrayBuffers": 24815
+  },
+  "closed": {
+    "rss": 470355968,
+    "heapTotal": 81944576,
+    "heapUsed": 46381248,
+    "external": 2254736,
+    "arrayBuffers": 24815
+  },
+  "shellOpenMs": 874.9548460000005,
+  "shellSamples": [
+    {
+      "command": "modules",
+      "milliseconds": 5523.366380000001,
+      "rss": 770863104,
+      "outcome": "completed"
+    },
+    {
+      "command": "inspect @module-9c9ed296",
+      "milliseconds": 732.4788929999995,
+      "rss": 778399744,
+      "outcome": "completed"
+    },
+    {
+      "command": "dependencies",
+      "milliseconds": 800.3876339999988,
+      "rss": 791011328,
+      "outcome": "completed"
+    },
+    {
+      "command": "children @module-9c9ed296",
+      "milliseconds": 699.246787,
+      "rss": 791764992,
+      "outcome": "completed"
+    },
+    {
+      "command": "parents @module-cb9ee545",
+      "milliseconds": 665.7253000000019,
+      "rss": 793776128,
+      "outcome": "completed"
+    },
+    {
+      "command": "inspect @module-9c9ed296 --source-detail",
+      "milliseconds": 749.8220579999979,
+      "rss": 807784448,
+      "outcome": "completed"
+    },
+    {
+      "command": "organization project",
+      "milliseconds": 751.543565,
+      "rss": 536129536,
+      "outcome": "completed"
+    },
+    {
+      "command": "organization repository",
+      "milliseconds": 734.5594579999997,
+      "rss": 541716480,
+      "outcome": "completed"
+    },
+    {
+      "command": "inspect @group-344f71b8",
+      "milliseconds": 697.8005050000029,
+      "rss": 543596544,
+      "outcome": "completed"
+    },
+    {
+      "command": "modules",
+      "milliseconds": 751.5396110000001,
+      "rss": 557113344,
+      "outcome": "completed"
+    },
+    {
+      "command": "dependencies",
+      "milliseconds": 752.4553359999991,
+      "rss": 576135168,
+      "outcome": "completed"
+    }
+  ],
+  "afterWorkerClose": {
+    "rss": 251879424,
+    "heapTotal": 81682432,
+    "heapUsed": 46044664,
+    "external": 2254926,
+    "arrayBuffers": 24822
+  },
+  "note": "Executor measurements include its two validation passes. validationCheckMs samples one additional check immediately after each request, outside its measured duration; it estimates per-pass cost rather than attributing time inside execution. Executor measurements exclude publication checks, worker startup, prompt and sink delivery. Shell measurements include three validation passes (before execution, before output after delivery, and after output), worker/prompt work and publication through observation submission to a no-op sink; opening is separate. Earlier view objects remain referenced during the closed measurement; compiler/store release is inferred from heap changes, not RSS high-water marks."
+}

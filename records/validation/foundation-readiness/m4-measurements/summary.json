@@ -1,0 +1,75 @@
+{
+  "aggregation": "Arithmetic means of two repetitions; validation means include the 11 extra checks in each journey; descriptive only",
+  "rows": [
+    {
+      "artifacts": 240,
+      "before": {
+        "openingMs": 353.49083950000005,
+        "shellOpeningMs": 819.8896485000005,
+        "oneAdditionalValidationCheckMs": 225.96474186363636,
+        "shellRepeatedModulesMs": 880.9125715000009,
+        "firstModulesMs": 5652.346831000001,
+        "firstDependenciesMs": 612.1493925,
+        "firstOrganizationProjectMs": 540.6188544999995,
+        "organizationRepositoryMs": 567.5618905000001,
+        "repeatedModulesMs": 632.0157790000003,
+        "repeatedDependenciesMs": 529.0494020000006,
+        "modulesCliMs": 6519.466073,
+        "modulesObservationMs": 31.87071700000024,
+        "organizationCliMs": 6451.7493345,
+        "organizationObservationMs": 10.514091500000177
+      },
+      "after": {
+        "openingMs": 354.78769450000004,
+        "shellOpeningMs": 873.8152690000006,
+        "oneAdditionalValidationCheckMs": 240.01752731818172,
+        "shellRepeatedModulesMs": 750.191288,
+        "firstModulesMs": 5587.706441,
+        "firstDependenciesMs": 559.8037519999998,
+        "firstOrganizationProjectMs": 476.9528870000004,
+        "organizationRepositoryMs": 499.949275500001,
+        "repeatedModulesMs": 533.268507499999,
+        "repeatedDependenciesMs": 507.1088660000005,
+        "modulesCliMs": 6613.027851000001,
+        "modulesObservationMs": 31.928863000000092,
+        "organizationCliMs": 6354.2512635,
+        "organizationObservationMs": 9.630053500000031
+      }
+    },
+    {
+      "artifacts": 2400,
+      "before": {
+        "openingMs": 460.307191,
+        "shellOpeningMs": 961.4123610000006,
+        "oneAdditionalValidationCheckMs": 320.5333831363637,
+        "shellRepeatedModulesMs": 1200.3734194999997,
+        "firstModulesMs": 5763.62369,
+        "firstDependenciesMs": 878.8472725000001,
+        "firstOrganizationProjectMs": 777.4943855000001,
+        "organizationRepositoryMs": 796.0557420000005,
+        "repeatedModulesMs": 824.6110730000009,
+        "repeatedDependenciesMs": 747.495601999999,
+        "modulesCliMs": 6920.253526,
+        "modulesObservationMs": 28.54427600000008,
+        "organizationCliMs": 7154.094438,
+        "organizationObservationMs": 27.266908500000227
+      },
+      "after": {
+        "openingMs": 459.014032,
+        "shellOpeningMs": 947.9072360000009,
+        "oneAdditionalValidationCheckMs": 326.63212213636365,
+        "shellRepeatedModulesMs": 1030.179740999998,
+        "firstModulesMs": 5620.2126435,
+        "firstDependenciesMs": 831.6742614999989,
+        "firstOrganizationProjectMs": 675.7468069999995,
+        "organizationRepositoryMs": 715.7125880000003,
+        "repeatedModulesMs": 698.9838430000009,
+        "repeatedDependenciesMs": 730.4416749999991,
+        "modulesCliMs": 6791.1452035,
+        "modulesObservationMs": 29.114825999999994,
+        "organizationCliMs": 6981.4739185,
+        "organizationObservationMs": 25.2650220000005
+      }
+    }
+  ]
+}

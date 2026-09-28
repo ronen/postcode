@@ -1,0 +1,24 @@
+{
+  "builds": {
+    "before": {
+      "build": "/Users/ronen/postcode/app/_foundation-readiness/m4-baseline",
+      "sha256": "64c2e39a3011b0f491ea39c97fb96df4dd08c2bd2fc53c418e904a2f2da1d666"
+    },
+    "after": {
+      "build": "/Users/ronen/postcode/app/_foundation-readiness/m4-final",
+      "sha256": "b0630b801b78f6f708bd47af63e1be607422cfa0f1f0fb2c8f5f3d2d1191bdd6"
+    }
+  },
+  "modules": 80,
+  "artifacts": [
+    240,
+    2400
+  ],
+  "repetitions": 2,
+  "order": [
+    "before/after",
+    "after/before"
+  ],
+  "fixture": "comparisonFixture generated-scale: 80 wildcard-chain modules, 24 artifact groups; second size adds 2160 non-module artifacts",
+  "policy": "Sequential runs, naturally warm OS caches, no latency threshold. Direct/shell journeys use no-op sink; full CLI measurements use real local publication."
+}

@@ -8,6 +8,7 @@ import os from 'node:os';
 import { buildIdentity } from './comparison-fixtures.mjs';
 const [build, report, ...args] = process.argv.slice(2);
 const root = process.cwd();
+const identity = buildIdentity(build);
 const startWall = Date.now(), startMono = performance.now(), startCpu = process.cpuUsage();
 const conditions = { node: process.version, platform: process.platform, arch: process.arch,
   cpus: os.cpus().length, cpu: os.cpus()[0]?.model, loadBefore: os.loadavg(), freeMemoryBefore: os.freemem() };
@@ -42,7 +43,7 @@ const exitCode = await runCli(args, { cwd: root, checkout: root,
   sink: { async submit(batch) { const start = performance.now(); try { return await sink.submit(batch); } finally { observationMs += performance.now() - start; } } },
 });
 const monotonicMs = performance.now() - startMono, wallMs = Date.now() - startWall;
-const result = { args, build: buildIdentity(build), conditions: { ...conditions, loadAfter: os.loadavg(), freeMemoryAfter: os.freemem() },
+const result = { args, build: identity, conditions: { ...conditions, loadAfter: os.loadavg(), freeMemoryAfter: os.freemem() },
   exitCode, wallMs, monotonicMs, wallMinusMonotonicMs: wallMs - monotonicMs, cpu: process.cpuUsage(startCpu),
   firstOutputMs, observationMs, stages, workerStages: globalThis.__analysisWorkerStages ?? {}, outputBytes, outputDigest: output.digest('hex'),
   warning: stderr.includes('WARNING'), disposition: Math.abs(wallMs - monotonicMs) > 1000 ? 'suspected-suspension' : 'unreviewed' };
