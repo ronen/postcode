@@ -109,6 +109,10 @@ Investigate now; fix confirmed defects within the existing policy (recommended)
 
 don't close yet.  Create a github PR, and I will arrange a review by Copilot
 
+### 2026-09-28 — Copilot review and conditional closure
+
+The Copilot review is complete.  Please fetch and preserve it, and act on its finding.  Then (unless something else arises as you do that) you may close the plan.
+
 ## Outcome
 
 Implementation checkpoint, 2026-09-28 (task remains active): M4 is implemented in
