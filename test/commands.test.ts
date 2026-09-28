@@ -51,10 +51,26 @@ test('one-shot scanner errors and help produce no observations; inline project p
   assert.equal(result.batches[0]!.records.find(item => item.kind === 'rendered-output')!.value, result.stdout);
 });
 
+test('ambiguous project diagnostics give a readable hint without introducing terminal structure', async () => {
+  const result = await invokeCli(['--project', '-x']);
+  assert.equal(result.exit, 2); assert.equal(result.stdout, ''); assert.equal(result.batches.length, 0);
+  assert.match(result.stderr, /ambiguous\. Did you forget/);
+  assert.match(result.stderr, /To specify an option argument starting with a dash use '--project=-XYZ'\./);
+  assert.doesNotMatch(result.stderr, /\\u000a/);
+  assert.equal(result.stderr.trimEnd().split('\n').length, 1);
+  const unsafe = await invokeCli(['--bad\noption\t\u001b\u202e']);
+  assert.equal(unsafe.exit, 2);
+  assert.equal(unsafe.stderr.trimEnd().split('\n').length, 1);
+  assert.doesNotMatch(unsafe.stderr, /[\t\u001b\u202e]/);
+  assert.match(unsafe.stderr, /\\u0009/);
+  assert.match(unsafe.stderr, /\\u001b/);
+  assert.match(unsafe.stderr, /\\u202e/);
+});
+
 test('shell records scanner refusals and then accepts a quoted literal selector', { timeout: 30000 }, async () => {
   const input = Object.assign(new PassThrough(), { isTTY: true });
   const driver = interactionDriver(() => input.end());
-  const lines = ['modules --help --unknown', 'modules --project=x --help', 'inspect --json --json -- "@literal"'];
+  const lines = ['modules --project -x', 'modules --help --unknown', 'modules --project=x --help', 'inspect --json --json -- "@literal"'];
   const batches: ObservationBatch[] = [];
   let started = false, errors = '';
   const exit = await runCli(['shell', `--project=${path.resolve('fixtures/exports/tsconfig.json')}`], {
@@ -67,12 +83,15 @@ test('shell records scanner refusals and then accepts a quoted literal selector'
       return { accepted: true };
     } },
   });
-  driver.verify(); assert.equal(exit, 0); assert.equal(batches.length, 3);
-  for (const batch of batches.slice(0, 2)) {
+  driver.verify(); assert.equal(exit, 0); assert.equal(batches.length, 4);
+  for (const batch of batches.slice(0, 3)) {
     assert.deepEqual(batch.events.map(event => event.type), ['command-refused']);
     assert.equal(batch.records.some(item => item.kind === 'qualified-view'), false);
   }
   assert.match(errors, /Unknown option/); assert.match(errors, /keeps its opened project/);
-  const view = batches[2]!.records.find(item => item.kind === 'qualified-view')!.value as { projection: { selection: { matches: number } } };
+  assert.match(errors, /ambiguous\. Did you forget/);
+  assert.match(errors, /To specify an option argument starting with a dash use '--project=-XYZ'\./);
+  assert.doesNotMatch(errors, /\\u000a/);
+  const view = batches[3]!.records.find(item => item.kind === 'qualified-view')!.value as { projection: { selection: { matches: number } } };
   assert.equal(view.projection.selection.matches, 0);
 });

@@ -63,7 +63,8 @@ export function parseCommand(args: readonly string[], cwd: string, interactive =
     } });
   } catch (failure) {
     if (failure instanceof Error && 'code' in failure && String(failure.code).startsWith('ERR_PARSE_ARGS_')) {
-      return error(inlineText(failure.message));
+      // Scanner hints may span lines; join them before escaping untrusted values.
+      return error(inlineText(failure.message.replace(/\n/g, ' ')));
     }
     throw failure;
   }

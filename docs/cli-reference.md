@@ -337,9 +337,15 @@ for the available line is omitted with a disclosure. Truncation counts original
 Unicode code points, including controls, rather than characters added by escaping.
 Stored source spans retain their UTF-16 coordinates.
 
+Literal text spelled as `\u` followed by four hexadecimal digits is also kept
+indivisible during wrapping and truncation. This can make truncation coarser;
+omission counts still count the original source code points.
+
 The observation-destination disclosure and CLI diagnostic/warning values use the
 same inline terminal-control escaping. Escaping changes the displayed text only;
 it does not change filesystem destinations or recorded observation values.
+Multi-line option-scanner hints are joined with spaces before terminal controls
+are escaped, keeping the correction hint readable without introducing new lines.
 
 
 ## Dependency investigation
