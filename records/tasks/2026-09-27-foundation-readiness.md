@@ -44,6 +44,12 @@ Human response:
 
 Accept M2 and proceed to M3
 
+### 2026-09-28 — M3 first review disposition and corrections
+
+Context: This follow-up concerns the first M3 acquisition/lifetime review.
+
+The first review round is complete.  Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
+
 ## Outcome
 
 ## Verification
