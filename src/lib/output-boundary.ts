@@ -42,8 +42,20 @@ export class OutputBoundaryFailure extends Error {
   constructor(readonly path: string, readonly reason: string) { super(`resolve generated-output boundary ${path}: ${reason}`); }
 }
 
+function flippedCase(name: string): string {
+  return name.replace(/[a-zA-Z]/, letter => letter === letter.toLowerCase() ? letter.toUpperCase() : letter.toLowerCase());
+}
+
+function sameEntry(name: string, alternate: string): boolean {
+  const original = lstatSync(name);
+  try {
+    const other = lstatSync(alternate);
+    return original.dev === other.dev && original.ino === other.ino;
+  } catch (error) { if (errorCode(error) !== 'ENOENT') throw error; return false; }
+}
+
 /** Observe case handling on the actual filesystem, without creating probe files. */
-function caseInsensitive(name: string, devices: Map<number, boolean>): boolean {
+function observeCaseInsensitive(name: string, devices: Map<number, boolean>): boolean {
   let directory = name;
   for (;;) {
     try { if (statSync(directory).isDirectory()) break; }
@@ -52,30 +64,45 @@ function caseInsensitive(name: string, devices: Map<number, boolean>): boolean {
     if (parent === directory) throw new OutputBoundaryFailure(name, 'Cannot establish filesystem case handling');
     directory = parent;
   }
+  // Resolve links before probing the directory's own spelling. A symlink's
+  // parent can have different case rules from the target's filesystem.
+  directory = realpathSync.native(directory);
   const device = statSync(directory).dev;
   const known = devices.get(device);
   if (known !== undefined) return known;
   for (;;) {
-    const names = readdirSync(directory);
-    const spellings = new Set(names);
-    for (const entry of names) {
-      const alternate = entry.replace(/[a-zA-Z]/, letter => letter === letter.toLowerCase() ? letter.toUpperCase() : letter.toLowerCase());
-      // An explicitly present second spelling could be a separate file or link.
-      if (alternate === entry || spellings.has(alternate)) continue;
-      const original = lstatSync(path.join(directory, entry));
-      let insensitive = false;
-      try {
-        const other = lstatSync(path.join(directory, alternate));
-        insensitive = original.dev === other.dev && original.ino === other.ino;
-      } catch (error) { if (errorCode(error) !== 'ENOENT') throw error; }
+    const parent = path.dirname(directory);
+    if (parent === directory || statSync(parent).dev !== device) {
+      // A device root has no own-name probe on that device. Use a child only
+      // here, and tolerate a listed child disappearing before it is inspected.
+      const names = readdirSync(directory), spellings = new Set(names);
+      for (const entry of names) {
+        const alternate = flippedCase(entry);
+        if (alternate === entry || spellings.has(alternate)) continue;
+        let insensitive;
+        try { insensitive = sameEntry(path.join(directory, entry), path.join(directory, alternate)); }
+        catch (error) { if (errorCode(error) === 'ENOENT') continue; throw error; }
+        devices.set(device, insensitive);
+        return insensitive;
+      }
+      throw new OutputBoundaryFailure(name, 'Cannot establish filesystem case handling without a same-filesystem spelling probe');
+    }
+    const entry = path.basename(directory);
+    const alternate = flippedCase(entry);
+    if (alternate !== entry) {
+      const insensitive = sameEntry(directory, path.join(parent, alternate));
       devices.set(device, insensitive);
       return insensitive;
     }
-    const parent = path.dirname(directory);
-    if (parent === directory || statSync(parent).dev !== device) {
-      throw new OutputBoundaryFailure(name, 'Cannot establish filesystem case handling');
-    }
     directory = parent;
+  }
+}
+
+function caseInsensitive(name: string, devices: Map<number, boolean>): boolean {
+  try { return observeCaseInsensitive(name, devices); }
+  catch (error) {
+    if (!operationalIO(error)) throw error;
+    throw new OutputBoundaryFailure(name, `Cannot establish filesystem case handling: ${errorCode(error)}`);
   }
 }
 

@@ -12,9 +12,12 @@ export function captureInputs(excludedDirectories: readonly string[] | OutputBou
   const exclusions = policy.locations;
   const observations = new Map<string, unknown>();
   const probes = new Map<string, () => unknown>();
+  let replaying = false;
   const unavailable = (name: string) => canonical(['unavailablePath', absolute(name)]);
   const recordUnavailable = (name: string, error: unknown) => {
     if (!operationalIO(error)) throw error;
+    // Validation compares the captured basis; only acquisition may extend it.
+    if (replaying) return;
     const key = unavailable(name);
     observations.set(key, true);
     probes.set(key, () => {
@@ -62,13 +65,16 @@ export function captureInputs(excludedDirectories: readonly string[] | OutputBou
     revision: () => observations.size,
     changed: (): boolean => {
       if (policy.changed()) return true;
-      for (const [key, probe] of probes) {
-        const before = observations.get(key), after = probe();
-        if (before === null || after === null || typeof before !== 'object' || typeof after !== 'object') {
-          if (before !== after) return true;
-        } else if (canonical(before) !== canonical(after)) return true;
-      }
-      return false;
+      replaying = true;
+      try {
+        for (const [key, probe] of probes) {
+          const before = observations.get(key), after = probe();
+          if (before === null || after === null || typeof before !== 'object' || typeof after !== 'object') {
+            if (before !== after) return true;
+          } else if (canonical(before) !== canonical(after)) return true;
+        }
+        return false;
+      } finally { replaying = false; }
     },
     identity: () => ({
       caseSensitive: system.useCaseSensitiveFileNames,

@@ -146,11 +146,16 @@ boundaries refuse opening with an operational failure, separately from compiler
 diagnostics. Revalidation detects retargeting or resolution failure and invalidates
 the session. Captured repository source links retain their separate historical
 resolver. The changed acquisition policy advances `postcode/observed-inputs` to
-version 5. Ordinary candidate paths that fail operational resolution remain absent
+version 6. Ordinary candidate paths that fail operational resolution remain absent
 to the compiler, with a retained recovery probe; they do not turn a resolved output
 boundary into an opening refusal. Missing output suffixes use filesystem case
-handling observed by a read-only spelling probe on the same device, shared within
-each boundary-resolution pass. Case-equivalent materialization does not itself
+handling observed by a read-only spelling probe of an existing directory on the
+same device, shared within each boundary-resolution pass. This avoids requiring
+directory-listing permission for the ordinary probe. Unknown case handling refuses
+with an explicit case-detection reason. The current per-device case assumption
+does not reliably handle per-directory case rules or lexical paths crossing
+filesystems with different case rules. Validation compares captured compiler
+observations without extending their identity or acquisition revision. Case-equivalent materialization does not itself
 retarget the boundary. This implements the [output-boundary decision](../decisions/generated-output-boundaries.md). Discovery contexts assert this exclusion only when at least one
 output location was supplied; direct library runs may enforce none. The CLI supplies
 its actual checkout observation and build directories before opening a project,
