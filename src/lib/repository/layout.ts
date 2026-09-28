@@ -1,3 +1,4 @@
+import { directedGraph } from '../directed-graph.js';
 import path from 'node:path';
 import { compare } from '../identity.js';
 import type { LayoutEvidence, RepositoryEvidence } from './evidence.js';
@@ -27,18 +28,7 @@ export function deriveLayout(evidence: RepositoryEvidence): LayoutEvidence {
   }));
   const artifactPaths = new Set(artifacts.map(artifact => artifact.path));
   const links: LayoutEvidence['links'][number][] = [];
-  const reaches = (from: string, target: string) => {
-    const pending = [from];
-    const seen = new Set<string>();
-    while (pending.length > 0) {
-      const current = pending.pop()!;
-      if (current === target) return true;
-      if (seen.has(current)) continue;
-      seen.add(current);
-      containment.filter(edge => edge.parent === current).forEach(edge => pending.push(edge.child));
-    }
-    return false;
-  };
+  const graph = directedGraph(paths, containment.map(edge => [edge.parent, edge.child] as const));
   // Deterministic ordering makes the accepted acyclic subset reproducible.
   for (const artifact of artifacts) {
     const link = artifact.link;
@@ -56,9 +46,10 @@ export function deriveLayout(evidence: RepositoryEvidence): LayoutEvidence {
       add('outside-population');
     } else {
       const source = parent(artifact.path);
-      if (reaches(target, source)) add('cyclic-containment');
-      else if (containment.some(edge => edge.parent === source && edge.child === target)) add('existing-parent', target);
+      if (graph.reaches(target, source)) add('cyclic-containment');
+      else if (graph.hasEdge(source, target)) add('existing-parent', target);
       else {
+        graph.add(source, target);
         containment.push({ parent: source, child: target, basis: 'symlink', evidencePath: artifact.path });
         add('additional-parent', target);
       }

@@ -1,5 +1,5 @@
 import { completedMaterialization } from '../evaluation-state.js';
-import { compositionAnnotation, compositionView } from '../composition-view.js';
+import { compositionAnnotation, prepareCompositionViews } from '../composition-view.js';
 import type { CompositionView } from '../composition-view.js';
 import { identityReference, methods, recordId } from '../identity.js';
 import type { Presentation } from '../presentation.js';
@@ -67,6 +67,9 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
   if (expanded && expanded.kind !== 'dependency-organization-evaluation') throw new Error('Expected organization expansion');
   const organizationClaims = expanded?.claims.map(id => store.get(id) as DependencyOrganizationClaim) ?? [];
   const allEdges = projection.relationships.map(id => store.get(id) as DependencyRelationshipClaim);
+  const compositionView = prepareCompositionViews(store, projection.expansions.moduleClaims, projection.expansions.moduleEvaluations);
+  const organizationByRelationship = new Map(organizationClaims.map(claim => [claim.subject, claim]));
+  const modulePopulation = new Set(projection.modules);
   const graph = projection.graph;
   const rows: Row[] = [];
   const displayed = new Set<RecordId>();
@@ -75,6 +78,13 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
   const maximumComponents = presentation.format === 'unicode' ? 60 : Infinity;
   const maximumDepth = presentation.format === 'unicode' ? 6 : Infinity;
   const componentOf = new Map(graph?.components.flatMap((component, index) => component.members.map(id => [id, index] as const)) ?? []);
+  const edgesByComponent = new Map<number, typeof allEdges>();
+  for (const edge of allEdges) {
+    const component = componentOf.get(edge.subject);
+    if (component === undefined) continue;
+    const bucket = edgesByComponent.get(component) ?? [];
+    bucket.push(edge); edgesByComponent.set(component, bucket);
+  }
   if (graph) {
     const seen = new Set<number>();
     // Incomplete evaluation cannot name roots: show known components as a flat inventory.
@@ -90,7 +100,7 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
       seen.add(next.component);
       component.members.forEach(id => displayed.add(id));
       // Opaque external endpoints come from projection edges, not the project-only SCC graph.
-      for (const edge of allEdges.filter(edge => componentOf.get(edge.subject) === next.component)) {
+      for (const edge of edgesByComponent.get(next.component) ?? []) {
         if (selectedEdges.size >= maximumEdges) break;
         selectedEdges.add(edge.id); displayed.add(edge.subject); displayed.add(edge.information.child);
       }
@@ -117,7 +127,7 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
     return { id, owner, target, mechanism, typeOnly, targetStatus, commonjs, qualification: qualification(item.context) };
   };
   const relationships: EdgeView[] = allEdges.filter(edge => selectedEdges.has(edge.id)).map(edge => {
-    const organization = organizationClaims.find(claim => claim.subject === edge.id);
+    const organization = organizationByRelationship.get(edge.id);
     const endpoint = (item: DependencyOrganizationClaim['information']['occurrences'][number]['source']) => ({
       outcome: item.outcome, materialization: item.materialization, groups: item.groups, candidates: item.candidates });
     return { id: edge.id, parent: edge.subject, child: edge.information.child, typeOnly: edge.information.typeOnly,
@@ -140,12 +150,12 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
     return { id, owner: item.owner, outcome: item.outcome, commonjs: item.commonjs, qualification: qualification(item.context) };
   });
   requestResults.forEach(item => displayed.add(item.owner));
-  recognitionCoverage.forEach(item => { if (item.owner && projection.modules.includes(item.owner)) displayed.add(item.owner); });
+  recognitionCoverage.forEach(item => { if (item.owner && modulePopulation.has(item.owner)) displayed.add(item.owner); });
   const modules = projection.modules.filter(id => displayed.has(id)).map(id => {
     const module = store.get(id);
     if (module.kind !== 'module') throw new Error('Expected module');
     const claim = store.get(module.claim) as ModuleClaim;
-    const composition = compositionView(store, id, projection.expansions.moduleClaims, projection.expansions.moduleEvaluations);
+    const composition = compositionView(id);
     for (const property of composition.claims) {
       const context = store.get(property.qualification.id);
       if (context.kind === 'claim-context') for (const evidence of context.evidence) source(property.id, 'composition', evidence);
@@ -191,8 +201,9 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
     'Variation labels preserve different established answers; unestablished organization is not a policy failure. Repository layout establishes no dependency policy or architectural violation.',
     'Generated handles are navigation cues; exact names and session-local Entity IDs retain their established meanings.'];
   if (projection.lens === 'dependency-parents') limitations.push('A request without an established child cannot be attributed to the selected module and therefore cannot produce a parent result.');
-  const sourcePriority = (item: typeof sourceItems[number]) => projection.nonEdgeRequests.includes(item.subject) ? 0
-    : projection.coverage.includes(item.subject) ? 1 : item.role === 'target' ? 3 : 2;
+  const nonEdges = new Set(projection.nonEdgeRequests), coverage = new Set(projection.coverage);
+  const sourcePriority = (item: typeof sourceItems[number]) => nonEdges.has(item.subject) ? 0
+    : coverage.has(item.subject) ? 1 : item.role === 'target' ? 3 : 2;
   sourceItems.sort((a, b) => sourcePriority(a) - sourcePriority(b));
   const result: QualifiedDependencyView = {
     schema: 'postcode-dependency-view/1-experimental',
@@ -240,12 +251,20 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
     for (const subject of view.subjects) lines.push(`Selected: ${label(subject)}`);
   }
   if (view.graph) {
+    const components = new Map(view.graph.components.flatMap((component, index) => component.members.map(id => [id, index] as const)));
+    const edges = new Map<number, EdgeView[]>();
+    for (const edge of view.relationships) {
+      const component = components.get(edge.parent);
+      if (component === undefined) continue;
+      const bucket = edges.get(component) ?? [];
+      bucket.push(edge); edges.set(component, bucket);
+    }
     lines.push('', view.graph.rootsEstablished ? 'Dependency roots and direct structure (root components have no incoming project relationships from outside the component)' : 'Known components; roots not established');
     for (const row of view.display.rows) {
       const component = view.graph.components[row.component]!;
       const indent = '  '.repeat(row.depth);
       lines.push(`${indent}◆ ${component.cyclic ? 'Cycle grouping (not an entity): ' : ''}${component.members.map(id => label(id)).join(', ')}${row.reference ? ' · reference (already expanded)' : ''}${row.pruned ? ' · further descent pruned at display depth' : ''}`);
-      if (!row.reference) for (const edge of view.relationships.filter(edge => component.members.includes(edge.parent))) lines.push(`${indent}  ${edgeText(edge)}`);
+      if (!row.reference) for (const edge of edges.get(row.component) ?? []) lines.push(`${indent}  ${edgeText(edge)}`);
     }
     if (!view.graph.components.length) lines.push(view.graph.rootsEstablished ? 'No project modules.' : 'No project modules materialized.');
   } else {

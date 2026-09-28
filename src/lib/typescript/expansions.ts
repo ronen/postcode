@@ -40,6 +40,7 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
     return !immediate || aliasAllowsValue(immediate, seen);
   };
   const surfaces = new Map<ts.Symbol, readonly ts.Symbol[]>();
+  const names = new Map<ts.Symbol, Map<string, ts.Symbol>>();
   const effective = (module: ts.Symbol): readonly ts.Symbol[] => {
     const cached = surfaces.get(module);
     if (cached) return cached;
@@ -48,8 +49,12 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
     const result = [...symbols, ...(assignment && !symbols.includes(assignment) ? [assignment] : [])]
       .sort((a, b) => compare(a.getName(), b.getName()));
     surfaces.set(module, result);
+    const byName = new Map<string, ts.Symbol>();
+    for (const symbol of result) if (!byName.has(symbol.getName())) byName.set(symbol.getName(), symbol);
+    names.set(module, byName);
     return result;
   };
+  const namedExport = (module: ts.Symbol, name: string) => { effective(module); return names.get(module)!.get(name); };
   const moduleAt = (node: ts.Node | undefined) => node ? checker.getSymbolAtLocation(node) : undefined;
   const moduleBySymbol = new Map(modules.filter(module => module.symbol).map(module => [module.symbol!, module]));
   const owner = (node: ts.Node, knownModuleOnly = false): ts.Symbol | undefined => {
@@ -63,7 +68,7 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
   };
   interface Edge { route: Route; next?: { module: ts.Symbol; name: string } }
   const edges = (module: ts.Symbol, name: string): Edge[] => {
-    const exported = effective(module).find(symbol => symbol.getName() === name);
+    const exported = namedExport(module, name);
     if (!exported) return [];
     const target = resolve(exported);
     const paths: Edge[] = [];
@@ -99,7 +104,7 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
       for (const statement of statements(module)) {
         if (!ts.isExportDeclaration(statement) || statement.exportClause || !statement.moduleSpecifier) continue;
         const via = moduleAt(statement.moduleSpecifier);
-        const upstream = via && effective(via).find(symbol => symbol.getName() === name);
+        const upstream = via && namedExport(via, name);
         if (!upstream || resolve(upstream) !== target) continue;
         forward(via, name, { kind: 'wildcard', typeOnly: statement.isTypeOnly, aliased: false, via, node: statement });
       }
@@ -196,7 +201,7 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
         const wildcardTargets = new Set(statements(module.symbol!).flatMap(statement => {
           if (!ts.isExportDeclaration(statement) || statement.exportClause) return [];
           const via = moduleAt(statement.moduleSpecifier);
-          const member = via && effective(via).find(member => member.getName() === exported.getName());
+          const member = via && namedExport(via, exported.getName());
           return member ? [resolve(member)] : [];
         }));
         if (wildcardTargets.size > 1) issues.push(`Export ${exported.getName()} has conflicting wildcard origins; the compiler surface is qualified.`);
@@ -284,21 +289,30 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
       }
     }
     const byId = new Map(records.map(record => [record.id, record]));
+    const exportsByModule = new Map<RecordId, RecordId[]>();
+    const docsBySubject = new Map<RecordId, { id: RecordId; order: number }[]>();
+    for (const id of exportClaims) {
+      const claim = byId.get(id);
+      if (claim?.kind !== 'claim') continue;
+      const bucket = exportsByModule.get(claim.subject) ?? [];
+      bucket.push(id); exportsByModule.set(claim.subject, bucket);
+    }
+    docClaims.forEach((id, order) => {
+      const claim = byId.get(id);
+      if (claim?.kind !== 'claim') return;
+      const bucket = docsBySubject.get(claim.subject) ?? [];
+      bucket.push({ id, order }); docsBySubject.set(claim.subject, bucket);
+    });
     const results: NonNullable<DiscoveryResult['expansions']>[number][] = prepared.flatMap((item, index) => {
       const subject = recordId(session, 'module', item.module.key);
-      const exports = exportClaims.filter(id => {
-        const claim = byId.get(id);
-        return claim?.kind === 'claim' && claim.subject === subject;
-      });
+      const exports = exportsByModule.get(subject) ?? [];
       const related = new Set([subject, ...exports]);
       for (const id of exports) {
         const claim = byId.get(id);
         if (claim?.kind === 'claim' && claim.information.type === 'export' && claim.information.symbol) related.add(claim.information.symbol);
       }
-      const docs = docClaims.filter(id => {
-        const claim = byId.get(id);
-        return claim?.kind === 'claim' && related.has(claim.subject);
-      });
+      const docs = [...related].flatMap(subject => docsBySubject.get(subject) ?? [])
+        .sort((a, b) => a.order - b.order).map(item => item.id);
       return requested.map(requirement => ({
         requirement, modules: [subject], claims: requirement === 'exports' ? exports : [...exports, ...docs], contexts: [contexts[index]!],
         applicability: 'applicable', availability: 'available', execution: 'completed',

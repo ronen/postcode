@@ -50,6 +50,14 @@ Place all options, including `--json` and `--source-detail`, before the marker.
 One exact selector is still
 required; the marker does not enable multiple selectors.
 
+`--project=value` accepts an inline path; dash-prefixed paths require this form
+(for example `--project=-config.json`). A project path must be nonempty and may
+appear only once. Repeated boolean flags are idempotent. Both `-h` and `--help`
+skip command-operand validation, but only after all options have been checked:
+unknown options, missing/empty values, duplicate project options and the shell's
+restriction on changing projects still produce usage errors. Shell quoting only
+groups words; it does not make an option-looking selector literal. Use `--`.
+
 Exit 0 means a view was produced, including a qualified or partial result. Exit 2
 means invalid arguments, failure to open the project or input invalidation; exit 1
 means an internal failure; exit 3 means an expected analysis failure preventing a
@@ -320,6 +328,14 @@ line-breaking, indentation and Unicode bidirectional formatting controls as visi
 Unicode escapes. Operational paths retain their original values internally. Documentation
 and excerpts retain the renderer's structured wrapping. JSON retains the original
 string values; display escaping does not alter stored claims or evidence.
+
+Multiline layout measures terminal display cells and breaks at grapheme boundaries,
+preserving combining sequences and emoji without Unicode normalization. Ambiguous
+width characters count as narrow. Tabs appear as `\u0009`, CR as `\u000d`, and LF
+remains a structured line break. Escapes remain indivisible. A grapheme too wide
+for the available line is omitted with a disclosure. Truncation counts original
+Unicode code points, including controls, rather than characters added by escaping.
+Stored source spans retain their UTF-16 coordinates.
 
 The observation-destination disclosure and CLI diagnostic/warning values use the
 same inline terminal-control escaping. Escaping changes the displayed text only;

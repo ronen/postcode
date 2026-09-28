@@ -10,8 +10,35 @@ import { localFileObservationSink } from '../src/lib/observations.js';
 import type { ObservationBatch, ObservationSink } from '../src/lib/observations.js';
 import { renderUnicode } from '../src/lib/presentation.js';
 import type { QualifiedView } from '../src/lib/presentation.js';
+import { codePointLength, displayWidth } from '../src/lib/terminal-layout.js';
 
 const config = path.resolve('fixtures/exports/tsconfig.json');
+
+test('Unicode layout preserves captured Unicode/control evidence and UTF-16 source positions', async t => {
+  const root = temporaryDirectory(t, 'postcode-unicode-layout-');
+  const project = path.join(root, 'tsconfig.json');
+  writeFileSync(project, '{"compilerOptions":{"noLib":true,"types":[]},"files":["sample.ts"]}');
+  const prose = '古e\u0301👩‍👩‍👧‍👦 '.repeat(100);
+  const sourceLine = 'export const a = "😀\t古"; export const b = 2;';
+  writeFileSync(path.join(root, 'sample.ts'), `/** ${prose} */\r\n${sourceLine}\r\n`);
+  const result = await invoke(['inspect', 'sample', '--project', project, '--source-detail']);
+  assert.equal(result.exit, 0);
+  const view = result.batches[0]!.records.find(item => item.kind === 'qualified-view')!.value as QualifiedView;
+  const original = JSON.stringify(view);
+  assert.equal(renderUnicode(view), result.stdout);
+  assert.equal(JSON.stringify(view), original);
+  assert.equal(result.stdout.includes('\t'), false);
+  assert.ok(result.stdout.includes('\\u0009'));
+  const documentation = view.modules[0]!.exports.find(item => item.exportedName === 'a')!.documentation[0]!;
+  assert.ok(prose.startsWith(documentation.text));
+  assert.equal(documentation.omittedTextCharacters, codePointLength(prose.trimEnd()) - codePointLength(documentation.text));
+  assert.ok(result.stdout.split('SOURCE DETAIL')[0]!.split('\n').filter(line => line.startsWith('  │  ')).every(line => displayWidth(line) <= 88));
+  const evidence = view.sourceDetail!.items.flatMap(item => item.evidence);
+  assert.ok(evidence.some(item => item.location.association === 'span' && item.location.excerpt.text.includes('\t')));
+  const b = view.sourceDetail!.items.find(item => item.label === 'Export b')!.evidence[0]!.location;
+  assert.equal(b.association, 'span');
+  if (b.association === 'span') assert.deepEqual(b.from, { line: 2, column: sourceLine.indexOf('export const b') + 1 });
+});
 function invoke(args: string[], options: { sink?: ObservationSink; checkout?: string; expectedWarning?: boolean } = {}) {
   return invokeCli(args, options);
 }
@@ -159,7 +186,7 @@ test('retired scope options are rejected and source detail remains bounded to su
   for (const option of ['--snapshot', '--session', '--dependency-context']) {
     const result = await invoke([option, 'unused']);
     assert.equal(result.exit, 2);
-    assert.match(result.stderr, /unknown option/);
+    assert.match(result.stderr, /unknown option/i);
     assert.equal(result.stdout, '');
     assert.equal(result.batches.length, 0);
   }
@@ -591,6 +618,7 @@ test('source expansion groups deduplicated evidence by displayed concepts with p
   const plain = await invoke(args);
   assert.equal(plain.stdout.includes('export interface Merged'), false);
   const result = await invoke([...args, '--source-detail', '--json']);
+  assert.equal(result.exit, 0, result.stderr);
   const view = JSON.parse(result.stdout) as QualifiedView;
   const items = view.sourceDetail!.items;
   const module = items.find(item => item.label.startsWith('Module origin'))!;

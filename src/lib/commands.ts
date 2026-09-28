@@ -1,3 +1,4 @@
+import { parseArgs } from 'node:util';
 import path from 'node:path';
 import type { ViewRequest } from './session.js';
 import { inlineText } from './terminal-text.js';
@@ -11,6 +12,8 @@ organization defaults to the configured project; repository selects the complete
 inspect accepts one exact group/module name or module handle; zero/one/multiple matches are explicit.
 Groups have segment names and group Entity IDs, with no handles or path selectors. The root has no intrinsic name.
 Place options before -- to pass an option-like selector literally: inspect --json -- --help.
+Use --project=value for inline paths and --project=-value for a dash-prefixed path.
+Value options may appear once; help still reports invalid options and values.
 Exact names and generated handles are current lookups with zero, one, or multiple matches.
 Entity references establish continuity only within their session; matching spellings in another session do not restore earlier work.
 --source-detail supports inspect and dependency views and discloses source locations and bounded excerpts supporting displayed claims.
@@ -51,23 +54,28 @@ export type ParsedCommand = { kind: 'help' } | { kind: 'exit' } | { kind: 'error
   | { kind: 'view'; configPath: string; request: ViewRequest };
 
 export function parseCommand(args: readonly string[], cwd: string, interactive = false, defaultJson = false): ParsedCommand {
-  let configPath = path.join(cwd, 'tsconfig.json'), json = defaultJson, sourceDetail = false, literal = false;
-  const positional: string[] = [];
   const error = (message: string): ParsedCommand => ({ kind: 'error', message: `Usage error: ${message}\n` });
-  for (let index = 0; index < args.length; index++) {
-    const arg = args[index]!;
-    if (arg === '--') { positional.push(...args.slice(index + 1)); literal = true; break; }
-    if (arg === '--help' || arg === '-h') return { kind: 'help' };
-    if (arg === '--json') json = true;
-    else if (arg === '--source-detail') sourceDetail = true;
-    else if (arg === '--project') {
-      if (interactive) return error('a shell keeps its opened project; exit to choose another.');
-      const next = args[++index];
-      if (!next || next.startsWith('--')) return error('--project requires a configuration path.');
-      configPath = path.resolve(cwd, next);
-    } else if (arg.startsWith('--')) return error(`unknown option ${inlineText(arg)}.`);
-    else positional.push(arg);
+  let scanned;
+  try {
+    scanned = parseArgs({ args: [...args], strict: true, allowPositionals: true, tokens: true, options: {
+      help: { type: 'boolean', short: 'h' }, json: { type: 'boolean' },
+      'source-detail': { type: 'boolean' }, project: { type: 'string' },
+    } });
+  } catch (failure) {
+    if (failure instanceof Error && 'code' in failure && String(failure.code).startsWith('ERR_PARSE_ARGS_')) {
+      return error(inlineText(failure.message));
+    }
+    throw failure;
   }
+  const { values, positionals: positional, tokens } = scanned;
+  const projects = tokens.filter(token => token.kind === 'option' && token.name === 'project');
+  if (projects.length > 1) return error('--project may only be supplied once.');
+  if (values.project === '') return error('--project requires a nonempty configuration path.');
+  if (interactive && projects.length) return error('a shell keeps its opened project; exit to choose another.');
+  if (values.help) return { kind: 'help' };
+  const configPath = values.project === undefined ? path.join(cwd, 'tsconfig.json') : path.resolve(cwd, values.project);
+  const json = values.json ?? defaultJson, sourceDetail = values['source-detail'] ?? false;
+  const literal = tokens.some(token => token.kind === 'option-terminator');
   const lens = positional[0] ?? 'modules';
   if (interactive && ['help', 'exit'].includes(lens) && args.length === 1) return { kind: lens as 'help' | 'exit' };
   if (!interactive && lens === 'shell' && positional.length === 1 && !sourceDetail) return { kind: 'shell', configPath, json };

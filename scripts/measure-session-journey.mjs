@@ -1,9 +1,12 @@
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { PassThrough } from 'node:stream';
-import { runCli } from '../_build/src/lib/cli.js';
+import { pathToFileURL } from 'node:url';
+import { buildIdentity } from './comparison-fixtures.mjs';
 import { writeFileSync } from 'node:fs';
-import { openSession } from '../_build/src/lib/session.js';
+const build = path.resolve(process.argv[4] ?? '_build');
+const { runCli } = await import(pathToFileURL(path.join(build, 'src/lib/cli.js')));
+const { openSession } = await import(pathToFileURL(path.join(build, 'src/lib/session.js')));
 
 // Run with --expose-gc; measurements are descriptive, never test thresholds.
 const configPath = path.resolve(process.argv[2] ?? 'tsconfig.json');
@@ -90,7 +93,7 @@ const shellExit = await runCli(['shell', '--project', configPath, '--json'], {
 if (interactionError) throw interactionError;
 assert.equal(shellExit, 0);
 const afterWorkerClose = await collect();
-const report = { configPath, node: process.versions.node, gcAvailable: Boolean(global.gc), baseline, openingMs, samples, journeyMs, live, closed, shellOpenMs, shellSamples, afterWorkerClose,
+const report = { configPath, build: buildIdentity(build), node: process.versions.node, gcAvailable: Boolean(global.gc), baseline, openingMs, samples, journeyMs, live, closed, shellOpenMs, shellSamples, afterWorkerClose,
   note: 'Executor measurements include its two validation passes. validationCheckMs samples one additional check immediately after each request, outside its measured duration; it estimates per-pass cost rather than attributing time inside execution. Executor measurements exclude publication checks, worker startup, prompt and sink delivery. Shell measurements include three validation passes (before execution, before output after delivery, and after output), worker/prompt work and publication through observation submission to a no-op sink; opening is separate. Earlier view objects remain referenced during the closed measurement; compiler/store release is inferred from heap changes, not RSS high-water marks.' };
 if (output) writeFileSync(output, JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify(report, null, 2));

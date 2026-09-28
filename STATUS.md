@@ -21,7 +21,8 @@ configured TypeScript project.
   with unresolved requests and analysis limits distinguished.
 - **[Supporting evidence](docs/cli-reference.md#source-detail-and-observations).**
   Inspections can expose source locations and bounded excerpts supporting the
-  displayed information.
+  displayed information. Terminal wrapping preserves combining characters and emoji,
+  measures display width, and visibly escapes control characters.
 - **[Local observation recording](README.md#observability).**
   Commands record requests, outcomes and presented views, grouped by project and
   UTC date. Only complete batches become visible under final filenames; delivery
@@ -37,3 +38,6 @@ configured TypeScript project.
   can be interrupted in both CLI modes. Git acquisition has a per-call deadline;
   unconfirmed cleanup is reported separately, without promising a deadline for
   the whole analysis.
+- **[Output exclusions](docs/backlog.md#correct-output-boundaries-across-different-filesystem-case-rules):**
+  paths crossing different filesystem case rules, or directories with different
+  case rules on one filesystem, have known exclusion defects awaiting correction.

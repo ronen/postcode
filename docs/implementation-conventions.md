@@ -56,6 +56,7 @@ Agents may update this document only as part of authorized implementation work t
 - Open one configured project per session. One-shot use executes one request; the terminal shell retains state through successive requests and closes on exit, EOF, invalidation or interruption.
 - Keep operational invocation paths separate from source evidence and domain identity. No generated next-command strings or corresponding presentation fields remain.
 - Put options before `--` and a literal option-like selector after it.
+- Scan options with Node's strict `util.parseArgs` before applying PostCode lens/selector rules or help. Reject repeated/empty project values and shell project changes before honoring help; boolean repeats are idempotent. Keep shell word tokenization separate from option scanning.
 - Report distinct enforced output-location boundaries in run qualification counts, not a census of generated files.
 
 ## Local observation sink
@@ -78,8 +79,12 @@ Agents may update this document only as part of authorized implementation work t
 - Preserve module and export containment in source presentation, and distinguish forwarding declarations from semantic-symbol definitions. [[Conceptual presentation and source escape](decisions/initial-module-inventory-decisions.md#keep-conceptual-presentation-separate-from-source-escape)]
 - Expand a narrow compiler span to its enclosing statement when that context makes the evidence intelligible, while keeping excerpts bounded and qualified.
 - Treat Unicode documentation height limits as presentation policy. Preserve the stored assertions and count additional characters or tags omitted by the height limit in the qualified view.
+- Use `string-width` with narrow ambiguous characters and `Intl.Segmenter` graphemes for terminal cells, wrapping and fit checks. Escape tabs and CR visibly, retain structured LF, and keep escaped tokens indivisible. Preserve original spelling and original-code-point omission counts; disclose indivisible text that exceeds the available width. JSON and stored source coordinates retain their existing text/UTF-16 conventions.
 
 ## Accumulation and interactive execution
+
+- Prepare processing indexes over the selected immutable view/evaluation inputs, preserving original ordinals when merging evidence buckets. Artifact/placement indexes use weak capture/layout keys; they do not refresh or cache filesystem observations. Keep ordered export surfaces alongside name lookups.
+- Keep Stately imports, encoded topology identifiers and mutable ephemeral graphs inside the directed-graph adapter. PostCode owns selected populations, sorting, all supporting claims and display traversal. Use explicit-direction, membership-checked DFS and sanctioned edge addition for sequential containment acceptance. [[Graph delegation](decisions/graph-kernel-delegation.md)]
 
 - Retain provider discovery and completed work by declared requirements. Keep the module evaluation basis and its expansions together; never broaden projections by selecting the accumulated store indiscriminately. Reuse complete module and expansion outcomes. Reuse partial outcomes only when the provider explicitly supplies a captured `retryBasis` asserting stability until further input acquisition. Validate that basis as analysis inputs in the same session; providers without it still retry. The TypeScript provider keys partial caches by its append-only acquisition revision and reassesses them after dependency input acquisition. Do not add outer module/dependency caches that hide this check. Preserve earlier records when a new input basis permits another attempt. [[Accumulated information](decisions/transient-analysis-sessions.md#immutable-information-within-an-accumulating-session)]
 - Evaluators return the immutable store-owned record after insertion. Publish a module outcome and its requested expansion outcomes atomically; a rejected expansion cannot leave a root-only attempt. The store still validates every submitted record and retains existing owned objects after an identical validated resubmission. Provider-owned discovery results are deeply frozen before returning them.

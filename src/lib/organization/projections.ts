@@ -1,3 +1,4 @@
+import { directedGraph } from '../directed-graph.js';
 import { completedMaterialization } from '../evaluation-state.js';
 import { identityReference, compare, methods, recordId } from '../identity.js';
 import { inspect as inspectModules } from '../projections.js';
@@ -27,16 +28,8 @@ function project(store: ProgramRecordStore, evaluation: OrganizationEvaluationRe
   let referenceStatus: OrganizationProjectionRecord['selection']['referenceStatus'] = 'current';
   if (subject === 'configured-project') {
     selected = new Set(placements.flatMap(claim => claim.information.type === 'module-placement' ? claim.information.groups : []));
-    let changed = true;
-    while (changed) {
-      changed = false;
-      for (const claim of claims) {
-        if (claim.information.type === 'group-containment' && selected.has(claim.information.child) && !selected.has(claim.subject)) {
-          selected.add(claim.subject);
-          changed = true;
-        }
-      }
-    }
+    selected = directedGraph(evaluation.groups, claims.flatMap(claim => claim.information.type === 'group-containment'
+      ? [[claim.subject, claim.information.child] as const] : [])).ancestors(selected);
   } else if (subject === 'selected-entities') {
     if (selector === null) throw new Error('Inspection requires a selector');
     const groupIds = store.entityIds(evaluation.groups, 'group');

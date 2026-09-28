@@ -1,3 +1,4 @@
+import { diagnosticLookup } from './diagnostics.js';
 import ts from 'typescript';
 import { identityReference, compare, methods, recordId } from '../identity.js';
 import type { ClaimContextRecord, ModuleDiscoveryFacet, ProgramRecord, RecordId, SessionId, SourceEvidenceRecord } from '../records.js';
@@ -36,6 +37,7 @@ type Evidence = (node: ts.Node, compilerName: string | null, resolution?: Source
 export function prepareDependencies(program: ts.Program, host: ts.CompilerHost, modules: readonly ModuleCandidate[]) {
   const checker = program.getTypeChecker();
   const diagnostics = program.getSyntacticDiagnostics();
+  const selectDiagnostics = diagnosticLookup(diagnostics);
   const syntaxFailures = new Set(diagnostics.flatMap(diagnostic => diagnostic.file ? [diagnostic.file] : []));
   const bySymbol = new Map(modules.filter(module => module.symbol).map(module => [module.symbol!, module]));
   const byFile = new Map(modules.flatMap(module => module.declarations.filter(ts.isSourceFile)
@@ -151,7 +153,7 @@ export function prepareDependencies(program: ts.Program, host: ts.CompilerHost, 
     const moduleId = (candidate: ModuleCandidate) => recordId(session, 'module', candidate.key);
     const context = (key: unknown, scope: RecordId | 'configured-project', sources: readonly RecordId[],
       sourceFiles: readonly ts.SourceFile[]): RecordId => {
-      const relevant = diagnostics.filter(diagnostic => diagnostic.file && sourceFiles.includes(diagnostic.file))
+      const relevant = selectDiagnostics(sourceFiles)
         .map(diagnostic => ({ code: diagnostic.code, category: ts.DiagnosticCategory[diagnostic.category]!.toLowerCase() }))
         .sort((a, b) => a.code - b.code || compare(a.category, b.category));
       const record: ClaimContextRecord = {

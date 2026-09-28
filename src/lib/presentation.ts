@@ -1,6 +1,7 @@
+import { boundedText, codePointLength, displayWidth, fitText, layoutText, padDisplay } from './terminal-layout.js';
 import { moduleLimitations, isCompositionContext } from './qualification-policy.js';
 import { completedMaterialization } from './evaluation-state.js';
-import { compositionView, compositionAnnotation } from './composition-view.js';
+import { prepareCompositionViews, compositionAnnotation } from './composition-view.js';
 import type { CompositionView } from './composition-view.js';
 import { inlineText, terminalText } from './terminal-text.js';
 import { identityReference, methods, recordId } from './identity.js';
@@ -68,6 +69,18 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
     return conceptual;
   };
   const expanded = projection.expansions.claims.map(id => store.get(id)).filter((record): record is Claim => record.kind === 'claim');
+  const expandedBySubject = new Map<RecordId, Claim[]>();
+  const docsBySubject = new Map<RecordId, { claim: Claim; order: number }[]>();
+  expanded.forEach((claim, order) => {
+    const bucket = expandedBySubject.get(claim.subject) ?? [];
+    bucket.push(claim); expandedBySubject.set(claim.subject, bucket);
+    if (claim.information.type === 'documentation-association') {
+      const docs = docsBySubject.get(claim.subject) ?? [];
+      docs.push({ claim, order }); docsBySubject.set(claim.subject, docs);
+    }
+  });
+  const modulePopulation = new Set(projection.modules);
+  const compositionView = prepareCompositionViews(store, projection.expansions.claims, projection.evaluations);
   const compact = presentation.format === 'unicode' && projection.lens === 'modules';
   const displayedClaims = new Map<RecordId, Claim>();
   type SourceGroup = Omit<NonNullable<QualifiedView['sourceDetail']>['items'][number], 'evidence'>;
@@ -77,12 +90,10 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
     sourceGroups.set(key, { ...group, claims: [...new Set([...(sourceGroups.get(key)?.claims ?? []), ...claims.map(claim => claim.id)])] });
     for (const claim of claims) displayedClaims.set(claim.id, claim);
   };
-  const excerpt = (text: string, maximum: number) => {
-    const characters = [...text];
-    return { text: characters.slice(0, maximum).join(''), omittedTextCharacters: Math.max(0, characters.length - maximum) };
-  };
+  const excerpt = (text: string, maximum: number) => boundedText(text, maximum, presentation.format === 'unicode');
   const documentation = (subjects: readonly RecordId[], maximumDocs: number, label: string, module: RecordId, subject: RecordId) => {
-    const associations = expanded.filter(record => record.information.type === 'documentation-association' && subjects.includes(record.subject));
+    const associations = [...new Set(subjects)].flatMap(subject => docsBySubject.get(subject) ?? [])
+      .sort((a, b) => a.order - b.order).map(item => item.claim);
     const shown = associations.slice(0, maximumDocs);
     const items: Documentation[] = shown.map(claim => {
       if (claim.information.type !== 'documentation-association') throw new Error('Expected documentation association');
@@ -94,20 +105,20 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
       const prose = assertion.text.replace(/```[\s\S]*?```/g, '').trim();
       let proseExcerpt = excerpt(prose, projection.lens === 'inspect' ? 2000 : 400);
       let remainingLines = presentation.format === 'unicode' ? 8 : Infinity;
-      if (Number.isFinite(remainingLines)) proseExcerpt = excerpt(prose, [...fitLines(proseExcerpt.text, '', remainingLines)].length);
+      if (Number.isFinite(remainingLines)) proseExcerpt = excerpt(prose, codePointLength(fitText(proseExcerpt.text, '', remainingLines)));
       remainingLines -= proseExcerpt.text ? wrapText(proseExcerpt.text, '       ').length : 0;
       const conceptualTags = assertion.tags.filter(tag => tag.name !== 'example' && tag.name !== 'see');
       const tags: Documentation['tags'][number][] = [];
       for (const tag of conceptualTags.slice(0, maximumTags)) {
         if (remainingLines <= 0) break;
         const bounded = excerpt(tag.text, 300);
-        const text = Number.isFinite(remainingLines) ? fitLines(bounded.text, `@${inlineText(tag.name)} `, remainingLines) : bounded.text;
+        const text = Number.isFinite(remainingLines) ? fitText(bounded.text, `@${inlineText(tag.name)} `, remainingLines) : bounded.text;
         if (Number.isFinite(remainingLines) && wrapText(`@${inlineText(tag.name)} ${text}`, '       ').length > remainingLines) break;
-        tags.push({ name: tag.name, text, omittedTextCharacters: [...tag.text].length - [...text].length });
+        tags.push({ name: tag.name, text, omittedTextCharacters: codePointLength(tag.text) - codePointLength(text) });
         remainingLines -= wrapText(`@${inlineText(tag.name)} ${text}`, '       ').length;
       }
       return { id: assertion.id, status: assertion.status,
-        text: proseExcerpt.text, omittedTextCharacters: [...assertion.text].length - [...proseExcerpt.text].length,
+        text: proseExcerpt.text, omittedTextCharacters: codePointLength(assertion.text) - codePointLength(proseExcerpt.text),
         tags, omittedTags: assertion.tags.length - tags.length,
         association: claim.information.association, qualification: qualification(claim.context) };
     });
@@ -122,13 +133,14 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
     const maximumDocs = compact ? 0 : projection.lens === 'inspect' ? 3 : claim.information.discoveryFacets.includes('project') ? 1 : 0;
     const sourceLabel = `${claim.information.handle} (${entityIds.get(id)!})`;
     sourceGroup({ label: `Module ${sourceLabel}`, module: id, subject: id, role: 'module' }, [claim]);
-    const composition = compositionView(store, id, projection.expansions.claims, projection.evaluations);
-    for (const property of expanded.filter(record => record.subject === id && record.information.type === 'module-composition')) {
+    const composition = compositionView(id);
+    for (const property of (expandedBySubject.get(id) ?? []).filter(record => record.information.type === 'module-composition')) {
       sourceGroup({ label: `Composition ${sourceLabel}`, module: id, subject: id, role: 'module' }, [property]);
     }
-    const allExports = expanded.filter((record): record is ExportClaim => record.information.type === 'export' && record.subject === id);
+    const allExports = (expandedBySubject.get(id) ?? []).filter((record): record is ExportClaim => record.information.type === 'export');
     const allSubjects = new Set([id, ...allExports.map(exported => exported.id), ...allExports.flatMap(exported => exported.information.symbol ? [exported.information.symbol] : [])]);
-    const allDocumentation = expanded.flatMap(record => record.information.type === 'documentation-association' && allSubjects.has(record.subject) ? [record.information.assertion] : []);
+    const allDocumentation = [...allSubjects].flatMap(subject => docsBySubject.get(subject) ?? []).flatMap(({ claim }) =>
+      claim.information.type === 'documentation-association' ? [claim.information.assertion] : []);
     const maximumExports = compact ? 3 : projection.lens === 'inspect' ? 50 : 6;
     const exports = allExports.slice(0, maximumExports).map(exported => {
       sourceGroup({ label: `Export ${exported.information.exportedName}`, module: id, subject: exported.id, role: 'export' }, [exported]);
@@ -149,7 +161,8 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
     });
     const moduleDocumentation = documentation([id], maximumDocs, `module ${sourceLabel}`, id, id);
     const shownDocumentation = [...moduleDocumentation.documentation, ...exports.flatMap(exported => exported.documentation)];
-    const omittedDocumentationInModule = allDocumentation.some(id => !shownDocumentation.some(doc => doc.id === id))
+    const shownIds = new Set(shownDocumentation.map(doc => doc.id));
+    const omittedDocumentationInModule = allDocumentation.some(id => !shownIds.has(id))
       || shownDocumentation.some(doc => doc.omittedTextCharacters > 0 || doc.omittedTags > 0 || doc.tags.some(tag => tag.omittedTextCharacters > 0));
     return { id, composition, entityId: entityIds.get(id)!, ...claim.information, qualification: qualification(claim.context), ...moduleDocumentation, omittedDocumentationInModule,
       exports, omittedExports: allExports.length - exports.length };
@@ -166,10 +179,15 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
     if (outcome.kind !== 'evaluation') continue;
     for (const contextId of outcome.contexts) {
       const context = store.get(contextId);
-      if (context.kind === 'claim-context' && (context.scope === 'configured-project' || projection.modules.includes(context.scope))) contextIds.add(contextId);
+      if (context.kind === 'claim-context' && (context.scope === 'configured-project' || modulePopulation.has(context.scope))) contextIds.add(contextId);
     }
   }
   const contexts = [...contextIds].map(qualification);
+  const contextsByScope = new Map<Qualification['scope'], Qualification[]>();
+  for (const context of contexts) {
+    const bucket = contextsByScope.get(context.scope) ?? [];
+    bucket.push(context); contextsByScope.set(context.scope, bucket);
+  }
   const collapsed = compact ? modules.filter(module => !module.discoveryFacets.includes('project')) : [];
   const listed = compact ? modules.filter(module => module.discoveryFacets.includes('project')) : modules;
   return {
@@ -182,7 +200,7 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
     display: { collapsedModules: collapsed.length,
       omittedExports: listed.reduce((count, module) => count + module.omittedExports, 0),
       modulesWithOmittedDocumentation: listed.filter(module => module.omittedDocumentationInModule).length,
-      collapsedQualifications: collapsed.map(module => ({ handle: module.handle, contexts: contexts.filter(context => context.scope === module.id) })) },
+      collapsedQualifications: collapsed.map(module => ({ handle: module.handle, contexts: contextsByScope.get(module.id) ?? [] })) },
     ...(presentation.sourceDetail ? { sourceDetail: {
       level: 'declaration-locations-and-excerpts' as const,
       notice: 'Source locations and bounded excerpts supporting displayed claims only. Module source files are listed without full-file excerpts. Range ends are exclusive; ↪ marks a wrapped source line.',
@@ -207,34 +225,11 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
   };
 }
 
-/** Largest bounded prefix that fits the Unicode assertion's remaining display height. */
-function fitLines(text: string, prefix: string, maximumLines: number): string {
-  const characters = [...text];
-  let low = 0;
-  let high = characters.length;
-  while (low < high) {
-    const middle = Math.ceil((low + high) / 2);
-    if (wrapText(prefix + characters.slice(0, middle).join(''), '       ').length <= maximumLines) low = middle;
-    else high = middle - 1;
-  }
-  return characters.slice(0, low).join('').trimEnd();
-}
-
-/** Wrap display text without changing the stored assertion or source excerpt. */
+/** Rendering and fit checks share terminal cell widths and grapheme boundaries. */
 function wrapText(text: string, indent: string, width = 88, continuation = indent): string[] {
-  const available = Math.max(1, width - Math.max([...indent].length, [...continuation].length));
-  return terminalText(text.replace(/\r\n/g, '\n')).split('\n').flatMap(line => {
-    const result: string[] = [];
-    let rest = [...line];
-    while (rest.length > available) {
-      let end = rest.slice(0, available + 1).lastIndexOf(' ');
-      if (end < 1) end = available;
-      result.push((result.length ? continuation : indent) + rest.slice(0, end).join(''));
-      rest = rest.slice(end + (rest[end] === ' ' ? 1 : 0));
-    }
-    result.push((result.length ? continuation : indent) + rest.join(''));
-    return result;
-  });
+  const result = layoutText(text, indent, width, continuation);
+  return [...result.lines, ...(result.omittedCharacters
+    ? [`${indent}… ${result.omittedCharacters} character(s) omitted because indivisible display text exceeds the available width.`] : [])];
 }
 
 export function renderUnicode(view: QualifiedView): string {
@@ -254,7 +249,14 @@ export function renderUnicode(view: QualifiedView): string {
     && outcome.availability === 'available' && completedMaterialization(outcome));
   if (complete) lines.push(`Analysis complete: ${[...new Set(view.evaluations.map(outcome => outcome.requirement))].join(', ')}`);
   else for (const [label, count] of outcomeGroups) lines.push(`Analysis ${label} (${count} scope${count === 1 ? '' : 's'})`);
-  const projectContexts = view.qualifications.filter(context => context.scope === 'configured-project');
+  const contextsByScope = new Map<Qualification['scope'], Qualification[]>();
+  for (const context of view.qualifications) {
+    const bucket = contextsByScope.get(context.scope) ?? [];
+    bucket.push(context); contextsByScope.set(context.scope, bucket);
+  }
+  const establishedExportModules = new Set(view.evaluations.flatMap(outcome => outcome.requirement === 'exports'
+    && outcome.availability === 'available' && outcome.applicability === 'applicable' && completedMaterialization(outcome) ? outcome.modules : []));
+  const projectContexts = contextsByScope.get('configured-project') ?? [];
   const sharedLimitations = new Set(projectContexts.flatMap(context => context.limitations));
   const sharedDiagnostics = new Set(projectContexts.flatMap(context => context.diagnostics.map(diagnostic => diagnostic.code)));
   const local = (contexts: readonly Qualification[], indent: string) => {
@@ -300,7 +302,7 @@ export function renderUnicode(view: QualifiedView): string {
   };
   const commonFacets = view.modules[0]?.discoveryFacets.filter(facet => view.modules.every(module => module.discoveryFacets.includes(facet))) ?? [];
   const allAnonymous = view.modules.length > 0 && view.modules.every(module => module.name === null);
-  const handleWidth = Math.min(30, Math.max(6, ...view.modules.map(module => inlineText(module.handle).length)));
+  const handleWidth = Math.min(30, Math.max(6, ...view.modules.map(module => displayWidth(inlineText(module.handle)))));
   const idWidth = Math.max(9, ...view.modules.map(module => module.entityId.length));
   if (view.modules.length) {
     const projectSelection = commonFacets.includes('project');
@@ -318,13 +320,12 @@ export function renderUnicode(view: QualifiedView): string {
       lines.push(`  Entity ID: ${module.entityId}`);
     }
     const total = module.exports.length + module.omittedExports;
-    const established = view.evaluations.some(outcome => outcome.requirement === 'exports'
-      && outcome.modules.includes(module.id) && outcome.availability === 'available' && outcome.applicability === 'applicable' && completedMaterialization(outcome));
+    const established = establishedExportModules.has(module.id);
     if (inventory) {
       const names = module.exports.map(exported => inlineText(exported.exportedName));
       if (module.omittedExports) names.push(`+${module.omittedExports}`);
       const cue = total ? names.join(', ') : established ? '(none)' : '(not established; no exports displayed)';
-      lines.push(`${inlineText(module.handle).padEnd(handleWidth)}  ${module.entityId.padEnd(idWidth)}  ${cue}${compositionAnnotation(module.composition)}${total && !established ? ' (materialized; surface incomplete)' : ''}`);
+      lines.push(`${padDisplay(inlineText(module.handle), handleWidth)}  ${module.entityId.padEnd(idWidth)}  ${cue}${compositionAnnotation(module.composition)}${total && !established ? ' (materialized; surface incomplete)' : ''}`);
       if (!allAnonymous) lines.push(`  TypeScript name: ${inlineText(module.name ?? '(not established)')}`);
       if (facets.length) lines.push(`  ${facets.join(', ')}`);
     } else {
@@ -340,13 +341,18 @@ export function renderUnicode(view: QualifiedView): string {
       if (module.omittedExports) lines.push(`  … ${module.omittedExports} effective export(s) omitted.`);
     }
 
-    local([...view.qualifications.filter(context => context.scope === module.id
-      && (!isCompositionContext(context) || module.composition.claims.length > 0
+    local([...(contextsByScope.get(module.id) ?? []).filter(context => (!isCompositionContext(context) || module.composition.claims.length > 0
         || !module.composition.evaluations.some(outcome => completedMaterialization(outcome)))), ...module.exports.map(exported => exported.qualification)], '  ');
   }
   if (view.sourceDetail) {
     lines.push('', 'SOURCE DETAIL — explicit source escape', ...wrapText(view.sourceDetail.notice, ''));
     const items = view.sourceDetail.items;
+    const itemsBySubject = new Map<string, typeof items[number][]>();
+    const subjectKey = (module: RecordId, subject: RecordId) => JSON.stringify([module, subject]);
+    for (const item of items) {
+      const key = subjectKey(item.module, item.subject), bucket = itemsBySubject.get(key) ?? [];
+      bucket.push(item); itemsBySubject.set(key, bucket);
+    }
     const key = (evidence: SourceEvidenceRecord) => JSON.stringify([evidence.path, evidence.start, evidence.length]);
     const showEvidence = (evidence: readonly SourceEvidenceRecord[], indent: string) => {
       for (const record of evidence) {
@@ -360,7 +366,7 @@ export function renderUnicode(view: QualifiedView): string {
       }
     };
     const sourceDocs = (module: RecordId, subject: RecordId, indent: string) => {
-      const documentation = items.filter(item => item.module === module && item.subject === subject && item.role === 'documentation');
+      const documentation = (itemsBySubject.get(subjectKey(module, subject)) ?? []).filter(item => item.role === 'documentation');
       for (const item of documentation) {
         lines.push(`${indent}${documentationLabel(item.association!, documentation.length > 1)}`);
         showEvidence(item.evidence, `${indent}  `);
@@ -368,16 +374,16 @@ export function renderUnicode(view: QualifiedView): string {
     };
     for (const module of view.modules) {
       lines.push('', `◆ ${inlineText(module.handle)}`, `  Entity ID: ${module.entityId}`);
-      const association = items.find(item => item.module === module.id && item.role === 'module');
+      const association = (itemsBySubject.get(subjectKey(module.id, module.id)) ?? []).find(item => item.role === 'module');
       if (association) showEvidence(association.evidence, '  ');
       sourceDocs(module.id, module.id, '  ');
       lines.push('', '  Exports:');
       if (!module.exports.length) lines.push('    No displayed export source.');
       for (const exported of module.exports) {
         lines.push(`  ├─ ${inlineText(exported.exportedName)} [${roles(exported)}]`);
-        const defining = items.find(item => item.module === module.id && item.subject === exported.id && item.role === 'symbol')?.evidence ?? [];
+        const defining = (itemsBySubject.get(subjectKey(module.id, exported.id)) ?? []).find(item => item.role === 'symbol')?.evidence ?? [];
         const definingKeys = new Set(defining.map(key));
-        const forwarding = (items.find(item => item.module === module.id && item.subject === exported.id && item.role === 'export')?.evidence ?? []).filter(evidence => !definingKeys.has(key(evidence)));
+        const forwarding = ((itemsBySubject.get(subjectKey(module.id, exported.id)) ?? []).find(item => item.role === 'export')?.evidence ?? []).filter(evidence => !definingKeys.has(key(evidence)));
         if (forwarding.length) {
           lines.push('  │  Export/forwarding source:');
           showEvidence(forwarding, '  │    ');

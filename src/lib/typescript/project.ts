@@ -1,3 +1,4 @@
+import { diagnosticLookup } from './diagnostics.js';
 import { outputBoundary, OutputBoundaryFailure } from '../output-boundary.js';
 import type { RunGit } from '../git-execution.js';
 import { moduleLimitations } from '../qualification-policy.js';
@@ -130,7 +131,7 @@ export async function openTypeScriptProject(options: ProjectOptions, runGit?: Ru
   function prepareDiscovery() {
     const checker = program.getTypeChecker();
     const files = [...program.getSourceFiles()].sort((a, b) => compare(a.fileName, b.fileName));
-    const encountered = program.getSyntacticDiagnostics();
+    const encountered = diagnosticLookup(program.getSyntacticDiagnostics());
     const roots = new Set(program.getRootFileNames());
     const candidates: { key: string; name: string | null; compilerName: string | null; symbol: ts.Symbol | undefined;
       declarations: readonly ts.Declaration[]; discoveryFacets: ModuleDiscoveryFacet[] }[] = [];
@@ -249,14 +250,19 @@ export async function openTypeScriptProject(options: ProjectOptions, runGit?: Ru
         };
         // Capture from the already-observed compiler input; presentation never rereads source.
         const span = ts.isSourceFile(declaration) ? '' : file.text.slice(start, declaration.end);
-        const excerpt = [...span.split('\n').slice(0, 4).join('\n')].slice(0, 300).join('');
+        let excerpt = '', characters = 0, kept = 0, line = 0;
+        for (const character of span) {
+          characters++;
+          if (character === '\n') line++;
+          if (kept < 300 && line < 4) { excerpt += character; kept++; }
+        }
         const detail: SourceEvidenceRecord = {
           kind: 'source-evidence', id: recordId(session, 'source', [file.fileName, start, declaration.end, ts.isSourceFile(declaration) ? 'file' : 'span', compilerName, resolution ? { ...resolution, target: identityReference(session, resolution.target) } : null, dependencyResolution ?? null]),
           session, method, path: file.fileName, contentDigest: sourceDigest(file),
           start, length: declaration.end - start,
           location: ts.isSourceFile(declaration) ? { association: 'file' } : {
             association: 'span', from: position(start), to: position(declaration.end),
-            excerpt: { text: excerpt, omittedCharacters: [...span].length - [...excerpt].length },
+            excerpt: { text: excerpt, omittedCharacters: characters - kept },
           },
           configuredRoot: roots.has(file.fileName), compilerName,
           ...(resolution ? { resolution } : {}),
@@ -265,9 +271,7 @@ export async function openTypeScriptProject(options: ProjectOptions, runGit?: Ru
         records.push(detail);
         return detail.id;
       };
-      const qualifications = (sourceFiles: readonly ts.SourceFile[], projectWide: boolean) => encountered
-        // Syntax diagnostics normally have files; a future file-less result belongs only to project context.
-        .filter(diagnostic => diagnostic.file === undefined ? projectWide : sourceFiles.includes(diagnostic.file))
+      const qualifications = (sourceFiles: readonly ts.SourceFile[], projectWide: boolean) => encountered(sourceFiles, projectWide)
         .map(diagnostic => ({ code: diagnostic.code, category: ts.DiagnosticCategory[diagnostic.category]!.toLowerCase() }))
         .sort((a, b) => a.code - b.code || compare(a.category, b.category));
       const makeContext = (scope: 'configured-project' | RecordId, evidenceIds: readonly RecordId[], sourceFiles: readonly ts.SourceFile[]): RecordId => {
@@ -288,10 +292,15 @@ export async function openTypeScriptProject(options: ProjectOptions, runGit?: Ru
         return context.id;
       };
       const materializeCore = () => {
-        const resolutionEvidence = resolutions.map(({ node, targetKey }) => ({ node, id: evidence(node, null, {
+        const resolutionEvidence = resolutions.map(({ node, targetKey }, order) => ({ node, order, id: evidence(node, null, {
           writtenSpecifier: node.text, target: targetKey ? recordId(session, 'module', targetKey) : null,
           status: targetKey ? 'established' : 'not-established',
         }) }));
+        const resolutionsByFile = new Map<ts.SourceFile, typeof resolutionEvidence>();
+        for (const item of resolutionEvidence) {
+          const file = item.node.getSourceFile(), bucket = resolutionsByFile.get(file) ?? [];
+          bucket.push(item); resolutionsByFile.set(file, bucket);
+        }
         const globalContext = makeContext('configured-project', [...files.map(file => evidence(file, null)), ...resolutionEvidence.map(item => item.id)], files);
         const moduleIds: RecordId[] = [];
         const mnemonic = (candidate: typeof candidates[number]): Pick<ModuleClaim['information'], 'handle' | 'handleProvenance'> => {
@@ -323,8 +332,11 @@ export async function openTypeScriptProject(options: ProjectOptions, runGit?: Ru
           const id = recordId(session, 'module', candidate.key);
           const claim = recordId(session, 'claim', identityReference(session, id));
           const context = makeContext(id, [...candidate.declarations.map(declaration => evidence(declaration, candidate.compilerName)),
-            ...resolutionEvidence.filter(item => candidate.declarations.some(declaration => item.node.getSourceFile() === declaration.getSourceFile()
-              && item.node.pos >= declaration.pos && item.node.end <= declaration.end)).map(item => item.id)],
+            ...[...new Set(candidate.declarations.map(declaration => declaration.getSourceFile()))]
+              .flatMap(file => resolutionsByFile.get(file) ?? [])
+              .filter(item => candidate.declarations.some(declaration => item.node.getSourceFile() === declaration.getSourceFile()
+                && item.node.pos >= declaration.pos && item.node.end <= declaration.end))
+              .sort((a, b) => a.order - b.order).map(item => item.id)],
             candidate.declarations.map(declaration => declaration.getSourceFile()));
           records.push({ kind: 'module', id, session, method, claim }, {
             kind: 'claim', id: claim, session, method, subject: id, context,

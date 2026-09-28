@@ -52,6 +52,15 @@ evaluations are reused by declared requirements, while newly requested work adds
 records. Each projection uses its own evaluation basis, never the entire store
 population. This establishes neither persistence nor a general scheduler.
 
+Processing indexes are prepared from the immutable records selected by a view or
+evaluation. Merged buckets retain evidence order; weak capture/layout indexes have
+the same lifetime as their inputs and do not cache new filesystem observations.
+Generic SCC, incremental cycle checks, ancestry and upward closure delegate to a
+private Stately topology adapter under the [graph decision](../decisions/graph-kernel-delegation.md).
+PostCode retains population selection, every parallel supporting claim, deterministic
+link acceptance and presentation traversal. Library identifiers and mutable graph
+objects never become stored domain evidence.
+
 Module claims carry the information asserted. Claim context separately identifies
 evidence, method, scope, guarantee, limitations, and encountered diagnostic codes.
 Source evidence carries compiler names, file paths, contributing declaration

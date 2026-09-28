@@ -8,23 +8,29 @@ export type CompositionView = {
 };
 
 /** Reads only the expansion records selected by the caller's projection. */
-export function compositionView(store: ProgramRecordStore, subject: RecordId,
-  claimIds: readonly RecordId[], evaluationIds: readonly RecordId[]): CompositionView {
-  const claims = claimIds.flatMap(id => {
+export function prepareCompositionViews(store: ProgramRecordStore,
+  claimIds: readonly RecordId[], evaluationIds: readonly RecordId[]): (subject: RecordId) => CompositionView {
+  const claims = new Map<RecordId, CompositionView['claims'][number][]>();
+  const evaluations = new Map<RecordId, CompositionView['evaluations'][number][]>();
+  for (const id of claimIds) {
     const claim = store.get(id);
-    if (claim.kind !== 'claim' || claim.subject !== subject || claim.information.type !== 'module-composition') return [];
+    if (claim.kind !== 'claim' || claim.information.type !== 'module-composition') continue;
     const context = store.get(claim.context);
     if (context.kind !== 'claim-context') throw new Error('Expected composition qualification');
     const { kind: _kind, evidence: _evidence, inputs: _inputs, ...qualification } = context;
-    return [{ id, property: claim.information.property, qualification }];
-  });
-  const evaluations = evaluationIds.flatMap(id => {
+    const bucket = claims.get(claim.subject) ?? [];
+    bucket.push({ id, property: claim.information.property, qualification }); claims.set(claim.subject, bucket);
+  }
+  for (const id of evaluationIds) {
     const outcome = store.get(id);
-    if (outcome.kind !== 'evaluation' || outcome.requirement !== 'composition' || !outcome.modules.includes(subject)) return [];
+    if (outcome.kind !== 'evaluation' || outcome.requirement !== 'composition') continue;
     const { applicability, availability, execution, materialization, reason } = outcome;
-    return [{ id, applicability, availability, execution, materialization, reason }];
-  });
-  return { claims, evaluations };
+    for (const subject of new Set(outcome.modules)) {
+      const bucket = evaluations.get(subject) ?? [];
+      bucket.push({ id, applicability, availability, execution, materialization, reason }); evaluations.set(subject, bucket);
+    }
+  }
+  return subject => ({ claims: claims.get(subject) ?? [], evaluations: evaluations.get(subject) ?? [] });
 }
 
 export function compositionAnnotation(composition: CompositionView): string {

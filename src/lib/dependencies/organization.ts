@@ -1,3 +1,4 @@
+import { directedGraph } from '../directed-graph.js';
 import { completedMaterialization } from '../evaluation-state.js';
 import { identityReference, compare, methods, recordId } from '../identity.js';
 import { locate } from '../organization/placement.js';
@@ -93,16 +94,14 @@ export function evaluateDependencyOrganization(store: ProgramRecordStore, depend
     list.push(edge);
     parents.set(edge.information.child, list);
   }
+  const containmentGraph = directedGraph(organization.groups, containment.map(edge => [edge.subject, edge.information.child] as const));
   const ancestry = new Map<RecordId, { groups: Set<RecordId>; claims: Set<RecordId> }>();
   const ancestors = (group: RecordId) => {
     const cached = ancestry.get(group);
     if (cached) return cached;
-    const result = { groups: new Set([group]), claims: new Set<RecordId>() };
-    const pending = [group];
-    while (pending.length) for (const edge of parents.get(pending.pop()!) ?? []) {
-      result.claims.add(edge.id);
-      if (!result.groups.has(edge.subject)) { result.groups.add(edge.subject); pending.push(edge.subject); }
-    }
+    const groups = containmentGraph.ancestors([group]);
+    // Collect all supporting edges, including parallel claims and non-tree parents.
+    const result = { groups, claims: new Set([...groups].flatMap(id => (parents.get(id) ?? []).map(edge => edge.id))) };
     ancestry.set(group, result);
     return result;
   };

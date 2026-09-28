@@ -1,3 +1,4 @@
+import { directedGraph } from '../directed-graph.js';
 import { completedMaterialization } from '../evaluation-state.js';
 import { locate } from './placement.js';
 import { identityReference, compare, methods, recordId } from '../identity.js';
@@ -146,17 +147,8 @@ export function evaluateOrganization(store: ProgramRecordStore, moduleEvaluation
     cost: { measure: 'module-count', value: moduleEvaluation.modules.length },
   };
   const direct = new Set(placements.flatMap(claim => claim.information.groups));
-  const containing = new Set(direct);
-  let changed = true;
-  while (changed) {
-    changed = false;
-    for (const edge of layout?.containment ?? []) {
-      if (containing.has(groups.get(edge.child)!) && !containing.has(groups.get(edge.parent)!)) {
-        containing.add(groups.get(edge.parent)!);
-        changed = true;
-      }
-    }
-  }
+  const containing = directedGraph(groups.values(), (layout?.containment ?? [])
+    .map(edge => [groups.get(edge.parent)!, groups.get(edge.child)!] as const)).ancestors(direct);
   for (const group of groups.values()) {
     const propertyContext = context(['group-properties', reference(evaluationId), reference(group)], group, [repository.id],
       'Direct documentation existence and module presence are derived from captured layout and this module-placement evaluation.',
