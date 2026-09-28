@@ -88,6 +88,12 @@ paths crossing filesystems with different case rules.
 
 the re-review is complete, no further findings.  OK to defer those filesystem defects.  M3 is acctepted.
 
+### 2026-09-28 — M5 integrated review dispositions
+
+Context: This follow-up concerns the first integrated M5 review.
+
+The review is complete.  Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
+
 ## Outcome
 
 Implementation checkpoint, 2026-09-28 (task remains active): M4 is implemented in
