@@ -109,8 +109,10 @@ for (const family of ['module', 'organization-module', 'organization-group', 'de
   });
 }
 
-test('qualification classification uses exact registered method identity, independent of limitation prose', () => {
+test('qualification classification uses only the exact primary producer and preserves derived limitations', () => {
+  assert.equal(isCompositionContext({ method: methods.composition }), true);
   assert.equal(isCompositionContext({ method: `${methods.composition};typescript@6.0.3` }), true);
+  assert.equal(isCompositionContext({ method: `${methods.organization};${methods.composition};typescript@6.0.3` }), false);
   assert.equal(isCompositionContext({ method: `${methods.composition}-unrelated` }), false);
   assert.equal(isCompositionContext({ method: `${methods.composition}0` }), false);
   const { store, evaluation } = discover('fixtures/exports/tsconfig.json');
@@ -118,10 +120,16 @@ test('qualification classification uses exact registered method identity, indepe
   const module = view.modules[0]!;
   const extra = { ...module.qualification, id: recordId(evaluation.session, 'unrelated-context', 1),
     method: `${methods.composition}-unrelated`, scope: module.id, limitations: ['Independent limitation remains visible.'] };
-  const withCompleteComposition = { ...view, qualifications: [...view.qualifications, extra], modules: view.modules.map(item => ({ ...item,
+  const inherited = { ...extra, id: recordId(evaluation.session, 'derived-context', 1),
+    method: `${methods.organization};${methods.composition}`, limitations: ['Derived limitation remains visible.'] };
+  const primary = { ...extra, id: recordId(evaluation.session, 'primary-context', 1),
+    method: `${methods.composition};typescript@6.0.3`, limitations: ['Primary composition limitation.'] };
+  const withCompleteComposition = { ...view, qualifications: [...view.qualifications, extra, inherited, primary], modules: view.modules.map(item => ({ ...item,
     composition: { claims: [], evaluations: [{ id: recordId(evaluation.session, 'complete', 1), applicability: 'applicable' as const,
       availability: 'available' as const, execution: 'completed' as const, materialization: 'full' as const, reason: null }] } })) };
   assert.match(renderUnicode(withCompleteComposition), /Independent limitation remains visible/);
+  assert.match(renderUnicode(withCompleteComposition), /Derived limitation remains visible/);
+  assert.doesNotMatch(renderUnicode(withCompleteComposition), /Primary composition limitation/);
   assert.ok(view.qualifications.some(context => context.limitations.includes(moduleLimitations.population)));
 });
 

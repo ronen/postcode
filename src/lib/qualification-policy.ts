@@ -8,7 +8,9 @@ export const moduleLimitations = {
   firstObserved: 'No atomic filesystem snapshot is claimed; inputs are memoized as first observed.',
 } as const;
 
-/** A method field is a semicolon-separated list of exact, versioned method identities. */
+/** Only the primary producer (the first exact method token) classifies a context.
+ * Inherited composition provenance cannot suppress a derived context's limitations.
+ */
 export function isCompositionContext(context: Pick<ClaimContextRecord, 'method'>): boolean {
-  return context.method.split(';').includes(methods.composition);
+  return context.method.split(';')[0] === methods.composition;
 }
