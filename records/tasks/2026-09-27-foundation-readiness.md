@@ -26,6 +26,15 @@ Include the Ctrl-C correction (recommended)
 
 The first review round is complete.  Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
 
+### 2026-09-28 — Composition qualification policy
+
+Context: Asked whether composition classification should consider only a context's
+primary producer or any inherited method, resolving the round-1 review uncertainty.
+
+Human response:
+
+only the primary producer, as recommended
+
 ## Outcome
 
 ## Verification
