@@ -80,6 +80,14 @@ Human response:
 
 Investigate now; fix confirmed defects within existing policy (recommended)
 
+### 2026-09-28 — M3 acceptance and filesystem defect deferral
+
+Context: The re-review follows the local F2 and validation corrections. The two
+filesystem defects concern per-directory case rules on one device and lexical
+paths crossing filesystems with different case rules.
+
+the re-review is complete, no further findings.  OK to defer those filesystem defects.  M3 is acctepted.
+
 ## Outcome
 
 ## Verification
