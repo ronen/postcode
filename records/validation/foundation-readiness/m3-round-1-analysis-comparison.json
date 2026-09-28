@@ -1,0 +1,1168 @@
+{
+  "before": {
+    "build": "/Users/ronen/postcode/app/_foundation-readiness/m3-review/baseline",
+    "sha256": "0a404ace567ab23e4871f0c171a184491ccdec6238dc44ab224b3219d0e9c913"
+  },
+  "after": {
+    "build": "/Users/ronen/postcode/app/_foundation-readiness/m3-review/after",
+    "sha256": "30ccede73cb2e644a031cc901b6cc8eec8dd93b3e474d71afcf58794937c22de"
+  },
+  "results": [
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-jHSfp1/tsconfig.json",
+      "args": [
+        "modules"
+      ],
+      "bytes": 1114,
+      "sha256": "5b091889491032bd2d1b2d1c37abd4eee85867ca97ece243ec4343ae3c4b842a",
+      "equal": true,
+      "session": "session:d688e07f-f621-466a-853c-5c1a29709b00",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-jHSfp1/tsconfig.json",
+      "args": [
+        "modules",
+        "--json"
+      ],
+      "bytes": 52665,
+      "sha256": "49604805e8941d1118b8e8ff0fdbe7a9fcdb45f9943ca3c756277239b2e79960",
+      "equal": true,
+      "session": "session:71d3acca-97d8-4c18-830e-5934fc60c580",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-jHSfp1/tsconfig.json",
+      "args": [
+        "organization",
+        "project"
+      ],
+      "bytes": 1598,
+      "sha256": "f00dbd37e50f6d9ecef4b2f8fa6ce782722d2cb3302e5d0964114533176b7780",
+      "equal": true,
+      "session": "session:5fc1e086-0dcd-4faa-95f1-2b11919501c7",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-jHSfp1/tsconfig.json",
+      "args": [
+        "organization",
+        "project",
+        "--json"
+      ],
+      "bytes": 46879,
+      "sha256": "f7e78a9b454b266844417d9347eef67d402243489b5d84d687e55f1bd9393c49",
+      "equal": true,
+      "session": "session:7adb5ee2-2c5f-4ee2-91b8-8c0153ae2ee1",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-jHSfp1/tsconfig.json",
+      "args": [
+        "organization",
+        "repository"
+      ],
+      "bytes": 1590,
+      "sha256": "163b7253453a88230d26bc6639c01ca0a3afc0c2bce548e994a96fe95393fdb0",
+      "equal": true,
+      "session": "session:2fbe7d17-2528-42de-a104-5234767aa655",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-jHSfp1/tsconfig.json",
+      "args": [
+        "organization",
+        "repository",
+        "--json"
+      ],
+      "bytes": 46871,
+      "sha256": "9ef9ad382d3ea362aa206cf7a26a7b83842b142f98028f2ad14afd77deea5c42",
+      "equal": true,
+      "session": "session:9a48c24e-bc27-4b89-a66d-e9dc953a77cf",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-jHSfp1/tsconfig.json",
+      "args": [
+        "inspect",
+        "forward"
+      ],
+      "bytes": 1120,
+      "sha256": "8845e1d620306b68e0b644cf19b39aaf8c85a4f03e2a76014479ef7541c4af30",
+      "equal": true,
+      "session": "session:00acbe2f-7a7a-42d3-ba04-34f12ffafc66",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-jHSfp1/tsconfig.json",
+      "args": [
+        "inspect",
+        "forward",
+        "--json"
+      ],
+      "bytes": 12736,
+      "sha256": "9d321a2f022e2d522ef4e2120d42c926140f4df717381730758de81c9fd50bcc",
+      "equal": true,
+      "session": "session:b792de09-6e03-4ca4-8e62-b20e6038cf7a",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-jHSfp1/tsconfig.json",
+      "args": [
+        "inspect",
+        "forward",
+        "--source-detail"
+      ],
+      "bytes": 1951,
+      "sha256": "ac50393ffb4bcff203cdfea6c45529d369e924c3fde287886df525f9f2e23502",
+      "equal": true,
+      "session": "session:1eebde32-5e25-4cfd-898f-266bd6b598b1",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-jHSfp1/tsconfig.json",
+      "args": [
+        "inspect",
+        "forward",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 18879,
+      "sha256": "2b3086a6440defa098d4d5cd5039713bf8b2c2717f0d51f852eeaf0d7dceadc6",
+      "equal": true,
+      "session": "session:23aa98ea-5f87-4ad1-80ed-2e250eda4ebb",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-jHSfp1/tsconfig.json",
+      "args": [
+        "dependencies"
+      ],
+      "bytes": 3386,
+      "sha256": "bc203b9a0cfaa82c7765f166ff1f344614bebe80c20368f8075792355179ecd9",
+      "equal": true,
+      "session": "session:66d0f962-0164-485d-bcff-b2c0a40a8898",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-jHSfp1/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--json"
+      ],
+      "bytes": 114231,
+      "sha256": "0256df856d0ddca3126e0d6f286eb104cc0d6ea9e53e713fdea3abff718ecf79",
+      "equal": true,
+      "session": "session:f13d1dbe-eb51-4964-b92d-b12571222ff0",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-jHSfp1/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--source-detail"
+      ],
+      "bytes": 7004,
+      "sha256": "6103f29e9d14cf599a2462c3823a73aa44c23301ff4cd354d9c5d1f005c3bc30",
+      "equal": true,
+      "session": "session:cca740b7-8a3d-4614-a9f5-c264f6c8ff59",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-jHSfp1/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 163442,
+      "sha256": "109161fa324a1a90e119d5e75785f8ea967132cd4570ca66b765a04706fb663d",
+      "equal": true,
+      "session": "session:931cc239-563d-4007-8af6-299969ba829a",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-jHSfp1/tsconfig.json",
+      "args": [
+        "children",
+        "forward",
+        "--source-detail"
+      ],
+      "bytes": 3734,
+      "sha256": "e21bb8f878088d6026cab2b4a22086fd51ebdc85ddbd1d9496d51ff71236613a",
+      "equal": true,
+      "session": "session:0a2cee6f-8e1d-48f5-80e6-d30f9c97db1f",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-jHSfp1/tsconfig.json",
+      "args": [
+        "children",
+        "forward",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 65158,
+      "sha256": "1df3b1f5327c681207effe68a2651f50cceb95bdd0ee5a4cc54003c08f5bbd59",
+      "equal": true,
+      "session": "session:5ff02fa9-124d-4f66-8028-ac97092bf99c",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-jHSfp1/tsconfig.json",
+      "args": [
+        "parents",
+        "forward",
+        "--source-detail"
+      ],
+      "bytes": 3628,
+      "sha256": "6efb394603d1baa5138046459200d62f3656565e2079a12f85af79ff709f949e",
+      "equal": true,
+      "session": "session:a0d8100d-563b-42d4-afca-a3362761deb3",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-jHSfp1/tsconfig.json",
+      "args": [
+        "parents",
+        "forward",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 61673,
+      "sha256": "80f5dd8ff3bf1f7318c9fe3cc606acb424e49d7220b008d38cbd3533445df65f",
+      "equal": true,
+      "session": "session:d7aee4cf-118b-409d-ba52-d9aaefb51a20",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-950nXo/tsconfig.json",
+      "args": [
+        "modules"
+      ],
+      "bytes": 1830,
+      "sha256": "fd01bb216b632b73626a0113dfa6293f9ffb71b02e891e51784a958971ec64cb",
+      "equal": true,
+      "session": "session:2ef0d5ae-2dc3-4006-8b65-fc25da900af2",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-950nXo/tsconfig.json",
+      "args": [
+        "modules",
+        "--json"
+      ],
+      "bytes": 79988,
+      "sha256": "494b9bc97aa7d1fd509db52add5f7952076b8e04148eb174353ebedf1b07d60d",
+      "equal": true,
+      "session": "session:5d73c7d8-e733-421a-ac9c-d9704b217a8d",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-950nXo/tsconfig.json",
+      "args": [
+        "organization",
+        "project"
+      ],
+      "bytes": 1645,
+      "sha256": "9135c41b7ebf73ad7ad8bd895361bba6621d14afb414bbb93c5dbdc3b447b6f1",
+      "equal": true,
+      "session": "session:da3a5f8b-2b3a-4409-98d7-8a172f9f7860",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-950nXo/tsconfig.json",
+      "args": [
+        "organization",
+        "project",
+        "--json"
+      ],
+      "bytes": 50318,
+      "sha256": "5fc68ba2fc1aa019c286a3feae26bed071458b9436ae3032d89294f666fee45d",
+      "equal": true,
+      "session": "session:80a23fe2-2876-4862-8698-9cd3f8c14087",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-950nXo/tsconfig.json",
+      "args": [
+        "organization",
+        "repository"
+      ],
+      "bytes": 1600,
+      "sha256": "e1e91f3d8ac9ceb97132e2891c1d05b127f9aef45d3e0c6d87f5ed8f86d37228",
+      "equal": true,
+      "session": "session:9759cf26-f1d4-4765-bdbb-e0d0d39a0756",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-950nXo/tsconfig.json",
+      "args": [
+        "organization",
+        "repository",
+        "--json"
+      ],
+      "bytes": 50295,
+      "sha256": "4eb525dd4946808923e874fe3050d7938389ed035c34c06727171f0049daa4bf",
+      "equal": true,
+      "session": "session:d24878a9-efa2-4919-8383-3ab09928b6f1",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-950nXo/tsconfig.json",
+      "args": [
+        "inspect",
+        "requests"
+      ],
+      "bytes": 1131,
+      "sha256": "41e0fc0f899fcd00d3fa6e811e4499d236a17b70cd2bfb0fdbf48ba4f941639f",
+      "equal": true,
+      "session": "session:fa2a7bad-ca11-4581-a3a7-a374d478aca4",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-950nXo/tsconfig.json",
+      "args": [
+        "inspect",
+        "requests",
+        "--json"
+      ],
+      "bytes": 16265,
+      "sha256": "aba2ab0d3e9c67cbaaf43340125d296fbdc53d90eb6e74a2af07ed9a4e4f4ade",
+      "equal": true,
+      "session": "session:a0a27970-369b-45d3-99c6-48a8ef771f77",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-950nXo/tsconfig.json",
+      "args": [
+        "inspect",
+        "requests",
+        "--source-detail"
+      ],
+      "bytes": 3053,
+      "sha256": "f928a34010c37ffe6a908a23ab6646364dde541bcfcf198e25f8db2247de46dd",
+      "equal": true,
+      "session": "session:81ca62cb-b706-456c-9a6d-3fd862acda65",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-950nXo/tsconfig.json",
+      "args": [
+        "inspect",
+        "requests",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 32568,
+      "sha256": "e1b26787c1b9491c8ceff326cccfc57c0ac3e1bbc553049fd75f824e444b2102",
+      "equal": true,
+      "session": "session:56ff95b5-1b63-4554-9279-0703c182aba4",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-950nXo/tsconfig.json",
+      "args": [
+        "dependencies"
+      ],
+      "bytes": 3953,
+      "sha256": "db7210bcf83df94d915c62f74452ca948c735b39f1d1cf9faeb081d6e590a1f0",
+      "equal": true,
+      "session": "session:ed3109bb-47fd-4fd9-babe-dff1e16be0db",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-950nXo/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--json"
+      ],
+      "bytes": 232191,
+      "sha256": "84f9b7a236d35ef980f462890802880f31a28be3a43709c8de116a69239fba57",
+      "equal": true,
+      "session": "session:6a4fc498-29ca-4998-a166-8e8bca21763e",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-950nXo/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--source-detail"
+      ],
+      "bytes": 17111,
+      "sha256": "f8df439328cab3a19fb17655a0c84b6c1df297b0af39682dd6a582da3f8f63e0",
+      "equal": true,
+      "session": "session:236387e4-c9e9-45e6-9bd8-e191b26391d6",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-950nXo/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 397043,
+      "sha256": "15e03b90d96fd200085e4a77374e01348432737b5fde39fd76e26d8c9e311b2f",
+      "equal": true,
+      "session": "session:69e31038-38f4-48c5-925c-79598d49cbc7",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-950nXo/tsconfig.json",
+      "args": [
+        "children",
+        "requests",
+        "--source-detail"
+      ],
+      "bytes": 13525,
+      "sha256": "6a22977f3689aba710de38902cb8fef84f222e34f8457acbf54aeac778e5a936",
+      "equal": true,
+      "session": "session:793df267-5e43-4933-b3ec-9b94ffb92a8a",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-950nXo/tsconfig.json",
+      "args": [
+        "children",
+        "requests",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 292831,
+      "sha256": "f176d2182243c0418a5c8f0c3fcfc74c06641a153dd858ec064e9dfb5aa6db12",
+      "equal": true,
+      "session": "session:9166cded-70c4-476f-bbc0-30909208b6ed",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-950nXo/tsconfig.json",
+      "args": [
+        "parents",
+        "requests",
+        "--source-detail"
+      ],
+      "bytes": 2820,
+      "sha256": "206f596dfce8e397624b76c8148d6e24d470aaacc06dc8289ee1c21db755842c",
+      "equal": true,
+      "session": "session:2a27ac0c-ea61-4648-a816-9bcb8926db92",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-950nXo/tsconfig.json",
+      "args": [
+        "parents",
+        "requests",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 36638,
+      "sha256": "61b3b01482b3569ae0462525cb953b057bbc93220a3578cbf482073450584689",
+      "equal": true,
+      "session": "session:ec4027de-f1fe-4323-9fb3-c4576b3e5893",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-JV6iEx/tsconfig.json",
+      "args": [
+        "modules"
+      ],
+      "bytes": 2207,
+      "sha256": "dc7cca215a5001915a96b96ea5daabf9fef667167517dcbf790b74008090987a",
+      "equal": true,
+      "session": "session:65aaccc6-c420-478e-a8b4-e75148663d1a",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-JV6iEx/tsconfig.json",
+      "args": [
+        "modules",
+        "--json"
+      ],
+      "bytes": 135160,
+      "sha256": "4acee527af66175156e520a0ad6b438e75f7254b710a2e4796f4657193a03a46",
+      "equal": true,
+      "session": "session:ed5b7996-4e84-4e45-97b0-6d3cdb7e7a69",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-JV6iEx/tsconfig.json",
+      "args": [
+        "organization",
+        "project"
+      ],
+      "bytes": 1546,
+      "sha256": "64353b9c5e1a1e16479d00eba2dc9cd8e23a783c2e370e68e14df64118ed2f99",
+      "equal": true,
+      "session": "session:a4b405c1-36ea-4c55-8c16-325cc8ffeeb0",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-JV6iEx/tsconfig.json",
+      "args": [
+        "organization",
+        "project",
+        "--json"
+      ],
+      "bytes": 46215,
+      "sha256": "cce9cf626e36c71c49498fa281dc14404abcd95522d46d0005a5a3cd0abd5dc1",
+      "equal": true,
+      "session": "session:9473dbcf-b669-4aa2-9a5c-95f31dda5330",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-JV6iEx/tsconfig.json",
+      "args": [
+        "organization",
+        "repository"
+      ],
+      "bytes": 1538,
+      "sha256": "bf58ca9c2542fc8193fe03fd863498c1735a0da3fd02c3bdb8d0cb6c4444e0a1",
+      "equal": true,
+      "session": "session:f901ae2d-ec68-4efc-b4c5-7c94665b61ce",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-JV6iEx/tsconfig.json",
+      "args": [
+        "organization",
+        "repository",
+        "--json"
+      ],
+      "bytes": 46207,
+      "sha256": "e900d86af899fa99e67bedfebcedb3abc56620aef3270679cf5b14b8a2d3b976",
+      "equal": true,
+      "session": "session:ba17e72a-d329-458a-85b9-02e25168e2b1",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-JV6iEx/tsconfig.json",
+      "args": [
+        "inspect",
+        "origin"
+      ],
+      "bytes": 1447,
+      "sha256": "c534cd742c02928b3d949b38941f6861586aeb24c2a7a9aa4e4a7df6b5c8b741",
+      "equal": true,
+      "session": "session:ec10a714-fafd-4b4f-95cc-497d025fef23",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-JV6iEx/tsconfig.json",
+      "args": [
+        "inspect",
+        "origin",
+        "--json"
+      ],
+      "bytes": 27248,
+      "sha256": "e2762000bfaf830aa971c41b7ed4ef7f284e5cabb5c84ec93841516491611496",
+      "equal": true,
+      "session": "session:b749efb7-85b4-4247-a907-418cb1bdf9cc",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-JV6iEx/tsconfig.json",
+      "args": [
+        "inspect",
+        "origin",
+        "--source-detail"
+      ],
+      "bytes": 4366,
+      "sha256": "5d84ee832051e138abd6cc13bffc9eca878fb46082e68fbd744ff68bc17f5124",
+      "equal": true,
+      "session": "session:09b79b02-9152-4d1f-82c3-7887edc7c511",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-JV6iEx/tsconfig.json",
+      "args": [
+        "inspect",
+        "origin",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 61441,
+      "sha256": "93d4482ab2d676817bbaf083f09765823503742cfe4303e8665be7878f0205b6",
+      "equal": true,
+      "session": "session:48c817c4-ebc0-4d54-9c35-5e0b29930a84",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-JV6iEx/tsconfig.json",
+      "args": [
+        "dependencies"
+      ],
+      "bytes": 3369,
+      "sha256": "c5d7ff288b02d9bb2972cdca378e91772f9e15e6fe87913f65e373d4b5a4db1b",
+      "equal": true,
+      "session": "session:110327c2-12e9-41a1-988e-8b5219f6f869",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-JV6iEx/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--json"
+      ],
+      "bytes": 132810,
+      "sha256": "76267ad3f1140bed14e3ab1a5c307bbeac06f1b302e51f0e87fb471be9ea8c1d",
+      "equal": true,
+      "session": "session:84e3e18f-a23f-4872-8a3f-bc498d08fd43",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-JV6iEx/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--source-detail"
+      ],
+      "bytes": 7242,
+      "sha256": "d492825dd39d2daa720fb879cac0f1629319f99a0ffdfa9de15b187938894eab",
+      "equal": true,
+      "session": "session:abcc9fb7-562b-4453-bccf-9efcbb3d72c2",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-JV6iEx/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 177790,
+      "sha256": "30a9990b0092d2dbb48becdb980464af5154892b9fb338e88cc057f0e0fdef3b",
+      "equal": true,
+      "session": "session:ee0ea59c-a8aa-4d83-9a1e-bcb57cf0e81f",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-JV6iEx/tsconfig.json",
+      "args": [
+        "children",
+        "origin",
+        "--source-detail"
+      ],
+      "bytes": 2890,
+      "sha256": "9013f536a186ecb5031bf33f4a49a1420f5d29478518dbb8da493a4670979ac6",
+      "equal": true,
+      "session": "session:390d9b4f-de62-40f0-92cc-7c4739b51498",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-JV6iEx/tsconfig.json",
+      "args": [
+        "children",
+        "origin",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 36855,
+      "sha256": "166cf909994815b93f9d92edbd3bd60f1c5d4de8d6bc9836531aa53403ff5702",
+      "equal": true,
+      "session": "session:22ccfe22-c631-4a17-b26e-12d64101f5e1",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-JV6iEx/tsconfig.json",
+      "args": [
+        "parents",
+        "origin",
+        "--source-detail"
+      ],
+      "bytes": 6172,
+      "sha256": "3c138ab0d8a8e8620d582b3a80bec68807da52fb37ef18f5a8b08e1fe448aab9",
+      "equal": true,
+      "session": "session:41993111-b641-4251-87e2-9cd920b020a5",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-JV6iEx/tsconfig.json",
+      "args": [
+        "parents",
+        "origin",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 136756,
+      "sha256": "3cee0688a63ad777885b09ba5d76e4174a715eb955891b0e9878bbae2281ee66",
+      "equal": true,
+      "session": "session:ce80faf0-4813-4b94-a638-c448adb407e7",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-uKyuJ4/tsconfig.json",
+      "args": [
+        "modules"
+      ],
+      "bytes": 5531,
+      "sha256": "6e8284a27c71d052daccdfe1207647744a553682e3aad03f85bffe3f28e805bf",
+      "equal": true,
+      "session": "session:dc2bd1b8-c873-4fea-90a0-6dd3e32ad480",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-uKyuJ4/tsconfig.json",
+      "args": [
+        "modules",
+        "--json"
+      ],
+      "bytes": 2370958,
+      "sha256": "4185995da85d0d70d63f0613cab36a0e20f7b6eb3e329f409c04e217dc397b1d",
+      "equal": true,
+      "session": "session:73eeaae0-d135-43f9-a5e7-8a1a0e1c3c31",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-uKyuJ4/tsconfig.json",
+      "args": [
+        "organization",
+        "project"
+      ],
+      "bytes": 1868,
+      "sha256": "475f061b9dec07d74f61d3d377622e09d0bf7157fe864c55ddc70be5b15b0b51",
+      "equal": true,
+      "session": "session:888742c6-bfc2-4f0d-a32e-7ddfb601d04d",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-uKyuJ4/tsconfig.json",
+      "args": [
+        "organization",
+        "project",
+        "--json"
+      ],
+      "bytes": 589998,
+      "sha256": "edb7136a1b800d3c60facd1057b09245b80b60829e6d6e49750c185216eb89dc",
+      "equal": true,
+      "session": "session:2772b005-8b02-4606-a772-851edfe35c9d",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-uKyuJ4/tsconfig.json",
+      "args": [
+        "organization",
+        "repository"
+      ],
+      "bytes": 3886,
+      "sha256": "bced4a56b8dd822f84a05f2f555782770dc75a29c19b711c845b4ec9e6cfbd34",
+      "equal": true,
+      "session": "session:4273907a-b1ec-4886-a9e9-872a6d13cd74",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-uKyuJ4/tsconfig.json",
+      "args": [
+        "organization",
+        "repository",
+        "--json"
+      ],
+      "bytes": 640848,
+      "sha256": "cf5ab15703af6695743e1ef86b5c8adb0c5e009d7de3dad81e902cef9c48d97a",
+      "equal": true,
+      "session": "session:92fda7c1-d08b-473d-8598-52758233db68",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-uKyuJ4/tsconfig.json",
+      "args": [
+        "inspect",
+        "module0"
+      ],
+      "bytes": 9527,
+      "sha256": "0430206cb9d0e86c82e086d524efa2f09583d741a154fdf39d6ce432c2f0bdb4",
+      "equal": true,
+      "session": "session:fbcb103c-d8c5-4504-b6eb-6ed9711dd9d4",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-uKyuJ4/tsconfig.json",
+      "args": [
+        "inspect",
+        "module0",
+        "--json"
+      ],
+      "bytes": 553995,
+      "sha256": "def89832e353fa1d165a69fca44fd23ec2e930ed33f0c00c0549736a90a62741",
+      "equal": true,
+      "session": "session:0dd87bec-fdb6-411d-8c9b-0fbe378c5787",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-uKyuJ4/tsconfig.json",
+      "args": [
+        "inspect",
+        "module0",
+        "--source-detail"
+      ],
+      "bytes": 249178,
+      "sha256": "3af2d223d6ecbb73b88268ec1835c2c24fceba93048984c494c96066430fcd26",
+      "equal": true,
+      "session": "session:dafaa647-6cca-4675-9687-506f86702ae6",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-uKyuJ4/tsconfig.json",
+      "args": [
+        "inspect",
+        "module0",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 2330458,
+      "sha256": "08b9b5554a309723884770827d3727aabf30cfb86425cef14446bf9a6431ba39",
+      "equal": true,
+      "session": "session:d7d955c2-326d-4a97-b9be-9481943b0425",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-uKyuJ4/tsconfig.json",
+      "args": [
+        "dependencies"
+      ],
+      "bytes": 3535,
+      "sha256": "99fc5f29f07807413b836c0dd4719541378d475edb944e58c94dc3ec998bc2cf",
+      "equal": true,
+      "session": "session:737e33cf-7e22-488a-a918-3048be9dafbf",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-uKyuJ4/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--json"
+      ],
+      "bytes": 3580862,
+      "sha256": "d7efe2a2f87060f1f3177084670e83430381bf9deb37ca475e08406662a993c5",
+      "equal": true,
+      "session": "session:3f1ae985-badd-42a9-80da-650f0ac67d98",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-uKyuJ4/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--source-detail"
+      ],
+      "bytes": 7495,
+      "sha256": "4a03ca55e2af245efd9a1274962f828d59de38279580a6cf12a3c33d24843888",
+      "equal": true,
+      "session": "session:db188543-3461-4b06-9c18-809ea7a82565",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-uKyuJ4/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 3927571,
+      "sha256": "6dd7d9c4530be67f04008e7983a92ca9af69cf5a7f57e2879f166ff748db3431",
+      "equal": true,
+      "session": "session:cef29812-6b48-41d3-b7b7-f0d80d464234",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-uKyuJ4/tsconfig.json",
+      "args": [
+        "children",
+        "module0",
+        "--source-detail"
+      ],
+      "bytes": 3506,
+      "sha256": "bdd5fc323a43c9c16955a20262dc85f12c708a914646fe9e673c52be488454fa",
+      "equal": true,
+      "session": "session:e04eb584-0f89-464a-bb63-2527b35aacfc",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-uKyuJ4/tsconfig.json",
+      "args": [
+        "children",
+        "module0",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 588535,
+      "sha256": "df4489480350a3cb423794ce561ae7d115e5198b6ad429c0cf5684abd29176d3",
+      "equal": true,
+      "session": "session:606ff570-ee4a-470c-9110-b9b4ead9c3e7",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-uKyuJ4/tsconfig.json",
+      "args": [
+        "parents",
+        "module0",
+        "--source-detail"
+      ],
+      "bytes": 2821,
+      "sha256": "e789c47120c482eb48e8c6c7a55c9ce40ebd3ce02db46e56c44121a658c8678a",
+      "equal": true,
+      "session": "session:f5915b42-e7a3-499e-b610-f0b114ade65a",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "/var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-comparison-uKyuJ4/tsconfig.json",
+      "args": [
+        "parents",
+        "module0",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 513546,
+      "sha256": "2269a561bcec05fa2c9e9fdb8727a023113ecc985c11f84b5c1f93d9214f407e",
+      "equal": true,
+      "session": "session:e66a37d2-d69a-4023-b274-9570709152d4",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    }
+  ]
+}
