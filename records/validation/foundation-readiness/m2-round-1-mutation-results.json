@@ -1,0 +1,22 @@
+[
+  {
+    "mutation": "m2-round-1-untagged-selector",
+    "detected": true,
+    "status": 1
+  },
+  {
+    "mutation": "m2-round-1-raw-selector-0",
+    "detected": true,
+    "status": 1
+  },
+  {
+    "mutation": "m2-round-1-raw-selector-1",
+    "detected": true,
+    "status": 1
+  },
+  {
+    "mutation": "m2-round-1-raw-selector-2",
+    "detected": true,
+    "status": 1
+  }
+]

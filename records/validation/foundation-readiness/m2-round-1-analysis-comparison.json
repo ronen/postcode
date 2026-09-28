@@ -1,0 +1,1168 @@
+{
+  "before": {
+    "build": "M2 target with projection method versions aligned",
+    "sha256": "48e3166fab7e09ded99b1f5854d4a22e6479b1c5704d8ba60a387745f8eb34b6"
+  },
+  "after": {
+    "build": "M2 round 1 correction",
+    "sha256": "e49f34275ea61abd23f360eec2724f4e92eed9a667ce052479f123ae9fc139e2"
+  },
+  "results": [
+    {
+      "config": "dependency-journey",
+      "args": [
+        "modules"
+      ],
+      "bytes": 1114,
+      "sha256": "50c6869e599bda17b36daf6eecec4213e51687da3e873a493f06f6b8b637999a",
+      "equal": true,
+      "session": "session:3e464f89-c14b-4a1e-82ba-adefc227a187",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey",
+      "args": [
+        "modules",
+        "--json"
+      ],
+      "bytes": 52665,
+      "sha256": "925dc99096d5017d3bc1a9fb7af78a0bd3ded3007f3851157ecce2f0b848e40e",
+      "equal": true,
+      "session": "session:68c188c1-d3e5-4d17-9b7c-51ace5b60769",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey",
+      "args": [
+        "organization",
+        "project"
+      ],
+      "bytes": 1598,
+      "sha256": "3a61be7ffca0d9d5f13ad67507a387ba83d0501c54712bbbe861801c312dc058",
+      "equal": true,
+      "session": "session:68291050-bbfe-4a0b-96e2-44c1ffa0547c",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey",
+      "args": [
+        "organization",
+        "project",
+        "--json"
+      ],
+      "bytes": 46879,
+      "sha256": "9d8be141be0077a0a5df354c6600fb10bc67b353dc5dbc35f93f79e86bf3e1f8",
+      "equal": true,
+      "session": "session:bb764af0-fa4c-4b3f-ae14-1576852d7eab",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey",
+      "args": [
+        "organization",
+        "repository"
+      ],
+      "bytes": 1590,
+      "sha256": "7d410b892a2af7a6b31d301b80e81bd66ff2af2fd9a4109599805145f37f27ae",
+      "equal": true,
+      "session": "session:a68a2822-c7e0-49cc-891a-ba2b3a7b65bd",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey",
+      "args": [
+        "organization",
+        "repository",
+        "--json"
+      ],
+      "bytes": 46871,
+      "sha256": "52c88b65b5635f19e40d4f747e9493f6964706e104ad3ae1fc0314d65f65b5d1",
+      "equal": true,
+      "session": "session:7e91e943-e14f-4c34-ba39-24c357a3a527",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey",
+      "args": [
+        "inspect",
+        "forward"
+      ],
+      "bytes": 1120,
+      "sha256": "2e1ddb685fecc60dd1e6802a0d2e39bd1b06979bad6e2cc8613ad63692c60392",
+      "equal": true,
+      "session": "session:5957490b-4337-4d4c-bb58-a7a10b335047",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey",
+      "args": [
+        "inspect",
+        "forward",
+        "--json"
+      ],
+      "bytes": 12736,
+      "sha256": "0a4b99b10f2cdb860e89838ba6f5ca474f2c1f34c1ac3d9c858d1789011884ae",
+      "equal": true,
+      "session": "session:86a28b56-59c3-4322-a85d-c392034eb0df",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey",
+      "args": [
+        "inspect",
+        "forward",
+        "--source-detail"
+      ],
+      "bytes": 1951,
+      "sha256": "de6c8e44b39e4e294bfc02ed5944ff466a1f238ce72fd779443bf71367597ca6",
+      "equal": true,
+      "session": "session:5354a61b-8038-435a-a121-87d08a683d5a",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey",
+      "args": [
+        "inspect",
+        "forward",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 18879,
+      "sha256": "72f72a9971cff9a8f70a93cb4a5b0ace5728e8d27f8de0206ef123b05f03cebe",
+      "equal": true,
+      "session": "session:e82cd238-bfe4-472a-b59d-ac2b7ad4e9a9",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey",
+      "args": [
+        "dependencies"
+      ],
+      "bytes": 3386,
+      "sha256": "0b322a118a165f327920d7d04baa9e1426c73d6706a760a8069fd510ca6adff1",
+      "equal": true,
+      "session": "session:eef13a17-1ba8-4cc0-99ea-bc98e90a2856",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey",
+      "args": [
+        "dependencies",
+        "--json"
+      ],
+      "bytes": 114231,
+      "sha256": "62516f6cd44e40e09535b4886321f4f0d5e66881ccd012b66aa323a9abb5ae19",
+      "equal": true,
+      "session": "session:4653ed11-ce98-497d-bb94-16796ca9517c",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey",
+      "args": [
+        "dependencies",
+        "--source-detail"
+      ],
+      "bytes": 7004,
+      "sha256": "4eaff55e0783f8d2e579d119402efcfea51c3d09ae3053c94286bf85cab6d154",
+      "equal": true,
+      "session": "session:0b4f5668-4d0b-47ad-b14b-338f9fa9b348",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey",
+      "args": [
+        "dependencies",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 163442,
+      "sha256": "146941130b9eb616d22de92c4c09ce984d35d947918c23935f37ed97a08a2c35",
+      "equal": true,
+      "session": "session:341d5818-d90d-4c7c-ab10-721c5fd486fb",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey",
+      "args": [
+        "children",
+        "forward",
+        "--source-detail"
+      ],
+      "bytes": 3734,
+      "sha256": "ef978e7371efa91cba41a4004dbb8755e5121db03f75471f33aac4af46a7eb8d",
+      "equal": true,
+      "session": "session:7ca91f94-193b-47a7-a8e9-eb8352bd70c0",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey",
+      "args": [
+        "children",
+        "forward",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 65158,
+      "sha256": "eb59d91e38fccfa3f3c09c2d8215825ccedab56e5fe67e31d56f85e912863a9f",
+      "equal": true,
+      "session": "session:d3302828-0066-460f-babb-ec6299861159",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey",
+      "args": [
+        "parents",
+        "forward",
+        "--source-detail"
+      ],
+      "bytes": 3628,
+      "sha256": "670c26014e1b4384a9184200cb7015aca8991c9b6d9a147a9cee86c9cf1af3f3",
+      "equal": true,
+      "session": "session:fbf20da1-b11d-4a95-9fa4-407e8e318ab8",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey",
+      "args": [
+        "parents",
+        "forward",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 61673,
+      "sha256": "ad1c98e8864b5c0b37429ff7d8900b5f9735606816da0f03d929be0242c8e1b4",
+      "equal": true,
+      "session": "session:3c0b3677-f8cd-43ab-8de1-0a3bab6d2f1e",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract",
+      "args": [
+        "modules"
+      ],
+      "bytes": 1830,
+      "sha256": "14241271a8f7df7437854445d454fa61e36c9f326e58a63752397c64425e76e7",
+      "equal": true,
+      "session": "session:e7f5dd77-ffda-456b-8476-778f1b2d7206",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract",
+      "args": [
+        "modules",
+        "--json"
+      ],
+      "bytes": 79988,
+      "sha256": "d4d6dc39373fab274e6320d46b30fc0edeb122fd20634e1449a1bb6bb40d15b4",
+      "equal": true,
+      "session": "session:cb03b258-fcf0-4086-b2f7-91a9e7c4b9e6",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract",
+      "args": [
+        "organization",
+        "project"
+      ],
+      "bytes": 1645,
+      "sha256": "13b4a4ca331e80d85b831a53f4bc84b7fe2dd8b48ffe6eb6df5ae97b78aa7080",
+      "equal": true,
+      "session": "session:64c53175-19fd-43d8-944b-1ec9c6c06d8e",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract",
+      "args": [
+        "organization",
+        "project",
+        "--json"
+      ],
+      "bytes": 50318,
+      "sha256": "030b724f64913a6211a4756cfbf455804b244bd5a4b28d597c36e394419dbf1d",
+      "equal": true,
+      "session": "session:1a2565d7-b871-4efa-941d-438a298dfe0c",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract",
+      "args": [
+        "organization",
+        "repository"
+      ],
+      "bytes": 1600,
+      "sha256": "1a5489a42a7c68b0519a4612b3939ca1e7fa06b2d14bbc16cbea374eea093e49",
+      "equal": true,
+      "session": "session:f77c3936-32dc-4ea1-aa0c-57e03dd4a95c",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract",
+      "args": [
+        "organization",
+        "repository",
+        "--json"
+      ],
+      "bytes": 50295,
+      "sha256": "162a51508e3ce1a459a75ce20da23a225b3dabb0030e2cb6bf1e9cdd63d705be",
+      "equal": true,
+      "session": "session:a219e015-13fb-4ead-adf7-069c6b0e9a42",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract",
+      "args": [
+        "inspect",
+        "requests"
+      ],
+      "bytes": 1131,
+      "sha256": "692c74d397428ddda65001e42f8590eb612933d5e1173ae995264e3070e46690",
+      "equal": true,
+      "session": "session:f419485d-3159-4ed9-8759-850cb8d45267",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract",
+      "args": [
+        "inspect",
+        "requests",
+        "--json"
+      ],
+      "bytes": 16265,
+      "sha256": "d35773b3931a36801761877ed815205abe59c528aff3d06fefeb2def1edf2cc8",
+      "equal": true,
+      "session": "session:88d864e1-c24f-4452-bcc7-dbc18292cc67",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract",
+      "args": [
+        "inspect",
+        "requests",
+        "--source-detail"
+      ],
+      "bytes": 3053,
+      "sha256": "bf479db9d5471b1385f0a9a1f4e71cfc06fcfa702b5acc758b2a1d8e028b3650",
+      "equal": true,
+      "session": "session:11143c6f-13d6-4601-a5de-fa73770e7885",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract",
+      "args": [
+        "inspect",
+        "requests",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 32568,
+      "sha256": "4869017e94d1f380a0303b4298ffc2420eda227539feac89f352297691683ca2",
+      "equal": true,
+      "session": "session:b2b5f159-eb82-4dfe-b90c-569d558c49b4",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract",
+      "args": [
+        "dependencies"
+      ],
+      "bytes": 3953,
+      "sha256": "569f4d46638d2d78c3b783a46c6b0c75604fcfd8b5d133f2f2f9c24738dc860c",
+      "equal": true,
+      "session": "session:4b566566-abb5-45a3-844a-ab3d074d790a",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract",
+      "args": [
+        "dependencies",
+        "--json"
+      ],
+      "bytes": 232191,
+      "sha256": "598d80f65595e5c2858b2563654d6b5cebb5910e5ebdea1c235855ac7ad2c9dc",
+      "equal": true,
+      "session": "session:e68e3f56-e2e3-46a7-aa14-58594c117a8d",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract",
+      "args": [
+        "dependencies",
+        "--source-detail"
+      ],
+      "bytes": 17111,
+      "sha256": "a7b571625df7d5047ab98acb731eb3316838e96a67b2a828503bce3df805e8bc",
+      "equal": true,
+      "session": "session:e50ae865-2981-40a7-963e-db41046398d0",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract",
+      "args": [
+        "dependencies",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 397043,
+      "sha256": "6ddae8ac9925f48040e5c0756a7d7ec443c969d44a2c296cc406ac71c1323b18",
+      "equal": true,
+      "session": "session:4cb73fab-9807-4cab-8e78-b68d5960eeca",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract",
+      "args": [
+        "children",
+        "requests",
+        "--source-detail"
+      ],
+      "bytes": 13525,
+      "sha256": "7d6ec5858ce23fe26bd9618096843bb3528cb23609745a79d49a0f84770087a5",
+      "equal": true,
+      "session": "session:5b577cfd-6e44-469d-a874-15a1f2d6adac",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract",
+      "args": [
+        "children",
+        "requests",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 292831,
+      "sha256": "cc8409e02ebe0cc2925772a9e8c4d579d3c02f7ff6dcdfeb82f9b1da7bd65eb2",
+      "equal": true,
+      "session": "session:16cf3eae-e300-4d96-8f80-f17745e8abf4",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract",
+      "args": [
+        "parents",
+        "requests",
+        "--source-detail"
+      ],
+      "bytes": 2820,
+      "sha256": "21f5f353f89dda791a697f27f70463f6a4e19f92b5517074cb0cca4930d963d1",
+      "equal": true,
+      "session": "session:5cd3a149-0b73-4c1f-b459-01341bf00a22",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract",
+      "args": [
+        "parents",
+        "requests",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 36638,
+      "sha256": "2c77d2578e44dff5cabbf2852fb355af5673d8bce7907c746991077a7b7a293c",
+      "equal": true,
+      "session": "session:5bbbef52-ec11-40e1-8175-19ff236eb18c",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports",
+      "args": [
+        "modules"
+      ],
+      "bytes": 2207,
+      "sha256": "206eb3329b3f0de022cfa398a31ce64ded8ce75f737b70d1c6566ca559b296b3",
+      "equal": true,
+      "session": "session:c48a2020-d90d-499b-bb51-175aa44792d3",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports",
+      "args": [
+        "modules",
+        "--json"
+      ],
+      "bytes": 135160,
+      "sha256": "9c389661f1f26dbb5dca051d7a61eb1204937be0e043dce32f0442460185e3e8",
+      "equal": true,
+      "session": "session:aa064633-827f-45d3-8351-1ab9467e21ae",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports",
+      "args": [
+        "organization",
+        "project"
+      ],
+      "bytes": 1546,
+      "sha256": "6a8f1016016569f0fff6072ad76fdf41c63ee40c8039ba89ec05ea4fa1c538fa",
+      "equal": true,
+      "session": "session:8cfe2ab7-0a61-4207-b408-b0b40f8b09cf",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports",
+      "args": [
+        "organization",
+        "project",
+        "--json"
+      ],
+      "bytes": 46215,
+      "sha256": "3b6bd058317fa7c9462ae75fe4c32ae3889be60e13d214f55edecfcb93be9b53",
+      "equal": true,
+      "session": "session:11876469-e8be-4a74-bf5a-c49f6e9b9a25",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports",
+      "args": [
+        "organization",
+        "repository"
+      ],
+      "bytes": 1538,
+      "sha256": "8259e96b9927d895454ba93c8c446e37ae5925da6ea804e5e49fa27b8fbd0192",
+      "equal": true,
+      "session": "session:e145295f-5a3a-461c-9304-555b09f79b4d",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports",
+      "args": [
+        "organization",
+        "repository",
+        "--json"
+      ],
+      "bytes": 46207,
+      "sha256": "be860b6b33bfea08d7dfc81ac2e048171f801bc1e3fbc82af3fbfd9584755a90",
+      "equal": true,
+      "session": "session:c32fd8b7-34b5-440d-8f8d-bf61ddee321e",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports",
+      "args": [
+        "inspect",
+        "origin"
+      ],
+      "bytes": 1447,
+      "sha256": "d8d0edcf4cbcd4beff156cd0ac9a8f2a05eb3adce83754d5c7207ae5e0698df8",
+      "equal": true,
+      "session": "session:e8ce287e-24b1-45c4-a79a-4282c85980f8",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports",
+      "args": [
+        "inspect",
+        "origin",
+        "--json"
+      ],
+      "bytes": 27248,
+      "sha256": "d0bb88d755f00dc8f42923012a60db716f0e7fcc293108f220c40feecdb30d1c",
+      "equal": true,
+      "session": "session:f955d7da-5da2-4140-8fe0-042b0d6ba23a",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports",
+      "args": [
+        "inspect",
+        "origin",
+        "--source-detail"
+      ],
+      "bytes": 4366,
+      "sha256": "fb759e4f609f6061daf07e095722baa2c6530712e4229b537a0054a052f37ad9",
+      "equal": true,
+      "session": "session:05061f7b-6b96-48f7-ac8f-340686bf9c9a",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports",
+      "args": [
+        "inspect",
+        "origin",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 61441,
+      "sha256": "21f14a41a37e5fab95d94085103a2e84d8588c9770c7d3c0982746f4a379663a",
+      "equal": true,
+      "session": "session:48734d65-e068-4d19-9b32-18d1f63f8008",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports",
+      "args": [
+        "dependencies"
+      ],
+      "bytes": 3369,
+      "sha256": "0e387514e26641606fa93334880676156a2fa7a1f6976a2febbfbd1a60044e25",
+      "equal": true,
+      "session": "session:2e3113b4-696c-4a04-a9fb-8baf3b46cc7a",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports",
+      "args": [
+        "dependencies",
+        "--json"
+      ],
+      "bytes": 132810,
+      "sha256": "f2b04eedd60c6261983c6039cdb572b959d4bd35b29e17977de2b21565fc6bb7",
+      "equal": true,
+      "session": "session:41ba0f4a-2353-4d0b-8fa5-2d0077df0f14",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports",
+      "args": [
+        "dependencies",
+        "--source-detail"
+      ],
+      "bytes": 7242,
+      "sha256": "1666030ac75e45e90990375928a45929575aaac57ccaff544d4f46e9ad7310ca",
+      "equal": true,
+      "session": "session:38ed8bca-849b-428c-91e4-07bfd3ea2571",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports",
+      "args": [
+        "dependencies",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 177790,
+      "sha256": "19c4164bdab73d1fef62829e74481836e946fe75e2ac62a04961cea2d703d214",
+      "equal": true,
+      "session": "session:7ef8ec5f-847b-40e2-b335-47cf13638161",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports",
+      "args": [
+        "children",
+        "origin",
+        "--source-detail"
+      ],
+      "bytes": 2890,
+      "sha256": "c958dad35427ed8475015b6e65c13700c248128f2e1dac07e531ad67dbd05543",
+      "equal": true,
+      "session": "session:032023b4-ca66-426b-ba4f-41103eff6846",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports",
+      "args": [
+        "children",
+        "origin",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 36855,
+      "sha256": "89e0fe69300bbbe9932581dacdccf630694ba7cdfbbc0db94fbc7cecc99bcec6",
+      "equal": true,
+      "session": "session:2be75dff-d2b7-4683-83f9-af8d2ae56e60",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports",
+      "args": [
+        "parents",
+        "origin",
+        "--source-detail"
+      ],
+      "bytes": 6172,
+      "sha256": "4638fd4c5a1be348440b8d17c73543fbe4e49d0ad7f68c23ce0ec793a9a621cf",
+      "equal": true,
+      "session": "session:6e529a53-e6d9-40a6-b36e-1c5f3d7a94eb",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports",
+      "args": [
+        "parents",
+        "origin",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 136756,
+      "sha256": "f6c9c60f84efff6f54fd94d78ba0374538f9b1187e0a4aac07d687ba8bf1f2ad",
+      "equal": true,
+      "session": "session:b5d86f41-79d4-4268-a4f1-7d59a832e146",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale",
+      "args": [
+        "modules"
+      ],
+      "bytes": 5531,
+      "sha256": "8fa6ab769107e1c01d805a7c770ae280611626c10ef2e5edea83156a609c20a3",
+      "equal": true,
+      "session": "session:70a79117-ff91-42ff-a2b4-c31aa7c1656e",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale",
+      "args": [
+        "modules",
+        "--json"
+      ],
+      "bytes": 2370958,
+      "sha256": "369dce4c82f0b594af1a9a02d43ee22c2ed211d74177f566970d27c18ccfe97c",
+      "equal": true,
+      "session": "session:3868bfae-2d50-4926-8c81-7b9e0c21d24f",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale",
+      "args": [
+        "organization",
+        "project"
+      ],
+      "bytes": 1868,
+      "sha256": "531b4f10896719734ae7ab87e554b23704b502fe10b123f023ff1d709ba257fc",
+      "equal": true,
+      "session": "session:666d3b36-8ed4-4ede-9df7-1adbaa613c49",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale",
+      "args": [
+        "organization",
+        "project",
+        "--json"
+      ],
+      "bytes": 589998,
+      "sha256": "0ed190d98ca3778b42191d63b1a29dd6e4435c94bbb9951cb42acf072e69aed2",
+      "equal": true,
+      "session": "session:eb491db9-c089-4560-85a5-ba2b91e1ae71",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale",
+      "args": [
+        "organization",
+        "repository"
+      ],
+      "bytes": 3886,
+      "sha256": "734129219a30fc50907d0323ef6b64bf62061f00e159a0a71c4b0491a21a9cf0",
+      "equal": true,
+      "session": "session:0e71e18b-fa25-437a-adc0-597684b79cd5",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale",
+      "args": [
+        "organization",
+        "repository",
+        "--json"
+      ],
+      "bytes": 640848,
+      "sha256": "6f59515a6fda1a38de3142a19d76de674354f024ca5e26ad301ee477a203db3c",
+      "equal": true,
+      "session": "session:59fd282e-d9b1-46d4-9c82-0d1735a77bb4",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale",
+      "args": [
+        "inspect",
+        "module0"
+      ],
+      "bytes": 9527,
+      "sha256": "3c0206cef9e9d38ee6460ace391f73dc1045ffbf26a109fce20274bec4a2ee4f",
+      "equal": true,
+      "session": "session:b12889a1-8024-4ef8-b103-8c233be3d9ec",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale",
+      "args": [
+        "inspect",
+        "module0",
+        "--json"
+      ],
+      "bytes": 553995,
+      "sha256": "4b596bbbe010bea1ab83697e73b4163dfcf724f3dc2af469df51451597e55ee5",
+      "equal": true,
+      "session": "session:2d724688-4b4e-4133-b83c-0faf2d7cedbd",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale",
+      "args": [
+        "inspect",
+        "module0",
+        "--source-detail"
+      ],
+      "bytes": 249178,
+      "sha256": "682b59124ed505068eb69f94d9390a999689eca2a663391843507bc4f5f5384d",
+      "equal": true,
+      "session": "session:dc1c8c73-67ef-46cd-8fa8-637504723fea",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale",
+      "args": [
+        "inspect",
+        "module0",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 2330458,
+      "sha256": "3cec4a2c112b3fec0ab731be43ff10dcc51c3599e7c9d085d49f3cf31b714d08",
+      "equal": true,
+      "session": "session:23ce69fd-9081-4d66-b740-4b96d72b4a3f",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale",
+      "args": [
+        "dependencies"
+      ],
+      "bytes": 3535,
+      "sha256": "6113761015229365f0b00a44d78866ce37e5538e17bf67969e68b4a00934976b",
+      "equal": true,
+      "session": "session:e6aa849d-72c8-4b78-92da-1dc3897219ed",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale",
+      "args": [
+        "dependencies",
+        "--json"
+      ],
+      "bytes": 3580862,
+      "sha256": "5b36d7d5aff7e0df0a6de3ec0a53082aeee7278e7893150495970f3142bdb4c4",
+      "equal": true,
+      "session": "session:c35270b8-d255-4ce2-ac31-acc74223c173",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale",
+      "args": [
+        "dependencies",
+        "--source-detail"
+      ],
+      "bytes": 7495,
+      "sha256": "cdd20971eb332cf94d9c0625a9f786b11c34ee5d21ba182573271e3206a0c0e4",
+      "equal": true,
+      "session": "session:505de924-4c7a-4035-8716-d7dd0065ae89",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale",
+      "args": [
+        "dependencies",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 3927570,
+      "sha256": "5c3df14ffe953c575691c5ebecc5a87772fcae22710077c9688fd38f5c850b58",
+      "equal": true,
+      "session": "session:32e6b571-c0ad-4cca-a1b6-be158dd583aa",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale",
+      "args": [
+        "children",
+        "module0",
+        "--source-detail"
+      ],
+      "bytes": 3506,
+      "sha256": "2bed287e706945b1a5aa4ef598797c24bc9c2e0ea71bf0262fff36ecdc01572f",
+      "equal": true,
+      "session": "session:e30b7433-deee-4a66-a82e-6f26b64814b7",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale",
+      "args": [
+        "children",
+        "module0",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 588535,
+      "sha256": "4c12f80f378cf4c160b7fcf8731cdc64858a1ed032c62c6131244f4cd422579a",
+      "equal": true,
+      "session": "session:88402a09-8452-4e87-81e3-e7bbb372bb24",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale",
+      "args": [
+        "parents",
+        "module0",
+        "--source-detail"
+      ],
+      "bytes": 2821,
+      "sha256": "34a636719fca2f8649de3577eea0ff9d408a973bd17ce7b7e89c44061dead067",
+      "equal": true,
+      "session": "session:1b90e021-2365-4311-a3c7-fe3b70a716c5",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale",
+      "args": [
+        "parents",
+        "module0",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 513546,
+      "sha256": "51acf58202f6a24cf354d829d59b78143ad6f810913f03815aa8deecbb250eff",
+      "equal": true,
+      "session": "session:cdf6609c-03c3-4423-88dc-ca041e82ea68",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    }
+  ]
+}
