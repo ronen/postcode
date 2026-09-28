@@ -101,9 +101,28 @@ These operationalize the approved plan and graph decision without changing the
 governing architecture. M3's two filesystem defects remain explicitly deferred.
 Integrated comparisons, measurements and the M5 review gate remain outstanding.
 
+M5 handoff checkpoint, 2026-09-28: planned implementation and integrated
+verification are complete at `9f8c8bd85e94428b11abb5b415e98cebb1f50901`.
+The [integrated review handoff](../reviews/foundation-readiness/2026-09-28-m5-integrated-handoff.md)
+is committed in `89838cc`. The agent has stopped for human-arranged review;
+the task remains active and no M5 acceptance or closure is inferred. The two
+filesystem defects remain explicitly deferred as authorized above.
+
 ## Verification
 
 M4 checkpoint: type checking and all 294 tests pass on the final application source.
 The graph/index checkpoint matched 72 CLI comparisons against accepted M3 before
 the intentional terminal version change. Final version-aligned and session-order
 comparisons are in progress; this is not final acceptance or task closure.
+
+Integrated verification: 294/294 tests and type checking pass. The graph/index
+checkpoint matches 72 full CLI comparisons against accepted M3; the final build
+matches 72 presentation-version-aligned comparisons and 288 fresh/accumulated/
+reordered/retained-session comparisons. Eight before/after journeys and 16 real
+publication CLI measurements completed across 80-module fixtures with 240 and
+2,400 non-module artifacts. All publication samples exit 0 without warnings.
+The [validation record](../validation/foundation-readiness/2026-09-28-m4-m5.md)
+preserves exact builds, C01–C23 dispositions, dependency review, measurements,
+intentional changes, an earlier failed test attempt and the passing stable rerun,
+native verification limits and remaining qualifications. Full CLI timing changes
+are modest; no aggregate pre-plan speedup or broad platform guarantee is claimed.
