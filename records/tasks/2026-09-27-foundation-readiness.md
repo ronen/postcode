@@ -105,6 +105,10 @@ Human response:
 
 Investigate now; fix confirmed defects within the existing policy (recommended)
 
+### 2026-09-28 — GitHub PR for human-arranged Copilot review
+
+don't close yet.  Create a github PR, and I will arrange a review by Copilot
+
 ## Outcome
 
 Implementation checkpoint, 2026-09-28 (task remains active): M4 is implemented in
