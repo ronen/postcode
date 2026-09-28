@@ -2,7 +2,7 @@ Record type: disposition
 Date: 2026-09-28
 Task: [Foundation readiness](../../tasks/2026-09-27-foundation-readiness.md)
 Handoff: [M3 acquisition and lifetime](2026-09-28-m3-acquisition-lifetime-handoff.md)
-Findings: [Round 1](2026-09-28-m3-acquisition-lifetime-round-1-findings.md), [Round 2](2026-09-28-m3-acquisition-lifetime-round-2-findings.md)
+Findings: [Round 1](2026-09-28-m3-acquisition-lifetime-round-1-findings.md), [Round 2](2026-09-28-m3-acquisition-lifetime-round-2-findings.md), [Round 3](2026-09-28-m3-acquisition-lifetime-round-3-findings.md)
 
 # Foundation readiness M3 acquisition/lifetime review: disposition
 
@@ -117,7 +117,31 @@ confirming the two filesystem model defects, the implementing agent asked whethe
 to extend the correction to component-specific case handling or explicitly defer
 those limitations. Neither choice is inferred while the response is pending.
 
+## Round 3 and final dispositions
+
+Round 3 independently reviewed `085621903155fdf95ff3d329872e54ac8094374b`
+and reports no new actionable finding. F2 and replay mutation are resolved, F1
+remains resolved, and the version-6 method assessment is accepted. The reviewer
+reran the native permission/replay/F1 probes, the controlled case model, type
+checking and all 282 tests. CLI/session comparison matrices and native mixed-volume,
+case-sensitive-volume and Linux checks were not rerun; those limits remain explicit.
+
+The deterministic first-boundary choice in the per-device cache is acknowledged as
+part of O1, not an additional ordering defect. The reviewer confirms that the
+records distinguish modeled evidence from native evidence and make no equivalence
+claim for this checkpoint. No further round is requested for documenting deferral.
+
+The human explicitly authorized deferring **O1 (same-device per-directory case
+rules)** and **O2 (mixed-filesystem lexical prefixes)** and accepted M3 on
+2026-09-28. This supersedes the pending choices recorded above. Both remain known
+defects, not rejected findings or corrected behavior. They are retained in the
+[backlog](../../../docs/backlog.md#correct-output-boundaries-across-different-filesystem-case-rules)
+and current architecture limitations. The verification scope is the actual local
+APFS environment; this does not assert correctness for every macOS volume layout.
+
 ## Gate conclusion
 
-Correction work and human direction remain pending. The human has not accepted the M3 gate. The task remains
-active, and M4–M5 remain outstanding. No pending work has been deferred out of scope.
+The human has accepted M3 with O1 and O2 explicitly deferred. The original handoff
+and all three findings records remain unchanged. The active foundation-readiness
+task continues to M4 and M5; the final integrated review and task conclusion remain
+outstanding.
