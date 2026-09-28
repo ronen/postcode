@@ -2,7 +2,7 @@ Record type: disposition
 Date: 2026-09-28
 Task: [Foundation readiness](../../tasks/2026-09-27-foundation-readiness.md)
 Handoff: [M2 state/identity](2026-09-27-m2-state-identity-handoff.md)
-Findings: [Round 1](2026-09-27-m2-state-identity-round-1-findings.md)
+Findings: [Round 1](2026-09-27-m2-state-identity-round-1-findings.md), [Round 2](2026-09-28-m2-state-identity-round-2-findings.md)
 
 # Foundation readiness M2 state/identity review: disposition
 
@@ -128,19 +128,39 @@ above describe the earlier F1/F2 target. They were not rerun for this local poli
 follow-up and are not represented as final-target comparison evidence. The full
 suite and explicit classification/rendering regression verify this follow-up.
 
+### Round-2 independent verification
+
+The second reviewer round independently verified the final implementation target
+`d84b102102f5abbd851d1a0bd9221f1e9b2f9018`. It reports no actionable findings and
+confirms F1, F2 and the human-directed composition policy are resolved. Its type
+check and all 254 tests pass. All eight deliberate mutations are detected, the
+literal-selector reproduction no longer collides, all 72 version-aligned CLI
+comparisons pass, and all 288 session comparisons pass. These are the reviewer's
+reported checks, preserved in the linked findings, not additional implementer runs.
+
+Both non-defect observations are accepted: the organization-group collision case
+shares the checked encoding and needs no separate correction, and the reviewer's
+final-target comparisons supplement the earlier implementer comparison evidence.
+The round-1 residual limits remain in force; no platform or later-milestone coverage
+is inferred from this review. No implementation change was needed for round 2.
+
 ## Review rounds
 
 Round 1 reviewed `0037eaff2d7dcd17fdb9186bed8511011f1eb9b6`, with findings committed
-as `1bab0c1`. The corrections belong to the original M2 handoff; no new assignment
-or edited handoff is required. A lightweight second review should check the tagged
-selector encoding, version assessment, collision and positive controls, expanded
-comparison requests, and the human-directed primary-producer policy against the
-current implementation target `d84b102102f5abbd851d1a0bd9221f1e9b2f9018`.
+as `1bab0c1`. Round 2 reviewed the corrections through
+`d84b102102f5abbd851d1a0bd9221f1e9b2f9018` under the same handoff and found no
+remaining issues. Both rounds and all dispositions belong to that assignment;
+neither the handoff nor the reviewer-authored findings have been rewritten.
 
 ## Gate conclusion
 
-The human has not declared the M2 gate sufficient. Further review of the corrections
-is required, as recommended in round 1. The human has resolved the composition-policy
-uncertainty; that direction has been implemented and verified. No findings have been
-rejected or materially qualified.
-The task remains active and M3–M5 work has not resumed.
+The reviewer recommends treating M2 as satisfied, and the human has reported that
+round 2 is complete with no more issues. No further correction or review round is
+identified as necessary. The composition-policy uncertainty has been resolved by
+human direction and independently verified. No findings have been rejected or
+materially qualified.
+
+The implementing agent has requested the human's gate decision before proceeding
+to M3, as the plan and review workflow require; reviewer recommendation alone is
+not recorded as human acceptance. Pending that decision, the task remains active
+and M3–M5 work has not resumed.
