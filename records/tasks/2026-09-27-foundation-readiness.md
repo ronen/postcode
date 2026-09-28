@@ -64,6 +64,22 @@ Context: This follow-up concerns the second M3 acquisition/lifetime review.
 
 The second review round is complete.  Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
 
+### 2026-09-28 — F2 unknown case handling policy
+
+Context: Asked whether to remove the directory-listing requirement while preserving explicit failure when case handling cannot be established, rather than adopting a guessed default.
+
+Human response:
+
+Preserve explicit failure; improve detection and diagnostic (recommended)
+
+### 2026-09-28 — M3 round-2 uncertainty investigation
+
+Context: Asked whether to investigate validation adding observations, per-directory case rules, and paths crossing filesystems, and fix confirmed defects within the existing policy.
+
+Human response:
+
+Investigate now; fix confirmed defects within existing policy (recommended)
+
 ## Outcome
 
 ## Verification
