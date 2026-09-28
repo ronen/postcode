@@ -1,0 +1,32 @@
+[
+  {
+    "case": "mixed-filesystem lexical sibling",
+    "expected": false,
+    "actual": true
+  },
+  {
+    "case": "per-directory insensitive suffix",
+    "expected": true,
+    "actual": false
+  },
+  {
+    "case": "per-directory sensitive sibling",
+    "expected": false,
+    "actual": false
+  },
+  {
+    "case": "nonempty device root",
+    "expected": 1,
+    "actual": 1
+  },
+  {
+    "case": "vanished device-root sibling",
+    "expected": 1,
+    "actual": 1
+  },
+  {
+    "case": "empty device root",
+    "expected": "explicit case-handling failure",
+    "actual": "Cannot establish filesystem case handling without a same-filesystem spelling probe"
+  }
+]

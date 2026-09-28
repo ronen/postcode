@@ -2,11 +2,11 @@ Record type: disposition
 Date: 2026-09-28
 Task: [Foundation readiness](../../tasks/2026-09-27-foundation-readiness.md)
 Handoff: [M3 acquisition and lifetime](2026-09-28-m3-acquisition-lifetime-handoff.md)
-Findings: [Round 1](2026-09-28-m3-acquisition-lifetime-round-1-findings.md)
+Findings: [Round 1](2026-09-28-m3-acquisition-lifetime-round-1-findings.md), [Round 2](2026-09-28-m3-acquisition-lifetime-round-2-findings.md)
 
 # Foundation readiness M3 acquisition/lifetime review: disposition
 
-## Findings and dispositions
+## Round 1 findings and dispositions
 
 **F1 — accepted and corrected in full.** Operationally unresolvable ordinary
 compiler candidates must not turn a project that previously opened into a project
@@ -82,7 +82,42 @@ committed by the reviewer in `9ca5987`. The implementing agent accepted F1, obta
 human direction on the case-insensitive uncertainty, and prepared the correction
 identified above. No second-round recommendation is inferred from round 1.
 
+## Round 2 findings and dispositions
+
+Round 2 reviewed `43410a0c1066389e64df657f9a850f53b3c951d3`; its findings were
+committed by the reviewer in `a70a9d8`. The human's disposition instruction and
+subsequent choices are preserved in the active task record before affected work.
+
+Local correction checkpoint: `085621903155fdf95ff3d329872e54ac8094374b`.
+The [round-2 validation record](../../validation/foundation-readiness/2026-09-28-m3-round-2.md)
+preserves native regressions, the controlled filesystem model and its results,
+method-version assessment, verification and remaining limits. This checkpoint is
+not the final resolution of the two modeled defects below.
+
+| Finding or observation | Disposition |
+| --- | --- |
+| F2: listing permission is required for an otherwise resolvable boundary | Accepted. Independently reproduced the `0311` parent refusal through the policy and direct session API. A regression test in `5ad6e24` fails on the reviewed implementation. The committed local correction probes an existing directory's own spelling without listing its siblings; focused checks pass. The broader case-handling correction remains pending. |
+| F2: deleted sibling can fail the probe | Accepted as an implementation dependency to remove. The ordinary probe no longer selects an unrelated sibling. A device-root fallback still examines children when its own name cannot observe that device; it skips children deleted before inspection. If no case rule can be established, the human-authorized explicit failure remains. No native concurrent-deletion reproduction is claimed. |
+| F2: empty mount point has no usable spelling probe | Accepted as a case-observation limitation. The human explicitly chose failure with an improved diagnostic when case handling cannot be established, rather than a guessed default. This does not claim successful resolution of an empty mounted filesystem's case rules. |
+| F2: failure diagnostic hides the case-detection step | Accepted. Operational case-probe failures now identify case handling in the reason. |
+| F1 is resolved | Acknowledged. Round 2 independently confirms the cycle, permission and dangling-candidate results. The focused correction checks continue to pass. |
+| Missing suffix case equivalence is resolved on APFS, subject to F2 | Acknowledged with the reviewer's stated qualification. Its native test remains in the correction checks; the separate mixed-rule concerns below are not treated as resolved by APFS evidence. |
+| Replay can add observations and advance acquisition revision | Investigated with explicit human authorization. Native reproduction confirms unchanged compiler absence with identity/revision growth. Corrected validation to compare without recording new observations; a regression test checks repeated replay, unchanged identity/revision, and invalidation on later recovery. This follows the acquisition/validation distinction without changing the compiler-visible absence policy. |
+| One case flag per device | Confirmed in a controlled filesystem model after human-authorized investigation. Two directories on one device with different case rules can cause a source path to be excluded, or generated output to be missed. A correction/disposition choice is pending human direction; no native Linux reproduction is claimed. |
+| Mixed-filesystem lexical paths | Confirmed in a controlled filesystem model after human-authorized investigation. A case-sensitive lexical prefix linked into an insensitive target can cause an unrelated sibling to be excluded. A correction/disposition choice is pending human direction; no native mixed-volume reproduction is claimed. |
+| Documentation, earlier dispositions and method versions accurately describe round 1 | Acknowledged. Round-1 evidence remains historical; any further policy/identity change must update its responsible method and current description. |
+| Reviewer did not rerun CLI/session comparisons or regression-control reports | Acknowledged as the independent round's verification limit. Earlier evidence remains attributed to its actual producer and target. |
+| Empty mount point and sibling-deletion cases were inspection-only | Acknowledged. Neither is relabeled as a native reproduction in this disposition. |
+| No native case-sensitive volume or Linux verification | Acknowledged. The controlled model demonstrates logic errors but does not certify a platform. The approved native verification scope remains macOS and the local filesystem. |
+| Recommendation: correct F2; a brief check may suffice | Accepted as review advice, not gate acceptance. The additional confirmed model defects may affect the scope of the next check; that remains pending human direction. |
+
+No finding has been rejected. The human authorized investigation of the remaining
+uncertainties and preserving explicit refusal for unobservable case handling. After
+confirming the two filesystem model defects, the implementing agent asked whether
+to extend the correction to component-specific case handling or explicitly defer
+those limitations. Neither choice is inferred while the response is pending.
+
 ## Gate conclusion
 
-Further review is required. The human has not accepted the M3 gate. The task remains
+Correction work and human direction remain pending. The human has not accepted the M3 gate. The task remains
 active, and M4–M5 remain outstanding. No pending work has been deferred out of scope.
