@@ -1,8 +1,8 @@
 # Foundation readiness
 
-Status: active
+Status: completed
 Opened: 2026-09-27
-Closed:
+Closed: 2026-09-28
 
 ## Task
 
@@ -133,6 +133,21 @@ is committed in `89838cc`. The agent has stopped for human-arranged review;
 the task remains active and no M5 acceptance or closure is inferred. The two
 filesystem defects remain explicitly deferred as authorized above.
 
+Final outcome, 2026-09-28: all eight foundation-readiness packages are implemented
+and the human-authorized M5 closure condition is satisfied. M2/M3 acceptance,
+the idle Ctrl-C correction, primary-producer qualification choice and authorized
+review investigations remain recorded above. The scanner diagnostic correction
+and prefix-fitting investigation are complete. Copilot's full PR review is
+[preserved](../reviews/foundation-readiness/2026-09-28-m5-integrated-round-2-copilot-findings.md)
+in `6415ecb`; its only actionable finding, the obsolete M3 plan-index status, was
+accepted and corrected in `eee0ed8`. The plan and index now record completion.
+The [final disposition](../reviews/foundation-readiness/2026-09-28-m5-integrated-disposition.md)
+records every finding and the human's conditional acceptance; no additional issue
+arose. The two confirmed filesystem case-rule defects remain explicitly deferred
+in the backlog. This conclusion does not broaden native verification or guarantee
+those defects are fixed. [PR #7](https://github.com/ronen/postcode/pull/7) remains
+open for the human's merge decision.
+
 ## Verification
 
 M4 checkpoint: type checking and all 294 tests pass on the final application source.
@@ -151,3 +166,14 @@ preserves exact builds, C01–C23 dispositions, dependency review, measurements,
 intentional changes, an earlier failed test attempt and the passing stable rerun,
 native verification limits and remaining qualifications. Full CLI timing changes
 are modest; no aggregate pre-plan speedup or broad platform guarantee is claimed.
+
+Final verification, 2026-09-28: `npm run check` and `npm test` pass on the final
+application checkout/build, including the post-review scanner and prefix tests:
+296/296 tests, zero failures, skips or cancellations, 119,992 ms. Node 22.13.1 and
+the previously recorded local macOS/APFS scope apply. The checkout was stable
+during this run. Copilot review source bodies match the API strings byte-for-byte;
+all plan links resolve and the correction passes `git diff --check`. No application
+code changed in response to Copilot's documentation-only finding. Earlier
+comparisons, measurements and their exact targets remain as recorded rather than
+being represented as newly rerun. Final M5 disposition and verification were
+committed in `4923c71` before this task closure.
