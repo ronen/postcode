@@ -50,6 +50,14 @@ Context: This follow-up concerns the first M3 acquisition/lifetime review.
 
 The first review round is complete.  Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
 
+### 2026-09-28 — Case-insensitive missing output suffix investigation
+
+Context: The M3 reviewer identified unresolved uncertainty about a missing output-boundary suffix whose spelling differs only in case on a case-insensitive filesystem. Asked whether to investigate now alongside F1.
+
+Human response:
+
+Investigate now; fix a confirmed defect within the existing boundary policy (recommended)
+
 ## Outcome
 
 ## Verification
