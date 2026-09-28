@@ -58,6 +58,12 @@ Human response:
 
 Investigate now; fix a confirmed defect within the existing boundary policy (recommended)
 
+### 2026-09-28 — M3 second review disposition and corrections
+
+Context: This follow-up concerns the second M3 acquisition/lifetime review.
+
+The second review round is complete.  Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
+
 ## Outcome
 
 ## Verification
