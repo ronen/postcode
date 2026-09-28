@@ -220,9 +220,9 @@ test('duplicate exact names and handles select multiple modules and only their c
   }
 });
 
-test('multiple sessions coexist; old record IDs do not bind in another session', () => {
-  const initial = discover('fixtures/module-population/tsconfig.json');
-  const next = discover('fixtures/empty/tsconfig.json');
+test('multiple sessions coexist; old record IDs do not bind in another session', async () => {
+  const initial = (await discover('fixtures/module-population/tsconfig.json'));
+  const next = (await discover('fixtures/empty/tsconfig.json'));
   evaluateModules(initial.store, next.analysis);
   assert.equal(initial.store.evaluations(initial.evaluation.session).length, 1);
   assert.equal(initial.store.evaluations(next.evaluation.session).length, 1);

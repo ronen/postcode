@@ -1,0 +1,147 @@
+Record type: disposition
+Date: 2026-09-28
+Task: [Foundation readiness](../../tasks/2026-09-27-foundation-readiness.md)
+Handoff: [M3 acquisition and lifetime](2026-09-28-m3-acquisition-lifetime-handoff.md)
+Findings: [Round 1](2026-09-28-m3-acquisition-lifetime-round-1-findings.md), [Round 2](2026-09-28-m3-acquisition-lifetime-round-2-findings.md), [Round 3](2026-09-28-m3-acquisition-lifetime-round-3-findings.md)
+
+# Foundation readiness M3 acquisition/lifetime review: disposition
+
+## Round 1 findings and dispositions
+
+**F1 — accepted and corrected in full.** Operationally unresolvable ordinary
+compiler candidates must not turn a project that previously opened into a project
+opening failure merely because valid output boundaries are configured. The
+correction distinguishes those candidates from explicit boundary failure. A failed
+candidate remains absent to the compiler and has a retained resolution probe;
+consistent absence can continue, and recovery requires restart. Unexpected defects
+still propagate. The misleading configuration-file diagnostic disappears with this
+incorrect refusal. Native cycle and permission-denied fixtures cover opening,
+execution, stable replay and recovery through direct and both CLI paths.
+
+**Case-insensitive missing suffix — accepted as a confirmed additional defect,
+corrected under explicit human direction.** Before investigating, the implementing
+agent asked about the reviewer’s uncertainty. The human authorized investigation
+and correction within the existing policy; that response was committed in the
+[task record](../../tasks/2026-09-27-foundation-readiness.md) before affected work.
+Native APFS reproduction showed two aliases counted separately and alternate-case
+candidates not excluded. The correction observes filesystem case handling without
+writing probe files, applies it to containment/counting and retained-basis replay,
+and preserves original path spellings. Compiler and repository checks cover the
+boundary while missing and after materialization. No finding has been rejected or
+materially qualified.
+
+## Non-defect observations and verification limits
+
+Every remaining observation is acknowledged separately; none is silently treated
+as a request to expand the task.
+
+| Reviewer observation | Disposition |
+| --- | --- |
+| Execution ownership traced end to end, including direct AbortSignal cleanup | Acknowledged. No ownership change is needed for F1. Existing distinctions among operation settlement, cleanup report and actual exit remain. |
+| Qualification mappings match the decision | Acknowledged. Confirmed timeout stays unavailable, unconfirmed opening cleanup is a resource failure, later unverified basis invalidates, and interruption remains 130. |
+| Publication follows the acceptance point | Acknowledged. Complete staged publication, no-overwrite link, owned cleanup and distinct accepted-with-warning outcome remain unchanged. |
+| Configuration paths reached through directory symlinks group separately | Acknowledged as the specified normalized-absolute-path grouping. No conversion to real-path project identity is introduced. |
+| Async propagation, retained serialization and ignored-ancestor lookup | Acknowledged. Existing async call sites and validation phases remain; current full-suite and comparison results are recorded below. |
+| Hung Git incurs a deadline per validation phase | Acknowledged. The CLI reference now explicitly explains roughly two minutes across opening and three publication checks. No aggregate budget or skipped replay is introduced. |
+| Large-input early Git failure may report EPIPE rather than exit 128 | Acknowledged as the reported pre-existing behavior. Both retain operational unavailable qualification; no new precedence policy is needed or introduced. |
+| Parent termination outside SIGINT is outside the guarantee | Acknowledged. The CLI reference now explicitly states that SIGTERM/SIGKILL or other owner termination does not guarantee child cleanup. No new signal supervision is implemented. |
+| Comparison/journey/profiler not rerun by reviewer | Acknowledged as independent-review scope, not a claim of failure. The implementing agent reran the relevant comparisons for this correction; earlier journey/profiler evidence stays attributed to the implementing agent. |
+| No native Linux, Windows, network filesystem or unsupported-hard-link filesystem | Acknowledged. Existing native verification scope remains macOS/local APFS; injected failure handling does not certify those platforms. |
+| No native never-settling worker termination or post-publication unlink failure | Acknowledged. Existing injected tests remain evidence of contract handling only, without asserting a native reproduction. |
+| Failed-opening message-before-exit ordering reasoned about rather than stress tested | Acknowledged as a verification limit. This correction does not alter worker protocol or ordering; no additional native stress-test claim is made. |
+| Compatibility with later investigation | Acknowledged. The correction introduces no investigator, scheduler, persistent session or descendant supervisor. |
+
+The missing-suffix uncertainty is resolved by the native reproduction and correction
+above. The remaining stated verification limits remain explicit. They do not
+constitute human acceptance of M3 or authorize later milestones.
+
+## Corrections and verification
+
+Correction target: `43410a0c1066389e64df657f9a850f53b3c951d3`.
+
+See the [round-1 correction verification](../../validation/foundation-readiness/2026-09-28-m3-round-1.md)
+for method assessment, native fixtures, negative regression controls, comparison
+provenance and remaining limits. Observed-input and repository-input methods advance
+to version 5 for the changed acquisition policy; other methods and batch schema do
+not change. Current descriptive architecture/conventions and CLI limits are updated.
+
+The type check and all **280 tests** pass. All **72** version-aligned CLI comparisons
+and **288** fresh/accumulating/reordered/retained session comparisons pass. The three
+new regression cases fail as expected on the unmodified reviewed source, and the
+corrected source passes them. The comparison builds are fingerprinted and checked
+for mutation; no comparison suppression was introduced.
+
+The correction affects opening and validation outcomes. Consistent with the reviewer’s
+recommendation, a short further independent round is required under the existing
+M3 handoff; the original handoff and returned findings are preserved unchanged.
+
+## Review rounds
+
+Round 1 reviewed `4656a34c0847c82d9f830a9d1587a2a28f2dd138`. Its findings were
+committed by the reviewer in `9ca5987`. The implementing agent accepted F1, obtained
+human direction on the case-insensitive uncertainty, and prepared the correction
+identified above. No second-round recommendation is inferred from round 1.
+
+## Round 2 findings and dispositions
+
+Round 2 reviewed `43410a0c1066389e64df657f9a850f53b3c951d3`; its findings were
+committed by the reviewer in `a70a9d8`. The human's disposition instruction and
+subsequent choices are preserved in the active task record before affected work.
+
+Local correction checkpoint: `085621903155fdf95ff3d329872e54ac8094374b`.
+The [round-2 validation record](../../validation/foundation-readiness/2026-09-28-m3-round-2.md)
+preserves native regressions, the controlled filesystem model and its results,
+method-version assessment, verification and remaining limits. This checkpoint is
+not the final resolution of the two modeled defects below.
+
+| Finding or observation | Disposition |
+| --- | --- |
+| F2: listing permission is required for an otherwise resolvable boundary | Accepted. Independently reproduced the `0311` parent refusal through the policy and direct session API. A regression test in `5ad6e24` fails on the reviewed implementation. The committed local correction probes an existing directory's own spelling without listing its siblings; focused checks pass. The broader case-handling correction remains pending. |
+| F2: deleted sibling can fail the probe | Accepted as an implementation dependency to remove. The ordinary probe no longer selects an unrelated sibling. A device-root fallback still examines children when its own name cannot observe that device; it skips children deleted before inspection. If no case rule can be established, the human-authorized explicit failure remains. No native concurrent-deletion reproduction is claimed. |
+| F2: empty mount point has no usable spelling probe | Accepted as a case-observation limitation. The human explicitly chose failure with an improved diagnostic when case handling cannot be established, rather than a guessed default. This does not claim successful resolution of an empty mounted filesystem's case rules. |
+| F2: failure diagnostic hides the case-detection step | Accepted. Operational case-probe failures now identify case handling in the reason. |
+| F1 is resolved | Acknowledged. Round 2 independently confirms the cycle, permission and dangling-candidate results. The focused correction checks continue to pass. |
+| Missing suffix case equivalence is resolved on APFS, subject to F2 | Acknowledged with the reviewer's stated qualification. Its native test remains in the correction checks; the separate mixed-rule concerns below are not treated as resolved by APFS evidence. |
+| Replay can add observations and advance acquisition revision | Investigated with explicit human authorization. Native reproduction confirms unchanged compiler absence with identity/revision growth. Corrected validation to compare without recording new observations; a regression test checks repeated replay, unchanged identity/revision, and invalidation on later recovery. This follows the acquisition/validation distinction without changing the compiler-visible absence policy. |
+| One case flag per device | Confirmed in a controlled filesystem model after human-authorized investigation. Two directories on one device with different case rules can cause a source path to be excluded, or generated output to be missed. A correction/disposition choice is pending human direction; no native Linux reproduction is claimed. |
+| Mixed-filesystem lexical paths | Confirmed in a controlled filesystem model after human-authorized investigation. A case-sensitive lexical prefix linked into an insensitive target can cause an unrelated sibling to be excluded. A correction/disposition choice is pending human direction; no native mixed-volume reproduction is claimed. |
+| Documentation, earlier dispositions and method versions accurately describe round 1 | Acknowledged. Round-1 evidence remains historical; any further policy/identity change must update its responsible method and current description. |
+| Reviewer did not rerun CLI/session comparisons or regression-control reports | Acknowledged as the independent round's verification limit. Earlier evidence remains attributed to its actual producer and target. |
+| Empty mount point and sibling-deletion cases were inspection-only | Acknowledged. Neither is relabeled as a native reproduction in this disposition. |
+| No native case-sensitive volume or Linux verification | Acknowledged. The controlled model demonstrates logic errors but does not certify a platform. The approved native verification scope remains macOS and the local filesystem. |
+| Recommendation: correct F2; a brief check may suffice | Accepted as review advice, not gate acceptance. The additional confirmed model defects may affect the scope of the next check; that remains pending human direction. |
+
+No finding has been rejected. The human authorized investigation of the remaining
+uncertainties and preserving explicit refusal for unobservable case handling. After
+confirming the two filesystem model defects, the implementing agent asked whether
+to extend the correction to component-specific case handling or explicitly defer
+those limitations. Neither choice is inferred while the response is pending.
+
+## Round 3 and final dispositions
+
+Round 3 independently reviewed `085621903155fdf95ff3d329872e54ac8094374b`
+and reports no new actionable finding. F2 and replay mutation are resolved, F1
+remains resolved, and the version-6 method assessment is accepted. The reviewer
+reran the native permission/replay/F1 probes, the controlled case model, type
+checking and all 282 tests. CLI/session comparison matrices and native mixed-volume,
+case-sensitive-volume and Linux checks were not rerun; those limits remain explicit.
+
+The deterministic first-boundary choice in the per-device cache is acknowledged as
+part of O1, not an additional ordering defect. The reviewer confirms that the
+records distinguish modeled evidence from native evidence and make no equivalence
+claim for this checkpoint. No further round is requested for documenting deferral.
+
+The human explicitly authorized deferring **O1 (same-device per-directory case
+rules)** and **O2 (mixed-filesystem lexical prefixes)** and accepted M3 on
+2026-09-28. This supersedes the pending choices recorded above. Both remain known
+defects, not rejected findings or corrected behavior. They are retained in the
+[backlog](../../../docs/backlog.md#correct-output-boundaries-across-different-filesystem-case-rules)
+and current architecture limitations. The verification scope is the actual local
+APFS environment; this does not assert correctness for every macOS volume layout.
+
+## Gate conclusion
+
+The human has accepted M3 with O1 and O2 explicitly deferred. The original handoff
+and all three findings records remain unchanged. The active foundation-readiness
+task continues to M4 and M5; the final integrated review and task conclusion remain
+outstanding.

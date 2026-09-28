@@ -30,9 +30,10 @@ for (const [file, names] of Object.entries(groups)) {
   const filename = path.join(destination, 'src/lib', file + '.js');
   let code = readFileSync(filename, 'utf8');
   for (const name of names) {
-    const declaration = `export function ${name}(`;
+    const asynchronous = code.includes(`export async function ${name}(`);
+    const declaration = `export ${asynchronous ? 'async ' : ''}function ${name}(`;
     if (code.split(declaration).length !== 2) throw Error(`Missing unique boundary: ${name}`);
-    code = code.replace(declaration, `function __profile_${name}(`);
+    code = code.replace(declaration, `${asynchronous ? 'async ' : ''}function __profile_${name}(`);
     code += `\nexport function ${name}(...args) { return globalThis.__analysisMeasure(${JSON.stringify(name)}, () => __profile_${name}(...args)); }\n`;
   }
   writeFileSync(filename, code);
@@ -49,3 +50,38 @@ for (const name of ['Expansions', 'Composition', 'Dependencies']) {
 }
 writeFileSync(project, code);
 console.log(destination);
+
+// The CLI now isolates compiler work in a worker. Keep worker timings separate
+// from parent wall-clock timings; do not add overlapping inclusive intervals.
+const workerFile = path.join(destination, 'src/lib/session-worker.js');
+if (readFileSync(workerFile, 'utf8').includes('parentPort')) {
+  const instrumentation = `import { parentPort as profilePort } from 'node:worker_threads';
+const profileStack = [];
+globalThis.__analysisMeasure = (name, operation) => {
+  const started = performance.now(), frame = { child: 0 }; profileStack.push(frame);
+  const finish = () => {
+    const inclusiveMs = performance.now() - started;
+    profileStack.pop(); if (profileStack.length) profileStack.at(-1).child += inclusiveMs;
+    profilePort.postMessage({ type: 'profile-sample', name, inclusiveMs, exclusiveMs: inclusiveMs - frame.child });
+  };
+  try {
+    const result = operation();
+    if (result && typeof result.then === 'function') return result.finally(finish);
+    finish(); return result;
+  } catch (error) { finish(); throw error; }
+};\n`;
+  writeFileSync(workerFile, instrumentation + readFileSync(workerFile, 'utf8'));
+  const parentFile = path.join(destination, 'src/lib/interactive-session.js');
+  let parentCode = readFileSync(parentFile, 'utf8');
+  const listener = "worker.on('message', (message) => {";
+  if (!parentCode.includes(listener)) throw new Error('Missing worker profiling boundary');
+  parentCode = parentCode.replace(listener, listener + `
+    if (message.type === 'profile-sample') {
+      const stages = globalThis.__analysisWorkerStages ??= {};
+      const entry = stages[message.name] ??= { calls: 0, inclusiveMs: 0, exclusiveMs: 0 };
+      entry.calls++; entry.inclusiveMs += message.inclusiveMs; entry.exclusiveMs += message.exclusiveMs;
+      return;
+    }
+`);
+  writeFileSync(parentFile, parentCode);
+}

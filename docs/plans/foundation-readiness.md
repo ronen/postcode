@@ -1,9 +1,25 @@
 # Foundation readiness
 
-Status: approved
+Status: completed
 Created: 2026-09-27
-Updated: 2026-09-27
+Updated: 2026-09-28
 Superseded by:
+
+## Completion
+
+Completed on 2026-09-28 following M2/M3 acceptance, integrated M5 review,
+corrections and verification, and the human's conditional authorization to close
+after addressing Copilot's stale-index finding. All eight packages are implemented.
+The [task record](../../records/tasks/2026-09-27-foundation-readiness.md) and
+[M5 disposition](../../records/reviews/foundation-readiness/2026-09-28-m5-integrated-disposition.md)
+preserve the outcome, review limits and acceptance basis. The
+[validation record](../../records/validation/foundation-readiness/2026-09-28-m4-m5.md)
+preserves integrated comparisons, measurements and C01–C23 dispositions.
+
+The human explicitly deferred the confirmed output-boundary defects involving
+per-directory case rules and paths crossing filesystems with different case rules;
+they remain in the [backlog](../backlog.md). Completion does not assert those
+defects are fixed or broaden the recorded native verification scope.
 
 ## Objective and outcome
 

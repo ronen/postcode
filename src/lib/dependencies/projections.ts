@@ -1,4 +1,5 @@
-import { compare, methods, recordId } from '../identity.js';
+import { completedMaterialization } from '../evaluation-state.js';
+import { identityReference, compare, methods, recordId } from '../identity.js';
 import { inspect } from '../projections.js';
 import { isModuleClaim } from '../records.js';
 import type { EvaluationState, ProgramRecordStore, RecordId } from '../records.js';
@@ -6,7 +7,7 @@ import { deriveDependencyGraph } from './graph.js';
 import type { DependencyEvaluationRecord, DependencyProjectionRecord, DependencyRelationshipClaim } from './records.js';
 
 const complete = (state: EvaluationState) => state.applicability === 'applicable' && state.availability === 'available'
-  && state.execution === 'completed' && state.materialization === 'full';
+  && completedMaterialization(state);
 
 /** These lenses select materialized relationships, never transitive reach or display bounds. */
 function project(store: ProgramRecordStore, evaluation: DependencyEvaluationRecord,
@@ -67,10 +68,13 @@ function project(store: ProgramRecordStore, evaluation: DependencyEvaluationReco
     if (expansion.kind !== 'dependency-organization-evaluation' || expansion.dependencyEvaluation !== evaluation.id) throw new Error('Expected matching dependency organization expansion');
     expansion.contexts.forEach(id => contexts.add(id));
   }
+  const selectedReference = subjects.find(id => id === selector);
+  // A resolved reference and a literal selector must occupy disjoint key spaces.
+  const selectorKey = selectedReference ? { reference: identityReference(evaluation.session, selectedReference) } : selector;
   const method = methods.dependencyProjection;
   const projection: DependencyProjectionRecord = {
     kind: 'dependency-projection', method, session: evaluation.session,
-    id: recordId(evaluation.session, 'dependency-projection', { method, evaluation: evaluation.id, lens, selector, reference, organization }),
+    id: recordId(evaluation.session, 'dependency-projection', { method, evaluation: identityReference(evaluation.session, evaluation.id), lens, selector: selectorKey, reference, organization: identityReference(evaluation.session, organization) }),
     lens, subject: selector === null ? 'configured-project' : 'selected-modules', parameters: { selector, reference },
     evaluation: evaluation.id, subjects, modules: [...included].sort(compare), relationships: relationships.map(edge => edge.id),
     occurrences, nonEdgeRequests, coverage, contexts: [...contexts],

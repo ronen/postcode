@@ -8,8 +8,8 @@ import { digest } from '../src/lib/identity.js';
 import { captureRepository } from '../src/lib/repository/capture.js';
 import { deriveLayout } from '../src/lib/repository/layout.js';
 
-function fixture(run: (root: string, write: (name: string, text?: string) => void,
-  git: (...args: string[]) => string, workspace: string) => void) {
+async function fixture(run: (root: string, write: (name: string, text?: string) => void,
+  git: (...args: string[]) => string, workspace: string) => void | Promise<void>) {
   const workspace = mkdtempSync(path.join(os.tmpdir(), 'postcode-repository-'));
   const root = path.join(workspace, 'repo');
   mkdirSync(root);
@@ -26,7 +26,7 @@ function fixture(run: (root: string, write: (name: string, text?: string) => voi
   try {
     git('init', '--quiet');
     write('tsconfig.json', '{"files":[]}');
-    run(root, write, git, workspace);
+    await run(root, write, git, workspace);
   } finally {
     for (const [key, value] of Object.entries(previous)) {
       if (value === undefined) delete process.env[key]; else process.env[key] = value;
@@ -35,15 +35,15 @@ function fixture(run: (root: string, write: (name: string, text?: string) => voi
   }
 }
 
-function capture(root: string, outputs: readonly string[] = []) {
-  const result = captureRepository(path.join(root, 'tsconfig.json'), outputs);
+async function capture(root: string, outputs: readonly string[] = []) {
+  const result = (await captureRepository(path.join(root, 'tsconfig.json'), outputs));
   assert.equal(result.status, 'available', JSON.stringify(result));
   if (result.status !== 'available') throw new Error('Repository unavailable');
   return result.evidence;
 }
 
-test('representative layout retains artifact-only siblings, direct documentation and ancestor regions', () => {
-  fixture((root, write) => {
+test('representative layout retains artifact-only siblings, direct documentation and ancestor regions', async () => {
+  await fixture(async (root, write) => {
     write('src/README', 'Not a promise about descendants');
     write('src/README.txt');
     write('src/README.unusual-extension');
@@ -53,7 +53,7 @@ test('representative layout retains artifact-only siblings, direct documentation
     write('manual/README.md');
     write('data/data.json');
     mkdirSync(path.join(root, 'empty'));
-    const evidence = capture(root);
+    const evidence = (await capture(root));
     const layout = deriveLayout(evidence);
     assert.deepEqual(layout.regions, [
       { path: '', name: null }, { path: 'data', name: 'data' }, { path: 'manual', name: 'manual' },
@@ -68,8 +68,8 @@ test('representative layout retains artifact-only siblings, direct documentation
   });
 });
 
-test('worktree visibility respects tracked overrides, nested ignores, local/global exclusions and current deletion', () => {
-  fixture((root, write, git, workspace) => {
+test('worktree visibility respects tracked overrides, nested ignores, local/global exclusions and current deletion', async () => {
+  await fixture(async (root, write, git, workspace) => {
     write('ignored/tracked.ts');
     write('deleted.ts');
     git('add', '.');
@@ -88,7 +88,7 @@ test('worktree visibility respects tracked overrides, nested ignores, local/glob
     git('config', 'core.excludesFile', global);
     write('global-litter/data');
     rmSync(path.join(root, 'deleted.ts'));
-    const evidence = capture(root);
+    const evidence = (await capture(root));
     assert.deepEqual(evidence.artifacts.map(item => item.path),
       ['.gitignore', 'ignored/tracked.ts', 'tsconfig.json', 'visible/.gitignore', 'visible/keep.tmp', 'visible/new.ts']);
     assert.equal(evidence.artifacts.find(item => item.path === 'ignored/tracked.ts')!.tracked, true);
@@ -98,123 +98,123 @@ test('worktree visibility respects tracked overrides, nested ignores, local/glob
   });
 });
 
-test('captures exclusion rules even where no visible artifact induces a group', () => {
-  fixture((root, write) => {
+test('captures exclusion rules even where no visible artifact induces a group', async () => {
+  await fixture(async (root, write) => {
     write('.gitignore', '.gitignore\n');
     write('hidden/.gitignore', '*\n');
     write('hidden/payload');
-    const before = capture(root);
+    const before = (await capture(root));
     assert.equal(deriveLayout(before).regions.some(region => region.path === 'hidden'), false);
     assert.ok(before.exclusions.some(item => item.path.endsWith('/hidden/.gitignore') && item.contentDigest));
     write('hidden/.gitignore', '*\n!payload\n');
-    const after = capture(root);
+    const after = (await capture(root));
     assert.notEqual(digest(before), digest(after));
     assert.ok(after.artifacts.some(item => item.path === 'hidden/payload'));
   });
 });
 
-test('tracked overrides honor Git case matching while retaining the observed worktree spelling', () => {
-  fixture((root, write, git) => {
+test('tracked overrides honor Git case matching while retaining the observed worktree spelling', async () => {
+  await fixture(async (root, write, git) => {
     write('source.ts');
     git('add', '.');
     git('config', 'core.ignoreCase', 'true');
     renameSync(path.join(root, 'source.ts'), path.join(root, 'SOURCE.ts'));
     write('.gitignore', '*.ts\n');
-    const evidence = capture(root);
+    const evidence = (await capture(root));
     assert.ok(evidence.artifacts.some(item => item.path === 'SOURCE.ts' && item.tracked));
     assert.equal(evidence.gitPathPolicy.ignoreCase, true);
   });
 });
 
-test('default XDG global ignore and configured global ignore are distinguished from repository policy', () => {
-  fixture((root, write, git, workspace) => {
+test('default XDG global ignore and configured global ignore are distinguished from repository policy', async () => {
+  await fixture(async (root, write, git, workspace) => {
     const xdg = path.join(workspace, 'config/git/ignore');
     mkdirSync(path.dirname(xdg), { recursive: true });
     writeFileSync(xdg, 'default-litter\n');
     write('default-litter');
     write('explicit-litter');
-    const first = capture(root);
+    const first = (await capture(root));
     assert.equal(first.artifacts.some(item => item.path === 'default-litter'), false);
     assert.ok(first.exclusions.some(item => item.origin === 'global' && item.path === xdg));
     const explicit = path.join(workspace, 'explicit-ignore');
     writeFileSync(explicit, 'explicit-litter\n');
     git('config', 'core.excludesFile', explicit);
-    const second = capture(root);
+    const second = (await capture(root));
     assert.ok(second.artifacts.some(item => item.path === 'default-litter'));
     assert.equal(second.artifacts.some(item => item.path === 'explicit-litter'), false);
     assert.notEqual(digest(first), digest(second));
     git('config', 'core.excludesFile', '');
-    const disabled = capture(root);
+    const disabled = (await capture(root));
     assert.equal(disabled.exclusions.some(item => item.origin === 'global'), false);
     assert.ok(disabled.artifacts.some(item => item.path === 'explicit-litter'));
   });
 });
 
-test('ineffective ignore contents beneath ignored directories do not become evidence through tracked descendants', () => {
-  fixture((root, write, git) => {
+test('ineffective ignore contents beneath ignored directories do not become evidence through tracked descendants', async () => {
+  await fixture(async (root, write, git) => {
     write('ignored/tracked.ts');
     git('add', '.');
     write('.gitignore', 'ignored/\n');
     write('ignored/.gitignore', 'first ignored rules');
-    const before = capture(root);
+    const before = (await capture(root));
     assert.equal(before.exclusions.some(item => item.path.endsWith('/ignored/.gitignore')), false);
     write('ignored/.gitignore', 'different ignored rules');
-    assert.deepEqual(capture(root), before);
+    assert.deepEqual((await capture(root)), before);
   });
 });
 
-test('output locations are explicit and normalized; conventional names remain ordinary evidence', () => {
-  fixture((root, write, git) => {
+test('output locations are explicit and normalized; conventional names remain ordinary evidence', async () => {
+  await fixture(async (root, write, git) => {
     write('_build/ordinary');
     write('_observations/ordinary');
     write('actual-output/generated');
     git('add', '.');
     const output = path.join(root, 'actual-output');
-    const first = capture(root, [output]);
+    const first = (await capture(root, [output]));
     assert.deepEqual(first.artifacts.map(item => item.path), ['_build/ordinary', '_observations/ordinary', 'tsconfig.json']);
     write('actual-output/generated', 'changed excluded bytes');
     write('actual-output/new/artifact');
-    assert.deepEqual(capture(root, [output, `${output}/../actual-output`, output]), first);
-    const all = capture(root);
+    assert.deepEqual((await capture(root, [output, `${output}/../actual-output`, output])), first);
+    const all = (await capture(root));
     assert.ok(all.artifacts.some(item => item.path === 'actual-output/new/artifact'));
   });
 });
 
-test('nested repositories and submodules are one opaque artifact each, including tracked nested contents', () => {
-  fixture((root, write, git) => {
+test('nested repositories and submodules are one opaque artifact each, including tracked nested contents', async () => {
+  await fixture(async (root, write, git) => {
     write('nested/already-tracked.ts');
     git('add', '.');
     execFileSync('git', ['init', '--quiet', path.join(root, 'nested')]);
     write('nested/deep/README');
     write('submodule/hidden.ts');
     git('update-index', '--add', '--cacheinfo', `160000,${'1'.repeat(40)},submodule`);
-    const first = capture(root);
+    const first = (await capture(root));
     assert.deepEqual(first.artifacts.map(item => [item.path, item.kind]),
       [['nested', 'nested-repository'], ['submodule', 'submodule'], ['tsconfig.json', 'file']]);
     assert.deepEqual(deriveLayout(first).regions, [{ path: '', name: null }]);
     write('nested/new-file');
     write('submodule/more/new-file');
-    assert.deepEqual(capture(root), first);
+    assert.deepEqual((await capture(root)), first);
   });
 });
 
-test('links into missing and existing generated output do not observe generated target existence or contents', () => {
-  fixture((root, write) => {
+test('links into missing and existing generated output do not observe generated target existence or contents', async () => {
+  await fixture(async (root, write) => {
     const output = path.join(root, 'generated');
     symlinkSync('generated', path.join(root, 'output-alias'));
     symlinkSync('output-alias/missing/deep', path.join(root, 'indirect-alias'));
-    const before = capture(root, [output]);
+    const before = (await capture(root, [output]));
     assert.ok(before.artifacts.filter(item => item.kind === 'symlink')
       .every(item => item.link?.status === 'excluded-output' && item.link.resolved === null));
     write('generated/missing/deep/payload');
-    assert.deepEqual(capture(root, [output]), before);
+    assert.deepEqual((await capture(root, [output])), before);
     write('generated/missing/deep/payload', 'changed');
-    assert.deepEqual(capture(root, [output]), before);
+    assert.deepEqual((await capture(root, [output])), before);
   });
 });
 
-test('symlinks retain captured target evidence and safe additional containment without duplicate regions', () => {
-  fixture((root, write, _git, workspace) => {
+test('symlinks retain captured target evidence and safe additional containment without duplicate regions', async () => {
+  await fixture(async (root, write, _git, workspace) => {
     write('target/module.ts');
     write('other/README');
     write('ignored/private.ts');
@@ -235,7 +235,7 @@ test('symlinks retain captured target evidence and safe additional containment w
     link('output', 'generated');
     link('loop-a', 'loop-b');
     link('loop-b', 'loop-a');
-    const evidence = capture(root, [path.join(root, 'generated')]);
+    const evidence = (await capture(root, [path.join(root, 'generated')]));
     const layout = deriveLayout(evidence);
     assert.deepEqual(layout.regions.map(region => region.path), ['', 'other', 'target']);
     assert.deepEqual(layout.links.map(item => [item.artifactPath, item.outcome]), [
@@ -249,29 +249,29 @@ test('symlinks retain captured target evidence and safe additional containment w
     rmSync(path.join(root, 'other/alias'));
     symlinkSync('../ignored', path.join(root, 'other/alias'));
     assert.equal(evidence.artifacts.find(item => item.path === 'other/alias')!.link!.target, '../target');
-    assert.notEqual(digest(capture(root)), digest(evidence));
+    assert.notEqual(digest((await capture(root))), digest(evidence));
   });
 });
 
-test('opposed directory links establish a deterministic acyclic subset', () => {
-  fixture((root, write) => {
+test('opposed directory links establish a deterministic acyclic subset', async () => {
+  await fixture(async (root, write) => {
     write('a/file');
     write('b/file');
     symlinkSync('../b', path.join(root, 'a/to-b'));
     symlinkSync('../a', path.join(root, 'b/to-a'));
-    const layout = deriveLayout(capture(root));
+    const layout = deriveLayout((await capture(root)));
     assert.deepEqual(layout.links.map(item => item.outcome), ['additional-parent', 'cyclic-containment']);
-    assert.deepEqual(layout, deriveLayout({ ...capture(root), artifacts: [...capture(root).artifacts].reverse() }));
+    assert.deepEqual(layout, deriveLayout({ ...(await capture(root)), artifacts: [...(await capture(root)).artifacts].reverse() }));
   });
 });
 
-test('directory links refuse a cycle through several established containment edges', () => {
-  fixture((root, write) => {
+test('directory links refuse a cycle through several established containment edges', async () => {
+  await fixture(async (root, write) => {
     for (const name of ['a', 'b', 'c']) write(`${name}/file`);
     symlinkSync('../b', path.join(root, 'a/to-b'));
     symlinkSync('../c', path.join(root, 'b/to-c'));
     symlinkSync('../a', path.join(root, 'c/to-a'));
-    const evidence = capture(root);
+    const evidence = (await capture(root));
     const layout = deriveLayout(evidence);
     assert.deepEqual(layout.links, [
       { artifactPath: 'a/to-b', outcome: 'additional-parent', targetRegion: 'b' },
@@ -284,15 +284,15 @@ test('directory links refuse a cycle through several established containment edg
   });
 });
 
-test('link resolution uses captured evidence without traversing opaque or ignored targets', () => {
-  fixture((root, write) => {
+test('link resolution uses captured evidence without traversing opaque or ignored targets', async () => {
+  await fixture(async (root, write) => {
     write('nested/.git', 'gitdir: unavailable');
     write('.gitignore', 'ignored/\n');
     write('ignored/first');
     symlinkSync('nested', path.join(root, 'nested-alias'));
     symlinkSync('nested-alias/missing/deep', path.join(root, 'opaque-link'));
     symlinkSync('ignored/missing/deep', path.join(root, 'ignored-link'));
-    const before = capture(root);
+    const before = (await capture(root));
     assert.equal(before.artifacts.find(item => item.path === 'opaque-link')!.link!.status, 'opaque-boundary');
     assert.equal(before.artifacts.find(item => item.path === 'ignored-link')!.link!.status, 'outside-population');
     const layout = deriveLayout(before);
@@ -304,19 +304,19 @@ test('link resolution uses captured evidence without traversing opaque or ignore
     assert.deepEqual(layout.containment, []);
     write('nested/missing/deep/new-file');
     write('ignored/missing/deep/new-file');
-    assert.deepEqual(capture(root), before);
+    assert.deepEqual((await capture(root)), before);
   });
 });
 
-test('an existing link target with uncaptured case spelling remains unestablished rather than broken', context => {
-  fixture((root, write) => {
+test('an existing link target with uncaptured case spelling remains unestablished rather than broken', async context => {
+  await fixture(async (root, write) => {
     write('Target/module.ts');
     if (!existsSync(path.join(root, 'target'))) {
       context.skip('Requires a filesystem where Target and target address the same existing directory.');
       return;
     }
     symlinkSync('target', path.join(root, 'alias'));
-    const evidence = capture(root);
+    const evidence = (await capture(root));
     assert.deepEqual(evidence.artifacts.find(item => item.path === 'alias')!.link, {
       target: 'target', status: 'target-not-established', resolved: null, targetKind: null,
     });
@@ -327,15 +327,15 @@ test('an existing link target with uncaptured case spelling remains unestablishe
   });
 });
 
-test('a nested project opened through a directory alias accepts absolute links through the invoked worktree path', () => {
-  fixture((root, write, _git, workspace) => {
+test('a nested project opened through a directory alias accepts absolute links through the invoked worktree path', async () => {
+  await fixture(async (root, write, _git, workspace) => {
     write('projects/selected/tsconfig.json', '{"files":[]}');
     write('target/file');
     write('holder/file');
     const invokedRoot = path.join(workspace, 'invoked-repo');
     symlinkSync(root, invokedRoot);
     symlinkSync(path.join(invokedRoot, 'target'), path.join(root, 'holder/through-invocation'));
-    const result = captureRepository(path.join(invokedRoot, 'projects/selected/tsconfig.json'));
+    const result = (await captureRepository(path.join(invokedRoot, 'projects/selected/tsconfig.json')));
     assert.equal(result.status, 'available', JSON.stringify(result));
     if (result.status !== 'available') throw new Error('Repository unavailable');
     assert.equal(result.evidence.root, realpathSync(root));
@@ -349,8 +349,8 @@ test('a nested project opened through a directory alias accepts absolute links t
   });
 });
 
-test('links resolve directory redirects before dot-dot and preserve absolute captured worktree paths', () => {
-  fixture((root, write) => {
+test('links resolve directory redirects before dot-dot and preserve absolute captured worktree paths', async () => {
+  await fixture(async (root, write) => {
     write('a/inside/data');
     write('a/file');
     write('file');
@@ -358,7 +358,7 @@ test('links resolve directory redirects before dot-dot and preserve absolute cap
     symlinkSync('directory-alias/../file', path.join(root, 'relative-link'));
     symlinkSync(path.join(root, 'a/file'), path.join(root, 'absolute-link'));
     symlinkSync('a/file/../file', path.join(root, 'not-directory'));
-    const evidence = capture(root);
+    const evidence = (await capture(root));
     for (const name of ['relative-link', 'absolute-link']) {
       assert.equal(evidence.artifacts.find(item => item.path === name)!.link!.resolved, path.join(realpathSync(root), 'a/file'));
     }
@@ -366,21 +366,21 @@ test('links resolve directory redirects before dot-dot and preserve absolute cap
   });
 });
 
-test('a bounded long link chain is not falsely classified as a demonstrated cycle', () => {
-  fixture((root, write) => {
+test('a bounded long link chain is not falsely classified as a demonstrated cycle', async () => {
+  await fixture(async (root, write) => {
     write('last');
     for (let index = 0; index < 43; index++) symlinkSync(index === 42 ? 'last' : `link-${index + 1}`, path.join(root, `link-${index}`));
-    const evidence = capture(root);
+    const evidence = (await capture(root));
     assert.equal(evidence.artifacts.find(item => item.path === 'link-0')!.link!.status, 'resolution-limit');
     assert.equal(evidence.artifacts.find(item => item.path === 'link-42')!.link!.status, 'resolved');
   });
 });
 
-test('special artifacts stay present and README matching asserts only direct availability', () => {
-  fixture((root, write) => {
+test('special artifacts stay present and README matching asserts only direct availability', async () => {
+  await fixture(async (root, write) => {
     execFileSync('mkfifo', [path.join(root, 'README.pipe')]);
     write('README.repo/.git', 'gitdir: missing');
-    const evidence = capture(root);
+    const evidence = (await capture(root));
     assert.equal(evidence.artifacts.find(item => item.path === 'README.pipe')!.kind, 'other');
     const layout = deriveLayout(evidence);
     assert.deepEqual(layout.placements.filter(item => item.documentation).map(item => item.artifactPath), ['README.pipe']);
@@ -388,67 +388,67 @@ test('special artifacts stay present and README matching asserts only direct ava
   });
 });
 
-test('Git failure is unavailable and an unexpected programming defect propagates', () => {
-  fixture((root, write) => {
+test('Git failure is unavailable and an unexpected programming defect propagates', async () => {
+  await fixture(async (root, write) => {
     write('.git/config', '[malformed');
-    const result = captureRepository(path.join(root, 'tsconfig.json'));
+    const result = (await captureRepository(path.join(root, 'tsconfig.json')));
     assert.ok(result.status === 'unavailable' && result.reason === 'capture-failed');
-    assert.throws(() => captureRepository(undefined as unknown as string), TypeError);
+    await assert.rejects(async () => (await captureRepository(undefined as unknown as string)), TypeError);
   });
 });
 
-test('identity evidence changes only for relevant artifact, exclusion and link inputs', () => {
-  fixture((root, write, git) => {
+test('identity evidence changes only for relevant artifact, exclusion and link inputs', async () => {
+  await fixture(async (root, write, git) => {
     write('docs/README.md', 'first documentation contents');
     write('data/payload', 'first opaque bytes');
-    const before = capture(root);
+    const before = (await capture(root));
     write('docs/README.md', 'new documentation contents');
     write('data/payload', 'new opaque bytes');
-    assert.deepEqual(capture(root), before);
+    assert.deepEqual((await capture(root)), before);
     write('added/payload');
-    const added = capture(root);
+    const added = (await capture(root));
     assert.notEqual(digest(added), digest(before));
     rmSync(path.join(root, 'added'), { recursive: true });
-    assert.deepEqual(capture(root), before);
+    assert.deepEqual((await capture(root)), before);
     git('add', 'data/payload');
-    const tracked = capture(root);
+    const tracked = (await capture(root));
     assert.notEqual(digest(tracked), digest(before));
     write('.git/info/exclude', '# changed effective exclusion input\n');
-    assert.notEqual(digest(capture(root)), digest(tracked));
+    assert.notEqual(digest((await capture(root))), digest(tracked));
     git('config', 'core.sparseCheckout', 'true');
-    assert.equal(capture(root).sparseCheckout, true);
-    assert.ok(capture(root).limitations.some(item => item.includes('Sparse-checkout completeness is unresolved')));
+    assert.equal((await capture(root)).sparseCheckout, true);
+    assert.ok((await capture(root)).limitations.some(item => item.includes('Sparse-checkout completeness is unresolved')));
   });
 });
 
-test('NUL-delimited Git operations retain literal control characters, whitespace and selector-like names', () => {
-  fixture((root, write, git) => {
+test('NUL-delimited Git operations retain literal control characters, whitespace and selector-like names', async () => {
+  await fixture(async (root, write, git) => {
     for (const name of ['new\nline/file', 'tab\tname', ' leading trailing ', '--flag', 'escape\u001bname']) write(name);
     git('add', '.');
-    const evidence = capture(root);
+    const evidence = (await capture(root));
     assert.deepEqual(evidence.artifacts.map(item => item.path),
       [' leading trailing ', '--flag', 'escape\u001bname', 'new\nline/file', 'tab\tname', 'tsconfig.json']);
     assert.equal(deriveLayout(evidence).regions.find(region => region.path === 'new\nline')!.name, 'new\nline');
   });
 });
 
-test('separate processes reproduce the same capture and prepared layout', () => {
-  fixture((root, write) => {
+test('separate processes reproduce the same capture and prepared layout', async () => {
+  await fixture((root, write) => {
     write('src/README');
     write('src/module.ts');
-    const probe = path.resolve('_build/test/repository-probe.js');
+    const probe = new URL('./repository-probe.js', import.meta.url).pathname;
     const run = () => execFileSync(process.execPath, [probe, path.join(root, 'tsconfig.json')], { encoding: 'utf8' });
     assert.equal(run(), run());
   });
 });
 
-test('an enclosing worktree is found from a nested project; outside Git is explicitly unavailable', () => {
-  fixture((root, write, _git, workspace) => {
+test('an enclosing worktree is found from a nested project; outside Git is explicitly unavailable', async () => {
+  await fixture(async (root, write, _git, workspace) => {
     write('projects/selected/tsconfig.json', '{"files":[]}');
-    assert.equal(captureRepository(path.join(root, 'projects/selected/tsconfig.json')).status, 'available');
-    const nested = captureRepository(path.join(root, 'projects/selected/tsconfig.json'));
+    assert.equal((await captureRepository(path.join(root, 'projects/selected/tsconfig.json'))).status, 'available');
+    const nested = (await captureRepository(path.join(root, 'projects/selected/tsconfig.json')));
     assert.ok(nested.status === 'available' && nested.evidence.root === realpathSync(root));
-    const outside = captureRepository(path.join(workspace, 'tsconfig.json'));
+    const outside = (await captureRepository(path.join(workspace, 'tsconfig.json')));
     assert.equal(outside.status, 'unavailable');
     assert.ok(outside.status === 'unavailable' && outside.reason === 'not-in-worktree');
   });

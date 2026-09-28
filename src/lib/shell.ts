@@ -1,3 +1,4 @@
+import { CleanupIncomplete } from './execution-errors.js';
 import path from 'node:path';
 import { createInterface } from 'node:readline';
 import { Writable } from 'node:stream';
@@ -5,24 +6,28 @@ import { commandWords, help, parseCommand } from './commands.js';
 import type { CliEnvironment } from './cli.js';
 import { CommandInterrupted, interactiveSession } from './interactive-session.js';
 import { commandObservation, localFileObservationSink } from './observations.js';
-import { publishCommand, submitObservation } from './command-execution.js';
+import { publishCommand, submitObservation, openFailureText } from './command-execution.js';
 import { inlineText } from './terminal-text.js';
 
 export async function runShell(options: { configPath: string; json: boolean }, environment: CliEnvironment): Promise<number> {
   const input = environment.input ?? process.stdin;
   if (!input.isTTY) { environment.stderr('Interactive shell requires terminal stdin; piped and command-file input are unsupported.\n'); return 2; }
   const destination = path.resolve(environment.checkout, '_observations');
-  const sink = environment.sink ?? localFileObservationSink(destination);
+  const localSink = localFileObservationSink(destination, options.configPath);
+  const sink = environment.sink ?? localSink;
   const remote = interactiveSession({ configPath: options.configPath, excludedOutputDirectories: [destination, path.resolve(environment.checkout, '_build')] });
   let busy = true;
   let inputClosed = false;
   let readline: ReturnType<typeof createInterface> | undefined;
   const prompt = () => { if (!inputClosed) readline?.prompt(); };
   const interrupt = () => {
-    if (busy) void remote.interrupt();
+    if (busy) void remote.interrupt().catch(() => {});
     else {
       readline?.write(null, { ctrl: true, name: 'e' });
       readline?.write(null, { ctrl: true, name: 'u' });
+      // Node's dumb-terminal mode ignores editing keys. Clear the retained input
+      // as well as requesting the normal terminal's visual line deletion.
+      if (readline) Object.assign(readline, { line: '', cursor: 0 });
       environment.stdout('\n'); prompt();
     }
   };
@@ -31,14 +36,15 @@ export async function runShell(options: { configPath: string; json: boolean }, e
     let opened;
     try { opened = await remote.opening; }
     catch (error) {
+      if (error instanceof CleanupIncomplete) { environment.stderr(`Project open failed:\n  ${inlineText(error.message)}\n`); return 2; }
       if (!(error instanceof CommandInterrupted)) throw error;
       environment.stderr(`${error.message}\n`); return 130;
     }
     if (opened.status !== 'opened') {
-      environment.stderr(`Project open failed:\n${opened.diagnostics.map(item => `  TS${item.code}: ${inlineText(item.message)}`).join('\n')}\n`);
+      environment.stderr(openFailureText(opened));
       return 2;
     }
-    environment.stderr(`Local observations: ${inlineText(destination)} (may contain repository-derived text and explicitly requested source locations).\n`);
+    environment.stderr(`Local observations: ${inlineText(localSink.destination)} (may contain repository-derived text and explicitly requested source locations).\n`);
     environment.stdout(`Session ${opened.id.slice('session:'.length)}\nInputs are assumed unchanged. Use help for commands; exit or EOF to finish.\n`);
     const session = { id: opened.id, execute: remote.execute, check: remote.check };
     const terminalOutput = new Writable({ write(chunk, _encoding, done) { environment.stdout(String(chunk)); done(); } });
@@ -84,6 +90,7 @@ export async function runShell(options: { configPath: string; json: boolean }, e
   } finally {
     process.removeListener('SIGINT', interrupt);
     readline?.close();
-    await remote.close();
+    try { await remote.close(); }
+    catch (error) { environment.stderr(`WARNING: ${inlineText(error instanceof Error ? error.message : 'Cleanup unconfirmed')}\n`); }
   }
 }

@@ -10,9 +10,12 @@ instrument validation and independent reviews are recorded in the
 [completed task](../../records/tasks/2026-09-12-initial-module-inventory.md).
 
 The current lifecycle is governed by the [session decisions](../decisions/transient-analysis-sessions.md).
-The shell and one-shot CLI share request execution. The shell retains compiler
-state and program records in a private worker while the parent owns terminal
-interaction, publication and observation delivery. Other governing choices are the accepted [projection architecture decisions](../decisions/initial-projection-architecture-decisions.md)
+The shell and one-shot CLI share request execution in a private compiler worker.
+The parent owns terminal interaction, asynchronous Git subprocesses, publication
+and observation delivery; child ownership survives worker disposal. Direct session
+users own Git in their calling process and await opening, execution, validation and
+close. The [execution decision](../decisions/execution-ownership-and-cancellation.md)
+governs this lifetime boundary. Other governing choices are the accepted [projection architecture decisions](../decisions/initial-projection-architecture-decisions.md)
 and [module inventory decisions](../decisions/initial-module-inventory-decisions.md).
 The governing cross-cutting terminology is maintained in [core concepts](../core-concepts.md), and binding cross-cutting rules are maintained in [architectural constraints](../architectural-constraints.md); this document describes how the current implementation realizes them.
 
@@ -33,7 +36,7 @@ Session identity is allocated once after project opening, independently of that 
 Expansion materialization adds semantic symbol entities and claims, export
 relationship claims, recorded documentation assertions, and qualified association
 claims. The evaluator records an immutable discovery attempt and separate expansion
-outcomes scoped to each module, so inspection does not inherit unrelated expansion
+outcomes scoped to each module in one atomic outcome batch, so inspection does not inherit unrelated expansion
 failures. Lens
 construction reads stored information, selects relevant subjects and context,
 and writes an addressable projection. It does not call TypeScript.
@@ -43,11 +46,20 @@ records, requires each session record's own ID to equal its session identity,
 rejects conflicting replacements and invalid references (including entity
 claim discriminators and reciprocal subjects, and documentation-association
 subjects matching their module, origin-symbol or export-alias provenance), and
-supports session namespaces and immutable evaluation attempts. The request executor
+supports session namespaces and immutable evaluation attempts. Evaluators return immutable store-owned outcomes; provider discovery results are also frozen before crossing the provider boundary. A session evaluation index is published only after batch validation, while selected projections still determine their own populations. The request executor
 owns an opened provider and ephemeral store and releases them on close. Completed
 evaluations are reused by declared requirements, while newly requested work adds
 records. Each projection uses its own evaluation basis, never the entire store
 population. This establishes neither persistence nor a general scheduler.
+
+Processing indexes are prepared from the immutable records selected by a view or
+evaluation. Merged buckets retain evidence order; weak capture/layout indexes have
+the same lifetime as their inputs and do not cache new filesystem observations.
+Generic SCC, incremental cycle checks, ancestry and upward closure delegate to a
+private Stately topology adapter under the [graph decision](../decisions/graph-kernel-delegation.md).
+PostCode retains population selection, every parallel supporting claim, deterministic
+link acceptance and presentation traversal. Library identifiers and mutable graph
+objects never become stored domain evidence.
 
 Module claims carry the information asserted. Claim context separately identifies
 evidence, method, scope, guarantee, limitations, and encountered diagnostic codes.
@@ -135,11 +147,25 @@ Actual generated-output directories supplied by the caller are excluded before
 configuration discovery and compiler reads. A target directory named `_observations`
 or `_build` remains an ordinary configured input unless it is an explicitly
 supplied output destination. Exclusion applies to roots, imported files, directory
-listings, and symlink targets, including missing descendants resolved through
-the nearest existing ancestor, so excluded contents do not enter evidence or its
-identity digest. Exclusion entries are normalized, sorted and deduplicated as
-lexical/real-path pairs before filtering and identity capture, so input order and
-repeated entries do not change the captured input support. Discovery contexts assert this exclusion only when at least one
+listings, and symlink targets, including dangling targets and missing descendants.
+One shared live policy supplies compiler and repository exclusion and retains
+lexical and resolved locations. Equivalent aliases count once; sorted, deduplicated
+entries make caller ordering and repetition immaterial. Unverifiable explicit
+boundaries refuse opening with an operational failure, separately from compiler
+diagnostics. Revalidation detects retargeting or resolution failure and invalidates
+the session. Captured repository source links retain their separate historical
+resolver. The changed acquisition policy advances `postcode/observed-inputs` to
+version 6. Ordinary candidate paths that fail operational resolution remain absent
+to the compiler, with a retained recovery probe; they do not turn a resolved output
+boundary into an opening refusal. Missing output suffixes use filesystem case
+handling observed by a read-only spelling probe of an existing directory on the
+same device, shared within each boundary-resolution pass. This avoids requiring
+directory-listing permission for the ordinary probe. Unknown case handling refuses
+with an explicit case-detection reason. The current per-device case assumption
+does not reliably handle per-directory case rules or lexical paths crossing
+filesystems with different case rules. Validation compares captured compiler
+observations without extending their identity or acquisition revision. Case-equivalent materialization does not itself
+retarget the boundary. This implements the [output-boundary decision](../decisions/generated-output-boundaries.md). Discovery contexts assert this exclusion only when at least one
 output location was supplied; direct library runs may enforce none. The CLI supplies
 its actual checkout observation and build directories before opening a project,
 including when the selected configuration is nested elsewhere. Git-ignore rules
@@ -217,13 +243,19 @@ records preserve actual status stderr and supplied requests. Refusals, failures,
 invalidation and interruption can carry command events without view references;
 only actual produced views have view-produced/source-escape events.
 
-The CLI discloses the absolute local sink destination on stderr. The sink creates
-one private JSON file per accepted batch under a UTC `date=YYYY-MM-DD` subdirectory
-of the PostCode checkout's ignored `_observations/` directory. Filenames carry a
-filesystem-safe UTC submission timestamp and the batch UUID. It exposes no
-historical-read API and supplies no producer retention or migration policy.
-Rejection or delivery failure emits a
-warning without changing the successful view or its exit status. No remote/shared
+The CLI discloses the project-specific sink destination on stderr. New batches
+are grouped by configured project and UTC date under the checkout’s ignored
+`_observations/` root, with time/UUID filenames. The project directory combines a
+safe configuration-directory label and a short hash of the absolute configuration
+path; batches without views use the same grouping. A private, complete, closed
+staging file is published through a no-overwrite hard link, then staging is
+removed. Final-link creation commits acceptance. Failure before publication is
+non-delivery; staging cleanup failure afterward is a distinct warning. Both
+preserve successful views and their exit status. Unsupported hard-link publication
+fails without a weaker fallback. Acceptance does not promise power-loss durability;
+crashes can leave staging residue. Existing files remain in place, with no
+historical reader, migration or scavenging. These guarantees implement
+[local observation acceptance](../decisions/local-observation-acceptance.md). No remote/shared
 sink or contemporaneous-note command exists. Privacy and exclusion details are in
 [implementation conventions](../implementation-conventions.md#local-observation-sink).
 
@@ -249,7 +281,7 @@ Repository evidence is captured after successful project opening and before
 requested discovery. The session references a stored capture result,
 including explicit unavailability outside a worktree. Organization evaluation
 reads that result and a stored module evaluation; it performs no filesystem or
-compiler work. Pure layout is prepared with capture and retained alongside it,
+compiler work. Pure organization and relationship-organization derivations reuse deterministic stored outcomes over their immutable bases, including unavailable and partial results. Provider acquisition and retry remain a separate responsibility. Pure layout is prepared with capture and retained alongside it,
 so view construction never repeats layout analysis. Repository inputs contribute
 to claim support across the module and organization CLI surfaces.
 
@@ -390,14 +422,26 @@ analysis inputs. Providers without the assurance retain ordinary retry behavior.
 Session requests go through the provider/evaluation boundary so an outer cache
 cannot hide acquisition. Earlier outcomes remain unchanged.
 The compiler Program fixes this provider’s module population at opening, so
-additional dependency inputs do not add modules. Repeated contexts retain their
-first supporting input record; new contexts can reference a later input basis.
+additional dependency inputs do not add modules. Repeated contexts read their
+first supporting input record from the stored Claim context; new contexts can reference a later input basis.
 Any conflicting record content still fails the store’s immutability check.
 
-Native SIGINT can terminate a one-shot process during synchronous compiler work.
-The shell instead runs the shared executor in a worker, allowing the parent to
-terminate an active compiler request and observe interruption without publishing a
-fabricated view. The session ends; safe worker-state recovery is not claimed.
+Both CLI entry paths keep compiler work in a worker so the parent can interrupt
+active work, reject the command with status 130, and independently dispose of the
+worker and owned Git children. Operation identities reject stale replies; failed
+sends, pending close and unexpected worker exit settle the current operation.
+The session ends; safe worker-state recovery is not claimed.
+
+Each Git invocation has a 30-second deadline and a combined 64 MiB output bound.
+On cancellation, POSIX children receive SIGTERM, then SIGKILL after 250 ms if
+still running. Cleanup reporting waits at most 2 seconds; an unconfirmed child or
+worker is reported separately while exit monitoring remains owned. These bounds
+do not establish a whole-analysis deadline, descendant-tree termination, or
+universal native-work exit. After confirmed cleanup an opening Git timeout yields
+qualified unavailable repository evidence under `postcode/repository-inputs@5`.
+Recovery to available evidence, or loss of a previously available basis, invalidates
+the session. Consistently unavailable evidence stays qualified as unavailable.
+Unconfirmed opening cleanup is a resource failure, never a usable degraded session.
 At an idle prompt, Ctrl-C cancels the line. EOF finishes accepted work and sink
 submission. Syntax errors and expected operational analysis failures retain
 sound state; unexpected defects terminate distinctly.

@@ -1,0 +1,28 @@
+{
+  "compiler": "typescript@6.0.3",
+  "declarations": 80000,
+  "control": {
+    "interrupted": false,
+    "phases": [
+      "compiler-source-read",
+      "compiler-source-read",
+      "compiler-source-read",
+      "view-published",
+      "compiler-source-read",
+      "finished"
+    ],
+    "code": 0,
+    "signal": null,
+    "elapsedMs": 2799.168492
+  },
+  "interrupted": {
+    "interrupted": true,
+    "phases": [
+      "compiler-source-read"
+    ],
+    "code": null,
+    "signal": "SIGINT",
+    "elapsedMs": 1023.4764220000002,
+    "signalToExitMs": 17.91284500000029
+  }
+}

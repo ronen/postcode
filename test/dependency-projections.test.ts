@@ -16,7 +16,7 @@ import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
 import type { EvaluationRecord, ModuleClaim, RecordId } from '../src/lib/records.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
 
-function fixture(files: Record<string, string>, run: (root: string) => void, git = true) {
+async function fixture(files: Record<string, string>, run: (root: string) => void | Promise<void>, git = true) {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-dependency-projections-'));
   try {
     for (const [name, contents] of Object.entries(files)) {
@@ -27,11 +27,11 @@ function fixture(files: Record<string, string>, run: (root: string) => void, git
       module: 'NodeNext', moduleResolution: 'NodeNext', noLib: true, types: [], moduleDetection: 'legacy',
     }, include: ['**/*.ts'] }));
     if (git) execFileSync('git', ['init', '--quiet', root]);
-    run(root);
+    await run(root);
   } finally { rmSync(root, { recursive: true, force: true }); }
 }
-function analyze(root: string) {
-  const opened = openTypeScriptProject({ configPath: path.join(root, 'tsconfig.json') });
+async function analyze(root: string) {
+  const opened = (await openTypeScriptProject({ configPath: path.join(root, 'tsconfig.json') }));
   assert.equal(opened.status, 'opened');
   if (opened.status !== 'opened') throw new Error('Expected open');
   const store = new MemoryProgramRecordStore();
@@ -43,13 +43,13 @@ function analyze(root: string) {
   return { store, evaluation, basis, name, module };
 }
 
-test('structure retains isolated modules, source SCC roots, self loops and shared children', () => {
-  fixture({
+test('structure retains isolated modules, source SCC roots, self loops and shared children', async () => {
+  await fixture({
     'a.ts': "export * from './b'; export * from './shared';",
     'b.ts': "export * from './a';", 'other.ts': "export * from './shared';",
     'shared.ts': 'export {};', 'self.ts': "export * from './self';", 'isolated.ts': 'export {};',
-  }, root => {
-    const { store, evaluation, name } = analyze(root);
+  }, async root => {
+    const { store, evaluation, name } = (await analyze(root));
     const view = dependencyStructure(store, evaluation);
     const graph = view.graph!;
     assert.equal(graph.rootsEstablished, true);
@@ -67,14 +67,14 @@ test('structure retains isolated modules, source SCC roots, self loops and share
   });
 });
 
-test('focused lenses retain only direct edges, nonedges stay with their owner and opaque endpoints remain selectable', () => {
-  fixture({
+test('focused lenses retain only direct edges, nonedges stay with their owner and opaque endpoints remain selectable', async () => {
+  await fixture({
     'a.ts': "import './b'; import './missing'; import('outside'); export {};",
     'b.ts': "import './c'; export {};", 'c.ts': 'export {};',
     'node_modules/outside/package.json': '{"types":"index.d.ts"}',
     'node_modules/outside/index.d.ts': 'export interface T {}',
-  }, root => {
-    const { store, evaluation, name, module, basis } = analyze(root);
+  }, async root => {
+    const { store, evaluation, name, module, basis } = (await analyze(root));
     const child = dependencyChildren(store, evaluation, 'a');
     assert.deepEqual(child.modules.map(name).sort(), ['a', 'b', 't']);
     assert.equal(child.relationships.length, 2);
@@ -99,8 +99,8 @@ test('focused lenses retain only direct edges, nonedges stay with their owner an
   });
 });
 
-test('composition is an independent exhaustive positive property across merged declarations', () => {
-  fixture({
+test('composition is an independent exhaustive positive property across merged declarations', async () => {
+  await fixture({
     'target.ts': 'export interface T {}',
     'positive.ts': "// comment\n; export * from './target'; export * as ns from './target'; export type { T } from './target'; export type * from './target'; export {} from './target';",
     'imported.ts': "import './target'; export * from './target';",
@@ -109,8 +109,8 @@ test('composition is an independent exhaustive positive property across merged d
     'broken.ts': "export * from './target'; const = ;",
     'first.d.ts': "declare module 'merged' { export * from 'target'; } declare module 'mixed' { export * from 'target'; } declare module 'target' { export interface T {} }",
     'second.d.ts': "declare module 'merged' { export type { T } from 'target'; } declare module 'mixed' { export const local: number; }",
-  }, root => {
-    const { store, evaluation, basis, name, module } = analyze(root);
+  }, async root => {
+    const { store, evaluation, basis, name, module } = (await analyze(root));
     const outcomes = store.evaluations(evaluation.session).filter(e => e.requirement === 'composition');
     const positives = outcomes.flatMap(e => e.claims ?? []).map(id => store.get(id)).map(claim => {
       assert.ok(claim.kind === 'claim' && claim.information.type === 'module-composition');
@@ -126,18 +126,18 @@ test('composition is an independent exhaustive positive property across merged d
   });
 });
 
-function organizationResult(root: string) {
-  const result = analyze(root);
+async function organizationResult(root: string) {
+  const result = (await analyze(root));
   const organization = evaluateOrganization(result.store, result.basis);
   const expansion = evaluateDependencyOrganization(result.store, result.evaluation, organization);
   const claims = expansion.claims.map(id => result.store.get(id) as DependencyOrganizationClaim);
   return { ...result, organization, expansion, claims };
 }
 
-test('organization expansion distinguishes same group, descendants and outward without transitive dependencies', () => {
-  fixture({ 'src/a.ts': "import './b'; import './child/c'; export {};", 'src/b.ts': 'export {};',
-    'src/child/c.ts': "import '../b'; export {};" }, root => {
-    const { store, evaluation, expansion, claims, name } = organizationResult(root);
+test('organization expansion distinguishes same group, descendants and outward without transitive dependencies', async () => {
+  await fixture({ 'src/a.ts': "import './b'; import './child/c'; export {};", 'src/b.ts': 'export {};',
+    'src/child/c.ts': "import '../b'; export {};" }, async root => {
+    const { store, evaluation, expansion, claims, name } = (await organizationResult(root));
     const answers = claims.map(claim => {
       const relationship = store.get(claim.subject);
       assert.ok(relationship.kind === 'claim' && relationship.information.type === 'dependency');
@@ -150,38 +150,38 @@ test('organization expansion distinguishes same group, descendants and outward w
   });
 });
 
-test('merged owners use occurrence-specific source placement; target declarations preserve variation', () => {
-  fixture({
+test('merged owners use occurrence-specific source placement; target declarations preserve variation', async () => {
+  await fixture({
     'src/first.d.ts': "declare module 'parent' { export type A = import('target').T; } declare module 'target' { export interface T {} }",
     'src/child/second.d.ts': "declare module 'parent' { export type B = import('target').T; }",
-  }, root => {
-    const { claims, expansion } = organizationResult(root);
+  }, async root => {
+    const { claims, expansion } = (await organizationResult(root));
     assert.equal(claims.length, 1);
     assert.equal(claims[0]!.information.classification, 'varies-by-occurrence');
     assert.deepEqual(claims[0]!.information.occurrences.map(o => o.classification).sort(), ['outward', 'same-group']);
     assert.ok(claims[0]!.information.occurrences.every(o => o.source.groups.length === 1));
     assert.equal(expansion.materialization, 'full');
   });
-  fixture({ 'src/parent.d.ts': "declare module 'parent' { export type A = import('target').T; } declare module 'target' { export interface T {} }",
-    'src/child/target.d.ts': "declare module 'target' { export interface T { value: string } }" }, root => {
-    const { claims } = organizationResult(root);
+  await fixture({ 'src/parent.d.ts': "declare module 'parent' { export type A = import('target').T; } declare module 'target' { export interface T {} }",
+    'src/child/target.d.ts': "declare module 'target' { export interface T { value: string } }" }, async root => {
+    const { claims } = (await organizationResult(root));
     assert.equal(claims[0]!.information.classification, 'varies-by-placement');
     assert.equal(claims[0]!.information.occurrences[0]!.target.groups.length, 2);
     assert.deepEqual(claims[0]!.information.occurrences[0]!.pairs.map(p => p.classification).sort(), ['into-descendants', 'same-group']);
   });
 });
 
-test('missing or partial organization weakens only expansion and cannot establish outward', () => {
+test('missing or partial organization weakens only expansion and cannot establish outward', async () => {
   const files = { 'a.ts': "import './b'; export {};", 'b.ts': 'export {};' };
-  fixture(files, root => {
-    const { store, evaluation, expansion, claims } = organizationResult(root);
+  await fixture(files, async root => {
+    const { store, evaluation, expansion, claims } = (await organizationResult(root));
     assert.equal(evaluation.materialization, 'full');
     assert.equal(expansion.availability, 'unavailable');
     assert.equal(claims[0]!.information.classification, null);
     assert.equal(dependencyStructure(store, evaluation).relationships.length, 1);
   }, false);
-  fixture(files, root => {
-    const { store, evaluation, organization } = organizationResult(root);
+  await fixture(files, async root => {
+    const { store, evaluation, organization } = (await organizationResult(root));
     const partial = { ...organization, id: recordId(evaluation.session, 'partial-organization', 1), execution: 'stopped' as const, materialization: 'partial' as const };
     store.put([partial]);
     const result = evaluateDependencyOrganization(store, evaluation, partial);
@@ -192,9 +192,9 @@ test('missing or partial organization weakens only expansion and cannot establis
   });
 });
 
-test('fallback preserves partial and ambiguous target placement without inventing endpoint associations', () => {
-  fixture({ 'src/a.ts': "import './b'; export {};", 'src/b.ts': 'export {};', 'other/c.ts': 'export {};' }, root => {
-    const { store, evaluation, organization, module } = organizationResult(root);
+test('fallback preserves partial and ambiguous target placement without inventing endpoint associations', async () => {
+  await fixture({ 'src/a.ts': "import './b'; export {};", 'src/b.ts': 'export {};', 'other/c.ts': 'export {};' }, async root => {
+    const { store, evaluation, organization, module } = (await organizationResult(root));
     const occurrence = store.get(evaluation.occurrences[0]!);
     const relationship = store.get(evaluation.relationships[0]!);
     assert.ok(occurrence.kind === 'dependency-occurrence');
@@ -233,10 +233,10 @@ test('fallback preserves partial and ambiguous target placement without inventin
   });
 });
 
-test('directory links preserve multiple containment parents and their common ancestor evidence', () => {
-  fixture({ 'src/target.ts': 'export {};', 'holder/entry.ts': "import '../src/target'; export {};" }, root => {
+test('directory links preserve multiple containment parents and their common ancestor evidence', async () => {
+  await fixture({ 'src/target.ts': 'export {};', 'holder/entry.ts': "import '../src/target'; export {};" }, async root => {
     symlinkSync('../src', path.join(root, 'holder/alias'));
-    const { claims } = organizationResult(root);
+    const { claims } = (await organizationResult(root));
     const item = claims[0]!.information.occurrences[0]!;
     assert.equal(item.classification, 'into-descendants');
     assert.equal(item.pairs.length, 1);
@@ -245,9 +245,9 @@ test('directory links preserve multiple containment parents and their common anc
   });
 });
 
-test('empty graph and composition evaluation are established empty results', () => {
-  fixture({ 'script.ts': 'const value = 1;' }, root => {
-    const { store, evaluation } = analyze(root);
+test('empty graph and composition evaluation are established empty results', async () => {
+  await fixture({ 'script.ts': 'const value = 1;' }, async root => {
+    const { store, evaluation } = (await analyze(root));
     const projection = dependencyStructure(store, evaluation);
     assert.deepEqual(projection.graph, { components: [], roots: [], rootsEstablished: true });
     const composition = store.evaluations(evaluation.session).filter(e => e.requirement === 'composition');
@@ -257,13 +257,13 @@ test('empty graph and composition evaluation are established empty results', () 
   });
 });
 
-test('graph and composition results reproduce across fresh processes', () => {
-  const script = `import { openTypeScriptProject } from './_build/src/lib/typescript/project.js';
-    import { MemoryProgramRecordStore } from './_build/src/lib/memory-store.js';
-    import { evaluateDependencies } from './_build/src/lib/dependencies/evaluate.js';
-    import { dependencyStructure } from './_build/src/lib/dependencies/projections.js';
+test('graph and composition results reproduce across fresh processes', async () => {
+  const script = `import { openTypeScriptProject } from '${new URL('../src/lib/typescript/project.js', import.meta.url).href}';
+    import { MemoryProgramRecordStore } from '${new URL('../src/lib/memory-store.js', import.meta.url).href}';
+    import { evaluateDependencies } from '${new URL('../src/lib/dependencies/evaluate.js', import.meta.url).href}';
+    import { dependencyStructure } from '${new URL('../src/lib/dependencies/projections.js', import.meta.url).href}';
     const store = new MemoryProgramRecordStore();
-    const opened = openTypeScriptProject({ configPath: 'fixtures/dependency-contract/tsconfig.json' });
+    const opened = await openTypeScriptProject({ configPath: 'fixtures/dependency-contract/tsconfig.json' });
     const outcome = evaluateDependencies(store, opened.analysis, ['composition']);
     const projection = dependencyStructure(store, outcome);
     console.log(JSON.stringify([projection, ...projection.expansions.moduleEvaluations.map(id => store.get(id)),
@@ -272,9 +272,9 @@ test('graph and composition results reproduce across fresh processes', () => {
   assert.deepEqual(normalizeSession(JSON.parse(run())), normalizeSession(JSON.parse(run())));
 });
 
-test('store rejects invalid component indices and missing organization occurrence support atomically', () => {
-  fixture({ 'a.ts': "import './b'; export {};", 'b.ts': 'export {};' }, root => {
-    const { store, evaluation, claims } = organizationResult(root);
+test('store rejects invalid component indices and missing organization occurrence support atomically', async () => {
+  await fixture({ 'a.ts': "import './b'; export {};", 'b.ts': 'export {};' }, async root => {
+    const { store, evaluation, claims } = (await organizationResult(root));
     const view = dependencyStructure(store, evaluation);
     const invalid = { ...view, id: recordId(evaluation.session, 'invalid-graph', 1), graph: { ...view.graph!, roots: [100] } };
     assert.throws(() => store.put([invalid]), /Invalid dependency graph grouping/);

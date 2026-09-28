@@ -1,0 +1,30 @@
+[
+  {
+    "fixture": "dependency-journey",
+    "requests": 24,
+    "referenceRequests": 6,
+    "comparisons": 72,
+    "equivalent": true
+  },
+  {
+    "fixture": "dependency-contract",
+    "requests": 24,
+    "referenceRequests": 6,
+    "comparisons": 72,
+    "equivalent": true
+  },
+  {
+    "fixture": "exports",
+    "requests": 24,
+    "referenceRequests": 6,
+    "comparisons": 72,
+    "equivalent": true
+  },
+  {
+    "fixture": "generated-scale",
+    "requests": 24,
+    "referenceRequests": 6,
+    "comparisons": 72,
+    "equivalent": true
+  }
+]

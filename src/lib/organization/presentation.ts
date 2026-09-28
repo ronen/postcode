@@ -1,7 +1,8 @@
-import { compositionView, compositionAnnotation } from '../composition-view.js';
+import { displayWidth, padDisplay } from '../terminal-layout.js';
+import { prepareCompositionViews, compositionAnnotation } from '../composition-view.js';
 import type { CompositionView } from '../composition-view.js';
 import path from 'node:path';
-import { methods, recordId } from '../identity.js';
+import { identityReference, methods, recordId } from '../identity.js';
 import { createView, renderUnicode } from '../presentation.js';
 import type { Presentation, QualifiedView } from '../presentation.js';
 import type { ClaimContextRecord, EvaluationState, ModuleClaim, ProgramRecordStore, ProjectionRecord, RecordId } from '../records.js';
@@ -104,15 +105,28 @@ export function createOrganizationView(store: ProgramRecordStore, projection: Or
   const claims = outcome.claims.map(id => store.get(id) as OrganizationClaims);
   const selectedClaims = new Set([...projection.claims, ...projection.expansions.claims]);
   const available = claims.filter(claim => selectedClaims.has(claim.id));
+  const primaryGroups = new Map(claims.filter(claim => claim.information.type === 'group').map(claim => [claim.subject, claim]));
+  const groupProperties = new Map(claims.filter(claim => claim.information.type === 'group-properties').map(claim => [claim.subject, claim]));
+  const bySubject = new Map<RecordId, OrganizationClaims[]>();
+  const parents = new Map<RecordId, RecordId[]>();
+  for (const claim of available) {
+    const bucket = bySubject.get(claim.subject) ?? [];
+    bucket.push(claim); bySubject.set(claim.subject, bucket);
+    if (claim.information.type === 'group-containment') {
+      const bucket = parents.get(claim.information.child) ?? [];
+      bucket.push(claim.subject); parents.set(claim.information.child, bucket);
+    }
+  }
   const qualification = (id: RecordId): Qualification => {
     const context = store.get(id);
     if (context.kind !== 'claim-context') throw new Error('Expected Claim context');
     const { kind: _kind, evidence: _evidence, inputs: _inputs, ...result } = context;
     return result;
   };
+  const compositionView = prepareCompositionViews(store, projection.expansions.moduleClaims, projection.expansions.moduleEvaluations);
   const group = (id: RecordId): GroupReference => {
-    const claim = claims.find(claim => claim.subject === id && claim.information.type === 'group');
-    const properties = claims.find(claim => claim.subject === id && claim.information.type === 'group-properties');
+    const claim = primaryGroups.get(id);
+    const properties = groupProperties.get(id);
     if (claim?.information.type !== 'group' || properties?.information.type !== 'group-properties') throw new Error('Missing group properties');
     return { id, entityId: groupIds.get(id)!, name: claim.information.name,
       label: claim.information.name ?? '[repository root]', documented: properties.information.documented,
@@ -123,26 +137,32 @@ export function createOrganizationView(store: ProgramRecordStore, projection: Or
     if (entity.kind !== 'module') throw new Error('Expected module');
     const claim = store.get(entity.claim) as ModuleClaim;
     const { artifacts: _artifacts, reasons, ...information } = placement.information;
-    return { composition: compositionView(store, entity.id, projection.expansions.moduleClaims, projection.expansions.moduleEvaluations), id: entity.id, entityId: moduleIds.get(entity.id)!, name: claim.information.name,
+    return { composition: compositionView(entity.id), id: entity.id, entityId: moduleIds.get(entity.id)!, name: claim.information.name,
       label: claim.information.name ?? claim.information.handle, handle: claim.information.handle,
       handleStatus: claim.information.handleStatus, handleProvenance: claim.information.handleProvenance,
       placement: { ...information, reasons: reasons.map(reason => reason === 'link-not-established' ? 'relationship-not-established' : reason) },
       locations: information.groups.map(group), candidates: information.candidates.map(group), qualification: qualification(placement.context) };
   };
   const placements = available.filter((claim): claim is ModulePlacementClaim => claim.information.type === 'module-placement');
+  const membersByGroup = new Map<RecordId, ModulePlacementClaim[]>();
+  for (const placement of placements) for (const id of new Set(placement.information.groups)) {
+    const bucket = membersByGroup.get(id) ?? [];
+    bucket.push(placement); membersByGroup.set(id, bucket);
+  }
+  const selected = new Set(projection.groups);
   const groupPopulation = [...new Set([...projection.groups, ...projection.expansions.groups])];
   const groups: GroupView[] = groupPopulation.map(id => {
-    const ownClaims = available.filter(claim => claim.subject === id);
-    const primary = claims.find(claim => claim.subject === id && claim.information.type === 'group')!;
+    const ownClaims = bySubject.get(id) ?? [];
+    const primary = primaryGroups.get(id)!;
     const artifactClaims = ownClaims.filter(claim => claim.information.type === 'artifact-placement');
     const documentation = ownClaims.filter(claim => claim.information.type === 'group-documentation');
-    const members = placements.filter(claim => claim.information.groups.includes(id));
+    const members = membersByGroup.get(id) ?? [];
     const moduleArtifacts = new Set(members.flatMap(claim => claim.information.artifacts));
     const documentationArtifacts = new Set(documentation.flatMap(claim => claim.information.type === 'group-documentation' ? [claim.information.artifact] : []));
     const other = artifactClaims.flatMap(claim => claim.information.type === 'artifact-placement'
       && !moduleArtifacts.has(claim.information.artifact) && !documentationArtifacts.has(claim.information.artifact) ? [claim.information.artifact] : []);
-    return { ...group(id), selected: projection.groups.includes(id), detail: projection.groups.includes(id) ? 'materialized' : 'not-requested', qualification: qualification(primary.context),
-      parents: [...new Set(available.flatMap(claim => claim.information.type === 'group-containment' && claim.information.child === id ? [claim.subject] : []))].map(group),
+    return { ...group(id), selected: selected.has(id), detail: selected.has(id) ? 'materialized' : 'not-requested', qualification: qualification(primary.context),
+      parents: [...new Set(parents.get(id) ?? [])].map(group),
       subgroups: [...new Set(ownClaims.flatMap(claim => claim.information.type === 'group-containment' ? [claim.information.child] : []))].map(group),
       modules: members.map(module), documentationCount: documentation.length,
       artifacts: { total: artifactClaims.length, moduleAssociated: artifactClaims.filter(claim => claim.information.type === 'artifact-placement' && moduleArtifacts.has(claim.information.artifact)).length,
@@ -155,7 +175,6 @@ export function createOrganizationView(store: ProgramRecordStore, projection: Or
   let prunedGroups = 0;
   let omittedModulePlacements = 0;
   const byId = new Map(groups.map(group => [group.id, group]));
-  const selected = new Set(projection.groups);
   const roots = groups.filter(group => group.selected && !group.parents.some(parent => selected.has(parent.id)));
   const pending = roots.map(group => ({ id: group.id, depth: 0 })).reverse();
   const maximumGroups = presentation.format === 'unicode' ? 150 : Infinity;
@@ -183,9 +202,19 @@ export function createOrganizationView(store: ProgramRecordStore, projection: Or
   const excluded = evidence?.exclusions.filter(item => item.contentDigest !== null) ?? [];
   const { applicability, availability, execution, materialization, reason, cost } = outcome;
   const externalModules = claims.filter(claim => claim.information.type === 'module-placement' && claim.information.reasons.includes('external-module')).length;
+  const linksByTarget = new Map<string, { link: LayoutEvidence['links'][number]; order: number }[]>();
+  const linksByArtifact = new Map<string, { link: LayoutEvidence['links'][number]; order: number }>();
+  if (presentation.sourceDetail) (layout?.links ?? []).forEach((link, order) => {
+    const item = { link, order };
+    linksByArtifact.set(link.artifactPath, item);
+    if (link.targetRegion !== null) {
+      const bucket = linksByTarget.get(link.targetRegion) ?? [];
+      bucket.push(item); linksByTarget.set(link.targetRegion, bucket);
+    }
+  });
   return {
     schema: 'postcode-organization-view/1-experimental',
-    id: recordId(projection.session, 'organization-view', { projection: projection.id, presentation, method: methods.presentation }),
+    id: recordId(projection.session, 'organization-view', { projection: identityReference(projection.session, projection.id), presentation, method: methods.presentation }),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,
       parameters: projection.parameters, selection: projection.selection },
     presentation: { ...presentation, expansions: [...projection.expansions.requested, ...new Set(projection.expansions.moduleEvaluations.flatMap(id => {
@@ -208,16 +237,17 @@ export function createOrganizationView(store: ProgramRecordStore, projection: Or
       notice: 'Captured group and artifact paths only; group documentation and other artifact contents are not reproduced. Module source detail, when selected, is separately bounded.',
       repositoryRoot: evidence?.root ?? null,
       groups: groups.filter(group => group.selected).map(group => {
-        const primary = claims.find(claim => claim.subject === group.id && claim.information.type === 'group')!;
+        const primary = primaryGroups.get(group.id)!;
         const context = store.get(primary.context);
         if (context.kind !== 'claim-context') throw new Error('Expected group context');
         const region = context.evidence.map(id => store.get(id)).find(record => record.kind === 'repository-region');
         if (region?.kind !== 'repository-region' || !evidence) throw new Error('Expected group region');
-        const artifacts = available.flatMap(claim => claim.subject === group.id && claim.information.type === 'artifact-placement' ? [store.get(claim.information.artifact)] : [])
+        const artifacts = (bySubject.get(group.id) ?? []).flatMap(claim => claim.information.type === 'artifact-placement' ? [store.get(claim.information.artifact)] : [])
           .flatMap(record => record.kind === 'repository-artifact' ? [record.artifact] : []);
         return { id: group.id, path: path.resolve(evidence.root, region.path), artifacts,
-          links: layout?.links.filter(link => link.targetRegion === region.path
-            || artifacts.some(artifact => artifact.path === link.artifactPath)) ?? [] };
+          links: [...new Set([...(linksByTarget.get(region.path) ?? []), ...artifacts.flatMap(artifact => {
+            const link = linksByArtifact.get(artifact.path); return link ? [link] : [];
+          })])].sort((a, b) => a.order - b.order).map(item => item.link) };
       }), modules: moduleDetail?.sourceDetail ?? null,
     } } : {}),
   };
@@ -262,12 +292,12 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
     lines.push('');
     const width = Math.min(36, Math.max(0, ...view.display.rows.map(row => {
       const entity = row.kind === 'group' ? groups.get(row.id)! : modules.get(row.id)!;
-      return inlineText(entity.label).length + row.depth * 2;
+      return displayWidth(inlineText(entity.label)) + row.depth * 2;
     })));
     for (const row of view.display.rows) {
       const item = row.kind === 'group' ? groups.get(row.id)! : modules.get(row.id)!;
       const group = row.kind === 'group' ? item as GroupView : null;
-      const name = inlineText(item.label).padEnd(Math.max(0, width - row.depth * 2));
+      const name = padDisplay(inlineText(item.label), Math.max(0, width - row.depth * 2));
       lines.push(`${'  '.repeat(row.depth)}${row.kind === 'group' ? '◆' : '·'} ${name}  ${item.entityId}${group ? ` · ${annotation(group)}${!group.selected ? ' · context group' : ''}${group.artifacts.unanalyzed ? ` · ${group.artifacts.unanalyzed} unanalyzed artifacts` : ''}` : ''}${row.kind === 'module' ? compositionAnnotation((item as ModuleReference).composition) : ''}${row.reference ? ' · reference (already expanded)' : ''}${row.pruned ? ` · descent pruned (${row.pruned === 'outside-project' ? 'outside project selection' : 'depth limit'})` : ''}`);
     }
     if (!view.display.rows.length) lines.push(view.projection.selection.populationEstablished ? 'No groups in this selection.' : 'No groups materialized for this selection.');

@@ -1,4 +1,8 @@
-import { spawnSync } from 'node:child_process';
+import { GitExecutionOwner } from '../git-execution.js';
+import type { RunGit } from '../git-execution.js';
+import { GitFailure, errorCode, operationalIO } from '../execution-errors.js';
+import { outputBoundary } from '../output-boundary.js';
+import type { OutputBoundary } from '../output-boundary.js';
 import { isUtf8 } from 'node:buffer';
 import { lstatSync, readFileSync, readdirSync, readlinkSync, realpathSync, statSync } from 'node:fs';
 import os from 'node:os';
@@ -6,63 +10,49 @@ import path from 'node:path';
 import { canonical, compare, digest } from '../identity.js';
 import type { ExclusionEvidence, RepositoryArtifact, RepositoryCapture } from './evidence.js';
 
-export const repositoryInputMethod = 'postcode/repository-inputs@3';
+export const repositoryInputMethod = 'postcode/repository-inputs@6';
 
 class CaptureFailure extends Error {
   constructor(readonly operation: string, readonly code: string | number | null) { super(operation); }
 }
 
-function errorCode(error: unknown): string | null {
-  return error instanceof Error && 'code' in error && typeof error.code === 'string' ? error.code : null;
-}
-
-function within(name: string, directory: string): boolean {
-  const relative = path.relative(directory, name);
-  return relative === '' || (relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative));
-}
-
 /** Capture once, then derive organization without more filesystem or Git reads.
  * The caller must enforce the configured-project-open precondition before invoking this provider.
  */
-export function captureRepository(configPath: string, excludedOutputDirectories: readonly string[] = []): RepositoryCapture {
+export async function captureRepository(configPath: string, excludedOutputDirectories: readonly string[] | OutputBoundary = [], runGit?: RunGit): Promise<RepositoryCapture> {
+  const policy = Array.isArray(excludedOutputDirectories) ? outputBoundary(excludedOutputDirectories) : excludedOutputDirectories as OutputBoundary;
+  const owner = runGit ? undefined : new GitExecutionOwner();
+  const run = runGit ?? owner!.run;
   try {
-    return capture();
+    return await capture();
   } catch (error) {
-    if (error instanceof CaptureFailure) return { status: 'unavailable', reason: 'capture-failed',
+    if (error instanceof CaptureFailure || error instanceof GitFailure) return { status: 'unavailable', reason: 'capture-failed',
       operation: error.operation, code: error.code };
     // Programming errors and broken invariants must not become ordinary evaluation outcomes.
     const code = errorCode(error);
-    if (code && ['EACCES', 'EPERM', 'ENOENT', 'ENOTDIR', 'ELOOP', 'EIO', 'EMFILE', 'ENFILE'].includes(code)) {
+    if (operationalIO(error)) {
       return { status: 'unavailable', reason: 'capture-failed', operation: 'filesystem capture', code };
     }
     throw error;
-  }
+  } finally { await owner?.close(); }
 
-  function capture(): RepositoryCapture {
-    // Repository selection comes from the opened config, not ambient Git redirection.
-    const env: NodeJS.ProcessEnv = { ...process.env, LC_ALL: 'C', GIT_OPTIONAL_LOCKS: '0' };
-    for (const key of ['GIT_DIR', 'GIT_WORK_TREE', 'GIT_INDEX_FILE', 'GIT_COMMON_DIR', 'GIT_PREFIX']) delete env[key];
-    const git = (cwd: string, args: readonly string[], input?: string) => {
-      const result = spawnSync('git', ['-C', cwd, ...args], { env,
-        ...(input === undefined ? {} : { input }), maxBuffer: 64 * 1024 * 1024 });
-      if (result.error) {
-        if (errorCode(result.error) === 'ENOENT') throw new CaptureFailure('git executable', 'ENOENT');
-        throw new CaptureFailure(`git ${args[0]}`, errorCode(result.error));
-      }
+  async function capture(): Promise<RepositoryCapture> {
+    const git = async (cwd: string, args: readonly string[], input?: string) => {
+      const result = await run({ cwd, args, ...(input === undefined ? {} : { input }) });
       if (result.signal || result.status === null) throw new CaptureFailure(`git ${args[0]}`, result.signal);
       if (!isUtf8(result.stdout) || !isUtf8(result.stderr)) throw new CaptureFailure('non-UTF-8 Git evidence', null);
-      return { status: result.status, output: result.stdout.toString('utf8'), error: result.stderr.toString('utf8') };
+      return { status: result.status, output: Buffer.from(result.stdout).toString('utf8'), error: Buffer.from(result.stderr).toString('utf8') };
     };
-    const required = (cwd: string, args: readonly string[], input?: string): string => {
-      const result = git(cwd, args, input);
+    const required = async (cwd: string, args: readonly string[], input?: string): Promise<string> => {
+      const result = await git(cwd, args, input);
       if (result.status !== 0) throw new CaptureFailure(`git ${args[0]}`, result.status);
       return result.output;
     };
     const base = path.dirname(path.resolve(configPath));
     let discovery;
-    try { discovery = git(base, ['rev-parse', '--show-toplevel']); }
+    try { discovery = await git(base, ['rev-parse', '--show-toplevel']); }
     catch (error) {
-      if (error instanceof CaptureFailure && error.operation === 'git executable') {
+      if (error instanceof GitFailure && error.operation === 'git executable') {
         return { status: 'unavailable', reason: 'git-unavailable', operation: error.operation, code: error.code };
       }
       throw error;
@@ -118,10 +108,9 @@ export function captureRepository(configPath: string, excludedOutputDirectories:
       }
       return path.resolve(realpathSync(ancestor), tail);
     };
-    const outputs = excludedOutputDirectories.map(name => ({ lexical: path.resolve(name), real: real(name) }))
-      .sort((a, b) => compare(a.lexical, b.lexical) || compare(a.real, b.real))
-      .filter((item, index, all) => index === 0 || item.lexical !== all[index - 1]!.lexical || item.real !== all[index - 1]!.real);
-    const excluded = (name: string) => outputs.some(item => within(name, item.lexical) || within(name, item.real));
+    const outputs = policy.locations;
+    // Captured source-link traversal below stays separate from live boundary resolution.
+    const excluded = policy.contains;
     const exclusionEvidence: ExclusionEvidence[] = [];
     const exclusionDigest = (name: string, origin: ExclusionEvidence['origin'], info: ReturnType<typeof lstat>) => {
       if (excluded(name)) throw new CaptureFailure('exclusion policy overlaps generated output', null);
@@ -134,28 +123,28 @@ export function captureRepository(configPath: string, excludedOutputDirectories:
     const captureExclusion = (name: string, origin: ExclusionEvidence['origin']) => {
       exclusionEvidence.push({ origin, path: name, contentDigest: exclusionDigest(name, origin, lstat(name)) });
     };
-    const local = required(root, ['rev-parse', '--path-format=absolute', '--git-path', 'info/exclude']).replace(/\n$/, '');
-    const configuredGlobal = git(root, ['config', '--path', '--null', '--get', 'core.excludesFile']);
+    const local = (await required(root, ['rev-parse', '--path-format=absolute', '--git-path', 'info/exclude'])).replace(/\n$/, '');
+    const configuredGlobal = await git(root, ['config', '--path', '--null', '--get', 'core.excludesFile']);
     if (![0, 1].includes(configuredGlobal.status)) throw new CaptureFailure('global exclusions configuration', configuredGlobal.status);
     const global = configuredGlobal.status === 0 ? configuredGlobal.output.replace(/\0$/, '')
       : path.join(process.env.XDG_CONFIG_HOME || path.join(os.homedir(), '.config'), 'git', 'ignore');
     captureExclusion(absolute(local), 'local');
     // An explicitly empty core.excludesFile disables the user-global source.
     if (global !== '') captureExclusion(absolute(global), 'global');
-    const sparse = git(root, ['config', '--bool', '--get', 'core.sparseCheckout']);
+    const sparse = await git(root, ['config', '--bool', '--get', 'core.sparseCheckout']);
     if (![0, 1].includes(sparse.status)) throw new CaptureFailure('sparse checkout configuration', sparse.status);
-    const booleanConfig = (name: string) => {
-      const result = git(root, ['config', '--bool', '--get', name]);
+    const booleanConfig = async (name: string) => {
+      const result = await git(root, ['config', '--bool', '--get', name]);
       if (![0, 1].includes(result.status)) throw new CaptureFailure('Git path configuration', result.status);
       return result.output === 'true\n';
     };
-    const gitPathPolicy = { ignoreCase: booleanConfig('core.ignoreCase'), precomposeUnicode: booleanConfig('core.precomposeUnicode') };
+    const gitPathPolicy = { ignoreCase: await booleanConfig('core.ignoreCase'), precomposeUnicode: await booleanConfig('core.precomposeUnicode') };
     const trackedKey = (name: string) => {
       const normalized = gitPathPolicy.precomposeUnicode ? name.normalize('NFC') : name;
       return gitPathPolicy.ignoreCase ? normalized.replace(/[A-Z]/g, letter => letter.toLowerCase()) : normalized;
     };
     const tracked = new Map<string, Set<string>>();
-    for (const entry of required(root, ['ls-files', '--stage', '-z']).split('\0').filter(Boolean)) {
+    for (const entry of (await required(root, ['ls-files', '--stage', '-z'])).split('\0').filter(Boolean)) {
       const match = /^(\d+) [a-f0-9]+ [0-3]\t([\s\S]+)$/.exec(entry);
       if (!match) throw new Error('Unexpected Git index entry');
       const key = trackedKey(match[2]!);
@@ -172,13 +161,20 @@ export function captureRepository(configPath: string, excludedOutputDirectories:
     const visibleDirectories = new Set<string>();
     const ignoredPaths = new Set<string>();
     const inactivePolicyDirectories = new Set<string>();
+    const inactivePolicy = (directory: string) => {
+      for (let current = relative(directory); current !== '.'; current = path.posix.dirname(current)) {
+        if (inactivePolicyDirectories.has(current)) return true;
+        if (current === '') break;
+      }
+      return false;
+    };
     let directories = excluded(root) ? [] : [root];
     while (directories.length > 0) {
       const entries = directories.flatMap(directory => {
         visibleDirectories.add(relative(directory));
         // Descend ignored regions only for tracked artifacts. Git does not use
         // deeper ignore rules beneath an excluded directory.
-        if (![...inactivePolicyDirectories].some(ignored => within(directory, absolute(ignored)))) {
+        if (!inactivePolicy(directory)) {
           captureExclusion(path.join(directory, '.gitignore'), 'repository');
         }
         return readdirSync(directory, { encoding: 'buffer' }).map(name => {
@@ -194,7 +190,7 @@ export function captureRepository(configPath: string, excludedOutputDirectories:
         // Tracked entries are handled explicitly above and below. --no-index
         // also reveals ignored parents that have tracked descendants, so their
         // ineffective deeper policies are never read as repository evidence.
-        const checked = git(root, ['check-ignore', '--no-index', '-z', '--stdin'], `${untracked.map(relative).join('\0')}\0`);
+        const checked = await git(root, ['check-ignore', '--no-index', '-z', '--stdin'], `${untracked.map(relative).join('\0')}\0`);
         if (![0, 1].includes(checked.status)) throw new CaptureFailure('Git visibility', checked.status);
         checked.output.split('\0').filter(Boolean).forEach(name => ignored.add(name));
       }
@@ -298,13 +294,13 @@ export function captureRepository(configPath: string, excludedOutputDirectories:
         throw new CaptureFailure('exclusion policy changed during capture', null);
       }
     }
-    const finalGlobal = git(root, ['config', '--path', '--null', '--get', 'core.excludesFile']);
+    const finalGlobal = await git(root, ['config', '--path', '--null', '--get', 'core.excludesFile']);
     if (finalGlobal.status !== configuredGlobal.status || finalGlobal.output !== configuredGlobal.output) {
       throw new CaptureFailure('global exclusion selection changed during capture', null);
     }
     return { status: 'available', evidence: {
       provider: 'repository-layout', method: repositoryInputMethod, root, rootPaths,
-      gitVersion: required(root, ['--version']).replace(/\n$/, ''), gitPathPolicy, inputConsistency: 'first-observed',
+      gitVersion: (await required(root, ['--version'])).replace(/\n$/, ''), gitPathPolicy, inputConsistency: 'first-observed',
       sparseCheckout: sparse.output === 'true\n',
       limitations: ['Current worktree inputs are first-observed, not an atomic filesystem transaction.',
         'Git reads live exclusion policy; a final policy check detects lasting changes, not transient concurrent edits.',

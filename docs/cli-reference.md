@@ -50,6 +50,14 @@ Place all options, including `--json` and `--source-detail`, before the marker.
 One exact selector is still
 required; the marker does not enable multiple selectors.
 
+`--project=value` accepts an inline path; dash-prefixed paths require this form
+(for example `--project=-config.json`). A project path must be nonempty and may
+appear only once. Repeated boolean flags are idempotent. Both `-h` and `--help`
+skip command-operand validation, but only after all options have been checked:
+unknown options, missing/empty values, duplicate project options and the shell's
+restriction on changing projects still produce usage errors. Shell quoting only
+groups words; it does not make an option-looking selector literal. Use `--`.
+
 Exit 0 means a view was produced, including a qualified or partial result. Exit 2
 means invalid arguments, failure to open the project or input invalidation; exit 1
 means an internal failure; exit 3 means an expected analysis failure preventing a
@@ -281,17 +289,25 @@ This is not full-file rendering or arbitrary source browsing. The invocation
 records source-escape use at the locations-and-excerpts level alongside the view.
 
 Every view-producing CLI invocation submits one self-contained observation batch
-to a `date=YYYY-MM-DD` UTC subdirectory of the PostCode checkout's
-`_observations/` directory. Each filename starts with its filesystem-safe UTC
-submission timestamp and ends with the batch UUID. The root destination is disclosed
-on stderr. Format-version-1 batches carry `session` and `command` (1 for one-shot),
+to `_observations/<project-label>-<project-key>/YYYY-MM-DD/HH-mm-ss.sssZ_<batch-uuid>.json`
+in the PostCode checkout. The label comes from the configured project directory,
+and the six-character key hashes its normalized absolute configuration path.
+Repeated sessions share the grouping; different configurations are disambiguated.
+One UTC submission time supplies both date and time. The project-specific destination
+is disclosed on stderr. Refusals and failures use the same project grouping. Format-version-1 batches carry `session` and `command` (1 for one-shot),
 with independent batch/event UUIDs. They contain request/context, the qualified view and exact output;
 they may contain repository-derived text and explicitly requested source detail.
 Expected analysis failures use outcome `failed` and event `command-failed`;
 unexpected defects use outcome `defect` and event `command-defect`. Neither
 invents a view when no output was published.
 Nothing is sent remotely. Files are created with private permissions and ignored
-by Git. The producer does not read historical batches or prescribe retention.
+by Git. A batch becomes accepted when its complete, closed staging file is linked
+to the final name without replacing any existing file. Delivery failure warns
+without changing a successful view/status. A later staging-cleanup failure reports
+that publication succeeded, separately from non-delivery. Unsupported publication
+fails visibly. This does not guarantee persistence after power loss or cleanup
+after a crash. Existing observation files remain in place; the producer does not
+read historical batches, migrate them, scavenge staging residue or prescribe retention.
 
 Caller-supplied generated-output locations are excluded before configuration and
 compiler input reads, including imported files and symlink targets. The run's exclusion
@@ -299,7 +315,13 @@ count is the distinct location boundaries enforced by that filter, not a count o
 generated files found or read. A configured location can be absent or outside the
 selected roots and still be protected against resolution into it. Git-ignore alone
 does not establish this exclusion. Keep additional generated views in the excluded
-`_observations/` directory or outside the analyzed repository.
+`_observations/` directory or outside the analyzed repository. Compiler and repository
+acquisition share this boundary, including aliases and dangling links. An explicit
+cyclic or otherwise unverifiable boundary refuses opening with `Project open failed:`
+and operational detail, status 2, and no view. Later retargeting or failed
+revalidation requires restart; it never silently removes an exclusion. An unreadable
+or cyclic ordinary compiler candidate remains absent, with recovery detected at
+validation. It does not make an otherwise resolvable explicit output boundary fail.
 
 Unicode inline values (names, selectors, qualifications and source paths) display
 line-breaking, indentation and Unicode bidirectional formatting controls as visible
@@ -307,9 +329,23 @@ Unicode escapes. Operational paths retain their original values internally. Docu
 and excerpts retain the renderer's structured wrapping. JSON retains the original
 string values; display escaping does not alter stored claims or evidence.
 
+Multiline layout measures terminal display cells and breaks at grapheme boundaries,
+preserving combining sequences and emoji without Unicode normalization. Ambiguous
+width characters count as narrow. Tabs appear as `\u0009`, CR as `\u000d`, and LF
+remains a structured line break. Escapes remain indivisible. A grapheme too wide
+for the available line is omitted with a disclosure. Truncation counts original
+Unicode code points, including controls, rather than characters added by escaping.
+Stored source spans retain their UTF-16 coordinates.
+
+Literal text spelled as `\u` followed by four hexadecimal digits is also kept
+indivisible during wrapping and truncation. This can make truncation coarser;
+omission counts still count the original source code points.
+
 The observation-destination disclosure and CLI diagnostic/warning values use the
 same inline terminal-control escaping. Escaping changes the displayed text only;
 it does not change filesystem destinations or recorded observation values.
+Multi-line option-scanner hints are joined with spaces before terminal controls
+are escaped, keeping the correction hint readable without introducing new lines.
 
 
 ## Dependency investigation
@@ -400,8 +436,25 @@ completed analysis between commands.
 The [latency measurements](../records/validation/2026-09-21-analysis-latency.md)
 show the earlier fresh-run improvement and its limits. Shell commands share a
 session and each submits its own observation. Active-command interruption ends
-the worker and session; the parent records the outcome where possible. One-shot
-native SIGINT can terminate before an observation can be delivered.
+the worker and session in both CLI entry paths; the parent records the outcome
+where possible and returns status 130. Git subprocess ownership remains with the
+parent during worker disposal. Each Git invocation has a 30-second deadline and
+64 MiB combined output limit. Cancellation requests graceful termination, escalating
+to forced termination after 250 ms on POSIX. Cleanup still unconfirmed after
+2 seconds produces a separate warning and retains exit monitoring; that warning
+does not replace status 130 or prove exit. No whole-analysis deadline or termination
+of every descendant is promised. Opening and the three publication checks can each
+incur the per-call Git deadline, so consistently hung Git can add roughly two
+minutes to a one-shot command. Only SIGINT has the described CLI interruption
+handling; killing the owning process (including with SIGTERM or SIGKILL) does not
+guarantee cleanup of its children. Native checks cover macOS and local APFS; other
+operating systems and network filesystems have not been certified in this slice.
+
+An opening Git timeout can leave a usable compiler-backed session with explicitly
+unavailable repository evidence after confirmed child exit. A later successful
+capture changes that basis and requires restart. Previously available evidence
+becoming unavailable also invalidates; consistent unavailability stays qualified.
+Unconfirmed cleanup prevents a usable session from opening.
 
 ## Input stability and retained work
 

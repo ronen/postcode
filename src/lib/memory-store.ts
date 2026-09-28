@@ -1,3 +1,5 @@
+import { freezeOwned } from './immutable.js';
+import { completedMaterialization } from './evaluation-state.js';
 import { canonical, EntityBindings } from './identity.js';
 import type { EvaluationRecord, ProgramRecord, ProgramRecordStore, RecordId, SessionId } from './records.js';
 
@@ -46,16 +48,10 @@ function references(record: ProgramRecord): readonly RecordId[] {
   }
 }
 
-function freeze(value: unknown): void {
-  if (value !== null && typeof value === 'object') {
-    Object.values(value).forEach(freeze);
-    Object.freeze(value);
-  }
-}
-
 /** Atomic batches permit mutually referring entity/claim/context records. */
 export class MemoryProgramRecordStore implements ProgramRecordStore {
   readonly #bindings = new Map<SessionId, EntityBindings>();
+  readonly #evaluations = new Map<SessionId, Map<RecordId, EvaluationRecord>>();
   readonly #records = new Map<RecordId, ProgramRecord>();
 
   put(records: readonly ProgramRecord[]): void {
@@ -66,6 +62,7 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
       if (prior && canonical(prior) !== canonical(record)) throw new Error('Immutable record collision');
       pending.set(record.id, structuredClone(record));
     }
+    const groupMembership = new Map<RecordId, ReadonlySet<RecordId>>();
     for (const record of pending.values()) {
       const session = pending.get(record.session) ?? this.#records.get(record.session);
       if ((record.kind === 'session' && record.id !== record.session)
@@ -135,7 +132,8 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
             if (indices.some(index => !Number.isInteger(index) || index < 0 || index >= count)
               || !record.graph.rootsEstablished && record.graph.roots.length > 0) throw new Error('Invalid dependency graph grouping');
             const members = record.graph.components.flatMap(component => component.members);
-            if (new Set(members).size !== members.length || members.some(id => !record.modules.includes(id))) throw new Error('Invalid dependency graph population');
+            const population = new Set(record.modules);
+            if (new Set(members).size !== members.length || members.some(id => !population.has(id))) throw new Error('Invalid dependency graph population');
           }
           break;
         }
@@ -226,12 +224,14 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
           if (record.information.type === 'group-properties') {
             requireKind(record.information.evaluation, 'organization-evaluation');
             const outcome = pending.get(record.information.evaluation) ?? this.#records.get(record.information.evaluation);
-            if (outcome?.kind === 'organization-evaluation' && !outcome.groups.includes(record.subject)) {
-              throw new Error('Group property subject is outside its evaluation');
+            if (outcome?.kind === 'organization-evaluation') {
+              let groups = groupMembership.get(outcome.id);
+              if (!groups) { groups = new Set(outcome.groups); groupMembership.set(outcome.id, groups); }
+              if (!groups.has(record.subject)) throw new Error('Group property subject is outside its evaluation');
             }
             if (record.information.modulePresence !== null && record.information.modulePresence !== 'direct'
               && outcome?.kind === 'organization-evaluation'
-              && (outcome.placement.execution !== 'completed' || outcome.placement.materialization !== 'full')) {
+              && !completedMaterialization(outcome.placement)) {
               throw new Error('Negative group presence requires completed placement evaluation');
             }
           }
@@ -320,22 +320,42 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
       }
     }
     for (const [id, record] of pending) {
-      freeze(record);
+      // Validation above is never skipped for a resubmission. Preserve the
+      // already-owned object when the validated content is identical.
+      if (this.#records.has(id)) continue;
+      freezeOwned(record);
       this.#records.set(id, record);
+      if (record.kind === 'evaluation') {
+        let index = this.#evaluations.get(record.session);
+        if (!index) { index = new Map(); this.#evaluations.set(record.session, index); }
+        index.set(id, record);
+      }
     }
   }
 
   entityIds(ids: readonly RecordId[], kind: 'module' | 'group'): ReadonlyMap<RecordId, string> {
-    const result = new Map<RecordId, string>();
+    const grouped = new Map<SessionId, RecordId[]>();
+    // Validate the entire request before allocating even the first binding.
     for (const id of ids) {
       const record = this.get(id);
       if (record.kind !== kind) throw new Error('Expected matching entity kind');
-      let bindings = this.#bindings.get(record.session);
-      if (!bindings) { bindings = new EntityBindings(); this.#bindings.set(record.session, bindings); }
-      for (const pair of bindings.allocate([id], kind)) result.set(...pair);
+      if (!/:[a-f0-9]{64}$/.test(id)) throw new Error('Invalid entity record key');
+      const group = grouped.get(record.session) ?? [];
+      group.push(id); grouped.set(record.session, group);
     }
-    return result;
+    const allocations = [...grouped].map(([session, group]) => {
+      const bindings = this.#bindings.get(session) ?? new EntityBindings();
+      return { session, bindings, prepared: bindings.prepare(group, kind) };
+    });
+    const result = new Map<RecordId, string>();
+    for (const { session, bindings, prepared } of allocations) {
+      this.#bindings.set(session, bindings);
+      for (const pair of prepared()) result.set(...pair);
+    }
+    return new Map(ids.map(id => [id, result.get(id)!]));
   }
+
+  lookup(id: RecordId): ProgramRecord | undefined { return this.#records.get(id); }
 
   get(id: RecordId): ProgramRecord {
     const result = this.#records.get(id);
@@ -344,7 +364,6 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
   }
 
   evaluations(session: SessionId): readonly EvaluationRecord[] {
-    return [...this.#records.values()].filter((record): record is EvaluationRecord =>
-      record.kind === 'evaluation' && record.session === session);
+    return [...(this.#evaluations.get(session)?.values() ?? [])];
   }
 }

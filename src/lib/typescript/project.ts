@@ -1,6 +1,12 @@
+import { diagnosticLookup } from './diagnostics.js';
+import { outputBoundary, OutputBoundaryFailure } from '../output-boundary.js';
+import type { RunGit } from '../git-execution.js';
+import { moduleLimitations } from '../qualification-policy.js';
+import { completedMaterialization } from '../evaluation-state.js';
+import { freezeOwned } from '../immutable.js';
 import path from 'node:path';
 import ts from 'typescript';
-import { canonical, compare, digest, methods, recordId, sessionId } from '../identity.js';
+import { identityReference, canonical, compare, digest, methods, recordId, sessionId } from '../identity.js';
 import type { DiscoveryResult, ModuleAnalysis } from '../evaluation.js';
 import type { ClaimContextRecord, ModuleClaim, ModuleExpansion, ModuleDiscoveryFacet, ProgramRecord, ProgramRecordStore, RecordId, SessionId, SourceEvidenceRecord } from '../records.js';
 import { captureInputs } from './inputs.js';
@@ -12,11 +18,10 @@ import { deriveLayout, repositoryLayoutMethod } from '../repository/layout.js';
 
 const method = `${methods.discovery};typescript@${ts.version}`;
 const inputMethod = methods.inputs;
-const limitation = 'Population is configured Program external-module SourceFiles and visible named ambient-module symbols; other compiler module categories are not established.';
 
 export type ProjectOpenResult =
-  | { readonly status: 'opened'; readonly session: SessionId; readonly analysis: ModuleAnalysis; readonly changed: () => boolean }
-  | { readonly status: 'project-open-failed'; readonly diagnostics: readonly { readonly code: number; readonly message: string }[] };
+  | { readonly status: 'opened'; readonly session: SessionId; readonly analysis: ModuleAnalysis; readonly changed: () => Promise<boolean> }
+  | { readonly status: 'project-open-failed'; readonly operational?: { readonly operation: string; readonly path: string; readonly reason: string }; readonly diagnostics: readonly { readonly code: number; readonly message: string }[] };
 
 export interface ProjectOptions {
   readonly configPath: string;
@@ -25,10 +30,20 @@ export interface ProjectOptions {
 }
 
 /** Operational setup follows TS config inheritance/selection/resolution without executing target code. */
-export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResult {
+export async function openTypeScriptProject(options: ProjectOptions, runGit?: RunGit): Promise<ProjectOpenResult> {
+  options = { ...options, excludedOutputDirectories: [...(options.excludedOutputDirectories ?? [])] };
+  const environment = canonical([process.cwd(), process.env, process.versions]);
   const configPath = path.resolve(options.configPath);
   const base = path.dirname(configPath);
-  const inputs = captureInputs(options.excludedOutputDirectories ?? []);
+  let policy;
+  try { policy = outputBoundary(options.excludedOutputDirectories ?? []); }
+  catch (error) {
+    if (!(error instanceof OutputBoundaryFailure)) throw error;
+    return { status: 'project-open-failed', diagnostics: [], operational: {
+      operation: 'resolve generated-output boundary', path: error.path, reason: error.reason,
+    } };
+  }
+  const inputs = captureInputs(policy);
   const diagnostics: ts.Diagnostic[] = [];
   const parsed = ts.getParsedCommandLineOfConfigFile(configPath, { noEmit: true }, {
     ...inputs.system,
@@ -93,18 +108,18 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
 
   // Repository capture begins only after the configured project opens. Its
   // result is retained independently of later requested module evaluation.
-  const repository = captureRepository(configPath, options.excludedOutputDirectories ?? []);
+  const repository = await captureRepository(configPath, policy, runGit);
+  const repositoryBasis = canonical(repository);
   const layout = repository.status === 'available' ? deriveLayout(repository.evidence) : null;
 
   const session = sessionId();
-  const environment = canonical([process.cwd(), process.env, process.versions]);
 
   const materializers = new WeakMap<ProgramRecordStore, ReturnType<typeof prepareDiscovery>>();
 
   // Compiler state never escapes the language integration. Discovery writes domain records atomically.
-  return { status: 'opened', session, changed: () =>
+  return { status: 'opened', session, changed: async () =>
     canonical([process.cwd(), process.env, process.versions]) !== environment || inputs.changed()
-      || canonical(captureRepository(configPath, options.excludedOutputDirectories ?? [])) !== canonical(repository),
+      || canonical(await captureRepository(configPath, policy, runGit)) !== repositoryBasis,
     analysis: { discover: (store, expansions, dependencies) => materialize(store, expansions ?? [], dependencies ?? false) } };
 
   function materialize(store: ProgramRecordStore, expansions: readonly ModuleExpansion[], dependencies: boolean) {
@@ -116,7 +131,7 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
   function prepareDiscovery() {
     const checker = program.getTypeChecker();
     const files = [...program.getSourceFiles()].sort((a, b) => compare(a.fileName, b.fileName));
-    const encountered = program.getSyntacticDiagnostics();
+    const encountered = diagnosticLookup(program.getSyntacticDiagnostics());
     const roots = new Set(program.getRootFileNames());
     const candidates: { key: string; name: string | null; compilerName: string | null; symbol: ts.Symbol | undefined;
       declarations: readonly ts.Declaration[]; discoveryFacets: ModuleDiscoveryFacet[] }[] = [];
@@ -179,9 +194,7 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
     const expansionCache = new Map<string, Retained<ReturnType<ReturnType<typeof prepareExpansions>>>>();
     let compositionCache: Retained<ReturnType<ReturnType<typeof prepareComposition>>> | undefined;
     let dependencyCache: Retained<ReturnType<ReturnType<typeof prepareDependencies>>> | undefined;
-    const support = new Map<RecordId, RecordId>();
     const results = new Map<string, Retained<DiscoveryResult>>();
-    const complete = (state: { execution: string; materialization: string }) => state.execution === 'completed' && state.materialization === 'full';
     return function discover(store: ProgramRecordStore, requested: readonly ModuleExpansion[], dependencies: boolean): DiscoveryResult {
       const requestKey = canonical([[...new Set(requested)].sort(compare), dependencies]);
       const prior = current(results.get(requestKey));
@@ -237,14 +250,19 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
         };
         // Capture from the already-observed compiler input; presentation never rereads source.
         const span = ts.isSourceFile(declaration) ? '' : file.text.slice(start, declaration.end);
-        const excerpt = [...span.split('\n').slice(0, 4).join('\n')].slice(0, 300).join('');
+        let excerpt = '', characters = 0, kept = 0, line = 0;
+        for (const character of span) {
+          characters++;
+          if (character === '\n') line++;
+          if (kept < 300 && line < 4) { excerpt += character; kept++; }
+        }
         const detail: SourceEvidenceRecord = {
-          kind: 'source-evidence', id: recordId(session, 'source', [file.fileName, start, declaration.end, ts.isSourceFile(declaration) ? 'file' : 'span', compilerName, resolution ?? null, dependencyResolution ?? null]),
+          kind: 'source-evidence', id: recordId(session, 'source', [file.fileName, start, declaration.end, ts.isSourceFile(declaration) ? 'file' : 'span', compilerName, resolution ? { ...resolution, target: identityReference(session, resolution.target) } : null, dependencyResolution ?? null]),
           session, method, path: file.fileName, contentDigest: sourceDigest(file),
           start, length: declaration.end - start,
           location: ts.isSourceFile(declaration) ? { association: 'file' } : {
             association: 'span', from: position(start), to: position(declaration.end),
-            excerpt: { text: excerpt, omittedCharacters: [...span].length - [...excerpt].length },
+            excerpt: { text: excerpt, omittedCharacters: characters - kept },
           },
           configuredRoot: roots.has(file.fileName), compilerName,
           ...(resolution ? { resolution } : {}),
@@ -253,22 +271,20 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
         records.push(detail);
         return detail.id;
       };
-      const qualifications = (sourceFiles: readonly ts.SourceFile[], projectWide: boolean) => encountered
-        // Syntax diagnostics normally have files; a future file-less result belongs only to project context.
-        .filter(diagnostic => diagnostic.file === undefined ? projectWide : sourceFiles.includes(diagnostic.file))
+      const qualifications = (sourceFiles: readonly ts.SourceFile[], projectWide: boolean) => encountered(sourceFiles, projectWide)
         .map(diagnostic => ({ code: diagnostic.code, category: ts.DiagnosticCategory[diagnostic.category]!.toLowerCase() }))
         .sort((a, b) => a.code - b.code || compare(a.category, b.category));
       const makeContext = (scope: 'configured-project' | RecordId, evidenceIds: readonly RecordId[], sourceFiles: readonly ts.SourceFile[]): RecordId => {
         const relevant = qualifications(sourceFiles, scope === 'configured-project');
         const context: ClaimContextRecord = {
-          kind: 'claim-context', id: recordId(session, 'context', scope), session, method,
+          kind: 'claim-context', id: recordId(session, 'context', scope === 'configured-project' ? scope : identityReference(session, scope)), session, method,
           scope, evidence: [...new Set(evidenceIds)], status: 'mechanically-derived',
           guarantee: relevant.length > 0
             ? 'Compiler-established module information with encountered syntax diagnostics; correctness is qualified.'
             : 'Module membership established by the supported TypeScript compiler operations.',
-          limitations: [limitation,
-            ...(inputs.excludedLocationCount > 0 ? ['Configured generated-output locations are explicitly excluded from repository evidence.'] : []),
-            'No atomic filesystem snapshot is claimed; inputs are memoized as first observed.',
+          limitations: [moduleLimitations.population,
+            ...(inputs.excludedLocationCount > 0 ? [moduleLimitations.excludedOutput] : []),
+            moduleLimitations.firstObserved,
             ...(relevant.length > 0 ? ['Encountered syntax diagnostics may limit the module interpretation.'] : [])],
           diagnostics: relevant,
         };
@@ -276,10 +292,15 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
         return context.id;
       };
       const materializeCore = () => {
-        const resolutionEvidence = resolutions.map(({ node, targetKey }) => ({ node, id: evidence(node, null, {
+        const resolutionEvidence = resolutions.map(({ node, targetKey }, order) => ({ node, order, id: evidence(node, null, {
           writtenSpecifier: node.text, target: targetKey ? recordId(session, 'module', targetKey) : null,
           status: targetKey ? 'established' : 'not-established',
         }) }));
+        const resolutionsByFile = new Map<ts.SourceFile, typeof resolutionEvidence>();
+        for (const item of resolutionEvidence) {
+          const file = item.node.getSourceFile(), bucket = resolutionsByFile.get(file) ?? [];
+          bucket.push(item); resolutionsByFile.set(file, bucket);
+        }
         const globalContext = makeContext('configured-project', [...files.map(file => evidence(file, null)), ...resolutionEvidence.map(item => item.id)], files);
         const moduleIds: RecordId[] = [];
         const mnemonic = (candidate: typeof candidates[number]): Pick<ModuleClaim['information'], 'handle' | 'handleProvenance'> => {
@@ -309,10 +330,13 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
         };
         for (const candidate of candidates) {
           const id = recordId(session, 'module', candidate.key);
-          const claim = recordId(session, 'claim', id);
+          const claim = recordId(session, 'claim', identityReference(session, id));
           const context = makeContext(id, [...candidate.declarations.map(declaration => evidence(declaration, candidate.compilerName)),
-            ...resolutionEvidence.filter(item => candidate.declarations.some(declaration => item.node.getSourceFile() === declaration.getSourceFile()
-              && item.node.pos >= declaration.pos && item.node.end <= declaration.end)).map(item => item.id)],
+            ...[...new Set(candidate.declarations.map(declaration => declaration.getSourceFile()))]
+              .flatMap(file => resolutionsByFile.get(file) ?? [])
+              .filter(item => candidate.declarations.some(declaration => item.node.getSourceFile() === declaration.getSourceFile()
+                && item.node.pos >= declaration.pos && item.node.end <= declaration.end))
+              .sort((a, b) => a.order - b.order).map(item => item.id)],
             candidate.declarations.map(declaration => declaration.getSourceFile()));
           records.push({ kind: 'module', id, session, method, claim }, {
             kind: 'claim', id: claim, session, method, subject: id, context,
@@ -333,16 +357,15 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
           if (record.kind !== 'claim-context') return record;
           // A repeated claim keeps the input basis on which it was first established.
           // The store still checks every other field for immutable-record collisions.
-          const basis = support.get(record.id) ?? inputId;
+          const retained = store.lookup(record.id);
+          if (retained && retained.kind !== 'claim-context') throw new Error('Expected historical Claim context');
+          const basis = retained?.inputs ?? inputId;
           return { ...record, inputs: basis };
         }));
-      for (const record of [...records, ...(expansions?.records ?? []), ...(dependencyResult?.records ?? []), ...(composition?.records ?? [])]) {
-        if (record.kind === 'claim-context' && !support.has(record.id)) support.set(record.id, inputId);
-      }
       core ??= { globalContext, moduleIds };
-      if (expansions) expansionCache.set(expansionKey, keep(expansions, expansions.results.every(complete), expansionRevision));
-      if (composition) compositionCache = keep(composition, composition.results.every(complete), compositionRevision);
-      if (dependencyResult) dependencyCache = keep(dependencyResult, complete(dependencyResult.result), dependencyRevision);
+      if (expansions) expansionCache.set(expansionKey, keep(expansions, expansions.results.every(completedMaterialization), expansionRevision));
+      if (composition) compositionCache = keep(composition, composition.results.every(completedMaterialization), compositionRevision);
+      if (dependencyResult) dependencyCache = keep(dependencyResult, completedMaterialization(dependencyResult.result), dependencyRevision);
       const selectedExpansions = expansions ?? cachedExpansions;
       const selectedComposition = composition ?? cachedComposition;
       const selectedDependencies = dependencyResult ?? cachedDependencies;
@@ -357,8 +380,9 @@ export function openTypeScriptProject(options: ProjectOptions): ProjectOpenResul
         ...(requested.length ? { expansions: [...(selectedExpansions?.results ?? []), ...(requested.includes('composition') ? selectedComposition?.results ?? [] : [])] } : {}),
         ...(dependencies && selectedDependencies ? { dependencies: selectedDependencies.result } : {}),
       };
+      freezeOwned(result);
       if (stable) results.set(requestKey, keep(result,
-        (result.expansions ?? []).every(complete) && (!result.dependencies || complete(result.dependencies)), inputs.revision()));
+        (result.expansions ?? []).every(completedMaterialization) && (!result.dependencies || completedMaterialization(result.dependencies)), inputs.revision()));
       return result;
     };
   }

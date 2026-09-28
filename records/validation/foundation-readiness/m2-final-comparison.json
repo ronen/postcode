@@ -1,0 +1,1168 @@
+{
+  "before": {
+    "build": "version-aligned-baseline",
+    "sha256": "a0a5e4e530eea2353e6fae0123d3c3d581c0418f3795316e32b280169dfe51dc"
+  },
+  "after": {
+    "build": "final-m2",
+    "sha256": "1c27c0f2cfecef90e7e3b39ee8741b4217e54eff6599fc5050e39c047208de8f"
+  },
+  "results": [
+    {
+      "config": "dependency-journey/tsconfig.json",
+      "args": [
+        "modules"
+      ],
+      "bytes": 1114,
+      "sha256": "82d597f77a34ab8e790d004a4d8678f21fd5fde3c649963edd665e4e08f52a80",
+      "equal": true,
+      "session": "session:88084944-43a4-47d9-a7ab-9c1b7bbef891",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey/tsconfig.json",
+      "args": [
+        "modules",
+        "--json"
+      ],
+      "bytes": 52665,
+      "sha256": "893784fd6dec08af2841a07671193b6a2d58c270f6df1df9b8d6a815c3265897",
+      "equal": true,
+      "session": "session:4d8e7fdf-1f7d-42a4-8804-fcec5208fb93",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey/tsconfig.json",
+      "args": [
+        "organization",
+        "project"
+      ],
+      "bytes": 1598,
+      "sha256": "2f8f9b785cca68f3216fcbc79d4d6b6face67e7b227293b1a8e9903ce4e1e0b5",
+      "equal": true,
+      "session": "session:a6b60035-1406-4f5f-a90b-70db4c03ebb8",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey/tsconfig.json",
+      "args": [
+        "organization",
+        "project",
+        "--json"
+      ],
+      "bytes": 46879,
+      "sha256": "8b4eb073345beac5b130274070db93ec9cc27cb6a690e8e4c1d9cdde408e511d",
+      "equal": true,
+      "session": "session:851517fb-8ba9-4755-b49f-0d514fae5b95",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey/tsconfig.json",
+      "args": [
+        "organization",
+        "repository"
+      ],
+      "bytes": 1590,
+      "sha256": "ac188065ce1f38bfa4f700692f01f2d6e7ad77639739f7bc3e7a48969be18848",
+      "equal": true,
+      "session": "session:bb03c8fd-7d15-4d61-9d47-1d72b907c880",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey/tsconfig.json",
+      "args": [
+        "organization",
+        "repository",
+        "--json"
+      ],
+      "bytes": 46871,
+      "sha256": "16808b82c58f35415a6d298d4d0d0dc10561cd29c7e85c3265ab1d869f0c80f6",
+      "equal": true,
+      "session": "session:6777ab3d-c47d-425e-a1da-4f9ac1710bbf",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey/tsconfig.json",
+      "args": [
+        "inspect",
+        "forward"
+      ],
+      "bytes": 1120,
+      "sha256": "9c0a2169bb09cc55b4549cfc671a7c666a9c496b64d4e4826f0cf25a5a49d081",
+      "equal": true,
+      "session": "session:d66d133b-338c-44e6-a3f3-1c4aa1efba25",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey/tsconfig.json",
+      "args": [
+        "inspect",
+        "forward",
+        "--json"
+      ],
+      "bytes": 12736,
+      "sha256": "8934adf6922c5d7718ddd16a460c21c9313467c325f272b1a3c00c58b413d173",
+      "equal": true,
+      "session": "session:4e0fea8b-fce4-4d34-a8d1-2d831167384d",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey/tsconfig.json",
+      "args": [
+        "inspect",
+        "forward",
+        "--source-detail"
+      ],
+      "bytes": 1951,
+      "sha256": "ce586118e57c92f08d857ca15a0dc498774ad7fd9b991a05f9362d9ebfb55358",
+      "equal": true,
+      "session": "session:a415d999-c14c-4a33-87b0-1c2b0e9f7e5f",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey/tsconfig.json",
+      "args": [
+        "inspect",
+        "forward",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 18879,
+      "sha256": "ea6692a5a2e98344e772870c22f7ff10a73703750c39494fdac3a3c9754f9148",
+      "equal": true,
+      "session": "session:fa0c3d19-cf52-4ba1-8326-b607ea0e5f70",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey/tsconfig.json",
+      "args": [
+        "dependencies"
+      ],
+      "bytes": 3386,
+      "sha256": "40750923d228f99a4147f738e3efccb590a4a10e957c7164a848382fce399e76",
+      "equal": true,
+      "session": "session:62089406-5c88-41e3-b260-aac9af26ec63",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--json"
+      ],
+      "bytes": 114231,
+      "sha256": "51877b679d9d93d966257dbeb1614ad9469be482ea6e44325dea54ed080f5897",
+      "equal": true,
+      "session": "session:c3615cfe-c689-4e60-8af8-22ae435ce38e",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--source-detail"
+      ],
+      "bytes": 7004,
+      "sha256": "ee498e1983468b5145d7501ec18d7579c22b48d0cdea24ad4868d6b772d00ecf",
+      "equal": true,
+      "session": "session:82da6071-d630-4d9d-b775-b9618ed81d28",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 163442,
+      "sha256": "6f8c7cefcbc3d58c9a29abd4f1d5a8dd861ef9c471b9876c48e8389363a1cdcd",
+      "equal": true,
+      "session": "session:760acfe1-b387-41d4-9b45-5583a6ce099a",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey/tsconfig.json",
+      "args": [
+        "children",
+        "forward",
+        "--source-detail"
+      ],
+      "bytes": 3734,
+      "sha256": "441d2fc57cbbbb8568ff52cfbda5f681053f53d2784552450b4645a914d16075",
+      "equal": true,
+      "session": "session:ad30ba87-c590-4a3e-be69-b47a5778701e",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey/tsconfig.json",
+      "args": [
+        "children",
+        "forward",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 65158,
+      "sha256": "0c5460eb2446e0277f757b0ae709de55b39e47d76fe27ac12bb731a676709689",
+      "equal": true,
+      "session": "session:c52cdfe4-df8d-4bf1-9043-27f4d7706d3b",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey/tsconfig.json",
+      "args": [
+        "parents",
+        "forward",
+        "--source-detail"
+      ],
+      "bytes": 3628,
+      "sha256": "4a806afa6b1bffc6c8dbd367010f0219bb93e593908dcb0574cc78ae7b5c1691",
+      "equal": true,
+      "session": "session:fa227edc-97fe-4582-8e0a-1f7a295e565a",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-journey/tsconfig.json",
+      "args": [
+        "parents",
+        "forward",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 61673,
+      "sha256": "6573462bf39cf370acd62a65782fa548cc671859a7f5a54e324b15c59ff710fd",
+      "equal": true,
+      "session": "session:6292a2b7-3752-4d2f-b05b-7dc7486105b9",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract/tsconfig.json",
+      "args": [
+        "modules"
+      ],
+      "bytes": 1830,
+      "sha256": "7ca69acbd9199f29646351bd07204c0dcebac88e81fa4660148c1dbaedc0244d",
+      "equal": true,
+      "session": "session:f4a1868d-a208-4525-8a35-d8b7257b3117",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract/tsconfig.json",
+      "args": [
+        "modules",
+        "--json"
+      ],
+      "bytes": 79988,
+      "sha256": "c1c418ed5c22e913d1cf1117d3f11ba5471276e744df7481c60f090f9861cd37",
+      "equal": true,
+      "session": "session:d0d5b4c0-a14f-4f59-bb2d-56b6a84e60c1",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract/tsconfig.json",
+      "args": [
+        "organization",
+        "project"
+      ],
+      "bytes": 1645,
+      "sha256": "435f09cee8d1f455c494067951f5986d03a775d8fec4f2b2b4a417f5ed482e58",
+      "equal": true,
+      "session": "session:584934cf-643e-4ac5-b38f-67c226c3cda1",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract/tsconfig.json",
+      "args": [
+        "organization",
+        "project",
+        "--json"
+      ],
+      "bytes": 50318,
+      "sha256": "0ce16e2c8faf61dcba7c5e73db2cc28fc95a8103bb8064a25e2893d0d37e4f7b",
+      "equal": true,
+      "session": "session:261c921a-585c-44d0-9714-75be99487626",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract/tsconfig.json",
+      "args": [
+        "organization",
+        "repository"
+      ],
+      "bytes": 1600,
+      "sha256": "503447f85e4005a1ac284faf37663a048c5c2767b9b4950f68e18ce8d06b13fa",
+      "equal": true,
+      "session": "session:91bf3592-7885-4978-a3ab-0f4a01b51129",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract/tsconfig.json",
+      "args": [
+        "organization",
+        "repository",
+        "--json"
+      ],
+      "bytes": 50295,
+      "sha256": "35ad3a19cc8d2054dd922f7998c15ca21921628bca0dc01dffba74fa1c096220",
+      "equal": true,
+      "session": "session:ff8541ba-4dd9-4508-8b53-f90696cb4558",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract/tsconfig.json",
+      "args": [
+        "inspect",
+        "requests"
+      ],
+      "bytes": 1131,
+      "sha256": "27e895063247713eb92325cc6d3b4fb45d03daac6cc1cbe85b7ac5736724dbd1",
+      "equal": true,
+      "session": "session:bff58566-75fc-448a-a54a-063f50165f47",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract/tsconfig.json",
+      "args": [
+        "inspect",
+        "requests",
+        "--json"
+      ],
+      "bytes": 16265,
+      "sha256": "172f0de3bf09c12e17d65366d5294cc347d421cf91207218d9478c6f2dcb1719",
+      "equal": true,
+      "session": "session:92f00502-775e-4b04-bb92-125a6beea1f6",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract/tsconfig.json",
+      "args": [
+        "inspect",
+        "requests",
+        "--source-detail"
+      ],
+      "bytes": 3053,
+      "sha256": "14aec9dceb83b8aa5271ecc7198c97736bcbe9e0ba175dc697bd7ed2afabba26",
+      "equal": true,
+      "session": "session:9fdcfc74-c6bf-41a8-b1ad-a2e7f2492113",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract/tsconfig.json",
+      "args": [
+        "inspect",
+        "requests",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 32568,
+      "sha256": "fba942ac28788af0a9d705520e02c64b11819da2067c6cbff0e5426fa01a4839",
+      "equal": true,
+      "session": "session:657f0c25-8ab8-4597-9f49-571ed062fd78",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract/tsconfig.json",
+      "args": [
+        "dependencies"
+      ],
+      "bytes": 3953,
+      "sha256": "532c3a96702e9277e8c82496715f8a24559b998c4793455d8a927127d4f6f6f6",
+      "equal": true,
+      "session": "session:4ba29e9a-1913-4734-814a-8a0c8ff93d64",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--json"
+      ],
+      "bytes": 232191,
+      "sha256": "ba6d803a27b5c62c4a08ab282963c9ee2c033db2a2ee7554de725cfb19c17721",
+      "equal": true,
+      "session": "session:76710bdd-6025-4d6f-ac6f-26c41b3fe621",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--source-detail"
+      ],
+      "bytes": 17111,
+      "sha256": "d5c08745e23a75297d0a4ed129cb97e159f65b321137dda2c4af485e00e7d234",
+      "equal": true,
+      "session": "session:3ede3b7a-f8d7-45bb-ac5e-d91606eb7ef9",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 397043,
+      "sha256": "72c95015df977a234f439a2d7f9f4d4b3f1105ffba138766abdfe75e4d113d24",
+      "equal": true,
+      "session": "session:4f5a78ce-0abe-4c00-a182-8b394875262b",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract/tsconfig.json",
+      "args": [
+        "children",
+        "requests",
+        "--source-detail"
+      ],
+      "bytes": 13525,
+      "sha256": "b3127ac5ecd21ef34b9c64b9b4dfe7ec9dc06b3adedd965c9afe6c9eac6673f1",
+      "equal": true,
+      "session": "session:a2fd9baa-a61e-44a8-aa62-c6590fafc616",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract/tsconfig.json",
+      "args": [
+        "children",
+        "requests",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 292831,
+      "sha256": "dc30b5d1d88e38707a591ceddd0d9ad6e3d040bf2c8abb2bdacff3ea69fb5bf5",
+      "equal": true,
+      "session": "session:43b38f5b-d494-4b28-b49d-b03d20d60383",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract/tsconfig.json",
+      "args": [
+        "parents",
+        "requests",
+        "--source-detail"
+      ],
+      "bytes": 2820,
+      "sha256": "17b1b914fbdf4a9ca5e73983617a4595ff3b144303b530990f7b05320176701b",
+      "equal": true,
+      "session": "session:161704c5-9a42-4c6e-9a1a-d958ff8bdaf4",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "dependency-contract/tsconfig.json",
+      "args": [
+        "parents",
+        "requests",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 36638,
+      "sha256": "b0cbb181f9fa5ee33f12e5084bf3bef1d1610ec6651e72f4781b5dd06d0cd325",
+      "equal": true,
+      "session": "session:ebda8668-c369-423b-aa48-7b8db9213e91",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports/tsconfig.json",
+      "args": [
+        "modules"
+      ],
+      "bytes": 2207,
+      "sha256": "992a39eaf7001e0e25df05618798ee94c749d3bbc8662e98d49026e2f66d541c",
+      "equal": true,
+      "session": "session:c7710403-f1d9-42be-aa5a-5e042ba684a2",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports/tsconfig.json",
+      "args": [
+        "modules",
+        "--json"
+      ],
+      "bytes": 135160,
+      "sha256": "2cf15f8f48ba0ce2b664fb897b866dd0d30008507e8afa9a9ebed931f343e510",
+      "equal": true,
+      "session": "session:4cb24b30-1d62-488f-aa27-1e91127dc393",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports/tsconfig.json",
+      "args": [
+        "organization",
+        "project"
+      ],
+      "bytes": 1546,
+      "sha256": "51fd113abd76039f754b411ad4e83a9cc5149e12ef519c4f2f1e7fd4941c81bb",
+      "equal": true,
+      "session": "session:80591ad4-7a71-4bd8-8ffe-12f270a79c9d",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports/tsconfig.json",
+      "args": [
+        "organization",
+        "project",
+        "--json"
+      ],
+      "bytes": 46215,
+      "sha256": "551340830443fe921ff9cf5eb1219bbb8a83acd4b64b6a283dc4569de09f6eef",
+      "equal": true,
+      "session": "session:509cd54e-d8a3-45d9-b5a2-4860c7db12b3",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports/tsconfig.json",
+      "args": [
+        "organization",
+        "repository"
+      ],
+      "bytes": 1538,
+      "sha256": "902deab1206199a0d867a9b14cdc7b671db6809e37e1b3e7b0984dbd9d78f826",
+      "equal": true,
+      "session": "session:a2455fdd-bad3-4246-8b78-35821fa97173",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports/tsconfig.json",
+      "args": [
+        "organization",
+        "repository",
+        "--json"
+      ],
+      "bytes": 46207,
+      "sha256": "2a70459de6335fa546bd71df1eef9ffae1ca930feddfe6fbc3ef0a3dde5eff51",
+      "equal": true,
+      "session": "session:384e4c9d-1d4f-4514-9f9c-c075efc0ed4e",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports/tsconfig.json",
+      "args": [
+        "inspect",
+        "origin"
+      ],
+      "bytes": 1447,
+      "sha256": "6db61fa87203b6f7e5c2f55c8568fe2dd7428e5dc546f0c4c13b6dfa70b085b0",
+      "equal": true,
+      "session": "session:6675f982-3a36-416e-8c7b-1634489d4c86",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports/tsconfig.json",
+      "args": [
+        "inspect",
+        "origin",
+        "--json"
+      ],
+      "bytes": 27248,
+      "sha256": "8d35528590fb90dcdf8fa959142de8ada1c6d726e90cbfe5e09e70bafb9c136e",
+      "equal": true,
+      "session": "session:b2a935b8-389f-4c6e-8026-3a486a43da86",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports/tsconfig.json",
+      "args": [
+        "inspect",
+        "origin",
+        "--source-detail"
+      ],
+      "bytes": 4366,
+      "sha256": "9d66e67dd74fd7b726bbd3bc28230d9b769b843d19600fba9078ee255148982e",
+      "equal": true,
+      "session": "session:e51ba353-1fb9-4906-8a7b-288a8d7d3865",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports/tsconfig.json",
+      "args": [
+        "inspect",
+        "origin",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 61441,
+      "sha256": "901a630e811f6d87422ffbc39355d8a101208fb12773a6303e6d11b5ea117a76",
+      "equal": true,
+      "session": "session:7f516866-330c-488a-84cf-d093161226fc",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports/tsconfig.json",
+      "args": [
+        "dependencies"
+      ],
+      "bytes": 3369,
+      "sha256": "5cf29ffbee63868eb1f83e9dacdfc736e77a8dac8dc0c829a2550f67c27a4e27",
+      "equal": true,
+      "session": "session:07af8ff4-788f-4492-817a-0c96505f528f",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--json"
+      ],
+      "bytes": 132810,
+      "sha256": "c53ddb0d955b4902786720a983f7acb42207d292d4245c93b13942fd341e7f39",
+      "equal": true,
+      "session": "session:a21957ae-5123-4d27-8c28-820661640657",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--source-detail"
+      ],
+      "bytes": 7242,
+      "sha256": "6f85209b581ff2507c26de833d848dbd0741a951f068aa5a6550e6c7afe6763f",
+      "equal": true,
+      "session": "session:16c73d99-51f4-4702-af8c-7a3b7107ea61",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 177790,
+      "sha256": "5def96870d542007f6ae8756c4a203ca223fbe7a45012e09ae0768bf5e75e648",
+      "equal": true,
+      "session": "session:1fd8c8da-f9e8-461b-bac0-ee2c41b257e9",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports/tsconfig.json",
+      "args": [
+        "children",
+        "origin",
+        "--source-detail"
+      ],
+      "bytes": 2890,
+      "sha256": "984b94115aeb47b96d3d17a01d83b72b9e2e473b2d06594a864b25dd89285577",
+      "equal": true,
+      "session": "session:905e4155-f01d-42aa-84bb-3d652faf24bf",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports/tsconfig.json",
+      "args": [
+        "children",
+        "origin",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 36855,
+      "sha256": "b020de18f75aae2fe8087ab30d590e30e098ca061996d706646e312102f8f37d",
+      "equal": true,
+      "session": "session:1e9c7b1b-4923-4685-8663-75874dba103e",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports/tsconfig.json",
+      "args": [
+        "parents",
+        "origin",
+        "--source-detail"
+      ],
+      "bytes": 6172,
+      "sha256": "376226b1429b040584d764d523f4c7630ff166b31b8aa38a22fb15bff3709499",
+      "equal": true,
+      "session": "session:a1369f46-01ff-4a25-aeb7-952dbc6c2008",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "exports/tsconfig.json",
+      "args": [
+        "parents",
+        "origin",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 136756,
+      "sha256": "c627cb43be1954d049e1d87a304131e2363cc1bde38b1be801adfb40643366b6",
+      "equal": true,
+      "session": "session:782e294f-be15-405e-8929-a91f5194b3cf",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale/tsconfig.json",
+      "args": [
+        "modules"
+      ],
+      "bytes": 5531,
+      "sha256": "8941d66216e60d59db2e09362ed8a1c91d09c4b05070558ccc677293222cf825",
+      "equal": true,
+      "session": "session:f653f22d-2e1a-4b67-868a-61cb11be30e9",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale/tsconfig.json",
+      "args": [
+        "modules",
+        "--json"
+      ],
+      "bytes": 2370958,
+      "sha256": "ff8fbc2921d81a9d6ec78647b028445ae1f7b8c73548cb5fb3d9c23b05e855fb",
+      "equal": true,
+      "session": "session:4a2cce13-5040-4214-ac86-77c292750edd",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale/tsconfig.json",
+      "args": [
+        "organization",
+        "project"
+      ],
+      "bytes": 1868,
+      "sha256": "5b0f5ebc0c35554fa97449ad886b71a6b56efdb9ce4306bf8ac7859c3e7bb259",
+      "equal": true,
+      "session": "session:dd9f0376-080d-4d5f-b575-40440580c97a",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale/tsconfig.json",
+      "args": [
+        "organization",
+        "project",
+        "--json"
+      ],
+      "bytes": 589998,
+      "sha256": "8965be4c0c7b388d254e96edd70080efacbbacd3e935f70a967cce809c0e7243",
+      "equal": true,
+      "session": "session:24373242-127b-4170-ba3a-b33980bc5911",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale/tsconfig.json",
+      "args": [
+        "organization",
+        "repository"
+      ],
+      "bytes": 3886,
+      "sha256": "49f12eb8da255d3344091def308d09cecb2371cc72c3f5ec236a5fba517c19c0",
+      "equal": true,
+      "session": "session:cc1b547b-1e0c-4250-958f-346c95730bc0",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale/tsconfig.json",
+      "args": [
+        "organization",
+        "repository",
+        "--json"
+      ],
+      "bytes": 640848,
+      "sha256": "aedb999e9b443071dfe424413af5887edf708b0fe2bda25d7ff8bc0ec850143a",
+      "equal": true,
+      "session": "session:ca1000b3-0b54-4f20-8031-e1fbdc4cbe3b",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale/tsconfig.json",
+      "args": [
+        "inspect",
+        "module0"
+      ],
+      "bytes": 9527,
+      "sha256": "c45c33af9c8aa190cbee0a74e772b9e28f89275e3915af3e49a957f68c5cda3b",
+      "equal": true,
+      "session": "session:f3e753e2-69c0-4721-a1bb-d4cd2e101e30",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale/tsconfig.json",
+      "args": [
+        "inspect",
+        "module0",
+        "--json"
+      ],
+      "bytes": 553995,
+      "sha256": "829ab9c8d682e67762a697af0c031284f388fe48f3c4448314d46b171527d83d",
+      "equal": true,
+      "session": "session:fe9d817c-4dc6-46ec-8605-b145305e490e",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale/tsconfig.json",
+      "args": [
+        "inspect",
+        "module0",
+        "--source-detail"
+      ],
+      "bytes": 249178,
+      "sha256": "0aced6779fddb1f0a15a888d484d704fa64014e1d765dc2dc8cb9c5a2793927a",
+      "equal": true,
+      "session": "session:0d481612-37d4-4c12-9ad4-9a7f646381ef",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale/tsconfig.json",
+      "args": [
+        "inspect",
+        "module0",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 2330458,
+      "sha256": "a41381e2a5bafcb5de6995a4074e0c1c8dfc558437a55210bd48318f67ccae3d",
+      "equal": true,
+      "session": "session:1a7ad738-cbf3-4c0e-807a-9d24149622bc",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale/tsconfig.json",
+      "args": [
+        "dependencies"
+      ],
+      "bytes": 3535,
+      "sha256": "b505fa718e1a2ac560c51370af91b08dfdf36f973936ff91d707168a723a9036",
+      "equal": true,
+      "session": "session:c9cbbe3b-cb6a-462a-b06a-0a3c4a8bff20",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--json"
+      ],
+      "bytes": 3580862,
+      "sha256": "33f40e49c67be807e181216f5b528d9bd5545983769dd506d1372b943404f1e3",
+      "equal": true,
+      "session": "session:fb216a2b-1e75-46f3-ac17-f190b119bcac",
+      "events": [
+        "view-produced",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--source-detail"
+      ],
+      "bytes": 7495,
+      "sha256": "4251cbcd240b742d778a5a90b054aa339044272fabc9e0e6a5f3d05effc5c505",
+      "equal": true,
+      "session": "session:b50d588c-6e25-4dab-92c6-a4bcf64c3f8a",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale/tsconfig.json",
+      "args": [
+        "dependencies",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 3927571,
+      "sha256": "601d1f029b119f280cb92fc45e678b597d4e47a485b7a413a893feeac7fde937",
+      "equal": true,
+      "session": "session:911e353a-4875-45f3-a848-b0babaf3ffa8",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale/tsconfig.json",
+      "args": [
+        "children",
+        "module0",
+        "--source-detail"
+      ],
+      "bytes": 3506,
+      "sha256": "44d8da2303956d602386fdceb0ae32b791ae658f63ce291245784cfe59a0fb62",
+      "equal": true,
+      "session": "session:d37ce057-b075-489a-a4d7-163441f79fe9",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale/tsconfig.json",
+      "args": [
+        "children",
+        "module0",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 588535,
+      "sha256": "92d116f77e18288b1041f375f1480c81636cf7192158c3613c8cbaed6872a115",
+      "equal": true,
+      "session": "session:e99bba2f-300e-470c-b727-0a746c78a26c",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale/tsconfig.json",
+      "args": [
+        "parents",
+        "module0",
+        "--source-detail"
+      ],
+      "bytes": 2821,
+      "sha256": "6b33cf1b1f21684c05b809c77769b9f10b797d822a4e35de1c65d65a13fafb7a",
+      "equal": true,
+      "session": "session:59ae607e-9d75-43ab-9eec-0e4922370d38",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    },
+    {
+      "config": "generated-scale/tsconfig.json",
+      "args": [
+        "parents",
+        "module0",
+        "--source-detail",
+        "--json"
+      ],
+      "bytes": 513546,
+      "sha256": "841a9531f68fe02c8d499275b32e424796f8f870962e60cc93ea103ab26882e2",
+      "equal": true,
+      "session": "session:5e4bbaf9-e3e3-4a31-b4c6-4c6fb51c6f50",
+      "events": [
+        "view-produced",
+        "source-escape",
+        "command-completed"
+      ]
+    }
+  ]
+}

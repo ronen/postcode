@@ -20,6 +20,28 @@ Describe the need, why it matters, and relevant constraints without designing th
 
 ## Candidates
 
+## Correct output boundaries across different filesystem case rules
+
+Added: 2026-09-28
+Origin: foundation-readiness M3 review, O1 and O2; explicitly deferred by the human when accepting M3
+Area: generated-output evidence boundaries
+
+The current case probe assumes one rule per device and folds an entire lexical
+path according to its resolved parent's rule. A controlled filesystem model
+confirms two defects: directories with different case rules on one device can
+cause generated output to be missed or source to be excluded (O1); a sensitive
+lexical prefix linked into an insensitive filesystem can exclude a distinct
+case-differing sibling (O2). The local APFS checks do not exercise either layout.
+
+Correct these while preserving shared compiler/repository exclusions, alias
+counting, missing suffixes, original path spellings and replay invalidation.
+Unknown explicit boundaries must still fail visibly rather than use a guessed
+rule. Component-specific case observation needs assessment, including directories
+that offer no usable spelling probe. This entry is a deferred concern, not platform
+certification or authorization to implement. See the
+[M3 disposition](../records/reviews/foundation-readiness/2026-09-28-m3-acquisition-lifetime-disposition.md)
+and [preserved model evidence](../records/validation/foundation-readiness/2026-09-28-m3-round-2.md).
+
 ## Assess reference-lifetime disclosure in existing views
 
 Added: 2026-09-26
@@ -166,9 +188,9 @@ Added: 2026-09-24
 Origin: human observation that PostCode appears to use one CPU during analysis
 Area: analysis execution and responsiveness
 
-The interactive shell currently runs one command at a time in one analysis worker. TypeScript program construction and much of discovery use synchronous compiler APIs; repository capture and input probes currently use synchronous filesystem and Git reads. The [foundation-readiness plan](plans/foundation-readiness.md) changes Git execution to support cancellation and removes repeated scans through local indexes; it does not establish general analysis parallelism.
+Both CLI entry paths run one command at a time in one analysis worker. TypeScript program construction and much of discovery use synchronous compiler APIs; repository capture and input probes retain synchronous filesystem reads. The [foundation-readiness plan](plans/foundation-readiness.md) has introduced parent-owned asynchronous Git execution and cancellation. Its remaining processing work removes repeated scans through local indexes; it does not establish general analysis parallelism.
 
-After that slice, measure remaining CPU use and stage-level wall time on representative projects to identify work that could run independently or overlap without changing results. Account for the implemented execution model rather than assuming the current synchronous Git path remains.
+After that slice, measure remaining CPU use and stage-level wall time on representative projects to identify work that could run independently or overlap without changing results. Account for the implemented parent/worker execution model and asynchronous Git ownership.
 
 Evaluate further parallel analysis or asynchronous I/O against worker startup and communication, memory use, deterministic output, captured-input consistency, session reference bindings and cancellation. Do not assume that asynchronous reads accelerate CPU-bound compiler work. Use the [completed latency investigation](../records/validation/2026-09-21-analysis-latency.md), the [processing audits](../records/audits/2026-09-27-foundation-readiness/README.md), and the foundation plan's integrated measurements as evidence, accounting separately for opening, first use, reuse and full CLI publication.
 

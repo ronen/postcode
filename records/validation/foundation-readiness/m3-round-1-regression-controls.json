@@ -1,0 +1,17 @@
+{
+  "reviewedTarget": "4656a34c0847c82d9f830a9d1587a2a28f2dd138",
+  "control": "Corrected regression tests against unmodified reviewed compiled source",
+  "expectedFailures": [
+    "ordinary cycle compiler candidates stay absent, replay recovery, and open through both CLI entry paths",
+    "ordinary unreadable compiler candidates stay absent, replay recovery, and open through both CLI entry paths",
+    "missing output suffixes follow observed filesystem case handling before and after materialization"
+  ],
+  "unchangedBoundaryTestsPassed": 2,
+  "unexpectedFailures": 0,
+  "correctedSourceFullSuite": {
+    "passed": 280,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0
+  }
+}

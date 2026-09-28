@@ -6,11 +6,11 @@ Use descriptive, unnumbered filenames, such as `initial-product-slice.md` or `ag
 
 ## Approved upcoming work
 
-- [Foundation readiness](foundation-readiness.md) — approved; implementation has not begun. Establish shared ownership, evidence boundaries, verification, library delegation and processing improvements before module investigation implementation.
 - [Module investigation](module-investigation.md) — approved; implementation has not begun. Depends on the foundation-readiness plan's completed and reviewed boundaries.
 
 ## Completed work
 
+- [Foundation readiness](foundation-readiness.md) — completed after M5 review and human-authorized closure; two filesystem case-rule defects remain explicitly deferred in the [backlog](../backlog.md).
 - [Transient interactive session shell](transient-session-shell.md) — completed.
 
 ## Lifecycle

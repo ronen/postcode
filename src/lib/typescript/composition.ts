@@ -1,12 +1,13 @@
+import { diagnosticLookup } from './diagnostics.js';
 import ts from 'typescript';
-import { methods, recordId } from '../identity.js';
+import { identityReference, methods, recordId } from '../identity.js';
 import type { DiscoveryResult } from '../evaluation.js';
 import type { ProgramRecord, RecordId, SessionId } from '../records.js';
 import type { ExpansionModule } from './expansions.js';
 
 /** Exhaustive syntax property; no export traversal or purpose inference. */
 export function prepareComposition(program: ts.Program, modules: readonly ExpansionModule[]) {
-  const diagnostics = program.getSyntacticDiagnostics();
+  const diagnostics = diagnosticLookup(program.getSyntacticDiagnostics());
   const prepared = modules.map(module => {
     const statements: ts.Statement[] = [];
     let supported = module.declarations.length > 0;
@@ -15,7 +16,7 @@ export function prepareComposition(program: ts.Program, modules: readonly Expans
       else if (ts.isModuleDeclaration(declaration) && declaration.body && ts.isModuleBlock(declaration.body)) statements.push(...declaration.body.statements);
       else supported = false;
     }
-    const relevant = diagnostics.filter(diagnostic => diagnostic.file && module.declarations.some(node => node.getSourceFile() === diagnostic.file))
+    const relevant = diagnostics(module.declarations.map(node => node.getSourceFile()))
       .map(diagnostic => ({ code: diagnostic.code, category: ts.DiagnosticCategory[diagnostic.category]!.toLowerCase() }));
     const substantive = statements.filter(statement => !ts.isEmptyStatement(statement));
     const complete = supported && relevant.length === 0;
@@ -30,8 +31,8 @@ export function prepareComposition(program: ts.Program, modules: readonly Expans
     const records: ProgramRecord[] = [];
     const results: NonNullable<DiscoveryResult['expansions']>[number][] = prepared.map(item => {
       const subject = recordId(session, 'module', item.module.key);
-      const context = recordId(session, 'composition-context', [method, subject]);
-      const claim = recordId(session, 'composition-claim', [method, subject]);
+      const context = recordId(session, 'composition-context', [method, identityReference(session, subject)]);
+      const claim = recordId(session, 'composition-claim', [method, identityReference(session, subject)]);
       records.push({ kind: 'claim-context', id: context, session, method, scope: subject,
         evidence: item.module.declarations.map(node => evidence(node, null)), status: 'mechanically-derived',
         guarantee: 'Composition tests every substantive top-level statement across all captured module declarations.',

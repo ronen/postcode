@@ -1,39 +1,41 @@
+import { livePath, outputBoundary } from '../output-boundary.js';
+import { operationalIO } from '../execution-errors.js';
+import type { OutputBoundary } from '../output-boundary.js';
 import path from 'node:path';
 import ts from 'typescript';
 import { canonical, compare, digest } from '../identity.js';
 
 /** Captures positive and negative resolution inputs, not just configured root contents. */
-export function captureInputs(excludedDirectories: readonly string[]) {
+export function captureInputs(excludedDirectories: readonly string[] | OutputBoundary) {
+  const policy = Array.isArray(excludedDirectories) ? outputBoundary(excludedDirectories) : excludedDirectories as OutputBoundary;
   const absolute = (name: string) => path.resolve(name);
-  const real = (name: string): string => {
-    const requested = absolute(name);
-    let ancestor = requested;
-    // realpath alone leaves a missing leaf unresolved, even under an existing symlink.
-    while (!ts.sys.fileExists(ancestor) && !ts.sys.directoryExists(ancestor)) {
-      const parent = path.dirname(ancestor);
-      if (parent === ancestor) break;
-      ancestor = parent;
-    }
-    const resolved = ts.sys.realpath?.(ancestor) ?? ancestor;
-    return path.resolve(resolved, path.relative(ancestor, requested));
-  };
-  const exclusions = excludedDirectories.map(name => ({ lexical: absolute(name), real: real(name) }))
-    .sort((a, b) => compare(a.lexical, b.lexical) || compare(a.real, b.real))
-    .filter((directory, index, all) => index === 0 || directory.lexical !== all[index - 1]!.lexical
-      || directory.real !== all[index - 1]!.real);
-  const within = (name: string, directory: string) => {
-    const relative = path.relative(directory, name);
-    return relative === '' || (!relative.startsWith(`..${path.sep}`) && relative !== '..' && !path.isAbsolute(relative));
-  };
-  const excluded = (name: string) => {
-    const lexical = absolute(name);
-    if (exclusions.some(directory => within(lexical, directory.lexical))) return true;
-    if (exclusions.length === 0) return false;
-    const resolved = real(name);
-    return exclusions.some(directory => within(resolved, directory.real));
-  };
+  const exclusions = policy.locations;
   const observations = new Map<string, unknown>();
   const probes = new Map<string, () => unknown>();
+  let replaying = false;
+  const unavailable = (name: string) => canonical(['unavailablePath', absolute(name)]);
+  const recordUnavailable = (name: string, error: unknown) => {
+    if (!operationalIO(error)) throw error;
+    // Validation compares the captured basis; only acquisition may extend it.
+    if (replaying) return;
+    const key = unavailable(name);
+    observations.set(key, true);
+    probes.set(key, () => {
+      try { livePath(name); return false; }
+      catch (error) { if (!operationalIO(error)) throw error; return true; }
+    });
+  };
+  // Explicit boundaries were resolved before this host exists. An operationally
+  // unreadable candidate is absent, but its later recovery must still be replayed.
+  const excluded = (name: string) => {
+    if (observations.has(unavailable(name))) return true;
+    try { return policy.excluded(name); }
+    catch (error) { recordUnavailable(name, error); return true; }
+  };
+  const real = (name: string) => {
+    try { return livePath(name); }
+    catch (error) { recordUnavailable(name, error); return absolute(name); }
+  };
   const memo = <T>(operation: string, args: unknown, run: () => T): T => {
     const key = canonical([operation, args]);
     if (observations.has(key)) return observations.get(key) as T;
@@ -59,17 +61,20 @@ export function captureInputs(excludedDirectories: readonly string[]) {
     writeFile: () => { throw new Error('Analysis must not write compiler output'); },
   };
   return {
-    system, excluded, excludedLocationCount: new Set(exclusions.map(directory => directory.real)).size,
+    system, excluded, excludedLocationCount: policy.count,
     revision: () => observations.size,
     changed: (): boolean => {
-      if (exclusions.some(directory => real(directory.lexical) !== directory.real)) return true;
-      for (const [key, probe] of probes) {
-        const before = observations.get(key), after = probe();
-        if (before === undefined || after === undefined) {
-          if (before !== after) return true;
-        } else if (canonical(before) !== canonical(after)) return true;
-      }
-      return false;
+      if (policy.changed()) return true;
+      replaying = true;
+      try {
+        for (const [key, probe] of probes) {
+          const before = observations.get(key), after = probe();
+          if (before === null || after === null || typeof before !== 'object' || typeof after !== 'object') {
+            if (before !== after) return true;
+          } else if (canonical(before) !== canonical(after)) return true;
+        }
+        return false;
+      } finally { replaying = false; }
     },
     identity: () => ({
       caseSensitive: system.useCaseSensitiveFileNames,

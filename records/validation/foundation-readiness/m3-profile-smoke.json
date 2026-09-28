@@ -1,0 +1,110 @@
+{
+  "args": [
+    "modules",
+    "--project",
+    "fixtures/empty/tsconfig.json",
+    "--json"
+  ],
+  "conditions": {
+    "node": "v22.13.1",
+    "platform": "darwin",
+    "arch": "x64",
+    "cpus": 16,
+    "cpu": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+    "loadBefore": [
+      7.30029296875,
+      9.39990234375,
+      9.630859375
+    ],
+    "freeMemoryBefore": 2785058816,
+    "loadAfter": [
+      7.19580078125,
+      9.34326171875,
+      9.609375
+    ],
+    "freeMemoryAfter": 2513616896
+  },
+  "exitCode": 0,
+  "wallMs": 1984,
+  "monotonicMs": 1983.097307,
+  "wallMinusMonotonicMs": 0.9026929999999993,
+  "cpu": {
+    "user": 1057133,
+    "system": 198790
+  },
+  "firstOutputMs": 1669.546968,
+  "observationMs": 3.992770000000064,
+  "stages": {
+    "observationBatch": {
+      "calls": 1,
+      "inclusiveMs": 0.48790200000007644,
+      "exclusiveMs": 0.48790200000007644
+    }
+  },
+  "workerStages": {
+    "captureRepository": {
+      "calls": 4,
+      "inclusiveMs": 1330.2257019999995,
+      "exclusiveMs": 1330.2257019999995
+    },
+    "deriveLayout": {
+      "calls": 1,
+      "inclusiveMs": 2.639515999999958,
+      "exclusiveMs": 2.639515999999958
+    },
+    "openTypeScriptProject": {
+      "calls": 1,
+      "inclusiveMs": 436.5049469999999,
+      "exclusiveMs": 27.091792000000055
+    },
+    "prepareExpansions": {
+      "calls": 1,
+      "inclusiveMs": 0.41974900000013804,
+      "exclusiveMs": 0.41974900000013804
+    },
+    "prepareComposition": {
+      "calls": 1,
+      "inclusiveMs": 0.10830399999986184,
+      "exclusiveMs": 0.10830399999986184
+    },
+    "materializeExpansions": {
+      "calls": 1,
+      "inclusiveMs": 0.31708499999990636,
+      "exclusiveMs": 0.31708499999990636
+    },
+    "materializeComposition": {
+      "calls": 1,
+      "inclusiveMs": 0.09218000000009852,
+      "exclusiveMs": 0.09218000000009852
+    },
+    "recordModuleEvaluation": {
+      "calls": 1,
+      "inclusiveMs": 0.9240600000000541,
+      "exclusiveMs": 0.9240600000000541
+    },
+    "evaluateModules": {
+      "calls": 1,
+      "inclusiveMs": 21.589242000000013,
+      "exclusiveMs": 19.727863999999954
+    },
+    "modules": {
+      "calls": 1,
+      "inclusiveMs": 0.6767690000001494,
+      "exclusiveMs": 0.6767690000001494
+    },
+    "createView": {
+      "calls": 1,
+      "inclusiveMs": 0.5364429999999629,
+      "exclusiveMs": 0.5364429999999629
+    },
+    "renderView": {
+      "calls": 1,
+      "inclusiveMs": 0.06684599999994134,
+      "exclusiveMs": 0.06684599999994134
+    }
+  },
+  "outputBytes": 3903,
+  "outputDigest": "58567ce5fd518f5cd66b5b90cd86a4d41630a026429d65311dea1e338ce098f6",
+  "warning": false,
+  "disposition": "unreviewed"
+}

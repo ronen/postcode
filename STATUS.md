@@ -1,6 +1,6 @@
 # Project Status
 
-Last reviewed: 2026-09-23
+Last reviewed: 2026-09-28
 
 PostCode is currently available as a development CLI for investigating one
 configured TypeScript project.
@@ -21,9 +21,12 @@ configured TypeScript project.
   with unresolved requests and analysis limits distinguished.
 - **[Supporting evidence](docs/cli-reference.md#source-detail-and-observations).**
   Inspections can expose source locations and bounded excerpts supporting the
-  displayed information.
+  displayed information. Terminal wrapping preserves combining characters and emoji,
+  measures display width, and visibly escapes control characters.
 - **[Local observation recording](README.md#observability).**
-  Commands record requests, outcomes and presented views for later examination.
+  Commands record requests, outcomes and presented views, grouped by project and
+  UTC date. Only complete batches become visible under final filenames; delivery
+  and later cleanup warnings remain distinct.
 
 ## Current limits
 
@@ -31,4 +34,10 @@ configured TypeScript project.
   TypeScript only, one configured project at a time, with explicit coverage limits.
 - **[Session lifetime](docs/cli-reference.md#input-stability-and-retained-work):**
   investigations cannot be saved or resumed. Detected input changes require
-  reopening; long sessions can accumulate memory until closed.
+  reopening; long sessions can accumulate memory until closed. Active commands
+  can be interrupted in both CLI modes. Git acquisition has a per-call deadline;
+  unconfirmed cleanup is reported separately, without promising a deadline for
+  the whole analysis.
+- **[Output exclusions](docs/backlog.md#correct-output-boundaries-across-different-filesystem-case-rules):**
+  paths crossing different filesystem case rules, or directories with different
+  case rules on one filesystem, have known exclusion defects awaiting correction.

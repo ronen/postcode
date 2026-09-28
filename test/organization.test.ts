@@ -12,7 +12,7 @@ import type { GroupPropertiesClaim, ModulePlacementClaim, OrganizationClaims, Or
 import type { EvaluationRecord, ModuleClaim, ProgramRecordStore, RecordId } from '../src/lib/records.js';
 import { discover, inputBasis } from './helpers.js';
 
-function fixture(run: (root: string, write: (name: string, text: string) => void) => void) {
+async function fixture(run: (root: string, write: (name: string, text: string) => void) => void | Promise<void>) {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-organization-'));
   const write = (name: string, text: string) => {
     mkdirSync(path.dirname(path.join(root, name)), { recursive: true });
@@ -21,12 +21,12 @@ function fixture(run: (root: string, write: (name: string, text: string) => void
   try {
     cpSync(path.resolve('fixtures/organization'), root, { recursive: true });
     execFileSync('git', ['init', '--quiet', root]);
-    run(root, write);
+    await run(root, write);
   } finally { rmSync(root, { recursive: true, force: true }); }
 }
 
-function evaluated(root: string) {
-  const result = discover(path.join(root, 'tsconfig.json'));
+async function evaluated(root: string) {
+  const result = (await discover(path.join(root, 'tsconfig.json')));
   const outcome = evaluateOrganization(result.store, result.evaluation);
   return { ...result, outcome };
 }
@@ -46,9 +46,9 @@ function placements(store: ProgramRecordStore, outcome: OrganizationEvaluationRe
   return claims(store, outcome).filter((claim): claim is ModulePlacementClaim => claim.information.type === 'module-placement');
 }
 
-test('repository and project select the same groups, preserving direct relationships and typed properties', () => {
-  fixture(root => {
-    const { store, outcome, evaluation } = evaluated(root);
+test('repository and project select the same groups, preserving direct relationships and typed properties', async () => {
+  await fixture(async root => {
+    const { store, outcome, evaluation } = (await evaluated(root));
     const named = groups(store, outcome);
     assert.equal(named.size, 5);
     const repository = organization(store, outcome, 'repository');
@@ -81,9 +81,9 @@ test('repository and project select the same groups, preserving direct relations
   });
 });
 
-test('explicit references select group IDs and inspect artifact-only groups outside project selection', () => {
-  fixture(root => {
-    const { store, outcome } = evaluated(root);
+test('explicit references select group IDs and inspect artifact-only groups outside project selection', async () => {
+  await fixture(async root => {
+    const { store, outcome } = (await evaluated(root));
     const manual = groups(store, outcome).get('manual')!;
     const compact = store.entityIds(outcome.groups, 'group').get(manual)!;
     assert.match(compact, /^group-[a-f0-9]{8,64}$/);
@@ -99,9 +99,9 @@ test('explicit references select group IDs and inspect artifact-only groups outs
   });
 });
 
-test('partial and unavailable module evaluations retain layout and known placements without false negative presence', () => {
-  fixture(root => {
-    const { store, outcome, evaluation } = evaluated(root);
+test('partial and unavailable module evaluations retain layout and known placements without false negative presence', async () => {
+  await fixture(async root => {
+    const { store, outcome, evaluation } = (await evaluated(root));
     for (const available of [true, false]) {
       const incomplete: EvaluationRecord = { ...evaluation, id: recordId(evaluation.session, 'evaluation', ['incomplete', available]),
         attempt: available ? 2 : 3, availability: available ? 'available' : 'unavailable', execution: available ? 'stopped' : 'deferred',
@@ -120,9 +120,9 @@ test('partial and unavailable module evaluations retain layout and known placeme
   });
 });
 
-test('organization evaluation and lenses use captured inputs, with stable groups across module attempts', () => {
-  fixture((root, write) => {
-    const { store, evaluation, analysis } = discover(path.join(root, 'tsconfig.json'));
+test('organization evaluation and lenses use captured inputs, with stable groups across module attempts', async () => {
+  await fixture(async (root, write) => {
+    const { store, evaluation, analysis } = (await discover(path.join(root, 'tsconfig.json')));
     write('later/README', 'later content');
     rmSync(path.join(root, 'manual'), { recursive: true });
     const first = evaluateOrganization(store, evaluation);
@@ -136,27 +136,27 @@ test('organization evaluation and lenses use captured inputs, with stable groups
   });
 });
 
-test('repository evidence participates in captured input support without reading ordinary artifact content', () => {
-  fixture((root, write) => {
-    const initial = evaluated(root);
+test('repository evidence participates in captured input support without reading ordinary artifact content', async () => {
+  await fixture(async (root, write) => {
+    const initial = (await evaluated(root));
     write('manual/README.md', 'Completely different documentation bytes.');
     write('data/value.json', '{"changed":true}');
-    const content = evaluated(root);
+    const content = (await evaluated(root));
     assert.equal(inputBasis(content), inputBasis(initial));
     write('manual/README.extra', 'new artifact');
-    const added = evaluated(root);
+    const added = (await evaluated(root));
     assert.notEqual(inputBasis(added), inputBasis(initial));
     write('.gitignore', 'manual/README.extra\n');
-    const excluded = evaluated(root);
+    const excluded = (await evaluated(root));
     assert.notEqual(inputBasis(excluded), inputBasis(added));
     assert.notEqual(inputBasis(excluded), inputBasis(initial));
   });
 });
 
-test('a configured project outside Git remains usable with unavailable organization', () => {
-  fixture(root => {
+test('a configured project outside Git remains usable with unavailable organization', async () => {
+  await fixture(async root => {
     rmSync(path.join(root, '.git'), { recursive: true });
-    const { store, outcome, evaluation } = evaluated(root);
+    const { store, outcome, evaluation } = (await evaluated(root));
     assert.equal(evaluation.materialization, 'full');
     assert.equal(evaluation.modules.length, 2);
     assert.equal(outcome.availability, 'unavailable');
@@ -168,14 +168,14 @@ test('a configured project outside Git remains usable with unavailable organizat
   });
 });
 
-test('directory aliases share a group and retain all parents while module identities remain apparent-path identities', () => {
-  fixture((root, write) => {
+test('directory aliases share a group and retain all parents while module identities remain apparent-path identities', async () => {
+  await fixture(async (root, write) => {
     write('holder/readme.txt', 'holder artifact');
     symlinkSync('../src', path.join(root, 'holder/alias'));
     symlinkSync('src/direct.ts', path.join(root, 'file-link.ts'));
     write('tsconfig.json', JSON.stringify({ compilerOptions: { noLib: true, types: [], preserveSymlinks: true },
       files: ['src/direct.ts', 'holder/alias/direct.ts', 'file-link.ts'] }));
-    const { store, outcome, evaluation } = evaluated(root);
+    const { store, outcome, evaluation } = (await evaluated(root));
     assert.equal(evaluation.modules.length, 3);
     const named = groups(store, outcome);
     assert.equal(named.has('alias'), false);
@@ -190,8 +190,8 @@ test('directory aliases share a group and retain all parents while module identi
   });
 });
 
-test('multiple declarations establish multiple placements; external and invisible modules retain distinct exceptions', () => {
-  fixture((root, write) => {
+test('multiple declarations establish multiple placements; external and invisible modules retain distinct exceptions', async () => {
+  await fixture(async (root, write) => {
     write('src/one.d.ts', "declare module 'shared' { export const a: number; }");
     write('other/two.d.ts', "declare module 'shared' { export const b: number; }");
     write('hidden/file.ts', 'export const hidden = 1;');
@@ -203,7 +203,7 @@ test('multiple declarations establish multiple placements; external and invisibl
     write('src/direct.ts', "export { external } from 'library';");
     write('tsconfig.json', JSON.stringify({ compilerOptions: { noLib: true, types: [] },
       files: ['src/one.d.ts', 'other/two.d.ts', 'src/direct.ts', 'hidden/file.ts', 'opaque/file.ts'] }));
-    const { store, outcome, claims: moduleClaims } = evaluated(root);
+    const { store, outcome, claims: moduleClaims } = (await evaluated(root));
     const placed = placements(store, outcome);
     const shared = placed.find(claim => moduleClaims.find(module => module.subject === claim.subject)?.information.name === 'shared')!;
     assert.equal(shared.information.outcome, 'multiple');
@@ -220,12 +220,12 @@ test('multiple declarations establish multiple placements; external and invisibl
   });
 });
 
-test('names can match groups and modules together; scoped Entity IDs are precise across kinds', () => {
-  fixture((root, write) => {
+test('names can match groups and modules together; scoped Entity IDs are precise across kinds', async () => {
+  await fixture(async (root, write) => {
     write('src/ambient.d.ts', "declare module 'src' { export const value: number; }");
     write('second/src/README', 'duplicate segment');
     write('tsconfig.json', '{"compilerOptions":{"noLib":true,"types":[]},"files":["src/ambient.d.ts"]}');
-    const { store, outcome, evaluation } = evaluated(root);
+    const { store, outcome, evaluation } = (await evaluated(root));
     const inspection = inspectOrganization(store, outcome, 'src');
     assert.equal(inspection.groups.length, 2);
     assert.equal(inspection.modules.length, 1);
@@ -250,8 +250,8 @@ test('names can match groups and modules together; scoped Entity IDs are precise
   });
 });
 
-test('nested directory-link traversal maps to captured regions and refuses cyclic containment paths', () => {
-  fixture((root, write) => {
+test('nested directory-link traversal maps to captured regions and refuses cyclic containment paths', async () => {
+  await fixture(async (root, write) => {
     write('holder/README', 'holder');
     write('middle/README', 'middle');
     symlinkSync('../middle', path.join(root, 'holder/alias'));
@@ -259,7 +259,7 @@ test('nested directory-link traversal maps to captured regions and refuses cycli
     symlinkSync('..', path.join(root, 'src/up'));
     write('tsconfig.json', JSON.stringify({ compilerOptions: { noLib: true, types: [], preserveSymlinks: true },
       files: ['holder/alias/alias/direct.ts', 'src/up/src/direct.ts'] }));
-    const { store, outcome } = evaluated(root);
+    const { store, outcome } = (await evaluated(root));
     const placed = placements(store, outcome);
     assert.equal(placed.length, 2);
     assert.ok(placed.some(claim => claim.information.groups.includes(groups(store, outcome).get('src')!)));
@@ -267,15 +267,15 @@ test('nested directory-link traversal maps to captured regions and refuses cycli
   });
 });
 
-test('placement accepts the destination after 40 directory-link redirects and refuses a 41st', () => {
-  fixture((root, write) => {
+test('placement accepts the destination after 40 directory-link redirects and refuses a 41st', async () => {
+  await fixture(async (root, write) => {
     for (let index = 0; index < 41; index++) {
       mkdirSync(path.join(root, `d${index}`));
       symlinkSync(`../d${index + 1}`, path.join(root, `d${index}/next`));
     }
     write('d41/module.ts', 'export const linked = 1;');
     write('tsconfig.json', JSON.stringify({ compilerOptions: { noLib: true, types: [] }, files: ['d41/module.ts'] }));
-    const { store, evaluation } = discover(path.join(root, 'tsconfig.json'));
+    const { store, evaluation } = (await discover(path.join(root, 'tsconfig.json')));
     const session = store.get(evaluation.session);
     assert.ok(session.kind === 'session' && session.repository);
     const repository = store.get(session.repository);
@@ -309,9 +309,9 @@ test('placement accepts the destination after 40 directory-link redirects and re
   });
 });
 
-test('unavailable source evidence preserves usable placements and leaves absent presence unknown', () => {
-  fixture(root => {
-    const { store, evaluation } = discover(path.join(root, 'tsconfig.json'));
+test('unavailable source evidence preserves usable placements and leaves absent presence unknown', async () => {
+  await fixture(async root => {
+    const { store, evaluation } = (await discover(path.join(root, 'tsconfig.json')));
     const original = store.get(evaluation.modules[0]!);
     assert.ok(original.kind === 'module');
     const claim = store.get(original.claim) as ModuleClaim;
@@ -332,9 +332,9 @@ test('unavailable source evidence preserves usable placements and leaves absent 
   });
 });
 
-test('record boundary rejects malformed placement outcomes and negative properties without completed evidence atomically', () => {
-  fixture(root => {
-    const { store, outcome, evaluation } = evaluated(root);
+test('record boundary rejects malformed placement outcomes and negative properties without completed evidence atomically', async () => {
+  await fixture(async root => {
+    const { store, outcome, evaluation } = (await evaluated(root));
     const placement = placements(store, outcome)[0]!;
     for (const information of [
       { ...placement.information, outcome: 'multiple' as const },
@@ -359,14 +359,14 @@ test('record boundary rejects malformed placement outcomes and negative properti
   });
 });
 
-test('project modules outside the worktree are unplaced with an outside-repository reason', () => {
+test('project modules outside the worktree are unplaced with an outside-repository reason', async () => {
   const externalRoot = mkdtempSync(path.join(os.tmpdir(), 'postcode-outside-'));
   try {
     const external = path.join(externalRoot, 'module.ts');
     writeFileSync(external, 'export const outside = 1;');
-    fixture((root, write) => {
+    await fixture(async (root, write) => {
       write('tsconfig.json', JSON.stringify({ compilerOptions: { noLib: true, types: [] }, files: [external] }));
-      const { store, outcome } = evaluated(root);
+      const { store, outcome } = (await evaluated(root));
       const placed = placements(store, outcome);
       assert.equal(placed.length, 1);
       assert.equal(placed[0]!.information.outcome, 'unplaced');
@@ -378,10 +378,10 @@ test('project modules outside the worktree are unplaced with an outside-reposito
   } finally { rmSync(externalRoot, { recursive: true, force: true }); }
 });
 
-test('completed empty module population establishes none; expansions require an explicit declaration', () => {
-  fixture((root, write) => {
+test('completed empty module population establishes none; expansions require an explicit declaration', async () => {
+  await fixture(async (root, write) => {
     write('tsconfig.json', '{"compilerOptions":{"noLib":true,"types":[]},"files":[]}');
-    const { store, evaluation } = discover(path.join(root, 'tsconfig.json'));
+    const { store, evaluation } = (await discover(path.join(root, 'tsconfig.json')));
     const outcome = evaluateOrganization(store, evaluation, []);
     assert.equal(outcome.placement.materialization, 'full');
     assert.ok([...properties(store, outcome).values()].every(info => info.modulePresence === 'none'));
@@ -395,27 +395,27 @@ test('completed empty module population establishes none; expansions require an 
   });
 });
 
-test('generated module handles cannot impersonate group navigation IDs', () => {
-  fixture((root, write) => {
+test('generated module handles cannot impersonate group navigation IDs', async () => {
+  await fixture(async (root, write) => {
     const cue = 'group-12345678';
     write(`${cue}.ts`, 'export const value = 1;');
     write('ambient.d.ts', `declare module '${cue}' { export const x: number; }`);
     write('tsconfig.json', JSON.stringify({ compilerOptions: { noLib: true, types: [] }, files: [`${cue}.ts`, 'ambient.d.ts'] }));
-    const { claims: modules } = evaluated(root);
+    const { claims: modules } = (await evaluated(root));
     assert.equal(modules.length, 2);
     assert.ok(modules.every(claim => claim.information.handle === `handle-${cue}`));
     assert.ok(modules.some(claim => claim.information.name === cue));
   });
 });
 
-test('opaque README boundaries remain unanalyzed artifacts without documentation availability', () => {
-  fixture((root, write) => {
+test('opaque README boundaries remain unanalyzed artifacts without documentation availability', async () => {
+  await fixture(async (root, write) => {
     write('boundaries/README/.git', 'gitdir: unavailable');
     write('boundaries/README/hidden.md', 'not inspected');
     write('boundaries/README.submodule/hidden.md', 'not inspected');
     execFileSync('git', ['-C', root, 'update-index', '--add', '--cacheinfo',
       '160000', '1234567890123456789012345678901234567890', 'boundaries/README.submodule']);
-    const { store, outcome } = evaluated(root);
+    const { store, outcome } = (await evaluated(root));
     const group = groups(store, outcome).get('boundaries')!;
     assert.equal(properties(store, outcome).get(group)!.documented, false);
     assert.equal(claims(store, outcome).filter(claim => claim.subject === group && claim.information.type === 'group-documentation').length, 0);
@@ -423,12 +423,12 @@ test('opaque README boundaries remain unanalyzed artifacts without documentation
   });
 });
 
-test('intermediate invocation links do not invent worktree-root aliases from path depth', () => {
-  fixture((root, write) => {
+test('intermediate invocation links do not invent worktree-root aliases from path depth', async () => {
+  await fixture(async (root, write) => {
     write('deep/project/tsconfig.json', '{"compilerOptions":{"noLib":true,"types":[]},"files":["module.ts"]}');
     write('deep/project/module.ts', 'export const value = 1;');
     symlinkSync('deep/project', path.join(root, 'alias'));
-    const { store, evaluation } = discover(path.join(root, 'alias/tsconfig.json'));
+    const { store, evaluation } = (await discover(path.join(root, 'alias/tsconfig.json')));
     const outcome = evaluateOrganization(store, evaluation);
     const repository = store.get(outcome.repository);
     assert.ok(repository.kind === 'repository-evidence' && repository.capture.status === 'available');

@@ -1,3 +1,4 @@
+import { temporaryDirectory } from './cli-helpers.js';
 import assert from 'node:assert/strict';
 import { mkdtempSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import os from 'node:os';
@@ -15,7 +16,7 @@ import type { ProgramRecord } from '../src/lib/records.js';
 import type { ObservationBatch } from '../src/lib/observations.js';
 import { moduleStandardExpansions } from '../src/lib/records.js';
 
-function temporary(run: (root: string, configPath: string) => void, include = false) {
+async function temporary(run: (root: string, configPath: string) => void | Promise<void>, include = false) {
   const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-session-'));
   try {
     execFileSync('git', ['init', '--quiet', root]);
@@ -23,17 +24,17 @@ function temporary(run: (root: string, configPath: string) => void, include = fa
     writeFileSync(configPath, JSON.stringify({ compilerOptions: { noLib: true, types: [], module: 'nodenext' },
       ...(include ? { include: ['**/*.ts', '**/*.cts'] } : { files: ['entry.cts'] }) }));
     writeFileSync(path.join(root, 'entry.cts'), "export {}; require('./later/target');");
-    run(root, configPath);
+    await run(root, configPath);
   } finally { rmSync(root, { recursive: true, force: true }); }
 }
 
 const request = { lens: 'modules' as const, selector: null, presentation: { format: 'json' as const, sourceDetail: false } };
 
-test('dependency acquisition adds captured inputs while completed core work and earlier support remain unchanged', () => {
-  temporary((root, configPath) => {
+test('dependency acquisition adds captured inputs while completed core work and earlier support remain unchanged', async () => {
+  await temporary(async (root, configPath) => {
     mkdirSync(path.join(root, 'later'));
     writeFileSync(path.join(root, 'later/target.ts'), 'export const target = 1;');
-    const opened = openTypeScriptProject({ configPath });
+    const opened = (await openTypeScriptProject({ configPath }));
     if (opened.status !== 'opened') throw new Error('Expected project');
     const store = new MemoryProgramRecordStore();
     const first = evaluateModules(store, opened.analysis, moduleStandardExpansions);
@@ -59,25 +60,25 @@ test('dependency acquisition adds captured inputs while completed core work and 
 });
 
 for (const change of ['source', 'configuration', 'resolution', 'population', 'repository', 'environment'] as const) {
-  test(`session invalidates after detected ${change} changes`, () => {
-    temporary((root, configPath) => {
+  test(`session invalidates after detected ${change} changes`, async () => {
+    await temporary(async (root, configPath) => {
       if (change === 'resolution' || change === 'population') rmSync(path.join(root, '.git'), { recursive: true });
-      const opened = openSession({ configPath });
+      const opened = (await openSession({ configPath }));
       if (opened.status !== 'opened') throw new Error('Expected project');
       const { session } = opened;
       const oldEnvironment = process.env.POSTCODE_SESSION_TEST;
       try {
-        session.execute(change === 'resolution' ? { ...request, lens: 'dependencies' } : request);
+        await session.execute(change === 'resolution' ? { ...request, lens: 'dependencies' } : request);
         if (change === 'source') writeFileSync(path.join(root, 'entry.cts'), 'export const changed = 1;');
         if (change === 'configuration') writeFileSync(configPath, '{"files":[]}');
         if (change === 'resolution') { mkdirSync(path.join(root, 'later')); writeFileSync(path.join(root, 'later/target.ts'), 'export {};'); }
         if (change === 'population') writeFileSync(path.join(root, 'new.ts'), 'export {};');
         if (change === 'repository') writeFileSync(path.join(root, '.gitignore'), 'entry.cts\n');
         if (change === 'environment') process.env.POSTCODE_SESSION_TEST = 'changed';
-        assert.throws(() => session.execute(request), SessionInvalidated);
-        assert.throws(() => session.check(), SessionInvalidated);
+        await assert.rejects(async () => (await session.execute(request)), SessionInvalidated);
+        await assert.rejects(async () => (await session.check()), SessionInvalidated);
       } finally {
-        session.close();
+        await session.close();
         if (oldEnvironment === undefined) delete process.env.POSTCODE_SESSION_TEST;
         else process.env.POSTCODE_SESSION_TEST = oldEnvironment;
       }
@@ -85,23 +86,23 @@ for (const change of ['source', 'configuration', 'resolution', 'population', 're
   });
 }
 
-test('excluded observation creation does not invalidate the session', () => {
-  temporary((root, configPath) => {
+test('excluded observation creation does not invalidate the session', async () => {
+  await temporary(async (root, configPath) => {
     const output = path.join(root, 'observations');
-    const opened = openSession({ configPath, excludedOutputDirectories: [output] });
+    const opened = (await openSession({ configPath, excludedOutputDirectories: [output] }));
     if (opened.status !== 'opened') throw new Error('Expected project');
     try {
-      const before = opened.session.execute(request);
+      const before = (await opened.session.execute(request));
       mkdirSync(output);
       writeFileSync(path.join(output, 'fake.ts'), 'export const fake = 1;');
-      assert.deepEqual(opened.session.execute(request), before);
-    } finally { opened.session.close(); }
+      assert.deepEqual((await opened.session.execute(request)), before);
+    } finally { await opened.session.close(); }
   }, true);
 });
 
-test('a later completed evaluation preserves the earlier incomplete outcome and projection', () => {
-  temporary((_root, configPath) => {
-    const opened = openTypeScriptProject({ configPath });
+test('a later completed evaluation preserves the earlier incomplete outcome and projection', async () => {
+  await temporary(async (_root, configPath) => {
+    const opened = (await openTypeScriptProject({ configPath }));
     if (opened.status !== 'opened') throw new Error('Expected project');
     const store = new MemoryProgramRecordStore();
     let first = true;
@@ -124,49 +125,48 @@ test('a later completed evaluation preserves the earlier incomplete outcome and 
   });
 });
 
-test('publication observes invalidation before and after output without fabricating or erasing views', async () => {
+test('publication observes invalidation before and after output without fabricating or erasing views', async t => {
   const { publishCommand } = await import('../src/lib/command-execution.js');
   const cases: Promise<void>[] = [];
   // Keep each temporary directory alive through asynchronous observation submission.
   for (const after of [false, true]) {
-    const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-publication-'));
+    const root = temporaryDirectory(t, 'postcode-publication-');
     const configPath = path.join(root, 'tsconfig.json');
     writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
     const source = path.join(root, 'entry.ts');
     writeFileSync(source, 'export const original = 1;');
-    const opened = openSession({ configPath });
+    const opened = (await openSession({ configPath }));
     if (opened.status !== 'opened') throw new Error('Expected project');
     const { session } = opened;
     let output = '', error = '';
+    let observed: ObservationBatch | undefined;
     cases.push((async () => {
       try {
-        const code = await publishCommand({ id: session.id, check: session.check, execute: (command, execution) => {
-          const result = session.execute(command, execution);
+        const code = await publishCommand({ id: session.id, check: session.check, execute: async (command, execution) => {
+          const result = (await session.execute(command, execution));
           if (!after) writeFileSync(source, 'export const changed = 2;');
           return result;
         } }, request, 'modules --json', configPath, 1, {
           stdout: text => { output += text; if (after) writeFileSync(source, 'export const changed = 2;'); },
           stderr: text => { error += text; },
-        }, { async submit(batch) {
-          assert.equal(batch.records.some(record => record.kind === 'qualified-view'), after);
-          assert.equal(batch.records.find(record => record.kind === 'rendered-output')!.value, output);
-          assert.ok(batch.events.some(event => event.type === 'session-invalidated'));
-          assert.equal(batch.events.some(event => event.type === 'view-produced'), after);
-          assert.equal(batch.events.some(event => event.type === 'source-escape'), false);
-          return { accepted: true };
-        } });
+        }, { async submit(batch) { observed = batch; return { accepted: true }; } });
+          assert.equal(observed!.records.some(record => record.kind === 'qualified-view'), after);
+          assert.equal(observed!.records.find(record => record.kind === 'rendered-output')!.value, output);
+          assert.ok(observed!.events.some(event => event.type === 'session-invalidated'));
+          assert.equal(observed!.events.some(event => event.type === 'view-produced'), after);
+          assert.equal(observed!.events.some(event => event.type === 'source-escape'), false);
         assert.equal(code, 2);
         assert.match(error, /invalidated/);
         assert.equal(output.length > 0, after);
-      } finally { session.close(); rmSync(root, { recursive: true, force: true }); }
+      } finally { await session.close(); rmSync(root, { recursive: true, force: true }); }
     })());
   }
   await Promise.all(cases);
 });
 
-test('dependency completion keeps earlier partial outcomes even when the module basis is reused', () => {
-  temporary((_root, configPath) => {
-    const opened = openTypeScriptProject({ configPath });
+test('dependency completion keeps earlier partial outcomes even when the module basis is reused', async () => {
+  await temporary(async (_root, configPath) => {
+    const opened = (await openTypeScriptProject({ configPath }));
     if (opened.status !== 'opened') throw new Error('Expected project');
     const store = new MemoryProgramRecordStore();
     let first = true;
@@ -190,7 +190,7 @@ test('dependency completion keeps earlier partial outcomes even when the module 
 test('validation refuses retargeted output boundaries before replaying captured reads', async () => {
   const { captureInputs } = await import('../src/lib/typescript/inputs.js');
   const { symlinkSync, unlinkSync } = await import('node:fs');
-  temporary(root => {
+  await temporary(root => {
     const output = path.join(root, 'output');
     const first = path.join(root, 'first'), second = path.join(root, 'second');
     mkdirSync(first); mkdirSync(second);
@@ -204,15 +204,15 @@ test('validation refuses retargeted output boundaries before replaying captured 
 });
 
 for (const changed of [false, true]) {
-  test(`operational analysis errors check input stability before allowing continuation (changed=${changed})`, t => {
-    temporary((root, configPath) => {
+  test(`operational analysis errors check input stability before allowing continuation (changed=${changed})`, async t => {
+    await temporary(async (root, configPath) => {
       mkdirSync(path.join(root, 'later'));
       writeFileSync(path.join(root, 'later/target.ts'), 'export const target = 1;');
-      const opened = openSession({ configPath });
+      const opened = (await openSession({ configPath }));
       if (opened.status !== 'opened') throw new Error('Expected project');
       const { session } = opened;
       try {
-        const before = session.execute(request);
+        const before = (await session.execute(request));
         const exists = ts.sys.fileExists;
         let attempted = false;
         const probe = t.mock.method(ts.sys, 'fileExists', (name: string) => {
@@ -223,62 +223,62 @@ for (const changed of [false, true]) {
           }
           return exists(name);
         });
-        assert.throws(() => session.execute({ ...request, lens: 'dependencies' }), changed ? SessionInvalidated : AnalysisFailure);
+        await assert.rejects(async () => (await session.execute({ ...request, lens: 'dependencies' })), changed ? SessionInvalidated : AnalysisFailure);
         assert.equal(attempted, true);
         probe.mock.restore();
-        if (changed) assert.throws(() => session.execute(request), SessionInvalidated);
-        else assert.deepEqual(session.execute(request), before);
-      } finally { session.close(); }
+        if (changed) await assert.rejects(async () => (await session.execute(request)), SessionInvalidated);
+        else assert.deepEqual((await session.execute(request)), before);
+      } finally { await session.close(); }
     });
   });
 }
 
 for (const lens of ['modules', 'inspect', 'dependencies'] as const) {
-  test(`session reuses partial expansions through ${lens} until additional inputs are acquired`, () => {
-    temporary((root, configPath) => {
+  test(`session reuses partial expansions through ${lens} until additional inputs are acquired`, async () => {
+    await temporary(async (root, configPath) => {
       writeFileSync(path.join(root, 'entry.cts'), "export { missing } from './nowhere.js';");
       writeFileSync(path.join(root, 'other.ts'), 'export const other = 1;');
-      const opened = openSession({ configPath });
+      const opened = (await openSession({ configPath }));
       if (opened.status !== 'opened') throw new Error('Expected project');
       const { session } = opened;
       try {
-        const inventory = session.execute(request);
+        const inventory = (await session.execute(request));
         if (inventory.view.schema !== 'postcode-view/1-experimental') throw new Error('Expected modules');
         assert.ok(inventory.view.evaluations.some(item => item.requirement === 'modules' && item.materialization === 'full'));
         assert.ok(inventory.view.evaluations.some(item => item.requirement === 'exports' && item.materialization === 'partial'));
         const command = { ...request, lens, selector: lens === 'inspect' ? inventory.view.modules[0]!.entityId : null,
           ...(lens === 'inspect' ? { reference: true } : {}) };
-        const first = session.execute(command);
-        const retained = structuredClone(first);
-        const later = session.execute(command);
+        const first = (await session.execute(command));
+        const retained = (await structuredClone(first));
+        const later = (await session.execute(command));
         assert.deepEqual(later, first);
         assert.deepEqual(first, retained);
         if (!('modules' in first.view) || !('modules' in later.view)) throw new Error('Expected module selection');
         assert.deepEqual(later.view.modules.map(item => [item.id, item.entityId]), first.view.modules.map(item => [item.id, item.entityId]));
-      } finally { session.close(); }
+      } finally { await session.close(); }
     }, true);
   });
 }
 
 test('direct execution keeps two checks while publication performs three without a duplicate', async t => {
   const { publishCommand } = await import('../src/lib/command-execution.js');
-  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-check-count-'));
+  const root = temporaryDirectory(t, 'postcode-check-count-');
   const configPath = path.join(root, 'tsconfig.json');
   const source = path.join(root, 'entry.ts');
   writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
   writeFileSync(source, 'export const entry = 1;');
-  const opened = openSession({ configPath });
+  const opened = (await openSession({ configPath }));
   if (opened.status !== 'opened') throw new Error('Expected project');
   const { session } = opened;
   try {
-    session.execute(request);
+    await session.execute(request);
     const read = ts.sys.readFile;
     let checks = 0;
     t.mock.method(ts.sys, 'readFile', (name: string, encoding?: string) => {
       if (name === source) checks++;
       return read(name, encoding);
     });
-    session.execute(request);
+    await session.execute(request);
     assert.equal(checks, 2);
     checks = 0;
     let published = false, observed = false;
@@ -287,14 +287,14 @@ test('direct execution keeps two checks while publication performs three without
       { async submit() { observed = true; return { accepted: true }; } }), 0);
     assert.equal(checks, 3);
     assert.equal(published && observed, true);
-  } finally { session.close(); rmSync(root, { recursive: true, force: true }); }
+  } finally { await session.close(); rmSync(root, { recursive: true, force: true }); }
 });
 
-test('worker delivery is validated before publication and emitted output survives later invalidation', async () => {
+test('worker delivery is validated before publication and emitted output survives later invalidation', async t => {
   const { publishCommand } = await import('../src/lib/command-execution.js');
   const { interactiveSession } = await import('../src/lib/interactive-session.js');
   for (const after of [false, true]) {
-    const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-worker-publication-'));
+    const root = temporaryDirectory(t, 'postcode-worker-publication-');
     const configPath = path.join(root, 'tsconfig.json');
     const source = path.join(root, 'entry.ts');
     writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
@@ -326,12 +326,12 @@ test('worker delivery is validated before publication and emitted output survive
 });
 
 
-test('additional dependency inputs permit one new partial attempt and preserve the earlier basis', () => {
-  temporary((root, configPath) => {
+test('additional dependency inputs permit one new partial attempt and preserve the earlier basis', async () => {
+  await temporary(async (root, configPath) => {
     writeFileSync(path.join(root, 'entry.cts'), "export { missing } from './nowhere.js'; require('./later/target');");
     mkdirSync(path.join(root, 'later'));
     writeFileSync(path.join(root, 'later/target.ts'), 'export const target = 1;');
-    const opened = openTypeScriptProject({ configPath });
+    const opened = (await openTypeScriptProject({ configPath }));
     if (opened.status !== 'opened') throw new Error('Expected project');
     const store = new MemoryProgramRecordStore();
     const firstResult = opened.analysis.discover(store, moduleStandardExpansions);
@@ -359,25 +359,25 @@ test('additional dependency inputs permit one new partial attempt and preserve t
   });
 });
 
-test('session reevaluates partial work after new dependency acquisition, then reuses it across lenses', () => {
-  temporary((root, configPath) => {
+test('session reevaluates partial work after new dependency acquisition, then reuses it across lenses', async () => {
+  await temporary(async (root, configPath) => {
     writeFileSync(path.join(root, 'entry.cts'), "export { missing } from './nowhere.js'; require('./later/target');");
     mkdirSync(path.join(root, 'later'));
     writeFileSync(path.join(root, 'later/target.ts'), 'export const target = 1;');
-    const opened = openSession({ configPath });
+    const opened = (await openSession({ configPath }));
     if (opened.status !== 'opened') throw new Error('Expected project');
     const { session } = opened;
     try {
-      const first = session.execute(request);
-      const retained = structuredClone(first);
-      assert.deepEqual(session.execute(request), first);
-      session.execute({ ...request, lens: 'dependencies' });
-      const later = session.execute(request);
+      const first = (await session.execute(request));
+      const retained = (await structuredClone(first));
+      assert.deepEqual((await session.execute(request)), first);
+      await session.execute({ ...request, lens: 'dependencies' });
+      const later = (await session.execute(request));
       assert.notEqual(later.view.projection.id, first.view.projection.id);
-      session.execute({ ...request, lens: 'organization' });
-      session.execute({ ...request, lens: 'inspect', selector: 'missing' });
-      assert.deepEqual(session.execute(request), later);
+      await session.execute({ ...request, lens: 'organization' });
+      await session.execute({ ...request, lens: 'inspect', selector: 'missing' });
+      assert.deepEqual((await session.execute(request)), later);
       assert.deepEqual(first, retained);
-    } finally { session.close(); }
+    } finally { await session.close(); }
   });
 });

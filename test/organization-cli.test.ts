@@ -1,3 +1,4 @@
+import { invokeCli } from './cli-helpers.js';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { cpSync, mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
@@ -5,8 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
 import { normalizeSession } from './helpers.js';
-import { runCli } from '../src/lib/cli.js';
-import type { ObservationBatch, ObservationSink } from '../src/lib/observations.js';
+import type { ObservationSink } from '../src/lib/observations.js';
 import { createOrganizationView, organizationPresentationRequirements, renderOrganizationView } from '../src/lib/organization/presentation.js';
 import type { QualifiedOrganizationView } from '../src/lib/organization/presentation.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
@@ -30,15 +30,8 @@ async function fixture(run: (root: string, write: (name: string, text: string) =
   } finally { rmSync(root, { recursive: true, force: true }); }
 }
 
-async function invoke(root: string, args: string[], sink?: ObservationSink) {
-  let stdout = '';
-  let stderr = '';
-  const batches: ObservationBatch[] = [];
-  const exit = await runCli([...args, '--project', path.join(root, 'tsconfig.json')], {
-    cwd: root, checkout: process.cwd(), stdout: text => { stdout += text; }, stderr: text => { stderr += text; },
-    sink: sink ?? { async submit(batch) { batches.push(batch); return { accepted: true }; } },
-  });
-  return { exit, stdout, stderr, batches };
+function invoke(root: string, args: string[], options: { sink?: ObservationSink; expectedWarning?: boolean } = {}) {
+  return invokeCli([...args, '--project', path.join(root, 'tsconfig.json')], { cwd: root, ...options });
 }
 const viewOf = (result: { stdout: string }) => JSON.parse(result.stdout) as QualifiedOrganizationView;
 
@@ -192,7 +185,7 @@ test('shared groups expand once; link mechanics stay in source detail and placem
 
 test('partial module evaluation preserves organization views and unknown properties without I/O on construction', async () => {
   await fixture(async root => {
-    const { store, analysis } = discover(path.join(root, 'tsconfig.json'));
+    const { store, analysis } = await discover(path.join(root, 'tsconfig.json'));
     const evaluation = evaluateModules(store, analysis, organizationPresentationRequirements.modules);
     const partial = { ...evaluation, id: recordId(evaluation.session, 'evaluation', 'partial-view'),
       execution: 'stopped' as const, materialization: 'partial' as const, modules: evaluation.modules.slice(0, 1), reason: 'Stopped fixture.' };
@@ -213,7 +206,7 @@ test('partial module evaluation preserves organization views and unknown propert
 test('unavailable repository and observation-sink failure remain visible after opening; invalid projects produce no view', async () => {
   await fixture(async (root, write) => {
     rmSync(path.join(root, '.git'), { recursive: true });
-    const unavailable = await invoke(root, ['organization', 'repository'], { async submit() { return { accepted: false, reason: 'fixture rejection' }; } });
+    const unavailable = await invoke(root, ['organization', 'repository'], { expectedWarning: true, sink: { async submit() { return { accepted: false, reason: 'fixture rejection' }; } } });
     assert.equal(unavailable.exit, 0);
     assert.ok(unavailable.stdout.includes('Repository layout: unavailable'));
     assert.ok(unavailable.stderr.includes('WARNING: observation not recorded: fixture rejection'));
@@ -249,12 +242,12 @@ test('organization output reproduces across processes and escapes control charac
     const name = 'group\nwith\tcontrols';
     write(`${name}/README`, 'not disclosed');
     const config = path.join(root, 'tsconfig.json');
-    const script = `import { runCli } from './_build/src/lib/cli.js';
+    const script = `import { runCli } from '${new URL('../src/lib/cli.js', import.meta.url).href}';
       await runCli(['organization','repository','--json','--project',process.argv[1]], {
         cwd:process.cwd(), checkout:process.cwd(), stdout:s=>process.stdout.write(s), stderr:()=>{},
         sink:{ async submit(){return {accepted:true};} }
       });`;
-    const run = () => execFileSync(process.execPath, ['--input-type=module', '-e', script, config], { encoding: 'utf8' });
+    const run = () => execFileSync(process.execPath, ['--expose-gc', '--input-type=module', '-e', script, config], { encoding: 'utf8' });
     const first = run();
     assert.deepEqual(normalizeSession(JSON.parse(run())), normalizeSession(JSON.parse(first)));
     const json = viewOf({ stdout: first });
@@ -283,7 +276,7 @@ test('group expansion limit is a display omission while root inspection retains 
 
 test('candidate ambiguity retains partial status and reachable candidate groups without asserting placements', async () => {
   await fixture(async root => {
-    const { store, evaluation } = discover(path.join(root, 'tsconfig.json'));
+    const { store, evaluation } = await discover(path.join(root, 'tsconfig.json'));
     const outcome = evaluateOrganization(store, evaluation);
     const claims = outcome.claims.map(id => store.get(id) as OrganizationClaims);
     const original = claims.find((claim): claim is ModulePlacementClaim => claim.information.type === 'module-placement')!;

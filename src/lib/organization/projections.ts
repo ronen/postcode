@@ -1,4 +1,6 @@
-import { compare, methods, recordId } from '../identity.js';
+import { directedGraph } from '../directed-graph.js';
+import { completedMaterialization } from '../evaluation-state.js';
+import { identityReference, compare, methods, recordId } from '../identity.js';
 import { inspect as inspectModules } from '../projections.js';
 import type { EvaluationRecord, ProgramRecordStore, RecordId } from '../records.js';
 import type { GroupClaim, OrganizationClaims, OrganizationEvaluationRecord, OrganizationProjectionRecord } from './records.js';
@@ -26,16 +28,8 @@ function project(store: ProgramRecordStore, evaluation: OrganizationEvaluationRe
   let referenceStatus: OrganizationProjectionRecord['selection']['referenceStatus'] = 'current';
   if (subject === 'configured-project') {
     selected = new Set(placements.flatMap(claim => claim.information.type === 'module-placement' ? claim.information.groups : []));
-    let changed = true;
-    while (changed) {
-      changed = false;
-      for (const claim of claims) {
-        if (claim.information.type === 'group-containment' && selected.has(claim.information.child) && !selected.has(claim.subject)) {
-          selected.add(claim.subject);
-          changed = true;
-        }
-      }
-    }
+    selected = directedGraph(evaluation.groups, claims.flatMap(claim => claim.information.type === 'group-containment'
+      ? [[claim.subject, claim.information.child] as const] : [])).ancestors(selected);
   } else if (subject === 'selected-entities') {
     if (selector === null) throw new Error('Inspection requires a selector');
     const groupIds = store.entityIds(evaluation.groups, 'group');
@@ -80,12 +74,15 @@ function project(store: ProgramRecordStore, evaluation: OrganizationEvaluationRe
   const moduleSubjects = new Set([...selectedModules, ...expandedModules]);
   const moduleExpansions = store.evaluations(evaluation.session).filter(outcome => outcome.basis === moduleEvaluation.id
     && (outcome.modules.length === 0 || outcome.modules.some(id => moduleSubjects.has(id))));
+  const selectedReference = [...groups, ...selectedModules].find(id => id === selector);
+  // A resolved reference and a literal selector must occupy disjoint key spaces.
+  const selectorKey = selectedReference ? { reference: identityReference(evaluation.session, selectedReference) } : selector;
   const method = `${methods.projection};${methods.organization}`;
-  const populationEstablished = evaluation.execution === 'completed' && evaluation.materialization === 'full'
-    && (subject === 'repository' || evaluation.placement.execution === 'completed' && evaluation.placement.materialization === 'full');
+  const populationEstablished = completedMaterialization(evaluation)
+    && (subject === 'repository' || completedMaterialization(evaluation.placement));
   const projection: OrganizationProjectionRecord = {
     kind: 'organization-projection', method, session: evaluation.session,
-    id: recordId(evaluation.session, 'organization-projection', { method, evaluation: evaluation.id, subject, selector, reference }),
+    id: recordId(evaluation.session, 'organization-projection', { method, evaluation: identityReference(evaluation.session, evaluation.id), subject, selector: selectorKey, reference }),
     lens: subject === 'selected-entities' ? 'inspect' : 'organization', subject, parameters: { selector, reference },
     evaluation: evaluation.id, moduleProjection, groups, modules: selectedModules, claims: selectedClaims.map(claim => claim.id),
     contexts: [...new Set([...evaluation.contexts, ...selectedClaims.map(claim => claim.context),

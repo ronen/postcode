@@ -1,5 +1,6 @@
+import { diagnosticLookup } from './diagnostics.js';
 import ts from 'typescript';
-import { compare, methods, recordId } from '../identity.js';
+import { identityReference, compare, methods, recordId } from '../identity.js';
 import type { ClaimContextRecord, ModuleDiscoveryFacet, ProgramRecord, RecordId, SessionId, SourceEvidenceRecord } from '../records.js';
 import type { CommonJSRecognition, DependencyCoverageRecord, DependencyMechanism, DependencyOccurrenceRecord,
   DependencyRelationshipClaim, DependencyResult, DependencyTargetStatus } from '../dependencies/records.js';
@@ -36,6 +37,7 @@ type Evidence = (node: ts.Node, compilerName: string | null, resolution?: Source
 export function prepareDependencies(program: ts.Program, host: ts.CompilerHost, modules: readonly ModuleCandidate[]) {
   const checker = program.getTypeChecker();
   const diagnostics = program.getSyntacticDiagnostics();
+  const selectDiagnostics = diagnosticLookup(diagnostics);
   const syntaxFailures = new Set(diagnostics.flatMap(diagnostic => diagnostic.file ? [diagnostic.file] : []));
   const bySymbol = new Map(modules.filter(module => module.symbol).map(module => [module.symbol!, module]));
   const byFile = new Map(modules.flatMap(module => module.declarations.filter(ts.isSourceFile)
@@ -151,7 +153,7 @@ export function prepareDependencies(program: ts.Program, host: ts.CompilerHost, 
     const moduleId = (candidate: ModuleCandidate) => recordId(session, 'module', candidate.key);
     const context = (key: unknown, scope: RecordId | 'configured-project', sources: readonly RecordId[],
       sourceFiles: readonly ts.SourceFile[]): RecordId => {
-      const relevant = diagnostics.filter(diagnostic => diagnostic.file && sourceFiles.includes(diagnostic.file))
+      const relevant = selectDiagnostics(sourceFiles)
         .map(diagnostic => ({ code: diagnostic.code, category: ts.DiagnosticCategory[diagnostic.category]!.toLowerCase() }))
         .sort((a, b) => a.code - b.code || compare(a.category, b.category));
       const record: ClaimContextRecord = {
@@ -170,8 +172,8 @@ export function prepareDependencies(program: ts.Program, host: ts.CompilerHost, 
       } : undefined);
       const targetEvidence = request.targetDeclarations.map(declaration => evidence(declaration, null));
       const support = [source, ...request.declarations.map(declaration => evidence(declaration, null)), ...targetEvidence];
-      const id = recordId(session, request.coverage === null ? 'dependency-occurrence' : 'dependency-coverage', [method, source, owner]);
-      const qualification = context(id, owner ?? 'configured-project', support, [request.node.getSourceFile()]);
+      const id = recordId(session, request.coverage === null ? 'dependency-occurrence' : 'dependency-coverage', [method, identityReference(session, source), identityReference(session, owner)]);
+      const qualification = context(identityReference(session, id), owner ?? 'configured-project', support, [request.node.getSourceFile()]);
       if (request.coverage !== null) {
         coverage.push({ kind: 'dependency-coverage', id, session, method, owner, context: qualification,
           evidence: source, outcome: request.coverage, commonjs: request.commonjs });
@@ -193,12 +195,12 @@ export function prepareDependencies(program: ts.Program, host: ts.CompilerHost, 
     }
     const relationships: DependencyRelationshipClaim[] = [...pairs].sort(([a], [b]) => compare(a, b)).map(([, supporting]) => {
       const first = supporting[0]!;
-      const id = recordId(session, 'dependency', [method, first.owner, first.target]);
+      const id = recordId(session, 'dependency', [method, identityReference(session, first.owner), identityReference(session, first.target)]);
       // Select each captured diagnostic once across the contributing files.
       // Concatenating occurrence contexts multiplies file-wide diagnostics;
       // deduplicating projected code/category pairs would lose distinct errors.
       const sourceFiles = [...new Set(supporting.map(occurrence => occurrenceFiles.get(occurrence.id)!))];
-      const qualification = context(id, first.owner,
+      const qualification = context(identityReference(session, id), first.owner,
         supporting.flatMap(occurrence => contexts.get(occurrence.context)!.evidence), sourceFiles);
       return { kind: 'claim', id, session, method, subject: first.owner, context: qualification,
         information: { type: 'dependency', child: first.target!, occurrences: supporting.map(occurrence => occurrence.id),

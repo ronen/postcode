@@ -1,3 +1,4 @@
+import { interactionDriver } from './cli-helpers.js';
 import assert from 'node:assert/strict';
 import { PassThrough } from 'node:stream';
 import path from 'node:path';
@@ -38,6 +39,7 @@ test('non-terminal shell input is refused before project opening', async () => {
 test('adaptive shell uses prior references, records syntax refusals, finishes on EOF and matches one-shot views', { timeout: 30000 }, async () => {
   const input = Object.assign(new PassThrough(), { isTTY: true });
   const batches: ObservationBatch[] = [];
+  const driver = interactionDriver(() => input.end());
   let started = false, stderr = '';
   const shell = runCli(['shell', '--project', config, '--json'], {
     cwd: process.cwd(), checkout: process.cwd(), input,
@@ -46,7 +48,7 @@ test('adaptive shell uses prior references, records syntax refusals, finishes on
     }, stderr: text => { stderr += text; },
     sink: { async submit(batch) {
       batches.push(batch);
-      setImmediate(() => {
+      driver.run(() => {
         if (batch.command === 1) input.write('modules\n');
         else if (batch.command === 2) {
           const view = batch.records.find(item => item.kind === 'qualified-view')!.value as QualifiedView;
@@ -58,6 +60,7 @@ test('adaptive shell uses prior references, records syntax refusals, finishes on
       return { accepted: true }; } },
   });
   assert.equal(await shell, 0);
+  driver.verify();
   assert.match(stderr, /unfinished/);
   assert.equal(batches.length, 4);
   assert.equal(new Set(batches.map(batch => batch.session)).size, 1);
@@ -85,29 +88,39 @@ test('ambiguous one-shot lookup recovers through an in-session lookup and precis
     sink: { async submit(batch) { original = batch.records.find(item => item.kind === 'qualified-view')!.value; return { accepted: true }; } },
   });
   const input = Object.assign(new PassThrough(), { isTTY: true });
-  let started = false, count = 0;
+  let started = false;
+  const batches: ObservationBatch[] = [];
+  const driver = interactionDriver(() => input.end());
   assert.equal(await runCli(['shell', '--project', config, '--json'], {
     cwd: process.cwd(), checkout: process.cwd(), input, stderr: () => {},
     stdout: text => { if (!started && text.includes('postcode> ')) { started = true; setImmediate(() => input.write('inspect src\n')); } },
     sink: { async submit(batch) {
-      count++;
-      const view = batch.records.find(item => item.kind === 'qualified-view')!.value as {
-        projection: { selection: { matches: number } }; groups: { entityId: string }[];
-      };
-      if (count === 1) {
-        assert.ok(view.projection.selection.matches > 1);
-        assert.deepEqual(normalizeSession(view), normalizeSession(original));
-        setImmediate(() => input.write(`inspect @${view.groups[0]!.entityId}\n`));
-      } else { assert.equal(view.projection.selection.matches, 1); setImmediate(() => input.end()); }
+      batches.push(batch);
+      driver.run(() => {
+        const view = batch.records.find(item => item.kind === 'qualified-view')!.value as { groups: { entityId: string }[] };
+        if (batches.length === 1) input.write(`inspect @${view.groups[0]!.entityId}\n`);
+        else input.end();
+      });
       return { accepted: true };
     } },
   }), 0);
-  assert.equal(count, 2);
+  driver.verify();
+  assert.equal(batches.length, 2);
+  const views = batches.map(batch => batch.records.find(item => item.kind === 'qualified-view')!.value as {
+    projection: { selection: { matches: number } };
+  });
+  assert.ok(views[0]!.projection.selection.matches > 1);
+  assert.deepEqual(normalizeSession(views[0]), normalizeSession(original));
+  assert.equal(views[1]!.projection.selection.matches, 1);
 });
 
-test('idle Ctrl-C discards its input line and EOF finishes the next accepted command', { timeout: 30000 }, async () => {
+for (const terminal of ['dumb', 'xterm']) test(`idle Ctrl-C discards its input line and EOF finishes the next accepted command (${terminal})`, { timeout: 30000 }, async t => {
+  const previous = process.env.TERM;
+  t.after(() => { if (previous === undefined) delete process.env.TERM; else process.env.TERM = previous; });
+  process.env.TERM = terminal;
   const input = Object.assign(new PassThrough(), { isTTY: true });
-  let started = false, count = 0;
+  let started = false;
+  const batches: ObservationBatch[] = [];
   const code = await runCli(['shell', '--project', config], {
     cwd: process.cwd(), checkout: process.cwd(), input, stderr: () => {},
     stdout: text => {
@@ -117,12 +130,13 @@ test('idle Ctrl-C discards its input line and EOF finishes the next accepted com
       }
     },
     sink: { async submit(batch) {
-      count++; assert.equal(batch.command, 1);
-      assert.ok(batch.events.some(event => event.type === 'view-produced'));
+      batches.push(batch);
       return { accepted: true };
     } },
   });
-  assert.equal(code, 0); assert.equal(count, 1);
+  assert.equal(code, 0); assert.equal(batches.length, 1);
+  assert.equal(batches[0]!.command, 1);
+  assert.ok(batches[0]!.events.some(event => event.type === 'view-produced'), JSON.stringify(batches[0]));
 });
 
 test('expected analysis failure, defect and interruption are distinct and never invent views', async () => {

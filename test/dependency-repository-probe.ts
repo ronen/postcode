@@ -75,12 +75,12 @@ for (const file of program.getSourceFiles()) {
   };
   visit(file);
 }
-const opened = openTypeScriptProject({ configPath });
+const opened = (await openTypeScriptProject({ configPath }));
 const baselinePath = process.argv[3] ? path.resolve(process.argv[3]) : null;
 const baseline = baselinePath ? ts.getParsedCommandLineOfConfigFile(baselinePath, {}, {
   ...captured.system, onUnRecoverableConfigFileDiagnostic: diagnostic => { throw new Error(String(diagnostic.messageText)); },
 }) : null;
-const baselineOpen = baselinePath ? openTypeScriptProject({ configPath: baselinePath }) : null;
+const baselineOpen = baselinePath ? (await openTypeScriptProject({ configPath: baselinePath })) : null;
 let productionDiscovery: unknown = null;
 if (opened.status === 'opened') {
   const store = new MemoryProgramRecordStore();
