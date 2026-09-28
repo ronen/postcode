@@ -2,7 +2,7 @@ Record type: disposition
 Date: 2026-09-28
 Task: [Foundation readiness](../../tasks/2026-09-27-foundation-readiness.md)
 Handoff: [M5 integrated review](2026-09-28-m5-integrated-handoff.md)
-Findings: [Round 1](2026-09-28-m5-integrated-round-1-findings.md)
+Findings: [Round 1](2026-09-28-m5-integrated-round-1-findings.md); [Round 2 — Copilot](2026-09-28-m5-integrated-round-2-copilot-findings.md)
 
 # Foundation readiness M5 integrated review disposition
 
@@ -77,3 +77,33 @@ remains active; it has not been accepted or closed on the agent's authority.
 The human subsequently directed: keep the task open and create a GitHub PR so
 they can arrange Copilot review. Further review therefore remains under the same
 M5 assignment. No M5 acceptance or task closure is inferred from preparing the PR.
+
+## Round 2 — Copilot and final closure
+
+Copilot reviewed PR #7 at `996b0d3cfffb2ceb12d455c734ebd647cfc729ca`.
+The complete API-retrieved overall review and inline finding are preserved in
+the round-2 findings record, committed as `6415ecb`. All three paginated endpoints
+returned one page: one review, one inline comment, and no conversation comments.
+The source bodies were verified byte-for-byte against the retrieved API strings.
+
+| Finding or observation | Disposition and basis |
+| --- | --- |
+| Inline finding `4124906805`: plan index still reports the obsolete M3 checkpoint | Accepted and corrected in `eee0ed8`. The human authorized closure after the finding was addressed unless something else arose, so the index now places foundation readiness under completed work. The plan metadata and completion account agree and link the review, verification and explicitly deferred filesystem defects. |
+| Overall review: broad ownership/execution changes require final human review | Acknowledged. The human's subsequent instruction to fetch, preserve and address this review and then close the plan is the gate authorization, recorded in task follow-up `6d2265d`. Closure does not infer acceptance from Copilot's `COMMENTED` review state or extend its verification claims. |
+| Overall review: implementation summary and changed-file inventory | Preserved as reviewer context; these introduce no additional requested correction. Copilot reports one low-severity finding and does not claim test execution. |
+
+The final correction changes documentation only. `npm run check` and `npm test`
+passed on the final application checkout/build: **296/296 tests**, zero failures,
+skips or cancellations, test-run duration 119,992 ms, Node 22.13.1 on the same
+local macOS/APFS environment. This run includes the scanner correction and new
+prefix regression that postdated the earlier 294-test run. No source, documentation
+or Git state was changed while tests ran. Plan links resolve and `git diff --check`
+passes for the correction. Previously recorded comparisons and measurements were
+not rerun for this documentation correction; their original targets and limits
+remain intact.
+
+No additional defect, unresolved scope choice or new reviewer uncertainty arose.
+The human's conditional closure instruction is therefore satisfied: M5 is accepted
+on that authority, and the plan and task may close. Prior M3 O1/O2 filesystem
+deferrals remain unchanged. PR #7 remains open; neither merge nor PR closure is
+part of this task conclusion.
