@@ -73,3 +73,7 @@ The clear in-scope correction and authorized uncertainty investigation are compl
 No new defect or scope expansion was introduced. Human direction is still required
 on whether the accumulated review satisfies M5 or another round is needed. The task
 remains active; it has not been accepted or closed on the agent's authority.
+
+The human subsequently directed: keep the task open and create a GitHub PR so
+they can arrange Copilot review. Further review therefore remains under the same
+M5 assignment. No M5 acceptance or task closure is inferred from preparing the PR.
