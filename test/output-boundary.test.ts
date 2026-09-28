@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { existsSync, mkdirSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs';
+import { chmodSync, existsSync, mkdirSync, readdirSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { PassThrough } from 'node:stream';
 import { runCli } from '../src/lib/cli.js';
@@ -63,6 +63,26 @@ test('unverifiable explicit boundaries refuse both CLI entry paths and later ret
   await opened.session.check();
   unlinkSync(output); symlinkSync(output, output);
   await assert.rejects(opened.session.check(), SessionInvalidated);
+});
+
+test('resolvable output boundaries need search permission but not directory-listing permission', async t => {
+  const root = temporaryDirectory(t, 'postcode-searchable-output-');
+  const hidden = path.join(root, 'hidden');
+  const output = path.join(hidden, 'out'); mkdirSync(output, { recursive: true });
+  const configPath = path.join(root, 'tsconfig.json');
+  writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"files":[]}');
+  chmodSync(hidden, 0o311);
+  try {
+    assert.throws(() => readdirSync(hidden), { code: 'EACCES' });
+    const policy = outputBoundary([output]);
+    assert.equal(policy.count, 1);
+    assert.equal(policy.excluded(path.join(output, 'generated.ts')), true);
+    assert.equal(policy.changed(), false);
+    const opened = await openSession({ configPath, excludedOutputDirectories: [output] });
+    assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
+    try { await opened.session.check(); }
+    finally { await opened.session.close(); }
+  } finally { chmodSync(hidden, 0o700); }
 });
 
 test('missing output suffixes follow observed filesystem case handling before and after materialization', async t => {
