@@ -92,6 +92,31 @@ The correction passed type checking, build, all 31 investigation tests and
 `git diff --check`. No full-suite rerun or live inference was performed for these
 corrections. The milestone gate remains unaccepted pending human direction.
 
+### Approved review rulings and bounded investigation
+
+The recorded human rulings were implemented in `f5a974d` and `32f90a5`:
+corrections identify explicit corrected subjects, usage preserves distinct
+reports with anomalies, and delivered correction content cites its reporter.
+All F1–F6 findings are corrected. The F7 regression establishes the shared-basis
+retry consequence without changing policy; acceptance of that behavior was
+requested and remains pending.
+
+The bounded comparison reproduced all 13 execution-ownership cancellations on
+the pre-implementation baseline and the corrected full suite. Both isolated
+runs passed 13 tests. Baseline full results were 283 passed, zero failed,
+13 cancelled; corrected full results were 318 passed, zero failed, 13 cancelled.
+The pattern is pre-existing; its cause remains unresolved. Human direction on
+explicitly deferring diagnosis versus keeping it open was requested and remains
+pending. No cancellation code or test was changed.
+
+Type checking, build, all 34 investigation tests, and the README regression
+passed. The final usage-report equality refinement passed both focused usage
+tests after the full-suite run started. The
+[correction validation](../validation/module-investigation/2026-09-29-milestone-1-review-corrections.md)
+preserves the exact verification scope and limits. The updated disposition
+records every finding; the original review remains unchanged. Milestone 2 has
+not begun, and the human has not accepted the milestone-1 gate.
+
 ### Original milestone 1 verification
 
 Milestone 1: `npm run check` passed; `npm test` passed 323 tests. Subsequent
