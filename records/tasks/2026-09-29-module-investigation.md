@@ -67,6 +67,10 @@ Implement scoped, navigable evidence (Recommended)
 
 Restrict to these subject kinds (Recommended)
 
+### Round 3 review disposition direction — 2026-09-29
+
+The next round of review is complete.  As usual:  Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
