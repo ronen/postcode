@@ -496,3 +496,37 @@ The cancellation concern remains unexplained and qualifies validation. Diagnosis
 is required before milestone-3 live, cost-bearing adapter work. The task remains
 active at the milestone-2 gate pending explicit human acceptance; no milestone-3
 implementation has begun.
+
+### Milestone 2 accepted; milestone 3 started — 2026-09-30
+
+The human accepted milestone 2 and authorized continuing. Acceptance is recorded
+in `6f16401`; the overall task remains active. `6677ccc` diagnoses and corrects
+the deferred execution-ownership test-harness race, with a controlled reproduction
+of the cancellation signature, confirmed production timeout/exit settlement,
+15 passing isolated tests and all 371 passing suite tests. The
+[diagnosis record](../validation/module-investigation/2026-09-30-execution-ownership-diagnosis.md)
+retains historical qualifications and inference limits. Production cancellation
+policy is unchanged.
+
+Under the plan's delegated integration selection, milestone 3 will use OpenAI's
+Responses API at its fixed HTTPS API endpoint with `gpt-6-sol`, medium reasoning,
+standard service, and no automatic retries or fallback. Official model guidance
+verified on 2026-09-30 supports this exact model/effort combination. The official
+`openai` JavaScript/TypeScript SDK 7.25.0 (Apache-2.0; Node >=22) is selected for
+maintained request/response types, abortable transport and provider error types;
+its default retries and logging will be disabled explicitly. No general agent
+framework or provider registry is needed.
+
+The initial credential mechanism is macOS Keychain, retrieved privately by
+PostCode using the system `security` executable. A human creates the item in
+Keychain Access, outside this conversation. Intentional PostCode-specific
+enablement remains separate from credential existence. Unsupported platforms or
+failed access produce configuration unavailability without an environment-key
+fallback. The concrete setup handoff will disclose repository transmission,
+separate API charges, provider spending controls, revocation/rotation and the
+lack of enforced isolation from same-user agents. No credential retrieval or live
+inference has occurred. The plan requires a pause for human setup before live use.
+
+Sources: [model](https://developers.openai.com/api/docs/models/gpt-6-sol),
+[SDK](https://developers.openai.com/api/docs/libraries),
+[spend controls](https://developers.openai.com/api/docs/guides/spend-limits).
