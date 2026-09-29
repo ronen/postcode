@@ -81,6 +81,10 @@ alone remain uncitable.
 
 Go ahead with both recommendations; of course with attendant regression coverage and architecture doc updates
 
+### Milestone 1 acceptance — 2026-09-29
+
+ok, Milestone 1 is accepted
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
