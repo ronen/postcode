@@ -85,6 +85,10 @@ Go ahead with both recommendations; of course with attendant regression coverage
 
 ok, Milestone 1 is accepted
 
+### Milestone 2 implementation direction — 2026-09-29
+
+Go ahead with milestone 2
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
