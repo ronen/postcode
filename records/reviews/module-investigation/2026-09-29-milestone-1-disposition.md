@@ -5,7 +5,7 @@ Date: 2026-09-29
 Task: [Module investigation](../../tasks/2026-09-29-module-investigation.md)
 Handoff: [Milestone 1](2026-09-29-milestone-1-handoff.md)
 Findings: [Round 1](2026-09-29-milestone-1-round-1-findings.md), [Round 2](2026-09-29-milestone-1-round-2-findings.md), [Round 3](2026-09-29-milestone-1-round-3-findings.md)
-State: round 3 verifies earlier corrections; R3-F1 and R3-F2 accepted with remedies awaiting human direction; milestone gate not satisfied
+State: round 3 verifies earlier corrections; R3-F1 and R3-F2 corrected under human-approved remedies; milestone gate awaits human acceptance
 
 ## Findings and dispositions
 
@@ -205,37 +205,46 @@ identified by the reviewer. Evidence attribution remains separate.
 
 ### R3-F1 — module inventory exceeds one investigation's budget
 
-**Accepted; requires human direction on the remedy.** The reviewer measured 40
-sequential pages and 1,871,220 serialized units for all 258 modules, against 32
-agent exchanges and a 2,000,000-unit cumulative dialogue guard. The page bound
-does not make that complete traversal achievable within one investigation.
-The selection currently traverses each module's naming claim, context and source
-support, confirming the reported cause. The reviewer's low severity and statement
-that this does not block the milestone are preserved.
+**Accepted and corrected under the human's lighter-listing ruling**, in
+`aef0878b17e1d31ec079edecd63a8ada469f56f8`. The reviewer measured 40 sequential pages and 1,871,220
+serialized units for all 258 modules, against 32 agent exchanges and a
+2,000,000-unit cumulative dialogue guard. The page bound alone did not make a
+complete traversal achievable within one investigation.
 
-The recommended remedy is a lighter module listing that retains identity, naming
-claim and qualification while supplying source support by inspectable reference.
-The alternatives are name/handle filtering or an explicitly accepted milestone-3
-limitation. These choices affect the evidence contract or defer a finding, so the
-human has been asked before any is implemented. If the lighter listing is chosen,
-verification will include full traversal within the investigation budget on this
-repository, qualification preservation and citation rejection for references that
-have not been inspected. No remedy or deferral is assumed from elapsed time.
+Module listings now retain each module, its naming claim and unchanged own
+qualification, with source support supplied by inspectable references from the
+first page. The page stays partial while support is referenced. Source references
+alone remain uncitable; full inspection establishes exposure. Other query kinds
+retain their existing source-support behavior and oversized-entry fallback.
+
+The new 263-module regression traverses the complete inventory and inspects source
+support before an accepted submission under the existing guards. The real
+repository's 258 modules now take 21 pages and 1,070,829 response units. An actual
+dialogue with validity checks completes listing, one source inspection and
+submission in 23 exchanges and 1,141,713 total sent/received units. No module was
+omitted. This establishes the measured case, not a universal inventory-size
+allowance; no guard was relaxed and no name-filter scope was added.
 
 ### R3-F2 — summary delivery indistinguishable in provenance
 
-**Accepted; requires human direction on the representation.** The coordinator
-currently adds evaluation summaries, their summarized qualification contexts and
-repository summaries to the same `suppliedEvidence` set as complete records.
-The architecture's existing statement that summary identities do not assert full
-transmission does not supply the missing machine-readable distinction.
+**Accepted and corrected under the human's separate-exposure ruling**, in
+`aef0878b17e1d31ec079edecd63a8ada469f56f8`. Attempt reports and accepted provenance now retain
+`summarizedEvidence` independently of `suppliedEvidence`. Evaluation summaries,
+their summarized global qualification contexts and repository summaries enter the
+former set only when dispatched. Complete records enter the latter. Both sets may
+contain an identity when both forms were delivered; recording full exposure does
+not erase prior summary exposure. Bare references enter neither set.
 
-The recommended remedy is separate summarized-evidence tracking in attempt
-reports and accepted provenance, allowing citations to substantive delivered
-summaries while preserving their exposure form. Bare support references remain
-uncitable. The reviewer also permits a documentation-only clarification of
-summary citation semantics; the human has been asked to choose before the
-contract changes. This finding has not been dismissed as already documented.
+Acceptance permits citations to substantive delivered summaries while provenance
+and investigator instructions explicitly preserve summary-only meaning. Regression
+coverage checks all summary kinds, successful citation, subsequent full delivery,
+exact report/provenance agreement, immutable accepted exposure, and failed-attempt
+reporting. Oversized withheld responses establish neither exposure form and cannot
+be cited. The architecture explains the distinction and downstream interpretation.
+
+The [round-3 validation](../../validation/module-investigation/2026-09-29-milestone-1-round-3-corrections.md)
+records final checks, the initial test-assumption correction, scale reproduction
+and residual limits. Investigation semantics advanced to `postcode/investigation@5`.
 
 ### Round 3 observations, verification and residual limits
 
@@ -253,14 +262,14 @@ contract changes. This finding has not been dismissed as already documented.
 - **Verification:** the reviewer reports type checking and 339/339 tests passing,
   with zero failures or cancellations, plus complete real-repository traversal
   with no omitted relationship, membership, export or group entries. These are
-  reviewer-reported results; this assessment has not rerun runtime checks or
-  changed runtime code.
+  reviewer-reported results at the prior target. The subsequent implementer
+  checks for both approved corrections are recorded in the linked round-3 validation.
 - **Remaining uncertainty:** the previous intermittent execution-ownership
   cancellations remain unexplained and explicitly deferred. The latest passing
   full suite does not resolve that concern; validation remains qualified. No
   diagnosis or baseline comparison was repeated. Hosted/live validation is still
-  absent, and scale evidence remains one real repository plus the generated
-  163-module fixture.
+  absent, and scale evidence remains one real repository plus generated
+  fixtures (including the new 263-module inventory regression).
 
 ## Non-defect observations and residual limits
 
@@ -313,6 +322,11 @@ Round-2 correction `212fa9e82f58d41f3de6829ad84285e40305930b` additionally passe
   the linked round-2 validation;
 - whitespace and architecture-link checks.
 
+Round-3 correction `aef0878b17e1d31ec079edecd63a8ada469f56f8` additionally passed
+type checking, the 10-test focused evidence-access suite, and the complete suite
+(342 passed, zero failed, cancelled or skipped). The real-repository inventory
+dialogue and collection sweep are documented in the round-3 validation.
+
 The successful latest full run does not resolve the intermittent cancellations
 recorded above. Validation remains qualified by that explicitly deferred concern.
 
@@ -341,12 +355,13 @@ records chronology, reproduction and limits, including the final focused check.
 ## Gate conclusion
 
 R2-F1 and R2-F2 are independently verified as corrected. Every actionable finding
-has a recorded disposition. R3-F1 and R3-F2 are accepted, with their remedies
-awaiting human direction because the reviewer presents consequential alternatives.
+has a recorded disposition. R3-F1 and R3-F2 are corrected under the human-approved recommendations, with
+regression coverage, scale verification and architecture updates.
 No finding has been rejected, materially qualified or deferred without direction.
 Earlier F7 acceptance and the qualified cancellation deferral remain unchanged.
 
 The task remains active at milestone 1. The reviewer considers this checkpoint
 sufficient once the remaining findings are resolved or dispositioned, without a
-mandatory further independent round. The original handoff remains unchanged.
+mandatory further independent round. Both findings are now corrected; their
+verification is recorded in the round-3 validation. The original handoff remains unchanged.
 The human has not accepted the gate, and milestone 2 has not begun.
