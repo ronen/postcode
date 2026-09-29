@@ -5,7 +5,7 @@ Date: 2026-09-29
 Task: [Module investigation](../../tasks/2026-09-29-module-investigation.md)
 Handoff: [Milestone 1](2026-09-29-milestone-1-handoff.md)
 Findings: [Round 1](2026-09-29-milestone-1-round-1-findings.md)
-State: F1–F6 corrected under human direction; bounded F7 and cancellation investigation in progress
+State: F1–F6 corrected under human direction; bounded investigation completed; human assessment pending
 
 ## Findings and dispositions
 
@@ -110,7 +110,8 @@ failed), with the same pending-promise error. Both baseline and corrected
 isolated execution-ownership runs passed all 13 tests. This establishes that the
 pattern predates the implementation; its cause remains unresolved. The human
 has been asked whether to defer diagnosis explicitly or keep it open before gate
-acceptance. The corrected full-suite run is in progress.
+acceptance. The corrected full suite also produced the same 13 cancellations: 318 passed,
+zero failed (331 total).
 
 No hosted provider, credentials or live inference were exercised. Retention,
 reconsideration and display remain later milestones. These review limits are
@@ -120,14 +121,16 @@ establishes their correctness or interpretive usefulness.
 ## Corrections and verification
 
 Correction commits: `1de634a29e0ba07a42091d0718f286462f77e3f4` (F3, F5, F6),
-`f5a974d` (F1, F2, F4 and the F7 regression).
+`f5a974d` (F1, F2, F4 and the F7 regression), and `32f90a5` (distinct
+non-finite usage reports).
 
 - Type checking and build passed.
 - All 34 investigation tests passed, without failures, cancellations or skips.
 - The README regression passed for partial and complete mechanical work.
 - Baseline and corrected isolated execution-ownership runs each passed 13 tests.
 - Baseline full suite: 283 passed, zero failed, 13 cancelled (296 total).
-- Corrected full suite: in progress.
+- Corrected full suite: 318 passed, zero failed, 13 cancelled (331 total).
+- Final usage refinement: both targeted tests, type checking and build passed.
 - `git diff --check`: passed.
 
 Investigation semantics advanced to `postcode/investigation@3`. No dependency,
@@ -137,7 +140,9 @@ CLI capability, governing document or development-process file changed.
 
 Round 1 reviewed `d4260522c2abf0530de076c05944f531de003e4b` against
 `c15afdd3b03f588534ac386c2453c81da71ffb68`; its findings remain unchanged.
-The correction target is `f5a974d`. No further independent round has occurred.
+The correction target is `32f90a5`. No further independent round has occurred.
+The [correction validation](../../validation/module-investigation/2026-09-29-milestone-1-review-corrections.md)
+records chronology, reproduction and limits, including the final focused check.
 
 ## Gate conclusion
 
