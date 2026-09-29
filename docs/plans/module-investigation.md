@@ -22,7 +22,7 @@ whose root references the selected subject through investigation provenance.
 Neither structure establishes a decomposition of the program into canonical
 architectural units.
 
-The human explores the code through these operations. The investigator gathers
+The human explores the code through these lenses. The investigator gathers
 evidence and produces interpretations to support that exploration. Existing
 mechanical analyses, such as organization and dependencies, continue to produce
 qualified projections. They can supply evidence for investigrams without
@@ -38,10 +38,16 @@ infrastructure:
 | `decompose(investigram)` | Smaller, tersely described selectable aspects of the selected functionality | More precise focus without requiring a deeper investigation of each aspect |
 | `examine(investigram)` | A deeper investigation of the selected aspect | Substantive findings, sharper limitations, corrections, or an explicit report that no useful addition was established |
 
-In this slice, each lens's information requirements map to one core investigation
+In this slice, each lens's information requirements map to one investigation
 operation. The operations use the shared
 [domain interpretation boundary](#investigator-execution-and-evidence-access),
 with objectives and input context determined by the behaviors above.
+
+In this plan, a lens is the public projection request; an investigation operation
+is the reusable work selected to supply its information. The table specifies the
+mapping through the requested information. Internal operation names remain
+implementation choices. Investigram provenance records the generating operation;
+projections identify the consuming lens.
 
 The functionality investigation supplies this slice's summary content. It does
 not define the complete or permanent composition of a summary projection, which
@@ -51,7 +57,7 @@ For a summary saying that a module “assembles configuration and starts the
 application,” decomposition can expose those two activities separately.
 Examining configuration assembly can investigate input precedence and
 validation. Explanation can clarify what assembly means in this program. All
-three return investigrams that can be used with any subsequent operation.
+three expose investigrams that can be selected by any subsequent follow-up lens.
 Decomposition may discover new claims while reasoning over existing evidence;
 examination may need additional source. Their objectives, not exclusive tool
 permissions, distinguish them.
@@ -86,7 +92,7 @@ hard execution bounds rather than replacing them.
 
 ## Success criteria and completion
 
-Completion requires the four operations and their agreed behavior to work
+Completion requires the four lenses and their agreed behavior to work
 through the supported CLI flows, the required automated and behavioral checks to
 pass, and the implementation and user documentation to be complete. The
 prescribed formative exercise is completed with retained artifacts reporting
@@ -213,8 +219,9 @@ continue to apply. No foundation revision is required.
 `summarize`, `explain`, `decompose`, and `examine` are lenses. `summarize` selects a module;
 follow-up lenses select an investigram as their subject, using its prose and
 underlying program context to focus the investigation. The projection identifies
-both that selection and the retained result. An investigram is a valid subject in
-its own right; it is not an entity.
+its lens, selected subject, the investigation-operation outcomes used, and the
+retained result. Reused outcomes preserve their original generating provenance.
+An investigram is a valid subject in its own right; it is not an entity.
 
 ### Established foundation
 
@@ -231,6 +238,12 @@ coordinating responsibility established by the
 it handles declared requirements, analysis selection, shared work, and qualified
 outcomes.
 
+An **investigation evaluation**, also called an interpretation evaluation, is one
+execution of one investigation operation in one investigator dialogue.
+Citation-index sharing, correction-cause exemptions, the execution guard, the terminal outcome,
+and attempt usage are scoped to that execution. A lens request can select work
+without merging these scopes across the operations it requires.
+
 Language analysis and interpretation are parallel producers of qualified program
 information in the session record store. Language analysis produces entities,
 relationship claims, evidence, and context; interpretation produces investigrams,
@@ -240,9 +253,10 @@ retain their existing meanings. Entities and investigrams do not require a commo
 record kind merely because they share these features.
 
 Investigation lenses declare information requirements referring to reusable
-domain investigation operations. Requests identify the desired information,
-subject, and relevant input parameters and context independently of the consuming
-lens. The evaluation layer selects retained outcomes that satisfy those requirements,
+domain investigation operations. Request identity comprises the operation,
+exact selected subject, and semantic operation parameters, independently of the
+consuming lens. Investigation context is supplied when the operation executes.
+The evaluation layer selects retained outcomes that satisfy those requirements,
 accounts for explicit revisions, and identifies missing operations before
 execution. It invokes the domain interpretation boundary for selected work and
 applies the outcome-retention policy to the returned outcome. Successful results and their
@@ -253,7 +267,8 @@ whether interpretation is required; newly available context alone does not
 silently invalidate a retained interpretation or invoke the investigator again.
 
 Different lenses can consume the same retained operation outcome when their
-requirements request compatible work. Reuse preserves generating provenance;
+requirements have the same [request identity](#request-identity). Reuse preserves
+generating provenance;
 the consuming lens alone does not determine whether investigation is needed.
 Operation selection and projection construction remain separate from the choice
 of how many operations an investigator dialogue executes.
@@ -326,7 +341,7 @@ the request identifies the exact retained subject independently of the
 selector's spelling.
 
 The human can select displayed investigrams, inspect their retained content and
-support without generating a new result, and use any follow-up operation on
+support without generating a new result, and use any follow-up lens on
 them. A follow-up receives the selected prose, referent description, references,
 and context, rather than only a module identifier. General conceptual background
 is not a separate investigation subject merely because an explanation includes
@@ -352,7 +367,7 @@ present, its result, selecting explicit replacements for display rather than
 invoking the investigator again. A result is the accepted root investigram; an
 outcome records how the evaluation ended, as defined by the [evaluation outcome
 taxonomy](../decisions/investigator-execution-and-evidence-access.md#evaluation-outcomes-and-later-requests).
-When no reusable outcome exists for that operation and target, the command runs
+When no reusable outcome exists for that investigation request, the command runs
 the investigation. Retained execution-limit and investigation-failure outcomes
 have no result and are displayed without silently retrying. Availability of more
 context does not by itself authorize new generation.
@@ -400,12 +415,22 @@ existing no-regeneration policy.
 
 A follow-up on a different investigram, including a replacement, is a distinct
 request and can still run normally. This boundary does not prevent new
-investigation through the four supported operations.
+investigation through the four supported lenses.
 
-A retained request is identified by operation, selected target, and semantic
-lens parameters. Presentation changes do not create a new investigation. The
-output identifies whether information was retained or newly generated, which
-attempt it comes from, and any explicit replacements selected for display. If
+A retained investigation request is identified by investigation operation, exact
+resolved subject, and semantic operation parameter values. Lens parameters map
+to those operation parameters; lens identity and presentation choices are not
+part of the retained request's identity. In this slice, compatible reuse means
+equality of those components. Original and replacement investigrams remain
+distinct subjects.
+
+Supplied investigation context is an execution input, recorded in provenance and
+citation indexes as applicable, rather than a request-identity component.
+Accumulating evidence, corrections, or associated investigrams does not turn a
+repeated request into a new one. Presentation changes do not create a new
+investigation. The output identifies whether information was retained or newly
+generated, which attempt it comes from, and any explicit replacements selected
+for display. If
 the request's original target has since been revised, its old follow-up result
 remains available with that context disclosed; repetition does not secretly
 investigate the new target. A new follow-up also targets the exact supplied
@@ -459,8 +484,9 @@ A view produced by a repeated request selects retained results and explicit
 revision relationships. It is a newly constructed projection of the current
 retained account, not mutation of the projection or view originally produced.
 Unrelated accumulated investigrams do not enter the view merely because they
-exist. Only the declared operation/target and revision selection, or the
-subject-association selection of `inspect`, determine its contents.
+exist. Only the consuming lens's requirements, selected subject and revision
+selection, or the subject-association selection of `inspect`, determine its
+contents.
 
 ### Example navigation journey
 
@@ -532,7 +558,8 @@ Original and replacement subjects identify distinct retained requests.
 Implement the [citation and reconsideration contract](../decisions/investigrams-and-progressive-investigation.md#record-citation-exposure-and-derive-reconsideration-status).
 Construct citation indexes from investigram context actually supplied to the
 investigator, conservatively shared across investigrams produced by an
-evaluation. Any substantive content, including excerpts and descriptive listings,
+investigation evaluation. Any substantive content, including excerpts and
+descriptive listings,
 creates a citation; identifiers
 alone do not. Correction eligibility requires complete retained prose, referent
 information, and qualifications, with no omitted or truncated elements. Delivery
@@ -552,13 +579,14 @@ investigator retrieval, with access to further detail. No full-path presentation
 or enumeration is required. Revised-subject disclosure presents the same
 reconsideration cause, when applicable, rather than a duplicate warning. Keep
 citation indexes and original content immutable. Warnings do not trigger
-regeneration or change exact selection. This slice has no clearing operation;
+regeneration or change exact selection. This slice has no explicit reconsideration capability;
 [explicit
 reconsideration](../backlog.md#reconsider-investigrams-after-context-corrections)
 is deferred. Another investigation does not silently clear an earlier account.
 
 If B corrects A, B's citation index necessarily includes A. Exempt every
-investigram produced by an evaluation from each correction cause that evaluation
+investigram produced by an investigation evaluation from each correction cause
+that evaluation
 produced or received in full. For each cause, a non-exempt investigram needs
 reconsideration if it cites the target or an investigram needing reconsideration
 for that cause. Exemption applies at the investigram on every path; later citers
@@ -586,7 +614,7 @@ those outcomes. An inner agent communication boundary handles instructions,
 messages, tool exchanges, completion/failure signals, and
 provider-specific authentication and transport. Dialogue coordination between
 them assembles instructions, dispatches tool requests through PostCode's
-subject-based APIs, and validates results. The four operations share these
+subject-based APIs, and validates results. The investigation operations share these
 capabilities; interface shapes and module layout remain implementation choices.
 
 One real hosted implementation is sufficient. The implementing agent chooses the
@@ -614,9 +642,10 @@ hidden memory. The PostCode session retains evidence, results, and outcomes
 across operations. An investigator's working conversation lives within one
 operation.
 
-A `summarize` request starts with the module reference and operation instructions. A
-follow-up starts with the selected investigram, its prose and referent
-information, and references to its evidence and investigation context. This
+The operation selected by `summarize` starts with the module reference and its
+instructions. An operation selected by a follow-up lens starts with the selected
+investigram, its prose and referent information, and references to its evidence
+and investigation context. This
 establishes the subject and objective without prescribing a fixed upfront
 evidence package.
 
@@ -840,7 +869,7 @@ view, which remains subject to the session-validity checks below.
 
 ### Asynchronous execution and interruption
 
-The shell remains single-operation-at-a-time. Support asynchronous interpretation,
+The shell remains single-command-at-a-time. Support asynchronous interpretation,
 retaining input checks before publication and after output. Active interruption
 keeps the existing end-session behavior; terminate/cancel inference where the
 chosen provider permits it and truthfully report limits on remote cancellation or cost. No late response is
@@ -878,8 +907,9 @@ inference or changes request selection.
 
 ## Observations and execution provenance
 
-Normal command observations include the exact selected target, any
-superseded-target warning and displayed replacement reference, operation,
+Normal command observations identify the consuming lens, the investigation
+operations executed and outcomes selected, and the exact selected target. They
+include any superseded-target warning and displayed replacement reference,
 selected retained or newly produced investigrams and revisions needed to
 interpret the view, prior interpretations retrieved by the investigator,
 qualifications, outcomes, actual output, and available usage. Keep the batch
@@ -936,15 +966,15 @@ remaining uncertainty.
 Reviewers may rerun deterministic tests and offline adapter checks. If additional
 live evidence is needed, they report the gap and request human direction.
 
-The four operations exercise complementary uses of shared interpretation
+The four lenses exercise complementary uses of shared interpretation
 infrastructure. Their combined value, including progressive investigation, is
 what this slice assesses; summary quality alone is not the basis for deciding
-whether to implement the remaining operations.
+whether to implement the remaining lenses.
 
 Milestone 1 implements interpretation execution and the full result contract
 using the double. Milestone 2 integrates returned outcomes with the evaluation layer,
 session handling, and the shell. Milestones 3–4 exercise live summary and
-follow-up operations. Milestone 5 adds correction-aware selection and display,
+follow-up lenses. Milestone 5 adds correction-aware selection and display,
 conflict handling, and reconsideration propagation.
 
 Use deterministic investigator doubles in the regular test suite. The double and
@@ -967,11 +997,17 @@ behavior or interpretive value.
 
 ### Milestone 1: Domain interpretation execution
 
+Begin by assessing the evaluation layer's organization as described under
+[Evaluation and retained program information](#evaluation-and-retained-program-information),
+including the entry points for investigator evidence queries. Record the chosen
+organization and rationale in the task record, and reflect material responsibility
+or boundary changes in `docs/architecture/`. Necessary restructuring of existing
+mechanical evaluation is in scope while preserving existing behavior.
+
 Implement the domain interpretation boundary with lens-independent operation
 requests, using an investigator double at the agent communication boundary.
 Exercise real dialogue coordination, qualified evidence requests, bounded
-asynchronous execution, submission and
-validation, and returned outcomes. Verify handling of cancellation and
+asynchronous execution, submission and validation, and returned outcomes. Verify handling of cancellation and
 invalidation signals, rejection of late results, and attempt usage attribution
 with synthetic provider-reported usage through domain-level tests.
 
@@ -1002,10 +1038,7 @@ without requiring new CLI behavior.
 ### Milestone 2: Shell and session integration
 
 Integrate investigation-operation requirements and outcomes with the evaluation
-layer and session handling. Assess its organization as described
-under [Evaluation and retained program information](#evaluation-and-retained-program-information).
-Record the chosen organization and its rationale.
-Select reusable outcomes and missing operations before
+layer and session handling. Select reusable outcomes and missing operations before
 execution, independently of projection construction. Apply
 retention policy, retain successful results and their accompanying corrections
 atomically, establish stable session references, and reuse retained outcomes.
@@ -1070,10 +1103,10 @@ Observe these dependencies when scheduling the work:
 
 Expose `explain`, `decompose`, and `examine` over the same results. Support on-demand
 investigram composition and investigation-provenance traversal, repeated
-operations, investigram evidence inspection, and subject-associated investigram
+lenses, investigram evidence inspection, and subject-associated investigram
 retrieval and inspection.
 
-Verify the follow-up operations and context navigation with the investigator
+Verify the follow-up lenses and context navigation with the investigator
 double before running the formative assessment. Then run a small formative live
 sequence exercising `explain`, `decompose`, and
 `examine` under the assessment protocol, using the pinned subjects and frozen
@@ -1144,15 +1177,19 @@ Verify public boundaries and journeys, including:
 - evaluation-layer selection of missing interpretation work, retained-outcome reuse,
   and investigator queries that acquire missing mechanical results without changing
   their qualification or generating nested human-command observations;
-- lens-independent operation requests, selection and reuse for compatible
-  information requirements, and projection construction without investigator
-  execution; each missing operation uses its own fresh dialogue;
+- investigation-operation requests and retained-outcome keys independent of lens
+  identity; equality of operation, exact subject, and semantic operation parameters
+  determines reuse, while accumulated execution context does not change identity;
+  repeated requests reuse retained outcomes and projection construction does not
+  invoke the investigator. Cross-lens reuse is not demonstrated in this slice;
+  verify it when a second consuming lens exists;
 - full captured source supplied independently of human excerpt limits, explicit
   chunking/coverage, no human source-escape event for investigator-only reads, and
   correct disclosure observations when source is actually shown to the human;
-- fresh investigator dialogues per new evaluation with multiple tool exchanges
-  within an operation;
-  on-demand composition traversal, prior investigations, reverse subject lookup,
+- fresh investigator dialogues per investigation evaluation, with multiple tool
+  exchanges and one terminal outcome; citation sharing, correction exemptions,
+  execution guards, and attempt usage remain scoped to that operation execution;
+- on-demand composition traversal, prior investigations, reverse subject lookup,
   revision context, and additional source;
 - explain/decompose/examine on outputs of each other, including more than one
   follow-up level and no useful finer decomposition or additional finding;
@@ -1400,7 +1437,7 @@ For each formative subject, assess the initial summary separately from the
 captured follow-up sequence. Use separate fresh contexts for summary-only and
 sequence conditions so later explanations do not inform the summary-only
 answers. The sequence includes the selected references and relevant prior
-output, allowing an evaluator to assess what each operation added. Fix the
+output, allowing an evaluator to assess what each lens added. Fix the
 question set before assessment and apply it consistently across subjects.
 Questions cover:
 
@@ -1410,7 +1447,7 @@ Questions cover:
 - What became clearer after explanation, more precisely selectable after
   decomposition, or substantively different after examination?
 - Which investigram would you select next, by displayed reference, with which
-  operation, and what would you expect to learn?
+  lens, and what would you expect to learn?
 - Where correction is shown, what changed, which references identify original and
   replacement, and what remains uncertain? Can composition be distinguished from
   the provenance of a later investigation?
@@ -1492,7 +1529,7 @@ Mark that setup as injected test context, not a natural investigator error.
 | 1 | Domain-level submission, validation, context requests and responses, and returned outcomes, using supplied context fixtures. | None. |
 | 2 | Retention, reuse, and successive evaluations with retained context; reporting and `inspect(investigram)` through the shell. | None. |
 | 3 | Retain the deterministic correction tests; run offline adapter contract checks. | Summary baseline; no deliberate live correction case required. |
-| 4 | Follow-up operations and context navigation, including accompanying corrections, before formative assessment. | Assess correction through follow-up operations. |
+| 4 | Follow-up lenses and context navigation, including accompanying corrections, before formative assessment. | Assess correction through follow-up lenses. |
 | 5 | Correction-aware selection, display, conflicts, and reconsideration propagation, before formative assessment. | Integrated assessment of the completed sequence and views; mechanical correctness is established by deterministic checks. |
 
 Retain exact explicit inputs, outputs, configuration, evidence access, failures,
@@ -1533,7 +1570,7 @@ session handling, dialogue coordination, validation, retention, and presentation
 The harness leaves normal CLI input behavior unchanged.
 
 For live sequences, the implementing agent selects follow-up targets and
-operations from captured views to exercise the prescribed assessment objectives.
+lenses from captured views to exercise the prescribed assessment objectives.
 Controlled correction cases use their designated target. Record each selection
 and its rationale, and identify adaptive target selection as a limitation of the
 formative findings. Selection remains separate from the clean comprehension
@@ -1662,7 +1699,7 @@ authorize them.
 
 ## Deliverables and remaining design choices
 
-The delivered capability includes the four operations, stable session-long CLI
+The delivered capability includes the four lenses, stable session-long CLI
 references, retained/current and historical viewing, subject-associated
 investigram inspection and retrieval, correction-aware navigation, and basic
 per-investigation and session usage reporting. Retry and forced regeneration
