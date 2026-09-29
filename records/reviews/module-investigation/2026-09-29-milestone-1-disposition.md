@@ -5,7 +5,7 @@ Date: 2026-09-29
 Task: [Module investigation](../../tasks/2026-09-29-module-investigation.md)
 Handoff: [Milestone 1](2026-09-29-milestone-1-handoff.md)
 Findings: [Round 1](2026-09-29-milestone-1-round-1-findings.md), [Round 2](2026-09-29-milestone-1-round-2-findings.md), [Round 3](2026-09-29-milestone-1-round-3-findings.md)
-State: round 3 verifies earlier corrections; R3-F1 and R3-F2 corrected under human-approved remedies; milestone gate awaits human acceptance
+State: milestone 1 accepted by the human on 2026-09-29; every finding dispositioned
 
 ## Findings and dispositions
 
@@ -360,8 +360,14 @@ regression coverage, scale verification and architecture updates.
 No finding has been rejected, materially qualified or deferred without direction.
 Earlier F7 acceptance and the qualified cancellation deferral remain unchanged.
 
-The task remains active at milestone 1. The reviewer considers this checkpoint
-sufficient once the remaining findings are resolved or dispositioned, without a
-mandatory further independent round. Both findings are now corrected; their
-verification is recorded in the round-3 validation. The original handoff remains unchanged.
-The human has not accepted the gate, and milestone 2 has not begun.
+The reviewer considered this checkpoint sufficient once the remaining findings
+were resolved or dispositioned, without a mandatory further independent round.
+Both findings are corrected in `aef0878b17e1d31ec079edecd63a8ada469f56f8`, with
+verification recorded in the round-3 validation. The human explicitly accepted
+milestone 1 on 2026-09-29 after confirming that the straightforward corrections
+did not warrant another independent round. The milestone-1 review gate is satisfied.
+
+Acceptance preserves the qualified cancellation deferral; it does not resolve its
+cause or establish hosted/live behavior. The original handoff and authored findings
+remain unchanged. The overall implementation task remains active. Milestone 2,
+shell and session integration, is next and has not begun at this acceptance record.
