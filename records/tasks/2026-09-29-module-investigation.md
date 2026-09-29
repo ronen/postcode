@@ -115,6 +115,16 @@ Add regression coverage for missing and unsupported references, empty disclosure
 
 round 3 review has been completed, please read and assess as usual
 
+### Milestone 2 round 3 observation rulings — 2026-09-30
+
+> The reviewer leaves the maintenance safeguard to your choice. I recommend adding brief cross-references beside each renderer’s source-detail code, pointing to the classifier and its regression tests. This changes comments only.
+
+Add renderer cross-references (Recommended)
+
+> The reviewer did not assess paths exposed outside sourceDetail, such as configuration paths in JSON analysis context. I recommend recording this as an unassessed backlog follow-up, without claiming compliance or expanding this milestone. Would you prefer a bounded audit before milestone-2 acceptance?
+
+Record unassessed follow-up (Recommended)
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
