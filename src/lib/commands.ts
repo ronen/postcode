@@ -3,9 +3,9 @@ import path from 'node:path';
 import type { ViewRequest } from './session.js';
 import { inlineText } from './terminal-text.js';
 
-export const help = `PostCode — modules, organization and dependencies\n
+export const help = `PostCode — modules, organization, dependencies and investigation\n
 Usage: postcode shell [--project <tsconfig.json>] [--json]
-       postcode [modules | organization [project | repository] | inspect <exact-selector> | dependencies | children <exact-selector> | parents <exact-selector>] [--project <tsconfig.json>] [--json] [--source-detail]
+       postcode [modules | organization [project | repository] | inspect <exact-selector> | dependencies | children <exact-selector> | parents <exact-selector> | summarize <module-selector> | usage] [--project <tsconfig.json>] [--json] [--source-detail]
 
 Defaults: modules(project), ./tsconfig.json, Unicode text.
 organization defaults to the configured project; repository selects the complete enclosing Git worktree organization.
@@ -30,6 +30,17 @@ Dependency Unicode expands 60 components, 6 levels and 200 edges; JSON retains a
 Focused relationships show up to 20 occurrences in Unicode or 50 in JSON; source detail shows up to 100 evidence records.
 External dependencies are opaque leaves. Cycles retain members and internal edges; roots do not imply entry points.
 Normal views automatically submit a local observation batch; the destination is disclosed on stderr.
+
+Investigation checkpoint:
+summarize requires one exact module name/handle, or a module reference in the shell.
+No hosted investigator is configured by this checkpoint; normal summary requests report configuration unavailability.
+Development tests inject the investigator at the communication boundary, using the production worker/session path.
+Successful, failed-investigation and limit-stop outcomes are retained; repeated display adds no usage.
+Communication/configuration failures leave no reusable outcome. Recovery from retained failures requires a new session.
+inspect @investigram-… in the shell shows the exact original, its fixed composition, support and correction links.
+usage reports per-attempt and session usage without inference; synthetic usage and unknown/anomalous reports remain explicit.
+Investigation JSON uses postcode-investigation-view/1-experimental. One-shot references expire at command end.
+Public follow-up lenses, hosted setup and automatic replacement selection remain later milestones.
 
 Concepts:
 modules inventories the supported population; inspect selects exact subjects from that population.
@@ -80,17 +91,18 @@ export function parseCommand(args: readonly string[], cwd: string, interactive =
   const lens = positional[0] ?? 'modules';
   if (interactive && ['help', 'exit'].includes(lens) && args.length === 1) return { kind: lens as 'help' | 'exit' };
   if (!interactive && lens === 'shell' && positional.length === 1 && !sourceDetail) return { kind: 'shell', configPath, json };
-  const focused = ['inspect', 'children', 'parents'].includes(lens);
+  const focused = ['inspect', 'children', 'parents', 'summarize'].includes(lens);
   const dependency = ['dependencies', 'children', 'parents'].includes(lens);
-  if (!['modules', 'inspect', 'organization', 'dependencies', 'children', 'parents'].includes(lens)
-    || (['modules', 'dependencies'].includes(lens) && positional.length > 1)
+  if (!['modules', 'inspect', 'organization', 'dependencies', 'children', 'parents', 'summarize', 'usage'].includes(lens)
+    || (['modules', 'dependencies', 'usage'].includes(lens) && positional.length > 1)
     || (lens === 'organization' && (positional.length > 2 || !['project', 'repository'].includes(positional[1] ?? 'project')))
-    || (focused && positional.length !== 2) || (sourceDetail && !focused && !dependency)) {
-    return error('use modules, organization [project | repository], inspect <selector>, dependencies, children <selector>, or parents <selector>; --source-detail requires inspect or a dependency view.');
+    || (focused && positional.length !== 2) || (sourceDetail && lens !== 'inspect' && !dependency)) {
+    return error('use modules, organization [project | repository], inspect <selector>, dependencies, children <selector>, parents <selector>, summarize <module>, or usage; --source-detail requires inspect or a dependency view.');
   }
   const selector = focused ? positional[1]! : null;
   const reference = interactive && !literal && selector?.startsWith('@') === true;
   return { kind: 'view', configPath, request: { lens: lens as ViewRequest['lens'],
+    ...(lens === 'summarize' || lens === 'usage' || reference && selector?.startsWith('@investigram-') ? { referenceLifetime: interactive ? 'session' as const : 'command' as const } : {}),
     selector: reference ? selector!.slice(1) : selector, ...(reference ? { reference: true } : {}),
     subject: positional[1] === 'repository' ? 'repository' : 'project', presentation: { format: json ? 'json' : 'unicode', sourceDetail } } };
 }

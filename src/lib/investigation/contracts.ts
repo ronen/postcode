@@ -149,6 +149,7 @@ export type AgentReply =
   | { readonly kind: 'ended' | 'refused' | 'truncated' }
   | AgentFailure;
 export interface AgentInput {
+  readonly attempt: RecordId;
   readonly instructions: string;
   readonly request: InvestigationRequest;
   readonly responses: readonly ToolResponse[];
@@ -170,7 +171,7 @@ export interface AttemptReport {
   readonly request: InvestigationRequest;
   readonly agent: AgentIdentity;
   readonly instructions: string;
-  readonly termination: InvestigationOutcome['kind'] | 'interrupted' | 'invalidated' | 'defect';
+  readonly termination: InvestigationOutcome['kind'] | 'interrupted' | 'invalidated' | 'defect' | 'running';
   readonly elapsedMilliseconds: number;
   readonly usage: readonly CallUsage[];
   readonly deliveries: readonly ContextDelivery[];

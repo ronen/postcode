@@ -1,10 +1,10 @@
 # Investigation execution
 
-This describes milestone 1 of [module investigation](../plans/module-investigation.md).
-The domain boundary is implemented and exercised through a deterministic agent
-double. It has no CLI entry point, hosted adapter, credentials, interpretation
-retention, or human-facing investigram presentation yet. Those integrations remain
-in the plan's later milestones. The governing contracts are
+This describes milestones 1–2 of [module investigation](../plans/module-investigation.md).
+The domain boundary, session retention and summary/inspection CLI paths are
+implemented and exercised through a deterministic agent double. There is no
+hosted adapter or credential setup yet. Public follow-up lenses and correction-aware
+replacement selection remain later milestones. The governing contracts are
 [investigator execution](../decisions/investigator-execution-and-evidence-access.md),
 [investigrams](../decisions/investigrams-and-progressive-investigation.md), and
 [operations and lenses](../decisions/investigation-operations-and-lenses.md).
@@ -141,7 +141,7 @@ independently of its future consuming lens. The four operation objectives are
 functionality, clarification, decomposition and examination; this slice accepts
 no semantic parameters. A functionality request starts with a module reference;
 the other operations start with the exact earlier investigram and correction-aware
-context. Every execution opens a fresh agent dialogue. The communication contract
+context. Every new operation execution opens a fresh agent dialogue; retained outcomes do not open one. The communication contract
 contains provider identity/configuration, context exchanges, explicit submission,
 failure signals, cancellation and usage reporting. No provider SDK types cross it.
 
@@ -171,7 +171,7 @@ generation time. There is no repair loop or truncation recovery at this checkpoi
 Malformed submissions, missing submission, refusal and unrecovered truncation
 return investigation failure; guard stops remain separate. Communication/service
 failure and configuration unavailability remain distinct returned outcomes. The
-future evaluation/session integration owns the prescribed retention policy.
+evaluation/session integration owns the prescribed retention policy.
 Interruption and invalidation propagate their existing termination errors.
 
 Acceptance validates required prose, referents, attributable qualifications,
@@ -192,15 +192,15 @@ from the original request or copied from all earlier associations.
 
 PostCode assigns identities and freezes the complete accepted unit, including
 operation provenance and every replacement. Acceptance does not insert
-investigrams or corrections into the program store. Milestone 2 will retain the
-unit atomically alongside its outcome. Mechanical evidence already acquired is
+investigrams or corrections into the program store. Evaluation retains the
+unit atomically alongside its outcome before view construction. Mechanical evidence already acquired is
 independent of whether interpretation is accepted. Rendering and projection code
 do not participate in investigation execution.
 
 ## Context exposure and usage
 
-Earlier accounts are supplied through a read-only history boundary. Milestone 1
-uses fixtures produced through ordinary acceptance. Context retrieval preserves
+Earlier accounts are supplied through a read-only history boundary over retained
+program records; domain tests also use fixtures produced through ordinary acceptance. Context retrieval preserves
 the exact original, explicit revision notices, replacement accounts, reasons and
 qualifications, including chains, alternatives and accompanying corrections.
 It does not recursively embed earlier delivery payloads or automatically expand
@@ -233,4 +233,71 @@ Synthetic test usage is distinguished from provider usage. A final report callba
 runs on success, failure, interruption, invalidation or defect and retains received
 usage, instructions, termination classification and supplied-context identities.
 Late callbacks after termination are ignored; remote billed usage may therefore
-remain unknown. Session aggregation and presentation are milestone 2 work.
+remain unknown. Session aggregation and presentation preserve these distinctions.
+
+## Retention, selection and presentation
+
+The investigation evaluator owns one evidence-access instance per session, so
+continuations survive successive tool requests. It selects work by operation,
+exact subject and semantic parameters before execution. A successful accepted
+forest, its provenance, accompanying corrections and evaluation outcome enter the
+shared program record store in one atomic batch. Investigation failures and limit
+stops retain an outcome with no result. Configuration and communication failures
+retain diagnostics/usage but no reusable outcome. Presentation changes, additional
+evidence and later interpretations do not regenerate retained requests.
+
+Module summary selection resolves exactly one module name, handle or bound
+reference before starting work. Missing and ambiguous selections expose their
+status and candidates without generation. Summary and exact investigram inspection
+construct views from retained records. Inspection never invokes investigation.
+Investigram bindings use the existing append-only session allocator with a distinct
+`investigram-` prefix. Originals, composition children and replacements remain
+addressable; views show originals and explicit correction links at this checkpoint.
+Correction-aware replacement selection and reconsideration display are milestone 5
+work. Broader subject-associated discovery and public follow-up lenses remain later
+work. The internal session evaluation entry point already supports successive
+operations and correction-aware investigator context over earlier retained results.
+
+The experimental investigation view includes selected operation/outcome and reuse,
+immutable accounts, corrections, generating provenance, evidence exposure, stable
+references and attempt/session usage. Standard support details distinguish full,
+summary and earlier-interpretation exposure per generating provenance, including
+the provenance of incoming corrections. Explicit source detail reveals captured
+support locations and excerpts, with a source-disclosure observation; investigator
+source acquisition by itself emits no human source-disclosure event. One-shot views
+disclose that their references expire when the command ends. Summary/configuration
+and selection failures produce an explicit view and expected failure exit status;
+the shell can continue. No automatic mechanical substitute is presented as a summary.
+
+## Worker communication and reporting lifetime
+
+CLI execution retains the existing compiler worker and one-command-at-a-time
+ownership. The worker owns analysis, evidence acquisition, investigation
+coordination, validation and retention. The parent owns the injected investigator's
+communication participant, cancellation and independently recorded usage. A private,
+operation-tagged bridge carries agent exchanges, immediate usage reports and attempt
+exposure snapshots; it does not provide an additional program-access interface.
+The same in-process CLI environment injection reaches this bridge for both shell
+and one-shot tests. Ordinary CLI use has no configured investigator and reports
+configuration unavailability without an actual provider call.
+
+Every new investigation opens a fresh parent dialogue; closing or interrupting it
+aborts its signal, closes local communication state and ignores late replies and
+usage. The parent retains received usage and the last dispatched-context snapshot
+when worker termination prevents a final worker report. Active interruption still
+ends the session and disposes the compiler worker. Remote work/billing cannot be
+guaranteed to stop. Shared validity checks run through evidence work, after
+submission, before output and after output; invalidated results are not published.
+
+Reports group usage by full provider/model/configuration identity and distinguish
+provider reports from synthetic test data. Categories retain units and subset
+relationships; there is no sum that double-counts subsets as additional usage.
+Unknown and anomalous calls remain separate from trusted totals. Numeric aggregate
+overflow is explicitly unknown without losing raw reports or failing interpretation.
+Non-finite raw category values carry indexed textual annotations so JSON serialization
+does not make distinct anomalies indistinguishable. Usage inspection opens no dialogue. Repeated result display attributes the original
+attempt without adding calls. Attempt/session reports survive direct session close
+and parent worker disposal. Command observations include usage independently of view
+production; interrupted or invalidated commands emit final usage reporting even
+when their result view was suppressed. These records describe received reports,
+not complete billed usage.

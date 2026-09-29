@@ -1,3 +1,11 @@
+import { methods } from './identity.js';
+import { investigationEvaluation } from './investigation/evaluation.js';
+import type { InvestigationDependencies } from './investigation/evaluation.js';
+import { InvestigationUsage } from './investigation/usage.js';
+import { usageSummary } from './investigation/reporting.js';
+import { createInvestigationView, renderInvestigationView } from './investigation/presentation.js';
+import type { AttemptReport, InvestigationRequest } from './investigation/contracts.js';
+import type { RecordId } from './records.js';
 import { AnalysisFailure, SessionInvalidated, SessionClosed, CommandInterrupted, CleanupIncomplete, operationalIO } from './execution-errors.js';
 import { GitExecutionOwner } from './git-execution.js';
 import type { RunGit } from './git-execution.js';
@@ -24,8 +32,9 @@ import type { ProjectOptions } from './typescript/project.js';
 export { AnalysisFailure, SessionInvalidated } from './execution-errors.js';
 
 export interface ViewRequest {
-  readonly lens: 'modules' | 'inspect' | 'organization' | 'dependencies' | 'children' | 'parents';
+  readonly lens: 'modules' | 'inspect' | 'organization' | 'dependencies' | 'children' | 'parents' | 'summarize' | 'usage';
   readonly selector: string | null;
+  readonly referenceLifetime?: 'session' | 'command';
   readonly reference?: boolean;
   readonly subject?: 'project' | 'repository';
   readonly presentation: Presentation;
@@ -37,11 +46,15 @@ export interface ExecutionOptions {
 }
 
 /** One configured project and its accumulating transient program records. */
-export async function openSession(options: ProjectOptions, lifetime: { runGit?: RunGit; signal?: AbortSignal } = {}) {
+export async function openSession(options: ProjectOptions, lifetime: { runGit?: RunGit; signal?: AbortSignal; investigation?: InvestigationDependencies } = {}) {
   const owner = lifetime.runGit ? undefined : new GitExecutionOwner();
+  const controller = new AbortController();
+  const reports = new Map<RecordId, AttemptReport>();
+  const usage = new InvestigationUsage();
+  const usageReport = () => usageSummary([...reports.values()]);
   let disposed: Error | undefined;
   let busy = false;
-  const dispose = (reason: Error) => { disposed ??= reason; return owner?.close(reason) ?? Promise.resolve(); };
+  const dispose = (reason: Error) => { disposed ??= reason; controller.abort(reason); return owner?.close(reason) ?? Promise.resolve(); };
   const interrupt = () => { void dispose(new CommandInterrupted()).catch(() => {}); };
   lifetime.signal?.addEventListener('abort', interrupt, { once: true });
   if (lifetime.signal?.aborted) interrupt();
@@ -65,9 +78,7 @@ export async function openSession(options: ProjectOptions, lifetime: { runGit?: 
     return opened;
   }
   const id: SessionId = opened.session;
-  let state: { execute: ReturnType<typeof requestExecutor>; changed: () => Promise<boolean> } | undefined = {
-    execute: requestExecutor(new MemoryProgramRecordStore(), opened.analysis), changed: opened.changed,
-  };
+  let state: { execute: ReturnType<typeof requestExecutor>; evaluate(request: InvestigationRequest): ReturnType<ReturnType<typeof investigationEvaluation>['evaluate']>; changed: () => Promise<boolean> } | undefined;
   let invalid = false;
   const check = async () => {
     alive();
@@ -82,8 +93,15 @@ export async function openSession(options: ProjectOptions, lifetime: { runGit?: 
       }
     }
     alive();
-    if (invalid) throw new SessionInvalidated();
+    if (invalid) { const error = new SessionInvalidated(); controller.abort(error); throw error; }
   };
+  const store = new MemoryProgramRecordStore();
+  const integration = investigationEvaluation(store, opened.analysis, id, usage, { ...lifetime.investigation,
+    onReport: report => { reports.set(report.attempt, report); lifetime.investigation?.onReport?.(report); },
+    onProgress: report => { reports.set(report.attempt, report); lifetime.investigation?.onProgress?.(report); },
+  }, check, controller.signal);
+  state = { execute: requestExecutor(store, opened.analysis, id, integration, usageReport), changed: opened.changed,
+    evaluate: request => { evaluateModules(store, opened.analysis); return integration.evaluate(request); } };
   const operation = async <T>(run: () => Promise<T>): Promise<T> => {
     alive();
     if (busy) throw new Error('Concurrent session command');
@@ -91,11 +109,14 @@ export async function openSession(options: ProjectOptions, lifetime: { runGit?: 
     try { return await run(); } finally { busy = false; }
   };
   return { status: 'opened' as const, session: {
-    id, check: () => operation(check),
+    id, check: () => operation(check), usage: usageReport,
+    evaluateInvestigation: (request: InvestigationRequest) => operation(async () => {
+      await check(); return state!.evaluate(request);
+    }),
     execute: (request: ViewRequest, execution: ExecutionOptions = {}) => operation(async () => {
       await check();
       try {
-        const result = state!.execute(request);
+        const result = await state!.execute(request);
         if (!execution.deferPublicationCheck) await check();
         alive();
         return result;
@@ -112,9 +133,36 @@ export async function openSession(options: ProjectOptions, lifetime: { runGit?: 
   } };
 }
 
-function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalysis) {
-  return (request: ViewRequest) => {
+function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalysis, session: SessionId,
+  integration: ReturnType<typeof investigationEvaluation>, usage: () => ReturnType<typeof usageSummary>) {
+  return async (request: ViewRequest) => {
     const { lens, selector, presentation } = request;
+    const interpretationInspection = lens === 'inspect' && request.reference && selector?.startsWith('investigram-');
+    if (lens === 'summarize' || lens === 'usage' || interpretationInspection) {
+      const basis = evaluateModules(store, analysis);
+      let selected: RecordId[] = [];
+      if (lens === 'summarize') {
+        const references = store.entityIds(basis.modules, 'module');
+        selected = basis.modules.filter(id => {
+          const module = store.get(id);
+          const claim = module.kind === 'module' ? store.get(module.claim) : null;
+          return request.reference ? references.get(id) === selector : claim?.kind === 'claim' && claim.information.type === 'module'
+            && (claim.information.name === selector || claim.information.handle === selector);
+        });
+      } else if (interpretationInspection) {
+        const ids = store.investigations(session).flatMap(item => item.investigrams);
+        selected = [...store.entityIds(ids, 'investigram')].filter(([, reference]) => reference === selector).map(([id]) => id);
+      }
+      const result = lens === 'summarize' && selected.length === 1
+        ? await integration.evaluate({ operation: 'functionality', subject: selected[0]!, parameters: {} }) : null;
+      const view = createInvestigationView(store, session, { ...request, lens: lens as 'summarize' | 'inspect' | 'usage' }, selected, result, usage());
+      const context = store.get(session);
+      if (context.kind !== 'session') throw new Error('Expected session');
+      const repository = context.repository ? store.get(context.repository) : null;
+      return { view, rendered: renderInvestigationView(view), repositoryRoot: repository?.kind === 'repository-evidence' && repository.capture.status === 'available' ? repository.capture.evidence.root : null,
+        methods: [...context.methods, methods.investigationEvaluation, methods.investigationPresentation],
+        failed: lens === 'summarize' && (selected.length !== 1 || !result?.evaluation || result.evaluation.outcome.kind !== 'accepted') || !!interpretationInspection && selected.length !== 1 };
+    }
     const dependencyLens = ['dependencies', 'children', 'parents'].includes(lens);
     // Provider/evaluation reuse owns input-basis validity; an outer cache could hide new acquisition.
     const dependencyOutcome = dependencyLens ? evaluateDependencies(store, analysis, dependencyPresentationRequirements.modules) : null;

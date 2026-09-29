@@ -509,3 +509,52 @@ historical observation readback. Long sessions retain evidence and results and
 can consume increasing memory, especially as new requirements or captured input
 bases establish additional retained outcomes. There is no eviction of earlier
 evidence to impose a memory bound.
+
+
+## Interpretation checkpoint: summary, inspection and usage
+
+`summarize MODULE_HANDLE` (or `summarize @module-…` in the shell) requires exactly
+one module. Missing or ambiguous selection reports candidates without starting an
+investigation. The default command remains the mechanical module inventory.
+There is no hosted investigator setup in this checkpoint: normal summary requests
+report configuration unavailability with exit status 3. Development tests inject a
+scripted investigator through the production CLI/session/worker communication path;
+there is no public injection flag or credential mechanism yet.
+
+With an investigator injected, a summary presents a root and any composition
+children as qualified interpretations, each with a stable `investigram-…` reference.
+Repeating a summary selects its retained outcome without generating again.
+Successful results, investigation failures (including refusals and invalid
+submissions) and execution-limit stops are retained. More evidence does not reset
+those outcomes. Communication and configuration failures leave no reusable outcome,
+so a later request can execute in the same session. There is no automatic retry.
+Recovery from a retained failure/stop requires reopening and loses accumulated work.
+
+Within a shell, `inspect @investigram-…` displays the exact original account,
+referent, qualification, evidence support, fixed composition, generating operation
+and accompanying correction links. Targets and replacements are separately
+selectable. `--source-detail` discloses captured support locations and excerpts and
+records that disclosure. Source sent only to the investigator does not count as
+human source disclosure. Inspection does not generate a missing account or redirect
+to a replacement. Replacement selection, conflict/reconsideration displays and
+public `explain`, `decompose` and `examine` commands remain later milestones.
+
+`usage` and `usage --json` expose per-attempt and session reported usage without
+inference, including failed attempts. Summary views also include their attempt and
+session usage. Provider/model/configuration, units and category subset relationships
+remain distinct. Synthetic test usage is labeled separately; unknown and anomalous
+calls are not zero and are excluded from trusted totals. Aggregate numeric overflow
+is explicitly unknown; indexed annotations preserve non-finite raw report values
+that JSON numbers cannot represent. Reported figures are not confirmed billing. Repeated display
+adds no usage. Interruption and invalidation preserve received reports in final
+reporting and command observations; late reports from a closed dialogue are ignored.
+
+Investigation JSON uses `postcode-investigation-view/1-experimental`, containing
+selection, operation/outcome reuse, accounts, correction links, provenance,
+full-record versus summarized evidence exposure, support and usage. Summarized
+identities support only the delivered summaries. Evidence references alone cannot
+be cited until inspected. One-shot summaries disclose `referenceLifetime: command`;
+their references expire when the command ends. Shell references last only for that
+session and cannot restore work in a later invocation. Abnormal final JSON usage is
+reported on stderr using `postcode-investigation-usage/1-experimental` and retained
+in the command observation, without fabricating a successful result view.

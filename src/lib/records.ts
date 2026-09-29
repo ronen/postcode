@@ -1,3 +1,5 @@
+import type { Investigram, Correction, InvestigationProvenance } from './investigation/contracts.js';
+import type { InvestigationEvaluationRecord } from './investigation/evaluation.js';
 import type { DependencyRecords, DependencyRelationshipClaim, DependencyOrganizationClaim, DependencyTargetStatus } from './dependencies/records.js';
 import type { OrganizationClaims, OrganizationRecords } from './organization/records.js';
 import type { CapturedContentRecord } from './evidence-access.js';
@@ -208,7 +210,7 @@ export interface ProjectionRecord extends RecordContext {
 }
 
 export type ProgramRecord = SessionRecord | AnalysisInputsRecord | ModuleRecord | SymbolRecord | Claim | RecordedAssertion
-  | SourceEvidenceRecord | ClaimContextRecord | EvaluationRecord | ProjectionRecord | OrganizationRecords | DependencyRecords | CapturedContentRecord;
+  | SourceEvidenceRecord | ClaimContextRecord | EvaluationRecord | ProjectionRecord | OrganizationRecords | DependencyRecords | CapturedContentRecord | Investigram | Correction | InvestigationProvenance | InvestigationEvaluationRecord;
 
 /** Only the domain operations currently used by discovery and lenses. */
 export interface ProgramRecordStore {
@@ -216,5 +218,6 @@ export interface ProgramRecordStore {
   get(id: RecordId): ProgramRecord;
   lookup(id: RecordId): ProgramRecord | undefined;
   evaluations(session: SessionId): readonly EvaluationRecord[];
-  entityIds(ids: readonly RecordId[], kind: 'module' | 'group'): ReadonlyMap<RecordId, string>;
+  investigations(session: SessionId): readonly InvestigationEvaluationRecord[];
+  entityIds(ids: readonly RecordId[], kind: 'module' | 'group' | 'investigram'): ReadonlyMap<RecordId, string>;
 }

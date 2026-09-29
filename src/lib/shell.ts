@@ -15,7 +15,7 @@ export async function runShell(options: { configPath: string; json: boolean }, e
   const destination = path.resolve(environment.checkout, '_observations');
   const localSink = localFileObservationSink(destination, options.configPath);
   const sink = environment.sink ?? localSink;
-  const remote = interactiveSession({ configPath: options.configPath, excludedOutputDirectories: [destination, path.resolve(environment.checkout, '_build')] });
+  const remote = interactiveSession({ configPath: options.configPath, excludedOutputDirectories: [destination, path.resolve(environment.checkout, '_build')] }, { ...(environment.investigator ? { investigator: environment.investigator } : {}), ...(environment.investigationBounds ? { investigationBounds: environment.investigationBounds } : {}) });
   let busy = true;
   let inputClosed = false;
   let readline: ReturnType<typeof createInterface> | undefined;
@@ -46,7 +46,7 @@ export async function runShell(options: { configPath: string; json: boolean }, e
     }
     environment.stderr(`Local observations: ${inlineText(localSink.destination)} (may contain repository-derived text and explicitly requested source locations).\n`);
     environment.stdout(`Session ${opened.id.slice('session:'.length)}\nInputs are assumed unchanged. Use help for commands; exit or EOF to finish.\n`);
-    const session = { id: opened.id, execute: remote.execute, check: remote.check };
+    const session = { id: opened.id, execute: remote.execute, check: remote.check, usage: remote.usage };
     const terminalOutput = new Writable({ write(chunk, _encoding, done) { environment.stdout(String(chunk)); done(); } });
     readline = createInterface({ input, output: terminalOutput, terminal: true, prompt: 'postcode> ', historySize: 0 });
     readline.on('SIGINT', interrupt);
@@ -72,14 +72,14 @@ export async function runShell(options: { configPath: string; json: boolean }, e
         if (stderr) environment.stderr(stderr);
         if (stdout) environment.stdout(stdout);
         await submitObservation(sink, commandObservation(session.id, command, { supplied: line, configPath: options.configPath },
-          parsed.kind === 'error' ? 'refused' : 'completed', stdout, stderr), environment);
+          parsed.kind === 'error' ? 'refused' : 'completed', stdout, stderr, undefined, remote.usage()), environment);
         if (parsed.kind === 'exit') break;
       }
       if (remote.interrupted) {
         const message = 'Session interrupted after command output; session ended.\n';
         environment.stderr(message);
         await submitObservation(sink, commandObservation(session.id, ++command,
-          { control: 'SIGINT', phase: 'command-completion' }, 'interrupted', '', message), environment);
+          { control: 'SIGINT', phase: 'command-completion' }, 'interrupted', '', message, undefined, remote.usage()), environment);
         code = 130;
         break;
       }

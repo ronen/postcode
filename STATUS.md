@@ -1,6 +1,6 @@
 # Project Status
 
-Last reviewed: 2026-09-28
+Last reviewed: 2026-09-29
 
 PostCode is currently available as a development CLI for investigating one
 configured TypeScript project.
@@ -28,7 +28,15 @@ configured TypeScript project.
   UTC date. Only complete batches become visible under final filenames; delivery
   and later cleanup warnings remain distinct.
 
+- **[Interpretation integration](docs/cli-reference.md#interpretation-checkpoint-summary-inspection-and-usage).**
+  Summary requests, retained investigram inspection and attempt/session usage are
+  integrated with the shell and exercised using a scripted investigator.
+
 ## Current limits
+
+- **Hosted interpretation:** no provider or credential setup is available yet.
+  Normal summary requests report configuration unavailability. Public follow-up
+  lenses and correction-aware replacement display are not implemented yet.
 
 - **[Analysis scope](docs/cli-reference.md#supported-typescript-population-and-qualifications):**
   TypeScript only, one configured project at a time, with explicit coverage limits.

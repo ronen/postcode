@@ -1,3 +1,5 @@
+import type { InvestigatorAgent } from './investigation/contracts.js';
+import type { InvestigationBounds } from './investigation/execute.js';
 import path from 'node:path';
 import type { Readable } from 'node:stream';
 import { localFileObservationSink } from './observations.js';
@@ -10,6 +12,9 @@ import { publishCommand, openFailureText } from './command-execution.js';
 import { runShell } from './shell.js';
 
 export interface CliEnvironment {
+  /** Internal communication-boundary injection for tests and assessment. */
+  readonly investigator?: InvestigatorAgent;
+  readonly investigationBounds?: InvestigationBounds;
   readonly cwd: string;
   readonly checkout: string;
   readonly stdout: (text: string) => void;
@@ -26,7 +31,7 @@ export async function runCli(args: readonly string[], environment: CliEnvironmen
   if (parsed.kind === 'shell') return runShell(parsed, environment);
   const destination = path.resolve(environment.checkout, '_observations');
   const localSink = localFileObservationSink(destination, parsed.configPath);
-  const remote = interactiveSession({ configPath: parsed.configPath, excludedOutputDirectories: [destination, path.resolve(environment.checkout, '_build')] });
+  const remote = interactiveSession({ configPath: parsed.configPath, excludedOutputDirectories: [destination, path.resolve(environment.checkout, '_build')] }, { ...(environment.investigator ? { investigator: environment.investigator } : {}), ...(environment.investigationBounds ? { investigationBounds: environment.investigationBounds } : {}) });
   const interrupt = () => { void remote.interrupt().catch(() => {}); };
   process.on('SIGINT', interrupt);
   try {
@@ -39,7 +44,7 @@ export async function runCli(args: readonly string[], environment: CliEnvironmen
     }
     if (opened.status !== 'opened') { environment.stderr(openFailureText(opened)); return 2; }
     environment.stderr(`Local observations: ${inlineText(localSink.destination)} (may contain repository-derived text and explicitly requested source locations).\n`);
-    return await publishCommand({ id: opened.id, execute: remote.execute, check: remote.check }, parsed.request, args, parsed.configPath, 1,
+    return await publishCommand({ id: opened.id, execute: remote.execute, check: remote.check, usage: remote.usage }, parsed.request, args, parsed.configPath, 1,
       environment, environment.sink ?? localSink);
   } finally {
     process.removeListener('SIGINT', interrupt);

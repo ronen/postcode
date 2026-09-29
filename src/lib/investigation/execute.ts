@@ -39,7 +39,8 @@ export interface InvestigationOptions {
   /** Checks shared captured inputs. Invalidity terminates the session, not an investigation outcome. */
   readonly check: () => Promise<void>;
   readonly signal?: AbortSignal;
-  readonly onReport?: (report: AttemptReport) => void;
+  readonly onReport?: ((report: AttemptReport) => void) | undefined;
+  readonly onProgress?: ((report: AttemptReport) => void) | undefined;
   /** Internal test/assessment control; not a public user allowance. */
   readonly bounds?: InvestigationBounds;
 }
@@ -126,7 +127,7 @@ export async function investigate(options: InvestigationOptions): Promise<Invest
     for (;;) {
       alive();
       if (calls >= bounds.calls) throw new LimitStop('Provider call guard reached.');
-      const input = freezeOwned(structuredClone({ instructions, request, responses, remaining: {
+      const input = freezeOwned(structuredClone({ attempt, instructions, request, responses, remaining: {
         milliseconds: Math.max(0, bounds.milliseconds - (performance.now() - start)), calls: bounds.calls - calls, toolCalls: bounds.toolCalls - toolCalls } }));
       volume(input);
       const reply = await wait(() => {
@@ -138,6 +139,7 @@ export async function investigate(options: InvestigationOptions): Promise<Invest
             response.repositories?.forEach(item => summarizedEvidence.add(item.id));
           }
         }
+        options.onProgress?.(freezeOwned({ ...report(), termination: 'running' }));
         const recordUsage = options.usage.start(attempt, ++calls, identity);
         return dialogue!.exchange(input, controller.signal, usage => { if (activeUsage) recordUsage(usage); });
       });

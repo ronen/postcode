@@ -214,3 +214,13 @@ Contemporaneous subjective-note capture and remote research export remain deferr
 ## License
 
 This project is licensed under the [Apache License 2.0](LICENSE).
+
+
+### Interpretation integration checkpoint
+
+`summarize <module>` and `usage` now have session and one-shot execution paths,
+with retained outcomes and exact investigram inspection. No hosted investigator
+is configured yet; ordinary summary requests explicitly report configuration
+unavailability. Credential-free tests inject a scripted investigator through the
+production worker path. See the [checkpoint reference](docs/cli-reference.md#interpretation-checkpoint-summary-inspection-and-usage)
+for retention, usage, references and current limits.

@@ -4,9 +4,11 @@ import type { RecordId, SessionId } from './records.js';
 /** Bump the responsible method whenever its analysis/identity/projection semantics change. */
 export const methods = {
   inputs: 'postcode/observed-inputs@6',
-  records: 'postcode/program-records@20',
+  records: 'postcode/program-records@21',
   content: 'postcode/subject-content@1',
-  investigation: 'postcode/investigation@5',
+  investigation: 'postcode/investigation@6',
+  investigationEvaluation: 'postcode/investigation-evaluation@1',
+  investigationPresentation: 'postcode/investigation-presentation@1',
   discovery: 'postcode/typescript-modules@12',
   evaluation: 'postcode/evaluate-modules@5',
   dependencies: 'postcode/typescript-dependencies@2',
@@ -57,12 +59,12 @@ export class EntityBindings {
   readonly #bindings = new Map<RecordId, string>();
   readonly #owners = new Map<string, RecordId>();
 
-  allocate(ids: readonly RecordId[], kind: 'module' | 'group'): ReadonlyMap<RecordId, string> {
+  allocate(ids: readonly RecordId[], kind: 'module' | 'group' | 'investigram'): ReadonlyMap<RecordId, string> {
     return this.prepare(ids, kind)();
   }
 
   /** Validate a batch without publishing bindings; the store commits all sessions together. */
-  prepare(ids: readonly RecordId[], kind: 'module' | 'group'): () => ReadonlyMap<RecordId, string> {
+  prepare(ids: readonly RecordId[], kind: 'module' | 'group' | 'investigram'): () => ReadonlyMap<RecordId, string> {
     const additions = new Map<RecordId, string>();
     const owners = new Set<string>();
     for (const id of [...new Set(ids)].sort(compare)) {

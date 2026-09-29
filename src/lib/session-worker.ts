@@ -1,3 +1,5 @@
+import type { AgentIdentity, AgentReply, InvestigatorAgent, ReportedUsage } from './investigation/contracts.js';
+import type { InvestigationBounds } from './investigation/execute.js';
 import { parentPort, workerData } from 'node:worker_threads';
 import { openSession } from './session.js';
 import type { ProjectOptions } from './typescript/project.js';
@@ -16,8 +18,42 @@ const runGit: RunGit = request => new Promise((resolve, reject) => {
   try { send({ type: 'git', operation, id, request }); }
   catch (error) { waiting.delete(id); reject(error); }
 });
+let exchangeId = 0;
+const exchanges = new Map<number, { operation: number; resolve(reply: AgentReply): void; reject(error: Error): void; usage(value: ReportedUsage): void }>();
+const configuration = workerData as ProjectOptions & { investigatorIdentity?: AgentIdentity; investigationBounds?: InvestigationBounds };
+const agent: InvestigatorAgent | undefined = configuration.investigatorIdentity ? {
+  identity: configuration.investigatorIdentity,
+  open() {
+    let attempt: string | undefined, call = 0;
+    const owned = new Set<number>();
+    return {
+      exchange(input, _signal, usage) {
+        attempt = input.attempt;
+        return new Promise((resolve, reject) => {
+          const id = ++exchangeId; owned.add(id);
+          exchanges.set(id, { operation, resolve, reject, usage });
+          send({ type: 'agent-exchange', operation, id, input, call: ++call });
+        });
+      },
+      close() {
+        for (const id of owned) exchanges.delete(id);
+        if (attempt) send({ type: 'agent-close', operation, attempt });
+      },
+    };
+  },
+} : undefined;
 let opened: Awaited<ReturnType<typeof openSession>>;
 port.on('message', async (message: WorkerRequest) => {
+  if (message.type === 'agent-result' || message.type === 'agent-usage') {
+    const pending = exchanges.get(message.id);
+    if (!pending || pending.operation !== message.operation) return;
+    if (message.type === 'agent-usage') { pending.usage(message.usage); return; }
+    exchanges.delete(message.id);
+    if (message.error) pending.reject(decodeError(message.error));
+    else if ('reply' in message) pending.resolve(message.reply!);
+    else pending.reject(new Error('Missing investigator response'));
+    return;
+  }
   if (message.type === 'git-result') {
     const pending = waiting.get(message.id);
     if (!pending || pending.operation !== message.operation) return;
@@ -36,7 +72,11 @@ port.on('message', async (message: WorkerRequest) => {
   finally { active = false; }
 });
 try {
-  opened = await openSession(workerData as ProjectOptions, { runGit });
+  opened = await openSession(configuration, { runGit, investigation: {
+    ...(agent ? { agent } : {}), ...(configuration.investigationBounds ? { bounds: configuration.investigationBounds } : {}),
+    onProgress: report => send({ type: 'attempt-report', operation, report }),
+    onReport: report => send({ type: 'attempt-report', operation, report }),
+  } });
   send({ type: 'reply', operation, opening: opened.status === 'opened' ? { status: 'opened', id: opened.session.id } : opened });
   active = false;
   if (opened.status !== 'opened') port.close();
