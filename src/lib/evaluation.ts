@@ -1,4 +1,5 @@
 import { completedMaterialization } from './evaluation-state.js';
+import type { ContentResult } from './evidence-access.js';
 import type { DependencyResult } from './dependencies/records.js';
 import { identityReference, canonical, methods, recordId } from './identity.js';
 import type { EvaluationRecord, EvaluationState, ModuleExpansion, ProgramRecordStore, RecordId, SessionId } from './records.js';
@@ -21,6 +22,7 @@ export interface DiscoveryResult extends EvaluationState {
 /** Language-specific objects stay behind this boundary. Results refer to stored domain records. */
 export interface ModuleAnalysis {
   discover(store: ProgramRecordStore, expansions?: readonly ModuleExpansion[], dependencies?: boolean): DiscoveryResult;
+  acquireContent?(store: ProgramRecordStore, subject: RecordId): ContentResult;
 }
 
 export function evaluateModules(store: ProgramRecordStore, analysis: ModuleAnalysis, expansions: readonly ModuleExpansion[] = []): EvaluationRecord {

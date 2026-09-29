@@ -21,6 +21,11 @@ The governing cross-cutting terminology is maintained in [core concepts](../core
 
 ## Responsibilities and flow
 
+The domain-only [investigation execution checkpoint](investigation.md) adds
+subject-based evidence queries and bounded interpretation dialogues. It is
+tested with a scripted investigator; CLI/session retention and hosted inference
+are later milestones of the [module-investigation plan](../plans/module-investigation.md).
+
 Operational project opening lives in the TypeScript integration. It follows
 TypeScript configuration inheritance, file selection, package and module
 resolution, and automatic module detection. It disables emission because this

@@ -1,5 +1,6 @@
 import type { DependencyRecords, DependencyRelationshipClaim, DependencyOrganizationClaim, DependencyTargetStatus } from './dependencies/records.js';
 import type { OrganizationClaims, OrganizationRecords } from './organization/records.js';
+import type { CapturedContentRecord } from './evidence-access.js';
 
 /** Logical records; no compiler objects or storage-native identifiers cross this boundary. */
 export type RecordId = string & { readonly recordId: unique symbol };
@@ -207,7 +208,7 @@ export interface ProjectionRecord extends RecordContext {
 }
 
 export type ProgramRecord = SessionRecord | AnalysisInputsRecord | ModuleRecord | SymbolRecord | Claim | RecordedAssertion
-  | SourceEvidenceRecord | ClaimContextRecord | EvaluationRecord | ProjectionRecord | OrganizationRecords | DependencyRecords;
+  | SourceEvidenceRecord | ClaimContextRecord | EvaluationRecord | ProjectionRecord | OrganizationRecords | DependencyRecords | CapturedContentRecord;
 
 /** Only the domain operations currently used by discovery and lenses. */
 export interface ProgramRecordStore {

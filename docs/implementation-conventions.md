@@ -83,6 +83,8 @@ Agents may update this document only as part of authorized implementation work t
 
 ## Accumulation and interactive execution
 
+- Test investigator coordination through `test/investigator-double.ts`, replacing only the agent communication participant. Keep real evidence evaluation, acquisition, context delivery and whole-result validation in those tests. Routine tests use no inference credentials. Keep attempt usage outside disposable dialogue state and mark synthetic reports explicitly. [[Investigator execution](decisions/investigator-execution-and-evidence-access.md)]
+
 - Prepare processing indexes over the selected immutable view/evaluation inputs, preserving original ordinals when merging evidence buckets. Artifact/placement indexes use weak capture/layout keys; they do not refresh or cache filesystem observations. Keep ordered export surfaces alongside name lookups.
 - Keep Stately imports, encoded topology identifiers and mutable ephemeral graphs inside the directed-graph adapter. PostCode owns selected populations, sorting, all supporting claims and display traversal. Use explicit-direction, membership-checked DFS and sanctioned edge addition for sequential containment acceptance. [[Graph delegation](decisions/graph-kernel-delegation.md)]
 

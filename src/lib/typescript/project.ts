@@ -8,6 +8,7 @@ import path from 'node:path';
 import ts from 'typescript';
 import { identityReference, canonical, compare, digest, methods, recordId, sessionId } from '../identity.js';
 import type { DiscoveryResult, ModuleAnalysis } from '../evaluation.js';
+import type { CapturedContentRecord, ContentResult } from '../evidence-access.js';
 import type { ClaimContextRecord, ModuleClaim, ModuleExpansion, ModuleDiscoveryFacet, ProgramRecord, ProgramRecordStore, RecordId, SessionId, SourceEvidenceRecord } from '../records.js';
 import { captureInputs } from './inputs.js';
 import { prepareComposition } from './composition.js';
@@ -120,7 +121,60 @@ export async function openTypeScriptProject(options: ProjectOptions, runGit?: Ru
   return { status: 'opened', session, changed: async () =>
     canonical([process.cwd(), process.env, process.versions]) !== environment || inputs.changed()
       || canonical(await captureRepository(configPath, policy, runGit)) !== repositoryBasis,
-    analysis: { discover: (store, expansions, dependencies) => materialize(store, expansions ?? [], dependencies ?? false) } };
+    analysis: { discover: (store, expansions, dependencies) => materialize(store, expansions ?? [], dependencies ?? false), acquireContent } };
+
+  function acquireContent(store: ProgramRecordStore, subjectId: RecordId): ContentResult {
+    const subject = store.lookup(subjectId);
+    const unavailable = (reason: string): ContentResult => ({ status: 'unavailable', captures: [], limitations: [reason] });
+    if (!subject || subject.session !== session) return unavailable('Unknown subject in the opened project.');
+    const mappings: { id: RecordId; path: string; expected?: string }[] = [];
+    if (subject.kind === 'module') {
+      const claim = store.get(subject.claim);
+      if (claim.kind !== 'claim') throw new Error('Invalid module claim');
+      const context = store.get(claim.context);
+      if (context.kind !== 'claim-context') throw new Error('Invalid module context');
+      for (const id of context.evidence) {
+        const evidence = store.get(id);
+        if (evidence.kind === 'source-evidence' && !mappings.some(item => item.path === evidence.path)) {
+          mappings.push({ id, path: evidence.path, expected: evidence.contentDigest });
+        }
+      }
+    } else if (subject.kind === 'repository-artifact') {
+      const captured = store.get(subject.repository);
+      if (captured.kind !== 'repository-evidence' || captured.capture.status !== 'available') return unavailable('Repository capture unavailable.');
+      const artifact = subject.artifact;
+      const sourcePath = artifact.kind === 'file' ? path.resolve(captured.capture.evidence.root, artifact.path)
+        : artifact.link?.status === 'resolved' && artifact.link.targetKind === 'file' ? artifact.link.resolved : null;
+      if (!sourcePath) return unavailable('Artifact is opaque, unresolved, or not a supported file.');
+      mappings.push({ id: subject.id, path: sourcePath });
+    } else return unavailable('Content requires a module or organization artifact.');
+    const captures: RecordId[] = [];
+    const limitations: string[] = [];
+    for (const mapping of mappings) {
+      if (inputs.excluded(mapping.path)) { limitations.push('Mapped content is excluded by the shared output boundary.'); continue; }
+      const id = recordId(session, 'captured-content', { method: methods.content, subject: identityReference(session, subject.id), mapping: identityReference(session, mapping.id) });
+      const existing = store.lookup(id);
+      if (existing) {
+        if (existing.kind !== 'captured-content') throw new Error('Expected retained subject content');
+        captures.push(id);
+        continue;
+      }
+      const text = inputs.system.readFile(mapping.path);
+      if (text === undefined || text.includes('\u0000')) { limitations.push('Mapped content is unavailable or not supported text.'); continue; }
+      if (mapping.expected !== undefined && digest(text) !== mapping.expected) throw new Error('Captured compiler content does not match its source evidence');
+      const value = inputs.identity();
+      const inputId = recordId(session, 'analysis-inputs', value);
+      const record: CapturedContentRecord = { kind: 'captured-content', id, session, method: methods.content,
+        subject: subject.id, mapping: mapping.id, inputs: inputId, path: mapping.path, text, contentDigest: digest(text), coverage: 'full-file',
+        limitations: ['First-observed content; acquisition is not atomic.',
+          'Full mapped file content can include code outside the selected subject.',
+          ...(subject.kind === 'repository-artifact' ? ['Artifact placement does not establish documentation applicability or truth.'] : [])] };
+      store.put([{ kind: 'analysis-inputs', id: inputId, session, method: inputMethod, value }, record]);
+      captures.push(id);
+    }
+    if (!mappings.length) limitations.push('No supported source mapping is established.');
+    return { status: captures.length === 0 ? 'unavailable' : limitations.length ? 'partial' : 'available', captures, limitations };
+  }
 
   function materialize(store: ProgramRecordStore, expansions: readonly ModuleExpansion[], dependencies: boolean) {
     let discovery = materializers.get(store);

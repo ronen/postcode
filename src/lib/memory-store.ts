@@ -1,12 +1,14 @@
 import { freezeOwned } from './immutable.js';
+import path from 'node:path';
 import { completedMaterialization } from './evaluation-state.js';
-import { canonical, EntityBindings } from './identity.js';
+import { canonical, digest, EntityBindings } from './identity.js';
 import type { EvaluationRecord, ProgramRecord, ProgramRecordStore, RecordId, SessionId } from './records.js';
 
 function references(record: ProgramRecord): readonly RecordId[] {
   switch (record.kind) {
     case 'session': return record.repository ? [record.repository] : [];
     case 'analysis-inputs': return [];
+    case 'captured-content': return [record.subject, record.inputs, record.mapping];
     case 'repository-evidence': return [];
     case 'repository-region':
     case 'repository-artifact': return [record.repository];
@@ -79,6 +81,30 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
         }
       };
       switch (record.kind) {
+        case 'captured-content': {
+          requireKind(record.inputs, 'analysis-inputs');
+          const subject = pending.get(record.subject) ?? this.#records.get(record.subject);
+          if (!subject || !['module', 'repository-artifact'].includes(subject.kind)
+            || record.coverage !== 'full-file' || record.contentDigest !== digest(record.text)) throw new Error('Invalid content capture');
+          requireKind(record.mapping, subject.kind === 'module' ? 'source-evidence' : 'repository-artifact');
+          if (subject.kind === 'module') {
+            const claim = pending.get(subject.claim) ?? this.#records.get(subject.claim);
+            const context = claim?.kind === 'claim' ? pending.get(claim.context) ?? this.#records.get(claim.context) : undefined;
+            const mapping = pending.get(record.mapping) ?? this.#records.get(record.mapping);
+            if (context?.kind !== 'claim-context' || !context.evidence.includes(record.mapping)
+              || mapping?.kind !== 'source-evidence' || mapping.path !== record.path || mapping.contentDigest !== record.contentDigest) {
+              throw new Error('Content does not match the module source mapping');
+            }
+          } else if (subject.kind === 'repository-artifact') {
+            const repository = pending.get(subject.repository) ?? this.#records.get(subject.repository);
+            const artifact = subject.artifact;
+            const expected = repository?.kind === 'repository-evidence' && repository.capture.status === 'available'
+              ? artifact.kind === 'file' ? path.resolve(repository.capture.evidence.root, artifact.path)
+                : artifact.link?.status === 'resolved' && artifact.link.targetKind === 'file' ? artifact.link.resolved : null : null;
+            if (record.mapping !== subject.id || expected === null || record.path !== expected) throw new Error('Content does not match the artifact mapping');
+          }
+          break;
+        }
         case 'group':
         case 'module':
         case 'symbol': {
