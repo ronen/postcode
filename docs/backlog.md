@@ -20,6 +20,27 @@ Describe the need, why it matters, and relevant constraints without designing th
 
 ## Candidates
 
+## Provide Git history as investigator evidence
+
+Added: 2026-09-29
+Origin: module investigation scope discussion before implementation
+Area: investigation evidence and historical context
+
+The [product design](../foundation/product-design.md#32-summary-as-initial-view-and-recursive-navigation)
+allows summaries to draw on history, while the initial
+[module investigation slice](plans/module-investigation.md) excludes it.
+Make relevant history available through the subject-based evidence interface
+to help explain how code acquired its current shape and recorded rationale.
+A bounded starting point could expose changes affecting a module and selected
+commit messages and diffs, without requiring a general history lens.
+
+Preserve revision identity, distinguish historical evidence from current source,
+and qualify commit messages as recorded assertions. Make retrieval bounds and
+unavailable history explicit. Reuse the investigation assessments to evaluate
+the effect on explanatory value, evidence selection, usage, and latency;
+reassess prompts when adding history access and tune them if findings warrant
+it.
+
 ## Correct output boundaries across different filesystem case rules
 
 Added: 2026-09-28
