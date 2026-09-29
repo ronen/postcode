@@ -462,3 +462,33 @@ handoff and reviewer-authored findings. Validation remains qualified by historic
 unresolved execution-ownership cancellations; diagnosis is required before live,
 cost-bearing adapter work. The task remains active at the milestone-2 gate pending
 human acceptance. No milestone-3 implementation or live inference occurred.
+
+### Milestone 2 round 3 assessment and observation rulings — 2026-09-30
+
+The [round-3 review](../reviews/module-investigation/2026-09-29-milestone-2-round-3-findings.md)
+independently clears the source-disclosure correction at
+`b408c414b041f032a8954ca450c9cbe30dded139`, with no new findings. The reviewer
+passed type checking, all 369 tests with zero failures/cancellations/skips (133.4
+seconds), and negative/positive disclosure probes in both formats. The reviewer
+recommends milestone acceptance with the existing cancellation qualification;
+the implementing agent agrees that no defect in the reviewed target remains open.
+
+All observations are dispositioned. Under the human's recorded rulings,
+`9370fef` adds comments beside source-detail rendering in each of the four view
+families, pointing to the classifier and regression tests, including JSON field
+changes. It also records paths outside sourceDetail as an explicitly unassessed
+[backlog follow-up](../../docs/backlog.md#assess-disclosure-classification-for-paths-outside-sourcedetail).
+Neither compliance nor nonconformance is inferred, and no broader audit or redesign
+was undertaken. The reviewer's correction of round-2 wording and the authorized
+handoff-addendum traceability observation are acknowledged in the
+[disposition](../reviews/module-investigation/2026-09-29-milestone-2-disposition.md).
+
+Verification confirmed source edits contain comments only, whitespace is clean,
+and documentation links and source/test cross-references resolve. No runtime tests
+were rerun for these comments and records; the independent 369-test result covers
+the unchanged implementation. Findings and handoff remain unchanged.
+
+The cancellation concern remains unexplained and qualifies validation. Diagnosis
+is required before milestone-3 live, cost-bearing adapter work. The task remains
+active at the milestone-2 gate pending explicit human acceptance; no milestone-3
+implementation has begun.
