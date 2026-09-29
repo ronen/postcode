@@ -111,6 +111,10 @@ the re-review has completed, as you will see it clears all the fixes but reports
 Preserve `--source-detail` in the request record, but emit a source-escape event only when source detail was actually presented. Account for each command’s supported disclosure forms, including locations and excerpts; the option or an empty source-detail container is insufficient.
 Add regression coverage for missing and unsupported references, empty disclosure, and successful disclosure in human and JSON output. Include the correction and verification in the milestone handoff. If this requires a substantially broader redesign, report that before expanding scope.
 
+### Milestone 2 round 3 assessment direction — 2026-09-30
+
+round 3 review has been completed, please read and assess as usual
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
