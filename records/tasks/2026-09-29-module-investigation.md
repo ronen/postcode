@@ -273,3 +273,57 @@ the unresolved, explicitly deferred execution-ownership cancellation concern;
 this passing run does not diagnose it. No hosted/live validation or milestone-2
 implementation was undertaken. The task remains active at milestone 1 awaiting
 the human's gate decision.
+
+### Milestone 2 — shell and session integration checkpoint
+
+Implemented in `a396f9b8e9b38ad344554cbe4c0e7677ded1ec0e`, against the accepted
+milestone-1 boundary `bca53ba66b1440039de805e1d74e2ef9a10a552b`. The
+[milestone-2 handoff](../reviews/module-investigation/2026-09-29-milestone-2-handoff.md)
+and [validation record](../validation/module-investigation/2026-09-29-milestone-2.md)
+are committed for human-arranged independent review.
+
+The evaluation-layer organization now includes a dedicated investigation evaluator.
+It owns operation-based reuse and atomic publication of accepted interpretation
+and accompanying corrections into the existing program record store. Mechanical
+evaluators remain responsible for their own reuse and acquisition; projections
+consume retained outcomes without invoking investigation. This separation avoids
+putting inference or retention decisions into rendering, while a session-owned
+evidence-access instance preserves continuation lifetime.
+
+The production shell and one-shot paths support summary selection, retained
+outcomes, exact investigram inspection, source traceability and attempt/session
+usage. A private operation-tagged worker bridge reaches the injected investigator
+communication participant in the parent while compiler/evidence/retention work
+remains in the worker. Parent-owned usage and exposure snapshots survive active
+worker termination. Earlier retained accounts supply context to subsequent
+operations; correction targets and replacements remain independently inspectable.
+Original composition is unchanged, with replacement selection and reconsideration
+display still reserved for milestone 5.
+
+No provider dependency, hosted setup, credential mechanism or public test flag was
+added. Regular CLI summary requests report configuration unavailability; tests
+inject the scripted participant through the same worker/session path. Public
+follow-up lenses and broader associated-account discovery remain later work.
+Architecture, CLI reference, README and project status describe this checkpoint.
+No governing foundation, development-process instruction or accepted decision was
+modified.
+
+Final type checking and build passed. The latest complete suite passed 360 tests
+with no failures or cancellations (approximately 113.0 seconds). A final small
+reporting refinement linked non-retained failures to their exact attempt and
+labeled unknown aggregates in human final reporting; the final target then passed
+all 18 integration tests (approximately 9.22 seconds) and all 13 isolated
+execution-ownership tests (approximately 3.33 seconds), plus type checking,
+whitespace and local documentation-link checks.
+
+An intermediate complete run reproduced the deferred concern: 346 passed, zero
+failed and 13 execution-ownership cancellations out of 359 tests, with the same
+pending-promise/event-loop error. The validation, backlog and new handoff preserve
+that result separately from the later full and isolated passes. Validation remains
+qualified by the unresolved concern; no cancellation diagnosis or baseline rerun
+was undertaken. Scripted tests establish integration behavior, not live provider
+behavior or interpretive usefulness.
+
+The overall task remains active at the milestone-2 review gate. The human arranges
+independent review and determines acceptance before milestone 3. No milestone-3
+implementation or live assessment has begun.
