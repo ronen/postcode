@@ -105,6 +105,12 @@ Regarding F1, I approve the focused correction and regression.&#x20;
 Using the parent’s authoritative ledger to finalize CLI usage is consistent with the existing design. Finalization should use a snapshot taken at the dialogue’s closure boundary, so views and observations agree on which reports were accepted.
 The regression should deliver usage specifically inside that closing window and verify consistent totals in the command view, subsequent `usage` view, and observation—without double-counting. Reports arriving after closure should retain the existing ignored/unknown treatment.
 
+### Milestone 2 source-disclosure correction direction — 2026-09-29
+
+the re-review has completed, as you will see it clears all the fixes but reports a previously-missed observation.  regarding that observation,  please fix source-disclosure observations within this task, including existing affected commands. The governing decision requires events to describe actual disclosure, so treat this as correcting pre-existing nonconformance.
+Preserve `--source-detail` in the request record, but emit a source-escape event only when source detail was actually presented. Account for each command’s supported disclosure forms, including locations and excerpts; the option or an empty source-detail container is insufficient.
+Add regression coverage for missing and unsupported references, empty disclosure, and successful disclosure in human and JSON output. Include the correction and verification in the milestone handoff. If this requires a substantially broader redesign, report that before expanding scope.
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
