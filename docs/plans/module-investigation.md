@@ -293,7 +293,8 @@ Investigrams carry or resolve to:
 - the originating module context, with optional validated references to more
   specific entities or supported subjects, including captured source regions;
 - evidence and narrower qualifications, including consequential missing context;
-- a citation index of prior investigrams supplied to the investigator during the evaluation;
+- a citation index of prior investigrams supplied to the investigator during the
+  investigation evaluation;
 - generating operation, selected target, and actual method/execution provenance;
 - stable session-local identity, fixed composition, and investigation-provenance links.
 
@@ -424,6 +425,10 @@ part of the retained request's identity. In this slice, compatible reuse means
 equality of those components. Original and replacement investigrams remain
 distinct subjects.
 
+Request-level input context in the
+[operation/lens decision](../decisions/investigation-operations-and-lenses.md)
+would be expressed through explicit request parameters; this slice has no separate
+context-selection parameter.
 Supplied investigation context is an execution input, recorded in provenance and
 citation indexes as applicable, rather than a request-identity component.
 Accumulating evidence, corrections, or associated investigrams does not turn a
@@ -567,10 +572,10 @@ can accumulate across exchanges. Retrieval may extend beyond the selected
 subject's composition or provenance chain.
 
 Context delivery means PostCode supplying content to the investigator, initially
-or in context responses, at any point in the evaluation. Later context trimming
-or summarization does not erase that exposure. It does not guarantee continued
-internal retention or comprehension. Preservation or re-supply during
-PostCode-managed trimming is an implementation choice.
+or in context responses, at any point in the investigation evaluation. Later
+context trimming or summarization does not erase that exposure. It does not
+guarantee continued internal retention or comprehension. Preservation or re-supply
+during PostCode-managed trimming is an implementation choice.
 
 Derive "needs reconsideration" through direct and transitive citations when
 context is corrected. Display the warning without suppressing the account.
@@ -1032,8 +1037,10 @@ discovery and navigation arrive in milestone 4.
 
 The milestone review covers the domain and agent-communication contracts,
 context requests and responses, complete-result validation, and returned
-outcomes. The working domain capability is demonstrated through behavioral tests
-without requiring new CLI behavior.
+outcomes. Include the recorded evaluation-layer organization and any restructuring
+of existing mechanical evaluation, with regression-test evidence that existing
+behavior is preserved. The working domain capability is demonstrated through
+behavioral tests without requiring new CLI behavior.
 
 ### Milestone 2: Shell and session integration
 
@@ -1206,18 +1213,20 @@ Verify public boundaries and journeys, including:
   initially or through permitted context responses, including across exchanges;
   excerpts, descriptive listings, truncated prose, and missing qualifications create citations but do not establish
   eligibility; identifiers alone create neither;
-- complete conservative citation indexes for all investigrams from an evaluation, including
-  replacements, unchanged by later dialogue trimming or summarization;
+- complete conservative citation indexes for all investigrams from an investigation
+  evaluation, including replacements, unchanged by later dialogue trimming or
+  summarization;
 - direct and transitive reconsideration warnings, multiple causes, unchanged
   investigrams and selection, no inference on disclosure, and no implicit clearing
   by a later investigation;
 - bounded cause presentation in human and JSON views and investigator retrieval
   over a graph with combinatorially many paths, with further detail accessible
   without requiring full-path display or enumeration;
-- A → B requires A in B's citations; all investigrams from the generating evaluation are
-  exempt from that cause, including the reporting root, composition children, other
-  replacements, and recursively accompanying corrections; an indirect citation
-  through Y citing A does not reintroduce that cause into exempt investigrams;
+- A → B requires A in B's citations; all investigrams from the generating
+  investigation evaluation are exempt from that cause, including the reporting
+  root, composition children, other replacements, and recursively accompanying
+  corrections; an indirect citation through Y citing A does not reintroduce that
+  cause into exempt investigrams;
 - later citers do not inherit a cause through exempt investigrams but do inherit it
   through other non-exempt citations; later corrections of A propagate independently;
 - correction-aware initial and retrieved context, exact originals plus replacements,
@@ -1582,9 +1591,11 @@ The control mechanism is an implementation choice.
 
 For live controlled correction cases, use the investigator double to produce the
 earlier misinterpretation through ordinary submission, validation, and retention.
-Use the live investigator for subsequent evaluations in that same session.
+Use the live investigator for subsequent investigation evaluations in that same
+session.
 Provide internal dependency injection at the agent communication boundary so
-the harness can select scripted or live investigation for each evaluation.
+the harness can select scripted or live investigation for each investigation
+evaluation.
 The injection mechanism is a test/assessment dependency, not a public command or
 normal configuration option. Its implementation remains delegated.
 The injection route must reach the investigator through the production session
