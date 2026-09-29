@@ -411,3 +411,40 @@ handoff remain unchanged. Validation remains qualified by the historical,
 unresolved execution-ownership cancellations; diagnosis is required before
 milestone 3's live, cost-bearing adapter work. The task remains active awaiting
 human milestone-2 acceptance. No milestone-3 work or live inference has begun.
+
+### Milestone 2 round 2 and actual source-disclosure correction
+
+The [round-2 review](../reviews/module-investigation/2026-09-29-milestone-2-round-2-findings.md)
+independently clears F1–F4 at `849267193a6d75113d2deb33c8a1b481f916fa4e` and
+recommends milestone acceptance with the standing cancellation qualification.
+Its previously missed observation about source-escape events is addressed under
+the human's explicit direction to correct pre-existing nonconformance in this task.
+
+`b408c414b041f032a8954ca450c9cbe30dded139` corrects the shared observation boundary
+for module, organization, dependency and investigram views. Request records retain
+the explicit option; only actually presented locations or nonempty excerpts cause
+a source-escape event. Events preserve their family and record actual disclosure
+forms. Empty containers, source IDs, omission counts and claim metadata alone do
+not imply disclosure. Classification follows each format: organization JSON's
+repository-root path and dependency JSON's embedded organization-support source
+records count when serialized, even when the human renderer omits them. Source
+rendering, acquisition and interpretation semantics remain unchanged. This required
+no broader redesign, dependency, public command or governing-document change.
+
+Type checking and build passed. All 45 focused disclosure/investigation/
+organization/dependency tests passed (48.56 seconds), and all 369 tests passed on a
+stationary worktree with zero failures, cancellations or skips (130.37 seconds).
+New human/JSON shell regressions cover missing and unsupported references, source-
+free retained accounts, empty/metadata-only containers, location-only and excerpt
+disclosure, and format differences, checking request intent and recorded output.
+Whitespace and changed-document local links passed.
+
+The [disposition](../reviews/module-investigation/2026-09-29-milestone-2-disposition.md)
+records both rounds and the observation correction. The human-requested dated
+[handoff addendum](../reviews/module-investigation/2026-09-29-milestone-2-handoff.md)
+and [validation](../validation/module-investigation/2026-09-29-milestone-2-source-disclosure.md)
+identify the exact correction target and evidence while preserving the original
+handoff and reviewer-authored findings. Validation remains qualified by historical
+unresolved execution-ownership cancellations; diagnosis is required before live,
+cost-bearing adapter work. The task remains active at the milestone-2 gate pending
+human acceptance. No milestone-3 implementation or live inference occurred.
