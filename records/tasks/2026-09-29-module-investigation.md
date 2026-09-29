@@ -93,6 +93,12 @@ Go ahead with milestone 2
 
 The review round is complete:  As usual:  Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
 
+### Milestone 2 cancellation deferral ruling — 2026-09-29
+
+> The reviewer asks for a renewed decision on the unresolved execution-ownership cancellations because milestone 2 extends those lifecycle paths. May I retain the qualified deferral for milestone 2 and record diagnosis as required before milestone 3’s live, cost-bearing adapter work? I’ll correct F1–F4 independently while you decide.
+
+Defer through milestone 2; diagnose before live adapter (Recommended)
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
