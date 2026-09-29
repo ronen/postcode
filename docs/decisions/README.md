@@ -58,6 +58,7 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 
 ## Accepted decisions
 
+- [Investigation operations and lenses](investigation-operations-and-lenses.md)
 - [Investigrams and progressive investigation](investigrams-and-progressive-investigation.md)
 - [Investigator execution and evidence access](investigator-execution-and-evidence-access.md)
 - [Facets for subjects](facets-for-subjects.md)

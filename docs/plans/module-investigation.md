@@ -2,7 +2,7 @@
 
 Status: approved
 Created: 2026-09-24
-Updated: 2026-09-27
+Updated: 2026-09-29
 Superseded by:
 
 ## Outcome and use narrative
@@ -28,23 +28,24 @@ mechanical analyses, such as organization and dependencies, continue to produce
 qualified projections. They can supply evidence for investigrams without
 themselves becoming investigrams.
 
-This slice implements four operations using shared interpretation
+This slice implements four public lenses using shared interpretation
 infrastructure:
 
-| Operation | Requested information | Observable distinction |
+| Lens | Requested information | Observable distinction |
 | --- | --- | --- |
 | `summarize(module)` | A deliberately terse account of apparent functionality and responsibility, including significant mechanisms, cases, and delegation | Broad, coherent selectable investigrams; no mandatory 5WH template or exhaustive branch inventory |
 | `explain(investigram)` | A more understandable account of the selected aspect of this program | Useful clarification and detail omitted for brevity; new findings are not required |
 | `decompose(investigram)` | Smaller, tersely described selectable aspects of the selected functionality | More precise focus without requiring a deeper investigation of each aspect |
 | `examine(investigram)` | A deeper investigation of the selected aspect | Substantive findings, sharper limitations, corrections, or an explicit report that no useful addition was established |
 
-The expected implementation uses one interpretation mechanism for all four
-operations: the same dialogue loop, evidence-access tools, result structure, and
-validation and retention flow. The operations differ through their prompting and
-input data: the requested objective, selected module or investigram, and relevant
-investigation context. Prompt wording and context assembly are implementation
-choices guided by the behaviors above; separate execution pipelines are not
-expected for each operation.
+In this slice, each lens's information requirements map to one core investigation
+operation. The operations use the shared
+[domain interpretation boundary](#investigator-execution-and-evidence-access),
+with objectives and input context determined by the behaviors above.
+
+The functionality investigation supplies this slice's summary content. It does
+not define the complete or permanent composition of a summary projection, which
+can later combine that interpretation with other qualified information.
 
 For a summary saying that a module “assembles configuration and starts the
 application,” decomposition can expose those two activities separately.
@@ -125,12 +126,14 @@ material limitations and follow-up candidates in the account.
 
 ## Scope and boundaries
 
-Include all four operations, repeatable follow-ups, evidence inspection,
+Include all four lenses, repeatable follow-ups, evidence inspection,
 explicit corrections to the selected or an earlier investigram, Unicode and
 structured JSON presentation, basic per-investigation and session usage
 reporting, provider credential setup, and integration with the existing shell
 and observation lifecycle. There is no fixed single-follow-up depth. Each
-operation has bounded execution.
+investigation operation has bounded execution. Each operation executes
+in its own fresh dialogue; grouping multiple operations into one dialogue is
+deferred to a [separate candidate](../backlog.md#consider-grouping-investigation-operations-in-one-dialogue).
 
 The initial subject is one supported module in the configured project. Source,
 qualified mechanical results, and attributed documentation provide the evidence.
@@ -186,6 +189,9 @@ establishes the presentation rule for references that expire before follow-up us
 [Investigator execution and evidence access](../decisions/investigator-execution-and-evidence-access.md)
 establishes evaluation integration, fresh per-operation dialogues, access
 boundaries, failure outcomes, and usage attribution.
+[Investigation operations and lenses](../decisions/investigation-operations-and-lenses.md)
+makes investigation work independently reusable through declared requirements
+and evaluation selection.
 [Facets for subjects](../decisions/facets-for-subjects.md) supersedes the initial
 Property/Facet decision, extending facet applicability from entities to subjects
 while preserving the other Property/Facet distinctions. The accompanying
@@ -218,6 +224,13 @@ Foundation readiness covers the needs of the existing commands. This plan extend
 
 ### Evaluation and retained program information
 
+**Evaluation** is an attempt to materialize requested information, as defined in
+[core concepts](../core-concepts.md#evaluation). The **evaluation layer** is the
+coordinating responsibility established by the
+[projection architecture decision](../decisions/initial-projection-architecture-decisions.md#separate-lens-requirements-evaluation-and-projection-construction):
+it handles declared requirements, analysis selection, shared work, and qualified
+outcomes.
+
 Language analysis and interpretation are parallel producers of qualified program
 information in the session record store. Language analysis produces entities,
 relationship claims, evidence, and context; interpretation produces investigrams,
@@ -226,23 +239,36 @@ Shared evidence, qualification, evaluation-outcome, and storage mechanisms
 retain their existing meanings. Entities and investigrams do not require a common
 record kind merely because they share these features.
 
-Investigation lenses declare their information requirements. Evaluation selects
-retained results that satisfy the request, accounts for explicit revisions, and
-identifies investigations that must run to supply missing information. It
-invokes the domain interpretation boundary where needed and applies the
-outcome-retention policy to the returned outcome. Successful results and their
+Investigation lenses declare information requirements referring to reusable
+domain investigation operations. Requests identify the desired information,
+subject, and relevant input parameters and context independently of the consuming
+lens. The evaluation layer selects retained outcomes that satisfy those requirements,
+accounts for explicit revisions, and identifies missing operations before
+execution. It invokes the domain interpretation boundary for selected work and
+applies the outcome-retention policy to the returned outcome. Successful results and their
 accompanying corrections are retained atomically before projection construction.
 Projection construction and rendering do not invoke investigation. The
 outcome-retention policy and retry exclusions below determine
 whether interpretation is required; newly available context alone does not
 silently invalidate a retained interpretation or invoke the investigator again.
 
+Different lenses can consume the same retained operation outcome when their
+requirements request compatible work. Reuse preserves generating provenance;
+the consuming lens alone does not determine whether investigation is needed.
+Operation selection and projection construction remain separate from the choice
+of how many operations an investigator dialogue executes.
+
 The investigator can query supported entities and relationships through that same
-evaluation boundary. It is not limited to records already materialized before
+evaluation layer. It is not limited to records already materialized before
 the operation began: a query can reuse qualified analysis or request missing
 mechanical analysis. Internal queries retain their outcomes and provenance
 without simulating additional human CLI commands. This is a domain API, not
 direct storage-engine access or a second analysis pipeline.
+
+When extending the evaluation layer to support investigation operations, assess
+whether an explicit interface or module for the layer would improve its
+organization, and which responsibilities belong together. Preserve a clear
+separation from lens projection construction and investigator communication.
 
 ## Result and navigation behavior
 
@@ -552,9 +578,10 @@ Partial delivery does not qualify for exemption.
 
 ## Investigator execution and evidence access
 
-The domain interpretation boundary accepts operations, subjects, and
-investigation context and returns evaluation outcomes, carrying a result when
-accepted. Evaluation and session handling apply retention and reuse policy to
+The domain interpretation boundary accepts an investigation request, its subject,
+and investigation context,
+and returns an evaluation outcome, carrying a result when accepted. The evaluation
+layer and session handling apply retention and reuse policy to
 those outcomes. An inner agent communication boundary handles instructions,
 messages, tool exchanges, completion/failure signals, and
 provider-specific authentication and transport. Dialogue coordination between
@@ -604,7 +631,7 @@ strategies.
 
 Investigator tools expose supported entities and relationships, including module
 exports, dependencies, dependents, and organization membership, with their
-evidence, method, coverage, and limitations. These queries use evaluation to
+evidence, method, coverage, and limitations. These queries use the evaluation layer to
 reuse retained results or perform missing mechanical analysis. The investigator
 need not reconstruct established relationships from source; interpreting their
 role remains separate from the mechanical claims. Tools also retrieve
@@ -794,8 +821,8 @@ communication/configuration failure ended recovery.
 
 Accept the submitted root investigram, including its composition and accompanying
 corrections, as a unit at the domain interpretation boundary after validation
-succeeds. Return the accepted result in the outcome; evaluation and session
-handling retain the result and its corrections atomically. Correction
+succeeds. Return the accepted result in the outcome; the evaluation layer and
+session handling retain the result and its corrections atomically. Correction
 relationships take effect in the session on retention, independently of display.
 Atomic acceptance and retention do not require the investigator to transmit the
 result in a single exchange; individual dialogue exchanges do not independently
@@ -915,7 +942,7 @@ what this slice assesses; summary quality alone is not the basis for deciding
 whether to implement the remaining operations.
 
 Milestone 1 implements interpretation execution and the full result contract
-using the double. Milestone 2 integrates returned outcomes with evaluation,
+using the double. Milestone 2 integrates returned outcomes with the evaluation layer,
 session handling, and the shell. Milestones 3–4 exercise live summary and
 follow-up operations. Milestone 5 adds correction-aware selection and display,
 conflict handling, and reconsideration propagation.
@@ -940,9 +967,10 @@ behavior or interpretive value.
 
 ### Milestone 1: Domain interpretation execution
 
-Implement the domain interpretation boundary using an investigator double
-at the agent communication boundary. Exercise real dialogue coordination,
-qualified evidence requests, bounded asynchronous execution, submission and
+Implement the domain interpretation boundary with lens-independent operation
+requests, using an investigator double at the agent communication boundary.
+Exercise real dialogue coordination, qualified evidence requests, bounded
+asynchronous execution, submission and
 validation, and returned outcomes. Verify handling of cancellation and
 invalidation signals, rejection of late results, and attempt usage attribution
 with synthetic provider-reported usage through domain-level tests.
@@ -973,7 +1001,12 @@ without requiring new CLI behavior.
 
 ### Milestone 2: Shell and session integration
 
-Integrate interpretation outcomes with evaluation and session handling. Apply
+Integrate investigation-operation requirements and outcomes with the evaluation
+layer and session handling. Assess its organization as described
+under [Evaluation and retained program information](#evaluation-and-retained-program-information).
+Record the chosen organization and its rationale.
+Select reusable outcomes and missing operations before
+execution, independently of projection construction. Apply
 retention policy, retain successful results and their accompanying corrections
 atomically, establish stable session references, and reuse retained outcomes.
 Exercise successive evaluations in one session, including supplying earlier
@@ -1108,9 +1141,12 @@ Verify public boundaries and journeys, including:
 
 #### Evaluation and evidence access
 
-- evaluation-driven selection of missing interpretation work, retained-outcome reuse,
+- evaluation-layer selection of missing interpretation work, retained-outcome reuse,
   and investigator queries that acquire missing mechanical results without changing
   their qualification or generating nested human-command observations;
+- lens-independent operation requests, selection and reuse for compatible
+  information requirements, and projection construction without investigator
+  execution; each missing operation uses its own fresh dialogue;
 - full captured source supplied independently of human excerpt limits, explicit
   chunking/coverage, no human source-escape event for investigator-only reads, and
   correct disclosure observations when source is actually shown to the human;

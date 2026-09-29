@@ -20,6 +20,25 @@ Describe the need, why it matters, and relevant constraints without designing th
 
 ## Candidates
 
+## Consider grouping investigation operations in one dialogue
+
+Added: 2026-09-29
+Origin: module investigation discussion of reusable operations and composite lenses
+Area: investigation execution and efficiency
+
+The [operation/lens separation](decisions/investigation-operations-and-lenses.md)
+allows evaluation to identify investigation work independently of its consuming
+lenses. The [module investigation slice](plans/module-investigation.md) executes
+each missing operation in a fresh dialogue.
+Assess whether grouping several selected operations in one dialogue improves
+context reuse, latency, or usage sufficiently to justify the added complexity.
+
+Define submission and outcome boundaries, independent success or failure,
+execution limits, usage attribution, and the effect of shared context on
+citation indexes and correction eligibility. Preserve qualified results and
+operation provenance, and compare interpretive quality with separate dialogues;
+selecting several operations does not itself require grouped execution.
+
 ## Provide Git history as investigator evidence
 
 Added: 2026-09-29
