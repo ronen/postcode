@@ -55,6 +55,18 @@ Re F7, I’ll accept your recommended disposition, with one clarification: this 
 
 The next round of review is complete.  As usual:  Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
 
+### Round 2 resolution choices — 2026-09-29
+
+The human answered the following questions (question text is retained as context):
+
+> R2-F1 requires an evidence-response contract change. May I return selected claims with their own qualification and evidence, summarize evaluation-level qualification by reference, and add bounded navigation through module/group/artifact listings? I’ll verify qualification preservation and usable relationship/documentation access at realistic scale, then prepare the correction for another independent review.
+
+Implement scoped, navigable evidence (Recommended)
+
+> For R2-F2, may I restrict correctedSubjects to module, symbol, group and repository-artifact records, rejecting claims, source-evidence and content captures? This keeps corrections associated with described subjects while evidence remains separately attributable.
+
+Restrict to these subject kinds (Recommended)
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
