@@ -27,11 +27,24 @@ resolve through captured repository evidence. Multiple module file mappings are
 preserved. The TypeScript provider reads through the existing first-observed input
 host, using the shared generated-output policy and registering new content with
 the existing validity probes. There is no investigator filesystem or path-reading
-interface. Artifact reads also advance the shared observed-input basis: subsequent
-partial mechanical work can retry once on the new basis, and its input attribution
-includes the documentation read. Completed work and earlier input snapshots remain
-unchanged. This is the current shared-host behavior; the milestone-1 review
-disposition records the outstanding human assessment of that consequence.
+interface.
+
+The captured input basis is a conservative shared acquisition basis, not an exact
+list of inputs used by the compiler or to derive an individual mechanical claim.
+Reading an artifact such as README registers its content for session validity
+and advances the shared acquisition revision. Membership in a later input-basis
+record means “captured in the shared basis”; it does not assert that the compiler
+used that content or that it contributed to the claim's derivation.
+
+Advancing that revision makes incomplete mechanical work eligible for another
+attempt. This conservative retry can do unnecessary work without changing the
+qualification of its outcome. Work that remains partial is reused on the same
+stable basis; completed work remains reusable across acquisition revisions.
+Earlier evaluations, claim-context attribution and input snapshots remain
+unchanged. The README regression covers these interactions, and F7 is accepted
+as current behavior for this slice. Separating acquisition revisions by relevance
+could be a later optimization if unnecessary re-evaluation becomes significant;
+no such separation is part of this milestone.
 
 Opaque artifacts, unresolved links, excluded targets, unavailable text
 and providers without acquisition support return qualified unavailability.

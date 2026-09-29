@@ -135,3 +135,41 @@ human-arranged independent review. Findings must be resolved and the human must
 direct continuation before milestone 2 begins. A reviewer recommendation alone
 does not satisfy the human gate or close the active task. The remaining milestone
 and final integrated-review gates still apply.
+
+
+## Human-requested correction and validation disclosure — 2026-09-29
+
+This addendum is appended at the human's explicit request after round 1; the
+original assignment and its historical target above remain unchanged. The
+corrected code target is `32f90a504344352a12810be66e3b41547731909f`.
+The [disposition](2026-09-29-milestone-1-disposition.md) records F1–F6 corrections
+and the human's acceptance of F7 with regression coverage: the input basis is
+conservative shared acquisition, not an exact compiler-use or claim-derivation
+list. Its revision permits conservative retry of incomplete work; completed work
+and earlier records remain unchanged.
+
+**Milestone validation is qualified by unresolved execution-ownership
+cancellations.** The bounded comparison captured these distinct results:
+
+| Target | Isolated execution ownership | Full suite |
+| --- | --- | --- |
+| Baseline `c15afdd3b03f588534ac386c2453c81da71ffb68` | 13 passed, 0 cancelled | 283 passed, 0 failed, 13 cancelled |
+| Corrected milestone 1 | 13 passed, 0 cancelled | 318 passed, 0 failed, 13 cancelled |
+
+All 13 tests in `test/execution-ownership.test.ts` were cancelled in each full
+run. The baseline's first test reported a pending promise after the event loop
+resolved; the remaining 12 were cancelled by the parent. The pattern predates
+the implementation, but its cause and any production implications remain
+unresolved. The isolated passes do not make these fully passing suite runs.
+
+The human authorized deferring diagnosis with a
+[backlog entry](../../../docs/backlog.md#diagnose-execution-ownership-cancellations-in-full-suite-runs)
+containing reproduction commands, baseline, affected tests and captured results.
+The [correction validation](../../validation/module-investigation/2026-09-29-milestone-1-review-corrections.md)
+separates the suite results from successful focused checks and records the final
+usage refinement's targeted verification after the full run began.
+
+The reviewer should assess whether this remaining uncertainty affects milestone
+acceptance, rather than infer acceptance from the deferral or isolated passes.
+No new review round is claimed or arranged by this addendum. The human's milestone
+gate decision remains pending; milestone 2 has not begun.

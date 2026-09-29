@@ -20,6 +20,55 @@ Describe the need, why it matters, and relevant constraints without designing th
 
 ## Candidates
 
+
+## Diagnose execution-ownership cancellations in full-suite runs
+
+Added: 2026-09-29
+Origin: [Module investigation milestone-1 review](../records/reviews/module-investigation/2026-09-29-milestone-1-disposition.md)
+Area: execution ownership and test reliability
+
+The human deferred diagnosis while retaining this unresolved qualification on
+milestone validation. A bounded comparison reproduced the review's cancellation
+pattern on pre-implementation baseline
+`c15afdd3b03f588534ac386c2453c81da71ffb68` and corrected implementation
+`f5a974d364245a3c19f4afe70d8e5f92c1807729`. The pattern predates investigation
+implementation, but its cause and any production implications remain unknown.
+
+Reproduce in separate checkouts with Node.js 22.13.1 and the pinned dependencies.
+After `npm run build`, run these separately to distinguish isolation from the
+full suite (the symptom is intermittent; a pass does not resolve it):
+
+```sh
+node --test _build/test/execution-ownership.test.js
+node --test _build/test/*.test.js
+```
+
+Captured comparison results:
+
+| Checkout | Isolated execution ownership | Full suite |
+| --- | --- | --- |
+| Pre-implementation baseline | 13 passed, 0 cancelled | 283 passed, 0 failed, 13 cancelled; 296 total |
+| Corrected milestone 1 | 13 passed, 0 cancelled | 318 passed, 0 failed, 13 cancelled; 331 total |
+
+All 13 tests in `test/execution-ownership.test.ts` were affected: Git deadline/
+escalation/exit, unconfirmed cleanup, worker interruption during opening and
+validation, unexpected worker exit, worker send/close/late settlement, opening
+timeout/invalidation, interrupted publication, worker cleanup bounds, Git output
+limits, and failed spawn handling. The first test reported
+`Promise resolution is still pending but the event loop has already resolved`
+after approximately 364 ms on the baseline; the remaining 12 were cancelled by
+the parent. The reviewer also saw 13 cancellations in one full run, followed by
+successful isolated and full runs.
+
+The [validation record](../records/validation/module-investigation/2026-09-29-milestone-1-review-corrections.md)
+preserves runtime, chronology and comparison limits. Local scratch logs are
+`_investigation/baseline-ownership.log`, `baseline-full.log`,
+`current-ownership.log` and `current-full.log` in that directory; the durable
+results above do not depend on those uncommitted files being retained.
+Investigate the unresolved cause without treating isolated passes as a fully
+passing suite or assuming a load-related explanation. This entry does not
+authorize a cancellation-policy change.
+
 ## Consider grouping investigation operations in one dialogue
 
 Added: 2026-09-29

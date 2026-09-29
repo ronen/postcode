@@ -5,7 +5,7 @@ Date: 2026-09-29
 Task: [Module investigation](../../tasks/2026-09-29-module-investigation.md)
 Handoff: [Milestone 1](2026-09-29-milestone-1-handoff.md)
 Findings: [Round 1](2026-09-29-milestone-1-round-1-findings.md)
-State: F1–F6 corrected under human direction; bounded investigation completed; human assessment pending
+State: F1–F6 corrected; F7 accepted with regression coverage; cancellation diagnosis deferred by human direction; milestone gate pending
 
 ## Findings and dispositions
 
@@ -83,7 +83,7 @@ distinguish intended boundary checks from unrelated generic failures.
 
 ### F7 — artifact acquisition and compiler input basis
 
-**Investigation authorized; current policy preserved pending human assessment.**
+**Accepted current behavior with regression coverage, by human direction.**
 The regression exercises README acquisition through the evidence boundary after
 organization materialization, followed by partial and complete mechanical queries.
 It confirms one new partial attempt on the advanced input basis, reuse on the
@@ -91,9 +91,14 @@ next query, reuse of completed work, and immutability of earlier evaluations and
 claim-context input references. The new retry-basis analysis-input record includes
 the README read; previously established claim contexts keep their earlier basis.
 
-No compiler/documentation input separation or retry-policy change was made. The
-human has been asked whether to accept this demonstrated shared-basis behavior
-with regression coverage, or keep F7 open for a separate design decision.
+The human clarified that this is a conservative shared acquisition basis.
+Membership means captured in that basis, not used by the compiler or to derive
+a particular claim. README acquisition registers session validity and makes
+incomplete work eligible for conservative retry; unnecessary work does not
+misrepresent its outcome. The architecture account records this distinction.
+No input separation or retry-policy change was made. Relevance-based acquisition
+revisions remain a possible later optimization if retry cost becomes significant,
+without expanding this milestone.
 
 ## Non-defect observations and residual limits
 
@@ -108,10 +113,15 @@ isolated and subsequent full runs passed. The authorized comparison reproduced
 the same 13 cancellations on the pre-implementation baseline (283 passed, zero
 failed), with the same pending-promise error. Both baseline and corrected
 isolated execution-ownership runs passed all 13 tests. This establishes that the
-pattern predates the implementation; its cause remains unresolved. The human
-has been asked whether to defer diagnosis explicitly or keep it open before gate
-acceptance. The corrected full suite also produced the same 13 cancellations: 318 passed,
-zero failed (331 total).
+pattern predates the implementation; its cause remains unresolved. The corrected
+full suite also produced the same 13 cancellations: 318 passed, zero failed
+(331 total). **Diagnosis is deferred by explicit human direction**, with a
+[backlog entry](../../../docs/backlog.md#diagnose-execution-ownership-cancellations-in-full-suite-runs)
+containing reproduction commands, baseline, affected tests and captured results.
+The validation and handoff explicitly disclose the concern. Validation remains
+qualified by these cancelled suite runs; isolated passes do not establish a fully
+passing suite. The reviewer can assess whether the uncertainty affects milestone
+acceptance.
 
 No hosted provider, credentials or live inference were exercised. Retention,
 reconsideration and display remain later milestones. These review limits are
@@ -146,8 +156,10 @@ records chronology, reproduction and limits, including the final focused check.
 
 ## Gate conclusion
 
-F1–F6 are corrected. Human assessment is pending on the demonstrated F7 behavior
-and deferral of the pre-existing cancellation pattern's unresolved diagnosis.
+F1–F6 are corrected. F7 is accepted current behavior with regression coverage.
+The human has deferred cancellation diagnosis subject to the recorded backlog,
+qualified validation and handoff disclosure; these conditions are now recorded.
+This deferral does not resolve the cause or itself accept the milestone gate.
 The reviewer considers a further independent round unnecessary if F1 and F2
 corrections are small and verified; the human retains the gate decision.
 The task remains active at milestone 1; milestone 2 has not begun. No finding

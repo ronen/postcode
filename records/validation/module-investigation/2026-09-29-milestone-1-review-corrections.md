@@ -6,6 +6,9 @@ Review: [Round 1 disposition](../../reviews/module-investigation/2026-09-29-mile
 Validator: implementing Codex agent; not an independent review
 Runtime: Node.js 22.13.1 with the repository's pinned dependencies
 
+Validation status: qualified by unresolved execution-ownership cancellations in
+both compared full-suite runs; successful isolated checks are separate evidence.
+
 ## Correction coverage
 
 F3, F5 and F6 were previously corrected in `1de634a` and passed all 31 then-current
@@ -44,7 +47,11 @@ correctly failed: existing claims keep their original input attribution. The
 final regression checks the new retry-basis record rather than mistaking an old
 context for new work. No production behavior was changed in response. This
 refines the attribution observation without changing the observed retry effect.
-Human acceptance of the demonstrated shared-basis behavior remains pending.
+The human accepted this behavior with regression coverage, clarifying that the
+basis conservatively records shared acquisition. Membership does not mean the
+compiler used the member or that it contributed to a mechanical claim. Advancing
+the basis permits another incomplete-work attempt without changing its outcome
+qualification; relevance-based revision separation is outside this milestone.
 
 ## Bounded cancellation comparison
 
@@ -72,8 +79,12 @@ This reproduces the review's pattern before investigation implementation and
 establishes that the pattern is pre-existing. It does not establish the cause,
 prove production cancellation is correct, or erase the cancelled verification.
 No execution-ownership test or production cancellation code was modified.
-The human has been asked whether to defer diagnosis explicitly to the backlog
-or keep it open before gate acceptance.
+The human explicitly deferred diagnosis to the
+[backlog](../../../docs/backlog.md#diagnose-execution-ownership-cancellations-in-full-suite-runs),
+with the commands, baseline, affected tests and captured results preserved.
+These full-suite runs were not fully passing runs. Successful isolated checks
+do not remove the unresolved concern or its qualification on milestone validation.
+The review handoff discloses this evidence for the reviewer's gate assessment.
 
 Reproduction after building: `node --test _build/test/execution-ownership.test.js`
 and `node --test _build/test/*.test.js`. The full runs were sequential; focused
@@ -81,8 +92,10 @@ checks also ran during the comparison, so this was not an isolated load study.
 
 ## Gate and limits
 
-The original handoff, review and validation remain historical evidence. The task
-is active at milestone 1. Human rulings on F7 and cancellation diagnosis, and
-explicit acceptance of the milestone gate, remain pending. No milestone-2 work
-has begun. Session retention, reconsideration, display and real-provider behavior
+The original handoff text, review and initial validation remain historical
+evidence; the human-requested disclosure is appended to the handoff. The task
+is active at milestone 1. F7 is accepted and cancellation diagnosis is deferred
+under the recorded conditions. Explicit acceptance of the milestone gate remains
+pending, with validation qualified by the unresolved cancellation concern.
+No milestone-2 work has begun. Session retention, reconsideration, display and real-provider behavior
 remain outside this checkpoint's verified scope.
