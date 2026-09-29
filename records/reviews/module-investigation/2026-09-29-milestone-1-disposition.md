@@ -4,8 +4,8 @@ Record type: disposition
 Date: 2026-09-29
 Task: [Module investigation](../../tasks/2026-09-29-module-investigation.md)
 Handoff: [Milestone 1](2026-09-29-milestone-1-handoff.md)
-Findings: [Round 1](2026-09-29-milestone-1-round-1-findings.md), [Round 2](2026-09-29-milestone-1-round-2-findings.md)
-State: round-2 findings corrected under human-approved contracts; further independent review required; milestone gate not satisfied
+Findings: [Round 1](2026-09-29-milestone-1-round-1-findings.md), [Round 2](2026-09-29-milestone-1-round-2-findings.md), [Round 3](2026-09-29-milestone-1-round-3-findings.md)
+State: round 3 verifies earlier corrections; R3-F1 and R3-F2 accepted with remedies awaiting human direction; milestone gate not satisfied
 
 ## Findings and dispositions
 
@@ -201,6 +201,67 @@ identified by the reviewer. Evidence attribution remains separate.
   hosted service were used. The approved correction now has scale regressions and qualification checks;
   they establish these tested cases, not universal evidence availability.
 
+## Round 3 findings and dispositions
+
+### R3-F1 — module inventory exceeds one investigation's budget
+
+**Accepted; requires human direction on the remedy.** The reviewer measured 40
+sequential pages and 1,871,220 serialized units for all 258 modules, against 32
+agent exchanges and a 2,000,000-unit cumulative dialogue guard. The page bound
+does not make that complete traversal achievable within one investigation.
+The selection currently traverses each module's naming claim, context and source
+support, confirming the reported cause. The reviewer's low severity and statement
+that this does not block the milestone are preserved.
+
+The recommended remedy is a lighter module listing that retains identity, naming
+claim and qualification while supplying source support by inspectable reference.
+The alternatives are name/handle filtering or an explicitly accepted milestone-3
+limitation. These choices affect the evidence contract or defer a finding, so the
+human has been asked before any is implemented. If the lighter listing is chosen,
+verification will include full traversal within the investigation budget on this
+repository, qualification preservation and citation rejection for references that
+have not been inspected. No remedy or deferral is assumed from elapsed time.
+
+### R3-F2 — summary delivery indistinguishable in provenance
+
+**Accepted; requires human direction on the representation.** The coordinator
+currently adds evaluation summaries, their summarized qualification contexts and
+repository summaries to the same `suppliedEvidence` set as complete records.
+The architecture's existing statement that summary identities do not assert full
+transmission does not supply the missing machine-readable distinction.
+
+The recommended remedy is separate summarized-evidence tracking in attempt
+reports and accepted provenance, allowing citations to substantive delivered
+summaries while preserving their exposure form. Bare support references remain
+uncitable. The reviewer also permits a documentation-only clarification of
+summary citation semantics; the human has been asked to choose before the
+contract changes. This finding has not been dismissed as already documented.
+
+### Round 3 observations, verification and residual limits
+
+- **Earlier findings:** accept the reviewer's verification that R2-F1 and R2-F2
+  are corrected and earlier corrections remain intact. The required independent
+  third round has now occurred against `212fa9e82f58d41f3de6829ad84285e40305930b`.
+- **Unpaged inspection:** acknowledge the stated limitation. The architecture
+  now explicitly explains that broad inspection may exceed the response bound,
+  while individual source-support references remain separately inspectable.
+  The reviewer notes this as an observation, not an additional defect.
+- **Continuation lifetime:** accept the integration constraint and record it in
+  the architecture. Milestone 2 must retain one evidence-access instance for at
+  least an entire evaluation; recreating it between requests loses continuations.
+  No milestone-2 implementation was started.
+- **Verification:** the reviewer reports type checking and 339/339 tests passing,
+  with zero failures or cancellations, plus complete real-repository traversal
+  with no omitted relationship, membership, export or group entries. These are
+  reviewer-reported results; this assessment has not rerun runtime checks or
+  changed runtime code.
+- **Remaining uncertainty:** the previous intermittent execution-ownership
+  cancellations remain unexplained and explicitly deferred. The latest passing
+  full suite does not resolve that concern; validation remains qualified. No
+  diagnosis or baseline comparison was repeated. Hosted/live validation is still
+  absent, and scale evidence remains one real repository plus the generated
+  163-module fixture.
+
 ## Non-defect observations and residual limits
 
 The six verified observations are acknowledged without dispute: qualified
@@ -268,21 +329,24 @@ tree at `2388914` containing documentation-only follow-ups. Its unchanged findin
 report type checking passed, 318 full-suite passes with 13 cancellations, all
 13 execution-ownership tests passing in isolation, and 56 investigation/input
 tests passing. The subsequent correction target is `212fa9e82f58d41f3de6829ad84285e40305930b`.
-No third independent round has yet occurred.
+Round 3 reviewed that correction target, with the working tree at `8f3a7c8`
+containing only subsequent documentation changes. Its findings are preserved in
+`5443e63`. The reviewer verified both round-2 corrections and raised R3-F1 and
+R3-F2 as low-severity findings that can be corrected or dispositioned without
+another independent round. That recommendation does not constitute human gate
+acceptance.
 The [correction validation](../../validation/module-investigation/2026-09-29-milestone-1-review-corrections.md)
 records chronology, reproduction and limits, including the final focused check.
 
 ## Gate conclusion
 
-R2-F1 and R2-F2 are corrected under the human's approved contracts, with type,
-regression and scale verification complete. Every actionable finding has a
-disposition; no finding was rejected or materially qualified without direction.
-Earlier F7 acceptance and the explicitly qualified cancellation deferral remain
-unchanged. The latest passing full suite does not resolve that deferred concern.
+R2-F1 and R2-F2 are independently verified as corrected. Every actionable finding
+has a recorded disposition. R3-F1 and R3-F2 are accepted, with their remedies
+awaiting human direction because the reviewer presents consequential alternatives.
+No finding has been rejected, materially qualified or deferred without direction.
+Earlier F7 acceptance and the qualified cancellation deferral remain unchanged.
 
-The task remains active at milestone 1. The changed evidence contract requires
-the further independent review recommended in round 2. The original handoff
-continues to govern that assignment, with correction target
-`212fa9e82f58d41f3de6829ad84285e40305930b` and the linked round-2 validation ready
-for the human-arranged reviewer. Milestone 2 has not begun; the human has not
-accepted the gate.
+The task remains active at milestone 1. The reviewer considers this checkpoint
+sufficient once the remaining findings are resolved or dispositioned, without a
+mandatory further independent round. The original handoff remains unchanged.
+The human has not accepted the gate, and milestone 2 has not begun.

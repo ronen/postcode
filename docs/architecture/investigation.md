@@ -38,7 +38,11 @@ including their support and qualification. Continuations are opaque, scoped to
 the evidence boundary and exact query, and refer to the original selection even
 if later acquisition enables another evaluation. They neither refresh nor merge
 that selection. Responses identify the covered interval, total selected population,
-next continuation and oversized omitted entries. Total selection size does not
+next continuation and oversized omitted entries. Continuations live in memory in
+one evidence-access instance. Session integration must retain that instance for
+at least the entire evaluation; recreating it between tool requests loses the
+continuations and returns explicit unknown-continuation responses.
+Total selection size does not
 assert that the underlying analysis is complete. Full qualification that itself
 exceeds delivery bounds remains explicitly unavailable rather than silently
 truncated. If an individual entry has extensive source support, its claim and own
@@ -109,6 +113,10 @@ the dialogue. Evidence already acquired remains retained. Collection continuatio
 and group navigation support narrower access; an individually oversized source or
 qualified item can still require finishing with an explicit coverage limitation. This
 delivery bound does not bound acquisition memory or introduce range retrieval.
+Inspection is also unpaged: a broad claim or global context can exceed the bound
+when its evidence is traversed. Individually addressable source-support references
+can still be inspected separately; their existence does not guarantee that a
+broader inspection response will fit.
 The separate cumulative dialogue guard can still stop an operation after
 multiple bounded responses.
 
