@@ -125,6 +125,10 @@ Add renderer cross-references (Recommended)
 
 Record unassessed follow-up (Recommended)
 
+### Milestone 2 acceptance and continuation — 2026-09-30
+
+ok, milestone 2 is accepted; wrap it up and continue on
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
