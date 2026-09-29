@@ -174,6 +174,41 @@ follow-up. Earlier test results retain their stated qualifications. The task
 remains active at milestone 1 pending the human's gate decision; milestone 2 has
 not begun.
 
+### Round 2 corrections ready for independent review
+
+The human-approved R2-F1 and R2-F2 contracts are implemented in
+`212fa9e82f58d41f3de6829ad84285e40305930b`. Evidence responses retain selected
+claims and their own qualified support, summarize evaluation/repository-wide
+qualification separately, and expose bounded stable continuation pages. Group
+navigation reaches members, artifacts and documentation. Extensive own source
+support can be separately inspected without making a subject disappear from the
+population or treating bare references as supplied evidence. Corrected subjects
+are restricted to modules, symbols, groups and repository artifacts.
+
+The [disposition](../reviews/module-investigation/2026-09-29-milestone-1-disposition.md)
+addresses both round-2 findings, all round-1 status confirmations, the process
+observation and residual limits. The original findings and handoff remain
+unchanged for this round. A further independent review of the changed evidence
+contract is required under that handoff; the human arranges it. Milestone 2 has
+not begun and this checkpoint does not accept the milestone gate.
+
+Final type checking passed. `npm test` passed 339 tests with zero failures,
+cancellations or skips. The [round-2 validation](../validation/module-investigation/2026-09-29-milestone-1-round-2-corrections.md)
+records fixture regressions, provenance checks, the real-repository sweep and
+reproduction commands. All 258 modules and 79 groups were navigable; all
+relationship/export queries for 93 project modules stayed within collection
+bounds with no omitted entries or unavailable responses, and group navigation
+reached 595 artifacts including root README content. Explicit source-support
+references remain distinct from embedded evidence. Whitespace and local link
+checks passed.
+
+The latest successful full run does not diagnose the intermittent
+execution-ownership cancellations. The human-authorized backlog deferral and
+qualified validation remain in force, with the previously cancelled suites and
+successful isolated runs kept distinct. No cancellation code, runtime dependency,
+CLI capability, governing material or development-process file changed. No
+credentials or live inference were used.
+
 ### Original milestone 1 verification
 
 Milestone 1: `npm run check` passed; `npm test` passed 323 tests. Subsequent
