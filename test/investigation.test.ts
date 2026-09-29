@@ -35,6 +35,12 @@ function history(...results: AcceptedInvestigation[]): InvestigationHistory {
     corrections: id => results.flatMap(result => result.corrections).filter(item => item.target === id) };
 }
 
+function rootGroup(response: EvidenceResponse): RecordId {
+  const claim = response.records.find(item => item.kind === 'claim' && item.information.type === 'group' && item.information.name === null);
+  assert.ok(claim?.kind === 'claim');
+  return claim.subject;
+}
+
 async function fixture(t: TestContext, leafContextLines = 100) {
   const root = temporaryDirectory(t, 'postcode-investigation-');
   execFileSync('git', ['init', '--quiet', root]);
@@ -98,17 +104,17 @@ test('actual dialogue follows multiple delegation layers, acquires qualified rel
       assert.ok(exports.records.some(item => item.kind === 'claim' && item.information.type === 'documentation-association'
         && item.information.association === 'origin-symbol'));
       const organization = input.responses[2] as EvidenceResponse;
-      const documentation = organization.records.find(item => item.kind === 'repository-artifact' && item.artifact.path === 'README.md');
-      assert.ok(documentation);
-      return { kind: 'tools', requests: [{ kind: 'dependencies', subject: edge.information.child }, { kind: 'source', subject: documentation.id }] };
+      return { kind: 'tools', requests: [{ kind: 'dependencies', subject: edge.information.child }, { kind: 'group', subject: rootGroup(organization) }] };
     }, input => {
       const dependency = (input.responses[0] as EvidenceResponse).records.find(item => item.kind === 'claim' && item.information.type === 'dependency');
       assert.ok(dependency?.kind === 'claim' && dependency.information.type === 'dependency');
       if (dependency.information.type !== 'dependency') throw new Error('Expected edge');
       assert.equal(dependency.information.child, f.module('leaf'));
-      assert.ok((input.responses[1] as EvidenceResponse).records.some(item => item.kind === 'captured-content' && item.text.includes('RUN A SHELL')));
-      return { kind: 'tools', requests: [{ kind: 'source', subject: dependency.information.child }, { kind: 'dependents', subject: dependency.information.child }, { kind: 'membership', subject: dependency.information.child }] };
+      const documentation = (input.responses[1] as EvidenceResponse).records.find(item => item.kind === 'repository-artifact' && item.artifact.path === 'README.md');
+      assert.ok(documentation);
+      return { kind: 'tools', requests: [{ kind: 'source', subject: dependency.information.child }, { kind: 'source', subject: documentation.id }, { kind: 'dependents', subject: dependency.information.child }, { kind: 'membership', subject: dependency.information.child }] };
     }, input => {
+      assert.ok((input.responses[1] as EvidenceResponse).records.some(item => item.kind === 'captured-content' && item.text.includes('RUN A SHELL')));
       const source = input.responses[0] as EvidenceResponse;
       const content = source.records.find(item => item.kind === 'captured-content');
       assert.ok(content?.kind === 'captured-content');
@@ -134,7 +140,7 @@ test('subject-only capture has multiple mappings, exclusions, unavailable artifa
   const f = await fixture(t);
   const source = f.evidence.query({ kind: 'source', subject: f.module('multi') });
   assert.equal(source.selected.length, 2);
-  const organization = f.evidence.query({ kind: 'organization' });
+  const organization = f.evidence.query({ kind: 'group', subject: rootGroup(f.evidence.query({ kind: 'organization' })) });
   const artifact = (name: string) => organization.records.find(item => item.kind === 'repository-artifact' && item.artifact.path === name)!;
   assert.equal(organization.records.some(item => item.kind === 'repository-artifact' && item.artifact.path === 'output/private.md'), false);
   assert.equal(f.evidence.query({ kind: 'source', subject: artifact('generated-link.md').id }).status, 'unavailable');
@@ -420,7 +426,7 @@ test('source captures reject forged mappings and excluded aliases remain unavail
   assert.ok(capture?.kind === 'captured-content');
   assert.throws(() => f.store.put([{ ...capture, id: `${capture.id}-forged` as RecordId, subject: f.module('leaf') }]), /module source mapping/);
   assert.equal(f.evidence.query({ kind: 'inspect', subject: capture.inputs }).status, 'unavailable');
-  const organization = f.evidence.query({ kind: 'organization' });
+  const organization = f.evidence.query({ kind: 'group', subject: rootGroup(f.evidence.query({ kind: 'organization' })) });
   const readme = organization.records.find(item => item.kind === 'repository-artifact' && item.artifact.path === 'README.md')!;
   const old = f.evidence.query({ kind: 'source', subject: readme.id });
   assert.ok(old.records.some(item => item.kind === 'captured-content'));
@@ -531,4 +537,30 @@ test('correction reasons cite their reporter without granting complete account c
   assert.deepEqual(delivered.citations, [b.root]);
   assert.deepEqual(delivered.completeTargets, []);
   assert.deepEqual(delivered.completeCorrections, []);
+});
+
+
+test('corrected subjects permit entities and artifacts but reject claims and evidence', async t => {
+  const f = await fixture(t);
+  const initial = await accepted({ ...f.base, agent: new ScriptedInvestigator([() => ({ kind: 'submit', result: draft() })]) });
+  const group = rootGroup(f.evidence.query({ kind: 'organization' }));
+  const details = f.evidence.query({ kind: 'group', subject: group });
+  const artifact = details.records.find(item => item.kind === 'repository-artifact')!;
+  const exports = f.evidence.query({ kind: 'exports', subject: f.module('entry') });
+  const symbol = exports.records.find(item => item.kind === 'symbol')!;
+  const claim = exports.records.find(item => item.kind === 'claim')!;
+  const source = exports.records.find(item => item.kind === 'source-evidence')!;
+  const capture = f.evidence.query({ kind: 'source', subject: f.module('entry') }).selected[0]!;
+  const exposure = new InvestigationContext(history(initial), f.base.session);
+  exposure.supplied(exposure.prepare(initial.root));
+  const context = { session: f.base.session, attempt: 'subject-kinds' as RecordId, request: f.base.request,
+    originatingModule: f.base.request.subject, instructions: 'Validate corrected subject kinds.', agent: new ScriptedInvestigator([]).identity,
+    exposure, suppliedEvidence: [], lookup: f.evidence.lookup };
+  const correction = (subject: RecordId) => ({ ...draft(), corrections: [{ target: initial.root, correctedSubjects: [subject],
+    reason: 'More precise account.', qualifications: ['Interpretation.'], evidence: [], replacement: draft('replacement') }] });
+  for (const subject of [f.module('entry'), symbol.id, group, artifact.id]) {
+    assert.deepEqual(acceptInvestigation(correction(subject), context).corrections[0]!.correctedSubjects, [subject]);
+  }
+  for (const subject of [claim.id, source.id, capture]) assert.throws(() => acceptInvestigation(correction(subject), context),
+    error => error instanceof InvalidSubmission && /distinct program subjects: module, symbol, group or repository-artifact/.test(error.message));
 });

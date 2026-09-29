@@ -13,13 +13,54 @@ in the plan's later milestones. The governing contracts are
 
 Existing module, dependency and organization evaluators continue to own mechanical
 evaluation and its reuse. A shared evidence-access boundary dispatches declared
-subject queries to those evaluators, returning stored records and their
-qualifications. It constructs neither projections nor human-command observations.
-It can materialize missing exports, documentation, dependencies, dependents and
-organization information. Its lookup operation resolves domain references; its
-inspection tool excludes internal session/input snapshots. Claim-context input
-references remain attributable without transmitting the raw acquisition ledger
-with each response.
+subject queries to those evaluators, returning selected stored records with their
+own contexts, methods, evidence and limitations. It constructs neither projections
+nor human-command observations. It can materialize missing exports, documentation,
+dependencies, dependents and organization information.
+
+Evaluation-wide results are delivered as explicitly separate summaries: identity,
+method, applicability, availability, execution, materialization, reason and the
+relevant basis reference. Organization summaries retain separate placement state.
+Evaluation-wide contexts retain scope, guarantees, limitations, input references
+and diagnostic code/category counts; their evidence populations are represented
+by counts, not recursively embedded. A selected claim's own context and evidence
+remain unchanged. Repository evidence reached through a context is separately
+summarized by identity, method, availability and limitations, rather than embedding
+its entire artifact census. Summaries are delivery metadata, not modified stored
+records. Supplied-evidence provenance includes delivered summary identities; it
+does not assert that the full underlying record was transmitted. Internal raw
+session/input snapshots remain outside the inspection tool.
+
+Module and organization listings, exports, dependencies, dependents, membership
+and group navigation use stable pages over retained selections. Each page covers
+at most 24 selected entries and targets 55,000 serialized UTF-16 code units,
+including their support and qualification. Continuations are opaque, scoped to
+the evidence boundary and exact query, and refer to the original selection even
+if later acquisition enables another evaluation. They neither refresh nor merge
+that selection. Responses identify the covered interval, total selected population,
+next continuation and oversized omitted entries. Total selection size does not
+assert that the underlying analysis is complete. Full qualification that itself
+exceeds delivery bounds remains explicitly unavailable rather than silently
+truncated. If an individual entry has extensive source support, its claim and own
+context remain embedded while explicit source-support references replace the support
+bodies. Those references can be inspected individually; the page is partial and
+the references alone do not count as supplied evidence. If even that qualified
+entry cannot fit (for example, an enormous documentation assertion), it is
+explicitly omitted; continuation can still reach later entries. Per-page partial
+status and omissions must be considered across the whole traversal, not replaced by the last page's
+status.
+
+Organization lists groups. Group navigation supplies direct containment,
+module-placement claims, artifacts and documentation references; content is then
+requested by artifact reference. Membership exposes a module's qualified groups
+without pulling in unrelated placements. Outgoing dependency queries include
+recognized requests without established edges and owner-specific coverage records.
+Incoming queries report established incoming edges and explicitly qualify that
+unresolved requests or unattributed coverage cannot establish absence of dependents.
+External interiors remain opaque. Each relationship's own evidence accompanies it;
+evaluation-wide qualification does not turn bounded recognition into a claim of
+runtime completeness. Missing provider expansions remain explicitly unavailable
+or partial, not empty complete exports.
 
 Content acquisition is a provider capability behind that same boundary. Module
 references resolve through their retained source mappings; organization artifacts
@@ -64,8 +105,9 @@ Before delivery, each mechanical/source tool response is limited to 60,000
 serialized UTF-16 code units. An oversized response becomes an explicit
 unavailable response identifying the omitted size and record/reference counts;
 it does not claim an empty result, create supplied-evidence references or terminate
-the dialogue. Evidence already acquired remains retained. The investigator can
-request a narrower known subject or finish with a coverage limitation. This
+the dialogue. Evidence already acquired remains retained. Collection continuations
+and group navigation support narrower access; an individually oversized source or
+qualified item can still require finishing with an explicit coverage limitation. This
 delivery bound does not bound acquisition memory or introduce range retrieval.
 The separate cumulative dialogue guard can still stop an operation after
 multiple bounded responses.
@@ -119,7 +161,9 @@ or mechanical citations. Each correction constructs a disjoint replacement tree;
 recursive corrections and conflicting alternatives are valid. Unresolved
 inconsistencies retain affected references and qualifications. Associations
 distinguish explicit description, the investigation subject and corrected subjects.
-Each correction explicitly names the program subjects whose accounts it corrects;
+Each correction explicitly names distinct modules, symbols, groups or repository
+artifacts whose accounts it corrects. Claims, source evidence and content captures
+are evidence rather than eligible corrected subjects;
 its target separately identifies the corrected investigram. Replacement roots
 receive those qualified corrected-subject associations. They are never inferred
 from the original request or copied from all earlier associations.

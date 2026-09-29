@@ -70,7 +70,7 @@ export function acceptInvestigation(value: unknown, context: AcceptanceContext):
         const target = reference(correction.target, 'target');
         const correctedSubjects = array(correction.correctedSubjects).map(id => reference(id, 'subject'));
         if (!correctedSubjects.length || new Set(correctedSubjects).size !== correctedSubjects.length
-          || correctedSubjects.some(id => exposure.history.get(id) || !context.lookup(id))) return invalid('Corrected subjects must explicitly identify distinct program subjects, not investigrams.');
+          || correctedSubjects.some(id => !['module', 'symbol', 'group', 'repository-artifact'].includes(context.lookup(id)?.kind ?? ''))) return invalid('Corrected subjects must explicitly identify distinct program subjects: module, symbol, group or repository-artifact.');
         return { target, correctedSubjects, reason: text(correction.reason), ...support(correction), replacement: parse(correction.replacement, depth + 1) };
       }),
       inconsistencies: array(item.inconsistencies).map(value => {

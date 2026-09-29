@@ -392,7 +392,10 @@ test('README acquisition advances the shared basis once for partial work and pre
     if (opened.status !== 'opened') throw new Error('Expected project');
     const store = new MemoryProgramRecordStore();
     const evidence = evidenceAccess(store, opened.analysis, opened.session);
-    const organization = evidence.query({ kind: 'organization' });
+    const groups = evidence.query({ kind: 'organization' });
+    const rootClaim = groups.records.find(item => item.kind === 'claim' && item.information.type === 'group' && item.information.name === null);
+    assert.ok(rootClaim?.kind === 'claim');
+    const organization = evidence.query({ kind: 'group', subject: rootClaim.subject });
     const readme = organization.records.find(item => item.kind === 'repository-artifact' && item.artifact.path === 'README.md');
     assert.ok(readme);
     const before = opened.analysis.discover(store, moduleStandardExpansions);

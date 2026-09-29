@@ -1,8 +1,12 @@
 import { evaluateModules } from './evaluation.js';
 import type { ModuleAnalysis } from './evaluation.js';
 import { evaluateDependencies } from './dependencies/evaluate.js';
+import { canonical } from './identity.js';
+import { evidenceDelivery } from './evidence-delivery.js';
+import type { EvidenceResponse } from './evidence-delivery.js';
+export type { EvidenceResponse } from './evidence-delivery.js';
 import { evaluateOrganization } from './organization/evaluate.js';
-import type { ProgramRecord, ProgramRecordStore, RecordContext, RecordId, SessionId } from './records.js';
+import type { ProgramRecordStore, RecordContext, RecordId, SessionId } from './records.js';
 
 /** Content is captured by the language/provider input boundary, never read by a lens or agent. */
 export interface CapturedContentRecord extends RecordContext {
@@ -23,60 +27,38 @@ export interface ContentResult {
   readonly limitations: readonly string[];
 }
 
-export type EvidenceQuery = { readonly kind: 'modules' | 'organization' }
-  | { readonly kind: 'inspect' | 'exports' | 'dependencies' | 'dependents' | 'membership' | 'source'; readonly subject: RecordId };
-
-export interface EvidenceResponse {
-  readonly status: 'available' | 'partial' | 'unavailable';
-  readonly records: readonly ProgramRecord[];
-  readonly selected: readonly RecordId[];
-  readonly limitations: readonly string[];
-}
+export type EvidenceQuery = ({ readonly kind: 'modules' | 'organization' }
+  | { readonly kind: 'exports' | 'dependencies' | 'dependents' | 'membership' | 'group'; readonly subject: RecordId }) & { readonly cursor?: string }
+  | { readonly kind: 'inspect' | 'source'; readonly subject: RecordId };
 
 /** A domain entry point to existing evaluators; no projections or human-command observations. */
 export function evidenceAccess(store: ProgramRecordStore, analysis: ModuleAnalysis, session: SessionId) {
   const unavailable = (reason: string): EvidenceResponse => ({ status: 'unavailable', records: [], selected: [], limitations: [reason] });
-  const response = (ids: readonly RecordId[], selected: readonly RecordId[], limitations: readonly string[] = [],
-    status: EvidenceResponse['status'] = 'available'): EvidenceResponse => {
-    const found = new Map<RecordId, ProgramRecord>();
-    const pending = [...ids];
-    while (pending.length) {
-      const id = pending.pop()!;
-      if (found.has(id)) continue;
-      const record = store.get(id);
-      if (record.session !== session) throw new Error('Foreign evidence session');
-      found.set(id, record);
-      if (record.kind === 'module' || record.kind === 'symbol' || record.kind === 'group') pending.push(record.claim);
-      if (record.kind === 'claim' || record.kind === 'recorded-assertion') pending.push(record.context);
-      if (record.kind === 'claim-context') pending.push(...record.evidence);
-      if (record.kind === 'claim' && record.information.type === 'documentation-association') pending.push(record.information.assertion);
-      if (record.kind === 'dependency-occurrence') pending.push(record.context, record.evidence, ...record.targetEvidence);
-      if (record.kind === 'dependency-coverage') pending.push(record.context, record.evidence);
-      if (record.kind === 'captured-content') pending.push(record.mapping);
-    }
-    return { status, records: [...found.values()], selected, limitations };
-  };
+  const delivery = evidenceDelivery(store, session);
   return {
     lookup: (id: RecordId) => { const item = store.lookup(id); return item?.session === session ? item : undefined; },
     query(query: EvidenceQuery): EvidenceResponse {
       const subject = 'subject' in query ? store.lookup(query.subject) : undefined;
       if ('subject' in query && (!subject || subject.session !== session)) return unavailable('Unknown subject in this session.');
+      const key = canonical({ kind: query.kind, ...('subject' in query ? { subject: query.subject } : {}) });
+      if ('cursor' in query && query.cursor !== undefined) return delivery.resume(key, query.cursor);
       if (query.kind === 'inspect') {
-        if (!['module', 'symbol', 'group', 'claim', 'claim-context', 'source-evidence', 'repository-artifact',
+        if (!['module', 'symbol', 'group', 'claim', 'claim-context', 'source-evidence', 'repository-artifact', 'repository-region',
           'recorded-assertion', 'captured-content', 'dependency-occurrence', 'dependency-coverage'].includes(subject!.kind)) {
           return unavailable('This internal record is not an inspectable program subject or evidence item.');
         }
-        return response([subject!.id], [subject!.id]);
+        return { status: 'available', ...delivery.compose([subject!.id]), selected: [subject!.id], limitations: [] };
       }
       if (query.kind === 'source') {
         if (subject!.kind !== 'module' && subject!.kind !== 'repository-artifact') return unavailable('Source requires a module or organization artifact reference.');
         if (!analysis.acquireContent) return unavailable('Content acquisition is unavailable from this provider.');
         const result = analysis.acquireContent(store, subject!.id);
-        return response(result.captures, result.captures, result.limitations, result.status);
+        return { status: result.status, ...delivery.compose(result.captures), selected: result.captures, limitations: result.limitations };
       }
       if (['exports', 'dependencies', 'dependents', 'membership'].includes(query.kind) && subject!.kind !== 'module') {
         return unavailable('This evidence query requires a module.');
       }
+      if (query.kind === 'group' && subject!.kind !== 'group') return unavailable('Group navigation requires a group.');
       if (query.kind === 'dependencies' || query.kind === 'dependents') {
         const evaluation = evaluateDependencies(store, analysis);
         const relationships = evaluation.relationships.filter(id => {
@@ -84,36 +66,44 @@ export function evidenceAccess(store: ProgramRecordStore, analysis: ModuleAnalys
           return claim.kind === 'claim' && claim.information.type === 'dependency'
             && (query.kind === 'dependencies' ? claim.subject === subject!.id : claim.information.child === subject!.id);
         });
-        const claims = relationships.map(id => store.get(id));
-        const endpoints = claims.flatMap(claim => claim.kind === 'claim' && claim.information.type === 'dependency'
-          ? [claim.subject, claim.information.child, ...claim.information.occurrences] : []);
-        return response([evaluation.id, ...evaluation.contexts, ...relationships, ...endpoints, ...evaluation.coverage], relationships,
-          evaluation.reason ? [evaluation.reason] : [], evaluation.materialization === 'full' ? 'available' : 'partial');
+        const covered = new Set(relationships.flatMap(id => {
+          const claim = store.get(id);
+          return claim.kind === 'claim' && claim.information.type === 'dependency' ? claim.information.occurrences : [];
+        }));
+        const nonEdges = query.kind === 'dependencies' ? evaluation.occurrences.filter(id => {
+          const item = store.get(id); return item.kind === 'dependency-occurrence' && item.owner === subject!.id && !covered.has(id);
+        }) : [];
+        const coverage = query.kind === 'dependencies' ? evaluation.coverage.filter(id => {
+          const item = store.get(id); return item.kind === 'dependency-coverage' && item.owner === subject!.id;
+        }) : [];
+        return delivery.select(key, [...relationships, ...nonEdges, ...coverage], [evaluation], [
+          'Dependency coverage is bounded project-owned source-request analysis, not runtime dependency completeness.',
+          ...(query.kind === 'dependents' ? ['Incoming relationships include established targets only; unresolved requests and unattributed coverage elsewhere cannot establish absence of dependents.']
+            : ['Outgoing selection includes recognized requests without established edges and owner-specific coverage records. Unattributed requests elsewhere cannot be assigned to this module.']),
+          ...(!evaluation.projectModules.includes(subject!.id) ? ['This subject is outside the analyzed project-owner population; its interior is opaque.'] : []),
+        ]);
       }
       const modules = evaluateModules(store, analysis, query.kind === 'exports' ? ['exports', 'documentation'] : []);
-      if (query.kind === 'modules') return response([modules.id, ...modules.contexts, ...modules.modules], modules.modules,
-        modules.reason ? [modules.reason] : [], modules.materialization === 'full' ? 'available' : 'partial');
+      if (query.kind === 'modules') return delivery.select(key, modules.modules, [modules]);
       if (query.kind === 'exports') {
         const expansions = store.evaluations(session).filter(item => item.basis === modules.id && item.modules.includes(subject!.id));
-        // Each expansion is already scoped to this module. Documentation may
-        // describe its exported symbol or alias rather than the module entity.
         const claims = [...new Set(expansions.flatMap(item => item.claims ?? []))];
-        const symbols = claims.flatMap(id => { const claim = store.get(id); return claim.kind === 'claim' && claim.information.type === 'export'
-          ? [claim.information.symbol, claim.information.origin].filter((id): id is RecordId => id !== null) : []; });
-        return response([modules.id, ...expansions.map(item => item.id), ...expansions.flatMap(item => item.contexts), ...claims, ...symbols], claims,
-          expansions.flatMap(item => item.reason ? [item.reason] : []), expansions.every(item => item.materialization === 'full') ? 'available' : 'partial');
+        const missing = ['exports', 'documentation'].filter(requirement => !expansions.some(item => item.requirement === requirement));
+        return delivery.select(key, claims, [modules, ...expansions],
+          missing.map(requirement => `The provider did not supply ${requirement} for this module; absence is not established.`),
+          missing.length ? expansions.length ? 'partial' : 'unavailable' : undefined);
       }
       const organization = evaluateOrganization(store, modules);
-      const selected = query.kind === 'membership' ? organization.claims.filter(id => {
-        const claim = store.get(id); return claim.kind === 'claim' && claim.subject === subject!.id && claim.information.type === 'module-placement';
-      }) : [...organization.groups, ...organization.claims];
-      const artifacts = selected.flatMap(id => {
-        const record = store.get(id);
-        return record.kind === 'claim' && (record.information.type === 'artifact-placement' || record.information.type === 'group-documentation')
-          ? [record.information.artifact] : [];
+      const selected = query.kind === 'organization' ? organization.groups : organization.claims.filter(id => {
+        const claim = store.get(id);
+        if (claim.kind !== 'claim') return false;
+        if (query.kind === 'membership') return claim.subject === subject!.id && claim.information.type === 'module-placement';
+        return claim.subject === subject!.id || claim.information.type === 'module-placement' && claim.information.groups.includes(subject!.id);
       });
-      return response([organization.id, ...organization.contexts, ...selected, ...artifacts], selected,
-        organization.reason ? [organization.reason] : [], organization.materialization === 'full' ? 'available' : 'partial');
+      return delivery.select(key, selected, [organization], [
+        'Organization lists groups; use group(subject) for direct containment, members, artifacts and documentation, then source(artifact) for content.',
+        'Repository layout and module-placement coverage are separate. Placement does not establish documentation applicability.',
+      ]);
     },
   };
 }

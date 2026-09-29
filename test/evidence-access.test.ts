@@ -1,0 +1,255 @@
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
+import type { TestContext } from 'node:test';
+import { execFileSync } from 'node:child_process';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import path from 'node:path';
+import { temporaryDirectory } from './cli-helpers.js';
+import { ScriptedInvestigator } from './investigator-double.js';
+import { openTypeScriptProject } from '../src/lib/typescript/project.js';
+import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
+import { evaluateModules } from '../src/lib/evaluation.js';
+import type { ModuleAnalysis } from '../src/lib/evaluation.js';
+import { evidenceAccess } from '../src/lib/evidence-access.js';
+import type { EvidenceQuery, EvidenceResponse } from '../src/lib/evidence-access.js';
+import { evidencePageCharacters } from '../src/lib/evidence-delivery.js';
+import { investigate, evidenceResponseCharacters } from '../src/lib/investigation/execute.js';
+import { InvestigationUsage } from '../src/lib/investigation/usage.js';
+import type { AgentInput, AgentReply } from '../src/lib/investigation/contracts.js';
+import type { RecordId } from '../src/lib/records.js';
+
+async function fixture(t: TestContext, unrelated: number, hugeDocumentation = false, wideSupport = false) {
+  const root = temporaryDirectory(t, 'postcode-evidence-');
+  execFileSync('git', ['init', '--quiet', root]);
+  mkdirSync(path.join(root, 'feature'));
+  mkdirSync(path.join(root, 'unrelated'));
+  writeFileSync(path.join(root, 'tsconfig.json'), JSON.stringify({ compilerOptions: { noLib: true, types: [], module: 'nodenext' }, include: ['**/*.ts'] }));
+  writeFileSync(path.join(root, 'feature/entry.ts'), "import { middle } from './middle.js'; import './missing.js'; export const entry = () => middle();");
+  writeFileSync(path.join(root, 'feature/middle.ts'), "import { leaf } from './leaf.js'; export const middle = () => leaf();");
+  writeFileSync(path.join(root, 'feature/leaf.ts'), `${hugeDocumentation ? `/** ${'Explanation. '.repeat(7000)} */` : '/** Completes work. */'}\nexport const leaf = () => 1;\nexport const extra = 2;`);
+  writeFileSync(path.join(root, 'feature/README.md'), 'This feature delegates entry to middle to leaf.');
+  for (let index = 0; index < unrelated; index++) writeFileSync(path.join(root, `unrelated/item${index}${wideSupport ? '.d' : ''}.ts`),
+    wideSupport ? `declare module 'wide' { export const item${index}: number; }` : `export const item${index} = ${index};`);
+  const opened = await openTypeScriptProject({ configPath: path.join(root, 'tsconfig.json') });
+  if (opened.status !== 'opened') throw new Error('Expected fixture');
+  const store = new MemoryProgramRecordStore();
+  const evaluation = evaluateModules(store, opened.analysis);
+  const module = (handle: string) => evaluation.modules.find(id => {
+    const item = store.get(id);
+    assert.ok(item.kind === 'module');
+    const claim = store.get(item.claim);
+    return claim.kind === 'claim' && claim.information.type === 'module' && claim.information.handle === handle;
+  })!;
+  return { root, opened, store, evaluation, module, evidence: evidenceAccess(store, opened.analysis, opened.session) };
+}
+function checkQualified(response: EvidenceResponse, store: MemoryProgramRecordStore) {
+  assert.ok(JSON.stringify(response).length <= evidencePageCharacters);
+  assert.ok(response.records.every(item => !['evaluation', 'dependency-evaluation', 'organization-evaluation', 'repository-evidence', 'analysis-inputs'].includes(item.kind)));
+  const delivered = new Map(response.records.map(item => [item.id, item]));
+  const repositoryIds = new Set([...(response.repositories?.map(item => item.id) ?? []), ...(response.supportReferences?.map(item => item.id) ?? [])]);
+  for (const record of response.records) {
+    assert.deepEqual(record, store.get(record.id), 'delivery must not rewrite retained claims or qualification');
+    if (record.kind === 'claim' || record.kind === 'recorded-assertion') assert.ok(delivered.has(record.context));
+    if (record.kind === 'claim-context') for (const id of record.evidence) assert.ok(delivered.has(id) || repositoryIds.has(id), 'own evidence stays attributable');
+  }
+}
+function pages(evidence: ReturnType<typeof evidenceAccess>, query: EvidenceQuery): EvidenceResponse[] {
+  const responses: EvidenceResponse[] = [];
+  let response = evidence.query(query);
+  do {
+    responses.push(response);
+    assert.ok(responses.length < 100, 'continuations must progress');
+    if (!response.page?.next) break;
+    response = evidence.query({ ...query, cursor: response.page.next } as EvidenceQuery);
+  } while (true);
+  return responses;
+}
+
+test('subject relationship delivery excludes unrelated project growth and preserves scoped support', async t => {
+  const sizes: Record<string, number>[] = [];
+  for (const unrelated of [2, 160]) {
+    const f = await fixture(t, unrelated);
+    const measured: Record<string, number> = {};
+    for (const kind of ['dependencies', 'dependents', 'membership', 'exports'] as const) {
+      const response = f.evidence.query({ kind, subject: f.module('entry') });
+      checkQualified(response, f.store);
+      assert.equal(response.page!.next, null);
+      assert.equal(response.page!.omitted.length, 0);
+      assert.ok(response.records.filter(item => item.kind === 'source-evidence').every(item => !item.path.includes('/unrelated/')));
+      assert.ok(response.evaluations!.length > 0);
+      measured[kind] = JSON.stringify(response).length;
+      if (kind === 'dependencies') {
+        assert.equal(response.records.filter(item => item.kind === 'claim' && item.information.type === 'dependency').length, 1);
+        assert.ok(response.records.some(item => item.kind === 'dependency-occurrence' && item.targetStatus === 'unresolved'));
+      }
+    }
+    sizes.push(measured);
+  }
+  for (const kind of Object.keys(sizes[0]!)) assert.ok(sizes[1]![kind]! < sizes[0]![kind]! + 2000, `${kind} grew with unrelated modules`);
+});
+
+test('bounded listings expose every module and group artifact with query-bound stable continuations', async t => {
+  const f = await fixture(t, 160);
+  let discoveries = 0;
+  const analysis: ModuleAnalysis = { ...f.opened.analysis, discover: (...args) => { discoveries++; return f.opened.analysis.discover(...args); } };
+  const evidence = evidenceAccess(f.store, analysis, f.opened.session);
+  const first = evidence.query({ kind: 'modules' });
+  assert.equal(first.status, 'partial');
+  assert.ok(first.page!.next);
+  const calls = discoveries;
+  const second = evidence.query({ kind: 'modules', cursor: first.page!.next! });
+  assert.equal(discoveries, calls, 'continuation must read the pinned selection without reevaluating');
+  assert.deepEqual(evidence.query({ kind: 'modules', cursor: first.page!.next! }), second);
+  assert.equal(evidence.query({ kind: 'organization', cursor: first.page!.next! }).status, 'unavailable');
+  assert.equal(evidence.query({ kind: 'modules', cursor: 'forged' }).status, 'unavailable');
+  assert.equal(f.evidence.query({ kind: 'modules', cursor: first.page!.next! }).status, 'unavailable');
+  const listed = pages(evidence, { kind: 'modules' });
+  for (const response of listed) checkQualified(response, f.store);
+  const ids = listed.flatMap(response => response.selected);
+  assert.equal(ids.length, new Set(ids).size);
+  assert.deepEqual(new Set(ids), new Set(f.evaluation.modules));
+  assert.equal(listed.at(-1)!.page!.end, f.evaluation.modules.length);
+  const groups = pages(evidence, { kind: 'organization' });
+  const artifacts = new Set<string>();
+  for (const listing of groups) {
+    checkQualified(listing, f.store);
+    for (const group of listing.selected) for (const details of pages(evidence, { kind: 'group', subject: group })) {
+      checkQualified(details, f.store);
+      for (const record of details.records) if (record.kind === 'repository-artifact') artifacts.add(record.artifact.path);
+    }
+  }
+  assert.ok(artifacts.has('feature/README.md'));
+  for (let index = 0; index < 160; index++) assert.ok(artifacts.has(`unrelated/item${index}.ts`));
+});
+
+test('scoped summaries preserve incomplete evaluation and separate placement qualification', async t => {
+  const f = await fixture(t, 2);
+  const analysis: ModuleAnalysis = { ...f.opened.analysis, discover: (...args) => ({ ...f.opened.analysis.discover(...args),
+    materialization: 'partial', reason: 'Controlled incomplete module population.' }) };
+  const evidence = evidenceAccess(f.store, analysis, f.opened.session);
+  const modules = evidence.query({ kind: 'modules' });
+  checkQualified(modules, f.store);
+  assert.equal(modules.status, 'partial');
+  assert.equal(modules.evaluations![0]!.materialization, 'partial');
+  assert.equal(modules.evaluations![0]!.reason, 'Controlled incomplete module population.');
+  assert.ok(modules.evaluations![0]!.qualification.length);
+  const groups = evidence.query({ kind: 'organization' });
+  checkQualified(groups, f.store);
+  assert.equal(groups.evaluations![0]!.materialization, 'full', 'layout coverage is independent');
+  assert.equal(groups.evaluations![0]!.placement!.materialization, 'partial');
+  assert.equal(groups.evaluations![0]!.placement!.reason, 'Controlled incomplete module population.');
+});
+
+test('an oversized qualified listing item is explicit and does not hide later items', async t => {
+  const f = await fixture(t, 2, true);
+  const responses = pages(f.evidence, { kind: 'exports', subject: f.module('leaf') });
+  for (const response of responses) checkQualified(response, f.store);
+  assert.ok(responses.some(response => response.page!.omitted.length > 0));
+  assert.ok(responses.filter(response => response.page!.omitted.length).every(response => response.status === 'partial'));
+  const claims = responses.flatMap(response => response.records).filter(item => item.kind === 'claim' && item.information.type === 'export');
+  assert.ok(claims.some(item => item.kind === 'claim' && item.information.type === 'export' && item.information.exportedName === 'extra'));
+  for (const omission of responses.flatMap(response => response.page!.omitted)) assert.ok(!responses.some(response => response.selected.includes(omission.id)));
+});
+
+test('realistic dialogue follows delegation and group documentation through bounded tools', async t => {
+  const f = await fixture(t, 160);
+  let middle: RecordId, leaf: RecordId, group: RecordId, artifact: RecordId;
+  const response = (value: unknown): EvidenceResponse => {
+    const result = value as EvidenceResponse;
+    checkQualified(result, f.store);
+    assert.ok(JSON.stringify(result).length < evidenceResponseCharacters);
+    assert.notEqual(result.status, 'unavailable');
+    return result;
+  };
+  const agent = new ScriptedInvestigator([
+    () => ({ kind: 'tools', requests: [{ kind: 'dependencies', subject: f.module('entry') }, { kind: 'membership', subject: f.module('entry') }, { kind: 'modules' }] }),
+    input => {
+      const dependency = response(input.responses[0]).records.find(item => item.kind === 'claim' && item.information.type === 'dependency');
+      assert.ok(dependency?.kind === 'claim' && dependency.information.type === 'dependency');
+      middle = dependency.information.child;
+      const placement = response(input.responses[1]).records.find(item => item.kind === 'claim' && item.information.type === 'module-placement');
+      assert.ok(placement?.kind === 'claim' && placement.information.type === 'module-placement');
+      group = placement.information.groups[0]!;
+      const modules = response(input.responses[2]);
+      return { kind: 'tools', requests: [{ kind: 'dependencies', subject: middle }, { kind: 'group', subject: group }, { kind: 'modules', cursor: modules.page!.next! }] };
+    },
+    input => {
+      const dependency = response(input.responses[0]).records.find(item => item.kind === 'claim' && item.information.type === 'dependency');
+      assert.ok(dependency?.kind === 'claim' && dependency.information.type === 'dependency');
+      leaf = dependency.information.child;
+      const documentation = response(input.responses[1]).records.find(item => item.kind === 'claim' && item.information.type === 'group-documentation');
+      assert.ok(documentation?.kind === 'claim' && documentation.information.type === 'group-documentation');
+      artifact = documentation.information.artifact;
+      assert.ok(response(input.responses[2]).page!.start > 0);
+      return { kind: 'tools', requests: [{ kind: 'source', subject: leaf }, { kind: 'source', subject: artifact }] };
+    },
+    input => {
+      const doc = response(input.responses[1]);
+      assert.ok(doc.records.some(item => item.kind === 'captured-content' && item.text.includes('delegates entry')));
+      return { kind: 'submit', result: { localId: 'root', prose: 'Entry delegates to middle and leaf.',
+        referent: { description: 'The entry feature.', subjects: [f.module('entry')] }, qualifications: ['Source interpretation.'],
+        evidence: [...response(input.responses[0]).selected, ...doc.selected], associations: [], children: [], corrections: [], inconsistencies: [] } };
+    },
+  ]);
+  const result = await investigate({ session: f.opened.session, request: { operation: 'functionality', subject: f.module('entry'), parameters: {} },
+    evidence: f.evidence, history: { get: () => undefined, provenance: () => undefined, correction: () => undefined, corrections: () => [] },
+    agent, usage: new InvestigationUsage(), check: async () => { assert.equal(await f.opened.changed(), false); } });
+  assert.equal(result.outcome.kind, 'accepted');
+  assert.ok(result.report.suppliedEvidence.some(id => f.store.get(id).kind === 'dependency-evaluation'), 'delivered summary is attributable without claiming full-record delivery');
+});
+
+
+test('missing provider expansions and dependency analysis remain unavailable, not empty complete results', async t => {
+  const f = await fixture(t, 2);
+  const analysis: ModuleAnalysis = { discover: (...args) => {
+    const { expansions: _expansions, dependencies: _dependencies, ...result } = f.opened.analysis.discover(...args);
+    return result;
+  } };
+  const evidence = evidenceAccess(f.store, analysis, f.opened.session);
+  for (const kind of ['exports', 'dependencies'] as const) {
+    const result = evidence.query({ kind, subject: f.module('entry') });
+    checkQualified(result, f.store);
+    assert.equal(result.status, 'unavailable');
+    assert.equal(result.selected.length, 0);
+    assert.match(result.limitations.join(' '), /did not supply/);
+  }
+});
+
+
+test('a merged module with extensive own support stays selectable through explicit inspect references', async t => {
+  const f = await fixture(t, 150, false, true);
+  const responses = pages(f.evidence, { kind: 'modules' });
+  const wide = f.module('wide');
+  assert.ok(wide);
+  const delivered = responses.find(response => response.selected.includes(wide))!;
+  assert.ok(delivered);
+  checkQualified(delivered, f.store);
+  assert.equal(delivered.status, 'partial');
+  assert.equal(delivered.page!.omitted.length, 0);
+  assert.ok(delivered.supportReferences!.length >= 150);
+  assert.ok(delivered.records.some(item => item.kind === 'claim-context' && item.evidence.length >= 150));
+  assert.ok(delivered.records.every(item => item.kind !== 'source-evidence'));
+  assert.deepEqual(new Set(responses.flatMap(response => response.selected)), new Set(f.evaluation.modules));
+  for (const reference of delivered.supportReferences!) {
+    const inspected = f.evidence.query({ kind: 'inspect', subject: reference.id });
+    assert.equal(inspected.status, 'available');
+    assert.ok(inspected.records.some(item => item.id === reference.id));
+  }
+  let withheld: RecordId | undefined;
+  const next = (input: AgentInput): AgentReply => {
+    const response = input.responses[0] as EvidenceResponse;
+    if (!response.supportReferences?.length) return { kind: 'tools', requests: [{ kind: 'modules', cursor: response.page!.next! }] };
+    withheld = response.supportReferences[0]!.id;
+    return { kind: 'submit', result: { localId: 'root', prose: 'Claims to use undelivered support.',
+      referent: { description: 'The wide module.', subjects: [wide] }, qualifications: ['Interpretation.'], evidence: [withheld],
+      associations: [], children: [], corrections: [], inconsistencies: [] } };
+  };
+  const execution = await investigate({ session: f.opened.session, request: { operation: 'functionality', subject: wide, parameters: {} },
+    evidence: f.evidence, history: { get: () => undefined, provenance: () => undefined, correction: () => undefined, corrections: () => [] },
+    agent: new ScriptedInvestigator([() => ({ kind: 'tools', requests: [{ kind: 'modules' }] }), next, next, next]),
+    usage: new InvestigationUsage(), check: async () => {} });
+  assert.ok(withheld);
+  assert.equal(execution.report.suppliedEvidence.includes(withheld), false);
+  assert.equal(execution.outcome.kind, 'investigation-failure');
+  if (execution.outcome.kind === 'investigation-failure') assert.equal(execution.outcome.reason, 'Evidence must identify supplied context in this session.');
+});
