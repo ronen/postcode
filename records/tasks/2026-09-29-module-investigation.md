@@ -15,6 +15,26 @@ to begin the substantive implementation task described by that plan
 
 The review is complete.  Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
 
+### Review resolution choices
+
+The human answered the following questions (question text is retained as context):
+
+> F1: I agree replacement associations are misattributed. May I make each correction explicitly identify the subjects whose accounts it corrects, while using correction.target solely for the corrected investigram and never inferring corrected subjects from the originating request?
+
+Use explicit corrected subjects (Recommended)
+
+> F2: How should unusual provider usage be handled without failing the investigation? I recommend retaining each distinct report with explicit anomalies, excluding unresolved figures from trusted totals.
+
+Retain reports with anomalies (Recommended)
+
+> F4 needs your ruling: should delivering a correction's reason or qualifications create a citation to its reporting investigram, since corrections are its accompanying content?
+
+Cite the reporting investigram (Recommended)
+
+> F7 and the unexplained execution-ownership test cancellations contain unresolved uncertainty. May I investigate them with bounded regression checks, preserving the current shared input-basis policy while testing README acquisition and comparing cancellation behavior against the pre-implementation baseline? I’ll report the evidence before proposing any policy change.
+
+Investigate and report (Recommended)
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
@@ -55,6 +75,24 @@ integrated review remain required. This checkpoint does not conclude the task or
 establish human acceptance of a review gate.
 
 ## Verification
+
+### Milestone 1 review follow-up
+
+The human-arranged [round-1 review](../reviews/module-investigation/2026-09-29-milestone-1-round-1-findings.md)
+was assessed under the recorded follow-up direction. The
+[disposition](../reviews/module-investigation/2026-09-29-milestone-1-disposition.md)
+addresses every finding and preserves the non-defect observations and residual
+uncertainties. F3, F5 and F6 were accepted and corrected in
+`1de634a29e0ba07a42091d0718f286462f77e3f4`. F1 and F2 are accepted issues with
+resolution choices awaiting human direction; F4 and F7 require the requested
+ruling/investigation direction. The reviewer-reported test cancellations remain
+unresolved and have not been dismissed. Milestone 2 has not begun.
+
+The correction passed type checking, build, all 31 investigation tests and
+`git diff --check`. No full-suite rerun or live inference was performed for these
+corrections. The milestone gate remains unaccepted pending human direction.
+
+### Original milestone 1 verification
 
 Milestone 1: `npm run check` passed; `npm test` passed 323 tests. Subsequent
 targeted checks covered the final local corrections: 62 investigation/store/input/
