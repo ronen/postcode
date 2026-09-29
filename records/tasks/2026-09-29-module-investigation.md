@@ -133,6 +133,31 @@ preserves the exact verification scope and limits. The updated disposition
 records every finding; the original review remains unchanged. Milestone 2 has
 not begun, and the human has not accepted the milestone-1 gate.
 
+### F7 acceptance and qualified diagnosis deferral
+
+The human accepted F7 with regression coverage and clarified that membership in
+the conservative shared acquisition basis does not establish compiler use or
+claim derivation. The architecture account now records that distinction and the
+conservative eligibility for retry of incomplete work, with completed work and
+earlier records preserved. Acquisition revisions by relevance remain a possible
+later optimization, outside this milestone.
+
+The human also deferred cancellation diagnosis subject to durable evidence and
+explicit qualification. The backlog now contains the reproduction commands,
+pre-implementation baseline, affected tests and captured results. The correction
+validation distinguishes the cancelled full-suite runs from successful isolated
+runs and explicitly remains qualified by the unresolved concern. A dated,
+human-requested addendum to the original handoff discloses that evidence for the
+reviewer's assessment of milestone acceptance. The original handoff text and
+review findings remain unchanged. F1–F7 now have resolved dispositions, with
+cancellation diagnosis deferred rather than explained or dismissed.
+
+These documentation changes were checked with `git diff --check` and local link
+target validation. No runtime code changed and no tests were rerun for this
+follow-up. Earlier test results retain their stated qualifications. The task
+remains active at milestone 1 pending the human's gate decision; milestone 2 has
+not begun.
+
 ### Original milestone 1 verification
 
 Milestone 1: `npm run check` passed; `npm test` passed 323 tests. Subsequent
