@@ -18,7 +18,7 @@ import type { InvestigationOptions } from '../src/lib/investigation/execute.js';
 import { InvestigationContext } from '../src/lib/investigation/context.js';
 import { acceptInvestigation, InvalidSubmission } from '../src/lib/investigation/acceptance.js';
 import { InvestigationUsage } from '../src/lib/investigation/usage.js';
-import type { AcceptedInvestigation, AgentReply, AttemptReport, InvestigationHistory, SubmittedInvestigram } from '../src/lib/investigation/contracts.js';
+import type { AcceptedInvestigation, AgentReply, AttemptReport, InvestigationHistory, ReportedUsage, SubmittedInvestigram } from '../src/lib/investigation/contracts.js';
 import type { RecordId } from '../src/lib/records.js';
 
 const emptyHistory: InvestigationHistory = { get: () => undefined, provenance: () => undefined, correction: () => undefined, corrections: () => [] };
@@ -157,12 +157,12 @@ test('full result accepts nested corrections, conflicts and inconsistencies with
   const f = await fixture(t);
   const initial = await accepted({ ...f.base, agent: new ScriptedInvestigator([() => ({ kind: 'submit', result: draft('old') })]) });
   const saved = JSON.stringify(initial);
-  const replacement = { ...draft('replacement'), corrections: [{ target: initial.root, reason: 'Alternative correction of the same earlier account.',
+  const replacement = { ...draft('replacement'), corrections: [{ target: initial.root, correctedSubjects: [f.module('entry')], reason: 'Alternative correction of the same earlier account.',
     qualifications: ['Unresolved alternative.'], evidence: [initial.root], replacement: draft('alternative') }] };
   const result = await accepted({ ...f.base, history: history(initial), request: { operation: 'examination', subject: initial.root, parameters: {} },
     agent: new ScriptedInvestigator([input => {
       assert.ok('accounts' in input.responses[0]!);
-      return { kind: 'submit', result: { ...draft(), children: [draft('child')], corrections: [{ target: initial.root,
+      return { kind: 'submit', result: { ...draft(), children: [draft('child')], corrections: [{ target: initial.root, correctedSubjects: [f.module('entry')],
         reason: 'Earlier account omitted delegation.', qualifications: ['Source interpretation.'], evidence: [initial.root], replacement }],
         inconsistencies: [{ targets: [initial.root], reason: 'Still unresolved.', qualifications: ['No certainty.'], evidence: [initial.root] }] } };
     }]) });
@@ -250,7 +250,7 @@ test('correction cannot target the identity assigned to an investigram in its ow
   const context = { session: f.base.session, attempt, request: f.base.request, originatingModule: f.base.request.subject,
     instructions: 'Test acceptance directly.', agent: new ScriptedInvestigator([]).identity,
     exposure: new InvestigationContext(emptyHistory, f.base.session), suppliedEvidence: [], lookup: f.evidence.lookup };
-  const result = { ...draft(), corrections: [{ target, reason: 'Self correction is invalid.', qualifications: ['Interpretation.'], evidence: [], replacement: draft('replacement') }] };
+  const result = { ...draft(), corrections: [{ target, correctedSubjects: [f.module('entry')], reason: 'Self correction is invalid.', qualifications: ['Interpretation.'], evidence: [], replacement: draft('replacement') }] };
   assert.throws(() => acceptInvestigation(result, context), error => error instanceof InvalidSubmission
     && error.message === 'Correction target must predate this result and have complete supplied context.');
 });
@@ -357,7 +357,7 @@ test('input changes during dialogue invalidate before acceptance; unexpected def
 test('only delivered complete target context permits corrections, including separately requested parts', async t => {
   const f = await fixture(t);
   const first = await accepted({ ...f.base, agent: new ScriptedInvestigator([() => ({ kind: 'submit', result: draft('earlier') })]) });
-  const correction = { ...draft(), corrections: [{ target: first.root, reason: 'Earlier wording too broad.',
+  const correction = { ...draft(), corrections: [{ target: first.root, correctedSubjects: [f.module('entry')], reason: 'Earlier wording too broad.',
     qualifications: ['Interpretation only.'], evidence: [first.root], replacement: draft('replacement') }] };
   for (const complete of [false, true]) {
     const agent = new ScriptedInvestigator([
@@ -385,11 +385,11 @@ test('corrected initial context includes chains and competing accounts, with omi
   const initial = await accepted({ ...f.base, agent: new ScriptedInvestigator([() => ({ kind: 'submit', result: draft() })]) });
   const revised = await accepted({ ...f.base, history: history(initial), request: { operation: 'examination', subject: initial.root, parameters: {} },
     agent: new ScriptedInvestigator([() => ({ kind: 'submit', result: { ...draft(), corrections: ['one', 'two'].map(localId => ({
-      target: initial.root, reason: 'Alternative account.', qualifications: ['Unresolved alternative.'], evidence: [], replacement: { ...draft(localId), children: [draft(`${localId}-child`)] },
+      target: initial.root, correctedSubjects: [f.module('entry')], reason: 'Alternative account.', qualifications: ['Unresolved alternative.'], evidence: [], replacement: { ...draft(localId), children: [draft(`${localId}-child`)] },
     })) } })]) });
   const replacement = revised.corrections[0]!.replacement;
   const third = await accepted({ ...f.base, history: history(initial, revised), request: { operation: 'examination', subject: replacement, parameters: {} },
-    agent: new ScriptedInvestigator([() => ({ kind: 'submit', result: { ...draft(), corrections: [{ target: replacement, reason: 'Further correction.',
+    agent: new ScriptedInvestigator([() => ({ kind: 'submit', result: { ...draft(), corrections: [{ target: replacement, correctedSubjects: [f.module('entry')], reason: 'Further correction.',
       qualifications: ['Interpretive.'], evidence: [], replacement: draft('third') }] } })]) });
   const h = history(initial, revised, third);
   const bounded = new InvestigationContext(h, f.base.session);
@@ -408,7 +408,7 @@ test('corrected initial context includes chains and competing accounts, with omi
       return { kind: 'submit', result: draft() };
     }]) });
   assert.equal(result.provenance.completeCorrections.length, 3);
-  assert.equal(result.provenance.citations.length, 4);
+  assert.deepEqual(new Set(result.provenance.citations), new Set([initial.root, ...revised.corrections.map(item => item.replacement), third.corrections[0]!.replacement, revised.root, third.root]));
   const reporter = new InvestigationContext(h, f.base.session).prepare(revised.root);
   assert.ok(reporter.corrections.some(item => item.reporter === revised.root), 'accompanying corrections are retrievable from their reporting account');
 });
@@ -445,15 +445,87 @@ test('malformed response and unsubmitted trees fail; post-submission validity ch
   assert.equal(result.outcome.kind, 'accepted');
 });
 
-test('usage preserves category relationships, deduplicates identical reports and rejects inconsistent accounting', () => {
+test('usage retains distinct reports and anomalies without selecting uncertain totals', () => {
   const usage = new InvestigationUsage();
   const agent = new ScriptedInvestigator([]);
   const report = usage.start('attempt' as RecordId, 1, agent.identity);
   report(syntheticUsage);
   report(syntheticUsage);
-  assert.equal(usage.calls().length, 1);
+  assert.equal(usage.calls()[0]!.reports.length, 1);
+  assert.deepEqual(usage.calls()[0]!.reported, syntheticUsage);
   assert.throws(() => usage.start('attempt' as RecordId, 1, agent.identity), /Duplicate/);
-  assert.throws(() => report({ source: 'synthetic', categories: [] }), /Conflicting/);
-  assert.throws(() => report({ source: 'synthetic', categories: [{ category: 'reasoning', unit: 'tokens', value: 4, includedIn: 'output' }] }), /relationships/);
-  assert.equal(usage.calls()[0]!.reported!.categories.find(item => item.category === 'reasoning')!.includedIn, 'output');
+  report({ source: 'provider', categories: [] });
+  assert.equal(usage.calls()[0]!.reports.length, 2);
+  assert.equal(usage.calls()[0]!.reported, null);
+  assert.match(usage.calls()[0]!.anomalies.join(' '), /Differing reports/);
+});
+
+const unusualUsage: readonly [string, ReportedUsage][] = [
+  ['subset exceeds', { source: 'provider', categories: [
+    { category: 'output', unit: 'tokens', value: 2, includedIn: null },
+    { category: 'reasoning', unit: 'tokens', value: 4, includedIn: 'output' }] }],
+  ['parent category', { source: 'provider', categories: [{ category: 'reasoning', unit: 'tokens', value: 4, includedIn: 'output' }] }],
+  ['Duplicate', { source: 'provider', categories: [
+    { category: 'output', unit: 'tokens', value: 2, includedIn: null },
+    { category: 'output', unit: 'tokens', value: 3, includedIn: null }] }],
+  ['Cyclic', { source: 'provider', categories: [
+    { category: 'output', unit: 'tokens', value: 2, includedIn: 'reasoning' },
+    { category: 'reasoning', unit: 'tokens', value: 2, includedIn: 'output' }] }],
+];
+test('provider accounting anomalies preserve both accepted and failed investigation outcomes', async t => {
+  const f = await fixture(t);
+  for (const [diagnostic, report] of unusualUsage) for (const submit of [true, false]) {
+    const result = await investigate({ ...f.base, agent: new ScriptedInvestigator([(_input, _signal, usage) => {
+      usage(report);
+      return submit ? { kind: 'submit', result: draft() } : { kind: 'refused' };
+    }]) });
+    assert.equal(result.outcome.kind, submit ? 'accepted' : 'investigation-failure');
+    const call = result.report.usage[0]!;
+    assert.equal(call.reported, null);
+    assert.deepEqual(call.reports[0]!.reported, report);
+    assert.ok(call.anomalies.some(item => item.includes(diagnostic)));
+  }
+});
+
+test('corrections associate explicit program subjects through follow-ups and subordinate accounts', async t => {
+  const f = await fixture(t);
+  const a = await accepted({ ...f.base, agent: new ScriptedInvestigator([() => ({ kind: 'submit', result: draft() })]) });
+  const b = await accepted({ ...f.base, history: history(a), request: { operation: 'clarification', subject: a.root, parameters: {} },
+    agent: new ScriptedInvestigator([() => ({ kind: 'submit', result: { ...draft(), children: [{ ...draft('leaf'),
+      referent: { description: 'Delegated leaf behavior.', subjects: [f.module('leaf')] } }] } })]) });
+  const child = b.investigrams.find(item => item.id !== b.root)!;
+  for (const target of [b.root, child.id]) {
+    const subject = target === b.root ? f.module('entry') : f.module('leaf');
+    const c = await accepted({ ...f.base, history: history(a, b), request: { operation: 'examination', subject: target, parameters: {} },
+      agent: new ScriptedInvestigator([() => ({ kind: 'submit', result: { ...draft(), corrections: [{ target,
+        correctedSubjects: [subject], reason: 'Correct this account only.', qualifications: ['Interpretation.'], evidence: [], replacement: draft('replacement') }] } })]) });
+    assert.deepEqual(c.corrections[0]!.correctedSubjects, [subject]);
+    const replacement = c.investigrams.find(item => item.id === c.corrections[0]!.replacement)!;
+    assert.deepEqual(replacement.associations.map(item => [item.role, item.subject]), [['corrected-subject', subject]]);
+    assert.deepEqual(c.investigrams.find(item => item.id === c.root)!.associations.map(item => [item.role, item.subject]), [['investigation-subject', target]]);
+  }
+  for (const subjects of [[], [a.root], [f.module('entry'), f.module('entry')]]) {
+    const result = await investigate({ ...f.base, history: history(a), request: { operation: 'examination', subject: a.root, parameters: {} },
+      agent: new ScriptedInvestigator([() => ({ kind: 'submit', result: { ...draft(), corrections: [{ target: a.root,
+        correctedSubjects: subjects, reason: 'Invalid subjects.', qualifications: ['Interpretation.'], evidence: [], replacement: draft('replacement') }] } })]) });
+    assert.equal(result.outcome.kind, 'investigation-failure');
+    if (result.outcome.kind === 'investigation-failure') assert.match(result.outcome.reason, /distinct program subjects/);
+  }
+});
+
+test('correction reasons cite their reporter without granting complete account context', async t => {
+  const f = await fixture(t);
+  const a = await accepted({ ...f.base, agent: new ScriptedInvestigator([() => ({ kind: 'submit', result: draft() })]) });
+  const b = await accepted({ ...f.base, history: history(a), request: { operation: 'examination', subject: a.root, parameters: {} },
+    agent: new ScriptedInvestigator([() => ({ kind: 'submit', result: { ...draft(), corrections: [{ target: a.root,
+      correctedSubjects: [f.module('entry')], reason: 'Earlier account is too broad.', qualifications: ['Interpretation.'], evidence: [], replacement: draft('replacement') }] } })]) });
+  const h = history(a, b);
+  const omitted = new InvestigationContext(h, f.base.session);
+  omitted.supplied(omitted.prepare(a.root, [], undefined, { accounts: 24, characters: 0 }));
+  assert.deepEqual(omitted.citations, []);
+  const delivered = new InvestigationContext(h, f.base.session);
+  delivered.supplied(delivered.prepare(a.root, []));
+  assert.deepEqual(delivered.citations, [b.root]);
+  assert.deepEqual(delivered.completeTargets, []);
+  assert.deepEqual(delivered.completeCorrections, []);
 });

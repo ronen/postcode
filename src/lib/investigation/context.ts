@@ -79,7 +79,12 @@ export class InvestigationContext {
       for (const part of account.completeParts) parts.add(part);
       this.#parts.set(account.id, parts);
     }
-    for (const correction of delivery.corrections) this.#corrections.set(correction.id, correction);
+    for (const correction of delivery.corrections) {
+      this.#corrections.set(correction.id, correction);
+      // Reasons and qualifications are substantive accompanying content of the
+      // reporter. Exposure does not imply delivery of that account's own fields.
+      if (!this.#parts.has(correction.reporter)) this.#parts.set(correction.reporter, new Set());
+    }
   }
   get citations(): readonly RecordId[] { return [...this.#parts.keys()]; }
   get completeTargets(): readonly RecordId[] { return [...this.#parts].filter(([, parts]) => allParts.every(part => parts.has(part))).map(([id]) => id); }

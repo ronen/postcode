@@ -29,7 +29,8 @@ export interface SubmittedInvestigram extends QualifiedSupport {
   readonly referent: Referent;
   readonly associations: readonly Omit<Association, 'role'>[];
   readonly children: readonly SubmittedInvestigram[];
-  readonly corrections: readonly (QualifiedSupport & { readonly target: RecordId; readonly reason: string; readonly replacement: SubmittedInvestigram })[];
+  readonly corrections: readonly (QualifiedSupport & { readonly target: RecordId; readonly correctedSubjects: readonly RecordId[];
+    readonly reason: string; readonly replacement: SubmittedInvestigram })[];
   readonly inconsistencies: readonly Inconsistency[];
 }
 
@@ -49,6 +50,7 @@ export interface Correction extends RecordContext, QualifiedSupport {
   readonly kind: 'investigram-correction';
   readonly reporter: RecordId;
   readonly target: RecordId;
+  readonly correctedSubjects: readonly RecordId[];
   readonly replacement: RecordId;
   readonly reason: string;
   readonly provenance: RecordId;
@@ -130,7 +132,12 @@ export interface CallUsage {
   readonly attempt: RecordId;
   readonly call: number;
   readonly agent: AgentIdentity;
+  /** Sole unambiguous report; null for absent or anomalous accounting. */
   readonly reported: ReportedUsage | null;
+  /** Every distinct provider report, including anomalous or conflicting updates. */
+  readonly reports: readonly { readonly reported: ReportedUsage; readonly anomalies: readonly string[] }[];
+  /** Nonempty means reported is null and this call is excluded from trusted totals. */
+  readonly anomalies: readonly string[];
 }
 export type AgentFailure = { readonly kind: 'communication-failure' | 'configuration-unavailable'; readonly code: string; readonly diagnostic: string };
 export type AgentReply =

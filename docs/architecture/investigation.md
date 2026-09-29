@@ -27,7 +27,13 @@ resolve through captured repository evidence. Multiple module file mappings are
 preserved. The TypeScript provider reads through the existing first-observed input
 host, using the shared generated-output policy and registering new content with
 the existing validity probes. There is no investigator filesystem or path-reading
-interface. Opaque artifacts, unresolved links, excluded targets, unavailable text
+interface. Artifact reads also advance the shared observed-input basis: subsequent
+partial mechanical work can retry once on the new basis, and its input attribution
+includes the documentation read. Completed work and earlier input snapshots remain
+unchanged. This is the current shared-host behavior; the milestone-1 review
+disposition records the outstanding human assessment of that consequence.
+
+Opaque artifacts, unresolved links, excluded targets, unavailable text
 and providers without acquisition support return qualified unavailability.
 
 Immutable content records retain full mapped files, their input basis, digest and
@@ -100,8 +106,10 @@ or mechanical citations. Each correction constructs a disjoint replacement tree;
 recursive corrections and conflicting alternatives are valid. Unresolved
 inconsistencies retain affected references and qualifications. Associations
 distinguish explicit description, the investigation subject and corrected subjects.
-Replacement associations preserve the corrected account's originating request
-subject without copying every additional association from the original.
+Each correction explicitly names the program subjects whose accounts it corrects;
+its target separately identifies the corrected investigram. Replacement roots
+receive those qualified corrected-subject associations. They are never inferred
+from the original request or copied from all earlier associations.
 
 PostCode assigns identities and freezes the complete accepted unit, including
 operation provenance and every replacement. Acceptance does not insert
@@ -124,7 +132,9 @@ metadata. Prose, referent and qualifications can be requested separately; excerp
 do not establish complete prose delivery.
 
 Only dispatched substantive context enters the conservative citation index.
-Identifiers alone and empty or whitespace-only prose excerpts do not.
+Identifiers alone and empty or whitespace-only prose excerpts do not. Delivered
+correction reasons and qualifications cite their reporting investigram as
+substantive accompanying content, without making its own account fields complete.
 Complete target eligibility accumulates across exchanges; complete correction
 context requires the target and replacement's own prose,
 referent and qualifications plus the correction's reasons and qualifications.
@@ -136,6 +146,10 @@ selection remains milestone 5 work.
 Usage is held by an independently owned attempt/call ledger. Calls are registered
 before dispatch; absent reports remain explicitly unknown. Identical repeated
 reports do not double count, and category subset relationships remain explicit.
+Every distinct report is preserved with accounting anomalies. Missing parents,
+cycles, duplicate categories, impossible amounts and differing updates do not
+fail the investigation. Calls with unresolved accounting have no trusted report;
+consumers must not silently sum or select their uncertain values.
 Synthetic test usage is distinguished from provider usage. A final report callback
 runs on success, failure, interruption, invalidation or defect and retains received
 usage, instructions, termination classification and supplied-context identities.

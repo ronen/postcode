@@ -66,8 +66,12 @@ export function acceptInvestigation(value: unknown, context: AcceptanceContext):
       }),
       children: array(item.children).map(child => parse(child, depth + 1)),
       corrections: array(item.corrections).map(value => {
-        const correction = object(value, ['target', 'reason', 'qualifications', 'evidence', 'replacement']);
-        return { target: reference(correction.target, 'target'), reason: text(correction.reason), ...support(correction), replacement: parse(correction.replacement, depth + 1) };
+        const correction = object(value, ['target', 'correctedSubjects', 'reason', 'qualifications', 'evidence', 'replacement']);
+        const target = reference(correction.target, 'target');
+        const correctedSubjects = array(correction.correctedSubjects).map(id => reference(id, 'subject'));
+        if (!correctedSubjects.length || new Set(correctedSubjects).size !== correctedSubjects.length
+          || correctedSubjects.some(id => exposure.history.get(id) || !context.lookup(id))) return invalid('Corrected subjects must explicitly identify distinct program subjects, not investigrams.');
+        return { target, correctedSubjects, reason: text(correction.reason), ...support(correction), replacement: parse(correction.replacement, depth + 1) };
       }),
       inconsistencies: array(item.inconsistencies).map(value => {
         const inconsistency = object(value, ['targets', 'reason', 'qualifications', 'evidence']);
@@ -86,28 +90,26 @@ export function acceptInvestigation(value: unknown, context: AcceptanceContext):
   };
   const investigrams: Investigram[] = [], corrections: Correction[] = [];
   const idFor = (item: SubmittedInvestigram) => recordId(session, 'investigram', [methods.investigation, identityReference(session, attempt), item.localId]);
-  const build = (item: SubmittedInvestigram, requiredAssociations: readonly RecordId[] = [], role: Association['role'] = 'corrected-subject'): RecordId => {
+  const build = (item: SubmittedInvestigram, requiredAssociations: readonly Association[] = []): RecordId => {
     const id = idFor(item);
     const ownCorrections = item.corrections.map((correction, index) => {
       const correctionId = recordId(session, 'investigram-correction', [identityReference(session, id), index]);
-      const target = exposure.history.get(correction.target)!;
-      const targetOrigin = exposure.history.provenance(target.provenance);
-      if (!targetOrigin) throw new Error('Missing correction target provenance');
-      const replacement = build(correction.replacement, [correction.target, targetOrigin.request.subject]);
+      const replacement = build(correction.replacement, correction.correctedSubjects.map(subject => ({ subject,
+        role: 'corrected-subject', qualifications: correction.qualifications, evidence: correction.evidence })));
       corrections.push({ kind: 'investigram-correction', id: correctionId, session, method: methods.investigation,
-        reporter: id, target: correction.target, replacement, reason: correction.reason,
+        reporter: id, target: correction.target, correctedSubjects: correction.correctedSubjects, replacement, reason: correction.reason,
         qualifications: correction.qualifications, evidence: correction.evidence, provenance: attempt });
       return correctionId;
     });
     const associations: Association[] = item.associations.map(item => ({ ...item, role: 'described' }));
-    for (const subject of new Set(requiredAssociations)) associations.push({ subject, role,
-      qualifications: ['Investigation selected this subject or explicitly corrected its account; this association does not establish interpretive correctness.'], evidence: [] });
+    associations.push(...requiredAssociations);
     investigrams.push({ kind: 'investigram', id, session, method: methods.investigation, status: 'interpretation',
       prose: item.prose, referent: item.referent, qualifications: item.qualifications, evidence: item.evidence,
       originatingModule: context.originatingModule, associations, children: item.children.map(child => build(child)),
       corrections: ownCorrections, inconsistencies: item.inconsistencies, provenance: attempt });
     return id;
   };
-  const root = build(tree, [request.subject], 'investigation-subject');
+  const root = build(tree, [{ subject: request.subject, role: 'investigation-subject',
+    qualifications: ['Investigation selected this subject; this association does not establish interpretive correctness.'], evidence: [] }]);
   return freezeOwned(structuredClone({ root, investigrams, corrections, provenance }));
 }
