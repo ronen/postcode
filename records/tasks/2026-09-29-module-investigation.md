@@ -51,6 +51,10 @@ Re F7, I’ll accept your recommended disposition, with one clarification: this 
   - Explicit disclosure in the review handoff, so the reviewer can assess whether the remaining uncertainty affects milestone acceptance.
   Please describe validation as qualified by this unresolved concern, rather than treating isolated passes as a fully passing suite.
 
+### Round 2 review disposition direction — 2026-09-29
+
+The next round of review is complete.  As usual:  Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
