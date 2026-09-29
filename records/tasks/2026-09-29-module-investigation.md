@@ -99,6 +99,12 @@ The review round is complete:  As usual:  Assess and record a disposition for ev
 
 Defer through milestone 2; diagnose before live adapter (Recommended)
 
+### Milestone 2 F1 closure-boundary usage approval — 2026-09-29
+
+Regarding F1, I approve the focused correction and regression.&#x20;
+Using the parent’s authoritative ledger to finalize CLI usage is consistent with the existing design. Finalization should use a snapshot taken at the dialogue’s closure boundary, so views and observations agree on which reports were accepted.
+The regression should deliver usage specifically inside that closing window and verify consistent totals in the command view, subsequent `usage` view, and observation—without double-counting. Reports arriving after closure should retain the existing ignored/unknown treatment.
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
