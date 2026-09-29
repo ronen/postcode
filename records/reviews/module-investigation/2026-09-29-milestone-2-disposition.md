@@ -156,3 +156,14 @@ tests were required or rerun. The independent 369-test result remains the eviden
 for the unchanged runtime implementation.
 The authored findings and handoff remain unchanged. The task remains active;
 milestone 3 has not begun.
+
+## Human milestone-2 acceptance — 2026-09-30
+
+The human explicitly accepted milestone 2 and directed continuation. This closes
+the milestone-2 review gate after three rounds, the recorded corrections and the
+approved observation dispositions. Runtime target `b408c414b041f032a8954ca450c9cbe30dded139`
+was independently cleared in round 3; subsequent source changes only added the
+approved maintenance comments. The outside-sourceDetail question remains an
+unassessed backlog follow-up. The cancellation qualification is preserved, with
+diagnosis required before milestone-3 live, cost-bearing adapter work. The overall
+module-investigation task remains active and proceeds to milestone 3.
