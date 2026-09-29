@@ -234,3 +234,34 @@ corrections; targeted final checks passed on the committed implementation.
 The [validation record](../validation/module-investigation/2026-09-29-milestone-1.md)
 records coverage, chronology, reproduction and limits. These are implementing-agent
 checks, not independent review or evidence of live interpretive usefulness.
+
+### Round 3 corrections complete
+
+The human-approved R3-F1 and R3-F2 recommendations are implemented in
+`aef0878b17e1d31ec079edecd63a8ada469f56f8`. Module listings retain naming claims
+and full own qualification while delivering source support by inspectable
+reference. Attempt reports and accepted provenance distinguish summaries from
+fully supplied records, preserve both exposure forms when both were delivered,
+and reject citations to uninspected references or withheld summaries. The
+architecture and investigator instructions describe these semantics; the
+investigation method advanced to version 5.
+
+Type checking and build passed. All 342 tests passed with zero failures,
+cancellations or skips; the final focused evidence suite passed all 10 tests.
+The new 263-module regression completes a guarded inventory dialogue. On the
+real repository, all 258 modules fit 21 pages; listing, one source inspection and
+submission complete in 23 exchanges and 1,141,713 serialized units under the
+unchanged limits. The complete collection sweep omitted no entries and returned
+no unavailable collection responses. The
+[round-3 validation](../validation/module-investigation/2026-09-29-milestone-1-round-3-corrections.md)
+preserves reproduction, exact results, the corrected initial test assumption
+and limits. Whitespace and local documentation links were checked.
+
+Every finding has a disposition. The reviewer considers the third round
+sufficient once its low-severity findings are corrected or dispositioned, without
+a mandatory further independent round. Both are now corrected. The original
+handoff and authored findings remain unchanged. Validation remains qualified by
+the unresolved, explicitly deferred execution-ownership cancellation concern;
+this passing run does not diagnose it. No hosted/live validation or milestone-2
+implementation was undertaken. The task remains active at milestone 1 awaiting
+the human's gate decision.
