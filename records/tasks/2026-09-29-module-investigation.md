@@ -337,3 +337,35 @@ behavior or interpretive usefulness.
 The overall task remains active at the milestone-2 review gate. The human arranges
 independent review and determines acceptance before milestone 3. No milestone-3
 implementation or live assessment has begun.
+
+### Milestone 2 round 1 review corrections and pending F1 choice
+
+The [round-1 disposition](../reviews/module-investigation/2026-09-29-milestone-2-disposition.md)
+assesses every finding and retains the non-defect observations and residual limits.
+`df2bdb07b8b0b3c7149a11e36a9bfbbd44c8b4e0` corrects F2–F4: unsupported
+investigram/lens selection, per-attempt abnormal human usage reporting, and explicit
+corrected-subject/evidence attribution. It also corrects F1's demonstrated
+post-reply usage loss by retaining worker usage callbacks until dialogue close.
+Architecture and CLI documentation reflect those changes. The original handoff
+and reviewer-authored findings remain unchanged.
+
+F1 remains open because code inspection identified a remaining closing-window
+race between the worker's final snapshot and parent dialogue close. Human direction
+was requested on using the authoritative parent usage snapshot to finalize CLI
+views, with a regression for that window. That additional change has not been made.
+
+Type checking, build and all 23 focused integration tests passed. The stationary
+full-suite run passed all 365 tests with zero failures/cancellations, about 112.56
+seconds. An earlier run, during which review records were added, passed 363 and
+failed two repository-backed session checks with input invalidation; it had zero
+cancellations. The [correction validation](../validation/module-investigation/2026-09-29-milestone-2-round-1-corrections.md)
+preserves both results and the concurrent-edit explanation as an inference.
+Whitespace and local documentation link checks passed.
+
+The human renewed the execution-ownership cancellation deferral through milestone
+2 and requires diagnosis before milestone 3's live, cost-bearing adapter work.
+The backlog and disposition record that prerequisite. Validation remains qualified;
+the passing complete run does not diagnose the earlier cancellations. No live
+adapter, credentials, inference or cancellation-policy change was introduced.
+The task remains active at the milestone-2 gate, awaiting the F1 ruling and human
+acceptance; milestone 3 has not begun.
