@@ -69,6 +69,16 @@ Investigate the unresolved cause without treating isolated passes as a fully
 passing suite or assuming a load-related explanation. This entry does not
 authorize a cancellation-policy change.
 
+Milestone-2 integration development reproduced the same 13 cancellations in a
+359-test full run: 346 passed, zero failed, 13 cancelled, approximately 128.3
+seconds. The first execution-ownership test reported the same pending-promise/
+event-loop error after approximately 349.6 ms; the other 12 were cancelled by the
+parent. An earlier 357-test development run passed all tests. The
+[milestone-2 validation](../records/validation/module-investigation/2026-09-29-milestone-2.md)
+records the later 360/360 complete run and the final 13/13 isolated ownership run
+separately, alongside the final focused integration checks. This is another
+observation of the deferred concern, not a diagnosis or a change in its disposition.
+
 ## Consider grouping investigation operations in one dialogue
 
 Added: 2026-09-29
