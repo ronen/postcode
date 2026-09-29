@@ -5,7 +5,7 @@ Date: 2026-09-29
 Task: [Module investigation](../../tasks/2026-09-29-module-investigation.md)
 Handoff: [Milestone 1](2026-09-29-milestone-1-handoff.md)
 Findings: [Round 1](2026-09-29-milestone-1-round-1-findings.md), [Round 2](2026-09-29-milestone-1-round-2-findings.md)
-State: round-2 findings accepted; resolution choices await human direction; milestone gate not satisfied
+State: round-2 findings corrected under human-approved contracts; further independent review required; milestone gate not satisfied
 
 ## Findings and dispositions
 
@@ -104,10 +104,11 @@ without expanding this milestone.
 
 ### R2-F1 — evaluation-wide evidence in subject queries
 
-**Accepted; high priority, milestone gate remains blocked by this defect.**
-The evidence boundary seeds per-subject responses with entire evaluation records,
-all evaluation contexts and all dependency coverage, then traverses context
-evidence. The size bound correctly qualifies oversized delivery, but cannot make
+**Accepted and corrected** in `212fa9e82f58d41f3de6829ad84285e40305930b`;
+verification is complete and further independent review remains required.
+At the reviewed target, the evidence boundary seeded per-subject responses with
+entire evaluation records, all evaluation contexts and all dependency coverage,
+then traversed context evidence. The size bound correctly qualifies oversized delivery, but cannot make
 these already-narrow subject requests usable. The round-1 F3 correction addressed
 termination behavior without addressing this underlying response-scope defect.
 The round-2 finding is accepted without reducing its severity or deferring it.
@@ -133,35 +134,52 @@ The probe confirms this repository instance, not universal size thresholds for
 other repositories or every subject. The review's broader structural conclusion
 is supported by the response construction itself.
 
-The human has been asked to approve the proposed contract: selected claims with
-their own context/evidence and qualification, evaluation-level identity plus
-qualification summaries rather than evaluation-wide embedding, and bounded
-navigation through module/group/artifact listings. The correction must retain
-per-claim method, scope, evidence and coverage; show omissions and continuation
-explicitly; and make delegation and documentation access usable at realistic
-scale. Population listings and intrinsically large individual evidence must
-remain honestly qualified. No new response contract has been selected or
-implemented pending the human's direction.
+The human approved scoped, navigable evidence before implementation. Selected
+claims retain their own contexts, method and evidence. Evaluation-level identity,
+state, reason, basis and global qualification are delivered as separate summaries;
+repository evidence is summarized without its complete artifact census. Global
+diagnostic code/category counts preserve repeated diagnostic information without
+repeating the full population. Repository layout and module-placement state remain
+distinct. Returned claims and contexts are not rewritten or weakened.
 
-The reviewer's request for a further independent round is accepted. Once the
-approved correction is implemented and verified, supply its exact target and
-qualification/scale evidence under this existing assignment. Do not proceed to
-milestone 2 or treat the round-1 gate recommendation as sufficient.
+Collections now provide stable, query-bound continuation pages. Organization
+lists groups; group navigation exposes direct members, containment, artifacts and
+documentation, with source acquisition by artifact reference. Outgoing dependency
+queries also retain owner-specific non-edge requests and coverage. Incoming
+queries explicitly qualify what unresolved/unattributed requests cannot establish.
+Missing provider analysis is unavailable or partial rather than empty complete
+results. Large own-source support can be separately inspected through explicit
+references while keeping the qualified subject selectable; those references
+alone are not supplied evidence. An intrinsically oversized item is explicitly
+omitted and does not prevent traversal to later items. Final response and total
+dialogue guards remain in place.
+
+Regressions compare five- and 163-module fixtures, check every returned claim's
+qualification against the store, traverse listings and documentation, distinguish
+incomplete/missing analysis, exercise a merged module with 150 declarations and
+reject citations to withheld support. An actual 163-module dialogue follows
+multiple delegation layers and acquires group documentation. The real-repository
+sweep covers all 258 modules, 93 project modules, 79 groups and their artifact
+listings; collection pages remain bounded with no omitted entries or unavailable
+responses in that measured repository. The
+[round-2 correction validation](../../validation/module-investigation/2026-09-29-milestone-1-round-2-corrections.md)
+records exact measurements, reproduction, development findings and limits.
+
+The reviewer's request for a further independent round is accepted. The exact
+correction target above and its qualification/scale evidence are ready under the
+existing handoff. The human arranges that round; the round-1 recommendation does
+not substitute for review of this changed evidence contract.
 
 ### R2-F2 — evidence records accepted as corrected subjects
 
-**Accepted; precise subject-kind contract awaits human direction.** The existing
-`subject` reference rule admits claims, source evidence and captured content, and
-the correction-specific check only excludes investigrams, missing records and
-duplicate/empty lists. Thus the instructions' “program subjects” wording and the
-accepted association model are not enforced by a dedicated subject-kind rule.
-
-The human has been asked to restrict `correctedSubjects` to `module`, `symbol`,
-`group` and `repository-artifact`, with evidence records rejected. That proposal
-preserves evidence attribution separately from described-subject associations.
-The reviewer offers narrowing or documenting a broader meaning; the implementing
-agent has not silently selected between those semantic alternatives. No code or
-instructions have been changed while this choice is pending.
+**Accepted and corrected** in `212fa9e82f58d41f3de6829ad84285e40305930b`.
+The human approved restricting `correctedSubjects` to `module`, `symbol`, `group`
+and `repository-artifact`. A dedicated correction check now enforces those kinds,
+separately from the broader referent/association reference rule. Claims, source
+evidence, content captures and investigrams cannot be corrected subjects.
+Instructions and the architecture account name the permitted kinds. Tests cover
+all four accepted kinds and specific rejection of the three evidence-record kinds
+identified by the reviewer. Evidence attribution remains separate.
 
 ### Round 2 observations and residual limits
 
@@ -180,8 +198,8 @@ instructions have been changed while this choice is pending.
   assignment text. No development-process rule is changed or proposed here.
 - **Residual limits:** retain the absence of hosted/live validation and the
   one-repository limit of the scale measurements. No inference credentials or
-  hosted service were used. Further scale regressions and qualification checks
-  belong to the proposed in-scope correction, once its contract is approved.
+  hosted service were used. The approved correction now has scale regressions and qualification checks;
+  they establish these tested cases, not universal evidence availability.
 
 ## Non-defect observations and residual limits
 
@@ -226,7 +244,19 @@ non-finite usage reports).
 - Final usage refinement: both targeted tests, type checking and build passed.
 - `git diff --check`: passed.
 
-Investigation semantics advanced to `postcode/investigation@3`. No dependency,
+Round-2 correction `212fa9e82f58d41f3de6829ad84285e40305930b` additionally passed:
+
+- final `npm run check`;
+- `npm test`: 339 passed, zero failed, cancelled or skipped (approximately 120.9 seconds);
+- the real-repository collection traversal and README acquisition documented in
+  the linked round-2 validation;
+- whitespace and architecture-link checks.
+
+The successful latest full run does not resolve the intermittent cancellations
+recorded above. Validation remains qualified by that explicitly deferred concern.
+
+Investigation semantics advanced to `postcode/investigation@3` for round-1
+corrections and `postcode/investigation@4` for the round-2 correction. No dependency,
 CLI capability, governing document or development-process file changed.
 
 ## Review rounds
@@ -237,19 +267,22 @@ Round 2 reviewed `32f90a504344352a12810be66e3b41547731909f`, with the working
 tree at `2388914` containing documentation-only follow-ups. Its unchanged findings
 report type checking passed, 318 full-suite passes with 13 cancellations, all
 13 execution-ownership tests passing in isolation, and 56 investigation/input
-tests passing. No correction to the round-2 target has yet been implemented.
+tests passing. The subsequent correction target is `212fa9e82f58d41f3de6829ad84285e40305930b`.
+No third independent round has yet occurred.
 The [correction validation](../../validation/module-investigation/2026-09-29-milestone-1-review-corrections.md)
 records chronology, reproduction and limits, including the final focused check.
 
 ## Gate conclusion
 
-Round 2 does not recommend proceeding until R2-F1 is corrected and independently
-reviewed. Both R2-F1 and R2-F2 are accepted, with the proposed consequential
-contract choices awaiting human direction. No finding has been rejected or
-materially qualified, and no additional scope has been assumed. Earlier F7
-acceptance and the explicitly qualified cancellation deferral remain unchanged.
+R2-F1 and R2-F2 are corrected under the human's approved contracts, with type,
+regression and scale verification complete. Every actionable finding has a
+disposition; no finding was rejected or materially qualified without direction.
+Earlier F7 acceptance and the explicitly qualified cancellation deferral remain
+unchanged. The latest passing full suite does not resolve that deferred concern.
 
-The task remains active at milestone 1. No milestone-2 work has begun and the
-human has not accepted this gate. A further independent review is required for
-the R2-F1 correction; the human arranges that review after implementation and
-verification are ready.
+The task remains active at milestone 1. The changed evidence contract requires
+the further independent review recommended in round 2. The original handoff
+continues to govern that assignment, with correction target
+`212fa9e82f58d41f3de6829ad84285e40305930b` and the linked round-2 validation ready
+for the human-arranged reviewer. Milestone 2 has not begun; the human has not
+accepted the gate.
