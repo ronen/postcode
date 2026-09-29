@@ -35,6 +35,22 @@ Cite the reporting investigram (Recommended)
 
 Investigate and report (Recommended)
 
+### F7 acceptance and cancellation deferral — 2026-09-29
+
+Re F7, I’ll accept your recommended disposition, with one clarification: this is a conservative shared acquisition basis, not an exact list of inputs used by the compiler. The behavior seems reasonable for this slice:
+
+- Reading README registers it for session validity, as required.
+- Advancing the shared revision makes incomplete mechanical work eligible for another attempt. That may be unnecessary work, but doesn’t misrepresent its outcome.
+- Completed work remains reusable, and earlier records remain unchanged. The reported regression covers the important interaction. Including README in later input-basis records is acceptable provided that membership means “captured in the shared basis,” not “used to derive this mechanical claim.”
+
+
+
+  Please record that distinction and the conservative retry behavior in the architecture account, then disposition F7 as accepted current behavior with regression coverage. Separating acquisition revisions by relevance could be a later optimization if unnecessary re-evaluation becomes significant; it needn’t expand this milestone.    ;;; Re deferring cancellation diagnosis: defer, deferral with:
+  - A backlog entry containing the reproduction commands, baseline commit, affected tests, and captured results.
+  - Milestone validation distinguishing the cancelled suite runs from the successful isolated runs.
+  - Explicit disclosure in the review handoff, so the reviewer can assess whether the remaining uncertainty affects milestone acceptance.
+  Please describe validation as qualified by this unresolved concern, rather than treating isolated passes as a fully passing suite.
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
