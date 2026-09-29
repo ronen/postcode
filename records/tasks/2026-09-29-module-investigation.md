@@ -375,3 +375,33 @@ the passing complete run does not diagnose the earlier cancellations. No live
 adapter, credentials, inference or cancellation-policy change was introduced.
 The task remains active at the milestone-2 gate, awaiting the F1 ruling and human
 acceptance; milestone 3 has not begun.
+
+### Milestone 2 F1 completion — closure-boundary usage
+
+The human-approved F1 completion is implemented in
+`849267193a6d75113d2deb33c8a1b481f916fa4e`. Parent dialogue closure seals immutable
+call reports before abort/close callbacks. CLI views are finalized from those
+snapshots, and subsequent usage views and observations use the same accepted
+reports. Duplicate reports count once; reports after closure remain ignored,
+including first reports for unknown calls. View identity includes finalized usage
+separately from interpretation projection identity; retained accounts and prior
+views remain unchanged. Architecture and CLI documentation describe the boundary.
+
+Two deterministic regressions drive the real shell and compiler worker in human
+and JSON formats. Intercepting the actual close-message delivery places usage
+inside the closing window and confirms the worker snapshot missed it. The command
+view, subsequent usage view and observations agree on three calls, one unknown,
+zero anomalies and 40 synthetic input tokens, with no duplicate counting. Reports
+first delivered after closure stay unknown. Type checking and build passed; all
+25 integration tests passed (14.59 seconds), followed by all 367 full-suite tests
+with no failures, cancellations or skips (130.80 seconds) on a stationary worktree.
+Whitespace and local documentation links passed.
+
+The [disposition](../reviews/module-investigation/2026-09-29-milestone-2-disposition.md)
+now records all four findings as corrected and the
+[validation](../validation/module-investigation/2026-09-29-milestone-2-round-1-corrections.md)
+preserves the exact target, regression method and results. The original review and
+handoff remain unchanged. Validation remains qualified by the historical,
+unresolved execution-ownership cancellations; diagnosis is required before
+milestone 3's live, cost-bearing adapter work. The task remains active awaiting
+human milestone-2 acceptance. No milestone-3 work or live inference has begun.
