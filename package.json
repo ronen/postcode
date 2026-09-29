@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@statelyai/graph": "2.4.0",
+    "openai": "7.25.0",
     "string-width": "8.3.0",
     "typescript": "6.0.3"
   },

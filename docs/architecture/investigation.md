@@ -1,9 +1,10 @@
 # Investigation execution
 
-This describes milestones 1–2 of [module investigation](../plans/module-investigation.md).
-The domain boundary, session retention and summary/inspection CLI paths are
-implemented and exercised through a deterministic agent double. There is no
-hosted adapter or credential setup yet. Public follow-up lenses and correction-aware
+This describes the implemented portion of [module investigation](../plans/module-investigation.md),
+including the hosted summary adapter. The domain boundary, session retention and
+summary/inspection CLI paths are exercised through a deterministic agent double
+and the real SDK with offline provider responses. Live verification remains pending
+human credential setup. Public follow-up lenses and correction-aware
 replacement selection remain later milestones. The governing contracts are
 [investigator execution](../decisions/investigator-execution-and-evidence-access.md),
 [investigrams](../decisions/investigrams-and-progressive-investigation.md), and
@@ -151,7 +152,7 @@ tools, supplies remaining limits, validates the submitted unit and returns one
 outcome. Unexpected defects propagate. Provider adapters are responsible for
 translating transport/authentication errors and credential-safe diagnostics at the
 communication boundary; a scripted adapter exercises the same contract in tests.
-No external dependencies are needed for this checkpoint.
+The hosted adapter uses the official OpenAI SDK behind that communication boundary.
 
 The execution guard currently permits 180 seconds, 32 agent exchanges, 96 tool
 requests and 2,000,000 serialized UTF-16 code units across sent/received exchanges.
@@ -161,7 +162,7 @@ Each exchange receives the remaining time and call counts to permit completion
 within the guard. Synchronous work may delay deadline detection; its returned
 content is checked before delivery. Abort signals reach asynchronous work, but
 ignored cancellation cannot forcibly terminate it. No late submission is accepted.
-Future hosted cancellation cannot promise that remote work or billing has stopped.
+Hosted cancellation cannot promise that remote work or billing has stopped.
 
 Submission is a single explicit `submit` exchange containing the assembled forest.
 Submission before the guard stops execution enters synchronous whole-result
@@ -291,8 +292,9 @@ exposure snapshots. Worker usage callbacks remain registered for the whole dialo
 including after the corresponding reply resolves, and are removed on dialogue
 close; pending reply ownership ends earlier. The bridge does not provide an additional program-access interface.
 The same in-process CLI environment injection reaches this bridge for both shell
-and one-shot tests. Ordinary CLI use has no configured investigator and reports
-configuration unavailability without an actual provider call.
+and one-shot tests. Ordinary CLI use can deliberately enable the hosted adapter
+through the setup boundary described below; disabled summary requests report
+configuration unavailability without a provider call.
 
 Every new investigation opens a fresh parent dialogue; closing or interrupting it
 aborts its signal, closes local communication state and ignores late replies and
@@ -319,7 +321,9 @@ guaranteed to stop. Shared validity checks run through evidence work, after
 submission, before output and after output; invalidated results are not published.
 
 Reports group usage by full provider/model/configuration identity and distinguish
-provider reports from synthetic test data. Categories retain units and subset
+provider reports from synthetic test data. Returned provider model and service-tier
+metadata are retained separately from requested configuration and also partition
+totals; missing metadata is not invented. Categories retain units and subset
 relationships; there is no sum that double-counts subsets as additional usage.
 Unknown and anomalous calls remain separate from trusted totals. Numeric aggregate
 overflow is explicitly unknown without losing raw reports or failing interpretation.
@@ -332,3 +336,39 @@ when their result view was suppressed. Human final reporting lists every attempt
 and its termination as well as session totals, even when all reports are unknown.
 These records describe received reports,
 not complete billed usage.
+
+
+## Hosted transport and credential boundary
+
+Intentional `POSTCODE_INVESTIGATOR=openai` enablement selects the single hosted
+adapter and announces repository-content transmission. Shared CLI preflight runs
+before either project-opening path, including mechanical commands. Disabled use
+performs no credential lookup. Enabled use requires macOS and an accessible
+PostCode-specific Keychain item; remote authentication/model/billing validity is
+not asserted by local preflight. Setup, charges, supported platform and same-user
+access limitations are documented in [hosted setup](../hosted-investigation.md).
+
+The parent retrieves the key privately and owns the SDK client; neither the worker
+nor domain records receive it. The fixed Responses endpoint uses the explicit key,
+with ambient SDK endpoint, organization, project and logging settings overridden.
+No SDK retries, provider fallback or model substitution occurs. Provider error
+objects and their potentially credential-bearing messages never cross the adapter;
+bounded codes and locally authored diagnostics preserve failure classification.
+Exact key echoes in provider data are redacted before delivery or assessment capture.
+
+Each dialogue retains its own local history, including opaque encrypted reasoning
+items needed for subsequent Responses exchanges. It uses no previous-response or
+server-conversation reference. Only evidence requests and explicit whole-result
+submission functions are supplied; the domain still validates tool capabilities,
+references, qualifications and complete submissions. Remaining guards accompany
+each exchange. The per-response output bound is 16,000 tokens; truncated output is
+not repaired or silently submitted. Closing aborts the local request and releases
+history; it cannot confirm cessation of remote work or billing.
+
+Non-streaming responses deliver usage before outcome classification, including
+failed, refused and incomplete responses. Aborted transport without a received
+response remains unknown usage. Input/output, cache reads/writes and reasoning
+retain their provider subset relationships. Optional assessment capture receives
+sanitized request bodies and responses or safe failure reports, never headers or
+SDK exceptions. Captures may contain repository source and are development
+assessment artifacts, not extra investigator access or ordinary observations.

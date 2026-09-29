@@ -1,6 +1,6 @@
 # Project Status
 
-Last reviewed: 2026-09-29
+Last reviewed: 2026-09-30
 
 PostCode is currently available as a development CLI for investigating one
 configured TypeScript project.
@@ -30,12 +30,14 @@ configured TypeScript project.
 
 - **[Interpretation integration](docs/cli-reference.md#interpretation-checkpoint-summary-inspection-and-usage).**
   Summary requests, retained investigram inspection and attempt/session usage are
-  integrated with the shell and exercised using a scripted investigator.
+  integrated with the shell. An optional OpenAI adapter supports explicit hosted
+  enablement and macOS Keychain credentials, with offline integration coverage.
 
 ## Current limits
 
-- **Hosted interpretation:** no provider or credential setup is available yet.
-  Normal summary requests report configuration unavailability. Public follow-up
+- **Hosted interpretation:** live provider verification and formative assessment
+  remain pending credential setup. Disabled summaries report configuration
+  unavailability; the initial credential route supports macOS only. Public follow-up
   lenses and correction-aware replacement display are not implemented yet.
 
 - **[Analysis scope](docs/cli-reference.md#supported-typescript-population-and-qualifications):**

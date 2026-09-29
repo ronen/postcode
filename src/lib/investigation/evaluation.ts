@@ -48,7 +48,7 @@ export function investigationEvaluation(store: ProgramRecordStore, analysis: Mod
     const retained = store.investigations(session).find(item => key(item.request) === key(request));
     if (retained) return { request, reused: true, attempt: retained.attempt, evaluation: retained, unavailable: null };
     if (!dependencies.agent) return { request, reused: false, attempt: null, evaluation: null, unavailable: {
-      kind: 'configuration-unavailable', code: 'investigator-not-configured', diagnostic: 'No investigator is configured. Hosted setup is not available at this checkpoint.',
+      kind: 'configuration-unavailable', code: 'investigator-not-configured', diagnostic: 'Investigation is disabled. See docs/hosted-investigation.md for intentional hosted enablement and credential setup.',
     } };
     const execution = await investigate({ session, request, evidence, history, usage, agent: dependencies.agent, check, signal,
       ...(dependencies.bounds ? { bounds: dependencies.bounds } : {}),

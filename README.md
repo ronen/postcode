@@ -219,8 +219,8 @@ This project is licensed under the [Apache License 2.0](LICENSE).
 ### Interpretation integration checkpoint
 
 `summarize <module>` and `usage` now have session and one-shot execution paths,
-with retained outcomes and exact investigram inspection. No hosted investigator
-is configured yet; ordinary summary requests explicitly report configuration
-unavailability. Credential-free tests inject a scripted investigator through the
-production worker path. See the [checkpoint reference](docs/cli-reference.md#interpretation-checkpoint-summary-inspection-and-usage)
+with retained outcomes and exact investigram inspection. [Optional hosted setup](docs/hosted-investigation.md)
+uses OpenAI with explicit transmission enablement and macOS Keychain credentials.
+Live verification is pending. Disabled summaries report configuration unavailability;
+offline tests exercise scripted and SDK-backed investigators through the production worker path. See the [checkpoint reference](docs/cli-reference.md#interpretation-checkpoint-summary-inspection-and-usage)
 for retention, usage, references and current limits.

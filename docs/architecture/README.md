@@ -24,8 +24,9 @@ The governing cross-cutting terminology is maintained in [core concepts](../core
 The [investigation execution and session integration](investigation.md) add
 subject-based evidence queries, bounded interpretation dialogues, atomic retention,
 summary/inspection views and usage reporting. Tests inject a scripted investigator
-through the production worker path. Hosted inference, public follow-up lenses and
-correction-aware display remain later milestones of the
+through the production worker path. An optional hosted summary adapter now has
+explicit enablement and macOS Keychain preflight; live verification is pending.
+Public follow-up lenses and correction-aware display remain later milestones of the
 [module-investigation plan](../plans/module-investigation.md).
 
 Operational project opening lives in the TypeScript integration. It follows

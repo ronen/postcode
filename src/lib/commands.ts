@@ -31,16 +31,18 @@ Focused relationships show up to 20 occurrences in Unicode or 50 in JSON; source
 External dependencies are opaque leaves. Cycles retain members and internal edges; roots do not imply entry points.
 Normal views automatically submit a local observation batch; the destination is disclosed on stderr.
 
-Investigation checkpoint:
+Investigation:
 summarize requires one exact module name/handle, or a module reference in the shell.
-No hosted investigator is configured by this checkpoint; normal summary requests report configuration unavailability.
+Hosted investigation is disabled by default. POSTCODE_INVESTIGATOR=openai intentionally enables transmission of selected repository source, documentation and analysis to OpenAI; API charges apply.
+The initial hosted adapter uses gpt-6-sol with medium reasoning and macOS Keychain (service org.postcode.openai, account api-key). See docs/hosted-investigation.md before setup.
+Enabled use requires accessible credentials before project opening, including mechanical commands. Unsupported platforms and missing access fail preflight without credential or provider fallback.
 Development tests inject the investigator at the communication boundary, using the production worker/session path.
 Successful, failed-investigation and limit-stop outcomes are retained; repeated display adds no usage.
 Communication/configuration failures leave no reusable outcome. Recovery from retained failures requires a new session.
 inspect @investigram-… in the shell shows the exact original, its fixed composition, support and correction links.
 usage reports per-attempt and session usage without inference; synthetic usage and unknown/anomalous reports remain explicit.
 Investigation JSON uses postcode-investigation-view/1-experimental. One-shot references expire at command end.
-Public follow-up lenses, hosted setup and automatic replacement selection remain later milestones.
+Public follow-up lenses and automatic replacement selection remain later milestones.
 
 Concepts:
 modules inventories the supported population; inspect selects exact subjects from that population.

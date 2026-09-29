@@ -8,6 +8,10 @@ function usageAnomalies(usage: ReportedUsage): readonly string[] {
   const anomalies = new Set<string>();
   if (!['provider', 'synthetic'].includes(usage.source)) anomalies.add('Unrecognized usage source.');
   if (!usage.categories.length) anomalies.add('No usage categories were reported.');
+  if (usage.execution && (typeof usage.execution.model !== 'string' || !usage.execution.model ||
+      (usage.execution.serviceTier !== null && (typeof usage.execution.serviceTier !== 'string' || !usage.execution.serviceTier)))) {
+    anomalies.add('Invalid provider execution metadata.');
+  }
   const key = (unit: string, category: string) => canonical([unit, category]);
   const categories = new Map(usage.categories.map(item => [key(item.unit, item.category), item]));
   if (categories.size !== usage.categories.length) anomalies.add('Duplicate usage categories.');

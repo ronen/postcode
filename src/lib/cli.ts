@@ -10,11 +10,14 @@ import { inlineText } from './terminal-text.js';
 import { help, parseCommand } from './commands.js';
 import { publishCommand, openFailureText } from './command-execution.js';
 import { runShell } from './shell.js';
+import { configuredInvestigator, hostedDisclosure } from './investigation/openai/configuration.js';
 
 export interface CliEnvironment {
   /** Internal communication-boundary injection for tests and assessment. */
   readonly investigator?: InvestigatorAgent;
   readonly investigationBounds?: InvestigationBounds;
+  /** Internal setup substitution for offline tests. Production uses POSTCODE_INVESTIGATOR. */
+  readonly configureInvestigator?: typeof configuredInvestigator;
   readonly cwd: string;
   readonly checkout: string;
   readonly stdout: (text: string) => void;
@@ -28,6 +31,14 @@ export async function runCli(args: readonly string[], environment: CliEnvironmen
   if (parsed.kind === 'help') { environment.stdout(help); return 0; }
   if (parsed.kind === 'error') { environment.stderr(parsed.message); return 2; }
   if (parsed.kind === 'exit') return 0;
+  if (!environment.investigator) {
+    const configured = await (environment.configureInvestigator ?? configuredInvestigator)(process.env.POSTCODE_INVESTIGATOR);
+    if (configured.kind === 'configuration-unavailable') { environment.stderr(`${configured.diagnostic}\n`); return 2; }
+    if (configured.kind === 'ready') {
+      environment.stderr(hostedDisclosure);
+      environment = { ...environment, investigator: configured.agent };
+    }
+  }
   if (parsed.kind === 'shell') return runShell(parsed, environment);
   const destination = path.resolve(environment.checkout, '_observations');
   const localSink = localFileObservationSink(destination, parsed.configPath);

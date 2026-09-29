@@ -522,12 +522,15 @@ evidence to impose a memory bound.
 `summarize MODULE_HANDLE` (or `summarize @module-…` in the shell) requires exactly
 one module. Missing or ambiguous selection reports candidates without starting an
 investigation. The default command remains the mechanical module inventory.
-There is no hosted investigator setup in this checkpoint: normal summary requests
-report configuration unavailability with exit status 3. Development tests inject a
-scripted investigator through the production CLI/session/worker communication path;
-there is no public injection flag or credential mechanism yet.
+Hosted investigation is disabled by default; disabled summary requests report
+configuration unavailability with exit status 3. Optional [hosted setup](hosted-investigation.md)
+uses OpenAI and macOS Keychain with explicit repository-transmission enablement.
+Enabled setup failures stop project opening with exit status 2, before either
+mechanical or investigation commands. Runtime provider failures are reported in
+the investigation view. Tests inject the agent/transport through the production
+CLI/session/worker path; there is no public injection flag.
 
-With an investigator injected, a summary presents a root and any composition
+With an investigator enabled, a summary presents a root and any composition
 children as qualified interpretations, each with a stable `investigram-…` reference.
 Repeating a summary selects its retained outcome without generating again.
 Successful results, investigation failures (including refusals and invalid
@@ -551,7 +554,7 @@ public `explain`, `decompose` and `examine` commands remain later milestones.
 `usage` and `usage --json` expose per-attempt and session reported usage without
 inference, including failed attempts. Summary views also include their attempt and
 session usage. Provider/model/configuration, units and category subset relationships
-remain distinct. Synthetic test usage is labeled separately; unknown and anomalous
+remain distinct, including actual returned model and service tier when reported. Synthetic test usage is labeled separately; unknown and anomalous
 calls are not zero and are excluded from trusted totals. Aggregate numeric overflow
 is explicitly unknown; indexed annotations preserve non-finite raw report values
 that JSON numbers cannot represent. Reported figures are not confirmed billing. Repeated display

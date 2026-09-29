@@ -130,7 +130,12 @@ export interface UsageCategory {
   /** For example, reasoning is a subset of output, not an additional output charge. */
   readonly includedIn: string | null;
 }
-export interface ReportedUsage { readonly source: 'provider' | 'synthetic'; readonly categories: readonly UsageCategory[] }
+export interface ReportedUsage {
+  readonly source: 'provider' | 'synthetic';
+  /** Actual provider response metadata, distinct from the requested agent configuration. */
+  readonly execution?: { readonly model: string; readonly serviceTier: string | null };
+  readonly categories: readonly UsageCategory[];
+}
 export interface CallUsage {
   readonly attempt: RecordId;
   readonly call: number;
