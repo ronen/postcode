@@ -1,3 +1,4 @@
+import { isDeepStrictEqual } from 'node:util';
 import { canonical } from '../identity.js';
 import { freezeOwned } from '../immutable.js';
 import type { RecordId } from '../records.js';
@@ -35,7 +36,7 @@ export class InvestigationUsage {
     this.#calls.set(key, freezeOwned(structuredClone({ attempt, call, agent, reported: null, reports: [], anomalies: [] })));
     return usage => {
       const prior = this.#calls.get(key)!;
-      if (prior.reports.some(item => canonical(item.reported) === canonical(usage))) return;
+      if (prior.reports.some(item => isDeepStrictEqual(item.reported, usage))) return;
       const reports = [...prior.reports, { reported: usage, anomalies: usageAnomalies(usage) }];
       const anomalies = [...new Set(reports.flatMap(item => item.anomalies))];
       if (reports.length > 1) anomalies.push('Differing reports for one call; cumulative versus incremental accounting is unresolved.');

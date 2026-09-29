@@ -458,6 +458,9 @@ test('usage retains distinct reports and anomalies without selecting uncertain t
   assert.equal(usage.calls()[0]!.reports.length, 2);
   assert.equal(usage.calls()[0]!.reported, null);
   assert.match(usage.calls()[0]!.anomalies.join(' '), /Differing reports/);
+  for (const value of [NaN, Infinity, NaN]) report({ source: 'provider', categories: [{ category: 'output', unit: 'tokens', value, includedIn: null }] });
+  assert.equal(usage.calls()[0]!.reports.length, 4, 'distinct non-finite reports survive without JSON null collisions');
+  assert.equal(usage.calls()[0]!.reported, null);
 });
 
 const unusualUsage: readonly [string, ReportedUsage][] = [
