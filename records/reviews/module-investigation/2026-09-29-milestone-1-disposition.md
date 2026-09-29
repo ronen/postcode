@@ -4,8 +4,8 @@ Record type: disposition
 Date: 2026-09-29
 Task: [Module investigation](../../tasks/2026-09-29-module-investigation.md)
 Handoff: [Milestone 1](2026-09-29-milestone-1-handoff.md)
-Findings: [Round 1](2026-09-29-milestone-1-round-1-findings.md)
-State: F1–F6 corrected; F7 accepted with regression coverage; cancellation diagnosis deferred by human direction; milestone gate pending
+Findings: [Round 1](2026-09-29-milestone-1-round-1-findings.md), [Round 2](2026-09-29-milestone-1-round-2-findings.md)
+State: round-2 findings accepted; resolution choices await human direction; milestone gate not satisfied
 
 ## Findings and dispositions
 
@@ -100,6 +100,89 @@ No input separation or retry-policy change was made. Relevance-based acquisition
 revisions remain a possible later optimization if retry cost becomes significant,
 without expanding this milestone.
 
+## Round 2 findings and dispositions
+
+### R2-F1 — evaluation-wide evidence in subject queries
+
+**Accepted; high priority, milestone gate remains blocked by this defect.**
+The evidence boundary seeds per-subject responses with entire evaluation records,
+all evaluation contexts and all dependency coverage, then traverses context
+evidence. The size bound correctly qualifies oversized delivery, but cannot make
+these already-narrow subject requests usable. The round-1 F3 correction addressed
+termination behavior without addressing this underlying response-scope defect.
+The round-2 finding is accepted without reducing its severity or deferring it.
+
+A local probe against this repository's `tsconfig.json`, using the existing built
+production evidence boundary, reproduced the structural problem (256 modules,
+91 project modules; selected module handle `graph`):
+
+| Query | Serialized UTF-16 code units | Selected references |
+| --- | --- | --- |
+| dependencies | 3,039,446 | 4 |
+| dependents | 3,041,486 | 2 |
+| membership | 3,163,084 | 1 |
+| exports | 48,960 | 2 |
+| source | 3,623 | 1 |
+| modules | 2,214,732 | 256 |
+| organization | 4,127,415 | 1,180 |
+
+The dependency response contained 1,266 claim contexts and 752 source-evidence
+records for only four selected relationships. These are raw evidence-query
+responses; the investigator coordinator withholds those exceeding 60,000 units.
+The probe confirms this repository instance, not universal size thresholds for
+other repositories or every subject. The review's broader structural conclusion
+is supported by the response construction itself.
+
+The human has been asked to approve the proposed contract: selected claims with
+their own context/evidence and qualification, evaluation-level identity plus
+qualification summaries rather than evaluation-wide embedding, and bounded
+navigation through module/group/artifact listings. The correction must retain
+per-claim method, scope, evidence and coverage; show omissions and continuation
+explicitly; and make delegation and documentation access usable at realistic
+scale. Population listings and intrinsically large individual evidence must
+remain honestly qualified. No new response contract has been selected or
+implemented pending the human's direction.
+
+The reviewer's request for a further independent round is accepted. Once the
+approved correction is implemented and verified, supply its exact target and
+qualification/scale evidence under this existing assignment. Do not proceed to
+milestone 2 or treat the round-1 gate recommendation as sufficient.
+
+### R2-F2 — evidence records accepted as corrected subjects
+
+**Accepted; precise subject-kind contract awaits human direction.** The existing
+`subject` reference rule admits claims, source evidence and captured content, and
+the correction-specific check only excludes investigrams, missing records and
+duplicate/empty lists. Thus the instructions' “program subjects” wording and the
+accepted association model are not enforced by a dedicated subject-kind rule.
+
+The human has been asked to restrict `correctedSubjects` to `module`, `symbol`,
+`group` and `repository-artifact`, with evidence records rejected. That proposal
+preserves evidence attribution separately from described-subject associations.
+The reviewer offers narrowing or documenting a broader meaning; the implementing
+agent has not silently selected between those semantic alternatives. No code or
+instructions have been changed while this choice is pending.
+
+### Round 2 observations and residual limits
+
+- **Round-1 statuses:** agree with every reported status: F1, F2, F4, F5 and F6
+  corrected; F7 accepted under the human's clarification; F3's bounded unavailable
+  behavior corrected, with the newly identified structural defect tracked by
+  R2-F1. No earlier finding is reopened or dismissed by implication.
+- **Execution-ownership cancellations:** acknowledge the reviewer reproduced the
+  same 13 cancellations in the 331-test full run and all 13 passed in isolation.
+  The human-authorized diagnosis deferral, backlog entry and qualified validation
+  remain in force. The reviewer's assessment that this is not material to domain
+  behavior is recorded as their assessment, not proof of the unresolved cause or
+  a fully passing suite. No new diagnosis or cancellation change was undertaken.
+- **Handoff addendum:** acknowledge the process-traceability observation. The
+  addendum was explicitly requested by the human and preserves the original
+  assignment text. No development-process rule is changed or proposed here.
+- **Residual limits:** retain the absence of hosted/live validation and the
+  one-repository limit of the scale measurements. No inference credentials or
+  hosted service were used. Further scale regressions and qualification checks
+  belong to the proposed in-scope correction, once its contract is approved.
+
 ## Non-defect observations and residual limits
 
 The six verified observations are acknowledged without dispute: qualified
@@ -150,17 +233,23 @@ CLI capability, governing document or development-process file changed.
 
 Round 1 reviewed `d4260522c2abf0530de076c05944f531de003e4b` against
 `c15afdd3b03f588534ac386c2453c81da71ffb68`; its findings remain unchanged.
-The correction target is `32f90a5`. No further independent round has occurred.
+Round 2 reviewed `32f90a504344352a12810be66e3b41547731909f`, with the working
+tree at `2388914` containing documentation-only follow-ups. Its unchanged findings
+report type checking passed, 318 full-suite passes with 13 cancellations, all
+13 execution-ownership tests passing in isolation, and 56 investigation/input
+tests passing. No correction to the round-2 target has yet been implemented.
 The [correction validation](../../validation/module-investigation/2026-09-29-milestone-1-review-corrections.md)
 records chronology, reproduction and limits, including the final focused check.
 
 ## Gate conclusion
 
-F1–F6 are corrected. F7 is accepted current behavior with regression coverage.
-The human has deferred cancellation diagnosis subject to the recorded backlog,
-qualified validation and handoff disclosure; these conditions are now recorded.
-This deferral does not resolve the cause or itself accept the milestone gate.
-The reviewer considers a further independent round unnecessary if F1 and F2
-corrections are small and verified; the human retains the gate decision.
-The task remains active at milestone 1; milestone 2 has not begun. No finding
-was rejected or materially qualified without human approval.
+Round 2 does not recommend proceeding until R2-F1 is corrected and independently
+reviewed. Both R2-F1 and R2-F2 are accepted, with the proposed consequential
+contract choices awaiting human direction. No finding has been rejected or
+materially qualified, and no additional scope has been assumed. Earlier F7
+acceptance and the explicitly qualified cancellation deferral remain unchanged.
+
+The task remains active at milestone 1. No milestone-2 work has begun and the
+human has not accepted this gate. A further independent review is required for
+the R2-F1 correction; the human arranges that review after implementation and
+verification are ready.
