@@ -13,6 +13,18 @@ import { InvestigationUsage } from './usage.js';
 
 export interface InvestigationBounds { readonly milliseconds: number; readonly calls: number; readonly toolCalls: number; readonly characters: number }
 export const investigationBounds: InvestigationBounds = Object.freeze({ milliseconds: 180_000, calls: 32, toolCalls: 96, characters: 2_000_000 });
+export const evidenceResponseCharacters = 60_000;
+
+/** Preserve qualification as a unit. Oversized evidence remains captured but is not delivered. */
+function boundedEvidence(response: EvidenceResponse): EvidenceResponse {
+  const characters = JSON.stringify(response).length;
+  if (characters <= evidenceResponseCharacters) return response;
+  return { status: 'unavailable', records: [], selected: [], limitations: [
+    `Evidence response omitted: ${characters} serialized UTF-16 code units exceed the ${evidenceResponseCharacters}-unit response bound.`,
+    `${response.records.length} records and ${response.selected.length} selected references were withheld; this does not establish an empty result.`,
+    'Acquired evidence remains retained. Request a narrower known subject or continue with an explicit coverage limitation; range retrieval is not available.',
+  ] };
+}
 export interface InvestigationEvidence {
   lookup(id: RecordId): ProgramRecord | undefined;
   query(query: EvidenceQuery, signal: AbortSignal): EvidenceResponse | Promise<EvidenceResponse>;
@@ -151,7 +163,7 @@ export async function investigate(options: InvestigationOptions): Promise<Invest
         let response: ToolResponse;
         if (!query) response = { status: 'unavailable', selected: [], records: [], limitations: ['Unsupported tool request; paths and arbitrary reads are not permitted.'] };
         else if (query.kind === 'investigram') response = exposure.prepare(query.subject, query.parts as readonly ContextPart[] | undefined, query.excerptCharacters);
-        else response = await wait(() => options.evidence.query(query, controller.signal));
+        else response = boundedEvidence(await wait(() => options.evidence.query(query, controller.signal)));
         await wait(options.check);
         responses.push(response);
       }

@@ -74,7 +74,7 @@ export class InvestigationContext {
     this.deliveries.push(delivery);
     for (const account of delivery.accounts) {
       // Metadata such as evidence links, provenance or a bare identifier alone is not exposure.
-      if (account.prose === undefined && account.referent === undefined && account.qualifications === undefined) continue;
+      if (!account.prose?.trim() && account.referent === undefined && account.qualifications === undefined) continue;
       const parts = this.#parts.get(account.id) ?? new Set<ContextPart>();
       for (const part of account.completeParts) parts.add(part);
       this.#parts.set(account.id, parts);

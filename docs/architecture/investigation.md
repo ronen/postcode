@@ -41,6 +41,16 @@ non-atomic. Full-file acquisition has no streaming or range selector at this
 checkpoint, and the existing synchronous compiler/filesystem operations cannot
 be preempted mid-operation.
 
+Before delivery, each mechanical/source tool response is limited to 60,000
+serialized UTF-16 code units. An oversized response becomes an explicit
+unavailable response identifying the omitted size and record/reference counts;
+it does not claim an empty result, create supplied-evidence references or terminate
+the dialogue. Evidence already acquired remains retained. The investigator can
+request a narrower known subject or finish with a coverage limitation. This
+delivery bound does not bound acquisition memory or introduce range retrieval.
+The separate cumulative dialogue guard can still stop an operation after
+multiple bounded responses.
+
 ## Dialogue, acceptance and ownership
 
 An investigation request names an operation, exact subject and semantic parameters,
@@ -114,8 +124,9 @@ metadata. Prose, referent and qualifications can be requested separately; excerp
 do not establish complete prose delivery.
 
 Only dispatched substantive context enters the conservative citation index.
-Identifiers alone do not. Complete target eligibility accumulates across exchanges;
-complete correction context requires the target and replacement's own prose,
+Identifiers alone and empty or whitespace-only prose excerpts do not.
+Complete target eligibility accumulates across exchanges; complete correction
+context requires the target and replacement's own prose,
 referent and qualifications plus the correction's reasons and qualifications.
 Completeness is recorded per correction identity. It does not imply comprehension
 or require subordinate trees. Every accepted investigram shares this execution's
