@@ -141,15 +141,18 @@ conforms to the actual-disclosure decision and leaves the round-2 fixes intact.
 | --- | --- | --- |
 | Source-disclosure correction and positive/negative controls | Accepted; independently verified | Request intent is retained; actual format-specific locations and nonempty excerpts determine events and forms. Empty selection/container cases and genuine location-only disclosure behave as required. No runtime correction is indicated. |
 | Correction to round-2 wording | Accepted | Shared mechanical behavior was pre-existing nonconformance, not an adopted convention. The reviewer now confirms this explicitly; the human-authorized correction and earlier disposition already use that interpretation. |
-| Maintenance coupling between renderer and classifier | Accepted risk; human choice requested | The classifier models renderer output separately. Current tests establish current behavior but cannot automatically cover future fields. The reviewer leaves a cross-reference safeguard to the human. Recommended action: brief comments at each renderer's source-detail section pointing to the classifier and regression test, without redesign. No dependent edit has yet been made. |
-| Paths outside sourceDetail | Unassessed; human direction requested | The reviewer did not assess ordinary JSON/context paths against the disclosure decision. Neither compliance nor a defect is inferred. Recommended disposition: an explicit unassessed backlog follow-up; the alternative offered is a bounded audit before milestone acceptance. No audit, fix or deferral has been assumed. |
+| Maintenance coupling between renderer and classifier | Accepted risk; approved safeguard added | The classifier models renderer output separately. Current tests establish current behavior but cannot automatically cover future fields. The human approved brief cross-references, now placed beside source-detail rendering in all four view families. They point to the classifier and regression tests and explicitly include changes to JSON source fields. This is a maintenance reminder, not a structural guarantee against future drift. |
+| Paths outside sourceDetail | Unassessed; human-approved backlog follow-up | The reviewer did not assess ordinary JSON/context paths against the disclosure decision. The human directed recording an unassessed follow-up without expanding this milestone. The [backlog entry](../../../docs/backlog.md#assess-disclosure-classification-for-paths-outside-sourcedetail) preserves the question without claiming compliance or a defect, or authorizing a classification change. |
 | Handoff addendum traceability | Acknowledged; no correction needed | The previous human explicitly requested inclusion of the correction and verification in the handoff. Its dated addendum preserved the original text; the review notes that authorization. No new handoff edit is needed for this assessment. |
 | Cancellation uncertainty | Existing human-approved qualification retained | The reviewer's fifth complete passing run does not diagnose historical cancellations. Diagnosis remains required before milestone-3 live, cost-bearing adapter work. |
 
 The reviewer recommends milestone-2 acceptance with that qualification. The
 implementing agent agrees that no defect in the reviewed target remains open.
-Human choices on the two observations above and explicit milestone acceptance
-remain pending. No runtime code, governing document or development instruction
-has been changed for this assessment, and no new tests were required or rerun.
+Both observation choices have been resolved by the human as recorded above;
+explicit milestone acceptance remains pending. Only source comments, the backlog
+and review/task records changed. Whitespace and cross-reference/link checks passed;
+no runtime code, governing document or development instruction changed, and no new
+tests were required or rerun. The independent 369-test result remains the evidence
+for the unchanged runtime implementation.
 The authored findings and handoff remain unchanged. The task remains active;
 milestone 3 has not begun.

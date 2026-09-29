@@ -313,6 +313,8 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
       }
     }
   }
+  // Changes to this section or JSON source fields must stay aligned with
+  // src/lib/source-disclosure.ts and test/source-disclosure.test.ts.
   if (view.sourceDetail) {
     lines.push('', 'Group source detail', `  ${view.sourceDetail.notice}`);
     for (const group of view.sourceDetail.groups) {

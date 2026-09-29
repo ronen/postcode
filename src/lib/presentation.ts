@@ -344,6 +344,8 @@ export function renderUnicode(view: QualifiedView): string {
     local([...(contextsByScope.get(module.id) ?? []).filter(context => (!isCompositionContext(context) || module.composition.claims.length > 0
         || !module.composition.evaluations.some(outcome => completedMaterialization(outcome)))), ...module.exports.map(exported => exported.qualification)], '  ');
   }
+  // Changes to this section or JSON source fields must stay aligned with
+  // src/lib/source-disclosure.ts and test/source-disclosure.test.ts.
   if (view.sourceDetail) {
     lines.push('', 'SOURCE DETAIL — explicit source escape', ...wrapText(view.sourceDetail.notice, ''));
     const items = view.sourceDetail.items;

@@ -20,6 +20,24 @@ Describe the need, why it matters, and relevant constraints without designing th
 
 ## Candidates
 
+## Assess disclosure classification for paths outside sourceDetail
+
+Added: 2026-09-30
+Origin: [Module investigation milestone-2 round-3 review](../records/reviews/module-investigation/2026-09-29-milestone-2-round-3-findings.md)
+Area: observation semantics and source disclosure
+
+The source-disclosure correction classifies supported explicit source-detail fields
+by presentation and format. The reviewer did not assess paths carried outside
+`sourceDetail`, such as configuration paths in JSON analysis context, against the
+[actual-disclosure decision](decisions/adopt-identity-evidence-and-observation-constraints.md#record-the-actual-source-disclosure-level).
+The human directed recording this as an unassessed follow-up without expanding
+milestone 2. Neither compliance nor nonconformance has been established.
+
+A future assessment should distinguish source locations actually presented from
+operational/context paths retained only in observation records, account for human
+and JSON output, and establish whether any source-escape events are missing.
+This entry does not authorize a classification change or prescribe a redesign.
+
 
 ## Diagnose execution-ownership cancellations in full-suite runs
 

@@ -121,6 +121,8 @@ export function renderInvestigationView(view: InvestigationView): string {
     `  Evidence: ${correction.evidence.length ? correction.evidence.map(inlineText).join(', ') : 'none supplied'}`,
     `  Reason: ${inlineText(correction.reason)}`, ...correction.qualifications.map(item => `  Qualification: ${inlineText(item)}`));
   if (view.projection.lens === 'inspect') for (const support of view.support) lines.push(`  Support (exposure identified by provenance): ${terminalText(JSON.stringify(support))}`);
+  // Changes to this section or JSON source fields must stay aligned with
+  // src/lib/source-disclosure.ts and test/source-disclosure.test.ts.
   if (view.sourceDetail) lines.push('\nSource support (captured locations and excerpts):', terminalText(JSON.stringify(view.sourceDetail.items, null, 2)));
   const attempt = view.usage.attempts.find(item => item.attempt === view.result?.attempt);
   if (attempt) lines.push(...usageLines(usageSummary([attempt]), `Attempt ${attempt.attempt} (${attempt.termination})`));

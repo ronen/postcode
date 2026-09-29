@@ -285,6 +285,8 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
     for (const [index, item] of view.recognitionCoverage.entries()) lines.push(`  Coverage ${index + 1}: ${item.outcome}${item.owner && modules.has(item.owner) ? ` · ${label(item.owner, false)}` : item.owner ? ' · owner omitted from this view' : ' · owner not established'}`);
     if (!Object.keys(view.summary.recognitionCoverage).length) lines.push('  No recorded coverage outcomes; bounded recognition still applies.');
   }
+  // Changes to this section or JSON source fields must stay aligned with
+  // src/lib/source-disclosure.ts and test/source-disclosure.test.ts.
   if (view.sourceDetail) {
     lines.push('', 'SOURCE DETAIL — explicit source escape', view.sourceDetail.notice);
     for (const item of view.sourceDetail.items) {
