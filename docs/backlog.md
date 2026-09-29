@@ -41,6 +41,13 @@ This entry does not authorize a classification change or prescribe a redesign.
 
 ## Diagnose execution-ownership cancellations in full-suite runs
 
+Status: diagnosed and corrected under the human-authorized milestone-3 prerequisite
+on 2026-09-30. The [diagnosis and regression record](../records/validation/module-investigation/2026-09-30-execution-ownership-diagnosis.md)
+reproduces the pending-readiness cancellation while confirming owner settlement
+and child exit. All 371 tests pass after correcting the harness. Historical
+results and their original uncertainty below remain preserved; exact historical
+child-startup timing was not captured.
+
 Added: 2026-09-29
 Origin: [Module investigation milestone-1 review](../records/reviews/module-investigation/2026-09-29-milestone-1-disposition.md)
 Area: execution ownership and test reliability
