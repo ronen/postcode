@@ -73,10 +73,10 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
     }
   }
   const projection = { id: recordId(session, 'investigation-projection', [methods.investigationPresentation, request,
-    selected.map(id => identityReference(session, id)), result?.evaluation?.id ?? null, [...corrections.keys()], usage]),
+    selected.map(id => identityReference(session, id)), result?.evaluation?.id ?? null, [...corrections.keys()]]),
     session, lens: request.lens, subject: 'selected-subjects', parameters: { selector: request.selector, reference: request.reference ?? false },
     selection: { matches: selected.length, status: request.unsupportedSubject ? 'unsupported-subject-lens' : selected.length === 1 ? 'selected' : selected.length ? 'ambiguous' : 'missing' } };
-  return freezeOwned({ schema: 'postcode-investigation-view/1-experimental' as const, id: projection.id, projection,
+  return finalizeInvestigationUsage({ schema: 'postcode-investigation-view/1-experimental' as const, id: projection.id, projection,
     presentation: request.presentation, referenceLifetime: request.referenceLifetime ?? 'session',
     result, selected, candidates, unsupportedSubject: request.unsupportedSubject ?? null, references: [...references].map(([id, reference]) => ({ id, reference })),
     accounts: [...accounts.values()], corrections: [...corrections.values()], provenance: [...provenances.values()],
@@ -85,7 +85,14 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
       'This checkpoint shows immutable originals and explicit correction links; replacement selection and reconsideration display arrive in a later milestone.',
       ...(request.lens === 'summarize' && selected.length !== 1 ? ['Summary requires one exact module; resolve a missing or ambiguous selection before investigation.'] : [])],
     ...(request.presentation.sourceDetail ? { sourceDetail: { level: 'investigation-support' as const, items: [...sources.values()] } } : {}),
-  });
+  }, usage);
+}
+/** Usage is view reporting, independent of the retained interpretation projection. */
+export function finalizeInvestigationUsage<T extends { readonly id: RecordId;
+  readonly projection: { readonly id: RecordId; readonly session: SessionId }; readonly usage: InvestigationUsageReport }>(view: T, usage: InvestigationUsageReport): T {
+  const session = view.projection.session;
+  const id = recordId(session, 'investigation-view', [methods.investigationPresentation, identityReference(session, view.projection.id), usage]);
+  return freezeOwned({ ...view, id, usage });
 }
 export type InvestigationView = ReturnType<typeof createInvestigationView>;
 export function renderInvestigationView(view: InvestigationView): string {

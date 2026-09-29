@@ -4,13 +4,15 @@ import type { TestContext } from 'node:test';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { PassThrough } from 'node:stream';
+import { Worker } from 'node:worker_threads';
+import type { WorkerReply } from '../src/lib/session-protocol.js';
 import { temporaryDirectory, interactionDriver } from './cli-helpers.js';
 import { ScriptedInvestigator, syntheticUsage } from './investigator-double.js';
 import { openSession } from '../src/lib/session.js';
 import { runCli } from '../src/lib/cli.js';
 import type { EvidenceResponse } from '../src/lib/evidence-access.js';
-import type { SubmittedInvestigram, AgentReply, InvestigatorAgent } from '../src/lib/investigation/contracts.js';
-import { renderInvestigationView } from '../src/lib/investigation/presentation.js';
+import type { SubmittedInvestigram, AgentReply, InvestigatorAgent, ReportedUsage } from '../src/lib/investigation/contracts.js';
+import { finalizeInvestigationUsage, renderInvestigationView } from '../src/lib/investigation/presentation.js';
 import type { InvestigationView } from '../src/lib/investigation/presentation.js';
 import type { InvestigationUsageReport } from '../src/lib/investigation/reporting.js';
 import type { ObservationBatch } from '../src/lib/observations.js';
@@ -456,4 +458,61 @@ for (const reported of [true, false]) test(`human final interruption reporting p
   assert.ok(stderr.includes(`Session reported usage: ${reported ? 2 : 1} calls; ${reported ? 0 : 1} unknown; 0 anomalous.`));
   if (reported) { assert.match(stderr, /input 20 tokens/); assert.match(stderr, /input 40 tokens/); }
   assert.doesNotMatch(stderr, /\n\n/);
+});
+
+for (const format of ['json', 'unicode'] as const) test(`CLI seals authoritative usage in the worker-to-parent closing window (${format})`, async t => {
+  const f = fixture(t), input = Object.assign(new PassThrough(), { isTTY: true });
+  const callbacks: ((value: ReportedUsage) => void)[] = [];
+  const agent = new ScriptedInvestigator([
+    (item, _signal, report) => { callbacks.push(report); report(syntheticUsage); return { kind: 'tools', requests: [{ kind: 'source', subject: item.request.subject }] }; },
+    (item, _signal, report) => { callbacks.push(report); return { kind: 'tools', requests: [{ kind: 'source', subject: item.request.subject }] }; },
+    (item, _signal, report) => { callbacks.push(report); return { kind: 'submit', result: draft(item.request.subject) }; },
+  ]);
+  let closingWindows = 0, workerMissing: number | undefined, started = false, stdout = '';
+  const emit = Worker.prototype.emit;
+  // Interpose only on delivery of the real worker's close message: its domain
+  // ledger is already closed, but the parent dialogue is still accepting reports.
+  t.mock.method(Worker.prototype, 'emit', function(this: Worker, event: string | symbol, ...args: unknown[]) {
+    const message = args[0] as WorkerReply | undefined;
+    const closing = event === 'message' && message?.type === 'agent-close';
+    if (closing) {
+      closingWindows++;
+      callbacks[0]!(syntheticUsage); // Existing report, not another charged call.
+      callbacks[1]!(syntheticUsage); callbacks[1]!(syntheticUsage);
+    }
+    if (event === 'message' && message?.type === 'reply' && message.result?.view.schema === 'postcode-investigation-view/1-experimental'
+      && message.result.view.projection.lens === 'summarize') workerMissing = message.result.view.usage.missingCalls;
+    const delivered = Reflect.apply(emit, this, [event, ...args]) as boolean;
+    if (closing) {
+      callbacks[2]!(syntheticUsage); // First report after closure must remain unknown.
+      callbacks[0]!({ source: 'synthetic', categories: [{ category: 'input', unit: 'tokens', value: 999, includedIn: null }] });
+    }
+    return delivered;
+  });
+  const batches: ObservationBatch[] = [];
+  const code = await runCli(['shell', '--project', f.configPath, ...(format === 'json' ? ['--json'] : [])], {
+    cwd: f.root, checkout: f.root, input, investigator: agent, stderr: () => {},
+    stdout: text => { stdout += text; if (!started && text.includes('postcode> ')) { started = true; setImmediate(() => input.write('summarize entry\nusage\n')); } },
+    sink: { async submit(batch) { batches.push(batch); if (batches.length === 2) input.end(); return { accepted: true }; } },
+  });
+  assert.equal(code, 0); assert.equal(closingWindows, 1); assert.equal(agent.closes, 1);
+  assert.equal(workerMissing, 2, 'the closing-window report was absent from the worker snapshot');
+  assert.equal(batches.length, 2);
+  let first: InvestigationUsageReport | undefined;
+  for (const batch of batches) {
+    const data = batch.records.find(item => item.kind === 'qualified-view')!.value as InvestigationView;
+    const observed = batch.records.find(item => item.kind === 'investigation-usage')!.value as InvestigationUsageReport;
+    const rendered = batch.records.find(item => item.kind === 'rendered-output')!.value as string;
+    assert.deepEqual(data.usage, observed);
+    if (first) assert.deepEqual(data.usage, first); else first = data.usage;
+    assert.equal(data.usage.calls, 3); assert.equal(data.usage.missingCalls, 1); assert.equal(data.usage.anomalousCalls, 0);
+    assert.equal(data.usage.totals[0]!.categories.find(item => item.category === 'input')!.value, 40);
+    assert.deepEqual(data.usage.attempts[0]!.usage.map(call => call.reports.length), [1, 1, 0]);
+    assert.deepEqual(finalizeInvestigationUsage(data, data.usage), data, 'finalization is idempotent');
+    const different = finalizeInvestigationUsage(data, { ...data.usage, missingCalls: 2 });
+    assert.equal(different.projection.id, data.projection.id); assert.notEqual(different.id, data.id);
+    assert.ok(stdout.includes(rendered));
+    if (format === 'json') assert.deepEqual(JSON.parse(rendered).usage, observed);
+    else { assert.match(rendered, /Session reported usage: 3 calls; 1 unknown; 0 anomalous/); assert.match(rendered, /input 40 tokens/); }
+  }
 });

@@ -292,7 +292,23 @@ configuration unavailability without an actual provider call.
 
 Every new investigation opens a fresh parent dialogue; closing or interrupting it
 aborts its signal, closes local communication state and ignores late replies and
-usage. The parent retains received usage and the last dispatched-context snapshot
+usage. At the parent closure boundary, before abort or local close can invoke any
+callbacks, the parent seals an immutable snapshot of that attempt's call reports.
+That snapshot is authoritative for CLI usage. It includes reports received after
+the worker finalized its own snapshot but before the parent processed dialogue
+closure. Reports after parent closure remain ignored, including first reports for
+otherwise unknown calls. Duplicate reports still count once.
+
+The worker's close message precedes its result message. On receiving a completed
+investigation view, the parent finalizes its usage and rendering from the sealed
+snapshots. Subsequent usage views and command observations read those same snapshots;
+worker report updates supply termination/exposure metadata without replacing the
+sealed call reports. View identity includes the finalized usage snapshot separately
+from the interpretation projection identity, and finalization leaves retained
+accounts and earlier views unchanged. Direct in-process sessions continue to use
+their own domain ledger and termination boundary.
+
+The parent retains received usage and the last dispatched-context snapshot
 when worker termination prevents a final worker report. Active interruption still
 ends the session and disposes the compiler worker. Remote work/billing cannot be
 guaranteed to stop. Shared validity checks run through evidence work, after

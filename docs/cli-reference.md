@@ -554,6 +554,10 @@ reporting and command observations. Human final reporting includes each attempt,
 its termination and its totals, followed by session totals; unknown-only reports
 remain explicit. Usage received after a reply while the dialogue remains active
 is still attributed to that call; late reports from a closed dialogue are ignored.
+CLI views and observations use the parent ledger's snapshot at dialogue closure,
+including reports received after the worker finished but before parent closure.
+Subsequent `usage` views use the same accepted reports, without counting duplicates
+or incorporating reports that arrived after closure.
 
 Investigation JSON uses `postcode-investigation-view/1-experimental`, containing
 selection, operation/outcome reuse, accounts, correction links, provenance,

@@ -1,3 +1,4 @@
+import type { RecordId } from './records.js';
 import type { AgentInput, AgentReply, AttemptReport, ReportedUsage } from './investigation/contracts.js';
 import type { openSession, ViewRequest, ExecutionOptions } from './session.js';
 import type { GitRequest, GitResult } from './git-execution.js';
@@ -30,6 +31,6 @@ export type WorkerRequest = { type: 'execute'; operation: number; request: ViewR
   | { type: 'git-result'; operation: number; id: number; result?: GitResult; error?: WireError };
 export type WorkerReply = { type: 'reply'; operation: number; opening?: Opening; result?: ExecutedView; error?: WireError }
   | { type: 'agent-exchange'; operation: number; id: number; call: number; input: AgentInput }
-  | { type: 'agent-close'; operation: number; attempt: string }
+  | { type: 'agent-close'; operation: number; attempt: RecordId }
   | { type: 'attempt-report'; operation: number; report: AttemptReport }
   | { type: 'git'; operation: number; id: number; request: GitRequest };

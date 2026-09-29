@@ -1,3 +1,4 @@
+import type { RecordId } from './records.js';
 import type { AgentIdentity, AgentReply, InvestigatorAgent, ReportedUsage } from './investigation/contracts.js';
 import type { InvestigationBounds } from './investigation/execute.js';
 import { parentPort, workerData } from 'node:worker_threads';
@@ -26,7 +27,7 @@ const configuration = workerData as ProjectOptions & { investigatorIdentity?: Ag
 const agent: InvestigatorAgent | undefined = configuration.investigatorIdentity ? {
   identity: configuration.investigatorIdentity,
   open() {
-    let attempt: string | undefined, call = 0;
+    let attempt: RecordId | undefined, call = 0;
     const owned = new Set<number>();
     return {
       exchange(input, _signal, usage) {

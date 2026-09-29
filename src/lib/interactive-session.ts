@@ -1,5 +1,6 @@
 import { freezeOwned } from './immutable.js';
-import type { InvestigatorAgent, AgentDialogue, AgentReply, AttemptReport } from './investigation/contracts.js';
+import type { InvestigatorAgent, AgentDialogue, AgentReply, AttemptReport, CallUsage } from './investigation/contracts.js';
+import { finalizeInvestigationUsage, renderInvestigationView } from './investigation/presentation.js';
 import type { InvestigationBounds } from './investigation/execute.js';
 import type { RecordId } from './records.js';
 import { InvestigationUsage } from './investigation/usage.js';
@@ -27,15 +28,18 @@ export function interactiveSession(options: ProjectOptions, dependencies: {
   const usage = new InvestigationUsage();
   const reports = new Map<RecordId, AttemptReport>();
   const started = new Map<RecordId, number>();
-  const closedDialogues = new Set<string>();
-  const dialogues = new Map<string, { dialogue: AgentDialogue; controller: AbortController }>();
-  const closeDialogue = (attempt: string) => {
-    closedDialogues.add(attempt);
+  const closedDialogues = new Map<RecordId, readonly CallUsage[]>();
+  const dialogues = new Map<RecordId, { dialogue: AgentDialogue; controller: AbortController }>();
+  const closeDialogue = (attempt: RecordId) => {
+    if (closedDialogues.has(attempt)) return undefined;
+    // This is the acceptance boundary, before abort/close can trigger callbacks.
+    closedDialogues.set(attempt, usage.calls(attempt));
     const item = dialogues.get(attempt); dialogues.delete(attempt);
     if (item) { item.controller.abort(); try { item.dialogue.close(); } catch (error) { return error instanceof Error ? error : new Error('Investigator close failed'); } }
     return undefined;
   };
-  const usageReport = () => usageSummary([...reports.values()].map(report => ({ ...report, usage: usage.calls(report.attempt) })));
+  const usageReport = () => usageSummary([...reports.values()].map(report => ({ ...report,
+    usage: closedDialogues.get(report.attempt) ?? usage.calls(report.attempt) })));
   const git = dependencies.git ?? new GitExecutionOwner();
   let pending: { id: number; resolve(value: Reply): void; reject(error: Error): void } | undefined;
   let ended = false, interrupted = false, sequence = 0;
@@ -124,6 +128,12 @@ export function interactiveSession(options: ProjectOptions, dependencies: {
     async execute(request: ViewRequest, execution: ExecutionOptions = {}): Promise<ExecutedView> {
       const reply = await send({ type: 'execute', request, execution });
       if (!reply.result) throw new Error('Worker returned no view');
+      if (reply.result.view.schema === 'postcode-investigation-view/1-experimental') {
+        // The close message precedes the result. Finalize from those sealed call
+        // snapshots, which also feed observations and subsequent usage requests.
+        const view = finalizeInvestigationUsage(reply.result.view, usageReport());
+        return { ...reply.result, view, rendered: renderInvestigationView(view), methods: [...reply.result.methods], failed: reply.result.failed ?? false };
+      }
       return reply.result;
     },
     async check() { await send({ type: 'check' }); },
