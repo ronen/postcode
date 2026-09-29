@@ -1,3 +1,5 @@
+import { sourceDisclosure } from './source-disclosure.js';
+import type { SourceDisclosureLevel, SourceDisclosureForm } from './source-disclosure.js';
 import type { InvestigationUsageReport } from './investigation/reporting.js';
 import type { InvestigationView } from './investigation/presentation.js';
 import type { QualifiedDependencyView } from './dependencies/presentation.js';
@@ -16,7 +18,8 @@ export interface ObservationBatch {
   readonly events: readonly {
     readonly id: string; readonly type: 'view-produced' | 'source-escape' | 'command-completed' | 'command-refused' | 'session-invalidated' | 'command-failed' | 'command-defect' | 'command-interrupted';
     readonly request: string; readonly analysis: string; readonly view?: string; readonly rendered: string;
-    readonly sourceLevel?: 'declaration-locations-and-excerpts' | 'organization-paths' | 'organization-and-module-source' | 'dependency-occurrences-and-organization-evidence' | 'investigation-support';
+    readonly sourceLevel?: SourceDisclosureLevel;
+    readonly sourceForms?: readonly SourceDisclosureForm[];
   }[];
 }
 
@@ -34,6 +37,7 @@ export function observationBatch(view: QualifiedView | QualifiedOrganizationView
   const artifact = randomUUID();
   const output = randomUUID();
   const references = { request, analysis, view: artifact, rendered: output };
+  const disclosed = rendered.length ? sourceDisclosure(view) : null;
   return { formatVersion: 1, id: randomUUID(), session: view.projection.session, command, records: [
     { id: request, kind: 'request', value: {
       lens: view.projection.lens, subject: view.projection.subject, lensParameters: view.projection.parameters,
@@ -48,7 +52,7 @@ export function observationBatch(view: QualifiedView | QualifiedOrganizationView
     { id: output, kind: 'rendered-output', value: rendered },
   ], events: [
     { id: randomUUID(), type: 'view-produced', ...references },
-    ...(view.sourceDetail ? [{ id: randomUUID(), type: 'source-escape' as const, ...references, sourceLevel: view.sourceDetail.level }] : []),
+    ...(disclosed ? [{ id: randomUUID(), type: 'source-escape' as const, ...references, sourceLevel: disclosed.level, sourceForms: disclosed.forms }] : []),
   ] };
 }
 

@@ -250,6 +250,20 @@ records preserve actual status stderr and supplied requests. Refusals, failures,
 invalidation and interruption can carry command events without view references;
 only actual produced views have view-produced/source-escape events.
 
+Source-escape events are classified from the bounded source fields rendered by
+each view family and format, independently of the requested `sourceDetail` option.
+The request retains that option even when no source is presented. Empty containers,
+record references and omission counts alone produce no source-escape event.
+Events preserve the disclosure family in `sourceLevel` and identify actual
+`sourceForms` as locations, excerpts or both. Module file associations and
+repository/group/artifact paths count as locations without requiring excerpt text.
+Organization JSON includes a captured repository root even for a missing selection;
+that is actual location disclosure, whereas its human rendering omits that field.
+Dependency organization-support source records are likewise disclosed in JSON but
+not by the human summary of that collection. Embedded module detail is accounted
+for alongside organization paths. This classification follows existing rendered
+content; it neither reads source nor infers disclosure from prose or arbitrary IDs.
+
 The CLI discloses the project-specific sink destination on stderr. New batches
 are grouped by configured project and UTC date under the checkout’s ignored
 `_observations/` root, with time/UUID filenames. The project directory combines a

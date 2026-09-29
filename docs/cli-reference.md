@@ -285,8 +285,14 @@ their enclosing declaration statement so the snippet includes meaningful syntax.
 Forwarding statements and semantic-symbol definitions remain distinct; shared
 export/symbol spans are shown once within each export. Excerpts remain bounded,
 so they support investigation without replacing the qualified compiler claim.
-This is not full-file rendering or arbitrary source browsing. The invocation
-records source-escape use at the locations-and-excerpts level alongside the view.
+This is not full-file rendering or arbitrary source browsing. A source-escape
+event is recorded only when source detail is actually presented. The request
+still records `--source-detail` for empty or unsupported selections. Each event
+identifies the disclosure family and its actual forms (`sourceForms`: locations,
+excerpts or both); locations alone count, but an empty source-detail container,
+evidence IDs and omission counts do not. Human and JSON output are assessed
+separately: for example, organization JSON includes its captured repository root
+even for a missing selection, while human output omits that field.
 
 Every view-producing CLI invocation submits one self-contained observation batch
 to `_observations/<project-label>-<project-key>/YYYY-MM-DD/HH-mm-ss.sssZ_<batch-uuid>.json`

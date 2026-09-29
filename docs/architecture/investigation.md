@@ -270,7 +270,11 @@ qualifications; the shared support list does not replace that attribution.
 Standard support details distinguish full,
 summary and earlier-interpretation exposure per generating provenance, including
 the provenance of incoming corrections. Explicit source detail reveals captured
-support locations and excerpts, with a source-disclosure observation; investigator
+support locations and excerpts, with a source-disclosure observation only when
+source detail is actually presented. Empty support containers for missing,
+unsupported selections or accounts with no disclosed source support produce no source-escape event;
+the request still records the explicit option. Events distinguish locations from
+nonempty excerpts through the shared format-aware observation classification. Investigator
 source acquisition by itself emits no human source-disclosure event. One-shot views
 disclose that their references expire when the command ends. Summary/configuration
 and selection failures produce an explicit view and expected failure exit status;
