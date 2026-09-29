@@ -4,7 +4,7 @@ Record type: disposition
 Date: 2026-09-29
 Task: [Module investigation](../../tasks/2026-09-29-module-investigation.md)
 Handoff: [Milestone 2](2026-09-29-milestone-2-handoff.md)
-Findings: [Round 1](2026-09-29-milestone-2-round-1-findings.md), [Round 2](2026-09-29-milestone-2-round-2-findings.md)
+Findings: [Round 1](2026-09-29-milestone-2-round-1-findings.md), [Round 2](2026-09-29-milestone-2-round-2-findings.md), [Round 3](2026-09-29-milestone-2-round-3-findings.md)
 
 ## Findings and dispositions
 
@@ -125,3 +125,31 @@ The task remains active at the milestone-2 gate pending human acceptance. The
 round-2 clearance covers F1–F4 at its pinned target; the subsequent disclosure
 correction has implementing-agent verification and is separately identified for
 any further review the human arranges. Milestone 3 has not begun.
+
+
+## Round 3 assessment — 2026-09-30
+
+Round 3 independently reviewed source-disclosure target
+`b408c414b041f032a8954ca450c9cbe30dded139`. The reviewer compared each classifier
+branch with its renderer, passed type checking and all 369 tests (133.4 seconds,
+zero failures/cancellations/skips), and reran the missing/unsupported-reference
+probe with a positive disclosure control in both formats. No new findings were
+reported. The implementing agent accepts the assessment that the correction
+conforms to the actual-disclosure decision and leaves the round-2 fixes intact.
+
+| Round-3 item | Disposition | Basis/action |
+| --- | --- | --- |
+| Source-disclosure correction and positive/negative controls | Accepted; independently verified | Request intent is retained; actual format-specific locations and nonempty excerpts determine events and forms. Empty selection/container cases and genuine location-only disclosure behave as required. No runtime correction is indicated. |
+| Correction to round-2 wording | Accepted | Shared mechanical behavior was pre-existing nonconformance, not an adopted convention. The reviewer now confirms this explicitly; the human-authorized correction and earlier disposition already use that interpretation. |
+| Maintenance coupling between renderer and classifier | Accepted risk; human choice requested | The classifier models renderer output separately. Current tests establish current behavior but cannot automatically cover future fields. The reviewer leaves a cross-reference safeguard to the human. Recommended action: brief comments at each renderer's source-detail section pointing to the classifier and regression test, without redesign. No dependent edit has yet been made. |
+| Paths outside sourceDetail | Unassessed; human direction requested | The reviewer did not assess ordinary JSON/context paths against the disclosure decision. Neither compliance nor a defect is inferred. Recommended disposition: an explicit unassessed backlog follow-up; the alternative offered is a bounded audit before milestone acceptance. No audit, fix or deferral has been assumed. |
+| Handoff addendum traceability | Acknowledged; no correction needed | The previous human explicitly requested inclusion of the correction and verification in the handoff. Its dated addendum preserved the original text; the review notes that authorization. No new handoff edit is needed for this assessment. |
+| Cancellation uncertainty | Existing human-approved qualification retained | The reviewer's fifth complete passing run does not diagnose historical cancellations. Diagnosis remains required before milestone-3 live, cost-bearing adapter work. |
+
+The reviewer recommends milestone-2 acceptance with that qualification. The
+implementing agent agrees that no defect in the reviewed target remains open.
+Human choices on the two observations above and explicit milestone acceptance
+remain pending. No runtime code, governing document or development instruction
+has been changed for this assessment, and no new tests were required or rerun.
+The authored findings and handoff remain unchanged. The task remains active;
+milestone 3 has not begun.
