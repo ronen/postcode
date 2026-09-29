@@ -530,3 +530,32 @@ inference has occurred. The plan requires a pause for human setup before live us
 Sources: [model](https://developers.openai.com/api/docs/models/gpt-6-sol),
 [SDK](https://developers.openai.com/api/docs/libraries),
 [spend controls](https://developers.openai.com/api/docs/guides/spend-limits).
+
+### Milestone 3 offline adapter and credential handoff — 2026-09-30
+
+`54d8a1b` implements the selected OpenAI Responses adapter and macOS Keychain
+preflight, intentional PostCode enablement and transmission disclosure, safe
+failure translation, actual returned model/service-tier usage attribution and
+partitioned totals. The SDK is pinned at 7.25.0; requests use the selected model,
+medium reasoning, standard service, `store: false`, no retries/fallback and a
+16,000-token output bound. Function access remains subject-based and whole-result
+acceptance remains in the existing domain boundary. Presentation identity is now
+`postcode/investigation-presentation@4`. Architecture, help, CLI reference and
+project status describe the implemented capability and its pending live verification.
+
+The [offline validation record](../validation/module-investigation/2026-09-30-milestone-3-offline-adapter.md)
+records the 11 adapter tests, real worker/CLI coverage in both formats, synthetic
+credential exclusion, provider failure taxonomy, cancellation and usage cases.
+Type checking and all 382 suite tests passed with zero failures, cancellations or
+skips (128.10 seconds). The earlier ownership diagnosis remains separately
+traceable, including the limits of historical attribution. No test result is
+claimed to establish live provider behavior.
+
+The [credential setup handoff](../../docs/hosted-investigation.md) is ready. Under
+the approved plan, work pauses for the human to configure access before any live
+inference. No real credential has been read or written and no live inference has
+run. The task remains active; milestone 3 is not complete. After setup, live usage
+verification, committed assessment tooling, pinned/frozen references, clean
+summary evaluators, source-informed assessment, baseline/focused cases and the
+milestone-3 independent review remain. Freeze source references before any live
+run on the assessment subjects or fixtures. Milestone 4 remains gated.
