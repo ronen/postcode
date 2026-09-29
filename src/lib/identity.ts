@@ -8,7 +8,7 @@ export const methods = {
   content: 'postcode/subject-content@1',
   investigation: 'postcode/investigation@6',
   investigationEvaluation: 'postcode/investigation-evaluation@1',
-  investigationPresentation: 'postcode/investigation-presentation@1',
+  investigationPresentation: 'postcode/investigation-presentation@2',
   discovery: 'postcode/typescript-modules@12',
   evaluation: 'postcode/evaluate-modules@5',
   dependencies: 'postcode/typescript-dependencies@2',

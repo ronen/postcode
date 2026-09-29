@@ -19,7 +19,9 @@ const runGit: RunGit = request => new Promise((resolve, reject) => {
   catch (error) { waiting.delete(id); reject(error); }
 });
 let exchangeId = 0;
-const exchanges = new Map<number, { operation: number; resolve(reply: AgentReply): void; reject(error: Error): void; usage(value: ReportedUsage): void }>();
+const exchanges = new Map<number, { operation: number; resolve(reply: AgentReply): void; reject(error: Error): void }>();
+// Usage belongs to the dialogue, not the shorter pending-reply lifetime.
+const usageCallbacks = new Map<number, { operation: number; usage(value: ReportedUsage): void }>();
 const configuration = workerData as ProjectOptions & { investigatorIdentity?: AgentIdentity; investigationBounds?: InvestigationBounds };
 const agent: InvestigatorAgent | undefined = configuration.investigatorIdentity ? {
   identity: configuration.investigatorIdentity,
@@ -31,12 +33,13 @@ const agent: InvestigatorAgent | undefined = configuration.investigatorIdentity 
         attempt = input.attempt;
         return new Promise((resolve, reject) => {
           const id = ++exchangeId; owned.add(id);
-          exchanges.set(id, { operation, resolve, reject, usage });
+          exchanges.set(id, { operation, resolve, reject });
+          usageCallbacks.set(id, { operation, usage });
           send({ type: 'agent-exchange', operation, id, input, call: ++call });
         });
       },
       close() {
-        for (const id of owned) exchanges.delete(id);
+        for (const id of owned) { exchanges.delete(id); usageCallbacks.delete(id); }
         if (attempt) send({ type: 'agent-close', operation, attempt });
       },
     };
@@ -45,9 +48,13 @@ const agent: InvestigatorAgent | undefined = configuration.investigatorIdentity 
 let opened: Awaited<ReturnType<typeof openSession>>;
 port.on('message', async (message: WorkerRequest) => {
   if (message.type === 'agent-result' || message.type === 'agent-usage') {
+    if (message.type === 'agent-usage') {
+      const callback = usageCallbacks.get(message.id);
+      if (callback?.operation === message.operation) callback.usage(message.usage);
+      return;
+    }
     const pending = exchanges.get(message.id);
     if (!pending || pending.operation !== message.operation) return;
-    if (message.type === 'agent-usage') { pending.usage(message.usage); return; }
     exchanges.delete(message.id);
     if (message.error) pending.reject(decodeError(message.error));
     else if ('reply' in message) pending.resolve(message.reply!);

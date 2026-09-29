@@ -250,6 +250,9 @@ Module summary selection resolves exactly one module name, handle or bound
 reference before starting work. Missing and ambiguous selections expose their
 status and candidates without generation. Summary and exact investigram inspection
 construct views from retained records. Inspection never invokes investigation.
+Known investigram references supplied to `children`, `parents` or `summarize`
+produce an explicit unsupported subject/lens selection and expected failure
+status, without coercion or generation. Missing references remain distinct.
 Investigram bindings use the existing append-only session allocator with a distinct
 `investigram-` prefix. Originals, composition children and replacements remain
 addressable; views show originals and explicit correction links at this checkpoint.
@@ -260,7 +263,11 @@ operations and correction-aware investigator context over earlier retained resul
 
 The experimental investigation view includes selected operation/outcome and reuse,
 immutable accounts, corrections, generating provenance, evidence exposure, stable
-references and attempt/session usage. Standard support details distinguish full,
+references and attempt/session usage.
+Human correction displays identify each correction's corrected subjects and own
+evidence references alongside its reporter, target, replacement, reason and
+qualifications; the shared support list does not replace that attribution.
+Standard support details distinguish full,
 summary and earlier-interpretation exposure per generating provenance, including
 the provenance of incoming corrections. Explicit source detail reveals captured
 support locations and excerpts, with a source-disclosure observation; investigator
@@ -276,7 +283,9 @@ ownership. The worker owns analysis, evidence acquisition, investigation
 coordination, validation and retention. The parent owns the injected investigator's
 communication participant, cancellation and independently recorded usage. A private,
 operation-tagged bridge carries agent exchanges, immediate usage reports and attempt
-exposure snapshots; it does not provide an additional program-access interface.
+exposure snapshots. Worker usage callbacks remain registered for the whole dialogue,
+including after the corresponding reply resolves, and are removed on dialogue
+close; pending reply ownership ends earlier. The bridge does not provide an additional program-access interface.
 The same in-process CLI environment injection reaches this bridge for both shell
 and one-shot tests. Ordinary CLI use has no configured investigator and reports
 configuration unavailability without an actual provider call.
@@ -299,5 +308,7 @@ does not make distinct anomalies indistinguishable. Usage inspection opens no di
 attempt without adding calls. Attempt/session reports survive direct session close
 and parent worker disposal. Command observations include usage independently of view
 production; interrupted or invalidated commands emit final usage reporting even
-when their result view was suppressed. These records describe received reports,
+when their result view was suppressed. Human final reporting lists every attempt
+and its termination as well as session totals, even when all reports are unknown.
+These records describe received reports,
 not complete billed usage.

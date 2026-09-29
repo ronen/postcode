@@ -9,7 +9,7 @@ import { usageSummary } from './reporting.js';
 import type { InvestigationUsageReport } from './reporting.js';
 
 export function createInvestigationView(store: ProgramRecordStore, session: SessionId,
-  request: { lens: 'summarize' | 'inspect' | 'usage'; selector: string | null; reference?: boolean; presentation: Presentation; referenceLifetime?: 'session' | 'command' },
+  request: { lens: 'summarize' | 'inspect' | 'usage' | 'children' | 'parents'; unsupportedSubject?: 'investigram'; selector: string | null; reference?: boolean; presentation: Presentation; referenceLifetime?: 'session' | 'command' },
   selected: readonly RecordId[], result: InvestigationSelection | null, usage: InvestigationUsageReport) {
   const accounts = new Map<RecordId, Investigram>(), corrections = new Map<RecordId, Correction>();
   const provenances = new Map<RecordId, InvestigationProvenance>();
@@ -41,7 +41,7 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
   const references = store.entityIds([...new Set([...accounts.keys(), ...[...corrections.values()].flatMap(item => [item.reporter, item.target, item.replacement])])], 'investigram');
   const support = new Set([...accounts.values()].flatMap(item => [...item.evidence, ...item.associations.flatMap(item => item.evidence), ...item.inconsistencies.flatMap(item => item.evidence)]));
   for (const correction of corrections.values()) correction.evidence.forEach(id => support.add(id));
-  const candidates = request.lens === 'summarize' ? selected.map(id => {
+  const candidates = request.lens === 'summarize' && !request.unsupportedSubject ? selected.map(id => {
     const module = store.get(id);
     const claim = module.kind === 'module' ? store.get(module.claim) : null;
     if (claim?.kind !== 'claim' || claim.information.type !== 'module') throw new Error('Expected module naming claim');
@@ -75,10 +75,10 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
   const projection = { id: recordId(session, 'investigation-projection', [methods.investigationPresentation, request,
     selected.map(id => identityReference(session, id)), result?.evaluation?.id ?? null, [...corrections.keys()], usage]),
     session, lens: request.lens, subject: 'selected-subjects', parameters: { selector: request.selector, reference: request.reference ?? false },
-    selection: { matches: selected.length, status: selected.length === 1 ? 'selected' : selected.length ? 'ambiguous' : 'missing' } };
+    selection: { matches: selected.length, status: request.unsupportedSubject ? 'unsupported-subject-lens' : selected.length === 1 ? 'selected' : selected.length ? 'ambiguous' : 'missing' } };
   return freezeOwned({ schema: 'postcode-investigation-view/1-experimental' as const, id: projection.id, projection,
     presentation: request.presentation, referenceLifetime: request.referenceLifetime ?? 'session',
-    result, selected, candidates, references: [...references].map(([id, reference]) => ({ id, reference })),
+    result, selected, candidates, unsupportedSubject: request.unsupportedSubject ?? null, references: [...references].map(([id, reference]) => ({ id, reference })),
     accounts: [...accounts.values()], corrections: [...corrections.values()], provenance: [...provenances.values()],
     support: supportDetails, usage,
     limitations: ['Generated accounts remain interpretation. Corrections are retained assertions, not established truth.',
@@ -91,8 +91,9 @@ export type InvestigationView = ReturnType<typeof createInvestigationView>;
 export function renderInvestigationView(view: InvestigationView): string {
   if (view.presentation.format === 'json') return `${JSON.stringify(view)}\n`;
   const reference = (id: RecordId) => view.references.find(item => item.id === id)?.reference ?? id;
-  const lines = [view.projection.lens === 'usage' ? 'Investigation usage' : view.projection.lens === 'summarize' ? 'Module summary' : 'Inspect · investigram'];
+  const lines = [view.unsupportedSubject ? `${view.projection.lens} · unsupported subject/lens combination` : view.projection.lens === 'usage' ? 'Investigation usage' : view.projection.lens === 'summarize' ? 'Module summary' : 'Inspect · investigram'];
   lines.push(view.referenceLifetime === 'command' ? 'References expire when this command ends. Use the shell for follow-up inspection.' : 'References remain bound for this session.');
+  if (view.unsupportedSubject) lines.push(`The reference is bound to an ${view.unsupportedSubject}; ${view.projection.lens} does not support that subject kind.`);
   if (view.result) {
     lines.push(view.result.reused ? 'Retained outcome; no new investigation.' : 'New investigation request.');
     const outcome = view.result.evaluation?.outcome ?? view.result.unavailable;
@@ -109,6 +110,8 @@ export function renderInvestigationView(view: InvestigationView): string {
     if (account.evidence.length) lines.push(`  Evidence: ${account.evidence.map(inlineText).join(', ')}`);
   }
   for (const correction of view.corrections) lines.push(`\nCorrection reported by @${reference(correction.reporter)}: @${reference(correction.target)} → @${reference(correction.replacement)}`,
+    `  Corrected subjects: ${correction.correctedSubjects.map(inlineText).join(', ')}`,
+    `  Evidence: ${correction.evidence.length ? correction.evidence.map(inlineText).join(', ') : 'none supplied'}`,
     `  Reason: ${inlineText(correction.reason)}`, ...correction.qualifications.map(item => `  Qualification: ${inlineText(item)}`));
   if (view.projection.lens === 'inspect') for (const support of view.support) lines.push(`  Support (exposure identified by provenance): ${terminalText(JSON.stringify(support))}`);
   if (view.sourceDetail) lines.push('\nSource support (captured locations and excerpts):', terminalText(JSON.stringify(view.sourceDetail.items, null, 2)));
@@ -120,7 +123,7 @@ export function renderInvestigationView(view: InvestigationView): string {
   return `${lines.join('\n')}\n`;
 }
 
-function usageLines(usage: InvestigationUsageReport, label: string): string[] {
-  return [`\n${label} reported usage: ${usage.calls} calls; ${usage.missingCalls} unknown; ${usage.anomalousCalls} anomalous.`,
+export function usageLines(usage: InvestigationUsageReport, label: string): string[] {
+  return [`${label} reported usage: ${usage.calls} calls; ${usage.missingCalls} unknown; ${usage.anomalousCalls} anomalous.`,
     ...usage.totals.map(total => `  ${inlineText(total.agent.provider)}/${inlineText(total.agent.model)} (${total.source}): ${total.categories.map(item => `${inlineText(item.category)} ${item.value ?? 'unknown'} ${inlineText(item.unit)}${item.includedIn ? ` (subset of ${inlineText(item.includedIn)})` : ''}`).join('; ')}`)];
 }

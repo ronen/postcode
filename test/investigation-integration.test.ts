@@ -10,6 +10,7 @@ import { openSession } from '../src/lib/session.js';
 import { runCli } from '../src/lib/cli.js';
 import type { EvidenceResponse } from '../src/lib/evidence-access.js';
 import type { SubmittedInvestigram, AgentReply, InvestigatorAgent } from '../src/lib/investigation/contracts.js';
+import { renderInvestigationView } from '../src/lib/investigation/presentation.js';
 import type { InvestigationView } from '../src/lib/investigation/presentation.js';
 import type { InvestigationUsageReport } from '../src/lib/investigation/reporting.js';
 import type { ObservationBatch } from '../src/lib/observations.js';
@@ -97,6 +98,10 @@ test('successive operation evaluations atomically retain corrections and supply 
   const inspected = view(await f.session.execute({ lens: 'inspect', selector: reference, reference: true, presentation: summary.presentation }));
   assert.deepEqual(inspected.accounts, initial.accounts, 'retention cannot rewrite an earlier tree');
   assert.equal(inspected.corrections.length, 1);
+  const human = renderInvestigationView({ ...inspected, presentation: { format: 'unicode', sourceDetail: false } });
+  const correctionText = human.slice(human.indexOf('Correction reported by'), human.indexOf('  Support'));
+  assert.ok(correctionText.includes(`Corrected subjects: ${initial.selected[0]}`));
+  assert.ok(correctionText.includes(`Evidence: ${root}`));
   assert.deepEqual(inspected.support.find(item => item.id === root)!.exposures, [{ provenance: inspected.corrections[0]!.provenance, forms: ['prior-interpretation'] }]);
   const replacement = inspected.references.find(item => item.id === inspected.corrections[0]!.replacement)!.reference;
   const replacementView = view(await f.session.execute({ lens: 'inspect', selector: replacement, reference: true, presentation: summary.presentation }));
@@ -339,7 +344,10 @@ test('shell retains accompanying corrections and makes original and replacement 
           original = data; root = data.accounts[0]!.id; module = data.selected[0]!;
           originalReference = data.references.find(item => item.id === root)!.reference; input.write('summarize other\n');
         } else if (views.length === 2) {
-          assert.equal(data.corrections.length, 1); assert.ok(data.provenance.some(item => item.completeTargets.includes(root)));
+          assert.equal(data.corrections.length, 1);
+          const human = renderInvestigationView({ ...data, presentation: { format: 'unicode', sourceDetail: false } });
+          assert.ok(human.includes(`Corrected subjects: ${module}`)); assert.ok(human.includes(`Evidence: ${root}`));
+          assert.ok(data.provenance.some(item => item.completeTargets.includes(root)));
           input.write(`inspect @${originalReference}\n`);
         } else if (views.length === 3) {
           assert.deepEqual(data.accounts, original.accounts);
@@ -375,4 +383,77 @@ test('the worker bridge preserves an absent malformed reply for retained domain 
   assert.equal(code, 0);
   assert.deepEqual(views[0]!.result!.evaluation!.outcome, { kind: 'investigation-failure', reason: 'Missing agent exchange.' });
   assert.equal(views[1]!.result!.reused, true); assert.equal(agent.inputs.length, 1); assert.equal(agent.closes, 1);
+});
+
+for (const shell of [false, true]) test(`usage arriving after a reply remains attributable until dialogue close (${shell ? 'shell' : 'one-shot'})`, async t => {
+  const f = fixture(t), input = Object.assign(new PassThrough(), { isTTY: true });
+  let reportFirst: (() => void) | undefined, started = false;
+  const agent = new ScriptedInvestigator([
+    (item, _signal, report) => { reportFirst = () => report(syntheticUsage); return { kind: 'tools', requests: [{ kind: 'source', subject: item.request.subject }] }; },
+    (item, _signal, report) => { reportFirst!(); report(syntheticUsage); return { kind: 'submit', result: draft(item.request.subject) }; },
+  ]);
+  const batches: ObservationBatch[] = [];
+  const code = await runCli(shell ? ['shell', '--project', f.configPath, '--json'] : ['summarize', 'entry', '--project', f.configPath, '--json'], {
+    cwd: f.root, checkout: f.root, input, investigator: agent, stderr: () => {},
+    stdout: text => { if (shell && !started && text.includes('postcode> ')) { started = true; setImmediate(() => input.write('summarize entry\nusage\n')); } },
+    sink: { async submit(batch) { batches.push(batch); if (batches.length === 2) input.end(); return { accepted: true }; } },
+  });
+  assert.equal(code, 0);
+  for (const batch of batches) {
+    const data = batch.records.find(item => item.kind === 'qualified-view')!.value as InvestigationView;
+    const observed = batch.records.find(item => item.kind === 'investigation-usage')!.value as InvestigationUsageReport;
+    assert.equal(data.usage.calls, 2); assert.equal(data.usage.missingCalls, 0);
+    assert.deepEqual(data.usage, observed);
+    assert.equal(data.usage.totals[0]!.categories.find(item => item.category === 'input')!.value, 40);
+  }
+  assert.equal(batches.length, shell ? 2 : 1);
+  assert.equal(agent.closes, 1);
+});
+
+test('shell rejects known investigram subjects for mechanical and summary lenses without calling the investigator', async t => {
+  const f = fixture(t), input = Object.assign(new PassThrough(), { isTTY: true }), agent = summaryAgent();
+  let started = false, reference = '', output = '';
+  const batches: ObservationBatch[] = [], driver = interactionDriver(() => input.end());
+  const commands = ['children', 'parents', 'summarize'];
+  const code = await runCli(['shell', '--project', f.configPath], { cwd: f.root, checkout: f.root, input, investigator: agent,
+    stdout: text => { output += text; if (!started && text.includes('postcode> ')) { started = true; setImmediate(() => input.write('summarize entry\n')); } }, stderr: () => {},
+    sink: { async submit(batch) { batches.push(batch); driver.run(() => {
+      const data = batch.records.find(item => item.kind === 'qualified-view')!.value as InvestigationView;
+      if (batches.length === 1) reference = data.references[0]!.reference;
+      else { assert.equal(data.projection.selection.status, 'unsupported-subject-lens'); assert.equal(data.unsupportedSubject, 'investigram'); assert.equal(data.result, null); assert.equal(data.accounts.length, 0); }
+      const command = commands[batches.length - 1];
+      if (command) input.write(`${command} @${reference}\n`); else input.end();
+    }); return { accepted: true }; } },
+  });
+  driver.verify(); assert.equal(code, 0); assert.equal(agent.inputs.length, 1);
+  assert.equal(batches.length, 4); assert.match(output, /unsupported subject\/lens combination/);
+  assert.ok(batches.slice(1).every(batch => batch.events.at(-1)!.type === 'command-failed'));
+  assert.doesNotMatch(output, /unknown-reference|Selection: missing/);
+});
+
+for (const reported of [true, false]) test(`human final interruption reporting preserves attempt and session usage (${reported ? 'multiple attempts' : 'unknown only'})`, async t => {
+  const f = fixture(t), input = Object.assign(new PassThrough(), { isTTY: true });
+  let started = false, opened = 0, stderr = '';
+  const batches: ObservationBatch[] = [];
+  const agent: InvestigatorAgent = { identity: summaryAgent().identity, open() {
+    const attempt = ++opened;
+    return { exchange: async (item, _signal, usage) => {
+      if (reported) usage(syntheticUsage);
+      if (reported && attempt === 1) return { kind: 'submit', result: draft(item.request.subject) };
+      setImmediate(() => process.emit('SIGINT'));
+      return new Promise<AgentReply>(() => {});
+    }, close() {} };
+  } };
+  const code = await runCli(reported ? ['shell', '--project', f.configPath] : ['summarize', 'entry', '--project', f.configPath], {
+    cwd: f.root, checkout: f.root, input, investigator: agent,
+    stdout: text => { if (reported && !started && text.includes('postcode> ')) { started = true; setImmediate(() => input.write('summarize entry\nsummarize other\n')); } },
+    stderr: text => { stderr += text; }, sink: { async submit(batch) { batches.push(batch); return { accepted: true }; } },
+  });
+  input.end(); assert.equal(code, 130);
+  const usage = batches.at(-1)!.records.find(item => item.kind === 'investigation-usage')!.value as InvestigationUsageReport;
+  assert.equal(usage.attempts.length, reported ? 2 : 1);
+  for (const attempt of usage.attempts) assert.ok(stderr.includes(`Attempt ${attempt.attempt} (${attempt.termination}) reported usage: 1 calls; ${reported ? 0 : 1} unknown; 0 anomalous.`));
+  assert.ok(stderr.includes(`Session reported usage: ${reported ? 2 : 1} calls; ${reported ? 0 : 1} unknown; 0 anomalous.`));
+  if (reported) { assert.match(stderr, /input 20 tokens/); assert.match(stderr, /input 40 tokens/); }
+  assert.doesNotMatch(stderr, /\n\n/);
 });

@@ -138,10 +138,15 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
   return async (request: ViewRequest) => {
     const { lens, selector, presentation } = request;
     const interpretationInspection = lens === 'inspect' && request.reference && selector?.startsWith('investigram-');
-    if (lens === 'summarize' || lens === 'usage' || interpretationInspection) {
+    const investigram = request.reference && selector?.startsWith('investigram-')
+      ? [...store.entityIds(store.investigations(session).flatMap(item => item.investigrams), 'investigram')]
+        .find(([, reference]) => reference === selector)?.[0] : undefined;
+    const unsupportedSubject = investigram && (lens === 'children' || lens === 'parents' || lens === 'summarize') ? 'investigram' as const : undefined;
+    if (lens === 'summarize' || lens === 'usage' || interpretationInspection || unsupportedSubject) {
       const basis = evaluateModules(store, analysis);
       let selected: RecordId[] = [];
-      if (lens === 'summarize') {
+      if (unsupportedSubject) selected = [investigram!];
+      else if (lens === 'summarize') {
         const references = store.entityIds(basis.modules, 'module');
         selected = basis.modules.filter(id => {
           const module = store.get(id);
@@ -153,15 +158,15 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
         const ids = store.investigations(session).flatMap(item => item.investigrams);
         selected = [...store.entityIds(ids, 'investigram')].filter(([, reference]) => reference === selector).map(([id]) => id);
       }
-      const result = lens === 'summarize' && selected.length === 1
+      const result = !unsupportedSubject && lens === 'summarize' && selected.length === 1
         ? await integration.evaluate({ operation: 'functionality', subject: selected[0]!, parameters: {} }) : null;
-      const view = createInvestigationView(store, session, { ...request, lens: lens as 'summarize' | 'inspect' | 'usage' }, selected, result, usage());
+      const view = createInvestigationView(store, session, { ...request, ...(unsupportedSubject ? { unsupportedSubject } : {}), lens: lens as 'summarize' | 'inspect' | 'usage' | 'children' | 'parents' }, selected, result, usage());
       const context = store.get(session);
       if (context.kind !== 'session') throw new Error('Expected session');
       const repository = context.repository ? store.get(context.repository) : null;
       return { view, rendered: renderInvestigationView(view), repositoryRoot: repository?.kind === 'repository-evidence' && repository.capture.status === 'available' ? repository.capture.evidence.root : null,
         methods: [...context.methods, methods.investigationEvaluation, methods.investigationPresentation],
-        failed: lens === 'summarize' && (selected.length !== 1 || !result?.evaluation || result.evaluation.outcome.kind !== 'accepted') || !!interpretationInspection && selected.length !== 1 };
+        failed: !!unsupportedSubject || lens === 'summarize' && (selected.length !== 1 || !result?.evaluation || result.evaluation.outcome.kind !== 'accepted') || !!interpretationInspection && selected.length !== 1 };
     }
     const dependencyLens = ['dependencies', 'children', 'parents'].includes(lens);
     // Provider/evaluation reuse owns input-basis validity; an outer cache could hide new acquisition.

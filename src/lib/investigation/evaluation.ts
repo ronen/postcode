@@ -64,7 +64,8 @@ export function investigationEvaluation(store: ProgramRecordStore, analysis: Mod
       id: recordId(session, 'investigation-evaluation', [methods.investigationEvaluation, identityReference(session, execution.report.attempt)]),
       request, attempt: execution.report.attempt, outcome: outcome.kind === 'accepted' ? { kind: 'accepted', root: outcome.result.root } : outcome,
       investigrams: accepted?.investigrams.map(item => item.id) ?? [], corrections: accepted?.corrections.map(item => item.id) ?? [] };
-    // No await between the last validity check and atomic publication.
+    // After the domain validity check returns, recheck abortion above and publish
+    // synchronously; no asynchronous work intervenes after that abort check.
     store.put([...(accepted ? [accepted.provenance, ...accepted.investigrams, ...accepted.corrections] : []), evaluation]);
     const stored = store.get(evaluation.id);
     if (stored.kind !== 'investigation-evaluation') throw new Error('Expected retained investigation outcome');

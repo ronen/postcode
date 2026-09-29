@@ -1,3 +1,5 @@
+import { usageSummary } from './investigation/reporting.js';
+import { usageLines } from './investigation/presentation.js';
 import type { InvestigationUsageReport } from './investigation/reporting.js';
 import { commandObservation, observationBatch } from './observations.js';
 import type { ObservationSink } from './observations.js';
@@ -51,7 +53,8 @@ export async function publishCommand(session: {
   const usage = session.usage?.();
   if (status !== 'completed' && usage?.attempts.length && !published) {
     const final = request.presentation.format === 'json' ? `${JSON.stringify({ schema: 'postcode-investigation-usage/1-experimental', session: session.id, usage })}\n`
-      : `Final investigation usage: ${usage.calls} calls; ${usage.missingCalls} unknown; ${usage.anomalousCalls} anomalous.\n${usage.totals.map(total => `${inlineText(total.agent.provider)}/${inlineText(total.agent.model)} (${total.source}): ${total.categories.map(item => `${inlineText(item.category)} ${item.value ?? 'unknown'} ${inlineText(item.unit)}${item.includedIn ? ` (subset of ${inlineText(item.includedIn)})` : ''}`).join('; ')}`).join('\n')}\n`;
+      : ['Final investigation usage:', ...usage.attempts.flatMap(attempt => usageLines(usageSummary([attempt]), `Attempt ${attempt.attempt} (${attempt.termination})`)),
+        ...usageLines(usage, 'Session'), ...usage.limitations.map(inlineText)].join('\n') + '\n';
     stderr += final; output.stderr(final);
   }
   const produced = published ? observationBatch(published.view, stdout,

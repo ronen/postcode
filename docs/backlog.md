@@ -79,6 +79,15 @@ records the later 360/360 complete run and the final 13/13 isolated ownership ru
 separately, alongside the final focused integration checks. This is another
 observation of the deferred concern, not a diagnosis or a change in its disposition.
 
+The milestone-2 reviewer ran the pinned target `a396f9b8e9b38ad344554cbe4c0e7677ded1ec0e`
+three times: 360 passed, zero failed or cancelled each time (about 125.5, 121.0
+and 117.4 seconds). These passes do not diagnose the concern. The human renewed
+qualified deferral through milestone 2 after that review, with diagnosis required
+before milestone 3's live, cost-bearing adapter work. The new parent-side dialogue,
+abort and usage state increases the importance of resolving the ownership concern
+before relying on live interruption and cleanup. See the
+[milestone-2 findings](../records/reviews/module-investigation/2026-09-29-milestone-2-round-1-findings.md).
+
 ## Consider grouping investigation operations in one dialogue
 
 Added: 2026-09-29

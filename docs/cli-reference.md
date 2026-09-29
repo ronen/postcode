@@ -533,7 +533,10 @@ Recovery from a retained failure/stop requires reopening and loses accumulated w
 Within a shell, `inspect @investigram-…` displays the exact original account,
 referent, qualification, evidence support, fixed composition, generating operation
 and accompanying correction links. Targets and replacements are separately
-selectable. `--source-detail` discloses captured support locations and excerpts and
+selectable. Each correction lists its corrected subjects and its own evidence
+references in human output. Known investigram references supplied to `children`,
+`parents` or `summarize` report an unsupported subject/lens combination without
+generation; an absent reference remains a missing selection. `--source-detail` discloses captured support locations and excerpts and
 records that disclosure. Source sent only to the investigator does not count as
 human source disclosure. Inspection does not generate a missing account or redirect
 to a replacement. Replacement selection, conflict/reconsideration displays and
@@ -547,7 +550,10 @@ calls are not zero and are excluded from trusted totals. Aggregate numeric overf
 is explicitly unknown; indexed annotations preserve non-finite raw report values
 that JSON numbers cannot represent. Reported figures are not confirmed billing. Repeated display
 adds no usage. Interruption and invalidation preserve received reports in final
-reporting and command observations; late reports from a closed dialogue are ignored.
+reporting and command observations. Human final reporting includes each attempt,
+its termination and its totals, followed by session totals; unknown-only reports
+remain explicit. Usage received after a reply while the dialogue remains active
+is still attributed to that call; late reports from a closed dialogue are ignored.
 
 Investigation JSON uses `postcode-investigation-view/1-experimental`, containing
 selection, operation/outcome reuse, accounts, correction links, provenance,
