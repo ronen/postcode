@@ -27,9 +27,24 @@ by counts, not recursively embedded. A selected claim's own context and evidence
 remain unchanged. Repository evidence reached through a context is separately
 summarized by identity, method, availability and limitations, rather than embedding
 its entire artifact census. Summaries are delivery metadata, not modified stored
-records. Supplied-evidence provenance includes delivered summary identities; it
-does not assert that the full underlying record was transmitted. Internal raw
-session/input snapshots remain outside the inspection tool.
+records. Attempt reports and accepted provenance distinguish `suppliedEvidence`
+(full records delivered) from `summarizedEvidence` (summaries delivered, including
+evaluation-wide qualification contexts). Both are accumulated only when dispatched
+to the investigator. A citation to a summary-only identity supports only the
+summary content, not omitted diagnostics, evidence populations or artifact census.
+An identity can appear in both sets if both forms were delivered, preserving the
+summary exposure without denying subsequent or earlier full delivery. Neither set
+claims comprehension. References alone enter neither set and cannot be cited as
+evidence until substantive content is delivered. Internal raw session/input
+snapshots remain outside the inspection tool.
+
+Module listings embed each module, its naming claim and unchanged own context;
+source support is supplied by explicit inspectable references from the first page.
+This keeps inventory navigation lighter without treating uninspected source as
+supplied evidence or dropping naming qualification. The listing remains partial
+while support bodies are referenced, including on its final page. Complete
+inventory traversal is not a prerequisite for investigation, and a bounded page
+does not guarantee arbitrary inventories fit one dialogue's cumulative guards.
 
 Module and organization listings, exports, dependencies, dependents, membership
 and group navigation use stable pages over retained selections. Each page covers
@@ -42,9 +57,8 @@ next continuation and oversized omitted entries. Continuations live in memory in
 one evidence-access instance. Session integration must retain that instance for
 at least the entire evaluation; recreating it between tool requests loses the
 continuations and returns explicit unknown-continuation responses.
-Total selection size does not
-assert that the underlying analysis is complete. Full qualification that itself
-exceeds delivery bounds remains explicitly unavailable rather than silently
+Total selection size does not assert that the underlying analysis is complete.
+Full qualification that itself exceeds delivery bounds remains explicitly unavailable rather than silently
 truncated. If an individual entry has extensive source support, its claim and own
 context remain embedded while explicit source-support references replace the support
 bodies. Those references can be inspected individually; the page is partial and

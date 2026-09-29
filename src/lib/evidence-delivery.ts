@@ -107,13 +107,13 @@ export function evidenceDelivery(store: ProgramRecordStore, session: SessionId) 
   };
   interface Selection {
     key: string; id: RecordId; ids: readonly RecordId[]; evaluations: readonly EvaluationSummary[];
-    limitations: readonly string[]; status: EvidenceResponse['status'];
+    limitations: readonly string[]; status: EvidenceResponse['status']; referenceSourceSupport: boolean;
   }
   const cursors = new Map<string, { selection: Selection; offset: number }>();
   const page = (selection: Selection, start: number): EvidenceResponse => {
     const selected: RecordId[] = [], omitted: { id: RecordId; reason: string }[] = [];
     let end = start;
-    let referenceSourceSupport = false;
+    let referenceSourceSupport = selection.referenceSourceSupport;
     const render = (): EvidenceResponse => {
       const next = end < selection.ids.length ? recordId(session, 'evidence-continuation', [selection.id, end]) : null;
       const support = compose(selected);
@@ -123,7 +123,7 @@ export function evidenceDelivery(store: ProgramRecordStore, session: SessionId) 
         : next || omitted.length || supportReferences.length ? 'partial' : selection.status,
       ...support, records: referenceSourceSupport ? support.records.filter(record => record.kind !== 'source-evidence') : support.records,
       supportReferences, selected: [...selected], evaluations: selection.evaluations,
-      limitations: [...selection.limitations, ...(supportReferences.length ? ['Source support bodies were not embedded to fit this entry; inspect each supportReferences identity for its retained evidence. References alone are not supplied evidence.'] : []), ...(next ? ['This is a page of the retained selection; follow page.next with the same query.'] : []),
+      limitations: [...selection.limitations, ...(supportReferences.length ? ['Source support bodies are supplied by reference; inspect each supportReferences identity for its retained evidence. References alone are not supplied evidence.'] : []), ...(next ? ['This is a page of the retained selection; follow page.next with the same query.'] : []),
         ...(omitted.length ? ['Oversized items were withheld with their qualification intact; this does not establish absence.'] : [])],
       page: { total: selection.ids.length, start, end, next, omitted: [...omitted] } };
     };
@@ -131,7 +131,7 @@ export function evidenceDelivery(store: ProgramRecordStore, session: SessionId) 
       selected.push(selection.ids[end]!);
       end++;
       if (JSON.stringify(render()).length <= evidencePageCharacters) continue;
-      if (selected.length === 1 && !omitted.length) {
+      if (selected.length === 1 && !omitted.length && !referenceSourceSupport) {
         referenceSourceSupport = true;
         if (JSON.stringify(render()).length <= evidencePageCharacters) break;
         referenceSourceSupport = false;
@@ -153,12 +153,13 @@ export function evidenceDelivery(store: ProgramRecordStore, session: SessionId) 
         : { status: 'unavailable', records: [], selected: [], limitations: ['Unknown continuation or continuation belongs to another query/session.'] };
     },
     select(key: string, ids: readonly RecordId[], evaluations: readonly Evaluation[], limitations: readonly string[] = [],
-      status: EvidenceResponse['status'] = !ids.length && evaluations.some(item => item.availability === 'unavailable') ? 'unavailable' : evaluations.every(item => item.availability === 'available' && item.execution === 'completed' && item.materialization === 'full') ? 'available' : 'partial'): EvidenceResponse {
+      status: EvidenceResponse['status'] = !ids.length && evaluations.some(item => item.availability === 'unavailable') ? 'unavailable' : evaluations.every(item => item.availability === 'available' && item.execution === 'completed' && item.materialization === 'full') ? 'available' : 'partial',
+      referenceSourceSupport = false): EvidenceResponse {
       const selection = freezeOwned({ key, id: recordId(session, 'evidence-selection', [key, ids, evaluations.map(item => item.id)]),
         ids: [...new Set(ids)], evaluations: evaluations.map(summarize), limitations: [...new Set([
           ...evaluations.flatMap(item => item.reason ? [item.reason] : []), ...limitations,
           'Evaluation summaries describe the wider analysis; only selected records and their own support are embedded. Shared input-basis membership does not establish claim derivation.',
-        ])], status });
+        ])], status, referenceSourceSupport });
       return page(selection, 0);
     },
   };

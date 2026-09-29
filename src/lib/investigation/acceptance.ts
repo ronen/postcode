@@ -24,6 +24,7 @@ export interface AcceptanceContext {
   readonly agent: AgentIdentity;
   readonly exposure: InvestigationContext;
   readonly suppliedEvidence: readonly RecordId[];
+  readonly summarizedEvidence: readonly RecordId[];
   readonly lookup: (id: RecordId) => ProgramRecord | undefined;
 }
 
@@ -31,7 +32,7 @@ export interface AcceptanceContext {
 export function acceptInvestigation(value: unknown, context: AcceptanceContext): AcceptedInvestigation {
   const { session, attempt, request, exposure } = context;
   const localIds = new Set<string>(), visited = new Set<object>();
-  const delivered = new Set([...context.suppliedEvidence, ...exposure.citations]);
+  const delivered = new Set([...context.suppliedEvidence, ...context.summarizedEvidence, ...exposure.citations]);
   const complete = new Set(exposure.completeTargets);
   const reference = (value: unknown, role: 'subject' | 'evidence' | 'target'): RecordId => {
     const id = text(value) as RecordId;
@@ -86,7 +87,7 @@ export function acceptInvestigation(value: unknown, context: AcceptanceContext):
     kind: 'investigation-provenance', id: attempt, session, method: methods.investigation,
     request, originatingModule: context.originatingModule, instructions: context.instructions, agent: context.agent,
     citations: exposure.citations, completeTargets: exposure.completeTargets, completeCorrections: exposure.completeCorrections,
-    suppliedEvidence: context.suppliedEvidence, deliveries: exposure.deliveries,
+    suppliedEvidence: context.suppliedEvidence, summarizedEvidence: context.summarizedEvidence, deliveries: exposure.deliveries,
   };
   const investigrams: Investigram[] = [], corrections: Correction[] = [];
   const idFor = (item: SubmittedInvestigram) => recordId(session, 'investigram', [methods.investigation, identityReference(session, attempt), item.localId]);

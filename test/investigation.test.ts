@@ -239,7 +239,7 @@ test('acceptance itself rejects cyclic and shared composition before assigning r
   const f = await fixture(t);
   const context = { session: f.base.session, attempt: 'test-attempt' as RecordId, request: f.base.request,
     originatingModule: f.base.request.subject, instructions: 'Test acceptance directly.', agent: new ScriptedInvestigator([]).identity,
-    exposure: new InvestigationContext(emptyHistory, f.base.session), suppliedEvidence: [], lookup: f.evidence.lookup };
+    exposure: new InvestigationContext(emptyHistory, f.base.session), suppliedEvidence: [], summarizedEvidence: [], lookup: f.evidence.lookup };
   const cyclic: Record<string, unknown> = { ...draft() };
   cyclic.children = [cyclic];
   const child = draft('shared');
@@ -255,7 +255,7 @@ test('correction cannot target the identity assigned to an investigram in its ow
   const target = recordId(f.base.session, 'investigram', [methods.investigation, identityReference(f.base.session, attempt), 'root']);
   const context = { session: f.base.session, attempt, request: f.base.request, originatingModule: f.base.request.subject,
     instructions: 'Test acceptance directly.', agent: new ScriptedInvestigator([]).identity,
-    exposure: new InvestigationContext(emptyHistory, f.base.session), suppliedEvidence: [], lookup: f.evidence.lookup };
+    exposure: new InvestigationContext(emptyHistory, f.base.session), suppliedEvidence: [], summarizedEvidence: [], lookup: f.evidence.lookup };
   const result = { ...draft(), corrections: [{ target, correctedSubjects: [f.module('entry')], reason: 'Self correction is invalid.', qualifications: ['Interpretation.'], evidence: [], replacement: draft('replacement') }] };
   assert.throws(() => acceptInvestigation(result, context), error => error instanceof InvalidSubmission
     && error.message === 'Correction target must predate this result and have complete supplied context.');
@@ -555,7 +555,7 @@ test('corrected subjects permit entities and artifacts but reject claims and evi
   exposure.supplied(exposure.prepare(initial.root));
   const context = { session: f.base.session, attempt: 'subject-kinds' as RecordId, request: f.base.request,
     originatingModule: f.base.request.subject, instructions: 'Validate corrected subject kinds.', agent: new ScriptedInvestigator([]).identity,
-    exposure, suppliedEvidence: [], lookup: f.evidence.lookup };
+    exposure, suppliedEvidence: [], summarizedEvidence: [], lookup: f.evidence.lookup };
   const correction = (subject: RecordId) => ({ ...draft(), corrections: [{ target: initial.root, correctedSubjects: [subject],
     reason: 'More precise account.', qualifications: ['Interpretation.'], evidence: [], replacement: draft('replacement') }] });
   for (const subject of [f.module('entry'), symbol.id, group, artifact.id]) {

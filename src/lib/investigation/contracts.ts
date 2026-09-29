@@ -64,7 +64,10 @@ export interface InvestigationProvenance extends RecordContext {
   readonly citations: readonly RecordId[];
   readonly completeTargets: readonly RecordId[];
   readonly completeCorrections: readonly RecordId[];
+  /** Full records delivered during this attempt. */
   readonly suppliedEvidence: readonly RecordId[];
+  /** Summaries delivered during this attempt; an ID may also have been delivered in full. */
+  readonly summarizedEvidence: readonly RecordId[];
   readonly deliveries: readonly ContextDelivery[];
 }
 export interface AcceptedInvestigation {
@@ -171,7 +174,10 @@ export interface AttemptReport {
   readonly elapsedMilliseconds: number;
   readonly usage: readonly CallUsage[];
   readonly deliveries: readonly ContextDelivery[];
+  /** Full records delivered during this attempt. */
   readonly suppliedEvidence: readonly RecordId[];
+  /** Summaries delivered during this attempt; an ID may also have been delivered in full. */
+  readonly summarizedEvidence: readonly RecordId[];
 }
 export type InvestigationOutcome =
   | { readonly kind: 'accepted'; readonly result: AcceptedInvestigation }

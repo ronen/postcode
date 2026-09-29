@@ -84,7 +84,7 @@ export function evidenceAccess(store: ProgramRecordStore, analysis: ModuleAnalys
         ]);
       }
       const modules = evaluateModules(store, analysis, query.kind === 'exports' ? ['exports', 'documentation'] : []);
-      if (query.kind === 'modules') return delivery.select(key, modules.modules, [modules]);
+      if (query.kind === 'modules') return delivery.select(key, modules.modules, [modules], [], undefined, true);
       if (query.kind === 'exports') {
         const expansions = store.evaluations(session).filter(item => item.basis === modules.id && item.modules.includes(subject!.id));
         const claims = [...new Set(expansions.flatMap(item => item.claims ?? []))];

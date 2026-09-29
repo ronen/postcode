@@ -195,7 +195,7 @@ test('realistic dialogue follows delegation and group documentation through boun
     evidence: f.evidence, history: { get: () => undefined, provenance: () => undefined, correction: () => undefined, corrections: () => [] },
     agent, usage: new InvestigationUsage(), check: async () => { assert.equal(await f.opened.changed(), false); } });
   assert.equal(result.outcome.kind, 'accepted');
-  assert.ok(result.report.suppliedEvidence.some(id => f.store.get(id).kind === 'dependency-evaluation'), 'delivered summary is attributable without claiming full-record delivery');
+  assert.ok(result.report.summarizedEvidence.some(id => f.store.get(id).kind === 'dependency-evaluation'), 'delivered summary is attributable without claiming full-record delivery');
 });
 
 
@@ -250,6 +250,117 @@ test('a merged module with extensive own support stays selectable through explic
     usage: new InvestigationUsage(), check: async () => {} });
   assert.ok(withheld);
   assert.equal(execution.report.suppliedEvidence.includes(withheld), false);
+  assert.equal(execution.outcome.kind, 'investigation-failure');
+  if (execution.outcome.kind === 'investigation-failure') assert.equal(execution.outcome.reason, 'Evidence must identify supplied context in this session.');
+});
+
+test('a complete 263-module inventory fits one guarded dialogue with qualified support by reference', async t => {
+  const f = await fixture(t, 260);
+  const selected: RecordId[] = [];
+  let inspected: RecordId | undefined;
+  let pageCount = 0;
+  const next = (input: AgentInput): AgentReply => {
+    const response = input.responses[0] as EvidenceResponse;
+    checkQualified(response, f.store);
+    if (response.page) {
+      pageCount++;
+      selected.push(...response.selected);
+      assert.equal(response.page.omitted.length, 0);
+      assert.equal(response.status, 'partial', 'referenced support stays explicitly partial even on the final page');
+      assert.ok(response.records.every(item => item.kind !== 'source-evidence'));
+      assert.ok(response.supportReferences!.length);
+      if (response.page.next) return { kind: 'tools', requests: [{ kind: 'modules', cursor: response.page.next }] };
+      inspected = response.supportReferences![0]!.id;
+      return { kind: 'tools', requests: [{ kind: 'inspect', subject: inspected }] };
+    }
+    assert.ok(response.records.some(item => item.id === inspected && item.kind === 'source-evidence'));
+    return { kind: 'submit', result: { localId: 'root', prose: 'The qualified module inventory was traversed.',
+      referent: { description: 'Entry.', subjects: [f.module('entry')] }, qualifications: ['Most source support remains uninspected.'],
+      evidence: [inspected], associations: [], children: [], corrections: [], inconsistencies: [] } };
+  };
+  const result = await investigate({ session: f.opened.session, request: { operation: 'functionality', subject: f.module('entry'), parameters: {} },
+    evidence: f.evidence, history: { get: () => undefined, provenance: () => undefined, correction: () => undefined, corrections: () => [] },
+    agent: new ScriptedInvestigator([() => ({ kind: 'tools', requests: [{ kind: 'modules' }] }), ...Array.from({ length: 31 }, () => next)]),
+    usage: new InvestigationUsage(), check: async () => {} });
+  assert.equal(result.outcome.kind, 'accepted', 'default dialogue call and volume guards must permit full traversal and inspection');
+  assert.equal(selected.length, 263);
+  assert.deepEqual(new Set(selected), new Set(f.evaluation.modules));
+  assert.ok(pageCount < 25, 'leave exchanges for useful follow-up after listing');
+  assert.deepEqual(result.report.suppliedEvidence.filter(id => f.store.get(id).kind === 'source-evidence'), [inspected]);
+});
+
+test('summary citations retain their exposure form, including subsequent full delivery and failed attempts', async t => {
+  const f = await fixture(t, 2);
+  const summaryIds = new Set<RecordId>();
+  const fullIds = new Set<RecordId>();
+  let context: RecordId;
+  const collect = (response: EvidenceResponse) => {
+    response.records.forEach(record => fullIds.add(record.id));
+    response.evaluations?.forEach(item => { summaryIds.add(item.id); item.qualification.forEach(item => summaryIds.add(item.id)); });
+    response.repositories?.forEach(item => summaryIds.add(item.id));
+  };
+  const options = { session: f.opened.session, request: { operation: 'functionality' as const, subject: f.module('entry'), parameters: {} },
+    evidence: f.evidence, history: { get: () => undefined, provenance: () => undefined, correction: () => undefined, corrections: () => [] },
+    check: async () => {} };
+  const execution = await investigate({ ...options, usage: new InvestigationUsage(), agent: new ScriptedInvestigator([
+    () => ({ kind: 'tools', requests: [{ kind: 'modules' }, { kind: 'membership', subject: f.module('entry') }] }),
+    input => {
+      const modules = input.responses[0] as EvidenceResponse;
+      input.responses.forEach(response => collect(response as EvidenceResponse));
+      context = modules.evaluations![0]!.qualification[0]!.id;
+      assert.ok(!fullIds.has(context));
+      const organization = input.responses[1] as EvidenceResponse;
+      const layoutContext = organization.evaluations![0]!.qualification.find(item => item.scope !== 'configured-project')!.id;
+      return { kind: 'tools', requests: [{ kind: 'inspect', subject: context }, { kind: 'inspect', subject: layoutContext }] };
+    },
+    input => {
+      const response = input.responses[0] as EvidenceResponse;
+      assert.ok(response.records.some(item => item.id === context && item.kind === 'claim-context'));
+      input.responses.forEach(response => collect(response as EvidenceResponse));
+      return { kind: 'submit', result: { localId: 'root', prose: 'An account supported by qualified summaries.',
+        referent: { description: 'Entry.', subjects: [f.module('entry')] }, qualifications: ['Summary citations cover only delivered summary content.'],
+        evidence: [...summaryIds], associations: [], children: [], corrections: [], inconsistencies: [] } };
+    },
+  ]) });
+  assert.equal(execution.outcome.kind, 'accepted');
+  assert.deepEqual(new Set(execution.report.suppliedEvidence), fullIds);
+  assert.deepEqual(new Set(execution.report.summarizedEvidence), summaryIds);
+  for (const kind of ['evaluation', 'organization-evaluation', 'repository-evidence']) {
+    assert.ok([...summaryIds].some(id => f.store.get(id).kind === kind), `expected summary exposure for ${kind}`);
+    assert.ok(![...fullIds].some(id => f.store.get(id).kind === kind));
+  }
+  assert.ok(execution.report.suppliedEvidence.includes(context!));
+  assert.ok(execution.report.summarizedEvidence.includes(context!), 'full delivery does not erase earlier summary exposure');
+  if (execution.outcome.kind === 'accepted') {
+    assert.deepEqual(execution.outcome.result.provenance.suppliedEvidence, execution.report.suppliedEvidence);
+    assert.deepEqual(execution.outcome.result.provenance.summarizedEvidence, execution.report.summarizedEvidence);
+    assert.ok(Object.isFrozen(execution.outcome.result.provenance.summarizedEvidence));
+  }
+  const failed = await investigate({ ...options, usage: new InvestigationUsage(), agent: new ScriptedInvestigator([
+    () => ({ kind: 'tools', requests: [{ kind: 'modules' }] }),
+    () => ({ kind: 'ended' }),
+  ]) });
+  assert.equal(failed.outcome.kind, 'investigation-failure');
+  assert.ok(failed.report.summarizedEvidence.includes(f.evaluation.id));
+  assert.equal(failed.report.suppliedEvidence.includes(f.evaluation.id), false);
+});
+
+test('summaries withheld by the response guard do not grant citation eligibility or exposure', async t => {
+  const f = await fixture(t, 2);
+  const execution = await investigate({ session: f.opened.session, request: { operation: 'functionality', subject: f.module('entry'), parameters: {} },
+    evidence: { lookup: f.evidence.lookup, query: query => ({ ...f.evidence.query(query), limitations: ['x'.repeat(evidenceResponseCharacters)] }) },
+    history: { get: () => undefined, provenance: () => undefined, correction: () => undefined, corrections: () => [] },
+    agent: new ScriptedInvestigator([
+      () => ({ kind: 'tools', requests: [{ kind: 'modules' }] }),
+      input => {
+        assert.equal((input.responses[0] as EvidenceResponse).status, 'unavailable');
+        return { kind: 'submit', result: { localId: 'root', prose: 'Claims to cite an undelivered summary.',
+          referent: { description: 'Entry.', subjects: [f.module('entry')] }, qualifications: ['Interpretation.'], evidence: [f.evaluation.id],
+          associations: [], children: [], corrections: [], inconsistencies: [] } };
+      },
+    ]), usage: new InvestigationUsage(), check: async () => {} });
+  assert.deepEqual(execution.report.suppliedEvidence, []);
+  assert.deepEqual(execution.report.summarizedEvidence, []);
   assert.equal(execution.outcome.kind, 'investigation-failure');
   if (execution.outcome.kind === 'investigation-failure') assert.equal(execution.outcome.reason, 'Evidence must identify supplied context in this session.');
 });
