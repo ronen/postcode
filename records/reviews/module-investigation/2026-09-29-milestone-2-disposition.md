@@ -4,7 +4,7 @@ Record type: disposition
 Date: 2026-09-29
 Task: [Module investigation](../../tasks/2026-09-29-module-investigation.md)
 Handoff: [Milestone 2](2026-09-29-milestone-2-handoff.md)
-Findings: [Round 1](2026-09-29-milestone-2-round-1-findings.md)
+Findings: [Round 1](2026-09-29-milestone-2-round-1-findings.md), [Round 2](2026-09-29-milestone-2-round-2-findings.md)
 
 ## Findings and dispositions
 
@@ -87,3 +87,41 @@ parent-ledger design; it does not revise the review's retention or reference
 analysis. No further independent round is imposed by these local corrections;
 the human determines whether the accumulated review is sufficient and has not yet
 accepted the milestone-2 gate. No milestone-3 implementation or live inference has begun.
+
+
+## Round 2 and human-directed source-disclosure correction
+
+Round 2 independently reviewed `849267193a6d75113d2deb33c8a1b481f916fa4e` and
+confirmed F1–F4 corrected, with no new defects in those fixes and no further round
+needed for them. The reviewer passed type checking, all 367 tests (133.7 seconds,
+zero failures/cancellations/skips), the original delayed-usage probe, and a new
+source-disclosure probe. This supersedes the earlier gate discussion about whether
+the local corrections needed re-review; that focused re-review has now occurred.
+
+| Round-2 item | Disposition | Basis/action |
+| --- | --- | --- |
+| F1–F4 correction confirmations and publication comment | Accepted; independently verified | The reviewer confirms usage closure, unsupported selection, final human usage and correction attribution, including identity/version handling. No further change to those fixes. |
+| Source-escape events with no disclosed source | Accepted as pre-existing nonconformance; corrected | The human explicitly authorized correction within this task, including existing affected commands, under the governing actual-disclosure decision. `b408c414b041f032a8954ca450c9cbe30dded139` classifies actual supported source fields by view family and output format. The requested option stays in the request; empty containers and reference/omission metadata do not cause events. Events identify actual locations and/or excerpts. |
+| Residual limits and unprobed lifecycle cases | Acknowledged, unchanged | Undisplayed bindings, raw evidence IDs, non-cloneable reply defects, human usage identity labels, shell invalidation during evidence work and worker crashes during exchange retain their previously recorded limits; the new tests do not claim to resolve them. |
+| Cancellation uncertainty and gate recommendation | Qualification retained; acceptance remains human-owned | Round 2 did not diagnose cancellations. Human-authorized deferral through milestone 2 and diagnosis before live adapter work remain in force. Reviewer acceptance advice is not treated as human acceptance. |
+
+The reviewer's suggestion to handle source observations separately is superseded
+by the human's explicit scope direction. This was a local observation-boundary
+correction, not a broader redesign. Rendered source remains unchanged, so a missing
+organization selection can still disclose a repository-root path in JSON and must
+record it; human output omits that path and records no escape. Locations count
+without excerpts, and empty excerpts do not falsely count as source text.
+
+The [source-disclosure validation](../../validation/module-investigation/2026-09-29-milestone-2-source-disclosure.md)
+records the exact target, command matrix and results: type checking/build passed,
+45 targeted tests passed (48.56 seconds), and all 369 full-suite tests passed on a
+stationary worktree (130.37 seconds), with zero failures/cancellations/skips.
+Whitespace and local links passed. The human explicitly requested inclusion in
+the milestone handoff; a dated addendum preserves the original handoff text while
+recording this correction, verification and standing qualification.
+
+All actionable findings and the newly authorized observation are corrected.
+The task remains active at the milestone-2 gate pending human acceptance. The
+round-2 clearance covers F1–F4 at its pinned target; the subsequent disclosure
+correction has implementing-agent verification and is separately identified for
+any further review the human arranges. Milestone 3 has not begun.

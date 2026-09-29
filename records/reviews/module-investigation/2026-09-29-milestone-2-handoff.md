@@ -133,3 +133,46 @@ consequential alternatives, material qualifications/rejections, scope expansion
 or reviewer-identified unresolved uncertainty require human direction before action.
 Further rounds follow material corrections when warranted. The human must accept
 the milestone gate; a reviewer recommendation alone does not authorize proceeding.
+
+## Human-requested addendum — actual source disclosure, 2026-09-29
+
+This addendum is explicitly requested by the human after round 2. The original
+assignment, target, verification and reviewer-authored findings above remain
+historical evidence. [Round 2](2026-09-29-milestone-2-round-2-findings.md) cleared
+F1–F4 at `849267193a6d75113d2deb33c8a1b481f916fa4e`, recommended gate acceptance
+with the cancellation qualification, and identified previously missed
+source-escape events with no source disclosure. The human directed correction of
+that pre-existing nonconformance within this task, including existing commands.
+
+Additional correction target: `b408c414b041f032a8954ca450c9cbe30dded139`.
+Correction scope relative to the previously reviewed implementation:
+`849267193a6d75113d2deb33c8a1b481f916fa4e..b408c414b041f032a8954ca450c9cbe30dded139`.
+The governing basis is [record actual source-disclosure level](../../../docs/decisions/adopt-identity-evidence-and-observation-constraints.md#record-the-actual-source-disclosure-level).
+
+The shared observation boundary now classifies actual disclosure by view family
+and format across module/organization inspection, dependency views and investigram
+inspection. Requested `--source-detail` remains in the request record. Empty
+containers, IDs and omission counts alone do not emit source-escape events.
+Actual locations and nonempty excerpts are identified by `sourceForms`, with the
+existing disclosure family retained in `sourceLevel`. Locations alone count.
+A captured repository-root path serialized by organization JSON counts even for
+missing selection; the corresponding human view omits that path and emits no event.
+No source rendering, acquisition or interpretation-retention policy was changed.
+
+[Validation](../../validation/module-investigation/2026-09-29-milestone-2-source-disclosure.md):
+type checking and build passed; 45 focused disclosure/investigation/organization/
+dependency tests passed (48.56 seconds); all 369 tests passed with zero failures,
+cancellations or skips on a stationary worktree (130.37 seconds). Regressions use
+the real shell/worker and both human and JSON output, covering missing/unsupported
+references, successful source-free inspection, empty and metadata-only containers,
+locations without excerpts, successful excerpt disclosure and format-specific
+rendering. Request intent, rendered output and event forms are checked together.
+Reproduce with `npm run check`, `npm test`, or the focused command in validation.
+
+These checks are implementing-agent verification of the new disclosure correction,
+not an extension of the reviewer's independent clearance to unreviewed code.
+The [disposition](2026-09-29-milestone-2-disposition.md) records both rounds and
+this correction. Validation remains qualified by unexplained execution-ownership
+cancellations: diagnosis is deferred through milestone 2 but required before
+milestone 3's live, cost-bearing adapter work. No credentials or live inference
+were used. Human milestone acceptance remains required.
