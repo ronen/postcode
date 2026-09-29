@@ -56,11 +56,11 @@ ownership tests passed in the complete stationary run.
 
 ## Limits and standing qualification
 
-F1's reported after-reply case is corrected, but code inspection identifies a
-remaining parent/worker closing-window race. The parent can receive usage before
+At the first correction target, F1's reported after-reply case was corrected, but
+code inspection identified a remaining parent/worker closing-window race. The parent can receive usage before
 its dialogue closes but after the worker has finalized its view snapshot.
-Human direction on finalizing CLI views from authoritative parent usage has been
-requested. The current correction does not claim that remaining case resolved.
+Human direction was requested before resolving this additional case. The approved
+completion and its verification are recorded below; this limit is now resolved.
 
 The historical execution-ownership cancellations remain unexplained. The human
 renewed deferral through milestone 2, requiring diagnosis before milestone 3's
@@ -72,3 +72,48 @@ source-informed assessment or baseline diagnosis was undertaken.
 
 See the [disposition](../../reviews/module-investigation/2026-09-29-milestone-2-disposition.md)
 and [backlog evidence](../../../docs/backlog.md#diagnose-execution-ownership-cancellations-in-full-suite-runs).
+
+
+## Approved F1 completion: closure-boundary snapshot
+
+Final target: `849267193a6d75113d2deb33c8a1b481f916fa4e`.
+The human approved finalizing CLI usage from the parent ledger snapshot taken at
+dialogue closure. Parent closure seals immutable call reports before abort or
+local close callbacks, and subsequent worker metadata cannot replace them.
+Command views, later usage views and observations use that same acceptance
+boundary. Finalization updates view identity/rendering without changing retained
+accounts or interpretation projection identity.
+
+Final checks:
+
+| Check | Result |
+| --- | --- |
+| `npm run check` | Passed |
+| `npm run build` | Passed |
+| `node --test _build/test/investigation-integration.test.js` | 25 passed; 0 failed/cancelled/skipped; 14.59 seconds |
+| `npm test` with the worktree held stationary | 367 passed; 0 failed/cancelled/skipped; 130.80 seconds |
+| Whitespace and changed-document local links | Passed |
+
+The two new regressions run the actual shell, investigator double and compiler
+worker in JSON and human formats. A test-local interception of the real worker's
+close-message delivery places reports exactly after the worker's dialogue closes
+but before the parent handles closure; no timer approximation, synthetic worker,
+production test hook or public flag is used. The worker's returned snapshot is
+asserted to have two unknown calls, proving the window was exercised.
+
+Call 1 reports normally and repeats the identical report in the closing window;
+call 2 first reports in that window and repeats its report there. Call 3 first
+reports after parent closure. A differing call-1 report is also delivered after
+closure. The command view, subsequent `usage` view and both command observations
+all agree: three calls, one unknown, zero anomalies, 40 synthetic input tokens,
+and raw report counts `[1, 1, 0]`. Rendered human/JSON output matches the finalized
+view. Finalization is idempotent, and changing the reporting snapshot changes view
+identity without changing projection identity. The existing tests continue to
+cover after-reply reports, interrupted final reporting and closed-dialogue late
+reply/usage rejection.
+
+No separate isolated ownership run was performed; the complete run includes all
+13 execution-ownership tests. The standing cancellation qualification and required
+diagnosis before live, cost-bearing adapter work remain unchanged. No credentials,
+hosted adapter or live inference were used. All review findings are dispositioned;
+these implementing-agent checks do not themselves accept the milestone gate.

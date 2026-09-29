@@ -10,14 +10,17 @@ Findings: [Round 1](2026-09-29-milestone-2-round-1-findings.md)
 
 | Finding | Disposition | Basis and action |
 | --- | --- | --- |
-| F1 — worker/parent usage disagreement | Accepted; correction in progress | `df2bdb0` separates pending replies from dialogue-lived worker usage callbacks. A report received after its reply remains attributable until dialogue close. Deterministic one-shot and shell regressions deliver call 1 usage during call 2 and compare the view and observation, including the later `usage` view. Code inspection also identifies a closing-window race: the parent can receive usage after the worker snapshot but before parent dialogue close. Human direction has been requested on finalizing CLI views from the parent snapshot; F1 remains open pending that ruling and correction. |
+| F1 — worker/parent usage disagreement | Accepted and corrected | `df2bdb0` keeps worker usage callbacks alive through dialogue close. The human-approved completion in `849267193a6d75113d2deb33c8a1b481f916fa4e` seals parent call reports at its closure boundary, before abort/close callbacks, and finalizes CLI views from those snapshots. Observations and subsequent usage views use the same accepted reports. Deterministic human and JSON regressions deliver usage after worker closure but before parent closure, verify identical totals without duplicate counting, and preserve unknown/ignored treatment after closure. |
 | F2 — known investigram reference called unknown | Accepted and corrected | Known investigram references supplied to `children`, `parents` or `summarize` return an explicit unsupported subject/lens selection and expected failure status. No module coercion or investigation occurs. A production shell regression covers all three commands and confirms only the preceding summary opened a dialogue. Missing/foreign references keep their missing status. |
 | F3 — incomplete human abnormal usage report | Accepted and corrected | Final human stderr lists each attempt and termination, its reported categories, and session totals through the shared usage renderer. Unknown-only reporting contains no stray blank line. Real CLI interruption regressions cover both multiple attempts and one unknown-only attempt; observations retain the same usage. |
 | F4 — correction attribution omitted in human output | Accepted and corrected | Each human correction now prints its explicit corrected subjects and own evidence IDs next to its reporter, target, replacement, reason and qualifications. Summary and inspection regressions check the correction attribution; the support list remains supplementary. Raw evidence IDs are attribution keys, not newly selectable shell subjects. |
 
 F2–F4 and the first F1 correction are in `df2bdb0`. The investigation presentation
 method advances to version 2 for the changed selection and presentation semantics.
-The architecture account and CLI reference describe these behaviors.
+The approved F1 completion advances that method to version 3: finalized usage is
+part of view identity separately from interpretation projection identity. The
+architecture account and CLI reference describe the closure boundary and reporting
+authority. No retained interpretation or acceptance policy changed.
 
 ## Non-defect observations and residual limits
 
@@ -63,9 +66,24 @@ edits are preserved in the [correction validation](../../validation/module-inves
 Whitespace and local documentation links passed. These are implementing-agent checks. The original
 handoff and reviewer-authored findings remain unchanged.
 
+The final F1 target `849267193a6d75113d2deb33c8a1b481f916fa4e` passed type checking,
+build, all 25 focused integration tests (14.59 seconds), and all 367 full-suite
+tests (130.80 seconds), with zero failures/cancellations/skips. The worktree was
+held stationary during that complete run. The closing-window regressions use the
+real CLI and compiler worker, interposing only on delivery of its close message
+so the callback timing is deterministic. They establish that the worker snapshot
+missed two calls' reports, while the authoritative snapshot accepts one of those
+reports before parent closure and leaves the other unknown after closure. Both
+views and observations agree on three calls, one unknown, zero anomalies and
+40 synthetic input tokens. These checks do not diagnose historical cancellations.
+
 ## Review rounds and gate conclusion
 
 Round 1 reviewed `a396f9b8e9b38ad344554cbe4c0e7677ded1ec0e`. The reviewer recommends acceptance
 after F1 is corrected or explicitly dispositioned, with F2–F4 corrected or deferred
-by human direction. F1 remains open as recorded above. The human has not accepted
-the milestone-2 gate. No milestone-3 implementation or live inference has begun.
+by human direction. All four findings are now corrected. The focused F1 completion
+implements the human's explicit closure-boundary ruling within the existing
+parent-ledger design; it does not revise the review's retention or reference
+analysis. No further independent round is imposed by these local corrections;
+the human determines whether the accumulated review is sufficient and has not yet
+accepted the milestone-2 gate. No milestone-3 implementation or live inference has begun.
