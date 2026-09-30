@@ -353,7 +353,8 @@ privately once per invocation. ChatGPT's stable host, issued client, verified
 subject and token sets persist in PostCode's own Keychain item. The native boundary
 normalizes null/undefined absence before decoding; empty, malformed or inaccessible
 stored data still fails without replacing it. Labels separate
-registrations even when emails match. A loopback OAuth callback validates state,
+registrations even when emails match. The native browser handoff receives the authorization URL through stdin, keeping
+returning ID-token hints out of helper process arguments. A loopback OAuth callback validates state,
 PKCE-bound exchange, signed identity, issuer/audience, expiry, nonce and saved
 subject before activation; token-response scopes determine plan permission.
 A valid identity without that permission remains signed in but cannot infer.

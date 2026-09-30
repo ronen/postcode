@@ -183,3 +183,10 @@ native dependencies so mechanical analysis can install on other platforms;
 ChatGPT setup fails explicitly if they are unavailable. Building `fs-ext` on
 macOS requires the native Node build toolchain/Xcode Command Line Tools. No
 credential is passed through native-helper command arguments.
+
+
+For a credential-free native browser diagnostic after building, run
+`node scripts/module-investigation/check-browser.mjs`. It exercises the production
+launcher and waits for the browser to request a temporary local test page. It
+opens a browser tab but does not access Keychain, initiate OAuth or contact an
+inference provider. This opt-in check is separate from the routine offline suite.
