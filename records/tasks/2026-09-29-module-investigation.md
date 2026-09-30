@@ -854,3 +854,47 @@ next step is at most one targeted item-structure diagnostic, followed by another
 report before deciding how to handle the inconsistent stream. Human direction
 is pending. Task status remains active; milestone 3 and its assessment/review
 requirements remain incomplete, and milestone 4 remains gated.
+
+### Successful connection and assessment compatibility choice — 2026-09-30
+
+The ten-request extension was recorded in `5052825`; the cap-disposition
+clarification was preserved in `d2cb79c`. Two requests from that allowance have
+been made, leaving eight. Request 1 established a finalized named submission
+item in the stream despite empty terminal output (873 tokens). Following the
+documented indexed function-event contract, `b37e8d7` resolves matching completed
+items only after a successful terminal, preserves terminal versus item captures
+separately, and retains ordinary tool and domain validation. Missing, duplicated,
+incomplete or mismatched event sequences remain unaccepted. Provenance is now
+`postcode/chatgpt-responses@2`; model, medium reasoning and billing route remain
+fixed.
+
+Request 2 passed the live connection check (892 tokens). New-allowance usage is
+1,765 reported tokens, with monetary and allowance/credit attribution unavailable.
+Across all five historical connection inference attempts, three have 2,659 known
+tokens and two remain unknown. No source-based assessment or evaluator request
+has been made. No automatic retry, fallback, purchase or provider-setting change
+occurred. The [connection record](../validation/module-investigation/2026-09-30-chatgpt-completed-items.md)
+preserves both safe captures, timing, correction rationale and limits.
+
+Type check/build and 26 focused tests passed; the full offline suite passed
+**417 tests**, zero failures, cancellations or skips, in 156.90 seconds, with
+repository inputs unchanged. Both CLI formats now exercise headerless item-based
+streams through source acquisition, continuation, validation, retention and usage.
+The connection is verified, while interpretive usefulness remains unassessed.
+
+All three approved subjects were acquired at recorded fixed Git revisions with
+lockfile dependencies and lifecycle scripts disabled. Cockatiel and fsm-engine
+open with their original configurations. Merge-anything's inherited config fails
+under the bundled TypeScript 6 analyzer because of deprecated options. A concrete
+assessment-only config extending the original and setting only
+`ignoreDeprecations: "6.0"` was verified by mechanical inventory with inference
+disabled; tracked subject files are unchanged. Human choice is required by the
+plan's fixed-subject compatibility rule before adopting this proposal. No live
+assessment has used it.
+
+The task remains active at that configuration choice, not at request exhaustion
+or milestone failure. Eight authorized inference requests remain. Reference and
+prompt/context freezing, assessment tooling, baseline/focused runs, clean
+evaluators/source-informed assessors and independent review remain due. Reaching
+the request ceiling later will require pausing and reporting rather than treating
+that administrative limit as a hard milestone failure. Milestone 4 remains gated.
