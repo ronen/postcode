@@ -159,3 +159,36 @@ test('absent content type permits framed terminal responses while empty output, 
   const reply = await dialogue.exchange(input, new AbortController().signal, () => assert.fail('not an SSE terminal')); dialogue.close();
   assert.equal(reply.kind, 'communication-failure');
 });
+
+test('completed stream items supply an empty terminal envelope only after a consistent successful completion', async () => {
+  const item = { ...call('submit_investigram', { prose: 'finished' }), id: 'fc_1' };
+  const start = { type: 'response.created', response: response([], 'in_progress') };
+  const added = { type: 'response.output_item.added', response_id: 'resp_test', output_index: 0, item: { ...item, arguments: '' } };
+  const done = { ...added, type: 'response.output_item.done', item };
+  const completed = { type: 'response.completed', response: response([]) };
+  const cases = [
+    { events: [start, added, done, completed], expected: 'submit' },
+    { events: [start, added, done], expected: 'communication-failure' },
+    { events: [start, added, completed], expected: 'ended' },
+    { events: [start, done, completed], expected: 'ended' },
+    { events: [start, added, done, done, completed], expected: 'ended' },
+    { events: [start, added, { ...done, item: { ...item, call_id: 'other' } }, completed], expected: 'ended' },
+    { events: [start, added, { ...done, response_id: 'other' }, completed], expected: 'ended' },
+    { events: [start, { ...added, output_index: 2 }, { ...done, output_index: 2 }, completed], expected: 'ended' },
+    { events: [start, added, done, { ...completed, response: { ...response([]), id: 'other' } }], expected: 'ended' },
+    { events: [start, added, done, { type: 'response.failed', response: response([], 'failed') }], expected: 'communication-failure' },
+    { events: [start, added, done, { type: 'response.incomplete', response: response([], 'incomplete') }], expected: 'truncated' },
+  ];
+  for (const { events, expected } of cases) {
+    const captures: OpenAIExchange[] = [], reports: ReportedUsage[] = [];
+    const wire = sse(events); wire.headers.delete('content-type');
+    const dialogue = chatGPTInvestigator(session, { fetch: async () => wire, onExchange: capture => captures.push(capture) }).open();
+    const result = await dialogue.exchange(input, new AbortController().signal, report => reports.push(report)); dialogue.close();
+    assert.equal(result.kind, expected);
+    if (expected === 'submit') {
+      assert.deepEqual(result, { kind: 'submit', result: { prose: 'finished' } });
+      assert.deepEqual((captures[0]!.response as { output: unknown[] }).output, []);
+      assert.deepEqual(captures[0]!.streamOutput, [item]); assert.equal(reports.length, 1);
+    }
+  }
+});

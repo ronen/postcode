@@ -383,13 +383,17 @@ project and logging settings and rejects redirects. Neither route automatically
 retries inference. API-key requests use non-streaming responses, standard service
 tier and a 16,000 output-token cap. ChatGPT requests stream, group the two functions
 in a namespace, and omit unsupported fields including the output-token cap.
-Deltas and output-item completion are never accepted as completed submissions.
+Deltas and output-item completion alone are never accepted as completed submissions.
 An explicit terminal event supplies response status when the optional nested status
 is absent; a contradictory nested status is rejected. Absent content type does not prevent parsing the requested event stream; an
 explicitly incompatible type is rejected. Valid framing and a completed terminal
 are still required. Premature EOF and inconsistent terminals produce distinct
-credential-safe diagnostics. Empty terminal output does not produce a submission,
-even if earlier output-item events were received.
+credential-safe diagnostics. When a successful completed envelope has empty output,
+the adapter can use finalized item events from the same response: every contiguous
+added item must have one matching done event, with consistent identity and kind.
+Missing, duplicate or mismatched items remain unaccepted. Nonempty terminal output
+remains authoritative. Assessment captures preserve the terminal envelope and
+resolved stream items separately; neither is rewritten to conceal the wire form.
 Only a successful completed response may submit a whole result to domain
 validation; failed/incomplete terminals, malformed streams and premature EOF
 remain distinct from accepted investigrams. Domain guards still bound the dialogue.

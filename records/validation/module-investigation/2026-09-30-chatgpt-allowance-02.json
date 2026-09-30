@@ -1,0 +1,285 @@
+{
+  "model": "gpt-5.6-sol",
+  "reasoning": "medium",
+  "billingRoute": "chatgpt-plan",
+  "inferenceRequests": 1,
+  "wire": [
+    {
+      "status": 200,
+      "contentType": "absent",
+      "requestIdPresent": false,
+      "capturedBytes": 37995,
+      "readFailed": false,
+      "body": {
+        "format": "event-stream",
+        "complete": true,
+        "events": [
+          {
+            "event": "response.created",
+            "response": {
+              "kind": "object",
+              "fields": {
+                "id": "string",
+                "object": "string",
+                "model": "string",
+                "status": "string",
+                "output": "array",
+                "usage": "null",
+                "error": "null"
+              },
+              "otherFieldCount": 29,
+              "status": "in_progress",
+              "selectedModelMatches": true,
+              "outputKinds": [],
+              "reportedTokenUsage": null
+            }
+          },
+          {
+            "event": "response.in_progress",
+            "response": {
+              "kind": "object",
+              "fields": {
+                "id": "string",
+                "object": "string",
+                "model": "string",
+                "status": "string",
+                "output": "array",
+                "usage": "null",
+                "error": "null"
+              },
+              "otherFieldCount": 29,
+              "status": "in_progress",
+              "selectedModelMatches": true,
+              "outputKinds": [],
+              "reportedTokenUsage": null
+            }
+          },
+          {
+            "event": "response.output_item.added",
+            "item": {
+              "kind": "reasoning",
+              "function": "other",
+              "namespaceMatches": false,
+              "callIdPresent": false,
+              "argumentsKind": "not-json"
+            },
+            "index": 0
+          },
+          {
+            "event": "response.output_item.done",
+            "item": {
+              "kind": "reasoning",
+              "function": "other",
+              "namespaceMatches": false,
+              "callIdPresent": false,
+              "argumentsKind": "not-json"
+            },
+            "index": 0
+          },
+          {
+            "event": "response.output_item.added",
+            "item": {
+              "kind": "function_call",
+              "function": "submit_investigram",
+              "namespaceMatches": true,
+              "callIdPresent": true,
+              "argumentsKind": "not-json"
+            },
+            "index": 1
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.delta"
+          },
+          {
+            "event": "response.function_call_arguments.done"
+          },
+          {
+            "event": "response.output_item.done",
+            "item": {
+              "kind": "function_call",
+              "function": "submit_investigram",
+              "namespaceMatches": true,
+              "callIdPresent": true,
+              "argumentsKind": "object"
+            },
+            "index": 1
+          },
+          {
+            "event": "response.completed",
+            "response": {
+              "kind": "object",
+              "fields": {
+                "id": "string",
+                "object": "string",
+                "model": "string",
+                "status": "string",
+                "output": "array",
+                "usage": "object",
+                "error": "null"
+              },
+              "otherFieldCount": 29,
+              "status": "completed",
+              "selectedModelMatches": true,
+              "outputKinds": [],
+              "reportedTokenUsage": {
+                "input_tokens": 808,
+                "output_tokens": 84,
+                "total_tokens": 892
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "check": "connected",
+  "elapsedMilliseconds": 6276,
+  "monetaryAttribution": "unknown; a failed or interrupted request does not establish zero consumption or charges"
+}

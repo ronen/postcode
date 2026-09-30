@@ -5,6 +5,7 @@ import type { ChatGPTSession } from './chatgpt-credentials.js';
 import type { Response, ResponseCreateParams, ResponseInputItem } from 'openai/resources/responses/responses.js';
 import type { AgentFailure, AgentIdentity, AgentReply, InvestigatorAgent, InvestigatorTool, ReportedUsage, UsageCategory } from '../contracts.js';
 import { investigatorFunctions } from './protocol.js';
+import { CompletedStreamOutput } from './stream-output.js';
 
 export const openAIIdentity: AgentIdentity = Object.freeze({ provider: 'openai', model: 'gpt-6-sol', origin: 'hosted',
   configuration: Object.freeze({ adapter: 'postcode/openai-responses@2', authenticationRoute: 'api-key', billingRoute: 'openai-api', sdk: 'openai@7.25.0', reasoningEffort: 'medium', serviceTier: 'default', store: false, retries: 0, maxOutputTokens: 16000 }) });
@@ -13,11 +14,13 @@ export interface OpenAIExchange {
   readonly request: ResponseCreateParams;
   /** Sanitized wire body, including malformed responses for assessment diagnosis. */
   readonly response?: unknown;
+  /** Finalized stream items supplied separately from an empty completed envelope. */
+  readonly streamOutput?: readonly unknown[];
   readonly failure?: AgentFailure;
 }
 
 export const chatGPTIdentity: AgentIdentity = Object.freeze({ provider: 'openai', model: 'gpt-5.6-sol', origin: 'hosted',
-  configuration: Object.freeze({ adapter: 'postcode/chatgpt-responses@1', sdk: 'openai@7.25.0', authenticationRoute: 'chatgpt-sign-in',
+  configuration: Object.freeze({ adapter: 'postcode/chatgpt-responses@2', sdk: 'openai@7.25.0', authenticationRoute: 'chatgpt-sign-in',
     billingRoute: 'chatgpt-plan', reasoningEffort: 'medium', store: false, streaming: true, retries: 0 }) });
 interface TransportOptions { fetch?: typeof fetch; onExchange?: (exchange: OpenAIExchange) => void }
 export function openAIInvestigator(apiKey: string, options: TransportOptions = {}): InvestigatorAgent {
@@ -98,6 +101,7 @@ function investigator(session: ChatGPTSession, subscription: boolean, options: T
             }
             let body: unknown;
             const streamEvents: string[] = [];
+            const completedOutput = new CompletedStreamOutput();
             let responseIssue = 'invalid_provider_response';
             try {
               if (subscription) {
@@ -110,6 +114,7 @@ function investigator(session: ChatGPTSession, subscription: boolean, options: T
                 const stream = Stream.fromSSEResponse<Record<string, unknown>>(wire, new AbortController(), client);
                 for await (const event of stream) {
                   if (streamEvents.length < 100) streamEvents.push(typeof event.type === 'string' ? event.type : '[missing event type]');
+                  completedOutput.observe(event);
                   if (event.type === 'response.completed' || event.type === 'response.failed' || event.type === 'response.incomplete') {
                     body = safe(event.response);
                     if (!body || typeof body !== 'object' || Array.isArray(body) || ('status' in body && `response.${body.status}` !== event.type)) {
@@ -142,15 +147,23 @@ function investigator(session: ChatGPTSession, subscription: boolean, options: T
             }
             // The SDK's raw-response route lets us reject malformed wire shapes
             // before convenience parsing can turn them into incidental TypeErrors.
-            const response = body as Response;
+            let response = body as Response;
             // Account before interpreting status, including refused, incomplete and failed responses.
             const usage = providerUsage(response);
             if (usage && !closed) reportUsage(usage);
             if (closed || requestSignal.aborted) throw requestSignal.reason ?? new Error('OpenAI dialogue closed');
-            options.onExchange?.({ request, response });
+            const streamOutput = subscription && response.status === 'completed' && Array.isArray(response.output) && response.output.length === 0
+              ? safe(completedOutput.complete(response as unknown as Record<string, unknown>)) : null;
+            options.onExchange?.({ request, response, ...(streamOutput ? { streamOutput } : {}) });
             if (response.status === 'failed') return failure(response.error?.code, wire.status, response, wire.headers.get('x-request-id'));
             if (response.status === 'incomplete') return { kind: response.incomplete_details?.reason === 'content_filter' ? 'refused' : 'truncated' };
             if (response.status !== 'completed' || !Array.isArray(response.output)) return { kind: 'ended' };
+            if (subscription && response.output.length === 0) {
+              if (!streamOutput) return { kind: 'ended' };
+              // Keep the captured terminal body unchanged. Resolve completed items
+              // only after terminal success, before existing tool/domain validation.
+              response = { ...response, output: streamOutput as Response['output'] };
+            }
             if (response.output.some(item => !item || typeof item !== 'object' ||
                 (item.type === 'message' && !Array.isArray(item.content)))) return { kind: 'ended' };
             if (response.output.some(item => item.type === 'message' && item.content.some(part => part?.type === 'refusal'))) return { kind: 'refused' };

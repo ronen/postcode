@@ -222,7 +222,16 @@ for (const route of ['api-key', 'chatgpt-plan']) for (const format of ['unicode'
   const batches: ObservationBatch[] = [], captures: OpenAIExchange[] = [];
   let calls = 0, stdout = '', stderr = '', prompts = 0, subject = '';
   const createAgent = (options: Parameters<typeof openAIInvestigator>[1]) => route === 'api-key' ? openAIInvestigator(sentinel, options) : chatGPTInvestigator({ token: async () => sentinel, watch: () => () => {} }, options);
-  const transportResponse = (body: ReturnType<typeof response>) => route === 'api-key' ? http(body) : new Response(`data: ${JSON.stringify({ type: 'response.completed', response: { ...body, model: 'gpt-5.6-sol', output: (body.output as any[]).map(item => ({ ...item, namespace: 'postcode' })) } })}\n\n`, { headers: { 'content-type': 'text/event-stream' } });
+  const transportResponse = (body: ReturnType<typeof response>) => {
+    if (route === 'api-key') return http(body);
+    const envelope = { ...body, model: 'gpt-5.6-sol', output: [] };
+    const events = [{ type: 'response.created', response: { ...envelope, status: 'in_progress' } },
+      ...(body.output as any[]).flatMap((item, output_index) => [
+        { type: 'response.output_item.added', output_index, item: { ...item, namespace: 'postcode', arguments: '' } },
+        { type: 'response.output_item.done', output_index, item: { ...item, namespace: 'postcode' } },
+      ]), { type: 'response.completed', response: envelope }];
+    return new Response(new TextEncoder().encode(events.map(event => `data: ${JSON.stringify(event)}\n\n`).join('')));
+  };
   const agent = createAgent( { onExchange: item => captures.push(item), fetch: async (_url, options) => {
     calls++;
     const body = JSON.parse(String(options?.body));
