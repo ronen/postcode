@@ -193,6 +193,12 @@ Opening ChatGPT sign-in. Approve optional plan usage in the browser if desired. 
 PostCode could not open the sign-in browser.
 ```
 
+### Human-selected ChatGPT assessment configuration — 2026-09-30
+
+Use `gpt-5.6-sol` with medium reasoning for the ChatGPT-plan assessment configuration.
+Record this as the human-selected rationale: `gpt-6-sol` is unavailable through the account’s ChatGPT-plan route. GPT-5.6 Sol is a capable alternative with lower published token rates than GPT-6 Astra, preserving our preference to start with a reasonably capable, moderately priced configuration. Whether it provides sufficient interpretive value remains for the assessments to establish.
+Verify that the configuration works through the selected route, update the relevant configuration documentation, and continue the planned assessments with it held fixed throughout the assessment pass. Do not automatically switch to Astra if results are disappointing; report the findings for us to consider.
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
