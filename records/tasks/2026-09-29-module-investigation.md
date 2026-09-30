@@ -605,3 +605,57 @@ verification, committed assessment tooling, pinned/frozen references, clean
 summary evaluators, source-informed assessment, baseline/focused cases and the
 milestone-3 independent review remain. Freeze source references before any live
 run on the assessment subjects or fixtures. Milestone 4 remains gated.
+
+### Milestone 3 ChatGPT sign-in addition and replacement handoff — 2026-09-30
+
+The human's authorized addition, preserved before implementation in `1de7477`,
+is implemented in `b0a0ca9`. The prior API-key-only setup handoff is superseded by
+project-independent browser Sign in with ChatGPT. API-key billing remains an
+explicit alternative; neither route silently falls back to the other. The
+[accepted route decision](../../docs/decisions/hosted-authentication-and-billing.md),
+approved-plan provisions, architecture, hosted setup, CLI reference and current
+status now reflect this authorized addition.
+
+PostCode validates loopback authorization, identity and granted plan scopes,
+persists registrations and credentials in its own Keychain item, serializes
+refresh rotation across processes, and provides safe status, selection and
+sign-out. Ordinary exit retains sign-in. Subscription inference uses streaming,
+namespaced functions and the required request restrictions; completed submissions
+still pass through existing domain validation. Route provenance, usage reporting
+and development assessment reporting distinguish API billing from ChatGPT-funded
+usage and leave unknown monetary/credit attribution unknown. Evaluator and assessor
+usage remain separate even when sharing the allowance.
+
+The dependency choices isolate provider transport (`openai` 7.25.0), OIDC signature
+validation (`jose` 6.2.12), in-process protected credential storage
+(`@napi-rs/keyring` 2.1.0), and kernel refresh coordination (`fs-ext` 2.1.1).
+A kernel lock avoids concurrent rotation after a suspended process loses a timed
+lease. Native dependencies are optional for installation; unavailable support
+fails hosted setup without plaintext fallback. Purpose, license, integration
+rationale and current protocol sources are retained in the
+[offline validation record](../validation/module-investigation/2026-09-30-milestone-3-chatgpt-offline.md).
+
+Type checking passed. The full suite passed **407 tests, zero failures,
+cancellations or skips**, in 127.11 seconds with repository inputs unchanged.
+Coverage includes actual local OAuth callbacks with generated identities,
+cross-process rotation, lock-owner death, permission decline, refresh and
+revocation failures, streaming completion/failure, cancellation, both output
+formats, credential exclusion, explicit route selection and assessment monetary
+unknowns. The first sandboxed loopback attempt was permission-restricted; the
+permitted offline run passed. No real Keychain item or Codex credential was read
+or changed, and no live inference or spending-settings operation occurred.
+
+Work now pauses for the human to run `npm run postcode -- auth chatgpt sign-in`
+from `/Users/ronen/postcode/app` in their own terminal and report readiness without
+credentials. Afterward run the explicit account/model/medium connection check,
+retain its usage, and continue the authorized ChatGPT-route assessment. Live
+eligibility/protocol compatibility and native Keychain/browser interaction remain
+unverified. Interactive reauthorization requires a human pause. The current docs
+name `earliest_refresh_at` without defining its representation; the implementation
+retains it opaquely and renews at expiry rather than guessing an earlier schedule.
+
+The task remains active and milestone 3 remains incomplete. Frozen references,
+remaining assessment tooling, clean evaluators and source-informed assessors,
+live baseline/focused cases and the independent milestone review are still due.
+The final milestone handoff must carry the addition, offline verification, actual
+connection result and attribution limits. Milestone 4 remains behind acceptance.
