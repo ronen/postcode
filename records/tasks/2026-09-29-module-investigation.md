@@ -199,6 +199,16 @@ Use `gpt-5.6-sol` with medium reasoning for the ChatGPT-plan assessment configur
 Record this as the human-selected rationale: `gpt-6-sol` is unavailable through the account’s ChatGPT-plan route. GPT-5.6 Sol is a capable alternative with lower published token rates than GPT-6 Astra, preserving our preference to start with a reasonably capable, moderately priced configuration. Whether it provides sufficient interpretive value remains for the assessments to establish.
 Verify that the configuration works through the selected route, update the relevant configuration documentation, and continue the planned assessments with it held fixed throughout the assessment pass. Do not automatically switch to Astra if results are disappointing; report the findings for us to consider.
 
+### Diagnostic request authorization — 2026-09-30
+
+Yes, you may run the diagnostic request.  As long as they're not succeeding, hence not billing, it doesn't really matter how many you run.  Once requests are successful accruing a cost -- or if you can't determine whether they are accruing a cost --  limit to only a few, and pause again rather repeatedly issuing more (potentially) billable requests.
+
+Context: approval for the proposed instrumented connection request. Earlier failed
+checks have unknown consumption; failure alone does not establish no billing.
+Count conservatively: one new diagnostic request, then reassess and pause if
+compatibility or cost remains unresolved. No automatic inference retry or model/
+billing fallback is authorized.
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
