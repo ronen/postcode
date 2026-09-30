@@ -911,3 +911,54 @@ prompt/context freezing, assessment tooling, baseline/focused runs, clean
 evaluators/source-informed assessors and independent review remain due. Reaching
 the request ceiling later will require pausing and reporting rather than treating
 that administrative limit as a hard milestone failure. Milestone 4 remains gated.
+
+### Milestone 3 fixed-configuration assessment and verification — 2026-09-30
+
+After the override approval in `1387e09`, `d00deb6` froze source-grounded references,
+exact shared instructions, fixed evaluator questions/rubric, source/configuration
+hashes and reusable CLI capture tooling. Merge-anything retains unchanged pinned
+source and original configuration, using the exact recorded assessment override
+with PostCode TypeScript 6.0.3. Cockatiel/fsm-engine retain original configurations.
+The human clarified request accounting in `9262403`: the ten-request allowance is
+for implementation/debugging, separate from planned assessments. `870e9be`
+separated those ledgers. Two diagnostics used and eight remain; this assessment
+pass consumed no additional diagnostic request.
+
+`6a21480` preserves six planned cases: three upstream summary baselines, a
+mixed/delegated/conflicting-documentation fixture, an opaque callback fixture,
+and a labelled hard-limit control. The five investigations were accepted after
+explicit submission validation; the guard control stopped with no provider call.
+The pass made 21 Responses requests and reported 666,727 tokens, all attributed
+to GPT-5.6 Sol / medium / ChatGPT-plan. No automatic retries, reruns, model/billing
+switches, purchases or provider-setting changes occurred. Actual monetary and
+included-allowance-versus-credit attribution are unavailable, not zero.
+
+Six fresh view-only evaluators and six separate fresh source-informed assessors
+ran as the approved plan prescribes. Their exact supplied inputs, dispatches and
+outputs are retained, with model-setting/usage unavailability and same-family,
+shared-orchestration/reference-preparation limitations disclosed. Their unknown
+usage is separate from PostCode's reported investigator total.
+
+The [assessment report](../validation/module-investigation/pass-01/report.md)
+records useful functional communication and material limits: overstatement risk
+around fsm-engine context separation, omitted exceptional/ownership boundaries,
+a missed conflicting README claim, verbose/generic presentation, and a guard-view
+name/state misunderstanding. The conflict case did not acquire the README and
+therefore does not validate reconciliation after disclosure. No prompt tuning or
+stronger-model substitution was performed to hide these findings. Assessment
+findings are not an independent implementation review or human acceptance.
+
+`npm test` at `6a21480` passed **419 tests**, zero failures/cancellations/skips,
+151.833 seconds, with repository inputs held stationary and loopback permission
+for offline callbacks. Build is included. The focused harness/transport run passed
+12 tests. All six post-run configuration/source checks passed; command views,
+subsequent usage views and usage observations agree in every case. Credential
+pattern scans supplement the existing sentinel-redaction regression coverage.
+`986fddb` records final verification and updates current capability limits.
+
+The previous ownership-cancellation prerequisite is resolved by the bounded
+reproduction and harness correction in `6677ccc`, not by isolated passes alone;
+historical cancelled runs remain preserved and their universal cause remains
+unproven. The milestone-3 handoff must retain that distinction and the new live
+assessment limitations. The task remains active awaiting independent milestone-3
+review and human acceptance. Milestone 4 has not begun.
