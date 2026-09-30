@@ -365,7 +365,7 @@ A valid identity without that permission remains signed in but cannot infer.
 Refresh reads current state under a kernel file lock shared by processes, replaces
 access/refresh/ID/expiry/scope state together, and saves it before inference.
 Unlike a stale timed lease, this lock cannot admit a second rotation while its
-owner is suspended and is released by process death. Access renews at expiry;
+owner is suspended and is released by process death. Access renews within a 60-second expiry margin before inference;
 the unspecified `earliest_refresh_at` representation is retained opaquely, not
 interpreted as a speculative early-refresh time. Terminal refresh errors clear
 unusable tokens; temporary failures retain them. No investigation is retried.
@@ -432,3 +432,10 @@ remains unknown. A ledger ceiling is an administrative interruption, not an
 interpretive result or milestone failure; ordinary investigation execution guards
 retain their distinct outcomes. Fresh view-only evaluators and source-informed
 assessors consume captured artifacts separately and receive no credentials.
+
+Completed stream items with an explicit non-completed status are inconsistent
+with terminal success and cannot supply tool calls or submissions. Missing item
+status remains supported; successful terminal completion and consistent item
+identity are still required. Malformed function arguments count as an invalid
+submission only when the function explicitly names `submit_investigram`; malformed
+evidence calls or unknown functions end without a submission, retaining usage.

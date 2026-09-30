@@ -153,11 +153,15 @@ processes; it contains no credentials and has no stale lease that could allow a
 second process to rotate a suspended process's refresh token. Keychain replacement
 saves each rotated set together. Ordinary process exit does not sign out or revoke.
 
-PostCode renews expired access tokens before the next request. The current docs
-name `earliest_refresh_at` without defining its representation; PostCode retains
-it opaquely and avoids speculative early refresh. A terminal refresh rejection
+PostCode renews access tokens within 60 seconds of expiry before the next request,
+following the provider’s [near-expiry renewal guidance](https://developers.openai.com/siwc/token-sharing-open-source/profiles-and-sessions#refreshing-tokens).
+This reduces admission-time expiry risk without guaranteeing validity across every
+network delay. The current docs name `earliest_refresh_at` without defining its
+representation; PostCode retains it opaquely. A terminal refresh rejection
 clears unusable tokens, retains the registration, and asks for interactive sign-in.
-Temporary service failures retain the saved credentials. Each running project
+Temporary service failures retain the saved credentials locally. If the provider
+rotated a refresh token before an interrupted response or failed local write, the
+retained token can nevertheless be unusable remotely and require sign-in again. Each running project
 binds to its selected registration; choosing another account affects subsequent
 invocations. Sign-out invalidates that session, rejects new requests and cancels
 in-flight local transport when its one-second watcher observes the change.
@@ -220,3 +224,8 @@ configuration. Original tracked source/configuration stays unchanged; the runner
 checks the pin, hashes and compiler version before inference. Cockatiel and
 fsm-engine use their original configurations. Reproduction instructions and the
 separate diagnostic/assessment accounting are in the [development harness guide](../scripts/module-investigation/README.md).
+
+Returning browser sign-in sends the retained ID token as an `id_token_hint` to
+the provider’s authorization endpoint. This hint identifies the account and may
+remain in browser history; it is not an inference bearer credential. PostCode
+keeps the authorization URL out of process arguments, logs and diagnostics.

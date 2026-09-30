@@ -23,7 +23,7 @@ export class CompletedStreamOutput {
       else this.added.set(index, value);
     } else {
       const initial = this.added.get(index);
-      if (!initial || this.done.has(index) || ['type', 'id', 'call_id', 'name', 'namespace'].some(key => initial[key] !== value[key])) this.valid = false;
+      if (!initial || this.done.has(index) || ('status' in value && value.status !== 'completed') || ['type', 'id', 'call_id', 'name', 'namespace'].some(key => initial[key] !== value[key])) this.valid = false;
       else this.done.set(index, value);
     }
   }

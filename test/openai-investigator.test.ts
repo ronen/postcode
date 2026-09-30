@@ -261,3 +261,22 @@ for (const route of ['api-key', 'chatgpt-plan']) for (const format of ['unicode'
   if (route === 'chatgpt-plan') { assert.match(stderr, /ChatGPT plan usage/); assert.match(JSON.stringify(views[0]!.usage.limitations), /monetary attribution is unavailable/); }
   assert.doesNotMatch(JSON.stringify({ stdout, stderr, batches, captures }), new RegExp(sentinel));
 });
+
+
+test('only an explicit submission call classifies malformed arguments as an invalid submission on either route', async () => {
+  for (const subscription of [false, true]) {
+    for (const name of ['request_evidence', 'unsupported_tool', 'submit_investigram']) {
+      const body = response({ output: [{ ...call(name, {}), namespace: 'postcode', arguments: '{bad-json' }] });
+      let requests = 0; const reports: ReportedUsage[] = [];
+      const fetcher: typeof fetch = async () => { requests++; return subscription
+        ? new Response(`data: ${JSON.stringify({ type: 'response.completed', response: body })}\n\n`, { headers: { 'content-type': 'text/event-stream' } }) : http(body); };
+      const agent = subscription ? chatGPTInvestigator({ token: async () => sentinel, watch: () => () => {} }, { fetch: fetcher }) : openAIInvestigator(sentinel, { fetch: fetcher });
+      const dialogue = agent.open();
+      try {
+        const result = await dialogue.exchange(input, new AbortController().signal, report => reports.push(report));
+        assert.deepEqual(result, name === 'submit_investigram' ? { kind: 'submit', result: null } : { kind: 'ended' });
+        assert.equal(requests, 1); assert.equal(reports.length, 1);
+      } finally { dialogue.close(); }
+    }
+  }
+});

@@ -192,3 +192,25 @@ test('completed stream items supply an empty terminal envelope only after a cons
     }
   }
 });
+
+
+test('unfinished item status cannot supply tools or a submission even with parseable arguments and terminal success', async () => {
+  for (const name of ['request_evidence', 'submit_investigram']) {
+    for (const status of [undefined, 'completed', 'incomplete', 'in_progress', null]) {
+      const item = { ...call(name, name === 'request_evidence' ? { requests: [{ kind: 'source', subject: input.request.subject }] } : { prose: 'finished' }), id: 'fc_1', ...(status === undefined ? {} : { status }) };
+      const events = [
+        { type: 'response.created', response: response([], 'in_progress') },
+        { type: 'response.output_item.added', output_index: 0, item: { ...item, status: 'in_progress', arguments: '' } },
+        { type: 'response.output_item.done', output_index: 0, item },
+        { type: 'response.completed', response: response([]) },
+      ];
+      const reports: ReportedUsage[] = [];
+      const dialogue = chatGPTInvestigator(session, { fetch: async () => sse(events) }).open();
+      try {
+        const result = await dialogue.exchange(input, new AbortController().signal, report => reports.push(report));
+        assert.equal(result.kind, status === undefined || status === 'completed' ? name === 'request_evidence' ? 'tools' : 'submit' : 'ended');
+        assert.equal(reports.length, 1);
+      } finally { dialogue.close(); }
+    }
+  }
+});

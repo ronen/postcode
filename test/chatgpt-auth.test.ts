@@ -173,7 +173,7 @@ test('kernel lock serializes separate processes and is released after process de
   } finally { await rm(directory, { recursive: true, force: true }); }
 });
 
-test('separate processes renew a shared expired registration exactly once and both use the rotated access token', async () => {
+test('separate processes renew a shared near-expiry registration exactly once and both use the rotated access token', async () => {
   const directory = await mkdtemp(path.join(tmpdir(), 'postcode-renew-'));
   try {
     const vaultPath = path.join(directory, 'fake-vault');
@@ -185,7 +185,7 @@ test('separate processes renew a shared expired registration exactly once and bo
       const dir = process.argv[1], file = dir + '/fake-vault';
       const store = { read: () => readFile(file, 'utf8'), write: v => writeFile(file, v), exclusive: action => withCredentialLock(dir, action) };
       const oauth = { refresh: async r => { if(r.tokens.refreshToken !== 'refresh-secret') throw Error('reused rotation'); await appendFile(dir + '/renewals', '1'); await new Promise(r => setTimeout(r, 100)); return { ...r.tokens, accessToken: 'rotated', refreshToken: 'rotated-refresh', expiresAt: ${now + 7200000} }; } };
-      const session = await chatGPTCredentials(store, oauth, () => ${now + 3600001}).session();
+      const session = await chatGPTCredentials(store, oauth, () => ${now + 3540000}).session();
       process.stdout.write('ready\\n');
       await new Promise(resolve => process.stdin.once('data', resolve));
       if (await session.token(new AbortController().signal) !== 'rotated') throw Error('wrong access');
@@ -289,4 +289,21 @@ test('native storage failures remain credential-safe failures instead of creatin
   const manager = chatGPTCredentials(store, service());
   await assert.rejects(manager.signIn('personal', false, new AbortController().signal), error => error instanceof CredentialError && error.code === 'credential_storage' && !error.message.includes('secret'));
   assert.equal(writes, 0);
+});
+
+
+test('refresh margin retains safely valid tokens and rotates at the boundary before returning credentials', async () => {
+  for (const remaining of [60_001, 60_000, 1, 0, -1]) {
+    const store = memoryStore(); let renewals = 0;
+    const oauth = service({ refresh: async () => { renewals++; return { ...tokens(), accessToken: 'rotated', refreshToken: 'replacement', expiresAt: now + 7200000 }; } });
+    await chatGPTCredentials(store, oauth).signIn('personal', false, new AbortController().signal);
+    const manager = chatGPTCredentials(store, oauth, () => now + 3600000 - remaining);
+    const session = await manager.session();
+    const expected = remaining > 60_000 ? 'access-secret' : 'rotated';
+    assert.equal(await session.token(new AbortController().signal), expected);
+    assert.equal(renewals, remaining > 60_000 ? 0 : 1);
+    assert.equal(await (await manager.session()).token(new AbortController().signal), expected);
+    assert.equal(renewals, remaining > 60_000 ? 0 : 1);
+    if (renewals) assert.equal(JSON.parse((await store.read())!).registrations[0].tokens.refreshToken, 'replacement');
+  }
 });

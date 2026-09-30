@@ -13,6 +13,7 @@ export interface ChatGPTSession {
   /** Abort an in-flight request after local sign-out/replacement is observed. */
   watch(controller: AbortController): () => void;
 }
+const renewalMarginMilliseconds = 60_000;
 const planEnabled = (tokens?: TokenSet) => !!tokens?.scopes.includes('chatgpt.tokens.use.direct') && tokens.scopes.includes('resource.invoke');
 const unavailable = () => new CredentialError('reauthorization_required', 'ChatGPT sign-in is required. Run postcode auth chatgpt sign-in in your own terminal. No API billing fallback was used.');
 function decode(raw: string | undefined): Vault {
@@ -95,9 +96,9 @@ export function chatGPTCredentials(store: CredentialStore, oauth: OAuthService, 
         async token(signal) {
           return store.exclusive(async () => {
             const { vault, registration: r } = await current();
-            // The docs do not define earliest_refresh_at units. Preserve it opaquely and
-            // renew at expiry, avoiding speculative proactive renewal before that boundary.
-            if (now() >= r.tokens.expiresAt) {
+            // Refresh near expiry before admitting inference. earliest_refresh_at remains
+            // opaque; the documented near-expiry policy does not depend on its units.
+            if (now() >= r.tokens.expiresAt - renewalMarginMilliseconds) {
               try { r.tokens = await oauth.refresh(r, signal); }
               catch (error) {
                 if (requiresReauthorization(error)) { delete (r as Registration).tokens; r.session = randomUUID(); await save(vault); }

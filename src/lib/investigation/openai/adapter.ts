@@ -172,8 +172,11 @@ function investigator(session: ChatGPTSession, subscription: boolean, options: T
             const call = calls[0]!;
             if (subscription && call.namespace !== 'postcode') return { kind: 'ended' };
             if (typeof call.call_id !== 'string' || !call.call_id || typeof call.arguments !== 'string') return { kind: 'ended' };
+            if (call.name !== 'submit_investigram' && call.name !== 'request_evidence') return { kind: 'ended' };
             let args: unknown;
-            try { args = JSON.parse(call.arguments); } catch { return { kind: 'submit', result: null }; }
+            try { args = JSON.parse(call.arguments); } catch {
+              return call.name === 'submit_investigram' ? { kind: 'submit', result: null } : { kind: 'ended' };
+            }
             if (call.name === 'submit_investigram') return { kind: 'submit', result: args };
             if (call.name !== 'request_evidence' || !args || typeof args !== 'object' || !('requests' in args) || !Array.isArray(args.requests)) return { kind: 'ended' };
             for (const item of response.output) {
