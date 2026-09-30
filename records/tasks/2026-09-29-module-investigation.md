@@ -754,3 +754,44 @@ The human was asked to choose whether to substitute a listed model or retain
 this required decision boundary; medium reasoning and live Responses behavior
 still require verification after the choice. Milestone-3 assessment and review
 remain pending, with source-reference freezing required before assessment runs.
+
+### Human-selected GPT-5.6 Sol and live transport pause — 2026-09-30
+
+The human's model selection and rationale were preserved before implementation in
+`8567ab0`. `12a1c65` fixes the ChatGPT-plan configuration to `gpt-5.6-sol` / medium
+in actual requests, provenance, account checking, disclosure and documentation.
+API-key use retains its separate `gpt-6-sol` / medium configuration. The rationale
+and prohibition on automatic Astra substitution are recorded in the hosted guide,
+approved plan and [verification record](../validation/module-investigation/2026-09-30-chatgpt-56sol-check.md).
+
+The account catalog lists the selected model. The initial connection inference
+failed with `invalid_provider_response`, reporting no usage. Investigation found
+an independent contract mismatch: the SDK permits absent nested response status,
+but the adapter required it despite an explicit terminal event. The correction
+derives missing status from that event and still rejects contradictory status,
+partial output and premature EOF. It is not a verified explanation of the live
+failure. Distinct credential-safe transport diagnostics were added.
+
+One bounded post-fix connection check, announced and recorded before execution,
+also failed. It received HTTP 200 with no content type or request ID and stopped
+before consuming events. No raw body was captured; provider versus intermediary
+origin and actual body format remain unresolved. Both checks attempted inference;
+no usage was received, so consumption and monetary attribution remain unknown,
+not zero. No assessment source was transmitted, no billing/model fallback occurred
+and no provider spending settings changed.
+
+Type checking and build passed. The focused adapter/shared CLI run passed 21
+tests. The first sandboxed full suite passed 409 and failed three loopback OAuth
+tests. Repeating the full offline suite with required local permission and no
+intervening source edits passed **412 tests**, zero failures, cancellations or
+skips, in 160.18 seconds. This clears offline verification, not live compatibility.
+
+Further inference is paused under the plan's unclassified-failure recovery rule.
+The proposed next step, requiring human direction, is one instrumented connection
+check retaining credential-safe metadata/body structure to identify the response
+before choosing a transport correction. No further request has been issued.
+Task status remains active; milestone 3 is incomplete. Preserve both failed
+attempts, unknown usage, the contract correction and remaining uncertainty in the
+milestone handoff. Frozen references, assessment tooling, baseline/focused cases,
+fresh evaluators/source-informed assessors and independent review remain due.
+Milestone 4 remains gated.
