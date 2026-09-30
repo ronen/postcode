@@ -222,6 +222,10 @@ This permits bounded diagnosis and verification, not automatic product retries.
 
 ...if you reach that limit pause and report back, don't consider that a hard failure of the milestone
 
+### Assessment configuration approval — 2026-09-30
+
+Yes, use that override.   Please retain the exact override and TypeScript version in the assessment record, use that configuration consistently across runs, and preserve the pinned source unchanged. The results should be attributed to that effective configuration so the exercise remains reproducible.
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
