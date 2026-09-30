@@ -669,3 +669,28 @@ remaining assessment tooling, clean evaluators and source-informed assessors,
 live baseline/focused cases and the independent milestone review are still due.
 The final milestone handoff must carry the addition, offline verification, actual
 connection result and attribution limits. Milestone 4 remains behind acceptance.
+
+### First-sign-in native storage correction — 2026-09-30
+
+The human-reported failure was recorded in `cba73b0`. An isolated nonexistent
+native Keychain item demonstrated that the installed binding returns null despite
+its async declaration advertising undefined. The prior boundary passed null to
+registration decoding, causing the reported pre-browser invalid-storage error.
+No actual PostCode or Codex credential was inspected or modified. The previous
+offline fixture modeled undefined absence and therefore missed this native gap.
+
+`6941c59` normalizes both absence sentinels at the native boundary while preserving
+rejection of invalid/empty stored values and credential-safe native read failures.
+Three regressions exercise that boundary and first sign-in/persistence. Type
+checking and build passed; the 39-test focused authentication, transport, shared
+CLI and assessment run passed with zero failures, cancellations or skips. An
+isolated native absence read through the corrected manager also passed. The
+[correction record](../validation/module-investigation/2026-09-30-keychain-first-sign-in-correction.md)
+retains reproduction, the coverage gap, verification and remaining live limits.
+Architecture and setup documentation were updated. The full suite was not rerun
+for this localized correction; its earlier passing result remains historical.
+
+The corrected build is ready for the human to retry the same terminal sign-in
+command. Browser authorization, real protected storage and account/model access
+still require human setup; the task remains active at that pause. Carry the
+reported failure and correction into the eventual milestone review handoff.
