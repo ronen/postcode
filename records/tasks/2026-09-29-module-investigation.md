@@ -727,3 +727,24 @@ preserves cause, coverage gap, native check and remaining live limits. The setup
 guide and architecture account were updated. The build is ready for the human
 to retry sign-in; actual authorization and account/model verification remain
 pending. Carry this failure and correction into the milestone review handoff.
+
+### Saved ChatGPT sign-in and model-choice pause — 2026-09-30
+
+After the human reported the successful browser callback, credential-safe CLI
+status confirmed the personal registration is signed in, plan usage is granted,
+and renewal is available. No credentials were displayed or inspected. The
+connection check then stopped at the authenticated model catalog because
+`gpt-6-sol` was not listed. No inference request was made and no inference usage
+report was received. No billing fallback or provider-setting change occurred.
+
+`32e5586` records the [account check](../validation/module-investigation/2026-09-30-chatgpt-account-check.md),
+including visible model names: `gpt-6-astra`, `gpt-5.6-sol`, `gpt-5.6-terra`,
+`gpt-5.6-luna` and `gpt-5.5`. The first sandboxed status invocation could not access
+the normal runtime coordination directory; permitted execution succeeded. The
+record distinguishes catalog access from live inference and monetary attribution.
+
+The human was asked to choose whether to substitute a listed model or retain
+`gpt-6-sol` and pause. No model choice has been applied. Work remains active at
+this required decision boundary; medium reasoning and live Responses behavior
+still require verification after the choice. Milestone-3 assessment and review
+remain pending, with source-reference freezing required before assessment runs.
