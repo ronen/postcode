@@ -1,0 +1,27 @@
+{
+  "authorized": 10,
+  "authorization": "5052825",
+  "capDisposition": "pause-and-report-not-milestone-failure",
+  "requests": [
+    {
+      "ordinal": 1,
+      "run": "connection-01",
+      "status": "not-completed",
+      "usage": {
+        "input_tokens": 808,
+        "output_tokens": 65,
+        "total_tokens": 873
+      }
+    },
+    {
+      "ordinal": 2,
+      "run": "connection-02",
+      "status": "connected",
+      "usage": {
+        "input_tokens": 808,
+        "output_tokens": 84,
+        "total_tokens": 892
+      }
+    }
+  ]
+}
