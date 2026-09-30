@@ -805,3 +805,39 @@ attempts, unknown usage, the contract correction and remaining uncertainty in th
 milestone handoff. Frozen references, assessment tooling, baseline/focused cases,
 fresh evaluators/source-informed assessors and independent review remain due.
 Milestone 4 remains gated.
+
+### Authorized stream diagnostic and cost-aware pause — 2026-09-30
+
+After authorization in `ff3a53d`, exactly one additional diagnostic inference
+request used the fixed GPT-5.6 Sol / medium / ChatGPT-plan configuration. It
+received an event stream without a content-type header and reached a completed
+terminal for the selected model. The captured provider usage is 808 input + 86
+output = 894 total tokens, separately attributed to the connection diagnostic.
+Actual charges and allowance/credit funding remain unknown. Failure of the client
+check did not mean no provider consumption; the two earlier attempts remain
+unknown rather than zero. No assessment source, purchase, billing fallback or
+model substitution was involved.
+
+`cc5db95` preserves the [diagnostic record and safe capture](../validation/module-investigation/2026-09-30-chatgpt-stream-diagnostic.md),
+adds a bounded development diagnostic and corrects rejection solely for absent
+content type. Framing and explicit terminal completion still govern acceptance;
+wrong content type, non-SSE content, partial output and empty terminal output do
+not become submissions. Type check/build and 25 focused diagnostic/transport/CLI
+regressions passed, with three diagnostic tests rerun successfully after adding
+item-structure instrumentation. The prior full-suite pass remains historical;
+no full run was repeated for this correction. Architecture, hosted setup and
+current status reflect the resulting behavior and remaining limit.
+
+A separate uncertainty remains: the completed terminal had an empty output array
+despite earlier output-item/function-call events. The diagnostic captured event
+types but not those item details, so no valid submission is established. No
+reconstruction policy was introduced. The diagnostic now supports credential-safe
+item structure for a possible next request, but that addition has only been tested
+offline. No post-correction live request or assessment has run.
+
+Further inference pauses under the human's cost limit: three connection attempts
+so far, one with known token usage and two with unknown consumption. The proposed
+next step is at most one targeted item-structure diagnostic, followed by another
+report before deciding how to handle the inconsistent stream. Human direction
+is pending. Task status remains active; milestone 3 and its assessment/review
+requirements remain incomplete, and milestone 4 remains gated.
