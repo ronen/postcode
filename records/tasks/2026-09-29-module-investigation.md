@@ -702,3 +702,28 @@ The corrected build is ready for the human to retry the same terminal sign-in
 command. Browser authorization, real protected storage and account/model access
 still require human setup; the task remains active at that pause. Carry the
 reported failure and correction into the eventual milestone review handoff.
+
+### Native browser handoff correction — 2026-09-30
+
+The second setup failure was preserved in `32779df`. The original native launcher
+reproduced an AppleScript `location` selector failure with a harmless loopback
+URL. Its Foundation import lacked `use scripting additions`, so `open location`
+was not resolved correctly. The previous native check exercised stdin reading
+only; offline OAuth tests replaced browser opening. Those checks missed the
+actual native launch defect.
+
+`2de9684` adds the required import and isolates the native handoff for reuse by
+OAuth and a committed opt-in diagnostic. Authorization URLs remain on stdin,
+with no credential-bearing process arguments. The diagnostic opens a harmless
+local page and requires both launcher success and the browser's HTTP request.
+It passed against the corrected production launcher on this host. No credentials,
+Keychain items, OAuth or inference services were used in this check.
+
+Type checking/build and 39 relevant authentication, transport, shared CLI and
+assessment regressions passed with zero failures, cancellations or skips (4.91
+seconds). The full suite was not rerun for this localized correction. The
+[validation record](../validation/module-investigation/2026-09-30-browser-handoff-correction.md)
+preserves cause, coverage gap, native check and remaining live limits. The setup
+guide and architecture account were updated. The build is ready for the human
+to retry sign-in; actual authorization and account/model verification remain
+pending. Carry this failure and correction into the milestone review handoff.
