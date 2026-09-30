@@ -175,6 +175,16 @@ When implementation and offline verification are ready, pause with the exact com
 
 If eligibility or protocol restrictions require materially broader changes, explain the specific issue before expanding scope.
 
+### Human setup failure — 2026-09-30
+
+I tried running the command in the terminal, I got this output:  &#x20;
+```plaintext
+Opening ChatGPT sign-in. Approve optional plan usage in the browser if desired. PostCode will not purchase credits or change spending settings.
+PostCode ChatGPT registration storage is invalid; it was not overwritten.
+```
+
+Browser was not opened.  I tried twice and got the same result both times
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
