@@ -134,7 +134,13 @@ The runner's offline regressions verify reserve-before-dispatch accounting,
 failed-attempt persistence, competing-run exclusion, cap refusal, command driving
 and credential exclusion. Pinned configuration preflight succeeded for all three
 upstream subjects; original tracked source/configuration remained unchanged.
-The complete final suite result will be recorded with the milestone handoff.
+The complete suite at implementation commit `6a214807d231d30c3925ef523785753bb4635c32`
+passed **419 tests, 0 failures, 0 cancellations, 0 skipped**, in 151.833 seconds.
+`npm test` includes the TypeScript build; all provider responses in this suite
+were offline test data. Local loopback permission was enabled for callback tests,
+and tracked repository inputs were held unchanged throughout. All six effective
+configurations and source pins were rechecked after live runs; usage-view equality
+and credential-pattern scans of the captured artifacts passed.
 
 The earlier execution-ownership cancellation prerequisite was diagnosed and
 corrected in `6677ccc`; see the [diagnosis](../2026-09-30-execution-ownership-diagnosis.md).

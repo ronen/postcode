@@ -36,9 +36,10 @@ configured TypeScript project.
 
 ## Current limits
 
-- **Hosted interpretation:** the ChatGPT connection check succeeds; formative
-  assessment remains in preparation. The human-selected
-  ChatGPT configuration is GPT-5.6 Sol with medium reasoning. Disabled summaries report configuration
+- **Hosted interpretation:** [formative assessments](records/validation/module-investigation/pass-01/report.md)
+  show useful source-qualified summaries alongside omitted qualifications and
+  missed conflicting documentation. The human-selected ChatGPT configuration is
+  GPT-5.6 Sol with medium reasoning. Disabled summaries report configuration
   unavailability; protected hosted credential setup supports macOS only. Public follow-up
   lenses and correction-aware replacement display are not implemented yet.
 
