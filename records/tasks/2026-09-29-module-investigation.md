@@ -185,6 +185,14 @@ PostCode ChatGPT registration storage is invalid; it was not overwritten.
 
 Browser was not opened.  I tried twice and got the same result both times
 
+### Browser handoff failure — 2026-09-30
+
+Still not working, here's the output:  &#x20;
+```plaintext
+Opening ChatGPT sign-in. Approve optional plan usage in the browser if desired. PostCode will not purchase credits or change spending settings.
+PostCode could not open the sign-in browser.
+```
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
