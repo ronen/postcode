@@ -218,6 +218,10 @@ connection attempts already recorded. Count attempted requests regardless of
 success, failure or unknown usage; retain the fixed model/reasoning/billing route.
 This permits bounded diagnosis and verification, not automatic product retries.
 
+### Request-cap disposition clarification — 2026-09-30
+
+...if you reach that limit pause and report back, don't consider that a hard failure of the milestone
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
