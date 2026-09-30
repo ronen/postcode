@@ -752,8 +752,13 @@ Implement the subscription Responses streaming and namespaced-tool contract as
 a distinct transport configuration. Only completed explicit submissions proceed
 to domain validation. Preserve cancellation, execution guards, usage attribution
 and the existing no-automatic-inference-retry policy; credential renewal is a
-separate lifecycle operation. Verify `gpt-6-sol` and medium reasoning against the
-human-authorized account; any required substitution needs a human choice.
+separate lifecycle operation. The human selected `gpt-5.6-sol` with medium
+reasoning for the ChatGPT-plan assessment after the account did not list
+`gpt-6-sol`. Verify it through that route and hold it fixed throughout the pass.
+Do not switch to Astra for disappointing results; report findings for human
+consideration. The human rationale preserves a reasonably capable, moderately
+priced starting point; interpretive sufficiency remains to be assessed. Any
+further substitution needs a human choice.
 
 When implementation and offline verification are ready, pause with the exact
 sign-in command for the human's own terminal. After they report readiness, run

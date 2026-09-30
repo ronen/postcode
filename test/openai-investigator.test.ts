@@ -222,7 +222,7 @@ for (const route of ['api-key', 'chatgpt-plan']) for (const format of ['unicode'
   const batches: ObservationBatch[] = [], captures: OpenAIExchange[] = [];
   let calls = 0, stdout = '', stderr = '', prompts = 0, subject = '';
   const createAgent = (options: Parameters<typeof openAIInvestigator>[1]) => route === 'api-key' ? openAIInvestigator(sentinel, options) : chatGPTInvestigator({ token: async () => sentinel, watch: () => () => {} }, options);
-  const transportResponse = (body: ReturnType<typeof response>) => route === 'api-key' ? http(body) : new Response(`data: ${JSON.stringify({ type: 'response.completed', response: { ...body, output: (body.output as any[]).map(item => ({ ...item, namespace: 'postcode' })) } })}\n\n`, { headers: { 'content-type': 'text/event-stream' } });
+  const transportResponse = (body: ReturnType<typeof response>) => route === 'api-key' ? http(body) : new Response(`data: ${JSON.stringify({ type: 'response.completed', response: { ...body, model: 'gpt-5.6-sol', output: (body.output as any[]).map(item => ({ ...item, namespace: 'postcode' })) } })}\n\n`, { headers: { 'content-type': 'text/event-stream' } });
   const agent = createAgent( { onExchange: item => captures.push(item), fetch: async (_url, options) => {
     calls++;
     const body = JSON.parse(String(options?.body));
@@ -247,6 +247,7 @@ for (const route of ['api-key', 'chatgpt-plan']) for (const format of ['unicode'
   assert.equal(views.length, 3);
   for (const view of views) { assert.equal(view.usage.calls, 2); assert.equal(view.usage.totals[0]!.categories.find(c => c.category === 'total')!.value, 300); }
   assert.equal(views[1]!.result!.reused, true);
+  assert.equal(captures[0]!.request.model, route === 'api-key' ? 'gpt-6-sol' : 'gpt-5.6-sol');
   assert.equal(views[0]!.usage.totals[0]!.agent.configuration.billingRoute, route === 'api-key' ? 'openai-api' : 'chatgpt-plan');
   if (route === 'chatgpt-plan') { assert.match(stderr, /ChatGPT plan usage/); assert.match(JSON.stringify(views[0]!.usage.limitations), /monetary attribution is unavailable/); }
   assert.doesNotMatch(JSON.stringify({ stdout, stderr, batches, captures }), new RegExp(sentinel));

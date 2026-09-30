@@ -6,7 +6,7 @@ import type { ChatGPTCredentials } from './chatgpt-credentials.js';
 import { chatGPTInvestigator, openAIInvestigator } from './adapter.js';
 
 export const hostedDisclosure = 'Hosted investigation enabled: selected repository source, documentation and qualified analysis will be sent to OpenAI (gpt-6-sol, medium reasoning) through its Responses API. API charges apply.\n';
-export const chatGPTDisclosure = 'Hosted investigation enabled: selected repository source, documentation and qualified analysis will be sent to OpenAI (gpt-6-sol, medium reasoning). Route: Sign in with ChatGPT / ChatGPT plan usage; optional credits apply only if already permitted in provider settings. Monetary attribution is unavailable. Controls: https://chatgpt.com/settings/usage. No API billing fallback.\n';
+export const chatGPTDisclosure = 'Hosted investigation enabled: selected repository source, documentation and qualified analysis will be sent to OpenAI (gpt-5.6-sol, medium reasoning). Route: Sign in with ChatGPT / ChatGPT plan usage; optional credits apply only if already permitted in provider settings. Monetary attribution is unavailable. Controls: https://chatgpt.com/settings/usage. No API billing fallback.\n';
 const unavailable = { kind: 'configuration-unavailable' as const,
   diagnostic: 'Hosted investigation configuration unavailable: macOS Keychain must contain service org.postcode.openai, account api-key, with an accessible nonempty API key. See docs/hosted-investigation.md. No credential fallback is used.' };
 

@@ -341,7 +341,10 @@ not complete billed usage.
 ## Hosted transport and credential boundary
 
 Explicit `POSTCODE_INVESTIGATOR=openai` or `chatgpt` selects API-key billing or
-Sign in with ChatGPT plan use, respectively. Both announce repository transmission
+Sign in with ChatGPT plan use, respectively. The fixed ChatGPT assessment
+configuration is `gpt-5.6-sol` with medium reasoning, selected by the human after
+the account catalog did not list `gpt-6-sol`; API-key configuration remains separate.
+Both announce repository transmission
 and preflight before either project-opening path. Disabled use performs no
 credential lookup. Authentication commands do not open a project. Local preflight
 is not evidence of remote eligibility or model access. The [accepted route decision](../decisions/hosted-authentication-and-billing.md)
@@ -381,6 +384,9 @@ retries inference. API-key requests use non-streaming responses, standard servic
 tier and a 16,000 output-token cap. ChatGPT requests stream, group the two functions
 in a namespace, and omit unsupported fields including the output-token cap.
 Deltas and output-item completion are never accepted as completed submissions.
+An explicit terminal event supplies response status when the optional nested status
+is absent; a contradictory nested status is rejected. Missing stream content type,
+premature EOF and inconsistent terminals produce distinct credential-safe diagnostics.
 Only a successful completed response may submit a whole result to domain
 validation; failed/incomplete terminals, malformed streams and premature EOF
 remain distinct from accepted investigrams. Domain guards still bound the dialogue.

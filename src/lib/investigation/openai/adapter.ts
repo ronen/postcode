@@ -16,7 +16,7 @@ export interface OpenAIExchange {
   readonly failure?: AgentFailure;
 }
 
-export const chatGPTIdentity: AgentIdentity = Object.freeze({ provider: 'openai', model: 'gpt-6-sol', origin: 'hosted',
+export const chatGPTIdentity: AgentIdentity = Object.freeze({ provider: 'openai', model: 'gpt-5.6-sol', origin: 'hosted',
   configuration: Object.freeze({ adapter: 'postcode/chatgpt-responses@1', sdk: 'openai@7.25.0', authenticationRoute: 'chatgpt-sign-in',
     billingRoute: 'chatgpt-plan', reasoningEffort: 'medium', store: false, streaming: true, retries: 0 }) });
 interface TransportOptions { fetch?: typeof fetch; onExchange?: (exchange: OpenAIExchange) => void }
@@ -29,6 +29,7 @@ export function chatGPTInvestigator(session: ChatGPTSession, options: TransportO
 }
 /** Parent-only transport owns credentials. Only sanitized replies and usage leave this boundary. */
 function investigator(session: ChatGPTSession, subscription: boolean, options: TransportOptions): InvestigatorAgent {
+  const identity = subscription ? chatGPTIdentity : openAIIdentity;
   const secrets = new Set<string>();
   const redact = (value: string) => { for (const secret of secrets) value = value.split(secret).join('[redacted credential]'); return value; };
   const safe = <T>(value: T): T => {
@@ -49,7 +50,7 @@ function investigator(session: ChatGPTSession, subscription: boolean, options: T
   }
 
   return {
-    identity: subscription ? chatGPTIdentity : openAIIdentity,
+    identity,
     open() {
       const controller = new AbortController();
       const stopWatching = session.watch(controller);
@@ -82,7 +83,7 @@ function investigator(session: ChatGPTSession, subscription: boolean, options: T
             };
             const client = new OpenAI({ apiKey: token, adminAPIKey: null, webhookSecret: null, baseURL: 'https://api.openai.com/v1', organization: null, project: null,
               maxRetries: 0, timeout: 180000, logLevel: 'off', fetch: transport });
-            const request: ResponseCreateParams = safe({ model: openAIIdentity.model, reasoning: { effort: 'medium' },
+            const request: ResponseCreateParams = safe({ model: identity.model, reasoning: { effort: 'medium' },
               ...(subscription ? { stream: true as const } : { service_tier: 'default' as const, stream: false as const, max_output_tokens: 16000 }), store: false, include: ['reasoning.encrypted_content'],
               instructions: input.instructions, input: history, tools: subscription ? [{ type: 'namespace', name: 'postcode', description: 'PostCode evidence and explicit result submission', tools: investigatorFunctions }] : investigatorFunctions, parallel_tool_calls: false, tool_choice: 'auto' });
             let wire: globalThis.Response;
@@ -96,14 +97,22 @@ function investigator(session: ChatGPTSession, subscription: boolean, options: T
               return problem;
             }
             let body: unknown;
+            const streamEvents: string[] = [];
+            let responseIssue = 'invalid_provider_response';
             try {
               if (subscription) {
-                if (!wire.headers.get('content-type')?.includes('text/event-stream')) throw new SyntaxError();
+                if (!wire.headers.get('content-type')?.includes('text/event-stream')) { responseIssue = 'unexpected_response_content_type'; throw new SyntaxError(); }
                 const stream = Stream.fromSSEResponse<Record<string, unknown>>(wire, new AbortController(), client);
                 for await (const event of stream) {
+                  if (streamEvents.length < 100) streamEvents.push(typeof event.type === 'string' ? event.type : '[missing event type]');
                   if (event.type === 'response.completed' || event.type === 'response.failed' || event.type === 'response.incomplete') {
                     body = safe(event.response);
-                    if (!body || typeof body !== 'object' || !('status' in body) || `response.${body.status}` !== event.type) throw new SyntaxError();
+                    if (!body || typeof body !== 'object' || Array.isArray(body) || ('status' in body && `response.${body.status}` !== event.type)) {
+                      responseIssue = 'inconsistent_terminal_response'; throw new SyntaxError();
+                    }
+                    // Response.status is optional in the provider schema. The terminal
+                    // event supplies status when omitted; contradictory status is rejected.
+                    body = { ...body, status: event.type.slice('response.'.length) };
                     break;
                   }
                   // Deltas and output-item completion are never accepted results.
@@ -112,12 +121,12 @@ function investigator(session: ChatGPTSession, subscription: boolean, options: T
                     options.onExchange?.({ request, failure: problem }); return problem;
                   }
                 }
-                if (body === undefined) throw new SyntaxError();
+                if (body === undefined) { responseIssue = 'stream_ended_without_terminal'; throw new SyntaxError(); }
               } else body = safe(await wire.json());
             }
             catch (error) {
               if (requestSignal.aborted) throw requestSignal.reason;
-              const problem = error instanceof OpenAI.APIError ? failure(error.code, wire.status, error.error, wire.headers.get('x-request-id')) : failure('invalid_provider_response');
+              const problem = error instanceof OpenAI.APIError ? failure(error.code, wire.status, error.error, wire.headers.get('x-request-id')) : failure(responseIssue, wire.status, { contentType: wire.headers.get('content-type'), observedEvents: streamEvents }, wire.headers.get('x-request-id'));
               options.onExchange?.({ request, failure: problem });
               return problem;
             }

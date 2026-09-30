@@ -6,9 +6,23 @@ its granted plan allowance; `POSTCODE_INVESTIGATOR=openai` uses an API key and A
 billing. Signing in alone does not enable hosted project work. PostCode never
 switches between these routes, accounts or models to recover from a failure.
 
-Both request `gpt-6-sol` with medium reasoning through the public Responses API.
+The ChatGPT-plan route requests `gpt-5.6-sol` with medium reasoning; the API-key
+route retains `gpt-6-sol` with medium reasoning. Both use the public Responses API.
 Compatibility must be verified against the authorized ChatGPT account before
 assessment; availability is account-dependent. No substitute model is selected automatically.
+
+The human selected `gpt-5.6-sol` for the fixed ChatGPT-plan assessment pass because
+`gpt-6-sol` is unavailable through this account. The recorded rationale is that
+GPT-5.6 Sol is a capable alternative with lower published token rates than GPT-6
+Astra, preserving a reasonably capable, moderately priced starting configuration.
+Sufficient interpretive value remains for assessment to establish. Hold this
+configuration fixed throughout the pass; disappointing findings do not authorize
+switching to Astra. The account catalog lists the selected model, but live medium
+reasoning and streaming compatibility remain unverified: the connection check
+received HTTP 200 without a content type and accepted no result. See the
+[verification record](../records/validation/module-investigation/2026-09-30-chatgpt-56sol-check.md).
+This selection rationale is not a claim about actual ChatGPT
+credit charges, which remain unattributed by token reports.
 
 ## Human setup: Sign in with ChatGPT
 
@@ -49,7 +63,7 @@ is reported. Disconnect PostCode in **ChatGPT Settings â†’ Security and login â†
 Sign in with ChatGPT** when remote access needs to be removed.
 
 After human setup, this explicit connection check lists the account's available
-models and performs a small, cost-bearing streaming request with `gpt-6-sol` and
+models and performs a small, cost-bearing streaming request with `gpt-5.6-sol` and
 medium reasoning. It reports provider token usage and stops on incompatibility:
 
 ```sh

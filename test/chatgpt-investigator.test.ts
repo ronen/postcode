@@ -13,7 +13,7 @@ const session = { token: async () => secret, watch: () => () => {} };
 const input: AgentInput = { attempt: 'attempt:test' as RecordId, instructions: 'Test instructions', request: { operation: 'functionality', subject: 'module:test' as RecordId, parameters: {} }, responses: [], remaining: { milliseconds: 10000, calls: 5, toolCalls: 10 } };
 const usage = { input_tokens: 12, output_tokens: 3, total_tokens: 15, input_tokens_details: { cached_tokens: 2 }, output_tokens_details: { reasoning_tokens: 1 } };
 const call = (name: string, args: unknown) => ({ type: 'function_call', call_id: 'call', name, namespace: 'postcode', arguments: JSON.stringify(args) });
-const response = (output: unknown[], status = 'completed') => ({ id: 'resp_test', model: 'gpt-6-sol', status, output, usage });
+const response = (output: unknown[], status = 'completed') => ({ id: 'resp_test', model: 'gpt-5.6-sol', status, output, usage });
 function sse(events: unknown[], done = true): Response {
   const text = events.map(event => `data: ${JSON.stringify(event)}\n\n`).join('') + (done ? 'data: [DONE]\n\n' : '');
   return new Response(text, { headers: { 'content-type': 'text/event-stream', 'x-request-id': 'request-test' } });
@@ -31,6 +31,7 @@ test('subscription transport uses streaming, namespace tools, completed response
   assert.equal((await dialogue.exchange(input, new AbortController().signal, item => reports.push(item))).kind, 'tools');
   const reply = await dialogue.exchange({ ...input, responses: [{ status: 'unavailable', records: [], selected: [], limitations: ['test'] }] }, new AbortController().signal, item => reports.push(item));
   assert.deepEqual(reply, { kind: 'submit', result: { prose: 'finished' } }); dialogue.close();
+  assert.equal(sent[0]!.model, 'gpt-5.6-sol'); assert.equal(agent.identity.model, 'gpt-5.6-sol');
   assert.equal(sent[0]!.stream, true); assert.equal(sent[0]!.store, false); assert.equal(Array.isArray(sent[0]!.input), true);
   assert.equal(sent[0]!.tools[0].type, 'namespace'); assert.equal(sent[0]!.tools[0].name, 'postcode');
   for (const field of ['max_output_tokens', 'service_tier', 'temperature', 'previous_response_id', 'metadata', 'conversation']) assert.equal(field in sent[0]!, false);
@@ -93,8 +94,8 @@ test('account check never substitutes a missing model and verifies medium throug
   const manager = { session: async () => session } as unknown as ChatGPTCredentials;
   let posts = 0, available = false;
   const fetcher: typeof fetch = async (url, options) => {
-    if (String(url).endsWith('/models')) return new Response(JSON.stringify({ models: available ? [{ slug: 'gpt-6-sol', visibility: 'list' }] : [{ slug: 'another-model', visibility: 'list' }] }));
-    posts++; const body = JSON.parse(String(options?.body)); assert.equal(body.model, 'gpt-6-sol'); assert.equal(body.reasoning.effort, 'medium');
+    if (String(url).endsWith('/models')) return new Response(JSON.stringify({ models: available ? [{ slug: 'gpt-5.6-sol', visibility: 'list' }] : [{ slug: 'another-model', visibility: 'list' }] }));
+    posts++; const body = JSON.parse(String(options?.body)); assert.equal(body.model, 'gpt-5.6-sol'); assert.equal(body.reasoning.effort, 'medium');
     return sse([{ type: 'response.completed', response: response([call('submit_investigram', { prose: 'Connection confirmed' })]) }]);
   };
   await assert.rejects(checkChatGPTConnection(manager, new AbortController().signal, fetcher), CredentialError); assert.equal(posts, 0);
@@ -110,4 +111,31 @@ test('credential revocation aborts an active stream as configuration unavailabil
   const pending = dialogue.exchange(input, new AbortController().signal, () => assert.fail('no usage yet'));
   await started; revoke(); const result = await pending; dialogue.close();
   assert.equal(result.kind, 'configuration-unavailable');
+});
+
+test('terminal events supply optional response status while partial output and contradictions remain rejected', async () => {
+  for (const status of ['completed', 'failed', 'incomplete']) {
+    const body = { model: 'gpt-5.6-sol', output: [call('submit_investigram', { prose: 'complete' })], usage };
+    const reports: ReportedUsage[] = [];
+    const dialogue = chatGPTInvestigator(session, { fetch: async () => sse([{ type: `response.${status}`, response: body }]) }).open();
+    const result = await dialogue.exchange(input, new AbortController().signal, report => reports.push(report)); dialogue.close();
+    assert.equal(result.kind, status === 'completed' ? 'submit' : status === 'failed' ? 'communication-failure' : 'truncated');
+    assert.equal(reports.length, 1);
+  }
+});
+
+test('stream diagnostics distinguish content type, premature EOF and contradictory terminal status and redact credentials', async () => {
+  for (const [wire, code] of [
+    [new Response(null), 'unexpected_response_content_type'],
+    [new Response('{}', { headers: { 'content-type': 'application/json' } }), 'unexpected_response_content_type'],
+    [sse([{ type: secret }]), 'stream_ended_without_terminal'],
+    [sse([{ type: 'response.created' }]), 'stream_ended_without_terminal'],
+    [sse([{ type: 'response.completed', response: response([], 'in_progress') }]), 'inconsistent_terminal_response'],
+  ] as const) {
+    const dialogue = chatGPTInvestigator(session, { fetch: async () => wire }).open();
+    const result = await dialogue.exchange(input, new AbortController().signal, () => {}); dialogue.close();
+    assert.equal(result.kind, 'communication-failure');
+    assert.equal(JSON.stringify(result).includes(secret), false);
+    if (result.kind === 'communication-failure') { assert.equal(result.code, code); assert.equal(result.provider?.status, 200); }
+  }
 });

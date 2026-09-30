@@ -34,7 +34,7 @@ Normal views automatically submit a local observation batch; the destination is 
 Investigation:
 summarize requires one exact module name/handle, or a module reference in the shell.
 Hosted investigation is disabled by default. POSTCODE_INVESTIGATOR=chatgpt (ChatGPT plan) or POSTCODE_INVESTIGATOR=openai (API billing) intentionally enables transmission of selected repository source, documentation and analysis to OpenAI; Choose the billing route explicitly; no fallback. Use auth chatgpt help for project-independent sign-in. API charges apply to the API-key route.
-The initial hosted adapter uses gpt-6-sol with medium reasoning and macOS Keychain (service org.postcode.openai, account api-key). See docs/hosted-investigation.md before setup.
+ChatGPT-plan investigation uses gpt-5.6-sol with medium reasoning; API-key investigation uses gpt-6-sol with medium reasoning. Both use macOS Keychain. See docs/hosted-investigation.md before setup.
 Enabled use requires accessible credentials before project opening, including mechanical commands. Unsupported platforms and missing access fail preflight without credential or provider fallback.
 Development tests inject the investigator at the communication boundary, using the production worker/session path.
 Successful, failed-investigation and limit-stop outcomes are retained; repeated display adds no usage.

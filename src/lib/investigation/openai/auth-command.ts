@@ -2,7 +2,7 @@ import type { ChatGPTCredentials } from './chatgpt-credentials.js';
 import { chatGPTCredentials } from './chatgpt-credentials.js';
 import { CredentialError, keychainStore } from './credential-store.js';
 import { oauthService } from './oauth.js';
-import { chatGPTInvestigator } from './adapter.js';
+import { chatGPTIdentity, chatGPTInvestigator } from './adapter.js';
 import type { AgentInput, ReportedUsage } from '../contracts.js';
 import type { RecordId } from '../../records.js';
 
@@ -62,6 +62,7 @@ export async function runAuthentication(args: readonly string[], output: { stdou
 
 /** Explicit, cost-bearing account compatibility check; never run implicitly during setup or startup. */
 export async function checkChatGPTConnection(credentials: ChatGPTCredentials, signal: AbortSignal, fetcher: typeof fetch = fetch) {
+  const model = chatGPTIdentity.model;
   const session = await credentials.session(), token = await session.token(signal);
   let catalog: unknown;
   try {
@@ -70,8 +71,8 @@ export async function checkChatGPTConnection(credentials: ChatGPTCredentials, si
     if (!response.ok) throw new Error(); catalog = await response.json();
   } catch { throw new CredentialError('model_catalog_unavailable', 'ChatGPT model access could not be verified. No model substitution or API billing fallback was made.'); }
   const models = catalog && typeof catalog === 'object' && 'models' in catalog && Array.isArray(catalog.models) ? catalog.models : [];
-  if (!models.some((m: unknown) => m && typeof m === 'object' && 'slug' in m && m.slug === 'gpt-6-sol' && 'visibility' in m && m.visibility === 'list'))
-    throw new CredentialError('model_unavailable', 'The authorized ChatGPT account does not list gpt-6-sol. A human model choice is required; no substitute was used.');
+  if (!models.some((m: unknown) => m && typeof m === 'object' && 'slug' in m && m.slug === model && 'visibility' in m && m.visibility === 'list'))
+    throw new CredentialError('model_unavailable', `The authorized ChatGPT account does not list ${model}. A human model choice is required; no substitute was used.`);
   const usage: ReportedUsage[] = [];
   let returnedModel: unknown;
   const agent = chatGPTInvestigator(session, { fetch: fetcher, onExchange: exchange => {
@@ -83,9 +84,9 @@ export async function checkChatGPTConnection(credentials: ChatGPTCredentials, si
   try {
     const reply = await dialogue.exchange(input, AbortSignal.any([signal, AbortSignal.timeout(30000)]), report => usage.push(report));
     if (reply.kind !== 'submit') throw new CredentialError('configuration_incompatible',
-      `The gpt-6-sol / medium / subscription-streaming check did not complete (${reply.kind}${'code' in reply ? `: ${reply.code}` : ''}). Retained check usage: ${JSON.stringify(usage)}. A human decision may be required; no substitute or inference retry was used.`);
-    if (returnedModel !== 'gpt-6-sol' || usage.some(report => report.execution?.model !== 'gpt-6-sol')) throw new CredentialError('model_mismatch', 'OpenAI reported a different model for the requested gpt-6-sol check. A human decision is required.');
-    return { authenticationRoute: 'chatgpt-sign-in', billingRoute: 'chatgpt-plan', model: 'gpt-6-sol', reasoning: 'medium', status: 'connected',
+      `The ${model} / medium / subscription-streaming check did not complete (${reply.kind}${'code' in reply ? `: ${reply.code}` : ''}). Retained check usage: ${JSON.stringify(usage)}. Provider diagnostic: ${JSON.stringify('provider' in reply ? reply.provider : null)}. A human decision may be required; no substitute or inference retry was used.`);
+    if (returnedModel !== model || usage.some(report => report.execution?.model !== model)) throw new CredentialError('model_mismatch', `OpenAI reported a different model for the requested ${model} check. A human decision is required.`);
+    return { authenticationRoute: 'chatgpt-sign-in', billingRoute: 'chatgpt-plan', model, reasoning: 'medium', status: 'connected',
       usage, monetaryAttribution: 'unavailable; provider tokens do not identify allowance versus optional purchased credits', usageControls: 'https://chatgpt.com/settings/usage' };
   } finally { dialogue.close(); }
 }

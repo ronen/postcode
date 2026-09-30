@@ -37,7 +37,8 @@ configured TypeScript project.
 ## Current limits
 
 - **Hosted interpretation:** live provider verification and formative assessment
-  remain pending an account-compatible model choice. Disabled summaries report configuration
+  remain pending resolution of a subscription-streaming connection failure. The human-selected
+  ChatGPT configuration is GPT-5.6 Sol with medium reasoning. Disabled summaries report configuration
   unavailability; protected hosted credential setup supports macOS only. Public follow-up
   lenses and correction-aware replacement display are not implemented yet.
 
