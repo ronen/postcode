@@ -31,13 +31,14 @@ configured TypeScript project.
 - **[Interpretation integration](docs/cli-reference.md#interpretation-checkpoint-summary-inspection-and-usage).**
   Summary requests, retained investigram inspection and attempt/session usage are
   integrated with the shell. An optional OpenAI adapter supports explicit hosted
-  enablement and macOS Keychain credentials, with offline integration coverage.
+  enablement, API-key billing or persistent Sign in with ChatGPT plan use, and
+  macOS Keychain credentials. Billing routes are selected explicitly.
 
 ## Current limits
 
 - **Hosted interpretation:** live provider verification and formative assessment
   remain pending credential setup. Disabled summaries report configuration
-  unavailability; the initial credential route supports macOS only. Public follow-up
+  unavailability; protected hosted credential setup supports macOS only. Public follow-up
   lenses and correction-aware replacement display are not implemented yet.
 
 - **[Analysis scope](docs/cli-reference.md#supported-typescript-population-and-qualifications):**

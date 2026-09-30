@@ -524,7 +524,11 @@ one module. Missing or ambiguous selection reports candidates without starting a
 investigation. The default command remains the mechanical module inventory.
 Hosted investigation is disabled by default; disabled summary requests report
 configuration unavailability with exit status 3. Optional [hosted setup](hosted-investigation.md)
-uses OpenAI and macOS Keychain with explicit repository-transmission enablement.
+offers API-key billing (`POSTCODE_INVESTIGATOR=openai`) or Sign in with ChatGPT
+plan usage (`POSTCODE_INVESTIGATOR=chatgpt`), with macOS Keychain and explicit
+repository-transmission enablement. No billing fallback occurs. `auth chatgpt help`
+explains project-independent sign-in, status, selection, sign-out and the explicit
+account/model connection check. Sign-in alone does not enable hosted projects.
 Enabled setup failures stop project opening with exit status 2, before either
 mechanical or investigation commands. Runtime provider failures are reported in
 the investigation view. Tests inject the agent/transport through the production

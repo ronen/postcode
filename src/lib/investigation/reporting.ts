@@ -14,6 +14,8 @@ export function usageSummary(attempts: readonly AttemptReport[]) {
   }));
   const limitations = new Set(['Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.']);
   for (const call of calls.values()) {
+    if (call.agent.configuration.billingRoute === 'chatgpt-plan') limitations.add('ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage');
+    if (call.agent.configuration.billingRoute === 'openai-api') limitations.add('OpenAI API-key billing route. Reported tokens do not establish confirmed API charges.');
     if (!call.reported) { if (call.anomalies.length) anomalousCalls++; else missingCalls++; continue; }
     const key = canonical([call.agent, call.reported.source, call.reported.execution ?? null]);
     const group = totals.get(key) ?? { agent: call.agent, source: call.reported.source, ...(call.reported.execution ? { execution: call.reported.execution } : {}), categories: [] };

@@ -340,35 +340,66 @@ not complete billed usage.
 
 ## Hosted transport and credential boundary
 
-Intentional `POSTCODE_INVESTIGATOR=openai` enablement selects the single hosted
-adapter and announces repository-content transmission. Shared CLI preflight runs
-before either project-opening path, including mechanical commands. Disabled use
-performs no credential lookup. Enabled use requires macOS and an accessible
-PostCode-specific Keychain item; remote authentication/model/billing validity is
-not asserted by local preflight. Setup, charges, supported platform and same-user
-access limitations are documented in [hosted setup](../hosted-investigation.md).
+Explicit `POSTCODE_INVESTIGATOR=openai` or `chatgpt` selects API-key billing or
+Sign in with ChatGPT plan use, respectively. Both announce repository transmission
+and preflight before either project-opening path. Disabled use performs no
+credential lookup. Authentication commands do not open a project. Local preflight
+is not evidence of remote eligibility or model access. The [accepted route decision](../decisions/hosted-authentication-and-billing.md)
+requires explicit selection and forbids billing/account/model fallback.
 
-The parent retrieves the key privately and owns the SDK client; neither the worker
-nor domain records receive it. The fixed Responses endpoint uses the explicit key,
-with ambient SDK endpoint, organization, project and logging settings overridden.
-No SDK retries, provider fallback or model substitution occurs. Provider error
-objects and their potentially credential-bearing messages never cross the adapter;
-bounded codes and locally authored diagnostics preserve failure classification.
-Exact key echoes in provider data are redacted before delivery or assessment capture.
+The parent owns the SDK transport and credentials; workers and investigator
+context receive only safe configuration, replies and usage. API keys are read
+privately once per invocation. ChatGPT's stable host, issued client, verified
+subject and token sets persist in PostCode's own Keychain item. Labels separate
+registrations even when emails match. A loopback OAuth callback validates state,
+PKCE-bound exchange, signed identity, issuer/audience, expiry, nonce and saved
+subject before activation; token-response scopes determine plan permission.
+A valid identity without that permission remains signed in but cannot infer.
 
-Each dialogue retains its own local history, including opaque encrypted reasoning
-items needed for subsequent Responses exchanges. It uses no previous-response or
-server-conversation reference. Only evidence requests and explicit whole-result
-submission functions are supplied; the domain still validates tool capabilities,
-references, qualifications and complete submissions. Remaining guards accompany
-each exchange. The per-response output bound is 16,000 tokens; truncated output is
-not repaired or silently submitted. Closing aborts the local request and releases
-history; it cannot confirm cessation of remote work or billing.
+Refresh reads current state under a kernel file lock shared by processes, replaces
+access/refresh/ID/expiry/scope state together, and saves it before inference.
+Unlike a stale timed lease, this lock cannot admit a second rotation while its
+owner is suspended and is released by process death. Access renews at expiry;
+the unspecified `earliest_refresh_at` representation is retained opaquely, not
+interpreted as a speculative early-refresh time. Terminal refresh errors clear
+unusable tokens; temporary failures retain them. No investigation is retried.
 
-Non-streaming responses deliver usage before outcome classification, including
-failed, refused and incomplete responses. Aborted transport without a received
-response remains unknown usage. Input/output, cache reads/writes and reasoning
-retain their provider subset relationships. Optional assessment capture receives
-sanitized request bodies and responses or safe failure reports, never headers or
-SDK exceptions. Captures may contain repository source and are development
-assessment artifacts, not extra investigator access or ordinary observations.
+A running project binds to one registration/session generation. Sign-out writes
+an invalidation before attempting revocation; new requests fail, and active
+transport cancels when its local watcher observes the invalidation. Revocation
+has bounded transient retries; unconfirmed remote revocation is disclosed after
+local token removal. Registrations survive sign-out; process exit does not revoke.
+Keychain does not absolutely isolate credentials from same-user processes. Setup,
+platform limits, controls and recovery are in [hosted setup](../hosted-investigation.md).
+
+The fixed public Responses endpoint overrides ambient SDK endpoint, organization,
+project and logging settings and rejects redirects. Neither route automatically
+retries inference. API-key requests use non-streaming responses, standard service
+tier and a 16,000 output-token cap. ChatGPT requests stream, group the two functions
+in a namespace, and omit unsupported fields including the output-token cap.
+Deltas and output-item completion are never accepted as completed submissions.
+Only a successful completed response may submit a whole result to domain
+validation; failed/incomplete terminals, malformed streams and premature EOF
+remain distinct from accepted investigrams. Domain guards still bound the dialogue.
+
+Each operation owns fresh local history, including opaque encrypted reasoning
+needed for further exchanges. No previous-response or server-conversation state
+is used. Only evidence-request and whole-result submission functions are exposed;
+the domain continues validating capabilities, references, qualifications and
+submissions. Closing aborts local transport and releases history, without claiming
+remote computation, allowance use or charges have stopped.
+
+Received terminal usage is reported before outcome classification, including
+failed, refused and incomplete responses. Missing usage after interruption is
+unknown. Identity provenance and aggregation retain the selected authentication
+and billing route. ChatGPT token counts establish neither allowance-versus-credit
+attribution nor actual monetary charges; usage reporting links the provider's
+controls and states this limit. Development assessment reporting separates
+investigator, evaluator and source-informed assessor usage even when they share
+one allowance. API-equivalent prices cannot be labeled actual ChatGPT charges.
+
+Optional assessment capture receives sanitized request bodies, terminal responses
+or failure records, never headers or SDK exceptions. Failure records retain HTTP
+status, body shape, exact safe code/parameter and request ID; known credential
+echoes are redacted before delivery. Captures may contain repository source and
+remain development artifacts, not additional investigator access.

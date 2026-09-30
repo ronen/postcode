@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { PassThrough } from 'node:stream';
-import { openAIInvestigator } from '../src/lib/investigation/openai/adapter.js';
+import { chatGPTInvestigator, openAIInvestigator } from '../src/lib/investigation/openai/adapter.js';
 import type { OpenAIExchange } from '../src/lib/investigation/openai/adapter.js';
 import { configuredInvestigator } from '../src/lib/investigation/openai/configuration.js';
 import { InvestigationUsage } from '../src/lib/investigation/usage.js';
@@ -213,7 +213,7 @@ test('SDK service failure after evidence retains usage and acquisition, but a la
   assert.doesNotMatch(JSON.stringify({ first, second, captures }), new RegExp(sentinel));
 });
 
-for (const format of ['unicode', 'json'] as const) test(`offline real-adapter CLI shell covers source acquisition, retention, usage and credential exclusion in ${format}`, async t => {
+for (const route of ['api-key', 'chatgpt-plan']) for (const format of ['unicode', 'json'] as const) test(`offline real-adapter CLI shell covers source acquisition, retention, usage and credential exclusion in ${format} via ${route}`, async t => {
   const root = temporaryDirectory(t, 'postcode-openai-');
   writeFileSync(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
   writeFileSync(path.join(root, 'entry.ts'), 'export function entry() { return 7; }');
@@ -221,15 +221,17 @@ for (const format of ['unicode', 'json'] as const) test(`offline real-adapter CL
   const driver = interactionDriver(() => inputStream.end());
   const batches: ObservationBatch[] = [], captures: OpenAIExchange[] = [];
   let calls = 0, stdout = '', stderr = '', prompts = 0, subject = '';
-  const agent = openAIInvestigator(sentinel, { onExchange: item => captures.push(item), fetch: async (_url, options) => {
+  const createAgent = (options: Parameters<typeof openAIInvestigator>[1]) => route === 'api-key' ? openAIInvestigator(sentinel, options) : chatGPTInvestigator({ token: async () => sentinel, watch: () => () => {} }, options);
+  const transportResponse = (body: ReturnType<typeof response>) => route === 'api-key' ? http(body) : new Response(`data: ${JSON.stringify({ type: 'response.completed', response: { ...body, output: (body.output as any[]).map(item => ({ ...item, namespace: 'postcode' })) } })}\n\n`, { headers: { 'content-type': 'text/event-stream' } });
+  const agent = createAgent( { onExchange: item => captures.push(item), fetch: async (_url, options) => {
     calls++;
     const body = JSON.parse(String(options?.body));
     const latest = body.input.filter((item: { role: string }) => item.role === 'user').at(-1);
     subject = JSON.parse(latest.content).request.subject;
-    if (calls === 1) return http(response({ output: [call('request_evidence', { requests: [{ kind: 'source', subject }] })] }));
+    if (calls === 1) return transportResponse(response({ output: [call('request_evidence', { requests: [{ kind: 'source', subject }] })] }));
     const result = JSON.parse(body.input.find((item: { type: string }) => item.type === 'function_call_output').output)[0];
     assert.equal(result.status, 'available');
-    return http(response({ output: [call('submit_investigram', draft(subject, result.selected))] }));
+    return transportResponse(response({ output: [call('submit_investigram', draft(subject, result.selected))] }));
   } });
   const exit = await runCli(['shell', '--project', path.join(root, 'tsconfig.json'), ...(format === 'json' ? ['--json'] : [])], {
     cwd: root, checkout: root, input: inputStream,
@@ -245,5 +247,7 @@ for (const format of ['unicode', 'json'] as const) test(`offline real-adapter CL
   assert.equal(views.length, 3);
   for (const view of views) { assert.equal(view.usage.calls, 2); assert.equal(view.usage.totals[0]!.categories.find(c => c.category === 'total')!.value, 300); }
   assert.equal(views[1]!.result!.reused, true);
+  assert.equal(views[0]!.usage.totals[0]!.agent.configuration.billingRoute, route === 'api-key' ? 'openai-api' : 'chatgpt-plan');
+  if (route === 'chatgpt-plan') { assert.match(stderr, /ChatGPT plan usage/); assert.match(JSON.stringify(views[0]!.usage.limitations), /monetary attribution is unavailable/); }
   assert.doesNotMatch(JSON.stringify({ stdout, stderr, batches, captures }), new RegExp(sentinel));
 });

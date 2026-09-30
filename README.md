@@ -219,7 +219,8 @@ This project is licensed under the [Apache License 2.0](LICENSE).
 ### Interpretation integration checkpoint
 
 `summarize <module>` and `usage` now have session and one-shot execution paths,
-with retained outcomes and exact investigram inspection. [Optional hosted setup](docs/hosted-investigation.md)
+with retained outcomes and exact investigram inspection. Hosted users explicitly
+choose API-key billing or Sign in with ChatGPT plan use. [Optional hosted setup](docs/hosted-investigation.md)
 uses OpenAI with explicit transmission enablement and macOS Keychain credentials.
 Live verification is pending. Disabled summaries report configuration unavailability;
 offline tests exercise scripted and SDK-backed investigators through the production worker path. See the [checkpoint reference](docs/cli-reference.md#interpretation-checkpoint-summary-inspection-and-usage)

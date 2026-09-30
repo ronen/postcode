@@ -14,11 +14,20 @@
   },
   "dependencies": {
     "@statelyai/graph": "2.4.0",
+    "jose": "6.2.12",
     "openai": "7.25.0",
     "string-width": "8.3.0",
     "typescript": "6.0.3"
   },
   "devDependencies": {
+    "@types/fs-ext": "2.0.3",
     "@types/node": "22.20.2"
+  },
+  "allowScripts": {
+    "fs-ext@2.1.1": true
+  },
+  "optionalDependencies": {
+    "@napi-rs/keyring": "2.1.0",
+    "fs-ext": "2.1.1"
   }
 }

@@ -622,9 +622,11 @@ them assembles instructions, dispatches tool requests through PostCode's
 subject-based APIs, and validates results. The investigation operations share these
 capabilities; interface shapes and module layout remain implementation choices.
 
-One real hosted implementation is sufficient. The implementing agent chooses the
-concrete invocation route, dependency, authentication mechanism, and supported
-initial configuration. OpenAI's GPT-6 Sol with medium reasoning effort is the
+The authorized milestone-3 addition supports two explicitly selected OpenAI
+routes: API-key billing and Sign in with ChatGPT with optional ChatGPT plan usage.
+There is no silent fallback between them. The implementing agent chooses the
+concrete CLI commands, dependencies and supported initial configuration, subject
+to the credential and subscription requirements below. OpenAI's GPT-6 Sol with medium reasoning effort is the
 starting preference; verify the available model identifier and supported
 setting. Record the provider and dependency choices and their rationale in the
 task record; selection remains delegated and does not require a separate
@@ -735,6 +737,32 @@ Credential material does not enter investigrams or observations. Exact setup
 steps and authentication storage follow the selected integration.
 
 ### Credential setup for live inference
+
+The human's 2026-09-30 authorized addition replaces the pending API-key-only
+setup handoff with project-independent browser Sign in with ChatGPT. Keep the
+API-key option available. Implement the current official local/public-client
+OAuth protocol, validate identity and granted plan permission, preserve stable
+host and account/client registrations, and store credentials in protected storage.
+Provide credential-safe status, account selection and sign-out. Persist sign-in
+across invocations, rotate refresh tokens atomically with cross-process renewal
+coordination, and do not sign out on ordinary process exit. A missing plan grant
+must not silently enable API billing. Do not inspect or reuse Codex credentials.
+
+Implement the subscription Responses streaming and namespaced-tool contract as
+a distinct transport configuration. Only completed explicit submissions proceed
+to domain validation. Preserve cancellation, execution guards, usage attribution
+and the existing no-automatic-inference-retry policy; credential renewal is a
+separate lifecycle operation. Verify `gpt-6-sol` and medium reasoning against the
+human-authorized account; any required substitution needs a human choice.
+
+When implementation and offline verification are ready, pause with the exact
+sign-in command for the human's own terminal. After they report readiness, run
+the connection check and continue the authorized assessments using the ChatGPT
+plan route. Interactive reauthorization requires another human setup pause.
+Do not purchase credits, enable automatic purchases or alter provider spending
+settings. Materially broader eligibility or protocol requirements require human
+direction before expansion. The accepted [authentication/billing decision](../decisions/hosted-authentication-and-billing.md)
+records this scope addition.
 
 Prefer the OS credential store for provider credentials, with PostCode
 retrieving them at runtime. The human supplies credentials through a separate
@@ -1088,8 +1116,9 @@ cases assigned below alongside the baseline.
 
 Observe these dependencies when scheduling the work:
 
-- Before live inference, document the credential mechanism and pause for the human
-  to configure access. Reference preparation may proceed independently.
+- Before live inference, implement and offline-verify both explicit routes and
+  document the credential mechanism, then pause for the human browser sign-in.
+  Verify the intended account/model/reasoning configuration after setup readiness. Reference preparation may proceed independently.
 - Before any live run on a formative subject, pin its revision and freeze its
   source-grounded reference material. The same freeze-before-live-run rule applies
   to assessment fixtures. Earlier live development runs may use other subjects or
@@ -1102,7 +1131,9 @@ Observe these dependencies when scheduling the work:
 - Include the baseline views, assessment findings, usage and cost records in the
   milestone-3 review handoff. The review covers the hosted adapter and offline
   contract checks; enablement, preflight, credential setup and disclosure, and
-  credential-exclusion checks; live usage reporting; assessment tooling; and
+  credential-exclusion checks; OAuth validation, persistence, renewal, concurrent
+  renewal, revocation, streaming completion/failure and cancellation regressions;
+  explicit billing selection and qualified monetary attribution; live usage reporting; assessment tooling; and
   baseline findings. Include any changes to the earlier boundaries or session
   integration prompted by live execution.
 
@@ -1635,15 +1666,17 @@ without depending on disposable files.
 
 Log each PostCode session's usage report, including one-shot runs and incomplete
 or failed sessions, alongside its investigation-attempt records. Produce a final
-report of PostCode's API session costs across all assessment runs and recovery
-attempts, with per-session breakdowns.
+report of PostCode session usage and available monetary attribution across all
+assessment runs and recovery attempts, with per-session and authentication/billing
+route breakdowns. ChatGPT-funded usage must distinguish token accounting from
+unknown allowance/credit attribution; unavailable monetary amounts are not zero.
 
 Report available usage for reference preparation, comprehension evaluation, and
 source-informed assessment separately from PostCode sessions. Keep any known
 assessment costs separate from the PostCode session-cost total. Unavailable usage
 or monetary attribution remains explicit rather than being reported as zero.
 
-Calculate estimated API cost from reported usage and the applicable published
+For API-key runs, calculate estimated API cost from reported usage and the applicable published
 rates, recording the pricing source, retrieval date, model, service tier,
 currency, and relevant caching or other billing distinctions. Avoid double
 counting usage categories. Distinguish estimated cost from provider-confirmed
@@ -1652,7 +1685,11 @@ explicit coverage limits, not zero-cost assumptions. If a complete total cannot
 be established, report the accounted-for amount and what is missing.
 Provider-side reconciliation may be used when separately configured access is
 available, but an Admin API key or billing integration is not a prerequisite.
-The cost calculation belongs to assessment tooling, not PostCode's product
+For ChatGPT plan runs, do not equate API list-price estimates with actual ChatGPT
+credit charges. An optional API-equivalent estimate is a comparison only. Link
+provider usage controls, explain shared allowance and optional credit use, and
+keep evaluator and assessor usage separately attributed even if they consume the
+same allowance. The cost calculation belongs to assessment tooling, not PostCode's product
 reporting in this slice.
 
 #### Assessment failure recovery and reliability

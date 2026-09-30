@@ -1,3 +1,5 @@
+import { runAuthentication } from './investigation/openai/auth-command.js';
+import type { ChatGPTCredentials } from './investigation/openai/chatgpt-credentials.js';
 import type { InvestigatorAgent } from './investigation/contracts.js';
 import type { InvestigationBounds } from './investigation/execute.js';
 import path from 'node:path';
@@ -10,10 +12,11 @@ import { inlineText } from './terminal-text.js';
 import { help, parseCommand } from './commands.js';
 import { publishCommand, openFailureText } from './command-execution.js';
 import { runShell } from './shell.js';
-import { configuredInvestigator, hostedDisclosure } from './investigation/openai/configuration.js';
+import { configuredInvestigator, hostedDisclosure, chatGPTDisclosure } from './investigation/openai/configuration.js';
 
 export interface CliEnvironment {
   /** Internal communication-boundary injection for tests and assessment. */
+  readonly authentication?: ChatGPTCredentials;
   readonly investigator?: InvestigatorAgent;
   readonly investigationBounds?: InvestigationBounds;
   /** Internal setup substitution for offline tests. Production uses POSTCODE_INVESTIGATOR. */
@@ -27,6 +30,7 @@ export interface CliEnvironment {
 }
 
 export async function runCli(args: readonly string[], environment: CliEnvironment): Promise<number> {
+  if (args[0] === 'auth') return runAuthentication(args.slice(1), environment, environment.authentication);
   const parsed = parseCommand(args, environment.cwd);
   if (parsed.kind === 'help') { environment.stdout(help); return 0; }
   if (parsed.kind === 'error') { environment.stderr(parsed.message); return 2; }
@@ -35,7 +39,7 @@ export async function runCli(args: readonly string[], environment: CliEnvironmen
     const configured = await (environment.configureInvestigator ?? configuredInvestigator)(process.env.POSTCODE_INVESTIGATOR);
     if (configured.kind === 'configuration-unavailable') { environment.stderr(`${configured.diagnostic}\n`); return 2; }
     if (configured.kind === 'ready') {
-      environment.stderr(hostedDisclosure);
+      environment.stderr(configured.agent.identity.configuration.billingRoute === 'chatgpt-plan' ? chatGPTDisclosure : hostedDisclosure);
       environment = { ...environment, investigator: configured.agent };
     }
   }

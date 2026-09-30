@@ -134,5 +134,5 @@ export function renderInvestigationView(view: InvestigationView): string {
 
 export function usageLines(usage: InvestigationUsageReport, label: string): string[] {
   return [`${label} reported usage: ${usage.calls} calls; ${usage.missingCalls} unknown; ${usage.anomalousCalls} anomalous.`,
-    ...usage.totals.map(total => `  ${inlineText(total.agent.provider)}/${inlineText(total.agent.model)} (${total.source})${total.execution ? `; reported model ${inlineText(total.execution.model)}, service tier ${inlineText(total.execution.serviceTier ?? 'unknown')}` : ''}: ${total.categories.map(item => `${inlineText(item.category)} ${item.value ?? 'unknown'} ${inlineText(item.unit)}${item.includedIn ? ` (subset of ${inlineText(item.includedIn)})` : ''}`).join('; ')}`)];
+    ...usage.totals.map(total => `  ${inlineText(total.agent.provider)}/${inlineText(total.agent.model)} (${total.source})${total.agent.configuration.billingRoute ? `; billing route ${inlineText(String(total.agent.configuration.billingRoute))}` : ''}${total.execution ? `; reported model ${inlineText(total.execution.model)}, service tier ${inlineText(total.execution.serviceTier ?? 'unknown')}` : ''}: ${total.categories.map(item => `${inlineText(item.category)} ${item.value ?? 'unknown'} ${inlineText(item.unit)}${item.includedIn ? ` (subset of ${inlineText(item.includedIn)})` : ''}`).join('; ')}`)];
 }

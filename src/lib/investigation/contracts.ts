@@ -147,7 +147,7 @@ export interface CallUsage {
   /** Nonempty means reported is null and this call is excluded from trusted totals. */
   readonly anomalies: readonly string[];
 }
-export type AgentFailure = { readonly kind: 'communication-failure' | 'configuration-unavailable'; readonly code: string; readonly diagnostic: string };
+export type AgentFailure = { readonly kind: 'communication-failure' | 'configuration-unavailable'; readonly code: string; readonly diagnostic: string; readonly provider?: { readonly status: number | null; readonly body: unknown; readonly requestId: string | null } };
 export type AgentReply =
   | { readonly kind: 'tools'; readonly requests: readonly InvestigatorTool[] }
   | { readonly kind: 'submit'; readonly result: unknown }
