@@ -235,6 +235,10 @@ assessment schedule. Two diagnostic requests used; eight remain. Planned bounded
 assessment runs are separately recorded under the existing plan authorization.
 No automatic repeat, model change or route fallback is authorized.
 
+### Milestone 3 review round 1 instructions
+
+> First review round is ready.  As usual:  Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope.  Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.  Regarding finding 1, see notes in records/reviews/module-investigation/2026-09-30-milestone-3-round-1-findings.md -- assess those notes also to ensure feasibility before acting.
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
