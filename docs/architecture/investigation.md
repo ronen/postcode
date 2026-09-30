@@ -350,7 +350,9 @@ requires explicit selection and forbids billing/account/model fallback.
 The parent owns the SDK transport and credentials; workers and investigator
 context receive only safe configuration, replies and usage. API keys are read
 privately once per invocation. ChatGPT's stable host, issued client, verified
-subject and token sets persist in PostCode's own Keychain item. Labels separate
+subject and token sets persist in PostCode's own Keychain item. The native boundary
+normalizes null/undefined absence before decoding; empty, malformed or inaccessible
+stored data still fails without replacing it. Labels separate
 registrations even when emails match. A loopback OAuth callback validates state,
 PKCE-bound exchange, signed identity, issuer/audience, expiry, nonce and saved
 subject before activation; token-response scopes determine plan permission.

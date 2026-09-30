@@ -22,7 +22,9 @@ npm run postcode -- auth chatgpt sign-in
 No project is opened. PostCode starts a local `127.0.0.1` callback before opening
 the browser. Sign in and grant optional ChatGPT plan use if desired. Return to
 the terminal for the validation result. Credentials are saved directly in macOS
-Keychain, never printed. Tell the implementing agent that setup is ready;
+Keychain, never printed. A missing item initializes a new registration; invalid or
+inaccessible existing storage is reported without overwriting it. Tell the
+implementing agent that setup is ready;
 **do not share tokens, callback URLs, or authorization URLs**.
 
 The initial registration label is `personal`. To add another account/workspace,

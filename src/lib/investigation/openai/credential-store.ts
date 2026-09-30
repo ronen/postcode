@@ -45,18 +45,26 @@ export async function keychainStore(): Promise<CredentialStore> {
   try {
     const { AsyncEntry } = await import('@napi-rs/keyring');
     const entry = new AsyncEntry('org.postcode.chatgpt', 'registrations-v1');
-    return {
-      async read() {
-        try { return await entry.getPassword(); }
-        catch { throw new CredentialError('credential_storage', 'PostCode could not read its ChatGPT Keychain item.'); }
-      },
-      async write(value) {
-        try { await entry.setPassword(value); }
-        catch { throw new CredentialError('credential_storage', 'PostCode could not save its ChatGPT Keychain item; interactive sign-in may be required.'); }
-      },
-      exclusive(action, signal) {
-        return withCredentialLock(path.join(homedir(), 'Library', 'Application Support', 'PostCode'), action, signal);
-      },
-    };
+    return keychainEntryStore(entry, (action, signal) =>
+      withCredentialLock(path.join(homedir(), 'Library', 'Application Support', 'PostCode'), action, signal));
   } catch { throw new CredentialError('credential_storage', 'PostCode macOS Keychain support could not be loaded.'); }
+}
+
+/** Native-entry boundary; injectable so offline tests exercise the same translation.
+ * The native binding returns null for absence despite its async declaration saying undefined. */
+export function keychainEntryStore(entry: {
+  getPassword(): Promise<string | null | undefined>;
+  setPassword(value: string): Promise<void>;
+}, exclusive: CredentialStore['exclusive']): CredentialStore {
+  return {
+    async read() {
+      try { return (await entry.getPassword()) ?? undefined; }
+      catch { throw new CredentialError('credential_storage', 'PostCode could not read its ChatGPT Keychain item.'); }
+    },
+    async write(value) {
+      try { await entry.setPassword(value); }
+      catch { throw new CredentialError('credential_storage', 'PostCode could not save its ChatGPT Keychain item; interactive sign-in may be required.'); }
+    },
+    exclusive,
+  };
 }

@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { chatGPTCredentials } from '../src/lib/investigation/openai/chatgpt-credentials.js';
-import { withCredentialLock, CredentialError } from '../src/lib/investigation/openai/credential-store.js';
+import { withCredentialLock, CredentialError, keychainEntryStore } from '../src/lib/investigation/openai/credential-store.js';
 import type { CredentialStore } from '../src/lib/investigation/openai/credential-store.js';
 import { oauthService, verifyIdentity, issuer, scopes, resource } from '../src/lib/investigation/openai/oauth.js';
 import type { OAuthService, OAuthRegistration, TokenSet } from '../src/lib/investigation/openai/oauth.js';
@@ -253,4 +253,40 @@ test('interrupted browser authorization closes the callback listener without exc
     fetch: async () => { exchanged = true; throw new Error(); } });
   await assert.rejects(oauth.authorize('host', undefined, false, async () => {}, controller.signal), CredentialError);
   assert.equal(exchanged, false); await assert.rejects(fetch(redirect));
+});
+
+
+test('native null or undefined absence permits first sign-in through the production Keychain boundary', async () => {
+  for (const absent of [null, undefined]) {
+    let saved: string | null | undefined = absent, authorizations = 0;
+    const store = keychainEntryStore({ getPassword: async () => saved, setPassword: async value => { saved = value; } }, action => action());
+    const manager = chatGPTCredentials(store, service({ authorize: async (_host, _registration, _consent, issued) => {
+      authorizations++; await issued('client-test');
+      return { clientId: 'client-test', identity: { subject: 'person' }, tokens: tokens() };
+    } }));
+    assert.deepEqual(await manager.status(), []);
+    assert.equal(saved, absent, 'status must not overwrite absent storage');
+    const result = await manager.signIn('personal', false, new AbortController().signal);
+    assert.equal(authorizations, 1); assert.equal(result.signedIn, true); assert.equal(result.planUsage, true);
+    const restarted = chatGPTCredentials(store, service());
+    assert.equal(await (await restarted.session()).token(new AbortController().signal), 'access-secret');
+  }
+});
+
+test('empty or invalid stored values remain invalid and are never silently reset as missing', async () => {
+  for (const invalid of ['', 'null', '{}', 'not-json']) {
+    let writes = 0, authorizations = 0;
+    const store = keychainEntryStore({ getPassword: async () => invalid, setPassword: async () => { writes++; } }, action => action());
+    const manager = chatGPTCredentials(store, service({ authorize: async () => { authorizations++; throw new Error('must not authorize'); } }));
+    await assert.rejects(manager.signIn('personal', false, new AbortController().signal), error => error instanceof CredentialError && error.code === 'invalid_storage');
+    assert.equal(writes, 0); assert.equal(authorizations, 0);
+  }
+});
+
+test('native storage failures remain credential-safe failures instead of creating a new vault', async () => {
+  let writes = 0;
+  const store = keychainEntryStore({ getPassword: async () => { throw new Error('native error with secret'); }, setPassword: async () => { writes++; } }, action => action());
+  const manager = chatGPTCredentials(store, service());
+  await assert.rejects(manager.signIn('personal', false, new AbortController().signal), error => error instanceof CredentialError && error.code === 'credential_storage' && !error.message.includes('secret'));
+  assert.equal(writes, 0);
 });
