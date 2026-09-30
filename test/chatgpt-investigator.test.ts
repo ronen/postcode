@@ -51,6 +51,8 @@ test('partial output, EOF, malformed SSE, failed terminal and incomplete termina
     { wire: sse([{ type: 'response.incomplete', response: response([], 'incomplete') }]), kind: 'truncated', reports: 1 },
     { wire: sse([{ type: 'response.completed', response: response([call('submit_investigram', {})], 'in_progress') }]), kind: 'communication-failure', reports: 0 },
     { wire: sse([{ type: 'response.completed', response: response([{ ...call('submit_investigram', {}), namespace: 'elsewhere' }]) }]), kind: 'ended', reports: 1 },
+    { wire: sse([{ type: 'response.completed', response: response([{ ...call('request_evidence', { requests: [] }), status: 'incomplete' }]) }]), kind: 'ended', reports: 1 },
+    { wire: sse([{ type: 'response.completed', response: response([{ ...call('submit_investigram', {}), status: 'in_progress' }]) }]), kind: 'ended', reports: 1 },
   ];
   for (const item of cases) {
     let calls = 0; const reports: ReportedUsage[] = [];

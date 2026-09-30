@@ -69,7 +69,11 @@ that attempt is distinct from the permitted successful run, not suppressed evide
 
 The discovery and ledger tests passed 14 tests (8.62 seconds), including scoped
 metadata, pagination, separately requested content and exact exposure accounting.
-Complete-suite verification and new assessment results remain pending.
+The complete suite at `79a33bb` passed 424 tests, zero failures/cancellations/skips
+(146.90 seconds), with repository inputs stationary and local loopback permission.
+A subsequent adjacent F2 check also rejects an explicit unfinished status on a
+function call in nonempty terminal output on either route; its 25 focused adapter
+tests passed (5.57 seconds). New assessment results remain pending.
 
 F4 sources checked on 2026-09-30: [accounts and sessions](https://developers.openai.com/siwc/token-sharing-open-source/profiles-and-sessions#refreshing-tokens)
 and [token reference](https://developers.openai.com/siwc/token-sharing-open-source/token-reference).

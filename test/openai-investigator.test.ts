@@ -103,6 +103,8 @@ test('provider refusal, truncation, failure, malformed submission and absent usa
     [response({ status: 'failed', error: { code: 'server_error', message: sentinel } }), 'communication-failure'],
     [response({ output: [{ ...call('submit_investigram', {}), arguments: '{bad-json' }] }), 'submit'],
     [response({ output: [call('unsupported_tool', {})] }), 'ended'],
+    [response({ output: [{ ...call('request_evidence', { requests: [] }), status: 'incomplete' }] }), 'ended'],
+    [response({ output: [{ ...call('submit_investigram', {}), status: 'in_progress' }] }), 'ended'],
     [response({ output: [call('submit_investigram', {}), call('request_evidence', {})] }), 'ended'],
     [response({ output: [null] }), 'ended'],
     [response({ output: [{ type: 'message', content: null }] }), 'ended'],

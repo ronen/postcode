@@ -154,7 +154,8 @@
     "src/lib/evidence-delivery.ts": "96e32c9a40e53a544eb5d6b67775734b2a7b46b49b129d13d8a214e578a2d45a",
     "src/lib/investigation/openai/protocol.ts": "4f28e7562c8b8796a1a5b2f457396c911c3dc65b335bcac9c80c84bbb3b8a52a",
     "src/lib/identity.ts": "4ebe9633013b3e8bc9bd803a6f4c7419b3fed2fbc1ed7a42e85eed6cbe1067c7",
-    "src/lib/investigation/presentation.ts": "0c78a2076c2f2fc15f505048947209f3ef7212f09904db175a38d0acac3d2661"
+    "src/lib/investigation/presentation.ts": "0c78a2076c2f2fc15f505048947209f3ef7212f09904db175a38d0acac3d2661",
+    "src/lib/investigation/openai/adapter.ts": "07cd5c5b09971bd7faa194aa7c3df69d830562fadf87a55f77caac5b638747c9"
   },
   "assessmentFileSHA256": {
     "fixtures/module-investigation-assessment/counter.ts": "55a4a0d604f218ce472fc1d17a94e1347a96cddcb08cb1b5ccd8909ee3e621ea",

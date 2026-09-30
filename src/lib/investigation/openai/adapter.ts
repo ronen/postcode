@@ -170,6 +170,7 @@ function investigator(session: ChatGPTSession, subscription: boolean, options: T
             const calls = response.output.filter(item => item.type === 'function_call');
             if (calls.length !== 1) return { kind: 'ended' };
             const call = calls[0]!;
+            if ('status' in call && call.status !== 'completed') return { kind: 'ended' };
             if (subscription && call.namespace !== 'postcode') return { kind: 'ended' };
             if (typeof call.call_id !== 'string' || !call.call_id || typeof call.arguments !== 'string') return { kind: 'ended' };
             if (call.name !== 'submit_investigram' && call.name !== 'request_evidence') return { kind: 'ended' };
