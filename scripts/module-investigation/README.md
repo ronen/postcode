@@ -58,3 +58,11 @@ tree with `git write-tree`, import the recorded `fixture-git-commit.txt` using
 `git hash-object -t commit -w`, and point the isolated repository HEAD at that
 commit. The recorded tree must match. This fixture pin is a local assessment
 artifact, not an upstream repository revision.
+
+New ledgers use `ceiling` for the numeric containment limit. Historical ledgers
+using `authorized` remain readable and unchanged; a ledger specifying both is
+rejected. A ceiling does not itself authorize requests. Pass 02 is the separately
+authorized documentation reassessment: the three original subjects and focused
+entry, plus a one-call opaque control. A direct-documentation diagnostic is
+conditional on normal focused-entry acquisition still failing, and must retain
+its intervention and separate diagnostic accounting.

@@ -82,7 +82,6 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
     accounts: [...accounts.values()], corrections: [...corrections.values()], provenance: [...provenances.values()],
     support: supportDetails, usage,
     limitations: ['Generated accounts remain interpretation. Corrections are retained assertions, not established truth.',
-      'This checkpoint shows immutable originals and explicit correction links; replacement selection and reconsideration display arrive in a later milestone.',
       ...(request.lens === 'summarize' && selected.length !== 1 ? ['Summary requires one exact module; resolve a missing or ambiguous selection before investigation.'] : [])],
     ...(request.presentation.sourceDetail ? { sourceDetail: { level: 'investigation-support' as const, items: [...sources.values()] } } : {}),
   }, usage);

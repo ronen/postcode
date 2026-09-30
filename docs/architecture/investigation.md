@@ -439,3 +439,17 @@ status remains supported; successful terminal completion and consistent item
 identity are still required. Malformed function arguments count as an invalid
 submission only when the function explicitly names `submit_investigram`; malformed
 evidence calls or unknown functions end without a submission, retaining usage.
+
+Module inspection now includes bounded, paginated organization context: retained
+placement claims, containing-group and ancestor containment claims, and nearby
+README artifact references with their original qualification. It excludes sibling
+branches and does not infer documentation applicability or inheritance. Content
+is acquired separately through the existing source query. Unavailable placement,
+partial discovery and withheld support remain explicit. Only dispatched records
+count as full exposure; evaluation/repository summaries and undelivered content
+retain their separate treatment. General investigation instructions describe how
+relevant documentation assertions can be compared with implementation; they do
+not prescribe exhaustive reading or supply assessment answers.
+
+The human presentation no longer advertises correction links in a generic
+milestone footer when a view may contain no correction or interpretation.

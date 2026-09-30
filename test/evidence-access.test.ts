@@ -18,7 +18,7 @@ import { InvestigationUsage } from '../src/lib/investigation/usage.js';
 import type { AgentInput, AgentReply } from '../src/lib/investigation/contracts.js';
 import type { RecordId } from '../src/lib/records.js';
 
-async function fixture(t: TestContext, unrelated: number, hugeDocumentation = false, wideSupport = false) {
+async function fixture(t: TestContext, unrelated: number, hugeDocumentation = false, wideSupport = false, ancestorDocumentation = 0) {
   const root = temporaryDirectory(t, 'postcode-evidence-');
   execFileSync('git', ['init', '--quiet', root]);
   mkdirSync(path.join(root, 'feature'));
@@ -30,6 +30,8 @@ async function fixture(t: TestContext, unrelated: number, hugeDocumentation = fa
   writeFileSync(path.join(root, 'feature/README.md'), 'This feature delegates entry to middle to leaf.');
   for (let index = 0; index < unrelated; index++) writeFileSync(path.join(root, `unrelated/item${index}${wideSupport ? '.d' : ''}.ts`),
     wideSupport ? `declare module 'wide' { export const item${index}: number; }` : `export const item${index} = ${index};`);
+  for (let index = 0; index < ancestorDocumentation; index++) writeFileSync(path.join(root, `README.${index}.md`), 'Repository intent assertion.');
+  if (ancestorDocumentation) writeFileSync(path.join(root, 'unrelated/README.md'), 'Sibling documentation must not be selected.');
   const opened = await openTypeScriptProject({ configPath: path.join(root, 'tsconfig.json') });
   if (opened.status !== 'opened') throw new Error('Expected fixture');
   const store = new MemoryProgramRecordStore();
@@ -363,4 +365,54 @@ test('summaries withheld by the response guard do not grant citation eligibility
   assert.deepEqual(execution.report.summarizedEvidence, []);
   assert.equal(execution.outcome.kind, 'investigation-failure');
   if (execution.outcome.kind === 'investigation-failure') assert.equal(execution.outcome.reason, 'Evidence must identify supplied context in this session.');
+});
+
+
+test('module inspection discovers qualified local and ancestor documentation with bounded continuations and no content exposure', async t => {
+  const f = await fixture(t, 160, false, false, 28);
+  const responses = pages(f.evidence, { kind: 'inspect', subject: f.module('entry') });
+  assert.ok(responses.length > 1);
+  const records = responses.flatMap(response => { checkQualified(response, f.store); return response.records; });
+  const docs = records.filter(record => record.kind === 'claim' && record.information.type === 'group-documentation');
+  assert.equal(new Set(docs.map(record => record.id)).size, 29);
+  assert.ok(records.some(record => record.kind === 'claim' && record.information.type === 'module-placement' && record.subject === f.module('entry')));
+  assert.ok(records.some(record => record.kind === 'claim' && record.information.type === 'group-containment'));
+  assert.ok(!records.some(record => record.kind === 'captured-content'));
+  assert.ok(!JSON.stringify(responses).includes('Sibling documentation must not be selected'));
+  const artifacts = records.filter(record => record.kind === 'repository-artifact');
+  assert.ok(!JSON.stringify(artifacts).includes('unrelated/README.md'));
+  assert.match(responses[0]!.limitations.join(' '), /does not establish applicability/);
+  const doc = docs[0]!; assert.ok(doc.kind === 'claim' && doc.information.type === 'group-documentation');
+  const content = f.evidence.query({ kind: 'source', subject: doc.information.artifact });
+  assert.ok(content.records.some(record => record.kind === 'captured-content'));
+});
+
+test('normal module inspection lets the investigator acquire documentation and records only delivered exposure', async t => {
+  const f = await fixture(t, 2);
+  let artifact: RecordId;
+  const seen = new Set<RecordId>();
+  const agent = new ScriptedInvestigator([
+    () => ({ kind: 'tools', requests: [{ kind: 'inspect', subject: f.module('entry') }] }),
+    input => {
+      const response = input.responses[0] as EvidenceResponse;
+      checkQualified(response, f.store);
+      response.records.forEach(record => seen.add(record.id));
+      assert.ok(!response.records.some(record => record.kind === 'captured-content'));
+      const doc = response.records.find(record => record.kind === 'claim' && record.information.type === 'group-documentation');
+      assert.ok(doc?.kind === 'claim' && doc.information.type === 'group-documentation');
+      artifact = doc.information.artifact;
+      return { kind: 'tools', requests: [{ kind: 'source', subject: artifact }] };
+    },
+    input => {
+      const response = input.responses[0] as EvidenceResponse;
+      response.records.forEach(record => seen.add(record.id));
+      assert.ok(response.records.some(record => record.kind === 'captured-content' && record.text.includes('delegates entry')));
+      return { kind: 'submit', result: { localId: 'root', prose: 'Documentation records a delegation assertion.', referent: { description: 'Entry', subjects: [f.module('entry')] }, qualifications: ['Nearby documentation is not proof of applicability or behavior.'], evidence: response.selected, associations: [], children: [], corrections: [], inconsistencies: [] } };
+    },
+  ]);
+  const result = await investigate({ session: f.opened.session, request: { operation: 'functionality', subject: f.module('entry'), parameters: {} }, evidence: f.evidence,
+    history: { get: () => undefined, provenance: () => undefined, correction: () => undefined, corrections: () => [] }, agent, usage: new InvestigationUsage(), check: async () => {} });
+  assert.equal(result.outcome.kind, 'accepted');
+  assert.deepEqual(new Set(result.report.suppliedEvidence), seen);
+  assert.ok(result.report.summarizedEvidence.some(id => f.store.get(id).kind === 'organization-evaluation'));
 });

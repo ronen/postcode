@@ -28,8 +28,8 @@ export interface ContentResult {
 }
 
 export type EvidenceQuery = ({ readonly kind: 'modules' | 'organization' }
-  | { readonly kind: 'exports' | 'dependencies' | 'dependents' | 'membership' | 'group'; readonly subject: RecordId }) & { readonly cursor?: string }
-  | { readonly kind: 'inspect' | 'source'; readonly subject: RecordId };
+  | { readonly kind: 'exports' | 'dependencies' | 'dependents' | 'membership' | 'group' | 'inspect'; readonly subject: RecordId }) & { readonly cursor?: string }
+  | { readonly kind: 'source'; readonly subject: RecordId };
 
 /** A domain entry point to existing evaluators; no projections or human-command observations. */
 export function evidenceAccess(store: ProgramRecordStore, analysis: ModuleAnalysis, session: SessionId) {
@@ -46,6 +46,32 @@ export function evidenceAccess(store: ProgramRecordStore, analysis: ModuleAnalys
         if (!['module', 'symbol', 'group', 'claim', 'claim-context', 'source-evidence', 'repository-artifact', 'repository-region',
           'recorded-assertion', 'captured-content', 'dependency-occurrence', 'dependency-coverage'].includes(subject!.kind)) {
           return unavailable('This internal record is not an inspectable program subject or evidence item.');
+        }
+        if (subject!.kind === 'module') {
+          const modules = evaluateModules(store, analysis);
+          const organization = evaluateOrganization(store, modules);
+          const claims = organization.claims.map(id => store.get(id)).filter(record => record.kind === 'claim');
+          const placements = claims.filter(claim => claim.subject === subject!.id && claim.information.type === 'module-placement');
+          const parents = new Map<RecordId, typeof claims>();
+          for (const claim of claims) if (claim.information.type === 'group-containment') {
+            const items = parents.get(claim.information.child) ?? [];
+            items.push(claim); parents.set(claim.information.child, items);
+          }
+          const nearby = new Set<RecordId>();
+          const pending = placements.flatMap(claim => claim.information.type === 'module-placement' ? [...claim.information.groups, ...claim.information.candidates] : []);
+          const containment: RecordId[] = [];
+          while (pending.length) {
+            const group = pending.pop()!;
+            if (nearby.has(group)) continue;
+            nearby.add(group);
+            for (const claim of parents.get(group) ?? []) { containment.push(claim.id); pending.push(claim.subject); }
+          }
+          const documentation = claims.filter(claim => claim.information.type === 'group-documentation' && nearby.has(claim.subject));
+          return delivery.select(key, [subject!.id, ...placements.map(claim => claim.id), ...containment, ...documentation.map(claim => claim.id)], [organization], [
+            'Module inspection includes qualified placement, containing groups and their ancestor groups, and nearby documentation references when established.',
+            'Nearby README existence does not establish applicability or inherited documentation for this module. Use source(artifact) to acquire relevant content before interpreting its assertions.',
+            'Documentation text is not included by these references. Omitted or unavailable placement/documentation does not establish absence.',
+          ]);
         }
         return { status: 'available', ...delivery.compose([subject!.id]), selected: [subject!.id], limitations: [] };
       }

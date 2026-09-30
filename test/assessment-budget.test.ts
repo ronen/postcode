@@ -24,7 +24,7 @@ test('assessment allowance reserves before dispatch, persists failed attempts an
 test('assessment harness captures CLI interaction and refuses an extra POST without exposing credentials', async t => {
   const { runAssessment } = await import(new URL('../../scripts/module-investigation/run-shell.mjs', import.meta.url).href);
   const root = temporaryDirectory(t, 'postcode-assessment-shell-'), file = path.join(root, 'budget.json'), output = path.join(root, 'capture');
-  writeFileSync(file, JSON.stringify({ authorized: 1, requests: [] }));
+  writeFileSync(file, JSON.stringify({ ceiling: 1, requests: [] }));
   let posts = 0;
   const exit = await runAssessment({ id: 'offline', project: 'fixture', output, budget: file, pass: 'test', commands: ['usage', 'exit'] }, {
     onError(error: unknown) { throw error; }, verify() {}, session: async () => ({ token: async () => 'offline-secret', watch: () => () => {} }),
