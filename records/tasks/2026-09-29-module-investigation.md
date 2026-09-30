@@ -209,6 +209,15 @@ Count conservatively: one new diagnostic request, then reassess and pause if
 compatibility or cost remains unresolved. No automatic inference retry or model/
 billing fallback is authorized.
 
+### Additional request allowance — 2026-09-30
+
+I'll pre-authorize you to make up to 10 more requests
+
+Context: a new ceiling of ten additional inference requests following the three
+connection attempts already recorded. Count attempted requests regardless of
+success, failure or unknown usage; retain the fixed model/reasoning/billing route.
+This permits bounded diagnosis and verification, not automatic product retries.
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
