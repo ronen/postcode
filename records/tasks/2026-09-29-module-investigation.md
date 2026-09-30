@@ -129,6 +129,52 @@ Record unassessed follow-up (Recommended)
 
 ok, milestone 2 is accepted; wrap it up and continue on
 
+### 2026-09-30 — ChatGPT sign-in and optional plan usage
+
+Please extend milestone 3 to support **Sign in with ChatGPT with optional ChatGPT plan usage**, alongside the existing OpenAI API-key mechanism. This is an authorized addition to the current implementation task. Replace the pending API-key setup step with the workflow below.
+
+Keep the current API-key option available. The user must explicitly select the authentication/billing route; never silently switch between subscription usage and API billing.
+
+Use the current official documentation, verifying its requirements before implementation:
+
+- [https://developers.openai.com/siwc/quickstart](https://developers.openai.com/siwc/quickstart)
+- [https://developers.openai.com/siwc/token-sharing-open-source](https://developers.openai.com/siwc/token-sharing-open-source)
+- [https://help.openai.com/en/articles/20001542-using-your-chatgpt-plan-in-other-apps-and-sites](https://help.openai.com/en/articles/20001542-using-your-chatgpt-plan-in-other-apps-and-sites)
+
+**Sign-in and credential lifecycle**
+
+Provide an explicit CLI setup command that works without opening a project. It should initiate browser sign-in, receive the local callback, validate the authorization and granted plan-usage permission, and securely persist the resulting credentials and registration metadata. Exact command names and configuration are implementation choices. Provide credential-safe status and sign-out operations.
+
+Authentication must persist across PostCode invocations so I can normally sign in once for the entire assessment. Renew credentials automatically as required, persist rotated credentials safely, and coordinate renewal across processes. Ordinary process exit must not sign out or revoke authorization.
+
+Continue using protected credential storage, preferably macOS Keychain, and the established parent-process credential boundary. Keep credentials out of investigator context, worker messages, logs, observations, assessment artifacts, and agent-visible diagnostics. Do not reuse or inspect Codex’s own credentials. Preserve the documented limitation that same-user processes are not absolutely isolated by Keychain storage.
+
+**Provider integration**
+
+Implement the documented subscription-sharing Responses API contract, including its streaming and tool-format requirements. Do not assume this is merely an API-key replacement.
+
+Preserve investigation semantics, explicit result submission and validation, cancellation, execution guards, usage attribution, and the existing inference-retry policy. Credential renewal is distinct from retrying an investigation. Streaming transport must not expose an unfinished investigram as an accepted result.
+
+Verify availability of the intended `gpt-6-sol` model and medium reasoning configuration through the authorized account. Do not silently substitute a model; report any incompatibility requiring a choice.
+
+**Usage and assessment reporting**
+
+Identify the selected authentication/billing route in configuration provenance and appropriate user-facing reporting. Explain subscription allowance and optional purchased-credit use accurately, with links to the provider’s usage controls.
+
+Continue recording provider-reported usage. Adapt assessment reporting to distinguish API charges from subscription-funded usage. Do not equate API list-price estimates with actual ChatGPT credit charges or treat unavailable monetary attribution as zero. If useful, report an API-equivalent estimate explicitly as a comparison only. Keep evaluator usage separately attributed even if it shares the same subscription allowance.
+
+Do not purchase credits, enable automatic purchases, or change provider-side spending settings.
+
+**Verification, documentation, and human setup**
+
+Retain API-key regression coverage and add offline coverage for sign-in validation, persistence and renewal, concurrent renewal, revocation, streaming completion and failure, cancellation, usage, credential exclusion, and explicit route selection.
+
+Update `docs/hosted-investigation.md`, the architecture account, and the affected approved-plan provisions to reflect this authorized addition. Follow the task protocol for recording this instruction and include the changes in the milestone review handoff.
+
+When implementation and offline verification are ready, pause with the exact command I should run in my own terminal. I will complete browser sign-in and tell you when setup is ready, without sharing credentials. Then perform the appropriate connection check and continue the authorized assessments using the ChatGPT-plan route. If interactive reauthorization becomes necessary, record the interruption and pause for me.
+
+If eligibility or protocol restrictions require materially broader changes, explain the specific issue before expanding scope.
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
