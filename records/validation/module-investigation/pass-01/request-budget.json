@@ -1,27 +1,13 @@
 {
-  "authorized": 10,
-  "authorization": "5052825",
-  "capDisposition": "pause-and-report-not-milestone-failure",
-  "requests": [
-    {
-      "ordinal": 1,
-      "run": "connection-01",
-      "status": "not-completed",
-      "usage": {
-        "input_tokens": 808,
-        "output_tokens": 65,
-        "total_tokens": 873
-      }
-    },
-    {
-      "ordinal": 2,
-      "run": "connection-02",
-      "status": "connected",
-      "usage": {
-        "input_tokens": 808,
-        "output_tokens": 84,
-        "total_tokens": 892
-      }
-    }
-  ]
+  "authorized": 192,
+  "scope": "Planned assessment schedule only: six fresh single-investigation cases, production maximum 32 calls each; not the ten-request diagnostic allowance. Zero automatic repeats.",
+  "runs": [
+    "cockatiel-summary",
+    "fsm-engine-summary",
+    "merge-anything-summary",
+    "focused-entry",
+    "focused-opaque",
+    "focused-hard-limit"
+  ],
+  "requests": []
 }

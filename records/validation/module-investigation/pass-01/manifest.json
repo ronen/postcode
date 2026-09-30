@@ -130,6 +130,20 @@
         "sha256": "8c302cbb45073cffd899f4220c42f36353a6a238de46c7517a95f8ea6b19e5f9"
       },
       "overrideArtifact": "merge-anything-override.json"
+    },
+    {
+      "id": "focused",
+      "repository": "Controlled fixture committed in PostCode; copy to isolated Git repository",
+      "commit": "7ded468532ad26bdb0c995a4f89a992dba3482ec",
+      "configuration": "tsconfig.json",
+      "fileSHA256": {
+        "counter.ts": "55a4a0d604f218ce472fc1d17a94e1347a96cddcb08cb1b5ccd8909ee3e621ea",
+        "entry.ts": "f5501e7732ac2c4665fa5de2ec0ab2a606d7c96365ce8d5ce4dadf50006e4efb",
+        "README.md": "c6cc12c1127d3653ab7f62a04a6f84dc13d8af4ac99dde3ed00c212a00375f97",
+        "opaque.ts": "12691aac0546fa281c4f43ddf1b9eb95705e6b115487ce2e75ccf37ef722470a",
+        "normalize.ts": "15c4375e6feb5727825ffef4b26ca93656d741894956261b8836d8de6c62e1b9",
+        "tsconfig.json": "7eb7eea5f213e4d6447bd60c7d6339c6ef5d25746ba953d436b8117afafe058d"
+      }
     }
   ],
   "freeze": "References, prompt and context hashes committed before any subject inference; one summary baseline per subject. No automatic repeated inference.",

@@ -17,6 +17,7 @@ export function requestBudget(file) {
   return {
     reserve(run) {
       if (closed) throw new Error('Budget closed');
+      if (state.runs && !state.runs.includes(run)) throw new Error('Run outside fixed schedule');
       if (state.requests.length >= state.authorized) return null;
       const ordinal = state.requests.length + 1;
       state.requests.push({ ordinal, run, status: 'reserved-before-dispatch', usage: null, startedAt: new Date().toISOString() }); save(); return ordinal;

@@ -42,3 +42,11 @@ ceiling stops further POSTs and records an administrative pause, not a semantic 
 milestone failure. No automatic repeat or model/billing fallback is implemented.
 `diagnose-chatgpt.mjs` is a separate one-request structural diagnostic; record its
 question, authorization and result before resuming assessment.
+
+The human clarified that the ten-request ceiling is for implementation/debugging.
+`diagnostic-budget.json` retains its two used and eight remaining requests. The
+assessment ledger is separate: six scheduled summary/focused cases, one attempt
+each, at most the production 32 requests per investigation (192 theoretical
+maximum, not a usage target). The hard-limit control should use fewer or none.
+Additional diagnostic runs consume the diagnostic allowance; evaluator and
+assessor work is separately attributed as required by the plan.
