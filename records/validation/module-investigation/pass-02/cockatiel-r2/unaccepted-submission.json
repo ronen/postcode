@@ -1,0 +1,149 @@
+{
+  "status": "Rejected draft; not an accepted or displayed investigram",
+  "reason": "Evidence must identify supplied context in this session.",
+  "submission": {
+    "localId": "executor-account",
+    "prose": "Policy-call execution adapter. It awaits synchronous or promise-like callbacks, classifies normal values and exceptions through configurable result/error predicates, exposes the classification as a tagged result, and can collapse that result back to return-or-throw semantics. It also centralizes per-call success/failure telemetry; concrete policies retain responsibility for retries, timeouts, fallback, and other control flow.",
+    "referent": {
+      "description": "The Executor module and its exported execution-classification API",
+      "subjects": [
+        "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:module:e65c42fdafe6c8f0c0186bf2818e001bb8f1989d4807e123dd62240657fc5559"
+      ]
+    },
+    "qualifications": [
+      "Interpretation of captured TypeScript source; execution and deployment behavior were not independently observed.",
+      "Dependency evidence is bounded to recognized project-owned source requests."
+    ],
+    "evidence": [
+      "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1",
+      "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:export:646b834659e590e7ef07cc184b49eb5cd4d68a61ebdc398d586614b9b5725fd1",
+      "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:export:bf30b1e29c27318b32a50ce708f5527dc9e39d20c384f83cfdd29682386bf11a",
+      "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:export:4a4b13f834912c68fdb4b0aaac052eebadeae2ede87f96a20ed462c3799ae3eb"
+    ],
+    "associations": [
+      {
+        "subject": "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:module:34b0c70333c5c2ef743310876c47d82311b0793d606dafb59fa24640c304352c",
+        "qualifications": [
+          "Policy supplies event contracts and constructs wrappers from configured predicates."
+        ],
+        "evidence": [
+          "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:captured-content:5062072ec4996b9f50441471dd9d60a772fd1aadb351cf32cad0516a8991559a",
+          "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:dependency:39ad478ea3a2cb76e11971bfce2348721f5f4243ef85baa4f84c1bd237853f36"
+        ]
+      },
+      {
+        "subject": "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:module:22f9fd20b03fe6b7ff5f0a43a835c29c8e85ebda6d7af1d94723d6340d7b677c",
+        "qualifications": [
+          "Event supplies listener registration, emission, and listener counts."
+        ],
+        "evidence": [
+          "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:captured-content:c90c2a138fcad3ce6a18d8d8d7d02ac3906a9273c68e6469dfa9b946122abb32",
+          "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:dependency:f3f6e82f24ffd99c92eb2559985277ad3c97edf142d75c1d5ddb5bd8fc3b86aa"
+        ]
+      }
+    ],
+    "children": [
+      {
+        "localId": "classification",
+        "prose": "`invoke()` returns `{success}` for an unfiltered fulfillment, `{value}` for a fulfillment selected as failure, and `{error}` for a selected exception. An unselected exception is reported and rethrown. `returnOrThrow()` reverses the wrapper boundary: throw `{error}`, otherwise return the success or filtered value. The supplied test exercises success, handled-error, and unhandled-error cases.",
+        "referent": {
+          "description": "Classification and tagged-result conversion implemented by ExecuteWrapper and returnOrThrow",
+          "subjects": [
+            "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:symbol:5d069dd56dbbc3b7cb56e8b8ae64943bd01c3d5c87b7c2b39647e68b1614e4dc",
+            "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:symbol:839b4b3cce4c5e2f91a1bb9e3469f399cfcd1a1c90388dfed51a934ee869f567",
+            "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:symbol:0a5270610d7e32715130ba8d4ad461da1fb539ecd822422700fb9777d17f7807"
+          ]
+        },
+        "qualifications": [
+          "The test is corroborating repository source, not evidence that the suite passed."
+        ],
+        "evidence": [
+          "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1",
+          "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:captured-content:03830170e50d85a26344ceb583aa669816e635c553bb7747607578171eaaec89"
+        ],
+        "associations": [],
+        "children": [],
+        "corrections": [],
+        "inconsistencies": []
+      },
+      {
+        "localId": "telemetry",
+        "prose": "Success and failure listeners are backed by separate emitters. Timing is skipped when neither has listeners; otherwise elapsed milliseconds come from `performance.now()` when available or Node high-resolution time. Filtered values emit handled failures; selected exceptions emit handled failures; unselected exceptions emit unhandled failures before propagation. `clone()` preserves predicates but creates fresh emitters.",
+        "referent": {
+          "description": "ExecuteWrapper telemetry, timing, and cloning behavior",
+          "subjects": [
+            "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:symbol:5d069dd56dbbc3b7cb56e8b8ae64943bd01c3d5c87b7c2b39647e68b1614e4dc"
+          ]
+        },
+        "qualifications": [
+          "Clock availability and precision are environment-dependent; no runtime platform was inspected."
+        ],
+        "evidence": [
+          "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1",
+          "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:captured-content:c90c2a138fcad3ce6a18d8d8d7d02ac3906a9273c68e6469dfa9b946122abb32"
+        ],
+        "associations": [
+          {
+            "subject": "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:module:22f9fd20b03fe6b7ff5f0a43a835c29c8e85ebda6d7af1d94723d6340d7b677c",
+            "qualifications": [
+              "Listener storage, count, emission, and disposable subscriptions are delegated here."
+            ],
+            "evidence": [
+              "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:captured-content:c90c2a138fcad3ce6a18d8d7d02ac3906a9273c68e6469dfa9b946122abb32"
+            ]
+          }
+        ],
+        "children": [],
+        "corrections": [],
+        "inconsistencies": []
+      },
+      {
+        "localId": "policy-delegation",
+        "prose": "Policy factories build wrappers from accumulated predicates. Consumers then own policy-specific decisions: RetryPolicy loops over non-success tags and applies backoff/give-up rules; NoopPolicy and TimeoutPolicy invoke once and use `returnOrThrow`, with TimeoutPolicy separately managing cancellation and races. Thus this module normalizes outcomes and telemetry rather than implementing resilience strategies.",
+        "referent": {
+          "description": "Delegation between Executor and policy construction/consumers",
+          "subjects": [
+            "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:module:34b0c70333c5c2ef743310876c47d82311b0793d606dafb59fa24640c304352c",
+            "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:module:bc05bc5c0861719997f55dcf56bb9629987212f39d7f3cba6f414ebc3d4c7393",
+            "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:module:be1e6048f8a1c9a226e3bfc4dc67aaaa6d7284298cf7f6e638dacccb618410fc",
+            "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:module:4131b546fa43f89c3a6efd2f2b8202959413a17921e3d52de68395ac1a88fd32"
+          ]
+        },
+        "qualifications": [
+          "Representative consumers were inspected; other established consumers were not read because they add little to this division-of-responsibility account."
+        ],
+        "evidence": [
+          "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:captured-content:5062072ec4996b9f50441471dd9d60a772fd1aadb351cf32cad0516a8991559a",
+          "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:captured-content:146966ba9ed6d0b5d2e402db1b64869f7a13ffb96bb36899670e8616ca6e9327",
+          "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:captured-content:3043027d7d250a5fd95814a74d779b2f6e6be0522f273a63cbc6da1f2a4696e1",
+          "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:captured-content:43f507f17a350b46aae388d56bd0925b9fb19c10adee83d07173d070e8616a3d"
+        ],
+        "associations": [
+          {
+            "subject": "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:module:bc05bc5c0861719997f55dcf56bb9629987212f39d7f3cba6f414ebc3d4c7393",
+            "qualifications": [
+              "Consumes failure tags to decide retry, delay, or give-up."
+            ],
+            "evidence": [
+              "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:captured-content:146966ba9ed6d0b5d2e402db1b64869f7a13ffb96bb36899670e8616ca6e9327"
+            ]
+          },
+          {
+            "subject": "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:module:4131b546fa43f89c3a6efd2f2b8202959413a17921e3d52de68395ac1a88fd32",
+            "qualifications": [
+              "Delegates callback observation to the wrapper while retaining timeout/cancellation control."
+            ],
+            "evidence": [
+              "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:captured-content:43f507f17a350b46aae388d56bd0925b9fb19c10adee83d07173d070e8616a3d"
+            ]
+          }
+        ],
+        "children": [],
+        "corrections": [],
+        "inconsistencies": []
+      }
+    ],
+    "corrections": [],
+    "inconsistencies": []
+  }
+}

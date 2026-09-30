@@ -1,0 +1,259 @@
+{
+  "status": "Rejected draft; not an accepted or displayed investigram",
+  "reason": "Invalid referent or association subject.",
+  "submission": {
+    "localId": "root-fsm-engine",
+    "prose": "Implements the typed FSM instance and its factory: it turns a builder definition into independent machines, owns per-instance context/state/queue/timers, executes event lifecycles, and emits optional traces. Definition construction/validation is delegated to the DSL implementation; keyed scheduling to the timer registry; specialized failures to the error module. The repository README describes substantially the same design, but its timer-payload claim conflicts with the captured implementation.",
+    "referent": {
+      "description": "FSM runtime engine module",
+      "subjects": [
+        "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:28ee01f871c5038ff17dab09c1a5c11ca53589990dd9c4649245a029996e56c4"
+      ]
+    },
+    "qualifications": [
+      "Apparent behavior is inferred from captured TypeScript source; it was not executed.",
+      "Captured source is first-observed rather than an atomic repository snapshot.",
+      "The nearby README is treated as a recorded project assertion and checked against implementation, not as proof of runtime behavior."
+    ],
+    "evidence": [
+      "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84",
+      "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7",
+      "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:dependency:a8b9a4269054de964cfe81e57c7485990cca9160190246e994ca26dd376aa105",
+      "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:dependency:f7c0b79edc646a2bbf2b77dda574890699fee3dc749235e6dd428ad812d75a7f",
+      "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:dependency:02261c2a14d4db8c4595c5283e985785f32d4597c093187476fc7589e6e5f021"
+    ],
+    "associations": [
+      {
+        "subject": "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:35c7001246df5fdcfd62f8b167bf2c5c7ff5bb105ade3ac84b5339479efdcc29",
+        "qualifications": [
+          "Runtime dependency used to build, validate, and compile definitions."
+        ],
+        "evidence": [
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:dependency:a8b9a4269054de964cfe81e57c7485990cca9160190246e994ca26dd376aa105",
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:2223a19b7c84507271eb5dcafd0ce7c951322233ba64e5857e7344d6ae15d73d"
+        ]
+      },
+      {
+        "subject": "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:fd42e085813524a5acab19c4929a9aa6ecfcd4a79ac3fd5bfd570ec94654a31e",
+        "qualifications": [
+          "Runtime dependency providing each instance's keyed timers."
+        ],
+        "evidence": [
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:dependency:f7c0b79edc646a2bbf2b77dda574890699fee3dc749235e6dd428ad812d75a7f",
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:5ae20a36be80e4d3426c537ab3f59d590e4dcd0d929812feb44017c3524f5e6a"
+        ]
+      },
+      {
+        "subject": "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:94b528fd03e2cdaae51953a3d2ebc5e3d11c0618129fac737de588f81a9807",
+        "qualifications": [
+          "Runtime dependency supplying unknown- and unhandled-event errors; the builder also uses its definition-error classes."
+        ],
+        "evidence": [
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:dependency:02261c2a14d4db8c4595c5283e985785f32d4597c093187476fc7589e6e5f021",
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:9005b07f7708207e8f24e52a62e67b90a7a1d58099c4fe95b259daeb0c278b8d"
+        ]
+      },
+      {
+        "subject": "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:b6a1d2f4a8cb65428d3899471864e847e2ea4b33dbc6b07c6bd197c301d36c38",
+        "qualifications": [
+          "Package-facing index re-exports this module."
+        ],
+        "evidence": [
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:dependency:1a4157eed0d23b164d027dc86e000409d1f5dae4e2ffb08a25af4b6a4d5cca55"
+        ]
+      },
+      {
+        "subject": "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93",
+        "qualifications": [
+          "Repository-level documentation; applicability is plausible from its package-wide subject but documentation truth is not assumed."
+        ],
+        "evidence": [
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7"
+        ]
+      }
+    ],
+    "children": [
+      {
+        "localId": "definition-factory",
+        "prose": "`define` runs the caller's builder body, asks `FsmBuilderImpl` to validate and compile it, then returns a closure sharing that immutable-looking definition. Each factory call creates a machine with its own context, initial state, queue, timer registry and trace identity; initial-state entry actions run during construction. The factory type makes context parameters optional only when `Context` is `void`.",
+        "referent": {
+          "description": "Definition-to-instance factory mechanism",
+          "subjects": [
+            "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:symbol:705a9557fbed7bce97e09c07316dd27159d05366e7c64f690492368852f5a05f",
+            "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:symbol:b14342d6db6c2e3ed2a00df6a90939a9a9b1ebe219e5d84a05d59ca8c0acd2f3"
+          ]
+        },
+        "qualifications": [
+          "The definition object is shared by closure; immutability is only apparent from its use and readonly-facing types, not independently enforced here.",
+          "Behavior inferred from source without execution."
+        ],
+        "evidence": [
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84",
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:source:20c77b7ba0e87de930a4c418e23bd76858530ebf31c5492791f7e50933199673",
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:2223a19b7c84507271eb5dcafd0ce7c951322233ba64e5857e7344d6ae15d73d"
+        ],
+        "associations": [
+          {
+            "subject": "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:35c7001246df5fdcfd62f8b167bf2c5c7ff5bb105ade3ac84b5339479efdcc29",
+            "qualifications": [
+              "Records states/events/actions/transitions, rejects duplicate or structurally invalid definitions, checks target existence and reachability, then emits lookup tables consumed by the engine."
+            ],
+            "evidence": [
+              "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:2223a19b7c84507271eb5dcafd0ce7c951322233ba64e5857e7344d6ae15d73d"
+            ]
+          },
+          {
+            "subject": "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:94b528fd03e2cdaae51953a3d2ebc5e3d11c0618129fac737de588f81a9807",
+            "qualifications": [
+              "Defines the concrete validation error hierarchy thrown by the builder."
+            ],
+            "evidence": [
+              "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:9005b07f7708207e8f24e52a62e67b90a7a1d58099c4fe95b259daeb0c278b8d"
+            ]
+          }
+        ],
+        "children": [],
+        "corrections": [],
+        "inconsistencies": []
+      },
+      {
+        "localId": "event-processing",
+        "prose": "`dispatch` always enqueues. The outermost call synchronously drains FIFO; re-entrant calls return and leave work to that drain. Unknown events fail before lookup. Handling runs state-specific begin actions and first-match transitions, then fallback begins/transitions; defined transitions whose guards all fail count as an implicit stay, while no state/fallback definition raises an unhandled-event error. Any thrown guard/action error clears remaining queued events and propagates.",
+        "referent": {
+          "description": "Queued event dispatch and selection semantics",
+          "subjects": [
+            "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:symbol:705a9557fbed7bce97e09c07316dd27159d05366e7c64f690492368852f5a05f"
+          ]
+        },
+        "qualifications": [
+          "Synchronous and FIFO characterize the visible source algorithm, not measured execution.",
+          "TypeScript types constrain normal callers, but runtime unknown-event checks still exist."
+        ],
+        "evidence": [
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84",
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7"
+        ],
+        "associations": [
+          {
+            "subject": "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:94b528fd03e2cdaae51953a3d2ebc5e3d11c0618129fac737de588f81a9807",
+            "qualifications": [
+              "Separates unknown events\u2014absent from the entire compiled definition\u2014from known events unhandled in the current state and fallback."
+            ],
+            "evidence": [
+              "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:9005b07f7708207e8f24e52a62e67b90a7a1d58099c4fe95b259daeb0c278b8d"
+            ]
+          }
+        ],
+        "children": [],
+        "corrections": [],
+        "inconsistencies": []
+      },
+      {
+        "localId": "transition-actions",
+        "prose": "Transitions are tested in declaration order and all guards on a candidate must pass. Internal transitions run only transition actions. External transitions run old-state exit actions, transition actions, assign the target state, then run target entry actions. Every callback receives the shared context plus typed event/state metadata and a restricted action API; events emitted by callbacks are queued until the current event finishes.",
+        "referent": {
+          "description": "Guard, transition, and action execution",
+          "subjects": [
+            "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:symbol:705a9557fbed7bce97e09c07316dd27159d05366e7c64f690492368852f5a05f"
+          ]
+        },
+        "qualifications": [
+          "Ordering is directly visible in source but was not executed.",
+          "An exception during entry occurs after state assignment; earlier transition-stage exceptions occur before assignment."
+        ],
+        "evidence": [
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84"
+        ],
+        "associations": [
+          {
+            "subject": "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:a3cc8b741ad6599eb7b59c324f70edf2b26ee951047fccef439d9d30d767dfbf",
+            "qualifications": [
+              "Type-only dependency defining callback and metadata shapes; its implementation was not inspected because runtime ordering is implemented locally."
+            ],
+            "evidence": [
+              "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:dependency:d6122b4f896df00ea0a358b4aa2f3db47359fc5d47d3d1a241eb9e6dc58a9b97"
+            ]
+          },
+          {
+            "subject": "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:732e8b830081aaba9597d951e9f2a659b1542cf3c8e37ff1d55af7ed21226bbc",
+            "qualifications": [
+              "Type-only dependency describing the restricted API passed to actions; behavior is implemented by this module."
+            ],
+            "evidence": [
+              "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:dependency:a7f4efe9fd748b14ff9923f48c09c5991c4ed3a12f7a48dd3b6094c34f0a0034"
+            ]
+          }
+        ],
+        "children": [],
+        "corrections": [],
+        "inconsistencies": []
+      },
+      {
+        "localId": "timers-tracing",
+        "prose": "The callback API can redispatch, schedule an event, or cancel one/all timers. `TimerRegistry` owns replacement-by-key, cancellation, relative delays, performance-clock deadlines, immediate clamping of past/negative times, and `Infinity` as unscheduled. The engine also formats optional timestamped traces for events, guards, selected transitions, actions, fallbacks and runtime errors, using a replaceable logger.",
+        "referent": {
+          "description": "Action effects and diagnostic tracing",
+          "subjects": [
+            "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:28ee01f871c5038ff17dab09c1a5c11ca53589990dd9c4649245a029996e56c4",
+            "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:fd42e085813524a5acab19c4929a9aa6ecfcd4a79ac3fd5bfd570ec94654a31e"
+          ]
+        },
+        "qualifications": [
+          "Timer semantics are inferred from source, including embedded tests, but tests were not executed.",
+          "Platform timer and performance-clock availability are not established by source evidence."
+        ],
+        "evidence": [
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84",
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:5ae20a36be80e4d3426c537ab3f59d590e4dcd0d929812feb44017c3524f5e6a"
+        ],
+        "associations": [
+          {
+            "subject": "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:fd42e085813524a5acab19c4929a9aa6ecfcd4a79ac3fd5bfd570ec94654a31e",
+            "qualifications": [
+              "Generic keyed timer lifecycle is delegated here; timer callbacks return to the engine through `dispatch`."
+            ],
+            "evidence": [
+              "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:5ae20a36be80e4d3426c537ab3f59d590e4dcd0d929812feb44017c3524f5e6a"
+            ]
+          }
+        ],
+        "children": [],
+        "corrections": [],
+        "inconsistencies": [
+          {
+            "targets": [
+              "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:28ee01f871c5038ff17dab09c1a5c11ca53589990dd9c4649245a029996e56c4",
+              "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93"
+            ],
+            "reason": "The README says `fsm.timer({ event, ..., payload? })` schedules a future dispatch with that payload. The implementation constructs an empty argument list when `payload` is present and `[params.payload]` when it is absent, so an explicitly supplied payload appears to be dropped; this likely reverses the intended condition.",
+            "qualifications": [
+              "Static source reading only; no timer was executed.",
+              "This conflicts with documentation and with the apparent typed action-API intent; whether generated output differs was not investigated."
+            ],
+            "evidence": [
+              "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84",
+              "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7"
+            ]
+          }
+        ]
+      }
+    ],
+    "corrections": [],
+    "inconsistencies": [
+      {
+        "targets": [
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:28ee01f871c5038ff17dab09c1a5c11ca53589990dd9c4649245a029996e56c4",
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93"
+        ],
+        "reason": "Documented scheduled-event payload forwarding does not match the apparent implementation: the payload-spread branch is reversed and drops a present payload.",
+        "qualifications": [
+          "Static interpretation, not runtime confirmation."
+        ],
+        "evidence": [
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84",
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "findings": [
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly treats the displayed result as a failed investigation with no substantive account of fsm-engine behavior.",
+      "evidence": [
+        "The user view displays 'investigation-failure: Invalid referent or association subject.', 'Selection: selected (1 matches).' and 'Module @module-28ee01f8: fsm-engine', followed by usage and qualification text rather than a functional account.",
+        "Evaluator answer 1 states that the module name alone cannot establish functionality or division of responsibility; answer 2 says there is no substantive generated account to evaluate."
+      ],
+      "consequence": "The evaluator does not invent module behavior or repeat an erroneous generated interpretation. Its limited usefulness judgment is supported by the capture.",
+      "uncertainty": "The capture does not establish whether any substantive interpretation existed internally or in another view. There is no generated semantic account here to compare for correctness."
+    },
+    {
+      "category": "material-omission",
+      "claim": "The captured result leaves the requested module-comprehension outcome unavailable: none of the source-supported runtime responsibilities is communicated.",
+      "evidence": [
+        "The frozen reference identifies construction and compilation through FsmBuilderImpl at fsm-engine.ts lines 119–135; synchronous FIFO dispatch and exception cleanup at lines 184–222; state-specific and fallback handling at lines 241–266; ordered guarded transitions at lines 271–313; and action-facing dispatch, timers and optional tracing at lines 366–376.",
+        "The displayed 'Module summary' contains only selection, failure, identifiers, reported usage and generic qualifications.",
+        "Evaluator answers 1 and 6 explicitly identify the absence of module functionality, responsibility boundaries and functional explanation."
+      ],
+      "consequence": "A reader cannot use this capture to understand how the engine builds definitions, executes transitions, queues reentrant events or delegates timers. The evaluator correctly reports this missing outcome.",
+      "uncertainty": "This is an omission in the delivered comprehension result, not evidence of a false generated account, a diagnosed generation defect or a milestone failure. The absent explanation, decomposition and examination follow-up views are not themselves counted as defects."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator preserves the scope of the displayed accounting and evidence qualifications.",
+      "evidence": [
+        "The view states 'Generated accounts remain interpretation. Corrections are retained assertions, not established truth.', 'Reported usage is not confirmed billed usage.' and 'Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero.'",
+        "The attempt and session each report 3 calls and 158883 total tokens for openai/gpt-5.6-sol.",
+        "Evaluator answer 2 treats these as displayed reports with overlapping scopes, rather than adding them as demonstrated separate consumption, and leaves independent metadata verification and monetary charges unknown."
+      ],
+      "consequence": "The evaluator avoids converting reported usage into billing facts or generic qualifications into evidence that a substantive account or correction was delivered.",
+      "uncertainty": "Neither the supplied view nor the frozen source reference independently verifies provider accounting, billing, model identity or the underlying call records. The overlap interpretation is supported by the displayed attempt/session scopes, not an independent accounting audit."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "The invalid-subject failure and its relationship to the successful selection remain undiagnosed.",
+      "evidence": [
+        "The view places 'References remain bound for this session.' and 'Selection: selected (1 matches).' alongside 'investigation-failure: Invalid referent or association subject.' without naming the invalid referent or association.",
+        "Evaluator answers 1 and 6 describe the missing explanation and recovery action rather than asserting a specific cause.",
+        "The frozen reference concerns the selected subject's source behavior and does not provide evidence about the investigation system's referent validation or this failed attempt."
+      ],
+      "consequence": "The evaluator's presentation critique is reasonable, but the artifacts do not support assigning the failure to selection, generated associations, reference binding or a particular system component.",
+      "uncertainty": "Selection success and a later invalid-subject error may concern different operations; the apparent tension does not prove a contradiction. The capture reports an invalid-subject error, not an administrative request-budget interruption, and establishes no broader milestone outcome."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator distinguishes missing follow-up and correction evidence from demonstrated capabilities, and labels its proposed next request as provisional.",
+      "evidence": [
+        "Evaluator answer 3 says explanation, decomposition and examination views were not supplied and declines to infer improvement.",
+        "Evaluator answer 4 provisionally proposes targeting @module-28ee01f8 with an explanation lens, explicitly noting that eligibility, available lenses and successful operation are unestablished.",
+        "Evaluator answer 5 states that the generic correction caveat supplies no original, replacement or provenance relationship."
+      ],
+      "consequence": "The evaluator avoids treating absent follow-up views as generation defects or claiming that the displayed module identifier establishes investigram selection, correction history or working lens controls.",
+      "uncertainty": "These capabilities or records may exist outside the supplied capture. The frozen subject reference cannot establish their availability or the success of the proposed next request."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "The captured view is useful as a failure and reported-usage notice, but does not support comprehension of fsm-engine. The evaluator communicates this limitation accurately and with appropriate qualifications.",
+    "reasons": [
+      "The selected module and failed investigation are explicit, allowing the reader to recognize that a substantive result was not delivered.",
+      "The evaluator correctly declines to infer functionality from the module name and identifies the absence of source-supported responsibilities.",
+      "The evaluator preserves uncertainty about billing, failure diagnosis, follow-up views, correction provenance and available lenses.",
+      "The generic summary heading, unexplained invalid-subject error and repeated usage detail reasonably impede comprehension and recovery, although their actual effect on readers is not measured."
+    ],
+    "limitations": [
+      "Only the supplied frozen reference, user view and evaluator response were used; no independent source inspection, browsing or runtime testing was performed.",
+      "The frozen reference is qualified source analysis, not proof of runtime guarantees; it also cannot diagnose the investigation system's failure.",
+      "No substantive generated interpretation is present, so this capture cannot establish semantic agreement or disagreement about transition ordering, guard behavior, timer payload forwarding, rollback or thread safety.",
+      "Absent follow-up views and concrete corrections are limits on what can be assessed, not independently established generation defects.",
+      "The source reference identifies purposeful development examples and shared implementation, reference-selection and same-family assessment limitations; this result is not independent corroboration or an unbiased general acceptance result."
+    ]
+  }
+}

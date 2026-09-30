@@ -1,0 +1,204 @@
+You are a fresh source-informed assessor. Use only the supplied frozen reference, view and evaluator response. Do not independently inspect source or browse. These references are qualified source analysis, not runtime proof.
+
+RUBRIC
+{
+  "version": 1,
+  "task": "Compare supplied investigator views and view-only evaluator answers against the frozen source references. Use only supplied artifacts. Preserve uncertainty and cite specific displayed references or source locations.",
+  "categories": ["generation-error-repeated-by-evaluator", "presentation-misunderstanding", "successful-qualified-communication", "unsupported-evaluator-extrapolation", "material-omission", "reference-cannot-settle"],
+  "output": "JSON with findings [{category, claim, evidence, consequence, uncertainty}], subjectUsefulness {judgment, reasons, limitations}. No numeric aggregate score. Do not treat a summary-only absence of follow-up views as a generation defect. Do not treat administrative request-budget interruption as an interpretive or milestone failure."
+}
+
+FROZEN REFERENCE
+# Frozen source-grounded references — summary pass 01
+
+Prepared before any subject/fixture inference by the implementing agent. Exact
+model identifier is unavailable; the family is OpenAI. Shared implementation,
+reference selection and orchestration can bias judgments. These are purposeful
+development examples, not an unbiased or untouched validation set. This material
+must not be supplied to the investigator or view-only evaluators.
+
+The [manifest](manifest.json) fixes revisions, source/document/configuration hashes,
+Node 22.13.1, the **PostCode analyzer TypeScript 6.0.3**, and the selected hosted
+configuration. Installed subject build TypeScript versions do not replace that
+analyzer. Repository source, README and ordinary subject-based evidence are
+accessible; reference answers, selection rationale and this file are not.
+PostCode source inspection is not execution or proof of runtime guarantees.
+
+
+
+## fsm-engine: runtime engine
+
+Source pin: [fsm-engine.ts](https://github.com/thingts/fsm-engine/blob/0bd7bb2cc9df14a1b599fb2748e5daf10169f513/src/fsm-engine.ts).
+Original `tsconfig.json`; selector `fsm-engine`. Mechanical inventory materializes
+`FsmEngine` and `FsmEngineFactory`. Normal evidence can reach DSL implementation,
+timer registry, types, errors and the root README; these were not injected as
+expected answers.
+
+Supported source conclusions:
+
+- Lines 119–135 build, validate and compile a definition via `FsmBuilderImpl`,
+  returning a factory. Instances share the definition but own runtime state,
+  queue, timers and caller-supplied context; context is not deep-copied.
+- Lines 184–222 enqueue all dispatches. Reentrant calls return after enqueuing;
+  the outer call drains FIFO synchronously. Exceptions clear queued work and
+  reset the dispatching flag; this does not undo actions already run.
+- Lines 241–266 run state-specific begin actions and try transitions, then
+  fallback begins/transitions. If there are transition candidates but none match,
+  the event is treated as an implicit stay. Absent handling produces an error.
+- Lines 271–313 choose the first transition whose guards all pass. External
+  transitions run exit actions, transition actions, commit state, then entry
+  actions. Internal transitions run actions without exit/entry or a state change.
+  The inline comment implying state is committed first is not the actual order.
+- Lines 366–376 provide action-facing dispatch and timer operations; scheduling
+  is delegated to `TimerRegistry`. Optional tracing records event/guard/action
+  progression but is not the transition-selection mechanism.
+
+Acceptable interpretation: synchronous typed state-machine execution with ordered
+guard/action handling, queued reentrant events, fallback handling, timers and
+tracing. Material limits: no subject test execution; caller guards/actions are
+unconstrained functions, and queued execution is not thread-safety or rollback.
+Do not generalize the README's broad safety claim beyond established control flow.
+The timer payload expression at line 371 is suspicious (a present payload selects
+an empty argument array); references do not establish correct payload forwarding.
+A summary need not audit every defect, but must not assert that guarantee as proven.
+
+
+
+## Assessment procedure and limitations
+
+Freeze the exact [instructions](instructions.json), general context-selection code
+hashes, model and route before inference. Keep production evidence access and
+guards unchanged except the labelled hard-limit control. No reference answers
+enter live context. The first pass has zero automatic repeat allowance; a
+diagnostic rerun requires a separately recorded question/count and preserves the
+original outcome. Administrative request-ceiling interruption is incomplete
+validation, not a semantic failure or hard milestone failure.
+
+Use the fixed `scripts/module-investigation/questions.json` for fresh view-only
+evaluators and `assessor-rubric.json` for separate fresh source-informed assessment.
+Retain exact prompts, inputs, outputs and available role configuration/usage.
+Unknown role usage is not zero. Fresh contexts and same-family agents do not
+establish independent corroboration. Per-subject results and focused cases stay
+separate; no universal acceptance score or prompt optimization search is intended.
+
+USER VIEW
+Module summary
+References remain bound for this session.
+New investigation request.
+investigation-failure: Invalid referent or association subject.
+Selection: selected (1 matches).
+Module @module-28ee01f8: fsm-engine
+Attempt session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:investigation-attempt:f02e08e30445bbeda94ea860c3cc4d8de636efaac2648913829b97dbf5a1f45d (investigation-failure) reported usage: 3 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 158883 tokens; input 152602 tokens (subset of total); output 6281 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 328 tokens (subset of output)
+Session reported usage: 3 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 158883 tokens; input 152602 tokens (subset of total); output 6281 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 328 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+EVALUATOR RESPONSE
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The view identifies one selected module, fsm-engine, and reports a failed investigation request. It communicates no actual module functionality or division of responsibility: the module name alone cannot establish either. The request failed despite a displayed selection match.",
+      "support": [
+        "Module @module-28ee01f8: fsm-engine",
+        "Selection: selected (1 matches).",
+        "New investigation request.",
+        "investigation-failure: Invalid referent or association subject."
+      ],
+      "unknowns": [
+        "The module's behavior, responsibilities, dependencies and boundaries.",
+        "Which referent or association subject was invalid and why a matched selection did not support a successful investigation."
+      ]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "There is no substantive generated account to evaluate as an interpretation. The view explicitly characterizes generated accounts as interpretations and corrections as retained assertions. Selection, failure and usage are displayed reports, with usage expressly qualified as neither confirmed billing nor evidence of credit charges. The displayed attempt and session both report 3 calls and 158883 total tokens for openai/gpt-5.6-sol; these are overlapping scopes, not demonstrated additional consumption.",
+      "support": [
+        "Generated accounts remain interpretation. Corrections are retained assertions, not established truth.",
+        "Attempt session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:investigation-attempt:f02e08e30445bbeda94ea860c3cc4d8de636efaac2648913829b97dbf5a1f45d (investigation-failure) reported usage: 3 calls; 0 unknown; 0 anomalous.",
+        "Session reported usage: 3 calls; 0 unknown; 0 anomalous.",
+        "reported model gpt-5.6-sol, service tier default: total 158883 tokens",
+        "Reported usage is not confirmed billed usage.",
+        "Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero."
+      ],
+      "unknowns": [
+        "The underlying evidence for module behavior, selection validity or the cause of failure.",
+        "Confirmed billed usage and monetary charges.",
+        "Any independently verified model or usage metadata beyond what the supplied view reports."
+      ]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "Explanation, decomposition and examination views were not supplied. No before-and-after comparison or improvement in understanding or selection can be assessed from this failed summary view.",
+      "support": [
+        "Module summary",
+        "investigation-failure: Invalid referent or association subject."
+      ],
+      "unknowns": [
+        "Whether explanation, decomposition or examination occurred elsewhere.",
+        "Any resulting changes in understanding, selectable parts or substantive conclusions."
+      ]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "No reference is explicitly presented as an investigram. The only displayed module reference is @module-28ee01f8, which I would provisionally target with an explanation lens to learn the module's purpose and responsibilities. That is a proposed next request, not a demonstrated available or successful operation. The view says references remain bound and reports a selection, but provides no lens controls and the current investigation failed.",
+      "support": [
+        "References remain bound for this session.",
+        "Module @module-28ee01f8: fsm-engine",
+        "Selection: selected (1 matches).",
+        "investigation-failure: Invalid referent or association subject."
+      ],
+      "unknowns": [
+        "Whether the module reference is an eligible investigram target.",
+        "Which lenses are available and how to invoke them.",
+        "Whether a subsequent request would resolve the invalid-referent failure."
+      ]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No concrete correction is shown. The generic correction caveat supplies neither an original nor a replacement, and no composition or later-investigation provenance is displayed. The attempt identifier identifies a failed attempt, but does not establish a correction relationship or distinguish those provenance types.",
+      "support": [
+        "Corrections are retained assertions, not established truth.",
+        "Attempt session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:investigation-attempt:f02e08e30445bbeda94ea860c3cc4d8de636efaac2648913829b97dbf5a1f45d (investigation-failure)"
+      ],
+      "unknowns": [
+        "Whether any correction exists, what it changes, and the identities of original and replacement.",
+        "Any composition relationships or later-investigation provenance."
+      ]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The view is useful for recognizing that the investigation failed and for seeing reported usage, but it does not support module comprehension. 'Module summary' suggests substantive content that never appears. 'selected (1 matches)' and 'References remain bound' sit uneasily beside an invalid-referent error without explaining which operation or subject failed. The long attempt identifier and repeated identical usage blocks dominate the view and may invite double counting. The subset and billing caveats help constrain interpretation, but generic references to corrections and synthetic usage have no concrete examples here. No recovery action or explanation of the invalid subject is offered.",
+      "support": [
+        "Module summary",
+        "References remain bound for this session.",
+        "Selection: selected (1 matches).",
+        "investigation-failure: Invalid referent or association subject.",
+        "Identical 3-call, 158883-total-token reports appear under both attempt and session usage.",
+        "Categories with includedIn are subsets, not additional usage.",
+        "Synthetic usage is test data, separate from provider usage."
+      ],
+      "unknowns": [
+        "How to repair the request or identify the invalid subject.",
+        "Whether additional controls or substantive results exist outside the supplied view."
+      ]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful as a failure and reported-usage notice; insufficient as a module comprehension view.",
+    "reasons": [
+      "Names the selected module and makes the failed investigation explicit.",
+      "Qualifies generated assertions, token accounting and monetary uncertainty.",
+      "Supplies no functional explanation, responsibility boundaries or actionable failure diagnosis.",
+      "Repeated usage detail obscures the small amount of task-relevant information."
+    ],
+    "limitations": [
+      "Assessment uses only the supplied summary view.",
+      "No later explanation, decomposition, examination or correction view was supplied.",
+      "Displayed identifiers and reported metadata were not independently verified."
+    ]
+  }
+}

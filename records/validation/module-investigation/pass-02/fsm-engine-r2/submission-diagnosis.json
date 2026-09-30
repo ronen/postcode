@@ -1,0 +1,48 @@
+{
+  "method": "Compare submitted referent/association subjects with record identities and kinds found in delivered JSON context. This is not a replay of all session lookup or later acceptance checks.",
+  "suspectSubjects": [
+    {
+      "path": "$",
+      "submitted": "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:94b528fd03e2cdaae51953a3d2ebc5e3d11c0618129fac737de588f81a9807",
+      "deliveredKind": null,
+      "closestDelivered": [
+        "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:94b528fd03e2cdaae51953a3d3d2ebc5e3d11c0618129fac737de588f81a9807"
+      ]
+    },
+    {
+      "path": "$",
+      "submitted": "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:b6a1d2f4a8cb65428d3899471864e847e2ea4b33dbc6b07c6bd197c301d36c38",
+      "deliveredKind": null,
+      "closestDelivered": []
+    },
+    {
+      "path": "$.children[0]",
+      "submitted": "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:94b528fd03e2cdaae51953a3d2ebc5e3d11c0618129fac737de588f81a9807",
+      "deliveredKind": null,
+      "closestDelivered": [
+        "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:94b528fd03e2cdaae51953a3d3d2ebc5e3d11c0618129fac737de588f81a9807"
+      ]
+    },
+    {
+      "path": "$.children[1]",
+      "submitted": "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:94b528fd03e2cdaae51953a3d2ebc5e3d11c0618129fac737de588f81a9807",
+      "deliveredKind": null,
+      "closestDelivered": [
+        "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:94b528fd03e2cdaae51953a3d3d2ebc5e3d11c0618129fac737de588f81a9807"
+      ]
+    },
+    {
+      "path": "$.children[2]",
+      "submitted": "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:a3cc8b741ad6599eb7b59c324f70edf2b26ee951047fccef439d9d30d767dfbf",
+      "deliveredKind": null,
+      "closestDelivered": []
+    },
+    {
+      "path": "$.children[2]",
+      "submitted": "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:732e8b830081aaba9597d951e9f2a659b1542cf3c8e37ff1d55af7ed21226bbc",
+      "deliveredKind": null,
+      "closestDelivered": []
+    }
+  ],
+  "result": "Several submitted subject identities do not appear as delivered records. A repeated module identity omits d3 from an otherwise matching supplied module identity; three other spellings have no close supplied counterpart. Exact-reference validation rejects the result. No repair or resubmission performed; this comparison does not prove all session lookups or rule out later validation defects."
+}

@@ -1,0 +1,12 @@
+{
+  "intervention": "none; normal frozen instructions and subject-based evidence",
+  "deliveredReadmes": [],
+  "requestedEvidenceKinds": {
+    "inspect": 1,
+    "source": 1,
+    "exports": 1,
+    "dependencies": 1,
+    "dependents": 1
+  },
+  "limitation": "References alone are not content delivery. First delivery is a provider request containing the captured README text; repeated history is deduplicated."
+}

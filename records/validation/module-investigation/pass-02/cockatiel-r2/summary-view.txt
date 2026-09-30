@@ -1,0 +1,13 @@
+Module summary
+References remain bound for this session.
+New investigation request.
+investigation-failure: Evidence must identify supplied context in this session.
+Selection: selected (1 matches).
+Module @module-e65c42fd: executor
+Attempt session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:investigation-attempt:9dbc21c4353e876e57be3576be0fd793654c5d9942600c58ed66259e143bd67a (investigation-failure) reported usage: 5 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 182631 tokens; input 178164 tokens (subset of total); output 4467 tokens (subset of total); cached-input 46336 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 568 tokens (subset of output)
+Session reported usage: 5 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 182631 tokens; input 178164 tokens (subset of total); output 4467 tokens (subset of total); cached-input 46336 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 568 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage

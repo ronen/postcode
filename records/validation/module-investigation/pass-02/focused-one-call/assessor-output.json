@@ -1,0 +1,79 @@
+{
+  "findings": [
+    {
+      "category": "presentation-misunderstanding",
+      "claim": "The evaluator repeatedly treats 'opaque' as an investigation status, although the frozen reference identifies opaque.ts as the selected subject and the view displays opaque after the module reference.",
+      "evidence": [
+        "Frozen reference, Controlled focused cases: 'opaque.ts invokes a supplied callback once and returns its value.'",
+        "User view: 'Module @module-801ab967: opaque'.",
+        "Evaluator answers 1, 2, 4 and 6 refer to the module being 'marked opaque', 'opaque status', or an unexplained opaque state."
+      ],
+      "consequence": "A subject name is promoted into an unsupported account of investigation state. The guard stop and lack of a displayed substantive account support limited comprehension, but the name does not independently establish an opacity status or its operational meaning.",
+      "uncertainty": "The supplied artifacts do not define the full display grammar or surrounding UI. The source-informed reference supports reading opaque as the subject name; it does not establish that no additional opaque status exists elsewhere."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly recognizes the absence of a displayed substantive module account and does not invent callback behavior, callers, or business purpose.",
+      "evidence": [
+        "Frozen reference, Controlled focused cases: opaque.ts invokes a supplied callback once and returns its value; no caller implementation or business purpose is present.",
+        "User view reports 'limit-stop: Provider call guard reached.' and contains no generated account of the module's behavior.",
+        "Evaluator answer 2: 'No substantive generated account of the module is displayed.'",
+        "Evaluator answer 4 labels an explanation request as a desired future investigation, not a demonstrated available capability."
+      ],
+      "consequence": "The evaluator preserves the distinction between what the source reference establishes and what a reader can learn from this stopped summary. Its proposed next inquiry is a request, not an assertion that a business purpose can be recovered.",
+      "uncertainty": "The captured view does not reveal whether the single provider call generated or considered any useful account before stopping. Its absence here does not establish a generation error or a failure to identify the source-level behavior."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The reported usage and epistemic qualifications are communicated accurately without turning them into billing facts, evaluator metadata, or evidence of an actual correction.",
+      "evidence": [
+        "User view: attempt and session each report '1 calls; 0 unknown; 0 anomalous' and 1777 total tokens.",
+        "User view: 'Reported usage is not confirmed billed usage', subset categories are not additional usage, and monetary attribution is 'unavailable, not zero'.",
+        "Evaluator answer 2 distinguishes the provider call metadata from the evaluator's unknown model and usage.",
+        "Evaluator answer 5 says no actual correction, original/replacement relationship, or composition provenance is displayed."
+      ],
+      "consequence": "The evaluator does not double-count the two usage scopes, infer credit charges, equate usage-report completeness with investigation completeness, or interpret a generic warning as an actual correction.",
+      "uncertainty": "These remain displayed reports rather than independently verified execution or billing evidence. Suggested risks of other readers misinterpreting repetition or warnings are plausible presentation concerns, not observed additional misunderstandings."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "This one-call provider-guard stop does not establish the outcome of the frozen reference's separate tiny-character hard-limit control or a semantic investigation failure.",
+      "evidence": [
+        "Frozen reference, Controlled focused cases: a separate hard-limit control uses an explicitly recorded tiny character guard and must report zero calls if it stops before a call.",
+        "User view instead says 'Provider call guard reached' and reports one provider call.",
+        "Frozen reference, Assessment procedure and limitations: administrative request-ceiling interruption is incomplete validation, not a semantic failure or hard milestone failure.",
+        "Evaluator characterizes the supplied result as a limited status and usage receipt rather than claiming a milestone outcome."
+      ],
+      "consequence": "The one-call report should be retained as shown and not conflated with the separate pre-call character-guard control. The stopped summary supports only a limited assessment of status presentation and qualified accounting.",
+      "uncertainty": "The exact guard configuration, continuation behavior, provider response contents, and runtime containment are not supplied. The frozen reference is qualified source analysis, not runtime proof."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator appropriately limits conclusions about explanation, decomposition, examination, and subsequent changes because those views are absent.",
+      "evidence": [
+        "The supplied user view is a single 'Module summary'.",
+        "Evaluator answer 3 explicitly declines before-and-after conclusions because later sequence views were not supplied.",
+        "Rubric: 'Do not treat a summary-only absence of follow-up views as a generation defect.'"
+      ],
+      "consequence": "No missing later view is falsely scored as a generation defect or used to claim that explanation or decomposition failed.",
+      "uncertainty": "The evaluator's quoted 'condition: summary-only; later sequence views not supplied' is not a line of the displayed user view, although the supplied artifact set supports the underlying limitation. No conclusion about actual later capabilities or results follows."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful for understanding a stopped attempt and its qualified reported usage; insufficient for learning the opaque module's behavior.",
+    "reasons": [
+      "The view identifies the selected module, provider-call stopping condition, and attempt/session usage scopes.",
+      "Accounting and interpretation caveats are largely preserved by the evaluator.",
+      "The source-grounded callback-once-and-return behavior is not communicated in the captured summary, but the stop prevents attributing that absence to a semantic generation defect.",
+      "The evaluator's treatment of the subject name opaque as a status introduces a specific presentation misunderstanding.",
+      "No concrete continuation mechanism is displayed; the evaluator correctly qualifies its proposed next lens as a request."
+    ],
+    "limitations": [
+      "Only the supplied frozen reference, user view, and evaluator response were assessed; there was no independent source inspection or browsing.",
+      "The frozen reference is qualified source analysis and does not prove runtime behavior or containment.",
+      "No substantive generated account or later sequence views are available for assessing interpretation accuracy or improvement across lenses.",
+      "The one-call provider guard result cannot settle the separate tiny-character control or any milestone outcome.",
+      "Purposeful development examples, shared reference selection and orchestration, and same-family evaluation limit independence and generalization."
+    ]
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The view communicates that one module was selected and a new investigation attempt failed. It supplies session-bound module and attempt identifiers, reported model usage, and qualifications about interpretation, correction assertions, and billing. It communicates no actual module functionality or division of responsibility among implementation components. A limited responsibility boundary is explicit: generated accounts are interpretations, while provider settings govern optional purchased credits and token reports do not establish charges.",
+      "support": [
+        "Module summary; References remain bound for this session.",
+        "New investigation request. investigation-failure: Invalid referent or association subject.",
+        "Selection: selected (1 matches). Module @module-a44de3a8: anonymous",
+        "Generated accounts remain interpretation. Corrections are retained assertions, not established truth.",
+        "Optional purchased credits apply only under the user’s provider settings."
+      ],
+      "unknowns": [
+        "The selected module's purpose, contents, boundaries, dependencies, and responsibilities.",
+        "Which referent or association subject was invalid and why.",
+        "Whether any useful investigation result was produced before the failure."
+      ]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "No substantive generated account is displayed to classify as an interpretation. The view explicitly classifies any generated accounts as interpretations and corrections as retained assertions. Selection, failure status, and usage are displayed reports rather than independently established facts. Both attempt and session report four calls and 154759 total tokens, with input and output subsets; this is qualified provider-reported usage, not confirmed billed usage. No synthetic usage entry is actually displayed. These figures identify the reported investigation model, not the evaluator's model or usage.",
+      "support": [
+        "Attempt ... (investigation-failure) reported usage: 4 calls; 0 unknown; 0 anomalous.",
+        "Session reported usage: 4 calls; 0 unknown; 0 anomalous.",
+        "Reported model gpt-5.6-sol, service tier default: total 154759 tokens; input 150709 tokens (subset of total); output 4050 tokens (subset of total).",
+        "Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage.",
+        "Monetary attribution is unavailable, not zero."
+      ],
+      "unknowns": [
+        "The module's behavior and the truth of any possible account of it.",
+        "Actual billed usage, allowance consumption, credit charges, and monetary cost.",
+        "The failed operation's cause and a valid recovery action.",
+        "Evaluator model and usage metadata are not supplied."
+      ]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "Explanation, decomposition, and examination views were not supplied. The summary alone does not support a before-and-after comparison, demonstrate finer selection, or show any substantive change after examination.",
+      "support": [
+        "The supplied condition is summary-only; later sequence views not supplied.",
+        "The user-facing view contains a Module summary and an investigation-failure report."
+      ],
+      "unknowns": [
+        "What an explanation would clarify.",
+        "Whether decomposition would expose selectable parts.",
+        "Whether examination would revise any account."
+      ]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "No reference is explicitly identified as an investigram, and no available lenses are listed. The only displayed content reference I could nominate is @module-a44de3a8. I would request an explanatory lens on that module to learn its purpose and responsibilities, but this is a proposed next capability, not one demonstrated as available or successful. The attempt identifier identifies a failed attempt; the view does not establish that it can be selected for diagnosis.",
+      "support": [
+        "Module @module-a44de3a8: anonymous",
+        "References remain bound for this session.",
+        "Attempt session:90b7b148-abbe-42da-b0ad-c4d2c2016749:investigation-attempt:31cf8b9b9d68497f0274da558a2a9dcce00775ca651bcaecf3e7bf2a200aba57 (investigation-failure)"
+      ],
+      "unknowns": [
+        "Whether the module reference qualifies as an investigram reference or accepts an explanatory lens.",
+        "What lenses or navigation actions are actually available.",
+        "Whether another request would encounter the same invalid-referent failure."
+      ]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No correction is shown. The general statement about retained assertions provides no original, replacement, correction identifier, or change content. Composition provenance and later-investigation provenance cannot be distinguished: the module and failed-attempt identifiers do not explain their relationship in those terms.",
+      "support": [
+        "Corrections are retained assertions, not established truth.",
+        "The view displays a module identifier and a failed investigation attempt identifier without correction content or provenance links."
+      ],
+      "unknowns": [
+        "Whether any correction exists, what it changed, and what identifies its original and replacement.",
+        "How the module was composed and whether any later investigation contributed to its account.",
+        "The provenance or validation of any retained assertion."
+      ]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The view is useful as a failure and usage notice but offers very little module comprehension. The successful-selection wording beside an invalid-referent failure leaves unclear which operation failed. The anonymous label supplies no orientation, and the error names neither the offending subject nor a recovery action. Identical attempt and session usage blocks dominate the view and could invite double counting despite the subset warnings. Long identifiers and unexplained terms such as association subject and includedIn add reading effort. Generic correction and synthetic-usage notices may suggest relevant content exists even though none is displayed. The billing qualifications are helpful, especially the distinction between unavailable monetary attribution and zero cost.",
+      "support": [
+        "Selection: selected (1 matches).",
+        "investigation-failure: Invalid referent or association subject.",
+        "Module @module-a44de3a8: anonymous",
+        "Attempt and session each repeat four calls and the same token breakdown.",
+        "Categories with includedIn are subsets, not additional usage.",
+        "Monetary attribution is unavailable, not zero."
+      ],
+      "unknowns": [
+        "Whether additional interface controls, diagnostic details, or module content exist outside this supplied view.",
+        "How a user can resolve the error or obtain the requested investigation."
+      ]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful for noticing a failed investigation and understanding the limits of reported usage; insufficient for understanding the module or choosing a demonstrated next investigation action.",
+    "reasons": [
+      "Failure status and session-bound identifiers provide basic orientation.",
+      "Explicit interpretation and billing qualifications discourage unwarranted certainty.",
+      "No functional account, decomposition, explanation, examination, or correction is supplied.",
+      "Repeated usage details outweigh the sparse content and unresolved error."
+    ],
+    "limitations": [
+      "This assessment uses only the supplied summary view.",
+      "No independent sources, implementation evidence, or later sequence views were consulted.",
+      "Requested explanatory navigation is a proposed next step, not an observed capability.",
+      "No evaluator model or usage metadata is established by the supplied artifact."
+    ]
+  }
+}

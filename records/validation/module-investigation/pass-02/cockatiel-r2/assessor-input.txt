@@ -1,0 +1,200 @@
+You are a fresh source-informed assessor. Use only the supplied frozen reference, view and evaluator response. Do not independently inspect source or browse. These references are qualified source analysis, not runtime proof.
+
+RUBRIC
+{
+  "version": 1,
+  "task": "Compare supplied investigator views and view-only evaluator answers against the frozen source references. Use only supplied artifacts. Preserve uncertainty and cite specific displayed references or source locations.",
+  "categories": ["generation-error-repeated-by-evaluator", "presentation-misunderstanding", "successful-qualified-communication", "unsupported-evaluator-extrapolation", "material-omission", "reference-cannot-settle"],
+  "output": "JSON with findings [{category, claim, evidence, consequence, uncertainty}], subjectUsefulness {judgment, reasons, limitations}. No numeric aggregate score. Do not treat a summary-only absence of follow-up views as a generation defect. Do not treat administrative request-budget interruption as an interpretive or milestone failure."
+}
+
+FROZEN REFERENCE
+# Frozen source-grounded references — summary pass 01
+
+Prepared before any subject/fixture inference by the implementing agent. Exact
+model identifier is unavailable; the family is OpenAI. Shared implementation,
+reference selection and orchestration can bias judgments. These are purposeful
+development examples, not an unbiased or untouched validation set. This material
+must not be supplied to the investigator or view-only evaluators.
+
+The [manifest](manifest.json) fixes revisions, source/document/configuration hashes,
+Node 22.13.1, the **PostCode analyzer TypeScript 6.0.3**, and the selected hosted
+configuration. Installed subject build TypeScript versions do not replace that
+analyzer. Repository source, README and ordinary subject-based evidence are
+accessible; reference answers, selection rationale and this file are not.
+PostCode source inspection is not execution or proof of runtime guarantees.
+
+
+
+## Cockatiel: Executor
+
+Source pin: [Executor.ts](https://github.com/connor4312/cockatiel/blob/80b5ed67966dfcc5410a912285fcb3eeb2dc5e5e/src/common/Executor.ts).
+Original `tsconfig.json`; selector `executor`. Mechanical inventory materializes
+its exports `ExecuteWrapper`, `FailureOrSuccess`, and `returnOrThrow`. Its source
+mapping and qualification are compiler-derived, not a behavioral proof.
+
+Supported source conclusions:
+
+- Lines 45–75 invoke supplied work once, await its return, and classify the value
+  or thrown error using supplied filters. A value matching the result filter is
+  returned as `{value}`; a nonmatching value as `{success}`. Handled errors become
+  `{error}`; unhandled errors are rethrown.
+- Lines 19–28 and 49–68 measure duration only when event listeners are present;
+  success/failure notifications are emitted through delegated event emitters.
+- Lines 30–43 expose two listener interfaces; cloning reuses filter functions but
+  creates a fresh wrapper and emitters. This is not a clone of caller work/state.
+- Lines 6–16 convert the tagged result into a return value or throw. A result
+  classified as failure by value can still be returned by this helper.
+- [RetryPolicy.ts lines 100–140](https://github.com/connor4312/cockatiel/blob/80b5ed67966dfcc5410a912285fcb3eeb2dc5e5e/src/RetryPolicy.ts#L100)
+  supplies the retry loop around this executor. Do not attribute retry/backoff,
+  the caller's business operation or generic fault tolerance to this file alone.
+
+Acceptable interpretation: a reusable boundary for invoking, classifying and
+observing caller-supplied work, used by surrounding resilience policies.
+Material limits: no runtime test was performed; caller operations/filters can do
+arbitrary work. Listener exceptions and filter exceptions can affect execution;
+the broad try/catch also encloses successful-value classification and notification.
+Do not claim that only exceptions from `fn` are handled or that all callbacks are
+safe. The library README's policy descriptions are attributed context, not proof
+that this module itself implements every policy.
+
+
+
+## Assessment procedure and limitations
+
+Freeze the exact [instructions](instructions.json), general context-selection code
+hashes, model and route before inference. Keep production evidence access and
+guards unchanged except the labelled hard-limit control. No reference answers
+enter live context. The first pass has zero automatic repeat allowance; a
+diagnostic rerun requires a separately recorded question/count and preserves the
+original outcome. Administrative request-ceiling interruption is incomplete
+validation, not a semantic failure or hard milestone failure.
+
+Use the fixed `scripts/module-investigation/questions.json` for fresh view-only
+evaluators and `assessor-rubric.json` for separate fresh source-informed assessment.
+Retain exact prompts, inputs, outputs and available role configuration/usage.
+Unknown role usage is not zero. Fresh contexts and same-family agents do not
+establish independent corroboration. Per-subject results and focused cases stay
+separate; no universal acceptance score or prompt optimization search is intended.
+
+USER VIEW
+Module summary
+References remain bound for this session.
+New investigation request.
+investigation-failure: Evidence must identify supplied context in this session.
+Selection: selected (1 matches).
+Module @module-e65c42fd: executor
+Attempt session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:investigation-attempt:9dbc21c4353e876e57be3576be0fd793654c5d9942600c58ed66259e143bd67a (investigation-failure) reported usage: 5 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 182631 tokens; input 178164 tokens (subset of total); output 4467 tokens (subset of total); cached-input 46336 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 568 tokens (subset of output)
+Session reported usage: 5 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 182631 tokens; input 178164 tokens (subset of total); output 4467 tokens (subset of total); cached-input 46336 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 568 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+EVALUATOR RESPONSE
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The view identifies a selected module named executor and reports a failed investigation request. It communicates session-bound references and usage reporting, but provides no account of the executor's functionality or division of responsibility. The name executor alone is insufficient to establish what it executes, owns, or delegates.",
+      "support": [
+        "Module @module-e65c42fd: executor",
+        "Selection: selected (1 matches).",
+        "References remain bound for this session.",
+        "investigation-failure: Evidence must identify supplied context in this session."
+      ],
+      "unknowns": [
+        "The module's behavior, inputs, outputs, collaborators, and responsibility boundaries.",
+        "What supplied context was expected and which evidence failed to identify it."
+      ]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "No substantive generated account of the module is displayed, so there are no module conclusions to classify. The view warns that generated accounts are interpretations and corrections are retained assertions. The failure status, selected identity, and usage are displayed reports. The usage is explicitly qualified as reported rather than confirmed billed usage; no actual credit charge can be inferred. The identical attempt and session totals do not establish successful investigation or explanation.",
+      "support": [
+        "Generated accounts remain interpretation. Corrections are retained assertions, not established truth.",
+        "Attempt session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:investigation-attempt:9dbc21c4353e876e57be3576be0fd793654c5d9942600c58ed66259e143bd67a (investigation-failure) reported usage: 5 calls; 0 unknown; 0 anomalous.",
+        "The attempt and session each report 182631 total tokens for openai/gpt-5.6-sol, billing route chatgpt-plan, reported model gpt-5.6-sol, service tier default.",
+        "Reported usage is not confirmed billed usage.",
+        "Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero."
+      ],
+      "unknowns": [
+        "Whether any valid module conclusions were produced elsewhere.",
+        "The underlying evidence and whether it supports any functional account.",
+        "Actual billed usage, monetary charges, and the user's purchased-credit settings.",
+        "What the counts of unknown and anomalous calls specifically measure."
+      ]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "Explanation, decomposition, and examination views were not supplied. The summary establishes a single selected module and a failed attempt, but contains no before-and-after account or decomposed selectable parts. No improvement in comprehension, selection precision, or substantive findings can be assessed.",
+      "support": [
+        "Module summary",
+        "Selection: selected (1 matches).",
+        "The only displayed investigation outcome is investigation-failure."
+      ],
+      "unknowns": [
+        "Whether explanation, decomposition, or examination occurred or is available.",
+        "Any changes such views might have made to understanding or selection."
+      ]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "No investigram reference or lens choice is displayed. The only explicit module reference is @module-e65c42fd. If requesting a next step, I would use that module as the target and request an explanation of its responsibilities grounded in identifiable supplied context, expecting to learn what executor does and where its responsibilities end. That is a proposed next investigation, not an available explanation lens or successful operation demonstrated by this view. The phrase New investigation request does not specify usable controls or supported lenses.",
+      "support": [
+        "Module @module-e65c42fd: executor",
+        "New investigation request.",
+        "investigation-failure: Evidence must identify supplied context in this session."
+      ],
+      "unknowns": [
+        "Which investigram references, if any, exist.",
+        "Which lenses are supported and how to invoke them.",
+        "How to supply or identify context so that a new request succeeds."
+      ]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No correction is shown. The general caution about retained assertions does not identify an original statement, replacement, or change. The attempt identifier identifies the failed attempt, but no composition or later-investigation provenance is supplied, so those origins cannot be distinguished.",
+      "support": [
+        "Corrections are retained assertions, not established truth.",
+        "The displayed attempt identifier is associated with investigation-failure."
+      ],
+      "unknowns": [
+        "Whether any corrections exist.",
+        "Any original and replacement content or links between them.",
+        "Whether any content came from composition or later investigation."
+      ]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The view is useful for recognizing that an investigation failed and for seeing qualified usage totals, but offers little help understanding the module or recovering from the failure. Module summary promises a functional account that is absent. The failure message names a requirement without identifying the offending evidence, expected context identifier, or corrective action. Selection: selected is redundant, and New investigation request is ambiguous between a heading, event, and action. Repeated long usage blocks and the long attempt identifier dominate the sparse module information. The zero unknown and anomalous counts could be mistaken for assurance about the investigation despite its failure. Billing and interpretation caveats reduce overclaiming, although references to synthetic usage and includedIn introduce terms not instantiated in the displayed report.",
+      "support": [
+        "Module summary",
+        "Selection: selected (1 matches).",
+        "New investigation request.",
+        "investigation-failure: Evidence must identify supplied context in this session.",
+        "The attempt and session usage blocks repeat the same totals and model metadata.",
+        "Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage."
+      ],
+      "unknowns": [
+        "Whether the text corresponds to interactive controls.",
+        "Whether additional recovery guidance or substantive module content exists outside the supplied view."
+      ]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful as a failure and usage report; insufficient as a module comprehension view.",
+    "reasons": [
+      "It identifies the selected module, reports the failure, and qualifies usage and generated assertions.",
+      "It supplies no explanation of functionality or responsibility boundaries.",
+      "It gives no concrete recovery step or demonstrated investigram and lens selection.",
+      "Repeated usage detail outweighs the small amount of module information."
+    ],
+    "limitations": [
+      "This assessment uses only the supplied summary view.",
+      "No later sequence views, supporting evidence, correction content, or interactive behavior were supplied.",
+      "Reported model and usage metadata have not been independently verified."
+    ]
+  }
+}

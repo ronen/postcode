@@ -1,0 +1,130 @@
+You are a fresh source-informed assessor. Use only the supplied frozen reference, view and evaluator response. Do not independently inspect source or browse. These references are qualified source analysis, not runtime proof.
+
+RUBRIC
+{
+  "version": 1,
+  "task": "Compare supplied investigator views and view-only evaluator answers against the frozen source references. Use only supplied artifacts. Preserve uncertainty and cite specific displayed references or source locations.",
+  "categories": ["generation-error-repeated-by-evaluator", "presentation-misunderstanding", "successful-qualified-communication", "unsupported-evaluator-extrapolation", "material-omission", "reference-cannot-settle"],
+  "output": "JSON with findings [{category, claim, evidence, consequence, uncertainty}], subjectUsefulness {judgment, reasons, limitations}. No numeric aggregate score. Do not treat a summary-only absence of follow-up views as a generation defect. Do not treat administrative request-budget interruption as an interpretive or milestone failure."
+}
+
+FROZEN REFERENCE
+# Frozen source-grounded references — summary pass 01
+
+Prepared before any subject/fixture inference by the implementing agent. Exact
+model identifier is unavailable; the family is OpenAI. Shared implementation,
+reference selection and orchestration can bias judgments. These are purposeful
+development examples, not an unbiased or untouched validation set. This material
+must not be supplied to the investigator or view-only evaluators.
+
+The [manifest](manifest.json) fixes revisions, source/document/configuration hashes,
+Node 22.13.1, the **PostCode analyzer TypeScript 6.0.3**, and the selected hosted
+configuration. Installed subject build TypeScript versions do not replace that
+analyzer. Repository source, README and ordinary subject-based evidence are
+accessible; reference answers, selection rationale and this file are not.
+PostCode source inspection is not execution or proof of runtime guarantees.
+
+
+
+## Controlled focused cases
+
+The fixture source and README live under `fixtures/module-investigation-assessment`
+and are hashed in the manifest. Before running, copy them unchanged into a small
+isolated Git repository; record its commit and effective project path. No other
+repository context should be accessible. No earlier interpretation is injected.
+
+- `entry.ts` delegates to two distinct operations: numeric clamping in
+  `normalize.ts`, and a module-scoped incrementing counter in `counter.ts`.
+  The deliberately authored README describes all exports as pure/stateless and
+  deterministic for the same arguments. The counter contradicts that assertion.
+  A useful summary distinguishes the two responsibilities and reports the
+  attributed documentation conflict without inventing one business purpose.
+- `opaque.ts` invokes a supplied callback once and returns its value. No caller
+  implementation or business purpose is present. This tests whether further
+  investigation stops with a disclosed gap instead of inventing behavior or
+  repeatedly searching irrelevant material.
+- A separate hard-limit control uses the same opaque subject with an explicitly
+  recorded tiny character guard. It is controlled execution containment, not a
+  finding about model quality or an exhausted financial allowance. Zero provider
+  calls in that control must be reported as such if the guard stops before a call.
+
+
+
+## Assessment procedure and limitations
+
+Freeze the exact [instructions](instructions.json), general context-selection code
+hashes, model and route before inference. Keep production evidence access and
+guards unchanged except the labelled hard-limit control. No reference answers
+enter live context. The first pass has zero automatic repeat allowance; a
+diagnostic rerun requires a separately recorded question/count and preserves the
+original outcome. Administrative request-ceiling interruption is incomplete
+validation, not a semantic failure or hard milestone failure.
+
+Use the fixed `scripts/module-investigation/questions.json` for fresh view-only
+evaluators and `assessor-rubric.json` for separate fresh source-informed assessment.
+Retain exact prompts, inputs, outputs and available role configuration/usage.
+Unknown role usage is not zero. Fresh contexts and same-family agents do not
+establish independent corroboration. Per-subject results and focused cases stay
+separate; no universal acceptance score or prompt optimization search is intended.
+
+USER VIEW
+Module summary
+References remain bound for this session.
+New investigation request.
+limit-stop: Provider call guard reached.
+Selection: selected (1 matches).
+Module @module-801ab967: opaque
+Attempt session:e5af104a-f5dd-4d31-ab55-44e03a42a146:investigation-attempt:78a0f8f4965809613af3b2d9322ee690450056192377db78ed7761b64acdfc77 (limit-stop) reported usage: 1 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 1777 tokens; input 1332 tokens (subset of total); output 445 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 58 tokens (subset of output)
+Session reported usage: 1 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 1777 tokens; input 1332 tokens (subset of total); output 445 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 58 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+EVALUATOR RESPONSE
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The view communicates selection of one module, a new investigation request, and termination at a provider call guard. It exposes a session-bound module reference and an attempt identifier, with attempt-level and session-level reported usage. The module itself is marked opaque, so no product functionality or internal division of responsibility is communicated. The view distinguishes generated interpretations, retained correction assertions, provider usage reports, and user-controlled provider billing settings.",
+      "support": ["Selection: selected (1 matches).", "Module @module-801ab967: opaque", "New investigation request.", "limit-stop: Provider call guard reached.", "References remain bound for this session.", "Generated accounts remain interpretation. Corrections are retained assertions, not established truth."],
+      "unknowns": ["What the module does, contains, or owns.", "Whether any useful investigation result was produced before the guard was reached.", "The guard configuration and how to continue."]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "No substantive generated account of the module is displayed. The view explicitly qualifies any generated accounts as interpretations and corrections as assertions. Selection, opaque status, limit-stop, and usage are displayed reports, not independently verified facts. It reports one provider call and 1777 total tokens for both attempt and session, with token categories explicitly described as subsets. These reports do not establish billed usage or credit charges. The displayed model and service tier describe the reported provider call; they do not establish the evaluator's model or usage.",
+      "support": ["Attempt session:e5af104a-f5dd-4d31-ab55-44e03a42a146:investigation-attempt:78a0f8f4965809613af3b2d9322ee690450056192377db78ed7761b64acdfc77 (limit-stop) reported usage: 1 calls; 0 unknown; 0 anomalous.", "reported model gpt-5.6-sol, service tier default: total 1777 tokens", "Reported usage is not confirmed billed usage.", "Categories with includedIn are subsets, not additional usage.", "monetary attribution is unavailable, not zero"],
+      "unknowns": ["The module's behavior and the evidence underlying an account of it.", "Actual billed usage, monetary cost, or purchased-credit consumption.", "Exact evaluator model and evaluator usage metadata.", "Whether the displayed absence of unknown or anomalous usage has any bearing on investigation completeness; the view does not establish such a connection."]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "Explanation, decomposition, examination, and later sequence views were not supplied. The supplied summary does not support any before-and-after comparison or claim of improved understanding, selection precision, or changed substance.",
+      "support": ["condition: summary-only; later sequence views not supplied", "Module summary", "Module @module-801ab967: opaque"],
+      "unknowns": ["Any explanation content, decomposed references, examination findings, or changes across those views."]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "I would select @module-801ab967 and request an explanation lens to learn the module's purpose, responsibilities, and relevant boundaries. This is a desired next investigation, not a capability demonstrated as available: the view supplies the reference but no lens controls or supported next-action syntax. The opaque status and provider call guard leave successful continuation uncertain.",
+      "support": ["Module @module-801ab967: opaque", "References remain bound for this session.", "limit-stop: Provider call guard reached."],
+      "unknowns": ["Which lenses are supported or selectable.", "How to submit another request and whether the call guard permits it.", "What evidence an explanation would expose."]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No actual correction is shown. There is only a general qualification about correction assertions. No original, replacement, changed claim, composition record, or later-investigation provenance is displayed. The attempt identifier names an attempt but does not supply those relationships.",
+      "support": ["Corrections are retained assertions, not established truth.", "The summary displays a single investigation-attempt identifier and no correction entries."],
+      "unknowns": ["Whether any correction occurred.", "The identity and content of original and replacement claims.", "Whether any content originated in composition or a later investigation."]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The summary is useful for recognizing a stopped attempt and reading qualified usage, but offers little help understanding the selected module or taking the next step. Repeated identical attempt and session usage can look duplicative or additive, although the two scopes are labeled. The long attempt identifier and billing detail dominate the absent module account. Opaque and provider call guard are not explained operationally. The reference-binding statement suggests reuse but provides no interaction instructions. The general correction warning could be mistaken for evidence of an actual correction, and 0 unknown or 0 anomalous could be misread as broader confidence rather than usage-report status. The explicit billing and subset caveats help prevent several accounting misinterpretations.",
+      "support": ["The attempt and session each display 1 call and 1777 total tokens.", "Module @module-801ab967: opaque", "limit-stop: Provider call guard reached.", "References remain bound for this session.", "Reported usage is not confirmed billed usage.", "Categories with includedIn are subsets, not additional usage."],
+      "unknowns": ["Whether surrounding UI provides controls, term explanations, or continuation guidance absent from the supplied view."]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful as a limited status and usage receipt; insufficient for substantive module comprehension.",
+    "reasons": ["Clearly identifies the selected module and guard-related stopping condition.", "Separates attempt and session usage and explicitly qualifies accounting claims.", "Provides no substantive account of functionality, responsibility, or evidence.", "Does not show a concrete way to continue from the stopped opaque state."],
+    "limitations": ["Assessment uses only the supplied summary.", "No later sequence views or independent evidence were supplied.", "Displayed provider metadata is not evaluator metadata, and reported usage is not confirmed billing."]
+  }
+}

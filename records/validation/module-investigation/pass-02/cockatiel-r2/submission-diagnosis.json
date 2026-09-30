@@ -1,0 +1,13 @@
+{
+  "method": "Compare all submitted evidence references with retained suppliedEvidence and summarizedEvidence of the failed attempt. No reference repair or resubmission performed.",
+  "invalidEvidence": [
+    {
+      "path": "$.children[1].associations[0].evidence[0]",
+      "submitted": "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:captured-content:c90c2a138fcad3ce6a18d8d7d02ac3906a9273c68e6469dfa9b946122abb32",
+      "closestSupplied": [
+        "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:captured-content:c90c2a138fcad3ce6a18d8d8d7d02ac3906a9273c68e6469dfa9b946122abb32"
+      ]
+    }
+  ],
+  "result": "One evidence identity in the telemetry child omits d8 from a supplied capture identity; other submitted evidence identities occur in retained exposure. Rejection is consistent with exact-reference validation. This does not establish semantic validity of the unaccepted draft."
+}

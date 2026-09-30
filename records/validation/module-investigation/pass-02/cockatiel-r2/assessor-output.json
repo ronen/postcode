@@ -1,0 +1,64 @@
+{
+  "findings": [
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly treats the displayed result as a failed investigation with no substantive module interpretation to assess.",
+      "evidence": [
+        "The user view displays 'investigation-failure: Evidence must identify supplied context in this session.' and 'Module @module-e65c42fd: executor', followed by usage and qualification text.",
+        "Evaluator answer 1 states that the module name alone cannot establish functionality or responsibility; answer 2 states that no substantive generated account is displayed.",
+        "The frozen reference identifies Executor.ts lines 45–75 as invoking and classifying supplied work, lines 19–28 and 49–68 as conditional timing and delegated notifications, and RetryPolicy.ts lines 100–140 as the surrounding retry loop. None of these behavioral claims appears in the user view or is invented by the evaluator."
+      ],
+      "consequence": "The evaluator avoids attributing generic retry or fault-tolerance responsibilities to the selected executor merely from its name and does not repeat an unsupported generated account.",
+      "uncertainty": "Only the captured view is assessable. It does not reveal whether an undisplayed candidate interpretation was produced or whether that interpretation contained errors."
+    },
+    {
+      "category": "material-omission",
+      "claim": "The failed summary supplies no source-qualified account of the executor's responsibilities, so it does not support module comprehension.",
+      "evidence": [
+        "The user view is headed 'Module summary' but its substantive result is the evidence-identification failure.",
+        "The frozen reference supports a reusable boundary for invoking, classifying and observing caller-supplied work, while assigning retry/backoff to the surrounding policy.",
+        "The reference also qualifies callback behavior: filter and listener exceptions can affect execution, and successful-value classification and notification are inside the broad try/catch.",
+        "Evaluator answers 1 and 6 explicitly identify the missing functional account and responsibility boundaries."
+      ],
+      "consequence": "The user cannot learn the supported functional boundary, returned result classifications, or consequential callback caveats from this captured output. The evaluator's judgment that it is insufficient as a module comprehension view is supported.",
+      "uncertainty": "This is a limitation of the failed displayed result, not evidence of a faulty successfully generated interpretation. Missing explanation, decomposition and examination views in a summary-only capture are not independently generation defects."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator preserves the view's qualifications about usage and distinguishes proposed future investigation from capabilities actually demonstrated.",
+      "evidence": [
+        "The user view says 'Reported usage is not confirmed billed usage' and 'monetary attribution is unavailable, not zero.'",
+        "Evaluator answer 2 does not infer charges or success from the five reported calls, token totals, or identical attempt/session totals.",
+        "Evaluator answer 3 explicitly says explanation, decomposition and examination views were not supplied; answer 4 labels an explanation request a proposed next investigation rather than a demonstrated lens; answer 5 distinguishes the generic correction caution from an actual displayed correction."
+      ],
+      "consequence": "The evaluator does not turn administrative metadata or generic cautions into evidence of semantic success, available interaction, correction history, or billing outcomes.",
+      "uncertainty": "The frozen source reference cannot independently verify usage, billing, interface controls or omitted interaction history. The evaluator's remarks about possible confusion from repetition and zero unknown/anomalous counts are plausible presentation concerns, not observed user misunderstandings."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "The supplied artifacts establish a displayed evidence-identification failure but cannot establish its underlying cause or a broader implementation or milestone outcome.",
+      "evidence": [
+        "The failure text identifies a requirement but supplies no offending evidence, expected context identifier, or recovery procedure.",
+        "Evaluator answers 1 and 6 explicitly leave the failed evidence and recovery mechanism unknown.",
+        "The frozen reference is qualified source analysis, explicitly not runtime proof, and its procedure distinguishes administrative request-ceiling interruption from semantic failure."
+      ],
+      "consequence": "The usefulness limitation can be recorded without attributing the failure to an incorrect source interpretation, inventing a request-budget interruption, or declaring an implementation or milestone failure.",
+      "uncertainty": "No generation trace, validation details, runtime test or recovery attempt is supplied. Neither the cause of this failure nor the behavior of the broader product can be resolved here."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful as a qualified failure and usage report; insufficient for understanding the selected executor.",
+    "reasons": [
+      "It identifies the selected module and clearly exposes the failed investigation rather than presenting an unsupported functional account.",
+      "The evaluator accurately recognizes the absence of module behavior and responsibility boundaries and preserves uncertainty about unshown views and controls.",
+      "No supported executor explanation or concrete recovery guidance reaches the user; repeated usage detail dominates the available module content."
+    ],
+    "limitations": [
+      "Assessment uses only the supplied frozen reference, captured summary and evaluator response, without independent source inspection or runtime validation.",
+      "No substantive generated interpretation is displayed, so its source accuracy cannot be assessed.",
+      "Absent follow-up views are a capture limitation, not evidence of a generation defect.",
+      "The reference is qualified source analysis from purposeful development examples and does not provide independent corroboration or universal validation.",
+      "Failure cause, actual billing, interactive controls, and any broader implementation or milestone outcome remain unestablished."
+    ]
+  }
+}

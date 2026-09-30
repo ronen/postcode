@@ -1,6 +1,6 @@
 # Project Status
 
-Last reviewed: 2026-09-30
+Last reviewed: 2026-10-01
 
 PostCode is currently available as a development CLI for investigating one
 configured TypeScript project.
@@ -37,8 +37,10 @@ configured TypeScript project.
 ## Current limits
 
 - **Hosted interpretation:** [formative assessments](records/validation/module-investigation/pass-01/report.md)
-  show useful source-qualified summaries alongside omitted qualifications and
-  missed conflicting documentation. The human-selected ChatGPT configuration is
+  show useful source-qualified summaries alongside omitted qualifications. A
+  [documentation reassessment](records/validation/module-investigation/pass-02/report.md)
+  acquired nearby README content but produced no accepted summaries because of
+  submission-contract and reference failures. The human-selected ChatGPT configuration is
   GPT-5.6 Sol with medium reasoning. Disabled summaries report configuration
   unavailability; protected hosted credential setup supports macOS only. Public follow-up
   lenses and correction-aware replacement display are not implemented yet.
