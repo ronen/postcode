@@ -20,6 +20,28 @@ Describe the need, why it matters, and relevant constraints without designing th
 
 ## Candidates
 
+## Configurable investigator model and reasoning effort
+
+Added: 2026-09-30
+Origin: human discussion following the ChatGPT-plan route's model-availability check
+Area: investigator configuration and usability
+
+Allow users to choose the investigator's model and reasoning effort from the
+configurations supported by their provider, account and authentication route.
+The module investigation assessment required a human-selected alternative when
+its intended model was unavailable through ChatGPT plan usage; product support
+should make such choices accessible without implementation edits.
+
+Provide defaults or recommendations, potentially per provider and access route,
+with an explanation of expected quality, latency and usage tradeoffs and their
+uncertainty. Recommendations could begin as curated defaults; automatic model
+selection and comparative benchmarking are separate possibilities.
+
+Preserve the effective configuration in investigation provenance and usage
+reports. Define when configuration changes take effect and how they interact
+with retained outcomes, without silently regenerating earlier investigations or
+switching billing routes.
+
 ## Assess disclosure classification for paths outside sourceDetail
 
 Added: 2026-09-30
