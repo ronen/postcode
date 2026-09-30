@@ -239,6 +239,87 @@ No automatic repeat, model change or route fallback is authorized.
 
 > First review round is ready.  As usual:  Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope.  Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.  Regarding finding 1, see notes in records/reviews/module-investigation/2026-09-30-milestone-3-round-1-findings.md -- assess those notes also to ensure feasibility before acting.
 
+### Documentation reassessment direction and hard-limit control
+
+> sorry bad paste, the notes are in _work/milestone-3-documentation-reassessment.md
+
+The following supplied direction is preserved verbatim from that provisional file:
+
+# Milestone 3: documentation discovery and reassessment
+
+Human direction for finding 1 in
+`records/reviews/module-investigation/2026-09-30-milestone-3-round-1-findings.md`.
+Record this material follow-up under the task protocol before acting on it.
+
+Choose disposition (a): make a bounded adjustment and reassess documentation
+handling, rather than defer the conflicting-documentation case.
+
+The review establishes that documentation is reachable, but none of the five
+inference cases acquired it. Investigate the context and instruction design
+before attributing this uniformly absent acquisition to a model limitation.
+
+## Bounded adjustment
+
+Choose the smallest coherent change along these lines:
+
+- Improve discoverability by exposing the selected module's containing
+  organization group and available documentation references in initial or
+  inspected context. Use established subject relationships and preserve the
+  qualification that nearby documentation may not describe that module.
+- Clarify that relevant documentation can supply assertions about purpose or
+  behavior that should be compared with implementation. Keep the guidance
+  general: do not disclose the fixture's expected contradiction or require
+  exhaustive documentation reading.
+
+Preserve the existing subject-based evidence boundary, acquisition bounds,
+qualification, and exposure accounting. Add appropriate deterministic coverage
+for changed context delivery. Record the adjustment and rationale, and update
+affected architecture documentation. This authorizes one bounded improvement
+effort, not open-ended prompt tuning.
+
+## Reassessment
+
+Rerun the three fixed formative subjects and the conflicting-documentation
+fixture as a separately identified assessment pass. Preserve the earlier pass
+and its findings. Keep the model, reasoning effort, source pins, effective
+subject configurations, and frozen reference material fixed. Freeze the revised
+instructions and context policy for the new pass and apply them consistently
+across subjects. Use the existing evaluator and source-informed assessment
+protocol, retaining views, context exchanges, findings, and usage attribution.
+
+For the conflicting-documentation case, assess separately:
+
+1. Whether the normal investigation discovers and acquires the relevant
+   documentation.
+2. Once that documentation is received, whether the account preserves the
+   attributed assertion and exposes its discrepancy with implementation.
+
+If the revised normal run still does not acquire the documentation, one separately
+labelled diagnostic run is authorized to supply it directly through the normal
+evidence interface. Record that intervention and its usage. Such a run can assess
+reconciliation after exposure, but must not be presented as evidence that normal
+discovery works. Do not leak the expected answer into the supplied context.
+
+Every subject need not read a README, and success does not require discovering
+every discrepancy. The focused case must actually receive the conflicting
+documentation before its reconciliation behavior can be considered assessed.
+
+## Handoff
+
+Report discovery and reconciliation results separately, including any persistent
+limitations and all additional usage. Carry the adjustment, new assessment pass,
+and any diagnostic run into the milestone review handoff for re-review. If the
+bounded effort leaves the required case unassessed or reveals a need for broader
+changes, return for human disposition rather than silently deferring it or
+continuing indefinite tuning. This instruction does not accept the milestone or
+resolve the review's other findings.
+
+Human response to the proposed additional one-call control:
+
+> Add one-call control (Recommended)
+
+The question was: "The reviewer leaves the hard-limit assessment to your decision. I recommend retaining the existing zero-call control and adding one focused run with a one-call guard, so it stops after acquiring evidence. Should I add that bounded assessment?"
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
