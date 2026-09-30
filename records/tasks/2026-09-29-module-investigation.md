@@ -226,6 +226,15 @@ This permits bounded diagnosis and verification, not automatic product retries.
 
 Yes, use that override.   Please retain the exact override and TypeScript version in the assessment record, use that configuration consistently across runs, and preserve the pinned source unchanged. The results should be attributed to that effective configuration so the exercise remains reproducible.
 
+### Assessment request accounting clarification
+
+> the request limit was for implementation/debugging investigation; the assessments will necessarily need to make more requests, no?
+
+The ten-request authorization applies to implementation/debugging, not the planned
+assessment schedule. Two diagnostic requests used; eight remain. Planned bounded
+assessment runs are separately recorded under the existing plan authorization.
+No automatic repeat, model change or route fallback is authorized.
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
