@@ -1,0 +1,103 @@
+{
+  "findings": [
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The summary follows the public entrypoint's delegation and communicates the main merge strategies rather than stopping at its barrel structure; the evaluator retains that division of responsibility.",
+      "evidence": [
+        "@investigram-fc9552fd identifies the re-export entrypoint and composes @investigram-c5872157 and @investigram-9a635ca2.",
+        "@investigram-c5872157 describes ordered folding, recursive plain-object handling, replacement by non-plain newcomers, own string and symbol properties, and skipping __proto__.",
+        "@investigram-9a635ca2 describes concatenation only when both values are arrays, otherwise returning the newcomer.",
+        "Evaluator answer 1 preserves these responsibilities, including the separate compile-time model.",
+        "The frozen reference identifies index.ts as the forwarding entry, merge.ts lines 39–94 as recursive merging and replacement, and lines 101–124 as the common implementation's ordered entry strategies."
+      ],
+      "consequence": "The supplied accounts give a useful, substantially reference-consistent map of the exposed functionality and its delegated implementation.",
+      "uncertainty": "This is agreement with qualified source analysis, not execution evidence. The frozen reference does not enumerate every exported name or verify every detailed type-utility claim."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator preserves the distinction between source interpretation, external dependency limits, compile-time modeling and observed runtime behavior.",
+      "evidence": [
+        "@investigram-fc9552fd explicitly qualifies the account as static TypeScript/source interpretation and bounds dependency coverage to recognized project-owned requests.",
+        "@investigram-9a635ca2 says array recognition is delegated to an external predicate whose implementation was not inspected.",
+        "@investigram-e3139c82 distinguishes compile-time behavior from runtime operations.",
+        "Evaluator answer 2 treats all four accounts as interpretations and leaves execution, external predicate behavior and runtime/type-model correspondence unestablished.",
+        "The frozen reference likewise limits external predicate knowledge, separates type utilities from runtime work and states that source inspection is not runtime proof."
+      ],
+      "consequence": "The evaluator does not convert the accepted attempt, source references, __proto__ handling or reported usage into a correctness, security or billing guarantee.",
+      "uncertainty": "The displayed qualification names external array recognition specifically; external plain-object and symbol classification is made explicit only in the frozen reference."
+    },
+    {
+      "category": "material-omission",
+      "claim": "The summary omits concrete reference-supported limits on object ownership and cloning, although the evaluator correctly recognizes aliasing and mutation as unexplained.",
+      "evidence": [
+        "@investigram-c5872157 says plain objects are rebuilt recursively and special objects are assigned rather than traversed, but does not state that references may be retained or that supplying no additional inputs returns the original.",
+        "The frozen reference explicitly says the implementation is not a general deep clone: references can be retained, non-plain inputs can be returned directly, and zero extra inputs return the original.",
+        "Evaluator answer 2 lists mutation and aliasing behavior as unexplained, and answer 4 proposes investigating whether returned values share nested objects with inputs."
+      ],
+      "consequence": "The initial map is insufficient for a caller deciding whether a result can be modified independently of its inputs. The evaluator avoids repeating an always-new-object or deep-clone claim, but the summary leaves available consequential source conclusions unstated.",
+      "uncertainty": "The supplied reference supports specific identity and sharing limits, not a complete mutation contract or runtime guarantee. No erroneous cloning claim is actually made in the displayed account or evaluator response."
+    },
+    {
+      "category": "presentation-misunderstanding",
+      "claim": "The callback description and directional wording create presentation risks that the evaluator detects rather than adopting as settled behavior.",
+      "evidence": [
+        "@investigram-c5872157 first says the callback is inserted at each incoming property conflict, then qualifies that it is invoked for every incoming own property after recursive plain-object merging, not only when both sides are defined.",
+        "The same account points to an array policy below, although @investigram-9a635ca2 appears above it.",
+        "Evaluator answers 1, 4 and 6 use the broader displayed callback qualification and explicitly identify both wording problems."
+      ],
+      "consequence": "A reader scanning only the main runtime account could infer a narrower callback trigger or search in the wrong direction. The evaluator's reading shows that the qualification successfully resolves the trigger ambiguity for this reader.",
+      "uncertainty": "No actual evaluator misunderstanding is demonstrated. The frozen reference states that merge-and-compare applies a supplied comparison function but does not provide enough callback-detail analysis to independently settle the precise qualification."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "Some detailed claims faithfully relayed by the evaluator cannot be independently adjudicated from the supplied frozen reference.",
+      "evidence": [
+        "@investigram-e3139c82 and evaluator answer 1 describe Assign, PrettyPrint and Pop and the record-like input branch.",
+        "@investigram-c5872157 and evaluator answer 1 describe callback invocation after recursive merging for every incoming own property.",
+        "The frozen reference establishes the compile-time/runtime distinction and the existence of the comparison strategy, but does not spell out these type branches or callback arguments and invocation conditions."
+      ],
+      "consequence": "These details are supported as statements present in the view, but neither source correctness nor a generation error repeated by the evaluator can be established by this assessment.",
+      "uncertainty": "Independent source inspection is prohibited for this assessment. The unexpanded evidence identifiers do not add assessable source content."
+    },
+    {
+      "category": "presentation-misunderstanding",
+      "claim": "The correction footer suggests concrete correction evidence that the supplied body does not show; the evaluator correctly separates that generic wording from the displayed relationships.",
+      "evidence": [
+        "The footer says this checkpoint shows immutable originals and explicit correction links, while the body displays Composition and Evidence fields without an original/replacement correction pair.",
+        "Evaluator answer 5 identifies this discrepancy, accurately enumerates the composition links, and declines to infer later-investigation provenance from the attempt identifier or hosted functionality metadata.",
+        "Evaluator answer 6 treats the correction wording as potentially misleading rather than evidence of an actual correction."
+      ],
+      "consequence": "The footer can overstate what this particular summary demonstrates. The evaluator avoids inventing a changed claim, replacement identifier or investigation lineage.",
+      "uncertainty": "The supplied summary cannot establish whether other views contain correction links or how the live interface presents them. Their absence here is not evidence of a missing implementation or milestone failure."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator bounds its usefulness judgment and proposed next action to what the summary actually demonstrates.",
+      "evidence": [
+        "Evaluator answer 3 declines to infer before/after improvement from explanation, decomposition or examination views that were not supplied.",
+        "Evaluator answer 4 selects the displayed @investigram-c5872157 for a proposed examination and distinguishes that request from demonstrated controls or lens availability.",
+        "Evaluator answer 6 qualifies its observations about opaque references and repeated accounting by leaving clickability, collapsed metadata and contextual controls unknown.",
+        "The rubric expressly prohibits treating summary-only absence of follow-up views as a generation defect."
+      ],
+      "consequence": "The evaluator identifies a concrete follow-up target without extrapolating an unseen interface or treating incomplete presentation coverage as a product failure.",
+      "uncertainty": "Only the captured summary and evaluator response were assessed; interactive usability and subsequent investigation outcomes remain unestablished."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful for initial source-qualified orientation to the public merge API and its delegated responsibilities, with consequential ownership details still missing.",
+    "reasons": [
+      "The interpretation follows the forwarding entry into runtime strategies, array handling and compile-time modeling, matching the main conclusions of the frozen reference.",
+      "The evaluator preserves the source-only qualifications and identifies aliasing as an unresolved practical concern instead of asserting cloning or independent ownership.",
+      "The evaluator detects callback wording, a misplaced directional reference and an overly generic correction footer without inventing unsupported functionality or investigation history.",
+      "The displayed runtime reference provides a sensible target for further examination, while opaque evidence strings and duplicated accounting impede scanning."
+    ],
+    "limitations": [
+      "The assessment used only the supplied artifact. The frozen reference is qualified source analysis, not subject execution or a security certification.",
+      "This run must be attributed to the frozen reference's effective ignoreDeprecations 6.0 override and PostCode analyzer TypeScript 6.0.3, not to an unmodified-config run or an asserted configuration-equivalence result.",
+      "Reference retention, original-value return with no additional inputs, and incomplete descriptor preservation are established in the frozen reference but not fully explained in the summary. The evaluator makes no stronger descriptor-preservation claim than preserving non-enumerability.",
+      "The frozen reference cannot settle every callback and type-utility detail relayed from the view. No source-grounded generation error repeated by the evaluator is established on those details.",
+      "No follow-up views, concrete correction sequence or live interaction were supplied. Their absence is a scope limit, not a generation defect or milestone failure.",
+      "Shared reference selection, orchestration and model-family context can bias this purposeful development example; fresh contexts do not establish independent corroboration or broader acceptance."
+    ]
+  }
+}

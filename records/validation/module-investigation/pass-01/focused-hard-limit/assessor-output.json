@@ -1,0 +1,77 @@
+{
+  "findings": [
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The stop status and zero reported calls are communicated and retained accurately by the evaluator.",
+      "evidence": [
+        "USER VIEW: 'limit-stop: Dialogue character guard reached.'",
+        "USER VIEW: attempt and session each report '0 calls; 0 unknown; 0 anomalous.'",
+        "EVALUATOR answers 1 and 2 identify the guard stop and zero reported usage, while distinguishing reported usage from confirmed billing.",
+        "FROZEN REFERENCE, Controlled focused cases: the hard-limit control uses an explicitly tiny character guard and requires zero provider calls to be reported when it stops before a call."
+      ],
+      "consequence": "The supplied view supports recognizing the intended containment outcome. Neither the stop nor the absence of a generated module account establishes an interpretive failure, exhausted financial allowance, or hard milestone failure.",
+      "uncertainty": "This assessment compares supplied artifacts; source analysis and displayed counters are not independent execution or billing proof."
+    },
+    {
+      "category": "presentation-misunderstanding",
+      "claim": "The evaluator appears to interpret the subject name 'opaque' as an assessed module state.",
+      "evidence": [
+        "USER VIEW: 'Module @module-801ab967: opaque'.",
+        "EVALUATOR answer 2 calls this an 'opaque module state'; answer 4 proposes learning 'why it is opaque'; answer 6 says the view does not explain 'what opaque means'.",
+        "FROZEN REFERENCE, Controlled focused cases: 'opaque.ts' is the fixture subject that invokes a supplied callback once and returns its value; the hard-limit control uses that same subject."
+      ],
+      "consequence": "A terse name presentation prompts the evaluator to infer a diagnostic condition that the frozen reference does not establish, diverting a proposed follow-up toward explaining opacity rather than identifying the selected subject.",
+      "uncertainty": "The view does not explicitly label 'opaque' as a name, and the evaluator's first use could be merely descriptive; its later 'state' wording and proposed explanation make the misunderstanding more apparent. No generated semantic account is displayed, so this is not evidence of an investigator generation error repeated by the evaluator."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly avoids inventing module behavior or inferring results from absent follow-up views.",
+      "evidence": [
+        "EVALUATOR answer 2: 'No substantive generated account of the module is displayed.'",
+        "EVALUATOR answer 3 states that explanation, decomposition, and examination views were not supplied and declines a before-and-after assessment.",
+        "EVALUATOR answer 4 labels an explanatory lens as a desired action rather than a demonstrated capability.",
+        "FROZEN REFERENCE, Controlled focused cases: opaque.ts invokes a callback once and returns its value, but has no supplied caller implementation or business purpose."
+      ],
+      "consequence": "The evaluator preserves the limits of its view-only evidence. Its lack of knowledge of the callback behavior is appropriate for this stopped view, not a material omission from a generated account or a defect caused by missing follow-up views.",
+      "uncertainty": "The frozen reference supplies source-level behavior to this assessor only; it cannot be retroactively treated as information available to the evaluator."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator distinguishes general qualification text from concrete correction evidence.",
+      "evidence": [
+        "USER VIEW: 'Generated accounts remain interpretation. Corrections are retained assertions, not established truth.'",
+        "USER VIEW: 'This checkpoint shows immutable originals and explicit correction links; replacement selection and reconsideration display arrive in a later milestone.'",
+        "EVALUATOR answer 5 observes that no concrete correction, original account, replacement account, or correction link is displayed and leaves provenance unestablished."
+      ],
+      "consequence": "The evaluator does not mistake generic checkpoint wording for a correction instance. Its observation that the wording could suggest visible evidence is grounded in this sparse display.",
+      "uncertainty": "Neither the supplied summary nor the frozen focused-case reference settles whether correction instances or provenance controls exist elsewhere."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "The evaluator's complaints about recovery guidance, selectable controls, and visual prominence are useful display-level observations but do not establish deficiencies in surrounding functionality.",
+      "evidence": [
+        "EVALUATOR answers 4 and 6 note missing lens choices and recovery guidance and explicitly leave surrounding controls unknown.",
+        "EVALUATOR answer 6 describes the long attempt identifier and generic caveats as outweighing actionable information.",
+        "USER VIEW includes a module reference, a long attempt identifier, stop and usage reports, and generic qualification text, but no recovery instructions.",
+        "FROZEN REFERENCE describes a controlled tiny-character-guard case and provides no surrounding interface or recovery workflow."
+      ],
+      "consequence": "The supplied text supports a judgment about the notice's limited actionability, while a product-wide recovery or navigation conclusion would require additional evidence."
+      ,"uncertainty": "Rendered visual hierarchy, undisplayed controls, normal guard configuration, and recovery behavior are outside the supplied evidence."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful as a qualified containment-status notice for the hard-limit control; it provides no substantive module explanation and leaves recovery unclear in the supplied text.",
+    "reasons": [
+      "The view clearly reports a character-guard stop and zero calls at both attempt and session scope, matching the frozen control's reporting requirement.",
+      "The evaluator retains usage and interpretation qualifications and declines unsupported behavioral, correction, and follow-up conclusions.",
+      "The name 'opaque' is insufficiently identified in the terse display and is taken by the evaluator as a module condition.",
+      "Generic checkpoint and usage explanations occupy substantial space in a view with little case-specific content."
+    ],
+    "limitations": [
+      "Only the supplied frozen reference, summary view, and evaluator response were assessed; no source inspection, browsing, or runtime verification was performed.",
+      "This deliberate hard-limit control cannot establish investigator semantic quality, ordinary module-comprehension usefulness, exhausted financial allowance, or milestone failure.",
+      "Absent explanation, decomposition, examination, and correction views are not generation defects.",
+      "The frozen reference is qualified source analysis, and the development examples and shared orchestration do not supply independent corroboration or an unbiased validation set."
+    ]
+  }
+}

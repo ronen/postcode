@@ -143,7 +143,8 @@
         "opaque.ts": "12691aac0546fa281c4f43ddf1b9eb95705e6b115487ce2e75ccf37ef722470a",
         "normalize.ts": "15c4375e6feb5727825ffef4b26ca93656d741894956261b8836d8de6c62e1b9",
         "tsconfig.json": "7eb7eea5f213e4d6447bd60c7d6339c6ef5d25746ba953d436b8117afafe058d"
-      }
+      },
+      "commitReproductionArtifact": "fixture-git-commit.txt"
     }
   ],
   "freeze": "References, prompt and context hashes committed before any subject inference; one summary baseline per subject. No automatic repeated inference.",

@@ -50,3 +50,11 @@ each, at most the production 32 requests per investigation (192 theoretical
 maximum, not a usage target). The hard-limit control should use fewer or none.
 Additional diagnostic runs consume the diagnostic allowance; evaluator and
 assessor work is separately attributed as required by the plan.
+
+The controlled fixture is copied from `fixtures/module-investigation-assessment`
+into an isolated repository. Its manifest hashes fix all six files. To recreate
+the recorded local commit exactly, stage those files (mode 100644), write the
+tree with `git write-tree`, import the recorded `fixture-git-commit.txt` using
+`git hash-object -t commit -w`, and point the isolated repository HEAD at that
+commit. The recorded tree must match. This fixture pin is a local assessment
+artifact, not an upstream repository revision.

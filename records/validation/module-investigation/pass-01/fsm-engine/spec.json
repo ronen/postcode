@@ -1,0 +1,14 @@
+{
+  "id": "fsm-engine-summary",
+  "pass": "module-summary-01",
+  "subject": "fsm-engine",
+  "manifest": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-01/manifest.json",
+  "project": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/tsconfig.json",
+  "output": "/Users/ronen/postcode/app/_investigation/module-assessment-runs/fsm-engine",
+  "budget": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-01/request-budget.json",
+  "commands": [
+    "summarize fsm-engine",
+    "usage",
+    "exit"
+  ]
+}

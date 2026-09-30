@@ -1,0 +1,45 @@
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The view reports a new module investigation request with one selected match, but the investigation stopped at a dialogue character guard. The selected module is presented as opaque, so the view does not communicate its functionality or any division of responsibility. It does communicate that references stay bound within this session and that attempt and session usage are reported separately.",
+      "support": ["New investigation request.", "limit-stop: Dialogue character guard reached.", "Selection: selected (1 matches).", "Module @module-801ab967: opaque", "References remain bound for this session.", "Attempt and session reported usage both show 0 calls; 0 unknown; 0 anomalous."],
+      "unknowns": ["The module's purpose, contents, behavior, collaborators, and responsibilities.", "What the selection matched and why it was selected.", "What specifically reached the character guard or whether any substantive investigation occurred."]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "No substantive generated account of the module is displayed. The view labels generated accounts generally as interpretation and corrections as retained assertions rather than established truth. The limit stop, opaque module state, selection count, and zero usage are displayed status reports; there is no independent corroboration. Reported usage is expressly qualified as distinct from confirmed billed usage.",
+      "support": ["Generated accounts remain interpretation. Corrections are retained assertions, not established truth.", "Reported usage is not confirmed billed usage.", "Synthetic usage is test data, separate from provider usage.", "Categories with includedIn are subsets, not additional usage."],
+      "unknowns": ["Any substantive conclusion about the module.", "Confirmed billed usage, model identity, or exact provider usage metadata beyond the displayed counters.", "Whether synthetic data contributes to this particular display.", "The cause and recoverability of the character-guard stop."]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "Explanation, decomposition, and examination views were not supplied. No before-and-after comparison or improvement in understanding or selection can be assessed from this summary alone.",
+      "support": ["Only a Module summary is displayed, with Module @module-801ab967: opaque."],
+      "unknowns": ["Whether any explanation, decomposition, or examination has occurred.", "Any resulting change in clarity, selectable detail, or substantive understanding."]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "I would select @module-801ab967, the only displayed module reference, and request an explanatory lens to learn its purpose and responsibilities and why it is opaque. That lens is a desired next action, not a capability demonstrated here: the view supplies neither lens choices nor a usable action for continuing after the stop. The long attempt identifier identifies the stopped attempt but is not shown as a selectable investigram reference.",
+      "support": ["Module @module-801ab967: opaque", "References remain bound for this session.", "limit-stop: Dialogue character guard reached."],
+      "unknowns": ["Whether @module-801ab967 can actually be selected in this interface.", "Available lenses and whether another investigation can proceed despite the guard.", "Whether the attempt identifier is navigable."]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No concrete correction, original account, replacement account, or correction link is displayed. A general checkpoint statement says immutable originals and explicit correction links are shown, but this summary provides no instance to assess. It explicitly places replacement selection and reconsideration display in a later milestone. Composition cannot be distinguished from later-investigation provenance here.",
+      "support": ["This checkpoint shows immutable originals and explicit correction links; replacement selection and reconsideration display arrive in a later milestone.", "Corrections are retained assertions, not established truth."],
+      "unknowns": ["Whether any correction exists for this module.", "What changed and how original and replacement are identified.", "Any composition history or later-investigation provenance."]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The view is useful as a stop-status notice but offers little module comprehension. It does not explain what opaque means, what reached the dialogue guard, or how to recover. Selected (1 matches) reports success without identifying the selection criterion. The long attempt identifier dominates a very sparse summary. Separate attempt and session counters are meaningful scopes, but their identical zero values and several generic caveats occupy more space than actionable information. The claim that the checkpoint shows originals and correction links could imply that such evidence is visible when no instance appears. References remain bound does not explain selection mechanics or lifetime beyond this session. The includedIn caveat introduces a field not otherwise displayed.",
+      "support": ["limit-stop: Dialogue character guard reached.", "Selection: selected (1 matches).", "Module @module-801ab967: opaque", "The attempt identifier and duplicate zero-valued usage summaries.", "This checkpoint shows immutable originals and explicit correction links", "Categories with includedIn are subsets, not additional usage."],
+      "unknowns": ["Whether surrounding interface controls provide navigation or recovery guidance.", "Whether generic caveats become relevant in later views."]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful for recognizing that this investigation stopped; insufficient for understanding the module or deciding a concrete recovery action.",
+    "reasons": ["Clearly identifies a selected module reference and the guard-related stop.", "Separates attempt and session usage and qualifies what those reports establish.", "Provides no substantive module account or next-step controls.", "Generic provenance and usage explanations outweigh the limited case-specific information."],
+    "limitations": ["Assessment is confined to the supplied summary view.", "No explanation, decomposition, examination, or concrete correction views were supplied.", "No implementation behavior, model metadata, billing details, or undisplayed controls were verified."]
+  }
+}

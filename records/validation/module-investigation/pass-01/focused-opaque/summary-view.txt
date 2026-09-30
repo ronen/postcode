@@ -1,0 +1,29 @@
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-801ab967: opaque
+
+@investigram-a85accde · interpretation
+A minimal synchronous operation invoker. It delegates all substantive work to a caller-supplied zero-argument function, calls it directly, and returns that call’s result without transformation; the shown implementation adds no branching, retry, fallback, or error handling.
+Referent: the requested TypeScript module
+  Qualification: Apparent behavior is inferred from the captured TypeScript source; source alone does not establish runtime behavior or author intent.
+  Qualification: Dependency analysis is bounded to recognized project-owned source requests, so its empty result is not a claim of complete runtime independence.
+  Composition: @investigram-03971a8c
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:78d946e7-70d9-4e09-997c-2ea8cc146081:captured-content:af2c712163b0e06fca970dcfb297d488c0062922b8ce4b40bb16d23ad9fc36e4, session:78d946e7-70d9-4e09-997c-2ea8cc146081:source:cbb0654ac67b6b008292eb27536abf07b40a01127398d0fd9bd39583155a45b7
+
+@investigram-03971a8c · interpretation
+`invokeOperation<T>` accepts `() => T`, invokes it synchronously with no arguments, and forwards its returned `T`. Exceptions would likewise receive no local interception in the shown body; callback semantics remain the caller’s responsibility.
+Referent: the exported invokeOperation function
+  Qualification: The exception statement describes the absence of a catch in the shown source, not an observed execution.
+  Qualification: The generic signature preserves the callback’s statically declared result type; it does not itself prove runtime type correctness.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:78d946e7-70d9-4e09-997c-2ea8cc146081:source:cbb0654ac67b6b008292eb27536abf07b40a01127398d0fd9bd39583155a45b7
+Attempt session:78d946e7-70d9-4e09-997c-2ea8cc146081:investigation-attempt:f5c5f0850ccac7e580ecebf92b8f2895c1086e427a1300e9f547b5097e312060 (accepted) reported usage: 3 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 14784 tokens; input 13206 tokens (subset of total); output 1578 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 141 tokens (subset of output)
+Session reported usage: 3 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 14784 tokens; input 13206 tokens (subset of total); output 1578 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 141 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+This checkpoint shows immutable originals and explicit correction links; replacement selection and reconsideration display arrive in a later milestone.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage

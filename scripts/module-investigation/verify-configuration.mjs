@@ -4,10 +4,12 @@ import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import ts from 'typescript';
+import { chatGPTIdentity } from '../../_build/src/lib/investigation/openai/adapter.js';
 import { investigationInstructions } from '../../_build/src/lib/investigation/execute.js';
 const hash = file => createHash('sha256').update(readFileSync(file)).digest('hex');
 export function verifyConfiguration(spec) {
   const manifest = JSON.parse(readFileSync(spec.manifest, 'utf8'));
+  if (chatGPTIdentity.model !== manifest.investigator.model || chatGPTIdentity.configuration.reasoningEffort !== manifest.investigator.reasoning || chatGPTIdentity.configuration.billingRoute !== manifest.investigator.route || chatGPTIdentity.configuration.adapter !== manifest.investigator.adapter) throw new Error('Investigator configuration changed');
   const subject = manifest.subjects.find(item => item.id === spec.subject);
   if (!subject || spec.pass !== manifest.pass || path.basename(spec.project) !== subject.configuration
       || ts.version !== manifest.analyzerTypeScript || process.versions.node !== manifest.node) throw new Error('Assessment configuration mismatch');

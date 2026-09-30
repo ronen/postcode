@@ -1,0 +1,240 @@
+You are a fresh source-informed assessor. Use only the supplied frozen reference, view and evaluator response. Do not independently inspect source or browse. These references are qualified source analysis, not runtime proof.
+
+RUBRIC
+{
+  "version": 1,
+  "task": "Compare supplied investigator views and view-only evaluator answers against the frozen source references. Use only supplied artifacts. Preserve uncertainty and cite specific displayed references or source locations.",
+  "categories": ["generation-error-repeated-by-evaluator", "presentation-misunderstanding", "successful-qualified-communication", "unsupported-evaluator-extrapolation", "material-omission", "reference-cannot-settle"],
+  "output": "JSON with findings [{category, claim, evidence, consequence, uncertainty}], subjectUsefulness {judgment, reasons, limitations}. No numeric aggregate score. Do not treat a summary-only absence of follow-up views as a generation defect. Do not treat administrative request-budget interruption as an interpretive or milestone failure."
+}
+
+FROZEN REFERENCE
+# Frozen source-grounded references — summary pass 01
+
+Prepared before any subject/fixture inference by the implementing agent. Exact
+model identifier is unavailable; the family is OpenAI. Shared implementation,
+reference selection and orchestration can bias judgments. These are purposeful
+development examples, not an unbiased or untouched validation set. This material
+must not be supplied to the investigator or view-only evaluators.
+
+The [manifest](manifest.json) fixes revisions, source/document/configuration hashes,
+Node 22.13.1, the **PostCode analyzer TypeScript 6.0.3**, and the selected hosted
+configuration. Installed subject build TypeScript versions do not replace that
+analyzer. Repository source, README and ordinary subject-based evidence are
+accessible; reference answers, selection rationale and this file are not.
+PostCode source inspection is not execution or proof of runtime guarantees.
+
+
+
+## merge-anything: public entry and delegated merging
+
+Source pin: [index.ts](https://github.com/mesqueeb/merge-anything/blob/bc7c79fe8fce89ed3350d7b3bdf7cdd1a7633906/src/index.ts).
+Selector `anonymous`, verified to select the public forwarding entry; conceptual
+handle is not a source path. The entry re-exports `extensions.ts` and `merge.ts`.
+The summary must follow delegation to explain functionality rather than stop at
+the fact that this file is a barrel.
+
+The human-approved effective configuration is the exact
+[override](merge-anything-override.json), beside the unchanged original config,
+extending it and setting only `ignoreDeprecations: "6.0"`. The inherited package
+is `@cycraft/tsconfig` 0.1.2, pinned by the repository lockfile and hashed in the
+manifest. Use this configuration and TypeScript 6.0.3 consistently throughout all
+assessment runs; attribute results to them, not to an unmodified-config run.
+The original config fails opening on deprecation diagnostics. The override was
+mechanically verified to open, not asserted equivalent by unperformed testing.
+
+Supported source conclusions from
+[merge.ts](https://github.com/mesqueeb/merge-anything/blob/bc7c79fe8fce89ed3350d7b3bdf7cdd1a7633906/src/merge.ts):
+
+- Lines 39–94 merge plain-object properties recursively, with plain-object and
+  symbol classification delegated to `is-what`. A non-plain newcomer replaces
+  the current value. Prior own properties absent from the newcomer are retained.
+- Own string and symbol properties are considered; `__proto__` is skipped. This
+  is specific source behavior, not a general security certification.
+- Lines 19–36 preserve enumerability when assigning values but do not preserve
+  every original descriptor or avoid evaluating getters.
+- Lines 101–124 fold inputs in order through the common implementation. Ordinary
+  merge replaces arrays; merge-and-compare applies a supplied comparison function;
+  merge-and-concat uses the array-concatenation helper when both values are arrays.
+- `extensions.ts` delegates array recognition to `is-what` and otherwise returns
+  the newcomer. Type utilities describe compile-time result shape, not runtime work.
+
+Acceptable interpretation: an entry exposing related merge strategies sharing
+recursive plain-object handling and replacement rules, with configurable comparison
+or array concatenation. Material limits: no subject execution; external predicate
+implementation is not established here. It is not a general deep clone: references
+can be retained, non-plain inputs can be returned directly, and zero extra inputs
+return the original. The README's always-new-object wording is broader than that
+source supports. Do not claim circular-input handling, rollback or general safety.
+
+
+
+## Assessment procedure and limitations
+
+Freeze the exact [instructions](instructions.json), general context-selection code
+hashes, model and route before inference. Keep production evidence access and
+guards unchanged except the labelled hard-limit control. No reference answers
+enter live context. The first pass has zero automatic repeat allowance; a
+diagnostic rerun requires a separately recorded question/count and preserves the
+original outcome. Administrative request-ceiling interruption is incomplete
+validation, not a semantic failure or hard milestone failure.
+
+Use the fixed `scripts/module-investigation/questions.json` for fresh view-only
+evaluators and `assessor-rubric.json` for separate fresh source-informed assessment.
+Retain exact prompts, inputs, outputs and available role configuration/usage.
+Unknown role usage is not zero. Fresh contexts and same-family agents do not
+establish independent corroboration. Per-subject results and focused cases stay
+separate; no universal acceptance score or prompt optimization search is intended.
+
+USER VIEW
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-a44de3a8: anonymous
+
+@investigram-fc9552fd · interpretation
+Public entrypoint for recursive merging: it adds no merge logic, but wildcard-re-exports the merge API and array-conflict helper. Its public surface is `merge`, `mergeAndCompare`, `mergeAndConcat`, `concatArrays`, and the `Merge` type.
+Referent: the requested public entrypoint module
+  Qualification: Static TypeScript/source interpretation; runtime execution and deployment behavior were not observed.
+  Qualification: The module handle is an anonymous generated navigation aid; functionality is inferred from its established re-export routes.
+  Qualification: Dependency coverage is bounded to recognized project-owned source requests.
+  Composition: @investigram-c5872157, @investigram-9a635ca2
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:3afeecca-2c48-48e3-bf87-883202535224:source:43636cb88b647809d461625bccebd341219dd09e3a70ecc4bc82234a446ed0f2, session:3afeecca-2c48-48e3-bf87-883202535224:dependency:ed268f1d30fc438081dd6ceffba6814b08906e6f770ff92ade7352ccb62823ac, session:3afeecca-2c48-48e3-bf87-883202535224:dependency:2d10a79ac4e197e72485153249a6e2fe4025cf5d456e6fd8f8d98629fa585377, session:3afeecca-2c48-48e3-bf87-883202535224:export:e26f07d96b232e4d184ad3e0cdf396135d5d38a0deec01c3652af840c3079397, session:3afeecca-2c48-48e3-bf87-883202535224:export:03e0101ac41b08cef3e381d2473a2ab7bce98037a1901b29e353d87f07f7f0c3, session:3afeecca-2c48-48e3-bf87-883202535224:export:5cbf575991c6bb6718d39fc9141a7b4e4919d6e1a778613577b5a23228b482fd, session:3afeecca-2c48-48e3-bf87-883202535224:export:93b3c024cb4f29a0fd0c645ef2a6b6f9b954e5c8054ddb60d0dffe3f97ba6fa0, session:3afeecca-2c48-48e3-bf87-883202535224:export:c1d37ad435569036afef1aae8e2b1cd24813adb35694bc6bba803ad4aa5404a8
+
+@investigram-9a635ca2 · interpretation
+`concatArrays` is both public and the built-in `mergeAndConcat` conflict policy: when both old and new values are arrays it returns their concatenation; otherwise it returns the new value unchanged.
+Referent: array concatenation conflict helper
+  Qualification: Behavior is read from captured source, not established by execution.
+  Qualification: Array recognition is delegated to an external predicate whose implementation was not inspected.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:3afeecca-2c48-48e3-bf87-883202535224:captured-content:6f64ed2803e14f05072f46970bb3eee68517667fd9442ba8d3d0ad0536c50f83, session:3afeecca-2c48-48e3-bf87-883202535224:source:7caa54971fa1ecdabf543e16a9c0472b7a47d21dd77f32f2ca6767365092fe70, session:3afeecca-2c48-48e3-bf87-883202535224:export:93b3c024cb4f29a0fd0c645ef2a6b6f9b954e5c8054ddb60d0dffe3f97ba6fa0
+
+@investigram-c5872157 · interpretation
+`merge` folds later inputs over the first. A non-plain incoming value replaces the accumulated value; plain objects are rebuilt recursively from own string and symbol properties. Later properties win, non-enumerability is preserved, `__proto__` is skipped, and class/special-object values are assigned rather than traversed. `mergeAndCompare` inserts a caller callback at each incoming property conflict; `mergeAndConcat` supplies the array policy below.
+Referent: runtime recursive merge implementation and its three exported entry functions
+  Qualification: Behavior is read from captured source, not established by execution.
+  Qualification: The comparison callback is invoked for every incoming own property after any recursive plain-object merge, not only when both sides are defined.
+  Composition: @investigram-e3139c82
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:3afeecca-2c48-48e3-bf87-883202535224:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:3afeecca-2c48-48e3-bf87-883202535224:documentation-association:3c6f811fbf03931840c225d3db59e1033450106a646ffd1483e9cfcb941b64dd, session:3afeecca-2c48-48e3-bf87-883202535224:source:8e720325202e79ae5656f9a4758857448dfd8eb8be21b13c06a65c5847d99358, session:3afeecca-2c48-48e3-bf87-883202535224:source:a3fd7ea754d19eb66f578f6ca3befe3e8d8087065164a7d2075316f234b688b6, session:3afeecca-2c48-48e3-bf87-883202535224:source:9497fc07d5b62237183636e8bb45b53c0424ebc9ddafe6fe6dc3db993793c60e
+
+@investigram-e3139c82 · interpretation
+`Merge<T, Ts>` models the result: record-like inputs delegate to `Assign` for deep, last-in override typing and then `PrettyPrint` for a readable expanded shape; otherwise it falls back to the last supplied type via `Pop`. The same utility is exported for standalone type use.
+Referent: the exported compile-time result model
+  Qualification: This is compile-time TypeScript behavior, not a runtime operation.
+  Qualification: The claim that it reflects JavaScript is recorded documentation and was not independently executed.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:3afeecca-2c48-48e3-bf87-883202535224:source:e8d31cc77ae274a753f7a7f34dbc2b6c693f8c8d6e41a9610d4059c17300ba70, session:3afeecca-2c48-48e3-bf87-883202535224:documentation-association:3c256e44f3868ad7f43645dc1203251271c17c5c51b0fbb0a96fcbe36c6bf2dd, session:3afeecca-2c48-48e3-bf87-883202535224:export:6d104b9d72531d2c9044a17c5a2f1127c3cf1b684a2c78094ccd14b40fe7f0a9, session:3afeecca-2c48-48e3-bf87-883202535224:export:e0c39ff912590420eaf7b2de2666f85f3927fe80e4722aded0a524a5403d1737
+Attempt session:3afeecca-2c48-48e3-bf87-883202535224:investigation-attempt:f24f28870f6ba49cd764ca6d43a2ecb5c9e29f3346492b5e4f5e49abf3e7136e (accepted) reported usage: 5 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 216892 tokens; input 211316 tokens (subset of total); output 5576 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 274 tokens (subset of output)
+Session reported usage: 5 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 216892 tokens; input 211316 tokens (subset of total); output 5576 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 274 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+This checkpoint shows immutable originals and explicit correction links; replacement selection and reconsideration display arrive in a later milestone.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+EVALUATOR RESPONSE
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The anonymous module is presented as a public re-export entrypoint with no merge logic of its own. It exposes merge, mergeAndCompare, mergeAndConcat, concatArrays and the Merge type. Runtime responsibility sits with the recursive merge implementation: later inputs override earlier values, plain objects are recursively rebuilt using own string and symbol properties, non-enumerability is preserved, __proto__ is skipped, and special objects are assigned rather than traversed. mergeAndCompare applies a caller callback to incoming own properties after recursive merging; mergeAndConcat uses the separate concatArrays helper. That helper concatenates two arrays and otherwise returns the incoming value. Merge<T, Ts> is a separate compile-time result model, using Assign and PrettyPrint for record-like inputs and Pop otherwise.",
+      "support": [
+        "@investigram-fc9552fd says the entrypoint 'adds no merge logic' and lists the five public exports; its Composition names @investigram-c5872157 and @investigram-9a635ca2.",
+        "@investigram-c5872157 describes the runtime rules and its qualification says the callback is invoked for 'every incoming own property' after recursive merging, even when both sides are not defined.",
+        "@investigram-9a635ca2 describes concatArrays and its use by mergeAndConcat.",
+        "@investigram-e3139c82 explicitly qualifies Merge as compile-time TypeScript behavior."
+      ],
+      "unknowns": [
+        "The module has no descriptive name or displayed file path.",
+        "The view does not establish runtime outcomes, deployment behavior or the implementation of external predicates and type utilities."
+      ]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "All four functional accounts are explicitly interpretations. They carry source, captured-content, export, dependency or documentation-association references as qualified support, but the referenced content is not supplied here for independent assessment. The entrypoint surface is attributed to established re-export routes. Runtime and helper behavior are attributed to captured source rather than execution. The type account distinguishes compile-time behavior from a documented claim that it reflects JavaScript, which was not independently executed. The accepted attempt and reported usage describe investigation status and accounting; they do not establish functional correctness or actual billing.",
+      "support": [
+        "Each @investigram heading is marked 'interpretation'.",
+        "@investigram-fc9552fd qualifies its account as 'Static TypeScript/source interpretation' and bounds dependency coverage to recognized project-owned source requests.",
+        "@investigram-9a635ca2 says the external array predicate's implementation was not inspected.",
+        "@investigram-e3139c82 identifies the JavaScript correspondence claim as recorded documentation.",
+        "The footer says 'Generated accounts remain interpretation' and 'Reported usage is not confirmed billed usage'."
+      ],
+      "unknowns": [
+        "Actual execution results, runtime/type-model correspondence and external array-recognition behavior remain unestablished.",
+        "Coverage outside recognized project-owned source requests is not established.",
+        "Mutation and aliasing behavior, exceptional inputs and cycle handling are not explained.",
+        "The displayed provider/model and token quantities are reported metadata; evaluator model/usage and monetary charges cannot be inferred from them."
+      ]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "Only the module summary was supplied. No subsequent explanation, decomposition or examination view is available, so I cannot identify changes produced by those operations. Within this summary, separate references already distinguish the entrypoint, runtime implementation, array helper and compile-time model, and the callback qualification makes the meaning of incoming property conflicts more precise. That is information present in the summary, not evidence of a before/after improvement.",
+      "support": [
+        "The supplied condition is 'summary-only; later sequence views not supplied'.",
+        "The four displayed investigram references have distinct referents.",
+        "@investigram-c5872157 qualifies callback invocation as applying to every incoming own property."
+      ],
+      "unknowns": [
+        "Whether explanation clarified anything beyond this summary, decomposition created finer selection targets, or examination changed a substantive claim is unknown."
+      ]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "I would select @investigram-c5872157 with an examination lens focused on callback order and value ownership. I would want to learn exactly which old and recursively merged incoming values the callback receives, whether callbacks run for properties absent from the earlier object, and whether returned values share nested objects with inputs. The reference is displayed and the summary says references remain bound for the session. However, an examination control, supported lens menu and resulting examination view are not shown; this is a requested next investigation, not a demonstrated available interaction.",
+      "support": [
+        "@investigram-c5872157 is the displayed reference for the recursive implementation and all three exported entry functions.",
+        "Its main account says 'at each incoming property conflict', while its qualification specifies every incoming own property after recursive plain-object merging.",
+        "The summary states 'References remain bound for this session' and displays 'New investigation request.'"
+      ],
+      "unknowns": [
+        "Whether the current interface accepts an examination lens or permits direct reference selection is not demonstrated.",
+        "The callback arguments, ownership details and results of a future investigation remain unknown."
+      ]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No concrete correction, original/replacement pair or changed claim is shown. The footer says this checkpoint shows immutable originals and explicit correction links, but the supplied body does not display such a pair or link. It also says replacement selection and reconsideration display arrive later, so those should be treated as future functionality. Composition is explicitly labeled: the entrypoint account composes the runtime and helper accounts, and the runtime account composes the type account. There is no displayed later-investigation provenance relationship to compare with those composition links. The attempt identifier and hosted functionality metadata alone do not establish a sequence of subsequent investigations.",
+      "support": [
+        "@investigram-fc9552fd has Composition: @investigram-c5872157, @investigram-9a635ca2.",
+        "@investigram-c5872157 has Composition: @investigram-e3139c82.",
+        "The footer says corrections are 'retained assertions, not established truth' and that replacement selection and reconsideration display 'arrive in a later milestone'."
+      ],
+      "unknowns": [
+        "No original/replacement identifiers, correction author, correction reason or changed wording can be identified from this view.",
+        "Later-investigation lineage and how the interface distinguishes it from composition are not demonstrated."
+      ]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The summary is useful for orienting a reader to the public API and division between runtime merging, array policy and compile-time typing. Its qualifications help prevent source interpretation from being mistaken for execution evidence. Several details impede use: 'incoming property conflict' suggests a narrower callback trigger than the qualification establishes; 'array policy below' points in the wrong direction because the helper appears above the runtime account; and the correction footer claims explicit links without showing any concrete correction. The anonymous module name and opaque evidence identifiers make locating or assessing the underlying material difficult. Long evidence lists and identical attempt/session usage blocks visually compete with the functional explanation. Composition is labeled but its exact relationship to module dependencies or investigation history is not explained. 'Accepted' could be mistaken for a truth endorsement, though the interpretation footer limits that reading. The view is useful as an initial map, with limited support for verification or carrying out a next action.",
+      "support": [
+        "The runtime account uses 'conflict', then broadens that wording in its callback qualification.",
+        "The helper account precedes the runtime account's reference to the policy 'below'.",
+        "The displayed module name is 'anonymous', and evidence uses long session-bound identifiers.",
+        "Attempt and session blocks repeat the same five-call and token reports.",
+        "The correction footer asserts explicit correction links, while the displayed accounts show only composition and evidence references."
+      ],
+      "unknowns": [
+        "Whether the live interface makes these identifiers clickable, collapses metadata or offers contextual controls cannot be determined from this supplied view.",
+        "Later views could resolve these limitations, but they were not supplied."
+      ]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful for initial orientation, but insufficient for verifying behavior or understanding an investigation's evolution.",
+    "reasons": [
+      "The four referenced accounts communicate a clear separation of API exposure, runtime implementation, array policy and compile-time modeling.",
+      "Explicit source-only and external-dependency qualifications preserve meaningful uncertainty.",
+      "Callback wording, an incorrect directional reference and a generic correction claim create avoidable ambiguity.",
+      "Opaque evidence identifiers and repeated accounting details reduce scanability."
+    ],
+    "limitations": [
+      "Assessment uses only the supplied summary and does not verify any implementation claim.",
+      "No explanation, decomposition, examination, concrete correction or later-investigation provenance view was supplied.",
+      "Interactive selection capabilities and exact evaluator model/usage metadata are not established."
+    ]
+  }
+}

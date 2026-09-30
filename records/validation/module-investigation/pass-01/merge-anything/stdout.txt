@@ -1,0 +1,62 @@
+Session 3afeecca-2c48-48e3-bf87-883202535224
+Inputs are assumed unchanged. Use help for commands; exit or EOF to finish.
+postcode> summarize anonymous
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-a44de3a8: anonymous
+
+@investigram-fc9552fd · interpretation
+Public entrypoint for recursive merging: it adds no merge logic, but wildcard-re-exports the merge API and array-conflict helper. Its public surface is `merge`, `mergeAndCompare`, `mergeAndConcat`, `concatArrays`, and the `Merge` type.
+Referent: the requested public entrypoint module
+  Qualification: Static TypeScript/source interpretation; runtime execution and deployment behavior were not observed.
+  Qualification: The module handle is an anonymous generated navigation aid; functionality is inferred from its established re-export routes.
+  Qualification: Dependency coverage is bounded to recognized project-owned source requests.
+  Composition: @investigram-c5872157, @investigram-9a635ca2
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:3afeecca-2c48-48e3-bf87-883202535224:source:43636cb88b647809d461625bccebd341219dd09e3a70ecc4bc82234a446ed0f2, session:3afeecca-2c48-48e3-bf87-883202535224:dependency:ed268f1d30fc438081dd6ceffba6814b08906e6f770ff92ade7352ccb62823ac, session:3afeecca-2c48-48e3-bf87-883202535224:dependency:2d10a79ac4e197e72485153249a6e2fe4025cf5d456e6fd8f8d98629fa585377, session:3afeecca-2c48-48e3-bf87-883202535224:export:e26f07d96b232e4d184ad3e0cdf396135d5d38a0deec01c3652af840c3079397, session:3afeecca-2c48-48e3-bf87-883202535224:export:03e0101ac41b08cef3e381d2473a2ab7bce98037a1901b29e353d87f07f7f0c3, session:3afeecca-2c48-48e3-bf87-883202535224:export:5cbf575991c6bb6718d39fc9141a7b4e4919d6e1a778613577b5a23228b482fd, session:3afeecca-2c48-48e3-bf87-883202535224:export:93b3c024cb4f29a0fd0c645ef2a6b6f9b954e5c8054ddb60d0dffe3f97ba6fa0, session:3afeecca-2c48-48e3-bf87-883202535224:export:c1d37ad435569036afef1aae8e2b1cd24813adb35694bc6bba803ad4aa5404a8
+
+@investigram-9a635ca2 · interpretation
+`concatArrays` is both public and the built-in `mergeAndConcat` conflict policy: when both old and new values are arrays it returns their concatenation; otherwise it returns the new value unchanged.
+Referent: array concatenation conflict helper
+  Qualification: Behavior is read from captured source, not established by execution.
+  Qualification: Array recognition is delegated to an external predicate whose implementation was not inspected.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:3afeecca-2c48-48e3-bf87-883202535224:captured-content:6f64ed2803e14f05072f46970bb3eee68517667fd9442ba8d3d0ad0536c50f83, session:3afeecca-2c48-48e3-bf87-883202535224:source:7caa54971fa1ecdabf543e16a9c0472b7a47d21dd77f32f2ca6767365092fe70, session:3afeecca-2c48-48e3-bf87-883202535224:export:93b3c024cb4f29a0fd0c645ef2a6b6f9b954e5c8054ddb60d0dffe3f97ba6fa0
+
+@investigram-c5872157 · interpretation
+`merge` folds later inputs over the first. A non-plain incoming value replaces the accumulated value; plain objects are rebuilt recursively from own string and symbol properties. Later properties win, non-enumerability is preserved, `__proto__` is skipped, and class/special-object values are assigned rather than traversed. `mergeAndCompare` inserts a caller callback at each incoming property conflict; `mergeAndConcat` supplies the array policy below.
+Referent: runtime recursive merge implementation and its three exported entry functions
+  Qualification: Behavior is read from captured source, not established by execution.
+  Qualification: The comparison callback is invoked for every incoming own property after any recursive plain-object merge, not only when both sides are defined.
+  Composition: @investigram-e3139c82
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:3afeecca-2c48-48e3-bf87-883202535224:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:3afeecca-2c48-48e3-bf87-883202535224:documentation-association:3c6f811fbf03931840c225d3db59e1033450106a646ffd1483e9cfcb941b64dd, session:3afeecca-2c48-48e3-bf87-883202535224:source:8e720325202e79ae5656f9a4758857448dfd8eb8be21b13c06a65c5847d99358, session:3afeecca-2c48-48e3-bf87-883202535224:source:a3fd7ea754d19eb66f578f6ca3befe3e8d8087065164a7d2075316f234b688b6, session:3afeecca-2c48-48e3-bf87-883202535224:source:9497fc07d5b62237183636e8bb45b53c0424ebc9ddafe6fe6dc3db993793c60e
+
+@investigram-e3139c82 · interpretation
+`Merge<T, Ts>` models the result: record-like inputs delegate to `Assign` for deep, last-in override typing and then `PrettyPrint` for a readable expanded shape; otherwise it falls back to the last supplied type via `Pop`. The same utility is exported for standalone type use.
+Referent: the exported compile-time result model
+  Qualification: This is compile-time TypeScript behavior, not a runtime operation.
+  Qualification: The claim that it reflects JavaScript is recorded documentation and was not independently executed.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:3afeecca-2c48-48e3-bf87-883202535224:source:e8d31cc77ae274a753f7a7f34dbc2b6c693f8c8d6e41a9610d4059c17300ba70, session:3afeecca-2c48-48e3-bf87-883202535224:documentation-association:3c256e44f3868ad7f43645dc1203251271c17c5c51b0fbb0a96fcbe36c6bf2dd, session:3afeecca-2c48-48e3-bf87-883202535224:export:6d104b9d72531d2c9044a17c5a2f1127c3cf1b684a2c78094ccd14b40fe7f0a9, session:3afeecca-2c48-48e3-bf87-883202535224:export:e0c39ff912590420eaf7b2de2666f85f3927fe80e4722aded0a524a5403d1737
+Attempt session:3afeecca-2c48-48e3-bf87-883202535224:investigation-attempt:f24f28870f6ba49cd764ca6d43a2ecb5c9e29f3346492b5e4f5e49abf3e7136e (accepted) reported usage: 5 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 216892 tokens; input 211316 tokens (subset of total); output 5576 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 274 tokens (subset of output)
+Session reported usage: 5 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 216892 tokens; input 211316 tokens (subset of total); output 5576 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 274 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+This checkpoint shows immutable originals and explicit correction links; replacement selection and reconsideration display arrive in a later milestone.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> usage
+Investigation usage
+References remain bound for this session.
+Attempt session:3afeecca-2c48-48e3-bf87-883202535224:investigation-attempt:f24f28870f6ba49cd764ca6d43a2ecb5c9e29f3346492b5e4f5e49abf3e7136e (accepted) reported usage: 5 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 216892 tokens; input 211316 tokens (subset of total); output 5576 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 274 tokens (subset of output)
+Session reported usage: 5 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 216892 tokens; input 211316 tokens (subset of total); output 5576 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 274 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+This checkpoint shows immutable originals and explicit correction links; replacement selection and reconsideration display arrive in a later milestone.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> exit

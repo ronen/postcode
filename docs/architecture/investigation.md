@@ -419,3 +419,16 @@ or failure records, never headers or SDK exceptions. Failure records retain HTTP
 status, body shape, exact safe code/parameter and request ID; known credential
 echoes are redacted before delivery. Captures may contain repository source and
 remain development artifacts, not additional investigator access.
+
+The development assessment harness drives the ordinary CLI and parent transport,
+retaining exact views, observations and sanitized exchanges. A frozen pass fixes
+source revisions, effective project configuration, compiler version, investigator
+configuration and shared instructions; preflight rejects drift before credential
+access. Assessment-only configuration overrides are preserved separately from
+unchanged pinned source and attributed as part of the effective configuration.
+Planned assessment runs and additional implementation diagnostics use separate
+request ledgers. Reservations precede dispatch, including requests whose usage
+remains unknown. A ledger ceiling is an administrative interruption, not an
+interpretive result or milestone failure; ordinary investigation execution guards
+retain their distinct outcomes. Fresh view-only evaluators and source-informed
+assessors consume captured artifacts separately and receive no credentials.

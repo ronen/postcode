@@ -1,0 +1,137 @@
+{
+  "roles": [
+    {
+      "subject": "cockatiel",
+      "role": "assessor",
+      "task": "/root/assess_cockatiel",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "monetaryAttribution": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode"
+    },
+    {
+      "subject": "cockatiel",
+      "role": "evaluator",
+      "task": "/root/evaluate_cockatiel",
+      "model": "inherited configured model; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "monetaryAttribution": null,
+      "billingRoute": "orchestration agent tools; unavailable attribution; separate from PostCode investigator"
+    },
+    {
+      "subject": "focused-entry",
+      "role": "assessor",
+      "task": "/root/assess_entry",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "monetaryAttribution": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode"
+    },
+    {
+      "subject": "focused-entry",
+      "role": "evaluator",
+      "task": "/root/evaluate_entry",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "monetaryAttribution": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode"
+    },
+    {
+      "subject": "focused-hard-limit",
+      "role": "assessor",
+      "task": "/root/assess_limit",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "monetaryAttribution": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode"
+    },
+    {
+      "subject": "focused-hard-limit",
+      "role": "evaluator",
+      "task": "/root/evaluate_limit",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "monetaryAttribution": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode"
+    },
+    {
+      "subject": "fsm-engine",
+      "role": "assessor",
+      "task": "/root/assess_fsm",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "monetaryAttribution": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode"
+    },
+    {
+      "subject": "fsm-engine",
+      "role": "evaluator",
+      "task": "/root/evaluate_fsm",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "monetaryAttribution": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode"
+    },
+    {
+      "subject": "focused-opaque",
+      "role": "assessor",
+      "task": "/root/assess_opaque",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "monetaryAttribution": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode"
+    },
+    {
+      "subject": "focused-opaque",
+      "role": "evaluator",
+      "task": "/root/evaluate_opaque",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "monetaryAttribution": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode"
+    },
+    {
+      "subject": "merge-anything",
+      "role": "assessor",
+      "task": "/root/assess_merge",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "monetaryAttribution": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode"
+    },
+    {
+      "subject": "merge-anything",
+      "role": "evaluator",
+      "task": "/root/evaluate_merge",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "monetaryAttribution": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode"
+    }
+  ],
+  "limitation": "Usage and monetary attribution are unavailable, not zero. These tool-hosted agents may share the account allowance; none are included in PostCode session token totals. One Cockatiel evaluator follow-up only persisted its existing answer; all other roles use one fresh turn."
+}

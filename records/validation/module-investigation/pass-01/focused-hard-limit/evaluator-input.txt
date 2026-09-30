@@ -1,0 +1,28 @@
+You are a fresh view-only evaluator. Assess only the user-facing view below. Do not inspect source, references, task history, documentation, plans or internet. Answer the fixed questions and preserve uncertainty. Exact model/usage metadata may be unavailable; do not invent it.
+
+{
+  "version": 1,
+  "condition": "summary-only; later sequence views not supplied",
+  "questions": [
+    "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+    "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+    "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+    "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+    "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+    "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score."
+  ],
+  "answerFormat": "JSON with answers [{question,answer,support,unknowns}], usefulness {judgment,reasons,limitations}. Use only supplied user-facing views; no independent sources or tools."
+}
+
+USER-FACING VIEW
+Module summary
+References remain bound for this session.
+New investigation request.
+limit-stop: Dialogue character guard reached.
+Selection: selected (1 matches).
+Module @module-801ab967: opaque
+Attempt session:29fedb35-baa5-484e-b217-9efd14443215:investigation-attempt:825ae9f7e8579613c257dc1e8a7aeedf7f447c60d70e1e8b36652496c56490ca (limit-stop) reported usage: 0 calls; 0 unknown; 0 anomalous.
+Session reported usage: 0 calls; 0 unknown; 0 anomalous.
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+This checkpoint shows immutable originals and explicit correction links; replacement selection and reconsideration display arrive in a later milestone.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.

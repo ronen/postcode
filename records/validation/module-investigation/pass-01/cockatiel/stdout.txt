@@ -1,0 +1,58 @@
+Session 0433ea25-913d-4dc3-a8e5-084e76f8b207
+Inputs are assumed unchanged. Use help for commands; exit or EOF to finish.
+postcode> summarize executor
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-e65c42fd: executor
+
+@investigram-b4f3a61a · interpretation
+Executes synchronous or asynchronous callbacks behind policy-supplied error/result predicates, classifies their outcomes, and exposes timed success/failure notifications. It also provides the small adapter that turns classified outcomes back into ordinary return-or-throw behavior.
+Referent: Executor module and its exported execution/outcome API
+  Qualification: Interpretation of first-observed TypeScript source; source establishes implementation text, not executed behavior in a particular runtime.
+  Qualification: Configured-project module/dependency analysis is bounded and does not establish runtime dependency completeness.
+  Composition: @investigram-1338a97e, @investigram-fa14b40f
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:0433ea25-913d-4dc3-a8e5-084e76f8b207:source:8427b7eac4fab8d5c817c70017ba8479710ab3afa6779a31336bdf277fec3dbd, session:0433ea25-913d-4dc3-a8e5-084e76f8b207:export:646b834659e590e7ef07cc184b49eb5cd4d68a61ebdc398d586614b9b5725fd1, session:0433ea25-913d-4dc3-a8e5-084e76f8b207:export:bf30b1e29c27318b32a50ce708f5527dc9e39d20c384f83cfdd29682386bf11a, session:0433ea25-913d-4dc3-a8e5-084e76f8b207:export:4a4b13f834912c68fdb4b0aaac052eebadeae2ede87f96a20ed462c3799ae3eb
+
+@investigram-fa14b40f · interpretation
+`FailureOrSuccess<R>` distinguishes ordinary success from policy-handled error or value failures. `returnOrThrow` throws the error case and returns either the success or handled value case.
+Referent: Classified outcome union and its unwrapping adapter
+  Qualification: The three cases are structurally discriminated by property presence; malformed external values are outside the declared type contract.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:0433ea25-913d-4dc3-a8e5-084e76f8b207:source:ff5c325c28823bfb0ba1bf80c92d4a862db0eb29d9a8eb3a0961cb914f1d2677, session:0433ea25-913d-4dc3-a8e5-084e76f8b207:source:11985e6907388eb17d657be3549d569d4ab3edcfea867c1b8148b32d0a9be720, session:0433ea25-913d-4dc3-a8e5-084e76f8b207:source:a2ac3b0045ddfb88715fe826f500bfc17536ba718208d0f185f7cad3139a6415
+
+@investigram-1338a97e · interpretation
+`invoke` awaits the callback. An unfiltered value becomes `{success}`; a filtered value becomes handled `{value}`. A filtered exception becomes `{error}`; an unfiltered exception is rethrown after failure notification. Timing is skipped unless a success or failure listener exists, using `performance.now()` when available and `process.hrtime.bigint()` otherwise.
+Referent: ExecuteWrapper invocation, filtering, timing, and notification mechanism
+  Qualification: Behavior is inferred from the captured implementation; platform availability and timing precision were not executed or tested.
+  Composition: @investigram-a9f22684
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:0433ea25-913d-4dc3-a8e5-084e76f8b207:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c, session:0433ea25-913d-4dc3-a8e5-084e76f8b207:source:8427b7eac4fab8d5c817c70017ba8479710ab3afa6779a31336bdf277fec3dbd
+
+@investigram-a9f22684 · interpretation
+`clone` preserves both predicates but creates fresh emitters, so derived policy instances share classification rules rather than subscriptions.
+Referent: ExecuteWrapper clone behavior
+  Qualification: Fresh-listener behavior follows from construction of a new wrapper and per-instance emitter fields.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:0433ea25-913d-4dc3-a8e5-084e76f8b207:source:8427b7eac4fab8d5c817c70017ba8479710ab3afa6779a31336bdf277fec3dbd
+Attempt session:0433ea25-913d-4dc3-a8e5-084e76f8b207:investigation-attempt:153ec327cc64f10faa0141dc47fefadb384fb7fb207db9724f4ea9251ccf1315 (accepted) reported usage: 5 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 204659 tokens; input 199671 tokens (subset of total); output 4988 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 618 tokens (subset of output)
+Session reported usage: 5 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 204659 tokens; input 199671 tokens (subset of total); output 4988 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 618 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+This checkpoint shows immutable originals and explicit correction links; replacement selection and reconsideration display arrive in a later milestone.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> usage
+Investigation usage
+References remain bound for this session.
+Attempt session:0433ea25-913d-4dc3-a8e5-084e76f8b207:investigation-attempt:153ec327cc64f10faa0141dc47fefadb384fb7fb207db9724f4ea9251ccf1315 (accepted) reported usage: 5 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 204659 tokens; input 199671 tokens (subset of total); output 4988 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 618 tokens (subset of output)
+Session reported usage: 5 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 204659 tokens; input 199671 tokens (subset of total); output 4988 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 618 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+This checkpoint shows immutable originals and explicit correction links; replacement selection and reconsideration display arrive in a later milestone.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> exit

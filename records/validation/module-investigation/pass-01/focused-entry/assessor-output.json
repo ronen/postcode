@@ -1,0 +1,77 @@
+{
+  "findings": [
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The summary and evaluator distinguish the entry module's two responsibilities without inventing a common business purpose.",
+      "evidence": [
+        "Frozen reference, Controlled focused cases: entry.ts delegates to numeric clamping in normalize.ts and a module-scoped incrementing counter in counter.ts.",
+        "@investigram-277b134e identifies numeric clamping and a stateful sequence counter, with Composition: @investigram-cab5aec0, @investigram-2b9ef522.",
+        "Evaluator answer 1 assigns clamping to the numeric implementation and mutable state to the sequence implementation."
+      ],
+      "consequence": "The evaluator recovers the central functional distinction and can identify a concrete component for a subsequent investigation.",
+      "uncertainty": "The frozen reference supports delegation and the responsibility split; it does not independently settle the stronger wording that the entry adds no computation or that the functions are unrelated in every possible context."
+    },
+    {
+      "category": "material-omission",
+      "claim": "The captured interpretation omits the deliberately authored README's purity and determinism claim and its conflict with the counter; the evaluator consequently does not report that conflict.",
+      "evidence": [
+        "Frozen reference, Controlled focused cases: the fixture README describes all exports as pure/stateless and deterministic for the same arguments, and the counter contradicts that assertion.",
+        "The frozen reference calls for reporting the attributed documentation conflict.",
+        "@investigram-2b9ef522 communicates module-local mutable state, but none of the three displayed interpretations attributes or discusses the README assertion.",
+        "Evaluator answers 1, 2, and 6 discuss state and qualifications but do not mention conflicting documentation."
+      ],
+      "consequence": "The user learns that the counter is stateful but loses the consequential finding that the repository's own documentation gives a contradictory account. This leaves the focused case's communication objective only partly satisfied.",
+      "uncertainty": "The supplied artifacts do not show whether the investigator accessed the README or why the conflict was omitted. A view-only evaluator could not be expected to discover undisplayed documentation; its failure to mention the conflict is not evidence of a misunderstanding or an affirmative endorsement of purity."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator preserves the distinction between source-based interpretation, displayed workflow status, and runtime or billing verification.",
+      "evidence": [
+        "@investigram-277b134e limits its account to first-observed TypeScript source and compiler-derived exports/dependencies and says execution, loader behavior, and deployment were not verified.",
+        "@investigram-2b9ef522 qualifies module instantiation/caching and bounds its reset statement to the captured module source.",
+        "Evaluator answer 2 explicitly treats accepted as workflow status, identifies unavailable underlying evidence, and does not infer actual charges from token reports.",
+        "Frozen reference: source inspection is not execution or proof of runtime guarantees; role metadata and reported usage require qualification."
+      ],
+      "consequence": "The evaluator does not promote the functional narrative, accepted status, or usage report into stronger verification claims.",
+      "uncertainty": "These are observations about the supplied communication. Neither the reference nor the view establishes runtime behavior, actual billing, or independent corroboration by the evaluator."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "Several precise details repeated by the evaluator are displayed in the interpretation but cannot be independently checked against the supplied frozen reference's abbreviated fixture description.",
+      "evidence": [
+        "@investigram-cab5aec0 and evaluator answer 1 specify the 0–100 range and NaN passthrough.",
+        "@investigram-2b9ef522 and evaluator answer 1 specify initialization at 0, a first result of 1, and no exposed reset.",
+        "The frozen reference specifies numeric clamping and a module-scoped incrementing counter, without reproducing those expressions or the full module source."
+      ],
+      "consequence": "These details demonstrate faithful reading of the view, but the assessment cannot classify them as independently confirmed source facts or generation errors.",
+      "uncertainty": "The evidence identifiers are displayed, but their contents are not supplied. No independent source inspection was performed."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator accurately identifies the limits of assessing later workflow behavior from this summary and treats a proposed examination as a desired next step.",
+      "evidence": [
+        "Evaluator answer 3 declines to infer before-and-after effects of explanation, decomposition, or examination from the summary's component references.",
+        "Evaluator answer 4 selects @investigram-2b9ef522 for a prospective state-sharing examination while explicitly saying that the summary does not demonstrate a lens selector or completed examination.",
+        "Evaluator answer 5 distinguishes the explicitly labeled composition relationship from unavailable later-investigation provenance and finds no concrete correction pair.",
+        "The view's footer says that this checkpoint shows immutable originals and explicit correction links, while the supplied entries contain no concrete correction relationship."
+      ],
+      "consequence": "The evaluator avoids inventing later views or treating generic footer wording as proof of a displayed correction. Its concern about the footer is grounded in the supplied text.",
+      "uncertainty": "Absent follow-up views and absent interaction controls in this text do not establish generation defects or unavailable capabilities in the full interface. The frozen reference supplies no runtime or rendered-interface evidence to resolve those questions."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful for the entry module's bounded functional overview, but materially incomplete for the focused documentation-conflict case.",
+    "reasons": [
+      "The summary separates numeric normalization from a stateful sequence operation and provides component references that the evaluator can use meaningfully.",
+      "The evaluator retains source and runtime qualifications instead of treating the interpretation or accepted attempt status as verified correctness.",
+      "The README's contradictory purity and determinism assertion is absent, so the user cannot recognize the documented-versus-implemented behavior conflict from the supplied view.",
+      "The evaluator's comments about repeated usage totals and generic correction language are traceable to the supplied presentation, although their impact on users was not measured."
+    ],
+    "limitations": [
+      "Only the supplied frozen reference, user view, and evaluator response were used; source contents behind evidence identifiers were not inspected.",
+      "The reference is qualified source analysis rather than runtime proof and does not settle every precise edge-case statement in the view.",
+      "This is a purposeful development fixture with shared reference selection and orchestration; same-family fresh contexts do not establish independent corroboration or generalizable performance.",
+      "The absence of follow-up views is not assessed as a generation defect, and no milestone conclusion follows from this summary-only assessment."
+    ]
+  }
+}

@@ -206,3 +206,17 @@ For a credential-free native browser diagnostic after building, run
 launcher and waits for the browser to request a temporary local test page. It
 opens a browser tab but does not access Keychain, initiate OAuth or contact an
 inference provider. This opt-in check is separate from the routine offline suite.
+
+## Reproducing the current assessment configuration
+
+The summary assessment pass uses `gpt-5.6-sol`, medium reasoning and the explicitly
+selected ChatGPT-plan route throughout. Its [frozen manifest](../records/validation/module-investigation/pass-01/manifest.json)
+records repository revisions, input hashes, Node 22.13.1 and PostCode's analyzer
+TypeScript **6.0.3**. The human approved an assessment-only merge-anything
+[configuration override](../records/validation/module-investigation/pass-01/merge-anything-override.json):
+it extends the unchanged original `tsconfig.json` and sets only
+`compilerOptions.ignoreDeprecations` to `"6.0"`. Results belong to that effective
+configuration. Original tracked source/configuration stays unchanged; the runner
+checks the pin, hashes and compiler version before inference. Cockatiel and
+fsm-engine use their original configurations. Reproduction instructions and the
+separate diagnostic/assessment accounting are in the [development harness guide](../scripts/module-investigation/README.md).
