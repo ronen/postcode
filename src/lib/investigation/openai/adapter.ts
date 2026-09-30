@@ -101,7 +101,12 @@ function investigator(session: ChatGPTSession, subscription: boolean, options: T
             let responseIssue = 'invalid_provider_response';
             try {
               if (subscription) {
-                if (!wire.headers.get('content-type')?.includes('text/event-stream')) { responseIssue = 'unexpected_response_content_type'; throw new SyntaxError(); }
+                // Some subscription responses omit Content-Type despite carrying SSE.
+                // Parse the requested stream; framing and an explicit terminal still
+                // determine success. An explicitly incompatible type remains an error.
+                const contentType = wire.headers.get('content-type');
+                if (contentType !== null && !contentType.includes('text/event-stream')) { responseIssue = 'unexpected_response_content_type'; throw new SyntaxError(); }
+                if (!wire.body) { responseIssue = 'stream_ended_without_terminal'; throw new SyntaxError(); }
                 const stream = Stream.fromSSEResponse<Record<string, unknown>>(wire, new AbortController(), client);
                 for await (const event of stream) {
                   if (streamEvents.length < 100) streamEvents.push(typeof event.type === 'string' ? event.type : '[missing event type]');

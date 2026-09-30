@@ -385,8 +385,11 @@ tier and a 16,000 output-token cap. ChatGPT requests stream, group the two funct
 in a namespace, and omit unsupported fields including the output-token cap.
 Deltas and output-item completion are never accepted as completed submissions.
 An explicit terminal event supplies response status when the optional nested status
-is absent; a contradictory nested status is rejected. Missing stream content type,
-premature EOF and inconsistent terminals produce distinct credential-safe diagnostics.
+is absent; a contradictory nested status is rejected. Absent content type does not prevent parsing the requested event stream; an
+explicitly incompatible type is rejected. Valid framing and a completed terminal
+are still required. Premature EOF and inconsistent terminals produce distinct
+credential-safe diagnostics. Empty terminal output does not produce a submission,
+even if earlier output-item events were received.
 Only a successful completed response may submit a whole result to domain
 validation; failed/incomplete terminals, malformed streams and premature EOF
 remain distinct from accepted investigrams. Domain guards still bound the dialogue.

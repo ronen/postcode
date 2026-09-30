@@ -17,10 +17,12 @@ GPT-5.6 Sol is a capable alternative with lower published token rates than GPT-6
 Astra, preserving a reasonably capable, moderately priced starting configuration.
 Sufficient interpretive value remains for assessment to establish. Hold this
 configuration fixed throughout the pass; disappointing findings do not authorize
-switching to Astra. The account catalog lists the selected model, but live medium
-reasoning and streaming compatibility remain unverified: the connection check
-received HTTP 200 without a content type and accepted no result. See the
-[verification record](../records/validation/module-investigation/2026-09-30-chatgpt-56sol-check.md).
+switching to Astra. A diagnostic request with this configuration reached completed
+inference and reported token usage. It exposed a stream without a content-type
+header, now supported, and an empty terminal output despite earlier function-call
+events. Successful PostCode tool submission remains unverified; assessments are
+paused. See the [diagnostic record](../records/validation/module-investigation/2026-09-30-chatgpt-stream-diagnostic.md)
+and [earlier checks](../records/validation/module-investigation/2026-09-30-chatgpt-56sol-check.md).
 This selection rationale is not a claim about actual ChatGPT
 credit charges, which remain unattributed by token reports.
 

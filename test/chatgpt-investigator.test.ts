@@ -126,7 +126,7 @@ test('terminal events supply optional response status while partial output and c
 
 test('stream diagnostics distinguish content type, premature EOF and contradictory terminal status and redact credentials', async () => {
   for (const [wire, code] of [
-    [new Response(null), 'unexpected_response_content_type'],
+    [new Response(null), 'stream_ended_without_terminal'],
     [new Response('{}', { headers: { 'content-type': 'application/json' } }), 'unexpected_response_content_type'],
     [sse([{ type: secret }]), 'stream_ended_without_terminal'],
     [sse([{ type: 'response.created' }]), 'stream_ended_without_terminal'],
@@ -138,4 +138,24 @@ test('stream diagnostics distinguish content type, premature EOF and contradicto
     assert.equal(JSON.stringify(result).includes(secret), false);
     if (result.kind === 'communication-failure') { assert.equal(result.code, code); assert.equal(result.provider?.status, 200); }
   }
+});
+
+test('absent content type permits framed terminal responses while empty output, partial events and JSON stay unaccepted', async () => {
+  const completed = response([call('submit_investigram', { prose: 'complete' })]);
+  for (const [events, expected, count] of [
+    [[{ type: 'response.completed', response: completed }], 'submit', 1],
+    [[{ type: 'response.completed', response: response([]) }], 'ended', 1],
+    [[{ type: 'response.failed', response: response([], 'failed') }], 'communication-failure', 1],
+    [[{ type: 'response.incomplete', response: response([], 'incomplete') }], 'truncated', 1],
+    [[{ type: 'response.output_item.done', item: call('submit_investigram', {}) }], 'communication-failure', 0],
+  ] as const) {
+    const wire = sse([...events]); wire.headers.delete('content-type');
+    const reports: ReportedUsage[] = [];
+    const dialogue = chatGPTInvestigator(session, { fetch: async () => wire }).open();
+    const reply = await dialogue.exchange(input, new AbortController().signal, report => reports.push(report)); dialogue.close();
+    assert.equal(reply.kind, expected); assert.equal(reports.length, count);
+  }
+  const dialogue = chatGPTInvestigator(session, { fetch: async () => new Response(new TextEncoder().encode(JSON.stringify(completed))) }).open();
+  const reply = await dialogue.exchange(input, new AbortController().signal, () => assert.fail('not an SSE terminal')); dialogue.close();
+  assert.equal(reply.kind, 'communication-failure');
 });
