@@ -37,7 +37,7 @@ configured TypeScript project.
 ## Current limits
 
 - **Hosted interpretation:** live provider verification and formative assessment
-  remain pending credential setup. Disabled summaries report configuration
+  remain pending an account-compatible model choice. Disabled summaries report configuration
   unavailability; protected hosted credential setup supports macOS only. Public follow-up
   lenses and correction-aware replacement display are not implemented yet.
 

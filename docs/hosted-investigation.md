@@ -7,8 +7,8 @@ billing. Signing in alone does not enable hosted project work. PostCode never
 switches between these routes, accounts or models to recover from a failure.
 
 Both request `gpt-6-sol` with medium reasoning through the public Responses API.
-Live compatibility with the authorized ChatGPT account remains to be checked
-after human setup. No substitute model is selected automatically.
+Compatibility must be verified against the authorized ChatGPT account before
+assessment; availability is account-dependent. No substitute model is selected automatically.
 
 ## Human setup: Sign in with ChatGPT
 
