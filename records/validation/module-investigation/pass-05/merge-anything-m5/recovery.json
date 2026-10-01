@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-01T23:13:18.310805+00:00",
+  "failedCommandOrdinal": 1,
+  "command": "summarize anonymous",
+  "classification": "evidenced plausibly transient provider overload",
+  "evidence": {
+    "type": "service_unavailable_error",
+    "code": "server_is_overloaded",
+    "message": "Our servers are currently overloaded. Please try again later.",
+    "httpStatus": 200,
+    "retryMetadata": "NO_MORE_RETRY"
+  },
+  "rationale": "The explicit overload type/code and try-later message supply evidence beyond an otherwise unclassified HTTP-200 stream failure. Preserve all provider metadata; no assumption about the undocumented retry-metadata header is used. One new dialogue is permitted by the frozen communication-recovery protocol, with no automatic or further same-shell retry.",
+  "recoveryAllowanceUsed": 1,
+  "recoveryAllowanceRemaining": 0,
+  "failedRequestMonetaryAttribution": null
+}

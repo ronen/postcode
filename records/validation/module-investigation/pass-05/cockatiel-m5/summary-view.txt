@@ -1,0 +1,79 @@
+COMMAND: summarize executor
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-e65c42fd: executor
+
+@investigram-f0a90ef1 · interpretation
+This module is the shared call-classification adapter used by several resilience policies. It turns an invoked synchronous or promise-like operation into a tagged success/handled-failure result, emits timed success/failure observations, and provides a helper that converts the tag back into ordinary return/throw behavior.
+Referent: Executor module and its execution-result adapter functionality
+  Qualification: Implementation-based account from first-observed TypeScript source; it does not establish deployed runtime behavior.
+  Qualification: The module has no associated earlier account in this session, and no nearby explanatory documentation was supplied.
+  Displayed composition: @investigram-f0c3a29d, @investigram-8437cd7c, @investigram-cbe246c3, @investigram-e946c605
+  Composition: @investigram-f0c3a29d, @investigram-8437cd7c, @investigram-cbe246c3, @investigram-e946c605
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:export:bf30b1e29c27318b32a50ce708f5527dc9e39d20c384f83cfdd29682386bf11a, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:export:4a4b13f834912c68fdb4b0aaac052eebadeae2ede87f96a20ed462c3799ae3eb, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:export:646b834659e590e7ef07cc184b49eb5cd4d68a61ebdc398d586614b9b5725fd1
+
+@investigram-f0c3a29d · interpretation
+ExecuteWrapper.invoke awaits the supplied function. An unfiltered resolved value becomes {success}; a result matching resultFilter becomes handled failure {value}; a thrown value matching errorFilter becomes {error}; and an unhandled throw is rethrown immediately. Success and failure events carry elapsed duration, while failures additionally report handled status and the error/value reason.
+Referent: ExecuteWrapper invocation and classification behavior
+  Qualification: Both synchronous throws and asynchronous rejection enter the same catch because invocation is awaited inside try/catch.
+  Qualification: Default filters reject every error/result, so ordinary results succeed and thrown errors propagate.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-f0a90ef1
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c
+
+@investigram-8437cd7c · interpretation
+Timing is conditional: no stopwatch is created unless at least one success or failure listener exists. It uses performance.now when available, otherwise process.hrtime.bigint converted to milliseconds. clone preserves the two filters but creates fresh emitters, isolating subscriptions between policy copies.
+Referent: Conditional timing, event emission, and cloning in ExecuteWrapper
+  Qualification: The environment-dependent clocks are implementation branches, not a precision guarantee.
+  Qualification: Listener storage and dispatch are delegated to the Event module.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-f0a90ef1
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:37e84c8771ffc282e7591b6b6542312e296cc6049e4bcec211846a339e6c16de
+
+@investigram-cbe246c3 · interpretation
+returnOrThrow reverses the tagged protocol: it throws an {error}, returns a {success}, and otherwise returns the filtered failure {value}. Thus callers decide whether a handled value remains a normal return, while handled errors regain exception semantics.
+Referent: returnOrThrow result-unwrapping helper
+  Qualification: The helper is intentionally mechanical; retry and other policies can inspect the union directly instead.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-f0a90ef1
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:11985e6907388eb17d657be3549d569d4ab3edcfea867c1b8148b32d0a9be720
+
+@investigram-e946c605 · interpretation
+Policy factories supply configured wrappers to retry, circuit-breaker, and fallback policies. Retry repeatedly invokes through the wrapper, returns {success}, feeds handled failures into backoff/retry events, and on exhaustion throws {error} or returns {value}. NoopPolicy uses the wrapper only for classification/telemetry before unwrapping. BulkheadPolicy constructs a wrapper and exposes its listeners, but its shown execute path calls the function directly, so wrapper timing/classification is not applied there.
+Referent: Delegation from policy construction into consumers of ExecuteWrapper
+  Qualification: Retry, no-op, and bulkhead were inspected as representative consumers; fallback and circuit-breaker construction is established, but their full execution implementations were not read.
+  Qualification: The bulkhead observation is limited to the supplied first-observed implementation source.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-f0a90ef1
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:5b473607db64d9d43e11143671122860af7e5c556bc4f3ac954728cb87cf5e08, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:c1b4f47f88e6b921182bd08f6add826c41b82220b781dd948f52e06fbbec54f1, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:19474d337b02ae1c8bfe18872f87677983eb7a7859a681c7b9d008f92193c046, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:9d807df36b3ab8b378698c5ad60738b0c7fbffc49d852075ca6d769b9bd4c7d2, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:aba78f3fbe7a376bde361ef188bcaf1c1130297a19e2ed3dd3ef3dfffddaa057, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:d8afce65f68c657a72df080f735fc42dc5e350547c0b35550d76df6d83567bb7, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:23aa998381f67512b605373c92b5cf920ca2d17afc596e1537c4161d979fa04a
+
+Revision status @investigram-f0a90ef1: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-f0c3a29d: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-8437cd7c: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-cbe246c3: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-e946c605: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8 (accepted) reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 238172 tokens; input 235361 tokens (subset of total); output 2811 tokens (subset of total); cached-input 28672 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 549 tokens (subset of output)
+Session reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 238172 tokens; input 235361 tokens (subset of total); output 2811 tokens (subset of total); cached-input 28672 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 549 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+

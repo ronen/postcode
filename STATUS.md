@@ -1,6 +1,6 @@
 # Project Status
 
-Last reviewed: 2026-10-01
+Last reviewed: 2026-10-02
 
 PostCode is currently available as a development CLI for investigating one
 configured TypeScript project.
@@ -31,7 +31,10 @@ configured TypeScript project.
 - **[Interpretation integration](docs/cli-reference.md#interpretation-checkpoint-summary-inspection-and-usage).**
   Summary, explanation, decomposition and examination requests, retained account
   navigation, associated-account inspection and attempt/session usage are
-  integrated with the shell. An optional OpenAI adapter supports explicit hosted
+  integrated with the shell. Redisplay selects current replacement accounts while
+  exact inspection preserves originals, composition and provenance. Revision views
+  expose unresolved alternatives and citation-based reconsideration warnings.
+  An optional OpenAI adapter supports explicit hosted
   enablement, API-key billing or persistent Sign in with ChatGPT plan use, and
   macOS Keychain credentials. Billing routes are selected explicitly.
 
@@ -44,10 +47,13 @@ configured TypeScript project.
   after contract clarification and private reference compaction. Semantic omissions
   and limited assessment coverage remain; earlier rejected results are preserved. The human-selected ChatGPT configuration is
   GPT-5.6 Sol with medium reasoning. Disabled summaries report configuration
-  unavailability; protected hosted credential setup supports macOS only. Correction-aware replacement display and derived revision warnings are not implemented yet.
+  unavailability; protected hosted credential setup supports macOS only. Reconsideration warnings identify affected citation paths; they do not establish that an account is wrong or automatically reassess it.
   [Progressive assessments](records/validation/module-investigation/pass-04/report.md)
   show useful clarification, narrower follow-up targets and explicit corrections,
   with dense presentation and gaps in independently assessed evidence.
+  [Integrated assessments](records/validation/module-investigation/pass-05/report.md)
+  exercise replacement selection and reconsideration, with successful controlled
+  corrections alongside incomplete live paths and a rejected submission.
 
 - **[Analysis scope](docs/cli-reference.md#supported-typescript-population-and-qualifications):**
   TypeScript only, one configured project at a time, with explicit coverage limits.

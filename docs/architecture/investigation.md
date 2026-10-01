@@ -1,10 +1,12 @@
 # Investigation execution
 
 This describes the implemented portion of [module investigation](../plans/module-investigation.md),
-including the hosted adapter and progressive shell lenses. The domain boundary, session retention and
-summary/follow-up/inspection CLI paths are exercised through a deterministic agent double
-and the real SDK with offline provider responses. Summary assessments are retained in the milestone-3 validation records.
-Correction-aware human replacement selection remains milestone 5 work. The governing contracts are
+including the hosted adapter, progressive shell lenses, correction-aware selection
+and citation-based reconsideration. The domain boundary, session retention and
+summary/follow-up/inspection paths are exercised through a deterministic agent
+double and the real SDK with offline provider responses. The
+[integrated assessment](../../records/validation/module-investigation/pass-05/report.md)
+retains live evidence and its limitations. The governing contracts are
 [investigator execution](../decisions/investigator-execution-and-evidence-access.md),
 [investigrams](../decisions/investigrams-and-progressive-investigation.md), and
 [operations and lenses](../decisions/investigation-operations-and-lenses.md).

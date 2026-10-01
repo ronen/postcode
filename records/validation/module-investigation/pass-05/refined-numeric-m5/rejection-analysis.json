@@ -1,0 +1,18 @@
+{
+  "commandOrdinal": 9,
+  "operation": "examination",
+  "accepted": false,
+  "invalidEvidenceFields": [
+    {
+      "path": "$.evidence[1]",
+      "handle": "r8Ez-BsWQjyM.4",
+      "reference": "session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram-correction:f4370ae915dfbb482e72dc93540398ef7787c7be5fc9659ccb23f450ac260800"
+    },
+    {
+      "path": "$.corrections[0].evidence[1]",
+      "handle": "r8Ez-BsWQjyM.4",
+      "reference": "session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram-correction:f4370ae915dfbb482e72dc93540398ef7787c7be5fc9659ccb23f450ac260800"
+    }
+  ],
+  "explanation": "Submission used the correction record itself as evidence. Correction context was supplied, but interpretive evidence attribution is to its reporting investigram; correction IDs are not eligible evidence records or cited investigrams. All typed handles resolved, so this is an evidence-contract rejection, not an unresolved-reference failure. No repair or retry was made."
+}

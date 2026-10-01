@@ -1,0 +1,159 @@
+{
+  "roles": [
+    {
+      "case": "cockatiel-m5",
+      "role": "sequence-assessor",
+      "dispatch": "cockatiel-m5/sequence-assessor-dispatch.json",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "usage": null,
+      "monetaryAttribution": null
+    },
+    {
+      "case": "cockatiel-m5",
+      "role": "sequence-evaluator",
+      "dispatch": "cockatiel-m5/sequence-evaluator-dispatch.json",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "usage": null,
+      "monetaryAttribution": null
+    },
+    {
+      "case": "cockatiel-m5",
+      "role": "summary-assessor",
+      "dispatch": "cockatiel-m5/summary-assessor-dispatch.json",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "usage": null,
+      "monetaryAttribution": null
+    },
+    {
+      "case": "cockatiel-m5",
+      "role": "summary-evaluator",
+      "dispatch": "cockatiel-m5/summary-evaluator-dispatch.json",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "usage": null,
+      "monetaryAttribution": null
+    },
+    {
+      "case": "conflict-numeric-m5",
+      "role": "sequence-assessor",
+      "dispatch": "conflict-numeric-m5/sequence-assessor-dispatch.json",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "usage": null,
+      "monetaryAttribution": null
+    },
+    {
+      "case": "conflict-numeric-m5",
+      "role": "sequence-evaluator",
+      "dispatch": "conflict-numeric-m5/sequence-evaluator-dispatch.json",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "usage": null,
+      "monetaryAttribution": null
+    },
+    {
+      "case": "fsm-engine-m5",
+      "role": "sequence-assessor",
+      "dispatch": "fsm-engine-m5/sequence-assessor-dispatch.json",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "usage": null,
+      "monetaryAttribution": null
+    },
+    {
+      "case": "fsm-engine-m5",
+      "role": "sequence-evaluator",
+      "dispatch": "fsm-engine-m5/sequence-evaluator-dispatch.json",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "usage": null,
+      "monetaryAttribution": null
+    },
+    {
+      "case": "fsm-engine-m5",
+      "role": "summary-assessor",
+      "dispatch": "fsm-engine-m5/summary-assessor-dispatch.json",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "usage": null,
+      "monetaryAttribution": null
+    },
+    {
+      "case": "fsm-engine-m5",
+      "role": "summary-evaluator",
+      "dispatch": "fsm-engine-m5/summary-evaluator-dispatch.json",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "usage": null,
+      "monetaryAttribution": null
+    },
+    {
+      "case": "merge-anything-m5",
+      "role": "sequence-assessor",
+      "dispatch": "merge-anything-m5/sequence-assessor-dispatch.json",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "usage": null,
+      "monetaryAttribution": null
+    },
+    {
+      "case": "merge-anything-m5",
+      "role": "sequence-evaluator",
+      "dispatch": "merge-anything-m5/sequence-evaluator-dispatch.json",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "usage": null,
+      "monetaryAttribution": null
+    },
+    {
+      "case": "merge-anything-m5",
+      "role": "summary-assessor",
+      "dispatch": "merge-anything-m5/summary-assessor-dispatch.json",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "usage": null,
+      "monetaryAttribution": null
+    },
+    {
+      "case": "merge-anything-m5",
+      "role": "summary-evaluator",
+      "dispatch": "merge-anything-m5/summary-evaluator-dispatch.json",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "usage": null,
+      "monetaryAttribution": null
+    },
+    {
+      "case": "refined-numeric-m5",
+      "role": "sequence-assessor",
+      "dispatch": "refined-numeric-m5/sequence-assessor-dispatch.json",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "usage": null,
+      "monetaryAttribution": null
+    },
+    {
+      "case": "refined-numeric-m5",
+      "role": "sequence-evaluator",
+      "dispatch": "refined-numeric-m5/sequence-evaluator-dispatch.json",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "usage": null,
+      "monetaryAttribution": null
+    }
+  ],
+  "referenceAndImplementationRole": {
+    "family": "OpenAI",
+    "model": null,
+    "usage": null,
+    "monetaryAttribution": null
+  },
+  "limitations": [
+    "Role usage may draw on the same subscription allowance, but is unavailable and not zero.",
+    "These roles are separate from the PostCode provider request ledger.",
+    "Shared family, reference preparation and orchestration limit independence."
+  ]
+}

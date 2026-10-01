@@ -1,0 +1,102 @@
+{
+  "findings": [
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator accurately recovers the central division between invocation/classification/observation and surrounding retry policy behavior.",
+      "evidence": [
+        "@investigram-f0a90ef1 calls Executor a shared call-classification adapter.",
+        "@investigram-f0c3a29d distinguishes {success}, {value}, {error}, and propagated throws; @investigram-cbe246c3 says returnOrThrow can return a filtered failure value.",
+        "Evaluator answer 1 assigns retry/backoff decisions to Retry.",
+        "Frozen reference: Executor.ts lines 45\u201375 and 6\u201316 establish the tags and unwrapping; RetryPolicy.ts lines 100\u2013140 supply the retry loop."
+      ],
+      "consequence": "The reader receives a useful account of the adapter boundary without attributing retry/backoff or the caller business operation to this file.",
+      "uncertainty": "This supports the central source-level account, not deployed runtime behavior or every detailed consumer claim."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator retains timing and cloning qualifications instead of overgeneralizing the opening summary.",
+      "evidence": [
+        "@investigram-8437cd7c conditions timing on listener presence and says clone retains filters but creates fresh emitters.",
+        "Evaluator answer 1 repeats both qualifications and assigns listener storage/dispatch to Event.",
+        "Frozen reference: Executor.ts lines 19\u201328 and 49\u201368 establish conditional timing and delegated notifications; lines 30\u201343 establish fresh wrappers/emitters with reused filters."
+      ],
+      "consequence": "The evaluator avoids treating timing as unconditional or cloning as copying caller work or state.",
+      "uncertainty": "The frozen reference does not establish clock implementation specifics or complete Event dispatch behavior."
+    },
+    {
+      "category": "material-omission",
+      "claim": "The generated summary and evaluator both omit the consequential exception boundary around filters and listeners.",
+      "evidence": [
+        "@investigram-f0c3a29d explains awaited invocation and the result/error filters, but does not explain that successful-value classification and notification are inside the broad try/catch.",
+        "@investigram-8437cd7c delegates dispatch to Event without stating that listener exceptions can affect execution.",
+        "Evaluator answers 1 and 2 repeat the normal classification account and list runtime/dispatch unknowns but do not identify this specific exception-boundary limitation.",
+        "Frozen reference material limits explicitly state that filter and listener exceptions can affect execution and that the broad try/catch encloses successful-value classification and notification."
+      ],
+      "consequence": "The summary can leave a reader with an incomplete model of what may enter error classification or disrupt an invocation, particularly when supplying custom filters or listeners.",
+      "uncertainty": "Neither the view nor evaluator explicitly claims that only fn exceptions are handled or that all callbacks are safe. This is an omitted qualification, not a demonstrated evaluator assertion of those stronger false claims. The reference supplies no runtime test or exhaustive callback outcome analysis."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "Several detailed generated claims repeated by the evaluator go beyond what this frozen reference can independently validate.",
+      "evidence": [
+        "@investigram-f0c3a29d states that default filters reject every error/result.",
+        "@investigram-8437cd7c names performance.now and process.hrtime.bigint clock branches.",
+        "@investigram-e946c605 describes NoopPolicy unwrapping, BulkheadPolicy direct invocation, and factory construction for fallback and circuit-breaker; evaluator answer 1 repeats these consumer claims.",
+        "The frozen reference covers Executor classification, conditional timing, clone behavior, unwrapping, and RetryPolicy loop ownership, but does not supply those default-filter, clock, no-op, bulkhead, or factory details."
+      ],
+      "consequence": "These details may be useful displayed interpretations, but their correctness cannot be scored as established or erroneous from this reference alone.",
+      "uncertainty": "The evaluator attributes them to displayed accounts and preserves limits on uninspected consumer implementations. Repeating these visible claims is not unsupported evaluator extrapolation; their supporting source contents are outside the permitted assessment packet."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly distinguishes an accepted interpretation from proof and avoids inventing progressive investigation or correction outcomes.",
+      "evidence": [
+        "Every displayed account is labeled interpretation, and @investigram-f0a90ef1 limits its account to first-observed source rather than deployed runtime behavior.",
+        "Evaluator answer 2 says accepted status and usage reports do not prove account truth.",
+        "Evaluator answer 3 identifies the sole summarize executor command and treats the four components as summary composition rather than a later decomposition operation.",
+        "Evaluator answer 4 explicitly describes its proposed policy-execution lens as future investigation, not an available demonstrated interface or obtained result."
+      ],
+      "consequence": "The reader can use the summary for follow-up while preserving uncertainty about validation, interaction capabilities, and changes that were never displayed.",
+      "uncertainty": "No follow-up views or runtime tests are supplied. Their absence is a condition of this assessment, not a generation defect or milestone failure."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator accurately reads original-selection status and separates composition, provenance, and general revision warnings.",
+      "evidence": [
+        "All five revision sections show original remains selected and 0 of 0 relationships/causes.",
+        "@investigram-f0a90ef1 lists four composition children, while each account labels the investigation subject provenance, not composition.",
+        "Evaluator answers 5 and 6 identify no displayed replacement, concrete conflict, reconsideration target, or direct/transitive correction cause.",
+        "The footer distinguishes recency-based selection from credibility and corrected-context exposure from established error."
+      ],
+      "consequence": "The evaluator does not mistake generic warnings, evidence identifiers, or accepted attempt identifiers for an actual correction history or demonstrated semantic reliance.",
+      "uncertainty": "The summary cannot demonstrate the behavior of replacement selection, exact-original inspection, or direct/transitive reconsideration when corrections exist; it also cannot establish the state of other accounts or sessions."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator identifies concrete scanning burdens while keeping usability judgments separate from demonstrated misunderstanding.",
+      "evidence": [
+        "Evaluator answer 7 points to duplicate Displayed composition/Composition lists, repeated provider/provenance metadata, five zero-revision sections, identical attempt/session usage totals, and a lengthy billing footer.",
+        "All of these repetitions appear in the captured summary.",
+        "The evaluator warns that generic correction language and the opening timed-observation wording could mislead, while its own answers correctly retain the account-specific state and listener condition."
+      ],
+      "consequence": "The assessment gives actionable presentation feedback without labeling hypothetical confusion as an observed presentation misunderstanding.",
+      "uncertainty": "The scanning-burden judgment is qualitative. No interaction study or navigation demonstration establishes practical navigation difficulty or the extent of burden for other users."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful as a qualified overview of an invocation, classification, and observation boundary and as a starting point for focused investigation; incomplete for reasoning about callback exception behavior and cumbersome to scan.",
+    "reasons": [
+      "The frozen reference supports the central responsibility assignment, tag distinctions, conditional timing, fresh listener state on clone, value-failure unwrapping, and external ownership of retry loops.",
+      "The evaluator successfully preserves interpretation status and distinguishes summary composition from later investigation and correction history.",
+      "Individually identified component accounts give a concrete follow-up target, and the evaluator correctly treats its proposed lens as a future request.",
+      "The evaluator identifies visible repetition and peripheral reporting that compete with the functional explanation."
+    ],
+    "limitations": [
+      "Filter/listener exception effects and the breadth of the try/catch are materially absent from the generated account and evaluator understanding.",
+      "The frozen reference cannot independently settle several displayed defaults, clock details, and consumer-specific claims; these are not demonstrated generation errors or evaluator extrapolations.",
+      "Only a summary is supplied, so progressive clarification, actual correction/reconsideration behavior, and navigation usability cannot be assessed.",
+      "No runtime test was performed, and caller operations and filters may perform arbitrary work.",
+      "The reference preparer and orchestrator are the implementing agent, with an unavailable exact model identifier in the OpenAI family; this overlap limits assessment independence."
+    ]
+  }
+}

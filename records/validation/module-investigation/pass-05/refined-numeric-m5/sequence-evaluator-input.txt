@@ -1,0 +1,788 @@
+Condition: sequence. These are exact captured user-facing views. Scripted origin denotes controlled setup, not a natural investigator result. Current views distinguish replacement display from exact originals, and expose unresolved conflicts and citation-based reconsideration. These warnings do not establish error or semantic reliance.
+
+QUESTIONS
+{
+  "version": 2,
+  "condition": "summary-only or progressive sequence; use only the supplied condition",
+  "questions": [
+    "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+    "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+    "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+    "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+    "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+    "Which account is currently selected, what conflicts remain, and which accounts need reconsideration? Distinguish direct and transitive causes, exact historical references, and claims the view does not establish. Does the presentation make the warning burden manageable?",
+    "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score."
+  ],
+  "answerFormat": "JSON with answers [{question,answer,support,unknowns}], usefulness {judgment,reasons,limitations}. Use only supplied user-facing views; no independent sources or tools."
+}
+
+VIEWS
+COMMAND: summarize classify
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-096f7ded: classify
+
+@investigram-047e66f3 · interpretation
+The classifier chooses one applicable label for each numeric input, preferring positive to even and then large. Inputs outside these categories return no label.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Displayed composition: @investigram-c6e80ecf
+  Composition: @investigram-c6e80ecf
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-096f7ded (provenance, not composition)
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee
+
+@investigram-c6e80ecf · interpretation
+For a positive even number, the returned array contains the positive label only.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-096f7ded (provenance, not composition)
+  Composition parent: @investigram-047e66f3
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee
+
+Revision status @investigram-047e66f3: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-c6e80ecf: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:b3e3f05e51b9a0d71f5bf065fc07098aa24a4304688861255d21b2f29ec2e3f2 (accepted) reported usage: 2 calls; 0 unknown; 2 anomalous.
+Session reported usage: 2 calls; 0 unknown; 2 anomalous.
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+
+
+COMMAND: explain @investigram-047e66f3
+Explain · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-27c4c9cc · interpretation
+Since classification selects at most one label, reading the first array element conveys the complete classification.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account; callers were not observed.
+  Operation: clarification; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-047e66f3 (provenance, not composition)
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16
+
+Revision status @investigram-27c4c9cc: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-047e66f3: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:c1088eff79d37caf4b63c45e9e9d3ce85299af6bc2f94a33c343da88f3eb25e3 (accepted) reported usage: 1 calls; 0 unknown; 1 anomalous.
+Session reported usage: 3 calls; 0 unknown; 3 anomalous.
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+
+
+COMMAND: decompose @investigram-27c4c9cc
+Decompose · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-2e4cbc09 · interpretation
+A caller summarizing the first returned label need not represent additional classifications for the same number.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account, not an observation of a particular caller.
+  Operation: decomposition; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-27c4c9cc (provenance, not composition)
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:27c4c9ccbc914a3ac0268c2b7892c2c9e33529e3217df2943cee9f0033cb7018
+
+Revision status @investigram-2e4cbc09: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-27c4c9cc: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:c0de16c5779960846dadf336e135f65fad135c245088c4dcd07657ed14898be5 (accepted) reported usage: 1 calls; 0 unknown; 1 anomalous.
+Session reported usage: 4 calls; 0 unknown; 4 anomalous.
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+
+
+COMMAND: examine @investigram-047e66f3
+Examine · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-36d5c456 · interpretation
+Static examination of the implementation establishes that the earlier account's precedence model is incorrect. `classify` evaluates three independent conditions and appends every matching label in fixed order: `positive` when `value > 0`, then `even` when `value % 2 === 0`, then `large` when `value >= 10`. Thus overlaps produce multiple labels—for example, 2 yields `['positive', 'even']` and 12 yields all three—not one preferred label. The nearby README only identifies the signature and available label names; it neither states precedence nor documents the exact predicates. The module has one direct value export, `classify`, and no outgoing source-request dependencies were recorded.
+Referent: Deeper examination and correction of the prior interpretation of the numeric classifier module and its exported classify function.
+  Qualification: Findings are derived by static reading of captured TypeScript source; no execution or runtime observation was performed.
+  Qualification: The concrete examples follow standard JavaScript/TypeScript numeric operators for values satisfying the declared `number` type; the annotation does not itself enforce runtime inputs.
+  Qualification: The dependency result is bounded to recognized project-owned source requests and is not a claim of complete runtime independence.
+  Qualification: The README is nearby group documentation; its placement alone does not establish applicability, truth, currency, or completeness.
+  Displayed composition: @investigram-325a82a4
+  Composition: @investigram-325a82a4
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-047e66f3 (provenance, not composition)
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:export:6b93e650f1cd2956d984207d77c26809e154c53d904388397a35ba2415307b03, session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:a152b080-592f-4090-bcc3-0d68d10c56b0:dependency-evaluation:3dd9a75beeebd0d9957a2e4d77702eddc209ce33fda4bfd40aa6a8415898e614
+
+@investigram-325a82a4 · interpretation
+Consequences of the exact predicates are broader than the earlier category summary: 0, -0, and negative even integers receive `even`; positive odd values below 10 receive only `positive`; values at least 10 always receive `positive` and `large`, additionally receiving `even` when divisible by 2. Under ordinary JavaScript number semantics, `NaN` receives no labels, positive infinity receives `positive` and `large`, and negative infinity receives none. Returned labels preserve predicate order, and duplicates cannot arise within one call because each predicate executes once.
+Referent: Boundary, overlap, ordering, and special-number behavior implied by the classify implementation.
+  Qualification: These are static consequences of the captured expressions, not results from executing tests.
+  Qualification: Special-number observations assume ordinary ECMAScript semantics and a direct call despite the TypeScript annotation; source evidence does not establish caller validation or deployment behavior.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-047e66f3 (provenance, not composition)
+  Composition parent: @investigram-36d5c456
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57
+
+@investigram-127ad6a0 · interpretation
+The module directly exports `classify(value: number): string[]`. Each call creates a fresh array, independently tests positivity, even divisibility, and the threshold of 10, appends every matching label in the fixed order `positive`, `even`, `large`, and returns the array. There is no precedence or mutual exclusion. Consequently an input may receive zero through three labels: 2 receives `['positive', 'even']`, 11 receives `['positive', 'large']`, 12 receives all three, and -2 receives `['even']`.
+Referent: Corrected account of the numeric classifier module and exported classify function.
+  Qualification: Static interpretation of captured source; runtime behavior was not directly observed.
+  Qualification: Examples assume ordinary JavaScript number semantics and values admitted by the declared TypeScript `number` parameter.
+  Qualification: The nearby README corroborates only the signature and available label names, not the exact selection rules.
+  Displayed composition: @investigram-1b750038
+  Composition: @investigram-1b750038
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-047e66f3 (provenance, not composition)
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:export:6b93e650f1cd2956d984207d77c26809e154c53d904388397a35ba2415307b03, session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-1b750038 · interpretation
+For a positive even number, the returned array contains both `positive` and `even`; if the number is also at least 10, it additionally contains `large`. The labels appear in that order.
+Referent: Corrected overlap behavior for positive even inputs.
+  Qualification: Static consequence of the three independent conditions; not runtime-tested.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-047e66f3 (provenance, not composition)
+  Composition parent: @investigram-127ad6a0
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57
+
+Revision status @investigram-36d5c456: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-325a82a4: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-127ad6a0: original remains selected.
+  Revision page 1; 1 of 1 relationships/causes.
+
+Revision status @investigram-1b750038: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-047e66f3: superseded; primary @investigram-127ad6a0.
+  Revision page 1; 1 of 1 relationships/causes.
+
+Correction reported by @investigram-36d5c456: @investigram-047e66f3 → @investigram-127ad6a0
+  Corrected subjects: session:a152b080-592f-4090-bcc3-0d68d10c56b0:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43, session:a152b080-592f-4090-bcc3-0d68d10c56b0:symbol:337f0ddac578f2c7275f2c66db00cea776637e92abfd7e082a40711fcc1871d2
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16, session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:c6e80ecf6ee93bc0ca3c4a928bc77d4d7e8f9eef419ad6da5a71ba94c0e9dc37, session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57
+  Reason: The earlier account says the classifier chooses one applicable label with positive-over-even-over-large precedence. The source instead contains three independent `if` statements, so all matching labels are appended. Its composed child is likewise false: a positive even value such as 2 receives both `positive` and `even`. The prior phrase 'outside these categories' is also too vague to capture cases such as negative even values, which still receive `even`.
+  Qualification: This correction is based on static source evidence and corrects the behavioral interpretation, not observed runtime behavior.
+  Qualification: Complete context for the corrected root and its composed child was retrieved before correction.
+Attempt session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20 (accepted) reported usage: 3 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 23892 tokens; input 21450 tokens (subset of total); output 2442 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 719 tokens (subset of output)
+Session reported usage: 7 calls; 0 unknown; 4 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 23892 tokens; input 21450 tokens (subset of total); output 2442 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 719 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-047e66f3
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-047e66f3 · interpretation
+The classifier chooses one applicable label for each numeric input, preferring positive to even and then large. Inputs outside these categories return no label.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Displayed composition: @investigram-c6e80ecf
+  Composition: @investigram-c6e80ecf
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-096f7ded (provenance, not composition)
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee
+
+@investigram-c6e80ecf · interpretation
+For a positive even number, the returned array contains the positive label only.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-096f7ded (provenance, not composition)
+  Composition parent: @investigram-047e66f3
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee
+
+Revision status @investigram-047e66f3: superseded; primary @investigram-127ad6a0.
+  Revision page 1; 1 of 1 relationships/causes.
+
+Revision status @investigram-c6e80ecf: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Correction reported by @investigram-36d5c456: @investigram-047e66f3 → @investigram-127ad6a0
+  Corrected subjects: session:a152b080-592f-4090-bcc3-0d68d10c56b0:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43, session:a152b080-592f-4090-bcc3-0d68d10c56b0:symbol:337f0ddac578f2c7275f2c66db00cea776637e92abfd7e082a40711fcc1871d2
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16, session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:c6e80ecf6ee93bc0ca3c4a928bc77d4d7e8f9eef419ad6da5a71ba94c0e9dc37, session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57
+  Reason: The earlier account says the classifier chooses one applicable label with positive-over-even-over-large precedence. The source instead contains three independent `if` statements, so all matching labels are appended. Its composed child is likewise false: a positive even value such as 2 receives both `positive` and `even`. The prior phrase 'outside these categories' is also too vague to capture cases such as negative even values, which still receive `even`.
+  Qualification: This correction is based on static source evidence and corrects the behavioral interpretation, not observed runtime behavior.
+  Qualification: Complete context for the corrected root and its composed child was retrieved before correction.
+
+Associated investigrams (explicit associations)
+Listing: available; 2 shown of 2.
+Use inspect @reference for retained content; no inference.
+@investigram-27c4c9cc · interpretation
+  Revision: current original; needs reconsideration (1 causes); inspect this reference for details.
+  Since classification selects at most one label, reading the first array element conveys the complete classification.
+  Operation: clarification; origin: scripted; provenance: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:c1088eff79d37caf4b63c45e9e9d3ce85299af6bc2f94a33c343da88f3eb25e3
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account; callers were not observed.
+  Association: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+@investigram-36d5c456 · interpretation
+  Revision: current original; inspect this reference for details.
+  Static examination of the implementation establishes that the earlier account's precedence model is incorrect. `classify` evaluates three independent conditions and appends every matching label in fixed order: `positive` when `value > 0`, then `even` when `value % 2 === 0`, then `large` when `value >= 10`. Thus overlaps produce multiple labels—for example, 2 yields `['positive', 'even']` and 12 yi [290 prose characters omitted]
+  Operation: examination; origin: hosted; provenance: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20
+  Qualification: Findings are derived by static reading of captured TypeScript source; no execution or runtime observation was performed.
+  Qualification: The concrete examples follow standard JavaScript/TypeScript numeric operators for values satisfying the declared `number` type; the annotation does not itself enforce runtime inputs.
+  Qualification: The dependency result is bounded to recognized project-owned source requests and is not a claim of complete runtime independence.
+  Qualification: The README is nearby group documentation; its placement alone does not establish applicability, truth, currency, or completeness.
+  Association: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:b3e3f05e51b9a0d71f5bf065fc07098aa24a4304688861255d21b2f29ec2e3f2","forms":["full"]},{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["full"]}],"coverage":"full-file","contentDigest":"8c500fd2a09328111cde51266aa6c87a7ff21f2f419906b24f93277968432bd1","mapping":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:7f76b3409b9f359faa7ce048ac16efa697ecf1de4a522f00f17d003d50e6ce22","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:c6e80ecf6ee93bc0ca3c4a928bc77d4d7e8f9eef419ad6da5a71ba94c0e9dc37","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["full"]}]}
+Session reported usage: 7 calls; 0 unknown; 4 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 23892 tokens; input 21450 tokens (subset of total); output 2442 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 719 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-27c4c9cc
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-27c4c9cc · interpretation
+Since classification selects at most one label, reading the first array element conveys the complete classification.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account; callers were not observed.
+  Operation: clarification; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-047e66f3 (provenance, not composition)
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16
+
+Revision status @investigram-27c4c9cc: original remains selected.
+  Needs reconsideration: 1 correction causes. This does not establish error or trigger inference.
+  Direct cause session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram-correction:f4370ae915dfbb482e72dc93540398ef7787c7be5fc9659ccb23f450ac260800: @investigram-047e66f3 → @investigram-127ad6a0; via @investigram-047e66f3.
+  Revision page 1; 1 of 1 relationships/causes.
+
+Correction reported by @investigram-36d5c456: @investigram-047e66f3 → @investigram-127ad6a0
+  Corrected subjects: session:a152b080-592f-4090-bcc3-0d68d10c56b0:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43, session:a152b080-592f-4090-bcc3-0d68d10c56b0:symbol:337f0ddac578f2c7275f2c66db00cea776637e92abfd7e082a40711fcc1871d2
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16, session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:c6e80ecf6ee93bc0ca3c4a928bc77d4d7e8f9eef419ad6da5a71ba94c0e9dc37, session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57
+  Reason: The earlier account says the classifier chooses one applicable label with positive-over-even-over-large precedence. The source instead contains three independent `if` statements, so all matching labels are appended. Its composed child is likewise false: a positive even value such as 2 receives both `positive` and `even`. The prior phrase 'outside these categories' is also too vague to capture cases such as negative even values, which still receive `even`.
+  Qualification: This correction is based on static source evidence and corrects the behavioral interpretation, not observed runtime behavior.
+  Qualification: Complete context for the corrected root and its composed child was retrieved before correction.
+
+Associated investigrams (explicit associations)
+Listing: available; 1 shown of 1.
+Use inspect @reference for retained content; no inference.
+@investigram-2e4cbc09 · interpretation
+  Revision: current original; needs reconsideration (1 causes); inspect this reference for details.
+  A caller summarizing the first returned label need not represent additional classifications for the same number.
+  Operation: decomposition; origin: scripted; provenance: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:c0de16c5779960846dadf336e135f65fad135c245088c4dcd07657ed14898be5
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account, not an observation of a particular caller.
+  Association: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:27c4c9ccbc914a3ac0268c2b7892c2c9e33529e3217df2943cee9f0033cb7018 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:c1088eff79d37caf4b63c45e9e9d3ce85299af6bc2f94a33c343da88f3eb25e3","forms":["prior-interpretation"]},{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:c6e80ecf6ee93bc0ca3c4a928bc77d4d7e8f9eef419ad6da5a71ba94c0e9dc37","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["full"]}],"coverage":"full-file","contentDigest":"8c500fd2a09328111cde51266aa6c87a7ff21f2f419906b24f93277968432bd1","mapping":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:7f76b3409b9f359faa7ce048ac16efa697ecf1de4a522f00f17d003d50e6ce22","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["full"]}]}
+Session reported usage: 7 calls; 0 unknown; 4 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 23892 tokens; input 21450 tokens (subset of total); output 2442 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 719 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-2e4cbc09
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-2e4cbc09 · interpretation
+A caller summarizing the first returned label need not represent additional classifications for the same number.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account, not an observation of a particular caller.
+  Operation: decomposition; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-27c4c9cc (provenance, not composition)
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:27c4c9ccbc914a3ac0268c2b7892c2c9e33529e3217df2943cee9f0033cb7018
+
+Revision status @investigram-2e4cbc09: original remains selected.
+  Needs reconsideration: 1 correction causes. This does not establish error or trigger inference.
+  Transitive cause session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram-correction:f4370ae915dfbb482e72dc93540398ef7787c7be5fc9659ccb23f450ac260800: @investigram-047e66f3 → @investigram-127ad6a0; via @investigram-27c4c9cc.
+  Revision page 1; 1 of 1 relationships/causes.
+
+Correction reported by @investigram-36d5c456: @investigram-047e66f3 → @investigram-127ad6a0
+  Corrected subjects: session:a152b080-592f-4090-bcc3-0d68d10c56b0:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43, session:a152b080-592f-4090-bcc3-0d68d10c56b0:symbol:337f0ddac578f2c7275f2c66db00cea776637e92abfd7e082a40711fcc1871d2
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16, session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:c6e80ecf6ee93bc0ca3c4a928bc77d4d7e8f9eef419ad6da5a71ba94c0e9dc37, session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57
+  Reason: The earlier account says the classifier chooses one applicable label with positive-over-even-over-large precedence. The source instead contains three independent `if` statements, so all matching labels are appended. Its composed child is likewise false: a positive even value such as 2 receives both `positive` and `even`. The prior phrase 'outside these categories' is also too vague to capture cases such as negative even values, which still receive `even`.
+  Qualification: This correction is based on static source evidence and corrects the behavioral interpretation, not observed runtime behavior.
+  Qualification: Complete context for the corrected root and its composed child was retrieved before correction.
+
+Associated investigrams (explicit associations)
+Listing: available; 0 shown of 0.
+Use inspect @reference for retained content; no inference.
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:27c4c9ccbc914a3ac0268c2b7892c2c9e33529e3217df2943cee9f0033cb7018","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:c0de16c5779960846dadf336e135f65fad135c245088c4dcd07657ed14898be5","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:c6e80ecf6ee93bc0ca3c4a928bc77d4d7e8f9eef419ad6da5a71ba94c0e9dc37","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["full"]}],"coverage":"full-file","contentDigest":"8c500fd2a09328111cde51266aa6c87a7ff21f2f419906b24f93277968432bd1","mapping":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:7f76b3409b9f359faa7ce048ac16efa697ecf1de4a522f00f17d003d50e6ce22","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["full"]}]}
+Session reported usage: 7 calls; 0 unknown; 4 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 23892 tokens; input 21450 tokens (subset of total); output 2442 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 719 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: explain @investigram-2e4cbc09
+Explain · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-0c97e3c4 · interpretation
+The statement is a warning that using only `classify(value)[0]` can be a lossy summary, not a claim that the first label is always incomplete. `classify` evaluates three conditions independently and appends every match in the order `positive`, `even`, then `large`. For example, `classify(12)` yields `['positive', 'even', 'large']`: reading only element zero reports `positive` while omitting two classifications. Likewise, the first element of `classify(2)` omits `even`. In contrast, `classify(-2)` is `['even']`, so its first element happens to be complete; when the returned array is empty, element zero is `undefined`. A consumer that needs the complete classification must therefore retain or process the whole array rather than treating its first element as the sole result. This conclusion is about the consequence of the captured implementation for a hypothetical consumer; no actual caller was inspected. Although the selected account was marked for reconsideration because it descends from an earlier, corrected one-label premise, its cautious phrase “need not represent” remains accurate under the corrected multi-label behavior.
+Referent: Clarification of why the first element of the numeric classifier result is not generally a complete classification.
+  Qualification: Static interpretation of captured TypeScript source; runtime behavior and actual callers were not observed.
+  Qualification: Examples assume ordinary JavaScript number semantics for values admitted by the declared TypeScript `number` parameter.
+  Qualification: The nearby README states that the result is an array and names the available labels, but it does not document the matching conditions or their order.
+  Qualification: The selected earlier account is reused only as the aspect being clarified, not as independent corroboration of implementation behavior.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-2e4cbc09 (provenance, not composition)
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:2e4cbc09cce698a9d8355d5b3df769864aa19de88cc6e6ff55f0c7fbe202df44, session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:27c4c9ccbc914a3ac0268c2b7892c2c9e33529e3217df2943cee9f0033cb7018, session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:127ad6a0305039120b269c3db2e2352a8147efe4f2d5d7c814deb59e2b585593, session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+Revision status @investigram-0c97e3c4: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-2e4cbc09: original remains selected.
+  Needs reconsideration: 1 correction causes. This does not establish error or trigger inference.
+  Transitive cause session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram-correction:f4370ae915dfbb482e72dc93540398ef7787c7be5fc9659ccb23f450ac260800: @investigram-047e66f3 → @investigram-127ad6a0; via @investigram-27c4c9cc.
+  Revision page 1; 1 of 1 relationships/causes.
+
+Correction reported by @investigram-36d5c456: @investigram-047e66f3 → @investigram-127ad6a0
+  Corrected subjects: session:a152b080-592f-4090-bcc3-0d68d10c56b0:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43, session:a152b080-592f-4090-bcc3-0d68d10c56b0:symbol:337f0ddac578f2c7275f2c66db00cea776637e92abfd7e082a40711fcc1871d2
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16, session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:c6e80ecf6ee93bc0ca3c4a928bc77d4d7e8f9eef419ad6da5a71ba94c0e9dc37, session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57
+  Reason: The earlier account says the classifier chooses one applicable label with positive-over-even-over-large precedence. The source instead contains three independent `if` statements, so all matching labels are appended. Its composed child is likewise false: a positive even value such as 2 receives both `positive` and `even`. The prior phrase 'outside these categories' is also too vague to capture cases such as negative even values, which still receive `even`.
+  Qualification: This correction is based on static source evidence and corrects the behavioral interpretation, not observed runtime behavior.
+  Qualification: Complete context for the corrected root and its composed child was retrieved before correction.
+Attempt session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:fe6fbec9a224dfa095687caba4815b04985be3d91aff296b3de6e997692e96bb (accepted) reported usage: 3 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 37270 tokens; input 35126 tokens (subset of total); output 2144 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1448 tokens (subset of output)
+Session reported usage: 10 calls; 0 unknown; 4 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 61162 tokens; input 56576 tokens (subset of total); output 4586 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2167 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: examine @investigram-27c4c9cc
+Examine · investigram
+References remain bound for this session.
+New investigation request.
+investigation-failure: Evidence must identify supplied context in this session.
+Selection: selected (1 matches).
+
+Revision status @investigram-27c4c9cc: original remains selected.
+  Needs reconsideration: 1 correction causes. This does not establish error or trigger inference.
+  Direct cause session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram-correction:f4370ae915dfbb482e72dc93540398ef7787c7be5fc9659ccb23f450ac260800: @investigram-047e66f3 → @investigram-127ad6a0; via @investigram-047e66f3.
+  Revision page 1; 1 of 1 relationships/causes.
+
+Correction reported by @investigram-36d5c456: @investigram-047e66f3 → @investigram-127ad6a0
+  Corrected subjects: session:a152b080-592f-4090-bcc3-0d68d10c56b0:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43, session:a152b080-592f-4090-bcc3-0d68d10c56b0:symbol:337f0ddac578f2c7275f2c66db00cea776637e92abfd7e082a40711fcc1871d2
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16, session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:c6e80ecf6ee93bc0ca3c4a928bc77d4d7e8f9eef419ad6da5a71ba94c0e9dc37, session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57
+  Reason: The earlier account says the classifier chooses one applicable label with positive-over-even-over-large precedence. The source instead contains three independent `if` statements, so all matching labels are appended. Its composed child is likewise false: a positive even value such as 2 receives both `positive` and `even`. The prior phrase 'outside these categories' is also too vague to capture cases such as negative even values, which still receive `even`.
+  Qualification: This correction is based on static source evidence and corrects the behavioral interpretation, not observed runtime behavior.
+  Qualification: Complete context for the corrected root and its composed child was retrieved before correction.
+Attempt session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:e57b099f42c4b478d35aa8fac965eae6b393f7999b4b44e64ee22437ff41d7a4 (investigation-failure) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 76024 tokens; input 72448 tokens (subset of total); output 3576 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1583 tokens (subset of output)
+Session reported usage: 14 calls; 0 unknown; 4 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 137186 tokens; input 129024 tokens (subset of total); output 8162 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3750 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-047e66f3 --source-detail
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-047e66f3 · interpretation
+The classifier chooses one applicable label for each numeric input, preferring positive to even and then large. Inputs outside these categories return no label.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Displayed composition: @investigram-c6e80ecf
+  Composition: @investigram-c6e80ecf
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-096f7ded (provenance, not composition)
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee
+
+@investigram-c6e80ecf · interpretation
+For a positive even number, the returned array contains the positive label only.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-096f7ded (provenance, not composition)
+  Composition parent: @investigram-047e66f3
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee
+
+Revision status @investigram-047e66f3: superseded; primary @investigram-127ad6a0.
+  Revision page 1; 1 of 1 relationships/causes.
+
+Revision status @investigram-c6e80ecf: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Correction reported by @investigram-36d5c456: @investigram-047e66f3 → @investigram-127ad6a0
+  Corrected subjects: session:a152b080-592f-4090-bcc3-0d68d10c56b0:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43, session:a152b080-592f-4090-bcc3-0d68d10c56b0:symbol:337f0ddac578f2c7275f2c66db00cea776637e92abfd7e082a40711fcc1871d2
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16, session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:c6e80ecf6ee93bc0ca3c4a928bc77d4d7e8f9eef419ad6da5a71ba94c0e9dc37, session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57
+  Reason: The earlier account says the classifier chooses one applicable label with positive-over-even-over-large precedence. The source instead contains three independent `if` statements, so all matching labels are appended. Its composed child is likewise false: a positive even value such as 2 receives both `positive` and `even`. The prior phrase 'outside these categories' is also too vague to capture cases such as negative even values, which still receive `even`.
+  Qualification: This correction is based on static source evidence and corrects the behavioral interpretation, not observed runtime behavior.
+  Qualification: Complete context for the corrected root and its composed child was retrieved before correction.
+
+Associated investigrams (explicit associations)
+Listing: available; 2 shown of 2.
+Use inspect @reference for retained content; no inference.
+@investigram-27c4c9cc · interpretation
+  Revision: current original; needs reconsideration (1 causes); inspect this reference for details.
+  Since classification selects at most one label, reading the first array element conveys the complete classification.
+  Operation: clarification; origin: scripted; provenance: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:c1088eff79d37caf4b63c45e9e9d3ce85299af6bc2f94a33c343da88f3eb25e3
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account; callers were not observed.
+  Association: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+@investigram-36d5c456 · interpretation
+  Revision: current original; inspect this reference for details.
+  Static examination of the implementation establishes that the earlier account's precedence model is incorrect. `classify` evaluates three independent conditions and appends every matching label in fixed order: `positive` when `value > 0`, then `even` when `value % 2 === 0`, then `large` when `value >= 10`. Thus overlaps produce multiple labels—for example, 2 yields `['positive', 'even']` and 12 yi [290 prose characters omitted]
+  Operation: examination; origin: hosted; provenance: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20
+  Qualification: Findings are derived by static reading of captured TypeScript source; no execution or runtime observation was performed.
+  Qualification: The concrete examples follow standard JavaScript/TypeScript numeric operators for values satisfying the declared `number` type; the annotation does not itself enforce runtime inputs.
+  Qualification: The dependency result is bounded to recognized project-owned source requests and is not a claim of complete runtime independence.
+  Qualification: The README is nearby group documentation; its placement alone does not establish applicability, truth, currency, or completeness.
+  Association: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:b3e3f05e51b9a0d71f5bf065fc07098aa24a4304688861255d21b2f29ec2e3f2","forms":["full"]},{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["full"]}],"coverage":"full-file","contentDigest":"8c500fd2a09328111cde51266aa6c87a7ff21f2f419906b24f93277968432bd1","mapping":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:7f76b3409b9f359faa7ce048ac16efa697ecf1de4a522f00f17d003d50e6ce22","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:c6e80ecf6ee93bc0ca3c4a928bc77d4d7e8f9eef419ad6da5a71ba94c0e9dc37","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["full"]}]}
+
+Source support (captured locations and excerpts):
+[
+  {
+    "kind": "source-evidence",
+    "id": "session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:7f76b3409b9f359faa7ce048ac16efa697ecf1de4a522f00f17d003d50e6ce22",
+    "session": "session:a152b080-592f-4090-bcc3-0d68d10c56b0",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/integrated-numeric/classify.ts",
+    "contentDigest": "8c500fd2a09328111cde51266aa6c87a7ff21f2f419906b24f93277968432bd1",
+    "start": 0,
+    "length": 271,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": "\"/Users/ronen/postcode/app/_investigation/module-assessment-sources/integrated-numeric/classify\""
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57",
+    "session": "session:a152b080-592f-4090-bcc3-0d68d10c56b0",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/integrated-numeric/classify.ts",
+    "contentDigest": "8c500fd2a09328111cde51266aa6c87a7ff21f2f419906b24f93277968432bd1",
+    "start": 42,
+    "length": 228,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 2,
+        "column": 1
+      },
+      "to": {
+        "line": 8,
+        "column": 2
+      },
+      "excerpt": {
+        "text": "export function classify(value: number): string[] {\n  const labels: string[] = [];\n  if (value > 0) labels.push('positive');\n  if (value % 2 === 0) labels.push('even');",
+        "omittedCharacters": 60
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  }
+]
+Session reported usage: 14 calls; 0 unknown; 4 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 137186 tokens; input 129024 tokens (subset of total); output 8162 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3750 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-27c4c9cc
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-27c4c9cc · interpretation
+Since classification selects at most one label, reading the first array element conveys the complete classification.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account; callers were not observed.
+  Operation: clarification; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-047e66f3 (provenance, not composition)
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16
+
+Revision status @investigram-27c4c9cc: original remains selected.
+  Needs reconsideration: 1 correction causes. This does not establish error or trigger inference.
+  Direct cause session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram-correction:f4370ae915dfbb482e72dc93540398ef7787c7be5fc9659ccb23f450ac260800: @investigram-047e66f3 → @investigram-127ad6a0; via @investigram-047e66f3.
+  Revision page 1; 1 of 1 relationships/causes.
+
+Correction reported by @investigram-36d5c456: @investigram-047e66f3 → @investigram-127ad6a0
+  Corrected subjects: session:a152b080-592f-4090-bcc3-0d68d10c56b0:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43, session:a152b080-592f-4090-bcc3-0d68d10c56b0:symbol:337f0ddac578f2c7275f2c66db00cea776637e92abfd7e082a40711fcc1871d2
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16, session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:c6e80ecf6ee93bc0ca3c4a928bc77d4d7e8f9eef419ad6da5a71ba94c0e9dc37, session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57
+  Reason: The earlier account says the classifier chooses one applicable label with positive-over-even-over-large precedence. The source instead contains three independent `if` statements, so all matching labels are appended. Its composed child is likewise false: a positive even value such as 2 receives both `positive` and `even`. The prior phrase 'outside these categories' is also too vague to capture cases such as negative even values, which still receive `even`.
+  Qualification: This correction is based on static source evidence and corrects the behavioral interpretation, not observed runtime behavior.
+  Qualification: Complete context for the corrected root and its composed child was retrieved before correction.
+
+Associated investigrams (explicit associations)
+Listing: available; 1 shown of 1.
+Use inspect @reference for retained content; no inference.
+@investigram-2e4cbc09 · interpretation
+  Revision: current original; needs reconsideration (1 causes); inspect this reference for details.
+  A caller summarizing the first returned label need not represent additional classifications for the same number.
+  Operation: decomposition; origin: scripted; provenance: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:c0de16c5779960846dadf336e135f65fad135c245088c4dcd07657ed14898be5
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account, not an observation of a particular caller.
+  Association: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:27c4c9ccbc914a3ac0268c2b7892c2c9e33529e3217df2943cee9f0033cb7018 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:c1088eff79d37caf4b63c45e9e9d3ce85299af6bc2f94a33c343da88f3eb25e3","forms":["prior-interpretation"]},{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:c6e80ecf6ee93bc0ca3c4a928bc77d4d7e8f9eef419ad6da5a71ba94c0e9dc37","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["full"]}],"coverage":"full-file","contentDigest":"8c500fd2a09328111cde51266aa6c87a7ff21f2f419906b24f93277968432bd1","mapping":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:7f76b3409b9f359faa7ce048ac16efa697ecf1de4a522f00f17d003d50e6ce22","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["full"]}]}
+Session reported usage: 14 calls; 0 unknown; 4 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 137186 tokens; input 129024 tokens (subset of total); output 8162 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3750 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-2e4cbc09
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-2e4cbc09 · interpretation
+A caller summarizing the first returned label need not represent additional classifications for the same number.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account, not an observation of a particular caller.
+  Operation: decomposition; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-27c4c9cc (provenance, not composition)
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:27c4c9ccbc914a3ac0268c2b7892c2c9e33529e3217df2943cee9f0033cb7018
+
+Revision status @investigram-2e4cbc09: original remains selected.
+  Needs reconsideration: 1 correction causes. This does not establish error or trigger inference.
+  Transitive cause session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram-correction:f4370ae915dfbb482e72dc93540398ef7787c7be5fc9659ccb23f450ac260800: @investigram-047e66f3 → @investigram-127ad6a0; via @investigram-27c4c9cc.
+  Revision page 1; 1 of 1 relationships/causes.
+
+Correction reported by @investigram-36d5c456: @investigram-047e66f3 → @investigram-127ad6a0
+  Corrected subjects: session:a152b080-592f-4090-bcc3-0d68d10c56b0:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43, session:a152b080-592f-4090-bcc3-0d68d10c56b0:symbol:337f0ddac578f2c7275f2c66db00cea776637e92abfd7e082a40711fcc1871d2
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16, session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:c6e80ecf6ee93bc0ca3c4a928bc77d4d7e8f9eef419ad6da5a71ba94c0e9dc37, session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57
+  Reason: The earlier account says the classifier chooses one applicable label with positive-over-even-over-large precedence. The source instead contains three independent `if` statements, so all matching labels are appended. Its composed child is likewise false: a positive even value such as 2 receives both `positive` and `even`. The prior phrase 'outside these categories' is also too vague to capture cases such as negative even values, which still receive `even`.
+  Qualification: This correction is based on static source evidence and corrects the behavioral interpretation, not observed runtime behavior.
+  Qualification: Complete context for the corrected root and its composed child was retrieved before correction.
+
+Associated investigrams (explicit associations)
+Listing: available; 1 shown of 1.
+Use inspect @reference for retained content; no inference.
+@investigram-0c97e3c4 · interpretation
+  Revision: current original; inspect this reference for details.
+  The statement is a warning that using only `classify(value)[0]` can be a lossy summary, not a claim that the first label is always incomplete. `classify` evaluates three conditions independently and appends every match in the order `positive`, `even`, then `large`. For example, `classify(12)` yields `['positive', 'even', 'large']`: reading only element zero reports `positive` while omitting two cl [742 prose characters omitted]
+  Operation: clarification; origin: hosted; provenance: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:fe6fbec9a224dfa095687caba4815b04985be3d91aff296b3de6e997692e96bb
+  Qualification: Static interpretation of captured TypeScript source; runtime behavior and actual callers were not observed.
+  Qualification: Examples assume ordinary JavaScript number semantics for values admitted by the declared TypeScript `number` parameter.
+  Qualification: The nearby README states that the result is an array and names the available labels, but it does not document the matching conditions or their order.
+  Qualification: The selected earlier account is reused only as the aspect being clarified, not as independent corroboration of implementation behavior.
+  Association: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:2e4cbc09cce698a9d8355d5b3df769864aa19de88cc6e6ff55f0c7fbe202df44 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:27c4c9ccbc914a3ac0268c2b7892c2c9e33529e3217df2943cee9f0033cb7018","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:c0de16c5779960846dadf336e135f65fad135c245088c4dcd07657ed14898be5","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:c6e80ecf6ee93bc0ca3c4a928bc77d4d7e8f9eef419ad6da5a71ba94c0e9dc37","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["full"]}],"coverage":"full-file","contentDigest":"8c500fd2a09328111cde51266aa6c87a7ff21f2f419906b24f93277968432bd1","mapping":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:7f76b3409b9f359faa7ce048ac16efa697ecf1de4a522f00f17d003d50e6ce22","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["full"]}]}
+Session reported usage: 14 calls; 0 unknown; 4 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 137186 tokens; input 129024 tokens (subset of total); output 8162 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3750 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-127ad6a0
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-127ad6a0 · interpretation
+The module directly exports `classify(value: number): string[]`. Each call creates a fresh array, independently tests positivity, even divisibility, and the threshold of 10, appends every matching label in the fixed order `positive`, `even`, `large`, and returns the array. There is no precedence or mutual exclusion. Consequently an input may receive zero through three labels: 2 receives `['positive', 'even']`, 11 receives `['positive', 'large']`, 12 receives all three, and -2 receives `['even']`.
+Referent: Corrected account of the numeric classifier module and exported classify function.
+  Qualification: Static interpretation of captured source; runtime behavior was not directly observed.
+  Qualification: Examples assume ordinary JavaScript number semantics and values admitted by the declared TypeScript `number` parameter.
+  Qualification: The nearby README corroborates only the signature and available label names, not the exact selection rules.
+  Displayed composition: @investigram-1b750038
+  Composition: @investigram-1b750038
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-047e66f3 (provenance, not composition)
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:export:6b93e650f1cd2956d984207d77c26809e154c53d904388397a35ba2415307b03, session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-1b750038 · interpretation
+For a positive even number, the returned array contains both `positive` and `even`; if the number is also at least 10, it additionally contains `large`. The labels appear in that order.
+Referent: Corrected overlap behavior for positive even inputs.
+  Qualification: Static consequence of the three independent conditions; not runtime-tested.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-047e66f3 (provenance, not composition)
+  Composition parent: @investigram-127ad6a0
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57
+
+Revision status @investigram-127ad6a0: original remains selected.
+  Revision page 1; 1 of 1 relationships/causes.
+
+Revision status @investigram-1b750038: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Correction reported by @investigram-36d5c456: @investigram-047e66f3 → @investigram-127ad6a0
+  Corrected subjects: session:a152b080-592f-4090-bcc3-0d68d10c56b0:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43, session:a152b080-592f-4090-bcc3-0d68d10c56b0:symbol:337f0ddac578f2c7275f2c66db00cea776637e92abfd7e082a40711fcc1871d2
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16, session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:c6e80ecf6ee93bc0ca3c4a928bc77d4d7e8f9eef419ad6da5a71ba94c0e9dc37, session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57
+  Reason: The earlier account says the classifier chooses one applicable label with positive-over-even-over-large precedence. The source instead contains three independent `if` statements, so all matching labels are appended. Its composed child is likewise false: a positive even value such as 2 receives both `positive` and `even`. The prior phrase 'outside these categories' is also too vague to capture cases such as negative even values, which still receive `even`.
+  Qualification: This correction is based on static source evidence and corrects the behavioral interpretation, not observed runtime behavior.
+  Qualification: Complete context for the corrected root and its composed child was retrieved before correction.
+
+Associated investigrams (explicit associations)
+Listing: available; 0 shown of 0.
+Use inspect @reference for retained content; no inference.
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["full"]}],"coverage":"full-file","contentDigest":"8c500fd2a09328111cde51266aa6c87a7ff21f2f419906b24f93277968432bd1","mapping":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:7f76b3409b9f359faa7ce048ac16efa697ecf1de4a522f00f17d003d50e6ce22","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:export:6b93e650f1cd2956d984207d77c26809e154c53d904388397a35ba2415307b03","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["full"]}],"information":{"type":"export","exportedName":"classify","symbol":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:symbol:337f0ddac578f2c7275f2c66db00cea776637e92abfd7e082a40711fcc1871d2","origin":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43","roles":{"type":false,"value":true},"routes":[{"kind":"direct","typeOnly":false,"aliased":false,"via":null}]},"qualification":{"kind":"claim-context","id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:expansion-context:bdec34947df232a2d711f1a3edff75ee79b93d11396e0425562abb4eec1b076f","session":"session:a152b080-592f-4090-bcc3-0d68d10c56b0","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43","evidence":["session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57"],"status":"mechanically-derived","guarantee":"The compiler exposes this exported name; roles and forwarding are qualified by the recorded route.","limitations":[],"diagnostics":[],"inputs":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:analysis-inputs:906e33c48d75e8b2a64252127b0b37d99ad40acb8d701f663f391afaf1709ea8"}}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["full"]}],"coverage":"full-file","contentDigest":"ddb102155476756ee48405f8449cf31445da39bdfbd14a454d4fab8656e79a16","mapping":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:c6e80ecf6ee93bc0ca3c4a928bc77d4d7e8f9eef419ad6da5a71ba94c0e9dc37","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:aa480dae98d27756b8bb4c019b35929e5f18a32698398c0bf0df5a97bba9aa20","forms":["prior-interpretation"]}]}
+Session reported usage: 14 calls; 0 unknown; 4 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 137186 tokens; input 129024 tokens (subset of total); output 8162 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3750 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: summarize classify
+Module summary
+References remain bound for this session.
+Retained outcome; no new investigation.
+Module @module-096f7ded: classify
+
+@investigram-127ad6a0 · interpretation
+The module directly exports `classify(value: number): string[]`. Each call creates a fresh array, independently tests positivity, even divisibility, and the threshold of 10, appends every matching label in the fixed order `positive`, `even`, `large`, and returns the array. There is no precedence or mutual exclusion. Consequently an input may receive zero through three labels: 2 receives `['positive', 'even']`, 11 receives `['positive', 'large']`, 12 receives all three, and -2 receives `['even']`.
+Referent: Corrected account of the numeric classifier module and exported classify function.
+  Qualification: Static interpretation of captured source; runtime behavior was not directly observed.
+  Qualification: Examples assume ordinary JavaScript number semantics and values admitted by the declared TypeScript `number` parameter.
+  Qualification: The nearby README corroborates only the signature and available label names, not the exact selection rules.
+  Updated display of @investigram-047e66f3; replacement uses its own composition.
+  Displayed composition: @investigram-1b750038
+  Composition: @investigram-1b750038
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-047e66f3 (provenance, not composition)
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:export:6b93e650f1cd2956d984207d77c26809e154c53d904388397a35ba2415307b03, session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-1b750038 · interpretation
+For a positive even number, the returned array contains both `positive` and `even`; if the number is also at least 10, it additionally contains `large`. The labels appear in that order.
+Referent: Corrected overlap behavior for positive even inputs.
+  Qualification: Static consequence of the three independent conditions; not runtime-tested.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-047e66f3 (provenance, not composition)
+  Composition parent: @investigram-127ad6a0
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57
+
+Revision status @investigram-047e66f3: superseded; primary @investigram-127ad6a0.
+  Revision page 1; 1 of 1 relationships/causes.
+
+Revision status @investigram-127ad6a0: original remains selected.
+  Revision page 1; 1 of 1 relationships/causes.
+
+Revision status @investigram-1b750038: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-c6e80ecf: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Displaced original composition (not incorporated into replacement): @investigram-047e66f3, @investigram-c6e80ecf
+
+Correction reported by @investigram-36d5c456: @investigram-047e66f3 → @investigram-127ad6a0
+  Corrected subjects: session:a152b080-592f-4090-bcc3-0d68d10c56b0:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43, session:a152b080-592f-4090-bcc3-0d68d10c56b0:symbol:337f0ddac578f2c7275f2c66db00cea776637e92abfd7e082a40711fcc1871d2
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16, session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:c6e80ecf6ee93bc0ca3c4a928bc77d4d7e8f9eef419ad6da5a71ba94c0e9dc37, session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57
+  Reason: The earlier account says the classifier chooses one applicable label with positive-over-even-over-large precedence. The source instead contains three independent `if` statements, so all matching labels are appended. Its composed child is likewise false: a positive even value such as 2 receives both `positive` and `even`. The prior phrase 'outside these categories' is also too vague to capture cases such as negative even values, which still receive `even`.
+  Qualification: This correction is based on static source evidence and corrects the behavioral interpretation, not observed runtime behavior.
+  Qualification: Complete context for the corrected root and its composed child was retrieved before correction.
+Attempt session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:b3e3f05e51b9a0d71f5bf065fc07098aa24a4304688861255d21b2f29ec2e3f2 (accepted) reported usage: 2 calls; 0 unknown; 2 anomalous.
+Session reported usage: 14 calls; 0 unknown; 4 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 137186 tokens; input 129024 tokens (subset of total); output 8162 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3750 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: explain @investigram-047e66f3
+Explain · investigram
+References remain bound for this session.
+Retained outcome; no new investigation.
+
+@investigram-27c4c9cc · interpretation
+Since classification selects at most one label, reading the first array element conveys the complete classification.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account; callers were not observed.
+  Operation: clarification; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-047e66f3 (provenance, not composition)
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16
+
+Revision status @investigram-27c4c9cc: original remains selected.
+  Needs reconsideration: 1 correction causes. This does not establish error or trigger inference.
+  Direct cause session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram-correction:f4370ae915dfbb482e72dc93540398ef7787c7be5fc9659ccb23f450ac260800: @investigram-047e66f3 → @investigram-127ad6a0; via @investigram-047e66f3.
+  Revision page 1; 1 of 1 relationships/causes.
+
+Revision status @investigram-047e66f3: superseded; primary @investigram-127ad6a0.
+  Revision page 1; 1 of 1 relationships/causes.
+
+Correction reported by @investigram-36d5c456: @investigram-047e66f3 → @investigram-127ad6a0
+  Corrected subjects: session:a152b080-592f-4090-bcc3-0d68d10c56b0:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43, session:a152b080-592f-4090-bcc3-0d68d10c56b0:symbol:337f0ddac578f2c7275f2c66db00cea776637e92abfd7e082a40711fcc1871d2
+  Evidence: session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:047e66f3b30dea7784250ac764b24e8cd628ba524d6e2bfe7a99ddde4e1a6e16, session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigram:c6e80ecf6ee93bc0ca3c4a928bc77d4d7e8f9eef419ad6da5a71ba94c0e9dc37, session:a152b080-592f-4090-bcc3-0d68d10c56b0:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:a152b080-592f-4090-bcc3-0d68d10c56b0:source:dbebc13acd4ad7ce702bfc223549d2b5c7494fa5650e3b6a13d0ccbfb777ef57
+  Reason: The earlier account says the classifier chooses one applicable label with positive-over-even-over-large precedence. The source instead contains three independent `if` statements, so all matching labels are appended. Its composed child is likewise false: a positive even value such as 2 receives both `positive` and `even`. The prior phrase 'outside these categories' is also too vague to capture cases such as negative even values, which still receive `even`.
+  Qualification: This correction is based on static source evidence and corrects the behavioral interpretation, not observed runtime behavior.
+  Qualification: Complete context for the corrected root and its composed child was retrieved before correction.
+Attempt session:a152b080-592f-4090-bcc3-0d68d10c56b0:investigation-attempt:c1088eff79d37caf4b63c45e9e9d3ce85299af6bc2f94a33c343da88f3eb25e3 (accepted) reported usage: 1 calls; 0 unknown; 1 anomalous.
+Session reported usage: 14 calls; 0 unknown; 4 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 137186 tokens; input 129024 tokens (subset of total); output 8162 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3750 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+

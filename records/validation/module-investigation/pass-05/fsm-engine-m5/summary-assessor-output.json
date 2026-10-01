@@ -1,0 +1,101 @@
+{
+  "findings": [
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator accurately recovers the core responsibility split and synchronous queued execution model, while retaining source-versus-execution limits.",
+      "evidence": [
+        "@investigram-7c656898 identifies the runtime and instance factory; @investigram-a6f543c9 delegates definition construction to FsmBuilderImpl.",
+        "@investigram-04d79256 describes always-enqueued dispatch, synchronous outer draining, FIFO reentrancy, ordered guards, and external/internal transition lifecycle.",
+        "Frozen fsm-engine.ts reference lines 119–135, 184–222 and 271–313 support these central conclusions.",
+        "Evaluator answers 1 and 2 retain the lack of execution, attribution of documentation to intended behavior, non-rollback of completed effects, and state commit after transition actions but before entry actions."
+      ],
+      "consequence": "The summary supports a useful initial understanding without converting captured control-flow interpretation into runtime verification, thread-safety or rollback guarantees.",
+      "uncertainty": "The frozen reference supports the central model, not every subsidiary detail in the five generated accounts; no subject tests were executed."
+    },
+    {
+      "category": "presentation-misunderstanding",
+      "claim": "The dispatch account contains an ambiguity that could obscure absent handling, but the evaluator identifies the ambiguity rather than clearly adopting an incorrect interpretation.",
+      "evidence": [
+        "@investigram-04d79256 says: 'A declared transition set whose guards all fail is an implicit handled stay; no state or fallback transition is unhandled.'",
+        "Evaluator answer 7 explicitly distinguishes an event with no transition from a possible reading that transitions are never unhandled.",
+        "Frozen fsm-engine.ts reference lines 241–266 establishes that transition candidates with no passing guards yield an implicit stay, whereas absent handling produces an error."
+      ],
+      "consequence": "The evaluator's precision is impeded at a consequential dispatch boundary. A clearer sentence would say that an event with neither state-specific nor fallback transition handling produces an error. This is a presentation ambiguity, not evidence of a generation error repeated as fact by the evaluator.",
+      "uncertainty": "The evaluator lacked the frozen source reference and appropriately left the intended wording unresolved. The frozen reference settles the underlying behavior, but not which reading the generator intended."
+    },
+    {
+      "category": "material-omission",
+      "claim": "The summary and evaluator omit the qualification that context is caller-supplied and is not deep-copied when describing independently stateful instances.",
+      "evidence": [
+        "@investigram-7c656898 says the shared definition serves 'independently stateful instances' and that each instance 'owns context'.",
+        "Evaluator answer 1 repeats that each instance owns its context, state, queue and timers.",
+        "Frozen fsm-engine.ts reference lines 119–135 expressly distinguishes per-instance runtime state from caller-supplied context and states that context is not deep-copied."
+      ],
+      "consequence": "Readers could overestimate isolation of caller data across instances. Adding the caller-supplied, non-copying qualification would make the ownership description more precise.",
+      "uncertainty": "Neither the generated account nor the evaluator explicitly asserts deep copying or full context isolation. This is a consequential missing qualification, not an established false guarantee or demonstrated evaluator extrapolation."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The timer-payload concern is communicated and selected for follow-up with appropriate uncertainty.",
+      "evidence": [
+        "@investigram-300a00e5 describes reversed payload forwarding as an 'Apparent defect' and explicitly calls it a source-level comparison, not a runtime test.",
+        "Frozen fsm-engine.ts reference line 371 identifies the suspicious expression in which a present payload selects an empty argument array and does not establish correct forwarding.",
+        "Evaluator answers 2 and 4 preserve the distinction between source comparison, documentation and unexecuted tests; answer 4 selects @investigram-300a00e5 for a proposed correctness and contract-consistency inquiry.",
+        "Evaluator answer 6 distinguishes this source-versus-documentation discrepancy from a conflict between revision accounts."
+      ],
+      "consequence": "The evaluator identifies a concrete, relevant next inquiry without claiming a reproduced runtime failure, a fix, or demonstrated availability of a testing or lens-invocation capability.",
+      "uncertainty": "The frozen reference corroborates suspicion about the branch expression, but does not settle runtime impact, all surrounding contracts, or the stronger characterization of a proven defect."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly separates the displayed summary structure and revision state from capabilities or changes not demonstrated in this condition.",
+      "evidence": [
+        "The only captured command is 'summarize fsm-engine'; @investigram-7c656898 lists four component accounts with corresponding composition-parent labels.",
+        "Every revision block says 'original remains selected' and '0 of 0 relationships/causes'.",
+        "Each account labels @module-28ee01f8 as investigation-subject provenance, not composition.",
+        "Evaluator answers 3, 5 and 6 report no explanation, subsequent decomposition, examination, correction, replacement chain, conflict or reconsideration cause demonstrated in these views."
+      ],
+      "consequence": "The evaluator avoids treating general footer rules as evidence of actual replacement, error, semantic reliance or reassessment. Summary-only absence of follow-up views is correctly a condition limit, not a generation or milestone failure.",
+      "uncertainty": "The displayed labels support the distinctions in this summary, but cannot establish behavior across real later investigations, conflicting replacements, historical inspection or direct and transitive reconsideration causes."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "The frozen reference cannot independently validate every detailed builder, timer-registry and tracing assertion that the evaluator accurately attributes to the view.",
+      "evidence": [
+        "@investigram-a6f543c9 enumerates specific validation failures and reachability rules beyond the frozen reference's general build/validate/compile conclusion at lines 119–135.",
+        "@investigram-300a00e5 gives timer-key replacement, deadline, clamping and Infinity details, whereas the frozen reference at lines 366–376 establishes delegation to TimerRegistry without documenting those specifics.",
+        "@investigram-9314e47c specifies logger replacement, elapsed-time reset, callback labels and falsy-payload formatting; the frozen reference only broadly supports optional progression tracing.",
+        "Evaluator answers 1 and 2 describe these as communicated source interpretations rather than independently verified source findings."
+      ],
+      "consequence": "These details should remain unadjudicated against this reference. Their presence is not grounds to label generation errors or unsupported evaluator extrapolation merely because the frozen reference is less detailed.",
+      "uncertainty": "The input says normal evidence can reach dependency sources and the README, but their contents are not reproduced in the frozen reference. This assessment cannot inspect them."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator's presentation criticisms are grounded in visible features and framed as qualitative risks rather than observed user failures.",
+      "evidence": [
+        "The root repeats identical Displayed composition and Composition lists; the view repeats provider/provenance metadata and matching attempt/session totals of four calls and 92226 tokens.",
+        "The view contains long evidence identifiers and general conflict/reconsideration guidance after five zero-relationship status blocks.",
+        "Evaluator answers 6 and 7 say these features could cause unnecessary searching or compete with the functional account, while retaining the explicit billing and acceptance qualifications."
+      ],
+      "consequence": "These observations identify plausible improvements to readability without establishing a false accounting inference or an actual misunderstanding of active revision status. The evaluator does not double-count usage or equate acceptance with truth.",
+      "uncertainty": "The judgment that warning burden is broadly manageable applies only to this summary. No interaction study or case with substantial revision history is supplied. Missing source excerpts and follow-up vocabulary limit this condition but do not prove those capabilities are absent from the product."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful for qualified orientation, identifying the main runtime responsibilities, and selecting a focused timer-payload follow-up. It provides little direct evidence about milestone-5 revision behavior because no revision sequence is displayed.",
+    "reasons": [
+      "The evaluator recovers the source-supported factory/runtime division, FIFO reentrant dispatch, guarded transition ordering and non-rollback qualifications.",
+      "The root and four component references provide concrete follow-up targets while distinguishing composition from investigation provenance.",
+      "The evaluator preserves source inference, intended behavior and execution as different forms of support, and does not turn the suspicious timer expression into a verified runtime defect.",
+      "Explicit original-selected statuses allow the evaluator to avoid inferring active conflicts or reconsideration from generic footer text."
+    ],
+    "limitations": [
+      "The ambiguous absent-handling sentence and omission of caller-supplied, non-deep-copied context weaken precision.",
+      "Only the initial summary is supplied; improvement from explanation, decomposition or examination, and behavior under correction or reconsideration, cannot be assessed.",
+      "The frozen reference does not settle all builder, timer-registry or trace details, and no subject execution evidence is available.",
+      "Repeated metadata and generic revision guidance plausibly add reading effort, but the supplied artifacts do not measure usability or warning burden under real conflicts.",
+      "The reference preparer and orchestrator are the implementing agent; the exact model identifier is unavailable and the stated family is OpenAI. This overlap limits assessment independence."
+    ]
+  }
+}

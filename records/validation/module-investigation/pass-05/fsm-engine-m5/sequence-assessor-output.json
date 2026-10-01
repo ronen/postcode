@@ -1,0 +1,113 @@
+{
+  "findings": [
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator recovers the core runtime responsibilities and execution order supported by the frozen reference, without promoting queueing into rollback, asynchronous execution, or a broad safety guarantee.",
+      "evidence": [
+        "Evaluator answer 1 describes shared compiled definitions, per-instance runtime state, synchronous outer FIFO draining, deferred re-entrant processing, ordered guarded selection, fallback handling, implicit stays, and exit actions then transition actions then state assignment then entry actions.",
+        "Displayed @investigram-04d79256, @investigram-a86b8e57, @investigram-70695d40, @investigram-7472008d and @investigram-a17803e1 support those distinctions.",
+        "Frozen fsm-engine.ts reference lines 119–135, 184–222, 241–266 and 271–313 establish the corresponding source conclusions and explicitly exclude rollback and thread-safety generalizations."
+      ],
+      "consequence": "The supplied sequence communicates the main functional model accurately enough to guide a focused follow-up. No core generation error repeated by this evaluator is established by the frozen reference.",
+      "uncertainty": "This is agreement with a bounded static reference, not runtime validation or proof of all callback behavior. The context-ownership qualification is separately missing."
+    },
+    {
+      "category": "material-omission",
+      "claim": "The generated summary and evaluator repeat instance ownership and independence language without explaining that caller-supplied context is not deep-copied.",
+      "evidence": [
+        "@investigram-7c656898 says instances are 'independently stateful' and each 'owns context'; evaluator answer 1 repeats both the independence framing and ownership of context.",
+        "The frozen reference for lines 119–135 explicitly says instances own caller-supplied context and 'context is not deep-copied'.",
+        "The supplied explanations discuss context mutations and lack of rollback, but do not state the absence of deep copying."
+      ],
+      "consequence": "Readers could overestimate isolation when supplying the same mutable context object to multiple instances. A short qualification about retaining caller-supplied context would materially improve the responsibility account.",
+      "uncertainty": "Neither the generation nor evaluator explicitly promises cloned or exclusive context. This is a missing qualification with a plausible misleading implication, not an established false cloning claim or observed evaluator misunderstanding."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "Explanation and decomposition resolve important ambiguities while examination adds bounded consequences rather than a correction or executed confirmation.",
+      "evidence": [
+        "Evaluator answer 3 identifies fallback after rejected state guards, distinguishes unknown/unhandled/implicit-stay cases, and identifies six selectable lifecycle aspects under @investigram-d74b9477.",
+        "@investigram-a86b8e57 expressly clarifies rather than corrects; @investigram-d74b9477 says its partition is neither exhaustive nor mutually exclusive.",
+        "@investigram-90cfd68f is labeled interpretation and static-only; @investigram-f0c5e050 and @investigram-1ed2124c discuss queue cleanup, later dispatch, and partial entry effects.",
+        "Frozen lines 184–222 and 271–313 support cleanup without rollback and the state-assignment boundary that underlies the pre-commit/post-commit distinction."
+      ],
+      "consequence": "The evaluator recognizes useful progression from a broad account to a selectable failure case and does not confuse investigation provenance with a replacement relationship.",
+      "uncertainty": "The compact frozen reference supports the central control-flow inference but does not independently settle every added timer, README, or test-coverage detail. The failed first decomposition is separately displayed and followed by an accepted decomposition; it is not evidence of an interpretive failure."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator keeps static interpretation, mechanical source support, documentation, exposure records, runtime results, and usage reporting distinct.",
+      "evidence": [
+        "Evaluator answer 2 qualifies generated accounts including 'confirmed', reports the missing focused entry-failure test, distinguishes recorded full-file exposure from displayed bodies, and does not infer actual charges from reported tokens.",
+        "Source-detail inspection of @investigram-7c656898 shows mechanically-derived exports FsmEngine and FsmEngineFactory, the complete factory-type excerpt at lines 49–51, and dependency limitations excluding execution and deployment claims.",
+        "The same inspection displays a class excerpt with 12203 omitted characters and first-observed, non-atomic acquisition limitations.",
+        "The frozen reference explicitly states no subject test execution and treats README safety claims as bounded documentation."
+      ],
+      "consequence": "The evaluator does not turn available evidence metadata or a confident examination headline into a claim of execution or independent proof.",
+      "uncertainty": "Exposure records establish reported acquisition scope, not independent verification of every generated detail. The reference itself has the preparer/orchestrator overlap disclosed in the input."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The timer-payload concern is retained as an apparent source-level discrepancy and selected for further examination, rather than converted into a proven forwarding guarantee or an already-executed reproduction.",
+      "evidence": [
+        "@investigram-300a00e5 calls the forwarding behavior an 'Apparent defect' and explicitly says the comparison was not a runtime test.",
+        "Evaluator answers 1, 2 and 4 retain the lack of runtime demonstration; answer 4 selects @investigram-300a00e5 for examination and distinguishes that shown lens from an unshown execute-tests capability.",
+        "The frozen reference calls line 371 suspicious because a present payload selects an empty argument array and says correct payload forwarding is not established."
+      ],
+      "consequence": "A consequential uncertainty remains visible and motivates a precise next investigation. The evaluator does not extrapolate examination into automatic repair or guaranteed runtime verification.",
+      "uncertainty": "The frozen reference supports the suspicious present-payload branch, but does not comprehensively establish consequences for falsy, omitted, or explicit-undefined payloads, or independently verify the complete documentation comparison."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly reports that this sequence instantiates no correction, competing replacement, or reconsideration chain and separates composition from later-investigation provenance.",
+      "evidence": [
+        "All supplied revision panels say the original remains selected with zero relationships/causes; retained final summary selects @investigram-7c656898 and the same four components.",
+        "@investigram-c7e665c6 has composition parent @investigram-d74b9477 and investigation subject @investigram-a17803e1; its later examination @investigram-90cfd68f has its own three components.",
+        "Evaluator answers 5 and 6 distinguish these roles, recognize the exact prior-interpretation exposure in inspect @investigram-a86b8e57, and explicitly deny that citation or association alone establishes semantic reliance.",
+        "The repeated footer says selection uses acceptance recency rather than credibility and reconsideration records corrected context exposure rather than established error."
+      ],
+      "consequence": "Generic revision policy is not mistaken for a populated conflict, the repository comment mismatch is not mistaken for an investigram correction, and the examiner's sharpened account is not promoted to a replacement.",
+      "uncertainty": "This zero-cause sequence cannot assess actual replacement selection, exact-original versus replacement display under correction, direct/transitive causes, populated conflict pagination, or reassessment. The condition preamble describes capabilities, not evidence that those scenarios occurred here. No displayed hosted account is established as a scripted injected baseline."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator notices concrete presentation hazards while avoiding the misunderstandings those hazards could cause.",
+      "evidence": [
+        "Evaluator answer 7 flags 'no state or fallback transition is unhandled' in @investigram-04d79256, and uses @investigram-7472008d to recover the intended absence-of-transitions condition, consistent with frozen lines 241–266.",
+        "It identifies the potentially overconfident 'confirmed' opening of @investigram-90cfd68f while retaining the adjacent static-only and missing-test qualifications.",
+        "It distinguishes full-file exposure from the abbreviated class excerpt, recognizes the 139-character association-preview omission, and notes repeated composition rows, zero revision panels, long evidence identifiers and generic conflict/billing footers.",
+        "Evaluator answer 6 does not infer active revision conflicts from the unconditional 'conflicts remain unresolved' footer."
+      ],
+      "consequence": "Ambiguous wording and repetition are credible formative usability concerns, but no actual presentation-induced misunderstanding is demonstrated in this evaluator's answers.",
+      "uncertainty": "The burden judgment is qualitative and specific to this text sequence; it is not observed user testing or evidence of usability for a populated conflict graph. The ambiguous summary wording should not be counted as an established repeated generation error when the evaluator explicitly resolves it correctly."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "Several detailed generated claims faithfully reported by the evaluator exceed the independent settling power of the compact frozen reference.",
+      "evidence": [
+        "@investigram-a6f543c9 lists particular builder validation rules and reachability treatment; @investigram-300a00e5 describes key replacement, clock deadlines, clamping and Infinity; @investigram-9314e47c describes trace formatting and falsy-payload omission.",
+        "@investigram-90cfd68f and @investigram-f0c5e050 report particular README agreement and test-source coverage, which evaluator answers 2 and 3 attribute to the examination.",
+        "The frozen reference establishes builder validation/compilation, TimerRegistry delegation and tracing at a higher level, but does not include the detailed dependency, README or test bodies. Captured source-detail locations mostly identify files rather than display those bodies."
+      ],
+      "consequence": "These details should remain qualified displayed interpretations. Their presence in the evaluator is not by itself unsupported evaluator extrapolation, and their absence from the reference is not evidence of a generation defect.",
+      "uncertainty": "Correctness or completeness of these narrower details cannot be settled without evidence outside the permitted assessment input. No additional repository or web inspection was used."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful for progressive understanding and precise follow-up selection, with strong evidence qualifications and substantial presentation overhead; correction and reconsideration workflows remain untested in this sequence.",
+    "reasons": [
+      "Core synchronous dispatch, transition ordering, fallback handling and partial-failure semantics align with the frozen source conclusions and are accurately recovered by the evaluator.",
+      "Explanation resolves important handling ambiguity, decomposition makes the post-commit failure aspect directly selectable, and examination adds qualified consequences without claiming a replacement.",
+      "The evaluator distinguishes composition, investigation provenance, retained outcomes, exposure records, mechanical claims and execution evidence.",
+      "A timer-payload uncertainty remains actionable through a specific next reference and lens.",
+      "Repeated status, accounting and support metadata competes with the functional account, and the missing context-copy qualification can mislead readers about instance isolation."
+    ],
+    "limitations": [
+      "Assessment uses only the supplied frozen reference, captured views and evaluator response; no source inspection, subject execution or implementation review was performed.",
+      "The reference preparer and orchestrator are the implementing agent; the exact model identifier is unavailable, with OpenAI family disclosed. This overlap limits independence.",
+      "No concrete correction, competing replacement, direct/transitive reconsideration cause or reassessment is displayed. Generic milestone capabilities and scripted-origin cautions cannot substitute for such evidence.",
+      "Detailed dependency behavior, documentation agreement and test-coverage assertions exceed the compact reference in places and remain unsettled rather than classified as errors.",
+      "Presentation risks are supported by displayed wording, but this evaluator generally resolves them correctly; no measured user-study result or numeric aggregate score is implied."
+    ]
+  }
+}

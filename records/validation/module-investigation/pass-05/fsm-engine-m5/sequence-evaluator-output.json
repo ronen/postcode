@@ -1,0 +1,132 @@
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The view presents fsm-engine as an FSM runtime and instance factory. FsmEngine.define uses a builder callback to obtain a validated, compiled definition, then returns a factory sharing that definition across independently stateful instances. FsmBuilderImpl collects declarations, validates them, and builds ordered lookup tables; runtime instances own context, current state, identity, FIFO event queues, timers and tracing. Dispatch enqueues every event, synchronously drains from the outermost call, and defers re-entrant events until the current event completes. It checks known events, runs state begin actions and ordered guarded transitions, then fallback handling if no state transition wins. Declared candidates all rejecting produce an implicit stay; absent transition handling produces an unhandled error. Internal transitions run transition actions alone. External transitions run exit actions, transition actions, state assignment, then entry actions. Failures discard pending events and reset dispatch readiness without rolling back prior effects. The action API enqueues events and manages keyed timers, with cancellation delegated to TimerRegistry. Tracing is per instance. Application callbacks supply context mutations and external effects; the engine does not supply transaction or compensation semantics.",
+      "support": [
+        "@investigram-7c656898: 'FSM runtime and instance factory'; one compiled definition and independently stateful instances.",
+        "@investigram-a6f543c9: collection delegated to FsmBuilderImpl, eager validation/compilation, fresh instances and immediate initial entry actions.",
+        "@investigram-04d79256 and clarification @investigram-a86b8e57: synchronous FIFO queue drain and re-entrant behavior.",
+        "@investigram-70695d40 and @investigram-7472008d: state/fallback selection, implicit stay, unknown versus unhandled events.",
+        "@investigram-a17803e1, @investigram-dc5b0f37 and @investigram-1ed2124c: commit ordering, cleanup, partial effects and no engine compensation.",
+        "@investigram-300a00e5: timer keys, replacement, relative or performance.now deadlines, Infinity and TimerRegistry delegation; @investigram-9314e47c: tracing and falsy-payload omission."
+      ],
+      "unknowns": [
+        "These are displayed static accounts, not executed runtime results.",
+        "Host scheduling, application callback behavior, external dependency interiors and deployment behavior are not established.",
+        "The apparent timer payload-forwarding defect is not demonstrated by a runtime test."
+      ]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "Every generated investigram is explicitly labeled interpretation, including the examination that says the prior account is confirmed. Source capture and compiler-derived claims provide different, bounded support. The source-detail view mechanically supports the exported names FsmEngine and FsmEngineFactory, their type/value roles and recorded direct routes; its complete factory-type excerpt supports conditional parameter optionality. Displayed import excerpts and dependency resolution support source requests to builder, timer and error modules, not their runtime availability or actual execution. Captured full-file exposure records identify what an investigation saw, but are first-observed, non-atomic acquisitions and may contain code outside the subject. README statements are attributed documentation, not independent proof. The examination reports agreement between documentation and implementation on entry failure, and test-source coverage of related FIFO and transition-action-error cases; neither those tests nor a focused throwing-entry-action test establish an executed result here. Usage reports are also qualified: reported tokens do not establish billing, and included categories are subsets.",
+      "support": [
+        "@investigram-90cfd68f explicitly says static interpretation, no execution, README agreement rather than independent proof, and no focused captured entry-action failure test.",
+        "@investigram-f0c5e050 reports tests for FIFO re-entrant processing and queue clearing after transition-action exceptions, but not the entry-action variant.",
+        "inspect @investigram-7c656898 --source-detail: export claims use postcode/typescript-expansions@2;typescript@6.0.3, status mechanically-derived, with compiler guarantees qualified by route.",
+        "The factory excerpt at displayed lines 49–51 uses [Context] extends [void] to choose optional versus required factory parameters.",
+        "Displayed dependency claim limitations explicitly exclude value-use, emission, loader availability, execution, bundler and deployment claims.",
+        "Support records state 'First-observed content; acquisition is not atomic' and warn that artifact placement does not establish documentation applicability or truth.",
+        "Repeated footer distinguishes reported from billed usage, synthetic from provider usage, and unavailable monetary attribution from zero."
+      ],
+      "unknowns": [
+        "Actual execution results, runtime persistence of target state after an entry exception, and actual timer payload behavior remain untested in this view.",
+        "Full source bodies are not displayed merely because full-file exposure is recorded; the class excerpt omits 12203 characters.",
+        "The nature or reversibility of user-defined effects, callback compensation, and scheduling outside dispatch are unknown.",
+        "Actual charges, including the failed call's unknown usage, cannot be inferred from token totals."
+      ]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "All three stages are supplied. Explanation makes the queue model operationally clearer: nested dispatch only appends, the successful outer call still drains before returning, and an event requested before state assignment normally observes the completed transition. It distinguishes fallback after guard rejection from fallback only when a handler is absent, and distinguishes unknown events, unhandled known events and implicit stays. It also separates pre-commit and post-commit failure. Decomposition exposes six individually selectable lifecycle aspects without claiming an exhaustive or disjoint partition. Examination of the post-commit entry failure does not reverse or replace the earlier conclusion. It adds consequential detail: pending events are discarded, scheduled timers are not thereby cancelled, later independent dispatch starts from the committed target, and earlier entry effects may survive while later entries never run. It adds documentation agreement and identifies the missing focused test. A first decomposition request failed; the subsequent successful request supplies the decomposition, so the failed attempt itself is not a finding.",
+      "support": [
+        "explain @investigram-04d79256 produces @investigram-a86b8e57, explicitly 'clarifies the earlier interpretation rather than correcting it'.",
+        "@investigram-d74b9477 decomposes @investigram-a17803e1 into @investigram-011724ec (internal path), @investigram-c35b2866 (external pre-commit), @investigram-505e10f5 (commit/entry), @investigram-72c6b25e (pre-commit failure), @investigram-c7e665c6 (post-commit failure), and @investigram-dc5b0f37 (cleanup).",
+        "examine @investigram-c7e665c6 produces @investigram-90cfd68f with @investigram-569d1439, @investigram-f0c5e050 and @investigram-1ed2124c.",
+        "The first decompose command reports communication-failure, HTTP 200, and no automatic retry; the next decompose command reports an accepted outcome.",
+        "Later explain and summarize commands explicitly say 'Retained outcome; no new investigation'."
+      ],
+      "unknowns": [
+        "No runtime confirmation follows the examination.",
+        "The communication failure's underlying cause is not explained by HTTP 200.",
+        "The examination supplies stronger detail and support qualifications, not an established correction or new implementation behavior."
+      ]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "I would select @investigram-300a00e5 with the examination lens, focusing on the claimed reversal of timer payload forwarding. I would expect a narrower account connecting action-API inputs, the engine's scheduling callback and the eventual dispatch arguments, together with the exact documentation comparison and relevant test-source coverage. That would help decide how much confidence to place in 'apparent defect' and whether falsy payloads, omitted payloads and explicit undefined have distinct consequences. Examine is visibly available because it was successfully used on @investigram-c7e665c6, and exact inspect with source detail is also demonstrated. A focused runtime reproduction would be a requested future verification capability or separate action: these views do not show an execute-tests lens or establish that examination runs code.",
+      "support": [
+        "@investigram-300a00e5 states that present payloads are dropped and payload-less events receive explicit undefined, with source-level and documentation qualifications.",
+        "The successful examine @investigram-c7e665c6 command demonstrates examination of a selected investigram.",
+        "inspect @investigram-7c656898 --source-detail demonstrates captured support inspection.",
+        "@investigram-9314e47c separately warns that falsy payloads are not rendered in traces, which could complicate observation."
+      ],
+      "unknowns": [
+        "The result of the proposed examination is not supplied.",
+        "Successful runtime reproduction, a test-running facility, automatic repair and a guaranteed correction are not shown capabilities."
+      ]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No concrete correction or replacement is shown in this sequence. Every displayed revision status retains the original with zero relationships/causes. The later explanation expressly disclaims correction, and the examination sharpens the post-commit account while leaving its subject original selected. The boilerplate about replacement selection is a general rule, not evidence that a replacement exists here. Composition is distinguishable from investigation provenance: @investigram-c7e665c6 is a component of @investigram-d74b9477, which was produced by decomposing @investigram-a17803e1. The later @investigram-90cfd68f examination has @investigram-c7e665c6 as its investigation subject and has its own three components; it is not listed as a component or replacement of @investigram-c7e665c6. Exact inspection retains that original and lists the examination through an explicit investigation-subject association. The comment-versus-statements mismatch and timer documentation discrepancy concern repository material, not correction relationships between investigrams.",
+      "support": [
+        "Revision status @investigram-c7e665c6: 'original remains selected'; '0 of 0 relationships/causes'.",
+        "@investigram-c7e665c6: Composition parent @investigram-d74b9477; Investigation subject @investigram-a17803e1 '(provenance, not composition)'.",
+        "@investigram-90cfd68f: Investigation subject @investigram-c7e665c6; composition @investigram-569d1439, @investigram-f0c5e050, @investigram-1ed2124c.",
+        "inspect @investigram-c7e665c6 lists @investigram-90cfd68f as 'current original' with an investigation-subject association that 'does not establish interpretive correctness'.",
+        "@investigram-a17803e1 says the 'Commit state first' comment differs from executable ordering and explicitly reports no structured inconsistency because the comment is repository text."
+      ],
+      "unknowns": [
+        "There are no displayed replacement identifiers, correction reasons, competing replacements or before/after correction contents to evaluate.",
+        "This sequence cannot demonstrate how replacement display differs from exact-original inspection when an actual correction exists.",
+        "The generic warning about scripted origin does not establish that any displayed hosted account is a scripted correction."
+      ]
+    },
+    {
+      "question": "Which account is currently selected, what conflicts remain, and which accounts need reconsideration? Distinguish direct and transitive causes, exact historical references, and claims the view does not establish. Does the presentation make the warning burden manageable?",
+      "answer": "At the sequence's end, the retained summary still selects original @investigram-7c656898 and its original four components; the retained explanation selects original @investigram-a86b8e57 and its three components. Decomposition and examination accounts also have original-selected statuses in their displayed views. No account is flagged as needing reconsideration, and no direct or transitive correction causes are listed. Two substantive tensions remain in the prose: timer payload forwarding versus type documentation/README, and the 'Commit state first' comment versus the reported statement order. These are not shown as unresolved competing-investigram revision conflicts. The explanation's evidence names the exact earlier dispatch investigram and its prior-interpretation exposure, but that shows captured context, not an established semantic dependency, error, or correction cause. The broad recency/conflict/reconsideration footer explains policy, but its unconditional repetition when all counts are zero increases the warning burden; the local zero statuses and explicit provenance labels are clearer than the boilerplate.",
+      "support": [
+        "Final summarize fsm-engine: retained outcome, original @investigram-7c656898 with original @investigram-a6f543c9, @investigram-04d79256, @investigram-300a00e5 and @investigram-9314e47c; all revision pages show zero relationships/causes.",
+        "Retained explanation: @investigram-a86b8e57, @investigram-70695d40, @investigram-7472008d and @investigram-a17803e1 all remain originals.",
+        "inspect @investigram-a86b8e57 exposes session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigram:04d792564de8b14389e42828a34df575d94185115f6c3aa2bf8fe3cec87f0604 with form 'prior-interpretation' in the clarification attempt.",
+        "Footer: selection uses acceptance recency, not credibility; reconsideration records corrected context exposure, not established error; exact inspection preserves originals.",
+        "@investigram-300a00e5 and @investigram-a17803e1 contain the two repository-level tensions."
+      ],
+      "unknowns": [
+        "No direct/transitive reconsideration chain, replacement selection contest, or historical corrected reference is instantiated in these views.",
+        "An investigation-subject association or evidence citation alone does not establish semantic reliance.",
+        "No displayed reconsideration flags does not prove every account correct or rule out conflicts beyond the supplied sequence.",
+        "Warning manageability for a populated conflict graph cannot be judged from this zero-cause sequence."
+      ]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The sequence is useful for learning and choosing a precise next investigation, but cumbersome to audit. The initial phrase 'no state or fallback transition is unhandled' is grammatically ambiguous: it can sound as though unhandled events never occur. The explanation resolves it as absence of transitions in both tiers. 'Confirmed' in the examination may sound like runtime verification despite the nearby static-only qualifications. 'Full-file' exposure may be mistaken for full displayed source even where the class excerpt is heavily omitted. Repeated identical Composition and Displayed composition rows, long evidence identifiers, zero revision panels, provider usage totals and billing footers compete with the functional story. The blanket 'conflicts remain unresolved' sentence can suggest an active conflict even though none is listed. Association previews omit prose and list only explicit associations, so neither a shortened preview nor a zero listing should be mistaken for a complete content or functionality inventory. The communication-failure message paired with HTTP 200 is difficult to interpret, although separating failure from the later accepted result is helpful. Clear short references, referents, qualifications, explicit investigation-subject labels and retained-outcome labels substantially improve navigability.",
+      "support": [
+        "@investigram-04d79256 contains the ambiguous 'no state or fallback transition is unhandled'; @investigram-7472008d spells out the distinction.",
+        "@investigram-90cfd68f begins 'The prior account is confirmed' but says no runtime execution was performed and focused test coverage is absent.",
+        "Source detail records full-file exposures while the class excerpt reports omittedCharacters: 12203.",
+        "inspect @investigram-c7e665c6 abbreviates the associated examination with '[139 prose characters omitted]' and warns that association absence does not establish functionality absence.",
+        "The sequence repeatedly prints zero revision pages, usage accounting and general correction/conflict warnings."
+      ],
+      "unknowns": [
+        "This is a qualitative judgment of the supplied text sequence, not observed user testing or a measured usability result.",
+        "The sequence does not demonstrate populated correction displays, conflict pagination, or runtime validation."
+      ]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful for progressive comprehension and precise follow-up selection, with strong qualification of evidence but excessive presentation overhead.",
+    "reasons": [
+      "The summary communicates runtime, builder, timer and tracing responsibilities; explanation resolves operational ambiguity; decomposition provides small selectable lifecycle aspects.",
+      "Examination adds important failure consequences and test-coverage limits without pretending to replace the original account.",
+      "Composition, investigation provenance, retained outcomes and exact references are explicitly distinguishable.",
+      "Repeated metadata and generic warnings make the substantive account and actual status harder to scan."
+    ],
+    "limitations": [
+      "Judgment uses only the supplied captured views; no independent source inspection or execution was performed.",
+      "No concrete correction, competing replacement or direct/transitive reconsideration scenario is displayed, so those workflows remain unevaluated.",
+      "Static interpretations and related test-source descriptions do not establish runtime correctness; reported usage does not establish billing."
+    ]
+  }
+}

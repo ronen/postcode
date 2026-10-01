@@ -1,0 +1,126 @@
+{
+  "findings": [
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly understands Executor as a boundary for one caller-supplied invocation, classification and observation, with retry and policy decisions outside that boundary.",
+      "evidence": [
+        "Evaluator answer 1 describes one synchronous or promise-like call, the success/value/error alternatives, unhandled propagation and policy-owned retry/backoff.",
+        "@investigram-f0a90ef1 calls this a shared call-classification adapter; @investigram-7a0a9dfa distinguishes classification from policy action; @investigram-cbe246c3 and @investigram-b1cc219c preserve the return of a filtered failure value.",
+        "Frozen reference: Executor.ts lines 45–75 support invocation/classification; lines 6–16 support returnOrThrow; RetryPolicy.ts lines 100–140 supply the surrounding retry loop."
+      ],
+      "consequence": "The account communicates the useful module responsibility without attributing caller business work or generic resilience policies to this file.",
+      "uncertainty": "This is supported static interpretation, not evidence of deployed behavior or of arbitrary caller operations and filters."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator retains consequential qualifications about listener-gated timing, shared filter functions, fresh emitters and callback exceptions.",
+      "evidence": [
+        "Evaluator answer 1 says timing depends on listeners at invocation start, clone shares predicates and creates fresh emitters, and normal outcomes are not guaranteed if filters, timing or listeners throw.",
+        "@investigram-8437cd7c, @investigram-e391831d and @investigram-b1cc219c explicitly qualify timing, delegated dispatch and captured mutable state.",
+        "Frozen reference: Executor.ts lines 19–28 and 49–68 describe conditional timing; lines 30–43 describe listeners/cloning; its material limits explicitly warn that listener and filter exceptions affect execution."
+      ],
+      "consequence": "The evaluator does not turn classification into a promise of safe callbacks or cloning into caller-state isolation.",
+      "uncertainty": "The frozen reference supports these broad boundaries; precise EventEmitter dispatch mechanics and every exceptional path are not exhaustively specified in it."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "A restrictive claim generated during examination is identified by the evaluator as a conflict in the account, rather than repeated as settled behavior.",
+      "evidence": [
+        "@investigram-860ecfdf says a listener exception can be classified only for success-event emission and that failure-event emission occurs inside catch.",
+        "@investigram-7a0a9dfa explicitly places success/result-failure notification in try; @investigram-a94d7314 describes the selected-result failure notification.",
+        "Evaluator answers 3, 4, 6 and 7 flag that discrepancy, decline to settle it from abbreviated excerpts and select @investigram-64783f5b for further examination.",
+        "The frozen reference warns that the broad try/catch also encloses successful-value classification and notification; it therefore supports retaining the broader warning instead of the examination child’s success-event-only restriction."
+      ],
+      "consequence": "The restrictive generated wording can mislead a reader about which observer failures enter errorFilter, but this evaluator did not endorse it. This is not an established generation-error-repeated-by-evaluator case.",
+      "uncertainty": "The displayed ExecuteWrapper excerpt omits the relevant implementation body. The view-only evaluator’s uncertainty is appropriate to its evidence, even though the frozen reference supports the broader warning. No runtime branch trace is supplied."
+    },
+    {
+      "category": "material-omission",
+      "claim": "The retained module summary does not bring the later callback/control-flow qualifications into its own account; the evaluator notices this limitation.",
+      "evidence": [
+        "@investigram-f0c3a29d says an unhandled throw is rethrown immediately and presents events as observations without the later callback-exception warning.",
+        "@investigram-7a0a9dfa adds the broad try/catch qualification; @investigram-c4293f15 explains catch-body secondary failures.",
+        "The final summarize executor is explicitly a retained outcome and repeats the original summary. Evaluator answer 7 warns that a reader stopping there may miss the later sharp edges.",
+        "The frozen reference identifies listener/filter exceptions and the broad catch boundary as material limits."
+      ],
+      "consequence": "The sequence can communicate the limitation to a reader who follows it, but redisplaying the original summary alone leaves a consequential qualification absent. The evaluator’s combined understanding is not shown to suffer that omission.",
+      "uncertainty": "This is a bounded content/presentation limitation, not proof that retained summaries must be rewritten automatically, a correction-system failure, or an omission of follow-up views from this supplied sequence."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator separates interpretation, compiler-derived support, attributed tests/documentation and runtime evidence.",
+      "evidence": [
+        "Evaluator answer 2 calls all investigram prose interpretation, limits mechanical export claims to exposed names/roles/routes, and says focused tests are reported rather than run.",
+        "inspect @investigram-f0a90ef1 --source-detail displays mechanically-derived export claims for FailureOrSuccess, returnOrThrow and ExecuteWrapper, along with captured locations and omitted-character counts.",
+        "The supplied source excerpts show Executor.ts line 4, its lines 6–16 helper excerpt and its truncated lines 30–78 class excerpt; Policy.ts line 28 shows error/value alternatives.",
+        "The frozen reference expressly limits compiler-derived source mapping and qualification and reports no runtime test."
+      ],
+      "consequence": "Evidence labels are not incorrectly promoted into behavioral proof, independent corroboration or test results.",
+      "uncertainty": "The record supports the evaluator’s attribution discipline. It does not independently establish all assertions made by the generated examination about tests or documentation."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "Some detailed consumer, EventEmitter and test/documentation claims are traceable to displayed interpretations but exceed the frozen reference’s validating scope.",
+      "evidence": [
+        "Evaluator answer 1 follows @investigram-e946c605 on Noop, Bulkhead and fallback/circuit-breaker construction; the displayed source-detail excerpts for these consumers mainly show imports.",
+        "Evaluator answers 2 and 3 attribute focused-test coverage, stopped listener iteration and the IPolicy.onFailure discrepancy to @investigram-a3ed2fe4, @investigram-c4293f15 and @investigram-0371953c.",
+        "The frozen reference validates Executor responsibilities, delegated emitters and the surrounding retry loop; it does not provide the full consumer bodies, focused tests, IPolicy comment or EventEmitter dispatch body."
+      ],
+      "consequence": "These details should remain attributed, qualified claims. Their repetition does not by itself demonstrate either factual correctness or unsupported evaluator invention.",
+      "uncertainty": "No error is established for these deeper claims. Resolving them would require material outside the permitted frozen reference and displayed excerpts."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly reports the absence of an exercised correction/replacement/reconsideration lifecycle and distinguishes composition from later-investigation provenance.",
+      "evidence": [
+        "Evaluator answers 5 and 6 identify the final original @investigram-f0a90ef1 and its four original components; all displayed revision statuses have zero relationships/causes.",
+        "@investigram-c3aae69a is a component of @investigram-f8162635, while @investigram-a3ed2fe4 lists it as an investigation subject, explicitly provenance rather than composition.",
+        "inspect @investigram-c3aae69a and inspect @investigram-7a0a9dfa show current-original associated interpretations; later explain and summarize commands say Retained outcome; no new investigation.",
+        "The condition preamble and footer distinguish reconsideration from established error or semantic reliance and describe recency-based selection without demonstrating a concrete replacement here."
+      ],
+      "consequence": "No generic warning is mistaken for a live correction, no provenance chain is converted into correction causation, and no examination is assumed to replace its subject.",
+      "uncertainty": "This sequence cannot assess changed selection, conflicting replacements, exact-original versus replacement inspection, direct/transitive reconsideration causes or warning burden under actual revision growth. Their absence is a coverage limitation, not evidence of a milestone failure."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The proposed next investigation is grounded in demonstrated selection and examination capabilities while keeping unshown capabilities hypothetical.",
+      "evidence": [
+        "Evaluator answer 4 selects @investigram-64783f5b, the displayed outcome-notification aspect, using the examination lens.",
+        "The captured decompose command creates that selectable aspect, and examine @investigram-c3aae69a demonstrates examination of an investigram.",
+        "The evaluator explicitly distinguishes runtime experiments, executable traces and automatic reconciliation from available or completed capabilities."
+      ],
+      "consequence": "The sequence enables a concrete follow-up question aimed at a material ambiguity without unsupported claims that the system can resolve or execute it automatically.",
+      "uncertainty": "The record shows a justified proposed selection, not the outcome or usefulness of the unperformed follow-up."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator describes warning and metadata burden as a presentation risk without actually mistaking generic conflict prose for live revision state.",
+      "evidence": [
+        "Evaluator answers 6 and 7 contrast zero local relationships/causes with the repeated footer phrase conflicts remain unresolved, and call the warning burden only partly manageable.",
+        "Captured views repeat Displayed composition/Composition, long evidence identifiers, token reports and unchanged warning paragraphs.",
+        "The evaluator preserves the distinction between reported and billed usage and states that monetary attribution is unavailable, not zero."
+      ],
+      "consequence": "The reading-cost criticism is grounded in visible repetition. There is no demonstrated presentation-misunderstanding or unsupported evaluator extrapolation about live conflicts, actual charges or unshown interface controls.",
+      "uncertainty": "This is a qualitative judgment from one captured sequence, not measured usability or evidence that collapse controls, concise diffs or graphical navigation are absent."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful for qualified understanding of Executor and for selecting a precise follow-up; limited for validating deeper claims or assessing the correction lifecycle, and expensive to read.",
+    "reasons": [
+      "The evaluator recovers the main source-supported responsibility boundary, including tagged outcomes, policy separation, conditional observations and the limits of cloning.",
+      "Explanation and decomposition make consequential control-flow questions more explicit and separately selectable.",
+      "The evaluator detects the examination’s restrictive notification-boundary wording, preserves uncertainty and requests a relevant next examination instead of silently accepting it.",
+      "Composition, later-investigation provenance, retained retrieval and mechanical evidence remain distinguishable.",
+      "Repetition and the absence of later sharp-edge qualifications in the retained summary reduce efficient reuse."
+    ],
+    "limitations": [
+      "Only the supplied input artifact was used; no repository source, other assessment records, plans or web material was inspected.",
+      "The frozen reference is a static, scoped reference and cannot settle detailed consumer, EventEmitter, test or documentation claims beyond its stated coverage.",
+      "No concrete replacement, conflict alternative, changed selection or reconsideration cause appears in these captured views; general milestone wording is not evidence that those scenarios were exercised.",
+      "No runtime tests, deployed observations, formal reassessment or successful future investigation are established.",
+      "The condition states that the reference preparer and orchestrator are the implementing agent, with exact model identifier unavailable and OpenAI family provenance; this overlap limits independence.",
+      "Scripted origin, if used as an injected baseline, must not be counted as a natural generation error; the cited examination account here is explicitly labelled hosted.",
+      "No numeric aggregate score is assigned, and no administrative request-budget interruption is treated as an interpretive or milestone failure."
+    ]
+  }
+}

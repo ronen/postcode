@@ -1,0 +1,13 @@
+{
+  "id": "cockatiel-m5",
+  "pass": "module-integrated-05",
+  "subject": "cockatiel",
+  "manifest": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-05/manifest.json",
+  "project": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/tsconfig.json",
+  "output": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-05/cockatiel-m5",
+  "budget": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-05/request-budget.json",
+  "incremental": true,
+  "commands": [
+    "summarize executor"
+  ]
+}

@@ -1,0 +1,1222 @@
+COMMAND: summarize executor
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-e65c42fd: executor
+
+@investigram-f0a90ef1 · interpretation
+This module is the shared call-classification adapter used by several resilience policies. It turns an invoked synchronous or promise-like operation into a tagged success/handled-failure result, emits timed success/failure observations, and provides a helper that converts the tag back into ordinary return/throw behavior.
+Referent: Executor module and its execution-result adapter functionality
+  Qualification: Implementation-based account from first-observed TypeScript source; it does not establish deployed runtime behavior.
+  Qualification: The module has no associated earlier account in this session, and no nearby explanatory documentation was supplied.
+  Displayed composition: @investigram-f0c3a29d, @investigram-8437cd7c, @investigram-cbe246c3, @investigram-e946c605
+  Composition: @investigram-f0c3a29d, @investigram-8437cd7c, @investigram-cbe246c3, @investigram-e946c605
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:export:bf30b1e29c27318b32a50ce708f5527dc9e39d20c384f83cfdd29682386bf11a, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:export:4a4b13f834912c68fdb4b0aaac052eebadeae2ede87f96a20ed462c3799ae3eb, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:export:646b834659e590e7ef07cc184b49eb5cd4d68a61ebdc398d586614b9b5725fd1
+
+@investigram-f0c3a29d · interpretation
+ExecuteWrapper.invoke awaits the supplied function. An unfiltered resolved value becomes {success}; a result matching resultFilter becomes handled failure {value}; a thrown value matching errorFilter becomes {error}; and an unhandled throw is rethrown immediately. Success and failure events carry elapsed duration, while failures additionally report handled status and the error/value reason.
+Referent: ExecuteWrapper invocation and classification behavior
+  Qualification: Both synchronous throws and asynchronous rejection enter the same catch because invocation is awaited inside try/catch.
+  Qualification: Default filters reject every error/result, so ordinary results succeed and thrown errors propagate.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-f0a90ef1
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c
+
+@investigram-8437cd7c · interpretation
+Timing is conditional: no stopwatch is created unless at least one success or failure listener exists. It uses performance.now when available, otherwise process.hrtime.bigint converted to milliseconds. clone preserves the two filters but creates fresh emitters, isolating subscriptions between policy copies.
+Referent: Conditional timing, event emission, and cloning in ExecuteWrapper
+  Qualification: The environment-dependent clocks are implementation branches, not a precision guarantee.
+  Qualification: Listener storage and dispatch are delegated to the Event module.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-f0a90ef1
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:37e84c8771ffc282e7591b6b6542312e296cc6049e4bcec211846a339e6c16de
+
+@investigram-cbe246c3 · interpretation
+returnOrThrow reverses the tagged protocol: it throws an {error}, returns a {success}, and otherwise returns the filtered failure {value}. Thus callers decide whether a handled value remains a normal return, while handled errors regain exception semantics.
+Referent: returnOrThrow result-unwrapping helper
+  Qualification: The helper is intentionally mechanical; retry and other policies can inspect the union directly instead.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-f0a90ef1
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:11985e6907388eb17d657be3549d569d4ab3edcfea867c1b8148b32d0a9be720
+
+@investigram-e946c605 · interpretation
+Policy factories supply configured wrappers to retry, circuit-breaker, and fallback policies. Retry repeatedly invokes through the wrapper, returns {success}, feeds handled failures into backoff/retry events, and on exhaustion throws {error} or returns {value}. NoopPolicy uses the wrapper only for classification/telemetry before unwrapping. BulkheadPolicy constructs a wrapper and exposes its listeners, but its shown execute path calls the function directly, so wrapper timing/classification is not applied there.
+Referent: Delegation from policy construction into consumers of ExecuteWrapper
+  Qualification: Retry, no-op, and bulkhead were inspected as representative consumers; fallback and circuit-breaker construction is established, but their full execution implementations were not read.
+  Qualification: The bulkhead observation is limited to the supplied first-observed implementation source.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-f0a90ef1
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:5b473607db64d9d43e11143671122860af7e5c556bc4f3ac954728cb87cf5e08, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:c1b4f47f88e6b921182bd08f6add826c41b82220b781dd948f52e06fbbec54f1, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:19474d337b02ae1c8bfe18872f87677983eb7a7859a681c7b9d008f92193c046, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:9d807df36b3ab8b378698c5ad60738b0c7fbffc49d852075ca6d769b9bd4c7d2, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:aba78f3fbe7a376bde361ef188bcaf1c1130297a19e2ed3dd3ef3dfffddaa057, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:d8afce65f68c657a72df080f735fc42dc5e350547c0b35550d76df6d83567bb7, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:23aa998381f67512b605373c92b5cf920ca2d17afc596e1537c4161d979fa04a
+
+Revision status @investigram-f0a90ef1: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-f0c3a29d: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-8437cd7c: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-cbe246c3: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-e946c605: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8 (accepted) reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 238172 tokens; input 235361 tokens (subset of total); output 2811 tokens (subset of total); cached-input 28672 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 549 tokens (subset of output)
+Session reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 238172 tokens; input 235361 tokens (subset of total); output 2811 tokens (subset of total); cached-input 28672 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 549 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: explain @investigram-f0c3a29d
+Explain · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-7a0a9dfa · interpretation
+`ExecuteWrapper.invoke` is a classifier around one function call, not the policy action itself. It starts optional timing, invokes and awaits `fn(...args)`, and then returns exactly one of three tagged shapes: `{ success: value }` for a resolved value rejected by `resultFilter`; `{ value }` for a resolved value accepted by `resultFilter`; or `{ error }` for a caught throw/rejection accepted by `errorFilter`. A caught item rejected by `errorFilter` is not converted into a result: a failure notification is attempted with `handled: false`, then the same thrown value is rethrown. Thus “handled” means selected by a configured filter for policy processing, not that the operation succeeded or that the reason was transformed.
+Referent: Clarified invocation, classification, timing, and notification behavior of ExecuteWrapper
+  Qualification: This expands the earlier account rather than correcting it; its main outcome classification is consistent with the captured implementation.
+  Qualification: The account is based on captured TypeScript source and compiler-derived symbol identity, not execution of the code.
+  Qualification: The `try` block also contains result filtering and success/result-failure notification. Consequently, exceptions from `resultFilter` or from listeners invoked there enter the same catch path as an exception from `fn`; this is a sharp edge rather than the ordinary intended call outcome.
+  Qualification: `errorFilter` and the failure notification in the catch block are not protected by another local catch. If either throws, that new exception propagates and can supersede the originally caught reason.
+  Displayed composition: @investigram-a94d7314, @investigram-e391831d, @investigram-b1cc219c
+  Composition: @investigram-a94d7314, @investigram-e391831d, @investigram-b1cc219c
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f0c3a29d (provenance, not composition)
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:5b473607db64d9d43e11143671122860af7e5c556bc4f3ac954728cb87cf5e08, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:1a67c6735a1a3434e9bb651b218f03790bf796947ad61c72dbc9f43a110b359f
+
+@investigram-a94d7314 · interpretation
+The resolved-value path first applies `resultFilter`. A false result emits success, when observable, and returns `{ success: value }`. A true result is deliberately represented as a handled failure: it emits `onFailure` with `handled: true` and `reason: { value }`, then returns `{ value }`. The thrown/rejected path applies `errorFilter`. A true result emits `handled: true` with `reason: { error }` and returns `{ error }`; a false result emits `handled: false` with the same reason and then rethrows. Synchronous throws and promise rejections converge because the call is awaited inside the `try`.
+Referent: Four classification branches within ExecuteWrapper.invoke
+  Qualification: The filters are predicates only: they choose the branch but do not replace the resolved or thrown payload.
+  Qualification: An unhandled exception can still produce an `onFailure` observation before propagation; “unhandled” means it is not returned as `{ error }`.
+  Qualification: With constructor defaults, neither predicate selects anything, so resolved values become `{ success }` and ordinary caught exceptions are rethrown.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f0c3a29d (provenance, not composition)
+  Composition parent: @investigram-7a0a9dfa
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae
+
+@investigram-e391831d · interpretation
+Timing is demand-driven. At the start of `invoke`, a stopwatch is created only if either success or failure emitter currently has at least one listener. It uses `performance.now()` when available, otherwise `process.hrtime.bigint()`, and reports milliseconds. The measured interval includes the awaited call and the applicable filter evaluation, ending when the event object is prepared; listener execution itself occurs afterward. No event history is retained by these base emitters.
+Referent: ExecuteWrapper timing and event-observation mechanics
+  Qualification: If neither emitter has a listener when invocation begins, adding one while the operation is pending does not enable an event for that invocation because the stored stopwatch remains null.
+  Qualification: If either emitter has a listener at invocation start, timing is enabled for the invocation even when the eventual outcome belongs to the other emitter; emitting to an emitter with no listeners is a no-op.
+  Qualification: Listeners are called synchronously and listener exceptions are not isolated by EventEmitter.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f0c3a29d (provenance, not composition)
+  Composition parent: @investigram-7a0a9dfa
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:1a67c6735a1a3434e9bb651b218f03790bf796947ad61c72dbc9f43a110b359f
+
+@investigram-b1cc219c · interpretation
+`clone()` creates a fresh wrapper that reuses the same two predicate function objects but has new success and failure emitters, so listeners are not copied. Separately, `returnOrThrow` converts a completed tagged outcome back to ordinary control flow: `{ error }` is thrown, while both `{ success }` and `{ value }` yield their payload. This separation lets policy implementations inspect handled failures before deciding whether and when to expose a value or throw.
+Referent: ExecuteWrapper cloning and conversion of classified outcomes
+  Qualification: Sharing predicate functions does not imply copying any external mutable state those functions may close over.
+  Qualification: The final sentence describes the mechanism enabled by the separation; individual policy decisions were not exhaustively inspected here.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f0c3a29d (provenance, not composition)
+  Composition parent: @investigram-7a0a9dfa
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:11985e6907388eb17d657be3549d569d4ab3edcfea867c1b8148b32d0a9be720
+
+Revision status @investigram-7a0a9dfa: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-a94d7314: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-e391831d: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-b1cc219c: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-f0c3a29d: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:3e4269a9fc4cff36d216dedb00da8577dd07fd64a28fff413aa74b550f4ac4d1 (accepted) reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 195273 tokens; input 191837 tokens (subset of total); output 3436 tokens (subset of total); cached-input 47360 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1195 tokens (subset of output)
+Session reported usage: 12 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 433445 tokens; input 427198 tokens (subset of total); output 6247 tokens (subset of total); cached-input 76032 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1744 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: decompose @investigram-7a0a9dfa
+Decompose · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-f8162635 · interpretation
+Selectable aspects of `ExecuteWrapper.invoke` include call/await behavior, resolved-value classification, caught-error classification, demand-driven timing, and outcome notification.
+Referent: Smaller selectable aspects of ExecuteWrapper invocation and classification
+  Qualification: This is a non-exhaustive decomposition; the aspects overlap where classification, timing, and notification occur in the same control-flow branches.
+  Qualification: The account interprets captured TypeScript source without executing it.
+  Qualification: The earlier clarification was considered for scope but is not independent corroboration.
+  Displayed composition: @investigram-1184cc39, @investigram-e049d39d, @investigram-c3aae69a, @investigram-5b8577ca, @investigram-64783f5b
+  Composition: @investigram-1184cc39, @investigram-e049d39d, @investigram-c3aae69a, @investigram-5b8577ca, @investigram-64783f5b
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-7a0a9dfa (provenance, not composition)
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigram:7a0a9dfa8cb19202ce1fd54182bfe821b68050dc845abdcd4b44f9b7d92bb7f7
+
+@investigram-1184cc39 · interpretation
+**Call and await:** Invoke `fn(...args)` and await either its direct value or promise-like result.
+Referent: Function invocation and asynchronous convergence within ExecuteWrapper.invoke
+  Qualification: Because the call is awaited inside the `try`, synchronous throws and promise rejections enter the catch path.
+  Qualification: This aspect does not by itself describe how the resulting value or error is classified.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-7a0a9dfa (provenance, not composition)
+  Composition parent: @investigram-f8162635
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1
+
+@investigram-e049d39d · interpretation
+**Resolved-result classification:** Apply `resultFilter`; return `{ success: value }` when it rejects the value, or `{ value }` when it selects the value.
+Referent: Classification of resolved values by ExecuteWrapper.invoke
+  Qualification: The predicate selects a branch but does not transform the value.
+  Qualification: The default result predicate returns false, so a normally resolved value takes the `{ success }` branch unless configured otherwise.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-7a0a9dfa (provenance, not composition)
+  Composition parent: @investigram-f8162635
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1
+
+@investigram-c3aae69a · interpretation
+**Caught-error classification:** Apply `errorFilter`; return `{ error }` for a selected error, otherwise rethrow it.
+Referent: Classification and propagation of caught values by ExecuteWrapper.invoke
+  Qualification: The catch parameter can hold any thrown or rejected value, not only an `Error` instance.
+  Qualification: The default error predicate returns false, so caught values are rethrown unless configured otherwise.
+  Qualification: An exception raised inside the preceding `try`, including one from result filtering or success-side notification, also reaches this catch path.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-7a0a9dfa (provenance, not composition)
+  Composition parent: @investigram-f8162635
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1
+
+@investigram-5b8577ca · interpretation
+**Conditional timing:** Start a stopwatch only when either outcome emitter has a listener at invocation start, then report elapsed milliseconds with the emitted outcome.
+Referent: Listener-gated duration measurement in ExecuteWrapper.invoke
+  Qualification: The stopwatch uses `performance.now()` when available and otherwise converts `process.hrtime.bigint()` nanoseconds to milliseconds.
+  Qualification: Listener presence is sampled before the function call; later subscription does not retroactively start timing for that invocation.
+  Qualification: The measured duration is read before the applicable event listener callbacks run.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-7a0a9dfa (provenance, not composition)
+  Composition parent: @investigram-f8162635
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:c90c2a138fcad3ce6a18d8d8d7d02ac3906a9273c68e6469dfa9b946122abb32
+
+@investigram-64783f5b · interpretation
+**Outcome notification:** Emit success for an unselected resolved value; emit failure with a tagged reason and `handled` status for selected results and caught values.
+Referent: Success and failure event emission by ExecuteWrapper.invoke
+  Qualification: Failure notification precedes rethrow when a caught value is not handled.
+  Qualification: Emission is skipped when no stopwatch was started, so these base notifications are tied to listener presence at invocation start.
+  Qualification: `EventEmitter.emit` calls listeners directly; listener exceptions are not locally isolated and may alter the invocation's control flow.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-7a0a9dfa (provenance, not composition)
+  Composition parent: @investigram-f8162635
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:c90c2a138fcad3ce6a18d8d8d7d02ac3906a9273c68e6469dfa9b946122abb32
+
+Revision status @investigram-f8162635: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-1184cc39: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-e049d39d: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-c3aae69a: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-5b8577ca: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-64783f5b: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-7a0a9dfa: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:1215432774cc489ae5b23a45cf90b416e502d4472a2664ab3115706efbb5d623 (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 82694 tokens; input 80399 tokens (subset of total); output 2295 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 643 tokens (subset of output)
+Session reported usage: 16 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 516139 tokens; input 507597 tokens (subset of total); output 8542 tokens (subset of total); cached-input 76032 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2387 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: examine @investigram-c3aae69a
+Examine · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-a3ed2fe4 · interpretation
+`ExecuteWrapper.invoke` has a broader error boundary than “errors from the invoked operation”: its `try` also encloses resolved-value filtering and success notification. Any synchronous throw or awaited rejection from those steps is passed to `errorFilter`. The resulting boolean is recorded in a failure event before the method either returns `{ error }` when handled or rethrows the original caught value when unhandled. This classification is not recursively protected: exceptions from `errorFilter`, elapsed-time calculation, or synchronous failure listeners escape directly and can prevent or replace the intended `{ error }`/rethrow outcome.
+Referent: Detailed control-flow, observability, and secondary-failure behavior of caught-value classification in ExecuteWrapper.invoke
+  Qualification: This is a static interpretation of first-observed TypeScript source, not executed or deployed-runtime evidence.
+  Qualification: The caught value is typed `unknown`; neither classification nor propagation requires an `Error` instance.
+  Qualification: The constructor's default `errorFilter` returns false, but policy factories shown in the supplied Policy source normally construct wrappers with explicit policy filters.
+  Qualification: Failure notification is synchronous and occurs before the final return or rethrow; a throwing listener therefore changes the externally observed outcome.
+  Qualification: The supplied focused tests cover ordinary handled and unhandled `Error` instances, but not non-Error throws, filter exceptions, listener exceptions, or errors originating in resolved-value filtering or success listeners.
+  Displayed composition: @investigram-860ecfdf, @investigram-802c57e4, @investigram-c4293f15, @investigram-0371953c
+  Composition: @investigram-860ecfdf, @investigram-802c57e4, @investigram-c4293f15, @investigram-0371953c
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-c3aae69a (provenance, not composition)
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:1a67c6735a1a3434e9bb651b218f03790bf796947ad61c72dbc9f43a110b359f, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:5b473607db64d9d43e11143671122860af7e5c556bc4f3ac954728cb87cf5e08, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:30c405c6c4943483102fac31da49e85c7f4e9f248249af1f04b3e743fe4aa712
+
+@investigram-860ecfdf · interpretation
+The catch boundary includes `await fn(...args)`, `resultFilter(value)`, elapsed-time measurement on the success path, and synchronous success-event emission. Consequently, an error caused by classification or observation infrastructure is indistinguishable at this boundary from an operation rejection and may itself be selected as a handled policy failure.
+Referent: Operations whose exceptions enter caught-value classification
+  Qualification: Only statements lexically inside the implementation's `try` enter this catch; setup before the `try`, including conditional stopwatch creation, does not.
+  Qualification: A listener exception can be classified only for success-event emission inside the try; failure-event emission occurs inside the catch and is not caught again.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-c3aae69a (provenance, not composition)
+  Composition parent: @investigram-a3ed2fe4
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:1a67c6735a1a3434e9bb651b218f03790bf796947ad61c72dbc9f43a110b359f
+
+@investigram-802c57e4 · interpretation
+Within the catch, `errorFilter` runs first. If it returns normally, `invoke` emits one failure event when timing was enabled, with the same caught value in `reason.error` and the computed `handled` flag. It then rethrows that exact value when false or returns `{ error }` when true.
+Referent: Ordering and data flow inside ExecuteWrapper.invoke's catch block
+  Qualification: Timing is enabled only if at least one success or failure listener existed when invocation began; later listener changes do not alter whether this invocation has a stopwatch.
+  Qualification: The event is attempted for both handled and unhandled values when timing is enabled.
+  Qualification: “One failure event” describes one `emit` call; multiple registered listeners may each receive it.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-c3aae69a (provenance, not composition)
+  Composition parent: @investigram-a3ed2fe4
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:1a67c6735a1a3434e9bb651b218f03790bf796947ad61c72dbc9f43a110b359f
+
+@investigram-c4293f15 · interpretation
+The catch body has no nested protection. If `errorFilter` throws, no failure event is emitted and its exception escapes. If duration calculation or a failure listener throws, that secondary exception escapes before the intended handled return or original-value rethrow; with multiple listeners, synchronous iteration also stops at the throwing listener.
+Referent: Propagation and masking caused by failures during caught-value handling
+  Qualification: The claim concerns direct control flow in the supplied implementations; no runtime experiment was performed.
+  Qualification: A secondary failure can mask the originally caught value from the caller, although earlier listeners may already have observed the failure event.
+  Qualification: The focused Executor tests do not exercise these secondary-failure cases.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-c3aae69a (provenance, not composition)
+  Composition parent: @investigram-a3ed2fe4
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:1a67c6735a1a3434e9bb651b218f03790bf796947ad61c72dbc9f43a110b359f, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:30c405c6c4943483102fac31da49e85c7f4e9f248249af1f04b3e743fe4aa712
+
+@investigram-0371953c · interpretation
+The supplied `IPolicy.onFailure` documentation says failure notification is for a request failing due to a handled reason, but `ExecuteWrapper.invoke` emits failure notification for an unhandled caught value too, setting `handled: false` immediately before rethrow. The focused test explicitly expects that unhandled notification, so the implementation and test agree while the interface prose is narrower.
+Referent: Documented versus implemented scope of failure notification during caught-error classification
+  Qualification: This is an attributed documentation-versus-implementation discrepancy, not a claim about author intent.
+  Qualification: The interface comment also contains wording defects, so its exact intended contract is uncertain.
+  Qualification: No structured inconsistency is reported because this discrepancy does not contradict an earlier investigram.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-c3aae69a (provenance, not composition)
+  Composition parent: @investigram-a3ed2fe4
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:5b473607db64d9d43e11143671122860af7e5c556bc4f3ac954728cb87cf5e08, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:30c405c6c4943483102fac31da49e85c7f4e9f248249af1f04b3e743fe4aa712
+
+Revision status @investigram-a3ed2fe4: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-860ecfdf: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-802c57e4: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-c4293f15: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-0371953c: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-c3aae69a: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:247400284ede91523babbae6d7fcd1dfc7668768a978906b55f6e8ecb3c8e2d1 (accepted) reported usage: 7 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 232093 tokens; input 228881 tokens (subset of total); output 3212 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 886 tokens (subset of output)
+Session reported usage: 23 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 748232 tokens; input 736478 tokens (subset of total); output 11754 tokens (subset of total); cached-input 76032 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3273 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-f0a90ef1 --source-detail
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-f0a90ef1 · interpretation
+This module is the shared call-classification adapter used by several resilience policies. It turns an invoked synchronous or promise-like operation into a tagged success/handled-failure result, emits timed success/failure observations, and provides a helper that converts the tag back into ordinary return/throw behavior.
+Referent: Executor module and its execution-result adapter functionality
+  Qualification: Implementation-based account from first-observed TypeScript source; it does not establish deployed runtime behavior.
+  Qualification: The module has no associated earlier account in this session, and no nearby explanatory documentation was supplied.
+  Displayed composition: @investigram-f0c3a29d, @investigram-8437cd7c, @investigram-cbe246c3, @investigram-e946c605
+  Composition: @investigram-f0c3a29d, @investigram-8437cd7c, @investigram-cbe246c3, @investigram-e946c605
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:export:bf30b1e29c27318b32a50ce708f5527dc9e39d20c384f83cfdd29682386bf11a, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:export:4a4b13f834912c68fdb4b0aaac052eebadeae2ede87f96a20ed462c3799ae3eb, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:export:646b834659e590e7ef07cc184b49eb5cd4d68a61ebdc398d586614b9b5725fd1
+
+@investigram-f0c3a29d · interpretation
+ExecuteWrapper.invoke awaits the supplied function. An unfiltered resolved value becomes {success}; a result matching resultFilter becomes handled failure {value}; a thrown value matching errorFilter becomes {error}; and an unhandled throw is rethrown immediately. Success and failure events carry elapsed duration, while failures additionally report handled status and the error/value reason.
+Referent: ExecuteWrapper invocation and classification behavior
+  Qualification: Both synchronous throws and asynchronous rejection enter the same catch because invocation is awaited inside try/catch.
+  Qualification: Default filters reject every error/result, so ordinary results succeed and thrown errors propagate.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-f0a90ef1
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c
+
+@investigram-8437cd7c · interpretation
+Timing is conditional: no stopwatch is created unless at least one success or failure listener exists. It uses performance.now when available, otherwise process.hrtime.bigint converted to milliseconds. clone preserves the two filters but creates fresh emitters, isolating subscriptions between policy copies.
+Referent: Conditional timing, event emission, and cloning in ExecuteWrapper
+  Qualification: The environment-dependent clocks are implementation branches, not a precision guarantee.
+  Qualification: Listener storage and dispatch are delegated to the Event module.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-f0a90ef1
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:37e84c8771ffc282e7591b6b6542312e296cc6049e4bcec211846a339e6c16de
+
+@investigram-cbe246c3 · interpretation
+returnOrThrow reverses the tagged protocol: it throws an {error}, returns a {success}, and otherwise returns the filtered failure {value}. Thus callers decide whether a handled value remains a normal return, while handled errors regain exception semantics.
+Referent: returnOrThrow result-unwrapping helper
+  Qualification: The helper is intentionally mechanical; retry and other policies can inspect the union directly instead.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-f0a90ef1
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:11985e6907388eb17d657be3549d569d4ab3edcfea867c1b8148b32d0a9be720
+
+@investigram-e946c605 · interpretation
+Policy factories supply configured wrappers to retry, circuit-breaker, and fallback policies. Retry repeatedly invokes through the wrapper, returns {success}, feeds handled failures into backoff/retry events, and on exhaustion throws {error} or returns {value}. NoopPolicy uses the wrapper only for classification/telemetry before unwrapping. BulkheadPolicy constructs a wrapper and exposes its listeners, but its shown execute path calls the function directly, so wrapper timing/classification is not applied there.
+Referent: Delegation from policy construction into consumers of ExecuteWrapper
+  Qualification: Retry, no-op, and bulkhead were inspected as representative consumers; fallback and circuit-breaker construction is established, but their full execution implementations were not read.
+  Qualification: The bulkhead observation is limited to the supplied first-observed implementation source.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-f0a90ef1
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:5b473607db64d9d43e11143671122860af7e5c556bc4f3ac954728cb87cf5e08, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:c1b4f47f88e6b921182bd08f6add826c41b82220b781dd948f52e06fbbec54f1, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:19474d337b02ae1c8bfe18872f87677983eb7a7859a681c7b9d008f92193c046, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:9d807df36b3ab8b378698c5ad60738b0c7fbffc49d852075ca6d769b9bd4c7d2, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:aba78f3fbe7a376bde361ef188bcaf1c1130297a19e2ed3dd3ef3dfffddaa057, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:d8afce65f68c657a72df080f735fc42dc5e350547c0b35550d76df6d83567bb7, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:23aa998381f67512b605373c92b5cf920ca2d17afc596e1537c4161d979fa04a
+
+Revision status @investigram-f0a90ef1: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-f0c3a29d: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-8437cd7c: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-cbe246c3: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-e946c605: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Associated investigrams (explicit associations)
+Listing: available; 0 shown of 0.
+Use inspect @reference for retained content; no inference.
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}],"coverage":"full-file","contentDigest":"2c6dffe091a6a029f123b0a1fa731581250ed5cd9009bc6c485b0d5eed6f1447","mapping":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:repository-artifact:429689534e3a1efc75b114d7e74fb232dfa8702254a0b672c93341588800b1ca","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:export:bf30b1e29c27318b32a50ce708f5527dc9e39d20c384f83cfdd29682386bf11a","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}],"information":{"type":"export","exportedName":"FailureOrSuccess","symbol":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:symbol:0a5270610d7e32715130ba8d4ad461da1fb539ecd822422700fb9777d17f7807","origin":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:module:e65c42fdafe6c8f0c0186bf2818e001bb8f1989d4807e123dd62240657fc5559","roles":{"type":true,"value":false},"routes":[{"kind":"direct","typeOnly":false,"aliased":false,"via":null}]},"qualification":{"kind":"claim-context","id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:expansion-context:f8dc78977c55e188b2ae1b679855f6a47222d245eef831ba171719698f4b6dd1","session":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:module:e65c42fdafe6c8f0c0186bf2818e001bb8f1989d4807e123dd62240657fc5559","evidence":["session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:ff5c325c28823bfb0ba1bf80c92d4a862db0eb29d9a8eb3a0961cb914f1d2677"],"status":"mechanically-derived","guarantee":"The compiler exposes this exported name; roles and forwarding are qualified by the recorded route.","limitations":[],"diagnostics":[],"inputs":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:analysis-inputs:ccf7643a66a883a3dc141b43db84eb72744f538d55b46b7cbfc28a9991278cc1"}}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:export:4a4b13f834912c68fdb4b0aaac052eebadeae2ede87f96a20ed462c3799ae3eb","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}],"information":{"type":"export","exportedName":"returnOrThrow","symbol":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:symbol:839b4b3cce4c5e2f91a1bb9e3469f399cfcd1a1c90388dfed51a934ee869f567","origin":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:module:e65c42fdafe6c8f0c0186bf2818e001bb8f1989d4807e123dd62240657fc5559","roles":{"type":false,"value":true},"routes":[{"kind":"direct","typeOnly":false,"aliased":false,"via":null}]},"qualification":{"kind":"claim-context","id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:expansion-context:e6551ff1181edc9c4da48bb0aad44f88a220225f6e421219ff1d7fe29c445c6c","session":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:module:e65c42fdafe6c8f0c0186bf2818e001bb8f1989d4807e123dd62240657fc5559","evidence":["session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:11985e6907388eb17d657be3549d569d4ab3edcfea867c1b8148b32d0a9be720"],"status":"mechanically-derived","guarantee":"The compiler exposes this exported name; roles and forwarding are qualified by the recorded route.","limitations":[],"diagnostics":[],"inputs":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:analysis-inputs:ccf7643a66a883a3dc141b43db84eb72744f538d55b46b7cbfc28a9991278cc1"}}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:export:646b834659e590e7ef07cc184b49eb5cd4d68a61ebdc398d586614b9b5725fd1","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}],"information":{"type":"export","exportedName":"ExecuteWrapper","symbol":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:symbol:5d069dd56dbbc3b7cb56e8b8ae64943bd01c3d5c87b7c2b39647e68b1614e4dc","origin":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:module:e65c42fdafe6c8f0c0186bf2818e001bb8f1989d4807e123dd62240657fc5559","roles":{"type":true,"value":true},"routes":[{"kind":"direct","typeOnly":false,"aliased":false,"via":null}]},"qualification":{"kind":"claim-context","id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:expansion-context:088432f171a447e3d4de00cd25446b0c4e39ed6f77bb2458bb1c3a1c511dbd4b","session":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:module:e65c42fdafe6c8f0c0186bf2818e001bb8f1989d4807e123dd62240657fc5559","evidence":["session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c"],"status":"mechanically-derived","guarantee":"The compiler exposes this exported name; roles and forwarding are qualified by the recorded route.","limitations":[],"diagnostics":[],"inputs":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:analysis-inputs:ccf7643a66a883a3dc141b43db84eb72744f538d55b46b7cbfc28a9991278cc1"}}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:ff5c325c28823bfb0ba1bf80c92d4a862db0eb29d9a8eb3a0961cb914f1d2677","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:11985e6907388eb17d657be3549d569d4ab3edcfea867c1b8148b32d0a9be720","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:989d51fdb86cd715ee817f15724e345b2909697c0d191aaad6a0545a04d2e0fb","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:89c1e4055876ecb7155b23c47b21603a45e3ddfd6b70fe77021638c2c14deefe","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:export:2a04ee0d0821383544fe715e2969006773a3bea7e89dc8d66f2f6300f62daf7d","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}],"information":{"type":"export","exportedName":"EventEmitter","symbol":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:symbol:093382ce72f2b5e49b9d1d3693989d909983c25950d01519a8a8385ef9917385","origin":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:module:22f9fd20b03fe6b7ff5f0a43a835c29c8e85ebda6d7af1d94723d6340d7b677c","roles":{"type":true,"value":true},"routes":[{"kind":"direct","typeOnly":false,"aliased":false,"via":null}]},"qualification":{"kind":"claim-context","id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:expansion-context:88248666c77f87639e94af0e97eb33b5ea351134ea6db7074b521a3586425665","session":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:module:22f9fd20b03fe6b7ff5f0a43a835c29c8e85ebda6d7af1d94723d6340d7b677c","evidence":["session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:37e84c8771ffc282e7591b6b6542312e296cc6049e4bcec211846a339e6c16de"],"status":"mechanically-derived","guarantee":"The compiler exposes this exported name; roles and forwarding are qualified by the recorded route.","limitations":[],"diagnostics":[],"inputs":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:analysis-inputs:ccf7643a66a883a3dc141b43db84eb72744f538d55b46b7cbfc28a9991278cc1"}}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:e38fe952955d047995f61ac75d85365a9fc9113273083529f46244b00c5ac598","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:605805a6907c9fe67ad2c2c65aab60b44923c018ee1a59d586f873d57aadca5e","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:5b473607db64d9d43e11143671122860af7e5c556bc4f3ac954728cb87cf5e08","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}],"coverage":"full-file","contentDigest":"0520ad289faf7375459b8a6fcbf3b5cba86263f4be8fcb547a186347e265ca95","mapping":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:repository-artifact:3d38f37965deccc5f3fc024d9005706419226162efd2cadb0783bb29bcc369a5","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:a2ac3b0045ddfb88715fe826f500bfc17536ba718208d0f185f7cad3139a6415","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:6d59d72771ecd9c7d39d801385bf8af5c604ae1c1325e6c45af83a5e1570cfd7","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:1d10ac794223ce8da67071053f8fd3ef6b10bc416c9a6ac04814828e19524e3c","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:37e84c8771ffc282e7591b6b6542312e296cc6049e4bcec211846a339e6c16de","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:19474d337b02ae1c8bfe18872f87677983eb7a7859a681c7b9d008f92193c046","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}],"coverage":"full-file","contentDigest":"8a0dc2ca8c7c49889cc841c85c80834b7cbbead32bb47843e0ce775229419d54","mapping":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:repository-artifact:1c5f827b4308b5bdefb68cdeccb9441f35ef89ba016c5ec2770c4d5f4410e5b9","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:c113b00b1b93d5ae0e3b56557ab03a9aa4bc1fc1cdbf109dd9053b02666070d4","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:c1b4f47f88e6b921182bd08f6add826c41b82220b781dd948f52e06fbbec54f1","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}],"coverage":"full-file","contentDigest":"8133e9ad9edb1f12ad6c724293b6707f27f7eea8667ab9b62b44fdfcffc068de","mapping":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:repository-artifact:e26f77c35119d60f761eb90011555d5c8a938d51aa4ec3ec488f60d6f7ea2ff6","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:9d807df36b3ab8b378698c5ad60738b0c7fbffc49d852075ca6d769b9bd4c7d2","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}],"coverage":"full-file","contentDigest":"58296539e85a39ca5c370ad73116b15cd34d8537a3f3aba2928ae680c87fcc0d","mapping":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:repository-artifact:91dcd70dd2db72ab2a691478d5ef04ae07dcca9bf8569294b551aa03ddf95046","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:aba78f3fbe7a376bde361ef188bcaf1c1130297a19e2ed3dd3ef3dfffddaa057","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:d8afce65f68c657a72df080f735fc42dc5e350547c0b35550d76df6d83567bb7","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:23aa998381f67512b605373c92b5cf920ca2d17afc596e1537c4161d979fa04a","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8","forms":["full"]}]}
+
+Source support (captured locations and excerpts):
+[
+  {
+    "session": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933",
+    "method": "postcode/organization@3",
+    "kind": "repository-artifact",
+    "id": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:repository-artifact:429689534e3a1efc75b114d7e74fb232dfa8702254a0b672c93341588800b1ca",
+    "repository": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:repository-evidence:dff828d8b80561c83ace18a0a30cab26bb4619b1b5ad67a3b748bbe5beac4908",
+    "artifact": {
+      "path": "src/common/Executor.ts",
+      "kind": "file",
+      "tracked": true
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:ff5c325c28823bfb0ba1bf80c92d4a862db0eb29d9a8eb3a0961cb914f1d2677",
+    "session": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/common/Executor.ts",
+    "contentDigest": "2c6dffe091a6a029f123b0a1fa731581250ed5cd9009bc6c485b0d5eed6f1447",
+    "start": 120,
+    "length": 68,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 4,
+        "column": 1
+      },
+      "to": {
+        "line": 4,
+        "column": 69
+      },
+      "excerpt": {
+        "text": "export type FailureOrSuccess<R> = FailureReason<R> | { success: R };",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:11985e6907388eb17d657be3549d569d4ab3edcfea867c1b8148b32d0a9be720",
+    "session": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/common/Executor.ts",
+    "contentDigest": "2c6dffe091a6a029f123b0a1fa731581250ed5cd9009bc6c485b0d5eed6f1447",
+    "start": 190,
+    "length": 215,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 6,
+        "column": 1
+      },
+      "to": {
+        "line": 16,
+        "column": 3
+      },
+      "excerpt": {
+        "text": "export const returnOrThrow = <R>(failure: FailureOrSuccess<R>) => {\n  if ('error' in failure) {\n    throw failure.error;\n  }",
+        "omittedCharacters": 91
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c",
+    "session": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/common/Executor.ts",
+    "contentDigest": "2c6dffe091a6a029f123b0a1fa731581250ed5cd9009bc6c485b0d5eed6f1447",
+    "start": 749,
+    "length": 1472,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 30,
+        "column": 1
+      },
+      "to": {
+        "line": 78,
+        "column": 2
+      },
+      "excerpt": {
+        "text": "export class ExecuteWrapper {\n  private readonly successEmitter = new EventEmitter<ISuccessEvent>();\n  private readonly failureEmitter = new EventEmitter<IFailureEvent>();\n  public readonly onSuccess = this.successEmitter.addListener;",
+        "omittedCharacters": 1238
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:989d51fdb86cd715ee817f15724e345b2909697c0d191aaad6a0545a04d2e0fb",
+    "session": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/common/Executor.ts",
+    "contentDigest": "2c6dffe091a6a029f123b0a1fa731581250ed5cd9009bc6c485b0d5eed6f1447",
+    "start": 76,
+    "length": 42,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 2,
+        "column": 1
+      },
+      "to": {
+        "line": 2,
+        "column": 43
+      },
+      "excerpt": {
+        "text": "import { EventEmitter } from './Event.js';",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null,
+    "dependencyResolution": {
+      "writtenSpecifier": "./Event.js",
+      "status": "resolved",
+      "resolvedFile": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/common/Event.ts",
+      "targetBasis": "checker-symbol",
+      "mode": "esm"
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:89c1e4055876ecb7155b23c47b21603a45e3ddfd6b70fe77021638c2c14deefe",
+    "session": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/common/Event.ts",
+    "contentDigest": "94f2a9e9aab295a22aa3a0874493a0344f0df8036543bc5c169cba92087fd81d",
+    "start": 0,
+    "length": 5845,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:37e84c8771ffc282e7591b6b6542312e296cc6049e4bcec211846a339e6c16de",
+    "session": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/common/Event.ts",
+    "contentDigest": "94f2a9e9aab295a22aa3a0874493a0344f0df8036543bc5c169cba92087fd81d",
+    "start": 2578,
+    "length": 1719,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 105,
+        "column": 1
+      },
+      "to": {
+        "line": 176,
+        "column": 2
+      },
+      "excerpt": {
+        "text": "export class EventEmitter<T> {\n  protected listeners?: Array<(data: T) => void> | ((data: T) => void);\n\n  /**",
+        "omittedCharacters": 1610
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:e38fe952955d047995f61ac75d85365a9fc9113273083529f46244b00c5ac598",
+    "session": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/common/Executor.ts",
+    "contentDigest": "2c6dffe091a6a029f123b0a1fa731581250ed5cd9009bc6c485b0d5eed6f1447",
+    "start": 0,
+    "length": 75,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 1,
+        "column": 1
+      },
+      "to": {
+        "line": 1,
+        "column": 76
+      },
+      "excerpt": {
+        "text": "import { FailureReason, IFailureEvent, ISuccessEvent } from '../Policy.js';",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null,
+    "dependencyResolution": {
+      "writtenSpecifier": "../Policy.js",
+      "status": "resolved",
+      "resolvedFile": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/Policy.ts",
+      "targetBasis": "checker-symbol",
+      "mode": "esm"
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:605805a6907c9fe67ad2c2c65aab60b44923c018ee1a59d586f873d57aadca5e",
+    "session": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/Policy.ts",
+    "contentDigest": "0520ad289faf7375459b8a6fcbf3b5cba86263f4be8fcb547a186347e265ca95",
+    "start": 0,
+    "length": 15655,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "session": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933",
+    "method": "postcode/organization@3",
+    "kind": "repository-artifact",
+    "id": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:repository-artifact:3d38f37965deccc5f3fc024d9005706419226162efd2cadb0783bb29bcc369a5",
+    "repository": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:repository-evidence:dff828d8b80561c83ace18a0a30cab26bb4619b1b5ad67a3b748bbe5beac4908",
+    "artifact": {
+      "path": "src/Policy.ts",
+      "kind": "file",
+      "tracked": true
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:a2ac3b0045ddfb88715fe826f500bfc17536ba718208d0f185f7cad3139a6415",
+    "session": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/Policy.ts",
+    "contentDigest": "0520ad289faf7375459b8a6fcbf3b5cba86263f4be8fcb547a186347e265ca95",
+    "start": 1108,
+    "length": 83,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 28,
+        "column": 1
+      },
+      "to": {
+        "line": 28,
+        "column": 84
+      },
+      "excerpt": {
+        "text": "export type FailureReason<ReturnType> = { error: unknown } | { value: ReturnType };",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:6d59d72771ecd9c7d39d801385bf8af5c604ae1c1325e6c45af83a5e1570cfd7",
+    "session": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/Policy.ts",
+    "contentDigest": "0520ad289faf7375459b8a6fcbf3b5cba86263f4be8fcb547a186347e265ca95",
+    "start": 1607,
+    "length": 149,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 53,
+        "column": 1
+      },
+      "to": {
+        "line": 58,
+        "column": 2
+      },
+      "excerpt": {
+        "text": "export interface ISuccessEvent {\n  /**\n   * Call duration, in milliseconds (with nanosecond precision, as the OS allows).\n   */",
+        "omittedCharacters": 22
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:1d10ac794223ce8da67071053f8fd3ef6b10bc416c9a6ac04814828e19524e3c",
+    "session": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/Policy.ts",
+    "contentDigest": "0520ad289faf7375459b8a6fcbf3b5cba86263f4be8fcb547a186347e265ca95",
+    "start": 1244,
+    "length": 310,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 33,
+        "column": 1
+      },
+      "to": {
+        "line": 48,
+        "column": 2
+      },
+      "excerpt": {
+        "text": "export interface IFailureEvent {\n  /**\n   * Call duration, in milliseconds (with nanosecond precision, as the OS allows).\n   */",
+        "omittedCharacters": 183
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "session": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933",
+    "method": "postcode/organization@3",
+    "kind": "repository-artifact",
+    "id": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:repository-artifact:1c5f827b4308b5bdefb68cdeccb9441f35ef89ba016c5ec2770c4d5f4410e5b9",
+    "repository": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:repository-evidence:dff828d8b80561c83ace18a0a30cab26bb4619b1b5ad67a3b748bbe5beac4908",
+    "artifact": {
+      "path": "src/NoopPolicy.ts",
+      "kind": "file",
+      "tracked": true
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:c113b00b1b93d5ae0e3b56557ab03a9aa4bc1fc1cdbf109dd9053b02666070d4",
+    "session": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/NoopPolicy.ts",
+    "contentDigest": "8a0dc2ca8c7c49889cc841c85c80834b7cbbead32bb47843e0ce775229419d54",
+    "start": 56,
+    "length": 69,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 2,
+        "column": 1
+      },
+      "to": {
+        "line": 2,
+        "column": 70
+      },
+      "excerpt": {
+        "text": "import { ExecuteWrapper, returnOrThrow } from './common/Executor.js';",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null,
+    "dependencyResolution": {
+      "writtenSpecifier": "./common/Executor.js",
+      "status": "resolved",
+      "resolvedFile": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/common/Executor.ts",
+      "targetBasis": "checker-symbol",
+      "mode": "esm"
+    }
+  },
+  {
+    "session": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933",
+    "method": "postcode/organization@3",
+    "kind": "repository-artifact",
+    "id": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:repository-artifact:e26f77c35119d60f761eb90011555d5c8a938d51aa4ec3ec488f60d6f7ea2ff6",
+    "repository": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:repository-evidence:dff828d8b80561c83ace18a0a30cab26bb4619b1b5ad67a3b748bbe5beac4908",
+    "artifact": {
+      "path": "src/RetryPolicy.ts",
+      "kind": "file",
+      "tracked": true
+    }
+  },
+  {
+    "session": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933",
+    "method": "postcode/organization@3",
+    "kind": "repository-artifact",
+    "id": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:repository-artifact:91dcd70dd2db72ab2a691478d5ef04ae07dcca9bf8569294b551aa03ddf95046",
+    "repository": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:repository-evidence:dff828d8b80561c83ace18a0a30cab26bb4619b1b5ad67a3b748bbe5beac4908",
+    "artifact": {
+      "path": "src/BulkheadPolicy.ts",
+      "kind": "file",
+      "tracked": true
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:aba78f3fbe7a376bde361ef188bcaf1c1130297a19e2ed3dd3ef3dfffddaa057",
+    "session": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/RetryPolicy.ts",
+    "contentDigest": "8133e9ad9edb1f12ad6c724293b6707f27f7eea8667ab9b62b44fdfcffc068de",
+    "start": 236,
+    "length": 54,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 5,
+        "column": 1
+      },
+      "to": {
+        "line": 5,
+        "column": 55
+      },
+      "excerpt": {
+        "text": "import { ExecuteWrapper } from './common/Executor.js';",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null,
+    "dependencyResolution": {
+      "writtenSpecifier": "./common/Executor.js",
+      "status": "resolved",
+      "resolvedFile": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/common/Executor.ts",
+      "targetBasis": "checker-symbol",
+      "mode": "esm"
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:d8afce65f68c657a72df080f735fc42dc5e350547c0b35550d76df6d83567bb7",
+    "session": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/BulkheadPolicy.ts",
+    "contentDigest": "58296539e85a39ca5c370ad73116b15cd34d8537a3f3aba2928ae680c87fcc0d",
+    "start": 149,
+    "length": 54,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 4,
+        "column": 1
+      },
+      "to": {
+        "line": 4,
+        "column": 55
+      },
+      "excerpt": {
+        "text": "import { ExecuteWrapper } from './common/Executor.js';",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null,
+    "dependencyResolution": {
+      "writtenSpecifier": "./common/Executor.js",
+      "status": "resolved",
+      "resolvedFile": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/common/Executor.ts",
+      "targetBasis": "checker-symbol",
+      "mode": "esm"
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:23aa998381f67512b605373c92b5cf920ca2d17afc596e1537c4161d979fa04a",
+    "session": "session:7deee0f5-41f7-489c-a9ba-5d6b181b5933",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/CircuitBreakerPolicy.ts",
+    "contentDigest": "07ec090850b4e52c3498e195661347c9c41b4228f56aab8df74f995f57944ccd",
+    "start": 281,
+    "length": 69,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 6,
+        "column": 1
+      },
+      "to": {
+        "line": 6,
+        "column": 70
+      },
+      "excerpt": {
+        "text": "import { ExecuteWrapper, returnOrThrow } from './common/Executor.js';",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null,
+    "dependencyResolution": {
+      "writtenSpecifier": "./common/Executor.js",
+      "status": "resolved",
+      "resolvedFile": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/common/Executor.ts",
+      "targetBasis": "checker-symbol",
+      "mode": "esm"
+    }
+  }
+]
+Session reported usage: 23 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 748232 tokens; input 736478 tokens (subset of total); output 11754 tokens (subset of total); cached-input 76032 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3273 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-c3aae69a
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-c3aae69a · interpretation
+**Caught-error classification:** Apply `errorFilter`; return `{ error }` for a selected error, otherwise rethrow it.
+Referent: Classification and propagation of caught values by ExecuteWrapper.invoke
+  Qualification: The catch parameter can hold any thrown or rejected value, not only an `Error` instance.
+  Qualification: The default error predicate returns false, so caught values are rethrown unless configured otherwise.
+  Qualification: An exception raised inside the preceding `try`, including one from result filtering or success-side notification, also reaches this catch path.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-7a0a9dfa (provenance, not composition)
+  Composition parent: @investigram-f8162635
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1
+
+Revision status @investigram-c3aae69a: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Associated investigrams (explicit associations)
+Listing: available; 1 shown of 1.
+Use inspect @reference for retained content; no inference.
+@investigram-a3ed2fe4 · interpretation
+  Revision: current original; inspect this reference for details.
+  `ExecuteWrapper.invoke` has a broader error boundary than “errors from the invoked operation”: its `try` also encloses resolved-value filtering and success notification. Any synchronous throw or awaited rejection from those steps is passed to `errorFilter`. The resulting boolean is recorded in a failure event before the method either returns `{ error }` when handled or rethrows the original caught [247 prose characters omitted]
+  Operation: examination; origin: hosted; provenance: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:247400284ede91523babbae6d7fcd1dfc7668768a978906b55f6e8ecb3c8e2d1
+  Qualification: This is a static interpretation of first-observed TypeScript source, not executed or deployed-runtime evidence.
+  Qualification: The caught value is typed `unknown`; neither classification nor propagation requires an `Error` instance.
+  Qualification: The constructor's default `errorFilter` returns false, but policy factories shown in the supplied Policy source normally construct wrappers with explicit policy filters.
+  Qualification: Failure notification is synchronous and occurs before the final return or rethrow; a throwing listener therefore changes the externally observed outcome.
+  Qualification: The supplied focused tests cover ordinary handled and unhandled `Error` instances, but not non-Error throws, filter exceptions, listener exceptions, or errors originating in resolved-value filtering or success listeners.
+  Association: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigram:c3aae69a6c7c0b32f7bc169801414ea1853e0c9fffa3d7ab8733d109f86fc916 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:1215432774cc489ae5b23a45cf90b416e502d4472a2664ab3115706efbb5d623","forms":["full"]}],"coverage":"full-file","contentDigest":"2c6dffe091a6a029f123b0a1fa731581250ed5cd9009bc6c485b0d5eed6f1447","mapping":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:8427b7eac4fab8d5c817c70017ba8479710ab3afa6779a31336bdf277fec3dbd","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:ff5c325c28823bfb0ba1bf80c92d4a862db0eb29d9a8eb3a0961cb914f1d2677","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:1215432774cc489ae5b23a45cf90b416e502d4472a2664ab3115706efbb5d623","forms":["full"]}]}
+Session reported usage: 23 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 748232 tokens; input 736478 tokens (subset of total); output 11754 tokens (subset of total); cached-input 76032 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3273 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-7a0a9dfa
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-7a0a9dfa · interpretation
+`ExecuteWrapper.invoke` is a classifier around one function call, not the policy action itself. It starts optional timing, invokes and awaits `fn(...args)`, and then returns exactly one of three tagged shapes: `{ success: value }` for a resolved value rejected by `resultFilter`; `{ value }` for a resolved value accepted by `resultFilter`; or `{ error }` for a caught throw/rejection accepted by `errorFilter`. A caught item rejected by `errorFilter` is not converted into a result: a failure notification is attempted with `handled: false`, then the same thrown value is rethrown. Thus “handled” means selected by a configured filter for policy processing, not that the operation succeeded or that the reason was transformed.
+Referent: Clarified invocation, classification, timing, and notification behavior of ExecuteWrapper
+  Qualification: This expands the earlier account rather than correcting it; its main outcome classification is consistent with the captured implementation.
+  Qualification: The account is based on captured TypeScript source and compiler-derived symbol identity, not execution of the code.
+  Qualification: The `try` block also contains result filtering and success/result-failure notification. Consequently, exceptions from `resultFilter` or from listeners invoked there enter the same catch path as an exception from `fn`; this is a sharp edge rather than the ordinary intended call outcome.
+  Qualification: `errorFilter` and the failure notification in the catch block are not protected by another local catch. If either throws, that new exception propagates and can supersede the originally caught reason.
+  Displayed composition: @investigram-a94d7314, @investigram-e391831d, @investigram-b1cc219c
+  Composition: @investigram-a94d7314, @investigram-e391831d, @investigram-b1cc219c
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f0c3a29d (provenance, not composition)
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:5b473607db64d9d43e11143671122860af7e5c556bc4f3ac954728cb87cf5e08, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:1a67c6735a1a3434e9bb651b218f03790bf796947ad61c72dbc9f43a110b359f
+
+@investigram-a94d7314 · interpretation
+The resolved-value path first applies `resultFilter`. A false result emits success, when observable, and returns `{ success: value }`. A true result is deliberately represented as a handled failure: it emits `onFailure` with `handled: true` and `reason: { value }`, then returns `{ value }`. The thrown/rejected path applies `errorFilter`. A true result emits `handled: true` with `reason: { error }` and returns `{ error }`; a false result emits `handled: false` with the same reason and then rethrows. Synchronous throws and promise rejections converge because the call is awaited inside the `try`.
+Referent: Four classification branches within ExecuteWrapper.invoke
+  Qualification: The filters are predicates only: they choose the branch but do not replace the resolved or thrown payload.
+  Qualification: An unhandled exception can still produce an `onFailure` observation before propagation; “unhandled” means it is not returned as `{ error }`.
+  Qualification: With constructor defaults, neither predicate selects anything, so resolved values become `{ success }` and ordinary caught exceptions are rethrown.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f0c3a29d (provenance, not composition)
+  Composition parent: @investigram-7a0a9dfa
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae
+
+@investigram-e391831d · interpretation
+Timing is demand-driven. At the start of `invoke`, a stopwatch is created only if either success or failure emitter currently has at least one listener. It uses `performance.now()` when available, otherwise `process.hrtime.bigint()`, and reports milliseconds. The measured interval includes the awaited call and the applicable filter evaluation, ending when the event object is prepared; listener execution itself occurs afterward. No event history is retained by these base emitters.
+Referent: ExecuteWrapper timing and event-observation mechanics
+  Qualification: If neither emitter has a listener when invocation begins, adding one while the operation is pending does not enable an event for that invocation because the stored stopwatch remains null.
+  Qualification: If either emitter has a listener at invocation start, timing is enabled for the invocation even when the eventual outcome belongs to the other emitter; emitting to an emitter with no listeners is a no-op.
+  Qualification: Listeners are called synchronously and listener exceptions are not isolated by EventEmitter.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f0c3a29d (provenance, not composition)
+  Composition parent: @investigram-7a0a9dfa
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:1a67c6735a1a3434e9bb651b218f03790bf796947ad61c72dbc9f43a110b359f
+
+@investigram-b1cc219c · interpretation
+`clone()` creates a fresh wrapper that reuses the same two predicate function objects but has new success and failure emitters, so listeners are not copied. Separately, `returnOrThrow` converts a completed tagged outcome back to ordinary control flow: `{ error }` is thrown, while both `{ success }` and `{ value }` yield their payload. This separation lets policy implementations inspect handled failures before deciding whether and when to expose a value or throw.
+Referent: ExecuteWrapper cloning and conversion of classified outcomes
+  Qualification: Sharing predicate functions does not imply copying any external mutable state those functions may close over.
+  Qualification: The final sentence describes the mechanism enabled by the separation; individual policy decisions were not exhaustively inspected here.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f0c3a29d (provenance, not composition)
+  Composition parent: @investigram-7a0a9dfa
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:11985e6907388eb17d657be3549d569d4ab3edcfea867c1b8148b32d0a9be720
+
+Revision status @investigram-7a0a9dfa: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-a94d7314: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-e391831d: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-b1cc219c: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Associated investigrams (explicit associations)
+Listing: available; 1 shown of 1.
+Use inspect @reference for retained content; no inference.
+@investigram-f8162635 · interpretation
+  Revision: current original; inspect this reference for details.
+  Selectable aspects of `ExecuteWrapper.invoke` include call/await behavior, resolved-value classification, caught-error classification, demand-driven timing, and outcome notification.
+  Operation: decomposition; origin: hosted; provenance: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:1215432774cc489ae5b23a45cf90b416e502d4472a2664ab3115706efbb5d623
+  Qualification: This is a non-exhaustive decomposition; the aspects overlap where classification, timing, and notification occur in the same control-flow branches.
+  Qualification: The account interprets captured TypeScript source without executing it.
+  Qualification: The earlier clarification was considered for scope but is not independent corroboration.
+  Association: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigram:7a0a9dfa8cb19202ce1fd54182bfe821b68050dc845abdcd4b44f9b7d92bb7f7 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:3e4269a9fc4cff36d216dedb00da8577dd07fd64a28fff413aa74b550f4ac4d1","forms":["full"]}],"coverage":"full-file","contentDigest":"2c6dffe091a6a029f123b0a1fa731581250ed5cd9009bc6c485b0d5eed6f1447","mapping":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:repository-artifact:429689534e3a1efc75b114d7e74fb232dfa8702254a0b672c93341588800b1ca","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:3e4269a9fc4cff36d216dedb00da8577dd07fd64a28fff413aa74b550f4ac4d1","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:5b473607db64d9d43e11143671122860af7e5c556bc4f3ac954728cb87cf5e08","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:3e4269a9fc4cff36d216dedb00da8577dd07fd64a28fff413aa74b550f4ac4d1","forms":["full"]}],"coverage":"full-file","contentDigest":"0520ad289faf7375459b8a6fcbf3b5cba86263f4be8fcb547a186347e265ca95","mapping":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:repository-artifact:3d38f37965deccc5f3fc024d9005706419226162efd2cadb0783bb29bcc369a5","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:1a67c6735a1a3434e9bb651b218f03790bf796947ad61c72dbc9f43a110b359f","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:3e4269a9fc4cff36d216dedb00da8577dd07fd64a28fff413aa74b550f4ac4d1","forms":["full"]}],"coverage":"full-file","contentDigest":"94f2a9e9aab295a22aa3a0874493a0344f0df8036543bc5c169cba92087fd81d","mapping":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:repository-artifact:9dbe7cf667cc0ea50c05b14a99954b411ca40830d015020638e6ce6c6cea90f9","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:ff5c325c28823bfb0ba1bf80c92d4a862db0eb29d9a8eb3a0961cb914f1d2677","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:3e4269a9fc4cff36d216dedb00da8577dd07fd64a28fff413aa74b550f4ac4d1","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:5fb7ea600a36b98b79358d11b44741aab26b8808f813f395e25e8ca438df9fb4","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:3e4269a9fc4cff36d216dedb00da8577dd07fd64a28fff413aa74b550f4ac4d1","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:11985e6907388eb17d657be3549d569d4ab3edcfea867c1b8148b32d0a9be720","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:3e4269a9fc4cff36d216dedb00da8577dd07fd64a28fff413aa74b550f4ac4d1","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:37e84c8771ffc282e7591b6b6542312e296cc6049e4bcec211846a339e6c16de","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:3e4269a9fc4cff36d216dedb00da8577dd07fd64a28fff413aa74b550f4ac4d1","forms":["full"]}]}
+Session reported usage: 23 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 748232 tokens; input 736478 tokens (subset of total); output 11754 tokens (subset of total); cached-input 76032 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3273 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: explain @investigram-f0c3a29d
+Explain · investigram
+References remain bound for this session.
+Retained outcome; no new investigation.
+
+@investigram-7a0a9dfa · interpretation
+`ExecuteWrapper.invoke` is a classifier around one function call, not the policy action itself. It starts optional timing, invokes and awaits `fn(...args)`, and then returns exactly one of three tagged shapes: `{ success: value }` for a resolved value rejected by `resultFilter`; `{ value }` for a resolved value accepted by `resultFilter`; or `{ error }` for a caught throw/rejection accepted by `errorFilter`. A caught item rejected by `errorFilter` is not converted into a result: a failure notification is attempted with `handled: false`, then the same thrown value is rethrown. Thus “handled” means selected by a configured filter for policy processing, not that the operation succeeded or that the reason was transformed.
+Referent: Clarified invocation, classification, timing, and notification behavior of ExecuteWrapper
+  Qualification: This expands the earlier account rather than correcting it; its main outcome classification is consistent with the captured implementation.
+  Qualification: The account is based on captured TypeScript source and compiler-derived symbol identity, not execution of the code.
+  Qualification: The `try` block also contains result filtering and success/result-failure notification. Consequently, exceptions from `resultFilter` or from listeners invoked there enter the same catch path as an exception from `fn`; this is a sharp edge rather than the ordinary intended call outcome.
+  Qualification: `errorFilter` and the failure notification in the catch block are not protected by another local catch. If either throws, that new exception propagates and can supersede the originally caught reason.
+  Displayed composition: @investigram-a94d7314, @investigram-e391831d, @investigram-b1cc219c
+  Composition: @investigram-a94d7314, @investigram-e391831d, @investigram-b1cc219c
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f0c3a29d (provenance, not composition)
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:5b473607db64d9d43e11143671122860af7e5c556bc4f3ac954728cb87cf5e08, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:1a67c6735a1a3434e9bb651b218f03790bf796947ad61c72dbc9f43a110b359f
+
+@investigram-a94d7314 · interpretation
+The resolved-value path first applies `resultFilter`. A false result emits success, when observable, and returns `{ success: value }`. A true result is deliberately represented as a handled failure: it emits `onFailure` with `handled: true` and `reason: { value }`, then returns `{ value }`. The thrown/rejected path applies `errorFilter`. A true result emits `handled: true` with `reason: { error }` and returns `{ error }`; a false result emits `handled: false` with the same reason and then rethrows. Synchronous throws and promise rejections converge because the call is awaited inside the `try`.
+Referent: Four classification branches within ExecuteWrapper.invoke
+  Qualification: The filters are predicates only: they choose the branch but do not replace the resolved or thrown payload.
+  Qualification: An unhandled exception can still produce an `onFailure` observation before propagation; “unhandled” means it is not returned as `{ error }`.
+  Qualification: With constructor defaults, neither predicate selects anything, so resolved values become `{ success }` and ordinary caught exceptions are rethrown.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f0c3a29d (provenance, not composition)
+  Composition parent: @investigram-7a0a9dfa
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae
+
+@investigram-e391831d · interpretation
+Timing is demand-driven. At the start of `invoke`, a stopwatch is created only if either success or failure emitter currently has at least one listener. It uses `performance.now()` when available, otherwise `process.hrtime.bigint()`, and reports milliseconds. The measured interval includes the awaited call and the applicable filter evaluation, ending when the event object is prepared; listener execution itself occurs afterward. No event history is retained by these base emitters.
+Referent: ExecuteWrapper timing and event-observation mechanics
+  Qualification: If neither emitter has a listener when invocation begins, adding one while the operation is pending does not enable an event for that invocation because the stored stopwatch remains null.
+  Qualification: If either emitter has a listener at invocation start, timing is enabled for the invocation even when the eventual outcome belongs to the other emitter; emitting to an emitter with no listeners is a no-op.
+  Qualification: Listeners are called synchronously and listener exceptions are not isolated by EventEmitter.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f0c3a29d (provenance, not composition)
+  Composition parent: @investigram-7a0a9dfa
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:1a67c6735a1a3434e9bb651b218f03790bf796947ad61c72dbc9f43a110b359f
+
+@investigram-b1cc219c · interpretation
+`clone()` creates a fresh wrapper that reuses the same two predicate function objects but has new success and failure emitters, so listeners are not copied. Separately, `returnOrThrow` converts a completed tagged outcome back to ordinary control flow: `{ error }` is thrown, while both `{ success }` and `{ value }` yield their payload. This separation lets policy implementations inspect handled failures before deciding whether and when to expose a value or throw.
+Referent: ExecuteWrapper cloning and conversion of classified outcomes
+  Qualification: Sharing predicate functions does not imply copying any external mutable state those functions may close over.
+  Qualification: The final sentence describes the mechanism enabled by the separation; individual policy decisions were not exhaustively inspected here.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f0c3a29d (provenance, not composition)
+  Composition parent: @investigram-7a0a9dfa
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:11985e6907388eb17d657be3549d569d4ab3edcfea867c1b8148b32d0a9be720
+
+Revision status @investigram-7a0a9dfa: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-a94d7314: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-e391831d: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-b1cc219c: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-f0c3a29d: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:3e4269a9fc4cff36d216dedb00da8577dd07fd64a28fff413aa74b550f4ac4d1 (accepted) reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 195273 tokens; input 191837 tokens (subset of total); output 3436 tokens (subset of total); cached-input 47360 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1195 tokens (subset of output)
+Session reported usage: 23 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 748232 tokens; input 736478 tokens (subset of total); output 11754 tokens (subset of total); cached-input 76032 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3273 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: summarize executor
+Module summary
+References remain bound for this session.
+Retained outcome; no new investigation.
+Module @module-e65c42fd: executor
+
+@investigram-f0a90ef1 · interpretation
+This module is the shared call-classification adapter used by several resilience policies. It turns an invoked synchronous or promise-like operation into a tagged success/handled-failure result, emits timed success/failure observations, and provides a helper that converts the tag back into ordinary return/throw behavior.
+Referent: Executor module and its execution-result adapter functionality
+  Qualification: Implementation-based account from first-observed TypeScript source; it does not establish deployed runtime behavior.
+  Qualification: The module has no associated earlier account in this session, and no nearby explanatory documentation was supplied.
+  Displayed composition: @investigram-f0c3a29d, @investigram-8437cd7c, @investigram-cbe246c3, @investigram-e946c605
+  Composition: @investigram-f0c3a29d, @investigram-8437cd7c, @investigram-cbe246c3, @investigram-e946c605
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:export:bf30b1e29c27318b32a50ce708f5527dc9e39d20c384f83cfdd29682386bf11a, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:export:4a4b13f834912c68fdb4b0aaac052eebadeae2ede87f96a20ed462c3799ae3eb, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:export:646b834659e590e7ef07cc184b49eb5cd4d68a61ebdc398d586614b9b5725fd1
+
+@investigram-f0c3a29d · interpretation
+ExecuteWrapper.invoke awaits the supplied function. An unfiltered resolved value becomes {success}; a result matching resultFilter becomes handled failure {value}; a thrown value matching errorFilter becomes {error}; and an unhandled throw is rethrown immediately. Success and failure events carry elapsed duration, while failures additionally report handled status and the error/value reason.
+Referent: ExecuteWrapper invocation and classification behavior
+  Qualification: Both synchronous throws and asynchronous rejection enter the same catch because invocation is awaited inside try/catch.
+  Qualification: Default filters reject every error/result, so ordinary results succeed and thrown errors propagate.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-f0a90ef1
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c
+
+@investigram-8437cd7c · interpretation
+Timing is conditional: no stopwatch is created unless at least one success or failure listener exists. It uses performance.now when available, otherwise process.hrtime.bigint converted to milliseconds. clone preserves the two filters but creates fresh emitters, isolating subscriptions between policy copies.
+Referent: Conditional timing, event emission, and cloning in ExecuteWrapper
+  Qualification: The environment-dependent clocks are implementation branches, not a precision guarantee.
+  Qualification: Listener storage and dispatch are delegated to the Event module.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-f0a90ef1
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:37e84c8771ffc282e7591b6b6542312e296cc6049e4bcec211846a339e6c16de
+
+@investigram-cbe246c3 · interpretation
+returnOrThrow reverses the tagged protocol: it throws an {error}, returns a {success}, and otherwise returns the filtered failure {value}. Thus callers decide whether a handled value remains a normal return, while handled errors regain exception semantics.
+Referent: returnOrThrow result-unwrapping helper
+  Qualification: The helper is intentionally mechanical; retry and other policies can inspect the union directly instead.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-f0a90ef1
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:11985e6907388eb17d657be3549d569d4ab3edcfea867c1b8148b32d0a9be720
+
+@investigram-e946c605 · interpretation
+Policy factories supply configured wrappers to retry, circuit-breaker, and fallback policies. Retry repeatedly invokes through the wrapper, returns {success}, feeds handled failures into backoff/retry events, and on exhaustion throws {error} or returns {value}. NoopPolicy uses the wrapper only for classification/telemetry before unwrapping. BulkheadPolicy constructs a wrapper and exposes its listeners, but its shown execute path calls the function directly, so wrapper timing/classification is not applied there.
+Referent: Delegation from policy construction into consumers of ExecuteWrapper
+  Qualification: Retry, no-op, and bulkhead were inspected as representative consumers; fallback and circuit-breaker construction is established, but their full execution implementations were not read.
+  Qualification: The bulkhead observation is limited to the supplied first-observed implementation source.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-f0a90ef1
+  Evidence: session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:5b473607db64d9d43e11143671122860af7e5c556bc4f3ac954728cb87cf5e08, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:c1b4f47f88e6b921182bd08f6add826c41b82220b781dd948f52e06fbbec54f1, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:19474d337b02ae1c8bfe18872f87677983eb7a7859a681c7b9d008f92193c046, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:captured-content:9d807df36b3ab8b378698c5ad60738b0c7fbffc49d852075ca6d769b9bd4c7d2, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:aba78f3fbe7a376bde361ef188bcaf1c1130297a19e2ed3dd3ef3dfffddaa057, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:d8afce65f68c657a72df080f735fc42dc5e350547c0b35550d76df6d83567bb7, session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:source:23aa998381f67512b605373c92b5cf920ca2d17afc596e1537c4161d979fa04a
+
+Revision status @investigram-f0a90ef1: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-f0c3a29d: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-8437cd7c: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-cbe246c3: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-e946c605: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:7deee0f5-41f7-489c-a9ba-5d6b181b5933:investigation-attempt:500ed01537e8b2b6de310724e4025b7e6af1ee8a0636895a97dad5137f8ef3e8 (accepted) reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 238172 tokens; input 235361 tokens (subset of total); output 2811 tokens (subset of total); cached-input 28672 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 549 tokens (subset of output)
+Session reported usage: 23 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 748232 tokens; input 736478 tokens (subset of total); output 11754 tokens (subset of total); cached-input 76032 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3273 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+

@@ -347,6 +347,14 @@ evidence navigation and concise provenance in the whole-journey review. These
 are formative observations, not measured human usability results or authorization
 for a presentation redesign.
 
+The [milestone-5 integrated assessment](../records/validation/module-investigation/pass-05/report.md)
+adds original/current account distinctions, causal warning pages and explicit
+conflicts to this journey. Assess whether repeated empty revision status obscures
+important warnings, and how users discover qualifications learned in follow-ups
+when the retained summary has no explicit correction. Preserve exact historical
+selection and avoid implying automatic synthesis or reassessment. These remain
+formative concerns, not a request to tune the current assessment.
+
 ## Investigate analysis parallelism and asynchronous I/O
 
 Added: 2026-09-24

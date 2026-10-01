@@ -1,0 +1,123 @@
+{
+  "findings": [
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator recovers the source-consistent accumulation behavior and does not repeat the injected single-winner mistakes as classifier facts.",
+      "evidence": [
+        "Frozen reference, implementation paragraph: three independent conditions append positive, even and large in that order; 12 statically yields all three, with no else-if chain or early return.",
+        "Evaluator answer 1 identifies every applicable label, the three predicates, fixed append order and the empty-array case, citing @investigram-99cb5303 and @investigram-aad21081.",
+        "Evaluator answers 2 and 3 explicitly identify @investigram-104b4d62, @investigram-eadb6e02, @investigram-50714bb2 and the first-element inferences as controlled scripted accounts."
+      ],
+      "consequence": "The central behavioral correction reaches the evaluator accurately. The original positive-only child and competing priority accounts are injected baseline errors, not evidence of natural generation errors repeated by this evaluator.",
+      "uncertainty": "Agreement is with the supplied frozen static reference. It does not establish execution, deployment behavior or correctness for unexamined inputs."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator distinguishes lossy first-element summarization from evidence that an actual caller performs it or ought to do it.",
+      "evidence": [
+        "Frozen reference: Y and Z depend on earlier interpretation rather than observed callers; callers, author intent and policy usefulness are unestablished.",
+        "@investigram-11c97394 describes static overlap examples, and @investigram-70da236d says no concrete first-element caller was established and an empty bounded result does not establish that no caller exists.",
+        "Evaluator answers 1, 2 and 4 retain the conditional caller policy, bounded dependency coverage, and unknown requirements; answer 4 proposes examination of @investigram-70da236d without promising broader search or runtime execution."
+      ],
+      "consequence": "The evaluator avoids unsupported extrapolation from static information loss to a real caller defect, exhaustive caller absence or a guaranteed future capability.",
+      "uncertainty": "The frozen reference does not independently establish the execution or completeness of the reported dependency query. Its result is supplied as qualified investigator content; actual callers and policy usefulness remain unsettled."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator accurately separates primary display selection, retained historical identity and unresolved disagreement.",
+      "evidence": [
+        "Frozen reference: recency initially selects C, a newer descendant of B may become primary without reconciliation, and inspect A always preserves A.",
+        "The final summarize classify view displays @investigram-99cb5303 as an updated display of @investigram-104b4d62 while stating that conflicting alternatives remain.",
+        "Later inspect @investigram-104b4d62 --source-detail and inspect @investigram-eadb6e02 retain their original priority prose. Inspect @investigram-50714bb2 retains its original with family primary @investigram-99cb5303.",
+        "Evaluator answers 5 and 6 identify all three correction edges and reporters, the final family primary, the surviving competing branch and the distinction between recency and credibility."
+      ],
+      "consequence": "No presentation misunderstanding of replacement as erasure, credibility adjudication or conflict resolution is demonstrated in these answers.",
+      "uncertainty": "This verifies comprehension of the supplied sequence, not every possible revision family or the implementation of selection."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "Composition and later-investigation provenance remain distinguishable, including the displacement of the old positive-only child.",
+      "evidence": [
+        "Frozen reference: replacing A uses the replacement's own composition; composition/provenance alone does not propagate causes.",
+        "The original @investigram-104b4d62 declares @investigram-f976ffc0 as composition; @investigram-29017938 instead names A as its investigation subject with the explicit provenance qualification.",
+        "Final summarize states 'replacement uses its own composition' and lists @investigram-104b4d62 and @investigram-f976ffc0 as displaced original composition, not incorporated into the replacement.",
+        "Evaluator answer 5 explains these distinctions and notes that no correction of @investigram-f976ffc0 itself is shown. Answer 6 correctly warns that its absent warning does not validate its claim."
+      ],
+      "consequence": "The evaluator does not blend the original child into the corrected account or mistake follow-up lineage for composition or validation.",
+      "uncertainty": "The frozen reference describes the separate possibility of a corrected child beneath an unchanged root, but this sequence does not demonstrate that case and the evaluator does not claim it does."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly recovers persistent direct and transitive warning causes without interpreting warnings as error findings, semantic reliance or reassessment.",
+      "evidence": [
+        "Later inspect @investigram-29017938 and inspect @investigram-98220f34 preserve two causes: A to B and A to C, direct via A for Y and transitive via Y for Z.",
+        "Later inspect @investigram-eadb6e02 retains the direct A-to-C cause via A; inspect @investigram-50714bb2 shows the direct B-to-@investigram-99cb5303 cause via B despite A remaining its investigation subject.",
+        "The final explain @investigram-104b4d62 is a retained outcome with no new investigation and still shows Y's two warnings.",
+        "Evaluator answer 6 reproduces those distinctions, does not invent a third Y/Z cause, and limits associated reporters' one-cause badges to the information actually displayed.",
+        "Frozen reference: produced or complete causes receive evaluation-specific exemptions, prior Y/Z warnings are not cleared by later explanation or examination, and composition/provenance alone does not propagate causes."
+      ],
+      "consequence": "The sequence successfully communicates citation/context-based reconsideration and exact historical cause identity. The evaluator does not mistake a newer account or an accepted examination for automatic reassessment of retained accounts.",
+      "uncertainty": "The supplied badges do not expose individual cause details for @investigram-192c6b0f, @investigram-ff82bd0a and @investigram-0db46c6c. The evaluator appropriately leaves those details unsettled; no implementation-level cause audit was performed."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator notices the live examination's misleading soft endorsement instead of repeating it as validation of the caller inference.",
+      "evidence": [
+        "@investigram-0db46c6c opens with 'directionally correct but underspecified' about @investigram-98220f34, then explains independent accumulation and information loss from first-element selection.",
+        "The frozen reference identifies Z's no-additional-classifications claim as an inference from the mistaken earlier account, while leaving actual caller policy usefulness unestablished.",
+        "Evaluator answer 7 explicitly identifies the tension between this phrase and the false single-label premise; answers 1 and 3 describe the substantive behavioral change instead of endorsing the premise."
+      ],
+      "consequence": "There is a generation/presentation ambiguity, but no demonstrated generation error repeated by the evaluator. The answer preserves the difference between conditional caller policy and a claim of complete classification.",
+      "uncertainty": "The source cannot determine whether a deliberately lossy summary is appropriate for an unspecified caller. The phrase is therefore misleading in this inferential context, rather than proof that every possible reading of the caller policy is false."
+    },
+    {
+      "category": "material-omission",
+      "claim": "The source-detail display omits an actual source excerpt despite labeling its section as captured locations and excerpts; the evaluator accurately identifies this display limitation.",
+      "evidence": [
+        "inspect @investigram-104b4d62 --source-detail contains a source-evidence object for classify.ts with digest 8c500fd2a09328111cde51266aa6c87a7ff21f2f419906b24f93277968432bd1, start 0 and length 271, but no code body.",
+        "Evaluator answers 2 and 7 explicitly distinguish that mapping object from an actual quoted source excerpt.",
+        "The frozen reference supplies the independent-if behavior used for this assessment, but that reference was not supplied to the view-only evaluator."
+      ],
+      "consequence": "The view supports attribution and navigation but does not let its reader directly check the reported predicates against a displayed source body. This is a presentation omission, not an evaluator omission or evidence that source acquisition failed.",
+      "uncertainty": "No conclusion is drawn about source display in other commands or contexts, or about implementation requirements outside the supplied artifacts."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "The evaluator's warning-burden and wording observations are plausible formative judgments, not established general usability effects or observed misunderstandings.",
+      "evidence": [
+        "The captured views repeatedly include correction blocks, usage caveats and exposure JSON; associated prose is explicitly truncated in listings.",
+        "Evaluator answers 6 and 7 call the burden partly manageable, note that 'original remains selected' may sound authoritative, and propose a compact comparison while explicitly treating it as a suggestion.",
+        "The same evaluator correctly distinguishes original selection from family primary and credibility, so these possible misunderstandings did not occur in the supplied answers."
+      ],
+      "consequence": "The artifacts justify targeting repetition, ambiguous status wording and source-detail clarity for formative improvement, without claiming that these risks caused evaluator error or that a proposed design has been validated.",
+      "uncertainty": "The frozen reference establishes deterministic lifecycle expectations, not user effort, discoverability, comparative usability or performance on larger families."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "The successful reading and source-consistent correction cannot establish natural error frequency, unbiased detection, semantic reliance or broad interpretive quality.",
+      "evidence": [
+        "The frozen reference explicitly identifies the priority accounts and caller chain as scripted test-origin inputs and limits coverage to static source and deterministic lifecycle expectations.",
+        "Its preparation disclosure identifies the implementing agent as reference preparer and orchestrator, with exact model identifier unavailable and shared OpenAI-family overlap limiting independence.",
+        "Evaluator answers 2, 3, 6 and 7 retain static/runtime, exposure/reliance and controlled/natural boundaries, and its usefulness limitations disclaim independent source verification and runtime proof."
+      ],
+      "consequence": "This assessment supports a bounded communication success for the supplied sequence. It does not convert controlled recovery into evidence of general reliability, actual billing, observed caller defects or automatic reconciliation.",
+      "uncertainty": "The present assessment uses only the supplied reference, views and evaluator response. The reference's authorship and scope limitations remain in force even where the response agrees with it."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful for this controlled classifier investigation: the evaluator accurately understands the corrected behavior and audits unresolved history and warning causes, with substantial presentation overhead.",
+    "reasons": [
+      "The final accumulation account agrees with the frozen source reference while static predictions remain distinct from observed execution.",
+      "Selectable mechanism, example and caller-limit accounts make the semantic change and remaining practical gap clear.",
+      "Exact originals, replacement display, displaced composition, recency selection and direct/transitive historical causes remain distinguishable.",
+      "No material evaluator misunderstanding or unsupported factual extrapolation is demonstrated; the evaluator identifies rather than adopts the misleading soft endorsement and status wording."
+    ],
+    "limitations": [
+      "The displayed source-detail object lacks a source excerpt, limiting direct audit within the supplied views.",
+      "Repeated corrections and raw identifiers create reading burden; some associated badges require further inspection for individual cause details.",
+      "Uncorrected retained accounts and unresolved conflicts remain visible; reconsideration does not establish error, semantic reliance or fresh reassessment.",
+      "Caller behavior, policy usefulness, runtime behavior, non-number inputs and general usability are not established.",
+      "Scripted origins, adaptive navigation, reference-preparer/orchestrator overlap and shared model-family limitations prevent generalization to natural investigation quality or error rates."
+    ]
+  }
+}

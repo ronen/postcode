@@ -1,0 +1,17 @@
+{"command":"summarize classify","at":"2026-10-01T23:20:48.187Z"}
+{"command":"explain @investigram-047e66f3","at":"2026-10-01T23:21:02.140Z"}
+{"command":"decompose @investigram-27c4c9cc","at":"2026-10-01T23:21:17.097Z"}
+{"command":"examine @investigram-047e66f3","at":"2026-10-01T23:21:26.745Z"}
+{"command":"inspect @investigram-047e66f3","at":"2026-10-01T23:22:25.817Z"}
+{"command":"inspect @investigram-27c4c9cc","at":"2026-10-01T23:22:26.277Z"}
+{"command":"inspect @investigram-2e4cbc09","at":"2026-10-01T23:22:26.755Z"}
+{"command":"explain @investigram-2e4cbc09","at":"2026-10-01T23:23:05.202Z"}
+{"command":"examine @investigram-27c4c9cc","at":"2026-10-01T23:24:52.699Z"}
+{"command":"inspect @investigram-047e66f3 --source-detail","at":"2026-10-01T23:27:09.604Z"}
+{"command":"inspect @investigram-27c4c9cc","at":"2026-10-01T23:27:10.062Z"}
+{"command":"inspect @investigram-2e4cbc09","at":"2026-10-01T23:27:10.513Z"}
+{"command":"inspect @investigram-127ad6a0","at":"2026-10-01T23:27:11.012Z"}
+{"command":"summarize classify","at":"2026-10-01T23:27:11.453Z"}
+{"command":"explain @investigram-047e66f3","at":"2026-10-01T23:27:12.001Z"}
+{"command":"usage","at":"2026-10-01T23:27:12.601Z"}
+{"command":"exit","at":"2026-10-01T23:27:13.062Z"}

@@ -1,0 +1,224 @@
+{
+  "cases": [
+    {
+      "case": "cockatiel-m5",
+      "liveOutcomes": [
+        {
+          "operation": "functionality",
+          "termination": "accepted",
+          "calls": 6,
+          "citations": 0,
+          "fullEvidenceRecords": 283,
+          "summaryRecords": 12
+        },
+        {
+          "operation": "clarification",
+          "termination": "accepted",
+          "calls": 6,
+          "citations": 1,
+          "fullEvidenceRecords": 127,
+          "summaryRecords": 8
+        },
+        {
+          "operation": "decomposition",
+          "termination": "accepted",
+          "calls": 4,
+          "citations": 4,
+          "fullEvidenceRecords": 66,
+          "summaryRecords": 6
+        },
+        {
+          "operation": "examination",
+          "termination": "accepted",
+          "calls": 7,
+          "citations": 4,
+          "fullEvidenceRecords": 126,
+          "summaryRecords": 8
+        }
+      ],
+      "requests": 23,
+      "tokens": 748232,
+      "exactResolvedFields": 249,
+      "missingCalls": 0,
+      "anomalousCalls": 0,
+      "wireExposureEqualsCanonicalLedger": true,
+      "usageViewsObservationsAndProviderAgree": true,
+      "elapsedMilliseconds": 602245
+    },
+    {
+      "case": "conflict-numeric-m5",
+      "liveOutcomes": [
+        {
+          "operation": "examination",
+          "termination": "accepted",
+          "calls": 3,
+          "citations": 6,
+          "fullEvidenceRecords": 26,
+          "summaryRecords": 8
+        },
+        {
+          "operation": "clarification",
+          "termination": "accepted",
+          "calls": 2,
+          "citations": 7,
+          "fullEvidenceRecords": 15,
+          "summaryRecords": 3
+        }
+      ],
+      "requests": 5,
+      "tokens": 56760,
+      "exactResolvedFields": 55,
+      "missingCalls": 0,
+      "anomalousCalls": 0,
+      "wireExposureEqualsCanonicalLedger": true,
+      "usageViewsObservationsAndProviderAgree": true,
+      "elapsedMilliseconds": 280753
+    },
+    {
+      "case": "fsm-engine-m5",
+      "liveOutcomes": [
+        {
+          "operation": "functionality",
+          "termination": "accepted",
+          "calls": 4,
+          "citations": 0,
+          "fullEvidenceRecords": 112,
+          "summaryRecords": 8
+        },
+        {
+          "operation": "clarification",
+          "termination": "accepted",
+          "calls": 2,
+          "citations": 1,
+          "fullEvidenceRecords": 50,
+          "summaryRecords": 3
+        },
+        {
+          "operation": "decomposition",
+          "termination": "communication-failure",
+          "calls": 1,
+          "citations": 1,
+          "fullEvidenceRecords": 0,
+          "summaryRecords": 0
+        },
+        {
+          "operation": "decomposition",
+          "termination": "accepted",
+          "calls": 4,
+          "citations": 1,
+          "fullEvidenceRecords": 50,
+          "summaryRecords": 6
+        },
+        {
+          "operation": "examination",
+          "termination": "accepted",
+          "calls": 7,
+          "citations": 1,
+          "fullEvidenceRecords": 219,
+          "summaryRecords": 7
+        }
+      ],
+      "requests": 18,
+      "tokens": 438770,
+      "exactResolvedFields": 133,
+      "missingCalls": 1,
+      "anomalousCalls": 0,
+      "wireExposureEqualsCanonicalLedger": true,
+      "usageViewsObservationsAndProviderAgree": true,
+      "elapsedMilliseconds": 710494
+    },
+    {
+      "case": "merge-anything-m5",
+      "liveOutcomes": [
+        {
+          "operation": "functionality",
+          "termination": "communication-failure",
+          "calls": 3,
+          "citations": 0,
+          "fullEvidenceRecords": 90,
+          "summaryRecords": 8
+        },
+        {
+          "operation": "functionality",
+          "termination": "accepted",
+          "calls": 4,
+          "citations": 0,
+          "fullEvidenceRecords": 136,
+          "summaryRecords": 8
+        },
+        {
+          "operation": "clarification",
+          "termination": "accepted",
+          "calls": 4,
+          "citations": 1,
+          "fullEvidenceRecords": 89,
+          "summaryRecords": 8
+        },
+        {
+          "operation": "decomposition",
+          "termination": "communication-failure",
+          "calls": 1,
+          "citations": 1,
+          "fullEvidenceRecords": 0,
+          "summaryRecords": 0
+        },
+        {
+          "operation": "examination",
+          "termination": "accepted",
+          "calls": 5,
+          "citations": 2,
+          "fullEvidenceRecords": 110,
+          "summaryRecords": 10
+        }
+      ],
+      "requests": 17,
+      "tokens": 302293,
+      "exactResolvedFields": 161,
+      "missingCalls": 2,
+      "anomalousCalls": 0,
+      "wireExposureEqualsCanonicalLedger": true,
+      "usageViewsObservationsAndProviderAgree": true,
+      "elapsedMilliseconds": 537099
+    },
+    {
+      "case": "refined-numeric-m5",
+      "liveOutcomes": [
+        {
+          "operation": "examination",
+          "termination": "accepted",
+          "calls": 3,
+          "citations": 2,
+          "fullEvidenceRecords": 26,
+          "summaryRecords": 8
+        },
+        {
+          "operation": "clarification",
+          "termination": "accepted",
+          "calls": 3,
+          "citations": 6,
+          "fullEvidenceRecords": 16,
+          "summaryRecords": 3
+        },
+        {
+          "operation": "examination",
+          "termination": "investigation-failure",
+          "calls": 4,
+          "citations": 7,
+          "fullEvidenceRecords": 26,
+          "summaryRecords": 8
+        }
+      ],
+      "requests": 10,
+      "tokens": 137186,
+      "exactResolvedFields": 120,
+      "missingCalls": 0,
+      "anomalousCalls": 0,
+      "wireExposureEqualsCanonicalLedger": true,
+      "usageViewsObservationsAndProviderAgree": true,
+      "elapsedMilliseconds": 386086
+    }
+  ],
+  "requests": 73,
+  "providerReportedTokens": 1683241,
+  "monetaryAttribution": null
+}
