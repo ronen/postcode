@@ -335,6 +335,24 @@ preserving the failed run and leaving timeout/validation rules unchanged. It doe
 not authorize another live assessment or a consequential reference-representation
 change.
 
+### Short investigator references and fixed reassessment — 2026-10-01
+
+Context (assistant question):
+
+> May I implement and verify it, then run one fixed reassessment of the same four subjects?
+
+The proposal was private short, exact model-facing references mapped to unchanged
+canonical IDs, followed by one pass of the original three upstream subjects and
+documentation fixture, preserving the fixed model and effective configurations.
+
+Human instruction:
+
+> yes, go ahead and implement it.  keep in mind some implementation details:
+>
+> - **Reference availability remains distinct from evidence exposure.** Issuing a handle must not make its underlying content count as supplied.
+> - **Translation must be structural.** Map designated reference fields, including nested results and evidence requests; never search-and-replace strings in source or prose.
+> - **Preserve auditable provenance and bounds.** Captures should establish what the investigator actually received and how handles resolved. The agent should state which representation the character guard measures.
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
