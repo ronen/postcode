@@ -237,7 +237,10 @@ revision/conflict display and integrated correction lifecycle have not begun.
 
 All eight view-only evaluator and eight source-informed assessor outputs are
 present and parseable; [role attribution](assessment-agent-usage.json) retains their
-separate unknown usage. JSON parsing, local report links and diff whitespace checks
-passed. A supplementary [capture scan](capture-safety-check.json) found no files
+separate unknown usage. JSON parsing and local report links passed. The non-capture
+diff whitespace check passed; the full range reports expected whitespace in exact
+terminal echoes, initial TAP output, renderer text and supplied role inputs/views.
+Those bytes are preserved, with the [check qualification](whitespace-check.json),
+not normalized. A supplementary [capture scan](capture-safety-check.json) found no files
 matching the checked credential patterns; that scan is not proof against every
 possible secret format. No real credential was inspected during these checks.
