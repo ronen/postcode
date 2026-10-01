@@ -353,6 +353,12 @@ Human instruction:
 > - **Translation must be structural.** Map designated reference fields, including nested results and evidence requests; never search-and-replace strings in source or prose.
 > - **Preserve auditable provenance and bounds.** Captures should establish what the investigator actually received and how handles resolved. The agent should state which representation the character guard measures.
 
+### Milestone 3 re-review and decision-record confirmation — 2026-10-01
+
+Human instruction:
+
+> The re-review is complete, it has a few small findings; respond as usual.  Regarding the decision record: The acceptance recorded in `a53ea33` covers the decision in `investigator-reference-transport.md`; I regard the record as an accurate account of the approved choice, including its discussion of alternatives. Add it to the decisions index. No separate acceptance step is needed.
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
