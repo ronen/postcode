@@ -1430,3 +1430,48 @@ instruction changes occurred after the live-pass freeze.
 
 Milestone 4 is ready for a human-arranged independent review. The task remains
 active; milestone-4 acceptance and milestone 5 are not implied by this checkpoint.
+
+### Milestone 4 round-1 review corrections — 2026-10-01
+
+The human-arranged review at `69c86d6` reproduced the complete 448-test suite and
+capture audits, checked consequential claims against pinned source, and found
+three low-severity corrections plus an assessment-adequacy choice. `bd00b66`
+preserves the human's review instructions and F4 decision before affected work.
+The human accepts the controlled-correction evidence as sufficient for milestone 4
+with its limited discriminating power; this is not blanket milestone acceptance.
+
+`c8780c0` corrects F1 by including the supplied continuation in associated-inspection
+identity, including invalid continuations. Regression distinguishes different
+invalid references and preserves repeated identity and no-inference behavior.
+F3 now gives readable unsupported-subject guidance and explains an unknown listing
+continuation. Presentation method advances to @8. F2 adds real CLI/worker regressions
+for throwing selection, interruption while identity is pending, late messages after
+closure, and stale operation/selection-ID replies. These verify session/worker
+closure, preserved prior usage and no new attempt/call/result; no handshake runtime
+change was needed. The architecture account documents these boundaries.
+
+The approved plan now refines one already-planned milestone-5 controlled case:
+interface documentation without the conclusion under test, a plausible mistaken
+account without an artificial unverified cue, warranted qualification, truthful
+injected-origin attribution, small source, and separately frozen fixture/setup/
+reference before live assessment. This is bounded future assessment work, not a
+new tuning loop. No milestone-5 case was created or run. The existing milestone-4
+fixture and all pass-04 records remain unchanged; their frozen @7 implementation
+attribution is retained. No live request or credential operation occurred, and the
+diagnostic allowance remains two used/eight remaining.
+
+Build and five targeted regressions passed during correction. The complete offline
+suite at `c8780c0` passed **452 tests, zero failures/cancellations/skips**, 144.934
+seconds (153.789 including build), with the same clean checkout before and after.
+Temporary idle-sleep prevention and the monitor recorded maximum gap 1.003 seconds,
+no gaps over two seconds. Historical failures/cancellations remain preserved.
+`bf35120` retains complete output, timing and a
+[finding-by-finding disposition](../reviews/module-investigation/2026-10-01-milestone-4-disposition.md),
+including every non-defect observation and residual review limit. Links, unchanged
+historical artifacts and diff checks passed.
+
+F1–F3 are accepted and corrected; F4 is accepted with the human-resolved limitation
+and future refinement. No finding is rejected or materially qualified without
+authorization. The local corrections do not invalidate the review's core analysis;
+further independent review is not judged necessary. Human milestone-4 acceptance
+remains pending; milestone 5 has not begun and the task remains active.
