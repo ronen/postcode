@@ -1,0 +1,228 @@
+You are a fresh source-informed assessor. Use only the supplied frozen reference, view and evaluator response. Do not independently inspect source or browse. These references are qualified source analysis, not runtime proof.
+
+RUBRIC
+{
+  "version": 1,
+  "task": "Compare supplied investigator views and view-only evaluator answers against the frozen source references. Use only supplied artifacts. Preserve uncertainty and cite specific displayed references or source locations.",
+  "categories": ["generation-error-repeated-by-evaluator", "presentation-misunderstanding", "successful-qualified-communication", "unsupported-evaluator-extrapolation", "material-omission", "reference-cannot-settle"],
+  "output": "JSON with findings [{category, claim, evidence, consequence, uncertainty}], subjectUsefulness {judgment, reasons, limitations}. No numeric aggregate score. Do not treat a summary-only absence of follow-up views as a generation defect. Do not treat administrative request-budget interruption as an interpretive or milestone failure."
+}
+
+FROZEN REFERENCE
+# Frozen source-grounded references — summary pass 01
+
+Prepared before any subject/fixture inference by the implementing agent. Exact
+model identifier is unavailable; the family is OpenAI. Shared implementation,
+reference selection and orchestration can bias judgments. These are purposeful
+development examples, not an unbiased or untouched validation set. This material
+must not be supplied to the investigator or view-only evaluators.
+
+The [manifest](manifest.json) fixes revisions, source/document/configuration hashes,
+Node 22.13.1, the **PostCode analyzer TypeScript 6.0.3**, and the selected hosted
+configuration. Installed subject build TypeScript versions do not replace that
+analyzer. Repository source, README and ordinary subject-based evidence are
+accessible; reference answers, selection rationale and this file are not.
+PostCode source inspection is not execution or proof of runtime guarantees.
+
+
+
+## Cockatiel: Executor
+
+Source pin: [Executor.ts](https://github.com/connor4312/cockatiel/blob/80b5ed67966dfcc5410a912285fcb3eeb2dc5e5e/src/common/Executor.ts).
+Original `tsconfig.json`; selector `executor`. Mechanical inventory materializes
+its exports `ExecuteWrapper`, `FailureOrSuccess`, and `returnOrThrow`. Its source
+mapping and qualification are compiler-derived, not a behavioral proof.
+
+Supported source conclusions:
+
+- Lines 45–75 invoke supplied work once, await its return, and classify the value
+  or thrown error using supplied filters. A value matching the result filter is
+  returned as `{value}`; a nonmatching value as `{success}`. Handled errors become
+  `{error}`; unhandled errors are rethrown.
+- Lines 19–28 and 49–68 measure duration only when event listeners are present;
+  success/failure notifications are emitted through delegated event emitters.
+- Lines 30–43 expose two listener interfaces; cloning reuses filter functions but
+  creates a fresh wrapper and emitters. This is not a clone of caller work/state.
+- Lines 6–16 convert the tagged result into a return value or throw. A result
+  classified as failure by value can still be returned by this helper.
+- [RetryPolicy.ts lines 100–140](https://github.com/connor4312/cockatiel/blob/80b5ed67966dfcc5410a912285fcb3eeb2dc5e5e/src/RetryPolicy.ts#L100)
+  supplies the retry loop around this executor. Do not attribute retry/backoff,
+  the caller's business operation or generic fault tolerance to this file alone.
+
+Acceptable interpretation: a reusable boundary for invoking, classifying and
+observing caller-supplied work, used by surrounding resilience policies.
+Material limits: no runtime test was performed; caller operations/filters can do
+arbitrary work. Listener exceptions and filter exceptions can affect execution;
+the broad try/catch also encloses successful-value classification and notification.
+Do not claim that only exceptions from `fn` are handled or that all callbacks are
+safe. The library README's policy descriptions are attributed context, not proof
+that this module itself implements every policy.
+
+
+
+## Assessment procedure and limitations
+
+Freeze the exact [instructions](instructions.json), general context-selection code
+hashes, model and route before inference. Keep production evidence access and
+guards unchanged except the labelled hard-limit control. No reference answers
+enter live context. The first pass has zero automatic repeat allowance; a
+diagnostic rerun requires a separately recorded question/count and preserves the
+original outcome. Administrative request-ceiling interruption is incomplete
+validation, not a semantic failure or hard milestone failure.
+
+Use the fixed `scripts/module-investigation/questions.json` for fresh view-only
+evaluators and `assessor-rubric.json` for separate fresh source-informed assessment.
+Retain exact prompts, inputs, outputs and available role configuration/usage.
+Unknown role usage is not zero. Fresh contexts and same-family agents do not
+establish independent corroboration. Per-subject results and focused cases stay
+separate; no universal acceptance score or prompt optimization search is intended.
+
+USER VIEW
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-e65c42fd: executor
+
+@investigram-ea858944 · interpretation
+Provides the shared call-classification core used by resilience policies: run a sync/async operation, classify returned values or thrown errors with injected filters, optionally publish timed success/failure telemetry, and return a tagged outcome for the calling policy to interpret.
+Referent: Executor module
+  Qualification: Implementation-based account of first-observed TypeScript source; it does not establish deployed runtime behavior.
+  Qualification: Timing is activated only when a success or failure listener exists; environment clock behavior was not executed.
+  Qualification: No applicable repository documentation was supplied. Policy interface comments were inspected; they describe failure notification as tied to handled reasons, whereas this implementation also emits an event with handled=false immediately before rethrowing an unhandled error.
+  Composition: @investigram-efc1e202, @investigram-fea456de, @investigram-5ae1b8b6
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:9c0b2f5b-2d50-452e-b7a5-0a4643e15757:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:9c0b2f5b-2d50-452e-b7a5-0a4643e15757:captured-content:5b473607db64d9d43e11143671122860af7e5c556bc4f3ac954728cb87cf5e08, session:9c0b2f5b-2d50-452e-b7a5-0a4643e15757:export:646b834659e590e7ef07cc184b49eb5cd4d68a61ebdc398d586614b9b5725fd1, session:9c0b2f5b-2d50-452e-b7a5-0a4643e15757:export:bf30b1e29c27318b32a50ce708f5527dc9e39d20c384f83cfdd29682386bf11a, session:9c0b2f5b-2d50-452e-b7a5-0a4643e15757:export:4a4b13f834912c68fdb4b0aaac052eebadeae2ede87f96a20ed462c3799ae3eb
+
+@investigram-5ae1b8b6 · interpretation
+returnOrThrow collapses the tagged protocol at policy boundaries: throw the error arm, return the success arm, or return a value that had been classified as a handled failure.
+Referent: returnOrThrow function
+  Qualification: The final value fallback assumes a valid FailureOrSuccess-shaped input; malformed runtime objects are outside its TypeScript contract.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:9c0b2f5b-2d50-452e-b7a5-0a4643e15757:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:9c0b2f5b-2d50-452e-b7a5-0a4643e15757:source:11985e6907388eb17d657be3549d569d4ab3edcfea867c1b8148b32d0a9be720
+
+@investigram-fea456de · interpretation
+FailureOrSuccess is the internal decision protocol: either an error reason, a result value classified as failure, or an explicitly successful value. It lets higher-level policies retry, fall back, break circuits, or otherwise decide without losing the distinction between thrown errors and rejected return values.
+Referent: FailureOrSuccess type
+  Qualification: This is a compile-time union; branch behavior depends on property-presence checks in consumers.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:9c0b2f5b-2d50-452e-b7a5-0a4643e15757:source:ff5c325c28823bfb0ba1bf80c92d4a862db0eb29d9a8eb3a0961cb914f1d2677, session:9c0b2f5b-2d50-452e-b7a5-0a4643e15757:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:9c0b2f5b-2d50-452e-b7a5-0a4643e15757:captured-content:c1b4f47f88e6b921182bd08f6add826c41b82220b781dd948f52e06fbbec54f1
+
+@investigram-efc1e202 · interpretation
+ExecuteWrapper owns independent success/failure emitters and two predicates. invoke awaits the supplied function. An unfiltered return emits success and yields {success}; a filtered return emits a handled failure and yields {value}. A caught error emits failure with the predicate's handled flag; handled errors yield {error}, while unhandled errors are rethrown. Telemetry includes elapsed milliseconds and is skipped entirely without listeners. clone preserves filters but creates fresh emitters.
+Referent: ExecuteWrapper class
+  Qualification: Event callbacks are invoked synchronously by the delegated EventEmitter; listener exceptions and clock failures can therefore affect invocation, but those edge effects were not executed.
+  Qualification: Browser-like performance.now is preferred when performance exists; otherwise process.hrtime.bigint is converted from nanoseconds to milliseconds.
+  Qualification: A thrown error is tested only by errorFilter; a normal value is tested only by resultFilter.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:9c0b2f5b-2d50-452e-b7a5-0a4643e15757:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:9c0b2f5b-2d50-452e-b7a5-0a4643e15757:captured-content:1a67c6735a1a3434e9bb651b218f03790bf796947ad61c72dbc9f43a110b359f, session:9c0b2f5b-2d50-452e-b7a5-0a4643e15757:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c
+Attempt session:9c0b2f5b-2d50-452e-b7a5-0a4643e15757:investigation-attempt:0c9869f52389c6fa380d416d5811f845ea85b823c1c8112a7be46fc330f2e9b3 (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 138247 tokens; input 135519 tokens (subset of total); output 2728 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 740 tokens (subset of output)
+Session reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 138247 tokens; input 135519 tokens (subset of total); output 2728 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 740 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+EVALUATOR RESPONSE
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The executor is a shared operation-running and classification layer for resilience policies. ExecuteWrapper invokes and awaits the supplied operation, applies resultFilter to normal returns and errorFilter to thrown errors, optionally emits timed success/failure events, and produces a tagged outcome or rethrows an unhandled error. FailureOrSuccess carries the distinction between an error, a returned value treated as failure, and success. Higher-level policies decide whether to retry, fall back, break a circuit, or take another action. returnOrThrow converts the tagged outcome back to throwing an error or returning a value at policy boundaries. clone retains filters while giving the clone fresh emitters.",
+      "support": [
+        "@investigram-ea858944 calls this the 'shared call-classification core' and says it returns 'a tagged outcome for the calling policy to interpret'.",
+        "@investigram-efc1e202 describes {success}, {value}, and {error}, the separate predicates, unhandled-error rethrowing, listener-dependent telemetry, and cloning.",
+        "@investigram-fea456de assigns downstream decisions to higher-level policies.",
+        "@investigram-5ae1b8b6 describes returnOrThrow at policy boundaries."
+      ],
+      "unknowns": [
+        "The supplied view does not establish which particular policies call this executor or their actual decision rules.",
+        "It does not establish deployed runtime behavior."
+      ]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "All four displayed functionality accounts are explicitly labeled interpretation. The view attributes their support to first-observed TypeScript implementation, referenced captured/source material, and inspected policy interface comments. Those references provide qualified provenance claims, but their contents are not displayed here for independent comparison. The stated mismatch between comments and implementation concerns failure notification for unhandled errors: the implementation account says it emits handled=false before rethrowing. Usage is reported metadata, with explicit qualifications against treating it as confirmed billing or monetary cost.",
+      "support": [
+        "@investigram-ea858944 says 'Implementation-based account of first-observed TypeScript source' and 'No applicable repository documentation was supplied'.",
+        "Its interface-comment qualification contrasts handled-reason documentation with an event emitted with handled=false before rethrowing.",
+        "@investigram-fea456de qualifies the protocol as a compile-time union with consumer property-presence checks.",
+        "@investigram-5ae1b8b6 assumes a valid FailureOrSuccess-shaped input.",
+        "@investigram-efc1e202 qualifies synchronous listener callbacks and clock behavior as unexecuted edge effects.",
+        "The footer says 'Generated accounts remain interpretation' and 'Reported usage is not confirmed billed usage'."
+      ],
+      "unknowns": [
+        "Runtime behavior, listener-exception effects, clock-failure effects, and malformed-input behavior are unestablished.",
+        "The exact consequences of the comment/implementation discrepancy for callers are not demonstrated.",
+        "Evidence contents and whether they fully support each claim cannot be assessed from the summary alone.",
+        "Actual credit charges and monetary attribution are unavailable."
+      ]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "No later explanation, decomposition, or examination views were supplied, so no before/after improvement or substantive change can be assessed. The summary itself exposes distinct references for the module, ExecuteWrapper, FailureOrSuccess, and returnOrThrow, allowing a reader to name a narrower subject, but it does not show that a decomposition operation created these references or made them newly selectable.",
+      "support": [
+        "The stated condition is 'summary-only; later sequence views not supplied'.",
+        "The module account lists three Composition references, each also displayed with its own referent and interpretation."
+      ],
+      "unknowns": [
+        "What any later operation explained, decomposed, examined, changed, or preserved.",
+        "Whether selection or navigation through these references is operational in the user interface."
+      ]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "I would select @investigram-efc1e202 with an examination lens focused on failure-event delivery and synchronous listener exceptions. I would expect a closer account of whether callback exceptions can alter classification, returned outcomes, or the original error, and how the handled=false event relates to the interface-comment mismatch. This is a proposed future investigation. The view shows the reference, its qualification, and 'New investigation request', but does not demonstrate an available examination lens, an actionable selection control, or an executed follow-up.",
+      "support": [
+        "@investigram-efc1e202 says synchronous listener exceptions and clock failures can affect invocation, but those edge effects were not executed.",
+        "@investigram-ea858944 states the failure-notification comment/implementation discrepancy.",
+        "The header says 'References remain bound for this session' and 'New investigation request'."
+      ],
+      "unknowns": [
+        "Which lenses the interface actually offers and what execution or source-inspection capabilities a follow-up has.",
+        "The outcome of the proposed examination."
+      ]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No actual correction is shown. There is no original/replacement pair, replacement relationship, or changed assertion to compare. The module's Composition field explicitly identifies three constituent accounts, while Operation, origin, provider/model, Evidence, and accepted-attempt metadata describe other aspects of provenance. No later-investigation relationship is displayed, so the view supports recognizing composition but cannot demonstrate how later-investigation provenance would differ or how a correction would be traced.",
+      "support": [
+        "@investigram-ea858944 lists Composition: @investigram-efc1e202, @investigram-fea456de, @investigram-5ae1b8b6.",
+        "The accounts separately display Operation, origin, provider/model, and Evidence fields.",
+        "The footer says 'Corrections are retained assertions, not established truth', without showing a specific correction."
+      ],
+      "unknowns": [
+        "Whether any correction occurred, what it changed, and how original and replacement would be identified.",
+        "How later investigation would relate to existing accounts or be distinguished visually from composition.",
+        "The meaning of accepted beyond the displayed attempt status."
+      ]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The summary is useful for understanding the classification boundary and identifying a focused next subject. Explicit interpretation labels and execution limitations help prevent overconfidence. However, long opaque evidence identifiers and repeated provenance fields compete with the functional explanation, while identical attempt/session usage blocks add repetition. 'Accepted' could be mistaken for validated correctness. 'Telemetry ... is skipped entirely without listeners' could be read too broadly unless tied specifically to timing and event work. 'New investigation request' and session-bound references suggest a workflow without showing how to act on it. The correction and synthetic-usage caveats introduce concepts for which no concrete example is shown. The distinction between a handled failure value and a thrown error is valuable but requires close reading of several accounts.",
+      "support": [
+        "The class and type accounts distinguish {value}, {error}, and {success}, and returnOrThrow explains their boundary behavior.",
+        "Each account repeats interpretation/provenance structure and long session evidence references.",
+        "Attempt and Session reported usage both show 4 calls and the same model/token totals.",
+        "The accepted attempt label and generic correction/synthetic-usage footer appear without examples of validation, correction, or synthetic data."
+      ],
+      "unknowns": [
+        "Whether the actual interface makes references clickable, collapses metadata, explains accepted status, or offers lens controls.",
+        "Whether later views resolve the workflow and provenance ambiguities."
+      ]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful as an implementation-qualified orientation and a starting point for targeted investigation; insufficient to assess an investigation sequence or establish runtime correctness.",
+    "reasons": [
+      "Communicates a clear separation between operation classification, tagged outcome representation, policy decisions, and boundary conversion.",
+      "Provides distinct referents with qualifications that expose consequential uncertainties and a specific comment/implementation discrepancy.",
+      "Dense identifiers, repeated usage reporting, and unexplained workflow labels make the important behavioral information harder to scan."
+    ],
+    "limitations": [
+      "Only the supplied summary was assessed; no independent sources or later sequence views were inspected.",
+      "Displayed evidence is referenced but not available for substantive verification within this view.",
+      "No correction, executable navigation, follow-up lens, or demonstrated runtime result is shown."
+    ]
+  }
+}

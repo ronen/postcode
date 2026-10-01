@@ -1,0 +1,59 @@
+{
+  "intervention": "none; normal frozen instructions and subject-based evidence",
+  "deliveredReadmes": [
+    {
+      "id": "session:1de628ff-612e-4003-8149-629424925c67:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7",
+      "wireId": "rkg8O-w3sZfM.47",
+      "subject": "session:1de628ff-612e-4003-8149-629424925c67:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93",
+      "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/README.md",
+      "firstDeliveredExchange": 3,
+      "characters": 9898
+    }
+  ],
+  "requestedEvidenceKinds": {
+    "inspect": 1,
+    "exports": 3,
+    "dependencies": 4,
+    "dependents": 1,
+    "source": 8
+  },
+  "referenceResolutionCounts": [
+    {
+      "exchange": 1,
+      "bindings": 1,
+      "resolved": 4,
+      "unresolved": []
+    },
+    {
+      "exchange": 2,
+      "bindings": 104,
+      "resolved": 6,
+      "unresolved": []
+    },
+    {
+      "exchange": 3,
+      "bindings": 152,
+      "resolved": 4,
+      "unresolved": []
+    },
+    {
+      "exchange": 4,
+      "bindings": 177,
+      "resolved": 2,
+      "unresolved": []
+    },
+    {
+      "exchange": 5,
+      "bindings": 179,
+      "resolved": 1,
+      "unresolved": []
+    },
+    {
+      "exchange": 6,
+      "bindings": 180,
+      "resolved": 50,
+      "unresolved": []
+    }
+  ],
+  "limitation": "References alone are not content delivery. First delivery is a provider request containing the captured README text; repeated history is deduplicated."
+}

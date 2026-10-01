@@ -1,0 +1,96 @@
+{
+  "roles": [
+    {
+      "subject": "focused-entry-r3",
+      "role": "evaluator",
+      "task": "/root/r3_evaluate_entry",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+      "monetaryAttribution": null
+    },
+    {
+      "subject": "focused-entry-r3",
+      "role": "assessor",
+      "task": "/root/r3_assess_entry",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+      "monetaryAttribution": null
+    },
+    {
+      "subject": "cockatiel-r3",
+      "role": "evaluator",
+      "task": "/root/r3_evaluate_cockatiel",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+      "monetaryAttribution": null
+    },
+    {
+      "subject": "cockatiel-r3",
+      "role": "assessor",
+      "task": "/root/r3_assess_cockatiel",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+      "monetaryAttribution": null
+    },
+    {
+      "subject": "fsm-engine-r3",
+      "role": "evaluator",
+      "task": "/root/r3_evaluate_fsm",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+      "monetaryAttribution": null
+    },
+    {
+      "subject": "fsm-engine-r3",
+      "role": "assessor",
+      "task": "/root/r3_assess_fsm",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+      "monetaryAttribution": null
+    },
+    {
+      "subject": "merge-anything-r3",
+      "role": "evaluator",
+      "task": "/root/r3_evaluate_merge",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+      "monetaryAttribution": null
+    },
+    {
+      "subject": "merge-anything-r3",
+      "role": "assessor",
+      "task": "/root/r3_assess_merge",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+      "monetaryAttribution": null
+    }
+  ],
+  "limitations": [
+    "Usage and monetary attribution are unavailable, not zero. These roles are separate from PostCode investigator inference even if they share an allowance.",
+    "Fresh contexts share orchestration/model family; they are not independent corroboration."
+  ]
+}

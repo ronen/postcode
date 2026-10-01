@@ -1,0 +1,96 @@
+{
+  "findings": [
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The view and evaluator communicate the principal division of responsibility and synchronous dispatch control flow accurately against the frozen reference.",
+      "evidence": [
+        "The frozen reference cites fsm-engine.ts lines 119–135 for definition construction, validation and compilation through FsmBuilderImpl and lines 184–222 for enqueueing all events and synchronously draining FIFO at the outermost call.",
+        "@investigram-72904a46 distinguishes the definition/factory surface from per-instance state and @investigram-72ba29f9 states that every dispatch first enqueues.",
+        "Evaluator answer 1 preserves these responsibilities, queue semantics, ordered guards, fallback handling, and the external exit → transition actions → state commit → entry order supported by frozen-reference lines 241–313."
+      ],
+      "consequence": "A reader can identify the main runtime responsibilities and reason about reentrant event ordering without interpreting reentrancy as concurrent execution.",
+      "uncertainty": "This agreement is with qualified source analysis, not execution or independent runtime verification."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The supplied material preserves important limitations on context isolation, exceptions and safety claims.",
+      "evidence": [
+        "The frozen reference says context is caller supplied and not deep-copied; exceptions clear queued work without undoing actions already run (lines 119–135 and 184–222).",
+        "Although @investigram-72904a46 uses 'separate context,' @investigram-795d1098 explicitly says instances expose the original mutable context object. Evaluator answer 1 avoids claiming caller-provided objects cannot be shared.",
+        "@investigram-72ba29f9 describes pending-event clearing and entry-action failure after state commitment, and disclaims concurrency conclusions beyond the synchronous implementation. Evaluator answers 1–2 retain those qualifications and do not assert rollback or thread safety."
+      ],
+      "consequence": "The evaluator does not convert per-instance bookkeeping or queued dispatch into unsupported isolation, rollback or concurrency guarantees.",
+      "uncertainty": "The evaluator could state the absence of rollback more explicitly, but its response does not assert rollback and the displayed component provides the consequential state-commit detail."
+    },
+    {
+      "category": "unsupported-evaluator-extrapolation",
+      "claim": "The evaluator's phrase 'stay without action' is broader than the supported implicit-stay behavior.",
+      "evidence": [
+        "Frozen-reference lines 241–266 specify that begin actions run before transition selection and that transition candidates with no matching guard produce an implicit stay.",
+        "@investigram-72904a46 calls this a 'no-op stay' while also describing begin actions; @investigram-72ba29f9 explicitly says begin actions precede guards.",
+        "Evaluator answer 1 says 'Known handlers whose guards do not match can stay without action.'"
+      ],
+      "consequence": "Read as a general description of guard failure, this wording could incorrectly imply that the event produces no action side effects, even though begin actions may already have run. The supported conclusion is no selected transition or state change after the relevant handling fails to match.",
+      "uncertainty": "The evaluator also states that begin actions precede guards, and 'can' permits cases with no begin actions. This is a localized overbroad phrase, not evidence that the evaluator consistently misunderstood the control flow. The view's 'no-op stay' wording contributes to the ambiguity but does not establish an unambiguous repeated generation error."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The suspected timer-payload defect is communicated and interpreted with appropriate source-based uncertainty.",
+      "evidence": [
+        "The frozen reference identifies the timer payload expression at fsm-engine.ts line 371 as suspicious because a present payload selects an empty argument array; correct payload forwarding is not established.",
+        "@investigram-795d1098 explicitly qualifies payload forwarding as a likely consequential implementation defect that 'appears inverted in this capture.'",
+        "Evaluator answer 2 treats the finding as source based rather than reproduced, and answer 4 selects that exact component for a proposed follow-up without claiming execution or an available test runner."
+      ],
+      "consequence": "The evaluator notices a consequential uncertainty, retains its qualification, and identifies a precise next investigation target instead of asserting timer correctness.",
+      "uncertainty": "The frozen reference supports suspicion about the present-payload branch but does not establish executed symptoms, the full affected-case matrix, or whether a different revision fixes it."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "Several detailed builder, initialization and timer claims are faithfully reproduced from the view but exceed what this frozen reference independently specifies.",
+      "evidence": [
+        "@investigram-32c93b1b describes default initial-state selection, duplicate checks, unconditional-transition restrictions and graph reachability validation; @investigram-795d1098 describes constructor entry actions, keyed replacement/cancellation, deadline handling, clamping and Infinity behavior.",
+        "Evaluator answers 1–2 reproduce or discuss these details with source and test-execution qualifications.",
+        "The frozen reference specifies the high-level FsmBuilderImpl pipeline and delegation to TimerRegistry, but does not supply detailed source conclusions for all of these dependency behaviors."
+      ],
+      "consequence": "These details can be assessed as communicated interpretations, but cannot all be certified correct or classified as generation errors from the permitted reference alone.",
+      "uncertainty": "Opaque captured-content references are displayed, but their contents are not supplied. No independent source inspection or test execution was performed for this assessment."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly distinguishes displayed composition from correction history, later investigation results and future capabilities.",
+      "evidence": [
+        "@investigram-72904a46 explicitly labels three component references as Composition. The supplied view contains no original/replacement correction pair or completed follow-up view.",
+        "Evaluator answers 3 and 5 decline to infer a later-operation sequence or correction from those component relationships or the generic corrections disclaimer.",
+        "Evaluator answer 4 frames examination as a requested future investigation and notes that the supplied text does not demonstrate interaction controls or execution capability."
+      ],
+      "consequence": "The assessment of this summary does not invent an improvement sequence, treat a defect qualification as a correction, or count unavailable follow-up views as a generation defect.",
+      "uncertainty": "The text cannot establish what additional controls, views or history exist elsewhere in the interface."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "The evaluator's usability concerns are plausible observations about the text, rather than established presentation failures or material omissions.",
+      "evidence": [
+        "Evaluator answer 6 identifies long evidence identifiers, repeated operation/usage metadata, an unexplained accepted status, and the suspected timer defect's placement below the top account.",
+        "Those features are present in the supplied display, and the evaluator successfully notices the timer qualification and distinguishes reported usage from verified charges.",
+        "The frozen reference explicitly says a summary need not audit every defect and provides no evidence about actual interface navigation, collapsed sections, or readers' observed behavior."
+      ],
+      "consequence": "The placement and density concerns can inform presentation review, but this record does not demonstrate that the evaluator missed a material qualification, added the repeated totals, or interpreted acceptance as correctness validation.",
+      "uncertainty": "The impact on other readers and the actual interactive interface remains unmeasured."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful as a qualified technical orientation and as a precise starting point for investigating timer payload handling.",
+    "reasons": [
+      "The evaluator recovers the source-supported definition/runtime division, queued reentrant dispatch and consequential transition ordering.",
+      "The view supplies distinct referents for definition work, event execution and action-side effects, and the evaluator uses them appropriately.",
+      "Static-analysis limits and the timer-payload concern remain visible in the evaluator's conclusions.",
+      "Composition, corrections and requested follow-up capabilities are not conflated."
+    ],
+    "limitations": [
+      "The phrase 'stay without action' can obscure begin-action side effects; the surrounding account supplies the more accurate ordering.",
+      "Some detailed dependency claims cannot be independently settled by the supplied frozen reference.",
+      "This summary-only record cannot establish execution correctness, later-investigation value, correction effectiveness or real interface usability.",
+      "The reference is qualified source analysis from purposeful development examples; shared implementation, selection and same-family orchestration limit independence and generalization."
+    ]
+  }
+}

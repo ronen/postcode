@@ -1,0 +1,88 @@
+{
+  "implementationCommit": "71949dd10c895bc3869849538389aee3f101e0c7",
+  "freezeCommit": "b13810e",
+  "fullOfflineSuite": {
+    "passed": 438,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "durationMilliseconds": 138834.399085,
+    "timing": "offline-suite.timing.json",
+    "output": "offline-suite.tap.txt"
+  },
+  "cases": [
+    {
+      "case": "focused-entry-r3",
+      "outcome": "accepted",
+      "calls": 4,
+      "totalTokens": 32819,
+      "elapsedMilliseconds": 51312,
+      "readmeDeliveredExchanges": [
+        3
+      ],
+      "exactResolvedFields": 37,
+      "unresolvedFields": 0,
+      "finalAvailableBindings": 68,
+      "suppliedEvidenceRecords": 54,
+      "summarizedEvidenceRecords": 8,
+      "wireExposureEqualsCanonicalLedger": true,
+      "usageViewsObservationsAndProviderAgree": true
+    },
+    {
+      "case": "cockatiel-r3",
+      "outcome": "accepted",
+      "calls": 4,
+      "totalTokens": 138247,
+      "elapsedMilliseconds": 87930,
+      "readmeDeliveredExchanges": [],
+      "exactResolvedFields": 68,
+      "unresolvedFields": 0,
+      "finalAvailableBindings": 224,
+      "suppliedEvidenceRecords": 201,
+      "summarizedEvidenceRecords": 8,
+      "wireExposureEqualsCanonicalLedger": true,
+      "usageViewsObservationsAndProviderAgree": true
+    },
+    {
+      "case": "fsm-engine-r3",
+      "outcome": "accepted",
+      "calls": 5,
+      "totalTokens": 189563,
+      "elapsedMilliseconds": 123082,
+      "readmeDeliveredExchanges": [
+        3
+      ],
+      "exactResolvedFields": 85,
+      "unresolvedFields": 0,
+      "finalAvailableBindings": 170,
+      "suppliedEvidenceRecords": 150,
+      "summarizedEvidenceRecords": 8,
+      "wireExposureEqualsCanonicalLedger": true,
+      "usageViewsObservationsAndProviderAgree": true
+    },
+    {
+      "case": "merge-anything-r3",
+      "outcome": "accepted",
+      "calls": 6,
+      "totalTokens": 203113,
+      "elapsedMilliseconds": 91096,
+      "readmeDeliveredExchanges": [
+        3
+      ],
+      "exactResolvedFields": 67,
+      "unresolvedFields": 0,
+      "finalAvailableBindings": 180,
+      "suppliedEvidenceRecords": 156,
+      "summarizedEvidenceRecords": 12,
+      "wireExposureEqualsCanonicalLedger": true,
+      "usageViewsObservationsAndProviderAgree": true
+    }
+  ],
+  "requests": 19,
+  "providerReportedTokens": 563742,
+  "actualMonetaryAttribution": null,
+  "diagnosticAllowance": {
+    "used": 2,
+    "remaining": 8
+  }
+}

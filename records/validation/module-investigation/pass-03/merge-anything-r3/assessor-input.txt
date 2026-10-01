@@ -1,0 +1,235 @@
+You are a fresh source-informed assessor. Use only the supplied frozen reference, view and evaluator response. Do not independently inspect source or browse. These references are qualified source analysis, not runtime proof.
+
+RUBRIC
+{
+  "version": 1,
+  "task": "Compare supplied investigator views and view-only evaluator answers against the frozen source references. Use only supplied artifacts. Preserve uncertainty and cite specific displayed references or source locations.",
+  "categories": ["generation-error-repeated-by-evaluator", "presentation-misunderstanding", "successful-qualified-communication", "unsupported-evaluator-extrapolation", "material-omission", "reference-cannot-settle"],
+  "output": "JSON with findings [{category, claim, evidence, consequence, uncertainty}], subjectUsefulness {judgment, reasons, limitations}. No numeric aggregate score. Do not treat a summary-only absence of follow-up views as a generation defect. Do not treat administrative request-budget interruption as an interpretive or milestone failure."
+}
+
+FROZEN REFERENCE
+# Frozen source-grounded references — summary pass 01
+
+Prepared before any subject/fixture inference by the implementing agent. Exact
+model identifier is unavailable; the family is OpenAI. Shared implementation,
+reference selection and orchestration can bias judgments. These are purposeful
+development examples, not an unbiased or untouched validation set. This material
+must not be supplied to the investigator or view-only evaluators.
+
+The [manifest](manifest.json) fixes revisions, source/document/configuration hashes,
+Node 22.13.1, the **PostCode analyzer TypeScript 6.0.3**, and the selected hosted
+configuration. Installed subject build TypeScript versions do not replace that
+analyzer. Repository source, README and ordinary subject-based evidence are
+accessible; reference answers, selection rationale and this file are not.
+PostCode source inspection is not execution or proof of runtime guarantees.
+
+
+
+## merge-anything: public entry and delegated merging
+
+Source pin: [index.ts](https://github.com/mesqueeb/merge-anything/blob/bc7c79fe8fce89ed3350d7b3bdf7cdd1a7633906/src/index.ts).
+Selector `anonymous`, verified to select the public forwarding entry; conceptual
+handle is not a source path. The entry re-exports `extensions.ts` and `merge.ts`.
+The summary must follow delegation to explain functionality rather than stop at
+the fact that this file is a barrel.
+
+The human-approved effective configuration is the exact
+[override](merge-anything-override.json), beside the unchanged original config,
+extending it and setting only `ignoreDeprecations: "6.0"`. The inherited package
+is `@cycraft/tsconfig` 0.1.2, pinned by the repository lockfile and hashed in the
+manifest. Use this configuration and TypeScript 6.0.3 consistently throughout all
+assessment runs; attribute results to them, not to an unmodified-config run.
+The original config fails opening on deprecation diagnostics. The override was
+mechanically verified to open, not asserted equivalent by unperformed testing.
+
+Supported source conclusions from
+[merge.ts](https://github.com/mesqueeb/merge-anything/blob/bc7c79fe8fce89ed3350d7b3bdf7cdd1a7633906/src/merge.ts):
+
+- Lines 39–94 merge plain-object properties recursively, with plain-object and
+  symbol classification delegated to `is-what`. A non-plain newcomer replaces
+  the current value. Prior own properties absent from the newcomer are retained.
+- Own string and symbol properties are considered; `__proto__` is skipped. This
+  is specific source behavior, not a general security certification.
+- Lines 19–36 preserve enumerability when assigning values but do not preserve
+  every original descriptor or avoid evaluating getters.
+- Lines 101–124 fold inputs in order through the common implementation. Ordinary
+  merge replaces arrays; merge-and-compare applies a supplied comparison function;
+  merge-and-concat uses the array-concatenation helper when both values are arrays.
+- `extensions.ts` delegates array recognition to `is-what` and otherwise returns
+  the newcomer. Type utilities describe compile-time result shape, not runtime work.
+
+Acceptable interpretation: an entry exposing related merge strategies sharing
+recursive plain-object handling and replacement rules, with configurable comparison
+or array concatenation. Material limits: no subject execution; external predicate
+implementation is not established here. It is not a general deep clone: references
+can be retained, non-plain inputs can be returned directly, and zero extra inputs
+return the original. The README's always-new-object wording is broader than that
+source supports. Do not claim circular-input handling, rollback or general safety.
+
+
+
+## Assessment procedure and limitations
+
+Freeze the exact [instructions](instructions.json), general context-selection code
+hashes, model and route before inference. Keep production evidence access and
+guards unchanged except the labelled hard-limit control. No reference answers
+enter live context. The first pass has zero automatic repeat allowance; a
+diagnostic rerun requires a separately recorded question/count and preserves the
+original outcome. Administrative request-ceiling interruption is incomplete
+validation, not a semantic failure or hard milestone failure.
+
+Use the fixed `scripts/module-investigation/questions.json` for fresh view-only
+evaluators and `assessor-rubric.json` for separate fresh source-informed assessment.
+Retain exact prompts, inputs, outputs and available role configuration/usage.
+Unknown role usage is not zero. Fresh contexts and same-family agents do not
+establish independent corroboration. Per-subject results and focused cases stay
+separate; no universal acceptance score or prompt optimization search is intended.
+
+USER VIEW
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-a44de3a8: anonymous
+
+@investigram-b202d0a2 · interpretation
+This module is the package façade: it implements no merge logic, but wildcard-re-exports the merge API and the array-concatenation helper. Its public surface is `merge`, `mergeAndCompare`, `mergeAndConcat`, `concatArrays`, and the type-only `Merge`.
+Referent: package entry module
+  Qualification: Interpretation of captured TypeScript source and compiler export records; execution, packaging, and loader behavior were not tested.
+  Composition: @investigram-f97f0697, @investigram-372b2c5b, @investigram-c31683d9
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:1de628ff-612e-4003-8149-629424925c67:captured-content:8063a4d5515655c21e37335157b6da32def9e894222b525f84b99c3945f95649, session:1de628ff-612e-4003-8149-629424925c67:export:e26f07d96b232e4d184ad3e0cdf396135d5d38a0deec01c3652af840c3079397, session:1de628ff-612e-4003-8149-629424925c67:export:03e0101ac41b08cef3e381d2473a2ab7bce98037a1901b29e353d87f07f7f0c3, session:1de628ff-612e-4003-8149-629424925c67:export:5cbf575991c6bb6718d39fc9141a7b4e4919d6e1a778613577b5a23228b482fd, session:1de628ff-612e-4003-8149-629424925c67:export:93b3c024cb4f29a0fd0c645ef2a6b6f9b954e5c8054ddb60d0dffe3f97ba6fa0, session:1de628ff-612e-4003-8149-629424925c67:export:c1d37ad435569036afef1aae8e2b1cd24813adb35694bc6bba803ad4aa5404a8
+
+@investigram-c31683d9 · interpretation
+The exported `Merge<T, Ts>` models the runtime result separately from runtime execution. If the first value and all later values are record-like, `Assign` walks the tuple and delegates each pair to `MergeDeep`; that type recursively combines record-valued fields while accounting for required and optional keys. `PrettyPrint` expands the resulting intersections with cycle detection. If those record constraints fail, `Pop` selects the final argument type instead.
+Referent: compile-time return-type calculation used by the merge functions
+  Qualification: This is TypeScript type-level behavior, not runtime validation.
+  Qualification: The deeper iteration helper used by `Assign` was identified but not read; the captured `Assign` source was sufficient to establish tuple traversal and delegation.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:1de628ff-612e-4003-8149-629424925c67:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:1de628ff-612e-4003-8149-629424925c67:captured-content:74dca925e00af1e4d8ff5392a6275a5f9629badac922808cdbae94b26f58340f, session:1de628ff-612e-4003-8149-629424925c67:captured-content:b4330d4f9743385b51897711bd6b99dd564e04315999ae3474bbe865feaa418d, session:1de628ff-612e-4003-8149-629424925c67:captured-content:adc561e2945ba6be219cc78844c7216800626454720292e8f75ab36bdbf88cbc, session:1de628ff-612e-4003-8149-629424925c67:captured-content:0edd20422bed0aee5f55854002c178200bf3577e50e8b2668f73b4608c1f1f77
+
+@investigram-372b2c5b · interpretation
+`concatArrays` is a narrow merge policy: when both old and incoming values are arrays it returns their concatenation; otherwise the incoming value wins. It is both directly public and used by `mergeAndConcat`.
+Referent: array-concatenation comparison helper
+  Qualification: Static source interpretation; array detection is delegated to uninspected `is-what` code.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:1de628ff-612e-4003-8149-629424925c67:captured-content:6f64ed2803e14f05072f46970bb3eee68517667fd9442ba8d3d0ad0536c50f83, session:1de628ff-612e-4003-8149-629424925c67:export:d1dc4565982f53d9145db5ca29131d76590a666f1877a0943f3f967d09cbc6eb
+
+@investigram-f97f0697 · interpretation
+The merge implementation folds later arguments left-to-right. Each step returns a non-plain incoming value directly; otherwise it builds a fresh plain object, preserves origin keys absent from the newcomer, and recursively combines overlapping values only when the incoming value is plain. It includes string and symbol own-property names, preserves enumerable versus non-enumerable status but recreates descriptors as writable/configurable data properties, and drops `__proto__`. `mergeAndCompare` applies a caller callback to every incoming property after any recursion; `mergeAndConcat` supplies the array helper as that callback. Plain-object and symbol classification is delegated to `is-what`.
+Referent: runtime recursive merge implementation and three public merge variants
+  Qualification: Static reading only; `is-what` internals and runtime behavior were not inspected.
+  Qualification: The nearby README says merge always returns a new object, but with no later arguments the implementation's reduction returns the original first argument; it also describes the comparison callback as firing on overwrite, whereas the implementation invokes it for every incoming property, including one without an origin value.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:1de628ff-612e-4003-8149-629424925c67:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:1de628ff-612e-4003-8149-629424925c67:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:1de628ff-612e-4003-8149-629424925c67:export:710187551d1822bb91121728747ecff758af9ca967ac6bf8ef66f1d0701018d1, session:1de628ff-612e-4003-8149-629424925c67:export:6a20a862a560fc871d60c237a8fb8cbfa54cbc7afd1edf8b24475111b0ffc49a, session:1de628ff-612e-4003-8149-629424925c67:export:ed57c40ba4cbb54a0e06e593c654be62f93ffa5d4e609e75ccf675a9cac18e90
+Attempt session:1de628ff-612e-4003-8149-629424925c67:investigation-attempt:776e96e1cf46fb940ec60d50162f10076d9ed412ee5d643b5578d38c2725a141 (accepted) reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 203113 tokens; input 200180 tokens (subset of total); output 2933 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 905 tokens (subset of output)
+Session reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 203113 tokens; input 200180 tokens (subset of total); output 2933 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 905 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+EVALUATOR RESPONSE
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The package entry module is presented as a facade that wildcard-re-exports runtime merge functions, an array policy helper, and a compile-time result type. Runtime merging belongs to a separate implementation: later arguments are folded left-to-right; a non-plain incoming value replaces the prior value; a plain incoming value leads to a fresh object and recursive treatment of overlapping values when the incoming value is plain. The callback variant applies a caller policy to every incoming property after recursion, and the concatenation variant supplies concatArrays. That helper concatenates when both values are arrays and otherwise chooses the incoming value. Merge<T, Ts> calculates a return type separately through Assign, MergeDeep, PrettyPrint and a final-argument fallback via Pop. Classification of plain objects, symbols and arrays is delegated to is-what.",
+      "support": [
+        "@investigram-b202d0a2: 'implements no merge logic' and public surface 'merge, mergeAndCompare, mergeAndConcat, concatArrays, and the type-only Merge'.",
+        "@investigram-f97f0697 describes the left-to-right fold, property handling, callback placement and delegated classification.",
+        "@investigram-372b2c5b describes concatArrays as both directly public and used by mergeAndConcat.",
+        "@investigram-c31683d9 separates compile-time return-type calculation from runtime execution."
+      ],
+      "unknowns": [
+        "Actual execution, installed-package exports and loader behavior have not been tested in the supplied account.",
+        "The module is named anonymous, so the summary alone does not supply a concrete module path or package identity."
+      ]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "All four functional accounts are explicitly labeled interpretation. The facade account cites captured TypeScript source and compiler export records; the helper and runtime accounts cite captured content and export evidence, and the type account cites captured content. These are qualified support references, not evidence contents independently inspectable in this supplied view. A nearby README is reported as disagreeing with the implementation interpretation on object freshness with no later arguments and on when callbacks fire. Neither side is established by an execution shown here. The accepted attempt and reported usage describe the investigation process, not validation of the functional claims.",
+      "support": [
+        "Every displayed investigram has the label 'interpretation'.",
+        "@investigram-b202d0a2 qualifies its account as an interpretation of captured source and compiler export records, with execution, packaging and loader behavior untested.",
+        "@investigram-c31683d9 says the deeper iteration helper was identified but not read, and that type-level behavior is not runtime validation.",
+        "@investigram-f97f0697 reports the two README discrepancies and states 'Static reading only'.",
+        "The footer says 'Generated accounts remain interpretation' and 'Reported usage is not confirmed billed usage'."
+      ],
+      "unknowns": [
+        "is-what internals, actual runtime behavior and the deeper iteration helper remain uninspected according to the view.",
+        "The view does not establish that computed TypeScript result types match runtime results in every case.",
+        "Provider usage is reported, but actual charges and monetary attribution are unavailable."
+      ]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "Explanation, decomposition and examination sequence views were not supplied. I cannot assess a before-and-after improvement or substantive change caused by those operations. The current summary does distinguish selectable-looking references for the facade, runtime implementation, array helper and compile-time type calculation, and lists three components of the facade account, but that does not show a decomposition operation or its effect.",
+      "support": [
+        "The supplied condition is 'summary-only; later sequence views not supplied'.",
+        "@investigram-b202d0a2 lists Composition: @investigram-f97f0697, @investigram-372b2c5b, @investigram-c31683d9."
+      ],
+      "unknowns": [
+        "No earlier account, operation request, later result or changed selection boundary is displayed."
+      ]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "I would select @investigram-f97f0697 with an examination lens focused on object identity and callback invocation. I would want to establish the precise conditions under which the result is the original first argument, a newly built object or an incoming value, and to clarify callback behavior for new versus overlapping properties. Concrete examples and qualified evidence would help resolve the reported README discrepancies. This is a proposed next investigation; the supplied view does not demonstrate an available examination control, lens selector or runtime execution capability.",
+      "support": [
+        "@investigram-f97f0697 reports both 'returns a non-plain incoming value directly' and construction of a 'fresh plain object'.",
+        "Its qualification says no later arguments returns the original first argument and callbacks fire for every incoming property.",
+        "The header says 'References remain bound for this session' and 'New investigation request'."
+      ],
+      "unknowns": [
+        "The supported request syntax, available lenses and whether an investigation can execute examples are not shown.",
+        "Session-bound references imply contextual identity but do not demonstrate navigation or actions in this static view."
+      ]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No correction event or original-to-replacement investigram pair is shown. The runtime account reports differences between README wording and its source interpretation, but these are not displayed as replacement records. The footer explains how corrections should be regarded without showing one. Composition is explicitly identified through the facade account's three component references. Later-investigation provenance is not shown, so its representation cannot be compared with composition. The operation and attempt metadata identify the current investigation context but do not identify a parent-to-later-investigation relationship.",
+      "support": [
+        "@investigram-b202d0a2 has an explicit Composition field containing three investigram references.",
+        "@investigram-f97f0697 places README discrepancies under Qualification rather than a correction or replacement field.",
+        "The footer says 'Corrections are retained assertions, not established truth'.",
+        "Only functionality operations and a single accepted attempt are displayed."
+      ],
+      "unknowns": [
+        "No original assertion identifier, replacement identifier, correction rationale or correction status is supplied.",
+        "No later-investigation result or provenance link is supplied."
+      ]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The summary is useful for orienting a reader to the API and locating distinct responsibilities, with unusually explicit limits on its claims. However, long evidence identifiers and repeated attempt/session usage blocks make the functional story harder to scan. The anonymous module label weakens orientation. Dense type-helper names may require explanation for readers unfamiliar with TypeScript internals. 'Fresh plain object' could be overgeneralized unless the reader notices the later identity caveat and non-plain replacement rule. The accepted attempt label could be mistaken for factual validation, despite the interpretation labels. 'New investigation request' does not explain how to act, and bound references do not reveal which actions are available. Billing details occupy substantial space relative to the module account and can distract from comprehension.",
+      "support": [
+        "Module @module-a44de3a8 is labeled anonymous.",
+        "Long session-scoped captured-content and export identifiers follow each functional account.",
+        "Attempt and session usage repeat the same six-call and token totals.",
+        "@investigram-c31683d9 introduces Assign, MergeDeep, PrettyPrint and Pop in one paragraph.",
+        "@investigram-f97f0697's freshness caveat is in a qualification following the principal account.",
+        "The view labels the attempt accepted while separately warning that generated accounts remain interpretation."
+      ],
+      "unknowns": [
+        "The supplied static text does not establish whether the actual interface offers collapsible evidence, reference navigation, tooltips or request controls that mitigate these issues.",
+        "No sequence views are available to judge whether later interaction resolves the presentation gaps."
+      ]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful as a qualified orientation and starting point for a focused follow-up; insufficient to establish runtime correctness or the effectiveness of later investigation interactions.",
+    "reasons": [
+      "Distinct references separate the facade, runtime merge behavior, array policy and compile-time result calculation.",
+      "Qualifications expose dependency-reading limits and consequential discrepancies with README wording.",
+      "Explicit interpretation and billing qualifications help constrain overconfident conclusions.",
+      "Dense evidence and repeated usage metadata impede scanning, while action availability remains unclear."
+    ],
+    "limitations": [
+      "Assessment uses only the supplied summary, with no independent source inspection or execution.",
+      "Explanation, decomposition, examination, correction and later provenance views were not supplied.",
+      "Displayed provider/model and usage information describe the shown investigation; evaluator model and usage metadata are not established by this artifact."
+    ]
+  }
+}

@@ -38,9 +38,10 @@ configured TypeScript project.
 
 - **Hosted interpretation:** [formative assessments](records/validation/module-investigation/pass-01/report.md)
   show useful source-qualified summaries alongside omitted qualifications. A
-  [documentation reassessment](records/validation/module-investigation/pass-02/report.md)
-  acquired nearby README content but produced no accepted summaries because of
-  submission-contract and reference failures. The human-selected ChatGPT configuration is
+  [subsequent reassessment](records/validation/module-investigation/pass-03/report.md)
+  produced accepted summaries and an attributed documentation/source discrepancy
+  after contract clarification and private reference compaction. Semantic omissions
+  and limited assessment coverage remain; earlier rejected results are preserved. The human-selected ChatGPT configuration is
   GPT-5.6 Sol with medium reasoning. Disabled summaries report configuration
   unavailability; protected hosted credential setup supports macOS only. Public follow-up
   lenses and correction-aware replacement display are not implemented yet.

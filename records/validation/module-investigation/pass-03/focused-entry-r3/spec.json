@@ -1,0 +1,14 @@
+{
+  "id": "focused-entry-r3",
+  "pass": "module-summary-03",
+  "subject": "focused",
+  "manifest": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-03/manifest.json",
+  "project": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/focused/tsconfig.json",
+  "output": "/Users/ronen/postcode/app/_investigation/module-assessment-runs/focused-entry-r3",
+  "budget": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-03/request-budget.json",
+  "commands": [
+    "summarize next-sequence",
+    "usage",
+    "exit"
+  ]
+}

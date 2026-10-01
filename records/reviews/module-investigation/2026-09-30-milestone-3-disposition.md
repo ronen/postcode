@@ -5,13 +5,13 @@ Date: 2026-09-30
 Task: [Module investigation](../../tasks/2026-09-29-module-investigation.md)
 Handoff: [Milestone 3](2026-09-30-milestone-3-handoff.md)
 Findings: [Round 1](2026-09-30-milestone-3-round-1-findings.md), reviewed target `986fddb6945eadf613ca28899003916fc689f8b7`
-Status: F2–F4 corrected; bounded F1 reassessment completed with new submission failures; human disposition pending, no gate acceptance
+Status: F1–F4 corrections and authorized reassessment complete; independent re-review and human milestone acceptance pending
 
 ## Findings and dispositions
 
 | Finding | Disposition | Basis and action |
 | --- | --- | --- |
-| F1: documentation never acquired; cause unestablished | Accepted; bounded adjustment/reassessment authorized in `31e8c18` | Human notes choose (a), preserve all three source/configuration/model pins and frozen references, and authorize one consistent improvement pass plus a conditional direct-exposure diagnostic. Existing membership, containment and group-documentation claims make the proposal feasible without a new tool or wider source boundary. Module inspection exposes qualified containing/ancestor context and README references with existing byte/item pagination; instructions describe assertion comparison without expected answers or exhaustive reading. Context delivery and actual exposure are regression-tested. Pass 02 delivered README content in the focused run and two upstream runs, but all four submissions failed validation. Discovery is exercised; accepted reconciliation remains unestablished. The new contract/reference failures require human disposition; see the reassessment section below. |
+| F1: documentation never acquired; cause unestablished | Accepted; correction and authorized reassessment complete, pending re-review | Human notes choose bounded improvement, preserving source/configuration/model pins and references. Inspection exposes qualified nearby documentation references; general instructions clarify assertion comparison. Pass 02 exercised discovery but rejected all four submissions. The subsequent authorized contract clarification and private structural handles preserve validation/exposure rules. Pass 03 accepted all four; its focused case received README text in exchange 3 and preserved the attributed contradiction in a displayed account, recognized by the fresh evaluator/assessor. Cockatiel did not acquire README; the human explicitly did not require every subject to do so. No conditional exposure diagnostic or further tuning occurred. See the pass-03 evidence below. |
 | F2: unfinished done-item status | Accepted; corrected in `57c2c84` | An explicitly non-completed done status invalidates the reconstructed output. Missing status remains supported as the reviewer proposes; completed terminal/identity checks remain required. Regression covers parseable evidence and submission arguments with absent/completed/incomplete/in-progress/null status; usage still survives rejected output. |
 | F3: malformed non-submission call becomes submission | Accepted; corrected in `57c2c84` | Classify the function name before parsing. Only explicit `submit_investigram` yields a malformed submission; unknown functions and malformed evidence arguments use existing `ended` behavior. Both routes retain usage, with one request and no retry. |
 | F4: expiry-time admission race | Accepted; corrected in `57c2c84` | A 60-second margin refreshes under the existing lock before returning a credential. Current official guidance explicitly calls for near-expiry refresh; no interpretation of the opaque earliest-refresh field is required. Tests cover the exact threshold, safely valid/expired tokens, persisted replacements and concurrent process renewal within the margin. This reduces the risk, not a guarantee against every network delay. No live request was needed to establish this boundary behavior. |
@@ -164,12 +164,59 @@ input-validation or ownership rule was changed. Final integrated verification at
 with stationary inputs and no monitored timing gap over two seconds. The old
 failed run remains disclosed; its individual causes are not retrospectively proven.
 
+## Authorized reference correction and pass 03 — 2026-10-01
+
+Human follow-up `a53ea33` authorizes the private short-reference correction and
+one fixed four-subject pass, explicitly preserving availability versus exposure,
+structural translation, auditable resolution and stated volume measurement.
+Implementation `71949dd` and the accepted reference-transport decision keep
+canonical records/public bindings unchanged. Both adapters use fresh dialogue
+namespaces and exact structural decoding. Invalid references remain unresolvable;
+no fuzzy matching or inference repair was introduced. Captures contain the actual
+wire representation and separate binding/resolution snapshots, never credentials.
+Table membership does not grant citation permission. The guard still measures
+canonical domain input and decoded reply UTF-16 serialization; provider history
+and capture metadata are outside that measure, as the instructions now state.
+
+The [pass-03 report](../../validation/module-investigation/pass-03/report.md)
+preserves the frozen manifest (`b13810e`), unchanged reference material, four
+accepted summaries, all captures, fresh role inputs/outputs and independent role
+attribution. The focused fixture, fsm-engine and merge-anything received README
+text through normal acquisition. The focused accepted account attributes and
+contrasts the README's pure/stateless claim with the counter, and the fresh
+view-only evaluator and source-informed assessor preserve that distinction.
+This exercises both required discovery and reconciliation; it does not establish
+universal discovery, runtime truth or general model adequacy. Cockatiel's missing
+README and semantic/presentation limitations remain explicit assessment findings.
+The human's notes permit that bounded result; no reviewer finding is rejected.
+
+All four cases used GPT-5.6 Sol / medium / ChatGPT-plan, the pinned source and
+TypeScript 6.0.3 effective configurations including the unchanged approved
+merge-anything override. There were **19 requests and 563,742 reported tokens**,
+no missing/anomalous reports, and no unresolved typed references. Provider,
+ledger, command, later usage and observation totals agree; actual monetary and
+allowance/credit attribution remain unknown. No additional debugging request,
+purchase, model/billing fallback or retry occurred. Diagnostic allowance remains
+2 used / 8 remaining. The earlier rejected drafts remain preserved.
+
+Complete offline verification at `71949dd` passed **438 tests**, zero failures,
+cancellations or skips, in 138.834 seconds. The repository stayed clean and
+stationary; temporary idle-sleep prevention and monitoring recorded no gap above
+two seconds. Regression covers the authorized transport/exposure/guard boundaries
+and retains both-route cancellation, usage and credential checks. The subsequent
+hosted-instruction preflight addition passed four real configuration checks and
+two offline harness tests. Historical failed-suite evidence remains disclosed;
+the timing diagnosis supports a suspension-related explanation without proving
+every old failure's cause. Current verification is a complete passing suite, not
+an extrapolation from isolated tests.
+
 ## Review rounds and gate
 
-Round 1 is preserved in `77b49e3`. No finding is rejected, and no uncertainty is
-silently converted to a model limitation. The authorized offline diagnosis and controlled rerun are recorded above; human
-direction remains pending on the consequential reference remedy and further live
-assessment. No timeout or validation rule was weakened. The existing handoff remains the review
-assignment; a new exact correction/reassessment target will be supplied for round 2.
-Independent re-review and human milestone acceptance remain required. Milestone 4
-has not begun; this task remains active.
+Round 1 remains preserved in `77b49e3`; its F1–F4 dispositions are above. The
+consequential representation remedy and bounded reassessment were explicitly
+authorized, implemented and exercised. No timeout or domain validation rule was
+weakened. The existing immutable milestone handoff remains the review assignment;
+the completed correction/reassessment target is supplied for the next round.
+Independent re-review and human milestone acceptance remain required. Semantic
+omissions and remaining assessment limits are carried into that handoff rather
+than prompting further unapproved tuning. Milestone 4 has not begun; task active.
