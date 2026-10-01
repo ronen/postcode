@@ -1580,6 +1580,22 @@ Use a controlled retained misinterpretation against unchanged source to exercise
 correction explicitly, both with deterministic tests and a live investigator.
 Mark that setup as injected test context, not a natural investigator error.
 
+The human accepted milestone 4's controlled-correction case as sufficient with its
+limited discriminating power: conclusion-stating documentation and explicit
+unverified qualifications cued the correction. Preserve that fixture and all
+milestone-4 results unchanged; no rerun is required for this finding.
+
+For one already-planned milestone-5 controlled correction case, use documentation
+that describes the interface without stating the conclusion under test, and inject
+a plausible mistaken account without an “unverified” qualification added solely to
+invite correction. Preserve qualifications warranted by actual evidence and
+provenance, and truthful injected test-origin metadata in views, observations and
+assessment records. Keep the source small and reviewable. Freeze and identify the
+revised fixture, injected setup and source-grounded reference before live assessment;
+use the existing protocol and capture what the investigator actually receives.
+This is a bounded refinement, not an additional tuning loop. Report the outcome
+and remaining limits without claiming unbiased, spontaneous error detection.
+
 | Milestone | Double-based testing | Live testing |
 | --- | --- | --- |
 | 1 | Domain-level submission, validation, context requests and responses, and returned outcomes, using supplied context fixtures. | None. |

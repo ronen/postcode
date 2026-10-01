@@ -6,7 +6,7 @@ import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { PassThrough } from 'node:stream';
 import { Worker } from 'node:worker_threads';
-import type { WorkerReply } from '../src/lib/session-protocol.js';
+import type { WorkerReply, WorkerRequest } from '../src/lib/session-protocol.js';
 import { temporaryDirectory, interactionDriver } from './cli-helpers.js';
 import { ScriptedInvestigator, syntheticUsage } from './investigator-double.js';
 import { openSession } from '../src/lib/session.js';
@@ -619,10 +619,25 @@ test('associated inspection is bounded, navigable and independent of incidental 
   assert.equal(second.view.investigations.items.length, 7); assert.equal(second.view.investigations.next, null);
   assert.equal(new Set([...first.view.investigations.items, ...second.view.investigations.items].map(item => item.id)).size, 31);
   assert.equal(JSON.stringify(before.view), original); assert.notEqual(before.view.projection.id, first.view.projection.id);
+  const invalid = await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-00000000' });
+  const otherInvalid = await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-11111111' });
+  const invalidAgain = await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-00000000' });
+  assert.equal(invalid.failed, true); assert.equal(otherInvalid.failed, true);
+  assert.ok('investigations' in invalid.view && invalid.view.investigations);
+  assert.equal(invalid.view.investigations.status, 'unknown-continuation');
+  assert.equal(invalid.view.investigations.after, 'investigram-00000000');
+  assert.notEqual(invalid.view.projection.id, otherInvalid.view.projection.id);
+  assert.notEqual(invalid.view.id, otherInvalid.view.id);
+  assert.equal(invalid.view.projection.id, invalidAgain.view.projection.id);
+  assert.equal(invalid.view.id, invalidAgain.view.id);
+  const humanInvalid = await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-00000000', presentation: { format: 'unicode', sourceDetail: false } });
+  assert.match(humanInvalid.rendered, /continuation reference is not in this listing/);
+  assert.match(humanInvalid.rendered, /without --after/);
   assert.equal(agent.inputs.length, 1);
   for (const lens of ['explain', 'decompose', 'examine'] as const) {
     const unsupported = view(await f.session.execute({ ...summary, lens, reference: true, selector: generated.candidates[0]!.reference }));
     assert.equal(unsupported.projection.selection.status, 'unsupported-subject-lens');
+    assert.match(renderInvestigationView({ ...unsupported, presentation: { format: 'unicode', sourceDetail: false } }), /This reference identifies part of the program/);
     const missing = view(await f.session.execute({ ...summary, lens, reference: true, selector: 'investigram-00000000' }));
     assert.equal(missing.projection.selection.status, 'missing');
   }
@@ -673,4 +688,71 @@ test('association discovery alone cannot authorize correcting an undelivered acc
   assert.equal(result.result!.evaluation!.outcome.kind, 'investigation-failure');
   assert.equal(result.accounts.length, 0);
   assert.deepEqual(view(await f.session.execute(summary)).accounts, initial.accounts);
+});
+
+for (const failure of ['throw', 'interrupt'] as const) test(`selection ${failure} closes the shell and preserves only prior accepted usage`, { timeout: 15000 }, async t => {
+  const f = fixture(t), input = Object.assign(new PassThrough(), { isTTY: true });
+  t.after(() => input.destroy());
+  const agent = summaryAgent(), batches: ObservationBatch[] = [];
+  let selections = 0, started = false, output = '', errors = '', owner: Worker | undefined;
+  let held: Extract<WorkerRequest, { type: 'agent-selected' }> | undefined;
+  const post = Worker.prototype.postMessage;
+  t.mock.method(Worker.prototype, 'postMessage', function(this: Worker, message: WorkerRequest) {
+    owner = this;
+    if (failure === 'interrupt' && message.type === 'agent-selected' && selections === 2) {
+      held = message;
+      setImmediate(() => process.emit('SIGINT'));
+      return; // The worker is waiting for identity; no second dialogue has opened.
+    }
+    return Reflect.apply(post, this, [message]);
+  });
+  const code = await runCli(['shell', '--project', f.configPath, '--json'], {
+    cwd: f.root, checkout: f.root, input, investigator: agent,
+    selectInvestigator: () => { if (++selections === 2 && failure === 'throw') throw new Error('Controlled selector failure'); return agent; },
+    stdout: text => { output += text; if (!started && text.includes('postcode> ')) { started = true; setImmediate(() => input.write('summarize entry\nsummarize other\nusage\n')); } },
+    stderr: text => { errors += text; },
+    sink: { async submit(batch) { batches.push(batch); return { accepted: true }; } },
+  });
+  assert.equal(code, failure === 'throw' ? 1 : 130);
+  assert.match(errors, failure === 'throw' ? /Internal failure: Controlled selector failure/ : /interrupted/i);
+  assert.equal(selections, 2); assert.equal(owner!.threadId, -1, 'the worker has exited before runCli returns');
+  assert.equal(agent.inputs.length, 1); assert.equal(agent.closes, 1);
+  assert.equal(batches.length, 2, 'queued usage command is not executed after session closure');
+  assert.equal(output.match(/postcode> /g)!.length, 2, 'no prompt follows the failed selection');
+  assert.ok(!batches[1]!.records.some(item => item.kind === 'qualified-view'));
+  const prior = batches[0]!.records.find(item => item.kind === 'investigation-usage')!.value as InvestigationUsageReport;
+  const final = batches[1]!.records.find(item => item.kind === 'investigation-usage')!.value as InvestigationUsageReport;
+  assert.equal(prior.calls, 2); assert.equal(prior.attempts.length, 1);
+  assert.deepEqual(final, prior, 'selection failure does not invent an attempt, usage report or charge');
+  if (held) {
+    Reflect.apply(post, owner, [held]); // Late reply to a terminated worker cannot publish.
+    owner!.emit('message', { type: 'agent-select', operation: held.operation, id: held.id, request: prior.attempts[0]!.request } satisfies WorkerReply);
+    assert.equal(selections, 2); assert.equal(agent.inputs.length, 1); assert.equal(batches.length, 2);
+  }
+});
+
+for (const field of ['operation', 'id'] as const) test(`worker ignores an agent-selected reply with stale ${field}`, { timeout: 15000 }, async t => {
+  const f = fixture(t), agent = summaryAgent(), batches: ObservationBatch[] = [];
+  let injected = 0;
+  const post = Worker.prototype.postMessage;
+  t.mock.method(Worker.prototype, 'postMessage', function(this: Worker, message: WorkerRequest) {
+    if (message.type === 'agent-selected' && message.identity) {
+      injected++;
+      Reflect.apply(post, this, [{ ...message, [field]: message[field] - 1,
+        identity: { ...message.identity, provider: 'stale-selection-must-not-be-used' } }]);
+    }
+    // FIFO delivery puts the stale reply first, without a timing-based assertion.
+    return Reflect.apply(post, this, [message]);
+  });
+  const code = await runCli(['summarize', 'entry', '--project', f.configPath, '--json'], {
+    cwd: f.root, checkout: f.root, investigator: agent, selectInvestigator: () => agent,
+    stdout: () => {}, stderr: () => {}, sink: { async submit(batch) { batches.push(batch); return { accepted: true }; } },
+  });
+  assert.equal(code, 0); assert.equal(injected, 1); assert.equal(agent.closes, 1);
+  const result = batches[0]!.records.find(item => item.kind === 'qualified-view')!.value as InvestigationView;
+  assert.equal(result.result!.evaluation!.outcome.kind, 'accepted');
+  assert.deepEqual(result.provenance[0]!.agent, agent.identity);
+  assert.deepEqual(result.usage.attempts[0]!.agent, agent.identity);
+  assert.equal(result.usage.calls, 2);
+  assert.ok(result.usage.attempts[0]!.usage.every(call => call.agent.provider === agent.identity.provider));
 });

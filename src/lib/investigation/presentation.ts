@@ -114,7 +114,9 @@ export function renderInvestigationView(view: InvestigationView): string {
   const reference = (id: RecordId) => view.references.find(item => item.id === id)?.reference ?? id;
   const lines = [view.unsupportedSubject ? `${view.projection.lens} · unsupported subject/lens combination` : view.projection.lens === 'usage' ? 'Investigation usage' : view.projection.lens === 'summarize' ? 'Module summary' : requestTitle(view.projection.lens)];
   lines.push(view.referenceLifetime === 'command' ? 'References expire when this command ends. Use the shell for follow-up inspection.' : 'References remain bound for this session.');
-  if (view.unsupportedSubject) lines.push(`The reference is bound to an ${view.unsupportedSubject}; ${view.projection.lens} does not support that subject kind.`);
+  if (view.unsupportedSubject) lines.push(view.unsupportedSubject === 'investigram'
+    ? `This reference identifies an investigram; ${view.projection.lens} does not support that kind of subject.`
+    : `This reference identifies part of the program. ${view.projection.lens} requires an investigram reference from this session.`);
   if (view.result) {
     lines.push(view.result.reused ? 'Retained outcome; no new investigation.' : 'New investigation request.');
     const outcome = view.result.evaluation?.outcome ?? view.result.unavailable;

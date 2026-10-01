@@ -45,7 +45,7 @@ export function withAssociatedInvestigations<T extends { readonly id: RecordId; 
   const session = view.projection.session;
   const projection = { ...view.projection, id: recordId(session, 'associated-inspection-projection', [methods.investigationPresentation,
     identityReference(session, view.projection.id), investigations.subjects.map(id => identityReference(session, id)),
-    investigations.items.map(item => identityReference(session, item.id)), investigations.total, investigations.omitted, investigations.status]) };
+    investigations.items.map(item => identityReference(session, item.id)), investigations.total, investigations.omitted, investigations.status, investigations.after]) };
   return freezeOwned({ ...view, projection, investigations,
     id: recordId(session, 'associated-inspection-view', [methods.investigationPresentation, identityReference(session, view.id), identityReference(session, projection.id), investigations.referenceLifetime]) });
 }
@@ -53,6 +53,7 @@ export function renderAssociatedInvestigations(value: AssociatedInvestigations |
   if (!value) return '';
   const lines = ['\nAssociated investigrams (explicit associations)', `Listing: ${value.status}; ${value.items.length} shown of ${value.total}.`,
     value.referenceLifetime === 'command' ? 'References expire when this command ends.' : 'Use inspect @reference for retained content; no inference.'];
+  if (value.status === 'unknown-continuation') lines.push('The supplied continuation reference is not in this listing. Inspect without --after to start from the first page.');
   for (const item of value.items) {
     lines.push(`@${item.reference} · interpretation`);
     if (item.detail) {

@@ -527,7 +527,9 @@ explicit qualified associations, including the investigation-subject and
 corrected-subject roles. Incidental mentions, referents and originating module
 context do not create associations. This section does not change mechanical
 information or turn interpretation into an intrinsic subject property. The
-inspection projection identifies both its mechanical basis and retained listing.
+inspection projection identifies its mechanical basis, retained listing and supplied
+continuation, including an invalid continuation. Different invalid references do
+not share a projection/view identity; reference lifetime also distinguishes views.
 Pages contain at most 24 accounts, 400 prose code units each and 55,000 code units
 of detail with complete qualification. An oversized qualified entry keeps its
 selectable reference and an explicit omission. `--after` continues in append-only
@@ -553,3 +555,10 @@ and retention, then selects the live participant for later evaluations. It is
 marked scripted in user-facing views and contributes only explicitly synthetic
 setup accounting, with no provider request. This is not a public configuration
 option or a billing fallback.
+
+Selection completes before an investigation attempt or dialogue starts. A selector
+failure closes the CLI session as an internal failure; interruption while identity
+is pending terminates the worker. Neither adds attempt usage, and earlier usage
+remains available for final reporting. Operation and selection identifiers prevent
+stale replies from resolving another selection. Offline regressions exercise
+these boundaries with the real worker, including late messages after closure.
