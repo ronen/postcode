@@ -176,8 +176,12 @@ existing sentinel-redaction tests; they do not prove universal exclusion.
 
 Before inference, the complete offline suite passed 424 tests at `79a33bb` with
 stationary repository inputs and loopback permission. The adjacent F2 completed
-terminal-call correction then passed 25 focused adapter tests. Final integrated
-offline verification is pending and will be recorded before handoff.
+terminal-call correction then passed 25 focused adapter tests. The final integrated
+`npm test` at `4a0a334` failed: **410 passed, 9 failed and 5 cancelled**, with
+4,251,441.929 ms reported duration and unchanged tracked inputs. Timing, timeout
+and session-validation failures remain unexplained; the [validation record](../2026-10-01-milestone-3-round-1-validation.md)
+preserves all output, affected tests and reproduction command. Verification is
+qualified by this unresolved concern; prior or isolated passes do not clear it.
 
 The [round-1 disposition](../../../reviews/module-investigation/2026-09-30-milestone-3-disposition.md)
 records every reviewer finding and observation, including corrected F2–F4 and

@@ -74,7 +74,11 @@ The complete suite at `79a33bb` passed 424 tests, zero failures/cancellations/sk
 A subsequent adjacent F2 check also rejects an explicit unfinished status on a
 function call in nonempty terminal output on either route; its 25 focused adapter
 tests passed (5.57 seconds). The separately frozen reassessment is complete;
-final integrated offline verification will be recorded before handoff.
+final integrated offline verification failed at `4a0a334`: **410 passed, 9 failed,
+5 cancelled**, 4,251,441.929 ms reported duration. Tracked inputs stayed unchanged.
+Timeouts and input-validation failures remain unexplained. The [validation record](../../validation/module-investigation/2026-10-01-milestone-3-round-1-validation.md)
+preserves the command, complete output and affected tests. This target does not
+have a fully passing suite; historical/isolated passes do not clear the uncertainty.
 
 F4 sources checked on 2026-09-30: [accounts and sessions](https://developers.openai.com/siwc/token-sharing-open-source/profiles-and-sessions#refreshing-tokens)
 and [token reference](https://developers.openai.com/siwc/token-sharing-open-source/token-reference).
@@ -130,7 +134,9 @@ remains historical evidence, not proof that the new context caused these failure
 ## Review rounds and gate
 
 Round 1 is preserved in `77b49e3`. No finding is rejected, and no uncertainty is
-silently converted to a model limitation. The existing handoff remains the review
+silently converted to a model limitation. Human direction is also pending on
+bounded offline diagnosis and a controlled rerun of the new suite failures; no
+timeout or validation rule was weakened. The existing handoff remains the review
 assignment; a new exact correction/reassessment target will be supplied for round 2.
 Independent re-review and human milestone acceptance remain required. Milestone 4
 has not begun; this task remains active.
