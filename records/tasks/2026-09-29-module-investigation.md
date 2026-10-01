@@ -378,6 +378,10 @@ Freeze and identify the revised fixture, injected setup, and source-grounded ref
 
 This is a bounded refinement within milestone 5’s planned controlled correction assessment, not an additional tuning loop. Report its outcome and remaining limitations without claiming it measures unbiased, spontaneous error detection.
 
+### Milestone 4 acceptance — 2026-10-01
+
+ok, milestone 4 is accepted
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
@@ -1475,3 +1479,10 @@ and future refinement. No finding is rejected or materially qualified without
 authorization. The local corrections do not invalidate the review's core analysis;
 further independent review is not judged necessary. Human milestone-4 acceptance
 remains pending; milestone 5 has not begun and the task remains active.
+
+### Milestone 4 accepted — 2026-10-01
+
+The human accepted milestone 4 after the recorded review corrections and complete
+452-test offline verification. The milestone-4 review gate is satisfied. The
+controlled-case limitation and authorized refinement of one milestone-5 assessment
+remain as recorded. The task remains active; milestone 5 has not begun.
