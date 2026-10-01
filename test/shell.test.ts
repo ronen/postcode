@@ -1,3 +1,4 @@
+import type { QualifiedOrganizationView } from '../src/lib/organization/presentation.js';
 import { interactionDriver } from './cli-helpers.js';
 import assert from 'node:assert/strict';
 import { PassThrough } from 'node:stream';
@@ -110,7 +111,12 @@ test('ambiguous one-shot lookup recovers through an in-session lookup and precis
     projection: { selection: { matches: number } };
   });
   assert.ok(views[0]!.projection.selection.matches > 1);
-  assert.deepEqual(normalizeSession(views[0]), normalizeSession(original));
+  const oneShot = normalizeSession(original as QualifiedOrganizationView);
+  const inSession = normalizeSession(views[0] as QualifiedOrganizationView);
+  assert.equal(oneShot.investigations!.referenceLifetime, 'command');
+  assert.equal(inSession.investigations!.referenceLifetime, 'session');
+  assert.notEqual(inSession.id, oneShot.id, 'reference lifetime changes the view identity, not its projection');
+  assert.deepEqual(inSession, { ...oneShot, id: inSession.id, investigations: { ...oneShot.investigations, referenceLifetime: 'session' } });
   assert.equal(views[1]!.projection.selection.matches, 1);
 });
 

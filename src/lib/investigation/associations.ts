@@ -47,7 +47,7 @@ export function withAssociatedInvestigations<T extends { readonly id: RecordId; 
     identityReference(session, view.projection.id), investigations.subjects.map(id => identityReference(session, id)),
     investigations.items.map(item => identityReference(session, item.id)), investigations.total, investigations.omitted, investigations.status]) };
   return freezeOwned({ ...view, projection, investigations,
-    id: recordId(session, 'associated-inspection-view', [methods.investigationPresentation, identityReference(session, view.id), identityReference(session, projection.id)]) });
+    id: recordId(session, 'associated-inspection-view', [methods.investigationPresentation, identityReference(session, view.id), identityReference(session, projection.id), investigations.referenceLifetime]) });
 }
 export function renderAssociatedInvestigations(value: AssociatedInvestigations | undefined): string {
   if (!value) return '';
