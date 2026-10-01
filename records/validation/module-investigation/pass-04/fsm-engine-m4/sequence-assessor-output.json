@@ -1,0 +1,119 @@
+{
+  "findings": [
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator recovers the principal division of responsibility and runtime model without turning static interpretation into an execution guarantee.",
+      "evidence": [
+        "Evaluator answer 1 attributes DSL capture, validation and compilation to FsmBuilderImpl, shared tables to the factory, and state, queue, context reference and timers to instances; it explicitly says context is not copied.",
+        "@investigram-dc111a38, @investigram-2d65ea4b and @investigram-c9f16bfd supply these distinctions.",
+        "Frozen reference: src/fsm-engine.ts lines 119–135 establish definition construction and sharing; caller context is not deep-copied. Lines 184–222 establish synchronous FIFO draining and reentrant enqueueing."
+      ],
+      "consequence": "The sequence communicates a useful module-level mental model, including the important limit on instance independence when callers supply mutable context.",
+      "uncertainty": "Detailed builder checks, lack of deep freezing, constructor behavior and typing details are displayed interpretations beyond the frozen reference’s explicit inventory. They should not be counted as independently verified merely because the evaluator repeats them."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator preserves ordered transition selection, fallback precedence, the transition-candidate condition for implicit stay, and the actual external-transition commit point.",
+      "evidence": [
+        "Evaluator answer 1 says state handling precedes fallback, the first passing transition is selected, declared transitions with rejecting guards yield implicit stay, and external order is exit actions, transition actions, target assignment, entry actions.",
+        "@investigram-26489d1b and decomposition children @investigram-41c7d145, @investigram-6f24de96 and @investigram-595b1fef make those rules explicit.",
+        "Frozen reference: src/fsm-engine.ts lines 241–266 and 271–313 support these rules and explicitly reject the inline comment suggesting that state commits first."
+      ],
+      "consequence": "The evaluator avoids the consequential errors of treating begin-only handling as sufficient for an implicit stay or moving state assignment ahead of exit/transition work.",
+      "uncertainty": "The summary’s phrases “handlers exist” and “immutable-looking” could mislead in isolation, but this evaluator identifies the ambiguity and uses the narrower later account. No observed presentation misunderstanding or repeated generation error is established here."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "Queue cleanup is communicated without an unsupported rollback or thread-safety guarantee.",
+      "evidence": [
+        "Evaluator answers 2 and 3 distinguish static conclusions from runtime results and describe subsequent dispatch as beginning from surviving partial state.",
+        "@investigram-8251c177 explicitly excludes rollback; @investigram-0d65be59 explains state commitment before entry actions and discarding queued events after failure.",
+        "Frozen reference: lines 184–222 establish clearing queued work and resetting dispatching without undoing earlier actions; lines 271–313 establish the commit point. The material limits explicitly exclude thread-safety and rollback."
+      ],
+      "consequence": "A reader can reason about partial effects after failure without mistaking queue serialization for transactionality or general safety.",
+      "uncertainty": "The evaluator’s concern about “always releases the dispatching flag” is a plausible wording risk, not evidence that it actually applied the claim to constructor entry. The decomposition is already framed as dispatch cleanup."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The apparent timer-payload defect is retained as a qualified discrepancy rather than a proven forwarding guarantee or an observed runtime failure.",
+      "evidence": [
+        "@investigram-dc111a38 and @investigram-7edddb44 identify the adapter’s apparent inverted argument construction and qualify the result as a literal-source interpretation.",
+        "Evaluator answers 1, 2 and 4 state that payload loss is not execution-confirmed and choose @investigram-7edddb44 for further examination; test execution is explicitly a requested future capability.",
+        "Frozen reference: line 371 is suspicious because a present payload selects an empty argument array; the reference does not establish correct payload forwarding."
+      ],
+      "consequence": "The most explicit source-contract discrepancy is neither hidden nor promoted into unsupported empirical certainty, and it supports a concrete next investigation.",
+      "uncertainty": "Actual payload behavior across timer cases and any additional test evidence remain unestablished. The frozen reference supports suspicion, not a completed defect validation."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator distinguishes explanation, decomposition, examination and retained reuse, and separates composition from later-investigation provenance.",
+      "evidence": [
+        "Evaluator answer 3 correctly identifies clarification @investigram-2d65ea4b, decomposition @investigram-23572608, cleanup child @investigram-8251c177 and examination @investigram-280ba8fb.",
+        "Evaluator answer 5 identifies @investigram-8251c177 as a composition child of @investigram-23572608 and as the investigation subject, not composition parent, of @investigram-280ba8fb.",
+        "The second examine command explicitly says “Retained outcome; no new investigation.” The evaluator does not count it as new corroboration."
+      ],
+      "consequence": "The sequence makes narrow follow-up selection and the lineage of resulting accounts intelligible without treating repetition or later placement as authority.",
+      "uncertainty": "This establishes comprehension of the supplied text and references, not interactive navigation usability or reproducibility of a future examination."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly refuses to invent a correction pair from an examination relationship or generic correction caveats.",
+      "evidence": [
+        "Evaluator answer 5 says no concrete correction record or original-to-replacement link is identifiable in this supplied sequence.",
+        "@investigram-280ba8fb names @investigram-8251c177 as its investigation subject and describes an expanded account; no displayed field labels that pair as a correction.",
+        "Footers say originals are displayed and replacement substitution and derived revision warnings are not yet presented."
+      ],
+      "consequence": "The generic introductory description does not cause the evaluator to claim supersession, automatic replacement or propagation of correction status.",
+      "uncertainty": "This sequence cannot assess concrete correction-link comprehension or determine whether correction records exist elsewhere. Their absence here is a coverage limitation, not evidence of a generation defect or failure of the deferred features."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "The examination’s detailed logger-failure, timer-survival, constructor-boundary and authored-test claims cannot all be independently adjudicated from the frozen reference.",
+      "evidence": [
+        "@investigram-9166567a describes unprotected logger throws and possible masking of engine errors; @investigram-fafd3a60 describes timers surviving queue cleanup; @investigram-f0aae7a0 inventories an internal-transition failure test and coverage gaps.",
+        "Evaluator answers 2 and 3 faithfully report these displayed claims while retaining static/no-execution qualifications.",
+        "The frozen reference provides broad queue cleanup at lines 184–222 and timer delegation at lines 366–376, but does not reproduce logger call protection, constructor cleanup boundaries, timer cancellation paths or the test artifact."
+      ],
+      "consequence": "The sequence demonstrably communicates additional detail, but that detail should not be classified as independently source-validated by this assessment. Nor should it be classified as unsupported evaluator extrapolation: it is present in the supplied views.",
+      "uncertainty": "The deeper claims may be correct; the allowed frozen reference does not settle them. This assessment did not inspect source or execute tests."
+    },
+    {
+      "category": "material-omission",
+      "claim": "The displayed source-detail block supplies artifact identities but omits the code excerpts and line locations needed to directly check the examination’s detailed claims.",
+      "evidence": [
+        "inspect @investigram-280ba8fb --source-detail contains the heading “Source support (captured locations and excerpts)” followed by repository-artifact records for src/fsm-engine.ts, README.md and tests/fsm-engine.test.ts.",
+        "Those records include paths, identifiers and tracking metadata, but no source text or claim-specific line ranges.",
+        "Evaluator answer 6 and its usefulness limitations explicitly recognize this gap."
+      ],
+      "consequence": "A reader can identify exposed artifacts but cannot verify the new logger, timer or test-coverage account from the shown source-detail block. This materially limits verification power while leaving the behavioral explanation useful.",
+      "uncertainty": "The omission is in the supplied presentation; it does not establish missing underlying captures or missing navigation capabilities elsewhere. It is not a demonstrated generation error or evaluator misunderstanding."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator appropriately separates structural inventory, interpreted behavior, attributed documentation, authored tests, evidence exposure and usage reporting.",
+      "evidence": [
+        "Evaluator answer 2 distinguishes TypeScript-established module membership and exports from investigram interpretation and README/JSDoc assertions; it says authored tests were read but not executed.",
+        "inspect fsm-engine reports FsmEngine [type+value], FsmEngineFactory [type], bounded compiler coverage and excluded generated locations; the frozen reference confirms the two mechanically inventoried exports.",
+        "Support records say first-observed content is not atomic; usage footers say token reports do not establish billed usage or actual charges. The evaluator preserves those qualifications."
+      ],
+      "consequence": "Neither evidence metadata, acceptance status, retained outcomes nor usage figures are mistaken for stronger behavioral corroboration.",
+      "uncertainty": "The reference confirms the export inventory but does not independently validate every analysis-coverage or billing statement; the finding concerns accurate comprehension of the displayed distinctions."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful for progressive understanding of this FSM runtime and selecting a focused next investigation, with strong qualification uptake and limited direct verification.",
+    "reasons": [
+      "The evaluator accurately recovers the frozen reference’s central runtime semantics, including the commit point, transition-candidate condition for implicit stay, FIFO reentrancy and non-rollback behavior.",
+      "Explanation resolves potentially loose summary wording; decomposition makes the dispatch facets selectable; examination supplies a more detailed failure account whose evidentiary limits the evaluator retains.",
+      "Composition, provenance, retained reuse and deferred correction behavior remain distinguishable. No material generation error repeated by the evaluator or consequential unsupported evaluator extrapolation is established within the frozen reference’s scope.",
+      "The timer-payload discrepancy supports a concrete next examination without implying execution capability or empirical confirmation."
+    ],
+    "limitations": [
+      "No subject tests were executed, and the frozen reference cannot settle the examination’s deeper logger, timer-survival and authored-test claims.",
+      "Source-detail presentation omits checkable code excerpts and line locations; long hashes, usage reports, repeated full accounts and truncated module prose add scanning burden. The evaluator identifies these risks rather than demonstrably succumbing to them.",
+      "No concrete correction pair is displayed, so this condition cannot establish comprehension of such a pair. Automatic replacement selection and derived revision warnings are explicitly deferred.",
+      "This is a supplied-artifact formative assessment, not an implementation review or evidence of general interactive usability.",
+      "The input identifies the reference preparer and orchestrator as the implementing agent, from the OpenAI family with exact model unavailable. That overlap limits independence; agreement here is not an independent source audit."
+    ]
+  }
+}

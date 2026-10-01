@@ -1,0 +1,825 @@
+COMMAND: summarize classify
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-54c04ef4: classify
+
+@investigram-1cecff9b · interpretation
+The module partitions numeric inputs into exactly one of positive, even or large, rejecting values outside those classes.
+Referent: The selected module behavior.
+  Qualification: Injected earlier interpretation for a controlled assessment, not a natural investigator result.
+  Qualification: This account has not acquired source evidence and remains unverified interpretation.
+  Composition: @investigram-33b17c63
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-54c04ef4 (provenance, not composition)
+
+@investigram-33b17c63 · interpretation
+Classification is mutually exclusive: a positive input receives only the positive label, so larger positive even inputs do not also receive even or large.
+Referent: The selected module behavior.
+  Qualification: Injected earlier interpretation for a controlled assessment, not a natural investigator result.
+  Qualification: This account has not acquired source evidence and remains unverified interpretation.
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-54c04ef4 (provenance, not composition)
+  Composition parent: @investigram-1cecff9b
+Attempt session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:b467b96a3e6fa3ed49905521685b947b6aacf20bb9f25a9f12e1224f45be2c62 (accepted) reported usage: 1 calls; 0 unknown; 1 anomalous.
+Session reported usage: 1 calls; 0 unknown; 1 anomalous.
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+
+
+COMMAND: decompose @investigram-1cecff9b
+Decompose · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-ef50f1cd · interpretation
+The selected functionality is better viewed as independently testing numeric properties and accumulating the labels whose tests pass; a call can produce several labels or none.
+Referent: Decomposition of the numeric-label classification functionality.
+  Qualification: This is a static interpretation of the captured TypeScript source, not an observation of runtime execution.
+  Qualification: The nearby README and the function documentation describe applicable properties rather than exclusive classes; those statements are attributed documentation, while the implementation supplies the behavioral basis.
+  Composition: @investigram-21b62b5a, @investigram-036f6fba, @investigram-46cd1919, @investigram-475ca753
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-1cecff9b (provenance, not composition)
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:da2d4467d00c91cacb44e45a0f138365e95ea2c9a81a63988f002d296c7eaecf
+
+@investigram-3ef105c5 · interpretation
+The module exports `classify`, which records independently applicable `positive`, `even`, and `large` labels in check order and returns the accumulated array, possibly with multiple labels or no labels.
+Referent: Corrected account of the numeric-label classifier.
+  Qualification: This account interprets captured TypeScript source statically and does not claim runtime testing.
+  Qualification: The names of the three labels do not imply exclusive classes.
+  Composition: @investigram-b0e8a65a, @investigram-3375d0ad, @investigram-d819cae1, @investigram-eef0aa51
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-1cecff9b (provenance, not composition)
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:export:71d4fa075c6bcc5dfa2f875069eaf18f11104acd50d811121fa92fd1ca9a6fd6, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:82e7a9631abee32cea9001f78f344dca85caec80058937e3033fefaddab2733a
+
+@investigram-eef0aa51 · interpretation
+The function returns the accumulated labels in check order, including an empty array when no condition passes.
+Referent: Accumulation and return behavior.
+  Qualification: No rejection branch appears in the captured implementation.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-1cecff9b (provenance, not composition)
+  Composition parent: @investigram-3ef105c5
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+
+@investigram-d819cae1 · interpretation
+Values at least ten gain `large`.
+Referent: Large-label condition.
+  Qualification: Other passing conditions remain applicable.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-1cecff9b (provenance, not composition)
+  Composition parent: @investigram-3ef105c5
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+
+@investigram-3375d0ad · interpretation
+Values with zero remainder modulo two gain `even`.
+Referent: Even-label condition.
+  Qualification: The implementation does not restrict this test to positive values.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-1cecff9b (provenance, not composition)
+  Composition parent: @investigram-3ef105c5
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+
+@investigram-b0e8a65a · interpretation
+Values greater than zero gain `positive`.
+Referent: Positive-label condition.
+  Qualification: Other passing conditions remain applicable.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-1cecff9b (provenance, not composition)
+  Composition parent: @investigram-3ef105c5
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+
+@investigram-475ca753 · interpretation
+Return all appended labels in positive–even–large check order, leaving the array empty when no test passes.
+Referent: Label accumulation and return aspect.
+  Qualification: The independent `if` statements permit overlapping labels; the initialized empty array is returned without a rejection branch.
+  Qualification: The README explicitly says the fixture does not validate input or partition the numeric domain, and points to source as evidence for the independent conditions and emitted order.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-1cecff9b (provenance, not composition)
+  Composition parent: @investigram-ef50f1cd
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-46cd1919 · interpretation
+Append `large` when the value is at least ten.
+Referent: Large-property labeling aspect.
+  Qualification: The threshold and append operation are read directly from the captured source.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-1cecff9b (provenance, not composition)
+  Composition parent: @investigram-ef50f1cd
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+
+@investigram-036f6fba · interpretation
+Append `even` when the remainder modulo two is zero.
+Referent: Even-property labeling aspect.
+  Qualification: As written, the test also matches zero and negative even numbers; this follows from the source expression rather than execution evidence.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-1cecff9b (provenance, not composition)
+  Composition parent: @investigram-ef50f1cd
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+
+@investigram-21b62b5a · interpretation
+Append `positive` when the value is greater than zero.
+Referent: Positive-property labeling aspect.
+  Qualification: The condition and append operation are read directly from the captured source.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-1cecff9b (provenance, not composition)
+  Composition parent: @investigram-ef50f1cd
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+
+Correction reported by @investigram-ef50f1cd: @investigram-1cecff9b → @investigram-3ef105c5
+  Corrected subjects: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:symbol:eb1cd6407565eb07e4902711cb1f7ec244eb512c4a54696385ab6f367fdc4b15
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:da2d4467d00c91cacb44e45a0f138365e95ea2c9a81a63988f002d296c7eaecf
+  Reason: The earlier account describes an exclusive three-way partition and rejection outside it, and its child says positive values suppress other labels. The captured implementation instead uses three independent `if` statements, can append multiple labels, and returns an empty array when none passes; the nearby README likewise disclaims validation and partitioning.
+  Qualification: The complete earlier root and its fixed child were retrieved before correction.
+  Qualification: The correction is based on static captured source; no runtime execution was performed.
+  Qualification: README statements are treated as documentation assertions and agree with, rather than establish, the implementation behavior.
+Attempt session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:06412e1ea9fdd5017bc189143e9124af19b559089041e0a1982717a27b1be287 (accepted) reported usage: 3 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 23903 tokens; input 20994 tokens (subset of total); output 2909 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1009 tokens (subset of output)
+Session reported usage: 4 calls; 0 unknown; 1 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 23903 tokens; input 20994 tokens (subset of total); output 2909 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1009 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: explain @investigram-ef50f1cd
+Explain · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-fdb5fd6d · interpretation
+`classify(value)` is an additive label collector, not a choice among three mutually exclusive classes. It starts with an empty array, evaluates three separate predicates in source order, appends the label for every predicate that succeeds, and returns that array unchanged. Concretely, it tests `value > 0` for `positive`, `value % 2 === 0` for `even`, and `value >= 10` for `large`; therefore the returned labels are always ordered `positive`, then `even`, then `large` when present. For example, `12` yields `['positive', 'even', 'large']`, `9` yields `['positive']`, `-2` yields `['even']`, `0` also yields `['even']`, and a value such as `-3` yields `[]`. The implementation neither throws nor supplies a fallback label when no predicate passes. Its comment says callers decide what the labels mean, and the nearby README similarly describes property recording rather than validation or partitioning; those are documentation assertions consistent with the captured implementation, not independent runtime proof.
+Referent: Clarified behavior, boundaries, ordering, and result shape of the numeric-label classifier.
+  Qualification: This clarification is a static interpretation of captured TypeScript source; the examples were derived from the predicates and were not produced by runtime execution.
+  Qualification: The examples concern ordinary numeric inputs and illustrate the existing checks rather than claiming input validation or a complete account of all JavaScript `number` edge cases.
+  Qualification: The README and function comment are attributed documentation assertions; implementation source is the basis for the stated label-accumulation behavior.
+  Composition: @investigram-c317863e, @investigram-1ee13653, @investigram-dc0c6f62, @investigram-1851aa45
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-ef50f1cd (provenance, not composition)
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:da2d4467d00c91cacb44e45a0f138365e95ea2c9a81a63988f002d296c7eaecf, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:export:71d4fa075c6bcc5dfa2f875069eaf18f11104acd50d811121fa92fd1ca9a6fd6, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:82e7a9631abee32cea9001f78f344dca85caec80058937e3033fefaddab2733a
+
+@investigram-1851aa45 · interpretation
+The result is a newly initialized `string[]` populated only by the three conditional appends. Each named label can be appended at most once per call, several different labels may coexist, and no passing condition leaves the array empty. There is no `else`, early return, error branch, or default category in the captured function; interpretation of the resulting labels is left to the caller according to the function's documentation.
+Referent: Accumulation, ordering, multiplicity, and empty-result semantics.
+  Qualification: Claims about the absence of alternative branches are limited to the fully captured implementation of this function.
+  Qualification: The statement that callers interpret the labels is attributed to the recorded function documentation.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-ef50f1cd (provenance, not composition)
+  Composition parent: @investigram-fdb5fd6d
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:da2d4467d00c91cacb44e45a0f138365e95ea2c9a81a63988f002d296c7eaecf
+
+@investigram-dc0c6f62 · interpretation
+The `large` label is appended when `value >= 10`, so 10 itself is included. Because this check is independent and runs after the other two, an input such as 10 or 12 accumulates `large` after `positive` and `even`, rather than replacing them.
+Referent: Threshold, inclusivity, and ordering of the `large` label.
+  Qualification: This is derived statically from the third `if` statement and its position in the captured implementation.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-ef50f1cd (provenance, not composition)
+  Composition parent: @investigram-fdb5fd6d
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+
+@investigram-1ee13653 · interpretation
+The `even` label uses `value % 2 === 0`, independently of sign. Consequently, ordinary negative even numbers qualify, and zero qualifies as even even though it does not qualify as positive. This is why `-2` and `0` each produce `['even']` under the captured checks.
+Referent: Exact predicate and boundary consequences of the `even` label.
+  Qualification: This is a static reading of JavaScript/TypeScript remainder and strict-equality syntax in the captured source.
+  Qualification: The examples were derived rather than executed, and this child does not attempt to catalogue special `number` values such as `NaN` and infinities.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-ef50f1cd (provenance, not composition)
+  Composition parent: @investigram-fdb5fd6d
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+
+@investigram-c317863e · interpretation
+The `positive` label is appended exactly when `value > 0`. Zero is therefore not positive under this function's rule, while every value that also satisfies later checks can retain `positive` alongside their labels; for instance, `12` does not stop at `positive`.
+Referent: Exact predicate and non-exclusive effect of the `positive` label.
+  Qualification: This is derived statically from the first `if` statement in the captured implementation.
+  Qualification: No separate domain object or exclusive positive class is created.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-ef50f1cd (provenance, not composition)
+  Composition parent: @investigram-fdb5fd6d
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+Attempt session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:c559f96b549907777ecd76c767385560b21bb8528c4143921617332ec6d9d2bf (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 53375 tokens; input 50818 tokens (subset of total); output 2557 tokens (subset of total); cached-input 6656 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 679 tokens (subset of output)
+Session reported usage: 8 calls; 0 unknown; 1 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 77278 tokens; input 71812 tokens (subset of total); output 5466 tokens (subset of total); cached-input 6656 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1688 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: examine @investigram-33b17c63
+Examine · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-8f1a2f3e · interpretation
+The earlier exclusivity claim is contradicted by the captured implementation. `classify` initializes an empty array and evaluates three separate `if` statements, appending `positive` when `value > 0`, `even` when `value % 2 === 0`, and `large` when `value >= 10`, in that order. The conditions therefore accumulate labels rather than selecting one branch: for an ordinary finite input such as 12, the code yields `['positive', 'even', 'large']`; 11 yields `['positive', 'large']`; 0 and negative even integers can receive `even` without `positive`. The nearby README independently asserts that the properties are applicable, the conditions are independent, and the result is not a partition, while the symbol’s own recorded documentation says callers decide how to interpret the labels. These documentation statements agree with the implementation but remain attributed assertions rather than runtime proof.
+Referent: Deeper examination and correction of the prior account of numeric classification behavior.
+  Qualification: The behavioral account is a static interpretation of captured TypeScript source; the code was not executed.
+  Qualification: Concrete examples assume ordinary ECMAScript number and remainder semantics for the shown finite numeric inputs.
+  Qualification: The README is nearby group documentation whose applicability and truth are not established solely by placement; it is used only as an attributed assertion that agrees with the source.
+  Qualification: The function performs no visible input validation and its `number` parameter can include JavaScript special numeric values; exhaustive special-value behavior was not dynamically tested.
+  Qualification: No incoming or outgoing source-request dependencies were returned, but the dependency analysis is bounded and its empty result does not establish universal absence of callers or runtime relationships.
+  Composition: @investigram-70839b95
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-33b17c63 (provenance, not composition)
+  Unresolved inconsistency: The earlier investigram’s mutually-exclusive interpretation conflicts with the captured function body, where all three conditions are independent and can append multiple labels for one value.; targets: @investigram-33b17c63
+    Qualification: This discrepancy compares an earlier interpretation with static source evidence; it does not rely on the earlier interpretation as corroboration.
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation-association:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:export:71d4fa075c6bcc5dfa2f875069eaf18f11104acd50d811121fa92fd1ca9a6fd6, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:dependency-evaluation:261ec59a167c92c4337a657fc77e2b9ac30a4bb40bf7719e90e0506466564e6b
+
+@investigram-b0e77f5c · interpretation
+Classification is cumulative, not mutually exclusive. `classify` tests positivity, evenness, and largeness independently and appends every applicable label in the fixed order `positive`, `even`, `large`. Thus 12 produces all three labels, while values may receive subsets such as `['positive', 'large']` for 11 or `['even']` for 0 and negative even integers. The function returns the accumulated string array and delegates interpretation of those labels to callers.
+Referent: Corrected account of the selected module’s classifier behavior.
+  Qualification: This is a static interpretation of the captured implementation, not an executed result.
+  Qualification: Examples use ordinary finite JavaScript numbers; behavior for NaN, infinities, and other edge cases is not exhaustively described.
+  Qualification: The statement that callers interpret labels is attributed to the symbol documentation and is consistent with, but not proven by, the function body.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-33b17c63 (provenance, not composition)
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation-association:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:export:71d4fa075c6bcc5dfa2f875069eaf18f11104acd50d811121fa92fd1ca9a6fd6
+
+@investigram-70839b95 · interpretation
+The three predicates overlap asymmetrically. Every finite value satisfying `value >= 10` also satisfies `value > 0`, so `large` is accompanied by `positive`; `even` is independent of sign and size, so it can combine with either label or occur alone. Emission order is stable in the source—`positive`, then `even`, then `large`—because pushes occur sequentially after independent tests.
+Referent: Interactions, accumulation, and ordering of the classifier predicates.
+  Qualification: The implication from `value >= 10` to `value > 0` is stated for ordinary ordered numeric values; special JavaScript values are not exhaustively characterized.
+  Qualification: Stable order is inferred from straight-line source and assumes normal Array behavior without environmental mutation.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-33b17c63 (provenance, not composition)
+  Composition parent: @investigram-8f1a2f3e
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+
+Correction reported by @investigram-8f1a2f3e: @investigram-33b17c63 → @investigram-b0e77f5c
+  Corrected subjects: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:symbol:eb1cd6407565eb07e4902711cb1f7ec244eb512c4a54696385ab6f367fdc4b15
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigram:33b17c63b7c4d8ac9bd97d76650d2352123db53f40de0ef5b79cc5aeeb7a2996, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation-association:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845
+  Reason: The prior account says classification is mutually exclusive and that larger positive even inputs receive only `positive`. The implementation uses independent, sequential `if` statements, so matching labels accumulate; the prior account also lacked source evidence. The complete replacement below preserves the intended behavioral scope while correcting exclusivity and adding evidence and limitations.
+  Qualification: The earlier account was explicitly injected and unverified.
+  Qualification: The correction is based on static captured source, supported by aligned but non-authoritative documentation; it is not a runtime test.
+Attempt session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7 (accepted) reported usage: 3 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 22737 tokens; input 20208 tokens (subset of total); output 2529 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 858 tokens (subset of output)
+Session reported usage: 11 calls; 0 unknown; 1 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 100015 tokens; input 92020 tokens (subset of total); output 7995 tokens (subset of total); cached-input 6656 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2546 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: examine @investigram-33b17c63
+Examine · investigram
+References remain bound for this session.
+Retained outcome; no new investigation.
+
+@investigram-8f1a2f3e · interpretation
+The earlier exclusivity claim is contradicted by the captured implementation. `classify` initializes an empty array and evaluates three separate `if` statements, appending `positive` when `value > 0`, `even` when `value % 2 === 0`, and `large` when `value >= 10`, in that order. The conditions therefore accumulate labels rather than selecting one branch: for an ordinary finite input such as 12, the code yields `['positive', 'even', 'large']`; 11 yields `['positive', 'large']`; 0 and negative even integers can receive `even` without `positive`. The nearby README independently asserts that the properties are applicable, the conditions are independent, and the result is not a partition, while the symbol’s own recorded documentation says callers decide how to interpret the labels. These documentation statements agree with the implementation but remain attributed assertions rather than runtime proof.
+Referent: Deeper examination and correction of the prior account of numeric classification behavior.
+  Qualification: The behavioral account is a static interpretation of captured TypeScript source; the code was not executed.
+  Qualification: Concrete examples assume ordinary ECMAScript number and remainder semantics for the shown finite numeric inputs.
+  Qualification: The README is nearby group documentation whose applicability and truth are not established solely by placement; it is used only as an attributed assertion that agrees with the source.
+  Qualification: The function performs no visible input validation and its `number` parameter can include JavaScript special numeric values; exhaustive special-value behavior was not dynamically tested.
+  Qualification: No incoming or outgoing source-request dependencies were returned, but the dependency analysis is bounded and its empty result does not establish universal absence of callers or runtime relationships.
+  Composition: @investigram-70839b95
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-33b17c63 (provenance, not composition)
+  Unresolved inconsistency: The earlier investigram’s mutually-exclusive interpretation conflicts with the captured function body, where all three conditions are independent and can append multiple labels for one value.; targets: @investigram-33b17c63
+    Qualification: This discrepancy compares an earlier interpretation with static source evidence; it does not rely on the earlier interpretation as corroboration.
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation-association:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:export:71d4fa075c6bcc5dfa2f875069eaf18f11104acd50d811121fa92fd1ca9a6fd6, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:dependency-evaluation:261ec59a167c92c4337a657fc77e2b9ac30a4bb40bf7719e90e0506466564e6b
+
+@investigram-b0e77f5c · interpretation
+Classification is cumulative, not mutually exclusive. `classify` tests positivity, evenness, and largeness independently and appends every applicable label in the fixed order `positive`, `even`, `large`. Thus 12 produces all three labels, while values may receive subsets such as `['positive', 'large']` for 11 or `['even']` for 0 and negative even integers. The function returns the accumulated string array and delegates interpretation of those labels to callers.
+Referent: Corrected account of the selected module’s classifier behavior.
+  Qualification: This is a static interpretation of the captured implementation, not an executed result.
+  Qualification: Examples use ordinary finite JavaScript numbers; behavior for NaN, infinities, and other edge cases is not exhaustively described.
+  Qualification: The statement that callers interpret labels is attributed to the symbol documentation and is consistent with, but not proven by, the function body.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-33b17c63 (provenance, not composition)
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation-association:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:export:71d4fa075c6bcc5dfa2f875069eaf18f11104acd50d811121fa92fd1ca9a6fd6
+
+@investigram-70839b95 · interpretation
+The three predicates overlap asymmetrically. Every finite value satisfying `value >= 10` also satisfies `value > 0`, so `large` is accompanied by `positive`; `even` is independent of sign and size, so it can combine with either label or occur alone. Emission order is stable in the source—`positive`, then `even`, then `large`—because pushes occur sequentially after independent tests.
+Referent: Interactions, accumulation, and ordering of the classifier predicates.
+  Qualification: The implication from `value >= 10` to `value > 0` is stated for ordinary ordered numeric values; special JavaScript values are not exhaustively characterized.
+  Qualification: Stable order is inferred from straight-line source and assumes normal Array behavior without environmental mutation.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-33b17c63 (provenance, not composition)
+  Composition parent: @investigram-8f1a2f3e
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+
+Correction reported by @investigram-8f1a2f3e: @investigram-33b17c63 → @investigram-b0e77f5c
+  Corrected subjects: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:symbol:eb1cd6407565eb07e4902711cb1f7ec244eb512c4a54696385ab6f367fdc4b15
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigram:33b17c63b7c4d8ac9bd97d76650d2352123db53f40de0ef5b79cc5aeeb7a2996, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation-association:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845
+  Reason: The prior account says classification is mutually exclusive and that larger positive even inputs receive only `positive`. The implementation uses independent, sequential `if` statements, so matching labels accumulate; the prior account also lacked source evidence. The complete replacement below preserves the intended behavioral scope while correcting exclusivity and adding evidence and limitations.
+  Qualification: The earlier account was explicitly injected and unverified.
+  Qualification: The correction is based on static captured source, supported by aligned but non-authoritative documentation; it is not a runtime test.
+Attempt session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7 (accepted) reported usage: 3 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 22737 tokens; input 20208 tokens (subset of total); output 2529 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 858 tokens (subset of output)
+Session reported usage: 11 calls; 0 unknown; 1 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 100015 tokens; input 92020 tokens (subset of total); output 7995 tokens (subset of total); cached-input 6656 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2546 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-1cecff9b
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-1cecff9b · interpretation
+The module partitions numeric inputs into exactly one of positive, even or large, rejecting values outside those classes.
+Referent: The selected module behavior.
+  Qualification: Injected earlier interpretation for a controlled assessment, not a natural investigator result.
+  Qualification: This account has not acquired source evidence and remains unverified interpretation.
+  Composition: @investigram-33b17c63
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-54c04ef4 (provenance, not composition)
+
+@investigram-33b17c63 · interpretation
+Classification is mutually exclusive: a positive input receives only the positive label, so larger positive even inputs do not also receive even or large.
+Referent: The selected module behavior.
+  Qualification: Injected earlier interpretation for a controlled assessment, not a natural investigator result.
+  Qualification: This account has not acquired source evidence and remains unverified interpretation.
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-54c04ef4 (provenance, not composition)
+  Composition parent: @investigram-1cecff9b
+
+Correction reported by @investigram-ef50f1cd: @investigram-1cecff9b → @investigram-3ef105c5
+  Corrected subjects: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:symbol:eb1cd6407565eb07e4902711cb1f7ec244eb512c4a54696385ab6f367fdc4b15
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:da2d4467d00c91cacb44e45a0f138365e95ea2c9a81a63988f002d296c7eaecf
+  Reason: The earlier account describes an exclusive three-way partition and rejection outside it, and its child says positive values suppress other labels. The captured implementation instead uses three independent `if` statements, can append multiple labels, and returns an empty array when none passes; the nearby README likewise disclaims validation and partitioning.
+  Qualification: The complete earlier root and its fixed child were retrieved before correction.
+  Qualification: The correction is based on static captured source; no runtime execution was performed.
+  Qualification: README statements are treated as documentation assertions and agree with, rather than establish, the implementation behavior.
+
+Correction reported by @investigram-8f1a2f3e: @investigram-33b17c63 → @investigram-b0e77f5c
+  Corrected subjects: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:symbol:eb1cd6407565eb07e4902711cb1f7ec244eb512c4a54696385ab6f367fdc4b15
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigram:33b17c63b7c4d8ac9bd97d76650d2352123db53f40de0ef5b79cc5aeeb7a2996, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation-association:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845
+  Reason: The prior account says classification is mutually exclusive and that larger positive even inputs receive only `positive`. The implementation uses independent, sequential `if` statements, so matching labels accumulate; the prior account also lacked source evidence. The complete replacement below preserves the intended behavioral scope while correcting exclusivity and adding evidence and limitations.
+  Qualification: The earlier account was explicitly injected and unverified.
+  Qualification: The correction is based on static captured source, supported by aligned but non-authoritative documentation; it is not a runtime test.
+
+Associated investigrams (explicit associations)
+Listing: available; 1 shown of 1.
+Use inspect @reference for retained content; no inference.
+@investigram-ef50f1cd · interpretation
+  The selected functionality is better viewed as independently testing numeric properties and accumulating the labels whose tests pass; a call can produce several labels or none.
+  Operation: decomposition; origin: hosted; provenance: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:06412e1ea9fdd5017bc189143e9124af19b559089041e0a1982717a27b1be287
+  Qualification: This is a static interpretation of the captured TypeScript source, not an observation of runtime execution.
+  Qualification: The nearby README and the function documentation describe applicable properties rather than exclusive classes; those statements are attributed documentation, while the implementation supplies the behavioral basis.
+  Association: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigram:1cecff9b749484a0ca3b79324ebd630815d367fd48cadd1009ad57492242ff56 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Originals are shown; correction-aware selection and derived revision warnings are not yet presented.
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:06412e1ea9fdd5017bc189143e9124af19b559089041e0a1982717a27b1be287","forms":["full"]},{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["full"]}],"coverage":"full-file","contentDigest":"5bb385c32f13da0c2de5a961cf3842a77f1642647da56e7c991cfd6ae523ab6b","mapping":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:aa2da1383922416d6bc790fc4d3a19737c4cddad75a010fdf460b7c9672dba38","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:06412e1ea9fdd5017bc189143e9124af19b559089041e0a1982717a27b1be287","forms":["full"]},{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["full"]}],"coverage":"full-file","contentDigest":"055d542f902f6a32c17b8ee2d59dc7b961762edfcd3346b9eac3f66f63dec434","mapping":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845","kind":"recorded-assertion","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:06412e1ea9fdd5017bc189143e9124af19b559089041e0a1982717a27b1be287","forms":["full"]},{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["full"]}],"assertion":"Record applicable numeric properties; callers choose how to interpret the labels.","tags":[],"status":"recorded-assertion","qualification":{"kind":"claim-context","id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:expansion-context:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845","session":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:symbol:eb1cd6407565eb07e4902711cb1f7ec244eb512c4a54696385ab6f367fdc4b15","evidence":["session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:da2d4467d00c91cacb44e45a0f138365e95ea2c9a81a63988f002d296c7eaecf"],"status":"mechanically-derived","guarantee":"TypeScript associates this recorded documentation with the subject.","limitations":["The text is a recorded assertion; its truth, currency and completeness are not established."],"diagnostics":[],"inputs":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:analysis-inputs:504351753f63f929e4e65a5c9dd851f88d77d25747e7fdc0bfc6231fc6de9285"}}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:da2d4467d00c91cacb44e45a0f138365e95ea2c9a81a63988f002d296c7eaecf","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:06412e1ea9fdd5017bc189143e9124af19b559089041e0a1982717a27b1be287","forms":["full"]},{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigram:33b17c63b7c4d8ac9bd97d76650d2352123db53f40de0ef5b79cc5aeeb7a2996","kind":"investigram","method":"postcode/investigation@9","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:06412e1ea9fdd5017bc189143e9124af19b559089041e0a1982717a27b1be287","forms":["prior-interpretation"]},{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation-association:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:06412e1ea9fdd5017bc189143e9124af19b559089041e0a1982717a27b1be287","forms":["full"]},{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["full"]}],"information":{"type":"documentation-association","assertion":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845","association":"origin-symbol"},"qualification":{"kind":"claim-context","id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:expansion-context:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845","session":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:symbol:eb1cd6407565eb07e4902711cb1f7ec244eb512c4a54696385ab6f367fdc4b15","evidence":["session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:da2d4467d00c91cacb44e45a0f138365e95ea2c9a81a63988f002d296c7eaecf"],"status":"mechanically-derived","guarantee":"TypeScript associates this recorded documentation with the subject.","limitations":["The text is a recorded assertion; its truth, currency and completeness are not established."],"diagnostics":[],"inputs":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:analysis-inputs:504351753f63f929e4e65a5c9dd851f88d77d25747e7fdc0bfc6231fc6de9285"}}
+Session reported usage: 11 calls; 0 unknown; 1 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 100015 tokens; input 92020 tokens (subset of total); output 7995 tokens (subset of total); cached-input 6656 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2546 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-33b17c63
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-33b17c63 · interpretation
+Classification is mutually exclusive: a positive input receives only the positive label, so larger positive even inputs do not also receive even or large.
+Referent: The selected module behavior.
+  Qualification: Injected earlier interpretation for a controlled assessment, not a natural investigator result.
+  Qualification: This account has not acquired source evidence and remains unverified interpretation.
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-54c04ef4 (provenance, not composition)
+  Composition parent: @investigram-1cecff9b
+
+Correction reported by @investigram-8f1a2f3e: @investigram-33b17c63 → @investigram-b0e77f5c
+  Corrected subjects: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:symbol:eb1cd6407565eb07e4902711cb1f7ec244eb512c4a54696385ab6f367fdc4b15
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigram:33b17c63b7c4d8ac9bd97d76650d2352123db53f40de0ef5b79cc5aeeb7a2996, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation-association:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845
+  Reason: The prior account says classification is mutually exclusive and that larger positive even inputs receive only `positive`. The implementation uses independent, sequential `if` statements, so matching labels accumulate; the prior account also lacked source evidence. The complete replacement below preserves the intended behavioral scope while correcting exclusivity and adding evidence and limitations.
+  Qualification: The earlier account was explicitly injected and unverified.
+  Qualification: The correction is based on static captured source, supported by aligned but non-authoritative documentation; it is not a runtime test.
+
+Associated investigrams (explicit associations)
+Listing: available; 1 shown of 1.
+Use inspect @reference for retained content; no inference.
+@investigram-8f1a2f3e · interpretation
+  The earlier exclusivity claim is contradicted by the captured implementation. `classify` initializes an empty array and evaluates three separate `if` statements, appending `positive` when `value > 0`, `even` when `value % 2 === 0`, and `large` when `value >= 10`, in that order. The conditions therefore accumulate labels rather than selecting one branch: for an ordinary finite input such as 12, the [507 prose characters omitted]
+  Operation: examination; origin: hosted; provenance: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7
+  Qualification: The behavioral account is a static interpretation of captured TypeScript source; the code was not executed.
+  Qualification: Concrete examples assume ordinary ECMAScript number and remainder semantics for the shown finite numeric inputs.
+  Qualification: The README is nearby group documentation whose applicability and truth are not established solely by placement; it is used only as an attributed assertion that agrees with the source.
+  Qualification: The function performs no visible input validation and its `number` parameter can include JavaScript special numeric values; exhaustive special-value behavior was not dynamically tested.
+  Qualification: No incoming or outgoing source-request dependencies were returned, but the dependency analysis is bounded and its empty result does not establish universal absence of callers or runtime relationships.
+  Association: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigram:33b17c63b7c4d8ac9bd97d76650d2352123db53f40de0ef5b79cc5aeeb7a2996 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Originals are shown; correction-aware selection and derived revision warnings are not yet presented.
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigram:33b17c63b7c4d8ac9bd97d76650d2352123db53f40de0ef5b79cc5aeeb7a2996","kind":"investigram","method":"postcode/investigation@9","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["full"]}],"coverage":"full-file","contentDigest":"5bb385c32f13da0c2de5a961cf3842a77f1642647da56e7c991cfd6ae523ab6b","mapping":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:aa2da1383922416d6bc790fc4d3a19737c4cddad75a010fdf460b7c9672dba38","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["full"]}],"coverage":"full-file","contentDigest":"055d542f902f6a32c17b8ee2d59dc7b961762edfcd3346b9eac3f66f63dec434","mapping":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation-association:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["full"]}],"information":{"type":"documentation-association","assertion":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845","association":"origin-symbol"},"qualification":{"kind":"claim-context","id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:expansion-context:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845","session":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:symbol:eb1cd6407565eb07e4902711cb1f7ec244eb512c4a54696385ab6f367fdc4b15","evidence":["session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:da2d4467d00c91cacb44e45a0f138365e95ea2c9a81a63988f002d296c7eaecf"],"status":"mechanically-derived","guarantee":"TypeScript associates this recorded documentation with the subject.","limitations":["The text is a recorded assertion; its truth, currency and completeness are not established."],"diagnostics":[],"inputs":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:analysis-inputs:504351753f63f929e4e65a5c9dd851f88d77d25747e7fdc0bfc6231fc6de9285"}}
+Session reported usage: 11 calls; 0 unknown; 1 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 100015 tokens; input 92020 tokens (subset of total); output 7995 tokens (subset of total); cached-input 6656 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2546 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-ef50f1cd
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-ef50f1cd · interpretation
+The selected functionality is better viewed as independently testing numeric properties and accumulating the labels whose tests pass; a call can produce several labels or none.
+Referent: Decomposition of the numeric-label classification functionality.
+  Qualification: This is a static interpretation of the captured TypeScript source, not an observation of runtime execution.
+  Qualification: The nearby README and the function documentation describe applicable properties rather than exclusive classes; those statements are attributed documentation, while the implementation supplies the behavioral basis.
+  Composition: @investigram-21b62b5a, @investigram-036f6fba, @investigram-46cd1919, @investigram-475ca753
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-1cecff9b (provenance, not composition)
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:da2d4467d00c91cacb44e45a0f138365e95ea2c9a81a63988f002d296c7eaecf
+
+@investigram-3ef105c5 · interpretation
+The module exports `classify`, which records independently applicable `positive`, `even`, and `large` labels in check order and returns the accumulated array, possibly with multiple labels or no labels.
+Referent: Corrected account of the numeric-label classifier.
+  Qualification: This account interprets captured TypeScript source statically and does not claim runtime testing.
+  Qualification: The names of the three labels do not imply exclusive classes.
+  Composition: @investigram-b0e8a65a, @investigram-3375d0ad, @investigram-d819cae1, @investigram-eef0aa51
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-1cecff9b (provenance, not composition)
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:export:71d4fa075c6bcc5dfa2f875069eaf18f11104acd50d811121fa92fd1ca9a6fd6, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:82e7a9631abee32cea9001f78f344dca85caec80058937e3033fefaddab2733a
+
+@investigram-eef0aa51 · interpretation
+The function returns the accumulated labels in check order, including an empty array when no condition passes.
+Referent: Accumulation and return behavior.
+  Qualification: No rejection branch appears in the captured implementation.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-1cecff9b (provenance, not composition)
+  Composition parent: @investigram-3ef105c5
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+
+@investigram-d819cae1 · interpretation
+Values at least ten gain `large`.
+Referent: Large-label condition.
+  Qualification: Other passing conditions remain applicable.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-1cecff9b (provenance, not composition)
+  Composition parent: @investigram-3ef105c5
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+
+@investigram-3375d0ad · interpretation
+Values with zero remainder modulo two gain `even`.
+Referent: Even-label condition.
+  Qualification: The implementation does not restrict this test to positive values.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-1cecff9b (provenance, not composition)
+  Composition parent: @investigram-3ef105c5
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+
+@investigram-b0e8a65a · interpretation
+Values greater than zero gain `positive`.
+Referent: Positive-label condition.
+  Qualification: Other passing conditions remain applicable.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-1cecff9b (provenance, not composition)
+  Composition parent: @investigram-3ef105c5
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+
+@investigram-475ca753 · interpretation
+Return all appended labels in positive–even–large check order, leaving the array empty when no test passes.
+Referent: Label accumulation and return aspect.
+  Qualification: The independent `if` statements permit overlapping labels; the initialized empty array is returned without a rejection branch.
+  Qualification: The README explicitly says the fixture does not validate input or partition the numeric domain, and points to source as evidence for the independent conditions and emitted order.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-1cecff9b (provenance, not composition)
+  Composition parent: @investigram-ef50f1cd
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-46cd1919 · interpretation
+Append `large` when the value is at least ten.
+Referent: Large-property labeling aspect.
+  Qualification: The threshold and append operation are read directly from the captured source.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-1cecff9b (provenance, not composition)
+  Composition parent: @investigram-ef50f1cd
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+
+@investigram-036f6fba · interpretation
+Append `even` when the remainder modulo two is zero.
+Referent: Even-property labeling aspect.
+  Qualification: As written, the test also matches zero and negative even numbers; this follows from the source expression rather than execution evidence.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-1cecff9b (provenance, not composition)
+  Composition parent: @investigram-ef50f1cd
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+
+@investigram-21b62b5a · interpretation
+Append `positive` when the value is greater than zero.
+Referent: Positive-property labeling aspect.
+  Qualification: The condition and append operation are read directly from the captured source.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-1cecff9b (provenance, not composition)
+  Composition parent: @investigram-ef50f1cd
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+
+Correction reported by @investigram-ef50f1cd: @investigram-1cecff9b → @investigram-3ef105c5
+  Corrected subjects: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:symbol:eb1cd6407565eb07e4902711cb1f7ec244eb512c4a54696385ab6f367fdc4b15
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:da2d4467d00c91cacb44e45a0f138365e95ea2c9a81a63988f002d296c7eaecf
+  Reason: The earlier account describes an exclusive three-way partition and rejection outside it, and its child says positive values suppress other labels. The captured implementation instead uses three independent `if` statements, can append multiple labels, and returns an empty array when none passes; the nearby README likewise disclaims validation and partitioning.
+  Qualification: The complete earlier root and its fixed child were retrieved before correction.
+  Qualification: The correction is based on static captured source; no runtime execution was performed.
+  Qualification: README statements are treated as documentation assertions and agree with, rather than establish, the implementation behavior.
+
+Associated investigrams (explicit associations)
+Listing: available; 1 shown of 1.
+Use inspect @reference for retained content; no inference.
+@investigram-fdb5fd6d · interpretation
+  `classify(value)` is an additive label collector, not a choice among three mutually exclusive classes. It starts with an empty array, evaluates three separate predicates in source order, appends the label for every predicate that succeeds, and returns that array unchanged. Concretely, it tests `value > 0` for `positive`, `value % 2 === 0` for `even`, and `value >= 10` for `large`; therefore the re [615 prose characters omitted]
+  Operation: clarification; origin: hosted; provenance: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:c559f96b549907777ecd76c767385560b21bb8528c4143921617332ec6d9d2bf
+  Qualification: This clarification is a static interpretation of captured TypeScript source; the examples were derived from the predicates and were not produced by runtime execution.
+  Qualification: The examples concern ordinary numeric inputs and illustrate the existing checks rather than claiming input validation or a complete account of all JavaScript `number` edge cases.
+  Qualification: The README and function comment are attributed documentation assertions; implementation source is the basis for the stated label-accumulation behavior.
+  Association: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigram:ef50f1cd4d84a8891d65d38a47ebc8bb9074a220096309b47e81819144cfa530 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Originals are shown; correction-aware selection and derived revision warnings are not yet presented.
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:06412e1ea9fdd5017bc189143e9124af19b559089041e0a1982717a27b1be287","forms":["full"]}],"coverage":"full-file","contentDigest":"5bb385c32f13da0c2de5a961cf3842a77f1642647da56e7c991cfd6ae523ab6b","mapping":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:aa2da1383922416d6bc790fc4d3a19737c4cddad75a010fdf460b7c9672dba38","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:06412e1ea9fdd5017bc189143e9124af19b559089041e0a1982717a27b1be287","forms":["full"]}],"coverage":"full-file","contentDigest":"055d542f902f6a32c17b8ee2d59dc7b961762edfcd3346b9eac3f66f63dec434","mapping":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845","kind":"recorded-assertion","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:06412e1ea9fdd5017bc189143e9124af19b559089041e0a1982717a27b1be287","forms":["full"]}],"assertion":"Record applicable numeric properties; callers choose how to interpret the labels.","tags":[],"status":"recorded-assertion","qualification":{"kind":"claim-context","id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:expansion-context:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845","session":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:symbol:eb1cd6407565eb07e4902711cb1f7ec244eb512c4a54696385ab6f367fdc4b15","evidence":["session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:da2d4467d00c91cacb44e45a0f138365e95ea2c9a81a63988f002d296c7eaecf"],"status":"mechanically-derived","guarantee":"TypeScript associates this recorded documentation with the subject.","limitations":["The text is a recorded assertion; its truth, currency and completeness are not established."],"diagnostics":[],"inputs":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:analysis-inputs:504351753f63f929e4e65a5c9dd851f88d77d25747e7fdc0bfc6231fc6de9285"}}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:da2d4467d00c91cacb44e45a0f138365e95ea2c9a81a63988f002d296c7eaecf","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:06412e1ea9fdd5017bc189143e9124af19b559089041e0a1982717a27b1be287","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:export:71d4fa075c6bcc5dfa2f875069eaf18f11104acd50d811121fa92fd1ca9a6fd6","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:06412e1ea9fdd5017bc189143e9124af19b559089041e0a1982717a27b1be287","forms":["full"]}],"information":{"type":"export","exportedName":"classify","symbol":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:symbol:eb1cd6407565eb07e4902711cb1f7ec244eb512c4a54696385ab6f367fdc4b15","origin":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98","roles":{"type":false,"value":true},"routes":[{"kind":"direct","typeOnly":false,"aliased":false,"via":null}]},"qualification":{"kind":"claim-context","id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:expansion-context:489909fb7f63b059242ffdfcfd07bd0845a39aebdecae3d328b5967b3cd68bea","session":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98","evidence":["session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:82e7a9631abee32cea9001f78f344dca85caec80058937e3033fefaddab2733a"],"status":"mechanically-derived","guarantee":"The compiler exposes this exported name; roles and forwarding are qualified by the recorded route.","limitations":[],"diagnostics":[],"inputs":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:analysis-inputs:504351753f63f929e4e65a5c9dd851f88d77d25747e7fdc0bfc6231fc6de9285"}}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:82e7a9631abee32cea9001f78f344dca85caec80058937e3033fefaddab2733a","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:06412e1ea9fdd5017bc189143e9124af19b559089041e0a1982717a27b1be287","forms":["full"]}]}
+Session reported usage: 11 calls; 0 unknown; 1 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 100015 tokens; input 92020 tokens (subset of total); output 7995 tokens (subset of total); cached-input 6656 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2546 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-8f1a2f3e --source-detail
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-8f1a2f3e · interpretation
+The earlier exclusivity claim is contradicted by the captured implementation. `classify` initializes an empty array and evaluates three separate `if` statements, appending `positive` when `value > 0`, `even` when `value % 2 === 0`, and `large` when `value >= 10`, in that order. The conditions therefore accumulate labels rather than selecting one branch: for an ordinary finite input such as 12, the code yields `['positive', 'even', 'large']`; 11 yields `['positive', 'large']`; 0 and negative even integers can receive `even` without `positive`. The nearby README independently asserts that the properties are applicable, the conditions are independent, and the result is not a partition, while the symbol’s own recorded documentation says callers decide how to interpret the labels. These documentation statements agree with the implementation but remain attributed assertions rather than runtime proof.
+Referent: Deeper examination and correction of the prior account of numeric classification behavior.
+  Qualification: The behavioral account is a static interpretation of captured TypeScript source; the code was not executed.
+  Qualification: Concrete examples assume ordinary ECMAScript number and remainder semantics for the shown finite numeric inputs.
+  Qualification: The README is nearby group documentation whose applicability and truth are not established solely by placement; it is used only as an attributed assertion that agrees with the source.
+  Qualification: The function performs no visible input validation and its `number` parameter can include JavaScript special numeric values; exhaustive special-value behavior was not dynamically tested.
+  Qualification: No incoming or outgoing source-request dependencies were returned, but the dependency analysis is bounded and its empty result does not establish universal absence of callers or runtime relationships.
+  Composition: @investigram-70839b95
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-33b17c63 (provenance, not composition)
+  Unresolved inconsistency: The earlier investigram’s mutually-exclusive interpretation conflicts with the captured function body, where all three conditions are independent and can append multiple labels for one value.; targets: @investigram-33b17c63
+    Qualification: This discrepancy compares an earlier interpretation with static source evidence; it does not rely on the earlier interpretation as corroboration.
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation-association:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:export:71d4fa075c6bcc5dfa2f875069eaf18f11104acd50d811121fa92fd1ca9a6fd6, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:dependency-evaluation:261ec59a167c92c4337a657fc77e2b9ac30a4bb40bf7719e90e0506466564e6b
+
+@investigram-b0e77f5c · interpretation
+Classification is cumulative, not mutually exclusive. `classify` tests positivity, evenness, and largeness independently and appends every applicable label in the fixed order `positive`, `even`, `large`. Thus 12 produces all three labels, while values may receive subsets such as `['positive', 'large']` for 11 or `['even']` for 0 and negative even integers. The function returns the accumulated string array and delegates interpretation of those labels to callers.
+Referent: Corrected account of the selected module’s classifier behavior.
+  Qualification: This is a static interpretation of the captured implementation, not an executed result.
+  Qualification: Examples use ordinary finite JavaScript numbers; behavior for NaN, infinities, and other edge cases is not exhaustively described.
+  Qualification: The statement that callers interpret labels is attributed to the symbol documentation and is consistent with, but not proven by, the function body.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-33b17c63 (provenance, not composition)
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation-association:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:export:71d4fa075c6bcc5dfa2f875069eaf18f11104acd50d811121fa92fd1ca9a6fd6
+
+@investigram-70839b95 · interpretation
+The three predicates overlap asymmetrically. Every finite value satisfying `value >= 10` also satisfies `value > 0`, so `large` is accompanied by `positive`; `even` is independent of sign and size, so it can combine with either label or occur alone. Emission order is stable in the source—`positive`, then `even`, then `large`—because pushes occur sequentially after independent tests.
+Referent: Interactions, accumulation, and ordering of the classifier predicates.
+  Qualification: The implication from `value >= 10` to `value > 0` is stated for ordinary ordered numeric values; special JavaScript values are not exhaustively characterized.
+  Qualification: Stable order is inferred from straight-line source and assumes normal Array behavior without environmental mutation.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-33b17c63 (provenance, not composition)
+  Composition parent: @investigram-8f1a2f3e
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+
+Correction reported by @investigram-8f1a2f3e: @investigram-33b17c63 → @investigram-b0e77f5c
+  Corrected subjects: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:symbol:eb1cd6407565eb07e4902711cb1f7ec244eb512c4a54696385ab6f367fdc4b15
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigram:33b17c63b7c4d8ac9bd97d76650d2352123db53f40de0ef5b79cc5aeeb7a2996, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation-association:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845
+  Reason: The prior account says classification is mutually exclusive and that larger positive even inputs receive only `positive`. The implementation uses independent, sequential `if` statements, so matching labels accumulate; the prior account also lacked source evidence. The complete replacement below preserves the intended behavioral scope while correcting exclusivity and adding evidence and limitations.
+  Qualification: The earlier account was explicitly injected and unverified.
+  Qualification: The correction is based on static captured source, supported by aligned but non-authoritative documentation; it is not a runtime test.
+
+Associated investigrams (explicit associations)
+Listing: available; 0 shown of 0.
+Use inspect @reference for retained content; no inference.
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Originals are shown; correction-aware selection and derived revision warnings are not yet presented.
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["full"]}],"coverage":"full-file","contentDigest":"5bb385c32f13da0c2de5a961cf3842a77f1642647da56e7c991cfd6ae523ab6b","mapping":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:aa2da1383922416d6bc790fc4d3a19737c4cddad75a010fdf460b7c9672dba38","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["full"]}],"coverage":"full-file","contentDigest":"055d542f902f6a32c17b8ee2d59dc7b961762edfcd3346b9eac3f66f63dec434","mapping":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation-association:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["full"]}],"information":{"type":"documentation-association","assertion":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845","association":"origin-symbol"},"qualification":{"kind":"claim-context","id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:expansion-context:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845","session":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:symbol:eb1cd6407565eb07e4902711cb1f7ec244eb512c4a54696385ab6f367fdc4b15","evidence":["session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:da2d4467d00c91cacb44e45a0f138365e95ea2c9a81a63988f002d296c7eaecf"],"status":"mechanically-derived","guarantee":"TypeScript associates this recorded documentation with the subject.","limitations":["The text is a recorded assertion; its truth, currency and completeness are not established."],"diagnostics":[],"inputs":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:analysis-inputs:504351753f63f929e4e65a5c9dd851f88d77d25747e7fdc0bfc6231fc6de9285"}}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:export:71d4fa075c6bcc5dfa2f875069eaf18f11104acd50d811121fa92fd1ca9a6fd6","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["full"]}],"information":{"type":"export","exportedName":"classify","symbol":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:symbol:eb1cd6407565eb07e4902711cb1f7ec244eb512c4a54696385ab6f367fdc4b15","origin":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98","roles":{"type":false,"value":true},"routes":[{"kind":"direct","typeOnly":false,"aliased":false,"via":null}]},"qualification":{"kind":"claim-context","id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:expansion-context:489909fb7f63b059242ffdfcfd07bd0845a39aebdecae3d328b5967b3cd68bea","session":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98","evidence":["session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:82e7a9631abee32cea9001f78f344dca85caec80058937e3033fefaddab2733a"],"status":"mechanically-derived","guarantee":"The compiler exposes this exported name; roles and forwarding are qualified by the recorded route.","limitations":[],"diagnostics":[],"inputs":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:analysis-inputs:504351753f63f929e4e65a5c9dd851f88d77d25747e7fdc0bfc6231fc6de9285"}}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:dependency-evaluation:261ec59a167c92c4337a657fc77e2b9ac30a4bb40bf7719e90e0506466564e6b","kind":"dependency-evaluation","method":"postcode/evaluate-dependencies@2","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["summary"]}]}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:82e7a9631abee32cea9001f78f344dca85caec80058937e3033fefaddab2733a","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigram:33b17c63b7c4d8ac9bd97d76650d2352123db53f40de0ef5b79cc5aeeb7a2996","kind":"investigram","method":"postcode/investigation@9","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["prior-interpretation"]}]}
+
+Source support (captured locations and excerpts):
+[
+  {
+    "kind": "source-evidence",
+    "id": "session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:aa2da1383922416d6bc790fc4d3a19737c4cddad75a010fdf460b7c9672dba38",
+    "session": "session:4add19ff-55e4-4c49-ad96-4a48d64014b0",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/progressive-numeric/classify.ts",
+    "contentDigest": "5bb385c32f13da0c2de5a961cf3842a77f1642647da56e7c991cfd6ae523ab6b",
+    "start": 0,
+    "length": 318,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": "\"/Users/ronen/postcode/app/_investigation/module-assessment-sources/progressive-numeric/classify\""
+  },
+  {
+    "session": "session:4add19ff-55e4-4c49-ad96-4a48d64014b0",
+    "method": "postcode/organization@3",
+    "kind": "repository-artifact",
+    "id": "session:4add19ff-55e4-4c49-ad96-4a48d64014b0:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93",
+    "repository": "session:4add19ff-55e4-4c49-ad96-4a48d64014b0:repository-evidence:dff828d8b80561c83ace18a0a30cab26bb4619b1b5ad67a3b748bbe5beac4908",
+    "artifact": {
+      "path": "README.md",
+      "kind": "file",
+      "tracked": true
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:da2d4467d00c91cacb44e45a0f138365e95ea2c9a81a63988f002d296c7eaecf",
+    "session": "session:4add19ff-55e4-4c49-ad96-4a48d64014b0",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/progressive-numeric/classify.ts",
+    "contentDigest": "5bb385c32f13da0c2de5a961cf3842a77f1642647da56e7c991cfd6ae523ab6b",
+    "start": 0,
+    "length": 88,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 1,
+        "column": 1
+      },
+      "to": {
+        "line": 1,
+        "column": 89
+      },
+      "excerpt": {
+        "text": "/** Record applicable numeric properties; callers choose how to interpret the labels. */",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:82e7a9631abee32cea9001f78f344dca85caec80058937e3033fefaddab2733a",
+    "session": "session:4add19ff-55e4-4c49-ad96-4a48d64014b0",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/progressive-numeric/classify.ts",
+    "contentDigest": "5bb385c32f13da0c2de5a961cf3842a77f1642647da56e7c991cfd6ae523ab6b",
+    "start": 89,
+    "length": 228,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 2,
+        "column": 1
+      },
+      "to": {
+        "line": 8,
+        "column": 2
+      },
+      "excerpt": {
+        "text": "export function classify(value: number): string[] {\n  const labels: string[] = [];\n  if (value > 0) labels.push('positive');\n  if (value % 2 === 0) labels.push('even');",
+        "omittedCharacters": 60
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  }
+]
+Session reported usage: 11 calls; 0 unknown; 1 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 100015 tokens; input 92020 tokens (subset of total); output 7995 tokens (subset of total); cached-input 6656 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2546 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-b0e77f5c
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-b0e77f5c · interpretation
+Classification is cumulative, not mutually exclusive. `classify` tests positivity, evenness, and largeness independently and appends every applicable label in the fixed order `positive`, `even`, `large`. Thus 12 produces all three labels, while values may receive subsets such as `['positive', 'large']` for 11 or `['even']` for 0 and negative even integers. The function returns the accumulated string array and delegates interpretation of those labels to callers.
+Referent: Corrected account of the selected module’s classifier behavior.
+  Qualification: This is a static interpretation of the captured implementation, not an executed result.
+  Qualification: Examples use ordinary finite JavaScript numbers; behavior for NaN, infinities, and other edge cases is not exhaustively described.
+  Qualification: The statement that callers interpret labels is attributed to the symbol documentation and is consistent with, but not proven by, the function body.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-33b17c63 (provenance, not composition)
+  Evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation-association:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:export:71d4fa075c6bcc5dfa2f875069eaf18f11104acd50d811121fa92fd1ca9a6fd6
+
+Associated investigrams (explicit associations)
+Listing: available; 0 shown of 0.
+Use inspect @reference for retained content; no inference.
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Originals are shown; correction-aware selection and derived revision warnings are not yet presented.
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["full"]}],"coverage":"full-file","contentDigest":"5bb385c32f13da0c2de5a961cf3842a77f1642647da56e7c991cfd6ae523ab6b","mapping":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:aa2da1383922416d6bc790fc4d3a19737c4cddad75a010fdf460b7c9672dba38","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation-association:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["full"]}],"information":{"type":"documentation-association","assertion":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845","association":"origin-symbol"},"qualification":{"kind":"claim-context","id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:expansion-context:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845","session":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:symbol:eb1cd6407565eb07e4902711cb1f7ec244eb512c4a54696385ab6f367fdc4b15","evidence":["session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:da2d4467d00c91cacb44e45a0f138365e95ea2c9a81a63988f002d296c7eaecf"],"status":"mechanically-derived","guarantee":"TypeScript associates this recorded documentation with the subject.","limitations":["The text is a recorded assertion; its truth, currency and completeness are not established."],"diagnostics":[],"inputs":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:analysis-inputs:504351753f63f929e4e65a5c9dd851f88d77d25747e7fdc0bfc6231fc6de9285"}}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:export:71d4fa075c6bcc5dfa2f875069eaf18f11104acd50d811121fa92fd1ca9a6fd6","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["full"]}],"information":{"type":"export","exportedName":"classify","symbol":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:symbol:eb1cd6407565eb07e4902711cb1f7ec244eb512c4a54696385ab6f367fdc4b15","origin":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98","roles":{"type":false,"value":true},"routes":[{"kind":"direct","typeOnly":false,"aliased":false,"via":null}]},"qualification":{"kind":"claim-context","id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:expansion-context:489909fb7f63b059242ffdfcfd07bd0845a39aebdecae3d328b5967b3cd68bea","session":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98","evidence":["session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:82e7a9631abee32cea9001f78f344dca85caec80058937e3033fefaddab2733a"],"status":"mechanically-derived","guarantee":"The compiler exposes this exported name; roles and forwarding are qualified by the recorded route.","limitations":[],"diagnostics":[],"inputs":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:analysis-inputs:504351753f63f929e4e65a5c9dd851f88d77d25747e7fdc0bfc6231fc6de9285"}}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigram:33b17c63b7c4d8ac9bd97d76650d2352123db53f40de0ef5b79cc5aeeb7a2996","kind":"investigram","method":"postcode/investigation@9","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7","forms":["full"]}],"coverage":"full-file","contentDigest":"055d542f902f6a32c17b8ee2d59dc7b961762edfcd3346b9eac3f66f63dec434","mapping":"session:4add19ff-55e4-4c49-ad96-4a48d64014b0:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+Session reported usage: 11 calls; 0 unknown; 1 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 100015 tokens; input 92020 tokens (subset of total); output 7995 tokens (subset of total); cached-input 6656 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2546 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect classify
+Inspect · configured TypeScript project
+Session 4add19ff-55e4-4c49-ad96-4a48d64014b0
+1 module selected from 1 · exact match for classify
+Analysis complete: modules, exports, documentation, composition
+
+Selected project modules · 1 · TypeScript names not established
+
+◆ classify
+  Entity ID: module-54c04ef4
+
+  Exports:
+  ├─ classify [value]
+  │  Documentation:
+  │    Record applicable numeric properties; callers choose how to interpret the labels.
+
+Documentation entries are recorded assertions; truth, currency, and completeness are not established.
+
+Status
+  Module membership and effective exports established by TypeScript analysis.
+  Coverage: external-module SourceFiles and visible named ambient modules; other compiler module categories are not established.
+
+Run limitations
+  2 generated-output locations excluded by this run's input filter.
+  Inputs were memoized as first observed, not captured as an atomic filesystem snapshot.
+
+Entity references belong to this session. One-shot queries accept exact names or handles.
+
+Associated investigrams (explicit associations)
+Listing: available; 7 shown of 7.
+Use inspect @reference for retained content; no inference.
+@investigram-1cecff9b · interpretation
+  The module partitions numeric inputs into exactly one of positive, even or large, rejecting values outside those classes.
+  Operation: functionality; origin: scripted; provenance: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:b467b96a3e6fa3ed49905521685b947b6aacf20bb9f25a9f12e1224f45be2c62
+  Qualification: Injected earlier interpretation for a controlled assessment, not a natural investigator result.
+  Qualification: This account has not acquired source evidence and remains unverified interpretation.
+  Association: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+@investigram-3ef105c5 · interpretation
+  The module exports `classify`, which records independently applicable `positive`, `even`, and `large` labels in check order and returns the accumulated array, possibly with multiple labels or no labels.
+  Operation: decomposition; origin: hosted; provenance: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:06412e1ea9fdd5017bc189143e9124af19b559089041e0a1982717a27b1be287
+  Qualification: This account interprets captured TypeScript source statically and does not claim runtime testing.
+  Qualification: The names of the three labels do not imply exclusive classes.
+  Association: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98 (described); The module contains and directly exports the implementation.; evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:export:71d4fa075c6bcc5dfa2f875069eaf18f11104acd50d811121fa92fd1ca9a6fd6
+  Association: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98 (corrected-subject); The complete earlier root and its fixed child were retrieved before correction.; The correction is based on static captured source; no runtime execution was performed.; README statements are treated as documentation assertions and agree with, rather than establish, the implementation behavior.; evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:source:da2d4467d00c91cacb44e45a0f138365e95ea2c9a81a63988f002d296c7eaecf
+@investigram-ef50f1cd · interpretation
+  The selected functionality is better viewed as independently testing numeric properties and accumulating the labels whose tests pass; a call can produce several labels or none.
+  Operation: decomposition; origin: hosted; provenance: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:06412e1ea9fdd5017bc189143e9124af19b559089041e0a1982717a27b1be287
+  Qualification: This is a static interpretation of the captured TypeScript source, not an observation of runtime execution.
+  Qualification: The nearby README and the function documentation describe applicable properties rather than exclusive classes; those statements are attributed documentation, while the implementation supplies the behavioral basis.
+  Association: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98 (described); The inspected module contains the captured implementation.; evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+@investigram-1851aa45 · interpretation
+  The result is a newly initialized `string[]` populated only by the three conditional appends. Each named label can be appended at most once per call, several different labels may coexist, and no passing condition leaves the array empty. There is no `else`, early return, error branch, or default category in the captured function; interpretation of the resulting labels is left to the caller accordin [34 prose characters omitted]
+  Operation: clarification; origin: hosted; provenance: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:c559f96b549907777ecd76c767385560b21bb8528c4143921617332ec6d9d2bf
+  Qualification: Claims about the absence of alternative branches are limited to the fully captured implementation of this function.
+  Qualification: The statement that callers interpret the labels is attributed to the recorded function documentation.
+  Association: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98 (described); The complete captured module source shows the array initialization, all three appends, and the final return.; evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+@investigram-fdb5fd6d · interpretation
+  `classify(value)` is an additive label collector, not a choice among three mutually exclusive classes. It starts with an empty array, evaluates three separate predicates in source order, appends the label for every predicate that succeeds, and returns that array unchanged. Concretely, it tests `value > 0` for `positive`, `value % 2 === 0` for `even`, and `value >= 10` for `large`; therefore the re [615 prose characters omitted]
+  Operation: clarification; origin: hosted; provenance: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:c559f96b549907777ecd76c767385560b21bb8528c4143921617332ec6d9d2bf
+  Qualification: This clarification is a static interpretation of captured TypeScript source; the examples were derived from the predicates and were not produced by runtime execution.
+  Qualification: The examples concern ordinary numeric inputs and illustrate the existing checks rather than claiming input validation or a complete account of all JavaScript `number` edge cases.
+  Qualification: The README and function comment are attributed documentation assertions; implementation source is the basis for the stated label-accumulation behavior.
+  Association: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98 (described); The module contains the captured implementation whose independent conditions, append order, and empty-array initialization support this clarification.; evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc
+@investigram-b0e77f5c · interpretation
+  Classification is cumulative, not mutually exclusive. `classify` tests positivity, evenness, and largeness independently and appends every applicable label in the fixed order `positive`, `even`, `large`. Thus 12 produces all three labels, while values may receive subsets such as `['positive', 'large']` for 11 or `['even']` for 0 and negative even integers. The function returns the accumulated stri [65 prose characters omitted]
+  Operation: examination; origin: hosted; provenance: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7
+  Qualification: This is a static interpretation of the captured implementation, not an executed result.
+  Qualification: Examples use ordinary finite JavaScript numbers; behavior for NaN, infinities, and other edge cases is not exhaustively described.
+  Qualification: The statement that callers interpret labels is attributed to the symbol documentation and is consistent with, but not proven by, the function body.
+  Association: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98 (corrected-subject); The earlier account was explicitly injected and unverified.; The correction is based on static captured source, supported by aligned but non-authoritative documentation; it is not a runtime test.; evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigram:33b17c63b7c4d8ac9bd97d76650d2352123db53f40de0ef5b79cc5aeeb7a2996, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:documentation-association:483119f4e5328e586407b39c30a22528e612922dba211b471f090ea5a3a96845
+@investigram-8f1a2f3e · interpretation
+  The earlier exclusivity claim is contradicted by the captured implementation. `classify` initializes an empty array and evaluates three separate `if` statements, appending `positive` when `value > 0`, `even` when `value % 2 === 0`, and `large` when `value >= 10`, in that order. The conditions therefore accumulate labels rather than selecting one branch: for an ordinary finite input such as 12, the [507 prose characters omitted]
+  Operation: examination; origin: hosted; provenance: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:905ffe45638a71d33cd7f5a5f1fcaedb582abd9638c53dc69d8320fd6e1096d7
+  Qualification: The behavioral account is a static interpretation of captured TypeScript source; the code was not executed.
+  Qualification: Concrete examples assume ordinary ECMAScript number and remainder semantics for the shown finite numeric inputs.
+  Qualification: The README is nearby group documentation whose applicability and truth are not established solely by placement; it is used only as an attributed assertion that agrees with the source.
+  Qualification: The function performs no visible input validation and its `number` parameter can include JavaScript special numeric values; exhaustive special-value behavior was not dynamically tested.
+  Qualification: No incoming or outgoing source-request dependencies were returned, but the dependency analysis is bounded and its empty result does not establish universal absence of callers or runtime relationships.
+  Association: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:module:54c04ef42915acd3542610a2544bb6ad6c0447a1dedc2584912a048aad817b98 (described); This is the inspected module containing the full captured implementation.; evidence: session:4add19ff-55e4-4c49-ad96-4a48d64014b0:captured-content:182c5e4a13b191a686fb602e8c56ab0909232490d3f23395d6c81cadf9671ecc, session:4add19ff-55e4-4c49-ad96-4a48d64014b0:export:71d4fa075c6bcc5dfa2f875069eaf18f11104acd50d811121fa92fd1ca9a6fd6
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Originals are shown; correction-aware selection and derived revision warnings are not yet presented.
+

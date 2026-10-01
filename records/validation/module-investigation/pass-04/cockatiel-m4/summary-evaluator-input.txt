@@ -1,0 +1,72 @@
+Condition: summary. These are exact captured user-facing views. Scripted origin denotes controlled setup, not a natural investigator result. Current views display originals and correction links; replacement substitution and derived revision warnings are not supplied.
+
+QUESTIONS
+{
+  "version": 1,
+  "condition": "summary-only or progressive sequence; use only the supplied condition",
+  "questions": [
+    "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+    "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+    "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+    "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+    "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+    "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score."
+  ],
+  "answerFormat": "JSON with answers [{question,answer,support,unknowns}], usefulness {judgment,reasons,limitations}. Use only supplied user-facing views; no independent sources or tools."
+}
+
+VIEWS
+COMMAND: summarize executor
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-e65c42fd: executor
+
+@investigram-5c163d44 · interpretation
+Provides the shared single-attempt execution boundary used by policies: it awaits a callback, classifies returned values and thrown errors with injected filters, reports timed success/failure events, and returns a tagged outcome for policy-specific control flow. It does not itself retry, delay, fall back, time out, or limit concurrency; those decisions remain with callers.
+Referent: Executor module and its exported execution/classification API
+  Qualification: Interpretation of first-observed TypeScript source; runtime, loader, and deployment behavior were not executed.
+  Qualification: Incoming dependency analysis establishes static imports, not every caller's runtime use. Retry and no-op integration were inspected directly; bulkhead, fallback, timeout, and circuit-breaker internals were not.
+  Composition: @investigram-4208b004, @investigram-f44764d6, @investigram-e99da96c
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:ff5c325c28823bfb0ba1bf80c92d4a862db0eb29d9a8eb3a0961cb914f1d2677, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:11985e6907388eb17d657be3549d569d4ab3edcfea867c1b8148b32d0a9be720, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:5062072ec4996b9f50441471dd9d60a772fd1aadb351cf32cad0516a8991559a, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:146966ba9ed6d0b5d2e402db1b64869f7a13ffb96bb36899670e8616ca6e9327, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:3043027d7d250a5fd95814a74d779b2f6e6be0522f273a63cbc6da1f2a4696e1
+
+@investigram-e99da96c · interpretation
+FailureOrSuccess is the policy FailureReason union plus `{success}`. returnOrThrow collapses it for simple callers: throw `{error}`, return `{success}`, otherwise return the filtered failure value. This lets richer policies inspect failures while no-op-style callers recover ordinary return/throw semantics.
+Referent: Tagged outcome type and normalization helper
+  Qualification: The union is structurally discriminated by property-presence checks.
+  Qualification: A filtered returned value is intentionally returned by returnOrThrow rather than thrown.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-5c163d44
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:ff5c325c28823bfb0ba1bf80c92d4a862db0eb29d9a8eb3a0961cb914f1d2677, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:11985e6907388eb17d657be3549d569d4ab3edcfea867c1b8148b32d0a9be720, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:3043027d7d250a5fd95814a74d779b2f6e6be0522f273a63cbc6da1f2a4696e1
+
+@investigram-f44764d6 · interpretation
+Timing is demand-driven: invoke starts a stopwatch only when either event has listeners. It uses `performance.now()` when available, otherwise Node's bigint high-resolution clock converted to milliseconds. Success emits only for an accepted result; filtered results and exceptions emit failure with duration, reason, and handled status.
+Referent: ExecuteWrapper timing and outcome-event behavior
+  Qualification: Timing behavior is inferred from source and was not benchmarked.
+  Qualification: If no listeners exist at invocation start, no stopwatch is created and no outcome event is emitted for that call.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-5c163d44
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:c90c2a138fcad3ce6a18d8d8d7d02ac3906a9273c68e6469dfa9b946122abb32
+
+@investigram-4208b004 · interpretation
+ExecuteWrapper owns fresh success/failure emitters and exposes their subscription functions. invoke awaits the callback. A value rejected by resultFilter becomes a handled failure `{value}`; any other value becomes `{success}`. A thrown error matching errorFilter becomes `{error}`; a nonmatching error is reported as unhandled and rethrown. clone preserves the two predicates but creates new emitters.
+Referent: ExecuteWrapper classification and invocation mechanism
+  Qualification: “Fresh emitters” follows construction of a new ExecuteWrapper in clone; filter functions themselves are reused.
+  Qualification: The callback may be synchronous or promise-like because its result is awaited.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-5c163d44
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c
+Attempt session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:de3e4640423878740a93a064c82db6709baa7f0a91b80e54413a1b970328902b (accepted) reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 156125 tokens; input 153347 tokens (subset of total); output 2778 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 555 tokens (subset of output)
+Session reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 156125 tokens; input 153347 tokens (subset of total); output 2778 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 555 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+

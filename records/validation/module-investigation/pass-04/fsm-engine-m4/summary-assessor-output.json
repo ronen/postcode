@@ -1,0 +1,104 @@
+{
+  "findings": [
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The summary and evaluator communicate the main runtime responsibilities and ordered execution without promoting source interpretation into verified behavior.",
+      "evidence": [
+        "Frozen reference, fsm-engine.ts lines 119–135: definition building, validation and compilation are delegated to FsmBuilderImpl.",
+        "Frozen reference, lines 184–222, 241–266 and 271–313: synchronous outer dispatch, queued reentrancy, guarded transitions, fallback handling, implicit stays and external/internal transition differences.",
+        "@investigram-dc111a38 specifies exit actions, transition actions, state commit and entry actions in the actual order, and qualifies the account with 'no execution was performed'.",
+        "Evaluator answers 1 and 2 preserve the runtime/builder division, synchronous and reentrant distinction, and interpretation status."
+      ],
+      "consequence": "The supplied summary supports useful orientation to the engine's control flow. In particular, the generated account avoids the misleading commit-first source comment identified by the frozen reference.",
+      "uncertainty": "The evaluator compresses the transition sequence into a reference to different sequences rather than restating every step; this is not evidence of misunderstanding. Neither artifact establishes correctness by execution."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The suspected timer payload inversion is communicated as a source-supported concern, and the evaluator preserves that qualification and selects the appropriate responsibility for follow-up.",
+      "evidence": [
+        "Frozen reference, fsm-engine.ts lines 366–376 and specifically line 371: scheduling is delegated to TimerRegistry, but a present payload selects an empty argument array; correct forwarding is not established.",
+        "@investigram-dc111a38 calls the inversion apparent and says it 'may cause payload-bearing timer events to receive undefined'.",
+        "@investigram-2f1f0d4d assigns timer-event-to-callback conversion to the engine.",
+        "Evaluator answers 2 and 4 treat the behavior as unexecuted, target @investigram-dc111a38, and describe execution or focused examination as requested future capabilities rather than demonstrated capabilities."
+      ],
+      "consequence": "A consequential uncertainty remains actionable without becoming an asserted payload-forwarding guarantee or an executed defect finding.",
+      "uncertainty": "The frozen reference supports suspicion about the conditional, not reproduced effects on consumers. It does not independently reproduce the README promise's wording."
+    },
+    {
+      "category": "material-omission",
+      "claim": "The ownership description omits that context is caller-supplied and not deep-copied, leaving the isolation of instance contexts unclear.",
+      "evidence": [
+        "Frozen reference, fsm-engine.ts lines 119–135: instances own caller-supplied context, and context is not deep-copied.",
+        "@investigram-dc111a38 says 'each instance owns context' without describing aliasing or copying.",
+        "Evaluator answer 1 repeats that each instance has 'its own context' while separately qualifying the definition's immutability."
+      ],
+      "consequence": "A reader considering shared mutable input could infer stronger context independence than the frozen reference supports. Naming caller ownership and the absence of deep copying would resolve the ambiguity.",
+      "uncertainty": "Neither the generated summary nor the evaluator explicitly claims deep copying or independent context objects. This is an omitted consequential boundary, not an established generation error or observed presentation misunderstanding."
+    },
+    {
+      "category": "material-omission",
+      "claim": "Exception handling is described as clearing queued events but does not explicitly state that already-run actions are not rolled back.",
+      "evidence": [
+        "Frozen reference, fsm-engine.ts lines 184–222: exceptions clear queued work and reset the dispatching flag, without undoing actions already run.",
+        "@investigram-dc111a38 says 'any thrown guard/action/error clears queued events' but omits the no-rollback boundary.",
+        "Evaluator answers 1 and 2 do not identify partial action effects among the remaining uncertainties."
+      ],
+      "consequence": "The account leaves an important failure-recovery boundary unstated. A concise no-rollback qualification would make the error behavior more useful to a consumer assessing side effects.",
+      "uncertainty": "No supplied claim promises atomicity, rollback or thread safety. The omission therefore does not establish an incorrect inference by the evaluator; a summary also need not enumerate every implementation limitation."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "Several detailed child-account assertions are accurately attributed by the evaluator but cannot be independently verified from the supplied frozen reference.",
+      "evidence": [
+        "@investigram-2f1f0d4d describes Infinity, non-finite values, likely epoch-domain deadlines, keyed replacement and embedded tests.",
+        "@investigram-1f0389d7 describes duplicate declarations, transitions after unconditional transitions and reachability checks.",
+        "@investigram-9c64fa80 describes individual error classes and retained diagnostic fields; @investigram-dc111a38 also states that initial entry actions run during construction.",
+        "The frozen reference identifies these dependency areas as reachable normal evidence, but does not supply corresponding source excerpts or equally detailed conclusions.",
+        "Evaluator answers 1 and 2 attribute the child accounts and retain qualifications about unexecuted tests, inspected call sites and bounded validation claims."
+      ],
+      "consequence": "These claims must remain unadjudicated at the source-assessment level. Their repetition by the evaluator is not sufficient evidence of either source correctness or a repeated generation error.",
+      "uncertainty": "Only the supplied artifacts were available for this assessment. Captured-content identifiers establish displayed provenance markers, not independently inspected source content."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly distinguishes the displayed composition structure from subject provenance and does not invent correction history or a progressive investigation sequence.",
+      "evidence": [
+        "The only captured command is 'summarize fsm-engine'.",
+        "@investigram-dc111a38 lists three composition children; each child lists that account as composition parent; all four separately mark @module-28ee01f8 as 'provenance, not composition'.",
+        "The footer says originals remain displayed and replacement substitution and derived revision warnings are not yet presented; no concrete original/replacement correction pair appears in this view.",
+        "Evaluator answers 3 and 5 explicitly decline to infer operation improvements, particular corrections or later-investigation relationships."
+      ],
+      "consequence": "The summary supports identifying responsibility-specific references while retaining the actual limits of the displayed history. Missing explanation, decomposition or examination views are not treated as generation defects, and deferred milestone features are not treated as failures.",
+      "uncertainty": "The view cannot establish whether corrections or other operations exist elsewhere. The general condition's description of explicit correction links does not establish a concrete correction in this captured summary."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator's presentation critique identifies plausible risks while expressly avoiding claims of observed reader confusion or unsupported system-wide capability limits.",
+      "evidence": [
+        "Evaluator answer 6 points to the dense lead paragraph, repeated metadata, opaque evidence identifiers, generic correction notices and repeated attempt/session totals.",
+        "The captured view repeats 4 calls and 123430 total tokens for attempt and session, and includes explicit warnings about subset accounting, billed usage and monetary attribution.",
+        "Evaluator answer 6 labels confusion as a presentation risk rather than an observed outcome and leaves open whether another UI supplies navigation or follow-up controls.",
+        "Evaluator answer 4 treats invocation syntax and supported lenses as unknown from this view."
+      ],
+      "consequence": "The criticism is grounded in the supplied display and useful for presentation refinement. No demonstrated presentation misunderstanding or unsupported evaluator extrapolation is established by these comments.",
+      "uncertainty": "The artifacts contain no usability observation beyond this evaluator's reading. Individually identified references are shown, but operational selectability and navigation are not demonstrated."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful as a qualified orientation to the FSM runtime and a basis for choosing a focused follow-up; insufficient to establish runtime correctness or correction history.",
+    "reasons": [
+      "The main runtime account agrees with the frozen control-flow reference, including synchronous queued dispatch and the actual external transition commit order.",
+      "Runtime, builder, timer and error responsibilities are separately identified, and composition is explicitly distinguished from investigation-subject provenance.",
+      "The timer payload concern is surfaced without claiming execution or proven payload forwarding.",
+      "The evaluator preserves interpretation status, bounded evidence coverage, unexecuted tests, uncertainty about follow-up capabilities and the absence of concrete correction history."
+    ],
+    "limitations": [
+      "Caller-supplied context aliasing and the lack of rollback are consequential boundaries left implicit or omitted.",
+      "The frozen reference cannot independently settle the detailed timer, builder and error assertions or construction behavior contained in the displayed accounts.",
+      "Only a summary view is supplied; progressive operations, executable follow-up controls and correction-specific relationships cannot be assessed.",
+      "Dense prose and repeated metadata may impede use, but confusion is a hypothesized presentation risk rather than an observed evaluator error.",
+      "The reference preparer and orchestrator are the implementing agent, with an unavailable exact model identifier in the OpenAI family; that overlap limits assessment independence.",
+      "No repeated generation error or unsupported evaluator extrapolation is established by the supplied comparison."
+    ]
+  }
+}

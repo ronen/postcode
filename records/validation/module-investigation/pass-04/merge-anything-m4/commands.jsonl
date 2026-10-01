@@ -1,0 +1,11 @@
+{"command":"summarize anonymous","at":"2026-10-01T15:24:46.115Z"}
+{"command":"explain @investigram-9035f794","at":"2026-10-01T15:26:40.837Z"}
+{"command":"decompose @investigram-dde06853","at":"2026-10-01T15:28:33.507Z"}
+{"command":"examine @investigram-da6ea7a9","at":"2026-10-01T15:29:51.855Z"}
+{"command":"examine @investigram-da6ea7a9","at":"2026-10-01T15:32:34.367Z"}
+{"command":"inspect @investigram-7482c4e2","at":"2026-10-01T15:32:35.352Z"}
+{"command":"inspect @investigram-da6ea7a9","at":"2026-10-01T15:32:36.052Z"}
+{"command":"inspect @investigram-ae9ae6b5 --source-detail","at":"2026-10-01T15:32:36.751Z"}
+{"command":"inspect anonymous","at":"2026-10-01T15:32:37.489Z"}
+{"command":"usage","at":"2026-10-01T15:32:38.248Z"}
+{"command":"exit","at":"2026-10-01T15:32:38.975Z"}

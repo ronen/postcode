@@ -1,0 +1,179 @@
+{
+  "cases": [
+    {
+      "case": "cockatiel-m4",
+      "liveOutcomes": [
+        {
+          "operation": "functionality",
+          "termination": "accepted",
+          "calls": 6,
+          "citations": 0,
+          "fullEvidenceRecords": 148,
+          "summaryRecords": 8
+        },
+        {
+          "operation": "clarification",
+          "termination": "accepted",
+          "calls": 3,
+          "citations": 1,
+          "fullEvidenceRecords": 53,
+          "summaryRecords": 3
+        },
+        {
+          "operation": "decomposition",
+          "termination": "accepted",
+          "calls": 3,
+          "citations": 4,
+          "fullEvidenceRecords": 44,
+          "summaryRecords": 6
+        },
+        {
+          "operation": "examination",
+          "termination": "accepted",
+          "calls": 6,
+          "citations": 1,
+          "fullEvidenceRecords": 103,
+          "summaryRecords": 8
+        }
+      ],
+      "requests": 18,
+      "tokens": 361212,
+      "exactResolvedFields": 182,
+      "missingCalls": 0,
+      "anomalousCalls": 0,
+      "wireExposureEqualsCanonicalLedger": true,
+      "usageViewsObservationsAndProviderAgree": true,
+      "elapsedMilliseconds": 503625
+    },
+    {
+      "case": "fsm-engine-m4",
+      "liveOutcomes": [
+        {
+          "operation": "functionality",
+          "termination": "accepted",
+          "calls": 4,
+          "citations": 0,
+          "fullEvidenceRecords": 134,
+          "summaryRecords": 8
+        },
+        {
+          "operation": "clarification",
+          "termination": "accepted",
+          "calls": 3,
+          "citations": 4,
+          "fullEvidenceRecords": 47,
+          "summaryRecords": 3
+        },
+        {
+          "operation": "decomposition",
+          "termination": "accepted",
+          "calls": 4,
+          "citations": 1,
+          "fullEvidenceRecords": 51,
+          "summaryRecords": 6
+        },
+        {
+          "operation": "examination",
+          "termination": "accepted",
+          "calls": 6,
+          "citations": 1,
+          "fullEvidenceRecords": 183,
+          "summaryRecords": 9
+        }
+      ],
+      "requests": 17,
+      "tokens": 489124,
+      "exactResolvedFields": 181,
+      "missingCalls": 0,
+      "anomalousCalls": 0,
+      "wireExposureEqualsCanonicalLedger": true,
+      "usageViewsObservationsAndProviderAgree": true,
+      "elapsedMilliseconds": 662757
+    },
+    {
+      "case": "merge-anything-m4",
+      "liveOutcomes": [
+        {
+          "operation": "functionality",
+          "termination": "accepted",
+          "calls": 7,
+          "citations": 0,
+          "fullEvidenceRecords": 156,
+          "summaryRecords": 10
+        },
+        {
+          "operation": "clarification",
+          "termination": "accepted",
+          "calls": 3,
+          "citations": 1,
+          "fullEvidenceRecords": 79,
+          "summaryRecords": 8
+        },
+        {
+          "operation": "decomposition",
+          "termination": "accepted",
+          "calls": 3,
+          "citations": 1,
+          "fullEvidenceRecords": 29,
+          "summaryRecords": 3
+        },
+        {
+          "operation": "examination",
+          "termination": "accepted",
+          "calls": 6,
+          "citations": 3,
+          "fullEvidenceRecords": 187,
+          "summaryRecords": 9
+        }
+      ],
+      "requests": 19,
+      "tokens": 509575,
+      "exactResolvedFields": 189,
+      "missingCalls": 0,
+      "anomalousCalls": 0,
+      "wireExposureEqualsCanonicalLedger": true,
+      "usageViewsObservationsAndProviderAgree": true,
+      "elapsedMilliseconds": 474214
+    },
+    {
+      "case": "progressive-numeric-m4",
+      "liveOutcomes": [
+        {
+          "operation": "decomposition",
+          "termination": "accepted",
+          "calls": 3,
+          "citations": 2,
+          "fullEvidenceRecords": 26,
+          "summaryRecords": 6
+        },
+        {
+          "operation": "clarification",
+          "termination": "accepted",
+          "calls": 4,
+          "citations": 3,
+          "fullEvidenceRecords": 26,
+          "summaryRecords": 6
+        },
+        {
+          "operation": "examination",
+          "termination": "accepted",
+          "calls": 3,
+          "citations": 1,
+          "fullEvidenceRecords": 26,
+          "summaryRecords": 8
+        }
+      ],
+      "requests": 10,
+      "tokens": 100015,
+      "exactResolvedFields": 154,
+      "missingCalls": 0,
+      "anomalousCalls": 0,
+      "wireExposureEqualsCanonicalLedger": true,
+      "usageViewsObservationsAndProviderAgree": true,
+      "elapsedMilliseconds": 360681
+    }
+  ],
+  "requests": 64,
+  "providerReportedTokens": 1459926,
+  "monetaryAttribution": null
+}

@@ -1,0 +1,13 @@
+{
+  "id": "cockatiel-m4",
+  "pass": "module-progressive-04",
+  "subject": "cockatiel",
+  "manifest": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-04/manifest.json",
+  "project": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/tsconfig.json",
+  "output": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-04/cockatiel-m4",
+  "budget": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-04/request-budget.json",
+  "incremental": true,
+  "commands": [
+    "summarize executor"
+  ]
+}

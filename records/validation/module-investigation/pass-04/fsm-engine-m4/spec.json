@@ -1,0 +1,13 @@
+{
+  "id": "fsm-engine-m4",
+  "pass": "module-progressive-04",
+  "subject": "fsm-engine",
+  "manifest": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-04/manifest.json",
+  "project": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/tsconfig.json",
+  "output": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-04/fsm-engine-m4",
+  "budget": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-04/request-budget.json",
+  "incremental": true,
+  "commands": [
+    "summarize fsm-engine"
+  ]
+}

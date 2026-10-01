@@ -337,6 +337,16 @@ attention, what should be progressively disclosed, and what belongs in a later
 visual interface. Preserve precise navigation, evidence, qualifications, and
 consequential omission disclosure while improving readability.
 
+The [milestone-4 progressive assessment](../records/validation/module-investigation/pass-04/report.md)
+adds captured examples: repeated full accounts and accounting/evidence metadata
+obscure what changed; investigram source-detail views can supply artifact paths
+and metadata without checkable excerpts or line positions; and standalone captured
+interpretive views omit effective compiler/configuration attribution that is
+available in the surrounding assessment record. Consider readable, bounded
+evidence navigation and concise provenance in the whole-journey review. These
+are formative observations, not measured human usability results or authorization
+for a presentation redesign.
+
 ## Investigate analysis parallelism and asynchronous I/O
 
 Added: 2026-09-24

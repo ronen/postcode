@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "condition": "sequence",
+  "findings": [
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator recovered the source-supported cumulative behavior and rejected the scripted exclusive partition, rather than repeating a natural generation error.",
+      "evidence": [
+        "Frozen reference: three independent conditions append positive for value > 0, even for value % 2 === 0, and large for value >= 10, in source order; no match returns an empty array without rejection.",
+        "Evaluator answer 1 cites @investigram-3ef105c5, @investigram-fdb5fd6d and @investigram-eef0aa51 for the same predicates, order, multiple labels and empty results.",
+        "The initial @investigram-1cecff9b and @investigram-33b17c63 identify their origin as scripted and explicitly call themselves injected, unverified interpretations. Evaluator answer 2 preserves this distinction."
+      ],
+      "consequence": "The central comprehension result agrees with the frozen reference. The wrong baseline cannot be counted as a natural investigator error or as a generation error repeated by this evaluator.",
+      "uncertainty": "This demonstrates recovery in one deliberately seeded sequence; it does not estimate the frequency of spontaneous wrong summaries or correction success elsewhere."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator distinguishes useful decomposition and explanation from the later examination's actual incremental contribution.",
+      "evidence": [
+        "@investigram-ef50f1cd selects positive, even, large and accumulation/return aspects through @investigram-21b62b5a, @investigram-036f6fba, @investigram-46cd1919 and @investigram-475ca753.",
+        "@investigram-fdb5fd6d and children explain the inclusive threshold, zero and negative even inputs, output order and empty results with explicitly derived examples.",
+        "@investigram-8f1a2f3e separately challenges the old child and composes @investigram-70839b95, which explains large implying positive for ordinary finite values.",
+        "Evaluator answer 3 states that cumulative behavior was already supplied by decomposition and explanation; examination deepens it and separately corrects the child."
+      ],
+      "consequence": "The reader can select an aspect of the function for follow-up without treating the parts as exclusive classes, separate domain objects, or independent collaborating modules. The evaluator does not inflate repetition into discovery.",
+      "uncertainty": "The frozen reference permits this decomposition but does not establish that it is uniquely useful. Ordinary numeric overlap is supported; an exhaustive account of special values is not supplied."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly reads both correction relationships and separates composition from later-investigation provenance.",
+      "evidence": [
+        "The decomposition reports @investigram-1cecff9b -> @investigram-3ef105c5 with a reason grounded in independent if statements, multiple labels and empty returns.",
+        "The examination reports @investigram-33b17c63 -> @investigram-b0e77f5c with a reason grounded in cumulative conditions and the original child's lack of source evidence.",
+        "inspect @investigram-1cecff9b retains the original root and its original composition child and displays both correction links.",
+        "Evaluator answer 5 distinguishes original, replacement, reporter, composition parent and investigation subject; it explicitly identifies @investigram-fdb5fd6d as a later investigation of @investigram-ef50f1cd rather than one of its four composition children."
+      ],
+      "consequence": "The evaluator can reconstruct what changed and why without claiming a silent rewrite, propagated revision or truth established merely by the correction label. The replacement behavior agrees with the frozen reference.",
+      "uncertainty": "These views support preservation of the displayed originals and composition, not a comprehensive audit of all retained records. Automatic replacement selection and derived revision warnings are deferred milestone-5 work, so their absence is not a milestone-4 failure."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator preserves the distinction between static interpretation, recorded documentation, mechanical support and runtime evidence.",
+      "evidence": [
+        "Evaluator answers 1 and 2 call the examples derived rather than executed and treat callers' interpretation of labels as recorded documentation rather than demonstrated caller behavior.",
+        "The displayed source location classify.ts line 1 records the caller-interpretation comment; documentation-association support explicitly leaves truth, currency and completeness unestablished.",
+        "The export support record for classify reports a direct, non-aliased value export; inspect classify qualifies module membership and export coverage and states first-observed, non-atomic input capture.",
+        "@investigram-8f1a2f3e bounds the empty dependency result, and evaluator answer 2 does not infer universal absence of callers or runtime relationships."
+      ],
+      "consequence": "The account gives the behavioral explanation usable support without converting metadata, nearby documentation, a number annotation, or an empty dependency result into runtime guarantees.",
+      "uncertainty": "The supplied support records are evidence of what the view communicates. The frozen reference does not independently audit the compiler extraction or dependency machinery, and actual callers and author intent remain unestablished."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The proposed follow-up stays within demonstrated navigation while correctly marking execution and correction-aware presentation as future capabilities.",
+      "evidence": [
+        "Evaluator answer 4 selects displayed child @investigram-70839b95 for examination of its special-value and normal-Array qualifications.",
+        "The sequence demonstrates targeted examine, decompose, explain, inspect and inspect with --source-detail.",
+        "The repeated examine @investigram-33b17c63 is labeled 'Retained outcome; no new investigation'; evaluator answers 2 and 4 recognize retained reuse.",
+        "Answer 4 explicitly says runtime validation, automatic replacement substitution and derived revision warnings are not demonstrated, and that no custom lens parameter is shown."
+      ],
+      "consequence": "The evaluator identifies a concrete next subject without inventing an available runtime command or mistaking another display of the same outcome for corroboration.",
+      "uncertainty": "There is no supplied result for examining @investigram-70839b95. The value or content of that future result and any execution capability remain unestablished."
+    },
+    {
+      "category": "material-omission",
+      "claim": "The source-detail presentation omits the implementation tail needed for direct reader verification of the large check and return, even though those behaviors are communicated elsewhere.",
+      "evidence": [
+        "inspect @investigram-8f1a2f3e --source-detail shows source:82e7a9631abee32cea9001f78f344dca85caec80058937e3033fefaddab2733a spanning classify.ts lines 2 through 8.",
+        "Its displayed excerpt stops after the even-label append and reports omittedCharacters: 60.",
+        "The frozen reference supplies the third predicate and return behavior; @investigram-fdb5fd6d and other accounts state them, while captured-content support reports full-file exposure to investigators.",
+        "Evaluator answers 1, 2 and 6 accurately identify the difference between reported full exposure and the reader's truncated excerpt."
+      ],
+      "consequence": "A reader can understand the claim but cannot verify the entire behavioral correction directly from that displayed code excerpt. This is a material presentation omission, not evidence that the investigator lacked full source or generated an incorrect account.",
+      "uncertainty": "The omission does not change the evaluator's recovered behavior in this sequence. No additional source-expansion mechanism beyond the supplied views is established."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator detects wording and navigation hazards without demonstrating that it actually misunderstood them.",
+      "evidence": [
+        "Evaluator answer 6 flags @investigram-1851aa45's 'no passing condition leaves the array empty', while answer 1 correctly states that no match yields an empty array.",
+        "The examination correction reason says 'The complete replacement below', although the replacement appears above in the examination and is not included as full content in the immediate original-child inspection.",
+        "@investigram-8f1a2f3e displays both 'Unresolved inconsistency' and a correction arrow; evaluator answer 5 declines to infer formal resolution.",
+        "The final inspect classify begins with the qualified scripted original, includes seven associated interpretations, and warns that listing order does not establish authority. Evaluator answer 6 describes possible skim-reading risk rather than endorsing that original."
+      ],
+      "consequence": "There are concrete presentation risks and avoidable reading effort, but no observed presentation misunderstanding in the evaluator's behavioral or correction account. The ambiguous empty-array wording should not be promoted to a demonstrated semantic generation error.",
+      "uncertainty": "Claims that other readers could skim incorrectly or that a different layout would reduce burden are plausible formative judgments, not measured user outcomes. The deferred replacement and warning features are not assessed as missing milestone-4 requirements."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "Deeper runtime, general reliability and broad usability conclusions exceed what the frozen fixture and this one sequence can settle.",
+      "evidence": [
+        "The frozen reference explicitly leaves runtime callers, non-number JavaScript inputs, author intent and the usefulness of the threshold unestablished, and states that no target function is executed.",
+        "Evaluator answers 2 through 4 preserve uncertainty about exhaustive special values, altered Array behavior, future follow-up results and behavior on uninjected accounts or other modules.",
+        "The evaluator's usefulness limitation confines its judgment to the supplied user-facing sequence.",
+        "The assessment setup states that the implementing agent prepared the reference and orchestrated the run, with exact model identity unavailable and OpenAI-family overlap limiting independence."
+      ],
+      "consequence": "The sequence supports a bounded formative comprehension result. It does not establish runtime robustness, general product reliability, independent validation, or comparative usability across tasks.",
+      "uncertainty": "No unsupported evaluator extrapolation of these matters is demonstrated: the evaluator labels them unknown or future work. Its qualitative report of cumbersome reading remains subjective and cannot be generalized from the reference."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful for understanding this small classifier and tracing its corrections, with substantial reading and verification friction.",
+    "reasons": [
+      "The evaluator accurately recovers independent label accumulation, exact predicates, check order and empty results, agreeing with the frozen source reference.",
+      "Decomposition supplies meaningful selectable aspects; explanation adds concrete boundaries and examples; examination separately corrects the scripted child and clarifies overlap.",
+      "Explicit original-to-replacement links and composition/provenance labels make correction history recoverable while preserving interpretation status.",
+      "The evaluator identifies a focused next examination and retains the limits of documentation, static support, retained reuse and runtime evidence."
+    ],
+    "limitations": [
+      "Repeated original accounts, long support records and usage metadata make the relevant behavioral change harder to find; this is a formative reading judgment, not a measured usability result.",
+      "The source-detail excerpt omits 60 implementation characters, limiting direct verification of the large condition and return despite reported full investigator exposure.",
+      "Ambiguous prose and positional 'replacement below' wording introduce presentation risk, but this evaluator did not adopt the wrong baseline or misunderstand the correction relationships.",
+      "No generation error repeated by the evaluator, unsupported evaluator extrapolation, or actual presentation misunderstanding was established in this sequence.",
+      "The baseline is injected, no runtime execution is supplied, and milestone-5 automatic replacement selection and derived warnings are explicitly outside the milestone-4 assessment.",
+      "Reference preparation and orchestration share the implementing agent, and model-family overlap limits independence. The fixture cannot settle deeper runtime claims or generalize reliability and usability to other subjects."
+    ]
+  }
+}

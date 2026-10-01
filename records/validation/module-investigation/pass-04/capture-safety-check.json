@@ -1,0 +1,11 @@
+{
+  "filesChecked": 120,
+  "flaggedFiles": [],
+  "jsonValid": true,
+  "scope": "Supplementary secret-pattern scan and JSON parsing; no credential access; not proof against every secret format.",
+  "patterns": [
+    "API-key-like prefix",
+    "JWT-like three segments",
+    "Bearer credential-like string"
+  ]
+}

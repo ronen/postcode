@@ -1,0 +1,594 @@
+COMMAND: summarize executor
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-e65c42fd: executor
+
+@investigram-5c163d44 · interpretation
+Provides the shared single-attempt execution boundary used by policies: it awaits a callback, classifies returned values and thrown errors with injected filters, reports timed success/failure events, and returns a tagged outcome for policy-specific control flow. It does not itself retry, delay, fall back, time out, or limit concurrency; those decisions remain with callers.
+Referent: Executor module and its exported execution/classification API
+  Qualification: Interpretation of first-observed TypeScript source; runtime, loader, and deployment behavior were not executed.
+  Qualification: Incoming dependency analysis establishes static imports, not every caller's runtime use. Retry and no-op integration were inspected directly; bulkhead, fallback, timeout, and circuit-breaker internals were not.
+  Composition: @investigram-4208b004, @investigram-f44764d6, @investigram-e99da96c
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:ff5c325c28823bfb0ba1bf80c92d4a862db0eb29d9a8eb3a0961cb914f1d2677, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:11985e6907388eb17d657be3549d569d4ab3edcfea867c1b8148b32d0a9be720, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:5062072ec4996b9f50441471dd9d60a772fd1aadb351cf32cad0516a8991559a, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:146966ba9ed6d0b5d2e402db1b64869f7a13ffb96bb36899670e8616ca6e9327, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:3043027d7d250a5fd95814a74d779b2f6e6be0522f273a63cbc6da1f2a4696e1
+
+@investigram-e99da96c · interpretation
+FailureOrSuccess is the policy FailureReason union plus `{success}`. returnOrThrow collapses it for simple callers: throw `{error}`, return `{success}`, otherwise return the filtered failure value. This lets richer policies inspect failures while no-op-style callers recover ordinary return/throw semantics.
+Referent: Tagged outcome type and normalization helper
+  Qualification: The union is structurally discriminated by property-presence checks.
+  Qualification: A filtered returned value is intentionally returned by returnOrThrow rather than thrown.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-5c163d44
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:ff5c325c28823bfb0ba1bf80c92d4a862db0eb29d9a8eb3a0961cb914f1d2677, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:11985e6907388eb17d657be3549d569d4ab3edcfea867c1b8148b32d0a9be720, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:3043027d7d250a5fd95814a74d779b2f6e6be0522f273a63cbc6da1f2a4696e1
+
+@investigram-f44764d6 · interpretation
+Timing is demand-driven: invoke starts a stopwatch only when either event has listeners. It uses `performance.now()` when available, otherwise Node's bigint high-resolution clock converted to milliseconds. Success emits only for an accepted result; filtered results and exceptions emit failure with duration, reason, and handled status.
+Referent: ExecuteWrapper timing and outcome-event behavior
+  Qualification: Timing behavior is inferred from source and was not benchmarked.
+  Qualification: If no listeners exist at invocation start, no stopwatch is created and no outcome event is emitted for that call.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-5c163d44
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:c90c2a138fcad3ce6a18d8d8d7d02ac3906a9273c68e6469dfa9b946122abb32
+
+@investigram-4208b004 · interpretation
+ExecuteWrapper owns fresh success/failure emitters and exposes their subscription functions. invoke awaits the callback. A value rejected by resultFilter becomes a handled failure `{value}`; any other value becomes `{success}`. A thrown error matching errorFilter becomes `{error}`; a nonmatching error is reported as unhandled and rethrown. clone preserves the two predicates but creates new emitters.
+Referent: ExecuteWrapper classification and invocation mechanism
+  Qualification: “Fresh emitters” follows construction of a new ExecuteWrapper in clone; filter functions themselves are reused.
+  Qualification: The callback may be synchronous or promise-like because its result is awaited.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-5c163d44
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c
+Attempt session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:de3e4640423878740a93a064c82db6709baa7f0a91b80e54413a1b970328902b (accepted) reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 156125 tokens; input 153347 tokens (subset of total); output 2778 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 555 tokens (subset of output)
+Session reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 156125 tokens; input 153347 tokens (subset of total); output 2778 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 555 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: explain @investigram-4208b004
+Explain · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-90eca545 · interpretation
+ExecuteWrapper is a boundary around one attempted call: it normalizes outcomes that a policy is meant to handle into a discriminated object, while allowing an unhandled thrown error to remain an actual rejection. `invoke(fn, ...args)` awaits `fn(...args)`, so the same classification applies to direct return values and fulfilled promises. After fulfillment, `resultFilter(value) === false` produces `{ success: value }`; `true` treats the otherwise successful value as a handled failure and produces `{ value }`. If the attempted work throws or its promise rejects, `errorFilter(error) === true` converts that exception to `{ error }`; `false` emits an unhandled-failure notification when observed and then rethrows the original error. Thus “handled” means represented for policy-level processing, not necessarily that the overall operation ultimately succeeds. With the constructor defaults, no returned value is rejected by result filtering and no thrown error is handled.
+Referent: Clarified ExecuteWrapper invocation, outcome classification, observability, and cloning behavior
+  Qualification: This describes the captured TypeScript implementation; source text alone does not establish behavior in every built or deployed version.
+  Qualification: The ordinary outcome flow assumes the supplied filters and event listeners do not themselves throw; those callbacks are not isolated from `invoke`'s control flow.
+  Qualification: `await` assimilates native promises and other PromiseLike results before result filtering.
+  Composition: @investigram-6a35c569, @investigram-7989f34d, @investigram-b9d66291
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-4208b004 (provenance, not composition)
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c
+
+@investigram-b9d66291 · interpretation
+The wrapper does not itself retry, delay, or turn a handled failure into the caller's final return value. RetryPolicy supplies that higher-level meaning: `{success}` ends its loop; `{error}` or `{value}` is passed to backoff as the last failure and may trigger another attempt. Once retries are unavailable, RetryPolicy rethrows the stored error for `{error}`, but returns the stored value for `{value}`. This explains why a result-filtered value is called a failure for policy decisions even though it can eventually be returned to the caller after give-up.
+Referent: How RetryPolicy consumes ExecuteWrapper's classified outcomes
+  Qualification: This consumer behavior is specific to the captured RetryPolicy implementation and is not intrinsic to ExecuteWrapper's union type.
+  Qualification: RetryPolicy also stops retrying when its abort signal is set or its configured retry bound is reached.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-4208b004 (provenance, not composition)
+  Composition parent: @investigram-90eca545
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:146966ba9ed6d0b5d2e402db1b64869f7a13ffb96bb36899670e8616ca6e9327
+
+@investigram-7989f34d · interpretation
+`clone()` copies configuration but not observation state. It constructs a new ExecuteWrapper with the same `errorFilter` and `resultFilter` function objects. Because each instance initializes its own success and failure emitters, listeners attached to the original are not attached to the clone. This lets a policy variant retain the same classification rules without sharing event subscriptions.
+Referent: ExecuteWrapper clone configuration and listener isolation
+  Qualification: The predicates are reused by reference rather than duplicated; any behavior arising from mutable state captured by those functions is therefore still shared.
+  Qualification: Fresh emitter state follows from constructing a new instance whose emitter fields are initialized per instance.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-4208b004 (provenance, not composition)
+  Composition parent: @investigram-90eca545
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1
+
+@investigram-6a35c569 · interpretation
+The two public event properties are subscription functions, not the outcome itself. A success notification contains only elapsed `duration`. A failure notification contains `duration`, `handled`, and `reason`, where `reason` is `{ value }` for a filtered result or `{ error }` for an exception. For a filtered result, `handled` is always true. For an exception, it is the boolean returned by `errorFilter`, so an event can report `handled: false` immediately before `invoke` rethrows. Timing work is skipped entirely when both emitters have zero listeners at the start of the invocation; consequently, these events are observational and listener presence controls whether duration is measured. Subscriptions return disposables, and EventEmitter invokes current listeners synchronously.
+Referent: ExecuteWrapper success/failure event payloads and conditional duration measurement
+  Qualification: Listener count is sampled once, before the callback is invoked; adding a first listener during that callback does not retroactively enable timing for that invocation.
+  Qualification: The duration covers the awaited callback plus subsequent result filtering up to the emission point, and is expressed in milliseconds by either `performance.now()` or a converted high-resolution process clock.
+  Qualification: EventEmitter does not catch listener exceptions. In ExecuteWrapper, filtering and emission occur inside its `try`, so a throwing filter or listener can alter the apparent failure path; in particular, this code does not provide observer-exception isolation.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-4208b004 (provenance, not composition)
+  Composition parent: @investigram-90eca545
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:c90c2a138fcad3ce6a18d8d8d7d02ac3906a9273c68e6469dfa9b946122abb32
+Attempt session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:09eaeec89a400eeaf6b45174ea28b4af3e567b6ad0971423614bf9a232876f9f (accepted) reported usage: 3 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 40768 tokens; input 38582 tokens (subset of total); output 2186 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 650 tokens (subset of output)
+Session reported usage: 9 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 196893 tokens; input 191929 tokens (subset of total); output 4964 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1205 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: decompose @investigram-90eca545
+Decompose · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-45379e6a · interpretation
+Selected aspects of ExecuteWrapper’s per-call outcome boundary include invocation, fulfilled-result classification, exception classification, notifications, default filtering, and cloning.
+Referent: A non-exhaustive decomposition of ExecuteWrapper outcome handling
+  Qualification: These are selectable aspects, not an assertion that the parts are exhaustive, independent, or mutually exclusive.
+  Qualification: The account describes captured TypeScript source; it does not establish behavior in every built or deployed version.
+  Composition: @investigram-07012499, @investigram-47e9b23d, @investigram-b7cf6b0e, @investigram-c779ad27, @investigram-6f195b44, @investigram-6bd98f60
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-90eca545 (provenance, not composition)
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigram:90eca545b4c7d7b4208162b5eeadbf8ebe1880dbfa58abdb4704225ab561c039, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c
+
+@investigram-6bd98f60 · interpretation
+Cloning — creates another wrapper with the same filter function objects and newly initialized emitter state.
+Referent: ExecuteWrapper configuration cloning
+  Qualification: Filters are shared by reference, so mutable state captured by them can remain shared.
+  Qualification: Fresh emitter state follows from construction of a new instance; subscriptions on the original are not copied by the captured implementation.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-90eca545 (provenance, not composition)
+  Composition parent: @investigram-45379e6a
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae
+
+@investigram-6f195b44 · interpretation
+Default filtering — absent custom predicates, fulfilled values pass as successes and exceptions remain unhandled and are rethrown.
+Referent: ExecuteWrapper constructor defaults
+  Qualification: Both captured default predicates return false.
+  Qualification: Notification behavior still depends on listener presence.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-90eca545 (provenance, not composition)
+  Composition parent: @investigram-45379e6a
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae
+
+@investigram-c779ad27 · interpretation
+Notifications — observed successes emit elapsed duration; observed failures emit duration, handled status, and either a filtered value or an error reason.
+Referent: ExecuteWrapper success and failure notifications
+  Qualification: A stopwatch is created only when at least one success or failure listener exists at invocation start.
+  Qualification: A filtered result is emitted as handled; an unhandled exception is notified before being rethrown.
+  Qualification: Listener dispatch details beyond ExecuteWrapper’s calls are not established here.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-90eca545 (provenance, not composition)
+  Composition parent: @investigram-45379e6a
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae
+
+@investigram-b7cf6b0e · interpretation
+Exception classification — a thrown or rejected value becomes `{ error }` when the error filter is true; otherwise the original value is rethrown.
+Referent: ExecuteWrapper exception classification
+  Qualification: The catch also covers exceptions raised inside the surrounding try block, including result filtering and success emission, rather than only callback failures.
+  Qualification: The statement assumes the error filter and failure emission return normally.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-90eca545 (provenance, not composition)
+  Composition parent: @investigram-45379e6a
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae
+
+@investigram-47e9b23d · interpretation
+Result classification — a fulfilled value becomes `{ success: value }` when the result filter is false, or `{ value }` when it is true.
+Referent: ExecuteWrapper fulfilled-result classification
+  Qualification: The filtered `{ value }` branch is represented as a policy-level failure even though the callback fulfilled.
+  Qualification: The statement assumes the result filter itself returns normally.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-90eca545 (provenance, not composition)
+  Composition parent: @investigram-45379e6a
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae
+
+@investigram-07012499 · interpretation
+Invocation — forwards the supplied arguments to the callback and awaits its direct or promise-like result.
+Referent: ExecuteWrapper callback invocation and awaiting
+  Qualification: Awaiting can turn a rejected promise-like result into the exception path.
+  Qualification: This aspect does not by itself describe how the settled outcome is classified.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-90eca545 (provenance, not composition)
+  Composition parent: @investigram-45379e6a
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae
+Attempt session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:6efaf7fa97ce7a8a024cf4ae0c748e298ad16e847bd94f28a90cbc9a33c4ca18 (accepted) reported usage: 3 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 40536 tokens; input 38688 tokens (subset of total); output 1848 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 546 tokens (subset of output)
+Session reported usage: 12 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 237429 tokens; input 230617 tokens (subset of total); output 6812 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1751 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: examine @investigram-b7cf6b0e
+Examine · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-da67d827 · interpretation
+ExecuteWrapper.invoke classifies the value caught by its single try/catch, not merely exceptions originating in the supplied callback. After awaiting the callback, failures from resultFilter, duration measurement on the success path, or synchronous success listeners enter the same catch and are passed to errorFilter. If that predicate returns true, invoke emits a handled failure event and resolves to an object containing the exact caught value as `error`; if it returns false, invoke emits an unhandled failure event and rethrows that same value. This sharpens, rather than overturns, the earlier account: classification has important boundaries and can itself be disrupted by predicates, timing, and listeners.
+Referent: Deep examination of ExecuteWrapper exception classification and its boundaries
+  Qualification: These are static-source findings; no execution was performed, and source alone does not establish observed runtime behavior in every deployment.
+  Qualification: The true/false wording follows the declared boolean predicate contract; ordinary JavaScript branching would in practice use the returned value's truthiness if the contract were violated.
+  Qualification: The exact caught value is preserved only while errorFilter, failure-duration evaluation, and failure emission complete normally.
+  Composition: @investigram-82abd8b2, @investigram-92cfd159, @investigram-cc343227
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-b7cf6b0e (provenance, not composition)
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:c90c2a138fcad3ce6a18d8d8d7d02ac3906a9273c68e6469dfa9b946122abb32, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:03830170e50d85a26344ceb583aa669816e635c553bb7747607578171eaaec89
+
+@investigram-cc343227 · interpretation
+The public IPolicy comment says onFailure fires when a request fails due to a handled reason, but ExecuteWrapper emits a failure event for every value reaching its catch, recording the filter result in `handled`; the supplied test explicitly expects an event for an unhandled Error before invoke rejects. Thus the documentation's handled-only phrasing is narrower than this implementation and its direct test example.
+Referent: Difference between onFailure documentation and ExecuteWrapper failure emission
+  Qualification: The IPolicy comment is documentation of the public policy interface, not a formal specification of the internal wrapper, although Policy factories construct wrappers and policies expose related events.
+  Qualification: The comment itself contains awkward wording, so the discrepancy is attributed to its apparent handled-only assertion rather than treated as proof of author intent.
+  Qualification: Failure emission can still be skipped or interrupted when no listener existed at invocation start, timing fails, errorFilter throws, or a failure listener throws.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-b7cf6b0e (provenance, not composition)
+  Composition parent: @investigram-da67d827
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:03830170e50d85a26344ceb583aa669816e635c553bb7747607578171eaaec89, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:5062072ec4996b9f50441471dd9d60a772fd1aadb351cf32cad0516a8991559a
+
+@investigram-92cfd159 · interpretation
+Event notification is synchronous and has no listener-level exception isolation. A throwing success listener is caught by invoke and can cause a completed callback result to be discarded, passed to errorFilter as the listener's exception, and followed by a failure notification. By contrast, errorFilter and failure emission run inside the catch clause rather than inside another protective try: if errorFilter throws, its exception replaces the original caught value; if failure-duration evaluation or a failure listener throws, that later exception escapes and can prevent the selected `{ error }` result or original-value rethrow. With multiple listeners, EventEmitter stops iterating when one throws.
+Referent: Observer and classifier failures that alter ExecuteWrapper exception outcomes
+  Qualification: A failure event is attempted before either returning `{ error }` or rethrowing the unhandled value, provided timing evaluation and emission complete normally.
+  Qualification: Listener registration changes during an awaited call can affect who receives an event, while the decision to collect timing and emit at all is fixed by listener counts at invocation start.
+  Qualification: These edge cases follow control flow in the captured sources and are not covered by the supplied ExecuteWrapper test file.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-b7cf6b0e (provenance, not composition)
+  Composition parent: @investigram-da67d827
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:c90c2a138fcad3ce6a18d8d8d7d02ac3906a9273c68e6469dfa9b946122abb32, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:03830170e50d85a26344ceb583aa669816e635c553bb7747607578171eaaec89
+
+@investigram-82abd8b2 · interpretation
+The catch domain starts at `await fn(...args)` and extends through result filtering, success-duration calculation, and success-event emission. It therefore handles both synchronous throws and awaited rejections from the callback, but it also reclassifies infrastructure failures from resultFilter or the success path as though they were operation errors. Stopwatch creation occurs before the try, so an exception while initially reading the clock bypasses errorFilter entirely.
+Referent: Operations included in and excluded from ExecuteWrapper's catch domain
+  Qualification: The implementation awaits a PromiseLike or immediate result, so the caught rejection reason need not be an Error object.
+  Qualification: The stopwatch is created only when at least one success or failure listener exists at invocation start; without such a listener, timing and event emission are skipped.
+  Qualification: No supplied test in the directly dependent Executor test module exercises rejected promises, throwing filters, timing failures, or throwing listeners.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-b7cf6b0e (provenance, not composition)
+  Composition parent: @investigram-da67d827
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:03830170e50d85a26344ceb583aa669816e635c553bb7747607578171eaaec89
+Attempt session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:d17a177ee6b356001a390cf6783b432d784732ef5fae03506dcd468478589408 (accepted) reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 123783 tokens; input 120146 tokens (subset of total); output 3637 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1772 tokens (subset of output)
+Session reported usage: 18 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 361212 tokens; input 350763 tokens (subset of total); output 10449 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3523 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: examine @investigram-b7cf6b0e
+Examine · investigram
+References remain bound for this session.
+Retained outcome; no new investigation.
+
+@investigram-da67d827 · interpretation
+ExecuteWrapper.invoke classifies the value caught by its single try/catch, not merely exceptions originating in the supplied callback. After awaiting the callback, failures from resultFilter, duration measurement on the success path, or synchronous success listeners enter the same catch and are passed to errorFilter. If that predicate returns true, invoke emits a handled failure event and resolves to an object containing the exact caught value as `error`; if it returns false, invoke emits an unhandled failure event and rethrows that same value. This sharpens, rather than overturns, the earlier account: classification has important boundaries and can itself be disrupted by predicates, timing, and listeners.
+Referent: Deep examination of ExecuteWrapper exception classification and its boundaries
+  Qualification: These are static-source findings; no execution was performed, and source alone does not establish observed runtime behavior in every deployment.
+  Qualification: The true/false wording follows the declared boolean predicate contract; ordinary JavaScript branching would in practice use the returned value's truthiness if the contract were violated.
+  Qualification: The exact caught value is preserved only while errorFilter, failure-duration evaluation, and failure emission complete normally.
+  Composition: @investigram-82abd8b2, @investigram-92cfd159, @investigram-cc343227
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-b7cf6b0e (provenance, not composition)
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:c90c2a138fcad3ce6a18d8d8d7d02ac3906a9273c68e6469dfa9b946122abb32, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:03830170e50d85a26344ceb583aa669816e635c553bb7747607578171eaaec89
+
+@investigram-cc343227 · interpretation
+The public IPolicy comment says onFailure fires when a request fails due to a handled reason, but ExecuteWrapper emits a failure event for every value reaching its catch, recording the filter result in `handled`; the supplied test explicitly expects an event for an unhandled Error before invoke rejects. Thus the documentation's handled-only phrasing is narrower than this implementation and its direct test example.
+Referent: Difference between onFailure documentation and ExecuteWrapper failure emission
+  Qualification: The IPolicy comment is documentation of the public policy interface, not a formal specification of the internal wrapper, although Policy factories construct wrappers and policies expose related events.
+  Qualification: The comment itself contains awkward wording, so the discrepancy is attributed to its apparent handled-only assertion rather than treated as proof of author intent.
+  Qualification: Failure emission can still be skipped or interrupted when no listener existed at invocation start, timing fails, errorFilter throws, or a failure listener throws.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-b7cf6b0e (provenance, not composition)
+  Composition parent: @investigram-da67d827
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:03830170e50d85a26344ceb583aa669816e635c553bb7747607578171eaaec89, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:5062072ec4996b9f50441471dd9d60a772fd1aadb351cf32cad0516a8991559a
+
+@investigram-92cfd159 · interpretation
+Event notification is synchronous and has no listener-level exception isolation. A throwing success listener is caught by invoke and can cause a completed callback result to be discarded, passed to errorFilter as the listener's exception, and followed by a failure notification. By contrast, errorFilter and failure emission run inside the catch clause rather than inside another protective try: if errorFilter throws, its exception replaces the original caught value; if failure-duration evaluation or a failure listener throws, that later exception escapes and can prevent the selected `{ error }` result or original-value rethrow. With multiple listeners, EventEmitter stops iterating when one throws.
+Referent: Observer and classifier failures that alter ExecuteWrapper exception outcomes
+  Qualification: A failure event is attempted before either returning `{ error }` or rethrowing the unhandled value, provided timing evaluation and emission complete normally.
+  Qualification: Listener registration changes during an awaited call can affect who receives an event, while the decision to collect timing and emit at all is fixed by listener counts at invocation start.
+  Qualification: These edge cases follow control flow in the captured sources and are not covered by the supplied ExecuteWrapper test file.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-b7cf6b0e (provenance, not composition)
+  Composition parent: @investigram-da67d827
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:c90c2a138fcad3ce6a18d8d8d7d02ac3906a9273c68e6469dfa9b946122abb32, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:03830170e50d85a26344ceb583aa669816e635c553bb7747607578171eaaec89
+
+@investigram-82abd8b2 · interpretation
+The catch domain starts at `await fn(...args)` and extends through result filtering, success-duration calculation, and success-event emission. It therefore handles both synchronous throws and awaited rejections from the callback, but it also reclassifies infrastructure failures from resultFilter or the success path as though they were operation errors. Stopwatch creation occurs before the try, so an exception while initially reading the clock bypasses errorFilter entirely.
+Referent: Operations included in and excluded from ExecuteWrapper's catch domain
+  Qualification: The implementation awaits a PromiseLike or immediate result, so the caught rejection reason need not be an Error object.
+  Qualification: The stopwatch is created only when at least one success or failure listener exists at invocation start; without such a listener, timing and event emission are skipped.
+  Qualification: No supplied test in the directly dependent Executor test module exercises rejected promises, throwing filters, timing failures, or throwing listeners.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-b7cf6b0e (provenance, not composition)
+  Composition parent: @investigram-da67d827
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:03830170e50d85a26344ceb583aa669816e635c553bb7747607578171eaaec89
+Attempt session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:d17a177ee6b356001a390cf6783b432d784732ef5fae03506dcd468478589408 (accepted) reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 123783 tokens; input 120146 tokens (subset of total); output 3637 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1772 tokens (subset of output)
+Session reported usage: 18 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 361212 tokens; input 350763 tokens (subset of total); output 10449 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3523 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-45379e6a
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-45379e6a · interpretation
+Selected aspects of ExecuteWrapper’s per-call outcome boundary include invocation, fulfilled-result classification, exception classification, notifications, default filtering, and cloning.
+Referent: A non-exhaustive decomposition of ExecuteWrapper outcome handling
+  Qualification: These are selectable aspects, not an assertion that the parts are exhaustive, independent, or mutually exclusive.
+  Qualification: The account describes captured TypeScript source; it does not establish behavior in every built or deployed version.
+  Composition: @investigram-07012499, @investigram-47e9b23d, @investigram-b7cf6b0e, @investigram-c779ad27, @investigram-6f195b44, @investigram-6bd98f60
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-90eca545 (provenance, not composition)
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigram:90eca545b4c7d7b4208162b5eeadbf8ebe1880dbfa58abdb4704225ab561c039, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c
+
+@investigram-6bd98f60 · interpretation
+Cloning — creates another wrapper with the same filter function objects and newly initialized emitter state.
+Referent: ExecuteWrapper configuration cloning
+  Qualification: Filters are shared by reference, so mutable state captured by them can remain shared.
+  Qualification: Fresh emitter state follows from construction of a new instance; subscriptions on the original are not copied by the captured implementation.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-90eca545 (provenance, not composition)
+  Composition parent: @investigram-45379e6a
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae
+
+@investigram-6f195b44 · interpretation
+Default filtering — absent custom predicates, fulfilled values pass as successes and exceptions remain unhandled and are rethrown.
+Referent: ExecuteWrapper constructor defaults
+  Qualification: Both captured default predicates return false.
+  Qualification: Notification behavior still depends on listener presence.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-90eca545 (provenance, not composition)
+  Composition parent: @investigram-45379e6a
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae
+
+@investigram-c779ad27 · interpretation
+Notifications — observed successes emit elapsed duration; observed failures emit duration, handled status, and either a filtered value or an error reason.
+Referent: ExecuteWrapper success and failure notifications
+  Qualification: A stopwatch is created only when at least one success or failure listener exists at invocation start.
+  Qualification: A filtered result is emitted as handled; an unhandled exception is notified before being rethrown.
+  Qualification: Listener dispatch details beyond ExecuteWrapper’s calls are not established here.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-90eca545 (provenance, not composition)
+  Composition parent: @investigram-45379e6a
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae
+
+@investigram-b7cf6b0e · interpretation
+Exception classification — a thrown or rejected value becomes `{ error }` when the error filter is true; otherwise the original value is rethrown.
+Referent: ExecuteWrapper exception classification
+  Qualification: The catch also covers exceptions raised inside the surrounding try block, including result filtering and success emission, rather than only callback failures.
+  Qualification: The statement assumes the error filter and failure emission return normally.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-90eca545 (provenance, not composition)
+  Composition parent: @investigram-45379e6a
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae
+
+@investigram-47e9b23d · interpretation
+Result classification — a fulfilled value becomes `{ success: value }` when the result filter is false, or `{ value }` when it is true.
+Referent: ExecuteWrapper fulfilled-result classification
+  Qualification: The filtered `{ value }` branch is represented as a policy-level failure even though the callback fulfilled.
+  Qualification: The statement assumes the result filter itself returns normally.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-90eca545 (provenance, not composition)
+  Composition parent: @investigram-45379e6a
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae
+
+@investigram-07012499 · interpretation
+Invocation — forwards the supplied arguments to the callback and awaits its direct or promise-like result.
+Referent: ExecuteWrapper callback invocation and awaiting
+  Qualification: Awaiting can turn a rejected promise-like result into the exception path.
+  Qualification: This aspect does not by itself describe how the settled outcome is classified.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-90eca545 (provenance, not composition)
+  Composition parent: @investigram-45379e6a
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae
+
+Associated investigrams (explicit associations)
+Listing: available; 0 shown of 0.
+Use inspect @reference for retained content; no inference.
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Originals are shown; correction-aware selection and derived revision warnings are not yet presented.
+  Support (exposure identified by provenance): {"id":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigram:90eca545b4c7d7b4208162b5eeadbf8ebe1880dbfa58abdb4704225ab561c039","kind":"investigram","method":"postcode/investigation@9","exposures":[{"provenance":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:6efaf7fa97ce7a8a024cf4ae0c748e298ad16e847bd94f28a90cbc9a33c4ca18","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:bd441c2f6808e949e47a86dade129eab543963a35149d7844762f5bb2e4cb1ae","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:6efaf7fa97ce7a8a024cf4ae0c748e298ad16e847bd94f28a90cbc9a33c4ca18","forms":["full"]}],"coverage":"full-file","contentDigest":"2c6dffe091a6a029f123b0a1fa731581250ed5cd9009bc6c485b0d5eed6f1447","mapping":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:repository-artifact:429689534e3a1efc75b114d7e74fb232dfa8702254a0b672c93341588800b1ca","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:6efaf7fa97ce7a8a024cf4ae0c748e298ad16e847bd94f28a90cbc9a33c4ca18","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:export:646b834659e590e7ef07cc184b49eb5cd4d68a61ebdc398d586614b9b5725fd1","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:6efaf7fa97ce7a8a024cf4ae0c748e298ad16e847bd94f28a90cbc9a33c4ca18","forms":["full"]}],"information":{"type":"export","exportedName":"ExecuteWrapper","symbol":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:symbol:5d069dd56dbbc3b7cb56e8b8ae64943bd01c3d5c87b7c2b39647e68b1614e4dc","origin":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:module:e65c42fdafe6c8f0c0186bf2818e001bb8f1989d4807e123dd62240657fc5559","roles":{"type":true,"value":true},"routes":[{"kind":"direct","typeOnly":false,"aliased":false,"via":null}]},"qualification":{"kind":"claim-context","id":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:expansion-context:088432f171a447e3d4de00cd25446b0c4e39ed6f77bb2458bb1c3a1c511dbd4b","session":"session:e4ee7d1f-3489-43f6-b260-9349e1441257","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:module:e65c42fdafe6c8f0c0186bf2818e001bb8f1989d4807e123dd62240657fc5559","evidence":["session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c"],"status":"mechanically-derived","guarantee":"The compiler exposes this exported name; roles and forwarding are qualified by the recorded route.","limitations":[],"diagnostics":[],"inputs":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:analysis-inputs:5ad299f0564785134ac42818e6199b512dc5a64294d6101ea963453d947c1cce"}}
+  Support (exposure identified by provenance): {"id":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:010d8757c2f0022d2a41abba71c9f0836a3337efba33277c1351efbb5801dba2","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:6efaf7fa97ce7a8a024cf4ae0c748e298ad16e847bd94f28a90cbc9a33c4ca18","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:export:bf30b1e29c27318b32a50ce708f5527dc9e39d20c384f83cfdd29682386bf11a","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:6efaf7fa97ce7a8a024cf4ae0c748e298ad16e847bd94f28a90cbc9a33c4ca18","forms":["full"]}],"information":{"type":"export","exportedName":"FailureOrSuccess","symbol":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:symbol:0a5270610d7e32715130ba8d4ad461da1fb539ecd822422700fb9777d17f7807","origin":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:module:e65c42fdafe6c8f0c0186bf2818e001bb8f1989d4807e123dd62240657fc5559","roles":{"type":true,"value":false},"routes":[{"kind":"direct","typeOnly":false,"aliased":false,"via":null}]},"qualification":{"kind":"claim-context","id":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:expansion-context:f8dc78977c55e188b2ae1b679855f6a47222d245eef831ba171719698f4b6dd1","session":"session:e4ee7d1f-3489-43f6-b260-9349e1441257","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:module:e65c42fdafe6c8f0c0186bf2818e001bb8f1989d4807e123dd62240657fc5559","evidence":["session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:ff5c325c28823bfb0ba1bf80c92d4a862db0eb29d9a8eb3a0961cb914f1d2677"],"status":"mechanically-derived","guarantee":"The compiler exposes this exported name; roles and forwarding are qualified by the recorded route.","limitations":[],"diagnostics":[],"inputs":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:analysis-inputs:5ad299f0564785134ac42818e6199b512dc5a64294d6101ea963453d947c1cce"}}
+  Support (exposure identified by provenance): {"id":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:ff5c325c28823bfb0ba1bf80c92d4a862db0eb29d9a8eb3a0961cb914f1d2677","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:6efaf7fa97ce7a8a024cf4ae0c748e298ad16e847bd94f28a90cbc9a33c4ca18","forms":["full"]}]}
+Session reported usage: 18 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 361212 tokens; input 350763 tokens (subset of total); output 10449 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3523 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-da67d827 --source-detail
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-da67d827 · interpretation
+ExecuteWrapper.invoke classifies the value caught by its single try/catch, not merely exceptions originating in the supplied callback. After awaiting the callback, failures from resultFilter, duration measurement on the success path, or synchronous success listeners enter the same catch and are passed to errorFilter. If that predicate returns true, invoke emits a handled failure event and resolves to an object containing the exact caught value as `error`; if it returns false, invoke emits an unhandled failure event and rethrows that same value. This sharpens, rather than overturns, the earlier account: classification has important boundaries and can itself be disrupted by predicates, timing, and listeners.
+Referent: Deep examination of ExecuteWrapper exception classification and its boundaries
+  Qualification: These are static-source findings; no execution was performed, and source alone does not establish observed runtime behavior in every deployment.
+  Qualification: The true/false wording follows the declared boolean predicate contract; ordinary JavaScript branching would in practice use the returned value's truthiness if the contract were violated.
+  Qualification: The exact caught value is preserved only while errorFilter, failure-duration evaluation, and failure emission complete normally.
+  Composition: @investigram-82abd8b2, @investigram-92cfd159, @investigram-cc343227
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-b7cf6b0e (provenance, not composition)
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:c90c2a138fcad3ce6a18d8d8d7d02ac3906a9273c68e6469dfa9b946122abb32, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:03830170e50d85a26344ceb583aa669816e635c553bb7747607578171eaaec89
+
+@investigram-cc343227 · interpretation
+The public IPolicy comment says onFailure fires when a request fails due to a handled reason, but ExecuteWrapper emits a failure event for every value reaching its catch, recording the filter result in `handled`; the supplied test explicitly expects an event for an unhandled Error before invoke rejects. Thus the documentation's handled-only phrasing is narrower than this implementation and its direct test example.
+Referent: Difference between onFailure documentation and ExecuteWrapper failure emission
+  Qualification: The IPolicy comment is documentation of the public policy interface, not a formal specification of the internal wrapper, although Policy factories construct wrappers and policies expose related events.
+  Qualification: The comment itself contains awkward wording, so the discrepancy is attributed to its apparent handled-only assertion rather than treated as proof of author intent.
+  Qualification: Failure emission can still be skipped or interrupted when no listener existed at invocation start, timing fails, errorFilter throws, or a failure listener throws.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-b7cf6b0e (provenance, not composition)
+  Composition parent: @investigram-da67d827
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:03830170e50d85a26344ceb583aa669816e635c553bb7747607578171eaaec89, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:5062072ec4996b9f50441471dd9d60a772fd1aadb351cf32cad0516a8991559a
+
+@investigram-92cfd159 · interpretation
+Event notification is synchronous and has no listener-level exception isolation. A throwing success listener is caught by invoke and can cause a completed callback result to be discarded, passed to errorFilter as the listener's exception, and followed by a failure notification. By contrast, errorFilter and failure emission run inside the catch clause rather than inside another protective try: if errorFilter throws, its exception replaces the original caught value; if failure-duration evaluation or a failure listener throws, that later exception escapes and can prevent the selected `{ error }` result or original-value rethrow. With multiple listeners, EventEmitter stops iterating when one throws.
+Referent: Observer and classifier failures that alter ExecuteWrapper exception outcomes
+  Qualification: A failure event is attempted before either returning `{ error }` or rethrowing the unhandled value, provided timing evaluation and emission complete normally.
+  Qualification: Listener registration changes during an awaited call can affect who receives an event, while the decision to collect timing and emit at all is fixed by listener counts at invocation start.
+  Qualification: These edge cases follow control flow in the captured sources and are not covered by the supplied ExecuteWrapper test file.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-b7cf6b0e (provenance, not composition)
+  Composition parent: @investigram-da67d827
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:c90c2a138fcad3ce6a18d8d8d7d02ac3906a9273c68e6469dfa9b946122abb32, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:03830170e50d85a26344ceb583aa669816e635c553bb7747607578171eaaec89
+
+@investigram-82abd8b2 · interpretation
+The catch domain starts at `await fn(...args)` and extends through result filtering, success-duration calculation, and success-event emission. It therefore handles both synchronous throws and awaited rejections from the callback, but it also reclassifies infrastructure failures from resultFilter or the success path as though they were operation errors. Stopwatch creation occurs before the try, so an exception while initially reading the clock bypasses errorFilter entirely.
+Referent: Operations included in and excluded from ExecuteWrapper's catch domain
+  Qualification: The implementation awaits a PromiseLike or immediate result, so the caught rejection reason need not be an Error object.
+  Qualification: The stopwatch is created only when at least one success or failure listener exists at invocation start; without such a listener, timing and event emission are skipped.
+  Qualification: No supplied test in the directly dependent Executor test module exercises rejected promises, throwing filters, timing failures, or throwing listeners.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-b7cf6b0e (provenance, not composition)
+  Composition parent: @investigram-da67d827
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:03830170e50d85a26344ceb583aa669816e635c553bb7747607578171eaaec89
+
+Associated investigrams (explicit associations)
+Listing: available; 0 shown of 0.
+Use inspect @reference for retained content; no inference.
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Originals are shown; correction-aware selection and derived revision warnings are not yet presented.
+  Support (exposure identified by provenance): {"id":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:d17a177ee6b356001a390cf6783b432d784732ef5fae03506dcd468478589408","forms":["full"]}],"coverage":"full-file","contentDigest":"2c6dffe091a6a029f123b0a1fa731581250ed5cd9009bc6c485b0d5eed6f1447","mapping":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:8427b7eac4fab8d5c817c70017ba8479710ab3afa6779a31336bdf277fec3dbd","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:c90c2a138fcad3ce6a18d8d8d7d02ac3906a9273c68e6469dfa9b946122abb32","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:d17a177ee6b356001a390cf6783b432d784732ef5fae03506dcd468478589408","forms":["full"]}],"coverage":"full-file","contentDigest":"94f2a9e9aab295a22aa3a0874493a0344f0df8036543bc5c169cba92087fd81d","mapping":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:570274449dcdc900ac09ef1756938c4c6a7dc40ff93bb7c2be60e309d5b1f7db","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:03830170e50d85a26344ceb583aa669816e635c553bb7747607578171eaaec89","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:d17a177ee6b356001a390cf6783b432d784732ef5fae03506dcd468478589408","forms":["full"]}],"coverage":"full-file","contentDigest":"b110eadbc0648e90a9c9984ad44b301b05a17e698cdeb1af533ee0511f37c862","mapping":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:0c65c6c6987446d42910fcd7a43500607c45340b61f1be28e718dbe224ecdd34","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:5062072ec4996b9f50441471dd9d60a772fd1aadb351cf32cad0516a8991559a","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:d17a177ee6b356001a390cf6783b432d784732ef5fae03506dcd468478589408","forms":["full"]}],"coverage":"full-file","contentDigest":"0520ad289faf7375459b8a6fcbf3b5cba86263f4be8fcb547a186347e265ca95","mapping":"session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:0817afd5c4f68910e2562e0148ba14e2826d0c1c7bb9ae82704f32e2cd345328","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+
+Source support (captured locations and excerpts):
+[
+  {
+    "kind": "source-evidence",
+    "id": "session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:8427b7eac4fab8d5c817c70017ba8479710ab3afa6779a31336bdf277fec3dbd",
+    "session": "session:e4ee7d1f-3489-43f6-b260-9349e1441257",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/common/Executor.ts",
+    "contentDigest": "2c6dffe091a6a029f123b0a1fa731581250ed5cd9009bc6c485b0d5eed6f1447",
+    "start": 0,
+    "length": 2222,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": "\"/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/common/Executor\""
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:570274449dcdc900ac09ef1756938c4c6a7dc40ff93bb7c2be60e309d5b1f7db",
+    "session": "session:e4ee7d1f-3489-43f6-b260-9349e1441257",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/common/Event.ts",
+    "contentDigest": "94f2a9e9aab295a22aa3a0874493a0344f0df8036543bc5c169cba92087fd81d",
+    "start": 0,
+    "length": 5845,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": "\"/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/common/Event\""
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:0c65c6c6987446d42910fcd7a43500607c45340b61f1be28e718dbe224ecdd34",
+    "session": "session:e4ee7d1f-3489-43f6-b260-9349e1441257",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/common/Executor.test.ts",
+    "contentDigest": "b110eadbc0648e90a9c9984ad44b301b05a17e698cdeb1af533ee0511f37c862",
+    "start": 0,
+    "length": 1687,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": "\"/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/common/Executor.test\""
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:0817afd5c4f68910e2562e0148ba14e2826d0c1c7bb9ae82704f32e2cd345328",
+    "session": "session:e4ee7d1f-3489-43f6-b260-9349e1441257",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/Policy.ts",
+    "contentDigest": "0520ad289faf7375459b8a6fcbf3b5cba86263f4be8fcb547a186347e265ca95",
+    "start": 0,
+    "length": 15655,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": "\"/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/src/Policy\""
+  }
+]
+Session reported usage: 18 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 361212 tokens; input 350763 tokens (subset of total); output 10449 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3523 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect executor
+Inspect · configured TypeScript project
+Session e4ee7d1f-3489-43f6-b260-9349e1441257
+1 module selected from 229 · exact match for executor
+Analysis complete: modules, exports, documentation, composition
+
+Selected project modules · 1 · TypeScript names not established
+
+◆ executor
+  Entity ID: module-e65c42fd
+
+  Exports:
+  ├─ ExecuteWrapper [type+value]
+  ├─ FailureOrSuccess [type]
+  ├─ returnOrThrow [value]
+
+Status
+  Module membership and effective exports established by TypeScript analysis.
+  Coverage: external-module SourceFiles and visible named ambient modules; other compiler module categories are not established.
+
+Run limitations
+  2 generated-output locations excluded by this run's input filter.
+  Inputs were memoized as first observed, not captured as an atomic filesystem snapshot.
+
+Entity references belong to this session. One-shot queries accept exact names or handles.
+
+Associated investigrams (explicit associations)
+Listing: available; 4 shown of 4.
+Use inspect @reference for retained content; no inference.
+@investigram-5c163d44 · interpretation
+  Provides the shared single-attempt execution boundary used by policies: it awaits a callback, classifies returned values and thrown errors with injected filters, reports timed success/failure events, and returns a tagged outcome for policy-specific control flow. It does not itself retry, delay, fall back, time out, or limit concurrency; those decisions remain with callers.
+  Operation: functionality; origin: hosted; provenance: session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:de3e4640423878740a93a064c82db6709baa7f0a91b80e54413a1b970328902b
+  Qualification: Interpretation of first-observed TypeScript source; runtime, loader, and deployment behavior were not executed.
+  Qualification: Incoming dependency analysis establishes static imports, not every caller's runtime use. Retry and no-op integration were inspected directly; bulkhead, fallback, timeout, and circuit-breaker internals were not.
+  Association: session:e4ee7d1f-3489-43f6-b260-9349e1441257:module:e65c42fdafe6c8f0c0186bf2818e001bb8f1989d4807e123dd62240657fc5559 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+@investigram-90eca545 · interpretation
+  ExecuteWrapper is a boundary around one attempted call: it normalizes outcomes that a policy is meant to handle into a discriminated object, while allowing an unhandled thrown error to remain an actual rejection. `invoke(fn, ...args)` awaits `fn(...args)`, so the same classification applies to direct return values and fulfilled promises. After fulfillment, `resultFilter(value) === false` produces  [575 prose characters omitted]
+  Operation: clarification; origin: hosted; provenance: session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:09eaeec89a400eeaf6b45174ea28b4af3e567b6ad0971423614bf9a232876f9f
+  Qualification: This describes the captured TypeScript implementation; source text alone does not establish behavior in every built or deployed version.
+  Qualification: The ordinary outcome flow assumes the supplied filters and event listeners do not themselves throw; those callbacks are not isolated from `invoke`'s control flow.
+  Qualification: `await` assimilates native promises and other PromiseLike results before result filtering.
+  Association: session:e4ee7d1f-3489-43f6-b260-9349e1441257:module:e65c42fdafe6c8f0c0186bf2818e001bb8f1989d4807e123dd62240657fc5559 (described); ExecuteWrapper is declared in the captured Executor module, which also defines the FailureOrSuccess union and a separate returnOrThrow helper.; evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:8427b7eac4fab8d5c817c70017ba8479710ab3afa6779a31336bdf277fec3dbd
+@investigram-45379e6a · interpretation
+  Selected aspects of ExecuteWrapper’s per-call outcome boundary include invocation, fulfilled-result classification, exception classification, notifications, default filtering, and cloning.
+  Operation: decomposition; origin: hosted; provenance: session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:6efaf7fa97ce7a8a024cf4ae0c748e298ad16e847bd94f28a90cbc9a33c4ca18
+  Qualification: These are selectable aspects, not an assertion that the parts are exhaustive, independent, or mutually exclusive.
+  Qualification: The account describes captured TypeScript source; it does not establish behavior in every built or deployed version.
+  Association: session:e4ee7d1f-3489-43f6-b260-9349e1441257:module:e65c42fdafe6c8f0c0186bf2818e001bb8f1989d4807e123dd62240657fc5559 (described); The captured Executor module directly exports ExecuteWrapper.; evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:export:646b834659e590e7ef07cc184b49eb5cd4d68a61ebdc398d586614b9b5725fd1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c
+@investigram-da67d827 · interpretation
+  ExecuteWrapper.invoke classifies the value caught by its single try/catch, not merely exceptions originating in the supplied callback. After awaiting the callback, failures from resultFilter, duration measurement on the success path, or synchronous success listeners enter the same catch and are passed to errorFilter. If that predicate returns true, invoke emits a handled failure event and resolves [315 prose characters omitted]
+  Operation: examination; origin: hosted; provenance: session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:d17a177ee6b356001a390cf6783b432d784732ef5fae03506dcd468478589408
+  Qualification: These are static-source findings; no execution was performed, and source alone does not establish observed runtime behavior in every deployment.
+  Qualification: The true/false wording follows the declared boolean predicate contract; ordinary JavaScript branching would in practice use the returned value's truthiness if the contract were violated.
+  Qualification: The exact caught value is preserved only while errorFilter, failure-duration evaluation, and failure emission complete normally.
+  Association: session:e4ee7d1f-3489-43f6-b260-9349e1441257:module:e65c42fdafe6c8f0c0186bf2818e001bb8f1989d4807e123dd62240657fc5559 (described); This module contains the examined ExecuteWrapper implementation.; evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Originals are shown; correction-aware selection and derived revision warnings are not yet presented.
+

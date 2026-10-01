@@ -1,0 +1,205 @@
+Condition: summary. Compare only supplied views, evaluator answers and frozen references. Milestone-4 views show originals and explicit correction links; automatic replacement selection and derived revision warnings are deferred. Scripted origin is an injected baseline, not a natural generation error. Reference preparer and orchestrator are the implementing agent, exact model identifier unavailable, OpenAI family; overlap limits independence. Reference scope may not settle deeper claims.
+
+RUBRIC
+{
+  "version": 1,
+  "task": "Compare supplied investigator views and view-only evaluator answers against the frozen source references. Use only supplied artifacts. Preserve uncertainty and cite specific displayed references or source locations.",
+  "categories": ["generation-error-repeated-by-evaluator", "presentation-misunderstanding", "successful-qualified-communication", "unsupported-evaluator-extrapolation", "material-omission", "reference-cannot-settle"],
+  "output": "JSON with findings [{category, claim, evidence, consequence, uncertainty}], subjectUsefulness {judgment, reasons, limitations}. No numeric aggregate score. Do not treat a summary-only absence of follow-up views as a generation defect. Do not treat administrative request-budget interruption as an interpretive or milestone failure."
+}
+
+FROZEN SOURCE REFERENCE
+## Cockatiel: Executor
+
+Source pin: [Executor.ts](https://github.com/connor4312/cockatiel/blob/80b5ed67966dfcc5410a912285fcb3eeb2dc5e5e/src/common/Executor.ts).
+Original `tsconfig.json`; selector `executor`. Mechanical inventory materializes
+its exports `ExecuteWrapper`, `FailureOrSuccess`, and `returnOrThrow`. Its source
+mapping and qualification are compiler-derived, not a behavioral proof.
+
+Supported source conclusions:
+
+- Lines 45–75 invoke supplied work once, await its return, and classify the value
+  or thrown error using supplied filters. A value matching the result filter is
+  returned as `{value}`; a nonmatching value as `{success}`. Handled errors become
+  `{error}`; unhandled errors are rethrown.
+- Lines 19–28 and 49–68 measure duration only when event listeners are present;
+  success/failure notifications are emitted through delegated event emitters.
+- Lines 30–43 expose two listener interfaces; cloning reuses filter functions but
+  creates a fresh wrapper and emitters. This is not a clone of caller work/state.
+- Lines 6–16 convert the tagged result into a return value or throw. A result
+  classified as failure by value can still be returned by this helper.
+- [RetryPolicy.ts lines 100–140](https://github.com/connor4312/cockatiel/blob/80b5ed67966dfcc5410a912285fcb3eeb2dc5e5e/src/RetryPolicy.ts#L100)
+  supplies the retry loop around this executor. Do not attribute retry/backoff,
+  the caller's business operation or generic fault tolerance to this file alone.
+
+Acceptable interpretation: a reusable boundary for invoking, classifying and
+observing caller-supplied work, used by surrounding resilience policies.
+Material limits: no runtime test was performed; caller operations/filters can do
+arbitrary work. Listener exceptions and filter exceptions can affect execution;
+the broad try/catch also encloses successful-value classification and notification.
+Do not claim that only exceptions from `fn` are handled or that all callbacks are
+safe. The library README's policy descriptions are attributed context, not proof
+that this module itself implements every policy.
+
+
+CAPTURED VIEWS
+COMMAND: summarize executor
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-e65c42fd: executor
+
+@investigram-5c163d44 · interpretation
+Provides the shared single-attempt execution boundary used by policies: it awaits a callback, classifies returned values and thrown errors with injected filters, reports timed success/failure events, and returns a tagged outcome for policy-specific control flow. It does not itself retry, delay, fall back, time out, or limit concurrency; those decisions remain with callers.
+Referent: Executor module and its exported execution/classification API
+  Qualification: Interpretation of first-observed TypeScript source; runtime, loader, and deployment behavior were not executed.
+  Qualification: Incoming dependency analysis establishes static imports, not every caller's runtime use. Retry and no-op integration were inspected directly; bulkhead, fallback, timeout, and circuit-breaker internals were not.
+  Composition: @investigram-4208b004, @investigram-f44764d6, @investigram-e99da96c
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:ff5c325c28823bfb0ba1bf80c92d4a862db0eb29d9a8eb3a0961cb914f1d2677, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:11985e6907388eb17d657be3549d569d4ab3edcfea867c1b8148b32d0a9be720, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:5062072ec4996b9f50441471dd9d60a772fd1aadb351cf32cad0516a8991559a, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:146966ba9ed6d0b5d2e402db1b64869f7a13ffb96bb36899670e8616ca6e9327, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:3043027d7d250a5fd95814a74d779b2f6e6be0522f273a63cbc6da1f2a4696e1
+
+@investigram-e99da96c · interpretation
+FailureOrSuccess is the policy FailureReason union plus `{success}`. returnOrThrow collapses it for simple callers: throw `{error}`, return `{success}`, otherwise return the filtered failure value. This lets richer policies inspect failures while no-op-style callers recover ordinary return/throw semantics.
+Referent: Tagged outcome type and normalization helper
+  Qualification: The union is structurally discriminated by property-presence checks.
+  Qualification: A filtered returned value is intentionally returned by returnOrThrow rather than thrown.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-5c163d44
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:ff5c325c28823bfb0ba1bf80c92d4a862db0eb29d9a8eb3a0961cb914f1d2677, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:11985e6907388eb17d657be3549d569d4ab3edcfea867c1b8148b32d0a9be720, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:3043027d7d250a5fd95814a74d779b2f6e6be0522f273a63cbc6da1f2a4696e1
+
+@investigram-f44764d6 · interpretation
+Timing is demand-driven: invoke starts a stopwatch only when either event has listeners. It uses `performance.now()` when available, otherwise Node's bigint high-resolution clock converted to milliseconds. Success emits only for an accepted result; filtered results and exceptions emit failure with duration, reason, and handled status.
+Referent: ExecuteWrapper timing and outcome-event behavior
+  Qualification: Timing behavior is inferred from source and was not benchmarked.
+  Qualification: If no listeners exist at invocation start, no stopwatch is created and no outcome event is emitted for that call.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-5c163d44
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:c90c2a138fcad3ce6a18d8d8d7d02ac3906a9273c68e6469dfa9b946122abb32
+
+@investigram-4208b004 · interpretation
+ExecuteWrapper owns fresh success/failure emitters and exposes their subscription functions. invoke awaits the callback. A value rejected by resultFilter becomes a handled failure `{value}`; any other value becomes `{success}`. A thrown error matching errorFilter becomes `{error}`; a nonmatching error is reported as unhandled and rethrown. clone preserves the two predicates but creates new emitters.
+Referent: ExecuteWrapper classification and invocation mechanism
+  Qualification: “Fresh emitters” follows construction of a new ExecuteWrapper in clone; filter functions themselves are reused.
+  Qualification: The callback may be synchronous or promise-like because its result is awaited.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-e65c42fd (provenance, not composition)
+  Composition parent: @investigram-5c163d44
+  Evidence: session:e4ee7d1f-3489-43f6-b260-9349e1441257:captured-content:73439aacad277f5b8de6f9eb636e1c9770da30c9383d976997f2160f5a2fa3e1, session:e4ee7d1f-3489-43f6-b260-9349e1441257:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c
+Attempt session:e4ee7d1f-3489-43f6-b260-9349e1441257:investigation-attempt:de3e4640423878740a93a064c82db6709baa7f0a91b80e54413a1b970328902b (accepted) reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 156125 tokens; input 153347 tokens (subset of total); output 2778 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 555 tokens (subset of output)
+Session reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 156125 tokens; input 153347 tokens (subset of total); output 2778 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 555 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+VIEW-ONLY EVALUATOR
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The executor supplies a shared single-attempt boundary: it awaits a callback, classifies its result or exception using injected predicates, optionally measures and reports outcomes, and returns tagged outcomes for callers to interpret. Policy callers own retrying, delays, fallback, timeouts, and concurrency limits. ExecuteWrapper exposes subscriptions and owns its emitters; clone reuses the predicates but creates fresh emitters. Rejected results become handled {value} failures, accepted results become {success}, matching errors become {error}, and nonmatching errors are reported as unhandled and rethrown. returnOrThrow restores ordinary return/throw behavior, including returning a filtered failure value. Timing and outcome emission depend on listeners being present when invocation starts.",
+      "support": [
+        "@investigram-5c163d44: 'shared single-attempt execution boundary' and 'those decisions remain with callers'.",
+        "@investigram-4208b004 describes invocation, classification, subscriptions, and cloning.",
+        "@investigram-e99da96c describes FailureOrSuccess and returnOrThrow, including the qualification that filtered returned values are returned rather than thrown.",
+        "@investigram-f44764d6 qualifies timing and emission: no listeners at invocation start means no stopwatch and no outcome event for that call."
+      ],
+      "unknowns": [
+        "Runtime behavior, loader behavior, and deployment behavior were not executed.",
+        "The internals of bulkhead, fallback, timeout, and circuit-breaker policies were not inspected."
+      ]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "All four displayed functionality accounts are explicitly interpretations. They cite captured-content and source references and carry qualifications describing their source-based support. The overview reports direct inspection of retry and no-op integration, while incoming dependency analysis supports static imports only. Fresh emitters are inferred from constructing a new wrapper; synchronous or promise-like callback support follows from awaiting the result. These are qualified grounds for the accounts, not independent runtime confirmation. Reported usage is separately displayed as provider-reported accounting, with explicit limits on billing conclusions.",
+      "support": [
+        "Every displayed investigram is labeled 'interpretation'.",
+        "@investigram-5c163d44: 'Interpretation of first-observed TypeScript source' and 'Incoming dependency analysis establishes static imports, not every caller’s runtime use'.",
+        "@investigram-4208b004 qualifications explain fresh emitters and awaiting the callback.",
+        "@investigram-f44764d6: 'Timing behavior is inferred from source and was not benchmarked'.",
+        "Footer: 'Generated accounts remain interpretation' and 'Reported usage is not confirmed billed usage'."
+      ],
+      "unknowns": [
+        "Actual execution, timing performance, loader and deployment behavior, and all callers' runtime use remain unestablished.",
+        "The supplied view does not expose the contents behind its evidence references, so their full support cannot be assessed here.",
+        "Actual credit charges and monetary attribution remain unavailable; unavailable does not mean zero."
+      ]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "Only the summarize executor view was supplied. No subsequent explanation, decomposition, or examination view is available, so no before/after improvement or substantive change can be established. Within this summary, the composition already separates classification/invocation, timing/events, and tagged-outcome normalization into individually referenced accounts, making those concerns identifiable as possible follow-up targets.",
+      "support": [
+        "The only displayed command is 'summarize executor'.",
+        "@investigram-5c163d44 lists Composition: @investigram-4208b004, @investigram-f44764d6, @investigram-e99da96c.",
+        "The three component accounts each display a distinct referent and a composition-parent link."
+      ],
+      "unknowns": [
+        "Whether explanation, decomposition, or examination would change the accounts is unknown.",
+        "No progressive sequence or follow-up results are supplied."
+      ]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "I would select @investigram-f44764d6 with a functionality lens focused on event timing and listener lifecycle. I would request examination of what happens if subscriptions change during the awaited callback, especially how the invocation-start condition relates to eventual emission. The view shows a bound reference and an account produced by the functionality operation. It does not demonstrate that this follow-up lens or examination interaction is currently available, nor supply its results; this is a proposed next request.",
+      "support": [
+        "@investigram-f44764d6 refers to 'ExecuteWrapper timing and outcome-event behavior'.",
+        "Its qualification states that listeners are checked 'at invocation start'.",
+        "The view says 'References remain bound for this session' and labels the account 'Operation: functionality'."
+      ],
+      "unknowns": [
+        "Behavior when listeners are added or removed during execution is not described.",
+        "No follow-up command syntax or available lens-selection interface is shown.",
+        "No runtime experiment or benchmark is supplied."
+      ]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No concrete correction, replacement account, or correction link appears in this executor summary. The general notices explain that originals are displayed and corrections would be retained assertions, but they do not identify an actual change here. Composition is explicitly distinguishable from investigation-subject provenance: the overview lists three component investigram references, the components point back to their composition parent, and all accounts separately name the module as investigation subject with the label 'provenance, not composition'. No later investigation is shown, so a later-investigation provenance chain cannot be assessed.",
+      "support": [
+        "Footer: 'Corrections are retained assertions, not established truth'.",
+        "Footer: 'Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented'.",
+        "@investigram-5c163d44 lists its Composition references; each component displays 'Composition parent: @investigram-5c163d44'.",
+        "Each account displays 'Investigation subject: @module-e65c42fd (provenance, not composition)'."
+      ],
+      "unknowns": [
+        "No specific original/replacement pair, correction rationale, or changed claim is supplied.",
+        "The introductory statement about correction links does not establish a correction for any of the displayed accounts.",
+        "No later investigation or derived revision status is shown."
+      ]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The summary is useful for understanding the executor boundary and selecting a narrower concern. The tagged examples and explicit caller responsibilities are clear. However, the overview's broad statement that it reports timed events can initially sound unconditional; the listener qualification appears in a component. Terms such as 'handled failure' and 'FailureReason' lack full definitions. Long opaque evidence identifiers and repeated provenance/provider metadata interrupt the explanation, while identical attempt and session usage reports may invite double counting despite the accounting caveats. The correction notices can suggest a correction is present even though no actual correction pair appears. Evidence links, acceptance status, and detailed accounting could also create a stronger impression of validation than the explicit source-interpretation qualifications justify.",
+      "support": [
+        "The overview says 'reports timed success/failure events'; @investigram-f44764d6 narrows this to calls with listeners at invocation start.",
+        "@investigram-e99da96c names the policy FailureReason union without displaying its full definition.",
+        "Evidence lists and investigation-subject/provider metadata recur across the four accounts.",
+        "The attempt and session sections each report 6 calls and 156125 total tokens.",
+        "The view explicitly warns that generated accounts remain interpretation, usage categories are subsets, and monetary attribution is unavailable."
+      ],
+      "unknowns": [
+        "Whether evidence references can be conveniently opened or inspected is not demonstrated.",
+        "No explanation, decomposition, examination, or correction interaction is available to judge beyond the static summary."
+      ]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful for initial functional orientation and choosing a focused follow-up, with limited ability to establish behavior or change history.",
+    "reasons": [
+      "Clearly separates single-attempt execution from policy orchestration.",
+      "Provides focused references for classification, timing, and outcome normalization.",
+      "Explicitly distinguishes composition from subject provenance and qualifies source-based conclusions."
+    ],
+    "limitations": [
+      "Only a summary is supplied; no progressive comparison or concrete correction is visible.",
+      "Runtime behavior and several policy integrations remain unverified.",
+      "Opaque evidence references and repeated metadata make the core account harder to scan."
+    ]
+  }
+}

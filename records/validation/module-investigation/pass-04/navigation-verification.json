@@ -1,0 +1,38 @@
+[
+  {
+    "case": "cockatiel-m4",
+    "commandsWithObservations": 10,
+    "retainedRepeats": 1,
+    "inspections": 3,
+    "unchangedDisplayedAccountRecords": 19,
+    "displayedCorrections": 0,
+    "repeatAndInspectionAddedNoCalls": true
+  },
+  {
+    "case": "fsm-engine-m4",
+    "commandsWithObservations": 10,
+    "retainedRepeats": 1,
+    "inspections": 3,
+    "unchangedDisplayedAccountRecords": 21,
+    "displayedCorrections": 0,
+    "repeatAndInspectionAddedNoCalls": true
+  },
+  {
+    "case": "merge-anything-m4",
+    "commandsWithObservations": 11,
+    "retainedRepeats": 1,
+    "inspections": 4,
+    "unchangedDisplayedAccountRecords": 23,
+    "displayedCorrections": 1,
+    "repeatAndInspectionAddedNoCalls": true
+  },
+  {
+    "case": "progressive-numeric-m4",
+    "commandsWithObservations": 13,
+    "retainedRepeats": 1,
+    "inspections": 6,
+    "unchangedDisplayedAccountRecords": 20,
+    "displayedCorrections": 2,
+    "repeatAndInspectionAddedNoCalls": true
+  }
+]

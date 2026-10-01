@@ -1,0 +1,10 @@
+{
+  "task": "m4_numeric_summary_assess",
+  "prompt": "Perform the source-informed formative assessment. Read only /Users/ronen/postcode/app/records/validation/module-investigation/pass-04/progressive-numeric-m4/summary-assessor-input.txt. It contains the frozen reference, exact views, evaluator response and rubric. Do not inspect repository source, other files, plans, conversation history or the web. Preserve distinctions between generation errors, presentation misunderstandings, unsupported evaluator extrapolation, omissions and claims the reference cannot settle. Write the requested JSON to /Users/ronen/postcode/app/records/validation/module-investigation/pass-04/progressive-numeric-m4/summary-assessor-output.json and give a brief completion message. This is not an implementation review. Do not modify anything else.",
+  "forkTurns": "none",
+  "model": "inherited; exact identifier unavailable",
+  "reasoning": "inherited; exact setting unavailable",
+  "family": "OpenAI",
+  "usage": null,
+  "billingRoute": "unavailable"
+}

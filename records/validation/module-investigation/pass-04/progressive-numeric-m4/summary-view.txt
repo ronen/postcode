@@ -1,0 +1,29 @@
+COMMAND: summarize classify
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-54c04ef4: classify
+
+@investigram-1cecff9b · interpretation
+The module partitions numeric inputs into exactly one of positive, even or large, rejecting values outside those classes.
+Referent: The selected module behavior.
+  Qualification: Injected earlier interpretation for a controlled assessment, not a natural investigator result.
+  Qualification: This account has not acquired source evidence and remains unverified interpretation.
+  Composition: @investigram-33b17c63
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-54c04ef4 (provenance, not composition)
+
+@investigram-33b17c63 · interpretation
+Classification is mutually exclusive: a positive input receives only the positive label, so larger positive even inputs do not also receive even or large.
+Referent: The selected module behavior.
+  Qualification: Injected earlier interpretation for a controlled assessment, not a natural investigator result.
+  Qualification: This account has not acquired source evidence and remains unverified interpretation.
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-54c04ef4 (provenance, not composition)
+  Composition parent: @investigram-1cecff9b
+Attempt session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:b467b96a3e6fa3ed49905521685b947b6aacf20bb9f25a9f12e1224f45be2c62 (accepted) reported usage: 1 calls; 0 unknown; 1 anomalous.
+Session reported usage: 1 calls; 0 unknown; 1 anomalous.
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+

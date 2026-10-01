@@ -45,7 +45,9 @@ configured TypeScript project.
   and limited assessment coverage remain; earlier rejected results are preserved. The human-selected ChatGPT configuration is
   GPT-5.6 Sol with medium reasoning. Disabled summaries report configuration
   unavailability; protected hosted credential setup supports macOS only. Correction-aware replacement display and derived revision warnings are not implemented yet.
-  Progressive-lens formative assessment is in progress.
+  [Progressive assessments](records/validation/module-investigation/pass-04/report.md)
+  show useful clarification, narrower follow-up targets and explicit corrections,
+  with dense presentation and gaps in independently assessed evidence.
 
 - **[Analysis scope](docs/cli-reference.md#supported-typescript-population-and-qualifications):**
   TypeScript only, one configured project at a time, with explicit coverage limits.

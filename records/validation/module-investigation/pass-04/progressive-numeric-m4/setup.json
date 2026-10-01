@@ -1,0 +1,9 @@
+{
+  "id": "numeric-classification-m4",
+  "prose": "The module partitions numeric inputs into exactly one of positive, even or large, rejecting values outside those classes.",
+  "childProse": "Classification is mutually exclusive: a positive input receives only the positive label, so larger positive even inputs do not also receive even or large.",
+  "qualifications": [
+    "Injected earlier interpretation for a controlled assessment, not a natural investigator result.",
+    "This account has not acquired source evidence and remains unverified interpretation."
+  ]
+}

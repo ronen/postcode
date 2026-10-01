@@ -1,0 +1,10 @@
+{"command": "summarize executor", "rationale": "Pinned Cockatiel entry subject from the approved assessment."}
+{"command": "explain @investigram-4208b004", "rationale": "Clarify the displayed callback classification and exception account, a selectable aspect of the summary."}
+{"command": "decompose @investigram-90eca545", "rationale": "Split the generated explanation into narrower selectable aspects, testing a follow-up on a follow-up result."}
+{"command": "examine @investigram-b7cf6b0e", "rationale": "Investigate the exception-classification aspect exposed by decomposition, to assess whether a deeper lens adds supported detail or a candid limit."}
+{"command": "examine @investigram-b7cf6b0e", "rationale": "Repeat the exact examination to verify retained reuse without new inference."}
+{"command": "inspect @investigram-45379e6a", "rationale": "Inspect the earlier fixed decomposition and its later associated result."}
+{"command": "inspect @investigram-da67d827 --source-detail", "rationale": "Inspect the examination and explicitly disclose its captured source support."}
+{"command": "inspect executor", "rationale": "Retrieve retained accounts explicitly associated with the original module."}
+{"command": "usage", "rationale": "Capture final authoritative session accounting."}
+{"command": "exit", "rationale": "Close the assessment shell without signing out."}

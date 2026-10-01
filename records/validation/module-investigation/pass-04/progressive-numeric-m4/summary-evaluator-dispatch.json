@@ -1,0 +1,10 @@
+{
+  "task": "m4_numeric_summary_eval",
+  "prompt": "Assess comprehension of the supplied summary only. Read only /Users/ronen/postcode/app/records/validation/module-investigation/pass-04/progressive-numeric-m4/summary-evaluator-input.txt. It contains the complete authorized input and questions. Do not read repository source, other files, plans, conversation history or the web. Answer in the requested JSON format, based only on the supplied view, preserving unknowns. Write your complete JSON response to /Users/ronen/postcode/app/records/validation/module-investigation/pass-04/progressive-numeric-m4/summary-evaluator-output.json, and give a brief completion message. This is a formative comprehension exercise, not an implementation review. Do not modify anything else.",
+  "forkTurns": "none",
+  "model": "inherited; exact identifier unavailable",
+  "reasoning": "inherited; exact setting unavailable",
+  "family": "OpenAI",
+  "usage": null,
+  "billingRoute": "unavailable"
+}

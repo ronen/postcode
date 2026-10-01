@@ -1,0 +1,653 @@
+COMMAND: summarize fsm-engine
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-28ee01f8: fsm-engine
+
+@investigram-dc111a38 · interpretation
+Implements the stateful FSM instance and its typed factory. `define` delegates DSL capture, validation and table compilation to `FsmBuilderImpl`, then factories share that immutable-looking definition while each instance owns context, current state, FIFO event queue, timers and tracing state. Dispatch is synchronous at the outer call and re-entrant calls only enqueue; processing runs state begin actions, first matching guarded transition, then fallback handling, with an implicit stay when handlers exist but no guard matches. External transitions run exit, transition and entry actions, committing the target between transition and entry actions; internal transitions run only transition actions. Unknown events and known-but-unhandled events are distinct errors; any thrown guard/action/error clears queued events. Initial entry actions run during construction. The action API loops dispatch back into the queue and delegates keyed scheduling/cancellation to `TimerRegistry`; trace output records events, guards, transitions and actions. The README describes these broad semantics, but its timer-payload promise conflicts with the implementation: the adapter appears to pass no payload argument when `payload` is present and one `undefined` argument when it is absent.
+Referent: FSM runtime engine and factory implementation
+  Qualification: Interpretation of captured TypeScript source; no execution was performed.
+  Qualification: The README is an attributed package-level assertion, not proof of behavior.
+  Qualification: The apparent timer payload inversion follows the literal conditional in the captured source and may cause payload-bearing timer events to receive `undefined`.
+  Qualification: Dependency coverage is bounded to recognized project-owned source requests.
+  Composition: @investigram-1f0389d7, @investigram-2f1f0d4d, @investigram-9c64fa80
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-9c64fa80 · interpretation
+Defines the error taxonomy and diagnostic payloads: definition-time errors for missing, duplicate, unknown or unreachable structure, and runtime errors for unknown versus currently unhandled events. Runtime errors retain the FSM identifier; unhandled-event errors also retain state, event, payload and context.
+Referent: FSM definition/runtime error classes
+  Qualification: Interpretation of captured declarations and constructors; which call sites can trigger each class is established only where inspected.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-dc111a38
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:9005b07f7708207e8f24e52a62e67b90a7a1d58099c4fe95b259daeb0c278b8d, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:2223a19b7c84507271eb5dcafd0ce7c951322233ba64e5857e7344d6ae15d73d
+
+@investigram-2f1f0d4d · interpretation
+Maintains keyed timeout handles. Scheduling first replaces the same key, accepts relative milliseconds or `performance.now()` deadlines, clamps past/negative delays to zero, treats Infinity as never firing, rejects other non-finite values and likely epoch-domain deadlines, and supports single/all cancellation.
+Referent: Keyed timer scheduling utility used by FSM actions
+  Qualification: Interpretation of captured implementation and embedded tests; tests were not executed.
+  Qualification: The registry itself is generic; conversion from timer events to callbacks remains the engine's responsibility.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-dc111a38
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:5ae20a36be80e4d3426c537ab3f59d590e4dcd0d929812feb44017c3524f5e6a
+
+@investigram-1f0389d7 · interpretation
+Builds the executable definition tables behind the public DSL. It records states, event/fallback begins, entry/exit actions, guards and ordered transitions; rejects duplicate state/event declarations and transitions placed after an unconditional transition; validates initial/target states and reachability; then exposes the compiled tables consumed by the engine.
+Referent: DSL recording, validation and compilation implementation
+  Qualification: Interpretation of captured source; validation guarantees beyond the shown checks were not inferred.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-dc111a38
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:2223a19b7c84507271eb5dcafd0ce7c951322233ba64e5857e7344d6ae15d73d
+Attempt session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigation-attempt:4c7d41887f91ba32c44af27c2607b0dfdf2676bb5e47404c218528f01f43beb9 (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 123430 tokens; input 121384 tokens (subset of total); output 2046 tokens (subset of total); cached-input 23552 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 563 tokens (subset of output)
+Session reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 123430 tokens; input 121384 tokens (subset of total); output 2046 tokens (subset of total); cached-input 23552 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 563 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: explain @investigram-dc111a38
+Explain · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-2d65ea4b · interpretation
+`FsmEngine` separates a one-time definition phase from per-instance execution. `define()` lets `FsmBuilderImpl` record the DSL, validates it immediately, compiles lookup tables, and closes over that definition in a typed factory. Every factory call then creates an independent machine with its own current state, context reference, event queue, timer registry, trace settings, and instance identifier; construction immediately runs the initial state's entry actions. The context is not copied: `fsm.context` and action callbacks receive the same mutable object supplied to the factory.
+
+A top-level `dispatch()` is synchronous for the complete resulting work batch. It appends the event, then drains the FIFO until empty. A dispatch made from a guard or action only appends another event and returns; that event is processed after the current event—including its transition and entry work—finishes. If processing throws, the outstanding queue is discarded and the outermost dispatch rethrows, but prior context mutations and already-completed actions are not rolled back.
+
+For each event, the engine first distinguishes an event absent from the entire compiled definition (`FsmEngineUnknownEventError`) from one known somewhere but unavailable in the current state and fallback (`FsmEngineUnhandledEventError`). For a known event, it runs the current state's begin actions, examines transitions in declaration order, and selects the first transition whose guards all pass. If no state-specific transition wins, it runs any fallback begin actions and tries fallback transitions. If at least one state or fallback transition exists but all guards reject it, the event is considered handled by an implicit no-action stay; if no transition exists in either place, it is unhandled. Thus begin actions can mutate context before guards, and state-specific begin actions can run even when fallback handling is ultimately selected.
+
+An internal `stay()` executes only its transition actions. An external `toState()`—even when its target equals the current state—executes old-state exit actions, transition actions, commits the target, and then executes target-state entry actions. Consequently, an exception before the commit leaves the old state selected; an exception from an entry action occurs after the new state has been selected. Re-entrantly queued events do not interrupt these steps.
+
+Actions receive the mutable context and a restricted action API; guards receive readonly-typed payload/context views, although that is a TypeScript constraint rather than runtime immutability. Metadata distinguishes begin, transition, exit, ordinary entry, and initial entry calls. Tracing can use a custom logger and records event handling, guard outcomes, selected transitions, and action invocations with a machine/instance label.
+
+Timers are per instance and keyed. A missing key defaults to the event name; scheduling the same key replaces the old timeout. Relative delays and `performance.now()`-domain deadlines are supported, negative or past values become zero-delay timeouts, and `Infinity` means no timeout is installed. Expiry dispatches through the same queue, so it does not bypass normal event semantics. The public action type and README say a payload-bearing timer dispatches its supplied payload, but the captured adapter constructs an empty argument list when the `payload` property exists and an `[undefined]` list when it does not. Read literally, payload-bearing timer events therefore lose their payload; this is a documentation/type-contract versus implementation discrepancy, not an executed observation.
+Referent: Clarified definition, instantiation, dispatch lifecycle, transition ordering, action API, timers, tracing, and failures of the FSM runtime engine
+  Qualification: Interpretation of captured TypeScript and nearby package README; no code or embedded tests were executed.
+  Qualification: The README is cited only as the package's stated contract, not as proof of runtime behavior.
+  Qualification: TypeScript readonly and payload constraints do not establish runtime immutability or validation of dynamically supplied values.
+  Qualification: The timer payload defect follows the literal adapter conditional; its observed behavior was not confirmed by execution.
+  Qualification: The compiled definition is shared by instances and not exposed for ordinary mutation, but the source does not deep-freeze its tables or callback arrays.
+  Composition: @investigram-c9f16bfd, @investigram-26489d1b, @investigram-7edddb44
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-dc111a38 (provenance, not composition)
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigram:dc111a388c48f95ae3ed784a88f9cde6ce2a2b9173274a1253687342cd58aa8f, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:26bb1b56e1acf46f558d9c3267bef7d2db4f8fb3e246c6c26e4e5fe63a275ecd, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:5b09a932de60532559831ee7994f10e82117d37cbcfa5455be2851bf8cc86a7a
+
+@investigram-7edddb44 · interpretation
+The engine's action API is intentionally narrower than the full instance: callbacks can enqueue typed events, schedule an event, or cancel one/all timers. `TimerRegistry` owns the timeout handles and removes a handle before invoking its callback, which permits that callback to schedule another timeout under the same key. Scheduling always cancels the existing key first; an infinite schedule therefore also removes a previous timer and installs nothing. Finite relative delays are clamped at zero, finite deadlines are converted by subtracting `performance.now()`, and deadline values larger than `Date.now()` are rejected as likely epoch timestamps. When a timeout fires, its callback calls the engine's ordinary `dispatch()`. The intended typed contract requires `payload` for payload-bearing events and forbids it for void events, but the captured engine adapter reverses the argument-list construction test, so supplied timer payloads appear to be dropped.
+Referent: Action-facing event and keyed-timer mechanics used by each FSM instance
+  Qualification: Interpretation of implementation and type declarations; timer tests embedded in the source were not executed.
+  Qualification: Host scheduling precision and event-loop timing are outside the guarantees established by these sources.
+  Qualification: The likely payload loss is established only from the literal conditional and dispatch argument handling.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-dc111a38 (provenance, not composition)
+  Composition parent: @investigram-2d65ea4b
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:5ae20a36be80e4d3426c537ab3f59d590e4dcd0d929812feb44017c3524f5e6a, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:26bb1b56e1acf46f558d9c3267bef7d2db4f8fb3e246c6c26e4e5fe63a275ecd, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:324d815a6ce567971e0b5e40ea54ff9ae270d941b53ac159704d3d9a3aa99de8, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-26489d1b · interpretation
+The practical event algorithm is: enqueue; if another dispatch is active, return; otherwise repeatedly dequeue, reject globally unknown names, run current-state begin actions, try current-state transitions, then run fallback begin actions and try fallback transitions. Guards within one transition short-circuit on the first false result, and transitions themselves are tried in declaration order. A selected external transition performs exit actions and transition actions while the engine's selected state is still the source, then assigns the target and runs entry actions; a selected internal transition performs transition actions without exit, assignment, or entry. Events queued during any of those callbacks wait until this whole event finishes. An event with declared transitions that all fail guards is an implicit successful stay, whereas a known event with no transitions in the current state or fallback produces an unhandled-event error after any applicable begin actions have run.
+Referent: Detailed FIFO dispatch and transition-selection lifecycle
+  Qualification: Synchronous ordering is inferred from the captured control flow; no concurrency or re-entrancy tests were executed.
+  Qualification: There is no transactional rollback of context mutation or external side effects when later processing throws.
+  Qualification: The source comment saying state is committed first does not match the adjacent assignment order; this account follows the executable statement order, which places assignment after transition actions and before entry actions.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-dc111a38 (provenance, not composition)
+  Composition parent: @investigram-2d65ea4b
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:5b09a932de60532559831ee7994f10e82117d37cbcfa5455be2851bf8cc86a7a
+
+@investigram-c9f16bfd · interpretation
+The builder's output is a set of direct lookup tables: state/event transitions, state/event begin actions, per-state entry and exit actions, and event-wide fallback actions/transitions. The first declared state becomes initial unless explicitly overridden. State and event declarations are rejected when duplicated in the same scope, and a transition declared after an unguarded transition for the same state/event is rejected because it can never be reached. Validation also requires at least one declared state, a declared initial state, declared external-transition targets, and reachability of every state through external transitions. Fallback external targets are included in the reachability traversal as globally available edges. The resulting sets, objects, and arrays are reused by every instance created from the factory.
+Referent: Definition capture, validation, and compilation details supporting the runtime engine
+  Qualification: This describes checks visible in the captured builder implementation and does not imply additional validation.
+  Qualification: Reachability is structural and based on external-transition targets; guard satisfiability is not analyzed.
+  Qualification: The shared compiled tables are treated as internal by the API but are not deep-frozen in the captured implementation.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-dc111a38 (provenance, not composition)
+  Composition parent: @investigram-2d65ea4b
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:2223a19b7c84507271eb5dcafd0ce7c951322233ba64e5857e7344d6ae15d73d, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:5f0b239941bada797164d6818c9cd0739deecbc2928e6cad7651fba1814d9ddb
+Attempt session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigation-attempt:1dbf8e9dee417daa7dba9d8cdef0268158d1de9350c48e922d0fe79bdf3b8be5 (accepted) reported usage: 3 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 91621 tokens; input 88031 tokens (subset of total); output 3590 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 785 tokens (subset of output)
+Session reported usage: 7 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 215051 tokens; input 209415 tokens (subset of total); output 5636 tokens (subset of total); cached-input 23552 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1348 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: decompose @investigram-26489d1b
+Decompose · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-23572608 · interpretation
+Useful selectable sub-aspects of the engine’s dispatch lifecycle include queue draining, event classification, state-versus-fallback precedence, guard selection, external-transition sequencing, internal-transition sequencing, and failure cleanup.
+Referent: Selected, non-exhaustive facets of FIFO event dispatch and transition selection
+  Qualification: This is a deliberately non-exhaustive decomposition; the facets overlap where ordering connects them.
+  Qualification: Behavior is inferred from captured TypeScript control flow rather than runtime execution.
+  Qualification: The README is treated as an assertion of intended behavior and compared with, rather than substituted for, the implementation.
+  Composition: @investigram-d7f18532, @investigram-3ee0ffcb, @investigram-6f24de96, @investigram-41c7d145, @investigram-595b1fef, @investigram-18bb1272, @investigram-8251c177
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-26489d1b (provenance, not composition)
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigram:26489d1bcd5065cbeccf39891165ae1d99dccbf9adca95bcc2c09803ac303b69, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:95b386bb-5138-49a2-ac41-d49e8759bd24:source:201166b39df10c798ae2d55eb9f954ac2dc3849caa203ff660444961b13ccbf2
+
+@investigram-8251c177 · interpretation
+Failure cleanup — an exception escaping a guard or action clears all remaining queued events, is rethrown by the outer dispatch, and always releases the dispatching flag.
+Referent: Queue cleanup and partial state commitment after callback failure
+  Qualification: There is no rollback of context mutations or external side effects already performed.
+  Qualification: Before the external-transition assignment, a failure leaves the stored state at the source; an entry-action failure occurs after the target has been assigned.
+  Qualification: No runtime fault-injection or re-entrancy tests were executed.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-26489d1b (provenance, not composition)
+  Composition parent: @investigram-23572608
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-18bb1272 · interpretation
+Internal transition execution — the engine records a stay and runs the transition actions, without exit actions, state assignment, or entry actions.
+Referent: Internal-transition stay behavior
+  Qualification: An internal transition can still mutate context, dispatch another event, schedule timers, or throw through its actions.
+  Qualification: This facet describes the engine path, not every effect user callbacks may produce.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-26489d1b (provenance, not composition)
+  Composition parent: @investigram-23572608
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-595b1fef · interpretation
+External transition execution — the engine traces the target, runs source exit actions, runs transition actions while the stored state is still the source, assigns the target, and then runs target entry actions.
+Referent: External-transition action order and state commit point
+  Qualification: The executable assignment order is used here; the adjacent source comment claiming that state is committed first is inconsistent with those statements.
+  Qualification: The README’s lifecycle description agrees with the executable exit/action/commit/entry order.
+  Qualification: Re-entrant dispatches made by these callbacks are queued, so their later handling does not interrupt this sequence.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-26489d1b (provenance, not composition)
+  Composition parent: @investigram-23572608
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-41c7d145 · interpretation
+Guard and transition selection — transitions are visited in declaration order; each transition’s guards are evaluated in order and stop at the first false result; the first transition whose guards all pass is selected.
+Referent: Ordered, first-match transition and guard evaluation
+  Qualification: An unguarded transition passes because its guard collection contains no failing guard.
+  Qualification: If no transition is selected but at least one current-state or fallback transition was declared, processing succeeds as an implicit stay; begin-action effects are not undone.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-26489d1b (provenance, not composition)
+  Composition parent: @investigram-23572608
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-6f24de96 · interpretation
+Handling precedence — current-state begin actions run first, followed by current-state transitions; only if none is selected do fallback begin actions and fallback transitions run.
+Referent: Current-state handling before fallback handling
+  Qualification: Begin actions may mutate context before guards inspect it.
+  Qualification: Fallback begin actions still run when current-state transitions exist but all of their guards fail.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-26489d1b (provenance, not composition)
+  Composition parent: @investigram-23572608
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-3ee0ffcb · interpretation
+Event classification — the drain loop rejects a name absent from the definition-wide event set as unknown; a globally known event becomes unhandled only after current-state and fallback handling both return false.
+Referent: Unknown-event versus currently-unhandled-event classification
+  Qualification: The unknown check occurs before event-specific begin actions.
+  Qualification: Unhandled status is state-sensitive, whereas unknown status is based on the definition-wide event set.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-26489d1b (provenance, not composition)
+  Composition parent: @investigram-23572608
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-d7f18532 · interpretation
+Queue admission and draining — every call enqueues; a re-entrant call returns immediately, while the outermost call synchronously shifts queued events in FIFO order until the queue is empty.
+Referent: FIFO admission, re-entrant deferral, and outermost queue draining
+  Qualification: “Synchronously” follows the shown loop and contains no claim about execution in other threads or hosts.
+  Qualification: A callback-dispatched event waits for the current event to finish, not necessarily for the original outer queue to become empty.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-26489d1b (provenance, not composition)
+  Composition parent: @investigram-23572608
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+Attempt session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigation-attempt:19842a040a90d758eb0683db4b83d62069bd50de7a198809e14c2f310fcd36a6 (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 76095 tokens; input 73203 tokens (subset of total); output 2892 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1162 tokens (subset of output)
+Session reported usage: 11 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 291146 tokens; input 282618 tokens (subset of total); output 8528 tokens (subset of total); cached-input 23552 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2510 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: examine @investigram-8251c177
+Examine · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-280ba8fb · interpretation
+The prior account is materially correct, but the cleanup boundary is broader and less transactional than “guard or action failure” suggests. Once an outer `dispatch()` enters its drain-loop `try`, any synchronous throw from processing the shifted event—including unknown/unhandled-event errors and a user-supplied trace logger, as well as guards and actions—replaces the queue with an empty array, propagates from that outer call, and reaches a `finally` that resets the dispatching flag. The event already shifted is not retried. Cleanup affects only the in-memory event queue: it does not roll back context or external effects, undo state already assigned, or cancel timers scheduled earlier. Consequently the instance is not left dispatch-locked and can receive a later explicit or timer-driven dispatch, but recovery begins from whatever partial state and effects survived the failed callback.
+Referent: Expanded failure boundary, cleanup scope, and recoverability of FsmEngine dispatch
+  Qualification: This is static interpretation of captured TypeScript source, not observed execution.
+  Qualification: The broad catch applies only after the outer dispatch has set the dispatching flag and entered its `try`; initial-state entry actions run in the constructor outside that dispatch cleanup boundary.
+  Qualification: The README and dispatch JSDoc describe queue clearing for guard/action errors; they do not document the broader trace-logger and runtime-error failure surface established by the implementation.
+  Qualification: No test suite was executed. The captured tests provide authored examples, not runtime confirmation.
+  Composition: @investigram-0d65be59, @investigram-9166567a, @investigram-fafd3a60, @investigram-f0aae7a0
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-8251c177 (provenance, not composition)
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:c0b6c3bec0b185acc365ce1ee35c81e12172c2d5c67879dfb52e049cc390e205, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:b9be92046aefdb189d7d529e41749cecc961c545e9509950775b57249da7bf00
+
+@investigram-f0aae7a0 · interpretation
+The captured test suite does include a focused authored case: an internal-transition action first queues an event and a later action throws; the expectation is that the queued event does not run. It also contains FIFO and guard-originated re-entrant dispatch examples. That narrows the earlier evidentiary gap, but coverage remains materially incomplete for failure in begin actions, guards, exit actions, external-transition actions, entry actions, trace loggers, unknown/unhandled errors, post-failure reuse, and timer survival.
+Referent: Available static test coverage and untested failure phases
+  Qualification: The tests were read as source and were not executed.
+  Qualification: Omission from this single captured test artifact does not establish that no other tests exist outside the captured repository population.
+  Qualification: The existing cleanup test exercises an internal transition, so it does not validate source-versus-target state commitment around external transitions.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-8251c177 (provenance, not composition)
+  Composition parent: @investigram-280ba8fb
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:b9be92046aefdb189d7d529e41749cecc961c545e9509950775b57249da7bf00
+
+@investigram-fafd3a60 · interpretation
+Queue cleanup is not whole-instance cancellation. The catch assigns `#queue = []`; it does not call `TimerRegistry.cancelAll()`. A timer scheduled before the failure therefore remains registered and its later callback can call `dispatch()`. Since `finally` has reset `#isDispatching`, that later dispatch starts a new drain cycle against the surviving state and context. This can be useful for recovery, but it also means “discard queued events” must not be read as discarding all pending future events.
+Referent: Distinction between queued-event deletion and persistence of previously scheduled timer events
+  Qualification: Timer persistence is inferred from the absence of timer cancellation in the dispatch catch and from the separate timer registry; no timer-after-failure test was executed or found in the captured test artifact.
+  Qualification: A timer callback that has not yet run is not an element of `#queue`; it enqueues only when its callback later invokes `dispatch()`.
+  Qualification: External cancellation or runtime timer behavior is outside the supplied evidence.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-8251c177 (provenance, not composition)
+  Composition parent: @investigram-280ba8fb
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:c0b6c3bec0b185acc365ce1ee35c81e12172c2d5c67879dfb52e049cc390e205, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:b9be92046aefdb189d7d529e41749cecc961c545e9509950775b57249da7bf00
+
+@investigram-9166567a · interpretation
+Tracing is part of the synchronous dispatch failure surface. Every enabled trace call invokes the configured logger without its own protection. If that logger throws, the outer dispatch catch clears the queue and rethrows the logger’s error. Because trace calls commonly precede guards or actions, such a failure can prevent the advertised callback from running; a logger failure in an error trace can also prevent construction or propagation of the engine’s intended unknown/unhandled-event error. The README’s guard/action failure description does not call out this behavior.
+Referent: User trace logger exceptions participate in dispatch abortion and may mask later work or engine errors
+  Qualification: This applies only while tracing is enabled and the configured logger throws synchronously.
+  Qualification: The default logger is also unguarded, though no claim is made here about whether `console.log` throws in a particular runtime.
+  Qualification: This is an implementation-versus-documentation omission, not a claim that the README explicitly promises logger isolation.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-8251c177 (provenance, not composition)
+  Composition parent: @investigram-280ba8fb
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:c0b6c3bec0b185acc365ce1ee35c81e12172c2d5c67879dfb52e049cc390e205, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-0d65be59 · interpretation
+For an external transition, failure atomicity is phase-dependent. State-specific begin actions, guards, exit actions, and transition actions all execute before `#state = toState`; a throw in any of them leaves the stored state at the source. The target is assigned only after exit and transition actions complete, immediately before entry actions, so an entry-action throw leaves the target committed. Internal transitions never assign state. In every phase, prior context mutations, I/O, timer scheduling, and other callback effects remain. The implementation’s nearby comment saying “Commit state first” is therefore misleading if read as ordering relative to exit and transition actions, although queued re-entrant events still observe the post-transition state when later drained.
+Referent: Exact state-commit boundary and non-rollback behavior on callback failure
+  Qualification: The conclusion concerns the stored `#state`, not arbitrary mutable context or external systems.
+  Qualification: A throw from tracing can occur at additional points: for example, the `toState` trace precedes exit/actions/assignment, while the entry-action trace follows assignment.
+  Qualification: Queued re-entrant events are processed only after the current event returns successfully; if the current event throws, those queued events are discarded instead.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-8251c177 (provenance, not composition)
+  Composition parent: @investigram-280ba8fb
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:c0b6c3bec0b185acc365ce1ee35c81e12172c2d5c67879dfb52e049cc390e205, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+Attempt session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigation-attempt:85d7231a55968a026f83a240771a67025f8f458fe918ccb57a2629478f4e0889 (accepted) reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 197978 tokens; input 194189 tokens (subset of total); output 3789 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1689 tokens (subset of output)
+Session reported usage: 17 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 489124 tokens; input 476807 tokens (subset of total); output 12317 tokens (subset of total); cached-input 23552 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 4199 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: examine @investigram-8251c177
+Examine · investigram
+References remain bound for this session.
+Retained outcome; no new investigation.
+
+@investigram-280ba8fb · interpretation
+The prior account is materially correct, but the cleanup boundary is broader and less transactional than “guard or action failure” suggests. Once an outer `dispatch()` enters its drain-loop `try`, any synchronous throw from processing the shifted event—including unknown/unhandled-event errors and a user-supplied trace logger, as well as guards and actions—replaces the queue with an empty array, propagates from that outer call, and reaches a `finally` that resets the dispatching flag. The event already shifted is not retried. Cleanup affects only the in-memory event queue: it does not roll back context or external effects, undo state already assigned, or cancel timers scheduled earlier. Consequently the instance is not left dispatch-locked and can receive a later explicit or timer-driven dispatch, but recovery begins from whatever partial state and effects survived the failed callback.
+Referent: Expanded failure boundary, cleanup scope, and recoverability of FsmEngine dispatch
+  Qualification: This is static interpretation of captured TypeScript source, not observed execution.
+  Qualification: The broad catch applies only after the outer dispatch has set the dispatching flag and entered its `try`; initial-state entry actions run in the constructor outside that dispatch cleanup boundary.
+  Qualification: The README and dispatch JSDoc describe queue clearing for guard/action errors; they do not document the broader trace-logger and runtime-error failure surface established by the implementation.
+  Qualification: No test suite was executed. The captured tests provide authored examples, not runtime confirmation.
+  Composition: @investigram-0d65be59, @investigram-9166567a, @investigram-fafd3a60, @investigram-f0aae7a0
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-8251c177 (provenance, not composition)
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:c0b6c3bec0b185acc365ce1ee35c81e12172c2d5c67879dfb52e049cc390e205, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:b9be92046aefdb189d7d529e41749cecc961c545e9509950775b57249da7bf00
+
+@investigram-f0aae7a0 · interpretation
+The captured test suite does include a focused authored case: an internal-transition action first queues an event and a later action throws; the expectation is that the queued event does not run. It also contains FIFO and guard-originated re-entrant dispatch examples. That narrows the earlier evidentiary gap, but coverage remains materially incomplete for failure in begin actions, guards, exit actions, external-transition actions, entry actions, trace loggers, unknown/unhandled errors, post-failure reuse, and timer survival.
+Referent: Available static test coverage and untested failure phases
+  Qualification: The tests were read as source and were not executed.
+  Qualification: Omission from this single captured test artifact does not establish that no other tests exist outside the captured repository population.
+  Qualification: The existing cleanup test exercises an internal transition, so it does not validate source-versus-target state commitment around external transitions.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-8251c177 (provenance, not composition)
+  Composition parent: @investigram-280ba8fb
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:b9be92046aefdb189d7d529e41749cecc961c545e9509950775b57249da7bf00
+
+@investigram-fafd3a60 · interpretation
+Queue cleanup is not whole-instance cancellation. The catch assigns `#queue = []`; it does not call `TimerRegistry.cancelAll()`. A timer scheduled before the failure therefore remains registered and its later callback can call `dispatch()`. Since `finally` has reset `#isDispatching`, that later dispatch starts a new drain cycle against the surviving state and context. This can be useful for recovery, but it also means “discard queued events” must not be read as discarding all pending future events.
+Referent: Distinction between queued-event deletion and persistence of previously scheduled timer events
+  Qualification: Timer persistence is inferred from the absence of timer cancellation in the dispatch catch and from the separate timer registry; no timer-after-failure test was executed or found in the captured test artifact.
+  Qualification: A timer callback that has not yet run is not an element of `#queue`; it enqueues only when its callback later invokes `dispatch()`.
+  Qualification: External cancellation or runtime timer behavior is outside the supplied evidence.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-8251c177 (provenance, not composition)
+  Composition parent: @investigram-280ba8fb
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:c0b6c3bec0b185acc365ce1ee35c81e12172c2d5c67879dfb52e049cc390e205, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:b9be92046aefdb189d7d529e41749cecc961c545e9509950775b57249da7bf00
+
+@investigram-9166567a · interpretation
+Tracing is part of the synchronous dispatch failure surface. Every enabled trace call invokes the configured logger without its own protection. If that logger throws, the outer dispatch catch clears the queue and rethrows the logger’s error. Because trace calls commonly precede guards or actions, such a failure can prevent the advertised callback from running; a logger failure in an error trace can also prevent construction or propagation of the engine’s intended unknown/unhandled-event error. The README’s guard/action failure description does not call out this behavior.
+Referent: User trace logger exceptions participate in dispatch abortion and may mask later work or engine errors
+  Qualification: This applies only while tracing is enabled and the configured logger throws synchronously.
+  Qualification: The default logger is also unguarded, though no claim is made here about whether `console.log` throws in a particular runtime.
+  Qualification: This is an implementation-versus-documentation omission, not a claim that the README explicitly promises logger isolation.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-8251c177 (provenance, not composition)
+  Composition parent: @investigram-280ba8fb
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:c0b6c3bec0b185acc365ce1ee35c81e12172c2d5c67879dfb52e049cc390e205, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-0d65be59 · interpretation
+For an external transition, failure atomicity is phase-dependent. State-specific begin actions, guards, exit actions, and transition actions all execute before `#state = toState`; a throw in any of them leaves the stored state at the source. The target is assigned only after exit and transition actions complete, immediately before entry actions, so an entry-action throw leaves the target committed. Internal transitions never assign state. In every phase, prior context mutations, I/O, timer scheduling, and other callback effects remain. The implementation’s nearby comment saying “Commit state first” is therefore misleading if read as ordering relative to exit and transition actions, although queued re-entrant events still observe the post-transition state when later drained.
+Referent: Exact state-commit boundary and non-rollback behavior on callback failure
+  Qualification: The conclusion concerns the stored `#state`, not arbitrary mutable context or external systems.
+  Qualification: A throw from tracing can occur at additional points: for example, the `toState` trace precedes exit/actions/assignment, while the entry-action trace follows assignment.
+  Qualification: Queued re-entrant events are processed only after the current event returns successfully; if the current event throws, those queued events are discarded instead.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-8251c177 (provenance, not composition)
+  Composition parent: @investigram-280ba8fb
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:c0b6c3bec0b185acc365ce1ee35c81e12172c2d5c67879dfb52e049cc390e205, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+Attempt session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigation-attempt:85d7231a55968a026f83a240771a67025f8f458fe918ccb57a2629478f4e0889 (accepted) reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 197978 tokens; input 194189 tokens (subset of total); output 3789 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1689 tokens (subset of output)
+Session reported usage: 17 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 489124 tokens; input 476807 tokens (subset of total); output 12317 tokens (subset of total); cached-input 23552 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 4199 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-23572608
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-23572608 · interpretation
+Useful selectable sub-aspects of the engine’s dispatch lifecycle include queue draining, event classification, state-versus-fallback precedence, guard selection, external-transition sequencing, internal-transition sequencing, and failure cleanup.
+Referent: Selected, non-exhaustive facets of FIFO event dispatch and transition selection
+  Qualification: This is a deliberately non-exhaustive decomposition; the facets overlap where ordering connects them.
+  Qualification: Behavior is inferred from captured TypeScript control flow rather than runtime execution.
+  Qualification: The README is treated as an assertion of intended behavior and compared with, rather than substituted for, the implementation.
+  Composition: @investigram-d7f18532, @investigram-3ee0ffcb, @investigram-6f24de96, @investigram-41c7d145, @investigram-595b1fef, @investigram-18bb1272, @investigram-8251c177
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-26489d1b (provenance, not composition)
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigram:26489d1bcd5065cbeccf39891165ae1d99dccbf9adca95bcc2c09803ac303b69, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:95b386bb-5138-49a2-ac41-d49e8759bd24:source:201166b39df10c798ae2d55eb9f954ac2dc3849caa203ff660444961b13ccbf2
+
+@investigram-8251c177 · interpretation
+Failure cleanup — an exception escaping a guard or action clears all remaining queued events, is rethrown by the outer dispatch, and always releases the dispatching flag.
+Referent: Queue cleanup and partial state commitment after callback failure
+  Qualification: There is no rollback of context mutations or external side effects already performed.
+  Qualification: Before the external-transition assignment, a failure leaves the stored state at the source; an entry-action failure occurs after the target has been assigned.
+  Qualification: No runtime fault-injection or re-entrancy tests were executed.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-26489d1b (provenance, not composition)
+  Composition parent: @investigram-23572608
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-18bb1272 · interpretation
+Internal transition execution — the engine records a stay and runs the transition actions, without exit actions, state assignment, or entry actions.
+Referent: Internal-transition stay behavior
+  Qualification: An internal transition can still mutate context, dispatch another event, schedule timers, or throw through its actions.
+  Qualification: This facet describes the engine path, not every effect user callbacks may produce.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-26489d1b (provenance, not composition)
+  Composition parent: @investigram-23572608
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-595b1fef · interpretation
+External transition execution — the engine traces the target, runs source exit actions, runs transition actions while the stored state is still the source, assigns the target, and then runs target entry actions.
+Referent: External-transition action order and state commit point
+  Qualification: The executable assignment order is used here; the adjacent source comment claiming that state is committed first is inconsistent with those statements.
+  Qualification: The README’s lifecycle description agrees with the executable exit/action/commit/entry order.
+  Qualification: Re-entrant dispatches made by these callbacks are queued, so their later handling does not interrupt this sequence.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-26489d1b (provenance, not composition)
+  Composition parent: @investigram-23572608
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-41c7d145 · interpretation
+Guard and transition selection — transitions are visited in declaration order; each transition’s guards are evaluated in order and stop at the first false result; the first transition whose guards all pass is selected.
+Referent: Ordered, first-match transition and guard evaluation
+  Qualification: An unguarded transition passes because its guard collection contains no failing guard.
+  Qualification: If no transition is selected but at least one current-state or fallback transition was declared, processing succeeds as an implicit stay; begin-action effects are not undone.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-26489d1b (provenance, not composition)
+  Composition parent: @investigram-23572608
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-6f24de96 · interpretation
+Handling precedence — current-state begin actions run first, followed by current-state transitions; only if none is selected do fallback begin actions and fallback transitions run.
+Referent: Current-state handling before fallback handling
+  Qualification: Begin actions may mutate context before guards inspect it.
+  Qualification: Fallback begin actions still run when current-state transitions exist but all of their guards fail.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-26489d1b (provenance, not composition)
+  Composition parent: @investigram-23572608
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-3ee0ffcb · interpretation
+Event classification — the drain loop rejects a name absent from the definition-wide event set as unknown; a globally known event becomes unhandled only after current-state and fallback handling both return false.
+Referent: Unknown-event versus currently-unhandled-event classification
+  Qualification: The unknown check occurs before event-specific begin actions.
+  Qualification: Unhandled status is state-sensitive, whereas unknown status is based on the definition-wide event set.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-26489d1b (provenance, not composition)
+  Composition parent: @investigram-23572608
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-d7f18532 · interpretation
+Queue admission and draining — every call enqueues; a re-entrant call returns immediately, while the outermost call synchronously shifts queued events in FIFO order until the queue is empty.
+Referent: FIFO admission, re-entrant deferral, and outermost queue draining
+  Qualification: “Synchronously” follows the shown loop and contains no claim about execution in other threads or hosts.
+  Qualification: A callback-dispatched event waits for the current event to finish, not necessarily for the original outer queue to become empty.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-26489d1b (provenance, not composition)
+  Composition parent: @investigram-23572608
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+Associated investigrams (explicit associations)
+Listing: available; 0 shown of 0.
+Use inspect @reference for retained content; no inference.
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Originals are shown; correction-aware selection and derived revision warnings are not yet presented.
+  Support (exposure identified by provenance): {"id":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigram:26489d1bcd5065cbeccf39891165ae1d99dccbf9adca95bcc2c09803ac303b69","kind":"investigram","method":"postcode/investigation@9","exposures":[{"provenance":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigation-attempt:19842a040a90d758eb0683db4b83d62069bd50de7a198809e14c2f310fcd36a6","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigation-attempt:19842a040a90d758eb0683db4b83d62069bd50de7a198809e14c2f310fcd36a6","forms":["full"]}],"coverage":"full-file","contentDigest":"71e8a8d50b2d32902b2d7ad6961f4ac73634e37062f132d58721bcbb9c6700f0","mapping":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:source:adb9ce1980e8b4bd9358750d3813426af93b6b84e25288586eea8cfc3e0d3a31","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigation-attempt:19842a040a90d758eb0683db4b83d62069bd50de7a198809e14c2f310fcd36a6","forms":["full"]}],"coverage":"full-file","contentDigest":"d6153d0b8da1a1ae986c959b57687a8bb9b77ad4a8152fb906262076109fe2e3","mapping":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:source:201166b39df10c798ae2d55eb9f954ac2dc3849caa203ff660444961b13ccbf2","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigation-attempt:19842a040a90d758eb0683db4b83d62069bd50de7a198809e14c2f310fcd36a6","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:source:125c6c8227a79e327a87f6ca0ac398376fa28e6b25bef0b8fae42403cc426425","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigation-attempt:19842a040a90d758eb0683db4b83d62069bd50de7a198809e14c2f310fcd36a6","forms":["full"]}]}
+Session reported usage: 17 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 489124 tokens; input 476807 tokens (subset of total); output 12317 tokens (subset of total); cached-input 23552 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 4199 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-280ba8fb --source-detail
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-280ba8fb · interpretation
+The prior account is materially correct, but the cleanup boundary is broader and less transactional than “guard or action failure” suggests. Once an outer `dispatch()` enters its drain-loop `try`, any synchronous throw from processing the shifted event—including unknown/unhandled-event errors and a user-supplied trace logger, as well as guards and actions—replaces the queue with an empty array, propagates from that outer call, and reaches a `finally` that resets the dispatching flag. The event already shifted is not retried. Cleanup affects only the in-memory event queue: it does not roll back context or external effects, undo state already assigned, or cancel timers scheduled earlier. Consequently the instance is not left dispatch-locked and can receive a later explicit or timer-driven dispatch, but recovery begins from whatever partial state and effects survived the failed callback.
+Referent: Expanded failure boundary, cleanup scope, and recoverability of FsmEngine dispatch
+  Qualification: This is static interpretation of captured TypeScript source, not observed execution.
+  Qualification: The broad catch applies only after the outer dispatch has set the dispatching flag and entered its `try`; initial-state entry actions run in the constructor outside that dispatch cleanup boundary.
+  Qualification: The README and dispatch JSDoc describe queue clearing for guard/action errors; they do not document the broader trace-logger and runtime-error failure surface established by the implementation.
+  Qualification: No test suite was executed. The captured tests provide authored examples, not runtime confirmation.
+  Composition: @investigram-0d65be59, @investigram-9166567a, @investigram-fafd3a60, @investigram-f0aae7a0
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-8251c177 (provenance, not composition)
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:c0b6c3bec0b185acc365ce1ee35c81e12172c2d5c67879dfb52e049cc390e205, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:b9be92046aefdb189d7d529e41749cecc961c545e9509950775b57249da7bf00
+
+@investigram-f0aae7a0 · interpretation
+The captured test suite does include a focused authored case: an internal-transition action first queues an event and a later action throws; the expectation is that the queued event does not run. It also contains FIFO and guard-originated re-entrant dispatch examples. That narrows the earlier evidentiary gap, but coverage remains materially incomplete for failure in begin actions, guards, exit actions, external-transition actions, entry actions, trace loggers, unknown/unhandled errors, post-failure reuse, and timer survival.
+Referent: Available static test coverage and untested failure phases
+  Qualification: The tests were read as source and were not executed.
+  Qualification: Omission from this single captured test artifact does not establish that no other tests exist outside the captured repository population.
+  Qualification: The existing cleanup test exercises an internal transition, so it does not validate source-versus-target state commitment around external transitions.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-8251c177 (provenance, not composition)
+  Composition parent: @investigram-280ba8fb
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:b9be92046aefdb189d7d529e41749cecc961c545e9509950775b57249da7bf00
+
+@investigram-fafd3a60 · interpretation
+Queue cleanup is not whole-instance cancellation. The catch assigns `#queue = []`; it does not call `TimerRegistry.cancelAll()`. A timer scheduled before the failure therefore remains registered and its later callback can call `dispatch()`. Since `finally` has reset `#isDispatching`, that later dispatch starts a new drain cycle against the surviving state and context. This can be useful for recovery, but it also means “discard queued events” must not be read as discarding all pending future events.
+Referent: Distinction between queued-event deletion and persistence of previously scheduled timer events
+  Qualification: Timer persistence is inferred from the absence of timer cancellation in the dispatch catch and from the separate timer registry; no timer-after-failure test was executed or found in the captured test artifact.
+  Qualification: A timer callback that has not yet run is not an element of `#queue`; it enqueues only when its callback later invokes `dispatch()`.
+  Qualification: External cancellation or runtime timer behavior is outside the supplied evidence.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-8251c177 (provenance, not composition)
+  Composition parent: @investigram-280ba8fb
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:c0b6c3bec0b185acc365ce1ee35c81e12172c2d5c67879dfb52e049cc390e205, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:b9be92046aefdb189d7d529e41749cecc961c545e9509950775b57249da7bf00
+
+@investigram-9166567a · interpretation
+Tracing is part of the synchronous dispatch failure surface. Every enabled trace call invokes the configured logger without its own protection. If that logger throws, the outer dispatch catch clears the queue and rethrows the logger’s error. Because trace calls commonly precede guards or actions, such a failure can prevent the advertised callback from running; a logger failure in an error trace can also prevent construction or propagation of the engine’s intended unknown/unhandled-event error. The README’s guard/action failure description does not call out this behavior.
+Referent: User trace logger exceptions participate in dispatch abortion and may mask later work or engine errors
+  Qualification: This applies only while tracing is enabled and the configured logger throws synchronously.
+  Qualification: The default logger is also unguarded, though no claim is made here about whether `console.log` throws in a particular runtime.
+  Qualification: This is an implementation-versus-documentation omission, not a claim that the README explicitly promises logger isolation.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-8251c177 (provenance, not composition)
+  Composition parent: @investigram-280ba8fb
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:c0b6c3bec0b185acc365ce1ee35c81e12172c2d5c67879dfb52e049cc390e205, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-0d65be59 · interpretation
+For an external transition, failure atomicity is phase-dependent. State-specific begin actions, guards, exit actions, and transition actions all execute before `#state = toState`; a throw in any of them leaves the stored state at the source. The target is assigned only after exit and transition actions complete, immediately before entry actions, so an entry-action throw leaves the target committed. Internal transitions never assign state. In every phase, prior context mutations, I/O, timer scheduling, and other callback effects remain. The implementation’s nearby comment saying “Commit state first” is therefore misleading if read as ordering relative to exit and transition actions, although queued re-entrant events still observe the post-transition state when later drained.
+Referent: Exact state-commit boundary and non-rollback behavior on callback failure
+  Qualification: The conclusion concerns the stored `#state`, not arbitrary mutable context or external systems.
+  Qualification: A throw from tracing can occur at additional points: for example, the `toState` trace precedes exit/actions/assignment, while the entry-action trace follows assignment.
+  Qualification: Queued re-entrant events are processed only after the current event returns successfully; if the current event throws, those queued events are discarded instead.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-8251c177 (provenance, not composition)
+  Composition parent: @investigram-280ba8fb
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:c0b6c3bec0b185acc365ce1ee35c81e12172c2d5c67879dfb52e049cc390e205, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+Associated investigrams (explicit associations)
+Listing: available; 0 shown of 0.
+Use inspect @reference for retained content; no inference.
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Originals are shown; correction-aware selection and derived revision warnings are not yet presented.
+  Support (exposure identified by provenance): {"id":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:c0b6c3bec0b185acc365ce1ee35c81e12172c2d5c67879dfb52e049cc390e205","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigation-attempt:85d7231a55968a026f83a240771a67025f8f458fe918ccb57a2629478f4e0889","forms":["full"]}],"coverage":"full-file","contentDigest":"71e8a8d50b2d32902b2d7ad6961f4ac73634e37062f132d58721bcbb9c6700f0","mapping":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:repository-artifact:2fd59cf05b8540a80a6b06faac535cb4700ce467524c3321b7448dd7eb88afb7","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigation-attempt:85d7231a55968a026f83a240771a67025f8f458fe918ccb57a2629478f4e0889","forms":["full"]}],"coverage":"full-file","contentDigest":"d6153d0b8da1a1ae986c959b57687a8bb9b77ad4a8152fb906262076109fe2e3","mapping":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:b9be92046aefdb189d7d529e41749cecc961c545e9509950775b57249da7bf00","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigation-attempt:85d7231a55968a026f83a240771a67025f8f458fe918ccb57a2629478f4e0889","forms":["full"]}],"coverage":"full-file","contentDigest":"624b77e64a5b95840bf65c1290024cf13858f0abebb04b3405656e63c53eefec","mapping":"session:95b386bb-5138-49a2-ac41-d49e8759bd24:repository-artifact:915184f9d9cb0c59bf6ffd2c160045627928024bda31324526ef31d340b18e9a","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+
+Source support (captured locations and excerpts):
+[
+  {
+    "session": "session:95b386bb-5138-49a2-ac41-d49e8759bd24",
+    "method": "postcode/organization@3",
+    "kind": "repository-artifact",
+    "id": "session:95b386bb-5138-49a2-ac41-d49e8759bd24:repository-artifact:2fd59cf05b8540a80a6b06faac535cb4700ce467524c3321b7448dd7eb88afb7",
+    "repository": "session:95b386bb-5138-49a2-ac41-d49e8759bd24:repository-evidence:dff828d8b80561c83ace18a0a30cab26bb4619b1b5ad67a3b748bbe5beac4908",
+    "artifact": {
+      "path": "src/fsm-engine.ts",
+      "kind": "file",
+      "tracked": true
+    }
+  },
+  {
+    "session": "session:95b386bb-5138-49a2-ac41-d49e8759bd24",
+    "method": "postcode/organization@3",
+    "kind": "repository-artifact",
+    "id": "session:95b386bb-5138-49a2-ac41-d49e8759bd24:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93",
+    "repository": "session:95b386bb-5138-49a2-ac41-d49e8759bd24:repository-evidence:dff828d8b80561c83ace18a0a30cab26bb4619b1b5ad67a3b748bbe5beac4908",
+    "artifact": {
+      "path": "README.md",
+      "kind": "file",
+      "tracked": true
+    }
+  },
+  {
+    "session": "session:95b386bb-5138-49a2-ac41-d49e8759bd24",
+    "method": "postcode/organization@3",
+    "kind": "repository-artifact",
+    "id": "session:95b386bb-5138-49a2-ac41-d49e8759bd24:repository-artifact:915184f9d9cb0c59bf6ffd2c160045627928024bda31324526ef31d340b18e9a",
+    "repository": "session:95b386bb-5138-49a2-ac41-d49e8759bd24:repository-evidence:dff828d8b80561c83ace18a0a30cab26bb4619b1b5ad67a3b748bbe5beac4908",
+    "artifact": {
+      "path": "tests/fsm-engine.test.ts",
+      "kind": "file",
+      "tracked": true
+    }
+  }
+]
+Session reported usage: 17 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 489124 tokens; input 476807 tokens (subset of total); output 12317 tokens (subset of total); cached-input 23552 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 4199 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect fsm-engine
+Inspect · configured TypeScript project
+Session 95b386bb-5138-49a2-ac41-d49e8759bd24
+1 module selected from 293 · exact match for fsm-engine
+Analysis complete: modules, exports, documentation, composition
+
+Selected project modules · 1 · TypeScript names not established
+
+◆ fsm-engine
+  Entity ID: module-28ee01f8
+
+  Exports:
+  ├─ FsmEngine [type+value]
+  │  Documentation:
+  │    Finite-state machine instance created from a definition built with
+  │    {@link FsmEngine.define}.
+  │    
+  │    Each instance has its own current state, event queue, timers, and optional
+  │    mutable context object.
+  ├─ FsmEngineFactory [type]
+  │  Documentation:
+  │    Factory function returned by {@link FsmEngine.define}.
+  │    
+  │    The returned function creates independent FSM instances that share the same
+  │    definition and type parameters.
+  │    
+  │    If `Context` is `void`, the factory may be called with no argument or with
+  │    `{ label?: string }`.
+  │    … 203 assertion character(s) omitted.
+
+Documentation entries are recorded assertions; truth, currency, and completeness are not established.
+
+Status
+  Module membership and effective exports established by TypeScript analysis.
+  Coverage: external-module SourceFiles and visible named ambient modules; other compiler module categories are not established.
+
+Run limitations
+  2 generated-output locations excluded by this run's input filter.
+  Inputs were memoized as first observed, not captured as an atomic filesystem snapshot.
+
+Entity references belong to this session. One-shot queries accept exact names or handles.
+
+Associated investigrams (explicit associations)
+Listing: available; 3 shown of 3.
+Use inspect @reference for retained content; no inference.
+@investigram-dc111a38 · interpretation
+  Implements the stateful FSM instance and its typed factory. `define` delegates DSL capture, validation and table compilation to `FsmBuilderImpl`, then factories share that immutable-looking definition while each instance owns context, current state, FIFO event queue, timers and tracing state. Dispatch is synchronous at the outer call and re-entrant calls only enqueue; processing runs state begin a [874 prose characters omitted]
+  Operation: functionality; origin: hosted; provenance: session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigation-attempt:4c7d41887f91ba32c44af27c2607b0dfdf2676bb5e47404c218528f01f43beb9
+  Qualification: Interpretation of captured TypeScript source; no execution was performed.
+  Qualification: The README is an attributed package-level assertion, not proof of behavior.
+  Qualification: The apparent timer payload inversion follows the literal conditional in the captured source and may cause payload-bearing timer events to receive `undefined`.
+  Qualification: Dependency coverage is bounded to recognized project-owned source requests.
+  Association: session:95b386bb-5138-49a2-ac41-d49e8759bd24:module:28ee01f871c5038ff17dab09c1a5c11ca53589990dd9c4649245a029996e56c4 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+@investigram-d7f18532 · interpretation
+  Queue admission and draining — every call enqueues; a re-entrant call returns immediately, while the outermost call synchronously shifts queued events in FIFO order until the queue is empty.
+  Operation: decomposition; origin: hosted; provenance: session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigation-attempt:19842a040a90d758eb0683db4b83d62069bd50de7a198809e14c2f310fcd36a6
+  Qualification: “Synchronously” follows the shown loop and contains no claim about execution in other threads or hosts.
+  Qualification: A callback-dispatched event waits for the current event to finish, not necessarily for the original outer queue to become empty.
+  Association: session:95b386bb-5138-49a2-ac41-d49e8759bd24:module:28ee01f871c5038ff17dab09c1a5c11ca53589990dd9c4649245a029996e56c4 (described); The queue fields and dispatch loop are implemented in this module.; evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84
+@investigram-280ba8fb · interpretation
+  The prior account is materially correct, but the cleanup boundary is broader and less transactional than “guard or action failure” suggests. Once an outer `dispatch()` enters its drain-loop `try`, any synchronous throw from processing the shifted event—including unknown/unhandled-event errors and a user-supplied trace logger, as well as guards and actions—replaces the queue with an empty array, pr [497 prose characters omitted]
+  Operation: examination; origin: hosted; provenance: session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigation-attempt:85d7231a55968a026f83a240771a67025f8f458fe918ccb57a2629478f4e0889
+  Qualification: This is static interpretation of captured TypeScript source, not observed execution.
+  Qualification: The broad catch applies only after the outer dispatch has set the dispatching flag and entered its `try`; initial-state entry actions run in the constructor outside that dispatch cleanup boundary.
+  Qualification: The README and dispatch JSDoc describe queue clearing for guard/action errors; they do not document the broader trace-logger and runtime-error failure surface established by the implementation.
+  Qualification: No test suite was executed. The captured tests provide authored examples, not runtime confirmation.
+  Association: session:95b386bb-5138-49a2-ac41-d49e8759bd24:module:28ee01f871c5038ff17dab09c1a5c11ca53589990dd9c4649245a029996e56c4 (described); The implementation containing the dispatch loop, transition sequencing, tracing callback, action API, and timer registry use is in this module.; evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:c0b6c3bec0b185acc365ce1ee35c81e12172c2d5c67879dfb52e049cc390e205
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Originals are shown; correction-aware selection and derived revision warnings are not yet presented.
+

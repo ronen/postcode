@@ -1,0 +1,725 @@
+COMMAND: summarize anonymous
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-a44de3a8: anonymous
+
+@investigram-7e572849 · interpretation
+This is the package-facing barrel: it implements no merge logic, but exposes `merge`, `mergeAndCompare`, `mergeAndConcat`, `concatArrays`, and the `Merge` type from two delegated modules. The README presents the package as recursive plain-object merging with special instances retained as values. One documented edge is overstated: `merge(x)` is said to always return a new object, but the implementation’s empty reduction returns `x` itself.
+Referent: public merge-anything entry module
+  Qualification: Static TypeScript/source interpretation only; runtime, emitted-package, and loader behavior were not executed.
+  Qualification: README statements are attributed documentation, not established behavior. The no-additional-arguments discrepancy follows directly from the implementation and README text.
+  Qualification: The entry module uses wildcard re-exports, so its apparent API follows the compiler-observed exports of the delegated modules.
+  Composition: @investigram-9035f794, @investigram-4b9903a5, @investigram-50a55c6f
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:8063a4d5515655c21e37335157b6da32def9e894222b525f84b99c3945f95649, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:6f64ed2803e14f05072f46970bb3eee68517667fd9442ba8d3d0ad0536c50f83, session:42072530-fdeb-4cef-a43f-070ad67651c5:export:c1d37ad435569036afef1aae8e2b1cd24813adb35694bc6bba803ad4aa5404a8, session:42072530-fdeb-4cef-a43f-070ad67651c5:export:93b3c024cb4f29a0fd0c645ef2a6b6f9b954e5c8054ddb60d0dffe3f97ba6fa0, session:42072530-fdeb-4cef-a43f-070ad67651c5:export:e26f07d96b232e4d184ad3e0cdf396135d5d38a0deec01c3652af840c3079397, session:42072530-fdeb-4cef-a43f-070ad67651c5:export:03e0101ac41b08cef3e381d2473a2ab7bce98037a1901b29e353d87f07f7f0c3, session:42072530-fdeb-4cef-a43f-070ad67651c5:export:5cbf575991c6bb6718d39fc9141a7b4e4919d6e1a778613577b5a23228b482fd
+
+@investigram-50a55c6f · interpretation
+The public `Merge<T, Ts>` models record inputs by repeatedly deep-merging tuple members in order and then recursively prettifying the resulting intersection-like shape. If either side is not modeled as records, it falls back to the last newcomer type; an empty newcomer list therefore falls through `Pop` to `never` for a non-record first input, although runtime `merge(x)` returns `x`. Optional/required keys receive dedicated union and override handling.
+Referent: compile-time result-shape machinery behind the public Merge type
+  Qualification: These modules are type-only and do not perform runtime merging.
+  Qualification: The type model is an approximation encoded through conditional and mapped types; no compiler test suite was inspected.
+  Qualification: `PrettyPrint` guards against revisiting already-seen types while recursively materializing record fields.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-7e572849
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:74dca925e00af1e4d8ff5392a6275a5f9629badac922808cdbae94b26f58340f, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:adc561e2945ba6be219cc78844c7216800626454720292e8f75ab36bdbf88cbc, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:0edd20422bed0aee5f55854002c178200bf3577e50e8b2668f73b4608c1f1f77, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:b4330d4f9743385b51897711bd6b99dd564e04315999ae3474bbe865feaa418d
+
+@investigram-4b9903a5 · interpretation
+`concatArrays` is a narrow conflict policy: when both old and new values are arrays it returns their concatenation; otherwise it returns the new value unchanged. `mergeAndConcat` feeds this policy into the same recursive engine, so nested array conflicts concatenate while other conflicts retain normal replacement behavior.
+Referent: array-concatenation merge policy
+  Qualification: Array recognition is delegated to external `is-what`.
+  Qualification: Concatenation is shallow and uses the origin array's `concat`; no element-level recursive merge is evident.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-7e572849
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:6f64ed2803e14f05072f46970bb3eee68517667fd9442ba8d3d0ad0536c50f83, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:source:7caa54971fa1ecdabf543e16a9c0472b7a47d21dd77f32f2ca6767365092fe70
+
+@investigram-9035f794 · interpretation
+The merge engine folds newcomers left-to-right. Only plain objects recurse; primitives, arrays, dates/classes, and other non-plain values replace the prior value. For plain objects it copies own string and symbol keys, includes non-enumerables, skips `__proto__`, preserves enumerable versus non-enumerable status, and builds fresh objects while retaining untouched nested references. `mergeAndCompare` applies a callback to every incoming own property after any recursive merge—not only actual overwrites, despite the README wording.
+Referent: runtime recursive merge engine and API variants
+  Qualification: `isPlainObject` and `isSymbol` behavior is delegated to external `is-what`; only its declaration barrel, not its runtime implementation, was inspected.
+  Qualification: Property descriptors are not preserved wholesale: assigned properties become ordinary writable/configurable data properties, with only enumerability distinguished.
+  Qualification: The callback receives `undefined` for a missing prior value and is still invoked, which is broader than the README's description of a function triggered when a value is overwritten.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-7e572849
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:4058110f5226dffbfee41a398a8c2c8aecb21a8f66e8857496f7812c0ec3edf9
+Attempt session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:24f1f4a200f17b75cba5187ae6e4e0cdcfda507fa6e1bf8a7053d9a524dcf5b5 (accepted) reported usage: 7 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 193301 tokens; input 190173 tokens (subset of total); output 3128 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1022 tokens (subset of output)
+Session reported usage: 7 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 193301 tokens; input 190173 tokens (subset of total); output 3128 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1022 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: explain @investigram-9035f794
+Explain · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-a61e09f4 · interpretation
+The engine is best understood as a left fold over the additional arguments. The first argument is the initial accumulator; each newcomer is merged into that accumulator, and the result becomes the input to the next step. A plain-object newcomer produces an ordinary new object for that step, while any non-plain newcomer—such as an array, primitive, function, date, or class instance—is returned as the accumulator unchanged by the engine. Consequently, “non-plain values replace” applies even at the root, and a later plain object can in turn replace or merge over that value. With no additional arguments, `merge` returns the original first argument rather than making a copy.
+Referent: clarification of the recursive merge engine, property copying, reference behavior, and callback-based variants
+  Qualification: This clarifies rather than corrects the earlier account: its concise description is consistent with the inspected implementation, but “builds fresh objects” applies to plain-object merge steps, not to a call with no newcomers or a step whose newcomer is non-plain.
+  Qualification: The account is based on captured TypeScript source, not execution; runtime classification of plain objects, arrays, and symbols remains delegated to `is-what`, whose acquired source is only its declaration barrel.
+  Qualification: The README is treated as documentation of intended/user-facing behavior, not as proof of runtime behavior.
+  Composition: @investigram-dde06853, @investigram-e7adaf3e, @investigram-886a1934, @investigram-4e730965, @investigram-bb57ef4e
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-9035f794 (provenance, not composition)
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:investigram:9035f7949524915e691504ca8e122d226579c66329ea671710b47177e61d2516, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-bb57ef4e · interpretation
+The module also exports a compile-time `Merge<T, Ts>` type used as the return type of all three public functions. When the starting type and all newcomer types satisfy the record constraints, it delegates to the type-level `Assign` machinery and prettifies the result; otherwise it falls back to the last type in the newcomer tuple. This type machinery describes an intended static result and does not participate in the runtime traversal.
+Referent: static return-type surface accompanying the runtime merge functions
+  Qualification: The type-level helper modules were not inspected for this clarification, so the internal details of `Assign`, `Pop`, and `PrettyPrint` are not expanded here.
+  Qualification: The source documentation asserts that `Merge` reflects the JavaScript result, but arbitrary `mergeAndCompare` callback output is an explicit practical limitation noted by the README.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-9035f794 (provenance, not composition)
+  Composition parent: @investigram-a61e09f4
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:42072530-fdeb-4cef-a43f-070ad67651c5:export:745b85b632b232382baca642f9c45f8df2c40d931be2206469162bff00caa9b7
+
+@investigram-4e730965 · interpretation
+`mergeAndConcat` is a preset use of the same callback mechanism. Its `concatArrays` callback concatenates only when both the prior and incoming values are arrays; otherwise it returns the incoming value. Thus arrays still are not recursively traversed: at an array-valued property the callback receives the two complete arrays and returns `origin.concat(incoming)`. Concatenation is shallow, so array elements retain their references. The same callback also runs at non-array properties and simply preserves normal newcomer-wins behavior there.
+Referent: array concatenation specialization used by mergeAndConcat
+  Qualification: Array recognition is delegated to the external `is-what` implementation, which was not inspected beyond declarations.
+  Qualification: Because the callback is used at every incoming property, concatenation occurs wherever both corresponding property values are arrays, including nested overlapping plain-object paths; it is not a separate array walk.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-9035f794 (provenance, not composition)
+  Composition parent: @investigram-a61e09f4
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:6f64ed2803e14f05072f46970bb3eee68517667fd9442ba8d3d0ad0536c50f83, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:42072530-fdeb-4cef-a43f-070ad67651c5:export:d1dc4565982f53d9145db5ca29131d76590a666f1877a0943f3f967d09cbc6eb
+
+@investigram-886a1934 · interpretation
+`mergeAndCompare` performs the same fold and traversal, but computes each incoming property's final assigned value by calling `compareFn(priorValue, incomingOrRecursivelyMergedValue, key)`. The callback is invoked for every visited incoming own property except skipped `__proto__`, including a newly introduced property whose prior value is `undefined`. For an overlapping plain-object property, nested callbacks run during recursion first; the parent callback then receives the prior parent object and the already-merged child object, so it may keep, replace, or transform that entire merged child. The key may be a string or symbol.
+Referent: callback timing and arguments for mergeAndCompare
+  Qualification: This is broader than the README's statement that the callback is triggered every time a value is “overwritten”; implementation also calls it for incoming properties that had no defined prior value.
+  Qualification: Callback return values are assigned without further recursive processing.
+  Qualification: The exported function's declared return type remains `Merge<T, Tn>` even though an arbitrary callback can produce values not represented by that type; the README warns that callers may need to cast the result.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-9035f794 (provenance, not composition)
+  Composition parent: @investigram-a61e09f4
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:42072530-fdeb-4cef-a43f-070ad67651c5:export:6a20a862a560fc871d60c237a8fb8cbfa54cbc7afd1edf8b24475111b0ffc49a
+
+@investigram-e7adaf3e · interpretation
+Recursion is driven primarily by the incoming value: it occurs when the prior value is not `undefined` and the incoming value is a plain object. If both values are plain objects, their properties combine deeply. If the prior value is defined but non-plain, recursion starts from an empty object and reconstructs the incoming plain object. If the prior value is missing or explicitly `undefined`, recursion is skipped and the incoming value is assigned directly. This explains the reference behavior precisely: origin-only properties are copied by reference; an incoming plain object with no defined counterpart is also retained by reference; only an overlapping, defined path whose incoming side is plain is rebuilt. Arrays and special objects are assigned as values rather than traversed.
+Referent: recursive-merge trigger and nested reference retention
+  Qualification: The implementation does not distinguish a missing prior key from an own prior key whose value is `undefined` when deciding whether to recurse.
+  Qualification: The README similarly warns that nested references can remain linked, but its prose is user-facing guidance; the more exact branch behavior here comes from source inspection.
+  Qualification: No cycle detection is visible in the recursive implementation, so this evidence does not support safe handling of overlapping cyclic plain-object graphs.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-9035f794 (provenance, not composition)
+  Composition parent: @investigram-a61e09f4
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-dde06853 · interpretation
+For a plain-object newcomer, one merge step has two passes. First it copies each own string or symbol property found only on a plain-object origin into a new `{}`. Second it visits every own string or symbol property of the newcomer and assigns that property, possibly after recursively merging its value. `Object.getOwnPropertyNames` means non-enumerable string properties are included, while `Object.getOwnPropertySymbols` adds symbols. The string key `__proto__` is skipped in both passes. Inherited properties are never enumerated. The result has the normal `Object.prototype`; source prototypes and full descriptors are not copied.
+Referent: own-property collection and assignment behavior inside one recursive merge step
+  Qualification: Assignment preserves only whether a property is enumerable. All copied values become writable, configurable data properties; getters and setters are read through ordinary property access and are therefore not preserved as accessors.
+  Qualification: Although `assignProp` is typed with a string key, symbol values are passed to it at runtime through casts and are handled by the computed-property and descriptor operations shown in source.
+  Qualification: Only the literal string key `__proto__` receives this special skip; this account does not generalize that check to other property names.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-9035f794 (provenance, not composition)
+  Composition parent: @investigram-a61e09f4
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+Attempt session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:5f721af01358df75e815529c64780c27481a60c3ead06c9d0c590ebfcff433a8 (accepted) reported usage: 3 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 63611 tokens; input 59757 tokens (subset of total); output 3854 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1437 tokens (subset of output)
+Session reported usage: 10 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 256912 tokens; input 249930 tokens (subset of total); output 6982 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2459 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: decompose @investigram-dde06853
+Decompose · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-7482c4e2 · interpretation
+Selectable sub-aspects of the merge step include property discovery, origin-only carryover, newcomer precedence and recursion, `__proto__` filtering, and descriptor normalization during assignment.
+Referent: selected smaller aspects of own-property collection and assignment in one recursive merge step
+  Qualification: This is an intentionally non-exhaustive decomposition; the aspects may overlap and are not presented as mutually exclusive.
+  Qualification: The repository README describes recursive plain-object merging onto a new object and claims support for symbols plus enumerable and non-enumerable properties; those are documentation assertions, while the implementation source shows the mechanics described by the children.
+  Qualification: The source is static captured content and does not by itself establish behavior in every runtime environment.
+  Composition: @investigram-384b1e31, @investigram-e6d20622, @investigram-82b5ee42, @investigram-b4657e70, @investigram-da6ea7a9, @investigram-40c27fe2
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-dde06853 (provenance, not composition)
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-40c27fe2 · interpretation
+Accumulate the merged plain-object result in a fresh ordinary `{}` container.
+Referent: result-container creation for a plain-object newcomer
+  Qualification: The container therefore has the ordinary object prototype rather than copying either source object's prototype; property values themselves are not necessarily cloned.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-dde06853 (provenance, not composition)
+  Composition parent: @investigram-7482c4e2
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+
+@investigram-da6ea7a9 · interpretation
+Preserve only source enumerability while materializing each copied value as a writable, configurable data property.
+Referent: property creation policy applied by `assignProp`
+  Qualification: Enumerable properties use ordinary computed assignment; non-enumerable properties use `Object.defineProperty` with `enumerable: false`, `writable: true`, and `configurable: true`.
+  Qualification: Source accessors and other descriptor details are not preserved because values are read through ordinary property access before assignment.
+  Qualification: Although the helper's key parameter is typed as `string`, callers pass symbol keys through casts and the runtime computed-key operations accept them.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-dde06853 (provenance, not composition)
+  Composition parent: @investigram-7482c4e2
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+
+@investigram-b4657e70 · interpretation
+Skip the literal string key `__proto__` in both passes.
+Referent: prototype-poisoning key guard during own-key reduction
+  Qualification: The guard is equality with the literal string `__proto__`; no broader dangerous-key policy is inferred.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-dde06853 (provenance, not composition)
+  Composition parent: @investigram-7482c4e2
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+
+@investigram-82b5ee42 · interpretation
+Visit every own newcomer key, recursively merge an overlapping plain-object value when eligible, then assign the newcomer-side result.
+Referent: second-pass newcomer precedence and recursive value handling
+  Qualification: Recursion requires a defined origin-side value and a plain-object newcomer value; an optional compare function can transform the value immediately before assignment.
+  Qualification: This aspect does not claim that all assigned nested values are cloned; unchanged values can retain references.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-dde06853 (provenance, not composition)
+  Composition parent: @investigram-7482c4e2
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+
+@investigram-e6d20622 · interpretation
+From a plain-object origin, carry forward only keys that the newcomer does not own.
+Referent: first-pass copying of origin-only properties
+  Qualification: This pass runs only when the origin satisfies `isPlainObject`; string and symbol presence are checked against the newcomer's corresponding own-key lists.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-dde06853 (provenance, not composition)
+  Composition parent: @investigram-7482c4e2
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+
+@investigram-384b1e31 · interpretation
+Collect own string names and own symbols, including non-enumerable properties but not inherited ones.
+Referent: own-key discovery for origin and newcomer passes
+  Qualification: `Object.getOwnPropertyNames` supplies string keys and `Object.getOwnPropertySymbols` supplies symbol keys; neither operation traverses inherited properties.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-dde06853 (provenance, not composition)
+  Composition parent: @investigram-7482c4e2
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+Attempt session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:e9f0db62f6444e424f632d1e2e29ad8660433224c4a4b9e3433b2e6694d94f4a (accepted) reported usage: 3 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 34915 tokens; input 33172 tokens (subset of total); output 1743 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 530 tokens (subset of output)
+Session reported usage: 13 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 291827 tokens; input 283102 tokens (subset of total); output 8725 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2989 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: examine @investigram-da6ea7a9
+Examine · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-ae9ae6b5 · interpretation
+`assignProp` is the final descriptor-normalization step of the recursive merge, not a descriptor clone. The merge enumerates all own string names and symbols, reads values through normal property access, and then asks `assignProp` to retain only the winning source property's enumerability. Non-enumerable results are explicitly created as writable/configurable data properties; enumerable results use ordinary assignment and therefore have ordinary `[[Set]]` semantics rather than an unconditional own-property definition.
+Referent: deep examination of the property-copy and descriptor policy implemented around `assignProp`
+  Qualification: Static interpretation of captured TypeScript source; no JavaScript execution or emitted-package inspection was performed.
+  Qualification: The README claims support for symbols and enumerable/non-enumerable properties, but it does not promise preservation of accessors or complete property descriptors.
+  Qualification: The test source demonstrates intended checks for string and symbol values plus non-enumerable visibility through `Object.keys`; it does not test getters, setters, writable/configurable preservation, inherited setters, or thrown accessor errors.
+  Composition: @investigram-57ccc26c, @investigram-22e01d7e, @investigram-0991a3ef, @investigram-d2c3fdfd
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-da6ea7a9 (provenance, not composition)
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7a8fba5a69e9e89c458d3242bc1bc54a9633b4e873bdd91d0c87d6c116eb55a2
+
+@investigram-abc5b89e · interpretation
+Preserve the winning source property's enumerability while copying its evaluated value, but do not preserve the rest of its descriptor. Non-enumerable keys are unconditionally defined as writable/configurable data properties; enumerable keys are written by ordinary assignment, which normally creates that kind of own data property on the fresh accumulator but retains ordinary inherited-setter semantics.
+Referent: corrected property creation policy applied by `assignProp`
+  Qualification: Values are obtained through ordinary property access, so accessors are invoked and replaced by their returned values; overlapping origin accessors can be evaluated twice before the newcomer-derived result is assigned.
+  Qualification: The `__proto__` string key is skipped before assignment, but the enumerable branch is not a general `defineProperty` operation and does not bypass arbitrary inherited setters.
+  Qualification: Symbol keys reach the helper through casts despite its `string` parameter annotation; no runtime string conversion is expressed.
+  Qualification: Static source interpretation only; proxy behavior and mutated global prototypes were not executed.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-da6ea7a9 (provenance, not composition)
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7a8fba5a69e9e89c458d3242bc1bc54a9633b4e873bdd91d0c87d6c116eb55a2
+
+@investigram-d2c3fdfd · interpretation
+Symbols are operationally supported because both loops combine `Object.getOwnPropertyNames` with `Object.getOwnPropertySymbols`, and computed access, assignment, `propertyIsEnumerable`, and `defineProperty` accept symbol keys. The helper's `key: string` annotation is therefore narrower than its actual calls: symbol keys are forced through `key as string`, which suppresses the mismatch without converting the runtime symbol.
+Referent: symbol-key flow through the string-typed helper boundary
+  Qualification: This is a source-level observation; no emitted JavaScript was acquired.
+  Qualification: The captured tests cover enumerable and non-enumerable symbols but do not establish all symbol edge cases.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-da6ea7a9 (provenance, not composition)
+  Composition parent: @investigram-ae9ae6b5
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7a8fba5a69e9e89c458d3242bc1bc54a9633b4e873bdd91d0c87d6c116eb55a2
+
+@investigram-0991a3ef · interpretation
+Enumerability follows the object whose value is actually assigned at that merge level: origin-only properties consult the origin, while newcomer properties—including conflicts and values transformed by recursion or the compare callback—consult the newcomer. The callback can replace the value but cannot directly choose the resulting descriptor. At nested levels, the same rule is reapplied by a fresh recursive accumulator.
+Referent: enumerability precedence across origin, newcomer, recursion, and comparison
+  Qualification: The policy is per property at each recursive plain-object merge boundary; special/non-plain values are assigned as values rather than traversed.
+  Qualification: The acquired compare-function tests check transformed values, not resulting descriptors.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-da6ea7a9 (provenance, not composition)
+  Composition parent: @investigram-ae9ae6b5
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:231e6dec254fa71e707bef6e69f15c11febe55c9586358edd73455bc6a2d7f46
+
+@investigram-22e01d7e · interpretation
+Accessors are evaluated, not copied. Every non-`__proto__` origin key is read before the implementation decides whether the newcomer already owns the same key. On an overlap, that first origin read is discarded and the origin property is read again while processing the newcomer; consequently an origin getter can run twice, while the newcomer getter is read once before recursion or comparison. Any side effects, changing return values, or exceptions from those reads become part of the merge operation.
+Referent: property-read timing and accessor side effects before `assignProp`
+  Qualification: Invocation counts follow the two captured reduction loops for an overlapping own key in ordinary, non-proxy objects.
+  Qualification: Proxy traps, mutations performed during enumeration, and accessor-thrown failures were not executed or covered by the acquired tests.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-da6ea7a9 (provenance, not composition)
+  Composition parent: @investigram-ae9ae6b5
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7a8fba5a69e9e89c458d3242bc1bc54a9633b4e873bdd91d0c87d6c116eb55a2
+
+@investigram-57ccc26c · interpretation
+For a non-enumerable own property, `propertyIsEnumerable.call` selects `Object.defineProperty` with exactly `value`, `enumerable: false`, `writable: true`, and `configurable: true`. Thus accessor identity, getter/setter functions, source writability, and source configurability are discarded. For an enumerable property, `carry[key] = newVal` normally creates an enumerable, writable, configurable own data property on the fresh ordinary accumulator, but it is not equivalent to `defineProperty`: an inherited setter installed for that key could intercept the assignment instead.
+Referent: descriptor transformation performed by `assignProp`
+  Qualification: The inherited-setter caveat concerns ordinary ECMAScript assignment semantics and is not exercised by the captured tests.
+  Qualification: `__proto__` string keys are filtered by both merge loops before reaching `assignProp`, avoiding the standard `Object.prototype.__proto__` setter; the source does not similarly harden every possible inherited accessor key.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-da6ea7a9 (provenance, not composition)
+  Composition parent: @investigram-ae9ae6b5
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7a8fba5a69e9e89c458d3242bc1bc54a9633b4e873bdd91d0c87d6c116eb55a2
+
+Correction reported by @investigram-ae9ae6b5: @investigram-da6ea7a9 → @investigram-abc5b89e
+  Corrected subjects: session:42072530-fdeb-4cef-a43f-070ad67651c5:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:investigram:da6ea7a98f846c9882c462cdf3fc94da99034455a58a169659681ee901e103d2, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+  Reason: The earlier account unconditionally said every copied value is materialized as a writable/configurable data property. That is exact for the explicit non-enumerable `defineProperty` branch, but too strong for the enumerable branch, which uses ordinary assignment and can be intercepted by an inherited setter. The replacement retains the earlier descriptor-loss finding while qualifying the enumerable case and adding the materially relevant eager-read behavior.
+  Qualification: The correction narrows an overstatement; under the usual unmodified `Object.prototype`, enumerable assignment to the fresh accumulator normally does create the described own data property.
+  Qualification: The earlier symbol-key observation remains valid and is retained with clearer distinction between the TypeScript annotation and runtime key identity.
+Attempt session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:009d1fda6256d0dd110a0533fcdec1d7a00745d6ae31f37245a875c77c94cf23 (accepted) reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 217748 tokens; input 213714 tokens (subset of total); output 4034 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1678 tokens (subset of output)
+Session reported usage: 19 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 509575 tokens; input 496816 tokens (subset of total); output 12759 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 4667 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: examine @investigram-da6ea7a9
+Examine · investigram
+References remain bound for this session.
+Retained outcome; no new investigation.
+
+@investigram-ae9ae6b5 · interpretation
+`assignProp` is the final descriptor-normalization step of the recursive merge, not a descriptor clone. The merge enumerates all own string names and symbols, reads values through normal property access, and then asks `assignProp` to retain only the winning source property's enumerability. Non-enumerable results are explicitly created as writable/configurable data properties; enumerable results use ordinary assignment and therefore have ordinary `[[Set]]` semantics rather than an unconditional own-property definition.
+Referent: deep examination of the property-copy and descriptor policy implemented around `assignProp`
+  Qualification: Static interpretation of captured TypeScript source; no JavaScript execution or emitted-package inspection was performed.
+  Qualification: The README claims support for symbols and enumerable/non-enumerable properties, but it does not promise preservation of accessors or complete property descriptors.
+  Qualification: The test source demonstrates intended checks for string and symbol values plus non-enumerable visibility through `Object.keys`; it does not test getters, setters, writable/configurable preservation, inherited setters, or thrown accessor errors.
+  Composition: @investigram-57ccc26c, @investigram-22e01d7e, @investigram-0991a3ef, @investigram-d2c3fdfd
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-da6ea7a9 (provenance, not composition)
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7a8fba5a69e9e89c458d3242bc1bc54a9633b4e873bdd91d0c87d6c116eb55a2
+
+@investigram-abc5b89e · interpretation
+Preserve the winning source property's enumerability while copying its evaluated value, but do not preserve the rest of its descriptor. Non-enumerable keys are unconditionally defined as writable/configurable data properties; enumerable keys are written by ordinary assignment, which normally creates that kind of own data property on the fresh accumulator but retains ordinary inherited-setter semantics.
+Referent: corrected property creation policy applied by `assignProp`
+  Qualification: Values are obtained through ordinary property access, so accessors are invoked and replaced by their returned values; overlapping origin accessors can be evaluated twice before the newcomer-derived result is assigned.
+  Qualification: The `__proto__` string key is skipped before assignment, but the enumerable branch is not a general `defineProperty` operation and does not bypass arbitrary inherited setters.
+  Qualification: Symbol keys reach the helper through casts despite its `string` parameter annotation; no runtime string conversion is expressed.
+  Qualification: Static source interpretation only; proxy behavior and mutated global prototypes were not executed.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-da6ea7a9 (provenance, not composition)
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7a8fba5a69e9e89c458d3242bc1bc54a9633b4e873bdd91d0c87d6c116eb55a2
+
+@investigram-d2c3fdfd · interpretation
+Symbols are operationally supported because both loops combine `Object.getOwnPropertyNames` with `Object.getOwnPropertySymbols`, and computed access, assignment, `propertyIsEnumerable`, and `defineProperty` accept symbol keys. The helper's `key: string` annotation is therefore narrower than its actual calls: symbol keys are forced through `key as string`, which suppresses the mismatch without converting the runtime symbol.
+Referent: symbol-key flow through the string-typed helper boundary
+  Qualification: This is a source-level observation; no emitted JavaScript was acquired.
+  Qualification: The captured tests cover enumerable and non-enumerable symbols but do not establish all symbol edge cases.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-da6ea7a9 (provenance, not composition)
+  Composition parent: @investigram-ae9ae6b5
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7a8fba5a69e9e89c458d3242bc1bc54a9633b4e873bdd91d0c87d6c116eb55a2
+
+@investigram-0991a3ef · interpretation
+Enumerability follows the object whose value is actually assigned at that merge level: origin-only properties consult the origin, while newcomer properties—including conflicts and values transformed by recursion or the compare callback—consult the newcomer. The callback can replace the value but cannot directly choose the resulting descriptor. At nested levels, the same rule is reapplied by a fresh recursive accumulator.
+Referent: enumerability precedence across origin, newcomer, recursion, and comparison
+  Qualification: The policy is per property at each recursive plain-object merge boundary; special/non-plain values are assigned as values rather than traversed.
+  Qualification: The acquired compare-function tests check transformed values, not resulting descriptors.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-da6ea7a9 (provenance, not composition)
+  Composition parent: @investigram-ae9ae6b5
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:231e6dec254fa71e707bef6e69f15c11febe55c9586358edd73455bc6a2d7f46
+
+@investigram-22e01d7e · interpretation
+Accessors are evaluated, not copied. Every non-`__proto__` origin key is read before the implementation decides whether the newcomer already owns the same key. On an overlap, that first origin read is discarded and the origin property is read again while processing the newcomer; consequently an origin getter can run twice, while the newcomer getter is read once before recursion or comparison. Any side effects, changing return values, or exceptions from those reads become part of the merge operation.
+Referent: property-read timing and accessor side effects before `assignProp`
+  Qualification: Invocation counts follow the two captured reduction loops for an overlapping own key in ordinary, non-proxy objects.
+  Qualification: Proxy traps, mutations performed during enumeration, and accessor-thrown failures were not executed or covered by the acquired tests.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-da6ea7a9 (provenance, not composition)
+  Composition parent: @investigram-ae9ae6b5
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7a8fba5a69e9e89c458d3242bc1bc54a9633b4e873bdd91d0c87d6c116eb55a2
+
+@investigram-57ccc26c · interpretation
+For a non-enumerable own property, `propertyIsEnumerable.call` selects `Object.defineProperty` with exactly `value`, `enumerable: false`, `writable: true`, and `configurable: true`. Thus accessor identity, getter/setter functions, source writability, and source configurability are discarded. For an enumerable property, `carry[key] = newVal` normally creates an enumerable, writable, configurable own data property on the fresh ordinary accumulator, but it is not equivalent to `defineProperty`: an inherited setter installed for that key could intercept the assignment instead.
+Referent: descriptor transformation performed by `assignProp`
+  Qualification: The inherited-setter caveat concerns ordinary ECMAScript assignment semantics and is not exercised by the captured tests.
+  Qualification: `__proto__` string keys are filtered by both merge loops before reaching `assignProp`, avoiding the standard `Object.prototype.__proto__` setter; the source does not similarly harden every possible inherited accessor key.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-da6ea7a9 (provenance, not composition)
+  Composition parent: @investigram-ae9ae6b5
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7a8fba5a69e9e89c458d3242bc1bc54a9633b4e873bdd91d0c87d6c116eb55a2
+
+Correction reported by @investigram-ae9ae6b5: @investigram-da6ea7a9 → @investigram-abc5b89e
+  Corrected subjects: session:42072530-fdeb-4cef-a43f-070ad67651c5:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:investigram:da6ea7a98f846c9882c462cdf3fc94da99034455a58a169659681ee901e103d2, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+  Reason: The earlier account unconditionally said every copied value is materialized as a writable/configurable data property. That is exact for the explicit non-enumerable `defineProperty` branch, but too strong for the enumerable branch, which uses ordinary assignment and can be intercepted by an inherited setter. The replacement retains the earlier descriptor-loss finding while qualifying the enumerable case and adding the materially relevant eager-read behavior.
+  Qualification: The correction narrows an overstatement; under the usual unmodified `Object.prototype`, enumerable assignment to the fresh accumulator normally does create the described own data property.
+  Qualification: The earlier symbol-key observation remains valid and is retained with clearer distinction between the TypeScript annotation and runtime key identity.
+Attempt session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:009d1fda6256d0dd110a0533fcdec1d7a00745d6ae31f37245a875c77c94cf23 (accepted) reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 217748 tokens; input 213714 tokens (subset of total); output 4034 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1678 tokens (subset of output)
+Session reported usage: 19 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 509575 tokens; input 496816 tokens (subset of total); output 12759 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 4667 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-7482c4e2
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-7482c4e2 · interpretation
+Selectable sub-aspects of the merge step include property discovery, origin-only carryover, newcomer precedence and recursion, `__proto__` filtering, and descriptor normalization during assignment.
+Referent: selected smaller aspects of own-property collection and assignment in one recursive merge step
+  Qualification: This is an intentionally non-exhaustive decomposition; the aspects may overlap and are not presented as mutually exclusive.
+  Qualification: The repository README describes recursive plain-object merging onto a new object and claims support for symbols plus enumerable and non-enumerable properties; those are documentation assertions, while the implementation source shows the mechanics described by the children.
+  Qualification: The source is static captured content and does not by itself establish behavior in every runtime environment.
+  Composition: @investigram-384b1e31, @investigram-e6d20622, @investigram-82b5ee42, @investigram-b4657e70, @investigram-da6ea7a9, @investigram-40c27fe2
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-dde06853 (provenance, not composition)
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-40c27fe2 · interpretation
+Accumulate the merged plain-object result in a fresh ordinary `{}` container.
+Referent: result-container creation for a plain-object newcomer
+  Qualification: The container therefore has the ordinary object prototype rather than copying either source object's prototype; property values themselves are not necessarily cloned.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-dde06853 (provenance, not composition)
+  Composition parent: @investigram-7482c4e2
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+
+@investigram-da6ea7a9 · interpretation
+Preserve only source enumerability while materializing each copied value as a writable, configurable data property.
+Referent: property creation policy applied by `assignProp`
+  Qualification: Enumerable properties use ordinary computed assignment; non-enumerable properties use `Object.defineProperty` with `enumerable: false`, `writable: true`, and `configurable: true`.
+  Qualification: Source accessors and other descriptor details are not preserved because values are read through ordinary property access before assignment.
+  Qualification: Although the helper's key parameter is typed as `string`, callers pass symbol keys through casts and the runtime computed-key operations accept them.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-dde06853 (provenance, not composition)
+  Composition parent: @investigram-7482c4e2
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+
+@investigram-b4657e70 · interpretation
+Skip the literal string key `__proto__` in both passes.
+Referent: prototype-poisoning key guard during own-key reduction
+  Qualification: The guard is equality with the literal string `__proto__`; no broader dangerous-key policy is inferred.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-dde06853 (provenance, not composition)
+  Composition parent: @investigram-7482c4e2
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+
+@investigram-82b5ee42 · interpretation
+Visit every own newcomer key, recursively merge an overlapping plain-object value when eligible, then assign the newcomer-side result.
+Referent: second-pass newcomer precedence and recursive value handling
+  Qualification: Recursion requires a defined origin-side value and a plain-object newcomer value; an optional compare function can transform the value immediately before assignment.
+  Qualification: This aspect does not claim that all assigned nested values are cloned; unchanged values can retain references.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-dde06853 (provenance, not composition)
+  Composition parent: @investigram-7482c4e2
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+
+@investigram-e6d20622 · interpretation
+From a plain-object origin, carry forward only keys that the newcomer does not own.
+Referent: first-pass copying of origin-only properties
+  Qualification: This pass runs only when the origin satisfies `isPlainObject`; string and symbol presence are checked against the newcomer's corresponding own-key lists.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-dde06853 (provenance, not composition)
+  Composition parent: @investigram-7482c4e2
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+
+@investigram-384b1e31 · interpretation
+Collect own string names and own symbols, including non-enumerable properties but not inherited ones.
+Referent: own-key discovery for origin and newcomer passes
+  Qualification: `Object.getOwnPropertyNames` supplies string keys and `Object.getOwnPropertySymbols` supplies symbol keys; neither operation traverses inherited properties.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-dde06853 (provenance, not composition)
+  Composition parent: @investigram-7482c4e2
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+
+Correction reported by @investigram-ae9ae6b5: @investigram-da6ea7a9 → @investigram-abc5b89e
+  Corrected subjects: session:42072530-fdeb-4cef-a43f-070ad67651c5:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:investigram:da6ea7a98f846c9882c462cdf3fc94da99034455a58a169659681ee901e103d2, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+  Reason: The earlier account unconditionally said every copied value is materialized as a writable/configurable data property. That is exact for the explicit non-enumerable `defineProperty` branch, but too strong for the enumerable branch, which uses ordinary assignment and can be intercepted by an inherited setter. The replacement retains the earlier descriptor-loss finding while qualifying the enumerable case and adding the materially relevant eager-read behavior.
+  Qualification: The correction narrows an overstatement; under the usual unmodified `Object.prototype`, enumerable assignment to the fresh accumulator normally does create the described own data property.
+  Qualification: The earlier symbol-key observation remains valid and is retained with clearer distinction between the TypeScript annotation and runtime key identity.
+
+Associated investigrams (explicit associations)
+Listing: available; 0 shown of 0.
+Use inspect @reference for retained content; no inference.
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Originals are shown; correction-aware selection and derived revision warnings are not yet presented.
+  Support (exposure identified by provenance): {"id":"session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:e9f0db62f6444e424f632d1e2e29ad8660433224c4a4b9e3433b2e6694d94f4a","forms":["full"]},{"provenance":"session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:009d1fda6256d0dd110a0533fcdec1d7a00745d6ae31f37245a875c77c94cf23","forms":["full"]}],"coverage":"full-file","contentDigest":"62c216bd690ec52692b34402597349609a21a993fcb808af0d3a1b3fe62a1b01","mapping":"session:42072530-fdeb-4cef-a43f-070ad67651c5:source:74e61361c910d5eb6a136db3f944d72b5111086426cdcbff85fe4c460b2dd066","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:e9f0db62f6444e424f632d1e2e29ad8660433224c4a4b9e3433b2e6694d94f4a","forms":["full"]},{"provenance":"session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:009d1fda6256d0dd110a0533fcdec1d7a00745d6ae31f37245a875c77c94cf23","forms":["full"]}],"coverage":"full-file","contentDigest":"2322b72829d384f04b496f293abcbaf981cf7504a27ca162d824cb2ef570e502","mapping":"session:42072530-fdeb-4cef-a43f-070ad67651c5:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:42072530-fdeb-4cef-a43f-070ad67651c5:investigram:da6ea7a98f846c9882c462cdf3fc94da99034455a58a169659681ee901e103d2","kind":"investigram","method":"postcode/investigation@9","exposures":[{"provenance":"session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:009d1fda6256d0dd110a0533fcdec1d7a00745d6ae31f37245a875c77c94cf23","forms":["prior-interpretation"]}]}
+Session reported usage: 19 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 509575 tokens; input 496816 tokens (subset of total); output 12759 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 4667 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-da6ea7a9
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-da6ea7a9 · interpretation
+Preserve only source enumerability while materializing each copied value as a writable, configurable data property.
+Referent: property creation policy applied by `assignProp`
+  Qualification: Enumerable properties use ordinary computed assignment; non-enumerable properties use `Object.defineProperty` with `enumerable: false`, `writable: true`, and `configurable: true`.
+  Qualification: Source accessors and other descriptor details are not preserved because values are read through ordinary property access before assignment.
+  Qualification: Although the helper's key parameter is typed as `string`, callers pass symbol keys through casts and the runtime computed-key operations accept them.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-dde06853 (provenance, not composition)
+  Composition parent: @investigram-7482c4e2
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+
+Correction reported by @investigram-ae9ae6b5: @investigram-da6ea7a9 → @investigram-abc5b89e
+  Corrected subjects: session:42072530-fdeb-4cef-a43f-070ad67651c5:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:investigram:da6ea7a98f846c9882c462cdf3fc94da99034455a58a169659681ee901e103d2, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+  Reason: The earlier account unconditionally said every copied value is materialized as a writable/configurable data property. That is exact for the explicit non-enumerable `defineProperty` branch, but too strong for the enumerable branch, which uses ordinary assignment and can be intercepted by an inherited setter. The replacement retains the earlier descriptor-loss finding while qualifying the enumerable case and adding the materially relevant eager-read behavior.
+  Qualification: The correction narrows an overstatement; under the usual unmodified `Object.prototype`, enumerable assignment to the fresh accumulator normally does create the described own data property.
+  Qualification: The earlier symbol-key observation remains valid and is retained with clearer distinction between the TypeScript annotation and runtime key identity.
+
+Associated investigrams (explicit associations)
+Listing: available; 1 shown of 1.
+Use inspect @reference for retained content; no inference.
+@investigram-ae9ae6b5 · interpretation
+  `assignProp` is the final descriptor-normalization step of the recursive merge, not a descriptor clone. The merge enumerates all own string names and symbols, reads values through normal property access, and then asks `assignProp` to retain only the winning source property's enumerability. Non-enumerable results are explicitly created as writable/configurable data properties; enumerable results us [123 prose characters omitted]
+  Operation: examination; origin: hosted; provenance: session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:009d1fda6256d0dd110a0533fcdec1d7a00745d6ae31f37245a875c77c94cf23
+  Qualification: Static interpretation of captured TypeScript source; no JavaScript execution or emitted-package inspection was performed.
+  Qualification: The README claims support for symbols and enumerable/non-enumerable properties, but it does not promise preservation of accessors or complete property descriptors.
+  Qualification: The test source demonstrates intended checks for string and symbol values plus non-enumerable visibility through `Object.keys`; it does not test getters, setters, writable/configurable preservation, inherited setters, or thrown accessor errors.
+  Association: session:42072530-fdeb-4cef-a43f-070ad67651c5:investigram:da6ea7a98f846c9882c462cdf3fc94da99034455a58a169659681ee901e103d2 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Originals are shown; correction-aware selection and derived revision warnings are not yet presented.
+  Support (exposure identified by provenance): {"id":"session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:e9f0db62f6444e424f632d1e2e29ad8660433224c4a4b9e3433b2e6694d94f4a","forms":["full"]},{"provenance":"session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:009d1fda6256d0dd110a0533fcdec1d7a00745d6ae31f37245a875c77c94cf23","forms":["full"]}],"coverage":"full-file","contentDigest":"62c216bd690ec52692b34402597349609a21a993fcb808af0d3a1b3fe62a1b01","mapping":"session:42072530-fdeb-4cef-a43f-070ad67651c5:source:74e61361c910d5eb6a136db3f944d72b5111086426cdcbff85fe4c460b2dd066","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:42072530-fdeb-4cef-a43f-070ad67651c5:investigram:da6ea7a98f846c9882c462cdf3fc94da99034455a58a169659681ee901e103d2","kind":"investigram","method":"postcode/investigation@9","exposures":[{"provenance":"session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:009d1fda6256d0dd110a0533fcdec1d7a00745d6ae31f37245a875c77c94cf23","forms":["prior-interpretation"]}]}
+Session reported usage: 19 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 509575 tokens; input 496816 tokens (subset of total); output 12759 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 4667 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect @investigram-ae9ae6b5 --source-detail
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-ae9ae6b5 · interpretation
+`assignProp` is the final descriptor-normalization step of the recursive merge, not a descriptor clone. The merge enumerates all own string names and symbols, reads values through normal property access, and then asks `assignProp` to retain only the winning source property's enumerability. Non-enumerable results are explicitly created as writable/configurable data properties; enumerable results use ordinary assignment and therefore have ordinary `[[Set]]` semantics rather than an unconditional own-property definition.
+Referent: deep examination of the property-copy and descriptor policy implemented around `assignProp`
+  Qualification: Static interpretation of captured TypeScript source; no JavaScript execution or emitted-package inspection was performed.
+  Qualification: The README claims support for symbols and enumerable/non-enumerable properties, but it does not promise preservation of accessors or complete property descriptors.
+  Qualification: The test source demonstrates intended checks for string and symbol values plus non-enumerable visibility through `Object.keys`; it does not test getters, setters, writable/configurable preservation, inherited setters, or thrown accessor errors.
+  Composition: @investigram-57ccc26c, @investigram-22e01d7e, @investigram-0991a3ef, @investigram-d2c3fdfd
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-da6ea7a9 (provenance, not composition)
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7a8fba5a69e9e89c458d3242bc1bc54a9633b4e873bdd91d0c87d6c116eb55a2
+
+@investigram-abc5b89e · interpretation
+Preserve the winning source property's enumerability while copying its evaluated value, but do not preserve the rest of its descriptor. Non-enumerable keys are unconditionally defined as writable/configurable data properties; enumerable keys are written by ordinary assignment, which normally creates that kind of own data property on the fresh accumulator but retains ordinary inherited-setter semantics.
+Referent: corrected property creation policy applied by `assignProp`
+  Qualification: Values are obtained through ordinary property access, so accessors are invoked and replaced by their returned values; overlapping origin accessors can be evaluated twice before the newcomer-derived result is assigned.
+  Qualification: The `__proto__` string key is skipped before assignment, but the enumerable branch is not a general `defineProperty` operation and does not bypass arbitrary inherited setters.
+  Qualification: Symbol keys reach the helper through casts despite its `string` parameter annotation; no runtime string conversion is expressed.
+  Qualification: Static source interpretation only; proxy behavior and mutated global prototypes were not executed.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-da6ea7a9 (provenance, not composition)
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7a8fba5a69e9e89c458d3242bc1bc54a9633b4e873bdd91d0c87d6c116eb55a2
+
+@investigram-d2c3fdfd · interpretation
+Symbols are operationally supported because both loops combine `Object.getOwnPropertyNames` with `Object.getOwnPropertySymbols`, and computed access, assignment, `propertyIsEnumerable`, and `defineProperty` accept symbol keys. The helper's `key: string` annotation is therefore narrower than its actual calls: symbol keys are forced through `key as string`, which suppresses the mismatch without converting the runtime symbol.
+Referent: symbol-key flow through the string-typed helper boundary
+  Qualification: This is a source-level observation; no emitted JavaScript was acquired.
+  Qualification: The captured tests cover enumerable and non-enumerable symbols but do not establish all symbol edge cases.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-da6ea7a9 (provenance, not composition)
+  Composition parent: @investigram-ae9ae6b5
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7a8fba5a69e9e89c458d3242bc1bc54a9633b4e873bdd91d0c87d6c116eb55a2
+
+@investigram-0991a3ef · interpretation
+Enumerability follows the object whose value is actually assigned at that merge level: origin-only properties consult the origin, while newcomer properties—including conflicts and values transformed by recursion or the compare callback—consult the newcomer. The callback can replace the value but cannot directly choose the resulting descriptor. At nested levels, the same rule is reapplied by a fresh recursive accumulator.
+Referent: enumerability precedence across origin, newcomer, recursion, and comparison
+  Qualification: The policy is per property at each recursive plain-object merge boundary; special/non-plain values are assigned as values rather than traversed.
+  Qualification: The acquired compare-function tests check transformed values, not resulting descriptors.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-da6ea7a9 (provenance, not composition)
+  Composition parent: @investigram-ae9ae6b5
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:231e6dec254fa71e707bef6e69f15c11febe55c9586358edd73455bc6a2d7f46
+
+@investigram-22e01d7e · interpretation
+Accessors are evaluated, not copied. Every non-`__proto__` origin key is read before the implementation decides whether the newcomer already owns the same key. On an overlap, that first origin read is discarded and the origin property is read again while processing the newcomer; consequently an origin getter can run twice, while the newcomer getter is read once before recursion or comparison. Any side effects, changing return values, or exceptions from those reads become part of the merge operation.
+Referent: property-read timing and accessor side effects before `assignProp`
+  Qualification: Invocation counts follow the two captured reduction loops for an overlapping own key in ordinary, non-proxy objects.
+  Qualification: Proxy traps, mutations performed during enumeration, and accessor-thrown failures were not executed or covered by the acquired tests.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-da6ea7a9 (provenance, not composition)
+  Composition parent: @investigram-ae9ae6b5
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7a8fba5a69e9e89c458d3242bc1bc54a9633b4e873bdd91d0c87d6c116eb55a2
+
+@investigram-57ccc26c · interpretation
+For a non-enumerable own property, `propertyIsEnumerable.call` selects `Object.defineProperty` with exactly `value`, `enumerable: false`, `writable: true`, and `configurable: true`. Thus accessor identity, getter/setter functions, source writability, and source configurability are discarded. For an enumerable property, `carry[key] = newVal` normally creates an enumerable, writable, configurable own data property on the fresh ordinary accumulator, but it is not equivalent to `defineProperty`: an inherited setter installed for that key could intercept the assignment instead.
+Referent: descriptor transformation performed by `assignProp`
+  Qualification: The inherited-setter caveat concerns ordinary ECMAScript assignment semantics and is not exercised by the captured tests.
+  Qualification: `__proto__` string keys are filtered by both merge loops before reaching `assignProp`, avoiding the standard `Object.prototype.__proto__` setter; the source does not similarly harden every possible inherited accessor key.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-da6ea7a9 (provenance, not composition)
+  Composition parent: @investigram-ae9ae6b5
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7a8fba5a69e9e89c458d3242bc1bc54a9633b4e873bdd91d0c87d6c116eb55a2
+
+Correction reported by @investigram-ae9ae6b5: @investigram-da6ea7a9 → @investigram-abc5b89e
+  Corrected subjects: session:42072530-fdeb-4cef-a43f-070ad67651c5:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:investigram:da6ea7a98f846c9882c462cdf3fc94da99034455a58a169659681ee901e103d2, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+  Reason: The earlier account unconditionally said every copied value is materialized as a writable/configurable data property. That is exact for the explicit non-enumerable `defineProperty` branch, but too strong for the enumerable branch, which uses ordinary assignment and can be intercepted by an inherited setter. The replacement retains the earlier descriptor-loss finding while qualifying the enumerable case and adding the materially relevant eager-read behavior.
+  Qualification: The correction narrows an overstatement; under the usual unmodified `Object.prototype`, enumerable assignment to the fresh accumulator normally does create the described own data property.
+  Qualification: The earlier symbol-key observation remains valid and is retained with clearer distinction between the TypeScript annotation and runtime key identity.
+
+Associated investigrams (explicit associations)
+Listing: available; 0 shown of 0.
+Use inspect @reference for retained content; no inference.
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Originals are shown; correction-aware selection and derived revision warnings are not yet presented.
+  Support (exposure identified by provenance): {"id":"session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:009d1fda6256d0dd110a0533fcdec1d7a00745d6ae31f37245a875c77c94cf23","forms":["full"]}],"coverage":"full-file","contentDigest":"62c216bd690ec52692b34402597349609a21a993fcb808af0d3a1b3fe62a1b01","mapping":"session:42072530-fdeb-4cef-a43f-070ad67651c5:source:74e61361c910d5eb6a136db3f944d72b5111086426cdcbff85fe4c460b2dd066","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:009d1fda6256d0dd110a0533fcdec1d7a00745d6ae31f37245a875c77c94cf23","forms":["full"]}],"coverage":"full-file","contentDigest":"2322b72829d384f04b496f293abcbaf981cf7504a27ca162d824cb2ef570e502","mapping":"session:42072530-fdeb-4cef-a43f-070ad67651c5:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7a8fba5a69e9e89c458d3242bc1bc54a9633b4e873bdd91d0c87d6c116eb55a2","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:009d1fda6256d0dd110a0533fcdec1d7a00745d6ae31f37245a875c77c94cf23","forms":["full"]}],"coverage":"full-file","contentDigest":"b33c260c1f2531ee6a106a76290e17fb7054a246d021808e10c8adba87464cf2","mapping":"session:42072530-fdeb-4cef-a43f-070ad67651c5:repository-artifact:add81c64830665e5eadb07a540e73038d184056933b37a4be10ac926af3e3213","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:42072530-fdeb-4cef-a43f-070ad67651c5:investigram:da6ea7a98f846c9882c462cdf3fc94da99034455a58a169659681ee901e103d2","kind":"investigram","method":"postcode/investigation@9","exposures":[{"provenance":"session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:009d1fda6256d0dd110a0533fcdec1d7a00745d6ae31f37245a875c77c94cf23","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:231e6dec254fa71e707bef6e69f15c11febe55c9586358edd73455bc6a2d7f46","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:009d1fda6256d0dd110a0533fcdec1d7a00745d6ae31f37245a875c77c94cf23","forms":["full"]}],"coverage":"full-file","contentDigest":"634dcf6463156f5445cec7cd1fc4d44c3b9d4f2fe5e9369e5374f1f33664c13d","mapping":"session:42072530-fdeb-4cef-a43f-070ad67651c5:repository-artifact:d6f24e2af28215054f7be60aa99d1f22b16c1a51a32b8b363f69c9cf731047d3","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+
+Source support (captured locations and excerpts):
+[
+  {
+    "kind": "source-evidence",
+    "id": "session:42072530-fdeb-4cef-a43f-070ad67651c5:source:74e61361c910d5eb6a136db3f944d72b5111086426cdcbff85fe4c460b2dd066",
+    "session": "session:42072530-fdeb-4cef-a43f-070ad67651c5",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/merge.ts",
+    "contentDigest": "62c216bd690ec52692b34402597349609a21a993fcb808af0d3a1b3fe62a1b01",
+    "start": 0,
+    "length": 5418,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": "\"/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/merge\""
+  },
+  {
+    "session": "session:42072530-fdeb-4cef-a43f-070ad67651c5",
+    "method": "postcode/organization@3",
+    "kind": "repository-artifact",
+    "id": "session:42072530-fdeb-4cef-a43f-070ad67651c5:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93",
+    "repository": "session:42072530-fdeb-4cef-a43f-070ad67651c5:repository-evidence:dff828d8b80561c83ace18a0a30cab26bb4619b1b5ad67a3b748bbe5beac4908",
+    "artifact": {
+      "path": "README.md",
+      "kind": "file",
+      "tracked": true
+    }
+  },
+  {
+    "session": "session:42072530-fdeb-4cef-a43f-070ad67651c5",
+    "method": "postcode/organization@3",
+    "kind": "repository-artifact",
+    "id": "session:42072530-fdeb-4cef-a43f-070ad67651c5:repository-artifact:add81c64830665e5eadb07a540e73038d184056933b37a4be10ac926af3e3213",
+    "repository": "session:42072530-fdeb-4cef-a43f-070ad67651c5:repository-evidence:dff828d8b80561c83ace18a0a30cab26bb4619b1b5ad67a3b748bbe5beac4908",
+    "artifact": {
+      "path": "test/index.test.ts",
+      "kind": "file",
+      "tracked": true
+    }
+  },
+  {
+    "session": "session:42072530-fdeb-4cef-a43f-070ad67651c5",
+    "method": "postcode/organization@3",
+    "kind": "repository-artifact",
+    "id": "session:42072530-fdeb-4cef-a43f-070ad67651c5:repository-artifact:d6f24e2af28215054f7be60aa99d1f22b16c1a51a32b8b363f69c9cf731047d3",
+    "repository": "session:42072530-fdeb-4cef-a43f-070ad67651c5:repository-evidence:dff828d8b80561c83ace18a0a30cab26bb4619b1b5ad67a3b748bbe5beac4908",
+    "artifact": {
+      "path": "test/mergeAndCompare.test.ts",
+      "kind": "file",
+      "tracked": true
+    }
+  }
+]
+Session reported usage: 19 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 509575 tokens; input 496816 tokens (subset of total); output 12759 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 4667 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: inspect anonymous
+Inspect · configured TypeScript project
+Session 42072530-fdeb-4cef-a43f-070ad67651c5
+1 module selected from 53 · exact match for anonymous
+Analysis complete: modules, exports, documentation, composition
+
+Selected project modules · 1 · TypeScript names not established
+
+◆ anonymous
+  re-exports only
+  Entity ID: module-a44de3a8
+
+  Exports:
+  ├─ Merge [type] · wildcard; origin: merge (module-2db3a56e)
+  │  Documentation:
+  │    The return type of `merge()`. It reflects the type that is returned by
+  │    JavaScript.
+  │    
+  │    This TS Utility can be used as standalone as well
+  ├─ concatArrays [value] · wildcard; origin: extensions (module-ddcc1eda)
+  ├─ merge [value] · wildcard; origin: merge (module-2db3a56e)
+  │  Documentation:
+  │    Merge anything recursively. Objects get merged, special objects (classes etc.)
+  │    are re-assigned
+  │    "as is". Basic types overwrite objects or other basic types.
+  ├─ mergeAndCompare [value] · wildcard; origin: merge (module-2db3a56e)
+  ├─ mergeAndConcat [value] · wildcard; origin: merge (module-2db3a56e)
+  Limitation: Only comments and EmptyStatement syntax are ignored. No barrel, facade, API, purity, safe-collapse, or transitive-side-effect claim.
+
+Documentation entries are recorded assertions; truth, currency, and completeness are not established.
+
+Export relationships describe aliases and forwarding, not calls or dependencies.
+
+Status
+  Module membership and effective exports established by TypeScript analysis.
+  Coverage: external-module SourceFiles and visible named ambient modules; other compiler module categories are not established.
+
+Run limitations
+  2 generated-output locations excluded by this run's input filter.
+  Inputs were memoized as first observed, not captured as an atomic filesystem snapshot.
+
+Entity references belong to this session. One-shot queries accept exact names or handles.
+
+Associated investigrams (explicit associations)
+Listing: available; 1 shown of 1.
+Use inspect @reference for retained content; no inference.
+@investigram-7e572849 · interpretation
+  This is the package-facing barrel: it implements no merge logic, but exposes `merge`, `mergeAndCompare`, `mergeAndConcat`, `concatArrays`, and the `Merge` type from two delegated modules. The README presents the package as recursive plain-object merging with special instances retained as values. One documented edge is overstated: `merge(x)` is said to always return a new object, but the implementa [42 prose characters omitted]
+  Operation: functionality; origin: hosted; provenance: session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:24f1f4a200f17b75cba5187ae6e4e0cdcfda507fa6e1bf8a7053d9a524dcf5b5
+  Qualification: Static TypeScript/source interpretation only; runtime, emitted-package, and loader behavior were not executed.
+  Qualification: README statements are attributed documentation, not established behavior. The no-additional-arguments discrepancy follows directly from the implementation and README text.
+  Qualification: The entry module uses wildcard re-exports, so its apparent API follows the compiler-observed exports of the delegated modules.
+  Association: session:42072530-fdeb-4cef-a43f-070ad67651c5:module:a44de3a807693355148d21f3778aea4923d9bc7350ec5bd987cac239b8541ba0 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Originals are shown; correction-aware selection and derived revision warnings are not yet presented.
+

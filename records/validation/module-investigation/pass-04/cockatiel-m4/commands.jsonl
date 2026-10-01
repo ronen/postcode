@@ -1,0 +1,10 @@
+{"command":"summarize executor","at":"2026-10-01T15:04:08.151Z"}
+{"command":"explain @investigram-4208b004","at":"2026-10-01T15:06:24.016Z"}
+{"command":"decompose @investigram-90eca545","at":"2026-10-01T15:08:26.539Z"}
+{"command":"examine @investigram-b7cf6b0e","at":"2026-10-01T15:09:41.541Z"}
+{"command":"examine @investigram-b7cf6b0e","at":"2026-10-01T15:12:22.046Z"}
+{"command":"inspect @investigram-45379e6a","at":"2026-10-01T15:12:23.717Z"}
+{"command":"inspect @investigram-da67d827 --source-detail","at":"2026-10-01T15:12:25.131Z"}
+{"command":"inspect executor","at":"2026-10-01T15:12:26.520Z"}
+{"command":"usage","at":"2026-10-01T15:12:28.078Z"}
+{"command":"exit","at":"2026-10-01T15:12:29.534Z"}

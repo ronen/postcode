@@ -1,0 +1,2 @@
+Hosted investigation enabled: selected repository source, documentation and qualified analysis will be sent to OpenAI (gpt-5.6-sol, medium reasoning). Route: Sign in with ChatGPT / ChatGPT plan usage; optional credits apply only if already permitted in provider settings. Monetary attribution is unavailable. Controls: https://chatgpt.com/settings/usage. No API billing fallback.
+Local observations: /Users/ronen/postcode/app/_observations/merge-anything-d832ae (may contain repository-derived text and explicitly requested source locations).

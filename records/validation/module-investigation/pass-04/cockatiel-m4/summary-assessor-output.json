@@ -1,0 +1,94 @@
+{
+  "findings": [
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly recovers the module's single-attempt responsibility and separates it from surrounding policy orchestration.",
+      "evidence": [
+        "@investigram-5c163d44 describes a shared single-attempt execution boundary and places retry, delay, fallback, timeout, and concurrency decisions with callers; evaluator answer 1 preserves that division.",
+        "Frozen reference: Executor.ts lines 45–75 invoke supplied work once, await it, and classify the outcome; RetryPolicy.ts lines 100–140 supply the retry loop."
+      ],
+      "consequence": "The summary supports useful initial orientation without attributing the library's general resilience capabilities or the caller's business operation to this file.",
+      "uncertainty": "The frozen reference directly supports the retry separation and broad boundary interpretation, but does not independently establish the internals of every named policy. The evaluator retains the displayed limitation on inspected integrations."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator preserves the consequential distinctions in outcome normalization and cloning.",
+      "evidence": [
+        "@investigram-e99da96c says returnOrThrow returns a filtered failure value rather than throwing it; evaluator answer 1 repeats this exception to an intuitive failure-means-throw interpretation.",
+        "@investigram-4208b004 says clone reuses predicates and creates new emitters; evaluator answer 1 retains both parts.",
+        "Frozen reference: Executor.ts lines 6–16 permit a failure-by-value result to be returned; lines 30–43 reuse filters while creating a fresh wrapper and emitters."
+      ],
+      "consequence": "Readers can distinguish tagged failure classification from throwing and understand that cloning separates event machinery while sharing filter functions.",
+      "uncertainty": "Neither the evaluator nor the view claims that cloning duplicates caller work or state. The frozen reference does not independently detail every assertion about the imported FailureReason type."
+    },
+    {
+      "category": "material-omission",
+      "claim": "Both the generated summary and the evaluator omit the broader exception boundary around classification and notification.",
+      "evidence": [
+        "@investigram-4208b004 proceeds from awaiting the callback to value classification and error matching without explaining exceptions from filters or listeners; evaluator answer 1 follows the same normal-path description.",
+        "The frozen reference explicitly states that listener and filter exceptions can affect execution and that the broad try/catch encloses successful-value classification and notification.",
+        "Evaluator answers 2 and 6 discuss runtime uncertainty and presentation limitations but do not identify this source-supported behavioral caveat."
+      ],
+      "consequence": "The account leaves readers without a material reason that classification or observation may change execution, especially when assessing error handling or adding listeners.",
+      "uncertainty": "This is an omission, not an explicit false assurance that callbacks are safe or that only exceptions originating in fn are handled. No supplied runtime experiment establishes specific exceptional executions."
+    },
+    {
+      "category": "material-omission",
+      "claim": "The wording does not clearly preserve the result filter's predicate polarity.",
+      "evidence": [
+        "@investigram-4208b004 says, 'A value rejected by resultFilter becomes a handled failure {value}; any other value becomes {success}'. Evaluator answer 1 repeats 'Rejected results' versus 'accepted results'.",
+        "The frozen reference states the exact condition: a value matching the result filter becomes {value}, and a nonmatching value becomes {success} (Executor.ts lines 45–75)."
+      ],
+      "consequence": "A reader implementing a filter may misunderstand whether returning true marks a failure. Explicit matching/nonmatching wording would remove the ambiguity.",
+      "uncertainty": "'Rejected' may mean rejected as a successful outcome rather than a false predicate result. The evaluator's repetition therefore does not establish a definite generation error or demonstrated presentation misunderstanding."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator integrates the timing qualification and does not mistake source interpretation or accounting detail for runtime validation.",
+      "evidence": [
+        "The overview @investigram-5c163d44 says 'reports timed success/failure events'; component @investigram-f44764d6 makes timing demand-driven. Evaluator answer 1 says it optionally measures and reports outcomes.",
+        "Frozen reference: Executor.ts lines 19–28 and 49–68 measure duration only when listeners are present and emit through delegated emitters.",
+        "Evaluator answer 2 explicitly distinguishes source-based grounds from independent runtime confirmation and retains the footer's distinction between reported usage and confirmed billing."
+      ],
+      "consequence": "The evaluator successfully reads the broad overview together with its narrower qualifications. Its warning about an initially unconditional impression is a prospective presentation risk, not evidence that it actually misunderstood timing.",
+      "uncertainty": "The frozen reference supports listener-dependent timing but does not settle every displayed clock implementation or listener-lifecycle detail. Accounting caveats are faithfully read from the view, not independently audited by the source reference."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator distinguishes the supplied summary's composition from absent follow-up and correction evidence.",
+      "evidence": [
+        "The captured command is only 'summarize executor'. Evaluator answer 3 declines to infer improvements from explanation, decomposition, or examination.",
+        "@investigram-5c163d44 lists three composition references, components identify their composition parent, and each account separately labels the module as investigation subject with 'provenance, not composition'. Evaluator answer 5 preserves those distinctions.",
+        "The footer says originals are displayed and replacement substitution and derived revision warnings are not yet presented. No concrete correction pair or correction link appears in the supplied executor view; evaluator answer 5 says so."
+      ],
+      "consequence": "The evaluator identifies selectable concerns without inventing a progressive sequence, a changed claim, an available follow-up interaction, or later-investigation lineage. Summary-only absence is not a generation defect, and deferred presentation features are not treated as failures.",
+      "uncertainty": "Only the supplied static summary is assessable. The introductory milestone-wide statement about correction links does not establish a correction in this particular view."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "Several finer behavioral and usability propositions remain outside the supplied reference's resolving power.",
+      "evidence": [
+        "@investigram-f44764d6 names performance.now and a bigint clock fallback and states an invocation-start condition for event emission; the frozen reference only summarizes listener-dependent duration measurement and delegated notification.",
+        "Evaluator answer 4 proposes investigating subscription changes during the awaited callback and explicitly leaves their behavior unknown.",
+        "Evaluator answer 6 describes possible scanning difficulty, double-counting temptation, and an inflated impression of validation from repeated metadata, evidence identifiers, acceptance status, and usage reports."
+      ],
+      "consequence": "The proposed follow-up is grounded in the view, but its answer cannot be supplied by this assessment. The usability concerns are plausible formative observations, not demonstrated reader errors or source-verified outcomes.",
+      "uncertainty": "No runtime trace, full supporting evidence contents, interaction study, or independently inspected source is available. The evaluator frames these points conditionally, so they are not established unsupported factual extrapolations."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful for initial functional orientation and selecting a focused investigation target, with a material gap around exceptional classification and listener behavior.",
+    "reasons": [
+      "The supplied summary and evaluator preserve the single-attempt executor boundary, surrounding policy responsibility, tagged-value return behavior, and shared-filter/fresh-emitter cloning distinction.",
+      "Separate references make classification, timing, and normalization identifiable follow-up subjects.",
+      "The evaluator retains interpretation and runtime limitations, integrates listener-dependent timing, and distinguishes composition from provenance without inventing correction history or demonstrated follow-up capabilities."
+    ],
+    "limitations": [
+      "Neither the view nor evaluator communicates the frozen reference's caveat that filter and listener exceptions can affect execution within the broader try/catch.",
+      "Rejected/accepted wording leaves the result predicate's matching polarity less precise than the frozen reference; a definite inversion is not established.",
+      "Only a summary was supplied. No before/after improvement, concrete correction, dynamic listener behavior, or runtime validation can be assessed, and these absences are not milestone failures.",
+      "Some detailed claims and presentation risks cannot be independently resolved from the supplied frozen reference. Reported usage and acceptance do not establish correctness or actual charges.",
+      "The reference preparer and orchestrator are the implementing agent, with the exact model unavailable and an OpenAI-family affiliation disclosed. This overlap limits independence of the assessment's reference basis. Scripted origin, where applicable, is an injected baseline rather than evidence of a natural generation error."
+    ]
+  }
+}
