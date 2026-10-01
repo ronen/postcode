@@ -1146,3 +1146,63 @@ proposal is implemented or approved by this checkpoint. The original milestone
 handoff remains immutable; subsequent review uses that assignment and a new exact
 target. Task status remains active, milestone 3 is unaccepted, and milestone 4 has
 not begun.
+
+### Authorized offline contract correction and diagnosis — 2026-10-01
+
+The human approved the bounded offline follow-up in `f315bb8`. `db091cd` makes the
+existing submission contract explicit: structured inconsistencies target earlier
+investigrams; documentation/source discrepancies belong in attributed prose and
+qualification with supplied evidence. Both provider schemas carry the same
+clarification, including nested accounts, and references must be copied exactly.
+No domain validation, exposure policy, atomic retention or inference-retry rule
+changed. Provenance advances to investigation `@8` and adapters `@4`; historical
+assessment manifests and captures remain unchanged. Architecture documentation
+reflects the clarification. No real credential operation or provider request was
+performed; the debugging allowance remains two used and eight available.
+
+Five new real-domain scripted cases cover preserved attributed conflict prose,
+rejected module/artifact inconsistency targets and rejected mistyped evidence or
+subject references, with no repair turn. Both route tests inspect the transmitted
+schema. Type checking/build and 65 focused tests passed. This proves deterministic
+contract behavior, not live model compliance or accepted assessment reconciliation.
+F1 remains open pending further human disposition and live evidence.
+
+The [offline diagnosis](../validation/module-investigation/2026-10-01-offline-diagnosis.md)
+retains reproducible scripts and evidence. An exact spelling audit over all
+provider inputs finds only one unique malformed reference per upstream draft,
+with two suffix characters omitted; fsm-engine repeats its typo three times.
+Other preliminary unmatched IDs were supplied as bare references, so their absence
+from a full-record index did not establish fabrication. Eight stub adapter replays
+preserve the captured drafts exactly. No approximate matching, repair, retry or
+model-only causal claim was introduced.
+
+The failed suite overlaps 21 local macOS Sleep/Wake/DarkWake events. Only event
+timestamps/types were retained, excluding app/process details. Before product
+edits, a controlled full rerun at `f315bb8` (same product code as the failed target)
+passed all 424 tests in 140.781 seconds. It used a command-scoped idle-sleep
+assertion and a one-second timing monitor, with unchanged deadlines/validation
+rules and stationary repository inputs. No monitor gap exceeded two seconds and
+no power event occurred during that run. The evidence supports suspension-related
+timing effects, but does not prove every old failure's cause or every suspension
+case. The earlier 410-pass/9-failure/5-cancellation run remains preserved and is
+not attributed to the previous readiness race.
+
+Final integrated verification of `db091cd` passed **429 tests, zero failures,
+cancellations or skips**, in **139.885 seconds** (about 150.6 seconds including
+build). The same monitor/temporary idle-sleep prevention was used, with unchanged
+tracked inputs, no interval over two seconds and no power event. `91b2a26` retains
+full final output, timing and current review disposition. Audit/replay scripts
+reproduced their saved results. Credential-pattern scans of test logs passed as
+supplementary checks, and verified duplicate scratch artifacts were removed.
+
+The consequential remedy proposed for approval is a private short, exact reference
+binding at the investigator communication boundary, preserving canonical domain
+identities, source/prose text, exposure accounting and exact validation. Existing
+public Entity bindings do not cover every evidence kind and will not be silently
+broadened. A proposed subsequent pass would use the same three upstream subjects
+and documentation fixture once each, with unchanged model/reasoning/source pins,
+effective configurations, TypeScript and frozen source references. The proposal
+is documented with scope boundaries and regression requirements; neither its
+implementation nor additional live assessment is authorized by this checkpoint.
+Human approval is pending. Task remains active, milestone 3 unaccepted, and
+milestone 4 has not begun. The original handoff remains the review assignment.
