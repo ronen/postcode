@@ -9,7 +9,7 @@ import { InvestigatorReferences, referenceInstructions, type ReferenceAudit } fr
 import { CompletedStreamOutput } from './stream-output.js';
 
 export const openAIIdentity: AgentIdentity = Object.freeze({ provider: 'openai', model: 'gpt-6-sol', origin: 'hosted',
-  configuration: Object.freeze({ adapter: 'postcode/openai-responses@6', authenticationRoute: 'api-key', billingRoute: 'openai-api', sdk: 'openai@7.25.0', reasoningEffort: 'medium', serviceTier: 'default', store: false, references: 'postcode/investigator-references@2', characterGuard: 'canonical-domain-exchanges', retries: 0, maxOutputTokens: 16000 }) });
+  configuration: Object.freeze({ adapter: 'postcode/openai-responses@6', authenticationRoute: 'api-key', billingRoute: 'openai-api', sdk: 'openai@7.25.0', reasoningEffort: 'medium', serviceTier: 'default', store: false, references: 'postcode/investigator-references@3', characterGuard: 'canonical-domain-exchanges', retries: 0, maxOutputTokens: 16000 }) });
 
 export interface OpenAIExchange {
   readonly request: ResponseCreateParams;
@@ -24,7 +24,7 @@ export interface OpenAIExchange {
 
 export const chatGPTIdentity: AgentIdentity = Object.freeze({ provider: 'openai', model: 'gpt-5.6-sol', origin: 'hosted',
   configuration: Object.freeze({ adapter: 'postcode/chatgpt-responses@6', sdk: 'openai@7.25.0', authenticationRoute: 'chatgpt-sign-in',
-    billingRoute: 'chatgpt-plan', reasoningEffort: 'medium', store: false, streaming: true, references: 'postcode/investigator-references@2', characterGuard: 'canonical-domain-exchanges', retries: 0 }) });
+    billingRoute: 'chatgpt-plan', reasoningEffort: 'medium', store: false, streaming: true, references: 'postcode/investigator-references@3', characterGuard: 'canonical-domain-exchanges', retries: 0 }) });
 interface TransportOptions { fetch?: typeof fetch; onExchange?: (exchange: OpenAIExchange) => void }
 export function openAIInvestigator(apiKey: string, options: TransportOptions = {}): InvestigatorAgent {
   if (!apiKey || /\s/.test(apiKey)) throw new Error('Invalid OpenAI credential');

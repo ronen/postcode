@@ -36,6 +36,7 @@ export interface ViewRequest {
   readonly lens: 'modules' | 'inspect' | 'organization' | 'dependencies' | 'children' | 'parents' | 'summarize' | 'explain' | 'decompose' | 'examine' | 'usage';
   readonly selector: string | null;
   readonly after?: string;
+  readonly revisionPage?: number;
   readonly referenceLifetime?: 'session' | 'command';
   readonly reference?: boolean;
   readonly subject?: 'project' | 'repository';

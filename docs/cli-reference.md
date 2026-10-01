@@ -552,7 +552,7 @@ references in human output. Known investigram references supplied to `children`,
 generation; an absent reference remains a missing selection. `--source-detail` discloses captured support locations and excerpts and
 records that disclosure. Source sent only to the investigator does not count as
 human source disclosure. Inspection does not generate a missing account or redirect
-to a replacement. Replacement selection and conflict/reconsideration displays remain milestone-5 work.
+to a replacement. Redisplay follows explicit replacement chains using acceptance recency, with unresolved conflicts and citation-based reconsideration warnings. Exact inspection and follow-up subjects are never redirected. Use `inspect @investigram --revision-page N` for additional correction and cause details.
 
 `explain @investigram-…`, `decompose @investigram-…` and `examine @investigram-…`
 require an exact reference in the shell. Explanation clarifies the selected
@@ -572,9 +572,9 @@ using the continuation shown. Listing prose is bounded to 400 UTF-16 code units;
 qualifications are preserved together or the entire detail is explicitly omitted
 under the 55,000-unit page bound. Listings reflect current retained associations,
 not all possible functionality or authority. A newly retained account can extend
-them without changing the mechanical inspection. Originals remain displayed;
-no automatic replacement substitution or derived revision warnings are supplied
-at this milestone.
+them without changing the mechanical inspection. Association listings show exact
+originals with current revision status. Result redisplay selects replacements;
+inspection preserves the original and exposes alternatives and reconsideration causes.
 
 `usage` and `usage --json` expose per-attempt and session reported usage without
 inference, including failed attempts. Summary views also include their attempt and

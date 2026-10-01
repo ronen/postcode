@@ -4,7 +4,7 @@ import type { Claim, ProgramRecord } from '../../records.js';
 
 export const referenceInstructions = 'PostCode reference fields use short opaque handles issued in this dialogue. Copy them exactly; never construct a handle or use a canonical ID in place of one. A handle makes a reference available, not its underlying content supplied: bare support references still require acquisition before citation. Use descriptive names in prose; text inside source, assertions, qualifications and prose is literal, not translated. The dialogue character guard measures canonical domain inputs and decoded replies, not compact wire messages or repeated provider history.';
 export interface ReferenceAudit {
-  readonly version: 'postcode/investigator-references@2';
+  readonly version: 'postcode/investigator-references@3';
   readonly characterGuard: 'canonical-domain-exchanges';
   readonly bindings: readonly { readonly handle: string; readonly reference: string }[];
   readonly resolutions: readonly { readonly path: string; readonly handle: string; readonly reference: string | null }[];
@@ -66,6 +66,7 @@ export class InvestigatorReferences {
   #account(): Transform {
     return object({ ...this.#context(), ...this.#support(), ...this.#fields(['originatingModule'], ['children', 'corrections']),
       referent: this.#referent(), associations: this.#associations(), inconsistencies: this.#inconsistencies(),
+      revision: object({ ...this.#fields(['original', 'primary', 'familyPrimary'], ['omittedInconsistencyReporters']), inconsistencies: list(object({ ...this.#support(), ...this.#fields(['reporter'], ['targets']) })), rows: list(object({ ...this.#fields(['correction', 'target', 'replacement', 'reporter']), cause: object(this.#fields([], ['via'])) })) }),
       provenance: this.#provenance(false), revisionNotices: list(object(this.#fields(['id', 'target', 'replacement']))) });
   }
   #correction(): Transform {
@@ -157,7 +158,7 @@ export class InvestigatorReferences {
   }
   audit(): ReferenceAudit {
     this.#alive();
-    return { version: 'postcode/investigator-references@2', characterGuard: 'canonical-domain-exchanges',
+    return { version: 'postcode/investigator-references@3', characterGuard: 'canonical-domain-exchanges',
       bindings: [...this.#references].map(([handle, reference]) => ({ handle, reference })), resolutions: this.#resolutions.map(item => ({ ...item })) };
   }
   close(): void { this.#closed = true; this.#handles.clear(); this.#references.clear(); this.#resolutions = []; }

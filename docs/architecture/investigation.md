@@ -225,8 +225,7 @@ context requires the target and replacement's own prose,
 referent and qualifications plus the correction's reasons and qualifications.
 Completeness is recorded per correction identity. It does not imply comprehension
 or require subordinate trees. Every accepted investigram shares this execution's
-exposure provenance. Deriving reconsideration and human-facing replacement
-selection remains milestone 5 work.
+exposure provenance. The derived revision snapshot supplies reconsideration and replacement selection without changing those exposure records.
 
 Usage is held by an independently owned attempt/call ledger. Calls are registered
 before dispatch; absent reports remain explicitly unknown. Identical repeated
@@ -261,9 +260,7 @@ produce an explicit unsupported subject/lens selection and expected failure
 status, without coercion or generation. Missing references remain distinct.
 Investigram bindings use the existing append-only session allocator with a distinct
 `investigram-` prefix. Originals, composition children and replacements remain
-addressable; views show originals and explicit correction links at this checkpoint.
-Correction-aware replacement selection and reconsideration display are milestone 5
-work. Public follow-up lenses and associated discovery use the same evaluation
+addressable. Redisplay selects explicit replacements; exact inspection retains originals. Public follow-up lenses and associated discovery use the same evaluation
 and correction-aware investigator context over earlier retained results.
 
 The experimental investigation view includes selected operation/outcome and reuse,
@@ -411,7 +408,7 @@ remote computation, allowance use or charges have stopped.
 
 Under the accepted [reference transport decision](../decisions/investigator-reference-transport.md),
 both hosted transports use a private per-dialogue reference table
-(`postcode/investigator-references@2`, adapter versions `@6`). Canonical domain
+(`postcode/investigator-references@3`, adapter versions `@6`). Canonical domain
 IDs, public Entity bindings, worker messages and retained records are unchanged.
 The model receives short exact handles with a random dialogue namespace and an
 append-only ordinal. A fresh dialogue gets a fresh table; close releases it.
@@ -518,9 +515,7 @@ Result views distinguish fixed composition from the generating investigation's
 selected subject. Inspection exposes the composition parent and precise
 provenance subject as navigation references; inspecting a linked child or earlier
 subject reaches its original account. Evidence support keeps its original
-qualification and source-detail disclosure remains explicitly requested. At this
-milestone, displayed trees remain originals, with explicit correction links;
-replacement substitution and derived revision warnings are not yet presented.
+qualification and source-detail disclosure remains explicitly requested. Display substitution follows explicit correction chains while retaining each account’s original composition separately. Derived revision status accompanies both original and replacement accounts.
 
 Subject inspection adds a history-dependent section selected only through
 explicit qualified associations, including the investigation-subject and
@@ -562,3 +557,63 @@ is pending terminates the worker. Neither adds attempt usage, and earlier usage
 remains available for final reporting. Operation and selection identifiers prevent
 stale replies from resolving another selection. Offline regressions exercise
 these boundaries with the real worker, including late messages after closure.
+
+
+## Correction selection and reconsideration
+
+`investigation/revisions.ts` derives a snapshot from accepted session evaluations.
+It indexes correction links and reverse citations without changing stored accounts,
+composition, provenance, citation indexes or earlier projections. Corrections take
+effect at retention, independently of presentation. The context coordinator caches
+this derived snapshot only until another evaluation is retained.
+
+Primary selection considers every reachable branch, using accepted evaluation
+order and then correction array order within a simultaneous result as its stable
+tie-break. Recency does not establish credibility or resolve a conflict. A branch
+remains conflicting after a later descendant is selected. The qualified overview
+links every competing account through paged correction relationships; inspecting
+a reference always supplies that exact original. Family-primary metadata supplies
+navigation across competing branches without redirecting the chosen subject.
+
+Result redisplay follows replacement chains and then the selected replacement’s
+own composition, with explicit original-to-displayed placement metadata. Corrected
+children can appear under an unchanged root. Replacing the root displaces its old
+subtree; corrections there remain disclosed and inspectable, without implying
+incorporation into the replacement. No display placement is stored as composition.
+At most 256 accounts are materialized per view, with omitted references identified.
+Follow-ups retain their exact subject and request identity, including superseded
+subjects; repeated results show current subject revisions without further inference.
+
+For each correction, the citation worklist starts at its target. A citer is affected
+unless its generating provenance either produced that correction or records its
+complete correction context. The exemption applies to the whole evaluation,
+including composition children and every replacement, and blocks propagation
+through that account. Other paths and later causes remain independent. No complete
+paths are enumerated: each account is visited at most once per cause. The work is
+bounded by corrections times the retained citation graph, rather than the number
+of possible citation paths. These domain worklists retain correction-specific
+exemptions; they do not add a generic graph framework. Composition and provenance
+subjects alone never propagate reconsideration. Warnings do not establish error,
+clear automatically, invalidate a session or trigger inference.
+
+Human and investigator revision pages each contain at most 24 correction/cause
+rows and 24 incoming unresolved inconsistencies. Each cause identifies up to eight
+proximal citations, with an omitted count and the complete immutable citation index
+available in provenance. `inspect @investigram --revision-page N` and
+`investigram(subject, revisionPage: N)` expose further pages. Rows preserve cause
+identity, distinguishing direct and transitive exposure without duplicating a cause
+for revised-subject disclosure. Current revision facets participate in projection
+identity, including associated-account inspections over unchanged mechanical data.
+
+Context retains the exact requested account plus bounded correction-family and
+cause context. Automatically included accounts carry their own content and a
+revision summary with an explicit page-1 continuation; the requested account’s
+relationship/cause page is expanded once, avoiding quadratic metadata repetition. Correction reasons and incoming inconsistency content create
+citations to their reporters; metadata and bare navigation references do not.
+Context pages report omitted accounts/corrections and further accompanying-correction
+pages. Only actual complete delivery of target and replacement fields plus
+correction reasons/qualifications establishes an exemption. Recursive children are
+not required. Reference transport maps these new fields structurally; prose is
+unchanged. The existing character guard continues to measure canonical domain
+exchanges before private handle translation. Captured deliveries remain the audit
+of actual exposure, including citation indexes and per-correction completeness.

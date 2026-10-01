@@ -202,3 +202,14 @@ for (const queued of [false, true]) {
     } finally { input.destroy(); }
   });
 }
+
+test('revision pagination requires one positive page and exact shell investigram inspection', () => {
+  const parsed = parseCommand(['inspect', '@investigram-deadbeef', '--revision-page', '2'], '.', true);
+  assert.equal(parsed.kind, 'view');
+  if (parsed.kind === 'view') assert.equal(parsed.request.revisionPage, 2);
+  for (const page of ['0', '-1', '1.5', '', 'Infinity', '9007199254740992']) assert.equal(parseCommand(['inspect', '@investigram-deadbeef', '--revision-page', page], '.', true).kind, 'error');
+  assert.equal(parseCommand(['inspect', '@module-deadbeef', '--revision-page', '2'], '.', true).kind, 'error');
+  assert.equal(parseCommand(['explain', '@investigram-deadbeef', '--revision-page', '2'], '.', true).kind, 'error');
+  assert.equal(parseCommand(['inspect', '@investigram-deadbeef', '--revision-page', '2', '--revision-page', '3'], '.', true).kind, 'error');
+  assert.equal(parseCommand(['inspect', '@investigram-deadbeef', '--revision-page', '2'], '.').kind, 'error');
+});

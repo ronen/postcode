@@ -1,3 +1,4 @@
+import { sessionRevisions } from './revisions.js';
 import { associatedInvestigrams } from './associations.js';
 import { canonical, identityReference, methods, recordId } from '../identity.js';
 import { freezeOwned } from '../immutable.js';
@@ -37,7 +38,13 @@ export interface InvestigationDependencies {
 export function investigationEvaluation(store: ProgramRecordStore, analysis: ModuleAnalysis, session: SessionId,
   usage: InvestigationUsage, dependencies: InvestigationDependencies, check: () => Promise<void>, signal: AbortSignal) {
   const evidence = evidenceAccess(store, analysis, session);
+  let revisionCount = -1, revisions: ReturnType<typeof sessionRevisions>;
   const history: InvestigationHistory = {
+    revision(id, page) {
+      const count = store.investigations(session).length;
+      if (count !== revisionCount) { revisions = sessionRevisions(store, session); revisionCount = count; }
+      return revisions.status(id, page);
+    },
     associated(subject) {
       const record = store.lookup(subject);
       if (!record || record.session !== session || !['module', 'symbol', 'group', 'repository-artifact', 'investigram'].includes(record.kind)) return undefined;

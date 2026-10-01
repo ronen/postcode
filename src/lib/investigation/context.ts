@@ -12,7 +12,7 @@ export class InvestigationContext {
   constructor(readonly history: InvestigationHistory, readonly session: SessionId) {}
 
   prepare(subject: RecordId, parts: readonly ContextPart[] = allParts, excerptCharacters?: number,
-    limits = { accounts: 24, characters: 60_000 }): ContextDelivery {
+    limits = { accounts: 24, characters: 60_000 }, revisionPage = 1): ContextDelivery {
     const accounts: AccountContext[] = [], corrections: Correction[] = [];
     const pending = [subject], seen = new Set<RecordId>(), correctionIds = new Set<RecordId>();
     const omittedAccounts: RecordId[] = [], omittedCorrections: RecordId[] = [];
@@ -26,7 +26,24 @@ export class InvestigationContext {
       if (accounts.length >= limits.accounts) { omittedAccounts.push(id); continue; }
       const incoming = this.history.corrections(id);
       if (incoming.some(item => item.target !== id)) throw new Error('Invalid retained incoming correction');
-      const related = [...new Map([...incoming, ...account.corrections.map(id => {
+      let revision = this.history.revision?.(id, id === subject ? revisionPage : 1);
+      // Expand the requested account's cause/alternative page once. Automatically
+      // included account bodies carry a revision summary and an explicit page-1
+      // continuation, avoiding quadratic repetition of the same family/causes.
+      if (revision && id !== subject) revision = { ...revision, rows: [], omittedRows: revision.total,
+        inconsistencies: [], omittedInconsistencyReporters: revision.inconsistencies.map(item => item.reporter),
+        nextPage: revision.total || revision.inconsistencyCount ? 1 : null };
+      if (revision) {
+        const omittedInconsistencyReporters: RecordId[] = [...(revision.omittedInconsistencyReporters ?? [])];
+        const inconsistencies = revision.inconsistencies.filter(item => {
+          const size = JSON.stringify(item).length;
+          if (size > remaining) { omittedInconsistencyReporters.push(item.reporter); return false; }
+          remaining -= size; return true;
+        });
+        revision = { ...revision, inconsistencies, omittedInconsistencyReporters };
+      }
+      const revisionLinks = revision ? [...revision.rows.map(row => this.history.correction(row.correction)!).filter(Boolean), ...(id !== subject ? incoming.slice(0, 1) : [])] : incoming;
+      const related = [...new Map([...revisionLinks, ...account.corrections.slice(((id === subject ? revisionPage : 1) - 1) * 24, (id === subject ? revisionPage : 1) * 24).map(id => {
         const correction = this.history.correction(id);
         if (!correction) throw new Error('Missing retained accompanying correction');
         return correction;
@@ -45,6 +62,10 @@ export class InvestigationContext {
       // Earlier delivery payloads are not recursively embedded in later contexts.
       const { deliveries: _deliveries, ...origin } = provenance;
       const completeParts: ContextPart[] = [], omissions: string[] = [];
+      if (revision?.omittedRows) omissions.push('Revision details omitted for automatically included account; retrieve this account at revisionPage 1.');
+      if (revision?.omittedInconsistencyReporters?.length) omissions.push('Incoming inconsistency content omitted by character bound; retrieve reporting account qualifications.');
+      const nextCorrectionPage = account.corrections.length > (id === subject ? revisionPage : 1) * 24 ? (id === subject ? revisionPage : 1) + 1 : null;
+      if (nextCorrectionPage) omissions.push(`Accompanying corrections omitted; retrieve this account with revisionPage ${nextCorrectionPage}.`);
       const values: { prose?: string; referent?: NonNullable<AccountContext['referent']>; qualifications?: readonly string[];
         associations?: NonNullable<AccountContext['associations']>; inconsistencies?: NonNullable<AccountContext['inconsistencies']> } = {};
       for (const part of parts) {
@@ -61,12 +82,12 @@ export class InvestigationContext {
       for (const part of allParts) if (!parts.includes(part)) omissions.push(`${part} not requested.`);
       accounts.push({ id, status: 'prior-interpretation', ...values, completeParts,
         evidence: account.evidence, originatingModule: account.originatingModule, children: account.children,
-        provenance: origin, corrections: related.map(item => item.id),
+        ...(revision ? { revision } : {}), nextCorrectionPage, provenance: origin, corrections: related.map(item => item.id),
         revisionNotices: related.map(({ id, target, replacement }) => ({ id, target, replacement })), omissions });
     }
     return freezeOwned(structuredClone({ requested: subject, accounts, corrections, omittedAccounts, omittedCorrections,
       limitations: ['Prior interpretations are not independent corroboration. Delivery does not establish comprehension.',
-        'Correction references denote revisions, including competing alternatives; exact originals are preserved.',
+        'Correction references denote revisions, including competing alternatives; exact originals are preserved. Revision rows are bounded; use investigram(subject, revisionPage: nextPage) for further relationships/causes. Retrieve cause targets, replacements and proximal citations for full context. Reference-only revision metadata does not supply account content or complete correction context.',
         ...(omittedAccounts.length || omittedCorrections.length ? ['Correction context is incomplete. Retrieve omitted account or correction-target references separately.'] : [])] }));
   }
 
@@ -85,6 +106,9 @@ export class InvestigationContext {
   supplied(delivery: ContextDelivery): void {
     this.deliveries.push(delivery);
     for (const account of delivery.accounts) {
+      for (const inconsistency of account.revision?.inconsistencies ?? []) {
+        if (!this.#parts.has(inconsistency.reporter)) this.#parts.set(inconsistency.reporter, new Set());
+      }
       // Metadata such as evidence links, provenance or a bare identifier alone is not exposure.
       if (!account.prose?.trim() && account.referent === undefined && account.qualifications === undefined) continue;
       const parts = this.#parts.get(account.id) ?? new Set<ContextPart>();

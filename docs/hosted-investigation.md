@@ -243,4 +243,4 @@ and `examine @investigram-…` use the same explicitly selected model, reasoning
 billing route. Each missing operation can incur provider usage; repeating a
 retained outcome or inspecting a linked account does not. There is no automatic
 model upgrade or route fallback. Progressive views currently show originals with
-correction links; automatic replacement display is deferred.
+correction links, replacement display and derived reconsideration warnings. Exact references retain their original targets; the investigator receives bounded correction and cause context with further revision pages available.

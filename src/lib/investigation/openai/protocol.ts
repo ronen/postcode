@@ -30,6 +30,7 @@ export const investigatorFunctions: FunctionTool[] = [
         subject: { type: 'string', description: 'Required except for modules and organization.' },
         cursor: { type: 'string', description: 'Only for paged collection queries.' },
         parts: { type: 'array', items: { type: 'string', enum: ['prose', 'referent', 'qualifications'] }, description: 'Only for investigram context; omit for complete context.' },
+        revisionPage: { type: 'integer', minimum: 1, description: 'Only for investigram context; follow revision.nextPage for further revision and cause details.' },
         excerptCharacters: { type: 'integer', minimum: 0, description: 'Only for investigram context; omit for complete context.' },
       } } },
     } },

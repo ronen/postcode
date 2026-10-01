@@ -71,12 +71,15 @@ test('nested submissions and prior context decode only designated references, wi
   const r = 'module:canonical';
   const provenance = { ...context, request: { subject: r }, originatingModule: r, citations: [r], suppliedEvidence: [r], summarizedEvidence: [r], completeTargets: [r], completeCorrections: [r], instructions: r };
   const wire = refs.encode(input([{ requested: r, accounts: [{ id: r, prose: r, referent: { description: r, subjects: [r] }, evidence: [r],
-    children: [r], corrections: [r], provenance, revisionNotices: [{ id: r, target: r, replacement: r }] }], corrections: [{ ...context, target: r, correctedSubjects: [r], replacement: r, reporter: r, provenance: r, evidence: [r], reason: r }], omittedAccounts: [r], omittedCorrections: [r] }])) as any;
+    children: [r], corrections: [r], provenance, revision: { original: r, primary: r, familyPrimary: r, rows: [{ correction: r, target: r, replacement: r, reporter: r, cause: { via: [r] } }], inconsistencies: [{ reporter: r, targets: [r], evidence: [r], reason: r, qualifications: [r] }] }, revisionNotices: [{ id: r, target: r, replacement: r }] }], corrections: [{ ...context, target: r, correctedSubjects: [r], replacement: r, reporter: r, provenance: r, evidence: [r], reason: r }], omittedAccounts: [r], omittedCorrections: [r] }])) as any;
   const h = wire.request.subject;
   assert.equal(wire.responses[0].accounts[0].provenance.request.subject, h);
   assert.equal(wire.responses[0].accounts[0].provenance.instructions, r);
   assert.deepEqual(wire.responses[0].accounts[0].revisionNotices, [{ id: h, target: h, replacement: h }]);
   assert.deepEqual(wire.responses[0].corrections[0].correctedSubjects, [h]);
+  assert.deepEqual(wire.responses[0].accounts[0].revision, { original: h, primary: h, familyPrimary: h,
+    rows: [{ correction: h, target: h, replacement: h, reporter: h, cause: { via: [h] } }],
+    inconsistencies: [{ reporter: h, targets: [h], evidence: [h], reason: r, qualifications: [r] }] });
   const account = { localId: h, prose: h, qualifications: [h], evidence: [h], referent: { description: h, subjects: [h] }, associations: [{ subject: h, evidence: [h], qualifications: [h] }], inconsistencies: [{ targets: [h], evidence: [h], reason: h }], children: [], corrections: [] };
   const draft = { ...account, children: [account], corrections: [{ target: h, correctedSubjects: [h], evidence: [h], reason: h, replacement: account }] };
   const decoded = refs.submission(draft) as any;

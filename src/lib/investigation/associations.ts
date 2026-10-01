@@ -1,3 +1,4 @@
+import { sessionRevisions } from './revisions.js';
 import { freezeOwned } from '../immutable.js';
 import { identityReference, methods, recordId } from '../identity.js';
 import { inlineText } from '../terminal-text.js';
@@ -13,6 +14,7 @@ export function associatedInvestigrams(store: ProgramRecordStore, session: Sessi
 
 export function associatedView(store: ProgramRecordStore, session: SessionId, subjects: readonly RecordId[], after?: string,
   lifetime: 'session' | 'command' = 'session') {
+  const revisions = sessionRevisions(store, session);
   const matches = associatedInvestigrams(store, session, subjects);
   const refs = store.entityIds(matches.map(item => item.id), 'investigram');
   const index = after === undefined ? -1 : matches.findIndex(item => refs.get(item.id) === after);
@@ -21,7 +23,8 @@ export function associatedView(store: ProgramRecordStore, session: SessionId, su
   const items = (valid ? matches.slice(index + 1, index + 25) : []).map(account => {
     const provenance = store.get(account.provenance);
     if (provenance.kind !== 'investigation-provenance') throw new Error('Expected investigation provenance');
-    const detail = { prose: account.prose.slice(0, 400), omittedProseCharacters: Math.max(0, account.prose.length - 400),
+    const revision = revisions.status(account.id);
+    const detail = { revision, prose: account.prose.slice(0, 400), omittedProseCharacters: Math.max(0, account.prose.length - 400),
       qualifications: account.qualifications, associations: account.associations.filter(item => subjects.includes(item.subject)),
       evidence: account.evidence, operation: provenance.request.operation, subject: provenance.request.subject,
       origin: provenance.agent.origin, provenance: provenance.id };
@@ -35,7 +38,7 @@ export function associatedView(store: ProgramRecordStore, session: SessionId, su
   return freezeOwned({ subjects, after: after ?? null, status: valid ? 'available' as const : 'unknown-continuation' as const,
     total: matches.length, items, omitted, next: omitted && items.length ? items.at(-1)!.reference : null, referenceLifetime: lifetime,
     limitations: ['Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.',
-      'Listing order does not establish authority. Originals are shown; correction-aware selection and derived revision warnings are not yet presented.'] });
+      'Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.'] });
 }
 export type AssociatedInvestigations = ReturnType<typeof associatedView>;
 
@@ -45,7 +48,7 @@ export function withAssociatedInvestigations<T extends { readonly id: RecordId; 
   const session = view.projection.session;
   const projection = { ...view.projection, id: recordId(session, 'associated-inspection-projection', [methods.investigationPresentation,
     identityReference(session, view.projection.id), investigations.subjects.map(id => identityReference(session, id)),
-    investigations.items.map(item => identityReference(session, item.id)), investigations.total, investigations.omitted, investigations.status, investigations.after]) };
+    investigations.items.map(item => identityReference(session, item.id)), investigations.total, investigations.omitted, investigations.status, investigations.after, investigations.items.map(item => item.detail?.revision ?? null)]) };
   return freezeOwned({ ...view, projection, investigations,
     id: recordId(session, 'associated-inspection-view', [methods.investigationPresentation, identityReference(session, view.id), identityReference(session, projection.id), investigations.referenceLifetime]) });
 }
@@ -57,6 +60,7 @@ export function renderAssociatedInvestigations(value: AssociatedInvestigations |
   for (const item of value.items) {
     lines.push(`@${item.reference} · interpretation`);
     if (item.detail) {
+      lines.push(`  Revision: ${item.detail.revision.superseded ? 'superseded' : 'current original'}; ${item.detail.revision.conflicting ? 'unresolved conflicts; ' : ''}${item.detail.revision.needsReconsideration ? `needs reconsideration (${item.detail.revision.causeCount} causes); ` : ''}inspect this reference for details.`);
       lines.push(`  ${inlineText(item.detail.prose)}${item.detail.omittedProseCharacters ? ` [${item.detail.omittedProseCharacters} prose characters omitted]` : ''}`,
         `  Operation: ${item.detail.operation}; origin: ${item.detail.origin}; provenance: ${item.detail.provenance}`,
         ...item.detail.qualifications.map(text => `  Qualification: ${inlineText(text)}`),

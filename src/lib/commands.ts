@@ -43,6 +43,7 @@ inspect @investigram-… in the shell shows the exact original, its fixed compos
 usage reports per-attempt and session usage without inference; synthetic usage and unknown/anomalous reports remain explicit.
 Investigation JSON uses postcode-investigation-view/1-experimental. One-shot references expire at command end.
 explain, decompose and examine require an exact @investigram reference in the shell. Each follow-up produces a separate result.
+inspect @investigram --revision-page N continues correction/cause details.
 inspect shows bounded associated accounts; --after @investigram-reference continues that listing.
 Original accounts are shown. Automatic replacement selection and derived revision warnings remain a later milestone.
 
@@ -74,7 +75,7 @@ export function parseCommand(args: readonly string[], cwd: string, interactive =
   try {
     scanned = parseArgs({ args: [...args], strict: true, allowPositionals: true, tokens: true, options: {
       help: { type: 'boolean', short: 'h' }, json: { type: 'boolean' },
-      'source-detail': { type: 'boolean' }, after: { type: 'string' }, project: { type: 'string' },
+      'source-detail': { type: 'boolean' }, after: { type: 'string' }, 'revision-page': { type: 'string' }, project: { type: 'string' },
     } });
   } catch (failure) {
     if (failure instanceof Error && 'code' in failure && String(failure.code).startsWith('ERR_PARSE_ARGS_')) {
@@ -98,6 +99,7 @@ export function parseCommand(args: readonly string[], cwd: string, interactive =
   if (!interactive && lens === 'shell' && positional.length === 1 && !sourceDetail) return { kind: 'shell', configPath, json };
   const followup = ['explain', 'decompose', 'examine'].includes(lens);
   if (values.after !== undefined && (lens !== 'inspect' || !interactive || !/^@?investigram-[a-f0-9]{8,64}$/.test(values.after))) return error('--after requires shell inspection and a displayed investigram reference.');
+  if (values['revision-page'] !== undefined && (lens !== 'inspect' || !interactive || !/^[1-9][0-9]*$/.test(values['revision-page']) || !Number.isSafeInteger(Number(values['revision-page'])) || tokens.filter(token => token.kind === 'option' && token.name === 'revision-page').length > 1)) return error('--revision-page requires shell inspection and one positive page number.');
   const focused = ['inspect', 'children', 'parents', 'summarize'].includes(lens) || followup;
   const dependency = ['dependencies', 'children', 'parents'].includes(lens);
   if (!['modules', 'inspect', 'organization', 'dependencies', 'children', 'parents', 'summarize', 'explain', 'decompose', 'examine', 'usage'].includes(lens)
@@ -108,10 +110,12 @@ export function parseCommand(args: readonly string[], cwd: string, interactive =
   }
   const selector = focused ? positional[1]! : null;
   const reference = interactive && !literal && selector?.startsWith('@') === true;
+  if (values['revision-page'] !== undefined && (!reference || !selector?.startsWith('@investigram-'))) return error('--revision-page requires an exact investigram reference.');
   if (followup && !reference) return error('follow-up lenses require an exact @investigram reference in the shell.');
   return { kind: 'view', configPath, request: { lens: lens as ViewRequest['lens'],
     ...(lens === 'summarize' || lens === 'usage' || lens === 'inspect' || followup ? { referenceLifetime: interactive ? 'session' as const : 'command' as const } : {}),
     ...(values.after === undefined ? {} : { after: values.after.replace(/^@/, '') }),
+    ...(values['revision-page'] === undefined ? {} : { revisionPage: Number(values['revision-page']) }),
     selector: reference ? selector!.slice(1) : selector, ...(reference ? { reference: true } : {}),
     subject: positional[1] === 'repository' ? 'repository' : 'project', presentation: { format: json ? 'json' : 'unicode', sourceDetail } } };
 }

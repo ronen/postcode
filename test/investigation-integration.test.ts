@@ -112,7 +112,10 @@ test('successive operation evaluations atomically retain corrections and supply 
   assert.ok(replacementView.provenance[0]!.completeTargets.includes(root));
   const repeated = view(await f.session.execute(summary));
   assert.equal(repeated.result!.reused, true);
-  assert.deepEqual(repeated.accounts, initial.accounts, 'replacement substitution is later milestone work');
+  assert.equal(repeated.accounts[0]!.id, inspected.corrections[0]!.replacement);
+  assert.equal(repeated.display[0]!.original, root);
+  assert.deepEqual(initial.accounts.map(item => item.id), [root, ...initial.accounts[0]!.children]);
+  assert.notEqual(repeated.projection.id, initial.projection.id);
   assert.equal(count, 2);
 });
 
@@ -755,4 +758,124 @@ for (const field of ['operation', 'id'] as const) test(`worker ignores an agent-
   assert.deepEqual(result.usage.attempts[0]!.agent, agent.identity);
   assert.equal(result.usage.calls, 2);
   assert.ok(result.usage.attempts[0]!.usage.every(call => call.agent.provider === agent.identity.provider));
+});
+
+test('revision lifecycle preserves exact subjects, displaced composition, conflicts, cause exemptions and immutable views', async t => {
+  let next = summaryAgent(), calls = 0;
+  const agent: InvestigatorAgent = { identity: next.identity, open() { calls++; return next.open(); } };
+  const f = await session(t, agent);
+  const initial = view(await f.session.execute(summary));
+  const frozenInitial = JSON.stringify(initial);
+  const module = initial.selected[0]!, a = initial.accounts[0]!.id, child = initial.accounts[0]!.children[0]!;
+  const reference = (v: InvestigationView, id: RecordId) => v.references.find(item => item.id === id)!.reference;
+  const execute = async (lens: 'explain' | 'examine' | 'decompose', subject: RecordId, prior: InvestigationView,
+    result: SubmittedInvestigram, retrieve: RecordId[] = []) => {
+    next = new ScriptedInvestigator([
+      ...(retrieve.length ? [() => ({ kind: 'tools' as const, requests: retrieve.map(subject => ({ kind: 'investigram' as const, subject })) })] : []),
+      () => ({ kind: 'submit', result }),
+    ]);
+    const out = view(await f.session.execute({ lens, selector: reference(prior, subject), reference: true, presentation: summary.presentation }));
+    assert.equal(out.result?.evaluation?.outcome.kind, 'accepted', JSON.stringify(out.result));
+    return out;
+  };
+  const correction = (target: RecordId, name: string, replacementChildren: SubmittedInvestigram[] = []) => ({ target, correctedSubjects: [module],
+    reason: `Revision ${name}.`, qualifications: ['Source interpretation.'], evidence: [target],
+    replacement: { ...draft(module, [], name), prose: name, children: replacementChildren } });
+  const y = await execute('explain', a, initial, { ...draft(module), prose: 'Dependent Y.' });
+  const yId = y.accounts[0]!.id;
+  const z = await execute('decompose', yId, y, { ...draft(module), prose: 'Transitive Z.' });
+  const zId = z.accounts[0]!.id;
+  const correcting = await execute('examine', a, initial, { ...draft(module), children: [draft(module, [], 'report-child')],
+    corrections: [correction(a, 'B', [draft(module, [], 'B-child')]), correction(child, 'old-child-replacement')] }, [child, yId]);
+  assert.ok(correcting.revisions.every(item => !item.needsReconsideration), 'whole correcting evaluation is exempt even through Y');
+  const b = correcting.corrections.find(item => item.target === a)!.replacement;
+  const changed = view(await f.session.execute(summary));
+  assert.equal(changed.accounts[0]!.id, b);
+  assert.deepEqual(changed.display.map(item => item.account), [b, ...changed.accounts[0]!.children]);
+  assert.ok(changed.displaced.includes(child));
+  assert.ok(changed.corrections.some(item => item.target === child), 'correction in displaced subtree stays disclosed');
+  assert.equal(JSON.stringify(initial), frozenInitial);
+  const yAgain = view(await f.session.execute({ lens: 'explain', selector: reference(initial, a), reference: true, presentation: summary.presentation }));
+  assert.equal(yAgain.result!.reused, true); assert.equal(yAgain.result!.request.subject, a);
+  assert.equal(yAgain.revisions.find(item => item.original === yId)!.needsReconsideration, true);
+  assert.equal(yAgain.revisions.find(item => item.original === yId)!.rows.filter(item => item.cause).length, 1, 'revised subject does not duplicate cause');
+  const zAgain = view(await f.session.execute({ lens: 'inspect', selector: reference(z, zId), reference: true, presentation: summary.presentation }));
+  assert.equal(zAgain.revisions[0]!.rows[0]!.cause!.direct, false);
+  assert.match(renderInvestigationView({ ...zAgain, presentation: { format: 'unicode', sourceDetail: false } }), /Transitive cause/);
+  const aware = await execute('examine', yId, y, { ...draft(module), children: [draft(module, [], 'aware-child')] });
+  assert.ok(aware.accounts.every(item => !aware.revisions.find(status => status.original === item.id)!.needsReconsideration));
+  assert.ok(aware.provenance[0]!.completeCorrections.includes(correcting.corrections.find(item => item.target === a)!.id));
+  const competing = await execute('decompose', a, initial, { ...draft(module), corrections: [correction(a, 'C')] });
+  const c = competing.corrections.find(item => item.reporter === competing.accounts[0]!.id)!.replacement;
+  assert.equal(view(await f.session.execute(summary)).accounts[0]!.id, c);
+  const descendant = await execute('explain', b, correcting, { ...draft(module), corrections: [correction(b, 'D')] });
+  assert.equal(descendant.result!.request.subject, b);
+  const d = descendant.corrections.find(item => item.target === b)!.replacement;
+  const final = view(await f.session.execute(summary));
+  assert.equal(final.accounts[0]!.id, d);
+  assert.equal(final.revisions.find(item => item.original === a)!.conflicting, true);
+  const exact = view(await f.session.execute({ lens: 'inspect', selector: reference(initial, a), reference: true, presentation: summary.presentation }));
+  assert.deepEqual(exact.accounts, initial.accounts);
+  assert.ok(exact.revisions[0]!.rows.some(item => item.replacement === c));
+  assert.equal(calls, 7, 'redisplay and inspection do not infer');
+});
+
+for (const stop of ['invalidation', 'interruption'] as const) test(`revision submission cannot alter earlier observations after ${stop}`, async t => {
+  const f = fixture(t), input = Object.assign(new PassThrough(), { isTTY: true }), batches: ObservationBatch[] = [];
+  let initial: InvestigationView, saved = '', count = 0;
+  const agent: InvestigatorAgent = { identity: summaryAgent().identity, open() {
+    if (++count === 1) return summaryAgent().open();
+    return new ScriptedInvestigator([(request, _signal, usage) => {
+      usage(syntheticUsage);
+      if (stop === 'interruption') { setImmediate(() => process.emit('SIGINT')); return new Promise<AgentReply>(() => {}); }
+      writeFileSync(f.source, 'export function entry() { return 8; }');
+      return { kind: 'submit', result: { ...draft(initial.selected[0]!), corrections: [{ target: request.request.subject,
+        correctedSubjects: initial.selected, reason: 'Updated account.', qualifications: ['Static interpretation.'], evidence: [],
+        replacement: { ...draft(initial.selected[0]!, [], 'revision'), prose: 'Returns eight.' } }] } };
+    }]).open();
+  } };
+  const driver = interactionDriver(() => input.end());
+  let started = false;
+  const code = await runCli(['shell', '--project', f.configPath, '--json'], { cwd: f.root, checkout: f.root, input, investigator: agent,
+    stdout: text => { if (!started && text.includes('postcode> ')) { started = true; setImmediate(() => input.write('summarize entry\n')); } }, stderr: () => {}, sink: { async submit(batch) {
+      batches.push(batch);
+      if (batches.length === 1) {
+        initial = batch.records.find(item => item.kind === 'qualified-view')!.value as InvestigationView;
+        saved = JSON.stringify(initial);
+        driver.run(() => input.write(`examine @${initial.references.find(item => item.id === initial.accounts[0]!.id)!.reference}\n`));
+      }
+      return { accepted: true };
+    } } });
+  driver.verify();
+  assert.equal(code, stop === 'interruption' ? 130 : 2);
+  assert.equal(JSON.stringify(initial!), saved);
+  assert.equal(batches.length, 2);
+  assert.ok(!batches[1]!.records.some(item => item.kind === 'qualified-view'));
+  assert.ok(!batches[1]!.events.some(item => item.type === 'source-escape'));
+});
+
+test('historical inspection pages expose every competing correction without changing primary selection or invoking inference', async t => {
+  let next = summaryAgent(), calls = 0;
+  const f = await session(t, { identity: next.identity, open() { calls++; return next.open(); } });
+  const initial = view(await f.session.execute(summary)), a = initial.accounts[0]!.id, module = initial.selected[0]!;
+  let subject = a, prior = initial;
+  for (let n = 0; n < 26; n++) {
+    next = new ScriptedInvestigator([
+      () => ({ kind: 'tools', requests: [{ kind: 'investigram', subject: a }] }),
+      () => ({ kind: 'submit', result: { ...draft(module), corrections: [{ target: a, correctedSubjects: [module], reason: `Alternative ${n}`,
+        qualifications: ['Interpretive alternative.'], evidence: [a], replacement: { ...draft(module, [], 'replacement'), prose: `Alternative ${n}.` } }] } }),
+    ]);
+    prior = view(await f.session.execute({ lens: 'examine', selector: prior.references.find(item => item.id === subject)!.reference, reference: true, presentation: summary.presentation }));
+    assert.equal(prior.result!.evaluation!.outcome.kind, 'accepted', `Alternative ${n}: ${JSON.stringify(prior.result!.evaluation!.outcome)}`); subject = prior.accounts[0]!.id;
+  }
+  const request = { lens: 'inspect' as const, selector: initial.references.find(item => item.id === a)!.reference, reference: true, presentation: summary.presentation };
+  const first = view(await f.session.execute(request)), second = view(await f.session.execute({ ...request, revisionPage: 2 }));
+  assert.equal(first.revisions[0]!.rows.length, 24); assert.equal(first.revisions[0]!.nextPage, 2);
+  assert.equal(second.revisions[0]!.rows.length, 2); assert.equal(second.revisions[0]!.nextPage, null);
+  assert.equal(first.revisions[0]!.primary, second.revisions[0]!.primary);
+  assert.notEqual(first.projection.id, second.projection.id);
+  assert.deepEqual(first.accounts, initial.accounts); assert.deepEqual(second.accounts, initial.accounts);
+  assert.equal(new Set([...first.revisions[0]!.rows, ...second.revisions[0]!.rows].map(item => item.correction)).size, 26);
+  assert.match(renderInvestigationView({ ...first, presentation: { format: 'unicode', sourceDetail: false } }), /--revision-page 2/);
+  assert.equal(calls, 27);
 });

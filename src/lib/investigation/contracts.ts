@@ -1,3 +1,4 @@
+import type { RevisionStatus } from './revisions.js';
 import type { EvidenceQuery, EvidenceResponse } from '../evidence-access.js';
 import type { RecordContext, RecordId, SessionId } from '../records.js';
 
@@ -79,6 +80,7 @@ export interface AcceptedInvestigation {
 
 /** Read-only retained context. M1 supplies fixtures; session retention is coordinated by evaluation. */
 export interface InvestigationHistory {
+  revision?(id: RecordId, page?: number): RevisionStatus;
   get(id: RecordId): Investigram | undefined;
   provenance(id: RecordId): InvestigationProvenance | undefined;
   correction(id: RecordId): Correction | undefined;
@@ -90,6 +92,8 @@ export type ContextPart = 'prose' | 'referent' | 'qualifications';
 export interface AccountContext {
   readonly id: RecordId;
   readonly status: 'prior-interpretation';
+  readonly revision?: RevisionStatus;
+  readonly nextCorrectionPage?: number | null;
   readonly prose?: string;
   readonly referent?: Referent;
   readonly qualifications?: readonly string[];
@@ -118,6 +122,7 @@ export type InvestigatorTool = EvidenceQuery | { readonly kind: 'investigations'
   readonly kind: 'investigram'; readonly subject: RecordId;
   readonly parts?: readonly ContextPart[];
   readonly excerptCharacters?: number;
+  readonly revisionPage?: number;
 };
 export type ToolResponse = EvidenceResponse | ContextDelivery;
 
