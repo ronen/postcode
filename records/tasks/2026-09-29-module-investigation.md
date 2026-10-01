@@ -382,6 +382,10 @@ This is a bounded refinement within milestone 5’s planned controlled correctio
 
 ok, milestone 4 is accepted
 
+### Milestone 5 authorization — 2026-10-01
+
+continue on to milestone 5
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
