@@ -320,6 +320,21 @@ Human response to the proposed additional one-call control:
 
 The question was: "The reviewer leaves the hard-limit assessment to your decision. I recommend retaining the existing zero-call control and adding one focused run with a one-call guard, so it stops after acquiring evidence. Should I add that bounded assessment?"
 
+### Offline submission and validation diagnosis authorization — 2026-10-01
+
+Context (assistant question):
+
+> May I clarify the submission contract and investigate the reference failures and suite failures offline, returning any consequential remedy for approval before further live assessments?
+
+Human reply:
+
+> yes
+
+This includes the proposed bounded offline suite diagnosis and controlled rerun,
+preserving the failed run and leaving timeout/validation rules unchanged. It does
+not authorize another live assessment or a consequential reference-representation
+change.
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
