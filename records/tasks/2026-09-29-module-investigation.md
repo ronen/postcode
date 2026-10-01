@@ -363,6 +363,21 @@ Human instruction:
 
 OK, milestone 3 is done, move on to milestone 4
 
+### Milestone 4 review and bounded milestone-5 assessment refinement — 2026-10-01
+
+The review is complete.  As usual:  Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
+
+Regarding F4 specifically:  I accept the controlled-correction case as sufficient for milestone 4, with its limited discriminating power explicitly recorded. No milestone-4 live rerun is required for this finding. Strengthen one of milestone 5’s already-planned controlled correction cases:
+
+- Use documentation that describes the interface without stating the conclusion being tested.
+- Inject a plausible mistaken account without adding an “unverified” qualification solely to invite correction. Preserve any qualifications warranted by the actual evidence and provenance.
+- Retain truthful test-origin metadata and attribution in views, observations, and assessment records. Do not present the injected account as a natural investigator result.
+- Keep the source small and reviewable; the aim is to reduce answer cues, not add complexity.
+
+Freeze and identify the revised fixture, injected setup, and source-grounded reference material before its live assessment. Preserve the milestone-4 fixture and results unchanged. Use the existing assessment protocol and record what the investigator actually received.
+
+This is a bounded refinement within milestone 5’s planned controlled correction assessment, not an additional tuning loop. Report its outcome and remaining limitations without claiming it measures unbiased, spontaneous error detection.
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
