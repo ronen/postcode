@@ -159,8 +159,10 @@ the unchanged suite passed all 424 tests under temporary idle-sleep prevention,
 with no failures/cancellations, in 140.781 seconds; a timing monitor recorded no
 gap above two seconds. This supports a suspension-related explanation but does
 not prove every old failure's cause. The failed run remains preserved. No timeout,
-input-validation or ownership rule was changed. Final integrated verification of
-the contract clarification remains pending.
+input-validation or ownership rule was changed. Final integrated verification at
+`db091cd` passed **429 tests**, no failures/cancellations/skips, in **139.885 seconds**
+with stationary inputs and no monitored timing gap over two seconds. The old
+failed run remains disclosed; its individual causes are not retrospectively proven.
 
 ## Review rounds and gate
 

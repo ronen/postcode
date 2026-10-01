@@ -47,7 +47,8 @@ to be fabricated merely because their full record bodies were absent.
 | merge-anything | 32 | 28 | One symbol identity, one occurrence, two characters omitted |
 
 References in these submissions are 114–129 characters long, including malformed
-ones. The missing suffix characters are `d8`, `d3` and `6b` respectively. Cockatiel
+ones. Each malformed suffix has 62 characters rather than 64; repeated characters make
+the precise deletion alignment non-unique. Cockatiel
 also uses its correct capture identity elsewhere in the same submission. Exact
 matching is working as designed; nearest matches in the audit are diagnostic
 candidates only and were never accepted, repaired or resubmitted.
@@ -146,7 +147,16 @@ Git deadline, test timeout or readiness-harness change is warranted by this boun
 evidence. The earlier readiness-race diagnosis is not reused as an explanation.
 The old run stays failed/cancelled and remains visible for milestone review.
 
-Final integrated verification after the contract clarification is pending.
+Final integrated verification at `db091cdac906ae5981b75062a75f211cc9c61a6b`
+passed **429 tests, 0 failures, 0 cancellations, 0 skipped**, in **139.885 seconds**
+by the runner (about 150.6 seconds including build). Inputs stayed clean and
+stationary. The same temporary idle-sleep prevention was used; maximum monitor
+interval was 1.002 seconds, with no interval above two seconds or recorded power
+event in the window. [Final output](offline-diagnosis-2026-10-01/final-suite.tap.txt)
+and [timing](offline-diagnosis-2026-10-01/final-suite-timing.json) are retained.
+The retained audit/replay scripts reproduced their saved JSON results. This is a
+passing integrated suite for the clarification, while the earlier failed run and
+the limit on causal attribution remain disclosed.
 
 ## Reproduction and limits
 

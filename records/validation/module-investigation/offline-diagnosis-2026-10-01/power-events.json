@@ -97,6 +97,12 @@
       "start": "2026-10-01T07:51:04.024000+00:00",
       "end": "2026-10-01T07:53:34.277000+00:00",
       "events": []
+    },
+    {
+      "interval": "final-contract-monitored-suite",
+      "start": "2026-10-01T08:01:28.073000+00:00",
+      "end": "2026-10-01T08:03:58.662000+00:00",
+      "events": []
     }
   ],
   "limitations": "The failed-run interval uses original log file birth/modify times, not an instrumented test start/end. Event correlation and a clean monitored rerun support a timing-related explanation but do not prove the cause of each failure."
