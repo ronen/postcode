@@ -1,0 +1,386 @@
+TAP version 13
+# Subtest: subscription transport uses streaming, namespace tools, completed response only, fresh history and rotated credentials
+ok 1 - subscription transport uses streaming, namespace tools, completed response only, fresh history and rotated credentials
+  ---
+  duration_ms: 30.298021
+  ...
+# Subtest: partial output, EOF, malformed SSE, failed terminal and incomplete terminal never become accepted submissions
+ok 2 - partial output, EOF, malformed SSE, failed terminal and incomplete terminal never become accepted submissions
+  ---
+  duration_ms: 19.452431
+  ...
+# Subtest: admission and streaming errors retain HTTP status, code, parameter, request ID and sanitized body shape
+ok 3 - admission and streaming errors retain HTTP status, code, parameter, request ID and sanitized body shape
+  ---
+  duration_ms: 6.950447
+  ...
+# Subtest: cancellation after streamed partial submission aborts transport and reports no accepted result or late usage
+ok 4 - cancellation after streamed partial submission aborts transport and reports no accepted result or late usage
+  ---
+  duration_ms: 3.096711
+  ...
+# Subtest: account check never substitutes a missing model and verifies medium through the actual streaming route
+ok 5 - account check never substitutes a missing model and verifies medium through the actual streaming route
+  ---
+  duration_ms: 3.67143
+  ...
+# Subtest: credential revocation aborts an active stream as configuration unavailability, independently of investigation cancellation
+ok 6 - credential revocation aborts an active stream as configuration unavailability, independently of investigation cancellation
+  ---
+  duration_ms: 1.826437
+  ...
+# Subtest: terminal events supply optional response status while partial output and contradictions remain rejected
+ok 7 - terminal events supply optional response status while partial output and contradictions remain rejected
+  ---
+  duration_ms: 4.252167
+  ...
+# Subtest: stream diagnostics distinguish content type, premature EOF and contradictory terminal status and redact credentials
+ok 8 - stream diagnostics distinguish content type, premature EOF and contradictory terminal status and redact credentials
+  ---
+  duration_ms: 7.663043
+  ...
+# Subtest: absent content type permits framed terminal responses while empty output, partial events and JSON stay unaccepted
+ok 9 - absent content type permits framed terminal responses while empty output, partial events and JSON stay unaccepted
+  ---
+  duration_ms: 10.515879
+  ...
+# Subtest: completed stream items supply an empty terminal envelope only after a consistent successful completion
+ok 10 - completed stream items supply an empty terminal envelope only after a consistent successful completion
+  ---
+  duration_ms: 15.064075
+  ...
+# Subtest: unfinished item status cannot supply tools or a submission even with parseable arguments and terminal success
+ok 11 - unfinished item status cannot supply tools or a submission even with parseable arguments and terminal success
+  ---
+  duration_ms: 16.590307
+  ...
+# Subtest: actual dialogue follows multiple delegation layers, acquires qualified relationships, full source and documentation
+ok 12 - actual dialogue follows multiple delegation layers, acquires qualified relationships, full source and documentation
+  ---
+  duration_ms: 3726.0823
+  ...
+# Subtest: subject-only capture has multiple mappings, exclusions, unavailable artifacts and first-observed validity
+ok 13 - subject-only capture has multiple mappings, exclusions, unavailable artifacts and first-observed validity
+  ---
+  duration_ms: 244.834386
+  ...
+# Subtest: unavailable and malformed tool requests permit continued investigation without arbitrary path reads
+ok 14 - unavailable and malformed tool requests permit continued investigation without arbitrary path reads
+  ---
+  duration_ms: 1197.939244
+  ...
+# Subtest: full result accepts nested corrections, conflicts and inconsistencies with complete exposure; originals stay immutable
+ok 15 - full result accepts nested corrections, conflicts and inconsistencies with complete exposure; originals stay immutable
+  ---
+  duration_ms: 842.733984
+  ...
+# Subtest: citations distinguish bare references, excerpts, and complete content accumulated across exchanges
+ok 16 - citations distinguish bare references, excerpts, and complete content accumulated across exchanges
+  ---
+  duration_ms: 552.651947
+  ...
+# Subtest: whole-result validation rejects duplicate without publishing fragments
+ok 17 - whole-result validation rejects duplicate without publishing fragments
+  ---
+  duration_ms: 366.326427
+  ...
+# Subtest: whole-result validation rejects qualification without publishing fragments
+ok 18 - whole-result validation rejects qualification without publishing fragments
+  ---
+  duration_ms: 387.60264
+  ...
+# Subtest: whole-result validation rejects reference without publishing fragments
+ok 19 - whole-result validation rejects reference without publishing fragments
+  ---
+  duration_ms: 365.819688
+  ...
+# Subtest: whole-result validation rejects status without publishing fragments
+ok 20 - whole-result validation rejects status without publishing fragments
+  ---
+  duration_ms: 386.736325
+  ...
+# Subtest: whole-result validation rejects module-target without publishing fragments
+ok 21 - whole-result validation rejects module-target without publishing fragments
+  ---
+  duration_ms: 359.360081
+  ...
+# Subtest: whole-result validation rejects local-id-target without publishing fragments
+ok 22 - whole-result validation rejects local-id-target without publishing fragments
+  ---
+  duration_ms: 394.368015
+  ...
+# Subtest: dialogue serialization rejects cycle without publishing fragments
+ok 23 - dialogue serialization rejects cycle without publishing fragments
+  ---
+  duration_ms: 356.642748
+  ...
+# Subtest: whole-result validation rejects shared without publishing fragments
+ok 24 - whole-result validation rejects shared without publishing fragments
+  ---
+  duration_ms: 347.982582
+  ...
+# Subtest: acceptance itself rejects cyclic and shared composition before assigning results
+ok 25 - acceptance itself rejects cyclic and shared composition before assigning results
+  ---
+  duration_ms: 201.641166
+  ...
+# Subtest: correction cannot target the identity assigned to an investigram in its own submitted unit
+ok 26 - correction cannot target the identity assigned to an investigram in its own submitted unit
+  ---
+  duration_ms: 200.09084
+  ...
+# Subtest: oversized evidence is explicitly unavailable while the dialogue can continue
+ok 27 - oversized evidence is explicitly unavailable while the dialogue can continue
+  ---
+  duration_ms: 1298.923649
+  ...
+# Subtest: ended after evidence/usage preserves attempt attribution and closes the dialogue
+ok 28 - ended after evidence/usage preserves attempt attribution and closes the dialogue
+  ---
+  duration_ms: 1137.775897
+  ...
+# Subtest: refused after evidence/usage preserves attempt attribution and closes the dialogue
+ok 29 - refused after evidence/usage preserves attempt attribution and closes the dialogue
+  ---
+  duration_ms: 1201.823667
+  ...
+# Subtest: truncated after evidence/usage preserves attempt attribution and closes the dialogue
+ok 30 - truncated after evidence/usage preserves attempt attribution and closes the dialogue
+  ---
+  duration_ms: 1109.859116
+  ...
+# Subtest: communication-failure after evidence/usage preserves attempt attribution and closes the dialogue
+ok 31 - communication-failure after evidence/usage preserves attempt attribution and closes the dialogue
+  ---
+  duration_ms: 1136.650391
+  ...
+# Subtest: configuration-unavailable after evidence/usage preserves attempt attribution and closes the dialogue
+ok 32 - configuration-unavailable after evidence/usage preserves attempt attribution and closes the dialogue
+  ---
+  duration_ms: 1150.942157
+  ...
+# Subtest: guard covers asynchronous evidence work, provider calls, call count, tool count and volume
+ok 33 - guard covers asynchronous evidence work, provider calls, call count, tool count and volume
+  ---
+  duration_ms: 404.900436
+  ...
+# Subtest: interrupt rejects late results and preserves prior usage independently
+ok 34 - interrupt rejects late results and preserves prior usage independently
+  ---
+  duration_ms: 197.444349
+  ...
+# Subtest: invalidate rejects late results and preserves prior usage independently
+ok 35 - invalidate rejects late results and preserves prior usage independently
+  ---
+  duration_ms: 188.411429
+  ...
+# Subtest: deadline rejects late results and preserves prior usage independently
+ok 36 - deadline rejects late results and preserves prior usage independently
+  ---
+  duration_ms: 263.735024
+  ...
+# Subtest: input changes during dialogue invalidate before acceptance; unexpected defects are not ordinary failures
+ok 37 - input changes during dialogue invalidate before acceptance; unexpected defects are not ordinary failures
+  ---
+  duration_ms: 2302.017496
+  ...
+# Subtest: only delivered complete target context permits corrections, including separately requested parts
+ok 38 - only delivered complete target context permits corrections, including separately requested parts
+  ---
+  duration_ms: 2734.82822
+  ...
+# Subtest: corrected initial context includes chains and competing accounts, with omissions and completeness by correction
+ok 39 - corrected initial context includes chains and competing accounts, with omissions and completeness by correction
+  ---
+  duration_ms: 1525.680389
+  ...
+# Subtest: source captures reject forged mappings and excluded aliases remain unavailable
+ok 40 - source captures reject forged mappings and excluded aliases remain unavailable
+  ---
+  duration_ms: 232.107289
+  ...
+# Subtest: malformed response and unsubmitted trees fail; post-submission validity checks are outside the generation deadline
+ok 41 - malformed response and unsubmitted trees fail; post-submission validity checks are outside the generation deadline
+  ---
+  duration_ms: 274.049726
+  ...
+# Subtest: usage retains distinct reports and anomalies without selecting uncertain totals
+ok 42 - usage retains distinct reports and anomalies without selecting uncertain totals
+  ---
+  duration_ms: 0.778719
+  ...
+# Subtest: provider accounting anomalies preserve both accepted and failed investigation outcomes
+ok 43 - provider accounting anomalies preserve both accepted and failed investigation outcomes
+  ---
+  duration_ms: 2230.0495
+  ...
+# Subtest: corrections associate explicit program subjects through follow-ups and subordinate accounts
+ok 44 - corrections associate explicit program subjects through follow-ups and subordinate accounts
+  ---
+  duration_ms: 2045.715735
+  ...
+# Subtest: correction reasons cite their reporter without granting complete account context
+ok 45 - correction reasons cite their reporter without granting complete account context
+  ---
+  duration_ms: 889.278216
+  ...
+# Subtest: corrected subjects permit entities and artifacts but reject claims and evidence
+ok 46 - corrected subjects permit entities and artifacts but reject claims and evidence
+  ---
+  duration_ms: 558.327059
+  ...
+# Subtest: documentation discrepancy submission preserves the contract: attributed-prose
+ok 47 - documentation discrepancy submission preserves the contract: attributed-prose
+  ---
+  duration_ms: 1541.171464
+  ...
+# Subtest: documentation discrepancy submission preserves the contract: module-inconsistency
+ok 48 - documentation discrepancy submission preserves the contract: module-inconsistency
+  ---
+  duration_ms: 1361.471476
+  ...
+# Subtest: documentation discrepancy submission preserves the contract: artifact-inconsistency
+ok 49 - documentation discrepancy submission preserves the contract: artifact-inconsistency
+  ---
+  duration_ms: 1365.030989
+  ...
+# Subtest: documentation discrepancy submission preserves the contract: mistyped-evidence
+ok 50 - documentation discrepancy submission preserves the contract: mistyped-evidence
+  ---
+  duration_ms: 1396.411597
+  ...
+# Subtest: documentation discrepancy submission preserves the contract: mistyped-subject
+ok 51 - documentation discrepancy submission preserves the contract: mistyped-subject
+  ---
+  duration_ms: 1388.020829
+  ...
+# Subtest: short handles preserve bare-reference exposure and exact domain validation (api, acquire=false)
+ok 52 - short handles preserve bare-reference exposure and exact domain validation (api, acquire=false)
+  ---
+  duration_ms: 705.125343
+  ...
+# Subtest: short handles preserve bare-reference exposure and exact domain validation (api, acquire=true)
+ok 53 - short handles preserve bare-reference exposure and exact domain validation (api, acquire=true)
+  ---
+  duration_ms: 1234.554198
+  ...
+# Subtest: short handles preserve bare-reference exposure and exact domain validation (plan, acquire=false)
+ok 54 - short handles preserve bare-reference exposure and exact domain validation (plan, acquire=false)
+  ---
+  duration_ms: 702.208086
+  ...
+# Subtest: short handles preserve bare-reference exposure and exact domain validation (plan, acquire=true)
+ok 55 - short handles preserve bare-reference exposure and exact domain validation (plan, acquire=true)
+  ---
+  duration_ms: 1147.660538
+  ...
+# Subtest: hosted reference compaction cannot bypass the canonical decoded-reply character guard
+ok 56 - hosted reference compaction cannot bypass the canonical decoded-reply character guard
+  ---
+  duration_ms: 323.503249
+  ...
+# Subtest: real evidence queries and retained investigram context encode without canonical reference leakage
+ok 57 - real evidence queries and retained investigram context encode without canonical reference leakage
+  ---
+  duration_ms: 849.881718
+  ...
+# Encoded 177 real evidence queries across all nine kinds, plus full and bounded retained investigram context.
+# Subtest: reference traversal preserves literal source, assertions, names, opaque values and qualifications
+ok 58 - reference traversal preserves literal source, assertions, names, opaque values and qualifications
+  ---
+  duration_ms: 4.401832
+  ...
+# Subtest: nested dependency placements, exports, summaries, cursors and omitted references are mapped structurally
+ok 59 - nested dependency placements, exports, summaries, cursors and omitted references are mapped structurally
+  ---
+  duration_ms: 1.288885
+  ...
+# Subtest: nested submissions and prior context decode only designated references, with auditable exact resolutions
+ok 60 - nested submissions and prior context decode only designated references, with auditable exact resolutions
+  ---
+  duration_ms: 1.424234
+  ...
+# Subtest: unknown, canonical and foreign spellings fail closed; audit snapshots and namespaces remain independent
+ok 61 - unknown, canonical and foreign spellings fail closed; audit snapshots and namespaces remain independent
+  ---
+  duration_ms: 2.352583
+  ...
+# Subtest: real SDK transports a fresh bounded dialogue with only PostCode functions and no credential in context or capture
+ok 62 - real SDK transports a fresh bounded dialogue with only PostCode functions and no credential in context or capture
+  ---
+  duration_ms: 28.202908
+  ...
+# Subtest: provider failure taxonomy preserves codes, excludes echoed credentials, and never retries
+ok 63 - provider failure taxonomy preserves codes, excludes echoed credentials, and never retries
+  ---
+  duration_ms: 42.127522
+  ...
+# Subtest: provider refusal, truncation, failure, malformed submission and absent usage remain distinct
+ok 64 - provider refusal, truncation, failure, malformed submission and absent usage remain distinct
+  ---
+  duration_ms: 14.651312
+  ...
+# Subtest: malformed provider JSON is a safe communication failure rather than a parser defect
+ok 65 - malformed provider JSON is a safe communication failure rather than a parser defect
+  ---
+  duration_ms: 3.770415
+  ...
+# Subtest: abort and close cancel in-flight SDK transport without retry or a late usage report
+ok 66 - abort and close cancel in-flight SDK transport without retry or a late usage report
+  ---
+  duration_ms: 3.610752
+  ...
+# Subtest: usage grouping preserves returned models and service tiers and does not add token subsets
+ok 67 - usage grouping preserves returned models and service tiers and does not add token subsets
+  ---
+  duration_ms: 7.010969
+  ...
+# Subtest: configuration fails closed without probing credentials when disabled or unsupported
+ok 68 - configuration fails closed without probing credentials when disabled or unsupported
+  ---
+  duration_ms: 0.918212
+  ...
+# Subtest: CLI preflight precedes project opening for shell and mechanical one-shot commands
+ok 69 - CLI preflight precedes project opening for shell and mechanical one-shot commands
+  ---
+  duration_ms: 2.25945
+  ...
+# Subtest: SDK service failure after evidence retains usage and acquisition, but a later request starts fresh
+ok 70 - SDK service failure after evidence retains usage and acquisition, but a later request starts fresh
+  ---
+  duration_ms: 271.708621
+  ...
+# Subtest: offline real-adapter CLI shell covers source acquisition, retention, usage and credential exclusion in unicode via api-key
+ok 71 - offline real-adapter CLI shell covers source acquisition, retention, usage and credential exclusion in unicode via api-key
+  ---
+  duration_ms: 974.891498
+  ...
+# Subtest: offline real-adapter CLI shell covers source acquisition, retention, usage and credential exclusion in json via api-key
+ok 72 - offline real-adapter CLI shell covers source acquisition, retention, usage and credential exclusion in json via api-key
+  ---
+  duration_ms: 876.901798
+  ...
+# Subtest: offline real-adapter CLI shell covers source acquisition, retention, usage and credential exclusion in unicode via chatgpt-plan
+ok 73 - offline real-adapter CLI shell covers source acquisition, retention, usage and credential exclusion in unicode via chatgpt-plan
+  ---
+  duration_ms: 849.812136
+  ...
+# Subtest: offline real-adapter CLI shell covers source acquisition, retention, usage and credential exclusion in json via chatgpt-plan
+ok 74 - offline real-adapter CLI shell covers source acquisition, retention, usage and credential exclusion in json via chatgpt-plan
+  ---
+  duration_ms: 852.746312
+  ...
+# Subtest: only an explicit submission call classifies malformed arguments as an invalid submission on either route
+ok 75 - only an explicit submission call classifies malformed arguments as an invalid submission on either route
+  ---
+  duration_ms: 8.144425
+  ...
+1..75
+# tests 75
+# suites 0
+# pass 75
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 43666.345426
