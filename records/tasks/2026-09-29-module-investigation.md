@@ -359,6 +359,10 @@ Human instruction:
 
 > The re-review is complete, it has a few small findings; respond as usual.  Regarding the decision record: The acceptance recorded in `a53ea33` covers the decision in `investigator-reference-transport.md`; I regard the record as an accurate account of the approved choice, including its discussion of alternatives. Add it to the decisions index. No separate acceptance step is needed.
 
+### Milestone 3 acceptance and milestone 4 authorization — 2026-10-01
+
+OK, milestone 3 is done, move on to milestone 4
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
