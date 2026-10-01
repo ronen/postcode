@@ -1297,3 +1297,41 @@ immutable handoff. No review finding was rejected. Further tuning, model changes
 or extra runs were not undertaken. Human milestone-3 acceptance remains required;
 milestone 4 has not begun and the task remains active. The correction/reassessment
 review target is `27c7331` (this task checkpoint adds only the durable outcome).
+
+### Milestone 3 round-2 minor corrections — 2026-10-01
+
+The human-arranged re-review (`7a4298a`, target `bba3d7a`) clears the earlier
+findings and recommends milestone-3 acceptance after two minor corrections,
+without another review round. The human explicitly confirms that `a53ea33`
+accepted the reference-transport decision as written, including its discussion of
+alternatives; `f4aab78` preserves that instruction before the affected work.
+This confirmation accepts the decision, not the milestone.
+
+Both new findings are accepted and fixed in `2ca400a`: the decision is now in the
+index, and an integrated regression encodes 177 real evidence queries across all
+nine query kinds plus full and bounded retained investigram context. It covers
+bare support references, unavailable outcomes, composition, corrections,
+inconsistencies, revision notices, provenance and omitted context. Reference
+strings are discovered independently of the encoder's handwritten field list;
+no canonical ID remains in the fixture's wire representation. Separate existing
+tests preserve literal IDs in source/prose, so this coverage does not introduce a
+runtime content restriction. The architecture account describes the safeguard.
+No production code or decision text changed.
+
+Build/type checking passed. The new regression passed alone; the investigation,
+reference and both hosted-transport suites passed **75 tests**, zero failures,
+cancellations or skips, in **43.666 seconds**. `c6feeb8` preserves complete focused
+output, verification and a disposition of both findings, all non-defect
+observations and the review's residual limits. Updated links and diff checks
+passed. The reviewer independently reports a complete 438-test passing run at
+its exact target; no new full-suite run is claimed for these test/documentation
+changes. Historical failure evidence remains preserved.
+
+No live inference, credential/browser operation, configuration change or frozen
+capture revision occurred. Diagnostic allowance remains two used / eight
+remaining. Semantic assessment limitations and the unverified non-module inspect
+cursor observation remain explicitly bounded; no correction depends on resolving
+that observation. No finding is rejected or materially qualified. These minor
+corrections do not invalidate the reviewer's analysis and do not warrant another
+review round. Human milestone-3 acceptance is pending; milestone 4 has not begun
+and the task remains active.
