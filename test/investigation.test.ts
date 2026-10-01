@@ -9,7 +9,7 @@ import { ScriptedInvestigator, syntheticUsage } from './investigator-double.js';
 import { evaluateModules } from '../src/lib/evaluation.js';
 import { identityReference, methods, recordId } from '../src/lib/identity.js';
 import { evidenceAccess } from '../src/lib/evidence-access.js';
-import type { EvidenceResponse } from '../src/lib/evidence-access.js';
+import type { EvidenceQuery, EvidenceResponse } from '../src/lib/evidence-access.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
 import { SessionInvalidated, CommandInterrupted } from '../src/lib/execution-errors.js';
@@ -18,8 +18,9 @@ import type { InvestigationOptions } from '../src/lib/investigation/execute.js';
 import { InvestigationContext } from '../src/lib/investigation/context.js';
 import { acceptInvestigation, InvalidSubmission } from '../src/lib/investigation/acceptance.js';
 import { openAIInvestigator, chatGPTInvestigator, type OpenAIExchange } from '../src/lib/investigation/openai/adapter.js';
+import { InvestigatorReferences } from '../src/lib/investigation/openai/references.js';
 import { InvestigationUsage } from '../src/lib/investigation/usage.js';
-import type { AcceptedInvestigation, AgentReply, AttemptReport, InvestigationHistory, ReportedUsage, SubmittedInvestigram } from '../src/lib/investigation/contracts.js';
+import type { AcceptedInvestigation, AgentInput, AgentReply, AttemptReport, InvestigationHistory, ReportedUsage, SubmittedInvestigram, ToolResponse } from '../src/lib/investigation/contracts.js';
 import type { RecordId } from '../src/lib/records.js';
 
 const emptyHistory: InvestigationHistory = { get: () => undefined, provenance: () => undefined, correction: () => undefined, corrections: () => [] };
@@ -680,4 +681,77 @@ test('hosted reference compaction cannot bypass the canonical decoded-reply char
   assert.equal(execution.outcome.kind, 'limit-stop');
   assert.ok(inputSize + wireReplySize < 20000); assert.ok(inputSize + replySize > 20000);
   assert.equal(calls, 1);
+});
+
+
+test('real evidence queries and retained investigram context encode without canonical reference leakage', async t => {
+  const f = await fixture(t);
+  const references = new InvestigatorReferences();
+  t.after(() => references.close());
+  // Controlled source and prose contain no canonical IDs. Literal IDs in real
+  // content must remain untouched; the dedicated structural tests cover that case.
+  const encode = (response: ToolResponse, label: string) => {
+    const input: AgentInput = { attempt: recordId(f.opened.session, 'attempt', [label]), instructions: 'Coverage probe.',
+      request: f.base.request, responses: [response], remaining: { milliseconds: 1000, calls: 1, toolCalls: 1 } };
+    assert.ok(JSON.stringify(input.request).includes(f.opened.session));
+    assert.equal(JSON.stringify(references.encode(input)).includes(f.opened.session), false, label);
+  };
+  const covered: Record<EvidenceQuery['kind'], boolean> = { modules: false, organization: false, group: false, membership: false,
+    inspect: false, exports: false, dependencies: false, dependents: false, source: false };
+  const pending: EvidenceQuery[] = [], queued = new Set<string>(), discovered = new Set<RecordId>();
+  const kinds = new Set<string>(); let sawSupportReference = false, sawUnavailable = false;
+  const enqueue = (query: EvidenceQuery) => {
+    const key = JSON.stringify(query);
+    if (!queued.has(key)) { queued.add(key); pending.push(query); }
+  };
+  // Discover references from actual results rather than mirroring the encoder's
+  // field list: a new reference-bearing field must enter this regression too.
+  const discover = (value: unknown): void => {
+    if (Array.isArray(value)) { value.forEach(discover); return; }
+    if (value && typeof value === 'object') { Object.values(value).forEach(discover); return; }
+    if (typeof value !== 'string' || !value.startsWith(f.opened.session)) return;
+    const id = value as RecordId;
+    if (discovered.has(id)) return;
+    discovered.add(id);
+    const record = f.evidence.lookup(id);
+    if (!record) return;
+    enqueue({ kind: 'inspect', subject: id });
+    if (record.kind === 'module') for (const kind of ['exports', 'dependencies', 'dependents', 'membership', 'source'] as const) enqueue({ kind, subject: id });
+    if (record.kind === 'group') enqueue({ kind: 'group', subject: id });
+    if (record.kind === 'repository-artifact') enqueue({ kind: 'source', subject: id });
+  };
+  enqueue({ kind: 'modules' }); enqueue({ kind: 'organization' });
+  for (let index = 0; index < pending.length; index++) {
+    assert.ok(index < 500, 'fixture crawl must terminate within its test bound');
+    const query = pending[index]!, response = f.evidence.query(query);
+    covered[query.kind] = true;
+    encode(response, JSON.stringify(query));
+    response.records.forEach(record => kinds.add(record.kind));
+    sawSupportReference ||= Boolean(response.supportReferences?.length);
+    sawUnavailable ||= response.status === 'unavailable';
+    discover(response);
+    if (response.page?.next && query.kind !== 'source') enqueue({ ...query, cursor: response.page.next });
+  }
+  assert.ok(Object.values(covered).every(Boolean), JSON.stringify(covered));
+  for (const kind of ['module', 'claim', 'claim-context', 'source-evidence', 'repository-artifact', 'group', 'captured-content', 'recorded-assertion', 'dependency-occurrence']) assert.ok(kinds.has(kind), kind);
+  assert.ok(sawSupportReference); assert.ok(sawUnavailable);
+
+  const initial = await accepted({ ...f.base, agent: new ScriptedInvestigator([() => ({ kind: 'submit', result: { ...draft('initial'), children: [draft('child')] } })]) });
+  const revised = await accepted({ ...f.base, history: history(initial), request: { operation: 'examination', subject: initial.root, parameters: {} },
+    agent: new ScriptedInvestigator([() => ({ kind: 'submit', result: { ...draft(), evidence: [initial.root],
+      referent: { description: 'Earlier account', subjects: [initial.root] },
+      inconsistencies: [{ targets: [initial.root], reason: 'Unsettled account.', qualifications: ['Interpretation.'], evidence: [initial.root] }],
+      corrections: [{ target: initial.root, correctedSubjects: [f.module('entry')], reason: 'Narrower account.',
+        qualifications: ['Interpretation.'], evidence: [initial.root], replacement: draft('replacement') }] } })]) });
+  const context = new InvestigationContext(history(initial, revised), f.opened.session);
+  const delivery = context.prepare(revised.root);
+  assert.equal(delivery.corrections.length, 1);
+  assert.ok(delivery.accounts.some(account => account.children.length));
+  assert.ok(delivery.accounts.some(account => account.inconsistencies?.length));
+  assert.ok(delivery.accounts.some(account => account.revisionNotices.length));
+  encode(delivery, 'retained accounts, corrections and provenance');
+  const omitted = context.prepare(initial.root, [], undefined, { accounts: 1, characters: 0 });
+  assert.ok(omitted.omittedAccounts.length); assert.ok(omitted.omittedCorrections.length);
+  encode(omitted, 'bounded omitted context');
+  t.diagnostic(`Encoded ${pending.length} real evidence queries across all nine kinds, plus full and bounded retained investigram context.`);
 });

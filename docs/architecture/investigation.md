@@ -454,6 +454,9 @@ Canonical provenance retains domain instructions; captures retain the actual
 transport instructions. Regression coverage in `investigator-references.test.ts`,
 `investigation.test.ts` and both transport suites checks structural translation,
 exposure separation, guards, fresh histories, cancellation and credential exclusion.
+A deterministic fixture crawl also checks all evidence-query kinds and retained
+investigram context for unencoded canonical references; its source/prose contain
+no literal IDs, whose preservation is covered separately.
 
 Received terminal usage is reported before outcome classification, including
 failed, refused and incomplete responses. Missing usage after interruption is
