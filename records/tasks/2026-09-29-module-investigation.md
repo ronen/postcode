@@ -1339,3 +1339,79 @@ that observation. No finding is rejected or materially qualified. These minor
 corrections do not invalidate the reviewer's analysis and do not warrant another
 review round. Human milestone-3 acceptance is pending; milestone 4 has not begun
 and the task remains active.
+
+### Milestone 3 accepted; milestone 4 implementation checkpoint — 2026-10-01
+
+The human accepted milestone 3 and directed milestone 4; `e25d727` preserves that
+follow-up before implementation. The milestone-3 disposition now records acceptance.
+Historical checkpoint statements above retain their original pending status.
+
+`3875cce` exposes shell `explain`, `decompose` and `examine` over retained
+investigram references, including later results; invalid/unsupported combinations
+remain explicit and do not invoke inference. Inspection now provides bounded,
+qualified associated-account navigation with continuation, plus composition and
+investigation-subject links. The investigator can list explicit associations and
+retrieve selected accounts. Bare listing/reference availability does not establish
+content exposure or correction eligibility. Structural transport mapping includes
+these navigation fields. Repeated lenses reuse retained outcomes. Originals,
+explicit correction links, qualification, provenance and source disclosure remain
+inspectable without implementing milestone-5 substitution or derived warnings.
+
+A private per-evaluation selection boundary supports the authorized scripted/live
+assessment setup. Selection and credentials stay in the parent; the worker receives
+identity, and usage/provenance preserve the actual selected participant. This does
+not introduce production model/billing fallback. The controlled setup enters through
+ordinary submission/validation/retention, with a separately attributed synthetic
+report. Architecture, CLI, hosted setup, harness documentation and project status
+describe the resulting capability and limits.
+
+At `3875cce`, the initial full suite reported 447 passed, one failed, zero cancelled.
+The failure was the older shell/one-shot view comparison expecting identical
+reference lifetime. `9a204a6` asserts the distinct command/session lifetime, includes
+that distinction in view identity, and compares remaining content. The isolated
+regression passed. The final complete suite at `9a204a6` passed **448 tests, zero
+failures/cancellations/skips**, 136.964 seconds (147.462 including build). A stationary
+checkout, temporary idle-sleep prevention and monitor with maximum 1.004-second gap
+are recorded. Earlier historical cancellations/failures remain preserved; later
+successful complete runs do not prove every earlier failure's cause.
+
+`645076f` froze [pass 04](../validation/module-investigation/pass-04/report.md) before
+live inference. The three pinned upstreams each received a fresh summary and all
+three follow-ups. The focused numeric case used the frozen scripted false root/child,
+then live decomposition, explanation and designated child examination. All **15
+hosted evaluations were accepted**. The numeric root and child each received explicit
+corrections; an ordinary merge-anything examination also corrected a descriptor
+overstatement. Originals and composition remained unchanged. Four repeated lenses
+and sixteen inspections made no additional calls.
+
+`9edf6ce` retains the exact commands, adaptive selections, views, observations,
+sanitized wire exchanges, binding/exposure audits and all eight fresh view-only
+evaluator/eight fresh source-informed assessor outputs. The assessment finds useful
+clarification, narrower selectable aspects and comprehensible correction links,
+while retaining semantic omissions, details beyond frozen-reference coverage,
+dense presentation and human excerpt limitations. Scripted error correction is not
+a natural error-rate measurement; shared reference authorship/orchestration and
+model family limit independence. These are formative agents, not implementation
+reviewers. The UI concerns enrich the existing whole-journey backlog rather than
+expanding this milestone into a redesign.
+
+The model/route remained **gpt-5.6-sol / medium / ChatGPT-plan**, with TypeScript
+6.0.3 and the exact approved merge-anything override unchanged. All preflights and
+four post-run pin/configuration/code/template checks passed. Capture audits reconcile
+**64 provider requests / 1,459,926 reported tokens**, with no missing or anomalous
+provider reports, and 706 structural resolution entries. The scripted setup's empty
+synthetic report remains explicitly anomalous, not a provider request or trusted
+zero total. Actual money and allowance-versus-credit attribution are unknown;
+evaluator/assessor usage is separately unknown. No retries/recovery requests,
+reauthorization, model fallback, purchases, spending-setting changes or additional
+diagnostics occurred. Diagnostic allowance remains **2 used / 8 remaining**.
+
+JSON and local links were checked; a supplementary credential-pattern scan found
+no flagged captures without accessing credentials. `391d0a5` qualifies whitespace
+verification: authored files pass, while exact terminal/TAP/role captures retain
+110 whitespace warnings unchanged. The frozen manifest's inherited descriptive
+fields are clarified separately without revising frozen inputs. No runtime or
+instruction changes occurred after the live-pass freeze.
+
+Milestone 4 is ready for a human-arranged independent review. The task remains
+active; milestone-4 acceptance and milestone 5 are not implied by this checkpoint.
