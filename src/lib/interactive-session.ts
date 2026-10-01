@@ -1,5 +1,5 @@
 import { freezeOwned } from './immutable.js';
-import type { InvestigatorAgent, AgentDialogue, AgentReply, AttemptReport, CallUsage } from './investigation/contracts.js';
+import type { InvestigationRequest, AgentIdentity, InvestigatorAgent, AgentDialogue, AgentReply, AttemptReport, CallUsage } from './investigation/contracts.js';
 import { finalizeInvestigationUsage, renderInvestigationView } from './investigation/presentation.js';
 import type { InvestigationBounds } from './investigation/execute.js';
 import type { RecordId } from './records.js';
@@ -18,18 +18,19 @@ export type { ExecutedView } from './session-protocol.js';
 type Reply = Extract<WorkerReply, { type: 'reply' }>;
 /** One operation; the parent owns Git and cleanup independently of compiler disposal. */
 export function interactiveSession(options: ProjectOptions, dependencies: {
-  worker?: Worker; git?: GitExecutionOwner; cleanupDeadlineMs?: number; investigator?: InvestigatorAgent; investigationBounds?: InvestigationBounds;
+  worker?: Worker; git?: GitExecutionOwner; cleanupDeadlineMs?: number; investigator?: InvestigatorAgent; selectInvestigator?: (request: InvestigationRequest) => InvestigatorAgent; investigationBounds?: InvestigationBounds;
 } = {}) {
   const identity = dependencies.investigator ? freezeOwned(structuredClone(dependencies.investigator.identity)) : undefined;
   // This compiled private worker does not inherit process-only launch flags.
   const worker = dependencies.worker ?? new Worker(new URL('./session-worker.js', import.meta.url), { execArgv: [], workerData: {
-    ...options, investigatorIdentity: identity, investigationBounds: dependencies.investigationBounds, excludedOutputDirectories: [...(options.excludedOutputDirectories ?? [])],
+    ...options, investigatorIdentity: identity, selectInvestigator: !!dependencies.selectInvestigator, investigationBounds: dependencies.investigationBounds, excludedOutputDirectories: [...(options.excludedOutputDirectories ?? [])],
   } });
   const usage = new InvestigationUsage();
   const reports = new Map<RecordId, AttemptReport>();
   const started = new Map<RecordId, number>();
   const closedDialogues = new Map<RecordId, readonly CallUsage[]>();
-  const dialogues = new Map<RecordId, { dialogue: AgentDialogue; controller: AbortController }>();
+  const selectedAgents = new Map<number, { agent: InvestigatorAgent; identity: AgentIdentity }>();
+  const dialogues = new Map<RecordId, { dialogue: AgentDialogue; identity: AgentIdentity; controller: AbortController }>();
   const closeDialogue = (attempt: RecordId) => {
     if (closedDialogues.has(attempt)) return undefined;
     // This is the acceptance boundary, before abort/close can trigger callbacks.
@@ -47,7 +48,7 @@ export function interactiveSession(options: ProjectOptions, dependencies: {
   const receive = (id: number) => new Promise<Reply>((resolve, reject) => { pending = { id, resolve, reject }; });
   const settleError = (error: Error) => { const current = pending; pending = undefined; current?.reject(error); };
   const dispose = (reason: Error) => {
-    ended = true; settleError(reason);
+    ended = true; settleError(reason); selectedAgents.clear();
     for (const [attempt, report] of reports) if (report.termination === 'running') reports.set(attempt, { ...report, termination: reason instanceof CommandInterrupted ? 'interrupted' : 'defect', elapsedMilliseconds: performance.now() - (started.get(attempt) ?? performance.now()) });
     const agentErrors = [...dialogues.keys()].map(closeDialogue).filter((error): error is Error => error !== undefined);
     if (!termination) {
@@ -78,16 +79,27 @@ export function interactiveSession(options: ProjectOptions, dependencies: {
       if (!started.has(message.report.attempt)) started.set(message.report.attempt, performance.now() - message.report.elapsedMilliseconds);
       reports.set(message.report.attempt, message.report); return;
     }
+    if (message.type === 'agent-select') {
+      try {
+        const agent = dependencies.selectInvestigator!(message.request);
+        const selectedIdentity = freezeOwned(structuredClone(agent.identity));
+        selectedAgents.set(message.operation, { agent, identity: selectedIdentity });
+        post({ type: 'agent-selected', operation: message.operation, id: message.id, identity: selectedIdentity });
+      } catch (error) { post({ type: 'agent-selected', operation: message.operation, id: message.id, error: encodeError(error) }); }
+      return;
+    }
     if (message.type === 'agent-close') { const error = closeDialogue(message.attempt); if (error) void dispose(error); return; }
     if (message.type === 'agent-exchange') {
       const { attempt } = message.input;
       void Promise.resolve().then(() => {
         if (ended || pending?.id !== message.operation) return;
-        if (!dependencies.investigator) throw new Error('Missing investigator bridge');
+        const selected = selectedAgents.get(message.operation);
+        const agent = selected?.agent ?? dependencies.investigator;
+        if (!agent) throw new Error('Missing investigator bridge');
         let active = dialogues.get(attempt);
-        if (!active) { active = { dialogue: dependencies.investigator.open(), controller: new AbortController() }; dialogues.set(attempt, active); }
+        if (!active) { active = { dialogue: agent.open(), identity: selected?.identity ?? identity!, controller: new AbortController() }; dialogues.set(attempt, active); }
         const current = active;
-        const recordUsage = usage.start(attempt, message.call, identity!);
+        const recordUsage = usage.start(attempt, message.call, active.identity);
         return active.dialogue.exchange(message.input, active.controller.signal, value => {
           if (ended || pending?.id !== message.operation || dialogues.get(attempt) !== current) return;
           recordUsage(value);
@@ -108,6 +120,7 @@ export function interactiveSession(options: ProjectOptions, dependencies: {
       });
       return;
     }
+    selectedAgents.delete(message.operation);
     const current = pending; pending = undefined;
     if (message.error) current.reject(decodeError(message.error));
     else current.resolve(message);

@@ -1,5 +1,5 @@
 import type { RecordId } from './records.js';
-import type { AgentInput, AgentReply, AttemptReport, ReportedUsage } from './investigation/contracts.js';
+import type { AgentInput, AgentReply, AgentIdentity, InvestigationRequest, AttemptReport, ReportedUsage } from './investigation/contracts.js';
 import type { openSession, ViewRequest, ExecutionOptions } from './session.js';
 import type { GitRequest, GitResult } from './git-execution.js';
 import { AnalysisFailure, SessionInvalidated, CleanupIncomplete, GitFailure } from './execution-errors.js';
@@ -26,10 +26,12 @@ export function decodeError(error: WireError): Error {
 }
 export type WorkerRequest = { type: 'execute'; operation: number; request: ViewRequest; execution: ExecutionOptions }
   | { type: 'check'; operation: number }
+  | { type: 'agent-selected'; operation: number; id: number; identity?: AgentIdentity; error?: WireError }
   | { type: 'agent-result'; operation: number; id: number; reply?: AgentReply; error?: WireError }
   | { type: 'agent-usage'; operation: number; id: number; usage: ReportedUsage }
   | { type: 'git-result'; operation: number; id: number; result?: GitResult; error?: WireError };
 export type WorkerReply = { type: 'reply'; operation: number; opening?: Opening; result?: ExecutedView; error?: WireError }
+  | { type: 'agent-select'; operation: number; id: number; request: InvestigationRequest }
   | { type: 'agent-exchange'; operation: number; id: number; call: number; input: AgentInput }
   | { type: 'agent-close'; operation: number; attempt: RecordId }
   | { type: 'attempt-report'; operation: number; report: AttemptReport }

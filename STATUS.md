@@ -29,7 +29,8 @@ configured TypeScript project.
   and later cleanup warnings remain distinct.
 
 - **[Interpretation integration](docs/cli-reference.md#interpretation-checkpoint-summary-inspection-and-usage).**
-  Summary requests, retained investigram inspection and attempt/session usage are
+  Summary, explanation, decomposition and examination requests, retained account
+  navigation, associated-account inspection and attempt/session usage are
   integrated with the shell. An optional OpenAI adapter supports explicit hosted
   enablement, API-key billing or persistent Sign in with ChatGPT plan use, and
   macOS Keychain credentials. Billing routes are selected explicitly.
@@ -43,8 +44,8 @@ configured TypeScript project.
   after contract clarification and private reference compaction. Semantic omissions
   and limited assessment coverage remain; earlier rejected results are preserved. The human-selected ChatGPT configuration is
   GPT-5.6 Sol with medium reasoning. Disabled summaries report configuration
-  unavailability; protected hosted credential setup supports macOS only. Public follow-up
-  lenses and correction-aware replacement display are not implemented yet.
+  unavailability; protected hosted credential setup supports macOS only. Correction-aware replacement display and derived revision warnings are not implemented yet.
+  Progressive-lens formative assessment is in progress.
 
 - **[Analysis scope](docs/cli-reference.md#supported-typescript-population-and-qualifications):**
   TypeScript only, one configured project at a time, with explicit coverage limits.

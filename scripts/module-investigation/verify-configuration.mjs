@@ -23,6 +23,8 @@ export function verifyConfiguration(spec) {
   for (const [file, expected] of Object.entries(manifest.assessmentFileSHA256)) if (hash(file) !== expected) throw new Error(`Frozen assessment material changed: ${file}`);
   if (subject.baseConfigPackage && hash(path.join(root, 'node_modules/@cycraft/tsconfig/tsconfig.json')) !== subject.baseConfigPackage.sha256) throw new Error('Inherited configuration changed');
   const instructions = JSON.parse(readFileSync(path.join(path.dirname(spec.manifest), 'instructions.json'), 'utf8'));
-  if (investigationInstructions('functionality') !== instructions.functionality) throw new Error('Built instructions differ from frozen pass');
+  for (const operation of ['functionality', 'clarification', 'decomposition', 'examination']) {
+    if (instructions[operation] !== undefined && investigationInstructions(operation) !== instructions[operation]) throw new Error('Built instructions differ from frozen pass');
+  }
   if (instructions.hostedFunctionality !== undefined && `${instructions.functionality}\n\n${referenceInstructions}` !== instructions.hostedFunctionality) throw new Error('Built reference instructions differ from frozen pass');
 }

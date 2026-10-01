@@ -1,3 +1,4 @@
+import { associatedView, renderAssociatedInvestigations } from './associations.js';
 import { identityReference, methods, recordId } from '../identity.js';
 import { freezeOwned } from '../immutable.js';
 import { inlineText, terminalText } from '../terminal-text.js';
@@ -9,7 +10,7 @@ import { usageSummary } from './reporting.js';
 import type { InvestigationUsageReport } from './reporting.js';
 
 export function createInvestigationView(store: ProgramRecordStore, session: SessionId,
-  request: { lens: 'summarize' | 'inspect' | 'usage' | 'children' | 'parents'; unsupportedSubject?: 'investigram'; selector: string | null; reference?: boolean; presentation: Presentation; referenceLifetime?: 'session' | 'command' },
+  request: { lens: 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'usage' | 'children' | 'parents'; unsupportedSubject?: 'investigram' | 'program-subject'; after?: string; selector: string | null; reference?: boolean; presentation: Presentation; referenceLifetime?: 'session' | 'command' },
   selected: readonly RecordId[], result: InvestigationSelection | null, usage: InvestigationUsageReport) {
   const accounts = new Map<RecordId, Investigram>(), corrections = new Map<RecordId, Correction>();
   const provenances = new Map<RecordId, InvestigationProvenance>();
@@ -38,7 +39,17 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
     if (provenance.kind !== 'investigation-provenance') throw new Error('Expected correction provenance');
     provenances.set(provenance.id, provenance);
   }
-  const references = store.entityIds([...new Set([...accounts.keys(), ...[...corrections.values()].flatMap(item => [item.reporter, item.target, item.replacement])])], 'investigram');
+  const compositionParents = new Map(store.investigations(session).flatMap(item => item.investigrams).flatMap(id => {
+    const account = store.get(id);
+    return account.kind === 'investigram' ? account.children.map(child => [child, account.id] as const) : [];
+  }));
+  const navigation = [...accounts.values()].map(account => {
+    const provenance = provenances.get(account.provenance)!;
+    return { account: account.id, compositionParent: compositionParents.get(account.id) ?? null, investigationSubject: provenance.request.subject };
+  });
+  const navigable = navigation.flatMap(item => [item.compositionParent, item.investigationSubject]).filter((id): id is RecordId => id !== null && store.get(id).kind === 'investigram');
+  const references = new Map(store.entityIds([...new Set([...accounts.keys(), ...navigable, ...[...accounts.values()].flatMap(item => item.inconsistencies.flatMap(item => item.targets)), ...[...corrections.values()].flatMap(item => [item.reporter, item.target, item.replacement])])], 'investigram'));
+  for (const [id, reference] of store.entityIds(navigation.map(item => item.investigationSubject).filter(id => store.get(id).kind === 'module'), 'module')) references.set(id, reference);
   const support = new Set([...accounts.values()].flatMap(item => [...item.evidence, ...item.associations.flatMap(item => item.evidence), ...item.inconsistencies.flatMap(item => item.evidence)]));
   for (const correction of corrections.values()) correction.evidence.forEach(id => support.add(id));
   const candidates = request.lens === 'summarize' && !request.unsupportedSubject ? selected.map(id => {
@@ -72,16 +83,20 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
       if (source.kind === 'source-evidence' || source.kind === 'repository-artifact') sources.set(source.id, source);
     }
   }
+  const investigations = request.lens === 'inspect' ? associatedView(store, session, selected, request.after, request.referenceLifetime) : undefined;
   const projection = { id: recordId(session, 'investigation-projection', [methods.investigationPresentation, request,
-    selected.map(id => identityReference(session, id)), result?.evaluation?.id ?? null, [...corrections.keys()]]),
+    selected.map(id => identityReference(session, id)), result?.evaluation?.id ?? null, [...corrections.keys()], investigations ?? null]),
     session, lens: request.lens, subject: 'selected-subjects', parameters: { selector: request.selector, reference: request.reference ?? false },
     selection: { matches: selected.length, status: request.unsupportedSubject ? 'unsupported-subject-lens' : selected.length === 1 ? 'selected' : selected.length ? 'ambiguous' : 'missing' } };
   return finalizeInvestigationUsage({ schema: 'postcode-investigation-view/1-experimental' as const, id: projection.id, projection,
     presentation: request.presentation, referenceLifetime: request.referenceLifetime ?? 'session',
     result, selected, candidates, unsupportedSubject: request.unsupportedSubject ?? null, references: [...references].map(([id, reference]) => ({ id, reference })),
+    navigation, ...(investigations ? { investigations } : {}),
     accounts: [...accounts.values()], corrections: [...corrections.values()], provenance: [...provenances.values()],
     support: supportDetails, usage,
     limitations: ['Generated accounts remain interpretation. Corrections are retained assertions, not established truth.',
+      'Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.',
+      ...(['explain', 'decompose', 'examine'].includes(request.lens) && selected.length !== 1 ? ['Follow-up requires one exact investigram reference from this session.'] : []),
       ...(request.lens === 'summarize' && selected.length !== 1 ? ['Summary requires one exact module; resolve a missing or ambiguous selection before investigation.'] : [])],
     ...(request.presentation.sourceDetail ? { sourceDetail: { level: 'investigation-support' as const, items: [...sources.values()] } } : {}),
   }, usage);
@@ -97,7 +112,7 @@ export type InvestigationView = ReturnType<typeof createInvestigationView>;
 export function renderInvestigationView(view: InvestigationView): string {
   if (view.presentation.format === 'json') return `${JSON.stringify(view)}\n`;
   const reference = (id: RecordId) => view.references.find(item => item.id === id)?.reference ?? id;
-  const lines = [view.unsupportedSubject ? `${view.projection.lens} · unsupported subject/lens combination` : view.projection.lens === 'usage' ? 'Investigation usage' : view.projection.lens === 'summarize' ? 'Module summary' : 'Inspect · investigram'];
+  const lines = [view.unsupportedSubject ? `${view.projection.lens} · unsupported subject/lens combination` : view.projection.lens === 'usage' ? 'Investigation usage' : view.projection.lens === 'summarize' ? 'Module summary' : requestTitle(view.projection.lens)];
   lines.push(view.referenceLifetime === 'command' ? 'References expire when this command ends. Use the shell for follow-up inspection.' : 'References remain bound for this session.');
   if (view.unsupportedSubject) lines.push(`The reference is bound to an ${view.unsupportedSubject}; ${view.projection.lens} does not support that subject kind.`);
   if (view.result) {
@@ -113,12 +128,17 @@ export function renderInvestigationView(view: InvestigationView): string {
     if (account.children.length) lines.push(`  Composition: ${account.children.map(id => `@${reference(id)}`).join(', ')}`);
     const provenance = view.provenance.find(item => item.id === account.provenance)!;
     lines.push(`  Operation: ${provenance.request.operation}; origin: ${provenance.agent.origin}; provider/model: ${inlineText(provenance.agent.provider)}/${inlineText(provenance.agent.model)}`);
+    const navigation = view.navigation.find(item => item.account === account.id)!;
+    lines.push(`  Investigation subject: @${reference(navigation.investigationSubject)} (provenance, not composition)`);
+    if (navigation.compositionParent) lines.push(`  Composition parent: @${reference(navigation.compositionParent)}`);
+    for (const inconsistency of account.inconsistencies) lines.push(`  Unresolved inconsistency: ${inlineText(inconsistency.reason)}; targets: ${inconsistency.targets.map(id => `@${reference(id)}`).join(', ')}`, ...inconsistency.qualifications.map(item => `    Qualification: ${inlineText(item)}`));
     if (account.evidence.length) lines.push(`  Evidence: ${account.evidence.map(inlineText).join(', ')}`);
   }
   for (const correction of view.corrections) lines.push(`\nCorrection reported by @${reference(correction.reporter)}: @${reference(correction.target)} → @${reference(correction.replacement)}`,
     `  Corrected subjects: ${correction.correctedSubjects.map(inlineText).join(', ')}`,
     `  Evidence: ${correction.evidence.length ? correction.evidence.map(inlineText).join(', ') : 'none supplied'}`,
     `  Reason: ${inlineText(correction.reason)}`, ...correction.qualifications.map(item => `  Qualification: ${inlineText(item)}`));
+  if (view.investigations) lines.push(renderAssociatedInvestigations(view.investigations).trimEnd());
   if (view.projection.lens === 'inspect') for (const support of view.support) lines.push(`  Support (exposure identified by provenance): ${terminalText(JSON.stringify(support))}`);
   // Changes to this section or JSON source fields must stay aligned with
   // src/lib/source-disclosure.ts and test/source-disclosure.test.ts.
@@ -134,4 +154,8 @@ export function renderInvestigationView(view: InvestigationView): string {
 export function usageLines(usage: InvestigationUsageReport, label: string): string[] {
   return [`${label} reported usage: ${usage.calls} calls; ${usage.missingCalls} unknown; ${usage.anomalousCalls} anomalous.`,
     ...usage.totals.map(total => `  ${inlineText(total.agent.provider)}/${inlineText(total.agent.model)} (${total.source})${total.agent.configuration.billingRoute ? `; billing route ${inlineText(String(total.agent.configuration.billingRoute))}` : ''}${total.execution ? `; reported model ${inlineText(total.execution.model)}, service tier ${inlineText(total.execution.serviceTier ?? 'unknown')}` : ''}: ${total.categories.map(item => `${inlineText(item.category)} ${item.value ?? 'unknown'} ${inlineText(item.unit)}${item.includedIn ? ` (subset of ${inlineText(item.includedIn)})` : ''}`).join('; ')}`)];
+}
+
+function requestTitle(lens: string): string {
+  return ({ explain: 'Explain · investigram', decompose: 'Decompose · investigram', examine: 'Examine · investigram' } as Record<string, string>)[lens] ?? 'Inspect · investigram';
 }

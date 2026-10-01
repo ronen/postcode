@@ -83,6 +83,8 @@ export interface InvestigationHistory {
   provenance(id: RecordId): InvestigationProvenance | undefined;
   correction(id: RecordId): Correction | undefined;
   corrections(id: RecordId): readonly Correction[];
+  /** Explicit associations only; undefined means unsupported or unavailable subject. */
+  associated?(subject: RecordId): readonly RecordId[] | undefined;
 }
 export type ContextPart = 'prose' | 'referent' | 'qualifications';
 export interface AccountContext {
@@ -103,6 +105,8 @@ export interface AccountContext {
   readonly omissions: readonly string[];
 }
 export interface ContextDelivery {
+  /** Bare references are navigation availability, never substantive exposure. */
+  readonly listing?: { readonly subject: RecordId; readonly selected: readonly RecordId[]; readonly total: number; readonly next: RecordId | null };
   readonly requested: RecordId;
   readonly accounts: readonly AccountContext[];
   readonly corrections: readonly Correction[];
@@ -110,7 +114,7 @@ export interface ContextDelivery {
   readonly omittedCorrections: readonly RecordId[];
   readonly limitations: readonly string[];
 }
-export type InvestigatorTool = EvidenceQuery | {
+export type InvestigatorTool = EvidenceQuery | { readonly kind: 'investigations'; readonly subject: RecordId; readonly cursor?: RecordId } | {
   readonly kind: 'investigram'; readonly subject: RecordId;
   readonly parts?: readonly ContextPart[];
   readonly excerptCharacters?: number;

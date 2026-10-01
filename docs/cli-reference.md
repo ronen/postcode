@@ -552,8 +552,29 @@ references in human output. Known investigram references supplied to `children`,
 generation; an absent reference remains a missing selection. `--source-detail` discloses captured support locations and excerpts and
 records that disclosure. Source sent only to the investigator does not count as
 human source disclosure. Inspection does not generate a missing account or redirect
-to a replacement. Replacement selection, conflict/reconsideration displays and
-public `explain`, `decompose` and `examine` commands remain later milestones.
+to a replacement. Replacement selection and conflict/reconsideration displays remain milestone-5 work.
+
+`explain @investigram-…`, `decompose @investigram-…` and `examine @investigram-…`
+require an exact reference in the shell. Explanation clarifies the selected
+program aspect; decomposition creates finer selectable aspects without implying
+an exhaustive or disjoint partition; examination pursues deeper findings or
+reports useful limits. Each produces a separate root with provenance naming its
+exact selected subject. All three accept results of any earlier investigation.
+Repeated requests reuse the retained outcome. Known module/group references are
+unsupported follow-up subjects; unbound references are missing. Names and
+one-shot follow-ups are refused because investigrams belong to the active session.
+
+Inspection shows composition-parent and investigation-subject links separately.
+`inspect MODULE`, `inspect @group-…` and `inspect @investigram-…` also list explicitly
+associated retained accounts (up to 24 per page). Use the displayed reference to
+inspect complete content, or repeat the inspection with `--after @investigram-…`
+using the continuation shown. Listing prose is bounded to 400 UTF-16 code units;
+qualifications are preserved together or the entire detail is explicitly omitted
+under the 55,000-unit page bound. Listings reflect current retained associations,
+not all possible functionality or authority. A newly retained account can extend
+them without changing the mechanical inspection. Originals remain displayed;
+no automatic replacement substitution or derived revision warnings are supplied
+at this milestone.
 
 `usage` and `usage --json` expose per-attempt and session reported usage without
 inference, including failed attempts. Summary views also include their attempt and

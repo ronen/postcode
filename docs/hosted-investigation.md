@@ -237,3 +237,10 @@ Returning browser sign-in sends the retained ID token as an `id_token_hint` to
 the provider’s authorization endpoint. This hint identifies the account and may
 remain in browser history; it is not an inference bearer credential. PostCode
 keeps the authorization URL out of process arguments, logs and diagnostics.
+
+After a summary in the shell, `explain @investigram-…`, `decompose @investigram-…`
+and `examine @investigram-…` use the same explicitly selected model, reasoning and
+billing route. Each missing operation can incur provider usage; repeating a
+retained outcome or inspecting a linked account does not. There is no automatic
+model upgrade or route fallback. Progressive views currently show originals with
+correction links; automatic replacement display is deferred.

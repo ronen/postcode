@@ -1,3 +1,5 @@
+import { renderAssociatedInvestigations } from '../investigation/associations.js';
+import type { AssociatedInvestigations } from '../investigation/associations.js';
 import { displayWidth, padDisplay } from '../terminal-layout.js';
 import { prepareCompositionViews, compositionAnnotation } from '../composition-view.js';
 import type { CompositionView } from '../composition-view.js';
@@ -50,6 +52,7 @@ interface TreeRow {
 }
 
 export interface QualifiedOrganizationView {
+  readonly investigations?: AssociatedInvestigations;
   readonly schema: 'postcode-organization-view/1-experimental';
   readonly id: RecordId;
   readonly projection: Pick<OrganizationProjectionRecord, 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
@@ -335,5 +338,5 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
     '  Inputs are first-observed, not atomic; sparse-checkout completeness remains unresolved.');
   const diagnostics = new Set(view.qualifications.flatMap(context => context.diagnostics.map(diagnostic => diagnostic.code)));
   for (const code of diagnostics) lines.push(`  Encountered TypeScript diagnostic: TS${code}`);
-  return `${lines.join('\n')}\n`;
+  return `${lines.join('\n')}\n${renderAssociatedInvestigations(view.investigations)}`;
 }

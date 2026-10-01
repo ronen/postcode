@@ -1,3 +1,5 @@
+import { InvestigationContext } from '../src/lib/investigation/context.js';
+import type { RecordId, SessionId } from '../src/lib/records.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { InvestigatorReferences } from '../src/lib/investigation/openai/references.js';
@@ -104,4 +106,33 @@ test('unknown, canonical and foreign spellings fail closed; audit snapshots and 
   refs.close(); assert.throws(() => refs.encode(input()), /closed/); assert.throws(() => refs.tools({}), /closed/);
   assert.throws(() => refs.audit(), /closed/);
   assert.deepEqual(other.tools({ requests: [{ kind: 'source', subject: h }] }), { requests: [{ kind: 'source', subject: `invalid-investigator-reference:${h}` }] });
+});
+
+test('association listings encode every navigation field and decode exact continuations without disclosing account bodies', () => {
+  const refs = new InvestigatorReferences();
+  const wire = refs.encode(input([{ requested: 'module:canonical', accounts: [], corrections: [], omittedAccounts: [], omittedCorrections: [],
+    listing: { subject: 'module:canonical', selected: ['investigram:first', 'investigram:second'], total: 30, next: 'investigram:second' }, limitations: ['Bare references only.'] }])) as any;
+  const listing = wire.responses[0].listing;
+  assert.equal(listing.subject, wire.request.subject);
+  assert.deepEqual(wire.responses[0].accounts, []);
+  assert.equal(listing.next, listing.selected[1]);
+  assert.doesNotMatch(JSON.stringify(wire), /module:canonical|investigram:first|investigram:second/);
+  assert.deepEqual(refs.tools({ requests: [{ kind: 'investigations', subject: listing.subject, cursor: listing.next }] }),
+    { requests: [{ kind: 'investigations', subject: 'module:canonical', cursor: 'investigram:second' }] });
+});
+
+
+test('association continuation preserves pages and distinguishes unsupported lookup from empty associations', () => {
+  const ids = Array.from({ length: 30 }, (_, i) => `account-${i}` as RecordId);
+  const context = new InvestigationContext({ get() { return undefined; }, provenance() { return undefined; }, correction() { return undefined; }, corrections() { return []; },
+    associated(subject) { return subject === 'known' ? ids : subject === 'empty' ? [] : undefined; } }, 'session:test' as SessionId);
+  const first = context.list('known' as RecordId); context.supplied(first);
+  assert.equal(first.listing!.selected.length, 24);
+  const next = context.list('known' as RecordId, first.listing!.next!); context.supplied(next);
+  assert.equal(next.listing!.selected.length, 6); assert.equal(next.listing!.next, null);
+  assert.deepEqual([...first.listing!.selected, ...next.listing!.selected], ids);
+  assert.deepEqual(context.citations, []); assert.deepEqual(context.completeTargets, []);
+  assert.equal(context.list('known' as RecordId, 'foreign' as RecordId).listing, undefined);
+  assert.equal(context.list('missing' as RecordId).listing, undefined);
+  assert.equal(context.list('empty' as RecordId).listing!.total, 0);
 });

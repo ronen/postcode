@@ -49,3 +49,16 @@ test('assessment harness captures CLI interaction and refuses an extra POST with
   assert.equal(JSON.parse(readFileSync(file, 'utf8')).requests.length, 1);
   assert.doesNotMatch(readFileSync(path.join(output, 'exchanges.jsonl'), 'utf8'), /offline-secret/);
 });
+
+test('controlled earlier interpretation is explicitly scripted and never sends a provider request', async () => {
+  const { injectedSetup } = await import(new URL('../../scripts/module-investigation/injected-setup.mjs', import.meta.url).href);
+  const captures: unknown[] = [], usage: unknown[] = [];
+  const agent = injectedSetup({ id: 'controlled', prose: 'Earlier root.', childProse: 'Earlier part.', qualifications: ['Injected test context.'] }, (value: unknown) => captures.push(value));
+  const dialogue = agent.open();
+  const reply = await dialogue.exchange({ request: { subject: 'module:test' } }, new AbortController().signal, (value: unknown) => usage.push(value));
+  assert.equal(agent.identity.origin, 'scripted'); assert.equal(agent.identity.configuration.providerRequests, false);
+  assert.equal(reply.kind, 'submit'); assert.equal(reply.result.children[0].prose, 'Earlier part.');
+  assert.deepEqual(reply.result.referent.subjects, ['module:test']);
+  assert.deepEqual(usage, [{ source: 'synthetic', categories: [] }]); assert.equal(captures.length, 1);
+  dialogue.close(); await assert.rejects(dialogue.exchange({}, new AbortController().signal, () => {}), /Closed/);
+});

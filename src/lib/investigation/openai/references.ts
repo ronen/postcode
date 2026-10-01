@@ -4,7 +4,7 @@ import type { Claim, ProgramRecord } from '../../records.js';
 
 export const referenceInstructions = 'PostCode reference fields use short opaque handles issued in this dialogue. Copy them exactly; never construct a handle or use a canonical ID in place of one. A handle makes a reference available, not its underlying content supplied: bare support references still require acquisition before citation. Use descriptive names in prose; text inside source, assertions, qualifications and prose is literal, not translated. The dialogue character guard measures canonical domain inputs and decoded replies, not compact wire messages or repeated provider history.';
 export interface ReferenceAudit {
-  readonly version: 'postcode/investigator-references@1';
+  readonly version: 'postcode/investigator-references@2';
   readonly characterGuard: 'canonical-domain-exchanges';
   readonly bindings: readonly { readonly handle: string; readonly reference: string }[];
   readonly resolutions: readonly { readonly path: string; readonly handle: string; readonly reference: string | null }[];
@@ -72,7 +72,7 @@ export class InvestigatorReferences {
     return object({ ...this.#context(), ...this.#support(), ...this.#fields(['reporter', 'target', 'replacement', 'provenance'], ['correctedSubjects']) });
   }
   #delivery: Transform = (value, path) => object({ ...this.#fields(['requested'], ['omittedAccounts', 'omittedCorrections']),
-    accounts: list(this.#account()), corrections: list(this.#correction()) })(value, path);
+    listing: object(this.#fields(['subject', 'next'], ['selected'])), accounts: list(this.#account()), corrections: list(this.#correction()) })(value, path);
   #endpoint(): Transform { return object(this.#fields([], ['groups', 'candidates', 'artifacts', 'evidence', 'claims'])); }
   #information(information: Claim['information']): Fields {
     switch (information.type) {
@@ -157,7 +157,7 @@ export class InvestigatorReferences {
   }
   audit(): ReferenceAudit {
     this.#alive();
-    return { version: 'postcode/investigator-references@1', characterGuard: 'canonical-domain-exchanges',
+    return { version: 'postcode/investigator-references@2', characterGuard: 'canonical-domain-exchanges',
       bindings: [...this.#references].map(([handle, reference]) => ({ handle, reference })), resolutions: this.#resolutions.map(item => ({ ...item })) };
   }
   close(): void { this.#closed = true; this.#handles.clear(); this.#references.clear(); this.#resolutions = []; }

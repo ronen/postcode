@@ -1,6 +1,6 @@
 import { runAuthentication } from './investigation/openai/auth-command.js';
 import type { ChatGPTCredentials } from './investigation/openai/chatgpt-credentials.js';
-import type { InvestigatorAgent } from './investigation/contracts.js';
+import type { InvestigationRequest, InvestigatorAgent } from './investigation/contracts.js';
 import type { InvestigationBounds } from './investigation/execute.js';
 import path from 'node:path';
 import type { Readable } from 'node:stream';
@@ -18,6 +18,8 @@ export interface CliEnvironment {
   /** Internal communication-boundary injection for tests and assessment. */
   readonly authentication?: ChatGPTCredentials;
   readonly investigator?: InvestigatorAgent;
+  /** Internal controlled-assessment injection; no public configuration route. */
+  readonly selectInvestigator?: (request: InvestigationRequest) => InvestigatorAgent;
   readonly investigationBounds?: InvestigationBounds;
   /** Internal setup substitution for offline tests. Production uses POSTCODE_INVESTIGATOR. */
   readonly configureInvestigator?: typeof configuredInvestigator;
@@ -46,7 +48,7 @@ export async function runCli(args: readonly string[], environment: CliEnvironmen
   if (parsed.kind === 'shell') return runShell(parsed, environment);
   const destination = path.resolve(environment.checkout, '_observations');
   const localSink = localFileObservationSink(destination, parsed.configPath);
-  const remote = interactiveSession({ configPath: parsed.configPath, excludedOutputDirectories: [destination, path.resolve(environment.checkout, '_build')] }, { ...(environment.investigator ? { investigator: environment.investigator } : {}), ...(environment.investigationBounds ? { investigationBounds: environment.investigationBounds } : {}) });
+  const remote = interactiveSession({ configPath: parsed.configPath, excludedOutputDirectories: [destination, path.resolve(environment.checkout, '_build')] }, { ...(environment.selectInvestigator ? { selectInvestigator: environment.selectInvestigator } : {}), ...(environment.investigator ? { investigator: environment.investigator } : {}), ...(environment.investigationBounds ? { investigationBounds: environment.investigationBounds } : {}) });
   const interrupt = () => { void remote.interrupt().catch(() => {}); };
   process.on('SIGINT', interrupt);
   try {

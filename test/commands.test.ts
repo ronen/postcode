@@ -95,3 +95,17 @@ test('shell records scanner refusals and then accepts a quoted literal selector'
   const view = batches[3]!.records.find(item => item.kind === 'qualified-view')!.value as { projection: { selection: { matches: number } } };
   assert.equal(view.projection.selection.matches, 0);
 });
+
+test('follow-ups require a shell reference and inspection continuation stays a presentation option', () => {
+  for (const lens of ['explain', 'decompose', 'examine']) {
+    const parsed = parseCommand([lens, '@investigram-12345678'], '.', true);
+    assert.equal(parsed.kind, 'view');
+    if (parsed.kind === 'view') { assert.equal(parsed.request.lens, lens); assert.equal(parsed.request.reference, true); }
+    for (const args of [[lens], [lens, 'name'], [lens, '--', '@investigram-12345678'], [lens, '@investigram-12345678', '--source-detail']]) assert.equal(parseCommand(args, '.', true).kind, 'error');
+    assert.equal(parseCommand([lens, '@investigram-12345678'], '.').kind, 'error');
+  }
+  const listing = parseCommand(['inspect', 'entry', '--after', '@investigram-12345678'], '.', true);
+  assert.equal(listing.kind, 'view');
+  if (listing.kind === 'view') assert.equal(listing.request.after, 'investigram-12345678');
+  for (const args of [['modules', '--after', '@investigram-12345678'], ['inspect', 'entry', '--after='], ['inspect', 'entry', '--after=a', '--after=b', '--help']]) assert.equal(parseCommand(args, '.', true).kind, 'error');
+});

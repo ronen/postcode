@@ -5,7 +5,7 @@ Date: 2026-09-30
 Task: [Module investigation](../../tasks/2026-09-29-module-investigation.md)
 Handoff: [Milestone 3](2026-09-30-milestone-3-handoff.md)
 Findings: [Round 1](2026-09-30-milestone-3-round-1-findings.md), reviewed target `986fddb6945eadf613ca28899003916fc689f8b7`; [Round 2](2026-10-01-milestone-3-round-2-findings.md), reviewed target `bba3d7af352981e7ba755f46d6364825a2c2685f`
-Status: Round-1 findings cleared by round 2; both minor round-2 findings corrected; human milestone acceptance pending
+Status: Milestone 3 accepted by the human on 2026-10-01 (`e25d727`); all findings dispositioned
 
 ## Findings and dispositions
 
@@ -267,3 +267,9 @@ The reviewer explicitly recommends human milestone-3 acceptance without another
 review round after these fixes; the implementer agrees that no further re-review
 is warranted for them. Human milestone-3 acceptance is still pending. Milestone 4
 has not begun; the task remains active under the original milestone handoff.
+
+## Milestone acceptance
+
+The human accepted milestone 3 and authorized milestone 4 in `e25d727`. The
+recorded assessment limitations and historical validation evidence remain
+unchanged. No further milestone-3 review or live run is required.

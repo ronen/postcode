@@ -76,3 +76,14 @@ audit. Use actual request records to establish content delivery; table membershi
 alone grants no exposure. The frozen instructions include both domain and actual
 hosted instructions, and preflight verifies the built transport suffix as well.
 Earlier pass directories retain their original configuration and results.
+
+Milestone 4 uses a separately frozen progressive pass: a fresh summary and all
+three follow-up lenses for each upstream subject, plus the controlled numeric
+fixture. The manifest freezes all four operation templates. The optional `setup`
+spec points to a frozen injected-account recipe; the harness records that recipe
+and exact scripted exchanges, submits it through the production worker path, and
+uses the selected live route for subsequent missing evaluations. A repeated lens
+still reuses its outcome and does not select another participant. Setup origin is
+scripted with empty synthetic accounting, not a provider call or natural error.
+The administrative ceiling derives from scheduled live evaluations; neither it
+nor the fixture injection changes production execution guards or billing routes.

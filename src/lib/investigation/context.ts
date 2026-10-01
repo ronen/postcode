@@ -70,6 +70,18 @@ export class InvestigationContext {
         ...(omittedAccounts.length || omittedCorrections.length ? ['Correction context is incomplete. Retrieve omitted account or correction-target references separately.'] : [])] }));
   }
 
+  list(subject: RecordId, cursor?: RecordId): ContextDelivery {
+    const ids = this.history.associated?.(subject);
+    const start = cursor === undefined ? 0 : (ids?.indexOf(cursor) ?? -1) + 1;
+    const valid = ids !== undefined && (cursor === undefined || start > 0);
+    const selected = valid ? ids.slice(start, start + 24) : [];
+    return freezeOwned({ requested: subject, accounts: [], corrections: [], omittedAccounts: [], omittedCorrections: [],
+      ...(valid ? { listing: { subject, selected, total: ids.length, next: start + selected.length < ids.length ? selected.at(-1)! : null } } : {}),
+      limitations: [valid ? 'Explicit subject associations in retention order, not authority or corroboration. Bare references do not supply account content; request investigram for qualified content and correction context.'
+        : 'Unavailable association listing: unsupported subject or invalid continuation.'],
+    });
+  }
+
   supplied(delivery: ContextDelivery): void {
     this.deliveries.push(delivery);
     for (const account of delivery.accounts) {

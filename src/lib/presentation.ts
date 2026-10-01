@@ -1,3 +1,5 @@
+import { renderAssociatedInvestigations } from './investigation/associations.js';
+import type { AssociatedInvestigations } from './investigation/associations.js';
 import { boundedText, codePointLength, displayWidth, fitText, layoutText, padDisplay } from './terminal-layout.js';
 import { moduleLimitations, isCompositionContext } from './qualification-policy.js';
 import { completedMaterialization } from './evaluation-state.js';
@@ -32,6 +34,7 @@ type ExportView = ExportClaim['information'] & {
 };
 
 export interface QualifiedView {
+  readonly investigations?: AssociatedInvestigations;
   readonly schema: 'postcode-view/1-experimental';
   readonly id: RecordId;
   readonly projection: Pick<ProjectionRecord, 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
@@ -432,7 +435,7 @@ export function renderUnicode(view: QualifiedView): string {
     if (exceptional.length) { lines.push(`- Collapsed ${inlineText(collapsed.handle)}:`); local(exceptional, '  '); }
   }
   lines.push('', 'Entity references belong to this session. One-shot queries accept exact names or handles.');
-  return `${lines.map(terminalText).join('\n')}\n`;
+  return `${lines.map(terminalText).join('\n')}\n${renderAssociatedInvestigations(view.investigations)}`;
 }
 
 export function renderView(view: QualifiedView): string {

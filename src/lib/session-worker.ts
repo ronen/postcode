@@ -1,5 +1,5 @@
 import type { RecordId } from './records.js';
-import type { AgentIdentity, AgentReply, InvestigatorAgent, ReportedUsage } from './investigation/contracts.js';
+import type { AgentIdentity, AgentReply, InvestigationRequest, InvestigatorAgent, ReportedUsage } from './investigation/contracts.js';
 import type { InvestigationBounds } from './investigation/execute.js';
 import { parentPort, workerData } from 'node:worker_threads';
 import { openSession } from './session.js';
@@ -23,9 +23,9 @@ let exchangeId = 0;
 const exchanges = new Map<number, { operation: number; resolve(reply: AgentReply): void; reject(error: Error): void }>();
 // Usage belongs to the dialogue, not the shorter pending-reply lifetime.
 const usageCallbacks = new Map<number, { operation: number; usage(value: ReportedUsage): void }>();
-const configuration = workerData as ProjectOptions & { investigatorIdentity?: AgentIdentity; investigationBounds?: InvestigationBounds };
-const agent: InvestigatorAgent | undefined = configuration.investigatorIdentity ? {
-  identity: configuration.investigatorIdentity,
+const configuration = workerData as ProjectOptions & { investigatorIdentity?: AgentIdentity; selectInvestigator?: boolean; investigationBounds?: InvestigationBounds };
+const bridge = (identity: AgentIdentity): InvestigatorAgent => ({
+  identity,
   open() {
     let attempt: RecordId | undefined, call = 0;
     const owned = new Set<number>();
@@ -45,9 +45,20 @@ const agent: InvestigatorAgent | undefined = configuration.investigatorIdentity 
       },
     };
   },
-} : undefined;
+});
+const selections = new Map<number, { operation: number; resolve(agent: InvestigatorAgent): void; reject(error: Error): void }>();
+let selectionId = 0;
 let opened: Awaited<ReturnType<typeof openSession>>;
 port.on('message', async (message: WorkerRequest) => {
+  if (message.type === 'agent-selected') {
+    const selected = selections.get(message.id);
+    if (!selected || selected.operation !== message.operation) return;
+    selections.delete(message.id);
+    if (message.error) selected.reject(decodeError(message.error));
+    else if (message.identity) selected.resolve(bridge(message.identity));
+    else selected.reject(new Error('Missing investigator selection'));
+    return;
+  }
   if (message.type === 'agent-result' || message.type === 'agent-usage') {
     if (message.type === 'agent-usage') {
       const callback = usageCallbacks.get(message.id);
@@ -81,7 +92,11 @@ port.on('message', async (message: WorkerRequest) => {
 });
 try {
   opened = await openSession(configuration, { runGit, investigation: {
-    ...(agent ? { agent } : {}), ...(configuration.investigationBounds ? { bounds: configuration.investigationBounds } : {}),
+    ...(configuration.investigatorIdentity ? { agent: bridge(configuration.investigatorIdentity) } : {}),
+    ...(configuration.selectInvestigator ? { selectAgent: (request: InvestigationRequest) => new Promise<InvestigatorAgent>((resolve, reject) => {
+      const id = ++selectionId; selections.set(id, { operation, resolve, reject });
+      send({ type: 'agent-select', operation, id, request });
+    }) } : {}), ...(configuration.investigationBounds ? { bounds: configuration.investigationBounds } : {}),
     onProgress: report => send({ type: 'attempt-report', operation, report }),
     onReport: report => send({ type: 'attempt-report', operation, report }),
   } });

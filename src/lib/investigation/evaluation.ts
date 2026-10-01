@@ -1,3 +1,4 @@
+import { associatedInvestigrams } from './associations.js';
 import { canonical, identityReference, methods, recordId } from '../identity.js';
 import { freezeOwned } from '../immutable.js';
 import { evidenceAccess } from '../evidence-access.js';
@@ -25,6 +26,8 @@ export interface InvestigationSelection {
 }
 export interface InvestigationDependencies {
   readonly agent?: InvestigatorAgent;
+  /** Internal assessment injection, selected only for missing work. */
+  readonly selectAgent?: (request: InvestigationRequest) => Promise<InvestigatorAgent>;
   readonly bounds?: InvestigationBounds;
   readonly onReport?: (report: AttemptReport) => void;
   readonly onProgress?: (report: AttemptReport) => void;
@@ -35,6 +38,11 @@ export function investigationEvaluation(store: ProgramRecordStore, analysis: Mod
   usage: InvestigationUsage, dependencies: InvestigationDependencies, check: () => Promise<void>, signal: AbortSignal) {
   const evidence = evidenceAccess(store, analysis, session);
   const history: InvestigationHistory = {
+    associated(subject) {
+      const record = store.lookup(subject);
+      if (!record || record.session !== session || !['module', 'symbol', 'group', 'repository-artifact', 'investigram'].includes(record.kind)) return undefined;
+      return associatedInvestigrams(store, session, [subject]).map(item => item.id);
+    },
     get(id) { const value = store.lookup(id); return value?.kind === 'investigram' && value.session === session ? value : undefined; },
     provenance(id) { const value = store.lookup(id); return value?.kind === 'investigation-provenance' && value.session === session ? value : undefined; },
     correction(id) { const value = store.lookup(id); return value?.kind === 'investigram-correction' && value.session === session ? value : undefined; },
@@ -47,10 +55,11 @@ export function investigationEvaluation(store: ProgramRecordStore, analysis: Mod
     await check();
     const retained = store.investigations(session).find(item => key(item.request) === key(request));
     if (retained) return { request, reused: true, attempt: retained.attempt, evaluation: retained, unavailable: null };
-    if (!dependencies.agent) return { request, reused: false, attempt: null, evaluation: null, unavailable: {
+    const agent = dependencies.selectAgent ? await dependencies.selectAgent(request) : dependencies.agent;
+    if (!agent) return { request, reused: false, attempt: null, evaluation: null, unavailable: {
       kind: 'configuration-unavailable', code: 'investigator-not-configured', diagnostic: 'Investigation is disabled. See docs/hosted-investigation.md for intentional hosted enablement and credential setup.',
     } };
-    const execution = await investigate({ session, request, evidence, history, usage, agent: dependencies.agent, check, signal,
+    const execution = await investigate({ session, request, evidence, history, usage, agent, check, signal,
       ...(dependencies.bounds ? { bounds: dependencies.bounds } : {}),
       onReport: dependencies.onReport, onProgress: dependencies.onProgress });
     if (signal.aborted) throw signal.reason;

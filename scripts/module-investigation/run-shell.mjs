@@ -9,6 +9,7 @@ import { verifyConfiguration } from './verify-configuration.mjs';
 import { runCli } from '../../_build/src/lib/cli.js';
 import { chatGPTInvestigator } from '../../_build/src/lib/investigation/openai/adapter.js';
 import { productionChatGPTCredentials } from '../../_build/src/lib/investigation/openai/auth-command.js';
+import { injectedSetup } from './injected-setup.mjs';
 import { requestBudget } from './request-budget.mjs';
 
 export async function runAssessment(spec, dependencies = {}) {
@@ -49,9 +50,23 @@ try {
         usage: exchange.response?.usage ?? null, failure: exchange.failure?.code ?? null });
     },
   });
+  let setup;
+  if (spec.setup) {
+    const recipe = JSON.parse(readFileSync(spec.setup, 'utf8'));
+    save('setup.json', JSON.stringify(recipe, null, 2) + '\n');
+    setup = injectedSetup(recipe, exchange => append('setup-exchanges.jsonl', JSON.stringify(exchange) + '\n'));
+  }
+  let injected = false;
   exit = await (dependencies.runCli ?? runCli)(['shell', '--project', spec.project, ...(spec.json ? ['--json'] : [])], {
     cwd: process.cwd(), checkout: process.cwd(), input,
     configureInvestigator: async () => ({ kind: 'ready', agent }),
+    ...(setup ? { selectInvestigator: request => {
+      if (!injected) {
+        if (request.operation !== 'functionality') throw new Error('Controlled setup must begin with functionality');
+        injected = true; return setup;
+      }
+      return agent;
+    } } : {}),
     ...(spec.bounds ? { investigationBounds: spec.bounds } : {}),
     stdout: text => { append('stdout.txt', text); if (text.endsWith('postcode> ')) { ready = true; process.stdout.write('READY\n'); send(); } },
     stderr: text => { append('stderr.txt', text); },

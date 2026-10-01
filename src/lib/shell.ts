@@ -15,7 +15,7 @@ export async function runShell(options: { configPath: string; json: boolean }, e
   const destination = path.resolve(environment.checkout, '_observations');
   const localSink = localFileObservationSink(destination, options.configPath);
   const sink = environment.sink ?? localSink;
-  const remote = interactiveSession({ configPath: options.configPath, excludedOutputDirectories: [destination, path.resolve(environment.checkout, '_build')] }, { ...(environment.investigator ? { investigator: environment.investigator } : {}), ...(environment.investigationBounds ? { investigationBounds: environment.investigationBounds } : {}) });
+  const remote = interactiveSession({ configPath: options.configPath, excludedOutputDirectories: [destination, path.resolve(environment.checkout, '_build')] }, { ...(environment.selectInvestigator ? { selectInvestigator: environment.selectInvestigator } : {}), ...(environment.investigator ? { investigator: environment.investigator } : {}), ...(environment.investigationBounds ? { investigationBounds: environment.investigationBounds } : {}) });
   let busy = true;
   let inputClosed = false;
   let readline: ReturnType<typeof createInterface> | undefined;

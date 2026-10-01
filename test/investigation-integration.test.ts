@@ -1,3 +1,4 @@
+import { InvestigatorReferences } from '../src/lib/investigation/openai/references.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import type { TestContext } from 'node:test';
@@ -515,4 +516,161 @@ for (const format of ['json', 'unicode'] as const) test(`CLI seals authoritative
     if (format === 'json') assert.deepEqual(JSON.parse(rendered).usage, observed);
     else { assert.match(rendered, /Session reported usage: 3 calls; 1 unknown; 0 anomalous/); assert.match(rendered, /input 40 tokens/); }
   }
+});
+
+for (const format of ['json', 'unicode'] as const) test(`progressive worker lenses navigate retained context, correct originals and preserve per-evaluation origin (${format})`, async t => {
+  const f = fixture(t), input = Object.assign(new PassThrough(), { isTTY: true });
+  let initial!: InvestigationView, last: InvestigationView, module: RecordId, rootReference = '', childReference = '', followupReference = '';
+  const scripted = summaryAgent();
+  let listingOnly: RecordId[] = [];
+  const followup = new ScriptedInvestigator([
+    item => {
+      const prior = item.responses[0]; assert.ok(prior && 'accounts' in prior);
+      assert.equal(prior.accounts[0]!.id, item.request.subject);
+      assert.equal(prior.accounts[0]!.provenance.agent.origin, item.request.operation === 'decomposition' ? 'scripted' : 'hosted');
+      module = prior.accounts[0]!.originatingModule;
+      return { kind: 'tools', requests: [{ kind: 'investigations', subject: module }, { kind: 'source', subject: module }] };
+    }, item => {
+      const listing = item.responses[0]; assert.ok(listing && 'accounts' in listing && listing.listing);
+      assert.equal(listing.accounts.length, 0, 'listing handles do not disclose content');
+      listingOnly = [...listing.listing.selected];
+      if (item.request.operation === 'examination') return { kind: 'tools', requests: [{ kind: 'investigram', subject: listing.listing.selected[0]! }] };
+      return { kind: 'submit', result: { ...draft(module), prose: item.request.operation === 'decomposition' ? 'Two overlapping views of the selected behavior.' : 'No useful additional detail established.',
+        qualifications: ['These aspects overlap and are not exhaustive.'], children: item.request.operation === 'decomposition' ? [draft(module, [], 'part')] : [] } };
+    }, item => {
+      const context = item.responses[0]; assert.ok(context && 'accounts' in context);
+      assert.equal(context.accounts[0]!.id, initial.accounts[0]!.id);
+      return { kind: 'submit', result: { ...draft(module), prose: 'A more precise account accompanies this examination.', corrections: [{ target: context.accounts[0]!.id,
+        correctedSubjects: [module], reason: 'The earlier wording lacked numeric precision.', qualifications: ['Controlled correction exercise.'], evidence: [context.accounts[0]!.id],
+        replacement: { ...draft(module, [], 'replacement'), prose: 'Returns the number seven.' } }] } };
+    },
+  ]);
+  const liveDouble: InvestigatorAgent = { identity: { ...followup.identity, provider: 'offline-follow-up-double', origin: 'hosted' }, open: () => followup.open() };
+  const selectedOperations: string[] = [], batches: ObservationBatch[] = [];
+  let started = false, output = '';
+  const driver = interactionDriver(() => input.end());
+  const code = await runCli(['shell', '--project', f.configPath, ...(format === 'json' ? ['--json'] : [])], {
+    cwd: f.root, checkout: f.root, input, investigator: liveDouble,
+    selectInvestigator: request => { selectedOperations.push(request.operation); return request.operation === 'functionality' ? scripted : liveDouble; },
+    stdout: text => { output += text; if (!started && text.includes('postcode> ')) { started = true; setImmediate(() => input.write('summarize entry\n')); } }, stderr: () => {},
+    sink: { async submit(batch) {
+      batches.push(batch); driver.run(() => {
+        const observedView = batch.records.find(item => item.kind === 'qualified-view');
+        assert.ok(observedView, JSON.stringify(batch));
+        const data = observedView.value as InvestigationView;
+        const ref = (id: RecordId) => data.references.find(item => item.id === id)!.reference;
+        switch (batches.length) {
+          case 1: initial = data; module = data.selected[0]!; rootReference = ref(data.accounts[0]!.id); childReference = ref(data.accounts[1]!.id); input.write(`decompose @${childReference}\n`); break;
+          case 2:
+            assert.equal(data.result!.request.operation, 'decomposition');
+            assert.equal(data.provenance[0]!.request.subject, initial.accounts[1]!.id);
+            assert.equal(data.provenance[0]!.citations.includes(initial.accounts[0]!.id), false, 'association availability is not exposure');
+            assert.ok(listingOnly.includes(initial.accounts[0]!.id));
+            followupReference = ref(data.accounts[1]!.id); input.write(`explain @${followupReference}\n`); break;
+          case 3: input.write(`examine @${ref(data.accounts[0]!.id)}\n`); break;
+          case 4:
+            last = data; assert.equal(data.corrections.length, 1);
+            assert.ok(data.provenance[0]!.completeTargets.includes(initial.accounts[0]!.id));
+            input.write(`examine @${ref(data.selected[0]!)}\n`); break;
+          case 5: assert.equal(data.result!.reused, true); assert.deepEqual(data.accounts, last.accounts); input.write(`inspect @${rootReference} --source-detail\n`); break;
+          case 6:
+            assert.deepEqual(data.accounts, initial.accounts); assert.equal(data.corrections.length, 1);
+            assert.ok(data.sourceDetail!.items.length); input.write('inspect entry\n'); break;
+          case 7: {
+            const listing = (data as unknown as { investigations: import('../src/lib/investigation/associations.js').AssociatedInvestigations }).investigations;
+            assert.ok(listing.items.some(item => item.id === initial.accounts[0]!.id));
+            assert.ok(listing.items.some(item => item.detail!.associations.some(item => item.role === 'corrected-subject')));
+            input.write('usage\n'); break;
+          }
+          default: input.end();
+        }
+      }); return { accepted: true };
+    } },
+  });
+  driver.verify(); assert.equal(code, 0);
+  assert.deepEqual(selectedOperations, ['functionality', 'decomposition', 'clarification', 'examination']);
+  assert.equal(scripted.closes, 1); assert.equal(followup.closes, 3);
+  for (const dialogue of followup.inputs) {
+    const refs = new InvestigatorReferences();
+    for (const item of dialogue) assert.equal(JSON.stringify(refs.encode(item)).includes(initial.projection.session), false, 'real context and association listings cannot leak canonical references');
+    refs.close();
+  }
+  assert.equal(batches.length, 8);
+  assert.ok(batches.every((batch, index) => index === 5 || !batch.events.some(item => item.type === 'source-escape')));
+  assert.match(output, format === 'unicode' ? /Investigation subject: .*provenance, not composition/ : /"navigation"/);
+  const usages = batches.at(-1)!.records.find(item => item.kind === 'investigation-usage')!.value as InvestigationUsageReport;
+  assert.deepEqual(usages.attempts.map(item => item.agent.origin), ['scripted', 'hosted', 'hosted', 'hosted']);
+});
+
+test('associated inspection is bounded, navigable and independent of incidental module context', async t => {
+  const agent = new ScriptedInvestigator([item => ({ kind: 'submit', result: { ...draft(item.request.subject),
+    children: Array.from({ length: 30 }, (_, i) => ({ ...draft(item.request.subject, [], `part-${i}`),
+      associations: [{ subject: item.request.subject, qualifications: ['Explicitly described.'], evidence: [] }] })) } })]);
+  const f = await session(t, agent);
+  const before = await f.session.execute({ ...summary, lens: 'inspect' });
+  assert.equal('investigations' in before.view && before.view.investigations?.total, 0);
+  const original = JSON.stringify(before.view);
+  const generated = view(await f.session.execute(summary));
+  const first = await f.session.execute({ ...summary, lens: 'inspect' });
+  assert.ok('investigations' in first.view && first.view.investigations);
+  assert.equal(first.view.investigations.total, 31); assert.equal(first.view.investigations.items.length, 24);
+  const second = await f.session.execute({ ...summary, lens: 'inspect', after: first.view.investigations.next! });
+  assert.ok('investigations' in second.view && second.view.investigations);
+  assert.equal(second.view.investigations.items.length, 7); assert.equal(second.view.investigations.next, null);
+  assert.equal(new Set([...first.view.investigations.items, ...second.view.investigations.items].map(item => item.id)).size, 31);
+  assert.equal(JSON.stringify(before.view), original); assert.notEqual(before.view.projection.id, first.view.projection.id);
+  assert.equal(agent.inputs.length, 1);
+  for (const lens of ['explain', 'decompose', 'examine'] as const) {
+    const unsupported = view(await f.session.execute({ ...summary, lens, reference: true, selector: generated.candidates[0]!.reference }));
+    assert.equal(unsupported.projection.selection.status, 'unsupported-subject-lens');
+    const missing = view(await f.session.execute({ ...summary, lens, reference: true, selector: 'investigram-00000000' }));
+    assert.equal(missing.projection.selection.status, 'missing');
+  }
+  assert.equal(agent.inputs.length, 1);
+});
+
+test('all follow-up lenses consume each other and retain candid empty decomposition outcomes', async t => {
+  const agent = new ScriptedInvestigator([item => {
+    const prior = item.responses[0];
+    const module = prior && 'accounts' in prior ? prior.accounts[0]!.originatingModule : item.request.subject;
+    return { kind: 'submit', result: { ...draft(module), prose: 'No useful finer decomposition or additional finding established.' } };
+  }]);
+  const f = await session(t, agent);
+  let current = view(await f.session.execute(summary));
+  for (const first of ['explain', 'decompose', 'examine'] as const) for (const next of ['explain', 'decompose', 'examine'] as const) {
+    for (const lens of [first, next]) {
+      const subject = current.accounts[0]!;
+      const selector = current.references.find(item => item.id === subject.id)!.reference;
+      const request = { ...summary, lens, selector, reference: true };
+      current = view(await f.session.execute(request));
+      assert.equal(current.accounts.length, 1); assert.equal(current.provenance[0]!.request.subject, subject.id);
+      assert.deepEqual(subject.children, []);
+      const repeated = view(await f.session.execute(request));
+      assert.equal(repeated.result!.reused, true); assert.deepEqual(repeated.accounts, current.accounts);
+    }
+  }
+  assert.equal(agent.inputs.length, 19);
+});
+
+test('association discovery alone cannot authorize correcting an undelivered account', async t => {
+  let module: RecordId;
+  const followup = new ScriptedInvestigator([
+    item => {
+      const prior = item.responses[0]; assert.ok(prior && 'accounts' in prior); module = prior.accounts[0]!.originatingModule;
+      return { kind: 'tools', requests: [{ kind: 'investigations', subject: module }] };
+    }, item => {
+      const listed = item.responses[0]; assert.ok(listed && 'accounts' in listed && listed.listing);
+      return { kind: 'submit', result: { ...draft(module), corrections: [{ target: listed.listing.selected[0]!, correctedSubjects: [module],
+        reason: 'Attempted without target content.', qualifications: ['Unverified.'], evidence: [], replacement: draft(module, [], 'replacement') }] } };
+    },
+  ]);
+  let count = 0;
+  const initialAgent = summaryAgent();
+  const f = await session(t, { identity: initialAgent.identity, open: () => ++count === 1 ? initialAgent.open() : followup.open() });
+  const initial = view(await f.session.execute(summary));
+  const selector = initial.references.find(item => item.id === initial.accounts[1]!.id)!.reference;
+  const result = view(await f.session.execute({ ...summary, lens: 'examine', selector, reference: true }));
+  assert.equal(result.result!.evaluation!.outcome.kind, 'investigation-failure');
+  assert.equal(result.accounts.length, 0);
+  assert.deepEqual(view(await f.session.execute(summary)).accounts, initial.accounts);
 });

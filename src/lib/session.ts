@@ -1,3 +1,4 @@
+import { associatedView, withAssociatedInvestigations } from './investigation/associations.js';
 import { methods } from './identity.js';
 import { investigationEvaluation } from './investigation/evaluation.js';
 import type { InvestigationDependencies } from './investigation/evaluation.js';
@@ -32,8 +33,9 @@ import type { ProjectOptions } from './typescript/project.js';
 export { AnalysisFailure, SessionInvalidated } from './execution-errors.js';
 
 export interface ViewRequest {
-  readonly lens: 'modules' | 'inspect' | 'organization' | 'dependencies' | 'children' | 'parents' | 'summarize' | 'usage';
+  readonly lens: 'modules' | 'inspect' | 'organization' | 'dependencies' | 'children' | 'parents' | 'summarize' | 'explain' | 'decompose' | 'examine' | 'usage';
   readonly selector: string | null;
+  readonly after?: string;
   readonly referenceLifetime?: 'session' | 'command';
   readonly reference?: boolean;
   readonly subject?: 'project' | 'repository';
@@ -137,12 +139,15 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
   integration: ReturnType<typeof investigationEvaluation>, usage: () => ReturnType<typeof usageSummary>) {
   return async (request: ViewRequest) => {
     const { lens, selector, presentation } = request;
+    const operation = { summarize: 'functionality', explain: 'clarification', decompose: 'decomposition', examine: 'examination' } as const;
+    const investigationLens = lens in operation ? lens as keyof typeof operation : null;
+    const followup = investigationLens !== null && lens !== 'summarize';
     const interpretationInspection = lens === 'inspect' && request.reference && selector?.startsWith('investigram-');
     const investigram = request.reference && selector?.startsWith('investigram-')
       ? [...store.entityIds(store.investigations(session).flatMap(item => item.investigrams), 'investigram')]
         .find(([, reference]) => reference === selector)?.[0] : undefined;
-    const unsupportedSubject = investigram && (lens === 'children' || lens === 'parents' || lens === 'summarize') ? 'investigram' as const : undefined;
-    if (lens === 'summarize' || lens === 'usage' || interpretationInspection || unsupportedSubject) {
+    let unsupportedSubject: 'investigram' | 'program-subject' | undefined = investigram && (lens === 'children' || lens === 'parents' || lens === 'summarize') ? 'investigram' as const : undefined;
+    if (investigationLens || lens === 'usage' || interpretationInspection || unsupportedSubject) {
       const basis = evaluateModules(store, analysis);
       let selected: RecordId[] = [];
       if (unsupportedSubject) selected = [investigram!];
@@ -154,19 +159,24 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
           return request.reference ? references.get(id) === selector : claim?.kind === 'claim' && claim.information.type === 'module'
             && (claim.information.name === selector || claim.information.handle === selector);
         });
-      } else if (interpretationInspection) {
+      } else if (interpretationInspection || followup) {
         const ids = store.investigations(session).flatMap(item => item.investigrams);
-        selected = [...store.entityIds(ids, 'investigram')].filter(([, reference]) => reference === selector).map(([id]) => id);
+        selected = request.reference ? [...store.entityIds(ids, 'investigram')].filter(([, reference]) => reference === selector).map(([id]) => id) : [];
+        if (followup && request.reference && !selected.length) {
+          const organization = evaluateOrganization(store, basis, organizationPresentationRequirements.groups);
+          const known = [...store.entityIds(basis.modules, 'module'), ...store.entityIds(organization.groups, 'group')].find(([, reference]) => reference === selector);
+          if (known) { selected = [known[0]]; unsupportedSubject = 'program-subject'; }
+        }
       }
-      const result = !unsupportedSubject && lens === 'summarize' && selected.length === 1
-        ? await integration.evaluate({ operation: 'functionality', subject: selected[0]!, parameters: {} }) : null;
-      const view = createInvestigationView(store, session, { ...request, ...(unsupportedSubject ? { unsupportedSubject } : {}), lens: lens as 'summarize' | 'inspect' | 'usage' | 'children' | 'parents' }, selected, result, usage());
+      const result = !unsupportedSubject && investigationLens && selected.length === 1
+        ? await integration.evaluate({ operation: operation[investigationLens], subject: selected[0]!, parameters: {} }) : null;
+      const view = createInvestigationView(store, session, { ...request, ...(unsupportedSubject ? { unsupportedSubject } : {}), lens: lens as 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'usage' | 'children' | 'parents' }, selected, result, usage());
       const context = store.get(session);
       if (context.kind !== 'session') throw new Error('Expected session');
       const repository = context.repository ? store.get(context.repository) : null;
       return { view, rendered: renderInvestigationView(view), repositoryRoot: repository?.kind === 'repository-evidence' && repository.capture.status === 'available' ? repository.capture.evidence.root : null,
         methods: [...context.methods, methods.investigationEvaluation, methods.investigationPresentation],
-        failed: !!unsupportedSubject || lens === 'summarize' && (selected.length !== 1 || !result?.evaluation || result.evaluation.outcome.kind !== 'accepted') || !!interpretationInspection && selected.length !== 1 };
+        failed: !!unsupportedSubject || !!investigationLens && (selected.length !== 1 || !result?.evaluation || result.evaluation.outcome.kind !== 'accepted') || !!interpretationInspection && selected.length !== 1 || view.investigations?.status === 'unknown-continuation' };
     }
     const dependencyLens = ['dependencies', 'children', 'parents'].includes(lens);
     // Provider/evaluation reuse owns input-basis validity; an outer cache could hide new acquisition.
@@ -187,16 +197,19 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
       ? store.get(projection.moduleProjection) as ProjectionRecord : null;
     const moduleOnly = projection.kind === 'organization-projection' && projection.lens === 'inspect' && projection.groups.length === 0
       && moduleProjection !== null && (moduleProjection.modules.length > 0 || organizationOutcome!.groups.length === 0);
-    const view = projection.kind === 'dependency-projection' ? createDependencyView(store, projection, presentation)
+    const mechanicalView = projection.kind === 'dependency-projection' ? createDependencyView(store, projection, presentation)
       : projection.kind === 'projection' ? createView(store, projection, presentation)
       : moduleOnly ? createView(store, moduleProjection!, presentation)
       : createOrganizationView(store, projection, presentation);
+    const inspectedSubjects = projection.kind === 'organization-projection' ? [...projection.groups, ...(moduleProjection?.modules ?? [])] : projection.kind === 'projection' ? projection.modules : [];
+    const view = lens === 'inspect' ? withAssociatedInvestigations(mechanicalView, associatedView(store, session, inspectedSubjects, request.after, request.referenceLifetime)) : mechanicalView;
     const rendered = view.schema === 'postcode-dependency-view/1-experimental' ? renderDependencyView(view)
       : view.schema === 'postcode-view/1-experimental' ? renderView(view) : renderOrganizationView(view);
     const context = store.get(projection.session);
     if (context.kind !== 'session') throw new Error('Expected analysis session');
     const captured = context.repository ? store.get(context.repository) : null;
     const repositoryRoot = captured?.kind === 'repository-evidence' && captured.capture.status === 'available' ? captured.capture.evidence.root : null;
-    return { view, rendered, repositoryRoot, methods: context.methods };
+    return { view, rendered, repositoryRoot, methods: lens === 'inspect' ? [...context.methods, methods.investigationPresentation] : context.methods,
+      ...('investigations' in view && view.investigations?.status === 'unknown-continuation' ? { failed: true } : {}) };
   };
 }

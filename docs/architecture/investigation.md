@@ -1,11 +1,10 @@
 # Investigation execution
 
 This describes the implemented portion of [module investigation](../plans/module-investigation.md),
-including the hosted summary adapter. The domain boundary, session retention and
-summary/inspection CLI paths are exercised through a deterministic agent double
-and the real SDK with offline provider responses. Live verification remains pending
-human credential setup. Public follow-up lenses and correction-aware
-replacement selection remain later milestones. The governing contracts are
+including the hosted adapter and progressive shell lenses. The domain boundary, session retention and
+summary/follow-up/inspection CLI paths are exercised through a deterministic agent double
+and the real SDK with offline provider responses. Summary assessments are retained in the milestone-3 validation records.
+Correction-aware human replacement selection remains milestone 5 work. The governing contracts are
 [investigator execution](../decisions/investigator-execution-and-evidence-access.md),
 [investigrams](../decisions/investigrams-and-progressive-investigation.md), and
 [operations and lenses](../decisions/investigation-operations-and-lenses.md).
@@ -264,9 +263,8 @@ Investigram bindings use the existing append-only session allocator with a disti
 `investigram-` prefix. Originals, composition children and replacements remain
 addressable; views show originals and explicit correction links at this checkpoint.
 Correction-aware replacement selection and reconsideration display are milestone 5
-work. Broader subject-associated discovery and public follow-up lenses remain later
-work. The internal session evaluation entry point already supports successive
-operations and correction-aware investigator context over earlier retained results.
+work. Public follow-up lenses and associated discovery use the same evaluation
+and correction-aware investigator context over earlier retained results.
 
 The experimental investigation view includes selected operation/outcome and reuse,
 immutable accounts, corrections, generating provenance, evidence exposure, stable
@@ -413,7 +411,7 @@ remote computation, allowance use or charges have stopped.
 
 Under the accepted [reference transport decision](../decisions/investigator-reference-transport.md),
 both hosted transports use a private per-dialogue reference table
-(`postcode/investigator-references@1`, adapter versions `@5`). Canonical domain
+(`postcode/investigator-references@2`, adapter versions `@6`). Canonical domain
 IDs, public Entity bindings, worker messages and retained records are unchanged.
 The model receives short exact handles with a random dialogue namespace and an
 append-only ordinal. A fresh dialogue gets a fresh table; close releases it.
@@ -506,3 +504,52 @@ not prescribe exhaustive reading or supply assessment answers.
 
 The human presentation no longer advertises correction links in a generic
 milestone footer when a view may contain no correction or interpretation.
+
+## Progressive shell navigation
+
+The shell maps `explain`, `decompose` and `examine` to clarification,
+decomposition and examination requirements on exact investigram references.
+Missing or unsupported subjects do not start a dialogue. The same operation
+retention and failure policy applies as for functionality; formatting, additional
+context and repeated commands do not change request identity. Each new result
+has a separate root. Inspection and rendering do not invoke an investigator.
+
+Result views distinguish fixed composition from the generating investigation's
+selected subject. Inspection exposes the composition parent and precise
+provenance subject as navigation references; inspecting a linked child or earlier
+subject reaches its original account. Evidence support keeps its original
+qualification and source-detail disclosure remains explicitly requested. At this
+milestone, displayed trees remain originals, with explicit correction links;
+replacement substitution and derived revision warnings are not yet presented.
+
+Subject inspection adds a history-dependent section selected only through
+explicit qualified associations, including the investigation-subject and
+corrected-subject roles. Incidental mentions, referents and originating module
+context do not create associations. This section does not change mechanical
+information or turn interpretation into an intrinsic subject property. The
+inspection projection identifies both its mechanical basis and retained listing.
+Pages contain at most 24 accounts, 400 prose code units each and 55,000 code units
+of detail with complete qualification. An oversized qualified entry keeps its
+selectable reference and an explicit omission. `--after` continues in append-only
+retention order; newly retained accounts may appear on subsequent inspection.
+An invalid continuation is explicit. Direct investigram inspection lists later
+results explicitly associated with it, so reverse provenance is also navigable.
+
+Investigators use `investigations(subject)` to obtain up to 24 associated account
+references and a continuation, then `investigram(reference)` to acquire content,
+provenance, composition links, evidence and correction context. Bare listing
+references never create citations or correction eligibility. Actual account
+retrieval uses the existing delivery ledger and bounds. Typed reference transport
+maps listing subjects, selected accounts and continuations structurally; listing
+availability cannot confer evidence exposure.
+
+A private assessment dependency selects the communication participant only after
+evaluation determines that work is missing. In CLI execution the worker requests
+an identity from the parent for that evaluation; credentials and agent instances
+remain in the parent. The selected identity follows provenance, observations and
+both usage ledgers. Ordinary configured operation uses its single explicit route.
+The controlled fixture injects its earlier account through ordinary submission
+and retention, then selects the live participant for later evaluations. It is
+marked scripted in user-facing views and contributes only explicitly synthetic
+setup accounting, with no provider request. This is not a public configuration
+option or a billing fallback.
