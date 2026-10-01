@@ -1490,3 +1490,75 @@ The human accepted milestone 4 after the recorded review corrections and complet
 452-test offline verification. The milestone-4 review gate is satisfied. The
 controlled-case limitation and authorized refinement of one milestone-5 assessment
 remain as recorded. The task remains active; milestone 5 has not begun.
+
+### Milestone 5 implemented and assessed — 2026-10-02
+
+Human authorization was recorded before work in `1d74cb4`. Production commit
+`9eb0b7d` implements derived correction selection across every reachable branch,
+persistent conflict disclosure and citation-based reconsideration with per-cause,
+whole-evaluation and complete-context exemptions. Redisplay selects replacements
+and their own composition; exact inspection and follow-up subjects preserve originals.
+Current revision facets affect projection identity. Bounded human/investigator pages
+preserve omissions, qualification and reporter citation without treating handle
+availability as evidence exposure. Structural transport and canonical character
+guards remain in force. Architecture, CLI, hosted guidance and status describe the
+implemented behavior; presentation concerns enrich the existing UI backlog.
+
+The complete suite at clean, stationary `9eb0b7d` passed **462 tests**, zero failures,
+cancellations or skips, 158.895 seconds (170.501 including build/monitor). Maximum
+monitor gap was 1.057 seconds, none over two seconds, with idle-sleep prevention.
+Five focused harness tests and two no-network real CLI/worker setup dry runs passed.
+Historical cancellation uncertainty remains; this suite is evidence for the current
+revision, not a retrospective diagnosis of every previous failure.
+
+`e54a4c3` froze the integrated protocol, source pins, instructions, implementation
+hashes, source-grounded references and two controlled setup recipes before live
+inference. The refined eight-line numeric fixture has interface-only documentation,
+plausible mistaken accounts without an artificial unverified cue, and truthful
+scripted-origin attribution. The milestone-4 fixture and pass-04 results are unchanged.
+No runtime or frozen input was tuned during this pass. `a5f6032` preserves the live
+captures, audits, sixteen fresh formative role inputs/outputs and qualified report.
+
+All five shells completed their planned attempts under fixed **gpt-5.6-sol / medium /
+ChatGPT-plan**, TypeScript **6.0.3**, original upstream pins and the exact approved
+merge-anything override. Postflight checks passed. Nineteen hosted attempts comprise
+17 scheduled evaluations and two explicit protocol-authorized overload recoveries:
+**15 accepted, three communication failures, one rejected submission**. Merge-anything
+decomposition remains incomplete after its one recovery allowance was used for the
+summary. Refined-case examination of Y cited a correction ID as evidence instead
+of the reporting investigram and was rejected as a whole, without repair or retry.
+These limits qualify live validation; successful individual steps are not a fully
+passing sequence.
+
+The refined case's first live examination corrects A from source, preserving old
+composition while replacement redisplay uses its own composition; direct Y and
+transitive Z warnings remain. The phrase “need not represent” in Z allowed an
+unintended warning interpretation, limiting discrimination; no fixture tuning followed.
+In the separate conflict case, a live correction to older B makes its newest
+descendant primary across branches without clearing alternatives or old warnings.
+The cases do not measure spontaneous error detection or natural model disagreement.
+Upstream follow-ups add useful distinctions but preserve semantic omissions,
+uncertainty beyond frozen references and dense output. Source-detail mapping without
+a checkable excerpt remains a recorded presentation limitation. Shared model family,
+reference authorship/orchestration and Cockatiel selection informed by assessment
+feedback limit independence. Formative agents are not implementation reviewers.
+
+Audits reconcile **73 provider requests / 1,683,241 known reported tokens**, three
+missing provider reports and no anomalous provider reports. Eight scripted setup
+evaluations have ten empty synthetic reports, explicitly anomalous and excluded
+from trusted provider totals. Actual monetary and allowance-versus-credit attribution
+are unknown; evaluator/assessor/preparer usage is separately unknown. No new diagnostic,
+model/route fallback, purchase, spending-setting change or reauthorization occurred.
+Diagnostic allowance remains **two used / eight remaining**.
+
+All 718 typed reference fields resolve exactly, actual wire exposure matches canonical
+ledgers, and usage views/observations agree. An independent reconstruction checks
+immutable history, all-branch primary selection, conflicts and per-cause propagation,
+plus ten retained repeats and 27 inspections with no calls. JSON, local links and a
+supplementary credential-pattern scan passed; its plain-text authorization-note
+false positive is disclosed. Exact captures preserve 174 whitespace warnings;
+authored code and descriptive documents have none.
+
+Milestone 5 is ready for human-arranged independent review, with adequacy of the
+qualified live evidence explicitly left for review. The task remains active.
+Milestone-5 acceptance and the subsequent final integrated review are still pending.
