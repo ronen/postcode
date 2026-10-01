@@ -1,0 +1,15 @@
+import { spawn, execFileSync } from 'node:child_process';
+import { openSync, closeSync, writeFileSync } from 'node:fs';
+import { performance } from 'node:perf_hooks';
+const label=process.argv[2];
+if(!/^[a-z0-9-]+$/.test(label)) throw new Error('Expected diagnostic label');
+const prefix=`_investigation/${label}`;
+const git=(...args)=>execFileSync('git',args,{encoding:'utf8'}).trim();
+const before={head:git('rev-parse','HEAD'),status:git('status','--porcelain'),node:process.version,startedAt:new Date().toISOString()};
+const log=openSync(`${prefix}.tap.txt`,'wx');
+let last=performance.now(),maxTickGap=0,ticks=0;
+const gaps=[];
+const timer=setInterval(()=>{const now=performance.now(),gap=now-last;last=now;ticks++;maxTickGap=Math.max(maxTickGap,gap);if(gap>2000)gaps.push({at:new Date().toISOString(),gapMilliseconds:gap});},1000);
+const child=spawn('/usr/bin/caffeinate',['-i','npm','test'],{stdio:['ignore',log,log]});
+child.on('error',err=>{clearInterval(timer);closeSync(log);throw err;});
+child.on('close',(code,signal)=>{clearInterval(timer);closeSync(log);const result={...before,endedAt:new Date().toISOString(),command:'/usr/bin/caffeinate -i npm test',code,signal,ticks,maxTickGapMilliseconds:maxTickGap,gaps,statusAfter:git('status','--porcelain'),headAfter:git('rev-parse','HEAD')};writeFileSync(`${prefix}.timing.json`,JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));process.exitCode=code??1;});

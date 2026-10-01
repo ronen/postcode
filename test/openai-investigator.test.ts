@@ -51,6 +51,14 @@ test('real SDK transports a fresh bounded dialogue with only PostCode functions 
   const fresh = agent.open();
   await fresh.exchange(input, signal, () => {}); fresh.close();
   assert.deepEqual(sent[0], sent[2], 'new operation must not inherit prior history');
+  const submissionSchema = sent[0]!.tools[1].parameters;
+  for (const schema of [submissionSchema, submissionSchema.$defs.investigram]) {
+    const targets = schema.properties.inconsistencies.items.properties.targets;
+    assert.match(targets.description, /One or more exact references/);
+    assert.match(targets.description, /earlier investigrams in this session/);
+    assert.match(targets.description, /documentation-versus-implementation discrepancies in attributed prose/);
+    assert.match(schema.properties.evidence.description, /context actually supplied/);
+  }
   assert.equal(sent[0]!.model, 'gpt-6-sol');
   assert.deepEqual(sent[0]!.reasoning, { effort: 'medium' });
   assert.equal(sent[0]!.store, false); assert.equal(sent[0]!.service_tier, 'default');

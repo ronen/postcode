@@ -1,7 +1,7 @@
 import type { FunctionTool } from 'openai/resources/responses/responses.js';
 
 const strings = { type: 'array', items: { type: 'string' } };
-const support = { qualifications: strings, evidence: strings };
+const support = { qualifications: strings, evidence: { ...strings, description: 'Exact references to context actually supplied; a bare support reference alone does not grant evidence eligibility.' } };
 const node = { $ref: '#/$defs/investigram' };
 const account = {
   type: 'object', additionalProperties: false,
@@ -14,7 +14,7 @@ const account = {
     corrections: { type: 'array', items: { type: 'object', additionalProperties: false,
       properties: { target: { type: 'string' }, correctedSubjects: strings, reason: { type: 'string' }, ...support, replacement: node },
       required: ['target', 'correctedSubjects', 'reason', 'qualifications', 'evidence', 'replacement'] } },
-    inconsistencies: { type: 'array', items: { type: 'object', additionalProperties: false, properties: { targets: strings, reason: { type: 'string' }, ...support }, required: ['targets', 'reason', 'qualifications', 'evidence'] } },
+    inconsistencies: { type: 'array', items: { type: 'object', additionalProperties: false, properties: { targets: { ...strings, description: 'One or more exact references to earlier investigrams in this session, never program subjects or source records. Describe documentation-versus-implementation discrepancies in attributed prose and qualifications instead.' }, reason: { type: 'string' }, ...support }, required: ['targets', 'reason', 'qualifications', 'evidence'] } },
   },
   required: ['localId', 'prose', 'referent', 'qualifications', 'evidence', 'associations', 'children', 'corrections', 'inconsistencies'],
 };
@@ -36,7 +36,7 @@ export const investigatorFunctions: FunctionTool[] = [
   },
   {
     type: 'function', name: 'submit_investigram', strict: true,
-    description: 'Submit the complete root interpretation for atomic PostCode validation. Follow the investigation instructions; schema conformance does not establish valid references or truth.',
+    description: 'Submit the complete root interpretation for atomic PostCode validation. Copy supplied references exactly, including their kind; do not abbreviate or reconstruct them. Follow the investigation instructions; schema conformance does not establish valid references or truth.',
     parameters: { ...account, $defs: { investigram: account } },
   },
 ];

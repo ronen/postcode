@@ -131,12 +131,43 @@ live pass. It is a proposal only. The authorized reassessment is preserved even
 though no normal case produced an accepted account. The preceding accepted pass
 remains historical evidence, not proof that the new context caused these failures.
 
+## Authorized offline follow-up — 2026-10-01
+
+The human authorized contract clarification and bounded offline diagnosis in
+`f315bb8`. The [diagnosis and proposed remedy](../../validation/module-investigation/2026-10-01-offline-diagnosis.md)
+retain reproduction scripts, reference audits, offline parser replays and monitored
+suite evidence. No new provider request or credential access occurred.
+
+The existing inconsistency-target restriction is now explicit in operation
+instructions and both provider tool schemas, including nested accounts. Five
+new deterministic cases preserve attributed documentation/source discrepancies
+in prose, reject program-subject inconsistency targets and reject mistyped
+references without repair/retry. The focused 65-test run passed. This corrects
+the instruction gap but does not establish live reconciliation or close F1.
+
+The exact-input audit narrows the preliminary reference diagnoses: only one unique
+misspelling per upstream submission is absent from all supplied references.
+Other IDs previously absent from the delivered-record index were supplied as bare
+references. The three misspellings each omit two characters from a long canonical
+ID. Eight stub adapter replays preserve the drafts exactly, supporting their
+origin in received model output rather than transport mutation. A private short,
+exact model-facing binding scheme is proposed, with all domain/exposure validation
+preserved; implementation and another live pass require human approval.
+
+The prior failed suite overlaps 21 macOS sleep/wake events. Before product edits,
+the unchanged suite passed all 424 tests under temporary idle-sleep prevention,
+with no failures/cancellations, in 140.781 seconds; a timing monitor recorded no
+gap above two seconds. This supports a suspension-related explanation but does
+not prove every old failure's cause. The failed run remains preserved. No timeout,
+input-validation or ownership rule was changed. Final integrated verification of
+the contract clarification remains pending.
+
 ## Review rounds and gate
 
 Round 1 is preserved in `77b49e3`. No finding is rejected, and no uncertainty is
-silently converted to a model limitation. Human direction is also pending on
-bounded offline diagnosis and a controlled rerun of the new suite failures; no
-timeout or validation rule was weakened. The existing handoff remains the review
+silently converted to a model limitation. The authorized offline diagnosis and controlled rerun are recorded above; human
+direction remains pending on the consequential reference remedy and further live
+assessment. No timeout or validation rule was weakened. The existing handoff remains the review
 assignment; a new exact correction/reassessment target will be supplied for round 2.
 Independent re-review and human milestone acceptance remain required. Milestone 4
 has not begun; this task remains active.

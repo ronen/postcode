@@ -31,6 +31,14 @@ test('subscription transport uses streaming, namespace tools, completed response
   assert.equal((await dialogue.exchange(input, new AbortController().signal, item => reports.push(item))).kind, 'tools');
   const reply = await dialogue.exchange({ ...input, responses: [{ status: 'unavailable', records: [], selected: [], limitations: ['test'] }] }, new AbortController().signal, item => reports.push(item));
   assert.deepEqual(reply, { kind: 'submit', result: { prose: 'finished' } }); dialogue.close();
+  const submissionSchema = sent[0]!.tools[0].tools[1].parameters;
+  for (const schema of [submissionSchema, submissionSchema.$defs.investigram]) {
+    const targets = schema.properties.inconsistencies.items.properties.targets;
+    assert.match(targets.description, /One or more exact references/);
+    assert.match(targets.description, /earlier investigrams in this session/);
+    assert.match(targets.description, /documentation-versus-implementation discrepancies in attributed prose/);
+    assert.match(schema.properties.evidence.description, /context actually supplied/);
+  }
   assert.equal(sent[0]!.model, 'gpt-5.6-sol'); assert.equal(agent.identity.model, 'gpt-5.6-sol');
   assert.equal(sent[0]!.stream, true); assert.equal(sent[0]!.store, false); assert.equal(Array.isArray(sent[0]!.input), true);
   assert.equal(sent[0]!.tools[0].type, 'namespace'); assert.equal(sent[0]!.tools[0].name, 'postcode');

@@ -1,0 +1,53 @@
+{
+  "results": [
+    {
+      "case": "focused-entry-r2",
+      "route": "api-key",
+      "stubCalls": 1,
+      "submissionExactlyPreserved": true
+    },
+    {
+      "case": "focused-entry-r2",
+      "route": "chatgpt-plan",
+      "stubCalls": 1,
+      "submissionExactlyPreserved": true
+    },
+    {
+      "case": "cockatiel-r2",
+      "route": "api-key",
+      "stubCalls": 1,
+      "submissionExactlyPreserved": true
+    },
+    {
+      "case": "cockatiel-r2",
+      "route": "chatgpt-plan",
+      "stubCalls": 1,
+      "submissionExactlyPreserved": true
+    },
+    {
+      "case": "fsm-engine-r2",
+      "route": "api-key",
+      "stubCalls": 1,
+      "submissionExactlyPreserved": true
+    },
+    {
+      "case": "fsm-engine-r2",
+      "route": "chatgpt-plan",
+      "stubCalls": 1,
+      "submissionExactlyPreserved": true
+    },
+    {
+      "case": "merge-anything-r2",
+      "route": "api-key",
+      "stubCalls": 1,
+      "submissionExactlyPreserved": true
+    },
+    {
+      "case": "merge-anything-r2",
+      "route": "chatgpt-plan",
+      "stubCalls": 1,
+      "submissionExactlyPreserved": true
+    }
+  ],
+  "scope": "Offline stub response carrying the recorded submission arguments; terminal output is synthesized from retained finalized items. Verifies adapter parsing/redaction does not change the submitted references. Does not replay original wire streaming, domain lookup, inference, or semantics. No provider network or credentials used."
+}

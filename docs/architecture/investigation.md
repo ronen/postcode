@@ -182,7 +182,13 @@ composition ownership, and earlier correction targets. The structural backstop i
 investigram is marked interpretation by PostCode, regardless of prose confidence
 or mechanical citations. Each correction constructs a disjoint replacement tree;
 recursive corrections and conflicting alternatives are valid. Unresolved
-inconsistencies retain affected references and qualifications. Associations
+inconsistencies target earlier investigrams in the same session and retain their
+qualifications. Operation instructions and the provider tool schema make that
+restriction explicit: documentation-versus-implementation discrepancies belong in
+attributed prose and qualification with supplied support, not in structured
+inconsistencies targeting program subjects or source records. Reference copying
+remains exact; unknown or mistyped identities reject the unit without repair or
+inference retry. Associations
 distinguish explicit description, the investigation subject and corrected subjects.
 Each correction explicitly names distinct modules, symbols, groups or repository
 artifacts whose accounts it corrects. Claims, source evidence and content captures
