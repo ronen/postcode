@@ -66,3 +66,13 @@ authorized documentation reassessment: the three original subjects and focused
 entry, plus a one-call opaque control. A direct-documentation diagnostic is
 conditional on normal focused-entry acquisition still failing, and must retain
 its intervention and separate diagnostic accounting.
+
+
+Pass 03 is the separately authorized reference-transport reassessment: the same
+three upstream subjects and focused documentation fixture, once each. Its neutral
+128-request ceiling is four production call guards, not a target or diagnostic
+allowance. Captures include wire handles and a separate canonical binding/resolution
+audit. Use actual request records to establish content delivery; table membership
+alone grants no exposure. The frozen instructions include both domain and actual
+hosted instructions, and preflight verifies the built transport suffix as well.
+Earlier pass directories retain their original configuration and results.

@@ -1,0 +1,15 @@
+{
+  "head": "71949dd10c895bc3869849538389aee3f101e0c7",
+  "status": "",
+  "node": "v22.13.1",
+  "startedAt": "2026-10-01T13:52:45.272Z",
+  "endedAt": "2026-10-01T13:55:13.574Z",
+  "command": "/usr/bin/caffeinate -i npm test",
+  "code": 0,
+  "signal": null,
+  "ticks": 148,
+  "maxTickGapMilliseconds": 1002.6102510000001,
+  "gaps": [],
+  "statusAfter": "",
+  "headAfter": "71949dd10c895bc3869849538389aee3f101e0c7"
+}
