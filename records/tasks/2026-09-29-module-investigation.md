@@ -1047,3 +1047,87 @@ historical cancelled runs remain preserved and their universal cause remains
 unproven. The milestone-3 handoff must retain that distinction and the new live
 assessment limitations. The task remains active awaiting independent milestone-3
 review and human acceptance. Milestone 4 has not begun.
+
+### Milestone 3 round 1 corrections and bounded reassessment — 2026-10-01
+
+The human's review instruction was recorded in `a64f160`; the clarified F1 notes
+and one-call control approval were preserved verbatim before acting in `31e8c18`.
+The notes were assessed as feasible using existing qualified organization and
+source interfaces, without expanding source access or changing applicability.
+Every finding and non-defect observation has a [disposition](../reviews/module-investigation/2026-09-30-milestone-3-disposition.md).
+No finding is rejected or silently deferred.
+
+`57c2c84` corrects F2 (unfinished done-item status), F3 (malformed non-submission
+arguments) and F4 (near-expiry token renewal under the existing lock), with
+regressions and credential-lifecycle disclosures. `a1c1f04` applies the same
+explicit-status check to authoritative terminal calls on both routes. `79a33bb`
+adds paginated, qualified containing/ancestor group and README references to
+module inspection, clarifies general documentation-comparison instructions,
+removes the misleading generic correction footer, and uses a neutral ceiling key
+for new assessment ledgers. Architecture and hosted documentation reflect these
+changes. No credential, billing-route, inference-retry or domain-acceptance
+boundary was relaxed.
+
+Pass 02 was frozen before inference and preserved in `4a0a334`. All three original
+source pins, the controlled fixture pin, TypeScript 6.0.3, exact approved
+merge-anything override and original source files remained fixed. Frozen source
+references are byte-identical to pass 01. GPT-5.6 Sol / medium / ChatGPT-plan was
+held fixed throughout. No automatic repeat, model/billing fallback, purchase or
+provider-setting change occurred. The [report](../validation/module-investigation/pass-02/report.md)
+retains views, sanitized exchanges, observations, exact role inputs/dispatches and
+outputs, diagnoses, configuration checks and usage reconciliation.
+
+The four normal reassessments produced no accepted investigram. Focused entry,
+fsm-engine and merge-anything acquired README content normally; Cockatiel did not.
+The focused draft attributes and contrasts the documentation claim but names
+program subjects as structured inconsistency targets, which must be earlier
+investigrams. Frozen instructions/schema omit that restriction, a plausible
+instruction-contract contributor. Its rejection means accepted user-facing
+reconciliation remains unestablished. The three upstream drafts each contain a
+supplied identity copied with two characters omitted; further unmatched spellings
+are retained without an exhaustive session-lookup claim. No approximate identity
+repair or resubmission was attempted. These findings are not attributed solely
+to the model or silently converted into an accepted limitation.
+
+The conditional direct-exposure diagnostic did not apply because the focused
+README was delivered. The human-approved one-call control made one request,
+processed evidence queries, and stopped before delivering their results in a
+second exchange. Thus it exercises a mid-dialogue guard, but not a stop after the
+investigator has read acquired source. Its exposure remains empty. The fresh
+view-only evaluator again confused the subject name opaque with a status; the
+source-informed assessor identified that persistent presentation concern.
+Five fresh evaluators and five separate source-informed assessors received only
+their recorded artifacts. Same-family/shared-orchestration and frozen-reference
+limits remain explicit, with unavailable role model details and usage separately
+attributed. Rejected drafts were not substituted for the actual user-facing views.
+
+Pass 02 made **16 provider requests, 547,736 reported tokens**. Reports were
+available/non-anomalous, and the ledger, exchanges, command view, later usage view
+and observations agree. Actual charges and allowance-versus-credit attribution
+remain unavailable, not zero. The separate debugging allowance remains **2 used,
+8 remaining**. Post-run source/configuration checks and credential-pattern scans
+passed; scans supplement, rather than replace, sentinel-redaction coverage.
+
+Offline checks before the pass included 45 authentication/adapter tests with
+loopback permission, 14 discovery/ledger tests, the full 424-test pass at
+`79a33bb`, and 25 focused adapter tests after the adjacent status correction.
+The earlier sandboxed 42-pass/3-callback-failure run remains distinct. However,
+final integrated `npm test` at `4a0a334` **failed: 410 passed, 9 failed, 5 cancelled**,
+with a reported 4,251,441.929 ms duration. Tracked inputs were unchanged and no
+agent writes or assessment requests occurred during the run. Timeouts, very long
+durations and input-validation failures span several areas; their cause is not
+established. `d3a263a` retains [full output and affected tests](../validation/module-investigation/2026-10-01-milestone-3-round-1-validation.md).
+Earlier complete/isolated passes do not clear this result, and it is not assumed
+to be the previously diagnosed ownership race. Verification is qualified by this
+new unresolved concern, not reported as a fully passing suite.
+
+Under the one-improvement boundary, further work pauses for human disposition.
+The proposed next step is clarification of the existing submission contract and
+bounded offline diagnosis of reference-copying failures, returning any
+consequential representation remedy for approval before another live pass.
+A separate question requests bounded offline diagnosis and a controlled rerun of
+the new suite failures without relaxing timeout or validation rules. Neither
+proposal is implemented or approved by this checkpoint. The original milestone
+handoff remains immutable; subsequent review uses that assignment and a new exact
+target. Task status remains active, milestone 3 is unaccepted, and milestone 4 has
+not begun.
