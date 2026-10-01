@@ -1224,3 +1224,70 @@ is documented with scope boundaries and regression requirements; neither its
 implementation nor additional live assessment is authorized by this checkpoint.
 Human approval is pending. Task remains active, milestone 3 unaccepted, and
 milestone 4 has not begun. The original handoff remains the review assignment.
+
+### Authorized private references and completed reassessment — 2026-10-01
+
+The human's `a53ea33` follow-up authorized private short references and one fixed
+four-subject reassessment. Implementation `71949dd` applies the same structural
+mapping to both hosted routes, keeping canonical IDs, public Entity bindings,
+worker messages and retained domain records unchanged. Available handles do not
+mark evidence supplied. Nested results, prior context and evidence-request/cursor
+fields are translated; source, assertions, prose, qualifications and opaque input
+values remain literal. Invalid, foreign and raw canonical incoming spellings
+remain unresolvable; no approximate matching, inference repair or retry was added.
+
+Captures preserve actual sanitized wire inputs, terminal responses, finalized
+stream items when used, binding snapshots and path-indexed resolutions. They
+exclude credentials. The character guard still counts serialized canonical domain
+inputs and decoded replies in UTF-16 code units, rather than compact provider
+history or capture metadata, and transport instructions explicitly say so. The
+accepted reference-transport decision, architecture, hosted setup and affected
+plan provisions record these boundaries.
+
+Offline regression covers both routes, literal preservation, nested references,
+qualification summaries, omitted records/cursors, exact/invalid/foreign resolution,
+fresh namespaces, exposure versus availability, canonical volume guards and the
+existing cancellation, usage, correction and credential boundaries. At `71949dd`,
+the full suite passed **438 tests, zero failures/cancellations/skips**, in
+**138.834 seconds** (148.302 including build). The clean tracked checkout remained
+stationary. Temporary idle-sleep prevention and a one-second monitor recorded no
+gap above two seconds. Four frozen configuration preflights and two offline harness
+tests passed after the small hosted-instruction preflight addition. Earlier failed
+suite evidence and uncertainty about individual old causes remain preserved.
+
+`b13810e` froze [pass 03](../validation/module-investigation/pass-03/report.md)
+before inference. Model, reasoning, route, source pins, TypeScript 6.0.3, approved
+merge-anything override and byte-identical reference accounts stayed fixed. Each
+of the three upstream subjects and documentation fixture ran once, with normal
+guards and no intervention. All four produced accepted investigrams. The focused
+fixture, fsm-engine and merge-anything received README text in exchange 3;
+Cockatiel did not. The focused accepted account attributes the pure/stateless
+assertion and contrasts it with the counter implementation. A fresh view-only
+evaluator and separate source-informed assessor preserve that discrepancy.
+
+`27c7331` retains exact captures and all four fresh evaluator/assessor pairs,
+including prompts, inputs, outputs and role attribution. Their judgments identify
+useful qualified communication plus semantic omissions, localized wording
+ambiguity and claims beyond the frozen reference's specificity. Those limits
+remain explicit; this is not broad model adequacy or independent corroboration.
+All **257 typed reply fields** resolved exactly. An audit independently matches
+actual captured record/summary delivery (including qualification summaries) to
+the canonical exposure ledger. Available table membership is not counted as
+exposure. The command, subsequent usage view, observations, request ledger and
+provider totals agree: **19 requests and 563,742 reported tokens**, no missing or
+anomalous reports. Actual money and allowance-versus-credit attribution remain
+unknown. Evaluator/assessor usage is separately unknown, not zero. No purchase,
+provider spending change, fallback or additional debugging request occurred;
+diagnostic allowance remains **2 used / 8 remaining**.
+
+Post-pass configuration preflights confirmed unchanged source, effective settings,
+context and instructions. The retained audit script, JSON validity, report links,
+role-output completeness and supplementary credential-pattern checks passed.
+The original failed assessment captures and suite logs remain untouched.
+
+The updated milestone-3 disposition addresses F1–F4 and records the focused
+required case as exercised, ready for independent re-review under the original
+immutable handoff. No review finding was rejected. Further tuning, model changes
+or extra runs were not undertaken. Human milestone-3 acceptance remains required;
+milestone 4 has not begun and the task remains active. The correction/reassessment
+review target is `27c7331` (this task checkpoint adds only the durable outcome).
