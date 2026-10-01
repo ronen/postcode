@@ -62,3 +62,42 @@ test('controlled earlier interpretation is explicitly scripted and never sends a
   assert.deepEqual(usage, [{ source: 'synthetic', categories: [] }]); assert.equal(captures.length, 1);
   dialogue.close(); await assert.rejects(dialogue.exchange({}, new AbortController().signal, () => {}), /Closed/);
 });
+
+test('controlled setup can acquire source before a mistaken account and retain exact prior-account attribution for a correction', async () => {
+  const { injectedSetup } = await import(new URL('../../scripts/module-investigation/injected-setup.mjs', import.meta.url).href);
+  const captures: any[] = [];
+  const source = injectedSetup({ id: 'source-first', prose: 'One label only.', acquireSource: true, qualifications: ['Scripted static interpretation.'] }, (value: unknown) => captures.push(value)).open();
+  assert.deepEqual(await source.exchange({ request: { subject: 'module:A' }, responses: [] }, new AbortController().signal, () => {}), { kind: 'tools', requests: [{ kind: 'source', subject: 'module:A' }] });
+  const result = await source.exchange({ request: { subject: 'module:A' }, responses: [{ records: [{}], selected: ['capture:A'] }] }, new AbortController().signal, () => {});
+  assert.equal(result.kind, 'submit'); assert.deepEqual(result.result.evidence, ['capture:A']);
+  assert.equal(captures.length, 2); assert.ok(captures.every(item => item.providerRequests === 0));
+  const correction = injectedSetup({ id: 'branch', prose: 'Alternative follows.', citeSubject: true,
+    qualifications: ['Scripted alternative.'], correction: { reason: 'Alternative reason.', prose: 'Replacement.' } }, () => {}).open();
+  const reply = await correction.exchange({ request: { subject: 'account:A' }, responses: [{ accounts: [{ id: 'account:A', originatingModule: 'module:A' }] }] }, new AbortController().signal, () => {});
+  assert.deepEqual(reply.result.referent.subjects, ['module:A']);
+  assert.equal(reply.result.corrections[0].target, 'account:A');
+  assert.deepEqual(reply.result.corrections[0].correctedSubjects, ['module:A']);
+  assert.deepEqual(reply.result.corrections[0].evidence, ['account:A']);
+});
+
+test('frozen setup sequence selects attributed participants in order and refuses an unexpected operation', async t => {
+  const { runAssessment } = await import(new URL('../../scripts/module-investigation/run-shell.mjs', import.meta.url).href);
+  const root = temporaryDirectory(t, 'postcode-assessment-sequence-'), budget = path.join(root, 'budget.json'), setup = path.join(root, 'setup.json');
+  writeFileSync(budget, JSON.stringify({ ceiling: 1, requests: [] }));
+  writeFileSync(setup, JSON.stringify({ sequence: ['functionality', 'clarification'].map((operation, index) => ({ operation,
+    recipe: { id: `step-${index}`, prose: 'Earlier account.', qualifications: ['Scripted assessment input.'] } })) }));
+  for (const mismatch of [false, true]) {
+    const exit = await runAssessment({ id: 'offline', project: 'fixture', output: path.join(root, String(mismatch)), budget, setup, pass: 'test' }, {
+      verify() {}, session: async () => ({ token: async () => { throw new Error('No request authorized by this test'); }, watch: () => () => {} }),
+      runCli: async (_args: unknown, options: any) => {
+        assert.equal(options.selectInvestigator({ operation: 'functionality' }).identity.configuration.setup, 'step-0');
+        const second = options.selectInvestigator({ operation: mismatch ? 'examination' : 'clarification' });
+        assert.equal(second.identity.configuration.setup, 'step-1');
+        assert.equal(options.selectInvestigator({ operation: 'examination' }).identity.origin, 'hosted');
+        return 0;
+      },
+    });
+    assert.equal(exit, mismatch ? 2 : 0);
+  }
+  assert.equal(JSON.parse(readFileSync(budget, 'utf8')).requests.length, 0);
+});

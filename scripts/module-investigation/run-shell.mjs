@@ -54,16 +54,20 @@ try {
   if (spec.setup) {
     const recipe = JSON.parse(readFileSync(spec.setup, 'utf8'));
     save('setup.json', JSON.stringify(recipe, null, 2) + '\n');
-    setup = injectedSetup(recipe, exchange => append('setup-exchanges.jsonl', JSON.stringify(exchange) + '\n'));
+    const entries = recipe.sequence ?? [{ operation: 'functionality', recipe }];
+    if (!Array.isArray(entries) || !entries.length || entries.some(item => !['functionality', 'clarification', 'decomposition', 'examination'].includes(item.operation) || !item.recipe)) throw new Error('Invalid assessment setup sequence');
+    setup = entries.map((item, index) => ({ operation: item.operation,
+      agent: injectedSetup(item.recipe, exchange => append('setup-exchanges.jsonl', JSON.stringify({ step: index + 1, ...exchange }) + '\n')) }));
   }
-  let injected = false;
+  let injected = 0;
   exit = await (dependencies.runCli ?? runCli)(['shell', '--project', spec.project, ...(spec.json ? ['--json'] : [])], {
     cwd: process.cwd(), checkout: process.cwd(), input,
     configureInvestigator: async () => ({ kind: 'ready', agent }),
     ...(setup ? { selectInvestigator: request => {
-      if (!injected) {
-        if (request.operation !== 'functionality') throw new Error('Controlled setup must begin with functionality');
-        injected = true; return setup;
+      if (injected < setup.length) {
+        const selected = setup[injected];
+        if (request.operation !== selected.operation) throw new Error('Controlled setup operation differs from frozen sequence');
+        injected++; return selected.agent;
       }
       return agent;
     } } : {}),

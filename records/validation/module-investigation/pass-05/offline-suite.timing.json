@@ -1,0 +1,16 @@
+{
+  "command": "/usr/bin/caffeinate -i npm test",
+  "before": {
+    "head": "9eb0b7d1e9448414d0cb6df999ce381fa643b3e5",
+    "status": ""
+  },
+  "after": {
+    "head": "9eb0b7d1e9448414d0cb6df999ce381fa643b3e5",
+    "status": ""
+  },
+  "exit": 0,
+  "elapsedSeconds": 170.50144981988706,
+  "ticks": 170,
+  "maxGapSeconds": 1.0571205669548362,
+  "gapsOverTwoSeconds": []
+}

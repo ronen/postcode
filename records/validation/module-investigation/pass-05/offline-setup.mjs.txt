@@ -1,0 +1,23 @@
+import {runAssessment} from '../scripts/module-investigation/run-shell.mjs';
+import {runCli} from '../_build/src/lib/cli.js';
+import path from 'node:path';
+import {writeFileSync} from 'node:fs';
+const budget=path.resolve('_investigation/m5-setup-budget-2.json');writeFileSync(budget,JSON.stringify({ceiling:1,requests:[]}));
+for (const name of ['refined','conflicts']) {
+ const refs={};let completed=0;
+ const exit=await runAssessment({id:`offline-${name}`,subject:'integrated-numeric',pass:'module-integrated-05',manifest:path.resolve('records/validation/module-investigation/pass-05/manifest.json'),
+ project:path.resolve('_investigation/module-assessment-sources/integrated-numeric/tsconfig.json'),output:path.resolve(`_investigation/m5-setup-2-${name}`),budget,setup:path.resolve(`records/validation/module-investigation/pass-05/${name}-setup.json`),commands:['summarize classify'],json:true}, {
+ session:async()=>({token:async()=>{throw Error('No live request permitted');},watch:()=>()=>{}}),onError:e=>{throw e;},
+ runCli:async(args,options)=>runCli(args,{...options,sink:{submit:async batch=>{
+  const accepted=await options.sink.submit(batch);
+  const view=batch.records.find(r=>r.kind==='qualified-view')?.value;
+  if(view?.result?.evaluation?.outcome.kind!=='accepted'){options.input.end();throw Error('Scripted setup was not accepted');}
+  completed++;const id=view.result.evaluation.outcome.root;refs[completed]=view.references.find(r=>r.id===id).reference;
+  const commands=[`explain @${refs[1]}`,`decompose @${refs[2]}`,`examine @${refs[1]}`,`decompose @${refs[1]}`];
+  if(completed<(name==='refined'?3:5))setImmediate(()=>options.input.write(commands[completed-1]+'\n'));else options.input.end();
+  return accepted;
+ }}}),
+ });
+ if(exit!==0||completed!==(name==='refined'?3:5))throw Error('Unexpected setup outcome');
+ console.log(name+': all scripted evaluations accepted without provider requests');
+}

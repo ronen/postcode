@@ -87,3 +87,13 @@ still reuses its outcome and does not select another participant. Setup origin i
 scripted with empty synthetic accounting, not a provider call or natural error.
 The administrative ceiling derives from scheduled live evaluations; neither it
 nor the fixture injection changes production execution guards or billing routes.
+
+Milestone 5 uses a separately frozen integrated pass. A setup recipe may contain
+`sequence: [{operation, recipe}]` to prepare a finite series of earlier accounts
+through ordinary production acceptance. Operations must match the frozen sequence;
+a mismatch stops the harness. Subsequent missing evaluations use the explicitly
+selected live agent. Repeated retained requests consume no setup step. Each recipe
+may acquire module source before submission, cite its exact supplied subject, or
+carry one explicit correction of that subject. These controls are assessment-only,
+not public configuration. Every setup exchange retains its sequence ordinal and
+truthful scripted identity; synthetic reports remain separate from provider usage.
