@@ -3,7 +3,7 @@ Record type: disposition
 # Module investigation milestone 4: review disposition
 
 Prepared: 2026-10-01
-Status: corrections verified; human milestone-4 acceptance pending
+Status: accepted by the human on 2026-10-01
 Task: [Module investigation](../../tasks/2026-09-29-module-investigation.md)
 Handoff: [Milestone 4](2026-10-01-milestone-4-handoff.md)
 Findings: [Round 1](2026-10-01-milestone-4-round-1-findings.md)
@@ -91,6 +91,11 @@ analysis: F1 adds a missing identity input, F3 changes wording, and F2 adds test
 without changing the handshake. F4's consequential choice is resolved explicitly
 by the human. No additional independent review is judged necessary for these
 corrections, although the human controls whether the accumulated review is sufficient.
-Milestone-4 acceptance remains pending; the active task is not closed and milestone
-5 has not begun. The original immutable handoff remains the assignment if another
-round is requested.
+The human acceptance below satisfies this review gate. The active task is not
+closed and milestone 5 has not begun.
+
+## Human acceptance — 2026-10-01
+
+The human accepted milestone 4 in `8bd5c77` after the corrections and verification
+recorded above. No additional review round is required for this milestone. The
+assessment limitations and bounded milestone-5 refinement remain unchanged.
