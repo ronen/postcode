@@ -38,9 +38,10 @@ test('real SDK transports a fresh bounded dialogue with only PostCode functions 
     assert.equal(String(url), 'https://api.openai.com/v1/responses');
     assert.equal(new Headers(options?.headers).get('authorization'), `Bearer ${sentinel}`);
     const body = JSON.parse(String(options?.body)); sent.push(body);
-    if (sent.length === 2) return http(response({ output: [call('submit_investigram', draft(input.request.subject))] }));
+    const subject = JSON.parse(body.input.at(-1).content).request.subject;
+    if (sent.length === 2) return http(response({ output: [call('submit_investigram', draft(subject))] }));
     return http(response({ output: [{ type: 'reasoning', id: 'rs_1', summary: [], encrypted_content: 'opaque-test-reasoning' },
-      call('request_evidence', { requests: [{ kind: 'source', subject: input.request.subject }] })] }));
+      call('request_evidence', { requests: [{ kind: 'source', subject }] })] }));
   } });
   const dialogue = agent.open(), signal = new AbortController().signal;
   assert.deepEqual(await dialogue.exchange(input, signal, item => usage.push(item)), { kind: 'tools', requests: [{ kind: 'source', subject: input.request.subject }] });
@@ -50,7 +51,11 @@ test('real SDK transports a fresh bounded dialogue with only PostCode functions 
   dialogue.close();
   const fresh = agent.open();
   await fresh.exchange(input, signal, () => {}); fresh.close();
-  assert.deepEqual(sent[0], sent[2], 'new operation must not inherit prior history');
+  assert.equal(sent[2]!.input.length, 1, 'new operation must not inherit prior history');
+  assert.notEqual(sent[0]!.input[0].content, sent[2]!.input[0].content, 'handles belong to a fresh dialogue');
+  assert.deepEqual({ ...sent[0], input: [] }, { ...sent[2], input: [] });
+  assert.deepEqual(captures[0]!.references.bindings.map(b => b.reference), captures[2]!.references.bindings.map(b => b.reference));
+  assert.deepEqual(captures[1]!.references.resolutions.map(r => r.reference), [input.request.subject]);
   const submissionSchema = sent[0]!.tools[1].parameters;
   for (const schema of [submissionSchema, submissionSchema.$defs.investigram]) {
     const targets = schema.properties.inconsistencies.items.properties.targets;

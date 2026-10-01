@@ -24,7 +24,7 @@ test('subscription transport uses streaming, namespace tools, completed response
   const agent = chatGPTInvestigator({ ...session, token: async () => { tokenCalls++; return `token-${tokenCalls}`; } }, { onExchange: item => captures.push(item), fetch: async (_url, options) => {
     assert.equal(new Headers(options?.headers).get('authorization'), `Bearer token-${tokenCalls}`);
     const body = JSON.parse(String(options?.body)); sent.push(body);
-    const output = sent.length === 1 ? [call('request_evidence', { requests: [{ kind: 'source', subject: input.request.subject }] })] : [call('submit_investigram', { prose: 'finished' })];
+    const output = sent.length === 1 ? [call('request_evidence', { requests: [{ kind: 'source', subject: JSON.parse(body.input.at(-1).content).request.subject }] })] : [call('submit_investigram', { prose: 'finished' })];
     return sse([{ type: 'response.output_item.done', item: call('submit_investigram', { prose: 'unfinished' }) }, { type: 'response.completed', response: response(output) }]);
   } });
   const dialogue = agent.open();
@@ -47,7 +47,10 @@ test('subscription transport uses streaming, namespace tools, completed response
   assert.equal(reports.length, 2); assert.equal(reports[0]!.categories.find(c => c.category === 'total')?.value, 15);
   assert.doesNotMatch(JSON.stringify(captures), /token-1|token-2/);
   const fresh = agent.open(); await fresh.exchange(input, new AbortController().signal, () => {}); fresh.close();
-  assert.deepEqual(sent[2], sent[0]);
+  assert.equal(sent[2]!.input.length, 1);
+  assert.notEqual(sent[2]!.input[0].content, sent[0]!.input[0].content);
+  assert.deepEqual({ ...sent[2], input: [] }, { ...sent[0], input: [] });
+  assert.deepEqual(captures[0]!.references.bindings.map(b => b.reference), captures[2]!.references.bindings.map(b => b.reference));
   assert.equal(agent.identity.configuration.billingRoute, 'chatgpt-plan');
 });
 

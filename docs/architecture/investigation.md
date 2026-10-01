@@ -411,6 +411,50 @@ the domain continues validating capabilities, references, qualifications and
 submissions. Closing aborts local transport and releases history, without claiming
 remote computation, allowance use or charges have stopped.
 
+Under the accepted [reference transport decision](../decisions/investigator-reference-transport.md),
+both hosted transports use a private per-dialogue reference table
+(`postcode/investigator-references@1`, adapter versions `@5`). Canonical domain
+IDs, public Entity bindings, worker messages and retained records are unchanged.
+The model receives short exact handles with a random dialogue namespace and an
+append-only ordinal. A fresh dialogue gets a fresh table; close releases it.
+Handles identify available references, not supplied evidence. In particular,
+issuing a handle for a bare support reference, omitted record or cursor does not
+add anything to the full-record, summary or prior-account exposure ledgers.
+
+Translation follows designated fields in the record union, evidence responses,
+qualification summaries and prior-account deliveries. Incoming evidence subjects
+and cursors, nested accounts, associations, inconsistencies and correction
+replacements are decoded structurally before domain validation. Names, source,
+paths, assertions, tags, opaque analysis values, prose, local IDs and qualification
+text remain literal, even when they contain an ID or handle. There is no string
+substitution over content, approximate matching or inference repair. Unknown,
+foreign-dialogue and raw canonical spellings in incoming reference fields become
+explicitly unresolvable references, preserving their full spelling for volume
+accounting; ordinary tool unavailability or atomic submission rejection follows.
+Only successful terminal tool calls are decoded; partial streamed output is never
+an accepted result.
+
+The transport appends instructions explaining handles, exposure and the guard to
+the domain instructions. Agent configuration records the reference version and
+guard representation. The character guard continues to measure serialized
+**canonical domain inputs and decoded replies in UTF-16 code units**, including
+all domain input fields. Evidence pagination and response bounds likewise run
+before compaction. It does not measure compact wire messages, repeated provider
+history, transport-only instructions, SDK envelopes or audit metadata. Invalid
+result trees beyond the existing depth/count bounds remain invalid; translation
+stops at those bounds. This is an execution backstop, not a token or price ceiling.
+
+Assessment captures retain the exact sanitized wire request, raw terminal body
+(and separately finalized stream items when used), plus a snapshot of available
+handle-to-canonical bindings and path-indexed reply resolutions. Failed resolutions
+are explicit nulls. The table is capture metadata, never extra provider context.
+Capture consumers must use delivered records/summaries and canonical exposure
+provenance to establish disclosure, not count table membership as delivery.
+Canonical provenance retains domain instructions; captures retain the actual
+transport instructions. Regression coverage in `investigator-references.test.ts`,
+`investigation.test.ts` and both transport suites checks structural translation,
+exposure separation, guards, fresh histories, cancellation and credential exclusion.
+
 Received terminal usage is reported before outcome classification, including
 failed, refused and incomplete responses. Missing usage after interruption is
 unknown. Identity provenance and aggregation retain the selected authentication

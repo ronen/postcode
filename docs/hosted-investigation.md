@@ -145,6 +145,14 @@ response still requires explicit result submission and domain validation. Partia
 streamed output never becomes an accepted investigram. The SDK's inference retries
 and logging are disabled; token renewal is separate from inference retry.
 
+Both routes give the investigator short references scoped to one dialogue.
+PostCode resolves reference fields back to canonical IDs before validation; source
+and prose stay literal. A reference does not mean its content was supplied.
+The character guard measures canonical domain inputs and decoded replies, in
+serialized UTF-16 code units, rather than compact provider messages or repeated
+history. Development captures preserve the wire form and a separate resolution
+audit, which must not be mistaken for evidence exposure.
+
 ChatGPT registrations and tokens persist together in Keychain service
 `org.postcode.chatgpt`, account `registrations-v1`. The stable host identifier and
 issued client/validated subject mapping survive sign-out. A kernel file lock in

@@ -824,6 +824,17 @@ not guarantee immediate termination or a monetary ceiling. It applies to hosted
 and future local inference alike. Bounds constrain execution, not the lens
 question.
 
+The human-authorized milestone-3 correction uses private short, exact references
+at the hosted communication boundary. Canonical IDs and domain validation stay
+unchanged. Translation is structural, including nested result and evidence-request
+fields; it never rewrites source or prose. Reference availability remains distinct
+from evidence exposure. Captures preserve actual wire inputs and reference
+resolution, and transport instructions state that the character guard measures
+canonical domain inputs and decoded replies, not the compact wire representation.
+The authorized follow-up is one fixed reassessment of the same three upstream
+subjects and documentation fixture, one attempt each, without extra retries or
+model/configuration changes. Earlier failed captures remain assessment evidence.
+
 Consider a soft threshold inside the guard that asks the investigator to finish
 with available evidence, or supplying remaining-limit information during the
 dialogue. These are implementation recommendations, not required mechanisms;

@@ -5,13 +5,16 @@ import type { ChatGPTSession } from './chatgpt-credentials.js';
 import type { Response, ResponseCreateParams, ResponseInputItem } from 'openai/resources/responses/responses.js';
 import type { AgentFailure, AgentIdentity, AgentReply, InvestigatorAgent, InvestigatorTool, ReportedUsage, UsageCategory } from '../contracts.js';
 import { investigatorFunctions } from './protocol.js';
+import { InvestigatorReferences, referenceInstructions, type ReferenceAudit } from './references.js';
 import { CompletedStreamOutput } from './stream-output.js';
 
 export const openAIIdentity: AgentIdentity = Object.freeze({ provider: 'openai', model: 'gpt-6-sol', origin: 'hosted',
-  configuration: Object.freeze({ adapter: 'postcode/openai-responses@4', authenticationRoute: 'api-key', billingRoute: 'openai-api', sdk: 'openai@7.25.0', reasoningEffort: 'medium', serviceTier: 'default', store: false, retries: 0, maxOutputTokens: 16000 }) });
+  configuration: Object.freeze({ adapter: 'postcode/openai-responses@5', authenticationRoute: 'api-key', billingRoute: 'openai-api', sdk: 'openai@7.25.0', reasoningEffort: 'medium', serviceTier: 'default', store: false, references: 'postcode/investigator-references@1', characterGuard: 'canonical-domain-exchanges', retries: 0, maxOutputTokens: 16000 }) });
 
 export interface OpenAIExchange {
   readonly request: ResponseCreateParams;
+  /** Available wire bindings are not evidence exposure; resolutions cover typed reply fields. */
+  readonly references: ReferenceAudit;
   /** Sanitized wire body, including malformed responses for assessment diagnosis. */
   readonly response?: unknown;
   /** Finalized stream items supplied separately from an empty completed envelope. */
@@ -20,8 +23,8 @@ export interface OpenAIExchange {
 }
 
 export const chatGPTIdentity: AgentIdentity = Object.freeze({ provider: 'openai', model: 'gpt-5.6-sol', origin: 'hosted',
-  configuration: Object.freeze({ adapter: 'postcode/chatgpt-responses@4', sdk: 'openai@7.25.0', authenticationRoute: 'chatgpt-sign-in',
-    billingRoute: 'chatgpt-plan', reasoningEffort: 'medium', store: false, streaming: true, retries: 0 }) });
+  configuration: Object.freeze({ adapter: 'postcode/chatgpt-responses@5', sdk: 'openai@7.25.0', authenticationRoute: 'chatgpt-sign-in',
+    billingRoute: 'chatgpt-plan', reasoningEffort: 'medium', store: false, streaming: true, references: 'postcode/investigator-references@1', characterGuard: 'canonical-domain-exchanges', retries: 0 }) });
 interface TransportOptions { fetch?: typeof fetch; onExchange?: (exchange: OpenAIExchange) => void }
 export function openAIInvestigator(apiKey: string, options: TransportOptions = {}): InvestigatorAgent {
   if (!apiKey || /\s/.test(apiKey)) throw new Error('Invalid OpenAI credential');
@@ -56,6 +59,7 @@ function investigator(session: ChatGPTSession, subscription: boolean, options: T
     identity,
     open() {
       const controller = new AbortController();
+      const references = new InvestigatorReferences();
       const stopWatching = session.watch(controller);
       let history: ResponseInputItem[] = [], pending: string | undefined, closed = false;
       return {
@@ -64,10 +68,11 @@ function investigator(session: ChatGPTSession, subscription: boolean, options: T
             if (closed) throw new Error('OpenAI dialogue is closed');
             const requestSignal = AbortSignal.any([signal, controller.signal]);
             requestSignal.throwIfAborted();
-            if (pending) history.push({ type: 'function_call_output', call_id: pending, output: JSON.stringify(input.responses) });
+            const encoded = references.encode(input);
+            if (pending) history.push({ type: 'function_call_output', call_id: pending, output: JSON.stringify(encoded.responses) });
             else if (history.length) throw new Error('OpenAI dialogue has no pending evidence request');
-            history.push({ role: 'user', content: JSON.stringify({ request: input.request, remaining: input.remaining,
-              ...(pending ? {} : { responses: input.responses }) }) });
+            history.push({ role: 'user', content: JSON.stringify({ request: encoded.request, remaining: input.remaining,
+              ...(pending ? {} : { responses: encoded.responses }) }) });
             pending = undefined;
             let token: string;
             try { token = await session.token(requestSignal); secrets.add(token); }
@@ -88,7 +93,7 @@ function investigator(session: ChatGPTSession, subscription: boolean, options: T
               maxRetries: 0, timeout: 180000, logLevel: 'off', fetch: transport });
             const request: ResponseCreateParams = safe({ model: identity.model, reasoning: { effort: 'medium' },
               ...(subscription ? { stream: true as const } : { service_tier: 'default' as const, stream: false as const, max_output_tokens: 16000 }), store: false, include: ['reasoning.encrypted_content'],
-              instructions: input.instructions, input: history, tools: subscription ? [{ type: 'namespace', name: 'postcode', description: 'PostCode evidence and explicit result submission', tools: investigatorFunctions }] : investigatorFunctions, parallel_tool_calls: false, tool_choice: 'auto' });
+              instructions: `${input.instructions}\n\n${referenceInstructions}`, input: history, tools: subscription ? [{ type: 'namespace', name: 'postcode', description: 'PostCode evidence and explicit result submission', tools: investigatorFunctions }] : investigatorFunctions, parallel_tool_calls: false, tool_choice: 'auto' });
             let wire: globalThis.Response;
             try { wire = await client.responses.create(request, { signal: requestSignal }).asResponse(); }
             catch (error) {
@@ -96,7 +101,7 @@ function investigator(session: ChatGPTSession, subscription: boolean, options: T
               if (!(error instanceof OpenAI.OpenAIError)) throw error;
               const problem = error instanceof OpenAI.APIError ? failure(error.code ?? (error instanceof OpenAI.APIConnectionTimeoutError ? 'request_timeout'
                 : error instanceof OpenAI.APIConnectionError ? 'transport_error' : undefined), error.status, failureBody ?? error.error, error.requestID) : failure(undefined);
-              options.onExchange?.({ request, failure: problem });
+              options.onExchange?.({ request, references: safe(references.audit()), failure: problem });
               return problem;
             }
             let body: unknown;
@@ -128,7 +133,7 @@ function investigator(session: ChatGPTSession, subscription: boolean, options: T
                   // Deltas and output-item completion are never accepted results.
                   if (event.type === 'error') {
                     const problem = failure(event.code, wire.status, event, wire.headers.get('x-request-id'));
-                    options.onExchange?.({ request, failure: problem }); return problem;
+                    options.onExchange?.({ request, references: safe(references.audit()), failure: problem }); return problem;
                   }
                 }
                 if (body === undefined) { responseIssue = 'stream_ended_without_terminal'; throw new SyntaxError(); }
@@ -137,12 +142,12 @@ function investigator(session: ChatGPTSession, subscription: boolean, options: T
             catch (error) {
               if (requestSignal.aborted) throw requestSignal.reason;
               const problem = error instanceof OpenAI.APIError ? failure(error.code, wire.status, error.error, wire.headers.get('x-request-id')) : failure(responseIssue, wire.status, { contentType: wire.headers.get('content-type'), observedEvents: streamEvents }, wire.headers.get('x-request-id'));
-              options.onExchange?.({ request, failure: problem });
+              options.onExchange?.({ request, references: safe(references.audit()), failure: problem });
               return problem;
             }
             if (!body || typeof body !== 'object' || !('status' in body)) {
               const problem = failure('invalid_provider_response');
-              options.onExchange?.({ request, response: body, failure: problem });
+              options.onExchange?.({ request, references: safe(references.audit()), response: body, failure: problem });
               return problem;
             }
             // The SDK's raw-response route lets us reject malformed wire shapes
@@ -154,45 +159,48 @@ function investigator(session: ChatGPTSession, subscription: boolean, options: T
             if (closed || requestSignal.aborted) throw requestSignal.reason ?? new Error('OpenAI dialogue closed');
             const streamOutput = subscription && response.status === 'completed' && Array.isArray(response.output) && response.output.length === 0
               ? safe(completedOutput.complete(response as unknown as Record<string, unknown>)) : null;
-            options.onExchange?.({ request, response, ...(streamOutput ? { streamOutput } : {}) });
-            if (response.status === 'failed') return failure(response.error?.code, wire.status, response, wire.headers.get('x-request-id'));
-            if (response.status === 'incomplete') return { kind: response.incomplete_details?.reason === 'content_filter' ? 'refused' : 'truncated' };
-            if (response.status !== 'completed' || !Array.isArray(response.output)) return { kind: 'ended' };
-            if (subscription && response.output.length === 0) {
-              if (!streamOutput) return { kind: 'ended' };
-              // Keep the captured terminal body unchanged. Resolve completed items
-              // only after terminal success, before existing tool/domain validation.
-              response = { ...response, output: streamOutput as Response['output'] };
+            try {
+              if (response.status === 'failed') return failure(response.error?.code, wire.status, response, wire.headers.get('x-request-id'));
+              if (response.status === 'incomplete') return { kind: response.incomplete_details?.reason === 'content_filter' ? 'refused' : 'truncated' };
+              if (response.status !== 'completed' || !Array.isArray(response.output)) return { kind: 'ended' };
+              if (subscription && response.output.length === 0) {
+                if (!streamOutput) return { kind: 'ended' };
+                // Keep the captured terminal body unchanged. Resolve completed items
+                // only after terminal success, before existing tool/domain validation.
+                response = { ...response, output: streamOutput as Response['output'] };
+              }
+              if (response.output.some(item => !item || typeof item !== 'object' ||
+                  (item.type === 'message' && !Array.isArray(item.content)))) return { kind: 'ended' };
+              if (response.output.some(item => item.type === 'message' && item.content.some(part => part?.type === 'refusal'))) return { kind: 'refused' };
+              const calls = response.output.filter(item => item.type === 'function_call');
+              if (calls.length !== 1) return { kind: 'ended' };
+              const call = calls[0]!;
+              if ('status' in call && call.status !== 'completed') return { kind: 'ended' };
+              if (subscription && call.namespace !== 'postcode') return { kind: 'ended' };
+              if (typeof call.call_id !== 'string' || !call.call_id || typeof call.arguments !== 'string') return { kind: 'ended' };
+              if (call.name !== 'submit_investigram' && call.name !== 'request_evidence') return { kind: 'ended' };
+              let args: unknown;
+              try { args = JSON.parse(call.arguments); } catch {
+                return call.name === 'submit_investigram' ? { kind: 'submit', result: null } : { kind: 'ended' };
+              }
+              if (call.name === 'submit_investigram') return { kind: 'submit', result: references.submission(args) };
+              if (call.name !== 'request_evidence' || !args || typeof args !== 'object' || !('requests' in args) || !Array.isArray(args.requests)) return { kind: 'ended' };
+              for (const item of response.output) {
+                if (item.type !== 'function_call' && item.type !== 'message' && item.type !== 'reasoning') return { kind: 'ended' };
+                history.push(item);
+              }
+              pending = call.call_id;
+              // Domain coordination validates every requested capability and reference.
+              return { kind: 'tools', requests: (references.tools(args) as { requests: InvestigatorTool[] }).requests };
+            } finally {
+              options.onExchange?.({ request, references: safe(references.audit()), response: body, ...(streamOutput ? { streamOutput } : {}) });
             }
-            if (response.output.some(item => !item || typeof item !== 'object' ||
-                (item.type === 'message' && !Array.isArray(item.content)))) return { kind: 'ended' };
-            if (response.output.some(item => item.type === 'message' && item.content.some(part => part?.type === 'refusal'))) return { kind: 'refused' };
-            const calls = response.output.filter(item => item.type === 'function_call');
-            if (calls.length !== 1) return { kind: 'ended' };
-            const call = calls[0]!;
-            if ('status' in call && call.status !== 'completed') return { kind: 'ended' };
-            if (subscription && call.namespace !== 'postcode') return { kind: 'ended' };
-            if (typeof call.call_id !== 'string' || !call.call_id || typeof call.arguments !== 'string') return { kind: 'ended' };
-            if (call.name !== 'submit_investigram' && call.name !== 'request_evidence') return { kind: 'ended' };
-            let args: unknown;
-            try { args = JSON.parse(call.arguments); } catch {
-              return call.name === 'submit_investigram' ? { kind: 'submit', result: null } : { kind: 'ended' };
-            }
-            if (call.name === 'submit_investigram') return { kind: 'submit', result: args };
-            if (call.name !== 'request_evidence' || !args || typeof args !== 'object' || !('requests' in args) || !Array.isArray(args.requests)) return { kind: 'ended' };
-            for (const item of response.output) {
-              if (item.type !== 'function_call' && item.type !== 'message' && item.type !== 'reasoning') return { kind: 'ended' };
-              history.push(item);
-            }
-            pending = call.call_id;
-            // Domain coordination validates every requested capability and reference.
-            return { kind: 'tools', requests: args.requests as InvestigatorTool[] };
           } catch (error) {
             if (error instanceof CredentialError) return { kind: 'configuration-unavailable', code: error.code, diagnostic: error.message };
             throw error;
           }
         },
-        close() { closed = true; stopWatching(); controller.abort(); history = []; pending = undefined; },
+        close() { closed = true; stopWatching(); controller.abort(); history = []; pending = undefined; references.close(); },
       };
     },
   };

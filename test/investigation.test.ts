@@ -17,6 +17,7 @@ import { investigate, investigationBounds } from '../src/lib/investigation/execu
 import type { InvestigationOptions } from '../src/lib/investigation/execute.js';
 import { InvestigationContext } from '../src/lib/investigation/context.js';
 import { acceptInvestigation, InvalidSubmission } from '../src/lib/investigation/acceptance.js';
+import { openAIInvestigator, chatGPTInvestigator, type OpenAIExchange } from '../src/lib/investigation/openai/adapter.js';
 import { InvestigationUsage } from '../src/lib/investigation/usage.js';
 import type { AcceptedInvestigation, AgentReply, AttemptReport, InvestigationHistory, ReportedUsage, SubmittedInvestigram } from '../src/lib/investigation/contracts.js';
 import type { RecordId } from '../src/lib/records.js';
@@ -626,3 +627,57 @@ for (const form of ['attributed-prose', 'module-inconsistency', 'artifact-incons
     }
   });
 }
+
+
+for (const route of ['api', 'plan']) for (const acquire of [false, true]) test(`short handles preserve bare-reference exposure and exact domain validation (${route}, acquire=${acquire})`, async t => {
+  const f = await fixture(t);
+  const captures: OpenAIExchange[] = []; let calls = 0, bare = '';
+  const fetcher: typeof fetch = async (_url, options) => {
+    const body = JSON.parse(String(options?.body)); calls++;
+    const subject = JSON.parse(body.input.filter((item: any) => item.role === 'user').at(-1).content).request.subject;
+    const responses = body.input.filter((item: any) => item.type === 'function_call_output').at(-1);
+    let args: unknown, name = 'request_evidence';
+    if (calls === 1) args = { requests: [{ kind: 'modules' }] };
+    else {
+      const result = JSON.parse(responses.output)[0];
+      if (calls === 2) {
+        bare = result.supportReferences[0].id;
+        assert.ok(bare); assert.equal(result.records.some((item: any) => item.id === bare), false);
+      }
+      if (calls === 2 && acquire) args = { requests: [{ kind: 'inspect', subject: bare }] };
+      else { name = 'submit_investigram'; args = { ...draft(), evidence: [bare], referent: { description: 'Module', subjects: [subject] } }; }
+    }
+    const response = { id: 'response', status: 'completed', model: 'stub', output: [{ type: 'function_call', namespace: 'postcode', call_id: `call-${calls}`, name, arguments: JSON.stringify(args) }] };
+    return route === 'api' ? new Response(JSON.stringify(response)) : new Response(`data: ${JSON.stringify({ type: 'response.completed', response })}\n\n`, { headers: { 'content-type': 'text/event-stream' } });
+  };
+  const options = { fetch: fetcher, onExchange: (capture: OpenAIExchange) => captures.push(capture) };
+  const agent = route === 'api' ? openAIInvestigator('stub', options) : chatGPTInvestigator({ token: async () => 'stub', watch: () => () => {} }, options);
+  const execution = await investigate({ ...f.base, agent });
+  assert.equal(execution.outcome.kind, acquire ? 'accepted' : 'investigation-failure');
+  assert.equal(calls, acquire ? 3 : 2, 'no repair inference');
+  const canonical = captures[1]!.references.bindings.find(item => item.handle === bare)!.reference as RecordId;
+  assert.equal(execution.report.suppliedEvidence.includes(canonical), acquire);
+  assert.equal(execution.report.summarizedEvidence.includes(canonical), false);
+  assert.equal(captures.at(-1)!.references.resolutions.find(item => item.path === '$.evidence[0]')!.reference, canonical);
+  if (execution.outcome.kind === 'accepted') assert.deepEqual(execution.outcome.result.investigrams[0]!.evidence, [canonical]);
+});
+
+test('hosted reference compaction cannot bypass the canonical decoded-reply character guard', async t => {
+  const f = await fixture(t); let inputSize = 0, replySize = 0, wireReplySize = 0, calls = 0;
+  const hosted = openAIInvestigator('stub', { fetch: async (_url, options) => {
+    calls++; const body = JSON.parse(String(options?.body));
+    const subject = JSON.parse(body.input[0].content).request.subject;
+    const result = { ...draft(), referent: { description: 'Repeated subjects', subjects: Array(500).fill(subject) } };
+    wireReplySize = JSON.stringify({ kind: 'submit', result }).length;
+    return new Response(JSON.stringify({ status: 'completed', output: [{ type: 'function_call', call_id: 'call', name: 'submit_investigram', arguments: JSON.stringify(result) }] }));
+  } });
+  const agent = { identity: hosted.identity, open() { const dialogue = hosted.open(); return {
+    async exchange(...args: Parameters<typeof dialogue.exchange>) {
+      inputSize = JSON.stringify(args[0]).length; const result = await dialogue.exchange(...args); replySize = JSON.stringify(result).length; return result;
+    }, close: () => dialogue.close(),
+  }; } };
+  const execution = await investigate({ ...f.base, agent, bounds: { ...investigationBounds, characters: 20000 } });
+  assert.equal(execution.outcome.kind, 'limit-stop');
+  assert.ok(inputSize + wireReplySize < 20000); assert.ok(inputSize + replySize > 20000);
+  assert.equal(calls, 1);
+});
