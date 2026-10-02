@@ -580,9 +580,16 @@ navigation across competing branches without redirecting the chosen subject.
 Result redisplay follows replacement chains and then the selected replacement’s
 own composition, with explicit original-to-displayed placement metadata. Corrected
 children can appear under an unchanged root. Replacing the root displaces its old
-subtree; corrections there remain disclosed and inspectable, without implying
-incorporation into the replacement. No display placement is stored as composition.
+subtree. Corrections targeting it remain in revision context; corrections reported
+by displaced accounts are separately listed by reporter, target and replacement
+references, without incorporating their replacements into the new tree. No display placement is stored as composition.
 At most 256 accounts are materialized per view, with omitted references identified.
+Displaced-account, displaced accompanying-correction and revision-status listings
+are each limited to 256 entries, with separate omitted counts. Revision statuses
+prioritize the selected investigram and displayed original/current accounts. Exact
+inspection exposes each account’s own bounded context; omitted display entries do
+not trigger displaced-subtree expansion. Retained history is still traversed to
+count omissions; the bound limits output, not session memory or traversal time.
 Follow-ups retain their exact subject and request identity, including superseded
 subjects; repeated results show current subject revisions without further inference.
 
@@ -609,10 +616,17 @@ identity, including associated-account inspections over unchanged mechanical dat
 
 Context retains the exact requested account plus bounded correction-family and
 cause context. Automatically included accounts carry their own content and a
-revision summary with an explicit page-1 continuation; the requested account’s
+revision summary with an explicit page-1 continuation; their automatic correction
+link follows the path to the current primary. Incoming inconsistency omissions
+distinguish summary policy (with the full count) from the character bound; the requested account’s
 relationship/cause page is expanded once, avoiding quadratic metadata repetition. Correction reasons and incoming inconsistency content create
 citations to their reporters; metadata and bare navigation references do not.
-Context pages report omitted accounts/corrections and further accompanying-correction
+Instructions, tool schemas and supplied context make the citation rule explicit:
+correction reasons and qualifications are content of the reporting investigram.
+The investigator cites `correction.reporter`; the correction handle identifies the
+relationship and is never eligible evidence. Metadata alone does not supply that
+content. Validation neither substitutes the reporter for an invalid correction ID
+nor opens a repair dialogue. Context pages report omitted accounts/corrections and further accompanying-correction
 pages. Only actual complete delivery of target and replacement fields plus
 correction reasons/qualifications establishes an exemption. Recursive children are
 not required. Reference transport maps these new fields structurally; prose is

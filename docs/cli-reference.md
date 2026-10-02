@@ -602,3 +602,9 @@ their references expire when the command ends. Shell references last only for th
 session and cannot restore work in a later invocation. Abnormal final JSON usage is
 reported on stderr using `postcode-investigation-usage/1-experimental` and retained
 in the command observation, without fabricating a successful result view.
+
+Correction metadata listings are bounded separately from account bodies: at most
+256 displaced accounts, 256 accompanying correction references and 256 revision
+statuses appear, with explicit omitted counts. Inspect exact original or reporter
+references to navigate their own bounded context. Corrections reported by displaced
+accounts remain linked without inserting their replacements into the displayed tree.

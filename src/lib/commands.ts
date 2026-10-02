@@ -45,7 +45,7 @@ Investigation JSON uses postcode-investigation-view/1-experimental. One-shot ref
 explain, decompose and examine require an exact @investigram reference in the shell. Each follow-up produces a separate result.
 inspect @investigram --revision-page N continues correction/cause details.
 inspect shows bounded associated accounts; --after @investigram-reference continues that listing.
-Original accounts are shown. Automatic replacement selection and derived revision warnings remain a later milestone.
+Redisplay selects current replacements; exact inspection preserves original accounts. Conflicts and citation-based reconsideration remain explicit; warnings do not establish error or trigger inference.
 
 Concepts:
 modules inventories the supported population; inspect selects exact subjects from that population.

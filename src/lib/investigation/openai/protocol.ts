@@ -1,7 +1,7 @@
 import type { FunctionTool } from 'openai/resources/responses/responses.js';
 
 const strings = { type: 'array', items: { type: 'string' } };
-const support = { qualifications: strings, evidence: { ...strings, description: 'Exact references to context actually supplied; a bare support reference alone does not grant evidence eligibility.' } };
+const support = { qualifications: strings, evidence: { ...strings, description: 'Exact references to context actually supplied; a bare support reference alone does not grant evidence eligibility. For supplied correction reasons and qualifications cite correction.reporter (the reporting investigram), never the correction handle: it identifies a relationship and is not eligible evidence. Revision metadata alone does not supply reporter content.' } };
 const node = { $ref: '#/$defs/investigram' };
 const account = {
   type: 'object', additionalProperties: false,
@@ -30,7 +30,7 @@ export const investigatorFunctions: FunctionTool[] = [
         subject: { type: 'string', description: 'Required except for modules and organization.' },
         cursor: { type: 'string', description: 'Only for paged collection queries.' },
         parts: { type: 'array', items: { type: 'string', enum: ['prose', 'referent', 'qualifications'] }, description: 'Only for investigram context; omit for complete context.' },
-        revisionPage: { type: 'integer', minimum: 1, description: 'Only for investigram context; follow revision.nextPage for further revision and cause details.' },
+        revisionPage: { type: 'integer', minimum: 1, description: 'Only for investigram context; follow revision.nextPage for further revision and cause details. Correction handles identify relationships, not eligible evidence; cite correction.reporter only when its substantive content was supplied.' },
         excerptCharacters: { type: 'integer', minimum: 0, description: 'Only for investigram context; omit for complete context.' },
       } } },
     } },

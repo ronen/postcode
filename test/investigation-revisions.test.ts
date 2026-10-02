@@ -122,3 +122,36 @@ test('incoming inconsistencies preserve qualification and count as reporter expo
   context.supplied(supplied); assert.deepEqual(context.citations, ['reporter']);
   assert.equal(context.completeTargets.length, 0);
 });
+
+test('automatic context summarizes all incoming inconsistencies honestly and follows the primary branch', async () => {
+  const { InvestigationContext } = await import('../src/lib/investigation/context.js');
+  const f = fixture();
+  for (const name of ['A', 'B', 'C', 'D', 'Y']) f.account(name, name === 'Y' ? ['A'] : []);
+  f.correction('AB', 'A', 'B'); f.correction('AC', 'A', 'C'); f.correction('CD', 'C', 'D');
+  for (let n = 0; n < 30; n++) {
+    f.account(`reporter-${n}`);
+    f.accounts[f.accounts.length - 1] = { ...f.accounts.at(-1)!, inconsistencies: [{ targets: [id('A')], reason: `Disagreement ${n}`, qualifications: ['Test.'], evidence: [] }] };
+  }
+  const graph = f.snapshot();
+  const history = { get: (id: RecordId) => graph.accounts.get(id), provenance: (id: RecordId) => f.origins.find(item => item.id === id),
+    correction: (id: RecordId) => f.corrections.find(item => item.id === id), corrections: (id: RecordId) => f.corrections.filter(item => item.target === id),
+    revision: (id: RecordId, page?: number) => graph.status(id, page) };
+  // Starting at B automatically includes A via family context. A's small
+  // relationship summary must point through C to D, not the oldest A-to-B branch.
+  const context = new InvestigationContext(history, session);
+  const delivered = context.prepare(id('B'));
+  const a = delivered.accounts.find(item => item.id === 'A')!;
+  assert.deepEqual(a.corrections, ['AC']);
+  assert.match(a.omissions.join(' '), /30 incoming inconsistencies omitted by automatic-account summary policy/);
+  assert.doesNotMatch(a.omissions.join(' '), /Incoming inconsistency content omitted by character bound/);
+  assert.equal(a.revision!.nextPage, 1);
+  assert.deepEqual(a.revision!.omittedInconsistencyReporters, []);
+  context.supplied(delivered);
+  assert.ok(!context.citations.some(value => value.startsWith('reporter-')));
+  const first = context.prepare(id('A')), second = context.prepare(id('A'), undefined, undefined, undefined, 2);
+  assert.equal(first.accounts[0]!.revision!.inconsistencies.length, 24);
+  assert.equal(second.accounts[0]!.revision!.inconsistencies.length, 6);
+  assert.equal(second.accounts[0]!.revision!.nextPage, null);
+  context.supplied(first); context.supplied(second);
+  assert.equal(context.citations.filter(value => value.startsWith('reporter-')).length, 30);
+});

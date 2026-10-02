@@ -13,8 +13,9 @@ import type { EvidenceQuery, EvidenceResponse } from '../src/lib/evidence-access
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
 import { SessionInvalidated, CommandInterrupted } from '../src/lib/execution-errors.js';
-import { investigate, investigationBounds } from '../src/lib/investigation/execute.js';
+import { investigate, investigationBounds, investigationInstructions } from '../src/lib/investigation/execute.js';
 import type { InvestigationOptions } from '../src/lib/investigation/execute.js';
+import { investigatorFunctions } from '../src/lib/investigation/openai/protocol.js';
 import { InvestigationContext } from '../src/lib/investigation/context.js';
 import { acceptInvestigation, InvalidSubmission } from '../src/lib/investigation/acceptance.js';
 import { openAIInvestigator, chatGPTInvestigator, type OpenAIExchange } from '../src/lib/investigation/openai/adapter.js';
@@ -539,6 +540,27 @@ test('correction reasons cite their reporter without granting complete account c
   assert.deepEqual(delivered.citations, [b.root]);
   assert.deepEqual(delivered.completeTargets, []);
   assert.deepEqual(delivered.completeCorrections, []);
+  const validate = (exposure: InvestigationContext, evidence: RecordId) => acceptInvestigation({ ...draft(), evidence: [evidence] }, {
+    session: f.base.session, attempt: 'reporter-contract' as RecordId, request: f.base.request,
+    originatingModule: f.base.request.subject, instructions: 'test', agent: new ScriptedInvestigator([]).identity,
+    exposure, suppliedEvidence: [], summarizedEvidence: [], lookup: f.evidence.lookup,
+  });
+  assert.equal(validate(delivered, b.root).investigrams[0]!.evidence[0], b.root);
+  assert.throws(() => validate(delivered, b.corrections[0]!.id), /Evidence must identify supplied context/);
+  assert.throws(() => validate(omitted, b.root), /Evidence must identify supplied context/);
+  assert.match(delivered.deliveries[0]!.limitations.join(' '), /cite correction.reporter/);
+  for (const operation of ['functionality', 'clarification', 'decomposition', 'examination'] as const) {
+    assert.match(investigationInstructions(operation), /correction handle identifies the relationship and is not eligible evidence/);
+    assert.match(investigationInstructions(operation), /seeing only revision metadata.*does not/);
+  }
+  const submission = investigatorFunctions.find(item => item.name === 'submit_investigram')!;
+  assert.match(JSON.stringify(submission.parameters), /cite correction.reporter/);
+  const invalidAgent = new ScriptedInvestigator([() => ({ kind: 'submit', result: { ...draft(), evidence: [b.corrections[0]!.id] } })]);
+  const rejected = await investigate({ ...f.base, history: h, request: { operation: 'clarification', subject: a.root, parameters: {} }, agent: invalidAgent });
+  assert.equal(rejected.outcome.kind, 'investigation-failure');
+  assert.equal(invalidAgent.inputs[0]!.length, 1, 'no substitution or validation-repair exchange');
+  assert.equal(invalidAgent.closes, 1);
+
 });
 
 

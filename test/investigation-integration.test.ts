@@ -818,6 +818,19 @@ test('revision lifecycle preserves exact subjects, displaced composition, confli
   assert.deepEqual(exact.accounts, initial.accounts);
   assert.ok(exact.revisions[0]!.rows.some(item => item.replacement === c));
   assert.equal(calls, 7, 'redisplay and inspection do not infer');
+  const reporter = correcting.accounts[0]!.id;
+  const reporterRevision = await execute('examine', reporter, correcting, { ...draft(module), corrections: [correction(reporter, 'E-prime')] });
+  const redisplay = view(await f.session.execute({ lens: 'examine', selector: reference(initial, a), reference: true, presentation: summary.presentation }));
+  assert.equal(redisplay.result!.reused, true);
+  assert.equal(redisplay.accounts[0]!.id, reporterRevision.corrections.find(item => item.target === reporter)!.replacement);
+  const displacedCorrection = redisplay.displacedCorrections.find(item => item.target === child)!;
+  assert.ok(displacedCorrection, 'corrections reported by the displaced root stay navigable');
+  assert.equal(displacedCorrection.reporter, reporter);
+  assert.ok(!redisplay.display.some(item => item.account === displacedCorrection.replacement), 'no old replacement spliced into the new tree');
+  assert.ok(redisplay.references.some(item => item.id === displacedCorrection.replacement));
+  assert.match(renderInvestigationView({ ...redisplay, presentation: { format: 'unicode', sourceDetail: false } }), /Displaced account .* reports correction/);
+  assert.equal(calls, 8);
+
 });
 
 for (const stop of ['invalidation', 'interruption'] as const) test(`revision submission cannot alter earlier observations after ${stop}`, async t => {
@@ -878,4 +891,34 @@ test('historical inspection pages expose every competing correction without chan
   assert.equal(new Set([...first.revisions[0]!.rows, ...second.revisions[0]!.rows].map(item => item.correction)).size, 26);
   assert.match(renderInvestigationView({ ...first, presentation: { format: 'unicode', sourceDetail: false } }), /--revision-page 2/);
   assert.equal(calls, 27);
+});
+
+test('large displaced history has bounded metadata and exact inspection recovers omitted statuses without inference', async t => {
+  let next = new ScriptedInvestigator([input => ({ kind: 'submit', result: { ...draft(input.request.subject),
+    children: Array.from({ length: 255 }, (_, n) => draft(input.request.subject, [], `old-${n}`)) } })]);
+  let calls = 0;
+  const f = await session(t, { identity: next.identity, open() { calls++; return next.open(); } });
+  const initial = view(await f.session.execute(summary));
+  assert.equal(initial.accounts.length, 256);
+  const a = initial.accounts[0]!.id, module = initial.selected[0]!;
+  const oldReference = initial.references.find(item => item.id === a)!.reference;
+  next = new ScriptedInvestigator([() => ({ kind: 'submit', result: { ...draft(module), corrections: [{ target: a,
+    correctedSubjects: [module], reason: 'A revised division of responsibility.', qualifications: ['Scripted bound regression.'], evidence: [a],
+    replacement: { ...draft(module, [], 'replacement'), children: Array.from({ length: 254 }, (_, n) => draft(module, [], `new-${n}`)) } }] } })]);
+  const changed = view(await f.session.execute({ lens: 'examine', selector: oldReference, reference: true, presentation: summary.presentation }));
+  assert.equal(changed.result!.evaluation!.outcome.kind, 'accepted');
+  const repeated = view(await f.session.execute(summary));
+  assert.equal(repeated.accounts.length, 255);
+  assert.equal(repeated.displaced.length, 256);
+  assert.equal(repeated.revisions.length, 256);
+  assert.equal(repeated.omissions.revisions, 255);
+  assert.ok(repeated.displacedCorrections.length <= 256);
+  const human = renderInvestigationView({ ...repeated, presentation: { format: 'unicode', sourceDetail: false } });
+  assert.equal((human.match(/Revision status /g) ?? []).length, 256);
+  assert.match(human, /255 revision statuses omitted/);
+  const original = view(await f.session.execute({ lens: 'inspect', selector: oldReference, reference: true, presentation: summary.presentation }));
+  assert.deepEqual(original.accounts, initial.accounts);
+  assert.equal(original.revisions.length, 256);
+  assert.equal(original.omissions.revisions, 0);
+  assert.equal(calls, 2);
 });

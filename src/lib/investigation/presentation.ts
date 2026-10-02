@@ -20,6 +20,8 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
   const display: { original: RecordId; account: RecordId; parent: RecordId | null; role: 'result' | 'accompanying' }[] = [];
   const pending = roots.map(original => ({ original, parent: null as RecordId | null, role: 'result' as 'result' | 'accompanying' }));
   const displaced = new Set<RecordId>(), omittedAccounts = new Set<RecordId>();
+  const listingLimit = 256;
+  const displacedCorrections = new Map<RecordId, { id: RecordId; reporter: RecordId; target: RecordId; replacement: RecordId }>();
   const historical = request.lens === 'inspect';
   // Displaced composition is disclosed separately; it is never spliced into a replacement.
   const rememberDisplaced = (root: RecordId) => {
@@ -27,15 +29,22 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
     for (let index = 0; index < queue.length; index++) {
       const id = queue[index]!;
       if (displaced.has(id)) continue;
-      displaced.add(id); queue.push(...revisionIndex.accounts.get(id)!.children);
+      const account = revisionIndex.accounts.get(id)!;
+      displaced.add(id); queue.push(...account.children);
+      for (const correctionId of account.corrections) {
+        const correction = store.get(correctionId);
+        if (correction.kind !== 'investigram-correction') throw new Error('Expected correction');
+        const { reporter, target, replacement } = correction;
+        displacedCorrections.set(correctionId, { id: correctionId, reporter, target, replacement });
+      }
     }
   };
   while (pending.length) {
     const entry = pending.shift()!;
     const id = historical ? entry.original : revisionIndex.primary(entry.original);
-    if (id !== entry.original) rememberDisplaced(entry.original);
     if (accounts.has(id)) continue;
-    if (accounts.size >= 256) { omittedAccounts.add(id); continue; }
+    if (accounts.size >= listingLimit) { omittedAccounts.add(id); continue; }
+    if (id !== entry.original) rememberDisplaced(entry.original);
     const account = revisionIndex.accounts.get(id);
     if (!account) throw new Error('Expected investigram');
     accounts.set(id, account); display.push({ ...entry, account: id });
@@ -50,8 +59,14 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
       pending.push({ original: correction.replacement, parent: null, role: 'accompanying' });
     }
   }
-  const revisionSubjects = [...new Set([...display.flatMap(item => [item.original, item.account]), ...displaced,
-    ...selected.filter(id => revisionIndex.accounts.has(id))])];
+  const allRevisionSubjects = [...new Set([...selected.filter(id => revisionIndex.accounts.has(id)),
+    ...display.flatMap(item => [item.original, item.account]), ...displaced])];
+  const revisionSubjects = allRevisionSubjects.slice(0, listingLimit);
+  const displacedListing = [...displaced].slice(0, listingLimit);
+  const displacedCorrectionListing = [...displacedCorrections.values()].slice(0, listingLimit);
+  const omissions = { displaced: displaced.size - displacedListing.length,
+    displacedCorrections: displacedCorrections.size - displacedCorrectionListing.length,
+    revisions: allRevisionSubjects.length - revisionSubjects.length };
   const revisions = revisionSubjects.map(id => revisionIndex.status(id, request.revisionPage));
   for (const status of revisions) for (const row of status.rows) {
     const correction = store.get(row.correction);
@@ -81,7 +96,9 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
     return { account: account.id, compositionParent: compositionParents.get(account.id) ?? null, investigationSubject: provenance.request.subject };
   });
   const navigable = navigation.flatMap(item => [item.compositionParent, item.investigationSubject]).filter((id): id is RecordId => id !== null && store.get(id).kind === 'investigram');
-  const references = new Map(store.entityIds([...new Set([...accounts.keys(), ...navigable, ...revisionSubjects, ...omittedAccounts, ...revisions.flatMap(item => [item.primary, item.familyPrimary, ...item.rows.flatMap(row => [row.target, row.replacement, row.reporter, ...(row.cause?.via ?? [])])]), ...inconsistencies.flatMap(item => [item.reporter, ...item.targets]), ...[...accounts.values()].flatMap(item => item.inconsistencies.flatMap(item => item.targets)), ...[...corrections.values()].flatMap(item => [item.reporter, item.target, item.replacement])])], 'investigram'));
+  const references = new Map(store.entityIds([...new Set([...accounts.keys(), ...navigable, ...revisionSubjects, ...displacedListing,
+    ...displacedCorrectionListing.flatMap(item => [item.reporter, item.target, item.replacement]),
+    ...omittedAccounts, ...revisions.flatMap(item => [item.primary, item.familyPrimary, ...item.rows.flatMap(row => [row.target, row.replacement, row.reporter, ...(row.cause?.via ?? [])])]), ...inconsistencies.flatMap(item => [item.reporter, ...item.targets]), ...[...accounts.values()].flatMap(item => item.inconsistencies.flatMap(item => item.targets)), ...[...corrections.values()].flatMap(item => [item.reporter, item.target, item.replacement])])], 'investigram'));
   for (const [id, reference] of store.entityIds(navigation.map(item => item.investigationSubject).filter(id => store.get(id).kind === 'module'), 'module')) references.set(id, reference);
   const support = new Set([...accounts.values()].flatMap(item => [...item.evidence, ...item.associations.flatMap(item => item.evidence), ...item.inconsistencies.flatMap(item => item.evidence)]));
   for (const correction of corrections.values()) correction.evidence.forEach(id => support.add(id));
@@ -119,13 +136,14 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
   }
   const investigations = request.lens === 'inspect' ? associatedView(store, session, selected, request.after, request.referenceLifetime) : undefined;
   const projection = { id: recordId(session, 'investigation-projection', [methods.investigationPresentation, request,
-    selected.map(id => identityReference(session, id)), result?.evaluation?.id ?? null, [...corrections.keys()], investigations ?? null, revisions, inconsistencies]),
+    selected.map(id => identityReference(session, id)), result?.evaluation?.id ?? null, [...corrections.keys()], investigations ?? null, revisions, inconsistencies, displacedCorrectionListing, omissions]),
     session, lens: request.lens, subject: 'selected-subjects', parameters: { selector: request.selector, reference: request.reference ?? false },
     selection: { matches: selected.length, status: request.unsupportedSubject ? 'unsupported-subject-lens' : selected.length === 1 ? 'selected' : selected.length ? 'ambiguous' : 'missing' } };
   return finalizeInvestigationUsage({ schema: 'postcode-investigation-view/1-experimental' as const, id: projection.id, projection,
     presentation: request.presentation, referenceLifetime: request.referenceLifetime ?? 'session',
     result, selected, candidates, unsupportedSubject: request.unsupportedSubject ?? null, references: [...references].map(([id, reference]) => ({ id, reference })),
-    display, revisions, displaced: [...displaced], omittedAccounts: [...omittedAccounts], inconsistencies,
+    display, revisions, displaced: displacedListing, displacedCorrections: displacedCorrectionListing, omissions,
+    omittedAccounts: [...omittedAccounts], inconsistencies,
     navigation, ...(investigations ? { investigations } : {}),
     accounts: [...accounts.values()], corrections: [...corrections.values()], provenance: [...provenances.values()],
     support: supportDetails, usage,
@@ -182,6 +200,8 @@ export function renderInvestigationView(view: InvestigationView): string {
     lines.push(`  Revision page ${revision.page}; ${revision.rows.length} of ${revision.total} relationships/causes.${revision.nextPage ? ` Inspect @${reference(revision.original)} --revision-page ${revision.nextPage} for more.` : ''}`);
   }
   if (view.displaced.length) lines.push(`Displaced original composition (not incorporated into replacement): ${view.displaced.map(id => `@${reference(id)}`).join(', ')}`);
+  for (const item of view.displacedCorrections) lines.push(`Displaced account @${reference(item.reporter)} reports correction ${item.id}: @${reference(item.target)} → @${reference(item.replacement)}. Inspect the reporter for its reason and qualifications; the replacement is not incorporated here.`);
+  if (Object.values(view.omissions).some(count => count > 0)) lines.push(`Metadata listing bounds: ${view.omissions.displaced} displaced accounts, ${view.omissions.displacedCorrections} accompanying corrections and ${view.omissions.revisions} revision statuses omitted. Inspect original, composition or reporter references to navigate their own bounded views.`);
   if (view.omittedAccounts.length) lines.push(`Account display bound; inspect omitted references: ${view.omittedAccounts.map(id => `@${reference(id)}`).join(', ')}`);
   for (const item of view.inconsistencies) lines.push(`Unresolved inconsistency reported by @${reference(item.reporter)}: ${inlineText(item.reason)}; targets ${item.targets.map(id => `@${reference(id)}`).join(', ')}`, ...item.qualifications.map(value => `  Qualification: ${inlineText(value)}`), `  Evidence: ${item.evidence.map(inlineText).join(', ') || 'none supplied'}`);
   for (const correction of view.corrections) lines.push(`\nCorrection reported by @${reference(correction.reporter)}: @${reference(correction.target)} → @${reference(correction.replacement)}`,

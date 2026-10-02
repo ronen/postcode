@@ -2,6 +2,8 @@ import { freezeOwned } from '../immutable.js';
 import type { RecordId, SessionId } from '../records.js';
 import type { AccountContext, ContextDelivery, ContextPart, Correction, InvestigationHistory } from './contracts.js';
 
+export const correctionEvidenceGuidance = 'A correction\'s reason and qualifications are content of its reporting investigram: cite correction.reporter for that content, never the correction handle. A correction handle identifies the relationship and is not eligible evidence. Receiving substantive correction content supplies its reporter for citation; seeing only revision metadata or a relationship handle does not.';
+
 const allParts: readonly ContextPart[] = ['prose', 'referent', 'qualifications'];
 
 /** Exposure is recorded only for responses the coordinator dispatches, never agent declarations. */
@@ -30,8 +32,9 @@ export class InvestigationContext {
       // Expand the requested account's cause/alternative page once. Automatically
       // included account bodies carry a revision summary and an explicit page-1
       // continuation, avoiding quadratic repetition of the same family/causes.
+      const policyOmittedInconsistencies = id !== subject ? revision?.inconsistencyCount ?? 0 : 0;
       if (revision && id !== subject) revision = { ...revision, rows: [], omittedRows: revision.total,
-        inconsistencies: [], omittedInconsistencyReporters: revision.inconsistencies.map(item => item.reporter),
+        inconsistencies: [], omittedInconsistencyReporters: [],
         nextPage: revision.total || revision.inconsistencyCount ? 1 : null };
       if (revision) {
         const omittedInconsistencyReporters: RecordId[] = [...(revision.omittedInconsistencyReporters ?? [])];
@@ -42,7 +45,12 @@ export class InvestigationContext {
         });
         revision = { ...revision, inconsistencies, omittedInconsistencyReporters };
       }
-      const revisionLinks = revision ? [...revision.rows.map(row => this.history.correction(row.correction)!).filter(Boolean), ...(id !== subject ? incoming.slice(0, 1) : [])] : incoming;
+      // Select the next link on the path to the current primary, not the oldest
+      // alternative. The related target/replacement bodies retain bounded traversal.
+      const primaryLink = revision && id !== subject
+        ? incoming.find(item => item.replacement === revision.primary || this.history.revision?.(item.replacement).primary === revision.primary)
+        : undefined;
+      const revisionLinks = revision ? [...revision.rows.map(row => this.history.correction(row.correction)!).filter(Boolean), ...(primaryLink ? [primaryLink] : [])] : incoming;
       const related = [...new Map([...revisionLinks, ...account.corrections.slice(((id === subject ? revisionPage : 1) - 1) * 24, (id === subject ? revisionPage : 1) * 24).map(id => {
         const correction = this.history.correction(id);
         if (!correction) throw new Error('Missing retained accompanying correction');
@@ -63,6 +71,7 @@ export class InvestigationContext {
       const { deliveries: _deliveries, ...origin } = provenance;
       const completeParts: ContextPart[] = [], omissions: string[] = [];
       if (revision?.omittedRows) omissions.push('Revision details omitted for automatically included account; retrieve this account at revisionPage 1.');
+      if (policyOmittedInconsistencies) omissions.push(`${policyOmittedInconsistencies} incoming inconsistencies omitted by automatic-account summary policy; retrieve this account at revisionPage 1 and follow revision.nextPage.`);
       if (revision?.omittedInconsistencyReporters?.length) omissions.push('Incoming inconsistency content omitted by character bound; retrieve reporting account qualifications.');
       const nextCorrectionPage = account.corrections.length > (id === subject ? revisionPage : 1) * 24 ? (id === subject ? revisionPage : 1) + 1 : null;
       if (nextCorrectionPage) omissions.push(`Accompanying corrections omitted; retrieve this account with revisionPage ${nextCorrectionPage}.`);
@@ -87,6 +96,7 @@ export class InvestigationContext {
     }
     return freezeOwned(structuredClone({ requested: subject, accounts, corrections, omittedAccounts, omittedCorrections,
       limitations: ['Prior interpretations are not independent corroboration. Delivery does not establish comprehension.',
+        correctionEvidenceGuidance,
         'Correction references denote revisions, including competing alternatives; exact originals are preserved. Revision rows are bounded; use investigram(subject, revisionPage: nextPage) for further relationships/causes. Retrieve cause targets, replacements and proximal citations for full context. Reference-only revision metadata does not supply account content or complete correction context.',
         ...(omittedAccounts.length || omittedCorrections.length ? ['Correction context is incomplete. Retrieve omitted account or correction-target references separately.'] : [])] }));
   }
