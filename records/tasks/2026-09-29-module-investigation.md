@@ -435,6 +435,14 @@ Human response to the implementing agent's question:
 
 > ok, milestone 5 is accepted, wrap it. up then prepare the integrated review
 
+### Integrated review: bounded completion and inconsistency exposure — 2026-10-02
+
+> The review is complete; assess and act as usual.
+>
+> Re F1: Complete the missing merge-anything integrated sequence rather than defer it. I authorize a bounded follow-up under the frozen assessment configuration, recreating prerequisites in a fresh shell as needed. There’s no need to repeat the rest of milestone 5.
+>
+> **Re F3:** Require substantive exposure to each inconsistency target, recorded through a citation; identifier availability alone is insufficient. Unlike a replacement correction, reporting an unresolved inconsistency need not require the target’s complete content. Record this clarification in the governing decision.
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
