@@ -1599,3 +1599,67 @@ authored code and descriptive documents have none.
 Milestone 5 is ready for human-arranged independent review, with adequacy of the
 qualified live evidence explicitly left for review. The task remains active.
 Milestone-5 acceptance and the subsequent final integrated review are still pending.
+
+### Milestone 5 review corrections and focused dependent assessment — 2026-10-02
+
+Human choices were recorded before affected work in `f21dd5e` (reporter-citation
+clarification and one bounded live sequence), `458fe44` (bounded revision listings)
+and `56912e6` (current-primary link priority). Production correction `117a4d4`
+addresses all six findings: displaced reporting accounts retain bounded correction
+references; reporter citation is explicit without broader eligibility or repair;
+help reflects implemented behavior; revision/displacement metadata has explicit
+bounds and omissions; automatic context prioritizes the current-primary path and
+honestly counts policy omissions; the pass-05 addendum restores the omitted
+structured-inconsistency observation. Architecture and user documentation are
+updated. No finding was rejected; the
+[disposition](../reviews/module-investigation/2026-10-02-milestone-5-disposition.md)
+retains every non-defect observation and review limit.
+
+Four focused regressions and the complete offline suite passed **466 tests**, zero
+failures/cancellations/skips, at clean stationary `117a4d4`. The earlier restricted
+run had 463 passes and three local callback failures; a minimal listener reproduced
+`EPERM`. The same complete suite passed with local listeners permitted, without
+code, test or timeout changes. Both runs are retained; historical execution-ownership
+cancellation concerns are not retroactively erased. Maximum monitor gap was 1.087
+seconds, none over two seconds. The new setup dry run accepted three scripted
+CLI/worker evaluations with no real credentials or provider requests.
+
+`94ee9b9` froze the fresh-session protocol, separate fixture/source pin, unambiguous
+Y/Z claims, exact instructions/schema, source-grounded reference and configuration
+before live work. `2c4bd8c5a9427e74f62f2d9cdb72a9417b57fd29` preserves the complete
+[focused assessment](../validation/module-investigation/pass-06/report.md), audits,
+formative role inputs/outputs and final dispositions. The fixed configuration remains
+**gpt-5.6-sol / medium / ChatGPT-plan**, TypeScript **6.0.3**, unchanged guards and
+inference-retry policy. All three scheduled hosted examinations were accepted;
+no failure, recovery, tuning, fallback, reauthorization or extra live sequence occurred.
+
+After A's source-supported correction, exact inspections verify direct warning Y
+and transitive warning Z with their original prose unchanged. Examination of Y
+accepts corrections of **both actual dependent errors**, supported by the full
+captured source. The scheduled examination of original Z adds a sharper competing
+replacement to that same original; it is not discovery of another distinct error.
+There are three dependent correction relationships over two distinct mistaken
+accounts. Fresh view-only evaluator and source-informed assessor agree on this
+bounded success. They retain ambiguous generated “complete result” wording, absent
+user-facing source excerpts and dense presentation. These outputs remain unchanged;
+known presentation concerns enrich the existing backlog. Controlled injection,
+deliberate examination, shared family and reference authorship/orchestration limit
+independence; this does not measure spontaneous error detection or broad adequacy.
+
+Audits reconcile **10 provider requests / 188,953 reported tokens**, no missing or
+anomalous provider reports, and 142 exact typed reference resolutions. Four empty
+synthetic setup reports remain anomalous and separate. Actual monetary attribution
+and evaluator/assessor/preparer usage are unavailable, not zero. Wire exposure,
+usage views/observations and independent lifecycle reconstruction agree. Each hosted
+evaluation received the full source body; no correction ID was used as evidence.
+Two retained repeats and thirteen inspections made no provider calls. Frozen inputs,
+runtime and source pin remain unchanged. JSON, local links and the supplementary
+credential-pattern scan pass; 65 exact-capture whitespace warnings are preserved,
+with none in authored documents/audit. Earlier fixture, pass-05 captures/rejection,
+reviewer findings and original handoff remain unchanged. Diagnostic allowance remains
+two used/eight remaining; no purchase or spending-setting change occurred.
+
+Further human-arranged review is required under the original milestone-5 handoff,
+with exact target `2c4bd8c5a9427e74f62f2d9cdb72a9417b57fd29` (this checkpoint adds
+only the task record). Milestone acceptance and the subsequent final integrated
+review remain pending. The task stays active.
