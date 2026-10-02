@@ -138,3 +138,23 @@ other recorded candidates remain in the [backlog](../../../../docs/backlog.md).
 The [integrated disposition](../../../reviews/module-investigation/2026-10-02-integrated-disposition.md)
 records the authorized F1 completion, F2 documentation refresh and F3 substantive
 citation requirement. Final acceptance remains outstanding.
+
+
+## Integrated re-review
+
+The [round-2 findings](../../../reviews/module-investigation/2026-10-02-integrated-round-2-findings.md)
+clear F1–F3 without new actionable findings. The reviewer independently reproduced
+469 passing tests and all fifteen audits at `f3189e3`, including unchanged aggregate
+outputs, and reran the F3 probe to confirm rejection. The same reviewer/session
+performed the focused check; all original coverage limits remain.
+
+The pinned-source check additionally confirms pass-07 descriptor normalization,
+collision enumerability and eager origin getter access. It identifies an omitted
+second `origin[key]` read on the collision path, which can invoke that getter twice.
+The examination's test-coverage statements remain unverified. These later checks
+add qualified evidence without rewriting pass-07 views or formative judgments.
+F3 remains covered deterministically, not by the historical-runtime live pass.
+
+The reviewer recommends sufficient evidence for the integrated gate. The human
+explicitly keeps the task open, with pushing and GitHub PR creation as the next step.
+This follow-up changes review records only and makes no new provider request.
