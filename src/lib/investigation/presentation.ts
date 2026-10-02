@@ -42,9 +42,11 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
   while (pending.length) {
     const entry = pending.shift()!;
     const id = historical ? entry.original : revisionIndex.primary(entry.original);
-    if (accounts.has(id)) continue;
-    if (accounts.size >= listingLimit) { omittedAccounts.add(id); continue; }
+    if (!accounts.has(id) && accounts.size >= listingLimit) { omittedAccounts.add(id); continue; }
+    // A primary already shown through an accompanying correction still displaces
+    // this original, even though its body must not be displayed twice.
     if (id !== entry.original) rememberDisplaced(entry.original);
+    if (accounts.has(id)) continue;
     const account = revisionIndex.accounts.get(id);
     if (!account) throw new Error('Expected investigram');
     accounts.set(id, account); display.push({ ...entry, account: id });

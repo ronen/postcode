@@ -582,7 +582,9 @@ own composition, with explicit original-to-displayed placement metadata. Correct
 children can appear under an unchanged root. Replacing the root displaces its old
 subtree. Corrections targeting it remain in revision context; corrections reported
 by displaced accounts are separately listed by reporter, target and replacement
-references, without incorporating their replacements into the new tree. No display placement is stored as composition.
+references, without incorporating their replacements into the new tree. If an accompanying correction has already displayed a primary before traversal
+reaches a deeper corrected original, that original and its subtree still count as
+displaced; the primary body is not duplicated. No display placement is stored as composition.
 At most 256 accounts are materialized per view, with omitted references identified.
 Displaced-account, displaced accompanying-correction and revision-status listings
 are each limited to 256 entries, with separate omitted counts. Revision statuses

@@ -922,3 +922,89 @@ test('large displaced history has bounded metadata and exact inspection recovers
   assert.equal(original.omissions.revisions, 0);
   assert.equal(calls, 2);
 });
+
+test('an already displayed accompanying replacement still discloses the deeper displaced original and subtree', async t => {
+  let next = new ScriptedInvestigator([input => ({ kind: 'submit', result: { ...draft(input.request.subject), children: [
+    draft(input.request.subject, [], 'shallow'), { ...draft(input.request.subject, [], 'parent'), children: [
+      { ...draft(input.request.subject, [], 'K'), children: [draft(input.request.subject, [], 'K-child')] },
+    ] },
+  ] } })]);
+  let calls = 0;
+  const f = await session(t, { identity: next.identity, open() { calls++; return next.open(); } });
+  const initial = view(await f.session.execute(summary)), module = initial.selected[0]!;
+  const root = initial.accounts[0]!, shallow = root.children[0]!;
+  const parent = initial.accounts.find(item => item.id === root.children[1])!;
+  const k = initial.accounts.find(item => item.id === parent.children[0])!;
+  const correction = (target: RecordId, replacement: SubmittedInvestigram) => ({ target, replacement,
+    correctedSubjects: [module], reason: 'More precise account.', qualifications: ['Scripted ordering regression.'], evidence: [target] });
+  next = new ScriptedInvestigator([
+    () => ({ kind: 'tools', requests: [{ kind: 'investigram', subject: k.id }] }),
+    () => ({ kind: 'submit', result: { ...draft(module), corrections: [correction(shallow,
+      { ...draft(module, [], 'shallow-replacement'), corrections: [correction(k.id, draft(module, [], 'K-replacement'))] })] } }),
+  ]);
+  const changed = view(await f.session.execute({ lens: 'examine', selector: initial.references.find(item => item.id === shallow)!.reference,
+    reference: true, presentation: summary.presentation }));
+  assert.equal(changed.result!.evaluation!.outcome.kind, 'accepted');
+  const replacement = changed.corrections.find(item => item.target === k.id)!.replacement;
+  const repeated = view(await f.session.execute(summary));
+  assert.equal(repeated.display.filter(item => item.account === replacement).length, 1);
+  assert.ok(repeated.displaced.includes(k.id));
+  assert.ok(repeated.displaced.includes(k.children[0]!));
+  assert.ok(repeated.revisions.some(item => item.original === k.id));
+  assert.deepEqual(repeated.omissions, { displaced: 0, displacedCorrections: 0, revisions: 0 });
+  const exact = view(await f.session.execute({ lens: 'inspect', selector: initial.references.find(item => item.id === k.id)!.reference,
+    reference: true, presentation: summary.presentation }));
+  assert.deepEqual(exact.accounts, [k, initial.accounts.find(item => item.id === k.children[0])!]);
+  assert.equal(calls, 2);
+});
+
+test('displaced account and accompanying correction listings truncate with exact counts and retained navigation', async t => {
+  let next = new ScriptedInvestigator([input => ({ kind: 'submit', result: draft(input.request.subject) })]), calls = 0;
+  const f = await session(t, { identity: next.identity, open() { calls++; return next.open(); } });
+  const auxiliary = view(await f.session.execute({ ...summary, selector: 'other' }));
+  const target = auxiliary.accounts[0]!.id;
+  next = new ScriptedInvestigator([input => ({ kind: 'submit', result: { ...draft(input.request.subject),
+    children: Array.from({ length: 3 }, (_, n) => draft(input.request.subject, [], `branch-${n}`)) } })]);
+  const initial = view(await f.session.execute(summary)), module = initial.selected[0]!;
+  const correction = (subject: RecordId, replacement: SubmittedInvestigram) => ({ target: subject, replacement,
+    correctedSubjects: [module], reason: 'More precise account.', qualifications: ['Scripted listing regression.'], evidence: [subject] });
+  const reporters: RecordId[] = [];
+  for (const [n, branch] of initial.accounts[0]!.children.entries()) {
+    next = new ScriptedInvestigator([
+      () => ({ kind: 'tools', requests: [{ kind: 'investigram', subject: target }] }),
+      () => ({ kind: 'submit', result: { ...draft(module), corrections: [correction(branch,
+        { ...draft(module, [], `wrapper-${n}`), children: [{ ...draft(module, [], `reporter-${n}`),
+          children: Array.from({ length: 122 }, (_, i) => draft(module, [], `child-${i}`)),
+          corrections: Array.from({ length: 129 }, (_, i) => correction(target, draft(module, [], `alternative-${i}`))),
+        }] })] } }),
+    ]);
+    const changed = view(await f.session.execute({ lens: 'examine', selector: initial.references.find(item => item.id === branch)!.reference,
+      reference: true, presentation: summary.presentation }));
+    assert.equal(changed.result!.evaluation!.outcome.kind, 'accepted');
+    reporters.push(changed.accounts.find(item => item.corrections.length === 129)!.id);
+  }
+  next = new ScriptedInvestigator([
+    () => ({ kind: 'tools', requests: reporters.map(subject => ({ kind: 'investigram', subject })) }),
+    () => ({ kind: 'submit', result: { ...draft(module), corrections: reporters.map((subject, n) => correction(subject, draft(module, [], `replacement-${n}`))) } }),
+  ]);
+  const changed = view(await f.session.execute({ lens: 'examine', selector: initial.references.find(item => item.id === initial.accounts[0]!.id)!.reference,
+    reference: true, presentation: summary.presentation }));
+  assert.equal(changed.result!.evaluation!.outcome.kind, 'accepted');
+  const repeated = view(await f.session.execute(summary));
+  assert.equal(repeated.displaced.length, 256);
+  assert.equal(repeated.omissions.displaced, 116, 'three old branches plus three displaced 123-account subtrees');
+  assert.equal(repeated.displacedCorrections.length, 256);
+  assert.equal(repeated.omissions.displacedCorrections, 131, 'three reporters each retain 129 corrections');
+  const human = renderInvestigationView({ ...repeated, presentation: { format: 'unicode', sourceDetail: false } });
+  assert.match(human, /116 displaced accounts, 131 accompanying corrections/);
+  const lastReporter = reporters[2]!;
+  const exact = view(await f.session.execute({ lens: 'inspect', selector: repeated.references.find(item => item.id === lastReporter)!.reference,
+    reference: true, presentation: summary.presentation }));
+  assert.equal(exact.accounts[0]!.id, lastReporter);
+  assert.equal(exact.accounts[0]!.children.length, 122);
+  assert.equal(exact.accounts[0]!.corrections.length, 129);
+  assert.ok(exact.accounts[0]!.corrections.some(id => !repeated.displacedCorrections.some(item => item.id === id)));
+  assert.ok(exact.accounts[0]!.children.some(id => !repeated.displaced.includes(id)));
+  assert.equal(exact.omittedAccounts.length, 0);
+  assert.equal(calls, 6, 'repeat and exact navigation do not infer');
+});
