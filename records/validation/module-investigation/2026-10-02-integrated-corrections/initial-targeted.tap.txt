@@ -1,0 +1,297 @@
+TAP version 13
+# Subtest: actual dialogue follows multiple delegation layers, acquires qualified relationships, full source and documentation
+ok 1 - actual dialogue follows multiple delegation layers, acquires qualified relationships, full source and documentation
+  ---
+  duration_ms: 3587.739933
+  ...
+# Subtest: subject-only capture has multiple mappings, exclusions, unavailable artifacts and first-observed validity
+ok 2 - subject-only capture has multiple mappings, exclusions, unavailable artifacts and first-observed validity
+  ---
+  duration_ms: 243.670216
+  ...
+# Subtest: unavailable and malformed tool requests permit continued investigation without arbitrary path reads
+ok 3 - unavailable and malformed tool requests permit continued investigation without arbitrary path reads
+  ---
+  duration_ms: 1212.933584
+  ...
+# Subtest: full result accepts nested corrections, conflicts and inconsistencies with complete exposure; originals stay immutable
+ok 4 - full result accepts nested corrections, conflicts and inconsistencies with complete exposure; originals stay immutable
+  ---
+  duration_ms: 871.921034
+  ...
+# Subtest: citations distinguish bare references, excerpts, and complete content accumulated across exchanges
+ok 5 - citations distinguish bare references, excerpts, and complete content accumulated across exchanges
+  ---
+  duration_ms: 537.315974
+  ...
+# Subtest: whole-result validation rejects duplicate without publishing fragments
+ok 6 - whole-result validation rejects duplicate without publishing fragments
+  ---
+  duration_ms: 371.317636
+  ...
+# Subtest: whole-result validation rejects qualification without publishing fragments
+ok 7 - whole-result validation rejects qualification without publishing fragments
+  ---
+  duration_ms: 372.946745
+  ...
+# Subtest: whole-result validation rejects reference without publishing fragments
+ok 8 - whole-result validation rejects reference without publishing fragments
+  ---
+  duration_ms: 370.606405
+  ...
+# Subtest: whole-result validation rejects status without publishing fragments
+ok 9 - whole-result validation rejects status without publishing fragments
+  ---
+  duration_ms: 370.596426
+  ...
+# Subtest: whole-result validation rejects module-target without publishing fragments
+ok 10 - whole-result validation rejects module-target without publishing fragments
+  ---
+  duration_ms: 376.909164
+  ...
+# Subtest: whole-result validation rejects local-id-target without publishing fragments
+ok 11 - whole-result validation rejects local-id-target without publishing fragments
+  ---
+  duration_ms: 374.40863
+  ...
+# Subtest: dialogue serialization rejects cycle without publishing fragments
+ok 12 - dialogue serialization rejects cycle without publishing fragments
+  ---
+  duration_ms: 377.137142
+  ...
+# Subtest: whole-result validation rejects shared without publishing fragments
+ok 13 - whole-result validation rejects shared without publishing fragments
+  ---
+  duration_ms: 366.64776
+  ...
+# Subtest: acceptance itself rejects cyclic and shared composition before assigning results
+ok 14 - acceptance itself rejects cyclic and shared composition before assigning results
+  ---
+  duration_ms: 219.55694
+  ...
+# Subtest: correction cannot target the identity assigned to an investigram in its own submitted unit
+ok 15 - correction cannot target the identity assigned to an investigram in its own submitted unit
+  ---
+  duration_ms: 211.393095
+  ...
+# Subtest: oversized evidence is explicitly unavailable while the dialogue can continue
+ok 16 - oversized evidence is explicitly unavailable while the dialogue can continue
+  ---
+  duration_ms: 1447.523829
+  ...
+# Subtest: ended after evidence/usage preserves attempt attribution and closes the dialogue
+ok 17 - ended after evidence/usage preserves attempt attribution and closes the dialogue
+  ---
+  duration_ms: 1162.860297
+  ...
+# Subtest: refused after evidence/usage preserves attempt attribution and closes the dialogue
+ok 18 - refused after evidence/usage preserves attempt attribution and closes the dialogue
+  ---
+  duration_ms: 1151.550471
+  ...
+# Subtest: truncated after evidence/usage preserves attempt attribution and closes the dialogue
+ok 19 - truncated after evidence/usage preserves attempt attribution and closes the dialogue
+  ---
+  duration_ms: 1164.395829
+  ...
+# Subtest: communication-failure after evidence/usage preserves attempt attribution and closes the dialogue
+ok 20 - communication-failure after evidence/usage preserves attempt attribution and closes the dialogue
+  ---
+  duration_ms: 1202.355951
+  ...
+# Subtest: configuration-unavailable after evidence/usage preserves attempt attribution and closes the dialogue
+ok 21 - configuration-unavailable after evidence/usage preserves attempt attribution and closes the dialogue
+  ---
+  duration_ms: 1164.150869
+  ...
+# Subtest: guard covers asynchronous evidence work, provider calls, call count, tool count and volume
+ok 22 - guard covers asynchronous evidence work, provider calls, call count, tool count and volume
+  ---
+  duration_ms: 413.563156
+  ...
+# Subtest: interrupt rejects late results and preserves prior usage independently
+ok 23 - interrupt rejects late results and preserves prior usage independently
+  ---
+  duration_ms: 215.200884
+  ...
+# Subtest: invalidate rejects late results and preserves prior usage independently
+ok 24 - invalidate rejects late results and preserves prior usage independently
+  ---
+  duration_ms: 216.07528
+  ...
+# Subtest: deadline rejects late results and preserves prior usage independently
+ok 25 - deadline rejects late results and preserves prior usage independently
+  ---
+  duration_ms: 269.036119
+  ...
+# Subtest: input changes during dialogue invalidate before acceptance; unexpected defects are not ordinary failures
+ok 26 - input changes during dialogue invalidate before acceptance; unexpected defects are not ordinary failures
+  ---
+  duration_ms: 378.49982
+  ...
+# Subtest: only delivered complete target context permits corrections, including separately requested parts
+ok 27 - only delivered complete target context permits corrections, including separately requested parts
+  ---
+  duration_ms: 2275.1441
+  ...
+# Subtest: corrected initial context includes chains and competing accounts, with omissions and completeness by correction
+ok 28 - corrected initial context includes chains and competing accounts, with omissions and completeness by correction
+  ---
+  duration_ms: 1524.433206
+  ...
+# Subtest: source captures reject forged mappings and excluded aliases remain unavailable
+ok 29 - source captures reject forged mappings and excluded aliases remain unavailable
+  ---
+  duration_ms: 237.159115
+  ...
+# Subtest: malformed response and unsubmitted trees fail; post-submission validity checks are outside the generation deadline
+ok 30 - malformed response and unsubmitted trees fail; post-submission validity checks are outside the generation deadline
+  ---
+  duration_ms: 290.367815
+  ...
+# Subtest: usage retains distinct reports and anomalies without selecting uncertain totals
+ok 31 - usage retains distinct reports and anomalies without selecting uncertain totals
+  ---
+  duration_ms: 0.965192
+  ...
+# Subtest: provider accounting anomalies preserve both accepted and failed investigation outcomes
+ok 32 - provider accounting anomalies preserve both accepted and failed investigation outcomes
+  ---
+  duration_ms: 2078.01031
+  ...
+# Subtest: corrections associate explicit program subjects through follow-ups and subordinate accounts
+ok 33 - corrections associate explicit program subjects through follow-ups and subordinate accounts
+  ---
+  duration_ms: 1900.977163
+  ...
+# Subtest: correction reasons cite their reporter without granting complete account context
+ok 34 - correction reasons cite their reporter without granting complete account context
+  ---
+  duration_ms: 966.989998
+  ...
+# Subtest: corrected subjects permit entities and artifacts but reject claims and evidence
+ok 35 - corrected subjects permit entities and artifacts but reject claims and evidence
+  ---
+  duration_ms: 509.191159
+  ...
+# Subtest: documentation discrepancy submission preserves the contract: attributed-prose
+ok 36 - documentation discrepancy submission preserves the contract: attributed-prose
+  ---
+  duration_ms: 1404.206733
+  ...
+# Subtest: documentation discrepancy submission preserves the contract: module-inconsistency
+not ok 37 - documentation discrepancy submission preserves the contract: module-inconsistency
+  ---
+  duration_ms: 1282.742828
+  location: '/Users/ronen/postcode/app/_build/test/investigation.test.js:590:5'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      {
+        kind: 'investigation-failure',
+    +   reason: 'Inconsistency targets must be earlier investigrams with substantively supplied content recorded by a citation.'
+    -   reason: 'Inconsistency targets must be earlier investigrams.'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    kind: 'investigation-failure'
+    reason: 'Inconsistency targets must be earlier investigrams.'
+  actual:
+    kind: 'investigation-failure'
+    reason: 'Inconsistency targets must be earlier investigrams with substantively supplied content recorded by a citation.'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/ronen/postcode/app/_build/test/investigation.test.js:648:20)
+    async Test.run (node:internal/test_runner/test:932:9)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: documentation discrepancy submission preserves the contract: artifact-inconsistency
+not ok 38 - documentation discrepancy submission preserves the contract: artifact-inconsistency
+  ---
+  duration_ms: 1677.591821
+  location: '/Users/ronen/postcode/app/_build/test/investigation.test.js:590:5'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      {
+        kind: 'investigation-failure',
+    +   reason: 'Inconsistency targets must be earlier investigrams with substantively supplied content recorded by a citation.'
+    -   reason: 'Inconsistency targets must be earlier investigrams.'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    kind: 'investigation-failure'
+    reason: 'Inconsistency targets must be earlier investigrams.'
+  actual:
+    kind: 'investigation-failure'
+    reason: 'Inconsistency targets must be earlier investigrams with substantively supplied content recorded by a citation.'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/ronen/postcode/app/_build/test/investigation.test.js:648:20)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:932:9)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: documentation discrepancy submission preserves the contract: mistyped-evidence
+ok 39 - documentation discrepancy submission preserves the contract: mistyped-evidence
+  ---
+  duration_ms: 1622.290492
+  ...
+# Subtest: documentation discrepancy submission preserves the contract: mistyped-subject
+ok 40 - documentation discrepancy submission preserves the contract: mistyped-subject
+  ---
+  duration_ms: 1440.504548
+  ...
+# Subtest: short handles preserve bare-reference exposure and exact domain validation (api, acquire=false)
+ok 41 - short handles preserve bare-reference exposure and exact domain validation (api, acquire=false)
+  ---
+  duration_ms: 863.564977
+  ...
+# Subtest: short handles preserve bare-reference exposure and exact domain validation (api, acquire=true)
+ok 42 - short handles preserve bare-reference exposure and exact domain validation (api, acquire=true)
+  ---
+  duration_ms: 1553.947915
+  ...
+# Subtest: short handles preserve bare-reference exposure and exact domain validation (plan, acquire=false)
+ok 43 - short handles preserve bare-reference exposure and exact domain validation (plan, acquire=false)
+  ---
+  duration_ms: 829.884425
+  ...
+# Subtest: short handles preserve bare-reference exposure and exact domain validation (plan, acquire=true)
+ok 44 - short handles preserve bare-reference exposure and exact domain validation (plan, acquire=true)
+  ---
+  duration_ms: 1260.196987
+  ...
+# Subtest: hosted reference compaction cannot bypass the canonical decoded-reply character guard
+ok 45 - hosted reference compaction cannot bypass the canonical decoded-reply character guard
+  ---
+  duration_ms: 402.696644
+  ...
+# Subtest: real evidence queries and retained investigram context encode without canonical reference leakage
+ok 46 - real evidence queries and retained investigram context encode without canonical reference leakage
+  ---
+  duration_ms: 963.598458
+  ...
+# Encoded 177 real evidence queries across all nine kinds, plus full and bounded retained investigram context.
+# Subtest: unresolved inconsistencies require substantive citation of every target without complete context or repair
+ok 47 - unresolved inconsistencies require substantive citation of every target without complete context or repair
+  ---
+  duration_ms: 6802.90621
+  ...
+1..47
+# tests 47
+# suites 0
+# pass 45
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 49750.761979
