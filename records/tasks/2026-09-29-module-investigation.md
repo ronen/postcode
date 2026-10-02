@@ -447,6 +447,12 @@ Human response to the implementing agent's question:
 
 > the review has been completed, and has no new findings.  follow up on it as usual, but don't close the task yet.   next step will be to push and create a github PR.
 
+### Push and PR authorization — 2026-10-02
+
+> push and create the PR
+
+> The PR description just needs to summarize the contribution, it doesn't need detailed implementation and review records
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
