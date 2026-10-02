@@ -22,7 +22,7 @@ and medium reasoning through the ChatGPT-plan route. The adapter handles omitted
 content-type headers and finalized item events followed by an empty completed
 envelope, without accepting unfinished output. See the
 [connection verification](../records/validation/module-investigation/2026-09-30-chatgpt-completed-items.md).
-Formative assessment is still pending; connectivity does not establish usefulness.
+Formative results and limitations are linked below; connectivity alone does not establish usefulness.
 This selection rationale is not a claim about actual ChatGPT
 credit charges, which remain unattributed by token reports.
 
@@ -252,3 +252,11 @@ uses the same fixed model, reasoning, route and TypeScript configuration. It
 records useful corrections alongside communication failures, a rejected evidence
 reference and controlled-fixture limitations; successful steps do not establish
 a fully successful live sequence.
+
+The [focused dependent-account sequence](../records/validation/module-investigation/pass-06/report.md)
+uses that same configuration after clarifying reporter citation. It records accepted,
+source-supported corrections to direct and transitive dependent accounts, with
+truthful scripted origin and deliberate examination. A later refinement leaves
+competing alternatives; warnings and selection still do not establish semantic
+error or credibility. This bounded result does not erase the earlier failures or
+measure spontaneous error detection.

@@ -1,0 +1,14 @@
+[
+  {
+    "case": "dependent-numeric-m5",
+    "immutableAccounts": 17,
+    "acceptedEvaluations": 6,
+    "corrections": 5,
+    "affectedAccountsObserved": 4,
+    "conflictingAccountsObserved": 3,
+    "displaySubstitutionsObserved": 2,
+    "retainedRepeats": 2,
+    "inspections": 13,
+    "derivedStateMatchesIndependentReconciliation": true
+  }
+]

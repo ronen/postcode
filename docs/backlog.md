@@ -353,7 +353,13 @@ conflicts to this journey. Assess whether repeated empty revision status obscure
 important warnings, and how users discover qualifications learned in follow-ups
 when the retained summary has no explicit correction. Preserve exact historical
 selection and avoid implying automatic synthesis or reassessment. These remain
-formative concerns, not a request to tune the current assessment.
+formative concerns, not a request to tune the current assessment. The
+[focused dependent-account sequence](../records/validation/module-investigation/pass-06/report.md)
+again exposes absent excerpts and dense repeated context. Its evaluator distinguishes
+compatible replacement accounts from the structural “conflicting alternatives”
+label, and local exact selection from family primary, but finds the wording demanding.
+Use these captures as further qualitative evidence for the same journey review,
+without implying measured misunderstanding or authorizing current-slice redesign.
 
 ## Investigate analysis parallelism and asynchronous I/O
 

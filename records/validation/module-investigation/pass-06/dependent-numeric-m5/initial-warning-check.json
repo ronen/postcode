@@ -1,0 +1,53 @@
+[
+  {
+    "command": 5,
+    "account": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:7e61bd81e278ba53df39ba60011a2c97a51dac9b5baeaf0af65a829937592972",
+    "needsReconsideration": false,
+    "causeCount": 0,
+    "causes": []
+  },
+  {
+    "command": 6,
+    "account": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:b073b3f458b34a2653c6dd9cdca4d04646f4761caff3ad079aab1ef804623d25",
+    "needsReconsideration": true,
+    "causeCount": 1,
+    "causes": [
+      {
+        "correction": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram-correction:f36623daead7f309ea9977b31e99bf41e06c59a29472390ea5532c3593bd09ff",
+        "target": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:7e61bd81e278ba53df39ba60011a2c97a51dac9b5baeaf0af65a829937592972",
+        "replacement": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:4f7a547f10e3c7292f7bc3ef741dd057644e846e1946126107e30cc513224494",
+        "reporter": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:efa0007bebe3761a9bd733f575a59bdee3f1e91cbc37e0eba7be8487d01c3cdf",
+        "relationship": false,
+        "cause": {
+          "direct": true,
+          "via": [
+            "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:7e61bd81e278ba53df39ba60011a2c97a51dac9b5baeaf0af65a829937592972"
+          ],
+          "omittedVia": 0
+        }
+      }
+    ]
+  },
+  {
+    "command": 7,
+    "account": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:8f10d63a763509f7699ed45fe4e020b2570326af4c07298ad84e3d5bbc506328",
+    "needsReconsideration": true,
+    "causeCount": 1,
+    "causes": [
+      {
+        "correction": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram-correction:f36623daead7f309ea9977b31e99bf41e06c59a29472390ea5532c3593bd09ff",
+        "target": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:7e61bd81e278ba53df39ba60011a2c97a51dac9b5baeaf0af65a829937592972",
+        "replacement": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:4f7a547f10e3c7292f7bc3ef741dd057644e846e1946126107e30cc513224494",
+        "reporter": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:efa0007bebe3761a9bd733f575a59bdee3f1e91cbc37e0eba7be8487d01c3cdf",
+        "relationship": false,
+        "cause": {
+          "direct": false,
+          "via": [
+            "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:b073b3f458b34a2653c6dd9cdca4d04646f4761caff3ad079aab1ef804623d25"
+          ],
+          "omittedVia": 0
+        }
+      }
+    ]
+  }
+]

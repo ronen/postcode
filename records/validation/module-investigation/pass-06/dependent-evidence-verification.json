@@ -1,0 +1,124 @@
+{
+  "originals": {
+    "A": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:7e61bd81e278ba53df39ba60011a2c97a51dac9b5baeaf0af65a829937592972",
+    "Y": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:b073b3f458b34a2653c6dd9cdca4d04646f4761caff3ad079aab1ef804623d25",
+    "Z": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:8f10d63a763509f7699ed45fe4e020b2570326af4c07298ad84e3d5bbc506328"
+  },
+  "evaluations": [
+    {
+      "subject": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:7e61bd81e278ba53df39ba60011a2c97a51dac9b5baeaf0af65a829937592972",
+      "termination": "accepted",
+      "sourceBodiesActuallyReceived": {
+        "session:f1582605-be7b-4854-9097-0d68d9cfa586:captured-content:9dd2d709b25a58ec404d64b7e6baffdfcccbd26a636d3ca6af28c3acf03de115": {
+          "firstExchange": 3,
+          "coverage": "full-file",
+          "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/dependent-numeric/classify.ts",
+          "digest": "8c500fd2a09328111cde51266aa6c87a7ff21f2f419906b24f93277968432bd1"
+        }
+      },
+      "suppliedCorrectionToReporter": {},
+      "acceptedCorrections": [
+        {
+          "id": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram-correction:f36623daead7f309ea9977b31e99bf41e06c59a29472390ea5532c3593bd09ff",
+          "target": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:7e61bd81e278ba53df39ba60011a2c97a51dac9b5baeaf0af65a829937592972",
+          "replacement": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:4f7a547f10e3c7292f7bc3ef741dd057644e846e1946126107e30cc513224494",
+          "reason": "The earlier account says the classifier chooses one applicable label with positive-over-even-over-large preference. The captured implementation instead uses three independent `if` statements and appends all matching labels in fixed source order, so no such priority or one-label rule exists.",
+          "evidence": [
+            "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:7e61bd81e278ba53df39ba60011a2c97a51dac9b5baeaf0af65a829937592972",
+            "session:f1582605-be7b-4854-9097-0d68d9cfa586:captured-content:9dd2d709b25a58ec404d64b7e6baffdfcccbd26a636d3ca6af28c3acf03de115"
+          ]
+        },
+        {
+          "id": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram-correction:a2c34654328213fb570c97504c1ce163f26118c32ffc6fee23563ecb4852d635",
+          "target": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:dbf4a5a216cc3e81bd3e9f2358213be20674b10661f1cdd227a7fbead3c06c29",
+          "replacement": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:354362cdbfea7b976bc381e2dcc9494a7566f3a9393d48b6446e78f05b3e7a9c",
+          "reason": "The earlier child account says a positive even number returns only the positive label. The source appends both `positive` and `even`; if the value is also at least ten, it appends `large` as well.",
+          "evidence": [
+            "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:dbf4a5a216cc3e81bd3e9f2358213be20674b10661f1cdd227a7fbead3c06c29",
+            "session:f1582605-be7b-4854-9097-0d68d9cfa586:captured-content:9dd2d709b25a58ec404d64b7e6baffdfcccbd26a636d3ca6af28c3acf03de115"
+          ]
+        }
+      ],
+      "dependentCorrections": []
+    },
+    {
+      "subject": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:b073b3f458b34a2653c6dd9cdca4d04646f4761caff3ad079aab1ef804623d25",
+      "termination": "accepted",
+      "sourceBodiesActuallyReceived": {
+        "session:f1582605-be7b-4854-9097-0d68d9cfa586:captured-content:9dd2d709b25a58ec404d64b7e6baffdfcccbd26a636d3ca6af28c3acf03de115": {
+          "firstExchange": 2,
+          "coverage": "full-file",
+          "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/dependent-numeric/classify.ts",
+          "digest": "8c500fd2a09328111cde51266aa6c87a7ff21f2f419906b24f93277968432bd1"
+        }
+      },
+      "suppliedCorrectionToReporter": {
+        "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram-correction:f36623daead7f309ea9977b31e99bf41e06c59a29472390ea5532c3593bd09ff": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:efa0007bebe3761a9bd733f575a59bdee3f1e91cbc37e0eba7be8487d01c3cdf",
+        "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram-correction:a2c34654328213fb570c97504c1ce163f26118c32ffc6fee23563ecb4852d635": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:efa0007bebe3761a9bd733f575a59bdee3f1e91cbc37e0eba7be8487d01c3cdf"
+      },
+      "acceptedCorrections": [
+        {
+          "id": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram-correction:9da28d5ca6951fc514c5cee0989185e7f46783a5e398189a03792233739e63e5",
+          "target": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:b073b3f458b34a2653c6dd9cdca4d04646f4761caff3ad079aab1ef804623d25",
+          "replacement": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:ecddab3f6981e05720f8dd40d7c1a0991cb61c88ee14629e7d31d1efa76e615f",
+          "reason": "The earlier account claims every numeric input yields at most one element and therefore element zero obtains every returned label. The captured implementation uses three independent `if` statements, so overlapping predicates append multiple labels; a positive even value at least ten yields three labels. Reading element zero retains only the first and omits the rest.",
+          "evidence": [
+            "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:b073b3f458b34a2653c6dd9cdca4d04646f4761caff3ad079aab1ef804623d25",
+            "session:f1582605-be7b-4854-9097-0d68d9cfa586:captured-content:9dd2d709b25a58ec404d64b7e6baffdfcccbd26a636d3ca6af28c3acf03de115"
+          ]
+        },
+        {
+          "id": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram-correction:7a6f0525c3e9e5b8ea3be7b5e3b1d800024ce9887bba4b0a893f7058171de276",
+          "target": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:8f10d63a763509f7699ed45fe4e020b2570326af4c07298ad84e3d5bbc506328",
+          "replacement": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:ad0f2e8fdbd66bb486e456705d3aa99564d0e58aea550a3778eb38cb0a8b1527",
+          "reason": "The derivative account says retaining only element zero never discards a second or third label. The implementation can return two labels for values such as 2 or 11 and three labels for 10, so storing only element zero discards later labels in those cases.",
+          "evidence": [
+            "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:8f10d63a763509f7699ed45fe4e020b2570326af4c07298ad84e3d5bbc506328",
+            "session:f1582605-be7b-4854-9097-0d68d9cfa586:captured-content:9dd2d709b25a58ec404d64b7e6baffdfcccbd26a636d3ca6af28c3acf03de115"
+          ]
+        }
+      ],
+      "dependentCorrections": [
+        "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram-correction:9da28d5ca6951fc514c5cee0989185e7f46783a5e398189a03792233739e63e5",
+        "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram-correction:7a6f0525c3e9e5b8ea3be7b5e3b1d800024ce9887bba4b0a893f7058171de276"
+      ]
+    },
+    {
+      "subject": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:8f10d63a763509f7699ed45fe4e020b2570326af4c07298ad84e3d5bbc506328",
+      "termination": "accepted",
+      "sourceBodiesActuallyReceived": {
+        "session:f1582605-be7b-4854-9097-0d68d9cfa586:captured-content:07eba21472f2d68aad83b6db6cda52297923f8aa97e831c326bee37e45d8dc8a": {
+          "firstExchange": 3,
+          "coverage": "full-file",
+          "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/dependent-numeric/classify.ts",
+          "digest": "8c500fd2a09328111cde51266aa6c87a7ff21f2f419906b24f93277968432bd1"
+        }
+      },
+      "suppliedCorrectionToReporter": {
+        "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram-correction:f36623daead7f309ea9977b31e99bf41e06c59a29472390ea5532c3593bd09ff": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:efa0007bebe3761a9bd733f575a59bdee3f1e91cbc37e0eba7be8487d01c3cdf",
+        "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram-correction:9da28d5ca6951fc514c5cee0989185e7f46783a5e398189a03792233739e63e5": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:6c78fd552ef0fbb01b194c654a3fa1a17bef229428c1482eabf1db373cb2b9c3",
+        "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram-correction:7a6f0525c3e9e5b8ea3be7b5e3b1d800024ce9887bba4b0a893f7058171de276": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:6c78fd552ef0fbb01b194c654a3fa1a17bef229428c1482eabf1db373cb2b9c3"
+      },
+      "acceptedCorrections": [
+        {
+          "id": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram-correction:cc4e9d3da11ac4d2bf996f3d2e187dbc9ba272a3f8288c1aaa2029124bd91873",
+          "target": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:8f10d63a763509f7699ed45fe4e020b2570326af4c07298ad84e3d5bbc506328",
+          "replacement": "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:5d641bad0833667b7d1d7f614966e64dd97d3ed902d78df0c3b01647e442a4aa",
+          "reason": "The selected account says retaining only element zero never discards a second or third label because the classifier returns no more than one. The implementation instead performs three independent appends. Overlapping predicates produce multiple labels, and index zero retains only the earliest appended label; in particular, `large` is always later than `positive` and can never survive as element zero.",
+          "evidence": [
+            "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:8f10d63a763509f7699ed45fe4e020b2570326af4c07298ad84e3d5bbc506328",
+            "session:f1582605-be7b-4854-9097-0d68d9cfa586:captured-content:07eba21472f2d68aad83b6db6cda52297923f8aa97e831c326bee37e45d8dc8a",
+            "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram:ad0f2e8fdbd66bb486e456705d3aa99564d0e58aea550a3778eb38cb0a8b1527"
+          ]
+        }
+      ],
+      "dependentCorrections": [
+        "session:f1582605-be7b-4854-9097-0d68d9cfa586:investigram-correction:cc4e9d3da11ac4d2bf996f3d2e187dbc9ba272a3f8288c1aaa2029124bd91873"
+      ]
+    }
+  ],
+  "acceptedDependentCorrectionCount": 3,
+  "distinctDependentAccountsCorrected": 2,
+  "correctionRelationshipsUsedAsEvidence": 0,
+  "limits": "This audit establishes delivery and accepted relationships, not semantic truth. Compare assertions/reasons with frozen source and source-informed findings; warnings alone are not proof of error."
+}

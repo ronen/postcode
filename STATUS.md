@@ -53,7 +53,10 @@ configured TypeScript project.
   with dense presentation and gaps in independently assessed evidence.
   [Integrated assessments](records/validation/module-investigation/pass-05/report.md)
   exercise replacement selection and reconsideration, with successful controlled
-  corrections alongside incomplete live paths and a rejected submission.
+  corrections alongside incomplete live paths and a rejected submission. A
+  [focused dependent-account sequence](records/validation/module-investigation/pass-06/report.md)
+  adds source-supported corrections of controlled direct and transitive errors;
+  deliberate examination and scripted origin limit what it establishes.
 
 - **[Analysis scope](docs/cli-reference.md#supported-typescript-population-and-qualifications):**
   TypeScript only, one configured project at a time, with explicit coverage limits.

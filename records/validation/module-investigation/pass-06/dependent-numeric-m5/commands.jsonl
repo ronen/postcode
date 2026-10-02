@@ -1,0 +1,23 @@
+{"command":"summarize classify","at":"2026-10-02T00:23:07.832Z"}
+{"command":"explain @investigram-7e61bd81","at":"2026-10-02T00:23:28.760Z"}
+{"command":"decompose @investigram-b073b3f4","at":"2026-10-02T00:23:40.464Z"}
+{"command":"examine @investigram-7e61bd81","at":"2026-10-02T00:23:53.240Z"}
+{"command":"inspect @investigram-7e61bd81","at":"2026-10-02T00:25:12.466Z"}
+{"command":"inspect @investigram-b073b3f4","at":"2026-10-02T00:25:12.929Z"}
+{"command":"inspect @investigram-8f10d63a","at":"2026-10-02T00:25:13.377Z"}
+{"command":"examine @investigram-b073b3f4","at":"2026-10-02T00:25:29.075Z"}
+{"command":"inspect @investigram-b073b3f4","at":"2026-10-02T00:27:36.187Z"}
+{"command":"inspect @investigram-8f10d63a","at":"2026-10-02T00:27:36.683Z"}
+{"command":"inspect @investigram-ecddab3f","at":"2026-10-02T00:27:37.183Z"}
+{"command":"inspect @investigram-ad0f2e8f","at":"2026-10-02T00:27:37.684Z"}
+{"command":"examine @investigram-8f10d63a","at":"2026-10-02T00:27:50.595Z"}
+{"command":"inspect @investigram-7e61bd81 --source-detail","at":"2026-10-02T00:29:56.510Z"}
+{"command":"inspect @investigram-b073b3f4","at":"2026-10-02T00:29:56.990Z"}
+{"command":"inspect @investigram-8f10d63a","at":"2026-10-02T00:29:57.501Z"}
+{"command":"inspect @investigram-ecddab3f","at":"2026-10-02T00:29:58.062Z"}
+{"command":"inspect @investigram-ad0f2e8f","at":"2026-10-02T00:29:58.607Z"}
+{"command":"inspect @investigram-5d641bad","at":"2026-10-02T00:29:59.188Z"}
+{"command":"summarize classify","at":"2026-10-02T00:29:59.830Z"}
+{"command":"explain @investigram-7e61bd81","at":"2026-10-02T00:30:00.590Z"}
+{"command":"usage","at":"2026-10-02T00:30:01.349Z"}
+{"command":"exit","at":"2026-10-02T00:30:01.997Z"}
