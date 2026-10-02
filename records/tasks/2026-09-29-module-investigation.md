@@ -386,6 +386,31 @@ ok, milestone 4 is accepted
 
 continue on to milestone 5
 
+### Milestone 5 review corrections and focused dependent assessment — 2026-10-02
+
+The review is complete.  As usual:  Assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
+
+Regarding F2: Choose option (a): make the existing reporter-citation rule explicit, without broadening evidence eligibility.
+
+A correction’s reason and qualifications are content of its reporting investigram. Explain in the investigator instructions, relevant schema descriptions, and supplied correction context that the investigator cites the reporting investigram for that content; the correction handle identifies the relationship and is not itself eligible evidence. Preserve the distinction between receiving substantive correction content and merely seeing revision metadata. Do not introduce implicit correction-ID-to-reporter substitution or a validation-repair loop.
+
+Add deterministic coverage for the clarified contract and update the relevant documentation.
+
+Regarding the evidence gap:  I also authorize one bounded live assessment sequence to address the dependent-account evidence gap:
+
+- Use a fresh PostCode session and separately frozen assessment configuration.
+- Establish a mistaken account and direct and transitive dependent accounts, then produce a correction and verify their reconsideration warnings.
+- Examine the dependent accounts under the clarified evidence contract.
+- Replace the ambiguous “need not represent” wording with unambiguous claims whose correctness can be assessed against the source. Preserve truthful test-origin attribution, without adding cues that tell the investigator what to correct.
+
+Preserve the earlier fixture, captures, rejected submission, and findings unchanged. Record the revised fixture, injected setup, instructions, and source-grounded references before the live run. Keep the model, effort, billing route, and other unaffected settings fixed. Use the existing assessment protocol and retain usage, exposure, views, and evaluator/assessor findings.
+
+Assess whether the investigator gives a source-supported response to an actual error in a dependent account. A reconsideration warning alone is not proof that an account is wrong, and a correction should not be rewarded merely for responding to that warning.
+
+This authorizes one focused sequence, not a general tuning pass, historical draft repair, or additional inference-retry mechanism. If no accepted dependent correction results, report the outcome and remaining limitation for human disposition rather than continuing to tune or rerun.
+
+Record this follow-up under the task protocol and include the correction and assessment evidence in the review handoff. This does not accept the milestone or dispose of its other findings.
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
