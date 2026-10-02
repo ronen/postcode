@@ -6,7 +6,7 @@ Findings: [round 1](2026-10-02-milestone-5-round-1-findings.md)
 Reviewed target: `37837f8d1432df652c6cec7c839f101a5b3d2cea`
 Human decisions: `f21dd5e` (F2 and one focused assessment), `458fe44` (F4 bounds),
 `56912e6` (F5 current-primary context priority).
-Status: all six findings accepted and corrected; focused assessment completed; further review required; milestone not accepted.
+Status: rounds 1 and 2 assessed; all findings/observations accepted and resolved; milestone-5 acceptance awaits the human; final integrated review remains.
 
 | Finding | Assessment and disposition |
 | --- | --- |
@@ -71,3 +71,38 @@ including its source-informed assessment and controlled-case limitations. The ne
 review message supplies the exact target containing these records. No new handoff
 or expanded assignment is needed. Human milestone acceptance and final integrated
 review remain pending.
+
+## Round 2 assessment and follow-up
+
+Findings: [round 2](2026-10-02-milestone-5-round-2-findings.md), reviewed
+`9e07266804701447fd737d6499db3f4e13262fc1` under the original handoff. The same
+human-arranged reviewer independently ran the complete suite (466 passes),
+regenerated all four pass-06 audits byte-identically, checked the source pin and
+unchanged prior artifacts, and reproduced resolution of round-1 F1. Accept its
+verification that F1–F6 are resolved as directed and that pass 06 addresses the
+specific dependent-account evidence gap within the authorized bounds. Its
+recommendation supports the milestone gate but is not human acceptance.
+
+| Observation | Assessment and disposition |
+| --- | --- |
+| R2-O1 | Accepted and corrected in `9d189d9`, after human authorization `015ea9c` to investigate the unexercised case. A real-session regression reproduced the omission: a shallow replacement's accompanying correction displays K's primary before a deeper K is dequeued. The old code omits K and its child from displacement. Record displacement before deduplicating the already displayed body, while retaining the existing bound for genuinely new bodies. The regression passes after the correction and verifies exact inspection, one primary display and no extra inference. Presentation identity advances to @11; architecture explains this case. |
+| R2-O2 | Accepted and covered in `9d189d9`. A separate real-session regression constructs three displaced 123-account subtrees plus three old branches and 387 accompanying corrections. It asserts 256 entries in each listing, exactly 116 displaced-account and 131 correction omissions, matching human disclosure, and retrieval of omitted children/corrections through exact reporter inspection without inference. The earlier 511-status regression remains. No truncation behavior needed changing. |
+
+The correction is a reproduced, local traversal-order fix with deterministic
+coverage. It does not invalidate round 2's substantive findings or require another
+milestone-5 re-review round. The final integrated review should include it and the
+new truncation coverage. Human milestone-5 acceptance is still pending.
+
+Preserve the review's residual limits: it did not read full pass-06 formative role
+inputs/outputs, independently rederive the generated “complete result” concern,
+rederive fsm-engine/merge-anything semantics, or repeat the sleep monitor and dry-run
+checks. Its dependent-correction judgment did inspect reasons and evidence. Neither
+new regression nor the suite upgrades these unverified areas. Prior live captures,
+reports, fixture, handoff and reviewer findings remain unchanged. No live request,
+credential operation, tuning or reassessment was performed in this follow-up.
+
+[Round-2 correction verification](../../validation/module-investigation/2026-10-02-milestone-5-round-2/verification.md)
+retains the failing reproduction, passing focused cases and complete suite: **468
+passes**, zero failures/cancellations/skips, clean stationary `9d189d9`. No further
+milestone-5 re-review is judged necessary for these local corrections; this is an
+implementation-agent judgment, not a claim that the reviewer inspected the new fix.

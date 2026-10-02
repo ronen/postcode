@@ -1,0 +1,30 @@
+TAP version 13
+# Subtest: revision lifecycle preserves exact subjects, displaced composition, conflicts, cause exemptions and immutable views
+ok 1 - revision lifecycle preserves exact subjects, displaced composition, conflicts, cause exemptions and immutable views
+  ---
+  duration_ms: 1231.598618
+  ...
+# Subtest: large displaced history has bounded metadata and exact inspection recovers omitted statuses without inference
+ok 2 - large displaced history has bounded metadata and exact inspection recovers omitted statuses without inference
+  ---
+  duration_ms: 353.384239
+  ...
+# Subtest: an already displayed accompanying replacement still discloses the deeper displaced original and subtree
+ok 3 - an already displayed accompanying replacement still discloses the deeper displaced original and subtree
+  ---
+  duration_ms: 299.272042
+  ...
+# Subtest: displaced account and accompanying correction listings truncate with exact counts and retained navigation
+ok 4 - displaced account and accompanying correction listings truncate with exact counts and retained navigation
+  ---
+  duration_ms: 5931.48999
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 8883.383104

@@ -1,0 +1,37 @@
+TAP version 13
+# Subtest: an already displayed accompanying replacement still discloses the deeper displaced original and subtree
+not ok 1 - an already displayed accompanying replacement still discloses the deeper displaced original and subtree
+  ---
+  duration_ms: 324.350839
+  location: '/Users/ronen/postcode/app/_build/test/investigation-integration.test.js:1071:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(repeated.displaced.includes(k.id))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///Users/ronen/postcode/app/_build/test/investigation-integration.test.js:1095:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:932:9)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: displaced account and accompanying correction listings truncate with exact counts and retained navigation
+ok 2 - displaced account and accompanying correction listings truncate with exact counts and retained navigation
+  ---
+  duration_ms: 6882.884102
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 1
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 8107.757947
