@@ -1,8 +1,8 @@
 # Module investigation
 
-Status: active
+Status: completed
 Opened: 2026-09-29
-Closed:
+Closed: 2026-10-02
 
 ## Task
 
@@ -495,6 +495,32 @@ conventions now identify the reusable double and independent usage ownership.
 The remaining milestones, live formative assessments, milestone reviews and final
 integrated review remain required. This checkpoint does not conclude the task or
 establish human acceptance of a review gate.
+
+### Final outcome — 2026-10-02
+
+Completed the approved module-investigation plan and authorized additions across
+all five milestones. PostCode provides summary, explanation, decomposition and
+examination; qualified retained accounts and provenance; explicit corrections and
+unresolved inconsistencies; revision-aware redisplay, exact history, associations
+and citation-based reconsideration. Hosted execution supports explicit API-key or
+persistent ChatGPT-plan routing, protected parent-owned credentials, bounded
+streaming/tool dialogues, cancellation and provider-reported usage.
+
+The human accepted the milestone gates and explicitly authorized final closure in
+`74a2699`, after the clean integrated re-review and Copilot's no-findings PR review.
+The latter is preserved in `65b82d8`; final disposition and acceptance are recorded
+in `c1e448f`. All actionable review findings are resolved. The missing merge-anything
+chain was completed under its frozen conditions; no required case remains silently
+deferred. The [PR](https://github.com/ronen/postcode/pull/8) publishes the contribution;
+closing this task does not merge or close that PR.
+
+Preserved qualifications include static-only interpretation, semantic omissions and
+assessment independence/coverage limits, dense presentation and source-detail gaps,
+unknown monetary attribution and separately unavailable assessment-role usage,
+no resumable investigations or automatic reassessment/repair, and the documented
+same-user credential boundary. Earlier failures, missing usage and cancellation
+attribution uncertainty remain unchanged. Existing backlog candidates stay future
+work; closure neither implements them nor erases the evidence limitations.
 
 ## Verification
 
@@ -1893,3 +1919,30 @@ as requested. The PR is attached to the active Codex task.
 No production, test, assessment or credential changes accompanied publication.
 The task remains active under the human's prior instruction; opening the PR does
 not merge it or close the task.
+
+
+### Final verification and closure — 2026-10-02
+
+The final integrated re-review independently passed **469 tests** with zero failures,
+cancellations or skips and all fifteen artifact/accounting audits with byte-identical
+outputs at `f3189e3`. The corrected F3 probe rejects wholly unseen inconsistency
+targets. The accepted assessment record contains seven preserved passes, including
+the successful bounded completion: **219 provider requests / 5,526,468 known reported
+tokens**, three missing provider reports, zero provider anomalies and fifteen empty
+synthetic reports excluded. Unknown usage and charges are not treated as zero.
+
+Copilot review `5395133325` targets `aaedc244fe005f61bdc4987be86c663b76ab0535`.
+Paginated REST retrieval covered overall reviews, inline review comments and PR
+conversation comments: one review, zero inline and zero conversation comments.
+The full body is retained in the [findings record](../reviews/module-investigation/2026-10-02-integrated-round-3-copilot-findings.md),
+with only disclosed CRLF-to-LF normalization; exact normalized-text comparison
+passed. Copilot reports no findings but is `COMMENTED` and recommends final human
+review. It reports no tests or complete coverage. Human closure approval, rather
+than inferred Copilot approval, satisfies the final gate.
+
+Closeout changes only task, review and assessment-summary records; production,
+tests and frozen captures are unchanged. Local-link and diff checks pass. No
+additional test suite, inference, credential action or spending change was needed.
+The task is completed with the accepted limits above, and the final records are
+prepared for push to the existing PR branch. No further implementation is pending
+within this task.
