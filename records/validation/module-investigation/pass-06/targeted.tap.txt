@@ -1,0 +1,30 @@
+TAP version 13
+# Subtest: revision lifecycle preserves exact subjects, displaced composition, conflicts, cause exemptions and immutable views
+ok 1 - revision lifecycle preserves exact subjects, displaced composition, conflicts, cause exemptions and immutable views
+  ---
+  duration_ms: 1144.195081
+  ...
+# Subtest: large displaced history has bounded metadata and exact inspection recovers omitted statuses without inference
+ok 2 - large displaced history has bounded metadata and exact inspection recovers omitted statuses without inference
+  ---
+  duration_ms: 318.00915
+  ...
+# Subtest: automatic context summarizes all incoming inconsistencies honestly and follows the primary branch
+ok 3 - automatic context summarizes all incoming inconsistencies honestly and follows the primary branch
+  ---
+  duration_ms: 12.642666
+  ...
+# Subtest: correction reasons cite their reporter without granting complete account context
+ok 4 - correction reasons cite their reporter without granting complete account context
+  ---
+  duration_ms: 1117.432284
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2311.523191

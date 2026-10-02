@@ -1,0 +1,42 @@
+{
+  "id": "numeric-m5-dependent-contract",
+  "sequence": [
+    {
+      "operation": "functionality",
+      "recipe": {
+        "id": "numeric-m5-dependent-contract-1",
+        "prose": "The classifier chooses one applicable label for each numeric input, preferring positive to even and then large. Inputs outside these categories return no label.",
+        "childProse": "For a positive even number, the returned array contains the positive label only.",
+        "qualifications": [
+          "Controlled assessment account supplied by scripted test setup, not a natural investigator result.",
+          "Static interpretation; runtime behavior was not observed."
+        ],
+        "acquireSource": true
+      }
+    },
+    {
+      "operation": "clarification",
+      "recipe": {
+        "id": "numeric-m5-dependent-contract-2",
+        "prose": "For every numeric input, the returned array has at most one element, so reading element zero obtains every label returned by the classifier.",
+        "qualifications": [
+          "Controlled assessment account supplied by scripted test setup, not a natural investigator result.",
+          "Inference from the supplied earlier account; callers were not observed."
+        ],
+        "citeSubject": true
+      }
+    },
+    {
+      "operation": "decomposition",
+      "recipe": {
+        "id": "numeric-m5-dependent-contract-3",
+        "prose": "A caller that stores only element zero never discards a second or third label, because the classifier never returns more than one label.",
+        "qualifications": [
+          "Controlled assessment account supplied by scripted test setup, not a natural investigator result.",
+          "Inference from the supplied earlier account, not an observation of a particular caller."
+        ],
+        "citeSubject": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "ceiling": 128,
+  "purpose": "three planned focused evaluations plus at most one existing-protocol transient communication recovery; separate from diagnostics",
+  "requests": []
+}

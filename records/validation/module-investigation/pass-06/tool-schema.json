@@ -1,0 +1,431 @@
+[
+  {
+    "type": "function",
+    "name": "request_evidence",
+    "strict": false,
+    "description": "Request qualified PostCode evidence. Results correspond to requests in order. Use exact supplied references, never paths. Omit inapplicable optional fields. Follow page.next with the same kind and subject and cursor.",
+    "parameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requests"
+      ],
+      "properties": {
+        "requests": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "modules",
+                  "organization",
+                  "group",
+                  "inspect",
+                  "exports",
+                  "dependencies",
+                  "dependents",
+                  "membership",
+                  "source",
+                  "investigram",
+                  "investigations"
+                ]
+              },
+              "subject": {
+                "type": "string",
+                "description": "Required except for modules and organization."
+              },
+              "cursor": {
+                "type": "string",
+                "description": "Only for paged collection queries."
+              },
+              "parts": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "prose",
+                    "referent",
+                    "qualifications"
+                  ]
+                },
+                "description": "Only for investigram context; omit for complete context."
+              },
+              "revisionPage": {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Only for investigram context; follow revision.nextPage for further revision and cause details. Correction handles identify relationships, not eligible evidence; cite correction.reporter only when its substantive content was supplied."
+              },
+              "excerptCharacters": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Only for investigram context; omit for complete context."
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "type": "function",
+    "name": "submit_investigram",
+    "strict": true,
+    "description": "Submit the complete root interpretation for atomic PostCode validation. Copy supplied references exactly, including their kind; do not abbreviate or reconstruct them. Follow the investigation instructions; schema conformance does not establish valid references or truth.",
+    "parameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "localId": {
+          "type": "string"
+        },
+        "prose": {
+          "type": "string"
+        },
+        "referent": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "subjects": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "description",
+            "subjects"
+          ]
+        },
+        "qualifications": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Exact references to context actually supplied; a bare support reference alone does not grant evidence eligibility. For supplied correction reasons and qualifications cite correction.reporter (the reporting investigram), never the correction handle: it identifies a relationship and is not eligible evidence. Revision metadata alone does not supply reporter content."
+        },
+        "associations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "subject": {
+                "type": "string"
+              },
+              "qualifications": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Exact references to context actually supplied; a bare support reference alone does not grant evidence eligibility. For supplied correction reasons and qualifications cite correction.reporter (the reporting investigram), never the correction handle: it identifies a relationship and is not eligible evidence. Revision metadata alone does not supply reporter content."
+              }
+            },
+            "required": [
+              "subject",
+              "qualifications",
+              "evidence"
+            ]
+          }
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/investigram"
+          }
+        },
+        "corrections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "target": {
+                "type": "string"
+              },
+              "correctedSubjects": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "reason": {
+                "type": "string"
+              },
+              "qualifications": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Exact references to context actually supplied; a bare support reference alone does not grant evidence eligibility. For supplied correction reasons and qualifications cite correction.reporter (the reporting investigram), never the correction handle: it identifies a relationship and is not eligible evidence. Revision metadata alone does not supply reporter content."
+              },
+              "replacement": {
+                "$ref": "#/$defs/investigram"
+              }
+            },
+            "required": [
+              "target",
+              "correctedSubjects",
+              "reason",
+              "qualifications",
+              "evidence",
+              "replacement"
+            ]
+          }
+        },
+        "inconsistencies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "targets": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "One or more exact references to earlier investigrams in this session, never program subjects or source records. Describe documentation-versus-implementation discrepancies in attributed prose and qualifications instead."
+              },
+              "reason": {
+                "type": "string"
+              },
+              "qualifications": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Exact references to context actually supplied; a bare support reference alone does not grant evidence eligibility. For supplied correction reasons and qualifications cite correction.reporter (the reporting investigram), never the correction handle: it identifies a relationship and is not eligible evidence. Revision metadata alone does not supply reporter content."
+              }
+            },
+            "required": [
+              "targets",
+              "reason",
+              "qualifications",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "localId",
+        "prose",
+        "referent",
+        "qualifications",
+        "evidence",
+        "associations",
+        "children",
+        "corrections",
+        "inconsistencies"
+      ],
+      "$defs": {
+        "investigram": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "localId": {
+              "type": "string"
+            },
+            "prose": {
+              "type": "string"
+            },
+            "referent": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "subjects": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "description",
+                "subjects"
+              ]
+            },
+            "qualifications": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Exact references to context actually supplied; a bare support reference alone does not grant evidence eligibility. For supplied correction reasons and qualifications cite correction.reporter (the reporting investigram), never the correction handle: it identifies a relationship and is not eligible evidence. Revision metadata alone does not supply reporter content."
+            },
+            "associations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "subject": {
+                    "type": "string"
+                  },
+                  "qualifications": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "evidence": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Exact references to context actually supplied; a bare support reference alone does not grant evidence eligibility. For supplied correction reasons and qualifications cite correction.reporter (the reporting investigram), never the correction handle: it identifies a relationship and is not eligible evidence. Revision metadata alone does not supply reporter content."
+                  }
+                },
+                "required": [
+                  "subject",
+                  "qualifications",
+                  "evidence"
+                ]
+              }
+            },
+            "children": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/investigram"
+              }
+            },
+            "corrections": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "target": {
+                    "type": "string"
+                  },
+                  "correctedSubjects": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "qualifications": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "evidence": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Exact references to context actually supplied; a bare support reference alone does not grant evidence eligibility. For supplied correction reasons and qualifications cite correction.reporter (the reporting investigram), never the correction handle: it identifies a relationship and is not eligible evidence. Revision metadata alone does not supply reporter content."
+                  },
+                  "replacement": {
+                    "$ref": "#/$defs/investigram"
+                  }
+                },
+                "required": [
+                  "target",
+                  "correctedSubjects",
+                  "reason",
+                  "qualifications",
+                  "evidence",
+                  "replacement"
+                ]
+              }
+            },
+            "inconsistencies": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "targets": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "One or more exact references to earlier investigrams in this session, never program subjects or source records. Describe documentation-versus-implementation discrepancies in attributed prose and qualifications instead."
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "qualifications": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "evidence": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Exact references to context actually supplied; a bare support reference alone does not grant evidence eligibility. For supplied correction reasons and qualifications cite correction.reporter (the reporting investigram), never the correction handle: it identifies a relationship and is not eligible evidence. Revision metadata alone does not supply reporter content."
+                  }
+                },
+                "required": [
+                  "targets",
+                  "reason",
+                  "qualifications",
+                  "evidence"
+                ]
+              }
+            }
+          },
+          "required": [
+            "localId",
+            "prose",
+            "referent",
+            "qualifications",
+            "evidence",
+            "associations",
+            "children",
+            "corrections",
+            "inconsistencies"
+          ]
+        }
+      }
+    }
+  }
+]
