@@ -431,6 +431,10 @@ Human response to the implementing agent's question:
 
 > Reproduce and fix now (Recommended)
 
+### Milestone 5 acceptance and integrated review — 2026-10-02
+
+> ok, milestone 5 is accepted, wrap it. up then prepare the integrated review
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
