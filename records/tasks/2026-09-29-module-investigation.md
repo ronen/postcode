@@ -443,6 +443,10 @@ Human response to the implementing agent's question:
 >
 > **Re F3:** Require substantive exposure to each inconsistency target, recorded through a citation; identifier availability alone is insufficient. Unlike a replacement correction, reporting an unresolved inconsistency need not require the target’s complete content. Record this clarification in the governing decision.
 
+### Integrated re-review follow-up; keep task open — 2026-10-02
+
+> the review has been completed, and has no new findings.  follow up on it as usual, but don't close the task yet.   next step will be to push and create a github PR.
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
