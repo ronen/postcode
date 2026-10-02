@@ -1715,3 +1715,39 @@ allowance remains two used/eight remaining. The local reproduced fix does not
 invalidate the re-review's substantive analysis; no additional milestone-5 re-review
 is judged necessary. Include the correction in final integrated review. Milestone-5
 acceptance still awaits the human, and the task remains active.
+
+### Milestone 5 accepted; integrated review preparation — 2026-10-02
+
+The human accepted milestone 5 in `70aa34f` and instructed preparation of final
+integrated review. All five milestone gates are now satisfied. `38fec6f` closes
+the milestone-5 disposition with that acceptance and adds a consolidated
+[assessment and usage account](../validation/module-investigation/integrated/report.md)
+for the final gate. It preserves the incomplete merge-anything sequence, earlier
+rejected submissions, controlled-case limits and later successful dependent evidence;
+acceptance does not turn those historical failures into passes or authorize tuning.
+
+The aggregate reconciles all six frozen assessment ledgers against saved usage
+reports: **203 provider requests / 5,110,325 known reported tokens**, three missing
+provider reports, no anomalous provider reports, and fifteen empty synthetic reports
+excluded. All assessment runs use the explicitly selected ChatGPT-plan route;
+actual monetary and allowance-versus-credit attribution remain unknown. Evaluator,
+assessor and preparer/orchestrator usage is separately unavailable. Connection/debug
+usage is separately disclosed, not added to the assessment total. The diagnostic
+allowance remains two used/eight remaining. No new provider or credential operation
+occurred.
+
+Runtime, tests and scripts remain identical to the complete 468-pass verification
+at `9d189d9`; preparing the integrated handoff does not require another suite run.
+The new accounting script reproduces its output, local links and diff checks pass,
+and all three available upstream checkouts match their frozen pins. Historical
+fixtures and pass artifacts remain unchanged. No governing or development-process
+material changed.
+
+Prepare a separate integrated handoff covering the cumulative implementation from
+`c15afdd3b03f588534ac386c2453c81da71ffb68`, all milestone dispositions and the
+retained formative evidence. The reviewer must independently assess consequential
+source claims and combined usefulness, with offline verification permitted and no
+new live inference or access to real credentials. Final review must also identify
+any specific required-case deferral still needing human approval before closure.
+The task remains active; final integrated review and the human completion gate
+are outstanding.
