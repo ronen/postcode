@@ -1876,3 +1876,16 @@ This follow-up only changes review/task records. Diff and local-link checks pass
 production and tests are unchanged, so no additional suite run or provider request
 was needed. Task status remains **active**, with no closing date. Pushing the branch
 and creating a GitHub PR are the next step; neither occurred in this follow-up.
+
+### Branch published and PR opened — 2026-10-02
+
+Following the explicit push/PR authorization recorded in `eddd8da`, pushed
+`codex/module-investigation` to `origin` and opened
+[GitHub PR #8](https://github.com/ronen/postcode/pull/8) against `main`:
+“Add progressive module investigation and hosted authentication”. The description
+summarizes the contribution without detailed implementation or review records,
+as requested. The PR is attached to the active Codex task.
+
+No production, test, assessment or credential changes accompanied publication.
+The task remains active under the human's prior instruction; opening the PR does
+not merge it or close the task.
