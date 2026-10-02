@@ -423,6 +423,14 @@ Question: “F5 also notes that automatically included accounts expose the oldes
 
 Human answer: “Prioritize the current-primary link (Recommended)”
 
+### Milestone 5 round-2 displacement investigation — 2026-10-02
+
+Human response to the implementing agent's question:
+
+> The reviewer clears all six fixes and considers the milestone evidence sufficient. R2-O1 identifies a possible displacement omission by inspection, but has not reproduced it. May I build a bounded regression and correct it if confirmed? I recommend doing that now; I can add R2-O2’s missing truncation coverage independently.
+
+> Reproduce and fix now (Recommended)
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
