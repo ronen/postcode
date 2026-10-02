@@ -1,0 +1,111 @@
+{
+  "status": "rejected; not an accepted investigram or user-facing interpretation",
+  "submission": {
+    "localId": "entry-account",
+    "prose": "This module is a thin public entry point: it implements no calculation itself and re-exports two unrelated value functions. `normalize` delegates bounded numeric clamping to the normalization module; `nextSequence` delegates process-local sequence state to the counter module.",
+    "referent": {
+      "description": "The requested TypeScript entry module and its exposed behavior",
+      "subjects": [
+        "session:283c4f24-db19-486c-b6d2-83fd05025d0b:module:acc2ba3957299311ce4c4c1e198b0fa34090289c2780c4c098f7c8a80401098e"
+      ]
+    },
+    "qualifications": [
+      "Interpretation of captured TypeScript source and compiler-resolved re-export relationships; runtime execution was not observed.",
+      "The nearby README calls the API pure and stateless, but that claim conflicts with the captured counter implementation."
+    ],
+    "evidence": [
+      "session:283c4f24-db19-486c-b6d2-83fd05025d0b:captured-content:70b04d446a2c528c013921a158ad9edf9c0e588f41696a6811d236ab34c334fa",
+      "session:283c4f24-db19-486c-b6d2-83fd05025d0b:export:919207ca16275a150befb2d26caed555ff9f8afceef63299607d9e2bb08cf522",
+      "session:283c4f24-db19-486c-b6d2-83fd05025d0b:export:949b5a0e581021614ffe94ab210b2c9515b0c4573d44af7f81f74c38c18de23c",
+      "session:283c4f24-db19-486c-b6d2-83fd05025d0b:dependency:35e686ceee13cd96eba488be95707111ea330310ddb85ea07a87eb3172ce3888",
+      "session:283c4f24-db19-486c-b6d2-83fd05025d0b:dependency:dda24ecc2e354798c8539229ef734f689daead55539e9eaccdc70b88aff17af6"
+    ],
+    "associations": [
+      {
+        "subject": "session:283c4f24-db19-486c-b6d2-83fd05025d0b:module:11b65d25dca7f6a2fdd26fafd5f96acb360acadc26fdce73cefcf21dad4aec6a",
+        "qualifications": [
+          "Resolved non-type-only ESM re-export; implementation behavior comes from captured source."
+        ],
+        "evidence": [
+          "session:283c4f24-db19-486c-b6d2-83fd05025d0b:dependency:35e686ceee13cd96eba488be95707111ea330310ddb85ea07a87eb3172ce3888",
+          "session:283c4f24-db19-486c-b6d2-83fd05025d0b:captured-content:d6de541ef38679e7c8b4d43d1dea1f40e9a70bfd9ed1b9aa275de0c4b3e9edf2"
+        ]
+      },
+      {
+        "subject": "session:283c4f24-db19-486c-b6d2-83fd05025d0b:module:3f2edd61cafeb0a51bc78699bc28b31bb34fc2186be42b2f9a1d49f9f4e8d072",
+        "qualifications": [
+          "Resolved non-type-only ESM re-export; statefulness is inferred directly from module-scoped mutable state in captured source."
+        ],
+        "evidence": [
+          "session:283c4f24-db19-486c-b6d2-83fd05025d0b:dependency:dda24ecc2e354798c8539229ef734f689daead55539e9eaccdc70b88aff17af6",
+          "session:283c4f24-db19-486c-b6d2-83fd05025d0b:captured-content:48f20fb4b2aef27bd330850b0b4bca13987437fbbffa0bea6ea61bee13a8d628"
+        ]
+      }
+    ],
+    "children": [
+      {
+        "localId": "normalize-account",
+        "prose": "`normalize(value)` clamps a number to the inclusive range 0\u2013100: negatives become 0, values above 100 become 100, and in-range values pass through unchanged.",
+        "referent": {
+          "description": "The delegated normalization implementation",
+          "subjects": [
+            "session:283c4f24-db19-486c-b6d2-83fd05025d0b:module:11b65d25dca7f6a2fdd26fafd5f96acb360acadc26fdce73cefcf21dad4aec6a",
+            "session:283c4f24-db19-486c-b6d2-83fd05025d0b:symbol:cde54e4832415ee11d5f0cc794273ae5324edf458802c5eda208366e31e0b5f4"
+          ]
+        },
+        "qualifications": [
+          "Source-level behavior only; JavaScript edge cases such as NaN are not specially handled."
+        ],
+        "evidence": [
+          "session:283c4f24-db19-486c-b6d2-83fd05025d0b:captured-content:d6de541ef38679e7c8b4d43d1dea1f40e9a70bfd9ed1b9aa275de0c4b3e9edf2",
+          "session:283c4f24-db19-486c-b6d2-83fd05025d0b:source:f2d73a409c55ee962947b0375ae1bb69ba9ed54cdc41a74824a8afef05f0c657"
+        ],
+        "associations": [],
+        "children": [],
+        "corrections": [],
+        "inconsistencies": []
+      },
+      {
+        "localId": "counter-account",
+        "prose": "`nextSequence()` owns a module-scoped counter initialized to 0. Each call increments it before returning, so successive calls yield 1, 2, 3, and so on for that module instance; it accepts no caller input and exposes no reset.",
+        "referent": {
+          "description": "The delegated mutable sequence implementation",
+          "subjects": [
+            "session:283c4f24-db19-486c-b6d2-83fd05025d0b:module:3f2edd61cafeb0a51bc78699bc28b31bb34fc2186be42b2f9a1d49f9f4e8d072",
+            "session:283c4f24-db19-486c-b6d2-83fd05025d0b:symbol:fa3a369287e11cb41dbb2da87e0636396db9b579c8616ec479714e337f1ac22d"
+          ]
+        },
+        "qualifications": [
+          "Sequence lifetime and sharing depend on runtime module instantiation; no runtime execution was observed.",
+          "Unbounded JavaScript-number growth can eventually lose integer precision; the source has no overflow handling."
+        ],
+        "evidence": [
+          "session:283c4f24-db19-486c-b6d2-83fd05025d0b:captured-content:48f20fb4b2aef27bd330850b0b4bca13987437fbbffa0bea6ea61bee13a8d628",
+          "session:283c4f24-db19-486c-b6d2-83fd05025d0b:source:001a9d3bf7d81b1142323abd5ccbd75fec3fa37290fbd71fa3d7f9686cc0b814"
+        ],
+        "associations": [],
+        "children": [],
+        "corrections": [],
+        "inconsistencies": []
+      }
+    ],
+    "corrections": [],
+    "inconsistencies": [
+      {
+        "targets": [
+          "session:283c4f24-db19-486c-b6d2-83fd05025d0b:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93",
+          "session:283c4f24-db19-486c-b6d2-83fd05025d0b:module:3f2edd61cafeb0a51bc78699bc28b31bb34fc2186be42b2f9a1d49f9f4e8d072"
+        ],
+        "reason": "The README says all entry exports are pure/stateless and return the same result for the same arguments. The re-exported `nextSequence` instead mutates module-scoped `sequence`, so repeated zero-argument calls return different values.",
+        "qualifications": [
+          "The README is nearby repository documentation; its applicability was not mechanically established, but it explicitly names this entry and both exports."
+        ],
+        "evidence": [
+          "session:283c4f24-db19-486c-b6d2-83fd05025d0b:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7",
+          "session:283c4f24-db19-486c-b6d2-83fd05025d0b:captured-content:48f20fb4b2aef27bd330850b0b4bca13987437fbbffa0bea6ea61bee13a8d628",
+          "session:283c4f24-db19-486c-b6d2-83fd05025d0b:captured-content:70b04d446a2c528c013921a158ad9edf9c0e588f41696a6811d236ab34c334fa"
+        ]
+      }
+    ]
+  }
+}

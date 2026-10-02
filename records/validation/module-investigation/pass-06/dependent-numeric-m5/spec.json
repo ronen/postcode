@@ -1,0 +1,14 @@
+{
+  "id": "dependent-numeric-m5",
+  "pass": "module-dependent-06",
+  "subject": "dependent-numeric",
+  "manifest": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-06/manifest.json",
+  "project": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/dependent-numeric/tsconfig.json",
+  "output": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-06/dependent-numeric-m5",
+  "budget": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-06/request-budget.json",
+  "incremental": true,
+  "commands": [
+    "summarize classify"
+  ],
+  "setup": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-06/setup.json"
+}

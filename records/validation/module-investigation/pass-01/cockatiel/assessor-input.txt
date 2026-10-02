@@ -1,0 +1,226 @@
+You are a fresh source-informed assessor. Use only the supplied frozen reference, view and evaluator response. Do not independently inspect source or browse. These references are qualified source analysis, not runtime proof.
+
+RUBRIC
+{
+  "version": 1,
+  "task": "Compare supplied investigator views and view-only evaluator answers against the frozen source references. Use only supplied artifacts. Preserve uncertainty and cite specific displayed references or source locations.",
+  "categories": ["generation-error-repeated-by-evaluator", "presentation-misunderstanding", "successful-qualified-communication", "unsupported-evaluator-extrapolation", "material-omission", "reference-cannot-settle"],
+  "output": "JSON with findings [{category, claim, evidence, consequence, uncertainty}], subjectUsefulness {judgment, reasons, limitations}. No numeric aggregate score. Do not treat a summary-only absence of follow-up views as a generation defect. Do not treat administrative request-budget interruption as an interpretive or milestone failure."
+}
+
+FROZEN REFERENCE
+# Frozen source-grounded references — summary pass 01
+
+Prepared before any subject/fixture inference by the implementing agent. Exact
+model identifier is unavailable; the family is OpenAI. Shared implementation,
+reference selection and orchestration can bias judgments. These are purposeful
+development examples, not an unbiased or untouched validation set. This material
+must not be supplied to the investigator or view-only evaluators.
+
+The [manifest](manifest.json) fixes revisions, source/document/configuration hashes,
+Node 22.13.1, the **PostCode analyzer TypeScript 6.0.3**, and the selected hosted
+configuration. Installed subject build TypeScript versions do not replace that
+analyzer. Repository source, README and ordinary subject-based evidence are
+accessible; reference answers, selection rationale and this file are not.
+PostCode source inspection is not execution or proof of runtime guarantees.
+
+## Cockatiel: Executor
+
+Source pin: [Executor.ts](https://github.com/connor4312/cockatiel/blob/80b5ed67966dfcc5410a912285fcb3eeb2dc5e5e/src/common/Executor.ts).
+Original `tsconfig.json`; selector `executor`. Mechanical inventory materializes
+its exports `ExecuteWrapper`, `FailureOrSuccess`, and `returnOrThrow`. Its source
+mapping and qualification are compiler-derived, not a behavioral proof.
+
+Supported source conclusions:
+
+- Lines 45–75 invoke supplied work once, await its return, and classify the value
+  or thrown error using supplied filters. A value matching the result filter is
+  returned as `{value}`; a nonmatching value as `{success}`. Handled errors become
+  `{error}`; unhandled errors are rethrown.
+- Lines 19–28 and 49–68 measure duration only when event listeners are present;
+  success/failure notifications are emitted through delegated event emitters.
+- Lines 30–43 expose two listener interfaces; cloning reuses filter functions but
+  creates a fresh wrapper and emitters. This is not a clone of caller work/state.
+- Lines 6–16 convert the tagged result into a return value or throw. A result
+  classified as failure by value can still be returned by this helper.
+- [RetryPolicy.ts lines 100–140](https://github.com/connor4312/cockatiel/blob/80b5ed67966dfcc5410a912285fcb3eeb2dc5e5e/src/RetryPolicy.ts#L100)
+  supplies the retry loop around this executor. Do not attribute retry/backoff,
+  the caller's business operation or generic fault tolerance to this file alone.
+
+Acceptable interpretation: a reusable boundary for invoking, classifying and
+observing caller-supplied work, used by surrounding resilience policies.
+Material limits: no runtime test was performed; caller operations/filters can do
+arbitrary work. Listener exceptions and filter exceptions can affect execution;
+the broad try/catch also encloses successful-value classification and notification.
+Do not claim that only exceptions from `fn` are handled or that all callbacks are
+safe. The library README's policy descriptions are attributed context, not proof
+that this module itself implements every policy.
+
+
+
+
+
+Freeze the exact [instructions](instructions.json), general context-selection code
+hashes, model and route before inference. Keep production evidence access and
+guards unchanged except the labelled hard-limit control. No reference answers
+enter live context. The first pass has zero automatic repeat allowance; a
+diagnostic rerun requires a separately recorded question/count and preserves the
+original outcome. Administrative request-ceiling interruption is incomplete
+validation, not a semantic failure or hard milestone failure.
+
+Use the fixed `scripts/module-investigation/questions.json` for fresh view-only
+evaluators and `assessor-rubric.json` for separate fresh source-informed assessment.
+Retain exact prompts, inputs, outputs and available role configuration/usage.
+Unknown role usage is not zero. Fresh contexts and same-family agents do not
+establish independent corroboration. Per-subject results and focused cases stay
+separate; no universal acceptance score or prompt optimization search is intended.
+
+USER VIEW
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-e65c42fd: executor
+
+@investigram-b4f3a61a · interpretation
+Executes synchronous or asynchronous callbacks behind policy-supplied error/result predicates, classifies their outcomes, and exposes timed success/failure notifications. It also provides the small adapter that turns classified outcomes back into ordinary return-or-throw behavior.
+Referent: Executor module and its exported execution/outcome API
+  Qualification: Interpretation of first-observed TypeScript source; source establishes implementation text, not executed behavior in a particular runtime.
+  Qualification: Configured-project module/dependency analysis is bounded and does not establish runtime dependency completeness.
+  Composition: @investigram-1338a97e, @investigram-fa14b40f
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:0433ea25-913d-4dc3-a8e5-084e76f8b207:source:8427b7eac4fab8d5c817c70017ba8479710ab3afa6779a31336bdf277fec3dbd, session:0433ea25-913d-4dc3-a8e5-084e76f8b207:export:646b834659e590e7ef07cc184b49eb5cd4d68a61ebdc398d586614b9b5725fd1, session:0433ea25-913d-4dc3-a8e5-084e76f8b207:export:bf30b1e29c27318b32a50ce708f5527dc9e39d20c384f83cfdd29682386bf11a, session:0433ea25-913d-4dc3-a8e5-084e76f8b207:export:4a4b13f834912c68fdb4b0aaac052eebadeae2ede87f96a20ed462c3799ae3eb
+
+@investigram-fa14b40f · interpretation
+`FailureOrSuccess<R>` distinguishes ordinary success from policy-handled error or value failures. `returnOrThrow` throws the error case and returns either the success or handled value case.
+Referent: Classified outcome union and its unwrapping adapter
+  Qualification: The three cases are structurally discriminated by property presence; malformed external values are outside the declared type contract.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:0433ea25-913d-4dc3-a8e5-084e76f8b207:source:ff5c325c28823bfb0ba1bf80c92d4a862db0eb29d9a8eb3a0961cb914f1d2677, session:0433ea25-913d-4dc3-a8e5-084e76f8b207:source:11985e6907388eb17d657be3549d569d4ab3edcfea867c1b8148b32d0a9be720, session:0433ea25-913d-4dc3-a8e5-084e76f8b207:source:a2ac3b0045ddfb88715fe826f500bfc17536ba718208d0f185f7cad3139a6415
+
+@investigram-1338a97e · interpretation
+`invoke` awaits the callback. An unfiltered value becomes `{success}`; a filtered value becomes handled `{value}`. A filtered exception becomes `{error}`; an unfiltered exception is rethrown after failure notification. Timing is skipped unless a success or failure listener exists, using `performance.now()` when available and `process.hrtime.bigint()` otherwise.
+Referent: ExecuteWrapper invocation, filtering, timing, and notification mechanism
+  Qualification: Behavior is inferred from the captured implementation; platform availability and timing precision were not executed or tested.
+  Composition: @investigram-a9f22684
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:0433ea25-913d-4dc3-a8e5-084e76f8b207:source:5dd1f98b6e0100759e21ecf740ffd15f9ef9c7d7ddcfb0921e19a6feeb12061c, session:0433ea25-913d-4dc3-a8e5-084e76f8b207:source:8427b7eac4fab8d5c817c70017ba8479710ab3afa6779a31336bdf277fec3dbd
+
+@investigram-a9f22684 · interpretation
+`clone` preserves both predicates but creates fresh emitters, so derived policy instances share classification rules rather than subscriptions.
+Referent: ExecuteWrapper clone behavior
+  Qualification: Fresh-listener behavior follows from construction of a new wrapper and per-instance emitter fields.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:0433ea25-913d-4dc3-a8e5-084e76f8b207:source:8427b7eac4fab8d5c817c70017ba8479710ab3afa6779a31336bdf277fec3dbd
+Attempt session:0433ea25-913d-4dc3-a8e5-084e76f8b207:investigation-attempt:153ec327cc64f10faa0141dc47fefadb384fb7fb207db9724f4ea9251ccf1315 (accepted) reported usage: 5 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 204659 tokens; input 199671 tokens (subset of total); output 4988 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 618 tokens (subset of output)
+Session reported usage: 5 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 204659 tokens; input 199671 tokens (subset of total); output 4988 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 618 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+This checkpoint shows immutable originals and explicit correction links; replacement selection and reconsideration display arrive in a later milestone.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+EVALUATOR RESPONSE
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The executor runs callbacks, classifies returned values and exceptions using policy-supplied predicates, and provides success/failure notifications with optional timing. The outcome union represents the classification, while returnOrThrow converts it into ordinary return-or-throw behavior. Cloning preserves classification predicates but creates separate notification emitters.",
+      "support": [
+        "@investigram-b4f3a61a describes execution, classification, notifications, and the adapter.",
+        "@investigram-1338a97e says invoke awaits the callback, maps filtered values to {value} and filtered exceptions to {error}, and rethrows unfiltered exceptions after failure notification.",
+        "@investigram-fa14b40f says returnOrThrow throws the error case and returns success or handled value cases.",
+        "@investigram-a9f22684 says clones share classification rules rather than subscriptions."
+      ],
+      "unknowns": [
+        "The predicates' actual definitions and the calling policies are not shown.",
+        "The complete public API, notification payloads, and listener-error behavior are not established."
+      ]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "All four functional accounts are explicitly interpretations. They have displayed source or export evidence references and specific qualifications, but the referenced evidence itself is not supplied for inspection. The view qualifies the outcome cases as structurally discriminated and the clone account as following from construction and per-instance fields. No independent execution evidence is displayed. Usage and model details are reported metadata, with explicit limits on billing conclusions.",
+      "support": [
+        "Each account is labeled interpretation.",
+        "The module qualification says source establishes implementation text, not executed behavior in a particular runtime.",
+        "The invocation qualification says platform availability and timing precision were not executed or tested.",
+        "The module/dependency analysis does not establish runtime dependency completeness.",
+        "The footer says reported usage is not confirmed billed usage and monetary attribution is unavailable."
+      ],
+      "unknowns": [
+        "Actual runtime behavior, timing precision, platform compatibility, and runtime dependency completeness.",
+        "Behavior for malformed externally supplied outcomes.",
+        "Actual charges or allowance consumption attributable to the reported token counts."
+      ]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "Explanation, decomposition, and examination sequence views were not supplied, so no change in clarity, selectability, or substantive conclusions can be assessed. The summary already separates the broad account, outcome adapter, invocation mechanism, and cloning into individually referenced accounts, but that does not establish what a later operation would change.",
+      "support": [
+        "The supplied condition is summary-only; later sequence views not supplied.",
+        "The four displayed investigram references identify distinct referents."
+      ],
+      "unknowns": [
+        "Any before-and-after effect of explanation, decomposition, or examination.",
+        "Whether those operations would add evidence, alter interpretation, or expose additional selectable referents."
+      ]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "I would select @investigram-1338a97e with an examination lens focused on outcome classification and notification order. I would expect to learn what happens when a predicate or listener throws, when each notification fires, and how timing relates to those steps. This is a requested next investigation; the summary does not show a working lens selector or demonstrate that this operation is available.",
+      "support": [
+        "@investigram-1338a97e identifies invocation, filtering, timing, and notification as its referent.",
+        "The view says references remain bound for this session and displays New investigation request.",
+        "The only operation explicitly attached to the accounts is functionality."
+      ],
+      "unknowns": [
+        "Which lenses can actually be selected and how to submit the reference.",
+        "Whether examination would resolve these questions or return further qualified interpretations."
+      ]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No concrete corrected assertion, original/replacement pair, or correction link is displayed. The footer claims that this checkpoint shows immutable originals and explicit correction links, but this particular summary does not expose an example. Composition links are explicitly labeled: the module account composes the invocation and outcome accounts, and the invocation account composes the clone account. No later-investigation provenance is shown, so its presentation cannot be compared with composition.",
+      "support": [
+        "@investigram-b4f3a61a lists Composition: @investigram-1338a97e, @investigram-fa14b40f.",
+        "@investigram-1338a97e lists Composition: @investigram-a9f22684.",
+        "The footer says corrections are retained assertions, not established truth.",
+        "The footer says replacement selection and reconsideration display arrive in a later milestone."
+      ],
+      "unknowns": [
+        "Whether any correction exists for these accounts.",
+        "What was changed, which reference would identify a replacement, and the evidence for any correction.",
+        "How later-investigation provenance would be labeled or connected."
+      ]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The summary is useful for understanding the executor's broad responsibilities and choosing a narrower subject to investigate. The qualifications help prevent treating generated accounts as tested facts. However, filtered and handled need explanation because a handled value is classified as a failure yet returned normally by the adapter. Timed notifications could initially suggest timing is unconditional, although a later account limits it to cases with listeners. Long opaque evidence identifiers and repeated usage blocks interrupt the functional explanation. The accepted attempt label could be mistaken for validation of correctness. The generic claim about displayed correction links exceeds what is visible here, and New investigation request does not explain the available interaction.",
+      "support": [
+        "The outcome account distinguishes ordinary success from policy-handled error or value failures.",
+        "The invocation account says timing is skipped unless a success or failure listener exists.",
+        "Attempt and session usage blocks repeat the same five-call totals.",
+        "The attempt is labeled accepted, while the footer says generated accounts remain interpretation.",
+        "No actual correction pair or lens controls appear in the supplied view."
+      ],
+      "unknowns": [
+        "Whether the actual interface makes evidence references expandable or actions discoverable.",
+        "Whether additional context defines filtered, handled, accepted, and the available lenses."
+      ]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful as a qualified orientation and a starting point for investigation, but insufficient for confirming runtime behavior or assessing investigation and correction workflows.",
+    "reasons": [
+      "Separates execution, outcome representation, unwrapping, and clone behavior into addressable accounts.",
+      "Includes concrete classification behavior and explicit evidence limits.",
+      "Provides a clear candidate for a focused follow-up investigation."
+    ],
+    "limitations": [
+      "Only the summary is available; no sequence effects can be assessed.",
+      "Evidence is referenced rather than displayed.",
+      "Correction and interaction affordances are described without concrete examples.",
+      "Dense provenance and repeated usage information reduce readability."
+    ]
+  }
+}

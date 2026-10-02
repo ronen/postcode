@@ -1,0 +1,22 @@
+{
+  "method": "Compare rejected draft and frozen instructions/tool schema with acceptance.ts target rule; no rewriting or resubmission.",
+  "inconsistencies": [
+    {
+      "targets": [
+        "session:283c4f24-db19-486c-b6d2-83fd05025d0b:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93",
+        "session:283c4f24-db19-486c-b6d2-83fd05025d0b:module:3f2edd61cafeb0a51bc78699bc28b31bb34fc2186be42b2f9a1d49f9f4e8d072"
+      ],
+      "reason": "The README says all entry exports are pure/stateless and return the same result for the same arguments. The re-exported `nextSequence` instead mutates module-scoped `sequence`, so repeated zero-argument calls return different values.",
+      "qualifications": [
+        "The README is nearby repository documentation; its applicability was not mechanically established, but it explicitly names this entry and both exports."
+      ],
+      "evidence": [
+        "session:283c4f24-db19-486c-b6d2-83fd05025d0b:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7",
+        "session:283c4f24-db19-486c-b6d2-83fd05025d0b:captured-content:48f20fb4b2aef27bd330850b0b4bca13987437fbbffa0bea6ea61bee13a8d628",
+        "session:283c4f24-db19-486c-b6d2-83fd05025d0b:captured-content:70b04d446a2c528c013921a158ad9edf9c0e588f41696a6811d236ab34c334fa"
+      ]
+    }
+  ],
+  "result": "The draft attributes the README assertion and contrasts it with stateful implementation, but structured inconsistency targets identify a repository-artifact and module rather than earlier investigrams. Domain validation rejects the entire submission before retention. Frozen instructions and tool schema list the targets field without explaining this restriction. An instruction-contract gap is therefore a plausible contributing cause, not evidence that the model alone cannot reconcile documentation. No accepted or displayed account established reconciliation.",
+  "conditionalDiagnostic": "Not applicable: normal run delivered README content. Further instruction changes and reruns require human disposition after the one authorized bounded improvement."
+}

@@ -1,0 +1,13 @@
+Module summary
+References remain bound for this session.
+New investigation request.
+investigation-failure: Invalid referent or association subject.
+Selection: selected (1 matches).
+Module @module-a44de3a8: anonymous
+Attempt session:90b7b148-abbe-42da-b0ad-c4d2c2016749:investigation-attempt:31cf8b9b9d68497f0274da558a2a9dcce00775ca651bcaecf3e7bf2a200aba57 (investigation-failure) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 154759 tokens; input 150709 tokens (subset of total); output 4050 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 270 tokens (subset of output)
+Session reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 154759 tokens; input 150709 tokens (subset of total); output 4050 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 270 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage

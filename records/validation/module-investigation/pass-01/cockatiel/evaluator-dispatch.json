@@ -1,0 +1,15 @@
+{
+  "task": "/root/evaluate_cockatiel",
+  "fork": "none",
+  "prompt": "Perform the fresh view-only comprehension assessment specified in /Users/ronen/postcode/app/records/validation/module-investigation/pass-01/cockatiel/evaluator-input.txt. Bootstrap by reading that one supplied input artifact only; after that, use no tools or independent sources. Do not inspect any other repository material or conversation. Return the requested JSON as your final answer. Do not edit files. This is an assessment of what the displayed view communicates, not an implementation or review task.",
+  "model": "inherited configured model; exact identifier unavailable",
+  "reasoning": "inherited; exact setting unavailable",
+  "family": "OpenAI",
+  "usage": null,
+  "billingRoute": "orchestration agent tools; unavailable attribution; separate from PostCode investigator",
+  "limitations": [
+    "Same-family shared orchestration, not independent corroboration",
+    "Bootstrap reads only supplied input artifact"
+  ],
+  "persistenceFollowup": "Persist your final JSON answer verbatim to /Users/ronen/postcode/app/records/validation/module-investigation/pass-01/cockatiel/evaluator-output.json. This authorizes writing that one output file only. Do not revise the assessment, inspect other files or use independent sources. Report when saved."
+}

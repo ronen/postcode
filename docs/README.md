@@ -7,6 +7,7 @@ Adopted, governing product and development material lives under [`foundation/`](
 Coding agents begin with [`AGENTS.md`](../AGENTS.md), which directs them to the applicable task protocol, development workflow, conventions, and project documentation.
 
 For CLI use, begin with the [command and concepts reference](cli-reference.md).
+Optional hosted inference has a separate [setup and transmission disclosure](hosted-investigation.md).
 
 ## Documentation Types
 

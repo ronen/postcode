@@ -1,3 +1,6 @@
+import { usageSummary } from './investigation/reporting.js';
+import { usageLines } from './investigation/presentation.js';
+import type { InvestigationUsageReport } from './investigation/reporting.js';
 import { commandObservation, observationBatch } from './observations.js';
 import type { ObservationSink } from './observations.js';
 import { AnalysisFailure, SessionInvalidated } from './execution-errors.js';
@@ -29,6 +32,7 @@ export async function publishCommand(session: {
   readonly id: string;
   execute(request: ViewRequest, execution?: ExecutionOptions): ExecutedView | Promise<ExecutedView>;
   check(): void | Promise<void>;
+  usage?(): InvestigationUsageReport;
 }, request: ViewRequest, supplied: unknown, configPath: string, command: number, output: Output, sink: ObservationSink): Promise<number> {
   let published: ExecutedView | undefined, stdout = '', stderr = '';
   let status: 'completed' | 'invalidated' | 'failed' | 'defect' | 'interrupted' = 'completed', code = 0;
@@ -38,6 +42,7 @@ export async function publishCommand(session: {
     output.stdout(result.rendered);
     stdout = result.rendered; published = result;
     await session.check();
+    if ('failed' in result && result.failed) { status = 'failed'; code = 3; }
   } catch (error) {
     status = error instanceof SessionInvalidated ? 'invalidated' : error instanceof CommandInterrupted ? 'interrupted'
       : error instanceof AnalysisFailure ? 'failed' : 'defect';
@@ -45,9 +50,16 @@ export async function publishCommand(session: {
     stderr = `${status === 'failed' ? 'Analysis failed: ' : status === 'defect' ? 'Internal failure: ' : ''}${inlineText(error instanceof Error ? error.message : 'unknown defect')}\n`;
     output.stderr(stderr);
   }
+  const usage = session.usage?.();
+  if (status !== 'completed' && usage?.attempts.length && !published) {
+    const final = request.presentation.format === 'json' ? `${JSON.stringify({ schema: 'postcode-investigation-usage/1-experimental', session: session.id, usage })}\n`
+      : ['Final investigation usage:', ...usage.attempts.flatMap(attempt => usageLines(usageSummary([attempt]), `Attempt ${attempt.attempt} (${attempt.termination})`)),
+        ...usageLines(usage, 'Session'), ...usage.limitations.map(inlineText)].join('\n') + '\n';
+    stderr += final; output.stderr(final);
+  }
   const produced = published ? observationBatch(published.view, stdout,
     { configPath, repositoryRoot: published.repositoryRoot, methods: published.methods }, command) : undefined;
-  await submitObservation(sink, commandObservation(session.id, command, { supplied, request, configPath }, status, stdout, stderr, produced), output);
+  await submitObservation(sink, commandObservation(session.id, command, { supplied, request, configPath }, status, stdout, stderr, produced, usage), output);
   return code;
 }
 

@@ -1,0 +1,22 @@
+import {runAssessment} from '../scripts/module-investigation/run-shell.mjs';
+import {runCli} from '../_build/src/lib/cli.js';
+import path from 'node:path';
+import {writeFileSync,readFileSync} from 'node:fs';
+const budget=path.resolve('_investigation/m5-dependent-dry-budget.json');writeFileSync(budget,JSON.stringify({ceiling:1,requests:[]}));
+const refs={};let completed=0;
+const spec=JSON.parse(readFileSync('_investigation/dependent-numeric-m5.spec.json','utf8'));
+const exit=await runAssessment({...spec,id:'offline-dependent',output:path.resolve('_investigation/m5-dependent-dry-run'),budget,incremental:false,json:true}, {
+ session:async()=>({token:async()=>{throw Error('No live request permitted');},watch:()=>()=>{}}),onError:e=>{throw e;},
+ runCli:async(args,options)=>runCli(args,{...options,sink:{submit:async batch=>{
+  const accepted=await options.sink.submit(batch);
+  const view=batch.records.find(r=>r.kind==='qualified-view')?.value;
+  if(view?.result?.evaluation?.outcome.kind!=='accepted'){options.input.end();throw Error('Scripted setup was not accepted');}
+  completed++;const id=view.result.evaluation.outcome.root;refs[completed]=view.references.find(r=>r.id===id).reference;
+  const commands=[`explain @${refs[1]}`,`decompose @${refs[2]}`];
+  if(completed<3)setImmediate(()=>options.input.write(commands[completed-1]+'\n'));else options.input.end();
+  return accepted;
+ }}}),
+});
+if(exit!==0||completed!==3)throw Error('Unexpected setup outcome');
+if(JSON.parse(readFileSync(budget,'utf8')).requests.length)throw Error('Unexpected provider reservation');
+console.log('All three scripted evaluations accepted through the real CLI/worker; zero provider requests.');

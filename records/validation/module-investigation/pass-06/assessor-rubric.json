@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "task": "Compare supplied investigator views and view-only evaluator answers against the frozen source references. Use only supplied artifacts. Preserve uncertainty and cite specific displayed references or source locations.",
+  "categories": [
+    "generation-error-repeated-by-evaluator",
+    "presentation-misunderstanding",
+    "successful-qualified-communication",
+    "unsupported-evaluator-extrapolation",
+    "material-omission",
+    "reference-cannot-settle"
+  ],
+  "output": "JSON with findings [{category, claim, evidence, consequence, uncertainty}], subjectUsefulness {judgment, reasons, limitations}. No numeric aggregate score. Do not treat a summary-only absence of follow-up views as a generation defect. Do not treat administrative request-budget interruption as an interpretive or milestone failure.",
+  "dependentAccountCriterion": "Assess whether accepted examination actually corrects or gives a source-supported response to an error in scripted Y or Z. A warning alone does not establish error. Compare the exact dependent claim, source predicates/examples and response; distinguish a submitted but rejected correction, a new explanation without a correction relationship, and an accepted replacement. Do not reward a correction merely for reacting to a warning."
+}

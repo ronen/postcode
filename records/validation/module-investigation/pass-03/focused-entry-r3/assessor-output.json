@@ -1,0 +1,86 @@
+{
+  "findings": [
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The view and evaluator distinguish numeric normalization from mutable sequence state without inventing a shared business purpose.",
+      "evidence": [
+        "Frozen reference, Controlled focused cases: entry.ts delegates to numeric clamping in normalize.ts and a module-scoped incrementing counter in counter.ts; a useful summary distinguishes the responsibilities without inventing one business purpose.",
+        "@investigram-18866a7b describes unlike semantics and rejects a stronger common responsibility based only on the shared entry point; its Composition names @investigram-867baefd and @investigram-3b0d3619.",
+        "Evaluator answer 1 preserves this division and cites all three displayed investigram references."
+      ],
+      "consequence": "The central functional distinction required by the focused case survives presentation and evaluation, with separately identifiable implementation branches.",
+      "uncertainty": "The frozen reference supports the responsibility split at source-analysis level, not runtime guarantees."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The intentionally misleading documentation is recognized as an attributed claim contradicted by the stateful counter.",
+      "evidence": [
+        "Frozen reference, Controlled focused cases: the authored README describes all exports as pure/stateless and deterministic for the same arguments, and the counter contradicts it.",
+        "@investigram-18866a7b explicitly compares the README claim with nextSequence's module-scoped increment and qualifies the nearby documentation's applicability.",
+        "Evaluator answer 1 identifies the documentation conflict; answer 5 correctly treats it as a current comparison rather than a correction history."
+      ],
+      "consequence": "The evaluator does not repeat the fixture's false blanket purity claim or misclassify detection of that conflict as a displayed correction event.",
+      "uncertainty": "The evaluator's conditional language about README applicability is more cautious than the fixture description, but preserves the conflict communicated by the view."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "Interpretation labels, runtime limitations, and investigation metadata retain their qualified status in the evaluator response.",
+      "evidence": [
+        "Frozen reference introduction: source inspection is not execution or proof of runtime guarantees.",
+        "@investigram-18866a7b limits loader, bundler, deployment, concurrency and caller conclusions; @investigram-3b0d3619 limits its progression to ordinary sequential calls in one module instance.",
+        "Evaluator answer 2 describes the accounts as interpretations, treats the incoming-dependents result as bounded, and distinguishes an accepted attempt and reported tokens from functional correctness and actual charges."
+      ],
+      "consequence": "The response avoids turning source-derived interpretation, an accepted attempt, or absent analysis results into stronger factual assurances.",
+      "uncertainty": "The supplied frozen reference does not independently verify the displayed dependent-analysis result, provider usage, or evidence identifiers. Preservation of their qualifications is assessable; their underlying accuracy is not."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator distinguishes visible composition and a proposed next investigation from unshown follow-up capabilities and correction provenance.",
+      "evidence": [
+        "The supplied user view is a module summary and explicitly displays Composition under @investigram-18866a7b, with Operation: functionality on the accounts.",
+        "Evaluator answers 3 and 5 decline to infer later explanation, decomposition, examination, or a correction pair from this summary.",
+        "Evaluator answer 4 selects @investigram-3b0d3619 for a requested examination while stating that no examination control or result is demonstrated."
+      ],
+      "consequence": "The response provides a concrete next target without claiming an available workflow or treating missing follow-up views as a generation defect.",
+      "uncertainty": "This artifact cannot establish whether the actual interface supports the proposed selection and lens or can obtain the missing runtime evidence."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "Several exact implementation details repeated by the evaluator have displayed support but exceed the specificity of the frozen reference.",
+      "evidence": [
+        "@investigram-867baefd specifies inclusive 0–100 clamping and a qualification about special JavaScript numeric values.",
+        "@investigram-3b0d3619 specifies initialization to 0 and results beginning 1, 2; @investigram-18866a7b specifies re-exports and no computation in the entry itself.",
+        "The frozen focused-case reference states numeric clamping, a module-scoped incrementing counter, and entry delegation without supplying exact function bodies or these exact details."
+      ],
+      "consequence": "These are faithful readings of the supplied view, but this assessment cannot independently certify their exact source accuracy or label them generation errors.",
+      "uncertainty": "No independent source inspection is authorized; the source and captured-content identifiers displayed in the view are references, not supplied source contents."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "The evaluator's presentation concerns are plausible usability hypotheses, while its concern about normalize's repeatability is not established as a semantic defect.",
+      "evidence": [
+        "Evaluator answer 6 notes long evidence identifiers, repeated operation metadata, identical attempt/session totals, the next-sequence module name, and generic correction and acceptance wording; these features are visible in the supplied summary.",
+        "The evaluator frames mistaken addition of totals, distraction, and implied correction history as things that could occur, while its own answers correctly distinguish these concepts.",
+        "Answer 6 also questions the statement that repeatability is true of normalize because documentation applicability and special-value outcomes are qualified. The frozen reference identifies the counter as the README contradiction and supplies no normalization counterexample."
+      ],
+      "consequence": "The formatting observations can inform usability investigation, but they do not demonstrate actual presentation misunderstanding. Unspecified special-value outcomes or uncertain README applicability alone do not establish that the implementation's repeatability claim is false.",
+      "uncertainty": "No user interaction evidence or exact normalization implementation is supplied. The criticism is a tentative concern, not a demonstrated evaluator or generation error."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful for the focused entry case: the summary communicates the two responsibilities and documentation conflict, and the evaluator preserves their qualifications while choosing a specific next target.",
+    "reasons": [
+      "The core source-reference expectations are met: numeric clamping and mutable sequence state remain distinct, with no invented common business purpose.",
+      "The misleading README claim is attributed and challenged rather than adopted.",
+      "Named investigram references and explicit composition make the implementation branches identifiable.",
+      "The evaluator recognizes source-analysis limits and separates a proposed examination from demonstrated capability."
+    ],
+    "limitations": [
+      "The assessment uses only the supplied frozen reference, user view, evaluator response and rubric; it does not independently inspect source or establish runtime behavior.",
+      "The frozen reference cannot settle every exact implementation detail, usage figure or bounded-analysis result displayed in the summary.",
+      "Dense metadata may impair scanning, but actual user confusion is not demonstrated by this evaluator response.",
+      "Follow-up investigation and correction workflows cannot be assessed from the summary alone; their absence is not a generation defect.",
+      "The references describe purposeful development examples, shared implementation and orchestration biases, and same-family assessment limits; this case does not establish broad or independent validation."
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+TAP version 13
+# Subtest: only delivered complete target context permits corrections, including separately requested parts
+ok 1 - only delivered complete target context permits corrections, including separately requested parts
+  ---
+  duration_ms: 2665.845317
+  ...
+# Subtest: documentation discrepancy submission preserves the contract: attributed-prose
+ok 2 - documentation discrepancy submission preserves the contract: attributed-prose
+  ---
+  duration_ms: 1597.458148
+  ...
+# Subtest: documentation discrepancy submission preserves the contract: module-inconsistency
+ok 3 - documentation discrepancy submission preserves the contract: module-inconsistency
+  ---
+  duration_ms: 1448.649243
+  ...
+# Subtest: documentation discrepancy submission preserves the contract: artifact-inconsistency
+ok 4 - documentation discrepancy submission preserves the contract: artifact-inconsistency
+  ---
+  duration_ms: 1424.249878
+  ...
+# Subtest: documentation discrepancy submission preserves the contract: mistyped-evidence
+ok 5 - documentation discrepancy submission preserves the contract: mistyped-evidence
+  ---
+  duration_ms: 1430.785757
+  ...
+# Subtest: documentation discrepancy submission preserves the contract: mistyped-subject
+ok 6 - documentation discrepancy submission preserves the contract: mistyped-subject
+  ---
+  duration_ms: 1338.956491
+  ...
+# Subtest: unresolved inconsistencies require substantive citation of every target without complete context or repair
+ok 7 - unresolved inconsistencies require substantive citation of every target without complete context or repair
+  ---
+  duration_ms: 6942.794006
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 18315.631822

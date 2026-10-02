@@ -1,0 +1,124 @@
+{
+  "findings": [
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator recovers the correct overlapping classification behavior and does not repeat the injected positive-first, single-label account as current truth.",
+      "evidence": [
+        "Frozen reference: classify.ts creates a fresh array and independently applies value > 0, value % 2 === 0, and value >= 10 in that order; 12 yields all three labels.",
+        "Evaluator answer 1 cites final selected @investigram-127ad6a0 and @investigram-36d5c456, reports the exact predicates, and distinguishes retained initial history from the final summary.",
+        "Initial @investigram-047e66f3 and child @investigram-c6e80ecf explicitly disclose controlled scripted origin."
+      ],
+      "consequence": "The source-supported correction reaches the evaluator. The initial false accounts are injected baselines, not observed natural generation errors; quoting them as history is not error repetition.",
+      "uncertainty": "This establishes comprehension of this supplied sequence, not a natural error rate or general correction reliability."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator accurately separates interpretation, displayed mechanical support, source-excerpt coverage, and runtime or caller evidence.",
+      "evidence": [
+        "Evaluator answer 2 identifies all investigram prose as interpretation and describes the mechanically-derived direct, non-aliased classify value export shown by inspect @investigram-127ad6a0.",
+        "inspect @investigram-047e66f3 --source-detail displays classify.ts span lines 2 through 8 but its excerpt stops after the even condition and reports omittedCharacters: 60.",
+        "The frozen reference independently establishes the full three-condition behavior and limits the README to signature and label names; it leaves callers and non-number JavaScript inputs unestablished."
+      ],
+      "consequence": "The evaluator does not mistake evidence exposure, a partial excerpt, documentation placement, or a type annotation for complete behavioral or runtime verification. The excerpt omission limits displayed independent checking; it does not undermine the full behavior confirmed by the frozen reference.",
+      "uncertainty": "The frozen reference is not an independent audit of compiler machinery, content acquisition, billing, or runtime deployment. Its scope cannot settle those broader claims."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "Replacement display, exact retained inspection, and composition versus investigation provenance are understood correctly.",
+      "evidence": [
+        "Evaluator answer 5 identifies reporter @investigram-36d5c456 and correction @investigram-047e66f3 → @investigram-127ad6a0.",
+        "Final summarize classify says the replacement uses its own composition @investigram-1b750038 and lists @investigram-047e66f3 and @investigram-c6e80ecf as displaced original composition.",
+        "Exact inspect @investigram-047e66f3 retains its original wording and child @investigram-c6e80ecf. Investigation subject fields explicitly say provenance, not composition."
+      ],
+      "consequence": "The evaluator does not silently retarget historical references or incorporate the old child into the replacement. It correctly treats the original child's selected status as lifecycle information rather than endorsement.",
+      "uncertainty": "No separate child correction relationship is shown. Criticism of the child in the root correction reason does not create one."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator preserves the distinction between citation-based reconsideration and established error, semantic reliance, reassessment, or warning clearance.",
+      "evidence": [
+        "Evaluator answer 6 identifies @investigram-27c4c9cc as directly affected via @investigram-047e66f3 and @investigram-2e4cbc09 as transitively affected via @investigram-27c4c9cc.",
+        "Both displayed statuses cite the same correction f4370ae915dfbb482e72dc93540398ef7787c7be5fc9659ccb23f450ac260800 and say This does not establish error or trigger inference.",
+        "explain @investigram-2e4cbc09 creates @investigram-0c97e3c4 while the selected older account retains its transitive warning; final explain @investigram-047e66f3 returns retained @investigram-27c4c9cc without new investigation.",
+        "Frozen reference says corrections cause direct and transitive reconsideration subject to evaluation-context exemptions, and later explanations do not clear retained warnings."
+      ],
+      "consequence": "The evaluator counts one correction cause affecting two accounts, avoids equating provenance with semantic dependence, and does not infer automatic repair from a later accepted clarification.",
+      "uncertainty": "The views do not independently demonstrate every exemption or propagation rule described by the reference. Lack of a warning on @investigram-0c97e3c4 is not proof of correctness."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator detects a consequential semantic reinterpretation in the live clarification instead of accepting it as confirmation of the earlier claim.",
+      "evidence": [
+        "Frozen reference states that scripted Z infers no additional classifications need representation, depending on the earlier single-label interpretation.",
+        "@investigram-2e4cbc09 says a caller summarizing the first returned label need not represent additional classifications; its cited parent @investigram-27c4c9cc asserts first-element completeness.",
+        "Hosted @investigram-0c97e3c4 reinterprets the statement as a warning of possible loss and says its cautious phrase remains accurate.",
+        "Evaluator answers 3, 4, and 7 explicitly flag the change from a permissive claim to a warning and propose examination of @investigram-0c97e3c4."
+      ],
+      "consequence": "The frozen setup confirms that the clarification does not faithfully preserve the injected inference even though its multi-label examples are source-consistent. This is a live interpretive problem caught by the evaluator, not a generation error repeated by the evaluator or an established presentation misunderstanding.",
+      "uncertainty": "The evaluator reasonably leaves intended meaning uncertain from views alone; the assessor-only reference establishes the scripted intended inference more specifically. It does not establish natural author intent or actual consumer requirements."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly treats the dependent examination as an unsuccessful attempt without inventing an accepted correction or a broad milestone failure.",
+      "evidence": [
+        "examine @investigram-27c4c9cc reports investigation-failure: Evidence must identify supplied context in this session.",
+        "The same view retains @investigram-27c4c9cc as original selected with its direct reconsideration cause.",
+        "Evaluator answers 3 and 4 distinguish available examination from guaranteed acceptance and say no accepted replacement of that explanation is shown."
+      ],
+      "consequence": "The actual unresolved follow-up remains visible and the evaluator identifies a concrete further target. This displayed evidence-validation failure is distinct from an administrative request-budget interruption.",
+      "uncertainty": "The rejected response and internal failure mechanism are not supplied. The reference cannot establish whether the cause lay in generation, validation, orchestration, or another mechanism, nor the rejected interpretation's quality."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator does not import the separate conflict fixture into the sequence condition.",
+      "evidence": [
+        "The frozen reference separately describes scripted B and C as competing even-first and large-first corrections.",
+        "Captured sequence views show one correction of @investigram-047e66f3 to @investigram-127ad6a0.",
+        "Evaluator answer 6 says only one root replacement is displayed and distinguishes contradictory historical claims from multiple competing replacement candidates."
+      ],
+      "consequence": "The generic conflicts-remain-unresolved footer is not mistaken for evidence that B/C-style alternatives exist in this capture. Acceptance recency is also correctly separated from credibility.",
+      "uncertainty": "This sequence does not exercise or assess competing-replacement selection or conflict reconciliation. Those capabilities cannot be validated from the separate fixture description alone."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "The evaluator's warning-burden assessment is a grounded formative judgment, not a demonstrated usability outcome or an observed misunderstanding.",
+      "evidence": [
+        "Evaluator answers 6 and 7 describe long repeated correction blocks, evidence identifiers, usage footers, duplicate composition fields, current-original wording, and generic conflict caveats as impediments.",
+        "The captured views repeatedly show these elements; association previews explicitly omit 290 and 742 prose characters while supplying inspect references.",
+        "Despite identifying those risks, the evaluator correctly reconstructs the local revision and reconsideration chain and limits its usefulness judgment to careful reading."
+      ],
+      "consequence": "The sequence supports opportunities to improve scanning and recovery guidance. It does not demonstrate that the evaluator actually misunderstood lifecycle labels or that other users would do so.",
+      "uncertainty": "The frozen source and this evaluator response cannot establish human reading time, error rates, larger-scale warning manageability, or the benefit of any proposed presentation change."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "The assessment cannot establish natural generation quality, unbiased correction detection, semantic reliance, or broad product usefulness.",
+      "evidence": [
+        "Frozen reference identifies A, its child, Y, and Z as controlled scripted inputs and notes adaptive navigation and shared reference-preparer/orchestrator/model-family overlap.",
+        "Evaluator usefulness limitations explicitly recognize scripted early accounts, no runtime or caller evidence, no successful dependent replacement, and the absence of competing root replacements.",
+        "The supplied preamble identifies the reference preparer and orchestrator as the implementing agent, exact model unavailable, OpenAI family."
+      ],
+      "consequence": "The supported result is a narrow formative demonstration: a correct root correction and traceable unresolved dependencies can be understood from the supplied views, and semantic drift in a later clarification can be noticed.",
+      "uncertainty": "Shared authorship and family overlap limit independence. The evaluator was view-only; absence of assessor-only methodological details from its answer is not an evaluator omission or a presentation defect."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful for careful, qualified understanding of this controlled correction sequence and selection of a precise follow-up target; cumbersome to scan and incomplete as a demonstration of dependent reassessment or conflict resolution.",
+    "reasons": [
+      "The evaluator accurately recovers independent multi-label behavior and distinguishes scripted historical mistakes from the hosted correction.",
+      "Stable references, the explicit correction mapping, replacement-owned composition, and exact historical inspection make the account change traceable.",
+      "Direct and transitive cause labels expose unresolved dependent accounts without implying automatic error or repair.",
+      "The evaluator notices the clarification's semantic shift and selects it for further examination rather than treating acceptance as validation.",
+      "Repeated metadata and partial excerpts create a credible scanning burden, while inspection references provide a recovery path."
+    ],
+    "limitations": [
+      "Only the supplied assessor input was consulted; this is not an implementation review.",
+      "The tiny numeric fixture and injected early accounts cannot establish natural error frequency, broad interpretive quality, unbiased detection, or semantic reliance.",
+      "Shared preparer/orchestrator authorship and OpenAI-family overlap limit independence; the exact preparer model is unavailable.",
+      "No actual callers, runtime observations, non-number input behavior, or consumer policy requirements are established.",
+      "The dependent examination failed evidence validation and no accepted replacement of the first-element-completeness account is supplied; the later clarification does not clear the earlier warning.",
+      "No competing root replacements are displayed in this sequence, so the separate conflict fixture must not be treated as an observed result here.",
+      "No generation error repeated as endorsed truth, established evaluator presentation misunderstanding, material evaluator omission, or unsupported evaluator extrapolation was identified within this bounded comparison. Potential presentation risks and reference limits are reported separately."
+    ]
+  }
+}

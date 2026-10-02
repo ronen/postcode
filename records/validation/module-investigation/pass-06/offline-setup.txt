@@ -1,0 +1,6 @@
+READY
+READY
+READY
+READY
+{"exit":0,"elapsedMilliseconds":4501,"pausedForBudget":false,"disposition":"inspect-recorded-outcome"}
+All three scripted evaluations accepted through the real CLI/worker; zero provider requests.

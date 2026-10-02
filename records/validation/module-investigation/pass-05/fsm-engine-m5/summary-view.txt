@@ -1,0 +1,82 @@
+COMMAND: summarize fsm-engine
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-28ee01f8: fsm-engine
+
+@investigram-7c656898 · interpretation
+This module is the FSM runtime and instance factory. `define` turns a builder callback into one validated, compiled definition shared by independently stateful instances; each instance owns context, current state, a FIFO event queue, timers, identity, and tracing. It exports only `FsmEngine` and its conditional factory type.
+Referent: FSM engine runtime module
+  Qualification: Apparent behavior from captured TypeScript source; no execution was performed.
+  Qualification: The repository README is nearby project documentation and is attributed as intended behavior, not treated as proof.
+  Qualification: Dependency coverage is bounded to captured project-owned source requests.
+  Displayed composition: @investigram-a6f543c9, @investigram-04d79256, @investigram-300a00e5, @investigram-9314e47c
+  Composition: @investigram-a6f543c9, @investigram-04d79256, @investigram-300a00e5, @investigram-9314e47c
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:export:9a41ee02d968b322d61df136d4af61f958954537b210ff2e2a6180fbee30e856, session:dba39c44-7b2b-467e-b414-866b256bbd8e:export:c990c362ac2b8ed8e617bf4ab2a9de58eb96af0ba6aaa3b83a8379e61dd4166e, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-a6f543c9 · interpretation
+`define` delegates collection to `FsmBuilderImpl`, then eagerly validates and compiles lookup tables. The builder rejects missing/unknown/unreachable states, duplicate state/event declarations, unknown targets, and transitions placed after an unconditional transition; it records ordered guards/actions plus state-specific and fallback tables. The returned closure reuses that definition while constructing fresh instances and immediately runs initial-state entry actions.
+Referent: definition, validation, compilation, and instantiation
+  Qualification: Validation and table construction are delegated behavior observed in captured builder source.
+  Qualification: Reachability follows external transitions, with fallback targets treated as globally reachable edges.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-7c656898
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:2223a19b7c84507271eb5dcafd0ce7c951322233ba64e5857e7344d6ae15d73d, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:5f0b239941bada797164d6818c9cd0739deecbc2928e6cad7651fba1814d9ddb
+
+@investigram-04d79256 · interpretation
+`dispatch` always enqueues. The outermost call drains synchronously; re-entrant calls return and remain FIFO. For each event it rejects names absent from the compiled definition, runs state begin actions, tries transitions in declaration order with short-circuiting guards, then tries fallback begins/transitions. A declared transition set whose guards all fail is an implicit handled stay; no state or fallback transition is unhandled. External transitions run exit actions, transition actions, commit state, then entry actions; internal transitions run only transition actions. Any thrown guard/action/error clears queued work and escapes the outer dispatch.
+Referent: event dispatch and transition lifecycle
+  Qualification: Synchronous behavior is inferred from control flow; host scheduling beyond this call is not assessed.
+  Qualification: Action side effects and completed exit actions are not rolled back on failure; state is committed before entry actions but after transition actions.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-7c656898
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-300a00e5 · interpretation
+Actions receive a narrow API that can enqueue events and manage keyed timers. Timer scheduling defaults the key to the event, replaces an existing key, accepts relative delay or `performance.now()` deadline, clamps past/negative times to immediate, and treats `Infinity` as never firing; cancellation delegates wholly to `TimerRegistry`. Apparent defect: timer payload forwarding is reversed—when `payload` exists the engine passes no payload, while payload-less events receive an explicit `undefined`; this conflicts with the action-API type documentation and README’s promised timer payload.
+Referent: action effects and timer delegation
+  Qualification: The payload discrepancy is a source-level comparison, not a runtime test.
+  Qualification: Documentation assertions are attributed to the action-API source and repository README.
+  Qualification: Timer registry source includes embedded tests, but they were not executed and do not cover engine payload forwarding.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-7c656898
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:26bb1b56e1acf46f558d9c3267bef7d2db4f8fb3e246c6c26e4e5fe63a275ecd, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:5ae20a36be80e4d3426c537ab3f59d590e4dcd0d929812feb44017c3524f5e6a, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-9314e47c · interpretation
+`trace` toggles per-instance logging, optionally replaces the logger, resets elapsed-time origin, and returns the instance. Emitted lines combine machine/instance identity, elapsed time, current state/event, fallback status, and guard/action/transition details; unnamed callbacks get ordinal labels.
+Referent: instance tracing
+  Qualification: Trace formatting uses `performance.now()` and defaults to `console.log`.
+  Qualification: Falsy payloads are not rendered because payload output is guarded by a truthiness check.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-7c656898
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84
+
+Revision status @investigram-7c656898: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-a6f543c9: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-04d79256: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-300a00e5: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-9314e47c: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:ac29d94c89454b2f8bed5be2cf4d8f972f8633d49bd344a89929434dffd18960 (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 92226 tokens; input 89558 tokens (subset of total); output 2668 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 740 tokens (subset of output)
+Session reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 92226 tokens; input 89558 tokens (subset of total); output 2668 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 740 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+

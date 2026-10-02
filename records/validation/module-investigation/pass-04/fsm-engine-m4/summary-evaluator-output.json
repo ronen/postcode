@@ -1,0 +1,102 @@
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The module supplies a typed factory and stateful FSM runtime. The engine delegates DSL recording, validation and table compilation to FsmBuilderImpl, shares an immutable-looking definition between factories/instances, and gives each instance its own context, current state, FIFO queue, timers and tracing. Outer dispatch is synchronous; re-entrant dispatch enqueues. The account describes begin actions, guarded transition selection, fallback handling and implicit stays, plus different external/internal transition action sequences. TimerRegistry manages keyed timeout handles while the engine converts timer events into callbacks. Separate error classes describe definition failures and distinguish unknown events from known events unhandled in the current state.",
+      "support": [
+        "@investigram-dc111a38: 'Implements the stateful FSM instance and its typed factory'; 'define delegates DSL capture, validation and table compilation to FsmBuilderImpl'.",
+        "@investigram-1f0389d7 describes DSL recording, ordered transitions, validation and compiled tables consumed by the engine.",
+        "@investigram-2f1f0d4d describes keyed scheduling/replacement/cancellation and explicitly assigns timer-event-to-callback conversion to the engine.",
+        "@investigram-9c64fa80 describes definition/runtime error classes and retained diagnostic fields."
+      ],
+      "unknowns": [
+        "The view does not establish execution behavior independently of these source interpretations.",
+        "The definition is only described as 'immutable-looking'; enforced immutability is not established.",
+        "Coverage of dependencies outside recognized project-owned source requests is not established."
+      ]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "All four investigrams are explicitly interpretations. The engine, builder and error descriptions are based on captured TypeScript source, declarations or constructors. The timer account also interprets embedded tests, but those tests were not executed. A README assertion supports broad intended semantics at package level, while expressly not proving behavior. The apparent timer payload inversion is a literal-source interpretation that conflicts with the README promise: the adapter appears to pass no payload argument when a payload is present, and one undefined argument when absent. This is a consequential suspected behavior, not an executed finding. Accepted investigation status and reported model usage do not validate the behavioral claims.",
+      "support": [
+        "@investigram-dc111a38 qualifies its source interpretation with 'no execution was performed', labels the README an attributed assertion, and says the inversion 'may cause payload-bearing timer events to receive undefined'.",
+        "@investigram-2f1f0d4d: 'Interpretation of captured implementation and embedded tests; tests were not executed.'",
+        "@investigram-1f0389d7 does not infer validation guarantees beyond shown checks.",
+        "@investigram-9c64fa80 limits established triggering call sites to those inspected.",
+        "The footer says 'Generated accounts remain interpretation' and distinguishes reported usage from confirmed billed usage."
+      ],
+      "unknowns": [
+        "Whether execution reproduces the timer payload inversion, and its concrete effects on consumers.",
+        "Whether tests pass, whether every error class has a reachable triggering path, and whether additional validation guarantees exist.",
+        "Actual billed usage, monetary attribution and credit charges are unavailable rather than established as zero."
+      ]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "Only the summarize fsm-engine view was supplied. No explanation, decomposition or examination sequence is available, so I cannot report changes caused by those operations. Within the summary, the engine account and its three separately referenced components make runtime, builder, timer and error responsibilities distinguishable and provide specific references one could select next. That is a property of this displayed summary, not evidence of a before-and-after improvement.",
+      "support": [
+        "The supplied command is 'summarize fsm-engine'.",
+        "@investigram-dc111a38 lists @investigram-1f0389d7, @investigram-2f1f0d4d and @investigram-9c64fa80 as its composition, and each child is displayed separately."
+      ],
+      "unknowns": [
+        "Results or availability of explanation, decomposition and examination operations are not shown.",
+        "No comparison view establishes changes in understanding, selectability or substantive conclusions after those operations."
+      ]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "I would select @investigram-dc111a38 with a timer-payload correctness lens, focusing on the engine adapter that converts scheduled events into callbacks. I would want a closer account of the conditional, the present/absent payload cases, the README conflict and the limits of the inferred effect. The engine reference is the appropriate target because the timer utility account expressly leaves conversion to the engine. A focused examination, and especially execution of a reproducing case, is a requested next capability; the supplied view does not demonstrate that either can be invoked. It does show session-bound references and the completed summary operation.",
+      "support": [
+        "@investigram-dc111a38 describes the apparent payload inversion and qualifies its source basis.",
+        "@investigram-2f1f0d4d: 'conversion from timer events to callbacks remains the engine's responsibility'.",
+        "The view states 'References remain bound for this session.'"
+      ],
+      "unknowns": [
+        "The syntax and supported lens vocabulary for a follow-up request are not supplied.",
+        "The view does not establish access to execution, source expansion or a follow-up examination operation."
+      ]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No concrete correction, replacement reference or changed assertion is displayed in this summary. The general notice says original accounts are displayed and that replacement substitution and derived revision warnings are not yet presented; it does not identify a replacement for any particular account. Composition can be distinguished from investigation-subject provenance: the parent explicitly lists three component references, each child names its composition parent, and every account separately marks the module as investigation subject '(provenance, not composition)'. No later-investigation relationship is displayed, so I cannot assess how such provenance would be presented or whether a correction affected derived accounts.",
+      "support": [
+        "@investigram-dc111a38 has 'Composition: @investigram-1f0389d7, @investigram-2f1f0d4d, @investigram-9c64fa80'.",
+        "The three child accounts have 'Composition parent: @investigram-dc111a38'.",
+        "All four accounts label 'Investigation subject: @module-28ee01f8 (provenance, not composition)'.",
+        "The footer says 'Corrections are retained assertions, not established truth' and 'Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.'"
+      ],
+      "unknowns": [
+        "Whether corrections exist for these accounts, what any correction changed, and the identity or validity of a replacement.",
+        "Any subsequent investigation's relationship to these accounts and any resulting revision effects."
+      ]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The summary is useful for orienting a reader to responsibilities and selecting a narrower concern. Separate referents, stable-within-session references and explicit qualifications help preserve the distinction between interpretation and verification. However, the long lead account packs many execution-order claims together, making boundary cases difficult to inspect. Declarative verbs such as 'Implements', 'rejects' and 'run' can sound verified if qualifications are skimmed. 'Immutable-looking' leaves a consequential property deliberately unresolved. Opaque evidence identifiers give traceability markers without displaying the underlying excerpts or a demonstrated way to inspect them. Repeated investigation metadata and duplicate attempt/session usage totals compete with the behavioral account, and the totals could be mistaken for additive usage despite the warnings. Generic correction notices could suggest a specific correction exists when none is identified here. The lack of demonstrated follow-up controls limits immediate use of the otherwise precise references.",
+      "support": [
+        "The lead @investigram-dc111a38 paragraph combines factory ownership, dispatch, action order, errors, timers, tracing and the payload conflict.",
+        "Every account repeats operation/provider, investigation subject and evidence metadata.",
+        "Attempt and session usage repeat the same 4-call and 123430-token totals; the footer explains subset accounting and unconfirmed billing.",
+        "The header and footer discuss correction presentation without showing a correction-specific original/replacement pair."
+      ],
+      "unknowns": [
+        "Whether another UI supplies evidence navigation, follow-up controls or clearer correction relationships.",
+        "Whether readers in practice confuse usage categories, interpretation status or generic correction notices; those are presentation risks, not observed user outcomes."
+      ]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful as a qualified orientation and a starting point for focused investigation; insufficient to establish runtime correctness or revision history.",
+    "reasons": [
+      "Communicates a coherent division between runtime, builder, timer registry and error classes.",
+      "Provides individually selectable references and explicitly separates composition from investigation-subject provenance.",
+      "Surfaces a consequential timer payload concern while preserving its source-interpretation status."
+    ],
+    "limitations": [
+      "Only a summary is supplied, with no progressive operation sequence or executed verification.",
+      "Evidence excerpts and demonstrated follow-up affordances are absent.",
+      "No concrete correction pair or later-investigation provenance is shown.",
+      "Dense prose and repeated usage/provenance metadata can obscure the most actionable uncertainty."
+    ]
+  }
+}

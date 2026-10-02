@@ -1,0 +1,64 @@
+You are a fresh view-only evaluator. Assess only the user-facing view below. Do not inspect source, references, task history, documentation, plans or internet. Answer the fixed questions and preserve uncertainty. Exact model/usage metadata may be unavailable; do not invent it.
+
+{
+  "version": 1,
+  "condition": "summary-only; later sequence views not supplied",
+  "questions": [
+    "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+    "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+    "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+    "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+    "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+    "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score."
+  ],
+  "answerFormat": "JSON with answers [{question,answer,support,unknowns}], usefulness {judgment,reasons,limitations}. Use only supplied user-facing views; no independent sources or tools."
+}
+
+USER-FACING VIEW
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-28ee01f8: fsm-engine
+
+@investigram-af5c440f · interpretation
+Implements the state-machine runtime and its public factory/type surface. `define` delegates definition capture, validation, and compilation to the builder implementation, then returns factories whose instances share the compiled definition but keep separate state, context, queue, timers, and tracing state.
+Referent: the finite-state-machine engine module
+  Qualification: Interpretation of first-observed TypeScript source; runtime behavior was not executed.
+  Qualification: The compiler exposes only `FsmEngine` and the `FsmEngineFactory` type directly from this module; the package index re-exports the module.
+  Qualification: Dependency evidence is bounded to recognized project-owned source requests.
+  Composition: @investigram-d77cb43d, @investigram-026d2d6e, @investigram-e2b45025
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:c69416ea-8f6b-425d-b25c-5e6715ce001b:source:adb9ce1980e8b4bd9358750d3813426af93b6b84e25288586eea8cfc3e0d3a31, session:c69416ea-8f6b-425d-b25c-5e6715ce001b:source:20c77b7ba0e87de930a4c418e23bd76858530ebf31c5492791f7e50933199673, session:c69416ea-8f6b-425d-b25c-5e6715ce001b:source:201166b39df10c798ae2d55eb9f954ac2dc3849caa203ff660444961b13ccbf2, session:c69416ea-8f6b-425d-b25c-5e6715ce001b:source:b4918c52ccb7a6f0c292932917dbc10f6ee855eb13b665a2c93981c01d974447
+
+@investigram-e2b45025 · interpretation
+Actions receive the instance context, metadata, and a restricted API for dispatching and managing timers. Timer work is delegated to a per-instance registry: scheduling replaces the same key, supports relative delays or `performance.now()` deadlines, clamps past/negative times to immediate scheduling, treats infinity as disabled, and supports one/all cancellation. Optional tracing reports events, guards, selected transition behavior, actions, fallback use, errors, and elapsed time through a replaceable logger.
+Referent: action-facing services and diagnostics of FsmEngine
+  Qualification: Timer and trace behavior is inferred from first-observed source; host timer/performance behavior was not executed.
+  Qualification: The timer registry also contains conditional in-source tests, but their presence does not establish that they ran or passed.
+  Qualification: The engine callback dispatches the configured timer event through the normal queue; payload forwarding is not characterized here because the source expression warrants separate verification.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:c69416ea-8f6b-425d-b25c-5e6715ce001b:source:adb9ce1980e8b4bd9358750d3813426af93b6b84e25288586eea8cfc3e0d3a31, session:c69416ea-8f6b-425d-b25c-5e6715ce001b:source:a2217383b45252ecd02e0c070ed044aa21d44d79746852e3256dd3bda2fd1836
+
+@investigram-026d2d6e · interpretation
+`dispatch` serializes work through a synchronous FIFO: re-entrant dispatches enqueue and return, while the outer call drains the queue and clears pending work on failure. For each event it rejects unknown names, runs state-specific begin actions, chooses the first transition whose guards all pass, then tries fallback begins/transitions. External transitions run exit, transition, and entry actions around the state change; internal transitions run actions without changing state. Known events with transitions but no passing guard count as an implicit stay; events with no applicable handler raise an unhandled-event error.
+Referent: event dispatch and transition execution in FsmEngine
+  Qualification: Synchronous/FIFO semantics and action ordering are source-level interpretations, not execution results.
+  Qualification: An action-triggered dispatch is deferred until the current event processing returns to the outer queue drain.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:c69416ea-8f6b-425d-b25c-5e6715ce001b:source:adb9ce1980e8b4bd9358750d3813426af93b6b84e25288586eea8cfc3e0d3a31
+
+@investigram-d77cb43d · interpretation
+`define` runs a typed DSL callback, then eagerly validates and compiles it. The delegated builder records state/event handlers, ordered guarded internal or external transitions, entry/exit/begin actions, and fallbacks; it rejects duplicate definitions, missing or unknown initial/target states, unreachable states, and transitions placed after an unguarded transition.
+Referent: FSM definition construction and validation used by the engine
+  Qualification: Behavior is inferred from source; validation was not executed.
+  Qualification: Reachability is computed over external transitions, including fallback targets; internal transitions do not establish reachability.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:c69416ea-8f6b-425d-b25c-5e6715ce001b:source:adb9ce1980e8b4bd9358750d3813426af93b6b84e25288586eea8cfc3e0d3a31, session:c69416ea-8f6b-425d-b25c-5e6715ce001b:source:fb139cec5c39b36c62c03d967becc1429e0b4a2c5958218f94efc80bf7516180
+Attempt session:c69416ea-8f6b-425d-b25c-5e6715ce001b:investigation-attempt:be80cd18480c86bcc12c262c361657040ea3b6b8cfefbb5c7c09c88c2be45294 (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 161522 tokens; input 157298 tokens (subset of total); output 4224 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 379 tokens (subset of output)
+Session reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 161522 tokens; input 157298 tokens (subset of total); output 4224 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 379 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+This checkpoint shows immutable originals and explicit correction links; replacement selection and reconsideration display arrive in a later milestone.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage

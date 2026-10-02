@@ -1,0 +1,18 @@
+{
+  "command": "npm test",
+  "implementationCommit": "6a214807d231d30c3925ef523785753bb4635c32",
+  "runtime": "Node 22.13.1 / TypeScript 6.0.3",
+  "build": "passed",
+  "tests": 419,
+  "passed": 419,
+  "failed": 0,
+  "cancelled": 0,
+  "skipped": 0,
+  "durationMilliseconds": 151833.430831,
+  "loopbackPermission": true,
+  "providerResponses": "offline test data",
+  "trackedInputsUnchangedDuringSuite": true,
+  "postRunConfigurationVerification": "All six specs passed pinned source/configuration/compiler/investigator checks",
+  "usageConsistency": "Command view, subsequent usage view and observations equal in all six cases",
+  "credentialPatternScan": "No Bearer/access-token/refresh-token/client-secret/PKCE/authorization-URL fields found in assessment capture; supplements adapter redaction regressions, not a proof of absence of every possible secret"
+}

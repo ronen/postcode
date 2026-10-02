@@ -1,0 +1,260 @@
+Condition: summary. Compare only supplied views, evaluator answers and frozen references. Milestone-5 views select replacements on redisplay, preserve exact originals on inspection and show unresolved conflicts and citation-based reconsideration. Reconsideration does not establish error, semantic reliance or reassessment. Scripted origin is an injected baseline, not a natural generation error. Reference preparer and orchestrator are the implementing agent, exact model identifier unavailable, OpenAI family; overlap limits independence. Reference scope may not settle deeper claims.
+
+RUBRIC
+{
+  "version": 1,
+  "task": "Compare supplied investigator views and view-only evaluator answers against the frozen source references. Use only supplied artifacts. Preserve uncertainty and cite specific displayed references or source locations.",
+  "categories": ["generation-error-repeated-by-evaluator", "presentation-misunderstanding", "successful-qualified-communication", "unsupported-evaluator-extrapolation", "material-omission", "reference-cannot-settle"],
+  "output": "JSON with findings [{category, claim, evidence, consequence, uncertainty}], subjectUsefulness {judgment, reasons, limitations}. No numeric aggregate score. Do not treat a summary-only absence of follow-up views as a generation defect. Do not treat administrative request-budget interruption as an interpretive or milestone failure."
+}
+
+FROZEN SOURCE REFERENCE
+## merge-anything: public entry and delegated merging
+
+Source pin: [index.ts](https://github.com/mesqueeb/merge-anything/blob/bc7c79fe8fce89ed3350d7b3bdf7cdd1a7633906/src/index.ts).
+Selector `anonymous`, verified to select the public forwarding entry; conceptual
+handle is not a source path. The entry re-exports `extensions.ts` and `merge.ts`.
+The summary must follow delegation to explain functionality rather than stop at
+the fact that this file is a barrel.
+
+The human-approved effective configuration is the exact
+[override](merge-anything-override.json), beside the unchanged original config,
+extending it and setting only `ignoreDeprecations: "6.0"`. The inherited package
+is `@cycraft/tsconfig` 0.1.2, pinned by the repository lockfile and hashed in the
+manifest. Use this configuration and TypeScript 6.0.3 consistently throughout all
+assessment runs; attribute results to them, not to an unmodified-config run.
+The original config fails opening on deprecation diagnostics. The override was
+mechanically verified to open, not asserted equivalent by unperformed testing.
+
+Supported source conclusions from
+[merge.ts](https://github.com/mesqueeb/merge-anything/blob/bc7c79fe8fce89ed3350d7b3bdf7cdd1a7633906/src/merge.ts):
+
+- Lines 39–94 merge plain-object properties recursively, with plain-object and
+  symbol classification delegated to `is-what`. A non-plain newcomer replaces
+  the current value. Prior own properties absent from the newcomer are retained.
+- Own string and symbol properties are considered; `__proto__` is skipped. This
+  is specific source behavior, not a general security certification.
+- Lines 19–36 preserve enumerability when assigning values but do not preserve
+  every original descriptor or avoid evaluating getters.
+- Lines 101–124 fold inputs in order through the common implementation. Ordinary
+  merge replaces arrays; merge-and-compare applies a supplied comparison function;
+  merge-and-concat uses the array-concatenation helper when both values are arrays.
+- `extensions.ts` delegates array recognition to `is-what` and otherwise returns
+  the newcomer. Type utilities describe compile-time result shape, not runtime work.
+
+Acceptable interpretation: an entry exposing related merge strategies sharing
+recursive plain-object handling and replacement rules, with configurable comparison
+or array concatenation. Material limits: no subject execution; external predicate
+implementation is not established here. It is not a general deep clone: references
+can be retained, non-plain inputs can be returned directly, and zero extra inputs
+return the original. The README's always-new-object wording is broader than that
+source supports. Do not claim circular-input handling, rollback or general safety.
+
+
+CAPTURED VIEWS
+COMMAND: summarize anonymous
+Module summary
+References remain bound for this session.
+New investigation request.
+communication-failure: OpenAI request failed (HTTP 200); no automatic retry was made. Unclassified errors are not assumed transient.
+Selection: selected (1 matches).
+Module @module-a44de3a8: anonymous
+Attempt session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:cf0693569d590ec5a899a821c557d239d42dc6ad41391d8f2f7f90485d920f07 (communication-failure) reported usage: 3 calls; 1 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 7442 tokens; input 7275 tokens (subset of total); output 167 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 21 tokens (subset of output)
+Session reported usage: 3 calls; 1 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 7442 tokens; input 7275 tokens (subset of total); output 167 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 21 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: summarize anonymous
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-a44de3a8: anonymous
+
+@investigram-15cfc298 · interpretation
+This module is the package-facing entry point: it implements no merge logic itself, but wildcard-re-exports the recursive merge API, its result type, and the array-concatenation helper. The nearby README describes the package as a deep merger for plain objects with TypeScript result inference; that description is broadly borne out by the inspected implementation, subject to its documented reference-sharing caveat.
+Referent: package-facing merge API entry point
+  Qualification: Implementation account from captured TypeScript source; no runtime execution was performed.
+  Qualification: README statements are attributed documentation, not independently established behavior.
+  Qualification: Dependency analysis is bounded source-request analysis, not runtime or deployment completeness.
+  Displayed composition: @investigram-f207fe80, @investigram-d5170823, @investigram-554de213
+  Composition: @investigram-f207fe80, @investigram-d5170823, @investigram-554de213
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:8063a4d5515655c21e37335157b6da32def9e894222b525f84b99c3945f95649, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:ed268f1d30fc438081dd6ceffba6814b08906e6f770ff92ade7352ccb62823ac, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:2d10a79ac4e197e72485153249a6e2fe4025cf5d456e6fd8f8d98629fa585377, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:c1d37ad435569036afef1aae8e2b1cd24813adb35694bc6bba803ad4aa5404a8, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:93b3c024cb4f29a0fd0c645ef2a6b6f9b954e5c8054ddb60d0dffe3f97ba6fa0, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:e26f07d96b232e4d184ad3e0cdf396135d5d38a0deec01c3652af840c3079397, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:03e0101ac41b08cef3e381d2473a2ab7bce98037a1901b29e353d87f07f7f0c3, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:5cbf575991c6bb6718d39fc9141a7b4e4919d6e1a778613577b5a23228b482fd
+
+@investigram-f207fe80 · interpretation
+The merge implementation folds later inputs over the accumulated result. Only plain objects recurse; primitives, arrays, class instances, and other non-plain values replace the prior value. It copies own string and symbol properties, preserves enumerable versus non-enumerable status, skips `__proto__`, and lets later properties win. `mergeAndCompare` routes each assignment through a caller callback; `mergeAndConcat` uses the array helper as that callback.
+Referent: recursive runtime merge implementation and public variants
+  Qualification: Apparent behavior from full captured source, not execution.
+  Qualification: Accessors and other descriptor attributes are not preserved: assignment/defineProperty materializes a writable configurable value property.
+  Qualification: Nested values can retain source references when no recursive overlap causes rebuilding, matching the README's warning.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-15cfc298
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:8e720325202e79ae5656f9a4758857448dfd8eb8be21b13c06a65c5847d99358, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:a3fd7ea754d19eb66f578f6ca3befe3e8d8087065164a7d2075316f234b688b6, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:9497fc07d5b62237183636e8bb45b53c0424ebc9ddafe6fe6dc3db993793c60e, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-d5170823 · interpretation
+The extension helper concatenates only when both old and incoming values are arrays; otherwise it returns the incoming value unchanged. It is both directly exported and delegated to by `mergeAndConcat`.
+Referent: array-concatenating overwrite policy
+  Qualification: Apparent behavior from captured source, not execution.
+  Qualification: Array recognition is delegated to external `is-what`; that dependency's implementation was not inspected.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-15cfc298
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:6f64ed2803e14f05072f46970bb3eee68517667fd9442ba8d3d0ad0536c50f83, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:7caa54971fa1ecdabf543e16a9c0472b7a47d21dd77f32f2ca6767365092fe70, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:db00a908bf5399461686cd58ade8511d978aea9a9511dc001727d35d5d46a564
+
+@investigram-554de213 · interpretation
+Compile-time return typing is separate from runtime recursion. `Merge` uses a recursive `Assign` model for object inputs, falls back to the last supplied type otherwise, and runs the result through `PrettyPrint` to expose a readable recursively expanded shape. `Assign` iterates input object types with last-in override semantics; `PrettyPrint` guards against cycles with a seen set.
+Referent: compile-time model of merge results
+  Qualification: Type-level interpretation from captured TypeScript definitions; it does not itself establish runtime equivalence.
+  Qualification: Further delegated internals such as `MergeDeep`, iteration, and list helpers were not inspected because the exposed branching and division of responsibility were already clear.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-15cfc298
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:74dca925e00af1e4d8ff5392a6275a5f9629badac922808cdbae94b26f58340f, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:0edd20422bed0aee5f55854002c178200bf3577e50e8b2668f73b4608c1f1f77, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:e8d31cc77ae274a753f7a7f34dbc2b6c693f8c8d6e41a9610d4059c17300ba70, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:c6747177ca6114dab696d2c944f2205c61dc4d77fff659431fd618292ca5c20b, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:4042a79bd3ddf9e6359b87b4d671cdf0f7bf3fca9a25eb57657942b6171dec15, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:b3197dacf8fff040b128a0db56e61d93a378d80423e42ac5d244c990f68423fb
+
+Revision status @investigram-15cfc298: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-f207fe80: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-d5170823: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-554de213: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 74740 tokens; input 72759 tokens (subset of total); output 1981 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 189 tokens (subset of output)
+Session reported usage: 7 calls; 1 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 82182 tokens; input 80034 tokens (subset of total); output 2148 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 210 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+VIEW-ONLY EVALUATOR
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The package-facing entry point re-exports functionality rather than implementing merging itself. Its account separates recursive runtime merging, an array-concatenation overwrite policy, and compile-time result typing. The runtime account describes later inputs overriding earlier values, recursion restricted to plain objects, copying own string and symbol properties with enumerability preserved, skipping __proto__, and callback-driven assignments in mergeAndCompare. mergeAndConcat delegates its callback to the array helper. That helper concatenates only when both values are arrays and otherwise returns the incoming value. The type account describes Merge, Assign and PrettyPrint as a separate model of inferred results, including last-in overrides and cycle guarding.",
+      "support": [
+        "@investigram-15cfc298: 'implements no merge logic itself' and wildcard-re-exports the merge API, result type and array helper.",
+        "@investigram-f207fe80: recursive runtime merge implementation and public variants; non-plain values replace prior values.",
+        "@investigram-d5170823: array-concatenating overwrite policy, directly exported and delegated to by mergeAndConcat.",
+        "@investigram-554de213: 'Compile-time return typing is separate from runtime recursion.'"
+      ],
+      "unknowns": [
+        "These descriptions were not verified by runtime execution.",
+        "The external array-recognition implementation and further delegated type internals were not inspected."
+      ]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "All four functional accounts are explicitly interpretations. Their stated support is captured TypeScript source, with evidence references displayed but their contents unavailable here. The README provides separately attributed documentation for deep plain-object merging, inferred types and reference sharing; it is not independent behavioral verification. Source qualifications explain that accessors and other descriptor attributes are not preserved, and that some nested values retain source references. The type-level account does not establish equivalence with runtime behavior. The initial communication failure and later accepted attempt describe investigation status, not behavioral validation. Reported usage likewise does not establish billing.",
+      "support": [
+        "Each account is labeled 'interpretation'.",
+        "@investigram-15cfc298: 'Implementation account from captured TypeScript source; no runtime execution was performed' and README statements are 'attributed documentation'.",
+        "@investigram-f207fe80: 'Apparent behavior from full captured source, not execution'; descriptor and source-reference qualifications.",
+        "@investigram-554de213: the type interpretation 'does not itself establish runtime equivalence'.",
+        "Footer: 'Reported usage is not confirmed billed usage' and monetary attribution is 'unavailable, not zero'."
+      ],
+      "unknowns": [
+        "Actual runtime behavior, edge-case outcomes, full dependency behavior and deployment completeness.",
+        "Whether the type model agrees with runtime results across inputs.",
+        "The implementation of external is-what and delegated MergeDeep, iteration and list helpers.",
+        "Actual credit charges and usage hidden by the reported unknown call."
+      ]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "No explanation, decomposition or examination views were supplied, so their effects cannot be assessed. The supplied condition contains two summarize outputs: the first reports a communication failure without a substantive account, and the second supplies an accepted summary with four separately referenced accounts. The latter makes the entry point, runtime implementation, array policy and type model individually addressable, but that is visible summary structure, not evidence of a decomposition operation or later examination changing the account.",
+      "support": [
+        "Both views are headed 'COMMAND: summarize anonymous'.",
+        "The first says 'communication-failure: OpenAI request failed (HTTP 200); no automatic retry was made'.",
+        "The second lists @investigram-15cfc298 and its three composition references, and reports an accepted attempt."
+      ],
+      "unknowns": [
+        "What any explanation, decomposition or examination would add or change.",
+        "Whether any such operations occurred outside these supplied views."
+      ]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "I would select @investigram-f207fe80 with a reference-sharing and overwrite-semantics lens. I would request concrete cases showing when nested inputs remain aliased, when overlapping plain objects are rebuilt, and how callback assignment interacts with those cases. That would clarify consequences of the displayed reference-sharing caveat. This is a proposed next inquiry: the summary supplies a selectable reference and mentions exact inspection, but does not demonstrate a lens selector, an example-generating operation or runtime testing capability.",
+      "support": [
+        "@investigram-f207fe80: 'Nested values can retain source references when no recursive overlap causes rebuilding'.",
+        "The same account says mergeAndCompare routes assignments through a caller callback.",
+        "The interface states 'References remain bound for this session' and 'Exact inspection preserves originals'."
+      ],
+      "unknowns": [
+        "Available lens names, supported commands and whether this interface can execute examples.",
+        "The concrete runtime outcomes that the proposed inquiry would seek."
+      ]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No concrete correction or replacement is shown. Every account's revision status says its original remains selected and lists zero relationships or causes. The change from a failed request to an accepted summary is not identified as a correction relationship. Composition is explicitly distinguishable from subject provenance: the entry account lists three composition children, those children name the entry as their composition parent, and all accounts label the module investigation subject 'provenance, not composition'. No later-investigation provenance chain is supplied, so that particular distinction cannot be tested on an actual later account.",
+      "support": [
+        "Revision status for @investigram-15cfc298, @investigram-f207fe80, @investigram-d5170823 and @investigram-554de213: 'original remains selected' and '0 of 0 relationships/causes'.",
+        "@investigram-15cfc298 lists @investigram-f207fe80, @investigram-d5170823 and @investigram-554de213 under both 'Displayed composition' and 'Composition'.",
+        "Each child lists 'Composition parent: @investigram-15cfc298'.",
+        "Each account lists 'Investigation subject: @module-a44de3a8 (provenance, not composition)'."
+      ],
+      "unknowns": [
+        "No replacement identifier, corrected content, correction cause or original/replacement comparison is available.",
+        "The generic warnings do not establish any actual correction or later-investigation relationship in these accounts."
+      ]
+    },
+    {
+      "question": "Which account is currently selected, what conflicts remain, and which accounts need reconsideration? Distinguish direct and transitive causes, exact historical references, and claims the view does not establish. Does the presentation make the warning burden manageable?",
+      "answer": "For the displayed module, the originals of all four referenced accounts remain selected; @investigram-15cfc298 is the entry-point account with three composition children. No account-specific conflict, reconsideration flag, direct cause or transitive cause is displayed. The footer's statement that conflicts remain unresolved is general policy wording and does not identify an actual conflicting pair here. There are stable displayed account references and evidence identifiers, but no exact historical replacement or cause reference to compare. The supplied warning says reconsideration would mean exposure to corrected context, not established error; it does not establish semantic reliance. The warning burden is partly manageable because local revision statuses are explicit, but repeated broad warnings make the absence of actual conflicts less immediately obvious.",
+      "support": [
+        "All four revision blocks say 'original remains selected' with '0 of 0 relationships/causes'.",
+        "Footer: replacement selection uses 'acceptance recency, not credibility'.",
+        "Footer: 'Needs reconsideration records corrected context exposure, not established error'.",
+        "The introductory condition says warnings do not establish error or semantic reliance."
+      ],
+      "unknowns": [
+        "No displayed grounds identify an account needing reconsideration.",
+        "No direct or transitive correction causes, conflicting replacement assertions or historical correction references are supplied.",
+        "The views cannot establish whether undisplayed accounts or relationships exist elsewhere."
+      ]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The summary is useful for an initial conceptual orientation: it separates responsibilities, provides addressable references and places important limitations next to claims. However, dense opaque evidence identifiers and detailed repeated usage disclosures compete with the functional explanation. Repeating identical 'Displayed composition' and 'Composition' lists adds little here and leaves their potential difference unexplained. Generic correction and conflict warnings can sound like active problems despite empty local revision records. 'Accepted' could be mistaken for verified, though the interpretation labels and no-execution qualifications counter that reading. 'anonymous' provides little identifying context, the initial HTTP 200 failure is confusing without an explanation, and no demonstrated navigation syntax shows how to pursue the references.",
+      "support": [
+        "The entry summary and three child referents give a clear functional partition.",
+        "The entry has identical 'Displayed composition' and 'Composition' lists.",
+        "Both outputs repeat correction, usage and billing notices; the successful output also shows empty revision records for every account.",
+        "The failed attempt says 'OpenAI request failed (HTTP 200)'; the successful attempt says '(accepted)'."
+      ],
+      "unknowns": [
+        "Whether the actual interface makes references clickable or offers navigation assistance beyond the captured text.",
+        "Whether the layout remains usable when real conflicting revisions and transitive causes are present."
+      ]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful for qualified initial understanding, but insufficient to assess correction handling or establish behavior.",
+    "reasons": [
+      "The functional account clearly separates exports, runtime merging, array policy and compile-time typing.",
+      "Local qualifications preserve meaningful uncertainty about execution, dependencies, aliasing and type equivalence.",
+      "Explicit composition and provenance labels help interpret relationships.",
+      "Repeated generic warnings, opaque evidence references and usage detail dilute the main explanation."
+    ],
+    "limitations": [
+      "Only summary views were supplied; no explanation, decomposition, examination or actual correction comparison was shown.",
+      "All account originals remain selected with no displayed revision relationships or causes.",
+      "This assessment uses only the supplied captured views and does not independently validate their source-based interpretations."
+    ]
+  }
+}

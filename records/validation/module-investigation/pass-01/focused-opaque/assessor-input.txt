@@ -1,0 +1,199 @@
+You are a fresh source-informed assessor. Use only the supplied frozen reference, view and evaluator response. Do not independently inspect source or browse. These references are qualified source analysis, not runtime proof.
+
+RUBRIC
+{
+  "version": 1,
+  "task": "Compare supplied investigator views and view-only evaluator answers against the frozen source references. Use only supplied artifacts. Preserve uncertainty and cite specific displayed references or source locations.",
+  "categories": ["generation-error-repeated-by-evaluator", "presentation-misunderstanding", "successful-qualified-communication", "unsupported-evaluator-extrapolation", "material-omission", "reference-cannot-settle"],
+  "output": "JSON with findings [{category, claim, evidence, consequence, uncertainty}], subjectUsefulness {judgment, reasons, limitations}. No numeric aggregate score. Do not treat a summary-only absence of follow-up views as a generation defect. Do not treat administrative request-budget interruption as an interpretive or milestone failure."
+}
+
+FROZEN REFERENCE
+# Frozen source-grounded references — summary pass 01
+
+Prepared before any subject/fixture inference by the implementing agent. Exact
+model identifier is unavailable; the family is OpenAI. Shared implementation,
+reference selection and orchestration can bias judgments. These are purposeful
+development examples, not an unbiased or untouched validation set. This material
+must not be supplied to the investigator or view-only evaluators.
+
+The [manifest](manifest.json) fixes revisions, source/document/configuration hashes,
+Node 22.13.1, the **PostCode analyzer TypeScript 6.0.3**, and the selected hosted
+configuration. Installed subject build TypeScript versions do not replace that
+analyzer. Repository source, README and ordinary subject-based evidence are
+accessible; reference answers, selection rationale and this file are not.
+PostCode source inspection is not execution or proof of runtime guarantees.
+
+
+
+## Controlled focused cases
+
+The fixture source and README live under `fixtures/module-investigation-assessment`
+and are hashed in the manifest. Before running, copy them unchanged into a small
+isolated Git repository; record its commit and effective project path. No other
+repository context should be accessible. No earlier interpretation is injected.
+
+- `entry.ts` delegates to two distinct operations: numeric clamping in
+  `normalize.ts`, and a module-scoped incrementing counter in `counter.ts`.
+  The deliberately authored README describes all exports as pure/stateless and
+  deterministic for the same arguments. The counter contradicts that assertion.
+  A useful summary distinguishes the two responsibilities and reports the
+  attributed documentation conflict without inventing one business purpose.
+- `opaque.ts` invokes a supplied callback once and returns its value. No caller
+  implementation or business purpose is present. This tests whether further
+  investigation stops with a disclosed gap instead of inventing behavior or
+  repeatedly searching irrelevant material.
+- A separate hard-limit control uses the same opaque subject with an explicitly
+  recorded tiny character guard. It is controlled execution containment, not a
+  finding about model quality or an exhausted financial allowance. Zero provider
+  calls in that control must be reported as such if the guard stops before a call.
+
+
+
+## Assessment procedure and limitations
+
+Freeze the exact [instructions](instructions.json), general context-selection code
+hashes, model and route before inference. Keep production evidence access and
+guards unchanged except the labelled hard-limit control. No reference answers
+enter live context. The first pass has zero automatic repeat allowance; a
+diagnostic rerun requires a separately recorded question/count and preserves the
+original outcome. Administrative request-ceiling interruption is incomplete
+validation, not a semantic failure or hard milestone failure.
+
+Use the fixed `scripts/module-investigation/questions.json` for fresh view-only
+evaluators and `assessor-rubric.json` for separate fresh source-informed assessment.
+Retain exact prompts, inputs, outputs and available role configuration/usage.
+Unknown role usage is not zero. Fresh contexts and same-family agents do not
+establish independent corroboration. Per-subject results and focused cases stay
+separate; no universal acceptance score or prompt optimization search is intended.
+
+USER VIEW
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-801ab967: opaque
+
+@investigram-a85accde · interpretation
+A minimal synchronous operation invoker. It delegates all substantive work to a caller-supplied zero-argument function, calls it directly, and returns that call’s result without transformation; the shown implementation adds no branching, retry, fallback, or error handling.
+Referent: the requested TypeScript module
+  Qualification: Apparent behavior is inferred from the captured TypeScript source; source alone does not establish runtime behavior or author intent.
+  Qualification: Dependency analysis is bounded to recognized project-owned source requests, so its empty result is not a claim of complete runtime independence.
+  Composition: @investigram-03971a8c
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:78d946e7-70d9-4e09-997c-2ea8cc146081:captured-content:af2c712163b0e06fca970dcfb297d488c0062922b8ce4b40bb16d23ad9fc36e4, session:78d946e7-70d9-4e09-997c-2ea8cc146081:source:cbb0654ac67b6b008292eb27536abf07b40a01127398d0fd9bd39583155a45b7
+
+@investigram-03971a8c · interpretation
+`invokeOperation<T>` accepts `() => T`, invokes it synchronously with no arguments, and forwards its returned `T`. Exceptions would likewise receive no local interception in the shown body; callback semantics remain the caller’s responsibility.
+Referent: the exported invokeOperation function
+  Qualification: The exception statement describes the absence of a catch in the shown source, not an observed execution.
+  Qualification: The generic signature preserves the callback’s statically declared result type; it does not itself prove runtime type correctness.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:78d946e7-70d9-4e09-997c-2ea8cc146081:source:cbb0654ac67b6b008292eb27536abf07b40a01127398d0fd9bd39583155a45b7
+Attempt session:78d946e7-70d9-4e09-997c-2ea8cc146081:investigation-attempt:f5c5f0850ccac7e580ecebf92b8f2895c1086e427a1300e9f547b5097e312060 (accepted) reported usage: 3 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 14784 tokens; input 13206 tokens (subset of total); output 1578 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 141 tokens (subset of output)
+Session reported usage: 3 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 14784 tokens; input 13206 tokens (subset of total); output 1578 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 141 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+This checkpoint shows immutable originals and explicit correction links; replacement selection and reconsideration display arrive in a later milestone.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+EVALUATOR RESPONSE
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The module is presented as a minimal synchronous wrapper around a caller-supplied operation. The wrapper calls a zero-argument function and forwards its result without transformation. The callback supplies the substantive behavior, while the wrapper adds no branching, retry, fallback or local error handling. The function account also describes a generic signature that preserves the callback's statically declared return type.",
+      "support": [
+        "@investigram-a85accde calls it 'A minimal synchronous operation invoker' and says it 'delegates all substantive work to a caller-supplied zero-argument function'.",
+        "@investigram-03971a8c says '`invokeOperation<T>` accepts `() => T`, invokes it synchronously with no arguments, and forwards its returned `T`'.",
+        "@investigram-03971a8c says 'callback semantics remain the caller’s responsibility'."
+      ],
+      "unknowns": [
+        "No callback implementation, callers, execution results or intended application purpose are supplied.",
+        "Calling the callback synchronously does not establish that every activity initiated by the callback completes synchronously."
+      ]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "Both displayed functionality accounts are explicitly marked interpretation. They have displayed source-evidence identifiers and qualifications, but the referenced source itself is not supplied. The module account describes apparent behavior inferred from captured TypeScript and qualifies the empty dependency result as limited to recognized project-owned source requests. The function account qualifies exception propagation as an inference from the absence of a catch and return-type preservation as a static signature property. The attempt and session usage figures are reported metadata rather than functionality evidence or confirmed billing.",
+      "support": [
+        "Both @investigram-a85accde and @investigram-03971a8c carry the label 'interpretation' and display Evidence references.",
+        "The module qualification says 'source alone does not establish runtime behavior or author intent' and that the empty dependency result is 'not a claim of complete runtime independence'.",
+        "The function qualifications distinguish the shown source from observed execution and static typing from runtime type correctness.",
+        "The footer says 'Reported usage is not confirmed billed usage' and 'monetary attribution is unavailable, not zero'."
+      ],
+      "unknowns": [
+        "Runtime behavior, author intent, complete dependencies, runtime type correctness and the behavior of any particular callback remain unestablished.",
+        "The evidence contents cannot be independently assessed from this supplied view.",
+        "The displayed provider/model and token figures concern the investigation being summarized; exact metadata for this evaluator is not supplied."
+      ]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "Explanation, decomposition and examination sequence views were not supplied, so no before-and-after change can be assessed. Within the summary, the function account gives a more specific referent and signature than the module account, but that is not evidence that a decomposition operation occurred or that an examination changed the account.",
+      "support": [
+        "The supplied condition is 'summary-only; later sequence views not supplied'.",
+        "The module account names 'the requested TypeScript module', while @investigram-03971a8c names 'the exported invokeOperation function'."
+      ],
+      "unknowns": [
+        "Whether any later explanation improved understanding, decomposition produced further selectable parts, or examination changed a claim is unknown."
+      ]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "I would select @investigram-03971a8c with an examination lens focused on the boundaries of synchronous invocation and result forwarding. I would want to learn whether the account distinguishes immediately invoking a callback from waiting for work that callback may initiate, including a returned promise, and what supports the exception claim. This is a requested next investigation: the view supplies the reference and a functionality operation label, but does not demonstrate an examination control, available lenses or a resulting examination view.",
+      "support": [
+        "@investigram-03971a8c is the displayed reference for the exported invokeOperation function.",
+        "Its wording includes 'invokes it synchronously', 'forwards its returned `T`' and 'Exceptions would likewise receive no local interception'.",
+        "The heading says 'References remain bound for this session' and 'New investigation request', while the displayed Operation fields say 'functionality'."
+      ],
+      "unknowns": [
+        "The interaction needed to select a reference or request a lens is not shown.",
+        "Whether an examination lens is currently implemented or would provide additional evidence is not established."
+      ]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No concrete correction, replacement account or original-to-replacement link is displayed, so no changed claim can be identified. The footer describes immutable originals, explicit correction links and a later milestone for replacement selection and reconsideration display, but this example does not demonstrate them. The explicit Composition field links the module account to the function account. That label identifies a composition relation, but no later-investigation provenance relation is shown for comparison; it would be unsupported to treat the function account as a later revision or correction.",
+      "support": [
+        "@investigram-a85accde contains 'Composition: @investigram-03971a8c'.",
+        "The footer says 'Corrections are retained assertions, not established truth'.",
+        "The footer says 'This checkpoint shows immutable originals and explicit correction links; replacement selection and reconsideration display arrive in a later milestone'."
+      ],
+      "unknowns": [
+        "There is no identified corrected claim, replacement identifier, correction reason or correction author in this view.",
+        "Later-investigation provenance and its presentation are not demonstrated.",
+        "The general checkpoint statement does not establish that either displayed account has actually been corrected."
+      ]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The concise behavioral accounts and adjacent qualifications are useful for initial comprehension. However, 'opaque' offers little recognition value, and long identifiers and duplicated attempt/session usage make the simple account harder to scan. 'Synchronous operation invoker' could be read as a claim about completion of all callback work rather than timing of invocation. The empty dependency result is discussed only through a qualification. 'New investigation request' does not explain how to act, and the footer's claim that the checkpoint shows correction links can suggest a concrete correction that is absent here. The Composition label gives a link but does not explain its meaning or interaction.",
+      "support": [
+        "The title is 'Module @module-801ab967: opaque'.",
+        "Attempt reported usage and Session reported usage each repeat 3 calls and the same 14784-token breakdown.",
+        "The behavior description is short, but Evidence and Attempt fields contain long session and content identifiers.",
+        "The view includes a Composition reference and general correction/milestone wording without a concrete correction example or visible selection instructions."
+      ],
+      "unknowns": [
+        "Whether the actual interface makes references clickable or provides explanatory controls is not visible in the supplied text.",
+        "Whether duplicated usage becomes helpful in sessions with multiple attempts cannot be judged from this example."
+      ]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful as a qualified first understanding of a very small wrapper; insufficient to assess investigation progression or correction behavior.",
+    "reasons": [
+      "Clearly separates the wrapper's invocation and forwarding responsibilities from the caller's callback behavior.",
+      "Places explicit limits beside runtime, dependency, exception and typing claims.",
+      "Provides stable-looking references for the module and function accounts, although interaction is not demonstrated.",
+      "Repeated usage details and generic milestone language compete with the short functionality summary."
+    ],
+    "limitations": [
+      "Only a summary was supplied; no explanation, decomposition, examination or correction sequence was available.",
+      "Referenced evidence was not supplied and was not independently inspected.",
+      "This assessment concerns what the displayed view communicates, not implementation correctness or actual runtime behavior."
+    ]
+  }
+}

@@ -1,0 +1,113 @@
+[
+  {
+    "case": "focused-entry-r2",
+    "structuredReferenceOccurrences": 25,
+    "uniqueStructuredReferences": 16,
+    "referenceLengths": [
+      116,
+      120,
+      126,
+      129
+    ],
+    "unmatchedOccurrences": [],
+    "method": "Exact membership in every provider input string; nearest candidates are diagnosis only, never accepted or repaired. Full-record lookup completeness is not asserted."
+  },
+  {
+    "case": "cockatiel-r2",
+    "structuredReferenceOccurrences": 33,
+    "uniqueStructuredReferences": 22,
+    "referenceLengths": [
+      116,
+      120,
+      124,
+      126
+    ],
+    "unmatchedOccurrences": [
+      {
+        "path": "$.children[1].associations[0].evidence[0]",
+        "reference": "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:captured-content:c90c2a138fcad3ce6a18d8d7d02ac3906a9273c68e6469dfa9b946122abb32",
+        "length": 124,
+        "suffixLength": 62,
+        "closeSuppliedSameKind": [
+          "session:1dac23d1-c5c9-4157-8d0b-5b2afbeb177e:captured-content:c90c2a138fcad3ce6a18d8d8d7d02ac3906a9273c68e6469dfa9b946122abb32"
+        ],
+        "sameSuffixDifferentKind": [],
+        "closestAlsoUsedCorrectlyElsewhereInSubmission": true
+      }
+    ],
+    "method": "Exact membership in every provider input string; nearest candidates are diagnosis only, never accepted or repaired. Full-record lookup completeness is not asserted."
+  },
+  {
+    "case": "fsm-engine-r2",
+    "structuredReferenceOccurrences": 53,
+    "uniqueStructuredReferences": 22,
+    "referenceLengths": [
+      114,
+      116,
+      120,
+      126,
+      129
+    ],
+    "unmatchedOccurrences": [
+      {
+        "path": "$.associations[2].subject",
+        "reference": "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:94b528fd03e2cdaae51953a3d2ebc5e3d11c0618129fac737de588f81a9807",
+        "length": 114,
+        "suffixLength": 62,
+        "closeSuppliedSameKind": [
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:94b528fd03e2cdaae51953a3d3d2ebc5e3d11c0618129fac737de588f81a9807"
+        ],
+        "sameSuffixDifferentKind": [],
+        "closestAlsoUsedCorrectlyElsewhereInSubmission": false
+      },
+      {
+        "path": "$.children[0].associations[1].subject",
+        "reference": "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:94b528fd03e2cdaae51953a3d2ebc5e3d11c0618129fac737de588f81a9807",
+        "length": 114,
+        "suffixLength": 62,
+        "closeSuppliedSameKind": [
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:94b528fd03e2cdaae51953a3d3d2ebc5e3d11c0618129fac737de588f81a9807"
+        ],
+        "sameSuffixDifferentKind": [],
+        "closestAlsoUsedCorrectlyElsewhereInSubmission": false
+      },
+      {
+        "path": "$.children[1].associations[0].subject",
+        "reference": "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:94b528fd03e2cdaae51953a3d2ebc5e3d11c0618129fac737de588f81a9807",
+        "length": 114,
+        "suffixLength": 62,
+        "closeSuppliedSameKind": [
+          "session:ca166f7b-154d-4b2c-86de-3cc6eb8474c8:module:94b528fd03e2cdaae51953a3d3d2ebc5e3d11c0618129fac737de588f81a9807"
+        ],
+        "sameSuffixDifferentKind": [],
+        "closestAlsoUsedCorrectlyElsewhereInSubmission": false
+      }
+    ],
+    "method": "Exact membership in every provider input string; nearest candidates are diagnosis only, never accepted or repaired. Full-record lookup completeness is not asserted."
+  },
+  {
+    "case": "merge-anything-r2",
+    "structuredReferenceOccurrences": 32,
+    "uniqueStructuredReferences": 28,
+    "referenceLengths": [
+      114,
+      116,
+      120,
+      126
+    ],
+    "unmatchedOccurrences": [
+      {
+        "path": "$.children[0].referent.subjects[3]",
+        "reference": "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:symbol:60dd76f621d6d63440adfca11446e6004c21d285cd1cd97fe9012429832ad4",
+        "length": 114,
+        "suffixLength": 62,
+        "closeSuppliedSameKind": [
+          "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:symbol:60dd76f621d6d6b63440adfca11446e6004c21d285cd1cd97fe9012429832ad4"
+        ],
+        "sameSuffixDifferentKind": [],
+        "closestAlsoUsedCorrectlyElsewhereInSubmission": false
+      }
+    ],
+    "method": "Exact membership in every provider input string; nearest candidates are diagnosis only, never accepted or repaired. Full-record lookup completeness is not asserted."
+  }
+]

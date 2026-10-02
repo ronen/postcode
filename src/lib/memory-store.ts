@@ -1,12 +1,23 @@
+import type { InvestigationEvaluationRecord } from './investigation/evaluation.js';
 import { freezeOwned } from './immutable.js';
+import path from 'node:path';
 import { completedMaterialization } from './evaluation-state.js';
-import { canonical, EntityBindings } from './identity.js';
+import { canonical, digest, EntityBindings } from './identity.js';
 import type { EvaluationRecord, ProgramRecord, ProgramRecordStore, RecordId, SessionId } from './records.js';
 
 function references(record: ProgramRecord): readonly RecordId[] {
   switch (record.kind) {
+    case 'investigation-evaluation': return [record.request.subject, ...record.investigrams, ...record.corrections,
+      ...(record.outcome.kind === 'accepted' ? [record.outcome.root, record.attempt] : [])];
+    case 'investigram': return [record.provenance, record.originatingModule, ...record.referent.subjects, ...record.evidence,
+      ...record.children, ...record.corrections, ...record.associations.flatMap(item => [item.subject, ...item.evidence]),
+      ...record.inconsistencies.flatMap(item => [...item.targets, ...item.evidence])];
+    case 'investigram-correction': return [record.provenance, record.reporter, record.target, record.replacement, ...record.correctedSubjects, ...record.evidence];
+    case 'investigation-provenance': return [record.request.subject, record.originatingModule, ...record.citations,
+      ...record.completeTargets, ...record.completeCorrections, ...record.suppliedEvidence, ...record.summarizedEvidence];
     case 'session': return record.repository ? [record.repository] : [];
     case 'analysis-inputs': return [];
+    case 'captured-content': return [record.subject, record.inputs, record.mapping];
     case 'repository-evidence': return [];
     case 'repository-region':
     case 'repository-artifact': return [record.repository];
@@ -52,6 +63,7 @@ function references(record: ProgramRecord): readonly RecordId[] {
 export class MemoryProgramRecordStore implements ProgramRecordStore {
   readonly #bindings = new Map<SessionId, EntityBindings>();
   readonly #evaluations = new Map<SessionId, Map<RecordId, EvaluationRecord>>();
+  readonly #investigations = new Map<SessionId, InvestigationEvaluationRecord[]>();
   readonly #records = new Map<RecordId, ProgramRecord>();
 
   put(records: readonly ProgramRecord[]): void {
@@ -79,6 +91,58 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
         }
       };
       switch (record.kind) {
+        case 'investigation-evaluation':
+          record.investigrams.forEach(id => requireKind(id, 'investigram'));
+          record.corrections.forEach(id => requireKind(id, 'investigram-correction'));
+          if (record.outcome.kind === 'accepted') {
+            requireKind(record.attempt, 'investigation-provenance');
+            requireKind(record.outcome.root, 'investigram');
+            if (!record.investigrams.includes(record.outcome.root)) throw new Error('Missing accepted root');
+          } else if (record.investigrams.length || record.corrections.length) throw new Error('Failed evaluation cannot retain interpretation');
+          break;
+        case 'investigram':
+          requireKind(record.provenance, 'investigation-provenance');
+          requireKind(record.originatingModule, 'module');
+          record.children.forEach(id => requireKind(id, 'investigram'));
+          record.corrections.forEach(id => requireKind(id, 'investigram-correction'));
+          if (record.status !== 'interpretation' || !record.prose.trim() || !record.qualifications.length) throw new Error('Invalid investigram');
+          break;
+        case 'investigram-correction':
+          [record.reporter, record.target, record.replacement].forEach(id => requireKind(id, 'investigram'));
+          requireKind(record.provenance, 'investigation-provenance');
+          if (this.#records.get(record.target)?.kind !== 'investigram') throw new Error('Correction target must already be retained');
+          if (!record.correctedSubjects.length || record.correctedSubjects.some(id => !['module', 'symbol', 'group', 'repository-artifact'].includes((pending.get(id) ?? this.#records.get(id))!.kind))) throw new Error('Invalid corrected subjects');
+          break;
+        case 'investigation-provenance':
+          requireKind(record.originatingModule, 'module');
+          record.citations.forEach(id => requireKind(id, 'investigram'));
+          record.completeTargets.forEach(id => requireKind(id, 'investigram'));
+          record.completeCorrections.forEach(id => requireKind(id, 'investigram-correction'));
+          break;
+        case 'captured-content': {
+          requireKind(record.inputs, 'analysis-inputs');
+          const subject = pending.get(record.subject) ?? this.#records.get(record.subject);
+          if (!subject || !['module', 'repository-artifact'].includes(subject.kind)
+            || record.coverage !== 'full-file' || record.contentDigest !== digest(record.text)) throw new Error('Invalid content capture');
+          requireKind(record.mapping, subject.kind === 'module' ? 'source-evidence' : 'repository-artifact');
+          if (subject.kind === 'module') {
+            const claim = pending.get(subject.claim) ?? this.#records.get(subject.claim);
+            const context = claim?.kind === 'claim' ? pending.get(claim.context) ?? this.#records.get(claim.context) : undefined;
+            const mapping = pending.get(record.mapping) ?? this.#records.get(record.mapping);
+            if (context?.kind !== 'claim-context' || !context.evidence.includes(record.mapping)
+              || mapping?.kind !== 'source-evidence' || mapping.path !== record.path || mapping.contentDigest !== record.contentDigest) {
+              throw new Error('Content does not match the module source mapping');
+            }
+          } else if (subject.kind === 'repository-artifact') {
+            const repository = pending.get(subject.repository) ?? this.#records.get(subject.repository);
+            const artifact = subject.artifact;
+            const expected = repository?.kind === 'repository-evidence' && repository.capture.status === 'available'
+              ? artifact.kind === 'file' ? path.resolve(repository.capture.evidence.root, artifact.path)
+                : artifact.link?.status === 'resolved' && artifact.link.targetKind === 'file' ? artifact.link.resolved : null : null;
+            if (record.mapping !== subject.id || expected === null || record.path !== expected) throw new Error('Content does not match the artifact mapping');
+          }
+          break;
+        }
         case 'group':
         case 'module':
         case 'symbol': {
@@ -325,6 +389,10 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
       if (this.#records.has(id)) continue;
       freezeOwned(record);
       this.#records.set(id, record);
+      if (record.kind === 'investigation-evaluation') {
+        const list = this.#investigations.get(record.session) ?? [];
+        list.push(record); this.#investigations.set(record.session, list);
+      }
       if (record.kind === 'evaluation') {
         let index = this.#evaluations.get(record.session);
         if (!index) { index = new Map(); this.#evaluations.set(record.session, index); }
@@ -333,7 +401,7 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
     }
   }
 
-  entityIds(ids: readonly RecordId[], kind: 'module' | 'group'): ReadonlyMap<RecordId, string> {
+  entityIds(ids: readonly RecordId[], kind: 'module' | 'group' | 'investigram'): ReadonlyMap<RecordId, string> {
     const grouped = new Map<SessionId, RecordId[]>();
     // Validate the entire request before allocating even the first binding.
     for (const id of ids) {
@@ -362,6 +430,8 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
     if (!result) throw new Error(`Missing program record: ${id}`);
     return result;
   }
+
+  investigations(session: SessionId): readonly InvestigationEvaluationRecord[] { return [...(this.#investigations.get(session) ?? [])]; }
 
   evaluations(session: SessionId): readonly EvaluationRecord[] {
     return [...(this.#evaluations.get(session)?.values() ?? [])];

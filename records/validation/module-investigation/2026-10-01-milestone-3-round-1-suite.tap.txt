@@ -1,0 +1,2324 @@
+
+> postcode@0.0.0 test
+> npm run build && node --test _build/test/*.test.js
+
+
+> postcode@0.0.0 build
+> tsc -p tsconfig.json
+
+TAP version 13
+# Subtest: assessment allowance reserves before dispatch, persists failed attempts and excludes competing runners
+ok 1 - assessment allowance reserves before dispatch, persists failed attempts and excludes competing runners
+  ---
+  duration_ms: 220.216253
+  ...
+# READY
+# READY
+# {"exit":0,"elapsedMilliseconds":533,"pausedForBudget":true,"disposition":"administrative-pause-not-milestone-failure"}
+# Subtest: assessment harness captures CLI interaction and refuses an extra POST without exposing credentials
+ok 2 - assessment harness captures CLI interaction and refuses an extra POST without exposing credentials
+  ---
+  duration_ms: 8964.08488
+  ...
+# Subtest: assessment report preserves investigator/evaluator attribution and unknown ChatGPT charges
+ok 3 - assessment report preserves investigator/evaluator attribution and unknown ChatGPT charges
+  ---
+  duration_ms: 3413.769814
+  ...
+# Subtest: benchmark fails explicitly after exhausted warm-up retries and retains all attempts
+ok 4 - benchmark fails explicitly after exhausted warm-up retries and retains all attempts
+  ---
+  duration_ms: 10249.908791
+  ...
+# Subtest: benchmark fails explicitly after exhausted representative retries and retains all attempts
+ok 5 - benchmark fails explicitly after exhausted representative retries and retains all attempts
+  ---
+  duration_ms: 15335.267284
+  ...
+# Subtest: benchmark continues after a successful retry and completes every requested sample slot
+not ok 6 - benchmark continues after a successful retry and completes every requested sample slot
+  ---
+  duration_ms: 183448.204671
+  location: '/Users/ronen/postcode/app/_build/test/benchmark-analysis.test.js:52:1'
+  failureType: 'testCodeFailure'
+  error: 'ifError got unwanted exception: spawnSync /Users/ronen/.nvm/versions/node/v22.13.1/bin/node ETIMEDOUT'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: ~
+  actual:
+  error: 'spawnSync /Users/ronen/.nvm/versions/node/v22.13.1/bin/node ETIMEDOUT'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1120:20)
+    spawnSync (node:child_process:868:24)
+    runSeries (file:///Users/ronen/postcode/app/_build/test/benchmark-analysis.test.js:25:24)
+    TestContext.<anonymous> (file:///Users/ronen/postcode/app/_build/test/benchmark-analysis.test.js:53:30)
+    Test.runInAsyncScope (node:async_hooks:211:14)
+    Test.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    Test.postRun (node:internal/test_runner/test:1042:19)
+    Test.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  operator: 'ifError'
+  stack: |-
+    runSeries (file:///Users/ronen/postcode/app/_build/test/benchmark-analysis.test.js:27:16)
+    Object.spawnSync (node:internal/child_process:1120:20)
+    spawnSync (node:child_process:868:24)
+    runSeries (file:///Users/ronen/postcode/app/_build/test/benchmark-analysis.test.js:25:24)
+    TestContext.<anonymous> (file:///Users/ronen/postcode/app/_build/test/benchmark-analysis.test.js:53:30)
+    Test.runInAsyncScope (node:async_hooks:211:14)
+    Test.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    Test.postRun (node:internal/test_runner/test:1042:19)
+    Test.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: OIDC validates signature, issuer, issued audience, expiry, nonce and saved identity
+ok 7 - OIDC validates signature, issuer, issued audience, expiry, nonce and saved identity
+  ---
+  duration_ms: 1560.487913
+  ...
+# Subtest: real loopback sign-in validates state, PKCE, client binding and authoritative granted scope
+ok 8 - real loopback sign-in validates state, PKCE, client binding and authoritative granted scope
+  ---
+  duration_ms: 400.920613
+  ...
+# Subtest: denial, missing new client, duplicate callback and mismatched returning client never exchange credentials
+ok 9 - denial, missing new client, duplicate callback and mismatched returning client never exchange credentials
+  ---
+  duration_ms: 237.350768
+  ...
+# Subtest: sign-in persists registration and host across instances, retains mappings on sign-out, and never merges accounts
+ok 10 - sign-in persists registration and host across instances, retains mappings on sign-out, and never merges accounts
+  ---
+  duration_ms: 179.107144
+  ...
+# Subtest: permission decline retains signed-in identity; explicit routes never silently read or fall back to API credentials
+ok 11 - permission decline retains signed-in identity; explicit routes never silently read or fall back to API credentials
+  ---
+  duration_ms: 33.044417
+  ...
+# Subtest: renewal replaces the whole token set once across concurrent manager instances; transient errors preserve it
+ok 12 - renewal replaces the whole token set once across concurrent manager instances; transient errors preserve it
+  ---
+  duration_ms: 12.900898
+  ...
+# Subtest: refresh sends the issued client and rotating refresh token without scope; invalid-grant is classified safely
+ok 13 - refresh sends the issued client and rotating refresh token without scope; invalid-grant is classified safely
+  ---
+  duration_ms: 28.17343
+  ...
+# Subtest: sign-out invalidates existing sessions, retains registration, and discloses unconfirmed revocation
+ok 14 - sign-out invalidates existing sessions, retains registration, and discloses unconfirmed revocation
+  ---
+  duration_ms: 7.038745
+  ...
+# Subtest: auth commands run without opening a project and status/sign-out never reveal credentials or identity
+ok 15 - auth commands run without opening a project and status/sign-out never reveal credentials or identity
+  ---
+  duration_ms: 28.731274
+  ...
+# Subtest: kernel lock serializes separate processes and is released after process death without stale-file deletion
+ok 16 - kernel lock serializes separate processes and is released after process death without stale-file deletion
+  ---
+  duration_ms: 3729.520406
+  ...
+# Subtest: separate processes renew a shared near-expiry registration exactly once and both use the rotated access token
+ok 17 - separate processes renew a shared near-expiry registration exactly once and both use the rotated access token
+  ---
+  duration_ms: 3985.629655
+  ...
+# Subtest: revocation uses discovered endpoint, retries transient failures, and treats empty 200 as success
+ok 18 - revocation uses discovered endpoint, retries transient failures, and treats empty 200 as success
+  ---
+  duration_ms: 258.50651
+  ...
+# Subtest: returning sign-in reuses client and host, requests explicit consent only when asked, and validates before activation
+ok 19 - returning sign-in reuses client and host, requests explicit consent only when asked, and validates before activation
+  ---
+  duration_ms: 30.618343
+  ...
+# Subtest: an active session observes persisted sign-out and aborts its local transport watcher
+ok 20 - an active session observes persisted sign-out and aborts its local transport watcher
+  ---
+  duration_ms: 1004.985159
+  ...
+# Subtest: identity-only permission decline persists a valid sign-in without inventing access or refresh grants
+ok 21 - identity-only permission decline persists a valid sign-in without inventing access or refresh grants
+  ---
+  duration_ms: 29.638819
+  ...
+# Subtest: interrupted browser authorization closes the callback listener without exchanging tokens
+ok 22 - interrupted browser authorization closes the callback listener without exchanging tokens
+  ---
+  duration_ms: 29.02936
+  ...
+# Subtest: native null or undefined absence permits first sign-in through the production Keychain boundary
+ok 23 - native null or undefined absence permits first sign-in through the production Keychain boundary
+  ---
+  duration_ms: 6.952757
+  ...
+# Subtest: empty or invalid stored values remain invalid and are never silently reset as missing
+ok 24 - empty or invalid stored values remain invalid and are never silently reset as missing
+  ---
+  duration_ms: 3.458446
+  ...
+# Subtest: native storage failures remain credential-safe failures instead of creating a new vault
+ok 25 - native storage failures remain credential-safe failures instead of creating a new vault
+  ---
+  duration_ms: 1.614444
+  ...
+# Subtest: refresh margin retains safely valid tokens and rotates at the boundary before returning credentials
+ok 26 - refresh margin retains safely valid tokens and rotates at the boundary before returning credentials
+  ---
+  duration_ms: 17.630397
+  ...
+# Subtest: diagnostic retains response structure and numeric usage without arbitrary strings or keys
+ok 27 - diagnostic retains response structure and numeric usage without arbitrary strings or keys
+  ---
+  duration_ms: 139.518181
+  ...
+# Subtest: diagnostic bounds capture, leaves original body readable, and distinguishes absent headers
+ok 28 - diagnostic bounds capture, leaves original body readable, and distinguishes absent headers
+  ---
+  duration_ms: 10.871682
+  ...
+# Subtest: diagnostic makes one inference attempt and preserves unknown cost on missing stream headers
+ok 29 - diagnostic makes one inference attempt and preserves unknown cost on missing stream headers
+  ---
+  duration_ms: 238.007513
+  ...
+# Subtest: subscription transport uses streaming, namespace tools, completed response only, fresh history and rotated credentials
+ok 30 - subscription transport uses streaming, namespace tools, completed response only, fresh history and rotated credentials
+  ---
+  duration_ms: 649.724852
+  ...
+# Subtest: partial output, EOF, malformed SSE, failed terminal and incomplete terminal never become accepted submissions
+ok 31 - partial output, EOF, malformed SSE, failed terminal and incomplete terminal never become accepted submissions
+  ---
+  duration_ms: 486.220355
+  ...
+# Subtest: admission and streaming errors retain HTTP status, code, parameter, request ID and sanitized body shape
+ok 32 - admission and streaming errors retain HTTP status, code, parameter, request ID and sanitized body shape
+  ---
+  duration_ms: 135.03796
+  ...
+# Subtest: cancellation after streamed partial submission aborts transport and reports no accepted result or late usage
+ok 33 - cancellation after streamed partial submission aborts transport and reports no accepted result or late usage
+  ---
+  duration_ms: 26.730275
+  ...
+# Subtest: account check never substitutes a missing model and verifies medium through the actual streaming route
+ok 34 - account check never substitutes a missing model and verifies medium through the actual streaming route
+  ---
+  duration_ms: 58.389255
+  ...
+# Subtest: credential revocation aborts an active stream as configuration unavailability, independently of investigation cancellation
+ok 35 - credential revocation aborts an active stream as configuration unavailability, independently of investigation cancellation
+  ---
+  duration_ms: 16.514
+  ...
+# Subtest: terminal events supply optional response status while partial output and contradictions remain rejected
+ok 36 - terminal events supply optional response status while partial output and contradictions remain rejected
+  ---
+  duration_ms: 28.895027
+  ...
+# Subtest: stream diagnostics distinguish content type, premature EOF and contradictory terminal status and redact credentials
+ok 37 - stream diagnostics distinguish content type, premature EOF and contradictory terminal status and redact credentials
+  ---
+  duration_ms: 84.59722
+  ...
+# Subtest: absent content type permits framed terminal responses while empty output, partial events and JSON stay unaccepted
+ok 38 - absent content type permits framed terminal responses while empty output, partial events and JSON stay unaccepted
+  ---
+  duration_ms: 123.58976
+  ...
+# Subtest: completed stream items supply an empty terminal envelope only after a consistent successful completion
+ok 39 - completed stream items supply an empty terminal envelope only after a consistent successful completion
+  ---
+  duration_ms: 416.68778
+  ...
+# Subtest: unfinished item status cannot supply tools or a submission even with parseable arguments and terminal success
+ok 40 - unfinished item status cannot supply tools or a submission even with parseable arguments and terminal success
+  ---
+  duration_ms: 456.669821
+  ...
+# Subtest: Unicode layout preserves captured Unicode/control evidence and UTF-16 source positions
+ok 41 - Unicode layout preserves captured Unicode/control evidence and UTF-16 source positions
+  ---
+  duration_ms: 12357.753594
+  ...
+# Subtest: Unicode and experimental JSON use the same qualified projection and automatically record exact displayed artifacts
+not ok 42 - Unicode and experimental JSON use the same qualified projection and automatically record exact displayed artifacts
+  ---
+  duration_ms: 201129.165956
+  location: '/Users/ronen/postcode/app/_build/test/cli.test.js:62:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    2 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 2
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/ronen/postcode/app/_build/test/cli.test.js:65:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:932:9)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: normal views omit source facets and raw evidence; inspection source escape only discloses displayed claims
+ok 43 - normal views omit source facets and raw evidence; inspection source escape only discloses displayed claims
+  ---
+  duration_ms: 284799.086463
+  ...
+# Subtest: delivery rejection and thrown sink failure visibly report the observation gap while preserving the successful view
+ok 44 - delivery rejection and thrown sink failure visibly report the observation gap while preserving the successful view
+  ---
+  duration_ms: 13648.604368
+  ...
+# Subtest: invalid CLI requests and project-open failures produce no view or misleading observation
+ok 45 - invalid CLI requests and project-open failures produce no view or misleading observation
+  ---
+  duration_ms: 4127.997424
+  ...
+# Subtest: malformed root and inherited configurations report each syntax diagnostic once
+ok 46 - malformed root and inherited configurations report each syntax diagnostic once
+  ---
+  duration_ms: 8642.948664
+  ...
+# Subtest: configuration diagnostics retain equal messages at different files or positions
+ok 47 - configuration diagnostics retain equal messages at different files or positions
+  ---
+  duration_ms: 8097.234924
+  ...
+# Subtest: retired scope options are rejected and source detail remains bounded to supported views
+ok 48 - retired scope options are rejected and source detail remains bounded to supported views
+  ---
+  duration_ms: 3.462199
+  ...
+# Subtest: end-of-options preserves option-like exact names while keeping one-selector validation
+ok 49 - end-of-options preserves option-like exact names while keeping one-selector validation
+  ---
+  duration_ms: 27274.514976
+  ...
+# Subtest: target directories named like PostCode output retain configured sources and observe their changed exports
+ok 50 - target directories named like PostCode output retain configured sources and observe their changed exports
+  ---
+  duration_ms: 241728.427084
+  ...
+# Subtest: independent CLI processes reproduce JSON while the local sink writes private self-contained batches
+ok 51 - independent CLI processes reproduce JSON while the local sink writes private self-contained batches
+  ---
+  duration_ms: 21439.220262
+  ...
+# Subtest: local observation paths use one UTC clock reading for their date directory and timestamped filename
+ok 52 - local observation paths use one UTC clock reading for their date directory and timestamped filename
+  ---
+  duration_ms: 10614.050244
+  ...
+# Subtest: CLI explicitly excludes actual checkout output directories when analyzing a nested configuration
+ok 53 - CLI explicitly excludes actual checkout output directories when analyzing a nested configuration
+  ---
+  duration_ms: 5972.240586
+  ...
+# Subtest: bounded exports and documentation disclose every material omission in both presentations
+ok 54 - bounded exports and documentation disclose every material omission in both presentations
+  ---
+  duration_ms: 5882.807602
+  ...
+# Subtest: conceptual documentation excerpts omit source examples and source-oriented tags with counts
+ok 55 - conceptual documentation excerpts omit source examples and source-oriented tags with counts
+  ---
+  duration_ms: 254775.125123
+  ...
+# Subtest: Unicode distinguishes established empty exports from unresolved exports and explains display limits
+ok 56 - Unicode distinguishes established empty exports from unresolved exports and explains display limits
+  ---
+  duration_ms: 1737.459188
+  ...
+# Subtest: inventory counts omitted external documentation while exact inspection makes it available
+ok 57 - inventory counts omitted external documentation while exact inspection makes it available
+  ---
+  duration_ms: 3678.512101
+  ...
+# Subtest: handles repeat current lookups while IDs do not provide cross-invocation navigation
+ok 58 - handles repeat current lookups while IDs do not provide cross-invocation navigation
+  ---
+  duration_ms: 4438.531286
+  ...
+# Subtest: inspection suppresses ordinary provenance but preserves aliases and merged declarations
+ok 59 - inspection suppresses ordinary provenance but preserves aliases and merged declarations
+  ---
+  duration_ms: 5573.044826
+  ...
+# Subtest: common success state is compact but abnormal capability states remain explicit
+ok 60 - common success state is compact but abnormal capability states remain explicit
+  ---
+  duration_ms: 7857.336339
+  ...
+# Subtest: compact inventory consolidates common labels and counts documentation beyond its export cues
+ok 61 - compact inventory consolidates common labels and counts documentation beyond its export cues
+  ---
+  duration_ms: 2987.761758
+  ...
+# Subtest: a mostly-type module uses an exported type cue instead of a helper predicate
+ok 62 - a mostly-type module uses an exported type cue instead of a helper predicate
+  ---
+  duration_ms: 2733.489472
+  ...
+# Subtest: one-shot lookup accepts project paths containing spaces and quotes without generated commands
+ok 63 - one-shot lookup accepts project paths containing spaces and quotes without generated commands
+  ---
+  duration_ms: 5055.744732
+  ...
+# Subtest: one-shot name and handle collisions retain every match and do not accept copied IDs
+ok 64 - one-shot name and handle collisions retain every match and do not accept copied IDs
+  ---
+  duration_ms: 12547.711489
+  ...
+# Subtest: basename mnemonic evidence stays distinct from names and precise scoped Entity IDs
+ok 65 - basename mnemonic evidence stays distinct from names and precise scoped Entity IDs
+  ---
+  duration_ms: 1080696.365617
+  ...
+# Subtest: exceptional inspections retain forwarding provenance, qualified failures, and truncated assertions
+ok 66 - exceptional inspections retain forwarding provenance, qualified failures, and truncated assertions
+  ---
+  duration_ms: 4396.324967
+  ...
+# Subtest: source expansion groups deduplicated evidence by displayed concepts with precise ranges and excerpts
+ok 67 - source expansion groups deduplicated evidence by displayed concepts with precise ranges and excerpts
+  ---
+  duration_ms: 24712.52512
+  ...
+# Subtest: documentation wraps without changing stored text and source excerpts stay bounded to displayed subjects
+ok 68 - documentation wraps without changing stored text and source excerpts stay bounded to displayed subjects
+  ---
+  duration_ms: 6011.919539
+  ...
+# Subtest: source hierarchy preserves forwarding, defining syntax and mixed documentation before the closing sections
+ok 69 - source hierarchy preserves forwarding, defining syntax and mixed documentation before the closing sections
+  ---
+  duration_ms: 26387.666964
+  ...
+# Subtest: Unicode bounds each assertion to eight wrapped content lines with exact character and tag omissions
+ok 70 - Unicode bounds each assertion to eight wrapped content lines with exact character and tag omissions
+  ---
+  duration_ms: 11348.306565
+  ...
+# Subtest: Unicode inline names and paths cannot inject structure while JSON and wrapped content retain source text
+ok 71 - Unicode inline names and paths cannot inject structure while JSON and wrapped content retain source text
+  ---
+  duration_ms: 962882.858332
+  ...
+# Subtest: control-bearing invocation paths stay out of conceptual output without generated commands
+ok 72 - control-bearing invocation paths stay out of conceptual output without generated commands
+  ---
+  duration_ms: 14034.227665
+  ...
+# Subtest: observation destination disclosure escapes controls while the sink uses the original path
+ok 73 - observation destination disclosure escapes controls while the sink uses the original path
+  ---
+  duration_ms: 10652.336109
+  ...
+# Subtest: CLI error and observation-warning values cannot introduce diagnostic lines
+ok 74 - CLI error and observation-warning values cannot introduce diagnostic lines
+  ---
+  duration_ms: 18603.58761
+  ...
+# Subtest: the executable escapes unexpected failure messages without changing exit status
+ok 75 - the executable escapes unexpected failure messages without changing exit status
+  ---
+  duration_ms: 854.516637
+  ...
+# Subtest: configuration diagnostic locations are one-based across lines and safely escaped on stderr
+ok 76 - configuration diagnostic locations are one-based across lines and safely escaped on stderr
+  ---
+  duration_ms: 2313.963949
+  ...
+# Subtest: composition remains a separately qualified property in inspection and organization leaves
+ok 77 - composition remains a separately qualified property in inspection and organization leaves
+  ---
+  duration_ms: 927671.336129
+  ...
+# Subtest: strict option grammar applies before help in both interfaces
+ok 78 - strict option grammar applies before help in both interfaces
+  ---
+  duration_ms: 142.452615
+  ...
+# Subtest: one-shot scanner errors and help produce no observations; inline project produces a view
+ok 79 - one-shot scanner errors and help produce no observations; inline project produces a view
+  ---
+  duration_ms: 24046.408126
+  ...
+# Subtest: ambiguous project diagnostics give a readable hint without introducing terminal structure
+ok 80 - ambiguous project diagnostics give a readable hint without introducing terminal structure
+  ---
+  duration_ms: 4.960422
+  ...
+# Subtest: shell records scanner refusals and then accepts a quoted literal selector
+not ok 81 - shell records scanner refusals and then accepts a quoted literal selector
+  ---
+  duration_ms: 181882.519662
+  location: '/Users/ronen/postcode/app/_build/test/commands.test.js:78:1'
+  failureType: 'testTimeoutFailure'
+  error: 'test timed out after 30000ms'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: ordinary cycle compiler candidates stay absent, replay recovery, and open through both CLI entry paths
+not ok 82 - ordinary cycle compiler candidates stay absent, replay recovery, and open through both CLI entry paths
+  ---
+  duration_ms: 196549.308465
+  location: '/Users/ronen/postcode/app/_build/test/compiler-candidate-paths.test.js:12:5'
+  failureType: 'testCodeFailure'
+  error: |-
+    Local observations: /var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-candidate-path-UZ93Yg/_observations/postcode-candidate-path-uz93yg-3317c3 (may contain repository-derived text and explicitly requested source locations).
+    Session invalidated: relevant inputs changed or could not be verified. Restart to continue.
+    
+    
+    2 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 2
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/ronen/postcode/app/_build/test/compiler-candidate-paths.test.js:57:20)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:932:9)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: ordinary unreadable compiler candidates stay absent, replay recovery, and open through both CLI entry paths
+ok 83 - ordinary unreadable compiler candidates stay absent, replay recovery, and open through both CLI entry paths
+  ---
+  duration_ms: 29285.44677
+  ...
+# Subtest: production dependencies retain supported mechanisms, direct intermediates and every aggregated occurrence
+ok 84 - production dependencies retain supported mechanisms, direct intermediates and every aggregated occurrence
+  ---
+  duration_ms: 4483.216357
+  ...
+# Subtest: production recognition applies classic, mixed and preserve context precedence
+ok 85 - production recognition applies classic, mixed and preserve context precedence
+  ---
+  duration_ms: 209469.032201
+  ...
+# Subtest: production declaration evidence distinguishes same-kind implementations, named annotations, conflicts and insufficiency
+ok 86 - production declaration evidence distinguishes same-kind implementations, named annotations, conflicts and insufficiency
+  ---
+  duration_ms: 1905.932981
+  ...
+# Subtest: production missing declaration evidence permits CommonJS but not preserve or unset-mode fallback
+ok 87 - production missing declaration evidence permits CommonJS but not preserve or unset-mode fallback
+  ---
+  duration_ms: 679.488148
+  ...
+# Subtest: production lexical completion rejects parse recovery, with scopes and all tested local binding shapes
+ok 88 - production lexical completion rejects parse recovery, with scopes and all tested local binding shapes
+  ---
+  duration_ms: 1255.337667
+  ...
+# Subtest: type-only is whole-edge evidence; adding a require never produces a runtime claim
+ok 89 - type-only is whole-edge evidence; adding a require never produces a runtime claim
+  ---
+  duration_ms: 129.754723
+  ...
+# Subtest: literal resolution honors package conditions, import-type mode attributes and exact ambient declarations
+ok 90 - literal resolution honors package conditions, import-type mode attributes and exact ambient declarations
+  ---
+  duration_ms: 190.949398
+  ...
+# Subtest: ownership respects named modules, namespaces and unresolved augmentations without guessing enclosing ownership
+ok 91 - ownership respects named modules, namespaces and unresolved augmentations without guessing enclosing ownership
+  ---
+  duration_ms: 224.030539
+  ...
+# Subtest: external interiors stay opaque and external augmentations do not become enclosing module requests
+ok 92 - external interiors stay opaque and external augmentations do not become enclosing module requests
+  ---
+  duration_ms: 221.676108
+  ...
+# Subtest: dependency resolution uses the captured output exclusion boundary and retains changed resolution inputs independently of session identity
+ok 93 - dependency resolution uses the captured output exclusion boundary and retains changed resolution inputs independently of session identity
+  ---
+  duration_ms: 363.368807
+  ...
+# Subtest: empty and unavailable dependency evaluations are distinct; ordinary discovery does not request dependencies
+ok 94 - empty and unavailable dependency evaluations are distinct; ordinary discovery does not request dependencies
+  ---
+  duration_ms: 4504.971368
+  ...
+# Subtest: dependency records reproduce in fresh processes without clock or invocation identity
+ok 95 - dependency records reproduce in fresh processes without clock or invocation identity
+  ---
+  duration_ms: 26446.675468
+  ...
+# Subtest: partial, stopped and failed dependency attempts retain qualified materialized results; defects propagate
+ok 96 - partial, stopped and failed dependency attempts retain qualified materialized results; defects propagate
+  ---
+  duration_ms: 5339.542433
+  ...
+# Subtest: store rejects unsupported relationship edges and false whole-edge qualifications atomically
+ok 97 - store rejects unsupported relationship edges and false whole-edge qualifications atomically
+  ---
+  duration_ms: 2500.022404
+  ...
+# Subtest: captured request evidence survives later edits and dependency method versions are retained
+ok 98 - captured request evidence survives later edits and dependency method versions are retained
+  ---
+  duration_ms: 255.056334
+  ...
+# Subtest: direct relationships preserve self requests and every edge around a cycle
+ok 99 - direct relationships preserve self requests and every edge around a cycle
+  ---
+  duration_ms: 147.900589
+  ...
+# Subtest: file resolver evidence never narrows a different ambient target declaration
+ok 100 - file resolver evidence never narrows a different ambient target declaration
+  ---
+  duration_ms: 161.043005
+  ...
+# Subtest: relationship diagnostics count source diagnostics once without collapsing distinct same-code errors
+ok 101 - relationship diagnostics count source diagnostics once without collapsing distinct same-code errors
+  ---
+  duration_ms: 328.729215
+  ...
+# Subtest: merged module relationships retain distinct diagnostics across files without multiplying shared file diagnostics
+ok 102 - merged module relationships retain distinct diagnostics across files without multiplying shared file diagnostics
+  ---
+  duration_ms: 166.059957
+  ...
+# Subtest: dependency evaluations partition resolved occurrences exactly and reject inconsistent batches atomically
+ok 103 - dependency evaluations partition resolved occurrences exactly and reject inconsistent batches atomically
+  ---
+  duration_ms: 2489.386497
+  ...
+# Subtest: dependency evaluations reject disjoint relationships for one ordered pair atomically
+ok 104 - dependency evaluations reject disjoint relationships for one ordered pair atomically
+  ---
+  duration_ms: 166.130687
+  ...
+# Subtest: dependency contract: supported request syntax preserves mechanism and explicit type evidence
+ok 105 - dependency contract: supported request syntax preserves mechanism and explicit type evidence
+  ---
+  duration_ms: 1052.069711
+  ...
+# Subtest: dependency contract: direct re-exports resolve to the intermediate module, not its export origin
+ok 106 - dependency contract: direct re-exports resolve to the intermediate module, not its export origin
+  ---
+  duration_ms: 264.457691
+  ...
+# Subtest: dependency contract: static, dynamic, import-type and import-equals literal symbols identify the same module
+ok 107 - dependency contract: static, dynamic, import-type and import-equals literal symbols identify the same module
+  ---
+  duration_ms: 185.842452
+  ...
+# Subtest: dependency contract: require literal lookup differs between TypeScript and JavaScript
+ok 108 - dependency contract: require literal lookup differs between TypeScript and JavaScript
+  ---
+  duration_ms: 132.710585
+  ...
+# Subtest: dependency contract: successful require resolution does not add a file to the configured Program population
+ok 109 - dependency contract: successful require resolution does not add a file to the configured Program population
+  ---
+  duration_ms: 148.425418
+  ...
+# Subtest: dependency contract: scope lookup distinguishes globals from parameters, hoisting and temporal-dead-zone bindings
+ok 110 - dependency contract: scope lookup distinguishes globals from parameters, hoisting and temporal-dead-zone bindings
+  ---
+  duration_ms: 208.68024
+  ...
+# Subtest: dependency contract: ESM format and an ambient require declaration are separate evidence, neither proves a loader
+ok 111 - dependency contract: ESM format and an ambient require declaration are separate evidence, neither proves a loader
+  ---
+  duration_ms: 74.49268
+  ...
+# Subtest: dependency contract: merged named ambient modules retain occurrence-specific declaration ownership
+ok 112 - dependency contract: merged named ambient modules retain occurrence-specific declaration ownership
+  ---
+  duration_ms: 103.16703
+  ...
+# Subtest: dependency contract: resolution mode selects distinct package export conditions
+ok 113 - dependency contract: resolution mode selects distinct package export conditions
+  ---
+  duration_ms: 112.692324
+  ...
+# Subtest: dependency contract: absent require evidence and local import aliases remain distinguishable
+ok 114 - dependency contract: absent require evidence and local import aliases remain distinguishable
+  ---
+  duration_ms: 122.132778
+  ...
+# Subtest: dependency contract: module declarations and augmentations require symbol membership, not just syntax ownership
+ok 115 - dependency contract: module declarations and augmentations require symbol membership, not just syntax ownership
+  ---
+  duration_ms: 82.631177
+  ...
+# Subtest: dependency contract: re-exports-only syntax rule ignores only comments and EmptyStatement
+ok 116 - dependency contract: re-exports-only syntax rule ignores only comments and EmptyStatement
+  ---
+  duration_ms: 78.120415
+  ...
+# Subtest: dependency contract: request syntax can survive diagnostics without implying a sound complete interpretation
+ok 117 - dependency contract: request syntax can survive diagnostics without implying a sound complete interpretation
+  ---
+  duration_ms: 54.638668
+  ...
+# Subtest: dependency contract: classic CommonJS has configured format and Node require evidence but no implied file format
+ok 118 - dependency contract: classic CommonJS has configured format and Node require evidence but no implied file format
+  ---
+  duration_ms: 15551.574994
+  ...
+# Subtest: dependency contract: mixed NodeNext formats share the same actual Node require variable declaration
+ok 119 - dependency contract: mixed NodeNext formats share the same actual Node require variable declaration
+  ---
+  duration_ms: 183089.937042
+  ...
+# Subtest: dependency contract: global implementation, ambient variable, absent binding and noncallable declaration differ
+ok 120 - dependency contract: global implementation, ambient variable, absent binding and noncallable declaration differ
+  ---
+  duration_ms: 28.714319
+  ...
+# Subtest: dependency contract: preserve retains mixed syntax and distinguishes explicit ESM from absent file format
+ok 121 - dependency contract: preserve retains mixed syntax and distinguishes explicit ESM from absent file format
+  ---
+  duration_ms: 37.277186
+  ...
+# Subtest: dependency contract: a completed CommonJS lexical lookup does not require a global declaration
+ok 122 - dependency contract: a completed CommonJS lexical lookup does not require a global declaration
+  ---
+  duration_ms: 7.295185
+  ...
+# Subtest: dependency contract: lexical lookup covers destructuring, catch, loop and type-only names
+ok 123 - dependency contract: lexical lookup covers destructuring, catch, loop and type-only names
+  ---
+  duration_ms: 5.160855
+  ...
+# Subtest: dependency contract: parse recovery and with scope do not establish complete lexical evidence from an absent lookup
+ok 124 - dependency contract: parse recovery and with scope do not establish complete lexical evidence from an absent lookup
+  ---
+  duration_ms: 5.579717
+  ...
+# Subtest: dependency contract: preserve binding evidence is absent, corroborating, alternative, or conflicting independently of format
+ok 125 - dependency contract: preserve binding evidence is absent, corroborating, alternative, or conflicting independently of format
+  ---
+  duration_ms: 98.930866
+  ...
+# Subtest: dependency contract: call-location lookup separates JavaScript synthetic require from nested local bindings
+ok 126 - dependency contract: call-location lookup separates JavaScript synthetic require from nested local bindings
+  ---
+  duration_ms: 5.228645
+  ...
+# Subtest: representative journey preserves direct intermediates, shared parents, composition and fresh exact lookups
+not ok 127 - representative journey preserves direct intermediates, shared parents, composition and fresh exact lookups
+  ---
+  duration_ms: 197291.280682
+  location: '/Users/ronen/postcode/app/_build/test/dependency-presentation.test.js:16:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Local observations: /Users/ronen/postcode/app/_observations/dependency-journey-e5455a (may contain repository-derived text and explicitly requested source locations).
+    Session invalidated: relevant inputs changed or could not be verified. Restart to continue.
+    
+    
+    2 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 2
+  operator: 'strictEqual'
+  stack: |-
+    viewOf (file:///Users/ronen/postcode/app/_build/test/dependency-presentation.test.js:13:12)
+    TestContext.<anonymous> (file:///Users/ronen/postcode/app/_build/test/dependency-presentation.test.js:19:18)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:932:9)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: source-owned request results and recognition outcomes are separate and parent disclosure does not fabricate them
+ok 128 - source-owned request results and recognition outcomes are separate and parent disclosure does not fabricate them
+  ---
+  duration_ms: 308734.602368
+  ...
+# Subtest: opaque external endpoints render as leaves and never claim an established empty interior
+ok 129 - opaque external endpoints render as leaves and never claim an established empty interior
+  ---
+  duration_ms: 13636.885774
+  ...
+# Subtest: cycle grouping retains internal edges and display depth omissions do not remove JSON graph facts
+ok 130 - cycle grouping retains internal edges and display depth omissions do not remove JSON graph facts
+  ---
+  duration_ms: 18923.711165
+  ...
+# Subtest: inspection by handle works independently of additional CommonJS dependency inputs
+ok 131 - inspection by handle works independently of additional CommonJS dependency inputs
+  ---
+  duration_ms: 25560.231272
+  ...
+# Subtest: component bounds count disconnected omissions and terminal controls stay inert
+ok 132 - component bounds count disconnected omissions and terminal controls stay inert
+  ---
+  duration_ms: 10042.880285
+  ...
+# Subtest: dependency rendering pluralizes each independent count including omissions
+ok 133 - dependency rendering pluralizes each independent count including omissions
+  ---
+  duration_ms: 229441.962851
+  ...
+# Subtest: structure retains isolated modules, source SCC roots, self loops and shared children
+ok 134 - structure retains isolated modules, source SCC roots, self loops and shared children
+  ---
+  duration_ms: 2405.441429
+  ...
+# Subtest: focused lenses retain only direct edges, nonedges stay with their owner and opaque endpoints remain selectable
+ok 135 - focused lenses retain only direct edges, nonedges stay with their owner and opaque endpoints remain selectable
+  ---
+  duration_ms: 2374.478642
+  ...
+# Subtest: composition is an independent exhaustive positive property across merged declarations
+ok 136 - composition is an independent exhaustive positive property across merged declarations
+  ---
+  duration_ms: 2046.954024
+  ...
+# Subtest: organization expansion distinguishes same group, descendants and outward without transitive dependencies
+ok 137 - organization expansion distinguishes same group, descendants and outward without transitive dependencies
+  ---
+  duration_ms: 1952.906413
+  ...
+# Subtest: merged owners use occurrence-specific source placement; target declarations preserve variation
+ok 138 - merged owners use occurrence-specific source placement; target declarations preserve variation
+  ---
+  duration_ms: 3432.937252
+  ...
+# Subtest: missing or partial organization weakens only expansion and cannot establish outward
+ok 139 - missing or partial organization weakens only expansion and cannot establish outward
+  ---
+  duration_ms: 1783.361841
+  ...
+# Subtest: fallback preserves partial and ambiguous target placement without inventing endpoint associations
+ok 140 - fallback preserves partial and ambiguous target placement without inventing endpoint associations
+  ---
+  duration_ms: 2175.619125
+  ...
+# Subtest: directory links preserve multiple containment parents and their common ancestor evidence
+ok 141 - directory links preserve multiple containment parents and their common ancestor evidence
+  ---
+  duration_ms: 1747.385134
+  ...
+# Subtest: empty graph and composition evaluation are established empty results
+ok 142 - empty graph and composition evaluation are established empty results
+  ---
+  duration_ms: 1662.534944
+  ...
+# Subtest: graph and composition results reproduce across fresh processes
+ok 143 - graph and composition results reproduce across fresh processes
+  ---
+  duration_ms: 194611.522116
+  ...
+# Subtest: store rejects invalid component indices and missing organization occurrence support atomically
+ok 144 - store rejects invalid component indices and missing organization occurrence support atomically
+  ---
+  duration_ms: 1588.596796
+  ...
+# Subtest: directed adapter preserves empty roots, direction, isolates and incremental mutations
+ok 145 - directed adapter preserves empty roots, direction, isolates and incremental mutations
+  ---
+  duration_ms: 33.300524
+  ...
+# Subtest: SCC, ancestry and incremental reachability match an independent bounded matrix oracle
+ok 146 - SCC, ancestry and incremental reachability match an independent bounded matrix oracle
+  ---
+  duration_ms: 6991.633106
+  ...
+# Subtest: delegated components and incoming traversal preserve deep-chain and deep-cycle robustness
+ok 147 - delegated components and incoming traversal preserve deep-chain and deep-cycle robustness
+  ---
+  duration_ms: 7981.944934
+  ...
+# Subtest: enumerates the exact supported population, with merged ambient evidence and transitively resolved identity
+ok 148 - enumerates the exact supported population, with merged ambient evidence and transitively resolved identity
+  ---
+  duration_ms: 4024.707199
+  ...
+# Subtest: source-derived compiler names do not become conceptual names
+ok 149 - source-derived compiler names do not become conceptual names
+  ---
+  duration_ms: 2981.236429
+  ...
+# Subtest: named ambient declarations in ordinary TypeScript have declaration-only facets
+ok 150 - named ambient declarations in ordinary TypeScript have declaration-only facets
+  ---
+  duration_ms: 176.316958
+  ...
+# Subtest: TypeScript automatic module detection is honored even without written imports or exports
+ok 151 - TypeScript automatic module detection is honored even without written imports or exports
+  ---
+  duration_ms: 194.565165
+  ...
+# Subtest: empty population has a stored projection and fully materialized evaluation
+ok 152 - empty population has a stored projection and fully materialized evaluation
+  ---
+  duration_ms: 2507.334061
+  ...
+# Subtest: missing, malformed, unusable config and missing configured source fail operationally
+ok 153 - missing, malformed, unusable config and missing configured source fail operationally
+  ---
+  duration_ms: 7956.113523
+  ...
+# Subtest: encountered parse diagnostics qualify discovery without unrelated semantic checking
+ok 154 - encountered parse diagnostics qualify discovery without unrelated semantic checking
+  ---
+  duration_ms: 2788.790312
+  ...
+# Subtest: inspect exact names, handles and IDs preserves zero/one selection and applicable context
+ok 155 - inspect exact names, handles and IDs preserves zero/one selection and applicable context
+  ---
+  duration_ms: 3265.640112
+  ...
+# Subtest: exact names remain usable when they collide with compact IDs; scoped IDs stay precise
+ok 156 - exact names remain usable when they collide with compact IDs; scoped IDs stay precise
+  ---
+  duration_ms: 401.694473
+  ...
+# Subtest: generated handles avoid compact Entity IDs across basename, language-name and export cues
+ok 157 - generated handles avoid compact Entity IDs across basename, language-name and export cues
+  ---
+  duration_ms: 174942.486128
+  ...
+# Subtest: equivalent separate processes preserve semantic records, relationships and ordering
+ok 158 - equivalent separate processes preserve semantic records, relationships and ordering
+  ---
+  duration_ms: 20778.619448
+  ...
+# Subtest: a changed method version remains attributable in an independent process
+ok 159 - a changed method version remains attributable in an independent process
+  ---
+  duration_ms: 31537.749643
+  ...
+# Subtest: source, inherited config, package metadata and missing-input resolution changes remain in captured input support
+ok 160 - source, inherited config, package metadata and missing-input resolution changes remain in captured input support
+  ---
+  duration_ms: 1370.243972
+  ...
+# Subtest: generated output is excluded from roots, imports, symlinks and session inputs
+ok 161 - generated output is excluded from roots, imports, symlinks and session inputs
+  ---
+  duration_ms: 707.997071
+  ...
+# Subtest: explicit output exclusion applies outside the default destination
+ok 162 - explicit output exclusion applies outside the default destination
+  ---
+  duration_ms: 506.45631
+  ...
+# Subtest: repeated completed evaluation reuses the retained outcome
+ok 163 - repeated completed evaluation reuses the retained outcome
+  ---
+  duration_ms: 2413.616744
+  ...
+# Subtest: expanded discovery attempts count root evaluations and preserve earlier expansion outcomes
+ok 164 - expanded discovery attempts count root evaluations and preserve earlier expansion outcomes
+  ---
+  duration_ms: 3467.822867
+  ...
+# Subtest: output-exclusion qualifications describe only filters actually supplied by the caller
+ok 165 - output-exclusion qualifications describe only filters actually supplied by the caller
+  ---
+  duration_ms: 7851.077047
+  ...
+# Subtest: exclusion order and duplicates preserve input support while different exclusion sets remain distinct
+ok 166 - exclusion order and duplicates preserve input support while different exclusion sets remain distinct
+  ---
+  duration_ms: 841.671913
+  ...
+# Subtest: missing descendants of symlinked exclusions stay outside session inputs when generated output appears
+ok 167 - missing descendants of symlinked exclusions stay outside session inputs when generated output appears
+  ---
+  duration_ms: 1523.855361
+  ...
+# Subtest: subject relationship delivery excludes unrelated project growth and preserves scoped support
+ok 168 - subject relationship delivery excludes unrelated project growth and preserves scoped support
+  ---
+  duration_ms: 9881.969446
+  ...
+# Subtest: bounded listings expose every module and group artifact with query-bound stable continuations
+ok 169 - bounded listings expose every module and group artifact with query-bound stable continuations
+  ---
+  duration_ms: 179803.28656
+  ...
+# Subtest: scoped summaries preserve incomplete evaluation and separate placement qualification
+ok 170 - scoped summaries preserve incomplete evaluation and separate placement qualification
+  ---
+  duration_ms: 1251.879056
+  ...
+# Subtest: an oversized qualified listing item is explicit and does not hide later items
+ok 171 - an oversized qualified listing item is explicit and does not hide later items
+  ---
+  duration_ms: 524.512723
+  ...
+# Subtest: realistic dialogue follows delegation and group documentation through bounded tools
+ok 172 - realistic dialogue follows delegation and group documentation through bounded tools
+  ---
+  duration_ms: 28736.309869
+  ...
+# Subtest: missing provider expansions and dependency analysis remain unavailable, not empty complete results
+ok 173 - missing provider expansions and dependency analysis remain unavailable, not empty complete results
+  ---
+  duration_ms: 1468.134517
+  ...
+# Subtest: a merged module with extensive own support stays selectable through explicit inspect references
+ok 174 - a merged module with extensive own support stays selectable through explicit inspect references
+  ---
+  duration_ms: 3312.430372
+  ...
+# Subtest: a complete 263-module inventory fits one guarded dialogue with qualified support by reference
+ok 175 - a complete 263-module inventory fits one guarded dialogue with qualified support by reference
+  ---
+  duration_ms: 5509.40855
+  ...
+# Subtest: summary citations retain their exposure form, including subsequent full delivery and failed attempts
+ok 176 - summary citations retain their exposure form, including subsequent full delivery and failed attempts
+  ---
+  duration_ms: 1470.530454
+  ...
+# Subtest: summaries withheld by the response guard do not grant citation eligibility or exposure
+ok 177 - summaries withheld by the response guard do not grant citation eligibility or exposure
+  ---
+  duration_ms: 1525.232553
+  ...
+# Subtest: module inspection discovers qualified local and ancestor documentation with bounded continuations and no content exposure
+ok 178 - module inspection discovers qualified local and ancestor documentation with bounded continuations and no content exposure
+  ---
+  duration_ms: 3503.861954
+  ...
+# Subtest: normal module inspection lets the investigator acquire documentation and records only delivered exposure
+ok 179 - normal module inspection lets the investigator acquire documentation and records only delivered exposure
+  ---
+  duration_ms: 1718.565788
+  ...
+# Subtest: Git owner enforces its per-call deadline, escalates, and confirms actual exit
+ok 180 - Git owner enforces its per-call deadline, escalates, and confirms actual exit
+  ---
+  duration_ms: 3031.571253
+  ...
+# Subtest: Git deadline settles and releases a child that never announces readiness
+ok 181 - Git deadline settles and releases a child that never announces readiness
+  ---
+  duration_ms: 47.644376
+  ...
+# Subtest: child readiness rejects when exit precedes its announcement
+ok 182 - child readiness rejects when exit precedes its announcement
+  ---
+  duration_ms: 16.689908
+  ...
+# Subtest: unconfirmed Git cleanup reports the resource and retains exit ownership
+ok 183 - unconfirmed Git cleanup reports the resource and retains exit ownership
+  ---
+  duration_ms: 60.389924
+  ...
+# Subtest: worker interruption owns Git through opening and prevents later work
+not ok 184 - worker interruption owns Git through opening and prevents later work
+  ---
+  duration_ms: 10060.840718
+  location: '/Users/ronen/postcode/app/_build/test/execution-ownership.test.js:93:5'
+  failureType: 'testTimeoutFailure'
+  error: 'test timed out after 10000ms'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: worker interruption owns Git through validation and prevents later work
+not ok 185 - worker interruption owns Git through validation and prevents later work
+  ---
+  duration_ms: 174373.587222
+  location: '/Users/ronen/postcode/app/_build/test/execution-ownership.test.js:93:5'
+  failureType: 'testTimeoutFailure'
+  error: 'test timed out after 10000ms'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: unexpected worker exit cancels outstanding Git independently
+ok 186 - unexpected worker exit cancels outstanding Git independently
+  ---
+  duration_ms: 299.714151
+  ...
+# Subtest: worker send settles once without phantom pending operations
+ok 187 - worker send settles once without phantom pending operations
+  ---
+  duration_ms: 1.553044
+  ...
+# Subtest: worker close settles once without phantom pending operations
+ok 188 - worker close settles once without phantom pending operations
+  ---
+  duration_ms: 1.251861
+  ...
+# Subtest: worker late settles once without phantom pending operations
+ok 189 - worker late settles once without phantom pending operations
+  ---
+  duration_ms: 3.274687
+  ...
+# Subtest: opening timeout is qualified unavailability; recovery or loss invalidates, consistent unavailability remains
+ok 190 - opening timeout is qualified unavailability; recovery or loss invalidates, consistent unavailability remains
+  ---
+  duration_ms: 1804.840145
+  ...
+# Subtest: interrupted publication settles at 130 while cleanup failure is reported separately
+ok 191 - interrupted publication settles at 130 while cleanup failure is reported separately
+  ---
+  duration_ms: 24.687103
+  ...
+# Subtest: worker cleanup reporting is bounded without claiming worker exit
+ok 192 - worker cleanup reporting is bounded without claiming worker exit
+  ---
+  duration_ms: 21.175569
+  ...
+# Subtest: Git output limits wait for exit and sanitized invocation context stays local
+ok 193 - Git output limits wait for exit and sanitized invocation context stays local
+  ---
+  duration_ms: 4.159266
+  ...
+# Subtest: failed Git spawn has no child to reap; unexpected defects stay distinct
+ok 194 - failed Git spawn has no child to reap; unexpected defects stay distinct
+  ---
+  duration_ms: 1.683864
+  ...
+# Subtest: effective surfaces include direct/default/aliased/wildcard/chained exports and preserve origin identity
+ok 195 - effective surfaces include direct/default/aliased/wildcard/chained exports and preserve origin identity
+  ---
+  duration_ms: 4514.047165
+  ...
+# Subtest: type, value and dual roles survive type-only direct and chained forwarding
+ok 196 - type, value and dual roles survive type-only direct and chained forwarding
+  ---
+  duration_ms: 3340.139039
+  ...
+# Subtest: overloads and merged declarations are one semantic symbol with separate evidence
+ok 197 - overloads and merged declarations are one semantic symbol with separate evidence
+  ---
+  duration_ms: 3241.725874
+  ...
+# Subtest: module and symbol documentation, tags and independent contributions remain recorded assertions
+ok 198 - module and symbol documentation, tags and independent contributions remain recorded assertions
+  ---
+  duration_ms: 4049.986587
+  ...
+# Subtest: export assignments are represented explicitly
+ok 199 - export assignments are represented explicitly
+  ---
+  duration_ms: 175213.926004
+  ...
+# Subtest: expansions are requested before evaluation and inspect includes only selected expansion subjects
+ok 200 - expansions are requested before evaluation and inspect includes only selected expansion subjects
+  ---
+  duration_ms: 2209.702099
+  ...
+# Subtest: unresolved export targets produce partial expansion outcomes even when no export entity is available
+ok 201 - unresolved export targets produce partial expansion outcomes even when no export entity is available
+  ---
+  duration_ms: 65.797011
+  ...
+# Subtest: requested expansion kinds are unique while qualified evaluation scopes remain per module
+ok 202 - requested expansion kinds are unique while qualified evaluation scopes remain per module
+  ---
+  duration_ms: 719.542848
+  ...
+# Subtest: renamed re-export traversal revisits a module under another name and still terminates true cycles
+ok 203 - renamed re-export traversal revisits a module under another name and still terminates true cycles
+  ---
+  duration_ms: 48.575304
+  ...
+# Subtest: layered wildcard diamonds retain linear route evidence and value reachability through mixed cyclic branches
+ok 204 - layered wildcard diamonds retain linear route evidence and value reachability through mixed cyclic branches
+  ---
+  duration_ms: 2315.739555
+  ...
+# Subtest: identity normalizes only explicitly identified local references and retains all literal spellings
+ok 205 - identity normalizes only explicitly identified local references and retains all literal spellings
+  ---
+  duration_ms: 16.937392
+  ...
+# Subtest: literal selectors containing the producing session cannot collide with the word session
+ok 206 - literal selectors containing the producing session cannot collide with the word session
+  ---
+  duration_ms: 3938.629912
+  ...
+# Subtest: resolved internal selectors cannot collide with literal normalized spellings in any projection family
+ok 207 - resolved internal selectors cannot collide with literal normalized spellings in any projection family
+  ---
+  duration_ms: 177488.352023
+  ...
+# Subtest: module projection normalizes resolved internal IDs across sessions and retains compact selection
+ok 208 - module projection normalizes resolved internal IDs across sessions and retains compact selection
+  ---
+  duration_ms: 1595.120361
+  ...
+# Subtest: organization-module projection normalizes resolved internal IDs across sessions and retains compact selection
+ok 209 - organization-module projection normalizes resolved internal IDs across sessions and retains compact selection
+  ---
+  duration_ms: 956.792889
+  ...
+# Subtest: organization-group projection normalizes resolved internal IDs across sessions and retains compact selection
+ok 210 - organization-group projection normalizes resolved internal IDs across sessions and retains compact selection
+  ---
+  duration_ms: 975.049046
+  ...
+# Subtest: dependency-children projection normalizes resolved internal IDs across sessions and retains compact selection
+ok 211 - dependency-children projection normalizes resolved internal IDs across sessions and retains compact selection
+  ---
+  duration_ms: 3583.366929
+  ...
+# Subtest: dependency-parents projection normalizes resolved internal IDs across sessions and retains compact selection
+ok 212 - dependency-parents projection normalizes resolved internal IDs across sessions and retains compact selection
+  ---
+  duration_ms: 2839.045511
+  ...
+# Subtest: qualification classification uses only the exact primary producer and preserves derived limitations
+ok 213 - qualification classification uses only the exact primary producer and preserves derived limitations
+  ---
+  duration_ms: 3246.715619
+  ...
+# Subtest: real provider keeps ambient names containing its own session distinct from literal session
+ok 214 - real provider keeps ambient names containing its own session distinct from literal session
+  ---
+  duration_ms: 194.335847
+  ...
+# Subtest: coupled publication rejects the root and expansion together and leaves no evaluation index residue
+ok 215 - coupled publication rejects the root and expansion together and leaves no evaluation index residue
+  ---
+  duration_ms: 77.563568
+  ...
+# Subtest: evaluation results are owned immutable values, independent of the producer and index consumers
+ok 216 - evaluation results are owned immutable values, independent of the producer and index consumers
+  ---
+  duration_ms: 23.628688
+  ...
+# Subtest: pure unavailable derivations are reused without submission and different immutable bases derive anew
+ok 217 - pure unavailable derivations are reused without submission and different immutable bases derive anew
+  ---
+  duration_ms: 70.613735
+  ...
+# Subtest: provider discovery cannot be mutated to affect retained results or later discovery
+ok 218 - provider discovery cannot be mutated to affect retained results or later discovery
+  ---
+  duration_ms: 5931.274006
+  ...
+# Subtest: entity binding batches validate first, order new collisions together and preserve existing bindings
+ok 219 - entity binding batches validate first, order new collisions together and preserve existing bindings
+  ---
+  duration_ms: 30.185591
+  ...
+# Subtest: completed materialization leaves independent availability and applicability dimensions unchanged
+ok 220 - completed materialization leaves independent availability and applicability dimensions unchanged
+  ---
+  duration_ms: 84.104525
+  ...
+# Subtest: evaluation query visits only session evaluations as unrelated stored evidence grows
+ok 221 - evaluation query visits only session evaluations as unrelated stored evidence grows
+  ---
+  duration_ms: 395.989235
+  ...
+# Subtest: exclusion checks resolve a missing candidate once regardless of exclusion count
+ok 222 - exclusion checks resolve a missing candidate once regardless of exclusion count
+  ---
+  duration_ms: 263.008543
+  ...
+# Subtest: unexpected candidate resolution defects propagate rather than becoming absence
+ok 223 - unexpected candidate resolution defects propagate rather than becoming absence
+  ---
+  duration_ms: 7.335377
+  ...
+# Subtest: validation preserves captured identity and revision when a missing candidate becomes cyclic
+ok 224 - validation preserves captured identity and revision when a missing candidate becomes cyclic
+  ---
+  duration_ms: 291.657176
+  ...
+# Subtest: operation retention is independent of presentation and exact inspection preserves original composition
+ok 225 - operation retention is independent of presentation and exact inspection preserves original composition
+  ---
+  duration_ms: 3769.86565
+  ...
+# Subtest: successive operation evaluations atomically retain corrections and supply earlier retained context
+ok 226 - successive operation evaluations atomically retain corrections and supply earlier retained context
+  ---
+  duration_ms: 2352.883771
+  ...
+# Subtest: session applies retention policy to refused with attempt usage preserved
+ok 227 - session applies retention policy to refused with attempt usage preserved
+  ---
+  duration_ms: 1286.038016
+  ...
+# Subtest: session applies retention policy to truncated with attempt usage preserved
+ok 228 - session applies retention policy to truncated with attempt usage preserved
+  ---
+  duration_ms: 988.346533
+  ...
+# Subtest: session applies retention policy to communication-failure with attempt usage preserved
+ok 229 - session applies retention policy to communication-failure with attempt usage preserved
+  ---
+  duration_ms: 1074.880057
+  ...
+# Subtest: session applies retention policy to configuration-unavailable with attempt usage preserved
+ok 230 - session applies retention policy to configuration-unavailable with attempt usage preserved
+  ---
+  duration_ms: 1144.982193
+  ...
+# Subtest: CLI worker summary, reuse, exact child inspection, source traceability and usage share one session
+ok 231 - CLI worker summary, reuse, exact child inspection, source traceability and usage share one session
+  ---
+  duration_ms: 12346.654866
+  ...
+# Subtest: one-shot summary discloses expiring references, source inspection is escaped, and unconfigured requests fail explicitly
+ok 232 - one-shot summary discloses expiring references, source inspection is escaped, and unconfigured requests fail explicitly
+  ---
+  duration_ms: 18184.362265
+  ...
+# Subtest: worker interruption aborts the dialogue and preserves received usage and exposure in final observations
+ok 233 - worker interruption aborts the dialogue and preserves received usage and exposure in final observations
+  ---
+  duration_ms: 8056.999089
+  ...
+# Subtest: post-submission input invalidation suppresses the view but preserves usage
+ok 234 - post-submission input invalidation suppresses the view but preserves usage
+  ---
+  duration_ms: 7715.449782
+  ...
+# Subtest: worker call guard produces a retained limit stop without retrying on repeated summary
+ok 235 - worker call guard produces a retained limit stop without retrying on repeated summary
+  ---
+  duration_ms: 8322.064655
+  ...
+# Subtest: selection failures and cross-session investigram references cannot start generation
+ok 236 - selection failures and cross-session investigram references cannot start generation
+  ---
+  duration_ms: 1479.580643
+  ...
+# Subtest: session usage keeps unknown and anomalous calls distinct and does not fail on aggregate overflow
+ok 237 - session usage keeps unknown and anomalous calls distinct and does not fail on aggregate overflow
+  ---
+  duration_ms: 1249.664567
+  ...
+# Subtest: worker guard ignores late replies and late usage from a closed dialogue
+ok 238 - worker guard ignores late replies and late usage from a closed dialogue
+  ---
+  duration_ms: 231972.523017
+  ...
+# Subtest: invalid submitted corrections retain only the failure and leave earlier accounts untouched
+ok 239 - invalid submitted corrections retain only the failure and leave earlier accounts untouched
+  ---
+  duration_ms: 635.430055
+  ...
+# Subtest: shell retains accompanying corrections and makes original and replacement references inspectable
+ok 240 - shell retains accompanying corrections and makes original and replacement references inspectable
+  ---
+  duration_ms: 3359.11785
+  ...
+# Subtest: non-finite usage reports remain distinguishable after JSON serialization
+ok 241 - non-finite usage reports remain distinguishable after JSON serialization
+  ---
+  duration_ms: 326.239924
+  ...
+# Subtest: the worker bridge preserves an absent malformed reply for retained domain failure
+ok 242 - the worker bridge preserves an absent malformed reply for retained domain failure
+  ---
+  duration_ms: 2822.567068
+  ...
+# Subtest: usage arriving after a reply remains attributable until dialogue close (one-shot)
+ok 243 - usage arriving after a reply remains attributable until dialogue close (one-shot)
+  ---
+  duration_ms: 4668.187432
+  ...
+# Subtest: usage arriving after a reply remains attributable until dialogue close (shell)
+ok 244 - usage arriving after a reply remains attributable until dialogue close (shell)
+  ---
+  duration_ms: 6267.042552
+  ...
+# Subtest: shell rejects known investigram subjects for mechanical and summary lenses without calling the investigator
+ok 245 - shell rejects known investigram subjects for mechanical and summary lenses without calling the investigator
+  ---
+  duration_ms: 6616.388147
+  ...
+# Subtest: human final interruption reporting preserves attempt and session usage (multiple attempts)
+ok 246 - human final interruption reporting preserves attempt and session usage (multiple attempts)
+  ---
+  duration_ms: 5289.059829
+  ...
+# Subtest: human final interruption reporting preserves attempt and session usage (unknown only)
+ok 247 - human final interruption reporting preserves attempt and session usage (unknown only)
+  ---
+  duration_ms: 5056.595262
+  ...
+# Subtest: CLI seals authoritative usage in the worker-to-parent closing window (json)
+ok 248 - CLI seals authoritative usage in the worker-to-parent closing window (json)
+  ---
+  duration_ms: 5902.576247
+  ...
+# Subtest: CLI seals authoritative usage in the worker-to-parent closing window (unicode)
+ok 249 - CLI seals authoritative usage in the worker-to-parent closing window (unicode)
+  ---
+  duration_ms: 6037.687321
+  ...
+# Subtest: actual dialogue follows multiple delegation layers, acquires qualified relationships, full source and documentation
+ok 250 - actual dialogue follows multiple delegation layers, acquires qualified relationships, full source and documentation
+  ---
+  duration_ms: 27976.673793
+  ...
+# Subtest: subject-only capture has multiple mappings, exclusions, unavailable artifacts and first-observed validity
+ok 251 - subject-only capture has multiple mappings, exclusions, unavailable artifacts and first-observed validity
+  ---
+  duration_ms: 1513.783124
+  ...
+# Subtest: unavailable and malformed tool requests permit continued investigation without arbitrary path reads
+ok 252 - unavailable and malformed tool requests permit continued investigation without arbitrary path reads
+  ---
+  duration_ms: 8017.329864
+  ...
+# Subtest: full result accepts nested corrections, conflicts and inconsistencies with complete exposure; originals stay immutable
+ok 253 - full result accepts nested corrections, conflicts and inconsistencies with complete exposure; originals stay immutable
+  ---
+  duration_ms: 6026.729617
+  ...
+# Subtest: citations distinguish bare references, excerpts, and complete content accumulated across exchanges
+ok 254 - citations distinguish bare references, excerpts, and complete content accumulated across exchanges
+  ---
+  duration_ms: 3619.884433
+  ...
+# Subtest: whole-result validation rejects duplicate without publishing fragments
+ok 255 - whole-result validation rejects duplicate without publishing fragments
+  ---
+  duration_ms: 2569.6176
+  ...
+# Subtest: whole-result validation rejects qualification without publishing fragments
+ok 256 - whole-result validation rejects qualification without publishing fragments
+  ---
+  duration_ms: 3118.848405
+  ...
+# Subtest: whole-result validation rejects reference without publishing fragments
+ok 257 - whole-result validation rejects reference without publishing fragments
+  ---
+  duration_ms: 2654.551944
+  ...
+# Subtest: whole-result validation rejects status without publishing fragments
+ok 258 - whole-result validation rejects status without publishing fragments
+  ---
+  duration_ms: 2717.562054
+  ...
+# Subtest: whole-result validation rejects module-target without publishing fragments
+ok 259 - whole-result validation rejects module-target without publishing fragments
+  ---
+  duration_ms: 2784.129392
+  ...
+# Subtest: whole-result validation rejects local-id-target without publishing fragments
+ok 260 - whole-result validation rejects local-id-target without publishing fragments
+  ---
+  duration_ms: 2823.866605
+  ...
+# Subtest: dialogue serialization rejects cycle without publishing fragments
+ok 261 - dialogue serialization rejects cycle without publishing fragments
+  ---
+  duration_ms: 2975.350277
+  ...
+# Subtest: whole-result validation rejects shared without publishing fragments
+ok 262 - whole-result validation rejects shared without publishing fragments
+  ---
+  duration_ms: 2539.273939
+  ...
+# Subtest: acceptance itself rejects cyclic and shared composition before assigning results
+ok 263 - acceptance itself rejects cyclic and shared composition before assigning results
+  ---
+  duration_ms: 1423.886771
+  ...
+# Subtest: correction cannot target the identity assigned to an investigram in its own submitted unit
+ok 264 - correction cannot target the identity assigned to an investigram in its own submitted unit
+  ---
+  duration_ms: 1345.589093
+  ...
+# Subtest: oversized evidence is explicitly unavailable while the dialogue can continue
+ok 265 - oversized evidence is explicitly unavailable while the dialogue can continue
+  ---
+  duration_ms: 230040.664596
+  ...
+# Subtest: ended after evidence/usage preserves attempt attribution and closes the dialogue
+ok 266 - ended after evidence/usage preserves attempt attribution and closes the dialogue
+  ---
+  duration_ms: 3700.757094
+  ...
+# Subtest: refused after evidence/usage preserves attempt attribution and closes the dialogue
+ok 267 - refused after evidence/usage preserves attempt attribution and closes the dialogue
+  ---
+  duration_ms: 4144.777499
+  ...
+# Subtest: truncated after evidence/usage preserves attempt attribution and closes the dialogue
+ok 268 - truncated after evidence/usage preserves attempt attribution and closes the dialogue
+  ---
+  duration_ms: 7409.329979
+  ...
+# Subtest: communication-failure after evidence/usage preserves attempt attribution and closes the dialogue
+ok 269 - communication-failure after evidence/usage preserves attempt attribution and closes the dialogue
+  ---
+  duration_ms: 7579.608264
+  ...
+# Subtest: configuration-unavailable after evidence/usage preserves attempt attribution and closes the dialogue
+ok 270 - configuration-unavailable after evidence/usage preserves attempt attribution and closes the dialogue
+  ---
+  duration_ms: 7513.828372
+  ...
+# Subtest: guard covers asynchronous evidence work, provider calls, call count, tool count and volume
+ok 271 - guard covers asynchronous evidence work, provider calls, call count, tool count and volume
+  ---
+  duration_ms: 1416.805496
+  ...
+# Subtest: interrupt rejects late results and preserves prior usage independently
+ok 272 - interrupt rejects late results and preserves prior usage independently
+  ---
+  duration_ms: 1747.497251
+  ...
+# Subtest: invalidate rejects late results and preserves prior usage independently
+ok 273 - invalidate rejects late results and preserves prior usage independently
+  ---
+  duration_ms: 1242.544171
+  ...
+# Subtest: deadline rejects late results and preserves prior usage independently
+ok 274 - deadline rejects late results and preserves prior usage independently
+  ---
+  duration_ms: 1206.616471
+  ...
+# Subtest: input changes during dialogue invalidate before acceptance; unexpected defects are not ordinary failures
+ok 275 - input changes during dialogue invalidate before acceptance; unexpected defects are not ordinary failures
+  ---
+  duration_ms: 2180.409429
+  ...
+# Subtest: only delivered complete target context permits corrections, including separately requested parts
+ok 276 - only delivered complete target context permits corrections, including separately requested parts
+  ---
+  duration_ms: 13610.732873
+  ...
+# Subtest: corrected initial context includes chains and competing accounts, with omissions and completeness by correction
+ok 277 - corrected initial context includes chains and competing accounts, with omissions and completeness by correction
+  ---
+  duration_ms: 7408.324732
+  ...
+# Subtest: source captures reject forged mappings and excluded aliases remain unavailable
+ok 278 - source captures reject forged mappings and excluded aliases remain unavailable
+  ---
+  duration_ms: 1097.169413
+  ...
+# Subtest: malformed response and unsubmitted trees fail; post-submission validity checks are outside the generation deadline
+ok 279 - malformed response and unsubmitted trees fail; post-submission validity checks are outside the generation deadline
+  ---
+  duration_ms: 1156.447413
+  ...
+# Subtest: usage retains distinct reports and anomalies without selecting uncertain totals
+ok 280 - usage retains distinct reports and anomalies without selecting uncertain totals
+  ---
+  duration_ms: 3.969296
+  ...
+# Subtest: provider accounting anomalies preserve both accepted and failed investigation outcomes
+ok 281 - provider accounting anomalies preserve both accepted and failed investigation outcomes
+  ---
+  duration_ms: 10420.509285
+  ...
+# Subtest: corrections associate explicit program subjects through follow-ups and subordinate accounts
+not ok 282 - corrections associate explicit program subjects through follow-ups and subordinate accounts
+  ---
+  duration_ms: 226240.117584
+  location: '/Users/ronen/postcode/app/_build/test/investigation.test.js:500:1'
+  failureType: 'testCodeFailure'
+  error: 'Session invalidated: relevant inputs changed or could not be verified. Restart to continue.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    check (file:///Users/ronen/postcode/app/_build/test/investigation.test.js:73:19)
+    async wait (file:///Users/ronen/postcode/app/_build/src/lib/investigation/execute.js:100:23)
+    async investigate (file:///Users/ronen/postcode/app/_build/src/lib/investigation/execute.js:124:9)
+    async accepted (file:///Users/ronen/postcode/app/_build/test/investigation.test.js:77:23)
+    async TestContext.<anonymous> (file:///Users/ronen/postcode/app/_build/test/investigation.test.js:502:15)
+    async Test.run (node:internal/test_runner/test:932:9)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: correction reasons cite their reporter without granting complete account context
+ok 283 - correction reasons cite their reporter without granting complete account context
+  ---
+  duration_ms: 1391.164058
+  ...
+# Subtest: corrected subjects permit entities and artifacts but reject claims and evidence
+ok 284 - corrected subjects permit entities and artifacts but reject claims and evidence
+  ---
+  duration_ms: 678.278254
+  ...
+# Subtest: observation grouping is bound to the configured project even for batches without views
+ok 285 - observation grouping is bound to the configured project even for batches without views
+  ---
+  duration_ms: 103.041863
+  ...
+# Subtest: final observation names expose complete closed bytes and never replace a prior batch
+ok 286 - final observation names expose complete closed bytes and never replace a prior batch
+  ---
+  duration_ms: 14.921339
+  ...
+# Subtest: observation create failure retains truthful acceptance and cleanup ownership
+ok 287 - observation create failure retains truthful acceptance and cleanup ownership
+  ---
+  duration_ms: 13.63046
+  ...
+# Subtest: observation partial-write failure retains truthful acceptance and cleanup ownership
+ok 288 - observation partial-write failure retains truthful acceptance and cleanup ownership
+  ---
+  duration_ms: 21.501843
+  ...
+# Subtest: observation close failure retains truthful acceptance and cleanup ownership
+ok 289 - observation close failure retains truthful acceptance and cleanup ownership
+  ---
+  duration_ms: 6.269459
+  ...
+# Subtest: observation unsupported-publication failure retains truthful acceptance and cleanup ownership
+ok 290 - observation unsupported-publication failure retains truthful acceptance and cleanup ownership
+  ---
+  duration_ms: 5.703687
+  ...
+# Subtest: observation cleanup failure retains truthful acceptance and cleanup ownership
+ok 291 - observation cleanup failure retains truthful acceptance and cleanup ownership
+  ---
+  duration_ms: 10.139507
+  ...
+# Subtest: real SDK transports a fresh bounded dialogue with only PostCode functions and no credential in context or capture
+ok 292 - real SDK transports a fresh bounded dialogue with only PostCode functions and no credential in context or capture
+  ---
+  duration_ms: 594.738011
+  ...
+# Subtest: provider failure taxonomy preserves codes, excludes echoed credentials, and never retries
+ok 293 - provider failure taxonomy preserves codes, excludes echoed credentials, and never retries
+  ---
+  duration_ms: 463.549088
+  ...
+# Subtest: provider refusal, truncation, failure, malformed submission and absent usage remain distinct
+ok 294 - provider refusal, truncation, failure, malformed submission and absent usage remain distinct
+  ---
+  duration_ms: 240.313253
+  ...
+# Subtest: malformed provider JSON is a safe communication failure rather than a parser defect
+ok 295 - malformed provider JSON is a safe communication failure rather than a parser defect
+  ---
+  duration_ms: 48.59693
+  ...
+# Subtest: abort and close cancel in-flight SDK transport without retry or a late usage report
+ok 296 - abort and close cancel in-flight SDK transport without retry or a late usage report
+  ---
+  duration_ms: 55.442853
+  ...
+# Subtest: usage grouping preserves returned models and service tiers and does not add token subsets
+ok 297 - usage grouping preserves returned models and service tiers and does not add token subsets
+  ---
+  duration_ms: 95.525902
+  ...
+# Subtest: configuration fails closed without probing credentials when disabled or unsupported
+ok 298 - configuration fails closed without probing credentials when disabled or unsupported
+  ---
+  duration_ms: 12.89217
+  ...
+# Subtest: CLI preflight precedes project opening for shell and mechanical one-shot commands
+ok 299 - CLI preflight precedes project opening for shell and mechanical one-shot commands
+  ---
+  duration_ms: 23.539675
+  ...
+# Subtest: SDK service failure after evidence retains usage and acquisition, but a later request starts fresh
+ok 300 - SDK service failure after evidence retains usage and acquisition, but a later request starts fresh
+  ---
+  duration_ms: 2865.342809
+  ...
+# Subtest: offline real-adapter CLI shell covers source acquisition, retention, usage and credential exclusion in unicode via api-key
+ok 301 - offline real-adapter CLI shell covers source acquisition, retention, usage and credential exclusion in unicode via api-key
+  ---
+  duration_ms: 10778.075445
+  ...
+# Subtest: offline real-adapter CLI shell covers source acquisition, retention, usage and credential exclusion in json via api-key
+ok 302 - offline real-adapter CLI shell covers source acquisition, retention, usage and credential exclusion in json via api-key
+  ---
+  duration_ms: 10367.014029
+  ...
+# Subtest: offline real-adapter CLI shell covers source acquisition, retention, usage and credential exclusion in unicode via chatgpt-plan
+ok 303 - offline real-adapter CLI shell covers source acquisition, retention, usage and credential exclusion in unicode via chatgpt-plan
+  ---
+  duration_ms: 10392.626158
+  ...
+# Subtest: offline real-adapter CLI shell covers source acquisition, retention, usage and credential exclusion in json via chatgpt-plan
+ok 304 - offline real-adapter CLI shell covers source acquisition, retention, usage and credential exclusion in json via chatgpt-plan
+  ---
+  duration_ms: 9189.52816
+  ...
+# Subtest: only an explicit submission call classifies malformed arguments as an invalid submission on either route
+ok 305 - only an explicit submission call classifies malformed arguments as an invalid submission on either route
+  ---
+  duration_ms: 44.940255
+  ...
+# Subtest: representative organization journey selects, inspects, navigates, and escapes to captured paths only
+not ok 306 - representative organization journey selects, inspects, navigates, and escapes to captured paths only
+  ---
+  duration_ms: 289011.165113
+  location: '/Users/ronen/postcode/app/_build/test/organization-cli.test.js:34:1'
+  failureType: 'testCodeFailure'
+  error: 'Unexpected end of JSON input'
+  code: 'ERR_TEST_FAILURE'
+  name: 'SyntaxError'
+  stack: |-
+    JSON.parse (<anonymous>)
+    file:///Users/ronen/postcode/app/_build/test/organization-cli.test.js:60:29
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async fixture (file:///Users/ronen/postcode/app/_build/test/organization-cli.test.js:24:9)
+    async TestContext.<anonymous> (file:///Users/ronen/postcode/app/_build/test/organization-cli.test.js:35:5)
+    async Test.run (node:internal/test_runner/test:932:9)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: Unicode and JSON share selection, disclose project pruning, and show all direct inspection relationships
+ok 307 - Unicode and JSON share selection, disclose project pruning, and show all direct inspection relationships
+  ---
+  duration_ms: 17537.930623
+  ...
+# Subtest: group source detail retains incoming parent-link evidence without changing direct artifact placement
+ok 308 - group source detail retains incoming parent-link evidence without changing direct artifact placement
+  ---
+  duration_ms: 37867.421896
+  ...
+# Subtest: generic inspection displays every group/module name match, without accepting IDs copied from another invocation
+ok 309 - generic inspection displays every group/module name match, without accepting IDs copied from another invocation
+  ---
+  duration_ms: 250621.694358
+  ...
+# Subtest: shared groups expand once; link mechanics stay in source detail and placement exceptions remain visible
+ok 310 - shared groups expand once; link mechanics stay in source detail and placement exceptions remain visible
+  ---
+  duration_ms: 4174.170726
+  ...
+# Subtest: partial module evaluation preserves organization views and unknown properties without I/O on construction
+ok 311 - partial module evaluation preserves organization views and unknown properties without I/O on construction
+  ---
+  duration_ms: 241.99399
+  ...
+# Subtest: unavailable repository and observation-sink failure remain visible after opening; invalid projects produce no view
+ok 312 - unavailable repository and observation-sink failure remain visible after opening; invalid projects produce no view
+  ---
+  duration_ms: 3027.965409
+  ...
+# Subtest: Unicode depth and leaf limits disclose omissions while JSON retains complete selected structure
+ok 313 - Unicode depth and leaf limits disclose omissions while JSON retains complete selected structure
+  ---
+  duration_ms: 25356.173957
+  ...
+# Subtest: organization output reproduces across processes and escapes control characters at terminal boundaries
+ok 314 - organization output reproduces across processes and escapes control characters at terminal boundaries
+  ---
+  duration_ms: 267352.918472
+  ...
+# Subtest: group expansion limit is a display omission while root inspection retains every direct subgroup
+ok 315 - group expansion limit is a display omission while root inspection retains every direct subgroup
+  ---
+  duration_ms: 3631.554905
+  ...
+# Subtest: candidate ambiguity retains partial status and reachable candidate groups without asserting placements
+ok 316 - candidate ambiguity retains partial status and reachable candidate groups without asserting placements
+  ---
+  duration_ms: 249.652947
+  ...
+# Subtest: repository and project select the same groups, preserving direct relationships and typed properties
+ok 317 - repository and project select the same groups, preserving direct relationships and typed properties
+  ---
+  duration_ms: 2996.189874
+  ...
+# Subtest: explicit references select group IDs and inspect artifact-only groups outside project selection
+ok 318 - explicit references select group IDs and inspect artifact-only groups outside project selection
+  ---
+  duration_ms: 1917.504753
+  ...
+# Subtest: partial and unavailable module evaluations retain layout and known placements without false negative presence
+ok 319 - partial and unavailable module evaluations retain layout and known placements without false negative presence
+  ---
+  duration_ms: 2174.904784
+  ...
+# Subtest: organization evaluation and lenses use captured inputs, with stable groups across module attempts
+ok 320 - organization evaluation and lenses use captured inputs, with stable groups across module attempts
+  ---
+  duration_ms: 1669.315852
+  ...
+# Subtest: repository evidence participates in captured input support without reading ordinary artifact content
+ok 321 - repository evidence participates in captured input support without reading ordinary artifact content
+  ---
+  duration_ms: 6027.392514
+  ...
+# Subtest: a configured project outside Git remains usable with unavailable organization
+ok 322 - a configured project outside Git remains usable with unavailable organization
+  ---
+  duration_ms: 519.261377
+  ...
+# Subtest: directory aliases share a group and retain all parents while module identities remain apparent-path identities
+ok 323 - directory aliases share a group and retain all parents while module identities remain apparent-path identities
+  ---
+  duration_ms: 2268.910491
+  ...
+# Subtest: multiple declarations establish multiple placements; external and invisible modules retain distinct exceptions
+ok 324 - multiple declarations establish multiple placements; external and invisible modules retain distinct exceptions
+  ---
+  duration_ms: 2048.479499
+  ...
+# Subtest: names can match groups and modules together; scoped Entity IDs are precise across kinds
+ok 325 - names can match groups and modules together; scoped Entity IDs are precise across kinds
+  ---
+  duration_ms: 1794.122106
+  ...
+# Subtest: nested directory-link traversal maps to captured regions and refuses cyclic containment paths
+ok 326 - nested directory-link traversal maps to captured regions and refuses cyclic containment paths
+  ---
+  duration_ms: 1628.142126
+  ...
+# Subtest: placement accepts the destination after 40 directory-link redirects and refuses a 41st
+ok 327 - placement accepts the destination after 40 directory-link redirects and refuses a 41st
+  ---
+  duration_ms: 3171.640447
+  ...
+# Subtest: unavailable source evidence preserves usable placements and leaves absent presence unknown
+ok 328 - unavailable source evidence preserves usable placements and leaves absent presence unknown
+  ---
+  duration_ms: 1744.808643
+  ...
+# Subtest: record boundary rejects malformed placement outcomes and negative properties without completed evidence atomically
+ok 329 - record boundary rejects malformed placement outcomes and negative properties without completed evidence atomically
+  ---
+  duration_ms: 1550.811958
+  ...
+# Subtest: project modules outside the worktree are unplaced with an outside-repository reason
+ok 330 - project modules outside the worktree are unplaced with an outside-repository reason
+  ---
+  duration_ms: 1592.243353
+  ...
+# Subtest: completed empty module population establishes none; expansions require an explicit declaration
+ok 331 - completed empty module population establishes none; expansions require an explicit declaration
+  ---
+  duration_ms: 1550.539734
+  ...
+# Subtest: generated module handles cannot impersonate group navigation IDs
+ok 332 - generated module handles cannot impersonate group navigation IDs
+  ---
+  duration_ms: 1665.049176
+  ...
+# Subtest: opaque README boundaries remain unanalyzed artifacts without documentation availability
+ok 333 - opaque README boundaries remain unanalyzed artifacts without documentation availability
+  ---
+  duration_ms: 1859.276126
+  ...
+# Subtest: intermediate invocation links do not invent worktree-root aliases from path depth
+ok 334 - intermediate invocation links do not invent worktree-root aliases from path depth
+  ---
+  duration_ms: 1690.718246
+  ...
+# Subtest: one output policy resolves aliases, dangling targets and missing descendants without duplicate boundary counts
+ok 335 - one output policy resolves aliases, dangling targets and missing descendants without duplicate boundary counts
+  ---
+  duration_ms: 266.221482
+  ...
+# Subtest: unverifiable explicit boundaries refuse both CLI entry paths and later retargeting invalidates
+ok 336 - unverifiable explicit boundaries refuse both CLI entry paths and later retargeting invalidates
+  ---
+  duration_ms: 16682.783669
+  ...
+# Subtest: resolvable output boundaries need search permission but not directory-listing permission
+ok 337 - resolvable output boundaries need search permission but not directory-listing permission
+  ---
+  duration_ms: 245.866218
+  ...
+# Subtest: missing output suffixes follow observed filesystem case handling before and after materialization
+ok 338 - missing output suffixes follow observed filesystem case handling before and after materialization
+  ---
+  duration_ms: 1313.381374
+  ...
+# Subtest: repeated placement lookup reads artifact paths once per immutable capture/layout pair
+ok 339 - repeated placement lookup reads artifact paths once per immutable capture/layout pair
+  ---
+  duration_ms: 483.153245
+  ...
+# Subtest: selected composition preparation has linear store reads and keeps parallel claims and outcome order
+ok 340 - selected composition preparation has linear store reads and keeps parallel claims and outcome order
+  ---
+  duration_ms: 84.980308
+  ...
+# Subtest: store rejects overwrites, missing/cross-session/wrong-kind references and leaves batches atomic
+ok 341 - store rejects overwrites, missing/cross-session/wrong-kind references and leaves batches atomic
+  ---
+  duration_ms: 100.226671
+  ...
+# Subtest: session records require their own matching identity even when referencing a valid pending or stored session
+ok 342 - session records require their own matching identity even when referencing a valid pending or stored session
+  ---
+  duration_ms: 40.981223
+  ...
+# Subtest: entity claims require the matching discriminator and reciprocal subject before any batch is committed
+ok 343 - entity claims require the matching discriminator and reciprocal subject before any batch is committed
+  ---
+  duration_ms: 141.15916
+  ...
+# Subtest: documentation associations validate subject kinds and export discriminators atomically for pending and existing targets
+ok 344 - documentation associations validate subject kinds and export discriminators atomically for pending and existing targets
+  ---
+  duration_ms: 403.606265
+  ...
+# Subtest: store owns immutable copies rather than sharing mutable producer values
+ok 345 - store owns immutable copies rather than sharing mutable producer values
+  ---
+  duration_ms: 45.85975
+  ...
+# Subtest: an export claim cannot serve as a module primary claim even with a reciprocal subject
+ok 346 - an export claim cannot serve as a module primary claim even with a reciprocal subject
+  ---
+  duration_ms: 2.993632
+  ...
+# Subtest: unavailable, deferred, failed, stopped and partial outcomes survive without becoming an established empty population
+ok 347 - unavailable, deferred, failed, stopped and partial outcomes survive without becoming an established empty population
+  ---
+  duration_ms: 36.187823
+  ...
+# Subtest: compiler/implementation defects are not mislabeled as ordinary analysis failure
+ok 348 - compiler/implementation defects are not mislabeled as ordinary analysis failure
+  ---
+  duration_ms: 2.763403
+  ...
+# Subtest: duplicate exact names and handles select multiple modules and only their contexts
+ok 349 - duplicate exact names and handles select multiple modules and only their contexts
+  ---
+  duration_ms: 55.56347
+  ...
+# Subtest: multiple sessions coexist; old record IDs do not bind in another session
+ok 350 - multiple sessions coexist; old record IDs do not bind in another session
+  ---
+  duration_ms: 7022.908166
+  ...
+# Subtest: representative layout retains artifact-only siblings, direct documentation and ancestor regions
+ok 351 - representative layout retains artifact-only siblings, direct documentation and ancestor regions
+  ---
+  duration_ms: 1601.838463
+  ...
+# Subtest: worktree visibility respects tracked overrides, nested ignores, local/global exclusions and current deletion
+ok 352 - worktree visibility respects tracked overrides, nested ignores, local/global exclusions and current deletion
+  ---
+  duration_ms: 1785.710969
+  ...
+# Subtest: captures exclusion rules even where no visible artifact induces a group
+ok 353 - captures exclusion rules even where no visible artifact induces a group
+  ---
+  duration_ms: 2537.808989
+  ...
+# Subtest: tracked overrides honor Git case matching while retaining the observed worktree spelling
+ok 354 - tracked overrides honor Git case matching while retaining the observed worktree spelling
+  ---
+  duration_ms: 1612.663851
+  ...
+# Subtest: default XDG global ignore and configured global ignore are distinguished from repository policy
+ok 355 - default XDG global ignore and configured global ignore are distinguished from repository policy
+  ---
+  duration_ms: 4146.589581
+  ...
+# Subtest: ineffective ignore contents beneath ignored directories do not become evidence through tracked descendants
+ok 356 - ineffective ignore contents beneath ignored directories do not become evidence through tracked descendants
+  ---
+  duration_ms: 2829.386881
+  ...
+# Subtest: output locations are explicit and normalized; conventional names remain ordinary evidence
+ok 357 - output locations are explicit and normalized; conventional names remain ordinary evidence
+  ---
+  duration_ms: 3558.072145
+  ...
+# Subtest: nested repositories and submodules are one opaque artifact each, including tracked nested contents
+ok 358 - nested repositories and submodules are one opaque artifact each, including tracked nested contents
+  ---
+  duration_ms: 2953.157476
+  ...
+# Subtest: links into missing and existing generated output do not observe generated target existence or contents
+ok 359 - links into missing and existing generated output do not observe generated target existence or contents
+  ---
+  duration_ms: 3289.62657
+  ...
+# Subtest: symlinks retain captured target evidence and safe additional containment without duplicate regions
+ok 360 - symlinks retain captured target evidence and safe additional containment without duplicate regions
+  ---
+  duration_ms: 2573.43052
+  ...
+# Subtest: opposed directory links establish a deterministic acyclic subset
+ok 361 - opposed directory links establish a deterministic acyclic subset
+  ---
+  duration_ms: 3783.725007
+  ...
+# Subtest: directory links refuse a cycle through several established containment edges
+ok 362 - directory links refuse a cycle through several established containment edges
+  ---
+  duration_ms: 1474.896101
+  ...
+# Subtest: link resolution uses captured evidence without traversing opaque or ignored targets
+ok 363 - link resolution uses captured evidence without traversing opaque or ignored targets
+  ---
+  duration_ms: 2424.236288
+  ...
+# Subtest: an existing link target with uncaptured case spelling remains unestablished rather than broken
+ok 364 - an existing link target with uncaptured case spelling remains unestablished rather than broken
+  ---
+  duration_ms: 1449.943848
+  ...
+# Subtest: a nested project opened through a directory alias accepts absolute links through the invoked worktree path
+ok 365 - a nested project opened through a directory alias accepts absolute links through the invoked worktree path
+  ---
+  duration_ms: 1666.305876
+  ...
+# Subtest: links resolve directory redirects before dot-dot and preserve absolute captured worktree paths
+ok 366 - links resolve directory redirects before dot-dot and preserve absolute captured worktree paths
+  ---
+  duration_ms: 1739.015142
+  ...
+# Subtest: a bounded long link chain is not falsely classified as a demonstrated cycle
+ok 367 - a bounded long link chain is not falsely classified as a demonstrated cycle
+  ---
+  duration_ms: 1408.955239
+  ...
+# Subtest: special artifacts stay present and README matching asserts only direct availability
+ok 368 - special artifacts stay present and README matching asserts only direct availability
+  ---
+  duration_ms: 1370.0377
+  ...
+# Subtest: Git failure is unavailable and an unexpected programming defect propagates
+ok 369 - Git failure is unavailable and an unexpected programming defect propagates
+  ---
+  duration_ms: 345.917417
+  ...
+# Subtest: identity evidence changes only for relevant artifact, exclusion and link inputs
+ok 370 - identity evidence changes only for relevant artifact, exclusion and link inputs
+  ---
+  duration_ms: 10304.731328
+  ...
+# Subtest: NUL-delimited Git operations retain literal control characters, whitespace and selector-like names
+ok 371 - NUL-delimited Git operations retain literal control characters, whitespace and selector-like names
+  ---
+  duration_ms: 1459.983838
+  ...
+# Subtest: separate processes reproduce the same capture and prepared layout
+ok 372 - separate processes reproduce the same capture and prepared layout
+  ---
+  duration_ms: 231488.479668
+  ...
+# Subtest: an enclosing worktree is found from a nested project; outside Git is explicitly unavailable
+ok 373 - an enclosing worktree is found from a nested project; outside Git is explicitly unavailable
+  ---
+  duration_ms: 888.614294
+  ...
+# Subtest: dependency acquisition adds captured inputs while completed core work and earlier support remain unchanged
+ok 374 - dependency acquisition adds captured inputs while completed core work and earlier support remain unchanged
+  ---
+  duration_ms: 2108.835806
+  ...
+# Subtest: session invalidates after detected source changes
+ok 375 - session invalidates after detected source changes
+  ---
+  duration_ms: 3570.597752
+  ...
+# Subtest: session invalidates after detected configuration changes
+ok 376 - session invalidates after detected configuration changes
+  ---
+  duration_ms: 3532.583423
+  ...
+# Subtest: session invalidates after detected resolution changes
+ok 377 - session invalidates after detected resolution changes
+  ---
+  duration_ms: 632.518513
+  ...
+# Subtest: session invalidates after detected population changes
+ok 378 - session invalidates after detected population changes
+  ---
+  duration_ms: 643.926811
+  ...
+# Subtest: session invalidates after detected repository changes
+ok 379 - session invalidates after detected repository changes
+  ---
+  duration_ms: 4423.236905
+  ...
+# Subtest: session invalidates after detected environment changes
+ok 380 - session invalidates after detected environment changes
+  ---
+  duration_ms: 3850.958104
+  ...
+# Subtest: excluded observation creation does not invalidate the session
+ok 381 - excluded observation creation does not invalidate the session
+  ---
+  duration_ms: 6076.920046
+  ...
+# Subtest: a later completed evaluation preserves the earlier incomplete outcome and projection
+ok 382 - a later completed evaluation preserves the earlier incomplete outcome and projection
+  ---
+  duration_ms: 1453.661122
+  ...
+# Subtest: publication observes invalidation before and after output without fabricating or erasing views
+ok 383 - publication observes invalidation before and after output without fabricating or erasing views
+  ---
+  duration_ms: 701.377769
+  ...
+# Subtest: dependency completion keeps earlier partial outcomes even when the module basis is reused
+ok 384 - dependency completion keeps earlier partial outcomes even when the module basis is reused
+  ---
+  duration_ms: 1421.633083
+  ...
+# Subtest: validation refuses retargeted output boundaries before replaying captured reads
+ok 385 - validation refuses retargeted output boundaries before replaying captured reads
+  ---
+  duration_ms: 329.547455
+  ...
+# Subtest: operational analysis errors check input stability before allowing continuation (changed=false)
+ok 386 - operational analysis errors check input stability before allowing continuation (changed=false)
+  ---
+  duration_ms: 9357.602731
+  ...
+# Subtest: operational analysis errors check input stability before allowing continuation (changed=true)
+ok 387 - operational analysis errors check input stability before allowing continuation (changed=true)
+  ---
+  duration_ms: 5322.021219
+  ...
+# Subtest: session reuses partial expansions through modules until additional inputs are acquired
+not ok 388 - session reuses partial expansions through modules until additional inputs are acquired
+  ---
+  duration_ms: 228349.412872
+  location: '/Users/ronen/postcode/app/_build/test/session-inputs.test.js:268:5'
+  failureType: 'testCodeFailure'
+  error: 'Session invalidated: relevant inputs changed or could not be verified. Restart to continue.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    check (file:///Users/ronen/postcode/app/_build/src/lib/session.js:79:27)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async file:///Users/ronen/postcode/app/_build/src/lib/session.js:110:17
+    async operation (file:///Users/ronen/postcode/app/_build/src/lib/session.js:97:20)
+    async file:///Users/ronen/postcode/app/_build/test/session-inputs.test.js:277:36
+    async temporary (file:///Users/ronen/postcode/app/_build/test/session-inputs.test.js:25:9)
+    async TestContext.<anonymous> (file:///Users/ronen/postcode/app/_build/test/session-inputs.test.js:269:9)
+    async Test.run (node:internal/test_runner/test:932:9)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: session reuses partial expansions through inspect until additional inputs are acquired
+ok 389 - session reuses partial expansions through inspect until additional inputs are acquired
+  ---
+  duration_ms: 3038.575373
+  ...
+# Subtest: session reuses partial expansions through dependencies until additional inputs are acquired
+ok 390 - session reuses partial expansions through dependencies until additional inputs are acquired
+  ---
+  duration_ms: 3455.60514
+  ...
+# Subtest: direct execution keeps two checks while publication performs three without a duplicate
+ok 391 - direct execution keeps two checks while publication performs three without a duplicate
+  ---
+  duration_ms: 442.573603
+  ...
+# Subtest: worker delivery is validated before publication and emitted output survives later invalidation
+ok 392 - worker delivery is validated before publication and emitted output survives later invalidation
+  ---
+  duration_ms: 6062.553051
+  ...
+# Subtest: additional dependency inputs permit one new partial attempt and preserve the earlier basis
+ok 393 - additional dependency inputs permit one new partial attempt and preserve the earlier basis
+  ---
+  duration_ms: 1482.797895
+  ...
+# Subtest: session reevaluates partial work after new dependency acquisition, then reuses it across lenses
+ok 394 - session reevaluates partial work after new dependency acquisition, then reuses it across lenses
+  ---
+  duration_ms: 17171.112775
+  ...
+# Subtest: README acquisition advances the shared basis once for partial work and preserves completed work
+ok 395 - README acquisition advances the shared basis once for partial work and preserves completed work
+  ---
+  duration_ms: 4690.785148
+  ...
+# Subtest: published navigation observations distinguish session references from exact lookups
+not ok 396 - published navigation observations distinguish session references from exact lookups
+  ---
+  duration_ms: 261182.555542
+  location: '/Users/ronen/postcode/app/_build/test/session.test.js:13:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    parents @module-aee44b7a
+    
+    2 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 2
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/ronen/postcode/app/_build/test/session.test.js:42:20)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:932:9)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: one-shot sessions own a project, produce correlated views, and release their state
+ok 397 - one-shot sessions own a project, produce correlated views, and release their state
+  ---
+  duration_ms: 8137.871105
+  ...
+# Subtest: claim input support is a retained record distinct from session identity and validates at the store boundary
+ok 398 - claim input support is a retained record distinct from session identity and validates at the store boundary
+  ---
+  duration_ms: 948.153665
+  ...
+# Subtest: accumulation preserves complete earlier views and precise references across independent requests
+ok 399 - accumulation preserves complete earlier views and precise references across independent requests
+  ---
+  duration_ms: 40279.747006
+  ...
+# Subtest: growing reference allocations cannot steal or lengthen earlier bindings
+ok 400 - growing reference allocations cannot steal or lengthen earlier bindings
+  ---
+  duration_ms: 4.16879
+  ...
+# Subtest: Unicode reference misses preserve reference syntax and status in organization and module inspection
+ok 401 - Unicode reference misses preserve reference syntax and status in organization and module inspection
+  ---
+  duration_ms: 10116.942297
+  ...
+# Subtest: shell tokenizer has quoting without command execution, and preserves literal reserved-looking names
+ok 402 - shell tokenizer has quoting without command execution, and preserves literal reserved-looking names
+  ---
+  duration_ms: 44.021339
+  ...
+# Subtest: non-terminal shell input is refused before project opening
+ok 403 - non-terminal shell input is refused before project opening
+  ---
+  duration_ms: 8.24524
+  ...
+# Subtest: adaptive shell uses prior references, records syntax refusals, finishes on EOF and matches one-shot views
+not ok 404 - adaptive shell uses prior references, records syntax refusals, finishes on EOF and matches one-shot views
+  ---
+  duration_ms: 30023.192385
+  location: '/Users/ronen/postcode/app/_build/test/shell.test.js:37:1'
+  failureType: 'testTimeoutFailure'
+  error: 'test timed out after 30000ms'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: ambiguous one-shot lookup recovers through an in-session lookup and precise group reference
+not ok 405 - ambiguous one-shot lookup recovers through an in-session lookup and precise group reference
+  ---
+  duration_ms: 229360.518363
+  location: '/Users/ronen/postcode/app/_build/test/shell.test.js:88:1'
+  failureType: 'testTimeoutFailure'
+  error: 'test timed out after 30000ms'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: idle Ctrl-C discards its input line and EOF finishes the next accepted command (dumb)
+ok 406 - idle Ctrl-C discards its input line and EOF finishes the next accepted command (dumb)
+  ---
+  duration_ms: 6280.153842
+  ...
+# Subtest: idle Ctrl-C discards its input line and EOF finishes the next accepted command (xterm)
+ok 407 - idle Ctrl-C discards its input line and EOF finishes the next accepted command (xterm)
+  ---
+  duration_ms: 9785.979284
+  ...
+# Subtest: expected analysis failure, defect and interruption are distinct and never invent views
+ok 408 - expected analysis failure, defect and interruption are distinct and never invent views
+  ---
+  duration_ms: 165.211118
+  ...
+# Subtest: terminal EOF while busy leaves input paused and drains accepted commands (queued=false)
+ok 409 - terminal EOF while busy leaves input paused and drains accepted commands (queued=false)
+  ---
+  duration_ms: 14532.375472
+  ...
+# Subtest: terminal EOF while busy leaves input paused and drains accepted commands (queued=true)
+ok 410 - terminal EOF while busy leaves input paused and drains accepted commands (queued=true)
+  ---
+  duration_ms: 13456.870412
+  ...
+# Subtest: source observations follow actual supported disclosure in unicode shell output
+not ok 411 - source observations follow actual supported disclosure in unicode shell output
+  ---
+  duration_ms: 257070.449807
+  location: '/Users/ronen/postcode/app/_build/test/source-disclosure.test.js:18:5'
+  failureType: 'testCodeFailure'
+  error: |-
+    Local observations: /var/folders/9j/6s691j7s7sz5_2w3kr2wndj40000gn/T/postcode-disclosure-Iipvvo/_observations/postcode-disclosure-iipvvo-1d1eed (may contain repository-derived text and explicitly requested source locations).
+    Session invalidated: relevant inputs changed or could not be verified. Restart to continue.
+    
+    
+    2 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 2
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/ronen/postcode/app/_build/test/source-disclosure.test.js:71:16)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:932:9)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: source observations follow actual supported disclosure in json shell output
+ok 412 - source observations follow actual supported disclosure in json shell output
+  ---
+  duration_ms: 55495.425603
+  ...
+# Subtest: reused content digests preserve distinct captured evidence and refresh on a new opening
+ok 413 - reused content digests preserve distinct captured evidence and refresh on a new opening
+  ---
+  duration_ms: 2163.134078
+  ...
+# Subtest: terminal layout uses cells and preserves combining, CJK and ZWJ spelling
+ok 414 - terminal layout uses cells and preserves combining, CJK and ZWJ spelling
+  ---
+  duration_ms: 512.909719
+  ...
+# Subtest: layout keeps control escapes indivisible and counts omitted original code points
+ok 415 - layout keeps control escapes indivisible and counts omitted original code points
+  ---
+  duration_ms: 24.355121
+  ...
+# Subtest: fit checks and rendering share continuation budgets and structural newlines
+ok 416 - fit checks and rendering share continuation budgets and structural newlines
+  ---
+  duration_ms: 37.957995
+  ...
+# Subtest: prefix fitting agrees with exhaustive legal-prefix rendering across whitespace and Unicode
+ok 417 - prefix fitting agrees with exhaustive legal-prefix rendering across whitespace and Unicode
+  ---
+  duration_ms: 21364.922494
+  ...
+# Subtest: reference-aware comparison accepts consistent renaming and rejects semantic mutations
+ok 418 - reference-aware comparison accepts consistent renaming and rejects semantic mutations
+  ---
+  duration_ms: 79.689515
+  ...
+# Subtest: graph oracle pins component/member order, indices, parallel support and incomplete roots
+ok 419 - graph oracle pins component/member order, indices, parallel support and incomplete roots
+  ---
+  duration_ms: 25.114533
+  ...
+# Subtest: comparison workers clean up partial opening and independent close failures
+ok 420 - comparison workers clean up partial opening and independent close failures
+  ---
+  duration_ms: 128.542094
+  ...
+# Subtest: interaction failures complete cleanup and rethrow their assertion
+ok 421 - interaction failures complete cleanup and rethrow their assertion
+  ---
+  duration_ms: 3207.476133
+  ...
+# Subtest: CLI collection surfaces swallowed sink assertions unless a warning is explicitly expected
+ok 422 - CLI collection surfaces swallowed sink assertions unless a warning is explicitly expected
+  ---
+  duration_ms: 247995.854882
+  ...
+# Subtest: bare reference comparison requires the declared producer and retains foreign namespaces
+ok 423 - bare reference comparison requires the declared producer and retains foreign namespaces
+  ---
+  duration_ms: 0.971674
+  ...
+# Subtest: comparison retains complete mixed group/module inspection and embedded session headings
+ok 424 - comparison retains complete mixed group/module inspection and embedded session headings
+  ---
+  duration_ms: 33252.716005
+  ...
+1..424
+# tests 424
+# suites 0
+# pass 410
+# fail 9
+# cancelled 5
+# skipped 0
+# todo 0
+# duration_ms 4251441.929112

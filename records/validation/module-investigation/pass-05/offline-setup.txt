@@ -1,0 +1,14 @@
+READY
+READY
+READY
+READY
+{"exit":0,"elapsedMilliseconds":4696,"pausedForBudget":false,"disposition":"inspect-recorded-outcome"}
+refined: all scripted evaluations accepted without provider requests
+READY
+READY
+READY
+READY
+READY
+READY
+{"exit":0,"elapsedMilliseconds":6254,"pausedForBudget":false,"disposition":"inspect-recorded-outcome"}
+conflicts: all scripted evaluations accepted without provider requests

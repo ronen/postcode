@@ -1,0 +1,192 @@
+You are a fresh source-informed assessor. Use only the supplied frozen reference, view and evaluator response. Do not independently inspect source or browse. These references are qualified source analysis, not runtime proof.
+
+RUBRIC
+{
+  "version": 1,
+  "task": "Compare supplied investigator views and view-only evaluator answers against the frozen source references. Use only supplied artifacts. Preserve uncertainty and cite specific displayed references or source locations.",
+  "categories": ["generation-error-repeated-by-evaluator", "presentation-misunderstanding", "successful-qualified-communication", "unsupported-evaluator-extrapolation", "material-omission", "reference-cannot-settle"],
+  "output": "JSON with findings [{category, claim, evidence, consequence, uncertainty}], subjectUsefulness {judgment, reasons, limitations}. No numeric aggregate score. Do not treat a summary-only absence of follow-up views as a generation defect. Do not treat administrative request-budget interruption as an interpretive or milestone failure."
+}
+
+FROZEN REFERENCE
+# Frozen source-grounded references — summary pass 01
+
+Prepared before any subject/fixture inference by the implementing agent. Exact
+model identifier is unavailable; the family is OpenAI. Shared implementation,
+reference selection and orchestration can bias judgments. These are purposeful
+development examples, not an unbiased or untouched validation set. This material
+must not be supplied to the investigator or view-only evaluators.
+
+The [manifest](manifest.json) fixes revisions, source/document/configuration hashes,
+Node 22.13.1, the **PostCode analyzer TypeScript 6.0.3**, and the selected hosted
+configuration. Installed subject build TypeScript versions do not replace that
+analyzer. Repository source, README and ordinary subject-based evidence are
+accessible; reference answers, selection rationale and this file are not.
+PostCode source inspection is not execution or proof of runtime guarantees.
+
+
+
+## Controlled focused cases
+
+The fixture source and README live under `fixtures/module-investigation-assessment`
+and are hashed in the manifest. Before running, copy them unchanged into a small
+isolated Git repository; record its commit and effective project path. No other
+repository context should be accessible. No earlier interpretation is injected.
+
+- `entry.ts` delegates to two distinct operations: numeric clamping in
+  `normalize.ts`, and a module-scoped incrementing counter in `counter.ts`.
+  The deliberately authored README describes all exports as pure/stateless and
+  deterministic for the same arguments. The counter contradicts that assertion.
+  A useful summary distinguishes the two responsibilities and reports the
+  attributed documentation conflict without inventing one business purpose.
+- `opaque.ts` invokes a supplied callback once and returns its value. No caller
+  implementation or business purpose is present. This tests whether further
+  investigation stops with a disclosed gap instead of inventing behavior or
+  repeatedly searching irrelevant material.
+- A separate hard-limit control uses the same opaque subject with an explicitly
+  recorded tiny character guard. It is controlled execution containment, not a
+  finding about model quality or an exhausted financial allowance. Zero provider
+  calls in that control must be reported as such if the guard stops before a call.
+
+
+
+## Assessment procedure and limitations
+
+Freeze the exact [instructions](instructions.json), general context-selection code
+hashes, model and route before inference. Keep production evidence access and
+guards unchanged except the labelled hard-limit control. No reference answers
+enter live context. The first pass has zero automatic repeat allowance; a
+diagnostic rerun requires a separately recorded question/count and preserves the
+original outcome. Administrative request-ceiling interruption is incomplete
+validation, not a semantic failure or hard milestone failure.
+
+Use the fixed `scripts/module-investigation/questions.json` for fresh view-only
+evaluators and `assessor-rubric.json` for separate fresh source-informed assessment.
+Retain exact prompts, inputs, outputs and available role configuration/usage.
+Unknown role usage is not zero. Fresh contexts and same-family agents do not
+establish independent corroboration. Per-subject results and focused cases stay
+separate; no universal acceptance score or prompt optimization search is intended.
+
+USER VIEW
+Module summary
+References remain bound for this session.
+New investigation request.
+investigation-failure: Inconsistency targets must be earlier investigrams.
+Selection: selected (1 matches).
+Module @module-acc2ba39: next-sequence
+Attempt session:283c4f24-db19-486c-b6d2-83fd05025d0b:investigation-attempt:58b480decea6ae980e008a799d5e528b2f53f50247c68985d0176a710403d647 (investigation-failure) reported usage: 3 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 49686 tokens; input 46793 tokens (subset of total); output 2893 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 190 tokens (subset of output)
+Session reported usage: 3 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 49686 tokens; input 46793 tokens (subset of total); output 2893 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 190 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+EVALUATOR RESPONSE
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The view identifies a selected module named next-sequence and reports that a new investigation request failed because its inconsistency targets did not satisfy an earlier-investigram requirement. It provides attempt-level and session-level usage accounting. It separates generated interpretations and retained correction assertions from established truth, and separates reported provider usage from confirmed billing. A substantive division of responsibility within the module is not communicated.",
+      "support": [
+        "Module @module-acc2ba39: next-sequence",
+        "Selection: selected (1 matches).",
+        "New investigation request.",
+        "investigation-failure: Inconsistency targets must be earlier investigrams.",
+        "Generated accounts remain interpretation. Corrections are retained assertions, not established truth.",
+        "Reported usage is not confirmed billed usage."
+      ],
+      "unknowns": [
+        "What next-sequence does and which responsibilities belong to it versus other components.",
+        "The investigation request, its targets, and the reason those targets were ineligible.",
+        "Whether any useful investigation content was produced before failure."
+      ]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "There is no substantive generated account to assess. The generic caveat labels generated accounts as interpretation and corrections as retained assertions. Selection, failure, and usage have support as displayed system reports, rather than independently established facts. The attempt and session each report three calls and 49,686 total tokens with zero unknown or anomalous calls; their identical totals do not establish two separate amounts of consumption. The reported model is gpt-5.6-sol, but this identifies the displayed attempt's report, not this evaluator's model. Actual billed usage and monetary attribution remain unestablished.",
+      "support": [
+        "Attempt ... (investigation-failure) reported usage: 3 calls; 0 unknown; 0 anomalous.",
+        "Session reported usage: 3 calls; 0 unknown; 0 anomalous.",
+        "reported model gpt-5.6-sol, service tier default: total 49686 tokens",
+        "Categories with includedIn are subsets, not additional usage.",
+        "Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero."
+      ],
+      "unknowns": [
+        "Any actual conclusion about module behavior, implementation, or correctness.",
+        "The evidence supporting any generated interpretation or correction.",
+        "Actual charges, purchased-credit use, and remaining provider allowance."
+      ]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "Explanation, decomposition, and examination views were not supplied. Only the module summary is visible, so no improvement in understanding, selection precision, or substantive conclusions can be assessed across those stages.",
+      "support": [
+        "The supplied user-facing view is titled Module summary.",
+        "No explanation, decomposition, or examination result appears in the supplied view."
+      ],
+      "unknowns": [
+        "Whether those operations are available or have been performed.",
+        "Any changes they might reveal."
+      ]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "No displayed investigram reference is available to select. @module-acc2ba39 identifies a module, and the long session-qualified identifier identifies a failed attempt; neither is presented as an investigram. I would request a selectable earlier investigram and an explanation lens to learn what that investigram claims and why it is eligible as an inconsistency target. That is a desired next step, not a capability demonstrated as available by this view.",
+      "support": [
+        "References remain bound for this session.",
+        "Module @module-acc2ba39: next-sequence",
+        "The attempt identifier is labeled investigation-failure.",
+        "Inconsistency targets must be earlier investigrams."
+      ],
+      "unknowns": [
+        "Which earlier investigrams exist, their references, and their sequence.",
+        "Which lenses can be selected and how to select them.",
+        "Whether the module or attempt reference is interactive."
+      ]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No concrete correction is shown. The generic correction caveat supplies neither original nor replacement content or identifiers. The failure message concerns inconsistency-target eligibility but does not demonstrate a completed correction. Composition and later-investigation provenance cannot be distinguished from this view.",
+      "support": [
+        "Corrections are retained assertions, not established truth.",
+        "investigation-failure: Inconsistency targets must be earlier investigrams."
+      ],
+      "unknowns": [
+        "Whether any correction exists or was attempted.",
+        "What changed and how an original and replacement would be linked.",
+        "The composition relationships, chronology, and investigation provenance of any content."
+      ]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The Module summary heading suggests substantive module information, but the body is dominated by failure and usage reporting. The failure explains a constraint without naming the invalid targets, defining earlier, or giving a recovery action. New investigation request. is ambiguous as status versus action, and selected (1 matches) leaves the selection mechanism unclear. The full attempt identifier and duplicate detailed usage blocks make the small amount of actionable information harder to find and could encourage double-counting, although the separate scope labels and subset caveat help. Session-bound references are mentioned without showing an eligible investigram. The billing and epistemic caveats are useful, but the view offers little help in understanding the module or continuing the investigation.",
+      "support": [
+        "Module summary",
+        "New investigation request.",
+        "Selection: selected (1 matches).",
+        "References remain bound for this session.",
+        "The attempt and session usage blocks repeat the same model and token totals.",
+        "monetary attribution is unavailable, not zero"
+      ],
+      "unknowns": [
+        "Whether surrounding interface controls supply navigation or recovery guidance omitted from this view.",
+        "Whether users have already been taught the terms investigram, lens, and inconsistency target."
+      ]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful as a qualified failure and usage report, but insufficient as a module comprehension or investigation-navigation view.",
+    "reasons": [
+      "Identifies the selected module and states the failure constraint.",
+      "Clearly warns that interpretations, corrections, token reports, and charges have different evidential status.",
+      "Provides no substantive module account, selectable investigram, or concrete recovery step.",
+      "Repeated usage details and long identifiers outweigh the explanatory content."
+    ],
+    "limitations": [
+      "Assessment uses only the supplied summary.",
+      "No later sequence views or concrete correction content were supplied.",
+      "No independent verification of the displayed reports was performed."
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+Module summary
+References remain bound for this session.
+New investigation request.
+limit-stop: Provider call guard reached.
+Selection: selected (1 matches).
+Module @module-801ab967: opaque
+Attempt session:e5af104a-f5dd-4d31-ab55-44e03a42a146:investigation-attempt:78a0f8f4965809613af3b2d9322ee690450056192377db78ed7761b64acdfc77 (limit-stop) reported usage: 1 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 1777 tokens; input 1332 tokens (subset of total); output 445 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 58 tokens (subset of output)
+Session reported usage: 1 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 1777 tokens; input 1332 tokens (subset of total); output 445 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 58 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage

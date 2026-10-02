@@ -24,7 +24,8 @@ Coding agents should begin with [`AGENTS.md`](AGENTS.md). The detailed developme
 
 The CLI opens one configured TypeScript project for an interactive investigation
 or a single view. It presents qualified module inventories, repository/project
-organization, group and module inspection, and direct dependency relationships.
+organization, group and module inspection, direct dependency relationships, and
+qualified interpretations that support progressive investigation.
 Use Node.js 22.13 or later:
 
 ```sh
@@ -154,6 +155,36 @@ See the [architecture overview](docs/architecture/README.md),
 [development process conventions](dev/process-conventions.md), and
 [session-shell task record](records/tasks/2026-09-23-transient-session-shell.md) for implementation
 boundaries, verification and review dispositions.
+
+### Progressive investigation
+
+With [hosted investigation enabled](docs/hosted-investigation.md), use
+`summarize <module>` for a terse functional account. In the same shell, select a
+displayed investigram reference for `explain @investigram-…`,
+`decompose @investigram-…` or `examine @investigram-…`. These lenses clarify an
+account, produce smaller selectable aspects, or investigate it more deeply.
+Replace the ellipsis with the exact displayed reference. `usage` reports known
+provider usage, including failed work; unavailable charges remain unknown.
+
+Hosted work is optional. Explicitly choose OpenAI API-key billing or Sign in with
+ChatGPT and granted plan usage; PostCode never switches routes automatically.
+Credentials use protected macOS storage. Setup and route selection are described
+in the [hosted guide](docs/hosted-investigation.md).
+
+Repeated requests reuse retained outcomes. Redisplay follows accepted corrections
+while preserving unresolved alternatives and reconsideration warnings; warnings do
+not establish that an account is wrong. `inspect @investigram-…` shows the exact
+historical account, and `--revision-page <n>` navigates further correction/cause
+rows. Subject inspection lists associated accounts with continuation where needed.
+Interpretations and their evidence remain qualified; they are not established
+program truth or runtime observations.
+
+All four lenses have live formative evidence, including useful corrections and
+recorded failures, omissions and presentation limits. See the
+[investigation reference](docs/cli-reference.md#progressive-investigation-and-usage)
+for commands, associations, retention and paging, and [STATUS](STATUS.md) for current
+capabilities and limitations. Follow-up investigations require a live shell;
+one-shot `summarize` and `usage` operate in separate transient sessions.
 
 ## Organization
 

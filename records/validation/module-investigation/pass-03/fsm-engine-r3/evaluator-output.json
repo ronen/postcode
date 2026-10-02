@@ -1,0 +1,106 @@
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The view presents fsm-engine as a typed FSM definition/factory surface plus a per-machine synchronous runtime. Definition capture, validation and compilation are delegated to FsmBuilderImpl; factories share the compiled definition while instances retain their own context, state, FIFO queue, tracing and timers. The runtime queues every event and only the outermost dispatch drains the queue, so action-triggered dispatch waits until the current transition finishes. State-specific begin actions and ordered first-match guards/transitions precede fallback handling. External transitions perform exit actions, transition actions, state commit and entry actions; internal transitions only perform transition actions. Known handlers whose guards do not match can stay without action, whereas unknown or wholly unhandled events raise errors. Initialization, tracing and a restricted action API are also exposed; TimerRegistry handles keyed timer replacement/cancellation and timing behavior.",
+      "support": [
+        "@investigram-72904a46 says define() delegates DSL capture/validation/compilation and distinguishes the shared compiled definition from separate instance state.",
+        "@investigram-32c93b1b assigns nested builder tables, declaration order, duplicate checks and state validation to FsmBuilderImpl.",
+        "@investigram-72ba29f9 states 'Every dispatch first enqueues' and specifies exit → transition actions → state commit → entry, including clearing pending events when a guard/action/error throws.",
+        "@investigram-795d1098 covers construction-time entry actions, the original mutable context, replaceable trace logger and action-side timers delegated to TimerRegistry."
+      ],
+      "unknowns": [
+        "These are displayed interpretations of captured source; actual runtime behavior was not independently observed.",
+        "The view gives no complete public API signatures or runnable usage example.",
+        "Separate per-instance context bookkeeping does not establish whether callers can deliberately supply the same mutable context object to multiple instances."
+      ]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "All four investigram accounts are explicitly marked interpretation. Their stated main basis is captured TypeScript and bounded project-owned dependency analysis. Documentation is attributed supporting material compared with implementation, not proof; timer behavior also cites embedded tests without independent execution. Static reachability ignores guard evaluation, so accepted reachability does not demonstrate that runtime guards permit a state to be reached. The timer payload account identifies a likely defect: it reports that a present payload produces no dispatch argument while an absent payload produces [undefined], contrary to documentation and FsmActionApi. That is a qualified source-based finding, not a reproduced failure. The usage figures are reported accounting metadata rather than verified bills or evaluator usage.",
+      "support": [
+        "@investigram-72904a46: 'Static interpretation of captured TypeScript; runtime execution was not performed' and README material is 'not as proof.'",
+        "@investigram-795d1098: 'Timer behavior is inferred from source and embedded tests, not independently executed' and payload forwarding 'appears inverted in this capture.'",
+        "@investigram-32c93b1b qualifies reachability as a static graph walk in which guards are not evaluated.",
+        "@investigram-72ba29f9 disclaims concurrency conclusions beyond the synchronous queue implementation.",
+        "The footer says generated accounts remain interpretation and reported usage is not confirmed billed usage."
+      ],
+      "unknowns": [
+        "Whether the likely timer defect occurs in an executed scenario, its exact user-visible symptoms, and whether it has been fixed.",
+        "Whether the captured source matches a currently deployed or installed version.",
+        "Coverage and passing status of the embedded tests, as well as broader asynchronous or concurrency guarantees.",
+        "Actual monetary charges and this evaluator's exact model/usage metadata are not established by the supplied view."
+      ]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "No later explanation, decomposition or examination views were supplied, so no before/after improvement or substantive change can be assessed. Within this summary alone, the three referenced component accounts make definition-time work, dispatch/transition execution, and initialization/tracing/action-side effects separately identifiable. Their additional detail clarifies such points as state commitment before entry-action failure and guard-independent static reachability, but the view does not demonstrate that those details resulted from a later operation.",
+      "support": [
+        "The supplied condition is 'summary-only; later sequence views not supplied.'",
+        "@investigram-72904a46 lists Composition: @investigram-32c93b1b, @investigram-72ba29f9, @investigram-795d1098.",
+        "Each component has its own reference and Referent line, distinguishing the three responsibility areas."
+      ],
+      "unknowns": [
+        "The contents and effects of any later explanation, decomposition or examination.",
+        "Whether a decomposition operation created these components or whether they were composed through another process.",
+        "Any newly selected scope or revised conclusion arising from a subsequent investigation."
+      ]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "I would select @investigram-795d1098 with a correctness/examination lens focused on timer event payload forwarding. I would want to separate the intended contract from the reported dispatch-argument construction, identify the affected payload and no-payload cases, and learn whether an execution or focused test supports the suspected inversion. This is a requested next investigation. The summary supplies a session-bound reference to target, but does not show an available examination control, supported lens menu, test runner or completed follow-up result.",
+      "support": [
+        "@investigram-795d1098 explicitly calls the payload behavior a 'likely consequential implementation defect' and contrasts documentation/FsmActionApi with FsmEngine behavior.",
+        "The view says 'References remain bound for this session' and displays 'New investigation request.'"
+      ],
+      "unknowns": [
+        "Whether selecting the reference is interactive in this presentation and how a lens would be requested.",
+        "Whether a future investigation can execute tests or only inspect source.",
+        "Whether the suspected inversion changes runtime behavior for all or only some event signatures."
+      ]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No correction record or original/replacement pair is shown. The likely timer defect is a qualification within an interpretation, not evidence that an earlier account was corrected or implementation changed. The summary explicitly labels its three component references as Composition, which identifies a composition relationship. It supplies no later-investigation provenance relation or correction history against which to compare that relationship. Operation, origin, provider/model and evidence metadata describe the current accounts but do not establish a sequence of replacement assertions.",
+      "support": [
+        "@investigram-72904a46 has a labeled Composition line containing three investigram references.",
+        "@investigram-795d1098 retains the suspected timer defect as a Qualification.",
+        "The footer says 'Corrections are retained assertions, not established truth,' but displays no particular correction."
+      ],
+      "unknowns": [
+        "Whether any correction exists elsewhere, what it changed, and its original and replacement identifiers.",
+        "Whether any displayed component was produced by a later investigation.",
+        "Chronology and derivation beyond the explicitly labeled composition membership."
+      ]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The summary is useful for orienting a technical reader to responsibilities, execution order and a consequential uncertainty. Stable-looking references and explicit referents make follow-up targets precise, while qualifications help prevent overclaiming. However, the dense prose and long opaque evidence identifiers make scanning and source verification difficult. The top account repeats much of the component detail yet omits the suspected timer defect, so a reader who stops at the first paragraph could miss it. Declarative behavioral wording can sound established unless the reader also sees the qualifications. The repeated attempt/session usage totals could look additive despite their different scopes, and subset accounting requires careful reading. 'Accepted' may sound like validated correctness even though no acceptance criterion is supplied. 'New investigation request' and session-bound references suggest a possible next action without showing how to invoke it or what lenses exist. The generic correction disclaimer does not provide an actual correction trail.",
+      "support": [
+        "The top account describes timers generally; the suspected payload inversion appears only in @investigram-795d1098's qualification.",
+        "Each account repeats operation/provider and lengthy session evidence identifiers.",
+        "Attempt reported usage and Session reported usage each list 5 calls and 189563 total tokens, followed by subset and billing caveats.",
+        "The attempt is labeled '(accepted)' without a displayed explanation of what acceptance establishes.",
+        "The display includes 'New investigation request' but no visible interaction instructions or supported lens list."
+      ],
+      "unknowns": [
+        "Whether the actual interface makes references clickable, collapses metadata, or offers controls not represented in the supplied text.",
+        "The intended audience's familiarity with FSM terminology, guards, fallback tables and timing APIs.",
+        "The criteria behind the attempt's accepted status."
+      ]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful as a qualified technical orientation and a starting point for a focused follow-up; insufficient to establish runtime correctness or assess investigation changes.",
+    "reasons": [
+      "Separates definition-time delegation, runtime event processing and action-side effects with precise references.",
+      "Explains consequential ordering, error behavior and the distinction between shared definitions and instance state.",
+      "Explicitly preserves static-analysis limitations and highlights a suspected timer payload defect."
+    ],
+    "limitations": [
+      "Only the summary is available; no later sequence, correction pair or examination result can be evaluated.",
+      "Evidence identifiers and provider metadata are displayed without the underlying evidence or a demonstrated navigation interaction.",
+      "Dense repetition and substantial usage metadata reduce the prominence of the main behavioral qualifications."
+    ]
+  }
+}

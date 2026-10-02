@@ -1,0 +1,15 @@
+TAP version 13
+# Subtest: ambiguous one-shot lookup recovers through an in-session lookup and precise group reference
+ok 1 - ambiguous one-shot lookup recovers through an in-session lookup and precise group reference
+  ---
+  duration_ms: 4731.167152
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5537.929111

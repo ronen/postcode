@@ -1,0 +1,204 @@
+You are a fresh source-informed assessor. Use only the supplied frozen reference, view and evaluator response. Do not independently inspect source or browse. These references are qualified source analysis, not runtime proof.
+
+RUBRIC
+{
+  "version": 1,
+  "task": "Compare supplied investigator views and view-only evaluator answers against the frozen source references. Use only supplied artifacts. Preserve uncertainty and cite specific displayed references or source locations.",
+  "categories": ["generation-error-repeated-by-evaluator", "presentation-misunderstanding", "successful-qualified-communication", "unsupported-evaluator-extrapolation", "material-omission", "reference-cannot-settle"],
+  "output": "JSON with findings [{category, claim, evidence, consequence, uncertainty}], subjectUsefulness {judgment, reasons, limitations}. No numeric aggregate score. Do not treat a summary-only absence of follow-up views as a generation defect. Do not treat administrative request-budget interruption as an interpretive or milestone failure."
+}
+
+FROZEN REFERENCE
+# Frozen source-grounded references — summary pass 01
+
+Prepared before any subject/fixture inference by the implementing agent. Exact
+model identifier is unavailable; the family is OpenAI. Shared implementation,
+reference selection and orchestration can bias judgments. These are purposeful
+development examples, not an unbiased or untouched validation set. This material
+must not be supplied to the investigator or view-only evaluators.
+
+The [manifest](manifest.json) fixes revisions, source/document/configuration hashes,
+Node 22.13.1, the **PostCode analyzer TypeScript 6.0.3**, and the selected hosted
+configuration. Installed subject build TypeScript versions do not replace that
+analyzer. Repository source, README and ordinary subject-based evidence are
+accessible; reference answers, selection rationale and this file are not.
+PostCode source inspection is not execution or proof of runtime guarantees.
+
+
+
+## Controlled focused cases
+
+The fixture source and README live under `fixtures/module-investigation-assessment`
+and are hashed in the manifest. Before running, copy them unchanged into a small
+isolated Git repository; record its commit and effective project path. No other
+repository context should be accessible. No earlier interpretation is injected.
+
+- `entry.ts` delegates to two distinct operations: numeric clamping in
+  `normalize.ts`, and a module-scoped incrementing counter in `counter.ts`.
+  The deliberately authored README describes all exports as pure/stateless and
+  deterministic for the same arguments. The counter contradicts that assertion.
+  A useful summary distinguishes the two responsibilities and reports the
+  attributed documentation conflict without inventing one business purpose.
+- `opaque.ts` invokes a supplied callback once and returns its value. No caller
+  implementation or business purpose is present. This tests whether further
+  investigation stops with a disclosed gap instead of inventing behavior or
+  repeatedly searching irrelevant material.
+- A separate hard-limit control uses the same opaque subject with an explicitly
+  recorded tiny character guard. It is controlled execution containment, not a
+  finding about model quality or an exhausted financial allowance. Zero provider
+  calls in that control must be reported as such if the guard stops before a call.
+
+
+
+## Assessment procedure and limitations
+
+Freeze the exact [instructions](instructions.json), general context-selection code
+hashes, model and route before inference. Keep production evidence access and
+guards unchanged except the labelled hard-limit control. No reference answers
+enter live context. The first pass has zero automatic repeat allowance; a
+diagnostic rerun requires a separately recorded question/count and preserves the
+original outcome. Administrative request-ceiling interruption is incomplete
+validation, not a semantic failure or hard milestone failure.
+
+Use the fixed `scripts/module-investigation/questions.json` for fresh view-only
+evaluators and `assessor-rubric.json` for separate fresh source-informed assessment.
+Retain exact prompts, inputs, outputs and available role configuration/usage.
+Unknown role usage is not zero. Fresh contexts and same-family agents do not
+establish independent corroboration. Per-subject results and focused cases stay
+separate; no universal acceptance score or prompt optimization search is intended.
+
+USER VIEW
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-acc2ba39: next-sequence
+
+@investigram-277b134e · interpretation
+A thin public entry point: it adds no computation, but re-exports two unrelated value functions—numeric clamping and a stateful sequence counter—from their implementing modules.
+Referent: the requested TypeScript entry module
+  Qualification: Interpretation is based on first-observed TypeScript source and compiler-derived exports/dependencies; execution, emitted JavaScript, loader behavior, and deployment were not verified.
+  Qualification: The source-request analysis is bounded to recognized project-owned requests, so it does not establish complete runtime dependency absence.
+  Composition: @investigram-cab5aec0, @investigram-2b9ef522
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:e7b761e8-8356-41a1-8b99-2d3711e14b6d:source:9f4f8654e2a28ec1dfdf31a22eb5d20b9f771f33dedb2d9c2a6260b93eca7117, session:e7b761e8-8356-41a1-8b99-2d3711e14b6d:source:92dee8f1d33cf6bc34a36579ce1d22e66feebb8bd572d99254fbdfc63ce1541b, session:e7b761e8-8356-41a1-8b99-2d3711e14b6d:source:0ef852d88daac461a9857a961a527772cdc88e64d4f7c66e11853e2da099b043
+
+@investigram-2b9ef522 · interpretation
+`nextSequence()` owns module-local mutable state initialized to 0; each call applies `sequence += 1` and returns the new value, so the first call in a fresh module instance returns 1. State is shared by callers of that instance and has no exposed reset.
+Referent: the delegated stateful sequence implementation
+  Qualification: Behavior is inferred from first-observed TypeScript source, not execution; module instantiation/caching and long-run JavaScript number precision depend on the runtime.
+  Qualification: No exposed reset is established only for this full captured module source; it is not a claim about external process or module-reload mechanisms.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:e7b761e8-8356-41a1-8b99-2d3711e14b6d:source:1fb07b4f46ea353807dfecbd17c053ac222303be33c4dde9cd464a0783f094aa, session:e7b761e8-8356-41a1-8b99-2d3711e14b6d:source:001a9d3bf7d81b1142323abd5ccbd75fec3fa37290fbd71fa3d7f9686cc0b814
+
+@investigram-cab5aec0 · interpretation
+`normalize(value)` clamps ordinary numeric inputs to 0–100: negatives become 0, values above 100 become 100, and in-range values pass through. Because both comparisons with `NaN` are false, `NaN` also passes through.
+Referent: the delegated numeric-normalization implementation
+  Qualification: Behavior is inferred from the TypeScript expression, not observed by execution; JavaScript numeric comparison semantics are assumed.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:e7b761e8-8356-41a1-8b99-2d3711e14b6d:source:f2d73a409c55ee962947b0375ae1bb69ba9ed54cdc41a74824a8afef05f0c657, session:e7b761e8-8356-41a1-8b99-2d3711e14b6d:source:a4803e9065330cc5ccc21f1e67047e55de7490fc9879fe5cdd5d7ec26b96ba19
+Attempt session:e7b761e8-8356-41a1-8b99-2d3711e14b6d:investigation-attempt:4435796711fffd73d3e91d4e17e3cb2a9de5e95fa11fd30c96d8d2c9e45bdf59 (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 68870 tokens; input 65739 tokens (subset of total); output 3131 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 421 tokens (subset of output)
+Session reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 68870 tokens; input 65739 tokens (subset of total); output 3131 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 421 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+This checkpoint shows immutable originals and explicit correction links; replacement selection and reconsideration display arrive in a later milestone.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+EVALUATOR RESPONSE
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The requested TypeScript entry module is presented as a thin public facade that adds no computation and re-exports two functions from separate implementations. The numeric implementation clamps ordinary numbers to 0–100, with NaN passing through. The sequence implementation owns module-local state initialized to 0, increments and returns it on each call, and therefore returns 1 on its first call in a fresh instance. Callers of that instance share the state, and no reset is exposed in the captured module source.",
+      "support": [
+        "@investigram-277b134e: 'A thin public entry point' that 're-exports two unrelated value functions'. Its composition lists @investigram-cab5aec0 and @investigram-2b9ef522.",
+        "@investigram-cab5aec0 describes normalize(value), the 0–100 clamp, and NaN passing through.",
+        "@investigram-2b9ef522 describes nextSequence(), sequence += 1, shared instance state, and the absence of an exposed reset."
+      ],
+      "unknowns": [
+        "Execution behavior, emitted JavaScript, loader behavior, and deployment were not verified.",
+        "The runtime determines module instantiation/caching and long-run number precision."
+      ]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "All three functional accounts are explicitly labeled interpretation. They report support from first-observed TypeScript source; the entry account additionally reports compiler-derived exports/dependencies. Evidence identifiers are supplied, but the underlying evidence is not displayed here, so I cannot independently confirm the accounts. The accepted attempt status establishes a displayed workflow status, not that execution or correctness was verified. Usage is reported with model and token metadata, but actual billed usage and monetary attribution are unestablished.",
+      "support": [
+        "Each investigram is labeled 'interpretation', and the footer says 'Generated accounts remain interpretation.'",
+        "@investigram-277b134e qualifies its account as based on source and compiler-derived exports/dependencies, with dependency analysis bounded to recognized project-owned requests.",
+        "@investigram-2b9ef522 bounds the reset claim to the full captured module source; @investigram-cab5aec0 assumes JavaScript numeric comparison semantics.",
+        "The attempt is marked '(accepted)' and reports openai/gpt-5.6-sol usage; the footer says reported usage is not confirmed billed usage and monetary attribution is unavailable."
+      ],
+      "unknowns": [
+        "Complete runtime dependency absence is not established.",
+        "External reset mechanisms, process restarts, module reloads, runtime instance sharing, and long-run precision are not established by this view.",
+        "The evidence contents and any execution validation are not supplied.",
+        "Actual credit charges cannot be inferred from the token report."
+      ]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "The explanation, decomposition, and examination sequence views were not supplied. I can identify separate references for the entry module, sequence implementation, and normalization implementation in this summary, but cannot attribute those distinctions to a later decomposition or compare any before-and-after understanding.",
+      "support": [
+        "The supplied condition is 'summary-only; later sequence views not supplied'.",
+        "The summary displays three separate investigram references and one composition relationship."
+      ],
+      "unknowns": [
+        "Whether explanation clarified any particular statement, decomposition introduced more precise selectable units, or examination changed any conclusion."
+      ]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "I would select @investigram-2b9ef522 with an examination lens focused on state ownership and sharing. I would expect to investigate how strongly the account supports shared state across callers and where runtime-dependent assumptions begin. That is a desired next investigation, not a capability demonstrated by this summary: it shows a stable reference, a functionality operation label, and 'New investigation request', but no lens selector or completed examination. Replacement selection and reconsideration display are explicitly described as future capabilities.",
+      "support": [
+        "@investigram-2b9ef522 says state is shared by callers of an instance and qualifies module instantiation/caching as runtime-dependent.",
+        "The header says 'References remain bound for this session' and 'New investigation request.'",
+        "The footer says 'replacement selection and reconsideration display arrive in a later milestone.'"
+      ],
+      "unknowns": [
+        "Whether an examination lens can currently be selected or run through this view.",
+        "Whether further investigation could access runtime evidence sufficient to resolve the qualified state-sharing claim."
+      ]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No concrete correction, changed assertion, or original-to-replacement pair is displayed. The footer claims this checkpoint shows immutable originals and explicit correction links, but I cannot locate a specific correction link in the supplied summary. The entry investigram's composition line explicitly identifies its two component investigrams. That is distinguishable as a composition relationship by its label, but no later-investigation provenance is displayed for comparison. Evidence identifiers and a shared attempt identifier do not by themselves show such a later relationship.",
+      "support": [
+        "@investigram-277b134e has 'Composition: @investigram-cab5aec0, @investigram-2b9ef522'.",
+        "The footer says 'Corrections are retained assertions, not established truth' and describes immutable originals and explicit correction links.",
+        "The three displayed investigrams contain no explicit original/replacement or correction relationship."
+      ],
+      "unknowns": [
+        "Whether any correction exists outside the supplied summary, what it changed, or which identifiers would identify its original and replacement.",
+        "How later-investigation provenance is represented and whether users can distinguish it reliably from composition in later views."
+      ]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The summary is useful for understanding the module's responsibilities and recognizing the limits of source-based inference. However, the name 'next-sequence' may initially obscure that the public entry also exports normalization; the concrete two-function account resolves that ambiguity. 'Adds no computation' and 'unrelated' are broad interpretive characterizations whose limits rely on reading the qualifications. Long evidence identifiers and repeated attempt/session usage totals interrupt the functional account and could invite accidental double counting. 'Accepted' could be mistaken for validated truth. The correction footer implies concrete correction links are visible when none can be identified here. 'New investigation request' and session-bound references suggest continuation without showing how a user selects a reference or lens.",
+      "support": [
+        "The module heading is 'next-sequence', while @investigram-277b134e describes numeric clamping and a sequence counter.",
+        "The same 4-call, 68870-token totals appear under attempt reported usage and session reported usage.",
+        "The view supplies detailed qualifications and explicit interpretation labels, but no visible continuation controls or concrete correction pair."
+      ],
+      "unknowns": [
+        "Whether the rendered interface provides interaction or visual grouping absent from this supplied text.",
+        "Whether omitted later views resolve these presentation concerns."
+      ]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful as a bounded functional overview, with limited support for understanding the investigation workflow.",
+    "reasons": [
+      "The separate referents and composition line communicate where computation and mutable state belong.",
+      "Concrete edge cases and explicit qualifications help avoid treating source interpretation as runtime verification.",
+      "Opaque evidence identifiers, repeated usage details, and generic correction language make the overview harder to scan and the next action less clear."
+    ],
+    "limitations": [
+      "Only the summary view was supplied; no explanation, decomposition, examination, or concrete correction could be assessed.",
+      "Underlying evidence and actual interface interactions were unavailable in the supplied view.",
+      "Displayed provider/model and usage metadata describe the reported investigation attempt; they do not establish this evaluator's metadata or actual billing."
+    ]
+  }
+}

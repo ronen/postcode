@@ -1,0 +1,59 @@
+You are a fresh view-only evaluator. Assess only the user-facing view below. Do not inspect source, references, task history, documentation, plans or internet. Answer the fixed questions and preserve uncertainty. Exact model/usage metadata may be unavailable; do not invent it.
+
+{
+  "version": 1,
+  "condition": "summary-only; later sequence views not supplied",
+  "questions": [
+    "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+    "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+    "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+    "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+    "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+    "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score."
+  ],
+  "answerFormat": "JSON with answers [{question,answer,support,unknowns}], usefulness {judgment,reasons,limitations}. Use only supplied user-facing views; no independent sources or tools."
+}
+
+USER-FACING VIEW
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-28ee01f8: fsm-engine
+
+@investigram-72904a46 · interpretation
+`fsm-engine` implements the public typed FSM factory and each machine's runtime. `define()` delegates DSL capture/validation/compilation, then returns factories whose instances share the compiled definition but keep separate context, state, FIFO event queue, tracing state, and timers. Dispatch is synchronous at the outermost call and queue-based when re-entered: it tries state-specific begin actions and ordered guarded transitions, then fallback handling; known handlers with no matching guard imply a no-op stay, while unknown or wholly unhandled events raise dedicated errors. External transitions run exit actions, transition actions, commit state, then entry actions; internal transitions run only transition actions. The module also exposes trace logging and the action-facing dispatch/timer controls.
+Referent: The `fsm-engine` module and its exported `FsmEngine`/`FsmEngineFactory` runtime surface.
+  Qualification: Static interpretation of captured TypeScript; runtime execution was not performed. The repository README is treated as attributed documentation and compared with implementation, not as proof.
+  Qualification: Dependency analysis is bounded to captured project-owned source requests; the acquired source provides the main behavioral basis.
+  Composition: @investigram-32c93b1b, @investigram-72ba29f9, @investigram-795d1098
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:f63c7428-6eb8-4c27-a452-d3885198394e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:f63c7428-6eb8-4c27-a452-d3885198394e:export:9a41ee02d968b322d61df136d4af61f958954537b210ff2e2a6180fbee30e856, session:f63c7428-6eb8-4c27-a452-d3885198394e:export:c990c362ac2b8ed8e617bf4ab2a9de58eb96af0ba6aaa3b83a8379e61dd4166e, session:f63c7428-6eb8-4c27-a452-d3885198394e:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-795d1098 · interpretation
+Instances run initial-state entry actions during construction, expose the original mutable context object, and can emit timestamped state/event/guard/action traces through a replaceable logger. Action callbacks receive a restricted API: dispatch feeds the same queue; timers delegate keyed replacement/cancellation to `TimerRegistry`, which supports relative delays or `performance.now()` deadlines, clamps past/negative delays, and treats `Infinity` as non-firing.
+Referent: Instance initialization, tracing, and action-side effects.
+  Qualification: Timer behavior is inferred from source and embedded tests, not independently executed.
+  Qualification: A likely consequential implementation defect exists: documentation and `FsmActionApi` say a non-void timer event's required `payload` is dispatched, but `FsmEngine` constructs no dispatch argument when `payload` is present and constructs `[undefined]` when it is absent. Thus timer-fired payload forwarding appears inverted in this capture.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:f63c7428-6eb8-4c27-a452-d3885198394e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:f63c7428-6eb8-4c27-a452-d3885198394e:captured-content:5ae20a36be80e4d3426c537ab3f59d590e4dcd0d929812feb44017c3524f5e6a, session:f63c7428-6eb8-4c27-a452-d3885198394e:captured-content:26bb1b56e1acf46f558d9c3267bef7d2db4f8fb3e246c6c26e4e5fe63a275ecd, session:f63c7428-6eb8-4c27-a452-d3885198394e:captured-content:324d815a6ce567971e0b5e40ea54ff9ae270d941b53ac159704d3d9a3aa99de8, session:f63c7428-6eb8-4c27-a452-d3885198394e:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-72ba29f9 · interpretation
+Every dispatch first enqueues. Only the outermost call drains FIFO, making action-triggered dispatch re-entrant without interrupting the current transition. For each event, begin actions precede guards; guards and transitions are first-match; fallback runs only after state-specific transitions fail. External execution is exit → transition actions → state commit → entry, whereas internal execution only invokes transition actions. Any thrown guard/action/error clears pending events and escapes the outermost dispatch; an entry-action failure occurs after the new state was committed.
+Referent: Per-instance event processing and transition execution in `FsmEngine`.
+  Qualification: The account follows control flow in the captured source; it does not claim concurrency behavior beyond this synchronous queue implementation.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:f63c7428-6eb8-4c27-a452-d3885198394e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:f63c7428-6eb8-4c27-a452-d3885198394e:captured-content:5f0b239941bada797164d6818c9cd0739deecbc2928e6cad7651fba1814d9ddb, session:f63c7428-6eb8-4c27-a452-d3885198394e:captured-content:9005b07f7708207e8f24e52a62e67b90a7a1d58099c4fe95b259daeb0c278b8d
+
+@investigram-32c93b1b · interpretation
+Definition work is delegated to `FsmBuilderImpl`: nested builders collect state/event/fallback tables, default the initial state to the first declaration, preserve declaration order, reject duplicate states/events and transitions after an unconditional transition, and validate missing/unknown/unreachable states before compiling the tables consumed by `FsmEngine`.
+Referent: The definition-time pipeline invoked by `FsmEngine.define()`.
+  Qualification: Reachability is a static graph walk over external state and fallback transitions; guards are not evaluated during validation.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:f63c7428-6eb8-4c27-a452-d3885198394e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:f63c7428-6eb8-4c27-a452-d3885198394e:captured-content:2223a19b7c84507271eb5dcafd0ce7c951322233ba64e5857e7344d6ae15d73d, session:f63c7428-6eb8-4c27-a452-d3885198394e:captured-content:5f0b239941bada797164d6818c9cd0739deecbc2928e6cad7651fba1814d9ddb
+Attempt session:f63c7428-6eb8-4c27-a452-d3885198394e:investigation-attempt:740a6753e7b1c5e4215eec0ab34dab12961cf26f0a244ed84de8c8a1ad1306e2 (accepted) reported usage: 5 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 189563 tokens; input 186199 tokens (subset of total); output 3364 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 940 tokens (subset of output)
+Session reported usage: 5 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 189563 tokens; input 186199 tokens (subset of total); output 3364 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 940 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage

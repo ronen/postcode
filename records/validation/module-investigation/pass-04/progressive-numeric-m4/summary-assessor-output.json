@@ -1,0 +1,96 @@
+{
+  "findings": [
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator accurately reports the displayed exclusivity and rejection assertions as unverified claims rather than adopting them as actual functionality.",
+      "evidence": [
+        "@investigram-1cecff9b claims exactly one of positive, even or large and rejection outside those classes; @investigram-33b17c63 claims positive inputs receive only positive.",
+        "Both accounts explicitly disclose injected, scripted origin and lack of source evidence. Evaluator answers 1 and 2 call the behavior claimed and unverified, and leave exclusivity and rejection unknown.",
+        "The frozen reference's static reading of classify.ts describes three independent tests that append labels, including positive/even/large for 12 and no labels for -3, with no rejection on the unmatched path."
+      ],
+      "consequence": "The source contradicts the displayed baseline, but the evaluator preserves its epistemic status. This is neither a natural generation error repeated as fact nor an observed presentation misunderstanding.",
+      "uncertainty": "The baseline was deliberately injected. This condition cannot establish whether a natural investigator would generate or correct these claims."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator distinguishes composition of accounts from implementation responsibilities and investigation-subject provenance.",
+      "evidence": [
+        "The parent lists Composition: @investigram-33b17c63; the child lists Composition parent: @investigram-1cecff9b.",
+        "Both accounts label @module-54c04ef4 as Investigation subject with the explicit qualifier provenance, not composition.",
+        "Evaluator answers 1 and 5 describe a broad account and narrower constituent account, without asserting separate implementation components."
+      ],
+      "consequence": "The displayed relationship is understood without mistaking the two mutually reinforcing assertions for source corroboration or a proven division of implementation responsibility.",
+      "uncertainty": "No later-investigation provenance is supplied, so communication of that relationship remains untested."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly limits conclusions about progression and correction to the sole supplied summary.",
+      "evidence": [
+        "The only captured command is summarize classify; neither a concrete correction link nor a replacement account appears.",
+        "Evaluator answers 3 and 5 explicitly decline to assess explanation, decomposition, examination, or a before-and-after correction.",
+        "The footer states that original accounts are displayed and replacement substitution and derived revision warnings are not yet presented. The frozen reference places those latter capabilities in milestone 5."
+      ],
+      "consequence": "Missing follow-up views are not misclassified as generation defects, and deferred replacement selection and warning behavior are not treated as milestone-4 failures.",
+      "uncertainty": "The summary provides no evidence about correction quality or the behavior of other views. Generic correction wording cannot establish that a correction exists."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The proposed next investigation is precise and explicitly separated from demonstrated capability.",
+      "evidence": [
+        "Evaluator answer 4 selects @investigram-33b17c63 and asks whether a positive input also satisfying even and large receives one or several labels.",
+        "The evaluator describes the source-evidence lens as a proposal and notes the absence of a lens menu, invocation command, or completed source examination.",
+        "The frozen reference confirms overlapping predicates and gives 12 as a static example satisfying all three tests."
+      ],
+      "consequence": "The summary supports identifying a consequential, addressable claim for further inquiry without the evaluator inventing an available operation.",
+      "uncertainty": "Availability and invocation of the proposed lens cannot be established from these artifacts. Session-bound references do not demonstrate persistence beyond this session."
+    },
+    {
+      "category": "material-omission",
+      "claim": "The summary omits the source-grounded behavioral account needed to use classify with confidence; the evaluator substantially recognizes this limitation.",
+      "evidence": [
+        "The frozen reference describes a fresh array, independent tests value > 0, value % 2 === 0, and value >= 10, literal labels appended in source order, and return of the resulting array.",
+        "The captured accounts instead supply the injected exclusive partition and rejection assertions without these conditions, accumulation behavior, or unmatched return behavior.",
+        "Evaluator answers 1, 2, and 6 identify missing actual behavior, thresholds, overlap, rejection details, and source evidence."
+      ],
+      "consequence": "The view is useful for selecting an investigation target but cannot support a reliable account of overlapping labels or empty-array results. This is a limitation of the supplied summary condition, not evidence of a natural generation defect or a requirement that absent follow-up views should have appeared.",
+      "uncertainty": "The evaluator had no source access and was right not to fill these gaps with the frozen reference's conclusions. Other views may resolve them, but none are supplied here."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "The evaluator's concerns about confidence, repetition, status wording, and clutter are plausible presentation risks, not demonstrated reader misunderstandings.",
+      "evidence": [
+        "Evaluator answer 6 says confident claims can be mistaken for established behavior, repeated exclusivity could look like corroboration, and Module summary or accepted may imply validation.",
+        "The view does contain those assertions and labels, a long attempt identifier, generic correction language, repeated usage qualifications, and 1 anomalous without an explanation of its cause.",
+        "Elsewhere the evaluator correctly rejects behavioral validation from accepted status, recognizes the shared injected origin, and identifies no concrete correction."
+      ],
+      "consequence": "These observations identify possible usability improvements, but should not be scored as actual presentation misunderstandings or unsupported factual extrapolations about observed users.",
+      "uncertainty": "The frozen source reference cannot determine how other readers respond, the intended semantics of accepted, the anomaly's cause, or confirmed billing. No administrative request-budget interruption is shown."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "The frozen source account resolves the simple numeric classification claims but does not establish broader runtime behavior or intent.",
+      "evidence": [
+        "The reference explicitly characterizes its examples as static readings, states that no target function is executed, and leaves runtime callers, non-number JavaScript arguments, author intent, and threshold usefulness unestablished.",
+        "Evaluator answer 1 leaves supported numeric types unknown, and the evaluator does not invent runtime validation or author intent."
+      ],
+      "consequence": "Assessment can establish the baseline's contradiction with the supplied source reading while retaining the evaluator's justified uncertainty about matters outside that reference's scope.",
+      "uncertainty": "The reference was prepared by the implementing agent and shares model-family overlap with assessment roles; exact model identity is unavailable. Its conclusions are not independent execution evidence."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful as a qualified starting point for investigating a specific behavioral claim; insufficient as a dependable description of the module's functionality.",
+    "reasons": [
+      "Session-bound references make the broad partition claim and narrower exclusivity claim separately addressable.",
+      "The evaluator understands the scripted origin, absence of source evidence, and distinction between composition and subject provenance.",
+      "The evaluator proposes an inquiry that directly targets the source-disconfirmed exclusivity assertion without claiming the proposed lens is available.",
+      "The evaluator correctly withholds conclusions about progression and correction when only the summary is supplied."
+    ],
+    "limitations": [
+      "The behavioral assertions contradict the frozen source reading, and the view supplies no source-grounded replacement account.",
+      "This deliberately injected baseline cannot measure natural generation error frequency or demonstrate a successful correction.",
+      "No explanation, decomposition, examination, correction link, replacement account, or invocation mechanics are available for assessment in this condition.",
+      "The evaluator's presentation-risk observations are hypotheses about usability, not observed misunderstandings.",
+      "The frozen reference has limited runtime scope, and shared preparer/orchestrator authorship and model-family overlap limit assessment independence."
+    ]
+  }
+}

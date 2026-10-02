@@ -1,0 +1,52 @@
+{
+  "cases": [
+    {
+      "case": "merge-anything-m5",
+      "liveOutcomes": [
+        {
+          "operation": "functionality",
+          "termination": "accepted",
+          "calls": 6,
+          "citations": 0,
+          "fullEvidenceRecords": 195,
+          "summaryRecords": 16
+        },
+        {
+          "operation": "clarification",
+          "termination": "accepted",
+          "calls": 3,
+          "citations": 1,
+          "fullEvidenceRecords": 86,
+          "summaryRecords": 8
+        },
+        {
+          "operation": "decomposition",
+          "termination": "accepted",
+          "calls": 2,
+          "citations": 1,
+          "fullEvidenceRecords": 26,
+          "summaryRecords": 3
+        },
+        {
+          "operation": "examination",
+          "termination": "accepted",
+          "calls": 5,
+          "citations": 1,
+          "fullEvidenceRecords": 164,
+          "summaryRecords": 9
+        }
+      ],
+      "requests": 16,
+      "tokens": 416143,
+      "exactResolvedFields": 158,
+      "missingCalls": 0,
+      "anomalousCalls": 0,
+      "wireExposureEqualsCanonicalLedger": true,
+      "usageViewsObservationsAndProviderAgree": true,
+      "elapsedMilliseconds": 716764
+    }
+  ],
+  "requests": 16,
+  "providerReportedTokens": 416143,
+  "monetaryAttribution": null
+}

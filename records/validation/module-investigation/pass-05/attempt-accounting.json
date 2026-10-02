@@ -1,0 +1,206 @@
+{
+  "cases": [
+    {
+      "case": "cockatiel-m5",
+      "hostedAttempts": [
+        {
+          "operation": "functionality",
+          "termination": "accepted",
+          "requests": 6,
+          "dialogueMilliseconds": 100509.210983,
+          "missingReports": 0,
+          "knownReportedTokenSubtotal": 238172,
+          "completeTokenTotal": 238172
+        },
+        {
+          "operation": "clarification",
+          "termination": "accepted",
+          "requests": 6,
+          "dialogueMilliseconds": 104333.92709499999,
+          "missingReports": 0,
+          "knownReportedTokenSubtotal": 195273,
+          "completeTokenTotal": 195273
+        },
+        {
+          "operation": "decomposition",
+          "termination": "accepted",
+          "requests": 4,
+          "dialogueMilliseconds": 72372.25002800004,
+          "missingReports": 0,
+          "knownReportedTokenSubtotal": 82694,
+          "completeTokenTotal": 82694
+        },
+        {
+          "operation": "examination",
+          "termination": "accepted",
+          "requests": 7,
+          "dialogueMilliseconds": 104162.83864700003,
+          "missingReports": 0,
+          "knownReportedTokenSubtotal": 232093,
+          "completeTokenTotal": 232093
+        }
+      ],
+      "syntheticReports": 0
+    },
+    {
+      "case": "conflict-numeric-m5",
+      "hostedAttempts": [
+        {
+          "operation": "examination",
+          "termination": "accepted",
+          "requests": 3,
+          "dialogueMilliseconds": 62199.36444100001,
+          "missingReports": 0,
+          "knownReportedTokenSubtotal": 34650,
+          "completeTokenTotal": 34650
+        },
+        {
+          "operation": "clarification",
+          "termination": "accepted",
+          "requests": 2,
+          "dialogueMilliseconds": 37423.23620300001,
+          "missingReports": 0,
+          "knownReportedTokenSubtotal": 22110,
+          "completeTokenTotal": 22110
+        }
+      ],
+      "syntheticReports": 6
+    },
+    {
+      "case": "fsm-engine-m5",
+      "hostedAttempts": [
+        {
+          "operation": "functionality",
+          "termination": "accepted",
+          "requests": 4,
+          "dialogueMilliseconds": 87111.54973,
+          "missingReports": 0,
+          "knownReportedTokenSubtotal": 92226,
+          "completeTokenTotal": 92226
+        },
+        {
+          "operation": "clarification",
+          "termination": "accepted",
+          "requests": 2,
+          "dialogueMilliseconds": 56135.778737000015,
+          "missingReports": 0,
+          "knownReportedTokenSubtotal": 30934,
+          "completeTokenTotal": 30934
+        },
+        {
+          "operation": "decomposition",
+          "termination": "communication-failure",
+          "requests": 1,
+          "dialogueMilliseconds": 2863.2787869999884,
+          "missingReports": 1,
+          "knownReportedTokenSubtotal": 0,
+          "completeTokenTotal": null
+        },
+        {
+          "operation": "decomposition",
+          "termination": "accepted",
+          "requests": 4,
+          "dialogueMilliseconds": 63884.156437999976,
+          "missingReports": 0,
+          "knownReportedTokenSubtotal": 59100,
+          "completeTokenTotal": 59100
+        },
+        {
+          "operation": "examination",
+          "termination": "accepted",
+          "requests": 7,
+          "dialogueMilliseconds": 103915.89795499993,
+          "missingReports": 0,
+          "knownReportedTokenSubtotal": 256510,
+          "completeTokenTotal": 256510
+        }
+      ],
+      "syntheticReports": 0
+    },
+    {
+      "case": "merge-anything-m5",
+      "hostedAttempts": [
+        {
+          "operation": "functionality",
+          "termination": "communication-failure",
+          "requests": 3,
+          "dialogueMilliseconds": 17389.264949,
+          "missingReports": 1,
+          "knownReportedTokenSubtotal": 7442,
+          "completeTokenTotal": null
+        },
+        {
+          "operation": "functionality",
+          "termination": "accepted",
+          "requests": 4,
+          "dialogueMilliseconds": 60338.41763399998,
+          "missingReports": 0,
+          "knownReportedTokenSubtotal": 74740,
+          "completeTokenTotal": 74740
+        },
+        {
+          "operation": "clarification",
+          "termination": "accepted",
+          "requests": 4,
+          "dialogueMilliseconds": 78611.16768900002,
+          "missingReports": 0,
+          "knownReportedTokenSubtotal": 86640,
+          "completeTokenTotal": 86640
+        },
+        {
+          "operation": "decomposition",
+          "termination": "communication-failure",
+          "requests": 1,
+          "dialogueMilliseconds": 2135.0259910000023,
+          "missingReports": 1,
+          "knownReportedTokenSubtotal": 0,
+          "completeTokenTotal": null
+        },
+        {
+          "operation": "examination",
+          "termination": "accepted",
+          "requests": 5,
+          "dialogueMilliseconds": 108400.087322,
+          "missingReports": 0,
+          "knownReportedTokenSubtotal": 133471,
+          "completeTokenTotal": 133471
+        }
+      ],
+      "syntheticReports": 0
+    },
+    {
+      "case": "refined-numeric-m5",
+      "hostedAttempts": [
+        {
+          "operation": "examination",
+          "termination": "accepted",
+          "requests": 3,
+          "dialogueMilliseconds": 58436.96730800001,
+          "missingReports": 0,
+          "knownReportedTokenSubtotal": 23892,
+          "completeTokenTotal": 23892
+        },
+        {
+          "operation": "clarification",
+          "termination": "accepted",
+          "requests": 3,
+          "dialogueMilliseconds": 53637.64762,
+          "missingReports": 0,
+          "knownReportedTokenSubtotal": 37270,
+          "completeTokenTotal": 37270
+        },
+        {
+          "operation": "examination",
+          "termination": "investigation-failure",
+          "requests": 4,
+          "dialogueMilliseconds": 79408.49355400002,
+          "missingReports": 0,
+          "knownReportedTokenSubtotal": 76024,
+          "completeTokenTotal": 76024
+        }
+      ],
+      "syntheticReports": 4
+    }
+  ],
+  "limitations": "Known reported token subtotals exclude unavailable reports; a zero subtotal with missing reports is not zero usage. Actual monetary attribution is unavailable for every attempt."
+}

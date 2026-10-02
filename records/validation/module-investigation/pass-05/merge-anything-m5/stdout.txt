@@ -1,0 +1,1245 @@
+Session eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2
+Inputs are assumed unchanged. Use help for commands; exit or EOF to finish.
+postcode> summarize anonymous
+Module summary
+References remain bound for this session.
+New investigation request.
+communication-failure: OpenAI request failed (HTTP 200); no automatic retry was made. Unclassified errors are not assumed transient.
+Selection: selected (1 matches).
+Module @module-a44de3a8: anonymous
+Attempt session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:cf0693569d590ec5a899a821c557d239d42dc6ad41391d8f2f7f90485d920f07 (communication-failure) reported usage: 3 calls; 1 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 7442 tokens; input 7275 tokens (subset of total); output 167 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 21 tokens (subset of output)
+Session reported usage: 3 calls; 1 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 7442 tokens; input 7275 tokens (subset of total); output 167 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 21 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> summarize anonymous
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-a44de3a8: anonymous
+
+@investigram-15cfc298 · interpretation
+This module is the package-facing entry point: it implements no merge logic itself, but wildcard-re-exports the recursive merge API, its result type, and the array-concatenation helper. The nearby README describes the package as a deep merger for plain objects with TypeScript result inference; that description is broadly borne out by the inspected implementation, subject to its documented reference-sharing caveat.
+Referent: package-facing merge API entry point
+  Qualification: Implementation account from captured TypeScript source; no runtime execution was performed.
+  Qualification: README statements are attributed documentation, not independently established behavior.
+  Qualification: Dependency analysis is bounded source-request analysis, not runtime or deployment completeness.
+  Displayed composition: @investigram-f207fe80, @investigram-d5170823, @investigram-554de213
+  Composition: @investigram-f207fe80, @investigram-d5170823, @investigram-554de213
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:8063a4d5515655c21e37335157b6da32def9e894222b525f84b99c3945f95649, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:ed268f1d30fc438081dd6ceffba6814b08906e6f770ff92ade7352ccb62823ac, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:2d10a79ac4e197e72485153249a6e2fe4025cf5d456e6fd8f8d98629fa585377, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:c1d37ad435569036afef1aae8e2b1cd24813adb35694bc6bba803ad4aa5404a8, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:93b3c024cb4f29a0fd0c645ef2a6b6f9b954e5c8054ddb60d0dffe3f97ba6fa0, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:e26f07d96b232e4d184ad3e0cdf396135d5d38a0deec01c3652af840c3079397, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:03e0101ac41b08cef3e381d2473a2ab7bce98037a1901b29e353d87f07f7f0c3, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:5cbf575991c6bb6718d39fc9141a7b4e4919d6e1a778613577b5a23228b482fd
+
+@investigram-f207fe80 · interpretation
+The merge implementation folds later inputs over the accumulated result. Only plain objects recurse; primitives, arrays, class instances, and other non-plain values replace the prior value. It copies own string and symbol properties, preserves enumerable versus non-enumerable status, skips `__proto__`, and lets later properties win. `mergeAndCompare` routes each assignment through a caller callback; `mergeAndConcat` uses the array helper as that callback.
+Referent: recursive runtime merge implementation and public variants
+  Qualification: Apparent behavior from full captured source, not execution.
+  Qualification: Accessors and other descriptor attributes are not preserved: assignment/defineProperty materializes a writable configurable value property.
+  Qualification: Nested values can retain source references when no recursive overlap causes rebuilding, matching the README's warning.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-15cfc298
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:8e720325202e79ae5656f9a4758857448dfd8eb8be21b13c06a65c5847d99358, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:a3fd7ea754d19eb66f578f6ca3befe3e8d8087065164a7d2075316f234b688b6, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:9497fc07d5b62237183636e8bb45b53c0424ebc9ddafe6fe6dc3db993793c60e, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-d5170823 · interpretation
+The extension helper concatenates only when both old and incoming values are arrays; otherwise it returns the incoming value unchanged. It is both directly exported and delegated to by `mergeAndConcat`.
+Referent: array-concatenating overwrite policy
+  Qualification: Apparent behavior from captured source, not execution.
+  Qualification: Array recognition is delegated to external `is-what`; that dependency's implementation was not inspected.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-15cfc298
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:6f64ed2803e14f05072f46970bb3eee68517667fd9442ba8d3d0ad0536c50f83, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:7caa54971fa1ecdabf543e16a9c0472b7a47d21dd77f32f2ca6767365092fe70, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:db00a908bf5399461686cd58ade8511d978aea9a9511dc001727d35d5d46a564
+
+@investigram-554de213 · interpretation
+Compile-time return typing is separate from runtime recursion. `Merge` uses a recursive `Assign` model for object inputs, falls back to the last supplied type otherwise, and runs the result through `PrettyPrint` to expose a readable recursively expanded shape. `Assign` iterates input object types with last-in override semantics; `PrettyPrint` guards against cycles with a seen set.
+Referent: compile-time model of merge results
+  Qualification: Type-level interpretation from captured TypeScript definitions; it does not itself establish runtime equivalence.
+  Qualification: Further delegated internals such as `MergeDeep`, iteration, and list helpers were not inspected because the exposed branching and division of responsibility were already clear.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-15cfc298
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:74dca925e00af1e4d8ff5392a6275a5f9629badac922808cdbae94b26f58340f, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:0edd20422bed0aee5f55854002c178200bf3577e50e8b2668f73b4608c1f1f77, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:e8d31cc77ae274a753f7a7f34dbc2b6c693f8c8d6e41a9610d4059c17300ba70, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:c6747177ca6114dab696d2c944f2205c61dc4d77fff659431fd618292ca5c20b, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:4042a79bd3ddf9e6359b87b4d671cdf0f7bf3fca9a25eb57657942b6171dec15, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:b3197dacf8fff040b128a0db56e61d93a378d80423e42ac5d244c990f68423fb
+
+Revision status @investigram-15cfc298: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-f207fe80: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-d5170823: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-554de213: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 74740 tokens; input 72759 tokens (subset of total); output 1981 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 189 tokens (subset of output)
+Session reported usage: 7 calls; 1 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 82182 tokens; input 80034 tokens (subset of total); output 2148 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 210 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> explain @investigram-f207fe80
+Explain · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-c693e563 · interpretation
+The public entry point re-exports the merge and extension modules. At runtime, `merge`, `mergeAndCompare`, and `mergeAndConcat` all perform the same left-to-right fold: the first argument is the initial accumulator, and each later argument is merged into the result of the preceding step. A later non-plain value—including an array, primitive, function, date, or class instance—replaces the accumulator at that point. A later plain object instead produces a fresh plain object whose own properties combine the two sides; recursion occurs only for an incoming plain-object property whose corresponding old value is not `undefined`. Thus “deep merge” applies selectively to overlapping plain-object branches, not as a general deep clone.
+Referent: clarified runtime behavior of the recursive merge implementation and its public variants
+  Qualification: Apparent behavior is inferred from captured TypeScript source and was not executed.
+  Qualification: The exact meaning of “plain object” is delegated to the external `is-what` implementation; only its declaration-level re-export surface, not the implementation of its predicates, was available here.
+  Qualification: The README describes intended usage and claims rather than independently establishing runtime behavior. Its statement that merge always returns a new object has an edge case in the implementation: with no additional arguments, the reducer returns the original first argument unchanged.
+  Qualification: The implementation does not detect cycles; recursive overlapping plain-object cycles may therefore fail to terminate.
+  Displayed composition: @investigram-c35d0ff7, @investigram-630be241, @investigram-795ef5e9
+  Composition: @investigram-c35d0ff7, @investigram-630be241, @investigram-795ef5e9
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f207fe80 (provenance, not composition)
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:8063a4d5515655c21e37335157b6da32def9e894222b525f84b99c3945f95649, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-c35d0ff7 · interpretation
+For a plain-object newcomer, the implementation first carries over old own properties that the newcomer does not have, then processes every own property of the newcomer. It uses `Object.getOwnPropertyNames` plus `Object.getOwnPropertySymbols`, so non-enumerable string properties and symbol properties participate, while inherited properties do not. The literal string key `__proto__` is skipped on both sides. Later keys win unless recursion or a comparison callback computes another value.
+Referent: property selection, precedence, and prototype-poisoning guard
+  Qualification: Property order follows the arrays returned by the standard own-property reflection calls, with string keys processed before symbol keys in each pass.
+  Qualification: The `__proto__` guard applies to that string key; symbol keys are distinct even if their descriptions contain the same text.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f207fe80 (provenance, not composition)
+  Composition parent: @investigram-c693e563
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+
+@investigram-630be241 · interpretation
+The merge preserves only whether each copied property is enumerable. It obtains values by property access, so getters are evaluated, and then writes an ordinary value property: enumerable properties use assignment; non-enumerable properties are defined as writable and configurable. Getters, setters, read-only/configurability flags, and other descriptor details are therefore not retained. Values on branches that are merely copied or directly replaced remain the same references; only an actually traversed overlapping plain-object branch is rebuilt. An incoming plain object paired with an old value of `undefined` is assigned directly rather than recursively copied.
+Referent: descriptor normalization and reference-sharing behavior
+  Qualification: The README explicitly warns that some nested properties remain linked to source objects; the source gives the more precise mechanism.
+  Qualification: Reading accessors can have user-defined effects; this follows from apparent property-access syntax and was not tested.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f207fe80 (provenance, not composition)
+  Composition parent: @investigram-c693e563
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-795ef5e9 · interpretation
+`mergeAndCompare(compareFn, first, ...rest)` invokes the callback for each property contributed by a newcomer, not for old-only properties that are merely carried forward. The callback receives the old value (or `undefined` when there is no usable plain-object origin), the proposed new value, and the string or symbol key. When the incoming value is a recursively mergeable plain object, that recursive result is computed before the callback at the parent key; callbacks also run while processing properties inside the recursive merge. `mergeAndConcat` installs `concatArrays` as this callback: it concatenates only when both compared values are arrays and otherwise accepts the proposed new value, so ordinary object recursion remains unchanged while overlapping arrays append old elements before new ones.
+Referent: custom comparison and array-concatenation variants
+  Qualification: The README phrases the custom callback as running when values are overwritten; the implementation is broader because it also invokes it for newcomer properties whose old value is absent.
+  Qualification: Array concatenation is shallow and uses the old array's `concat`; array elements are not recursively merged by this helper.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f207fe80 (provenance, not composition)
+  Composition parent: @investigram-c693e563
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:6f64ed2803e14f05072f46970bb3eee68517667fd9442ba8d3d0ad0536c50f83, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+Revision status @investigram-c693e563: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-c35d0ff7: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-630be241: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-795ef5e9: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-f207fe80: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:2bf1b564c485134853590c0628cac56b18f3ced1ba255b04bed90ca48c6c913d (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 86640 tokens; input 83585 tokens (subset of total); output 3055 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1201 tokens (subset of output)
+Session reported usage: 11 calls; 1 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 168822 tokens; input 163619 tokens (subset of total); output 5203 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1411 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> decompose @investigram-630be241
+Decompose · investigram
+References remain bound for this session.
+New investigation request.
+communication-failure: OpenAI request failed (HTTP 200); no automatic retry was made. Unclassified errors are not assumed transient.
+Selection: selected (1 matches).
+
+Revision status @investigram-630be241: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:95b60956cbc27596b0a08aa7ae1f4f8fcdf4f354f2f917edb2d43c9c8999801a (communication-failure) reported usage: 1 calls; 1 unknown; 0 anomalous.
+Session reported usage: 12 calls; 2 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 168822 tokens; input 163619 tokens (subset of total); output 5203 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1411 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> examine @investigram-630be241
+Examine · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-bac77638 · interpretation
+The earlier account is sound, but the implementation exposes sharper identity and side-effect boundaries. A merge step inventories all own string-named properties, including non-enumerables, plus all own symbols; inherited properties are excluded, and the string key `__proto__` is deliberately discarded from both inputs. It then reads values and recreates properties on a fresh ordinary object rather than transferring descriptors. Consequently, descriptor normalization is accompanied by observable access order: an origin property is read before the code checks whether the incoming object supersedes it, and an overlapping origin value is read again while processing the incoming key. An accessor on an overridden origin key can therefore run twice even though its value may not appear in the result. No execution was performed, so this is a source-level account of ordinary ECMAScript property access rather than an observed trace.
+Referent: deeper examination of descriptor normalization, accessor effects, and reference identity in recursive merge
+  Qualification: Derived from captured TypeScript source; runtime behavior was not executed.
+  Qualification: The exact boundary of “plain object” is delegated to the external `is-what` runtime. Only its declaration entry point was available here, not the implementation of `isPlainObject`.
+  Qualification: The README is treated as attributed package documentation and compared with source, not as proof of behavior.
+  Displayed composition: @investigram-9f5b679a, @investigram-0588920a, @investigram-b271cd1e
+  Composition: @investigram-9f5b679a, @investigram-0588920a, @investigram-b271cd1e
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-630be241 (provenance, not composition)
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:4058110f5226dffbfee41a398a8c2c8aecb21a8f66e8857496f7812c0ec3edf9
+
+@investigram-9f5b679a · interpretation
+For an ordinary overlapping key, the origin-side pass evaluates `origin[key]` before deciding that the incoming object owns the same key; the incoming-side pass then evaluates `newComer[key]` and evaluates `origin[key]` again. Thus an old getter can run twice and a new getter once. A non-overlapping origin getter is still evaluated once when copied. Getter return values, rather than accessor descriptors, are installed in the result; enumerable results are assigned and non-enumerable results are defined as writable and configurable data properties. Errors and mutations caused by these reads are not intercepted by the shown code. Symbol keys follow the same runtime path despite the helper's internal string cast.
+Referent: accessor evaluation order and descriptor recreation
+  Qualification: Invocation counts describe the straight-line source path for stable ordinary objects; proxies or getters that mutate either input can alter later reflection and membership checks.
+  Qualification: No runtime tests were available to confirm side-effect traces.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-630be241 (provenance, not composition)
+  Composition parent: @investigram-bac77638
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+
+@investigram-0588920a · interpretation
+Reference sharing is path-dependent rather than simply “deep” or “shallow.” With no additional arguments, `merge` returns its first argument unchanged. A non-plain incoming value—including an array under the default merge—is returned or assigned as the same reference. A plain incoming property is recursively rebuilt only when the corresponding origin value is not `undefined`; if the key is absent or explicitly holds `undefined`, that incoming plain object is assigned by reference. The recursion has no visited-object or memoization table. Therefore an overlapping cyclic pair can recurse without a termination guard, while repeated references that are recursively traversed through separate overlapping properties can be rebuilt independently and lose alias identity. Cycles or aliases on paths merely assigned rather than traversed remain shared.
+Referent: path-dependent cloning, aliasing, and cycle behavior
+  Qualification: Cycle nontermination and alias splitting are source-level consequences of unguarded recursive calls; they were not demonstrated by execution.
+  Qualification: Whether a particular object reaches recursion depends on the external `isPlainObject` predicate, whose runtime implementation was not acquired.
+  Qualification: The README warns generally about retained nested references but does not document cycle handling or alias preservation.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-630be241 (provenance, not composition)
+  Composition parent: @investigram-bac77638
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:4058110f5226dffbfee41a398a8c2c8aecb21a8f66e8857496f7812c0ec3edf9
+
+@investigram-b271cd1e · interpretation
+The compare hook has a documentation-versus-implementation qualification relevant to value identity. The README says the custom function is triggered when a value is overwritten, but the source calls it for every own incoming key, including a key absent from the origin or one whose origin value is `undefined`. For an overlapping incoming plain object, recursion occurs first, so the callback receives the recursively produced value rather than the raw incoming object. Whatever the callback returns is then stored under the incoming property's enumerability, with the same descriptor normalization as ordinary merge.
+Referent: compare-hook scope and its effect on assigned identity
+  Qualification: This is an attributed discrepancy between README wording and captured implementation, not a structured inconsistency with an earlier investigram.
+  Qualification: The source does not distinguish an absent origin key from an origin key whose value is `undefined` when invoking the callback.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-630be241 (provenance, not composition)
+  Composition parent: @investigram-bac77638
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+Revision status @investigram-bac77638: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-9f5b679a: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-0588920a: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-b271cd1e: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-630be241: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:8f7f880d9844577dbdf383facd861410e3733e3b3b6f2fd57e33450632f14cbc (accepted) reported usage: 5 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 133471 tokens; input 129256 tokens (subset of total); output 4215 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2376 tokens (subset of output)
+Session reported usage: 17 calls; 2 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 302293 tokens; input 292875 tokens (subset of total); output 9418 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3787 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> inspect @investigram-15cfc298 --source-detail
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-15cfc298 · interpretation
+This module is the package-facing entry point: it implements no merge logic itself, but wildcard-re-exports the recursive merge API, its result type, and the array-concatenation helper. The nearby README describes the package as a deep merger for plain objects with TypeScript result inference; that description is broadly borne out by the inspected implementation, subject to its documented reference-sharing caveat.
+Referent: package-facing merge API entry point
+  Qualification: Implementation account from captured TypeScript source; no runtime execution was performed.
+  Qualification: README statements are attributed documentation, not independently established behavior.
+  Qualification: Dependency analysis is bounded source-request analysis, not runtime or deployment completeness.
+  Displayed composition: @investigram-f207fe80, @investigram-d5170823, @investigram-554de213
+  Composition: @investigram-f207fe80, @investigram-d5170823, @investigram-554de213
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:8063a4d5515655c21e37335157b6da32def9e894222b525f84b99c3945f95649, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:ed268f1d30fc438081dd6ceffba6814b08906e6f770ff92ade7352ccb62823ac, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:2d10a79ac4e197e72485153249a6e2fe4025cf5d456e6fd8f8d98629fa585377, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:c1d37ad435569036afef1aae8e2b1cd24813adb35694bc6bba803ad4aa5404a8, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:93b3c024cb4f29a0fd0c645ef2a6b6f9b954e5c8054ddb60d0dffe3f97ba6fa0, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:e26f07d96b232e4d184ad3e0cdf396135d5d38a0deec01c3652af840c3079397, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:03e0101ac41b08cef3e381d2473a2ab7bce98037a1901b29e353d87f07f7f0c3, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:5cbf575991c6bb6718d39fc9141a7b4e4919d6e1a778613577b5a23228b482fd
+
+@investigram-f207fe80 · interpretation
+The merge implementation folds later inputs over the accumulated result. Only plain objects recurse; primitives, arrays, class instances, and other non-plain values replace the prior value. It copies own string and symbol properties, preserves enumerable versus non-enumerable status, skips `__proto__`, and lets later properties win. `mergeAndCompare` routes each assignment through a caller callback; `mergeAndConcat` uses the array helper as that callback.
+Referent: recursive runtime merge implementation and public variants
+  Qualification: Apparent behavior from full captured source, not execution.
+  Qualification: Accessors and other descriptor attributes are not preserved: assignment/defineProperty materializes a writable configurable value property.
+  Qualification: Nested values can retain source references when no recursive overlap causes rebuilding, matching the README's warning.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-15cfc298
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:8e720325202e79ae5656f9a4758857448dfd8eb8be21b13c06a65c5847d99358, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:a3fd7ea754d19eb66f578f6ca3befe3e8d8087065164a7d2075316f234b688b6, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:9497fc07d5b62237183636e8bb45b53c0424ebc9ddafe6fe6dc3db993793c60e, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-d5170823 · interpretation
+The extension helper concatenates only when both old and incoming values are arrays; otherwise it returns the incoming value unchanged. It is both directly exported and delegated to by `mergeAndConcat`.
+Referent: array-concatenating overwrite policy
+  Qualification: Apparent behavior from captured source, not execution.
+  Qualification: Array recognition is delegated to external `is-what`; that dependency's implementation was not inspected.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-15cfc298
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:6f64ed2803e14f05072f46970bb3eee68517667fd9442ba8d3d0ad0536c50f83, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:7caa54971fa1ecdabf543e16a9c0472b7a47d21dd77f32f2ca6767365092fe70, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:db00a908bf5399461686cd58ade8511d978aea9a9511dc001727d35d5d46a564
+
+@investigram-554de213 · interpretation
+Compile-time return typing is separate from runtime recursion. `Merge` uses a recursive `Assign` model for object inputs, falls back to the last supplied type otherwise, and runs the result through `PrettyPrint` to expose a readable recursively expanded shape. `Assign` iterates input object types with last-in override semantics; `PrettyPrint` guards against cycles with a seen set.
+Referent: compile-time model of merge results
+  Qualification: Type-level interpretation from captured TypeScript definitions; it does not itself establish runtime equivalence.
+  Qualification: Further delegated internals such as `MergeDeep`, iteration, and list helpers were not inspected because the exposed branching and division of responsibility were already clear.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-15cfc298
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:74dca925e00af1e4d8ff5392a6275a5f9629badac922808cdbae94b26f58340f, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:0edd20422bed0aee5f55854002c178200bf3577e50e8b2668f73b4608c1f1f77, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:e8d31cc77ae274a753f7a7f34dbc2b6c693f8c8d6e41a9610d4059c17300ba70, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:c6747177ca6114dab696d2c944f2205c61dc4d77fff659431fd618292ca5c20b, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:4042a79bd3ddf9e6359b87b4d671cdf0f7bf3fca9a25eb57657942b6171dec15, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:b3197dacf8fff040b128a0db56e61d93a378d80423e42ac5d244c990f68423fb
+
+Revision status @investigram-15cfc298: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-f207fe80: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-d5170823: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-554de213: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Associated investigrams (explicit associations)
+Listing: available; 0 shown of 0.
+Use inspect @reference for retained content; no inference.
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:8063a4d5515655c21e37335157b6da32def9e894222b525f84b99c3945f95649","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}],"coverage":"full-file","contentDigest":"cf5f2af85811119cfc99c544fe0a58acffa2a3d33f7f045a4d4d8cecf3d4095b","mapping":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:43636cb88b647809d461625bccebd341219dd09e3a70ecc4bc82234a446ed0f2","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:ed268f1d30fc438081dd6ceffba6814b08906e6f770ff92ade7352ccb62823ac","kind":"claim","method":"postcode/typescript-dependencies@2;typescript@6.0.3","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}],"information":{"type":"dependency","child":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f","occurrences":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency-occurrence:1d2f634aaccfa8642b767b2b888a90fa97c09d622a681edd8bebf130ad1d0898"],"mechanisms":["re-export"],"typeOnly":false},"qualification":{"kind":"claim-context","id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency-context:949b58bc17b35305e4cb84ad5b7edf9d0e49d6881ae43dddebcffdf67890cdbd","session":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2","method":"postcode/typescript-dependencies@2;typescript@6.0.3","scope":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:a44de3a807693355148d21f3778aea4923d9bc7350ec5bd987cac239b8541ba0","evidence":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:82b9d31bae1f5b9b4f4418adfd25d9d00874d88e42d886a7fae53f8fc1e131b2","session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:0c4dc4e585f30fc36f54daeb9e42e517eb33777e2e9e2a0888ce35b03884eba9"],"status":"mechanically-derived","guarantee":"Bounded source-request evidence under the configured TypeScript environment; syntax diagnostics qualify interpretation.","limitations":["Source requests only: no value-use, emission, loader availability, execution, bundler, or deployment claims.","Only project-owned requests are analyzed; external module interiors are opaque.","CommonJS coverage is bare require with exactly one argument, complete lexical evidence, and affirmative captured context; aliases, properties and other APIs are excluded.","Defined ESM format overrides ambient declarations; preserve requires callable ambient corroboration; absent module options do not infer compiler defaults.","Nonliteral targets are not evaluated; resolved files outside the discovered population do not add modules."],"diagnostics":[],"inputs":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:analysis-inputs:282b86000bee1f58c19cc56196eca8567768c09c781ed259ee2ed03f7bbbe43e"}}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:2d10a79ac4e197e72485153249a6e2fe4025cf5d456e6fd8f8d98629fa585377","kind":"claim","method":"postcode/typescript-dependencies@2;typescript@6.0.3","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}],"information":{"type":"dependency","child":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:ddcc1eda2912d7b145024422ac5a5a5bd5a3dc278b2e70bf05d7fa040914fee5","occurrences":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency-occurrence:ad8f83a17bcd66956dadb5dff21754ea77a3a6f4795372af68163379d4b34b6b"],"mechanisms":["re-export"],"typeOnly":false},"qualification":{"kind":"claim-context","id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency-context:5d8314394732d829e61f8896254c974b945de2e9bf5bb83c4500528ebeda7c55","session":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2","method":"postcode/typescript-dependencies@2;typescript@6.0.3","scope":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:a44de3a807693355148d21f3778aea4923d9bc7350ec5bd987cac239b8541ba0","evidence":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:67a8808144b0dfd073dbadbb0547e98bcffde5fc76f1aab70eefe01156ced1cf","session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:6af505e5388cb0fd70a4309106b68462978ee61daca4b2de4e05080593af1c06"],"status":"mechanically-derived","guarantee":"Bounded source-request evidence under the configured TypeScript environment; syntax diagnostics qualify interpretation.","limitations":["Source requests only: no value-use, emission, loader availability, execution, bundler, or deployment claims.","Only project-owned requests are analyzed; external module interiors are opaque.","CommonJS coverage is bare require with exactly one argument, complete lexical evidence, and affirmative captured context; aliases, properties and other APIs are excluded.","Defined ESM format overrides ambient declarations; preserve requires callable ambient corroboration; absent module options do not infer compiler defaults.","Nonliteral targets are not evaluated; resolved files outside the discovered population do not add modules."],"diagnostics":[],"inputs":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:analysis-inputs:282b86000bee1f58c19cc56196eca8567768c09c781ed259ee2ed03f7bbbe43e"}}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}],"coverage":"full-file","contentDigest":"2322b72829d384f04b496f293abcbaf981cf7504a27ca162d824cb2ef570e502","mapping":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:c1d37ad435569036afef1aae8e2b1cd24813adb35694bc6bba803ad4aa5404a8","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}],"information":{"type":"export","exportedName":"Merge","symbol":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:symbol:d6e1f7899095a4b8e6719a7c52fcbbfce80de39fad92ed0109aa48f820019989","origin":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f","roles":{"type":true,"value":false},"routes":[{"kind":"wildcard","typeOnly":false,"aliased":false,"via":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f"},{"kind":"direct","typeOnly":false,"aliased":false,"via":null}]},"qualification":{"kind":"claim-context","id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:expansion-context:0d554d145c2f4f8cb1e603457c39948391e2acdb9d4503fd60cd26ed57b863b8","session":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:a44de3a807693355148d21f3778aea4923d9bc7350ec5bd987cac239b8541ba0","evidence":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:e8d31cc77ae274a753f7a7f34dbc2b6c693f8c8d6e41a9610d4059c17300ba70","session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:1c7ebc0507d814b463637ce7724750f2ba9fb8f5dbadf0af1452df7d7105fe3f"],"status":"mechanically-derived","guarantee":"The compiler exposes this exported name; roles and forwarding are qualified by the recorded route.","limitations":[],"diagnostics":[],"inputs":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:analysis-inputs:282b86000bee1f58c19cc56196eca8567768c09c781ed259ee2ed03f7bbbe43e"}}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:93b3c024cb4f29a0fd0c645ef2a6b6f9b954e5c8054ddb60d0dffe3f97ba6fa0","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}],"information":{"type":"export","exportedName":"concatArrays","symbol":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:symbol:f06fccccd95a6f49abaa7c957c07ac7a17eec850b76b9c8632e616e654ff1b19","origin":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:ddcc1eda2912d7b145024422ac5a5a5bd5a3dc278b2e70bf05d7fa040914fee5","roles":{"type":false,"value":true},"routes":[{"kind":"wildcard","typeOnly":false,"aliased":false,"via":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:ddcc1eda2912d7b145024422ac5a5a5bd5a3dc278b2e70bf05d7fa040914fee5"},{"kind":"direct","typeOnly":false,"aliased":false,"via":null}]},"qualification":{"kind":"claim-context","id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:expansion-context:f2acdaa74c3fe20d11e98c87caf7b0e02de5624e3106a2bf3612117c49d0a7a8","session":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:a44de3a807693355148d21f3778aea4923d9bc7350ec5bd987cac239b8541ba0","evidence":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:7caa54971fa1ecdabf543e16a9c0472b7a47d21dd77f32f2ca6767365092fe70","session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:bbb44b0e3d57491bf73fa953612c437fe3944365acc76d9b2b7db7543525ac1c"],"status":"mechanically-derived","guarantee":"The compiler exposes this exported name; roles and forwarding are qualified by the recorded route.","limitations":[],"diagnostics":[],"inputs":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:analysis-inputs:282b86000bee1f58c19cc56196eca8567768c09c781ed259ee2ed03f7bbbe43e"}}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:e26f07d96b232e4d184ad3e0cdf396135d5d38a0deec01c3652af840c3079397","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}],"information":{"type":"export","exportedName":"merge","symbol":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:symbol:55194f4f2135dfbcb0148ad0000f04388f91de411897e39ea77062d2cb15a251","origin":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f","roles":{"type":false,"value":true},"routes":[{"kind":"wildcard","typeOnly":false,"aliased":false,"via":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f"},{"kind":"direct","typeOnly":false,"aliased":false,"via":null}]},"qualification":{"kind":"claim-context","id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:expansion-context:1dc83f9d827edc888ad8010e2c13fc256d9019d547208827af6944f6bb7a9eb2","session":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:a44de3a807693355148d21f3778aea4923d9bc7350ec5bd987cac239b8541ba0","evidence":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:8e720325202e79ae5656f9a4758857448dfd8eb8be21b13c06a65c5847d99358","session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:1c7ebc0507d814b463637ce7724750f2ba9fb8f5dbadf0af1452df7d7105fe3f"],"status":"mechanically-derived","guarantee":"The compiler exposes this exported name; roles and forwarding are qualified by the recorded route.","limitations":[],"diagnostics":[],"inputs":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:analysis-inputs:282b86000bee1f58c19cc56196eca8567768c09c781ed259ee2ed03f7bbbe43e"}}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:03e0101ac41b08cef3e381d2473a2ab7bce98037a1901b29e353d87f07f7f0c3","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}],"information":{"type":"export","exportedName":"mergeAndCompare","symbol":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:symbol:94c5264a7031a9258cf116cc108ca7ea5302c88b6c35a2764a0521fdc7202145","origin":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f","roles":{"type":false,"value":true},"routes":[{"kind":"wildcard","typeOnly":false,"aliased":false,"via":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f"},{"kind":"direct","typeOnly":false,"aliased":false,"via":null}]},"qualification":{"kind":"claim-context","id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:expansion-context:9ac4180160c87b7bbc1691071ae920e2022b9bcdcb2954cb6d12bf40ba85c5fa","session":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:a44de3a807693355148d21f3778aea4923d9bc7350ec5bd987cac239b8541ba0","evidence":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:a3fd7ea754d19eb66f578f6ca3befe3e8d8087065164a7d2075316f234b688b6","session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:1c7ebc0507d814b463637ce7724750f2ba9fb8f5dbadf0af1452df7d7105fe3f"],"status":"mechanically-derived","guarantee":"The compiler exposes this exported name; roles and forwarding are qualified by the recorded route.","limitations":[],"diagnostics":[],"inputs":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:analysis-inputs:282b86000bee1f58c19cc56196eca8567768c09c781ed259ee2ed03f7bbbe43e"}}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:5cbf575991c6bb6718d39fc9141a7b4e4919d6e1a778613577b5a23228b482fd","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}],"information":{"type":"export","exportedName":"mergeAndConcat","symbol":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:symbol:60dd76f621d6d6b63440adfca11446e6004c21d285cd1cd97fe9012429832ad4","origin":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f","roles":{"type":false,"value":true},"routes":[{"kind":"wildcard","typeOnly":false,"aliased":false,"via":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f"},{"kind":"direct","typeOnly":false,"aliased":false,"via":null}]},"qualification":{"kind":"claim-context","id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:expansion-context:6abec23cdbd0dc8d411edf75a60e451b31e7eaec0c945e5812211cac68fe3456","session":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:a44de3a807693355148d21f3778aea4923d9bc7350ec5bd987cac239b8541ba0","evidence":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:9497fc07d5b62237183636e8bb45b53c0424ebc9ddafe6fe6dc3db993793c60e","session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:1c7ebc0507d814b463637ce7724750f2ba9fb8f5dbadf0af1452df7d7105fe3f"],"status":"mechanically-derived","guarantee":"The compiler exposes this exported name; roles and forwarding are qualified by the recorded route.","limitations":[],"diagnostics":[],"inputs":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:analysis-inputs:282b86000bee1f58c19cc56196eca8567768c09c781ed259ee2ed03f7bbbe43e"}}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}],"coverage":"full-file","contentDigest":"62c216bd690ec52692b34402597349609a21a993fcb808af0d3a1b3fe62a1b01","mapping":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:74e61361c910d5eb6a136db3f944d72b5111086426cdcbff85fe4c460b2dd066","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:8e720325202e79ae5656f9a4758857448dfd8eb8be21b13c06a65c5847d99358","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:a3fd7ea754d19eb66f578f6ca3befe3e8d8087065164a7d2075316f234b688b6","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:9497fc07d5b62237183636e8bb45b53c0424ebc9ddafe6fe6dc3db993793c60e","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:15399731e838c272609ed91aee99cebf8931a0be5006b8469adef85ecbe06b49","kind":"claim","method":"postcode/typescript-dependencies@2;typescript@6.0.3","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}],"information":{"type":"dependency","child":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:52c2eae32518452dc625e6436fbacc5f7952504b6621d5bed37010fa57cde956","occurrences":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency-occurrence:602540e50feda541f3b43f95b5223477e75d75a046da5844552811f623f8122d"],"mechanisms":["static-import"],"typeOnly":false},"qualification":{"kind":"claim-context","id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency-context:4e07ac3d19c83e8e07cba26a9ea2887c92d39364e39c2be2647377c76c6c05be","session":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2","method":"postcode/typescript-dependencies@2;typescript@6.0.3","scope":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f","evidence":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:e2f0fdc6d1fdce14489664718aae06a49cb3be998230a7c2ef41a0bc32ee172d","session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:43e5df5a8423bbfb6a2aaee8bc34e043ce8cda20e1bed18423471d4422ffb437"],"status":"mechanically-derived","guarantee":"Bounded source-request evidence under the configured TypeScript environment; syntax diagnostics qualify interpretation.","limitations":["Source requests only: no value-use, emission, loader availability, execution, bundler, or deployment claims.","Only project-owned requests are analyzed; external module interiors are opaque.","CommonJS coverage is bare require with exactly one argument, complete lexical evidence, and affirmative captured context; aliases, properties and other APIs are excluded.","Defined ESM format overrides ambient declarations; preserve requires callable ambient corroboration; absent module options do not infer compiler defaults.","Nonliteral targets are not evaluated; resolved files outside the discovered population do not add modules."],"diagnostics":[],"inputs":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:analysis-inputs:282b86000bee1f58c19cc56196eca8567768c09c781ed259ee2ed03f7bbbe43e"}}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:fc14889c872b78ea857f8c2e2c04daf4fb5a104d2299e2e5c421d63dafaafaaf","kind":"claim","method":"postcode/typescript-dependencies@2;typescript@6.0.3","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}],"information":{"type":"dependency","child":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:ddcc1eda2912d7b145024422ac5a5a5bd5a3dc278b2e70bf05d7fa040914fee5","occurrences":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency-occurrence:322cdb4e612bfdbeb017a5bbed93d1e39bab45d347286a65576a360be627962f"],"mechanisms":["static-import"],"typeOnly":false},"qualification":{"kind":"claim-context","id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency-context:99ca91f55b1aa76ef30243a258561b6a49b20a9b774b64b4e5c59cee88c763ff","session":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2","method":"postcode/typescript-dependencies@2;typescript@6.0.3","scope":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f","evidence":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:c097b6ec81aa524b3aa0ce989f67dc8bb130b8f793d6530b74fceb1bc30687a0","session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:6af505e5388cb0fd70a4309106b68462978ee61daca4b2de4e05080593af1c06"],"status":"mechanically-derived","guarantee":"Bounded source-request evidence under the configured TypeScript environment; syntax diagnostics qualify interpretation.","limitations":["Source requests only: no value-use, emission, loader availability, execution, bundler, or deployment claims.","Only project-owned requests are analyzed; external module interiors are opaque.","CommonJS coverage is bare require with exactly one argument, complete lexical evidence, and affirmative captured context; aliases, properties and other APIs are excluded.","Defined ESM format overrides ambient declarations; preserve requires callable ambient corroboration; absent module options do not infer compiler defaults.","Nonliteral targets are not evaluated; resolved files outside the discovered population do not add modules."],"diagnostics":[],"inputs":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:analysis-inputs:282b86000bee1f58c19cc56196eca8567768c09c781ed259ee2ed03f7bbbe43e"}}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:6f64ed2803e14f05072f46970bb3eee68517667fd9442ba8d3d0ad0536c50f83","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}],"coverage":"full-file","contentDigest":"43e2a8b75ff68ac75f2b6c5f32f8e4528b60887c81ddfb0a22d2a4a2cf28899c","mapping":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:4e55e7f47194581850d6382178abf03746fbf11e7527462b2a1bbdfed76b2f1d","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:7caa54971fa1ecdabf543e16a9c0472b7a47d21dd77f32f2ca6767365092fe70","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:db00a908bf5399461686cd58ade8511d978aea9a9511dc001727d35d5d46a564","kind":"claim","method":"postcode/typescript-dependencies@2;typescript@6.0.3","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}],"information":{"type":"dependency","child":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:52c2eae32518452dc625e6436fbacc5f7952504b6621d5bed37010fa57cde956","occurrences":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency-occurrence:e29248d7642ad15b845152f69e1bc10969cd0fd84640c33bb87648b0fe13ecd9"],"mechanisms":["static-import"],"typeOnly":false},"qualification":{"kind":"claim-context","id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency-context:c37fa8b637a44e0869c27678e8093db57772f0391e06142aaea43d0c52c13a72","session":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2","method":"postcode/typescript-dependencies@2;typescript@6.0.3","scope":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:ddcc1eda2912d7b145024422ac5a5a5bd5a3dc278b2e70bf05d7fa040914fee5","evidence":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:3db4fcb07569faa3c58bde16bf9b7f97eeadb59b1b8b25a8403c787cbf258989","session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:43e5df5a8423bbfb6a2aaee8bc34e043ce8cda20e1bed18423471d4422ffb437"],"status":"mechanically-derived","guarantee":"Bounded source-request evidence under the configured TypeScript environment; syntax diagnostics qualify interpretation.","limitations":["Source requests only: no value-use, emission, loader availability, execution, bundler, or deployment claims.","Only project-owned requests are analyzed; external module interiors are opaque.","CommonJS coverage is bare require with exactly one argument, complete lexical evidence, and affirmative captured context; aliases, properties and other APIs are excluded.","Defined ESM format overrides ambient declarations; preserve requires callable ambient corroboration; absent module options do not infer compiler defaults.","Nonliteral targets are not evaluated; resolved files outside the discovered population do not add modules."],"diagnostics":[],"inputs":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:analysis-inputs:282b86000bee1f58c19cc56196eca8567768c09c781ed259ee2ed03f7bbbe43e"}}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:74dca925e00af1e4d8ff5392a6275a5f9629badac922808cdbae94b26f58340f","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}],"coverage":"full-file","contentDigest":"d3d9aaddfd5815a14a71c995c19f64c9ffeda9ea2d3083a5965f69060c0a0461","mapping":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:947fea951542f0e36cb7258e2e2ae6dbd904f90489b806ec213cd9b4e946e3ac","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:0edd20422bed0aee5f55854002c178200bf3577e50e8b2668f73b4608c1f1f77","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}],"coverage":"full-file","contentDigest":"69711eeeb8bd0d9ae1267d526b82f4d2fff6848b274d484fdc7ba3088ed8db3d","mapping":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:cfa3269cd2c626f45fba3f298839b5204ecb06451d36ece4ecae094958e19a04","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:e8d31cc77ae274a753f7a7f34dbc2b6c693f8c8d6e41a9610d4059c17300ba70","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:c6747177ca6114dab696d2c944f2205c61dc4d77fff659431fd618292ca5c20b","kind":"claim","method":"postcode/typescript-dependencies@2;typescript@6.0.3","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}],"information":{"type":"dependency","child":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:79b8297add64fe523f87f58a3be9467f8f9e2a313466517a10bcb36e547877c6","occurrences":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency-occurrence:c37ec79e1335867ea1504a5e63fbfd167b26e439c5422287e893520acbe47336"],"mechanisms":["static-import"],"typeOnly":true},"qualification":{"kind":"claim-context","id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency-context:fd3795041f2bc210a674dbea73af608186bd0875b808d4a85b77e0cd9d4f4d23","session":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2","method":"postcode/typescript-dependencies@2;typescript@6.0.3","scope":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f","evidence":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:f74f895791cb5af89ec4adf70c0f90c5beb6e1ba1a68eabc32bdcd493b3329cf","session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:62b7a414f2fff5f444a676a01908141b0c48bb6d2c2a47aa26a79ae23d5a76cb"],"status":"mechanically-derived","guarantee":"Bounded source-request evidence under the configured TypeScript environment; syntax diagnostics qualify interpretation.","limitations":["Source requests only: no value-use, emission, loader availability, execution, bundler, or deployment claims.","Only project-owned requests are analyzed; external module interiors are opaque.","CommonJS coverage is bare require with exactly one argument, complete lexical evidence, and affirmative captured context; aliases, properties and other APIs are excluded.","Defined ESM format overrides ambient declarations; preserve requires callable ambient corroboration; absent module options do not infer compiler defaults.","Nonliteral targets are not evaluated; resolved files outside the discovered population do not add modules."],"diagnostics":[],"inputs":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:analysis-inputs:282b86000bee1f58c19cc56196eca8567768c09c781ed259ee2ed03f7bbbe43e"}}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:4042a79bd3ddf9e6359b87b4d671cdf0f7bf3fca9a25eb57657942b6171dec15","kind":"claim","method":"postcode/typescript-dependencies@2;typescript@6.0.3","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}],"information":{"type":"dependency","child":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:92481056bbc2e85ce5a0b1d999aed415b30649350845a1f680b1044dee2888af","occurrences":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency-occurrence:c0f2a34c3bc02c4f1b49428adf8f6e17c74803b3a1b99ad73698cc8c973a411c"],"mechanisms":["static-import"],"typeOnly":true},"qualification":{"kind":"claim-context","id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency-context:a66132d9e765975c2c1bcdc933075a143022f81f2787154e921ecdb5ee664543","session":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2","method":"postcode/typescript-dependencies@2;typescript@6.0.3","scope":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f","evidence":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:651fd09660a24d833d9b1918adfe19984427640d11aa29ace56dabd00815aab5","session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:fc0b55194b55c7fac59a2140e1921931afdd83ef890d3a3adee81bea51bdd22d"],"status":"mechanically-derived","guarantee":"Bounded source-request evidence under the configured TypeScript environment; syntax diagnostics qualify interpretation.","limitations":["Source requests only: no value-use, emission, loader availability, execution, bundler, or deployment claims.","Only project-owned requests are analyzed; external module interiors are opaque.","CommonJS coverage is bare require with exactly one argument, complete lexical evidence, and affirmative captured context; aliases, properties and other APIs are excluded.","Defined ESM format overrides ambient declarations; preserve requires callable ambient corroboration; absent module options do not infer compiler defaults.","Nonliteral targets are not evaluated; resolved files outside the discovered population do not add modules."],"diagnostics":[],"inputs":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:analysis-inputs:282b86000bee1f58c19cc56196eca8567768c09c781ed259ee2ed03f7bbbe43e"}}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:b3197dacf8fff040b128a0db56e61d93a378d80423e42ac5d244c990f68423fb","kind":"claim","method":"postcode/typescript-dependencies@2;typescript@6.0.3","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e","forms":["full"]}],"information":{"type":"dependency","child":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:14f53644b8919e52a1da75e68bf03f9047d7e53057eeb6858159b9cf64515153","occurrences":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency-occurrence:9aa44102ae6ac806f2d05d347a03698b46621e53c6c51b84c3690372e7d164bf"],"mechanisms":["static-import"],"typeOnly":true},"qualification":{"kind":"claim-context","id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency-context:3abf49f05947c4647bbd85a8b5c67b46c2028bed207741aed4c63e286af7d5c5","session":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2","method":"postcode/typescript-dependencies@2;typescript@6.0.3","scope":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f","evidence":["session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:8e1d8265804ae147651dc6894ce5e34d93857c775f0b6a7fb94fbf7fe5666dfe","session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:7396c8f521f6574ac75f811113bc68c0df7d8a3378a075df7f8630b199046562"],"status":"mechanically-derived","guarantee":"Bounded source-request evidence under the configured TypeScript environment; syntax diagnostics qualify interpretation.","limitations":["Source requests only: no value-use, emission, loader availability, execution, bundler, or deployment claims.","Only project-owned requests are analyzed; external module interiors are opaque.","CommonJS coverage is bare require with exactly one argument, complete lexical evidence, and affirmative captured context; aliases, properties and other APIs are excluded.","Defined ESM format overrides ambient declarations; preserve requires callable ambient corroboration; absent module options do not infer compiler defaults.","Nonliteral targets are not evaluated; resolved files outside the discovered population do not add modules."],"diagnostics":[],"inputs":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:analysis-inputs:282b86000bee1f58c19cc56196eca8567768c09c781ed259ee2ed03f7bbbe43e"}}
+
+Source support (captured locations and excerpts):
+[
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:43636cb88b647809d461625bccebd341219dd09e3a70ecc4bc82234a446ed0f2",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/index.ts",
+    "contentDigest": "cf5f2af85811119cfc99c544fe0a58acffa2a3d33f7f045a4d4d8cecf3d4095b",
+    "start": 0,
+    "length": 59,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": "\"/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/index\""
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:82b9d31bae1f5b9b4f4418adfd25d9d00874d88e42d886a7fae53f8fc1e131b2",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/index.ts",
+    "contentDigest": "cf5f2af85811119cfc99c544fe0a58acffa2a3d33f7f045a4d4d8cecf3d4095b",
+    "start": 32,
+    "length": 26,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 2,
+        "column": 1
+      },
+      "to": {
+        "line": 2,
+        "column": 27
+      },
+      "excerpt": {
+        "text": "export * from './merge.js'",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null,
+    "dependencyResolution": {
+      "writtenSpecifier": "./merge.js",
+      "status": "resolved",
+      "resolvedFile": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/merge.ts",
+      "targetBasis": "checker-symbol",
+      "mode": "esm"
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:0c4dc4e585f30fc36f54daeb9e42e517eb33777e2e9e2a0888ce35b03884eba9",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/merge.ts",
+    "contentDigest": "62c216bd690ec52692b34402597349609a21a993fcb808af0d3a1b3fe62a1b01",
+    "start": 0,
+    "length": 5418,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:67a8808144b0dfd073dbadbb0547e98bcffde5fc76f1aab70eefe01156ced1cf",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/index.ts",
+    "contentDigest": "cf5f2af85811119cfc99c544fe0a58acffa2a3d33f7f045a4d4d8cecf3d4095b",
+    "start": 0,
+    "length": 31,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 1,
+        "column": 1
+      },
+      "to": {
+        "line": 1,
+        "column": 32
+      },
+      "excerpt": {
+        "text": "export * from './extensions.js'",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null,
+    "dependencyResolution": {
+      "writtenSpecifier": "./extensions.js",
+      "status": "resolved",
+      "resolvedFile": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/extensions.ts",
+      "targetBasis": "checker-symbol",
+      "mode": "esm"
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:6af505e5388cb0fd70a4309106b68462978ee61daca4b2de4e05080593af1c06",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/extensions.ts",
+    "contentDigest": "43e2a8b75ff68ac75f2b6c5f32f8e4528b60887c81ddfb0a22d2a4a2cf28899c",
+    "start": 0,
+    "length": 271,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/organization@3",
+    "kind": "repository-artifact",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93",
+    "repository": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:repository-evidence:dff828d8b80561c83ace18a0a30cab26bb4619b1b5ad67a3b748bbe5beac4908",
+    "artifact": {
+      "path": "README.md",
+      "kind": "file",
+      "tracked": true
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:e8d31cc77ae274a753f7a7f34dbc2b6c693f8c8d6e41a9610d4059c17300ba70",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/merge.ts",
+    "contentDigest": "62c216bd690ec52692b34402597349609a21a993fcb808af0d3a1b3fe62a1b01",
+    "start": 409,
+    "length": 224,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 12,
+        "column": 1
+      },
+      "to": {
+        "line": 17,
+        "column": 14
+      },
+      "excerpt": {
+        "text": "export type Merge<T, Ts extends unknown[]> =\n  T extends Record<string | number | symbol, unknown>\n    ? Ts extends Record<string | number | symbol, unknown>[]\n      ? PrettyPrint<Assign<T, Ts>>",
+        "omittedCharacters": 30
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:1c7ebc0507d814b463637ce7724750f2ba9fb8f5dbadf0af1452df7d7105fe3f",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/index.ts",
+    "contentDigest": "cf5f2af85811119cfc99c544fe0a58acffa2a3d33f7f045a4d4d8cecf3d4095b",
+    "start": 32,
+    "length": 26,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 2,
+        "column": 1
+      },
+      "to": {
+        "line": 2,
+        "column": 27
+      },
+      "excerpt": {
+        "text": "export * from './merge.js'",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:7caa54971fa1ecdabf543e16a9c0472b7a47d21dd77f32f2ca6767365092fe70",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/extensions.ts",
+    "contentDigest": "43e2a8b75ff68ac75f2b6c5f32f8e4528b60887c81ddfb0a22d2a4a2cf28899c",
+    "start": 35,
+    "length": 235,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 3,
+        "column": 1
+      },
+      "to": {
+        "line": 9,
+        "column": 2
+      },
+      "excerpt": {
+        "text": "export function concatArrays<T>(originVal: unknown, newVal: T): T {\n  if (isArray(originVal) && isArray(newVal)) {\n    // concat logic\n    return originVal.concat(newVal) as T",
+        "omittedCharacters": 60
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:bbb44b0e3d57491bf73fa953612c437fe3944365acc76d9b2b7db7543525ac1c",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/index.ts",
+    "contentDigest": "cf5f2af85811119cfc99c544fe0a58acffa2a3d33f7f045a4d4d8cecf3d4095b",
+    "start": 0,
+    "length": 31,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 1,
+        "column": 1
+      },
+      "to": {
+        "line": 1,
+        "column": 32
+      },
+      "excerpt": {
+        "text": "export * from './extensions.js'",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:8e720325202e79ae5656f9a4758857448dfd8eb8be21b13c06a65c5847d99358",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/merge.ts",
+    "contentDigest": "62c216bd690ec52692b34402597349609a21a993fcb808af0d3a1b3fe62a1b01",
+    "start": 3509,
+    "length": 221,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 101,
+        "column": 1
+      },
+      "to": {
+        "line": 105,
+        "column": 2
+      },
+      "excerpt": {
+        "text": "export function merge<T, const Tn extends unknown[]>(object: T, ...otherObjects: Tn): Merge<T, Tn> {\n  return otherObjects.reduce((result, newComer) => {\n    return mergeRecursively(result, newComer)\n  }, object) as any",
+        "omittedCharacters": 2
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:a3fd7ea754d19eb66f578f6ca3befe3e8d8087065164a7d2075316f234b688b6",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/merge.ts",
+    "contentDigest": "62c216bd690ec52692b34402597349609a21a993fcb808af0d3a1b3fe62a1b01",
+    "start": 3732,
+    "length": 329,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 107,
+        "column": 1
+      },
+      "to": {
+        "line": 115,
+        "column": 2
+      },
+      "excerpt": {
+        "text": "export function mergeAndCompare<T, const Tn extends unknown[]>(\n  compareFn: (prop1: unknown, prop2: unknown, propName: string | symbol) => any,\n  object: T,\n  ...otherObjects: Tn",
+        "omittedCharacters": 150
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:9497fc07d5b62237183636e8bb45b53c0424ebc9ddafe6fe6dc3db993793c60e",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/merge.ts",
+    "contentDigest": "62c216bd690ec52692b34402597349609a21a993fcb808af0d3a1b3fe62a1b01",
+    "start": 4063,
+    "length": 250,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 117,
+        "column": 1
+      },
+      "to": {
+        "line": 124,
+        "column": 2
+      },
+      "excerpt": {
+        "text": "export function mergeAndConcat<T, const Tn extends unknown[]>(\n  object: T,\n  ...otherObjects: Tn\n): Merge<T, Tn> {",
+        "omittedCharacters": 135
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:74e61361c910d5eb6a136db3f944d72b5111086426cdcbff85fe4c460b2dd066",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/merge.ts",
+    "contentDigest": "62c216bd690ec52692b34402597349609a21a993fcb808af0d3a1b3fe62a1b01",
+    "start": 0,
+    "length": 5418,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": "\"/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/merge\""
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:e2f0fdc6d1fdce14489664718aae06a49cb3be998230a7c2ef41a0bc32ee172d",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/merge.ts",
+    "contentDigest": "62c216bd690ec52692b34402597349609a21a993fcb808af0d3a1b3fe62a1b01",
+    "start": 0,
+    "length": 49,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 1,
+        "column": 1
+      },
+      "to": {
+        "line": 1,
+        "column": 50
+      },
+      "excerpt": {
+        "text": "import { isPlainObject, isSymbol } from 'is-what'",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null,
+    "dependencyResolution": {
+      "writtenSpecifier": "is-what",
+      "status": "resolved",
+      "resolvedFile": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/node_modules/.pnpm/is-what@5.5.7/node_modules/is-what/dist/index.d.ts",
+      "targetBasis": "checker-symbol",
+      "mode": "esm"
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:43e5df5a8423bbfb6a2aaee8bc34e043ce8cda20e1bed18423471d4422ffb437",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/node_modules/.pnpm/is-what@5.5.7/node_modules/is-what/dist/index.d.ts",
+    "contentDigest": "df3f1331d299bac7ebcf392bcc76969519f3a187e007612806d3eadea9fafcc5",
+    "start": 0,
+    "length": 2201,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": false,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:c097b6ec81aa524b3aa0ce989f67dc8bb130b8f793d6530b74fceb1bc30687a0",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/merge.ts",
+    "contentDigest": "62c216bd690ec52692b34402597349609a21a993fcb808af0d3a1b3fe62a1b01",
+    "start": 50,
+    "length": 46,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 2,
+        "column": 1
+      },
+      "to": {
+        "line": 2,
+        "column": 47
+      },
+      "excerpt": {
+        "text": "import { concatArrays } from './extensions.js'",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null,
+    "dependencyResolution": {
+      "writtenSpecifier": "./extensions.js",
+      "status": "resolved",
+      "resolvedFile": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/extensions.ts",
+      "targetBasis": "checker-symbol",
+      "mode": "esm"
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:4e55e7f47194581850d6382178abf03746fbf11e7527462b2a1bbdfed76b2f1d",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/extensions.ts",
+    "contentDigest": "43e2a8b75ff68ac75f2b6c5f32f8e4528b60887c81ddfb0a22d2a4a2cf28899c",
+    "start": 0,
+    "length": 271,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": "\"/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/extensions\""
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:3db4fcb07569faa3c58bde16bf9b7f97eeadb59b1b8b25a8403c787cbf258989",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/extensions.ts",
+    "contentDigest": "43e2a8b75ff68ac75f2b6c5f32f8e4528b60887c81ddfb0a22d2a4a2cf28899c",
+    "start": 0,
+    "length": 33,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 1,
+        "column": 1
+      },
+      "to": {
+        "line": 1,
+        "column": 34
+      },
+      "excerpt": {
+        "text": "import { isArray } from 'is-what'",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null,
+    "dependencyResolution": {
+      "writtenSpecifier": "is-what",
+      "status": "resolved",
+      "resolvedFile": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/node_modules/.pnpm/is-what@5.5.7/node_modules/is-what/dist/index.d.ts",
+      "targetBasis": "checker-symbol",
+      "mode": "esm"
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:947fea951542f0e36cb7258e2e2ae6dbd904f90489b806ec213cd9b4e946e3ac",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/typeUtils/Assign.ts",
+    "contentDigest": "d3d9aaddfd5815a14a71c995c19f64c9ffeda9ea2d3083a5965f69060c0a0461",
+    "start": 0,
+    "length": 2605,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": "\"/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/typeUtils/Assign\""
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:cfa3269cd2c626f45fba3f298839b5204ecb06451d36ece4ecae094958e19a04",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/typeUtils/PrettyPrint.ts",
+    "contentDigest": "69711eeeb8bd0d9ae1267d526b82f4d2fff6848b274d484fdc7ba3088ed8db3d",
+    "start": 0,
+    "length": 494,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": "\"/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/typeUtils/PrettyPrint\""
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:f74f895791cb5af89ec4adf70c0f90c5beb6e1ba1a68eabc32bdcd493b3329cf",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/merge.ts",
+    "contentDigest": "62c216bd690ec52692b34402597349609a21a993fcb808af0d3a1b3fe62a1b01",
+    "start": 97,
+    "length": 51,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 3,
+        "column": 1
+      },
+      "to": {
+        "line": 3,
+        "column": 52
+      },
+      "excerpt": {
+        "text": "import type { Assign } from './typeUtils/Assign.js'",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null,
+    "dependencyResolution": {
+      "writtenSpecifier": "./typeUtils/Assign.js",
+      "status": "resolved",
+      "resolvedFile": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/typeUtils/Assign.ts",
+      "targetBasis": "checker-symbol",
+      "mode": "esm"
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:62b7a414f2fff5f444a676a01908141b0c48bb6d2c2a47aa26a79ae23d5a76cb",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/typeUtils/Assign.ts",
+    "contentDigest": "d3d9aaddfd5815a14a71c995c19f64c9ffeda9ea2d3083a5965f69060c0a0461",
+    "start": 0,
+    "length": 2605,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:651fd09660a24d833d9b1918adfe19984427640d11aa29ace56dabd00815aab5",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/merge.ts",
+    "contentDigest": "62c216bd690ec52692b34402597349609a21a993fcb808af0d3a1b3fe62a1b01",
+    "start": 196,
+    "length": 61,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 5,
+        "column": 1
+      },
+      "to": {
+        "line": 5,
+        "column": 62
+      },
+      "excerpt": {
+        "text": "import type { PrettyPrint } from './typeUtils/PrettyPrint.js'",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null,
+    "dependencyResolution": {
+      "writtenSpecifier": "./typeUtils/PrettyPrint.js",
+      "status": "resolved",
+      "resolvedFile": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/typeUtils/PrettyPrint.ts",
+      "targetBasis": "checker-symbol",
+      "mode": "esm"
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:fc0b55194b55c7fac59a2140e1921931afdd83ef890d3a3adee81bea51bdd22d",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/typeUtils/PrettyPrint.ts",
+    "contentDigest": "69711eeeb8bd0d9ae1267d526b82f4d2fff6848b274d484fdc7ba3088ed8db3d",
+    "start": 0,
+    "length": 494,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:8e1d8265804ae147651dc6894ce5e34d93857c775f0b6a7fb94fbf7fe5666dfe",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/merge.ts",
+    "contentDigest": "62c216bd690ec52692b34402597349609a21a993fcb808af0d3a1b3fe62a1b01",
+    "start": 149,
+    "length": 46,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 4,
+        "column": 1
+      },
+      "to": {
+        "line": 4,
+        "column": 47
+      },
+      "excerpt": {
+        "text": "import type { Pop } from './typeUtils/List.js'",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null,
+    "dependencyResolution": {
+      "writtenSpecifier": "./typeUtils/List.js",
+      "status": "resolved",
+      "resolvedFile": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/typeUtils/List.ts",
+      "targetBasis": "checker-symbol",
+      "mode": "esm"
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:7396c8f521f6574ac75f811113bc68c0df7d8a3378a075df7f8630b199046562",
+    "session": "session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/src/typeUtils/List.ts",
+    "contentDigest": "e26eeda9dce41f3d2e5adf996863ae61fa00b45a56c19e68995257806165526e",
+    "start": 0,
+    "length": 739,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  }
+]
+Session reported usage: 17 calls; 2 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 302293 tokens; input 292875 tokens (subset of total); output 9418 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3787 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> inspect @investigram-630be241
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-630be241 · interpretation
+The merge preserves only whether each copied property is enumerable. It obtains values by property access, so getters are evaluated, and then writes an ordinary value property: enumerable properties use assignment; non-enumerable properties are defined as writable and configurable. Getters, setters, read-only/configurability flags, and other descriptor details are therefore not retained. Values on branches that are merely copied or directly replaced remain the same references; only an actually traversed overlapping plain-object branch is rebuilt. An incoming plain object paired with an old value of `undefined` is assigned directly rather than recursively copied.
+Referent: descriptor normalization and reference-sharing behavior
+  Qualification: The README explicitly warns that some nested properties remain linked to source objects; the source gives the more precise mechanism.
+  Qualification: Reading accessors can have user-defined effects; this follows from apparent property-access syntax and was not tested.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f207fe80 (provenance, not composition)
+  Composition parent: @investigram-c693e563
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+Revision status @investigram-630be241: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Associated investigrams (explicit associations)
+Listing: available; 1 shown of 1.
+Use inspect @reference for retained content; no inference.
+@investigram-bac77638 · interpretation
+  Revision: current original; inspect this reference for details.
+  The earlier account is sound, but the implementation exposes sharper identity and side-effect boundaries. A merge step inventories all own string-named properties, including non-enumerables, plus all own symbols; inherited properties are excluded, and the string key `__proto__` is deliberately discarded from both inputs. It then reads values and recreates properties on a fresh ordinary object rath [537 prose characters omitted]
+  Operation: examination; origin: hosted; provenance: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:8f7f880d9844577dbdf383facd861410e3733e3b3b6f2fd57e33450632f14cbc
+  Qualification: Derived from captured TypeScript source; runtime behavior was not executed.
+  Qualification: The exact boundary of “plain object” is delegated to the external `is-what` runtime. Only its declaration entry point was available here, not the implementation of `isPlainObject`.
+  Qualification: The README is treated as attributed package documentation and compared with source, not as proof of behavior.
+  Association: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigram:630be2417544f7a5aa0823fc9e90587c8f6151dbaf16daef56440a3a7543e15f (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:2bf1b564c485134853590c0628cac56b18f3ced1ba255b04bed90ca48c6c913d","forms":["full"]}],"coverage":"full-file","contentDigest":"62c216bd690ec52692b34402597349609a21a993fcb808af0d3a1b3fe62a1b01","mapping":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:74e61361c910d5eb6a136db3f944d72b5111086426cdcbff85fe4c460b2dd066","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:2bf1b564c485134853590c0628cac56b18f3ced1ba255b04bed90ca48c6c913d","forms":["full"]}],"coverage":"full-file","contentDigest":"2322b72829d384f04b496f293abcbaf981cf7504a27ca162d824cb2ef570e502","mapping":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+Session reported usage: 17 calls; 2 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 302293 tokens; input 292875 tokens (subset of total); output 9418 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3787 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> inspect @investigram-bac77638
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-bac77638 · interpretation
+The earlier account is sound, but the implementation exposes sharper identity and side-effect boundaries. A merge step inventories all own string-named properties, including non-enumerables, plus all own symbols; inherited properties are excluded, and the string key `__proto__` is deliberately discarded from both inputs. It then reads values and recreates properties on a fresh ordinary object rather than transferring descriptors. Consequently, descriptor normalization is accompanied by observable access order: an origin property is read before the code checks whether the incoming object supersedes it, and an overlapping origin value is read again while processing the incoming key. An accessor on an overridden origin key can therefore run twice even though its value may not appear in the result. No execution was performed, so this is a source-level account of ordinary ECMAScript property access rather than an observed trace.
+Referent: deeper examination of descriptor normalization, accessor effects, and reference identity in recursive merge
+  Qualification: Derived from captured TypeScript source; runtime behavior was not executed.
+  Qualification: The exact boundary of “plain object” is delegated to the external `is-what` runtime. Only its declaration entry point was available here, not the implementation of `isPlainObject`.
+  Qualification: The README is treated as attributed package documentation and compared with source, not as proof of behavior.
+  Displayed composition: @investigram-9f5b679a, @investigram-0588920a, @investigram-b271cd1e
+  Composition: @investigram-9f5b679a, @investigram-0588920a, @investigram-b271cd1e
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-630be241 (provenance, not composition)
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:4058110f5226dffbfee41a398a8c2c8aecb21a8f66e8857496f7812c0ec3edf9
+
+@investigram-9f5b679a · interpretation
+For an ordinary overlapping key, the origin-side pass evaluates `origin[key]` before deciding that the incoming object owns the same key; the incoming-side pass then evaluates `newComer[key]` and evaluates `origin[key]` again. Thus an old getter can run twice and a new getter once. A non-overlapping origin getter is still evaluated once when copied. Getter return values, rather than accessor descriptors, are installed in the result; enumerable results are assigned and non-enumerable results are defined as writable and configurable data properties. Errors and mutations caused by these reads are not intercepted by the shown code. Symbol keys follow the same runtime path despite the helper's internal string cast.
+Referent: accessor evaluation order and descriptor recreation
+  Qualification: Invocation counts describe the straight-line source path for stable ordinary objects; proxies or getters that mutate either input can alter later reflection and membership checks.
+  Qualification: No runtime tests were available to confirm side-effect traces.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-630be241 (provenance, not composition)
+  Composition parent: @investigram-bac77638
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+
+@investigram-0588920a · interpretation
+Reference sharing is path-dependent rather than simply “deep” or “shallow.” With no additional arguments, `merge` returns its first argument unchanged. A non-plain incoming value—including an array under the default merge—is returned or assigned as the same reference. A plain incoming property is recursively rebuilt only when the corresponding origin value is not `undefined`; if the key is absent or explicitly holds `undefined`, that incoming plain object is assigned by reference. The recursion has no visited-object or memoization table. Therefore an overlapping cyclic pair can recurse without a termination guard, while repeated references that are recursively traversed through separate overlapping properties can be rebuilt independently and lose alias identity. Cycles or aliases on paths merely assigned rather than traversed remain shared.
+Referent: path-dependent cloning, aliasing, and cycle behavior
+  Qualification: Cycle nontermination and alias splitting are source-level consequences of unguarded recursive calls; they were not demonstrated by execution.
+  Qualification: Whether a particular object reaches recursion depends on the external `isPlainObject` predicate, whose runtime implementation was not acquired.
+  Qualification: The README warns generally about retained nested references but does not document cycle handling or alias preservation.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-630be241 (provenance, not composition)
+  Composition parent: @investigram-bac77638
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:4058110f5226dffbfee41a398a8c2c8aecb21a8f66e8857496f7812c0ec3edf9
+
+@investigram-b271cd1e · interpretation
+The compare hook has a documentation-versus-implementation qualification relevant to value identity. The README says the custom function is triggered when a value is overwritten, but the source calls it for every own incoming key, including a key absent from the origin or one whose origin value is `undefined`. For an overlapping incoming plain object, recursion occurs first, so the callback receives the recursively produced value rather than the raw incoming object. Whatever the callback returns is then stored under the incoming property's enumerability, with the same descriptor normalization as ordinary merge.
+Referent: compare-hook scope and its effect on assigned identity
+  Qualification: This is an attributed discrepancy between README wording and captured implementation, not a structured inconsistency with an earlier investigram.
+  Qualification: The source does not distinguish an absent origin key from an origin key whose value is `undefined` when invoking the callback.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-630be241 (provenance, not composition)
+  Composition parent: @investigram-bac77638
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+Revision status @investigram-bac77638: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-9f5b679a: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-0588920a: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-b271cd1e: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Associated investigrams (explicit associations)
+Listing: available; 0 shown of 0.
+Use inspect @reference for retained content; no inference.
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:8f7f880d9844577dbdf383facd861410e3733e3b3b6f2fd57e33450632f14cbc","forms":["full"]}],"coverage":"full-file","contentDigest":"62c216bd690ec52692b34402597349609a21a993fcb808af0d3a1b3fe62a1b01","mapping":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:74e61361c910d5eb6a136db3f944d72b5111086426cdcbff85fe4c460b2dd066","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:8f7f880d9844577dbdf383facd861410e3733e3b3b6f2fd57e33450632f14cbc","forms":["full"]}],"coverage":"full-file","contentDigest":"2322b72829d384f04b496f293abcbaf981cf7504a27ca162d824cb2ef570e502","mapping":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:4058110f5226dffbfee41a398a8c2c8aecb21a8f66e8857496f7812c0ec3edf9","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:8f7f880d9844577dbdf383facd861410e3733e3b3b6f2fd57e33450632f14cbc","forms":["full"]}],"coverage":"full-file","contentDigest":"df3f1331d299bac7ebcf392bcc76969519f3a187e007612806d3eadea9fafcc5","mapping":"session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:92e3ddf234d5492d815cbac29e915e82ed82f3a5c918586e1b087440847ac154","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+Session reported usage: 17 calls; 2 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 302293 tokens; input 292875 tokens (subset of total); output 9418 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3787 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> explain @investigram-f207fe80
+Explain · investigram
+References remain bound for this session.
+Retained outcome; no new investigation.
+
+@investigram-c693e563 · interpretation
+The public entry point re-exports the merge and extension modules. At runtime, `merge`, `mergeAndCompare`, and `mergeAndConcat` all perform the same left-to-right fold: the first argument is the initial accumulator, and each later argument is merged into the result of the preceding step. A later non-plain value—including an array, primitive, function, date, or class instance—replaces the accumulator at that point. A later plain object instead produces a fresh plain object whose own properties combine the two sides; recursion occurs only for an incoming plain-object property whose corresponding old value is not `undefined`. Thus “deep merge” applies selectively to overlapping plain-object branches, not as a general deep clone.
+Referent: clarified runtime behavior of the recursive merge implementation and its public variants
+  Qualification: Apparent behavior is inferred from captured TypeScript source and was not executed.
+  Qualification: The exact meaning of “plain object” is delegated to the external `is-what` implementation; only its declaration-level re-export surface, not the implementation of its predicates, was available here.
+  Qualification: The README describes intended usage and claims rather than independently establishing runtime behavior. Its statement that merge always returns a new object has an edge case in the implementation: with no additional arguments, the reducer returns the original first argument unchanged.
+  Qualification: The implementation does not detect cycles; recursive overlapping plain-object cycles may therefore fail to terminate.
+  Displayed composition: @investigram-c35d0ff7, @investigram-630be241, @investigram-795ef5e9
+  Composition: @investigram-c35d0ff7, @investigram-630be241, @investigram-795ef5e9
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f207fe80 (provenance, not composition)
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:8063a4d5515655c21e37335157b6da32def9e894222b525f84b99c3945f95649, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-c35d0ff7 · interpretation
+For a plain-object newcomer, the implementation first carries over old own properties that the newcomer does not have, then processes every own property of the newcomer. It uses `Object.getOwnPropertyNames` plus `Object.getOwnPropertySymbols`, so non-enumerable string properties and symbol properties participate, while inherited properties do not. The literal string key `__proto__` is skipped on both sides. Later keys win unless recursion or a comparison callback computes another value.
+Referent: property selection, precedence, and prototype-poisoning guard
+  Qualification: Property order follows the arrays returned by the standard own-property reflection calls, with string keys processed before symbol keys in each pass.
+  Qualification: The `__proto__` guard applies to that string key; symbol keys are distinct even if their descriptions contain the same text.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f207fe80 (provenance, not composition)
+  Composition parent: @investigram-c693e563
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579
+
+@investigram-630be241 · interpretation
+The merge preserves only whether each copied property is enumerable. It obtains values by property access, so getters are evaluated, and then writes an ordinary value property: enumerable properties use assignment; non-enumerable properties are defined as writable and configurable. Getters, setters, read-only/configurability flags, and other descriptor details are therefore not retained. Values on branches that are merely copied or directly replaced remain the same references; only an actually traversed overlapping plain-object branch is rebuilt. An incoming plain object paired with an old value of `undefined` is assigned directly rather than recursively copied.
+Referent: descriptor normalization and reference-sharing behavior
+  Qualification: The README explicitly warns that some nested properties remain linked to source objects; the source gives the more precise mechanism.
+  Qualification: Reading accessors can have user-defined effects; this follows from apparent property-access syntax and was not tested.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f207fe80 (provenance, not composition)
+  Composition parent: @investigram-c693e563
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-795ef5e9 · interpretation
+`mergeAndCompare(compareFn, first, ...rest)` invokes the callback for each property contributed by a newcomer, not for old-only properties that are merely carried forward. The callback receives the old value (or `undefined` when there is no usable plain-object origin), the proposed new value, and the string or symbol key. When the incoming value is a recursively mergeable plain object, that recursive result is computed before the callback at the parent key; callbacks also run while processing properties inside the recursive merge. `mergeAndConcat` installs `concatArrays` as this callback: it concatenates only when both compared values are arrays and otherwise accepts the proposed new value, so ordinary object recursion remains unchanged while overlapping arrays append old elements before new ones.
+Referent: custom comparison and array-concatenation variants
+  Qualification: The README phrases the custom callback as running when values are overwritten; the implementation is broader because it also invokes it for newcomer properties whose old value is absent.
+  Qualification: Array concatenation is shallow and uses the old array's `concat`; array elements are not recursively merged by this helper.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-f207fe80 (provenance, not composition)
+  Composition parent: @investigram-c693e563
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:6f64ed2803e14f05072f46970bb3eee68517667fd9442ba8d3d0ad0536c50f83, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+Revision status @investigram-c693e563: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-c35d0ff7: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-630be241: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-795ef5e9: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-f207fe80: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:2bf1b564c485134853590c0628cac56b18f3ced1ba255b04bed90ca48c6c913d (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 86640 tokens; input 83585 tokens (subset of total); output 3055 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1201 tokens (subset of output)
+Session reported usage: 17 calls; 2 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 302293 tokens; input 292875 tokens (subset of total); output 9418 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3787 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> summarize anonymous
+Module summary
+References remain bound for this session.
+Retained outcome; no new investigation.
+Module @module-a44de3a8: anonymous
+
+@investigram-15cfc298 · interpretation
+This module is the package-facing entry point: it implements no merge logic itself, but wildcard-re-exports the recursive merge API, its result type, and the array-concatenation helper. The nearby README describes the package as a deep merger for plain objects with TypeScript result inference; that description is broadly borne out by the inspected implementation, subject to its documented reference-sharing caveat.
+Referent: package-facing merge API entry point
+  Qualification: Implementation account from captured TypeScript source; no runtime execution was performed.
+  Qualification: README statements are attributed documentation, not independently established behavior.
+  Qualification: Dependency analysis is bounded source-request analysis, not runtime or deployment completeness.
+  Displayed composition: @investigram-f207fe80, @investigram-d5170823, @investigram-554de213
+  Composition: @investigram-f207fe80, @investigram-d5170823, @investigram-554de213
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:8063a4d5515655c21e37335157b6da32def9e894222b525f84b99c3945f95649, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:ed268f1d30fc438081dd6ceffba6814b08906e6f770ff92ade7352ccb62823ac, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:2d10a79ac4e197e72485153249a6e2fe4025cf5d456e6fd8f8d98629fa585377, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:c1d37ad435569036afef1aae8e2b1cd24813adb35694bc6bba803ad4aa5404a8, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:93b3c024cb4f29a0fd0c645ef2a6b6f9b954e5c8054ddb60d0dffe3f97ba6fa0, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:e26f07d96b232e4d184ad3e0cdf396135d5d38a0deec01c3652af840c3079397, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:03e0101ac41b08cef3e381d2473a2ab7bce98037a1901b29e353d87f07f7f0c3, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:5cbf575991c6bb6718d39fc9141a7b4e4919d6e1a778613577b5a23228b482fd
+
+@investigram-f207fe80 · interpretation
+The merge implementation folds later inputs over the accumulated result. Only plain objects recurse; primitives, arrays, class instances, and other non-plain values replace the prior value. It copies own string and symbol properties, preserves enumerable versus non-enumerable status, skips `__proto__`, and lets later properties win. `mergeAndCompare` routes each assignment through a caller callback; `mergeAndConcat` uses the array helper as that callback.
+Referent: recursive runtime merge implementation and public variants
+  Qualification: Apparent behavior from full captured source, not execution.
+  Qualification: Accessors and other descriptor attributes are not preserved: assignment/defineProperty materializes a writable configurable value property.
+  Qualification: Nested values can retain source references when no recursive overlap causes rebuilding, matching the README's warning.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-15cfc298
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:8e720325202e79ae5656f9a4758857448dfd8eb8be21b13c06a65c5847d99358, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:a3fd7ea754d19eb66f578f6ca3befe3e8d8087065164a7d2075316f234b688b6, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:9497fc07d5b62237183636e8bb45b53c0424ebc9ddafe6fe6dc3db993793c60e, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-d5170823 · interpretation
+The extension helper concatenates only when both old and incoming values are arrays; otherwise it returns the incoming value unchanged. It is both directly exported and delegated to by `mergeAndConcat`.
+Referent: array-concatenating overwrite policy
+  Qualification: Apparent behavior from captured source, not execution.
+  Qualification: Array recognition is delegated to external `is-what`; that dependency's implementation was not inspected.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-15cfc298
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:6f64ed2803e14f05072f46970bb3eee68517667fd9442ba8d3d0ad0536c50f83, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:7caa54971fa1ecdabf543e16a9c0472b7a47d21dd77f32f2ca6767365092fe70, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:db00a908bf5399461686cd58ade8511d978aea9a9511dc001727d35d5d46a564
+
+@investigram-554de213 · interpretation
+Compile-time return typing is separate from runtime recursion. `Merge` uses a recursive `Assign` model for object inputs, falls back to the last supplied type otherwise, and runs the result through `PrettyPrint` to expose a readable recursively expanded shape. `Assign` iterates input object types with last-in override semantics; `PrettyPrint` guards against cycles with a seen set.
+Referent: compile-time model of merge results
+  Qualification: Type-level interpretation from captured TypeScript definitions; it does not itself establish runtime equivalence.
+  Qualification: Further delegated internals such as `MergeDeep`, iteration, and list helpers were not inspected because the exposed branching and division of responsibility were already clear.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-15cfc298
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:74dca925e00af1e4d8ff5392a6275a5f9629badac922808cdbae94b26f58340f, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:0edd20422bed0aee5f55854002c178200bf3577e50e8b2668f73b4608c1f1f77, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:e8d31cc77ae274a753f7a7f34dbc2b6c693f8c8d6e41a9610d4059c17300ba70, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:c6747177ca6114dab696d2c944f2205c61dc4d77fff659431fd618292ca5c20b, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:4042a79bd3ddf9e6359b87b4d671cdf0f7bf3fca9a25eb57657942b6171dec15, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:b3197dacf8fff040b128a0db56e61d93a378d80423e42ac5d244c990f68423fb
+
+Revision status @investigram-15cfc298: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-f207fe80: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-d5170823: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-554de213: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 74740 tokens; input 72759 tokens (subset of total); output 1981 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 189 tokens (subset of output)
+Session reported usage: 17 calls; 2 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 302293 tokens; input 292875 tokens (subset of total); output 9418 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3787 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> usage
+Investigation usage
+References remain bound for this session.
+Attempt session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:cf0693569d590ec5a899a821c557d239d42dc6ad41391d8f2f7f90485d920f07 (communication-failure) reported usage: 3 calls; 1 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 7442 tokens; input 7275 tokens (subset of total); output 167 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 21 tokens (subset of output)
+Attempt session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 74740 tokens; input 72759 tokens (subset of total); output 1981 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 189 tokens (subset of output)
+Attempt session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:2bf1b564c485134853590c0628cac56b18f3ced1ba255b04bed90ca48c6c913d (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 86640 tokens; input 83585 tokens (subset of total); output 3055 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1201 tokens (subset of output)
+Attempt session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:95b60956cbc27596b0a08aa7ae1f4f8fcdf4f354f2f917edb2d43c9c8999801a (communication-failure) reported usage: 1 calls; 1 unknown; 0 anomalous.
+Attempt session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:8f7f880d9844577dbdf383facd861410e3733e3b3b6f2fd57e33450632f14cbc (accepted) reported usage: 5 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 133471 tokens; input 129256 tokens (subset of total); output 4215 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2376 tokens (subset of output)
+Session reported usage: 17 calls; 2 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 302293 tokens; input 292875 tokens (subset of total); output 9418 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3787 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> exit

@@ -1,0 +1,192 @@
+[
+  {
+    "case": "cockatiel-m5",
+    "attempts": [
+      {
+        "operation": "functionality",
+        "termination": "accepted",
+        "readmeBodies": []
+      },
+      {
+        "operation": "clarification",
+        "termination": "accepted",
+        "readmeBodies": []
+      },
+      {
+        "operation": "decomposition",
+        "termination": "accepted",
+        "readmeBodies": []
+      },
+      {
+        "operation": "examination",
+        "termination": "accepted",
+        "readmeBodies": []
+      }
+    ]
+  },
+  {
+    "case": "conflict-numeric-m5",
+    "attempts": [
+      {
+        "operation": "examination",
+        "termination": "accepted",
+        "readmeBodies": [
+          {
+            "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/integrated-numeric/README.md",
+            "firstExchange": 3,
+            "coverage": "full-file",
+            "characters": 205
+          }
+        ]
+      },
+      {
+        "operation": "clarification",
+        "termination": "accepted",
+        "readmeBodies": []
+      }
+    ]
+  },
+  {
+    "case": "fsm-engine-m5",
+    "attempts": [
+      {
+        "operation": "functionality",
+        "termination": "accepted",
+        "readmeBodies": [
+          {
+            "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/README.md",
+            "firstExchange": 3,
+            "coverage": "full-file",
+            "characters": 26916
+          }
+        ]
+      },
+      {
+        "operation": "clarification",
+        "termination": "accepted",
+        "readmeBodies": []
+      },
+      {
+        "operation": "decomposition",
+        "termination": "communication-failure",
+        "readmeBodies": []
+      },
+      {
+        "operation": "decomposition",
+        "termination": "accepted",
+        "readmeBodies": []
+      },
+      {
+        "operation": "examination",
+        "termination": "accepted",
+        "readmeBodies": [
+          {
+            "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/README.md",
+            "firstExchange": 4,
+            "coverage": "full-file",
+            "characters": 26916
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "case": "merge-anything-m5",
+    "attempts": [
+      {
+        "operation": "functionality",
+        "termination": "communication-failure",
+        "readmeBodies": [
+          {
+            "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/README.md",
+            "firstExchange": 3,
+            "coverage": "full-file",
+            "characters": 9898
+          }
+        ]
+      },
+      {
+        "operation": "functionality",
+        "termination": "accepted",
+        "readmeBodies": [
+          {
+            "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/README.md",
+            "firstExchange": 3,
+            "coverage": "full-file",
+            "characters": 9898
+          }
+        ]
+      },
+      {
+        "operation": "clarification",
+        "termination": "accepted",
+        "readmeBodies": [
+          {
+            "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/README.md",
+            "firstExchange": 3,
+            "coverage": "full-file",
+            "characters": 9898
+          }
+        ]
+      },
+      {
+        "operation": "decomposition",
+        "termination": "communication-failure",
+        "readmeBodies": []
+      },
+      {
+        "operation": "examination",
+        "termination": "accepted",
+        "readmeBodies": [
+          {
+            "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/README.md",
+            "firstExchange": 3,
+            "coverage": "full-file",
+            "characters": 9898
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "case": "refined-numeric-m5",
+    "attempts": [
+      {
+        "operation": "examination",
+        "termination": "accepted",
+        "readmeBodies": [
+          {
+            "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/integrated-numeric/README.md",
+            "firstExchange": 3,
+            "coverage": "full-file",
+            "characters": 205
+          }
+        ]
+      },
+      {
+        "operation": "clarification",
+        "termination": "accepted",
+        "readmeBodies": [
+          {
+            "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/integrated-numeric/README.md",
+            "firstExchange": 3,
+            "coverage": "full-file",
+            "characters": 205
+          }
+        ]
+      },
+      {
+        "operation": "examination",
+        "termination": "investigation-failure",
+        "readmeBodies": [
+          {
+            "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/integrated-numeric/README.md",
+            "firstExchange": 3,
+            "coverage": "full-file",
+            "characters": 205
+          }
+        ]
+      }
+    ]
+  }
+]

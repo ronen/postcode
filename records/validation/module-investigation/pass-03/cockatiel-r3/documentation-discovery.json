@@ -1,0 +1,38 @@
+{
+  "intervention": "none; normal frozen instructions and subject-based evidence",
+  "deliveredReadmes": [],
+  "requestedEvidenceKinds": {
+    "inspect": 9,
+    "exports": 1,
+    "dependencies": 1,
+    "dependents": 1,
+    "source": 6
+  },
+  "referenceResolutionCounts": [
+    {
+      "exchange": 1,
+      "bindings": 1,
+      "resolved": 4,
+      "unresolved": []
+    },
+    {
+      "exchange": 2,
+      "bindings": 117,
+      "resolved": 9,
+      "unresolved": []
+    },
+    {
+      "exchange": 3,
+      "bindings": 219,
+      "resolved": 5,
+      "unresolved": []
+    },
+    {
+      "exchange": 4,
+      "bindings": 224,
+      "resolved": 50,
+      "unresolved": []
+    }
+  ],
+  "limitation": "References alone are not content delivery. First delivery is a provider request containing the captured README text; repeated history is deduplicated."
+}

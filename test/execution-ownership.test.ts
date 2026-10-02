@@ -21,11 +21,21 @@ const command = { lens: 'modules' as const, selector: null, presentation: { form
 
 function childHarness() {
   let ready!: () => void;
-  const readiness = new Promise<void>(resolve => { ready = resolve; });
+  let failed!: (error: Error) => void;
+  const readiness = new Promise<void>((resolve, reject) => { ready = resolve; failed = reject; });
+  // A child that exits before readiness must fail the waiter, not strand it.
+  void readiness.catch(() => {});
   let child!: ChildProcessWithoutNullStreams;
   const start = () => {
     child = spawn(process.execPath, ['-e', "process.on('SIGTERM',()=>{});process.stdout.write('ready');setInterval(()=>{},1000)"], { stdio: 'pipe' });
-    child.stdout.once('data', ready);
+    const exited = () => failed(new Error('Controlled child exited before readiness'));
+    child.once('exit', exited);
+    child.once('error', failed);
+    child.stdout.once('data', () => {
+      child.removeListener('exit', exited);
+      child.removeListener('error', failed);
+      ready();
+    });
     return child;
   };
   return { start, readiness, get child() { return child; } };
@@ -34,16 +44,43 @@ function childHarness() {
 test('Git owner enforces its per-call deadline, escalates, and confirms actual exit', { timeout: 10000 }, async t => {
   assert.deepEqual(executionLimits, { gitDeadlineMs: 30000, terminationGraceMs: 250, cleanupDeadlineMs: 2000, outputBytes: 64 * 1024 * 1024 });
   const harness = childHarness();
-  const owner = new GitExecutionOwner({ limits: { ...limits, gitDeadlineMs: 300 }, spawn: harness.start });
-  t.after(async () => { harness.child.kill('SIGKILL'); await owner.close(); });
-  const outcome = owner.run(request);
-  const rejected = assert.rejects(outcome, error => error instanceof GitFailure && error.code === 'ETIMEDOUT');
+  const owner = new GitExecutionOwner({ limits: { ...limits, gitDeadlineMs: 300 }, spawn: () => harness.child });
+  t.after(async () => { harness.child?.kill('SIGKILL'); await owner.close(); });
+  harness.start();
+  // Escalation requires an installed SIGTERM handler. OS startup time is not
+  // part of this fixture's controlled deadline; pre-readiness expiry is below.
   await harness.readiness;
   const exited = once(harness.child, 'exit');
+  const outcome = owner.run(request);
+  const rejected = assert.rejects(outcome, error => error instanceof GitFailure && error.code === 'ETIMEDOUT');
   await rejected;
   const [code, signal] = await exited;
   assert.equal(code, null); assert.equal(signal, 'SIGKILL');
   assert.equal(owner.ownedChildren, 0);
+});
+
+test('Git deadline settles and releases a child that never announces readiness', { timeout: 10000 }, async t => {
+  const child = spawn(process.execPath, ['-e', 'setInterval(()=>{},1000)'], { stdio: 'pipe' });
+  const owner = new GitExecutionOwner({ limits: { ...limits, gitDeadlineMs: 30 }, spawn: () => child });
+  t.after(async () => { child.kill('SIGKILL'); await owner.close(); });
+  const exited = once(child, 'exit');
+  let announced = false;
+  child.stdout.on('data', () => { announced = true; });
+  await assert.rejects(owner.run(request), error => error instanceof GitFailure && error.code === 'ETIMEDOUT');
+  const [code, signal] = await exited;
+  assert.equal(code, null);
+  assert.ok(signal === 'SIGTERM' || signal === 'SIGKILL');
+  assert.equal(announced, false);
+  assert.equal(owner.ownedChildren, 0);
+  await owner.close();
+});
+
+test('child readiness rejects when exit precedes its announcement', async t => {
+  const harness = childHarness();
+  t.after(() => { harness.child?.kill('SIGKILL'); });
+  const rejected = assert.rejects(harness.readiness, /exited before readiness/);
+  harness.start().kill('SIGKILL');
+  await rejected;
 });
 
 test('unconfirmed Git cleanup reports the resource and retains exit ownership', async () => {

@@ -1,0 +1,11 @@
+Module summary
+References remain bound for this session.
+New investigation request.
+limit-stop: Dialogue character guard reached.
+Selection: selected (1 matches).
+Module @module-801ab967: opaque
+Attempt session:29fedb35-baa5-484e-b217-9efd14443215:investigation-attempt:825ae9f7e8579613c257dc1e8a7aeedf7f447c60d70e1e8b36652496c56490ca (limit-stop) reported usage: 0 calls; 0 unknown; 0 anomalous.
+Session reported usage: 0 calls; 0 unknown; 0 anomalous.
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+This checkpoint shows immutable originals and explicit correction links; replacement selection and reconsideration display arrive in a later milestone.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.

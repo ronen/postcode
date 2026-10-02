@@ -1,0 +1,20 @@
+{
+  "intervention": "none; normal frozen instructions and subject-based evidence",
+  "deliveredReadmes": [
+    {
+      "id": "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7",
+      "subject": "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93",
+      "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/README.md",
+      "firstDeliveredExchange": 3,
+      "characters": 9898
+    }
+  ],
+  "requestedEvidenceKinds": {
+    "inspect": 2,
+    "dependencies": 1,
+    "dependents": 1,
+    "source": 7,
+    "exports": 3
+  },
+  "limitation": "References alone are not content delivery. First delivery is a provider request containing the captured README text; repeated history is deduplicated."
+}

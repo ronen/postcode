@@ -1,0 +1,103 @@
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The executor runs callbacks, classifies returned values and exceptions using policy-supplied predicates, and provides success/failure notifications with optional timing. The outcome union represents the classification, while returnOrThrow converts it into ordinary return-or-throw behavior. Cloning preserves classification predicates but creates separate notification emitters.",
+      "support": [
+        "@investigram-b4f3a61a describes execution, classification, notifications, and the adapter.",
+        "@investigram-1338a97e says invoke awaits the callback, maps filtered values to {value} and filtered exceptions to {error}, and rethrows unfiltered exceptions after failure notification.",
+        "@investigram-fa14b40f says returnOrThrow throws the error case and returns success or handled value cases.",
+        "@investigram-a9f22684 says clones share classification rules rather than subscriptions."
+      ],
+      "unknowns": [
+        "The predicates' actual definitions and the calling policies are not shown.",
+        "The complete public API, notification payloads, and listener-error behavior are not established."
+      ]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "All four functional accounts are explicitly interpretations. They have displayed source or export evidence references and specific qualifications, but the referenced evidence itself is not supplied for inspection. The view qualifies the outcome cases as structurally discriminated and the clone account as following from construction and per-instance fields. No independent execution evidence is displayed. Usage and model details are reported metadata, with explicit limits on billing conclusions.",
+      "support": [
+        "Each account is labeled interpretation.",
+        "The module qualification says source establishes implementation text, not executed behavior in a particular runtime.",
+        "The invocation qualification says platform availability and timing precision were not executed or tested.",
+        "The module/dependency analysis does not establish runtime dependency completeness.",
+        "The footer says reported usage is not confirmed billed usage and monetary attribution is unavailable."
+      ],
+      "unknowns": [
+        "Actual runtime behavior, timing precision, platform compatibility, and runtime dependency completeness.",
+        "Behavior for malformed externally supplied outcomes.",
+        "Actual charges or allowance consumption attributable to the reported token counts."
+      ]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "Explanation, decomposition, and examination sequence views were not supplied, so no change in clarity, selectability, or substantive conclusions can be assessed. The summary already separates the broad account, outcome adapter, invocation mechanism, and cloning into individually referenced accounts, but that does not establish what a later operation would change.",
+      "support": [
+        "The supplied condition is summary-only; later sequence views not supplied.",
+        "The four displayed investigram references identify distinct referents."
+      ],
+      "unknowns": [
+        "Any before-and-after effect of explanation, decomposition, or examination.",
+        "Whether those operations would add evidence, alter interpretation, or expose additional selectable referents."
+      ]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "I would select @investigram-1338a97e with an examination lens focused on outcome classification and notification order. I would expect to learn what happens when a predicate or listener throws, when each notification fires, and how timing relates to those steps. This is a requested next investigation; the summary does not show a working lens selector or demonstrate that this operation is available.",
+      "support": [
+        "@investigram-1338a97e identifies invocation, filtering, timing, and notification as its referent.",
+        "The view says references remain bound for this session and displays New investigation request.",
+        "The only operation explicitly attached to the accounts is functionality."
+      ],
+      "unknowns": [
+        "Which lenses can actually be selected and how to submit the reference.",
+        "Whether examination would resolve these questions or return further qualified interpretations."
+      ]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No concrete corrected assertion, original/replacement pair, or correction link is displayed. The footer claims that this checkpoint shows immutable originals and explicit correction links, but this particular summary does not expose an example. Composition links are explicitly labeled: the module account composes the invocation and outcome accounts, and the invocation account composes the clone account. No later-investigation provenance is shown, so its presentation cannot be compared with composition.",
+      "support": [
+        "@investigram-b4f3a61a lists Composition: @investigram-1338a97e, @investigram-fa14b40f.",
+        "@investigram-1338a97e lists Composition: @investigram-a9f22684.",
+        "The footer says corrections are retained assertions, not established truth.",
+        "The footer says replacement selection and reconsideration display arrive in a later milestone."
+      ],
+      "unknowns": [
+        "Whether any correction exists for these accounts.",
+        "What was changed, which reference would identify a replacement, and the evidence for any correction.",
+        "How later-investigation provenance would be labeled or connected."
+      ]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The summary is useful for understanding the executor's broad responsibilities and choosing a narrower subject to investigate. The qualifications help prevent treating generated accounts as tested facts. However, filtered and handled need explanation because a handled value is classified as a failure yet returned normally by the adapter. Timed notifications could initially suggest timing is unconditional, although a later account limits it to cases with listeners. Long opaque evidence identifiers and repeated usage blocks interrupt the functional explanation. The accepted attempt label could be mistaken for validation of correctness. The generic claim about displayed correction links exceeds what is visible here, and New investigation request does not explain the available interaction.",
+      "support": [
+        "The outcome account distinguishes ordinary success from policy-handled error or value failures.",
+        "The invocation account says timing is skipped unless a success or failure listener exists.",
+        "Attempt and session usage blocks repeat the same five-call totals.",
+        "The attempt is labeled accepted, while the footer says generated accounts remain interpretation.",
+        "No actual correction pair or lens controls appear in the supplied view."
+      ],
+      "unknowns": [
+        "Whether the actual interface makes evidence references expandable or actions discoverable.",
+        "Whether additional context defines filtered, handled, accepted, and the available lenses."
+      ]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful as a qualified orientation and a starting point for investigation, but insufficient for confirming runtime behavior or assessing investigation and correction workflows.",
+    "reasons": [
+      "Separates execution, outcome representation, unwrapping, and clone behavior into addressable accounts.",
+      "Includes concrete classification behavior and explicit evidence limits.",
+      "Provides a clear candidate for a focused follow-up investigation."
+    ],
+    "limitations": [
+      "Only the summary is available; no sequence effects can be assessed.",
+      "Evidence is referenced rather than displayed.",
+      "Correction and interaction affordances are described without concrete examples.",
+      "Dense provenance and repeated usage information reduce readability."
+    ]
+  }
+}

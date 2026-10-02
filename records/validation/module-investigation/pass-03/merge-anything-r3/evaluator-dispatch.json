@@ -1,0 +1,14 @@
+{
+  "task": "/root/r3_evaluate_merge",
+  "fork": "none",
+  "prompt": "Perform the fresh view-only comprehension assessment specified in /Users/ronen/postcode/app/records/validation/module-investigation/pass-03/merge-anything-r3/evaluator-input.txt. Bootstrap by reading that one supplied artifact only; use no independent sources or other read tools. Do not inspect any other repository material or conversation. Write the requested final JSON to /Users/ronen/postcode/app/records/validation/module-investigation/pass-03/merge-anything-r3/evaluator-output.json, and report a short completion notice. Only that output file may be edited. This assesses what the displayed view communicates, not implementation or review.",
+  "model": "inherited; exact identifier unavailable",
+  "reasoning": "inherited; exact setting unavailable",
+  "family": "OpenAI",
+  "usage": null,
+  "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+  "limitations": [
+    "Same-family shared orchestration, not independent corroboration",
+    "Bootstrap reads only supplied input artifact"
+  ]
+}

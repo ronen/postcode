@@ -58,6 +58,9 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 
 ## Accepted decisions
 
+- [Hosted authentication and billing routes](hosted-authentication-and-billing.md)
+- [Private investigator reference transport](investigator-reference-transport.md)
+
 - [Investigation operations and lenses](investigation-operations-and-lenses.md)
 - [Investigrams and progressive investigation](investigrams-and-progressive-investigation.md)
 - [Investigator execution and evidence access](investigator-execution-and-evidence-access.md)

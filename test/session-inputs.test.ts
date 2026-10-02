@@ -9,6 +9,7 @@ import ts from 'typescript';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { evaluateModules } from '../src/lib/evaluation.js';
+import { evidenceAccess } from '../src/lib/evidence-access.js';
 import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
 import { modules } from '../src/lib/projections.js';
 import { openSession, SessionInvalidated, AnalysisFailure } from '../src/lib/session.js';
@@ -379,5 +380,50 @@ test('session reevaluates partial work after new dependency acquisition, then re
       assert.deepEqual((await session.execute(request)), later);
       assert.deepEqual(first, retained);
     } finally { await session.close(); }
+  });
+});
+
+
+test('README acquisition advances the shared basis once for partial work and preserves completed work', async () => {
+  for (const partial of [false, true]) await temporary(async (root, configPath) => {
+    writeFileSync(path.join(root, 'entry.cts'), partial ? "export { missing } from './nowhere.js';" : 'export const present = 1;');
+    writeFileSync(path.join(root, 'README.md'), 'Repository documentation.');
+    const opened = await openTypeScriptProject({ configPath });
+    if (opened.status !== 'opened') throw new Error('Expected project');
+    const store = new MemoryProgramRecordStore();
+    const evidence = evidenceAccess(store, opened.analysis, opened.session);
+    const groups = evidence.query({ kind: 'organization' });
+    const rootClaim = groups.records.find(item => item.kind === 'claim' && item.information.type === 'group' && item.information.name === null);
+    assert.ok(rootClaim?.kind === 'claim');
+    const organization = evidence.query({ kind: 'group', subject: rootClaim.subject });
+    const readme = organization.records.find(item => item.kind === 'repository-artifact' && item.artifact.path === 'README.md');
+    assert.ok(readme);
+    const before = opened.analysis.discover(store, moduleStandardExpansions);
+    const first = evaluateModules(store, opened.analysis, moduleStandardExpansions);
+    const earlier = structuredClone([first, ...first.contexts.map(id => store.get(id))]);
+    const firstContext = store.get(first.contexts[0]!);
+    assert.equal(firstContext.kind, 'claim-context');
+    if (firstContext.kind !== 'claim-context') throw new Error('Expected context');
+    const firstInputs = store.get(firstContext.inputs!);
+    const snapshot = structuredClone(firstInputs);
+    assert.ok(firstInputs.kind === 'analysis-inputs');
+    assert.doesNotMatch(JSON.stringify((firstInputs.value as { inputs: unknown }).inputs), /README\.md/);
+    const captured = evidence.query({ kind: 'source', subject: readme.id }).records.find(item => item.kind === 'captured-content');
+    assert.ok(captured?.kind === 'captured-content');
+    assert.notEqual(captured.inputs, firstContext.inputs);
+    const after = opened.analysis.discover(store, moduleStandardExpansions);
+    const later = evaluateModules(store, opened.analysis, moduleStandardExpansions);
+    if (partial) {
+      assert.notEqual(after.retryBasis, before.retryBasis);
+      assert.notEqual(later.id, first.id);
+      const inputs = store.get(after.retryBasis!);
+      assert.ok(inputs.kind === 'analysis-inputs');
+      assert.match(JSON.stringify((inputs.value as { inputs: unknown }).inputs), /README\.md/);
+    } else assert.equal(later.id, first.id);
+    assert.equal(opened.analysis.discover(store, moduleStandardExpansions), after);
+    assert.equal(evaluateModules(store, opened.analysis, moduleStandardExpansions).id, later.id);
+    assert.deepEqual(store.get(firstInputs.id), snapshot);
+    assert.deepEqual([store.get(first.id), ...first.contexts.map(id => store.get(id))], earlier);
+    assert.equal(await opened.changed(), false);
   });
 });

@@ -1,0 +1,32 @@
+{
+  "method": "Compare submitted referent/association subjects with record identities and kinds found in delivered JSON context. This is not a replay of all session lookup or later acceptance checks.",
+  "suspectSubjects": [
+    {
+      "path": "$.children[0]",
+      "submitted": "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:symbol:60dd76f621d6d63440adfca11446e6004c21d285cd1cd97fe9012429832ad4",
+      "deliveredKind": null,
+      "closestDelivered": [
+        "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:symbol:60dd76f621d6d6b63440adfca11446e6004c21d285cd1cd97fe9012429832ad4"
+      ]
+    },
+    {
+      "path": "$.children[0].children[0]",
+      "submitted": "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:module:79b8297add64fe523f87f58a3be9467f8f9e2a313466517a10bcb36e547877c6",
+      "deliveredKind": null,
+      "closestDelivered": []
+    },
+    {
+      "path": "$.children[0].children[0]",
+      "submitted": "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:module:14f53644b8919e52a1da75e68bf03f9047d7e53057eeb6858159b9cf64515153",
+      "deliveredKind": null,
+      "closestDelivered": []
+    },
+    {
+      "path": "$.children[0].children[0]",
+      "submitted": "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:module:92481056bbc2e85ce5a0b1d999aed415b30649350845a1f680b1044dee2888af",
+      "deliveredKind": null,
+      "closestDelivered": []
+    }
+  ],
+  "result": "Submitted subjects shown here do not match supplied record identities. No repair or resubmission performed; later validation defects are not ruled out."
+}

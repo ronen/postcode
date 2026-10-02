@@ -1,0 +1,47 @@
+Condition: summary. These are exact captured user-facing views. Scripted origin denotes controlled setup, not a natural investigator result. Current views display originals and correction links; replacement substitution and derived revision warnings are not supplied.
+
+QUESTIONS
+{
+  "version": 1,
+  "condition": "summary-only or progressive sequence; use only the supplied condition",
+  "questions": [
+    "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+    "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+    "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+    "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+    "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+    "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score."
+  ],
+  "answerFormat": "JSON with answers [{question,answer,support,unknowns}], usefulness {judgment,reasons,limitations}. Use only supplied user-facing views; no independent sources or tools."
+}
+
+VIEWS
+COMMAND: summarize classify
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-54c04ef4: classify
+
+@investigram-1cecff9b · interpretation
+The module partitions numeric inputs into exactly one of positive, even or large, rejecting values outside those classes.
+Referent: The selected module behavior.
+  Qualification: Injected earlier interpretation for a controlled assessment, not a natural investigator result.
+  Qualification: This account has not acquired source evidence and remains unverified interpretation.
+  Composition: @investigram-33b17c63
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-54c04ef4 (provenance, not composition)
+
+@investigram-33b17c63 · interpretation
+Classification is mutually exclusive: a positive input receives only the positive label, so larger positive even inputs do not also receive even or large.
+Referent: The selected module behavior.
+  Qualification: Injected earlier interpretation for a controlled assessment, not a natural investigator result.
+  Qualification: This account has not acquired source evidence and remains unverified interpretation.
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-54c04ef4 (provenance, not composition)
+  Composition parent: @investigram-1cecff9b
+Attempt session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:b467b96a3e6fa3ed49905521685b947b6aacf20bb9f25a9f12e1224f45be2c62 (accepted) reported usage: 1 calls; 0 unknown; 1 anomalous.
+Session reported usage: 1 calls; 0 unknown; 1 anomalous.
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+

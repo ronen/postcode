@@ -1,0 +1,6 @@
+{
+  "target": "9edf6cebce73725b0eb77fc35f19c6c15ba56b3a",
+  "captureWarnings": 110,
+  "disposition": "Preserved exact terminal output, initial TAP failure output and supplied role inputs/views, including CRLF echo, trailing renderer spaces and separator newlines. No capture normalization.",
+  "nonCaptureDiffCheck": "passed b46074d..9edf6ce, excluding pass-04 .txt captures"
+}

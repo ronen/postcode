@@ -1,3 +1,7 @@
+import { sourceDisclosure } from './source-disclosure.js';
+import type { SourceDisclosureLevel, SourceDisclosureForm } from './source-disclosure.js';
+import type { InvestigationUsageReport } from './investigation/reporting.js';
+import type { InvestigationView } from './investigation/presentation.js';
 import type { QualifiedDependencyView } from './dependencies/presentation.js';
 import { randomUUID, createHash } from 'node:crypto';
 import { mkdir, open, link, unlink } from 'node:fs/promises';
@@ -10,11 +14,12 @@ export interface ObservationBatch {
   readonly id: string;
   readonly session: string;
   readonly command: number;
-  readonly records: readonly { readonly id: string; readonly kind: 'request' | 'analysis-context' | 'qualified-view' | 'rendered-output' | 'command-outcome'; readonly value: unknown }[];
+  readonly records: readonly { readonly id: string; readonly kind: 'request' | 'analysis-context' | 'qualified-view' | 'rendered-output' | 'command-outcome' | 'investigation-usage'; readonly value: unknown }[];
   readonly events: readonly {
     readonly id: string; readonly type: 'view-produced' | 'source-escape' | 'command-completed' | 'command-refused' | 'session-invalidated' | 'command-failed' | 'command-defect' | 'command-interrupted';
     readonly request: string; readonly analysis: string; readonly view?: string; readonly rendered: string;
-    readonly sourceLevel?: 'declaration-locations-and-excerpts' | 'organization-paths' | 'organization-and-module-source' | 'dependency-occurrences-and-organization-evidence';
+    readonly sourceLevel?: SourceDisclosureLevel;
+    readonly sourceForms?: readonly SourceDisclosureForm[];
   }[];
 }
 
@@ -23,7 +28,7 @@ export interface ObservationSink {
 }
 
 /** No UUID registry, historical reads, producer retention policy, or operational-store dependency. */
-export function observationBatch(view: QualifiedView | QualifiedOrganizationView | QualifiedDependencyView, rendered: string, context: {
+export function observationBatch(view: QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | InvestigationView, rendered: string, context: {
   readonly configPath: string; readonly repositoryRoot: string | null; readonly methods: readonly string[];
 }, command = 1): ObservationBatch {
   if (!Number.isSafeInteger(command) || command < 1) throw new Error('Invalid command order');
@@ -32,6 +37,7 @@ export function observationBatch(view: QualifiedView | QualifiedOrganizationView
   const artifact = randomUUID();
   const output = randomUUID();
   const references = { request, analysis, view: artifact, rendered: output };
+  const disclosed = rendered.length ? sourceDisclosure(view) : null;
   return { formatVersion: 1, id: randomUUID(), session: view.projection.session, command, records: [
     { id: request, kind: 'request', value: {
       lens: view.projection.lens, subject: view.projection.subject, lensParameters: view.projection.parameters,
@@ -39,14 +45,14 @@ export function observationBatch(view: QualifiedView | QualifiedOrganizationView
         ? view.projection.parameters.reference
           ? 'Session-local entity reference supplied; resolution is within this session only, with no cross-invocation continuity.'
           : 'Exact name or handle supplied for lookup; no session-reference or cross-invocation continuity is asserted.'
-        : view.projection.lens === 'organization' ? 'Organization investigation requested for the stated subject.' : view.projection.lens === 'dependency-structure' ? 'Project dependency structure requested.' : 'Configured-project inventory requested.',
+        : view.projection.lens === 'summarize' || view.projection.lens === 'usage' ? 'Investigation or usage requested; references are scoped to this producing session.' : view.projection.lens === 'organization' ? 'Organization investigation requested for the stated subject.' : view.projection.lens === 'dependency-structure' ? 'Project dependency structure requested.' : 'Configured-project inventory requested.',
     } },
     { id: analysis, kind: 'analysis-context', value: { ...context, session: view.projection.session } },
     { id: artifact, kind: 'qualified-view', value: view },
     { id: output, kind: 'rendered-output', value: rendered },
   ], events: [
     { id: randomUUID(), type: 'view-produced', ...references },
-    ...(view.sourceDetail ? [{ id: randomUUID(), type: 'source-escape' as const, ...references, sourceLevel: view.sourceDetail.level }] : []),
+    ...(disclosed ? [{ id: randomUUID(), type: 'source-escape' as const, ...references, sourceLevel: disclosed.level, sourceForms: disclosed.forms }] : []),
   ] };
 }
 
@@ -95,7 +101,7 @@ export function localFileObservationSink(directory: string, configPath: string, 
 /** Refusals and failures have no fabricated view or source-disclosure event. */
 export function commandObservation(session: string, command: number, requestValue: unknown,
   status: 'completed' | 'refused' | 'invalidated' | 'failed' | 'defect' | 'interrupted',
-  stdout: string, stderr: string, produced?: ObservationBatch): ObservationBatch {
+  stdout: string, stderr: string, produced?: ObservationBatch, usage?: InvestigationUsageReport): ObservationBatch {
   if (!Number.isSafeInteger(command) || command < 1) throw new Error('Invalid command order');
   const request = produced?.records.find(item => item.kind === 'request')?.id ?? randomUUID();
   const analysis = produced?.records.find(item => item.kind === 'analysis-context')?.id ?? randomUUID();
@@ -105,6 +111,7 @@ export function commandObservation(session: string, command: number, requestValu
     { id: analysis, kind: 'analysis-context', value: { session } },
     { id: rendered, kind: 'rendered-output', value: stdout },
   ];
+  if (usage?.attempts.length) records.push({ id: randomUUID(), kind: 'investigation-usage', value: usage });
   records.push({ id: randomUUID(), kind: 'command-outcome', value: { status, request: requestValue, stderr } });
   const type = status === 'invalidated' ? 'session-invalidated' : `command-${status}` as const;
   return { formatVersion: 1, id: produced?.id ?? randomUUID(), session, command, records,

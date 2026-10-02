@@ -1,0 +1,14 @@
+{
+  "task": "/root/r2_assess_merge",
+  "fork": "none",
+  "prompt": "Perform the fresh source-informed assessment specified in /Users/ronen/postcode/app/records/validation/module-investigation/pass-02/merge-anything-r2/assessor-input.txt. Read that supplied artifact only; no independent source inspection, browsing or other reads. Write the requested final JSON to /Users/ronen/postcode/app/records/validation/module-investigation/pass-02/merge-anything-r2/assessor-output.json, and report a short completion notice. Only that output file may be edited. Assess the captured interpretation and evaluator response against the qualified frozen reference; this is not an implementation or independent milestone review.",
+  "model": "inherited; exact identifier unavailable",
+  "reasoning": "inherited; exact setting unavailable",
+  "family": "OpenAI",
+  "usage": null,
+  "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+  "limitations": [
+    "Same-family shared orchestration, not independent corroboration",
+    "Bootstrap reads only supplied input artifact"
+  ]
+}

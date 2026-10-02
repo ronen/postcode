@@ -1,0 +1,44 @@
+{
+  "cases": [
+    {
+      "case": "dependent-numeric-m5",
+      "liveOutcomes": [
+        {
+          "operation": "examination",
+          "termination": "accepted",
+          "calls": 3,
+          "citations": 2,
+          "fullEvidenceRecords": 26,
+          "summaryRecords": 8
+        },
+        {
+          "operation": "examination",
+          "termination": "accepted",
+          "calls": 4,
+          "citations": 8,
+          "fullEvidenceRecords": 26,
+          "summaryRecords": 8
+        },
+        {
+          "operation": "examination",
+          "termination": "accepted",
+          "calls": 3,
+          "citations": 8,
+          "fullEvidenceRecords": 35,
+          "summaryRecords": 9
+        }
+      ],
+      "requests": 10,
+      "tokens": 188953,
+      "exactResolvedFields": 142,
+      "missingCalls": 0,
+      "anomalousCalls": 0,
+      "wireExposureEqualsCanonicalLedger": true,
+      "usageViewsObservationsAndProviderAgree": true,
+      "elapsedMilliseconds": 415337
+    }
+  ],
+  "requests": 10,
+  "providerReportedTokens": 188953,
+  "monetaryAttribution": null
+}

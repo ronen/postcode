@@ -1,0 +1,57 @@
+COMMAND: summarize anonymous
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-a44de3a8: anonymous
+
+@investigram-7e572849 · interpretation
+This is the package-facing barrel: it implements no merge logic, but exposes `merge`, `mergeAndCompare`, `mergeAndConcat`, `concatArrays`, and the `Merge` type from two delegated modules. The README presents the package as recursive plain-object merging with special instances retained as values. One documented edge is overstated: `merge(x)` is said to always return a new object, but the implementation’s empty reduction returns `x` itself.
+Referent: public merge-anything entry module
+  Qualification: Static TypeScript/source interpretation only; runtime, emitted-package, and loader behavior were not executed.
+  Qualification: README statements are attributed documentation, not established behavior. The no-additional-arguments discrepancy follows directly from the implementation and README text.
+  Qualification: The entry module uses wildcard re-exports, so its apparent API follows the compiler-observed exports of the delegated modules.
+  Composition: @investigram-9035f794, @investigram-4b9903a5, @investigram-50a55c6f
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:8063a4d5515655c21e37335157b6da32def9e894222b525f84b99c3945f95649, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:6f64ed2803e14f05072f46970bb3eee68517667fd9442ba8d3d0ad0536c50f83, session:42072530-fdeb-4cef-a43f-070ad67651c5:export:c1d37ad435569036afef1aae8e2b1cd24813adb35694bc6bba803ad4aa5404a8, session:42072530-fdeb-4cef-a43f-070ad67651c5:export:93b3c024cb4f29a0fd0c645ef2a6b6f9b954e5c8054ddb60d0dffe3f97ba6fa0, session:42072530-fdeb-4cef-a43f-070ad67651c5:export:e26f07d96b232e4d184ad3e0cdf396135d5d38a0deec01c3652af840c3079397, session:42072530-fdeb-4cef-a43f-070ad67651c5:export:03e0101ac41b08cef3e381d2473a2ab7bce98037a1901b29e353d87f07f7f0c3, session:42072530-fdeb-4cef-a43f-070ad67651c5:export:5cbf575991c6bb6718d39fc9141a7b4e4919d6e1a778613577b5a23228b482fd
+
+@investigram-50a55c6f · interpretation
+The public `Merge<T, Ts>` models record inputs by repeatedly deep-merging tuple members in order and then recursively prettifying the resulting intersection-like shape. If either side is not modeled as records, it falls back to the last newcomer type; an empty newcomer list therefore falls through `Pop` to `never` for a non-record first input, although runtime `merge(x)` returns `x`. Optional/required keys receive dedicated union and override handling.
+Referent: compile-time result-shape machinery behind the public Merge type
+  Qualification: These modules are type-only and do not perform runtime merging.
+  Qualification: The type model is an approximation encoded through conditional and mapped types; no compiler test suite was inspected.
+  Qualification: `PrettyPrint` guards against revisiting already-seen types while recursively materializing record fields.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-7e572849
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:74dca925e00af1e4d8ff5392a6275a5f9629badac922808cdbae94b26f58340f, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:adc561e2945ba6be219cc78844c7216800626454720292e8f75ab36bdbf88cbc, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:0edd20422bed0aee5f55854002c178200bf3577e50e8b2668f73b4608c1f1f77, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:b4330d4f9743385b51897711bd6b99dd564e04315999ae3474bbe865feaa418d
+
+@investigram-4b9903a5 · interpretation
+`concatArrays` is a narrow conflict policy: when both old and new values are arrays it returns their concatenation; otherwise it returns the new value unchanged. `mergeAndConcat` feeds this policy into the same recursive engine, so nested array conflicts concatenate while other conflicts retain normal replacement behavior.
+Referent: array-concatenation merge policy
+  Qualification: Array recognition is delegated to external `is-what`.
+  Qualification: Concatenation is shallow and uses the origin array's `concat`; no element-level recursive merge is evident.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-7e572849
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:6f64ed2803e14f05072f46970bb3eee68517667fd9442ba8d3d0ad0536c50f83, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:source:7caa54971fa1ecdabf543e16a9c0472b7a47d21dd77f32f2ca6767365092fe70
+
+@investigram-9035f794 · interpretation
+The merge engine folds newcomers left-to-right. Only plain objects recurse; primitives, arrays, dates/classes, and other non-plain values replace the prior value. For plain objects it copies own string and symbol keys, includes non-enumerables, skips `__proto__`, preserves enumerable versus non-enumerable status, and builds fresh objects while retaining untouched nested references. `mergeAndCompare` applies a callback to every incoming own property after any recursive merge—not only actual overwrites, despite the README wording.
+Referent: runtime recursive merge engine and API variants
+  Qualification: `isPlainObject` and `isSymbol` behavior is delegated to external `is-what`; only its declaration barrel, not its runtime implementation, was inspected.
+  Qualification: Property descriptors are not preserved wholesale: assigned properties become ordinary writable/configurable data properties, with only enumerability distinguished.
+  Qualification: The callback receives `undefined` for a missing prior value and is still invoked, which is broader than the README's description of a function triggered when a value is overwritten.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-7e572849
+  Evidence: session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:42072530-fdeb-4cef-a43f-070ad67651c5:captured-content:4058110f5226dffbfee41a398a8c2c8aecb21a8f66e8857496f7812c0ec3edf9
+Attempt session:42072530-fdeb-4cef-a43f-070ad67651c5:investigation-attempt:24f1f4a200f17b75cba5187ae6e4e0cdcfda507fa6e1bf8a7053d9a524dcf5b5 (accepted) reported usage: 7 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 193301 tokens; input 190173 tokens (subset of total); output 3128 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1022 tokens (subset of output)
+Session reported usage: 7 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 193301 tokens; input 190173 tokens (subset of total); output 3128 tokens (subset of total); cached-input 1664 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1022 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+

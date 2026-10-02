@@ -285,8 +285,14 @@ their enclosing declaration statement so the snippet includes meaningful syntax.
 Forwarding statements and semantic-symbol definitions remain distinct; shared
 export/symbol spans are shown once within each export. Excerpts remain bounded,
 so they support investigation without replacing the qualified compiler claim.
-This is not full-file rendering or arbitrary source browsing. The invocation
-records source-escape use at the locations-and-excerpts level alongside the view.
+This is not full-file rendering or arbitrary source browsing. A source-escape
+event is recorded only when source detail is actually presented. The request
+still records `--source-detail` for empty or unsupported selections. Each event
+identifies the disclosure family and its actual forms (`sourceForms`: locations,
+excerpts or both); locations alone count, but an empty source-detail container,
+evidence IDs and omission counts do not. Human and JSON output are assessed
+separately: for example, organization JSON includes its captured repository root
+even for a missing selection, while human output omits that field.
 
 Every view-producing CLI invocation submits one self-contained observation batch
 to `_observations/<project-label>-<project-key>/YYYY-MM-DD/HH-mm-ss.sssZ_<batch-uuid>.json`
@@ -509,3 +515,98 @@ historical observation readback. Long sessions retain evidence and results and
 can consume increasing memory, especially as new requirements or captured input
 bases establish additional retained outcomes. There is no eviction of earlier
 evidence to impose a memory bound.
+
+
+<a id="interpretation-checkpoint-summary-inspection-and-usage"></a>
+
+## Progressive investigation and usage
+
+`summarize MODULE_HANDLE` (or `summarize @module-…` in the shell) requires exactly
+one module. Missing or ambiguous selection reports candidates without starting an
+investigation. The default command remains the mechanical module inventory.
+Hosted investigation is disabled by default; disabled summary requests report
+configuration unavailability with exit status 3. Optional [hosted setup](hosted-investigation.md)
+offers API-key billing (`POSTCODE_INVESTIGATOR=openai`) or Sign in with ChatGPT
+plan usage (`POSTCODE_INVESTIGATOR=chatgpt`), with macOS Keychain and explicit
+repository-transmission enablement. No billing fallback occurs. `auth chatgpt help`
+explains project-independent sign-in, status, selection, sign-out and the explicit
+account/model connection check. Sign-in alone does not enable hosted projects.
+Enabled setup failures stop project opening with exit status 2, before either
+mechanical or investigation commands. Runtime provider failures are reported in
+the investigation view. Tests inject the agent/transport through the production
+CLI/session/worker path; there is no public injection flag.
+
+With an investigator enabled, a summary presents a root and any composition
+children as qualified interpretations, each with a stable `investigram-…` reference.
+Repeating a summary selects its retained outcome without generating again.
+Successful results, investigation failures (including refusals and invalid
+submissions) and execution-limit stops are retained. More evidence does not reset
+those outcomes. Communication and configuration failures leave no reusable outcome,
+so a later request can execute in the same session. There is no automatic retry.
+Recovery from a retained failure/stop requires reopening and loses accumulated work.
+
+Within a shell, `inspect @investigram-…` displays the exact original account,
+referent, qualification, evidence support, fixed composition, generating operation
+and accompanying correction links. Targets and replacements are separately
+selectable. Each correction lists its corrected subjects and its own evidence
+references in human output. Known investigram references supplied to `children`,
+`parents` or `summarize` report an unsupported subject/lens combination without
+generation; an absent reference remains a missing selection. `--source-detail` discloses captured support locations and excerpts and
+records that disclosure. Source sent only to the investigator does not count as
+human source disclosure. Inspection does not generate a missing account or redirect
+to a replacement. Redisplay follows explicit replacement chains using acceptance recency, with unresolved conflicts and citation-based reconsideration warnings. Exact inspection and follow-up subjects are never redirected. Use `inspect @investigram --revision-page N` for additional correction and cause details.
+
+`explain @investigram-…`, `decompose @investigram-…` and `examine @investigram-…`
+require an exact reference in the shell. Explanation clarifies the selected
+program aspect; decomposition creates finer selectable aspects without implying
+an exhaustive or disjoint partition; examination pursues deeper findings or
+reports useful limits. Each produces a separate root with provenance naming its
+exact selected subject. All three accept results of any earlier investigation.
+Repeated requests reuse the retained outcome. Known module/group references are
+unsupported follow-up subjects; unbound references are missing. Names and
+one-shot follow-ups are refused because investigrams belong to the active session.
+
+Inspection shows composition-parent and investigation-subject links separately.
+`inspect MODULE`, `inspect @group-…` and `inspect @investigram-…` also list explicitly
+associated retained accounts (up to 24 per page). Use the displayed reference to
+inspect complete content, or repeat the inspection with `--after @investigram-…`
+using the continuation shown. Listing prose is bounded to 400 UTF-16 code units;
+qualifications are preserved together or the entire detail is explicitly omitted
+under the 55,000-unit page bound. Listings reflect current retained associations,
+not all possible functionality or authority. A newly retained account can extend
+them without changing the mechanical inspection. Association listings show exact
+originals with current revision status. Result redisplay selects replacements;
+inspection preserves the original and exposes alternatives and reconsideration causes.
+
+`usage` and `usage --json` expose per-attempt and session reported usage without
+inference, including failed attempts. Summary views also include their attempt and
+session usage. Provider/model/configuration, units and category subset relationships
+remain distinct, including actual returned model and service tier when reported. Synthetic test usage is labeled separately; unknown and anomalous
+calls are not zero and are excluded from trusted totals. Aggregate numeric overflow
+is explicitly unknown; indexed annotations preserve non-finite raw report values
+that JSON numbers cannot represent. Reported figures are not confirmed billing. Repeated display
+adds no usage. Interruption and invalidation preserve received reports in final
+reporting and command observations. Human final reporting includes each attempt,
+its termination and its totals, followed by session totals; unknown-only reports
+remain explicit. Usage received after a reply while the dialogue remains active
+is still attributed to that call; late reports from a closed dialogue are ignored.
+CLI views and observations use the parent ledger's snapshot at dialogue closure,
+including reports received after the worker finished but before parent closure.
+Subsequent `usage` views use the same accepted reports, without counting duplicates
+or incorporating reports that arrived after closure.
+
+Investigation JSON uses `postcode-investigation-view/1-experimental`, containing
+selection, operation/outcome reuse, accounts, correction links, provenance,
+full-record versus summarized evidence exposure, support and usage. Summarized
+identities support only the delivered summaries. Evidence references alone cannot
+be cited until inspected. One-shot summaries disclose `referenceLifetime: command`;
+their references expire when the command ends. Shell references last only for that
+session and cannot restore work in a later invocation. Abnormal final JSON usage is
+reported on stderr using `postcode-investigation-usage/1-experimental` and retained
+in the command observation, without fabricating a successful result view.
+
+Correction metadata listings are bounded separately from account bodies: at most
+256 displaced accounts, 256 accompanying correction references and 256 revision
+statuses appear, with explicit omitted counts. Inspect exact original or reporter
+references to navigate their own bounded context. Corrections reported by displaced
+accounts remain linked without inserting their replacements into the displayed tree.

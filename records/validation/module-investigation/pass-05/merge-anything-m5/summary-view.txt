@@ -1,0 +1,86 @@
+COMMAND: summarize anonymous
+Module summary
+References remain bound for this session.
+New investigation request.
+communication-failure: OpenAI request failed (HTTP 200); no automatic retry was made. Unclassified errors are not assumed transient.
+Selection: selected (1 matches).
+Module @module-a44de3a8: anonymous
+Attempt session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:cf0693569d590ec5a899a821c557d239d42dc6ad41391d8f2f7f90485d920f07 (communication-failure) reported usage: 3 calls; 1 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 7442 tokens; input 7275 tokens (subset of total); output 167 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 21 tokens (subset of output)
+Session reported usage: 3 calls; 1 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 7442 tokens; input 7275 tokens (subset of total); output 167 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 21 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+COMMAND: summarize anonymous
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-a44de3a8: anonymous
+
+@investigram-15cfc298 · interpretation
+This module is the package-facing entry point: it implements no merge logic itself, but wildcard-re-exports the recursive merge API, its result type, and the array-concatenation helper. The nearby README describes the package as a deep merger for plain objects with TypeScript result inference; that description is broadly borne out by the inspected implementation, subject to its documented reference-sharing caveat.
+Referent: package-facing merge API entry point
+  Qualification: Implementation account from captured TypeScript source; no runtime execution was performed.
+  Qualification: README statements are attributed documentation, not independently established behavior.
+  Qualification: Dependency analysis is bounded source-request analysis, not runtime or deployment completeness.
+  Displayed composition: @investigram-f207fe80, @investigram-d5170823, @investigram-554de213
+  Composition: @investigram-f207fe80, @investigram-d5170823, @investigram-554de213
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:8063a4d5515655c21e37335157b6da32def9e894222b525f84b99c3945f95649, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:ed268f1d30fc438081dd6ceffba6814b08906e6f770ff92ade7352ccb62823ac, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:2d10a79ac4e197e72485153249a6e2fe4025cf5d456e6fd8f8d98629fa585377, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:c1d37ad435569036afef1aae8e2b1cd24813adb35694bc6bba803ad4aa5404a8, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:93b3c024cb4f29a0fd0c645ef2a6b6f9b954e5c8054ddb60d0dffe3f97ba6fa0, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:e26f07d96b232e4d184ad3e0cdf396135d5d38a0deec01c3652af840c3079397, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:03e0101ac41b08cef3e381d2473a2ab7bce98037a1901b29e353d87f07f7f0c3, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:export:5cbf575991c6bb6718d39fc9141a7b4e4919d6e1a778613577b5a23228b482fd
+
+@investigram-f207fe80 · interpretation
+The merge implementation folds later inputs over the accumulated result. Only plain objects recurse; primitives, arrays, class instances, and other non-plain values replace the prior value. It copies own string and symbol properties, preserves enumerable versus non-enumerable status, skips `__proto__`, and lets later properties win. `mergeAndCompare` routes each assignment through a caller callback; `mergeAndConcat` uses the array helper as that callback.
+Referent: recursive runtime merge implementation and public variants
+  Qualification: Apparent behavior from full captured source, not execution.
+  Qualification: Accessors and other descriptor attributes are not preserved: assignment/defineProperty materializes a writable configurable value property.
+  Qualification: Nested values can retain source references when no recursive overlap causes rebuilding, matching the README's warning.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-15cfc298
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:8e720325202e79ae5656f9a4758857448dfd8eb8be21b13c06a65c5847d99358, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:a3fd7ea754d19eb66f578f6ca3befe3e8d8087065164a7d2075316f234b688b6, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:9497fc07d5b62237183636e8bb45b53c0424ebc9ddafe6fe6dc3db993793c60e, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-d5170823 · interpretation
+The extension helper concatenates only when both old and incoming values are arrays; otherwise it returns the incoming value unchanged. It is both directly exported and delegated to by `mergeAndConcat`.
+Referent: array-concatenating overwrite policy
+  Qualification: Apparent behavior from captured source, not execution.
+  Qualification: Array recognition is delegated to external `is-what`; that dependency's implementation was not inspected.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-15cfc298
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:6f64ed2803e14f05072f46970bb3eee68517667fd9442ba8d3d0ad0536c50f83, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:7caa54971fa1ecdabf543e16a9c0472b7a47d21dd77f32f2ca6767365092fe70, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:db00a908bf5399461686cd58ade8511d978aea9a9511dc001727d35d5d46a564
+
+@investigram-554de213 · interpretation
+Compile-time return typing is separate from runtime recursion. `Merge` uses a recursive `Assign` model for object inputs, falls back to the last supplied type otherwise, and runs the result through `PrettyPrint` to expose a readable recursively expanded shape. `Assign` iterates input object types with last-in override semantics; `PrettyPrint` guards against cycles with a seen set.
+Referent: compile-time model of merge results
+  Qualification: Type-level interpretation from captured TypeScript definitions; it does not itself establish runtime equivalence.
+  Qualification: Further delegated internals such as `MergeDeep`, iteration, and list helpers were not inspected because the exposed branching and division of responsibility were already clear.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-a44de3a8 (provenance, not composition)
+  Composition parent: @investigram-15cfc298
+  Evidence: session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:74dca925e00af1e4d8ff5392a6275a5f9629badac922808cdbae94b26f58340f, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:captured-content:0edd20422bed0aee5f55854002c178200bf3577e50e8b2668f73b4608c1f1f77, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:source:e8d31cc77ae274a753f7a7f34dbc2b6c693f8c8d6e41a9610d4059c17300ba70, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:c6747177ca6114dab696d2c944f2205c61dc4d77fff659431fd618292ca5c20b, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:4042a79bd3ddf9e6359b87b4d671cdf0f7bf3fca9a25eb57657942b6171dec15, session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:dependency:b3197dacf8fff040b128a0db56e61d93a378d80423e42ac5d244c990f68423fb
+
+Revision status @investigram-15cfc298: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-f207fe80: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-d5170823: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-554de213: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:eedd77ce-6f02-4e5f-8fe7-f1bd9fe87fb2:investigation-attempt:c86426b7f0f4f85238d95524c21554b8957374bc77b8b4e36688421fdd0ed26e (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 74740 tokens; input 72759 tokens (subset of total); output 1981 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 189 tokens (subset of output)
+Session reported usage: 7 calls; 1 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 82182 tokens; input 80034 tokens (subset of total); output 2148 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 210 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+

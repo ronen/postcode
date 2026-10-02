@@ -1,0 +1,197 @@
+{
+  "cases": [
+    {
+      "case": "focused-entry-r2",
+      "outcome": {
+        "kind": "investigation-failure",
+        "reason": "Inconsistency targets must be earlier investigrams."
+      },
+      "calls": 3,
+      "reportedTokens": 49686,
+      "elapsedMilliseconds": 66073,
+      "readmesDelivered": 1,
+      "commandUsageAndObservationsAgree": true,
+      "ledgerAndExchangesAgree": true,
+      "postRunConfigurationVerified": true
+    },
+    {
+      "case": "cockatiel-r2",
+      "outcome": {
+        "kind": "investigation-failure",
+        "reason": "Evidence must identify supplied context in this session."
+      },
+      "calls": 5,
+      "reportedTokens": 182631,
+      "elapsedMilliseconds": 114338,
+      "readmesDelivered": 0,
+      "commandUsageAndObservationsAgree": true,
+      "ledgerAndExchangesAgree": true,
+      "postRunConfigurationVerified": true
+    },
+    {
+      "case": "fsm-engine-r2",
+      "outcome": {
+        "kind": "investigation-failure",
+        "reason": "Invalid referent or association subject."
+      },
+      "calls": 3,
+      "reportedTokens": 158883,
+      "elapsedMilliseconds": 160194,
+      "readmesDelivered": 1,
+      "commandUsageAndObservationsAgree": true,
+      "ledgerAndExchangesAgree": true,
+      "postRunConfigurationVerified": true
+    },
+    {
+      "case": "merge-anything-r2",
+      "outcome": {
+        "kind": "investigation-failure",
+        "reason": "Invalid referent or association subject."
+      },
+      "calls": 4,
+      "reportedTokens": 154759,
+      "elapsedMilliseconds": 99823,
+      "readmesDelivered": 1,
+      "commandUsageAndObservationsAgree": true,
+      "ledgerAndExchangesAgree": true,
+      "postRunConfigurationVerified": true
+    },
+    {
+      "case": "focused-one-call",
+      "outcome": {
+        "kind": "limit-stop",
+        "reason": "Provider call guard reached."
+      },
+      "calls": 1,
+      "reportedTokens": 1777,
+      "elapsedMilliseconds": 14289,
+      "readmesDelivered": 0,
+      "commandUsageAndObservationsAgree": true,
+      "ledgerAndExchangesAgree": true,
+      "postRunConfigurationVerified": true
+    }
+  ],
+  "totalRequests": 16,
+  "totalReportedTokens": 547736,
+  "frozenReferencesByteIdenticalToPass01": true,
+  "limitations": [
+    "Exact role usage and monetary attribution unavailable; upstream runtime tests not run.",
+    "Elapsed milliseconds measure captured CLI run, not provider latency alone."
+  ],
+  "finalOfflineSuite": {
+    "target": "4a0a334",
+    "command": "npm test",
+    "node": "22.13.1",
+    "loopbackPermission": true,
+    "trackedWorktreeBeforeAndAfter": "clean; no repository edits or agent writes during run",
+    "tests": 424,
+    "passed": 410,
+    "failed": 9,
+    "cancelled": 5,
+    "skipped": 0,
+    "runnerDurationMilliseconds": 4251441.929112,
+    "result": "failed; cause unresolved",
+    "failuresAndCancellations": [
+      {
+        "number": 6,
+        "test": "benchmark continues after a successful retry and completes every requested sample slot",
+        "durationMilliseconds": 183448.204671,
+        "location": "'/Users/ronen/postcode/app/_build/test/benchmark-analysis.test.js:52:1'",
+        "failureType": "'testCodeFailure'"
+      },
+      {
+        "number": 42,
+        "test": "Unicode and experimental JSON use the same qualified projection and automatically record exact displayed artifacts",
+        "durationMilliseconds": 201129.165956,
+        "location": "'/Users/ronen/postcode/app/_build/test/cli.test.js:62:1'",
+        "failureType": "'testCodeFailure'"
+      },
+      {
+        "number": 81,
+        "test": "shell records scanner refusals and then accepts a quoted literal selector",
+        "durationMilliseconds": 181882.519662,
+        "location": "'/Users/ronen/postcode/app/_build/test/commands.test.js:78:1'",
+        "failureType": "'testTimeoutFailure'"
+      },
+      {
+        "number": 82,
+        "test": "ordinary cycle compiler candidates stay absent, replay recovery, and open through both CLI entry paths",
+        "durationMilliseconds": 196549.308465,
+        "location": "'/Users/ronen/postcode/app/_build/test/compiler-candidate-paths.test.js:12:5'",
+        "failureType": "'testCodeFailure'"
+      },
+      {
+        "number": 127,
+        "test": "representative journey preserves direct intermediates, shared parents, composition and fresh exact lookups",
+        "durationMilliseconds": 197291.280682,
+        "location": "'/Users/ronen/postcode/app/_build/test/dependency-presentation.test.js:16:1'",
+        "failureType": "'testCodeFailure'"
+      },
+      {
+        "number": 184,
+        "test": "worker interruption owns Git through opening and prevents later work",
+        "durationMilliseconds": 10060.840718,
+        "location": "'/Users/ronen/postcode/app/_build/test/execution-ownership.test.js:93:5'",
+        "failureType": "'testTimeoutFailure'"
+      },
+      {
+        "number": 185,
+        "test": "worker interruption owns Git through validation and prevents later work",
+        "durationMilliseconds": 174373.587222,
+        "location": "'/Users/ronen/postcode/app/_build/test/execution-ownership.test.js:93:5'",
+        "failureType": "'testTimeoutFailure'"
+      },
+      {
+        "number": 282,
+        "test": "corrections associate explicit program subjects through follow-ups and subordinate accounts",
+        "durationMilliseconds": 226240.117584,
+        "location": "'/Users/ronen/postcode/app/_build/test/investigation.test.js:500:1'",
+        "failureType": "'testCodeFailure'"
+      },
+      {
+        "number": 306,
+        "test": "representative organization journey selects, inspects, navigates, and escapes to captured paths only",
+        "durationMilliseconds": 289011.165113,
+        "location": "'/Users/ronen/postcode/app/_build/test/organization-cli.test.js:34:1'",
+        "failureType": "'testCodeFailure'"
+      },
+      {
+        "number": 388,
+        "test": "session reuses partial expansions through modules until additional inputs are acquired",
+        "durationMilliseconds": 228349.412872,
+        "location": "'/Users/ronen/postcode/app/_build/test/session-inputs.test.js:268:5'",
+        "failureType": "'testCodeFailure'"
+      },
+      {
+        "number": 396,
+        "test": "published navigation observations distinguish session references from exact lookups",
+        "durationMilliseconds": 261182.555542,
+        "location": "'/Users/ronen/postcode/app/_build/test/session.test.js:13:1'",
+        "failureType": "'testCodeFailure'"
+      },
+      {
+        "number": 404,
+        "test": "adaptive shell uses prior references, records syntax refusals, finishes on EOF and matches one-shot views",
+        "durationMilliseconds": 30023.192385,
+        "location": "'/Users/ronen/postcode/app/_build/test/shell.test.js:37:1'",
+        "failureType": "'testTimeoutFailure'"
+      },
+      {
+        "number": 405,
+        "test": "ambiguous one-shot lookup recovers through an in-session lookup and precise group reference",
+        "durationMilliseconds": 229360.518363,
+        "location": "'/Users/ronen/postcode/app/_build/test/shell.test.js:88:1'",
+        "failureType": "'testTimeoutFailure'"
+      },
+      {
+        "number": 411,
+        "test": "source observations follow actual supported disclosure in unicode shell output",
+        "durationMilliseconds": 257070.449807,
+        "location": "'/Users/ronen/postcode/app/_build/test/source-disclosure.test.js:18:5'",
+        "failureType": "'testCodeFailure'"
+      }
+    ],
+    "rawOutput": "../2026-10-01-milestone-3-round-1-suite.tap.txt",
+    "priorSuite": "79a33bb: 424 passed in 146.90 seconds before the adjacent terminal-call status check; historical, not a passing run of this target"
+  }
+}

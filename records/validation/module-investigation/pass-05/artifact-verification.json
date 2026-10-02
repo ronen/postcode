@@ -1,0 +1,7 @@
+{
+  "filesChecked": 136,
+  "jsonlRecordsChecked": 271,
+  "flagged": [],
+  "reviewedFalsePositive": "The frozen manifest authorization field is the exact plain-text commit references for milestone-5 authorization and controlled-case refinement, not a credential.",
+  "limitations": "Pattern and field checks are supplementary, do not inspect real credentials, and do not prove absence of all sensitive content. Exact opaque provider reasoning payloads are retained transport evidence, not decoded or evaluated."
+}

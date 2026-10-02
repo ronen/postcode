@@ -1,0 +1,40 @@
+TAP version 13
+# Subtest: assessment allowance reserves before dispatch, persists failed attempts and excludes competing runners
+ok 1 - assessment allowance reserves before dispatch, persists failed attempts and excludes competing runners
+  ---
+  duration_ms: 182.448202
+  ...
+# READY
+# READY
+# {"exit":0,"elapsedMilliseconds":222,"pausedForBudget":true,"disposition":"administrative-pause-not-milestone-failure"}
+# {"exit":0,"elapsedMilliseconds":2,"pausedForBudget":false,"disposition":"inspect-recorded-outcome"}
+# {"exit":2,"elapsedMilliseconds":2,"pausedForBudget":false,"disposition":"inspect-recorded-outcome"}
+# Subtest: assessment harness captures CLI interaction and refuses an extra POST without exposing credentials
+ok 2 - assessment harness captures CLI interaction and refuses an extra POST without exposing credentials
+  ---
+  duration_ms: 780.627481
+  ...
+# Subtest: controlled earlier interpretation is explicitly scripted and never sends a provider request
+ok 3 - controlled earlier interpretation is explicitly scripted and never sends a provider request
+  ---
+  duration_ms: 2.693518
+  ...
+# Subtest: controlled setup can acquire source before a mistaken account and retain exact prior-account attribution for a correction
+ok 4 - controlled setup can acquire source before a mistaken account and retain exact prior-account attribution for a correction
+  ---
+  duration_ms: 1.274965
+  ...
+# Subtest: frozen setup sequence selects attributed participants in order and refuses an unexpected operation
+ok 5 - frozen setup sequence selects attributed participants in order and refuses an unexpected operation
+  ---
+  duration_ms: 11.512448
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1454.800338

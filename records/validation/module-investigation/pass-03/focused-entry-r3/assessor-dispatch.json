@@ -1,0 +1,14 @@
+{
+  "task": "/root/r3_assess_entry",
+  "fork": "none",
+  "prompt": "Perform the fresh source-informed assessment specified in /Users/ronen/postcode/app/records/validation/module-investigation/pass-03/focused-entry-r3/assessor-input.txt. Bootstrap by reading that one supplied artifact only. Use only its frozen reference, user view, evaluator response and rubric; do not read other repository material, independently inspect source or browse. Write the requested JSON to /Users/ronen/postcode/app/records/validation/module-investigation/pass-03/focused-entry-r3/assessor-output.json, then report a short completion notice. Only that output file may be edited. This is an attributable assessment, not an implementation review.",
+  "model": "inherited; exact identifier unavailable",
+  "reasoning": "inherited; exact setting unavailable",
+  "family": "OpenAI",
+  "usage": null,
+  "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+  "limitations": [
+    "Same-family shared orchestration, not independent corroboration",
+    "Bootstrap reads only supplied input artifact"
+  ]
+}

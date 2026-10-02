@@ -1,0 +1,14 @@
+{
+  "id": "merge-anything-r3",
+  "pass": "module-summary-03",
+  "subject": "merge-anything",
+  "manifest": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-03/manifest.json",
+  "project": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/tsconfig.postcode-assessment.json",
+  "output": "/Users/ronen/postcode/app/_investigation/module-assessment-runs/merge-anything-r3",
+  "budget": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-03/request-budget.json",
+  "commands": [
+    "summarize anonymous",
+    "usage",
+    "exit"
+  ]
+}

@@ -1,0 +1,35 @@
+TAP version 13
+# Subtest: associated inspection is bounded, navigable and independent of incidental module context
+ok 1 - associated inspection is bounded, navigable and independent of incidental module context
+  ---
+  duration_ms: 590.865921
+  ...
+# Subtest: selection throw closes the shell and preserves only prior accepted usage
+ok 2 - selection throw closes the shell and preserves only prior accepted usage
+  ---
+  duration_ms: 758.223931
+  ...
+# Subtest: selection interrupt closes the shell and preserves only prior accepted usage
+ok 3 - selection interrupt closes the shell and preserves only prior accepted usage
+  ---
+  duration_ms: 724.975517
+  ...
+# Subtest: worker ignores an agent-selected reply with stale operation
+ok 4 - worker ignores an agent-selected reply with stale operation
+  ---
+  duration_ms: 685.933451
+  ...
+# Subtest: worker ignores an agent-selected reply with stale id
+ok 5 - worker ignores an agent-selected reply with stale id
+  ---
+  duration_ms: 685.667763
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4308.633882

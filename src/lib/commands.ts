@@ -3,9 +3,9 @@ import path from 'node:path';
 import type { ViewRequest } from './session.js';
 import { inlineText } from './terminal-text.js';
 
-export const help = `PostCode — modules, organization and dependencies\n
+export const help = `PostCode — modules, organization, dependencies and investigation\n
 Usage: postcode shell [--project <tsconfig.json>] [--json]
-       postcode [modules | organization [project | repository] | inspect <exact-selector> | dependencies | children <exact-selector> | parents <exact-selector>] [--project <tsconfig.json>] [--json] [--source-detail]
+       postcode [modules | organization [project | repository] | inspect <exact-selector> | dependencies | children <exact-selector> | parents <exact-selector> | summarize <module-selector> | explain <investigram-reference> | decompose <investigram-reference> | examine <investigram-reference> | usage] [--project <tsconfig.json>] [--json] [--source-detail]
 
 Defaults: modules(project), ./tsconfig.json, Unicode text.
 organization defaults to the configured project; repository selects the complete enclosing Git worktree organization.
@@ -30,6 +30,22 @@ Dependency Unicode expands 60 components, 6 levels and 200 edges; JSON retains a
 Focused relationships show up to 20 occurrences in Unicode or 50 in JSON; source detail shows up to 100 evidence records.
 External dependencies are opaque leaves. Cycles retain members and internal edges; roots do not imply entry points.
 Normal views automatically submit a local observation batch; the destination is disclosed on stderr.
+
+Investigation:
+summarize requires one exact module name/handle, or a module reference in the shell.
+Hosted investigation is disabled by default. POSTCODE_INVESTIGATOR=chatgpt (ChatGPT plan) or POSTCODE_INVESTIGATOR=openai (API billing) intentionally enables transmission of selected repository source, documentation and analysis to OpenAI; Choose the billing route explicitly; no fallback. Use auth chatgpt help for project-independent sign-in. API charges apply to the API-key route.
+ChatGPT-plan investigation uses gpt-5.6-sol with medium reasoning; API-key investigation uses gpt-6-sol with medium reasoning. Both use macOS Keychain. See docs/hosted-investigation.md before setup.
+Enabled use requires accessible credentials before project opening, including mechanical commands. Unsupported platforms and missing access fail preflight without credential or provider fallback.
+Development tests inject the investigator at the communication boundary, using the production worker/session path.
+Successful, failed-investigation and limit-stop outcomes are retained; repeated display adds no usage.
+Communication/configuration failures leave no reusable outcome. Recovery from retained failures requires a new session.
+inspect @investigram-… in the shell shows the exact original, its fixed composition, support and correction links.
+usage reports per-attempt and session usage without inference; synthetic usage and unknown/anomalous reports remain explicit.
+Investigation JSON uses postcode-investigation-view/1-experimental. One-shot references expire at command end.
+explain, decompose and examine require an exact @investigram reference in the shell. Each follow-up produces a separate result.
+inspect @investigram --revision-page N continues correction/cause details.
+inspect shows bounded associated accounts; --after @investigram-reference continues that listing.
+Redisplay selects current replacements; exact inspection preserves original accounts. Conflicts and citation-based reconsideration remain explicit; warnings do not establish error or trigger inference.
 
 Concepts:
 modules inventories the supported population; inspect selects exact subjects from that population.
@@ -59,7 +75,7 @@ export function parseCommand(args: readonly string[], cwd: string, interactive =
   try {
     scanned = parseArgs({ args: [...args], strict: true, allowPositionals: true, tokens: true, options: {
       help: { type: 'boolean', short: 'h' }, json: { type: 'boolean' },
-      'source-detail': { type: 'boolean' }, project: { type: 'string' },
+      'source-detail': { type: 'boolean' }, after: { type: 'string' }, 'revision-page': { type: 'string' }, project: { type: 'string' },
     } });
   } catch (failure) {
     if (failure instanceof Error && 'code' in failure && String(failure.code).startsWith('ERR_PARSE_ARGS_')) {
@@ -73,6 +89,7 @@ export function parseCommand(args: readonly string[], cwd: string, interactive =
   if (projects.length > 1) return error('--project may only be supplied once.');
   if (values.project === '') return error('--project requires a nonempty configuration path.');
   if (interactive && projects.length) return error('a shell keeps its opened project; exit to choose another.');
+  if (tokens.filter(token => token.kind === 'option' && token.name === 'after').length > 1 || values.after === '') return error('--after requires one nonempty investigram reference.');
   if (values.help) return { kind: 'help' };
   const configPath = values.project === undefined ? path.join(cwd, 'tsconfig.json') : path.resolve(cwd, values.project);
   const json = values.json ?? defaultJson, sourceDetail = values['source-detail'] ?? false;
@@ -80,17 +97,25 @@ export function parseCommand(args: readonly string[], cwd: string, interactive =
   const lens = positional[0] ?? 'modules';
   if (interactive && ['help', 'exit'].includes(lens) && args.length === 1) return { kind: lens as 'help' | 'exit' };
   if (!interactive && lens === 'shell' && positional.length === 1 && !sourceDetail) return { kind: 'shell', configPath, json };
-  const focused = ['inspect', 'children', 'parents'].includes(lens);
+  const followup = ['explain', 'decompose', 'examine'].includes(lens);
+  if (values.after !== undefined && (lens !== 'inspect' || !interactive || !/^@?investigram-[a-f0-9]{8,64}$/.test(values.after))) return error('--after requires shell inspection and a displayed investigram reference.');
+  if (values['revision-page'] !== undefined && (lens !== 'inspect' || !interactive || !/^[1-9][0-9]*$/.test(values['revision-page']) || !Number.isSafeInteger(Number(values['revision-page'])) || tokens.filter(token => token.kind === 'option' && token.name === 'revision-page').length > 1)) return error('--revision-page requires shell inspection and one positive page number.');
+  const focused = ['inspect', 'children', 'parents', 'summarize'].includes(lens) || followup;
   const dependency = ['dependencies', 'children', 'parents'].includes(lens);
-  if (!['modules', 'inspect', 'organization', 'dependencies', 'children', 'parents'].includes(lens)
-    || (['modules', 'dependencies'].includes(lens) && positional.length > 1)
+  if (!['modules', 'inspect', 'organization', 'dependencies', 'children', 'parents', 'summarize', 'explain', 'decompose', 'examine', 'usage'].includes(lens)
+    || (['modules', 'dependencies', 'usage'].includes(lens) && positional.length > 1)
     || (lens === 'organization' && (positional.length > 2 || !['project', 'repository'].includes(positional[1] ?? 'project')))
-    || (focused && positional.length !== 2) || (sourceDetail && !focused && !dependency)) {
-    return error('use modules, organization [project | repository], inspect <selector>, dependencies, children <selector>, or parents <selector>; --source-detail requires inspect or a dependency view.');
+    || (focused && positional.length !== 2) || (sourceDetail && lens !== 'inspect' && !dependency)) {
+    return error('use modules, organization [project | repository], inspect <selector>, dependencies, children <selector>, parents <selector>, summarize <module>, explain/decompose/examine <investigram-reference>, or usage; --source-detail requires inspect or a dependency view.');
   }
   const selector = focused ? positional[1]! : null;
   const reference = interactive && !literal && selector?.startsWith('@') === true;
+  if (values['revision-page'] !== undefined && (!reference || !selector?.startsWith('@investigram-'))) return error('--revision-page requires an exact investigram reference.');
+  if (followup && !reference) return error('follow-up lenses require an exact @investigram reference in the shell.');
   return { kind: 'view', configPath, request: { lens: lens as ViewRequest['lens'],
+    ...(lens === 'summarize' || lens === 'usage' || lens === 'inspect' || followup ? { referenceLifetime: interactive ? 'session' as const : 'command' as const } : {}),
+    ...(values.after === undefined ? {} : { after: values.after.replace(/^@/, '') }),
+    ...(values['revision-page'] === undefined ? {} : { revisionPage: Number(values['revision-page']) }),
     selector: reference ? selector!.slice(1) : selector, ...(reference ? { reference: true } : {}),
     subject: positional[1] === 'repository' ? 'repository' : 'project', presentation: { format: json ? 'json' : 'unicode', sourceDetail } } };
 }

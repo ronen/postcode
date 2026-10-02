@@ -1,0 +1,207 @@
+Condition: summary. Compare only supplied views, evaluator answers and frozen references. Milestone-4 views show originals and explicit correction links; automatic replacement selection and derived revision warnings are deferred. Scripted origin is an injected baseline, not a natural generation error. Reference preparer and orchestrator are the implementing agent, exact model identifier unavailable, OpenAI family; overlap limits independence. Reference scope may not settle deeper claims.
+
+RUBRIC
+{
+  "version": 1,
+  "task": "Compare supplied investigator views and view-only evaluator answers against the frozen source references. Use only supplied artifacts. Preserve uncertainty and cite specific displayed references or source locations.",
+  "categories": ["generation-error-repeated-by-evaluator", "presentation-misunderstanding", "successful-qualified-communication", "unsupported-evaluator-extrapolation", "material-omission", "reference-cannot-settle"],
+  "output": "JSON with findings [{category, claim, evidence, consequence, uncertainty}], subjectUsefulness {judgment, reasons, limitations}. No numeric aggregate score. Do not treat a summary-only absence of follow-up views as a generation defect. Do not treat administrative request-budget interruption as an interpretive or milestone failure."
+}
+
+FROZEN SOURCE REFERENCE
+## fsm-engine: runtime engine
+
+Source pin: [fsm-engine.ts](https://github.com/thingts/fsm-engine/blob/0bd7bb2cc9df14a1b599fb2748e5daf10169f513/src/fsm-engine.ts).
+Original `tsconfig.json`; selector `fsm-engine`. Mechanical inventory materializes
+`FsmEngine` and `FsmEngineFactory`. Normal evidence can reach DSL implementation,
+timer registry, types, errors and the root README; these were not injected as
+expected answers.
+
+Supported source conclusions:
+
+- Lines 119–135 build, validate and compile a definition via `FsmBuilderImpl`,
+  returning a factory. Instances share the definition but own runtime state,
+  queue, timers and caller-supplied context; context is not deep-copied.
+- Lines 184–222 enqueue all dispatches. Reentrant calls return after enqueuing;
+  the outer call drains FIFO synchronously. Exceptions clear queued work and
+  reset the dispatching flag; this does not undo actions already run.
+- Lines 241–266 run state-specific begin actions and try transitions, then
+  fallback begins/transitions. If there are transition candidates but none match,
+  the event is treated as an implicit stay. Absent handling produces an error.
+- Lines 271–313 choose the first transition whose guards all pass. External
+  transitions run exit actions, transition actions, commit state, then entry
+  actions. Internal transitions run actions without exit/entry or a state change.
+  The inline comment implying state is committed first is not the actual order.
+- Lines 366–376 provide action-facing dispatch and timer operations; scheduling
+  is delegated to `TimerRegistry`. Optional tracing records event/guard/action
+  progression but is not the transition-selection mechanism.
+
+Acceptable interpretation: synchronous typed state-machine execution with ordered
+guard/action handling, queued reentrant events, fallback handling, timers and
+tracing. Material limits: no subject test execution; caller guards/actions are
+unconstrained functions, and queued execution is not thread-safety or rollback.
+Do not generalize the README's broad safety claim beyond established control flow.
+The timer payload expression at line 371 is suspicious (a present payload selects
+an empty argument array); references do not establish correct payload forwarding.
+A summary need not audit every defect, but must not assert that guarantee as proven.
+
+
+CAPTURED VIEWS
+COMMAND: summarize fsm-engine
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-28ee01f8: fsm-engine
+
+@investigram-dc111a38 · interpretation
+Implements the stateful FSM instance and its typed factory. `define` delegates DSL capture, validation and table compilation to `FsmBuilderImpl`, then factories share that immutable-looking definition while each instance owns context, current state, FIFO event queue, timers and tracing state. Dispatch is synchronous at the outer call and re-entrant calls only enqueue; processing runs state begin actions, first matching guarded transition, then fallback handling, with an implicit stay when handlers exist but no guard matches. External transitions run exit, transition and entry actions, committing the target between transition and entry actions; internal transitions run only transition actions. Unknown events and known-but-unhandled events are distinct errors; any thrown guard/action/error clears queued events. Initial entry actions run during construction. The action API loops dispatch back into the queue and delegates keyed scheduling/cancellation to `TimerRegistry`; trace output records events, guards, transitions and actions. The README describes these broad semantics, but its timer-payload promise conflicts with the implementation: the adapter appears to pass no payload argument when `payload` is present and one `undefined` argument when it is absent.
+Referent: FSM runtime engine and factory implementation
+  Qualification: Interpretation of captured TypeScript source; no execution was performed.
+  Qualification: The README is an attributed package-level assertion, not proof of behavior.
+  Qualification: The apparent timer payload inversion follows the literal conditional in the captured source and may cause payload-bearing timer events to receive `undefined`.
+  Qualification: Dependency coverage is bounded to recognized project-owned source requests.
+  Composition: @investigram-1f0389d7, @investigram-2f1f0d4d, @investigram-9c64fa80
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-9c64fa80 · interpretation
+Defines the error taxonomy and diagnostic payloads: definition-time errors for missing, duplicate, unknown or unreachable structure, and runtime errors for unknown versus currently unhandled events. Runtime errors retain the FSM identifier; unhandled-event errors also retain state, event, payload and context.
+Referent: FSM definition/runtime error classes
+  Qualification: Interpretation of captured declarations and constructors; which call sites can trigger each class is established only where inspected.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-dc111a38
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:9005b07f7708207e8f24e52a62e67b90a7a1d58099c4fe95b259daeb0c278b8d, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:2223a19b7c84507271eb5dcafd0ce7c951322233ba64e5857e7344d6ae15d73d
+
+@investigram-2f1f0d4d · interpretation
+Maintains keyed timeout handles. Scheduling first replaces the same key, accepts relative milliseconds or `performance.now()` deadlines, clamps past/negative delays to zero, treats Infinity as never firing, rejects other non-finite values and likely epoch-domain deadlines, and supports single/all cancellation.
+Referent: Keyed timer scheduling utility used by FSM actions
+  Qualification: Interpretation of captured implementation and embedded tests; tests were not executed.
+  Qualification: The registry itself is generic; conversion from timer events to callbacks remains the engine's responsibility.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-dc111a38
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:5ae20a36be80e4d3426c537ab3f59d590e4dcd0d929812feb44017c3524f5e6a
+
+@investigram-1f0389d7 · interpretation
+Builds the executable definition tables behind the public DSL. It records states, event/fallback begins, entry/exit actions, guards and ordered transitions; rejects duplicate state/event declarations and transitions placed after an unconditional transition; validates initial/target states and reachability; then exposes the compiled tables consumed by the engine.
+Referent: DSL recording, validation and compilation implementation
+  Qualification: Interpretation of captured source; validation guarantees beyond the shown checks were not inferred.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-dc111a38
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:2223a19b7c84507271eb5dcafd0ce7c951322233ba64e5857e7344d6ae15d73d
+Attempt session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigation-attempt:4c7d41887f91ba32c44af27c2607b0dfdf2676bb5e47404c218528f01f43beb9 (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 123430 tokens; input 121384 tokens (subset of total); output 2046 tokens (subset of total); cached-input 23552 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 563 tokens (subset of output)
+Session reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 123430 tokens; input 121384 tokens (subset of total); output 2046 tokens (subset of total); cached-input 23552 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 563 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+
+VIEW-ONLY EVALUATOR
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The module supplies a typed factory and stateful FSM runtime. The engine delegates DSL recording, validation and table compilation to FsmBuilderImpl, shares an immutable-looking definition between factories/instances, and gives each instance its own context, current state, FIFO queue, timers and tracing. Outer dispatch is synchronous; re-entrant dispatch enqueues. The account describes begin actions, guarded transition selection, fallback handling and implicit stays, plus different external/internal transition action sequences. TimerRegistry manages keyed timeout handles while the engine converts timer events into callbacks. Separate error classes describe definition failures and distinguish unknown events from known events unhandled in the current state.",
+      "support": [
+        "@investigram-dc111a38: 'Implements the stateful FSM instance and its typed factory'; 'define delegates DSL capture, validation and table compilation to FsmBuilderImpl'.",
+        "@investigram-1f0389d7 describes DSL recording, ordered transitions, validation and compiled tables consumed by the engine.",
+        "@investigram-2f1f0d4d describes keyed scheduling/replacement/cancellation and explicitly assigns timer-event-to-callback conversion to the engine.",
+        "@investigram-9c64fa80 describes definition/runtime error classes and retained diagnostic fields."
+      ],
+      "unknowns": [
+        "The view does not establish execution behavior independently of these source interpretations.",
+        "The definition is only described as 'immutable-looking'; enforced immutability is not established.",
+        "Coverage of dependencies outside recognized project-owned source requests is not established."
+      ]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "All four investigrams are explicitly interpretations. The engine, builder and error descriptions are based on captured TypeScript source, declarations or constructors. The timer account also interprets embedded tests, but those tests were not executed. A README assertion supports broad intended semantics at package level, while expressly not proving behavior. The apparent timer payload inversion is a literal-source interpretation that conflicts with the README promise: the adapter appears to pass no payload argument when a payload is present, and one undefined argument when absent. This is a consequential suspected behavior, not an executed finding. Accepted investigation status and reported model usage do not validate the behavioral claims.",
+      "support": [
+        "@investigram-dc111a38 qualifies its source interpretation with 'no execution was performed', labels the README an attributed assertion, and says the inversion 'may cause payload-bearing timer events to receive undefined'.",
+        "@investigram-2f1f0d4d: 'Interpretation of captured implementation and embedded tests; tests were not executed.'",
+        "@investigram-1f0389d7 does not infer validation guarantees beyond shown checks.",
+        "@investigram-9c64fa80 limits established triggering call sites to those inspected.",
+        "The footer says 'Generated accounts remain interpretation' and distinguishes reported usage from confirmed billed usage."
+      ],
+      "unknowns": [
+        "Whether execution reproduces the timer payload inversion, and its concrete effects on consumers.",
+        "Whether tests pass, whether every error class has a reachable triggering path, and whether additional validation guarantees exist.",
+        "Actual billed usage, monetary attribution and credit charges are unavailable rather than established as zero."
+      ]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "Only the summarize fsm-engine view was supplied. No explanation, decomposition or examination sequence is available, so I cannot report changes caused by those operations. Within the summary, the engine account and its three separately referenced components make runtime, builder, timer and error responsibilities distinguishable and provide specific references one could select next. That is a property of this displayed summary, not evidence of a before-and-after improvement.",
+      "support": [
+        "The supplied command is 'summarize fsm-engine'.",
+        "@investigram-dc111a38 lists @investigram-1f0389d7, @investigram-2f1f0d4d and @investigram-9c64fa80 as its composition, and each child is displayed separately."
+      ],
+      "unknowns": [
+        "Results or availability of explanation, decomposition and examination operations are not shown.",
+        "No comparison view establishes changes in understanding, selectability or substantive conclusions after those operations."
+      ]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "I would select @investigram-dc111a38 with a timer-payload correctness lens, focusing on the engine adapter that converts scheduled events into callbacks. I would want a closer account of the conditional, the present/absent payload cases, the README conflict and the limits of the inferred effect. The engine reference is the appropriate target because the timer utility account expressly leaves conversion to the engine. A focused examination, and especially execution of a reproducing case, is a requested next capability; the supplied view does not demonstrate that either can be invoked. It does show session-bound references and the completed summary operation.",
+      "support": [
+        "@investigram-dc111a38 describes the apparent payload inversion and qualifies its source basis.",
+        "@investigram-2f1f0d4d: 'conversion from timer events to callbacks remains the engine's responsibility'.",
+        "The view states 'References remain bound for this session.'"
+      ],
+      "unknowns": [
+        "The syntax and supported lens vocabulary for a follow-up request are not supplied.",
+        "The view does not establish access to execution, source expansion or a follow-up examination operation."
+      ]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No concrete correction, replacement reference or changed assertion is displayed in this summary. The general notice says original accounts are displayed and that replacement substitution and derived revision warnings are not yet presented; it does not identify a replacement for any particular account. Composition can be distinguished from investigation-subject provenance: the parent explicitly lists three component references, each child names its composition parent, and every account separately marks the module as investigation subject '(provenance, not composition)'. No later-investigation relationship is displayed, so I cannot assess how such provenance would be presented or whether a correction affected derived accounts.",
+      "support": [
+        "@investigram-dc111a38 has 'Composition: @investigram-1f0389d7, @investigram-2f1f0d4d, @investigram-9c64fa80'.",
+        "The three child accounts have 'Composition parent: @investigram-dc111a38'.",
+        "All four accounts label 'Investigation subject: @module-28ee01f8 (provenance, not composition)'.",
+        "The footer says 'Corrections are retained assertions, not established truth' and 'Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.'"
+      ],
+      "unknowns": [
+        "Whether corrections exist for these accounts, what any correction changed, and the identity or validity of a replacement.",
+        "Any subsequent investigation's relationship to these accounts and any resulting revision effects."
+      ]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The summary is useful for orienting a reader to responsibilities and selecting a narrower concern. Separate referents, stable-within-session references and explicit qualifications help preserve the distinction between interpretation and verification. However, the long lead account packs many execution-order claims together, making boundary cases difficult to inspect. Declarative verbs such as 'Implements', 'rejects' and 'run' can sound verified if qualifications are skimmed. 'Immutable-looking' leaves a consequential property deliberately unresolved. Opaque evidence identifiers give traceability markers without displaying the underlying excerpts or a demonstrated way to inspect them. Repeated investigation metadata and duplicate attempt/session usage totals compete with the behavioral account, and the totals could be mistaken for additive usage despite the warnings. Generic correction notices could suggest a specific correction exists when none is identified here. The lack of demonstrated follow-up controls limits immediate use of the otherwise precise references.",
+      "support": [
+        "The lead @investigram-dc111a38 paragraph combines factory ownership, dispatch, action order, errors, timers, tracing and the payload conflict.",
+        "Every account repeats operation/provider, investigation subject and evidence metadata.",
+        "Attempt and session usage repeat the same 4-call and 123430-token totals; the footer explains subset accounting and unconfirmed billing.",
+        "The header and footer discuss correction presentation without showing a correction-specific original/replacement pair."
+      ],
+      "unknowns": [
+        "Whether another UI supplies evidence navigation, follow-up controls or clearer correction relationships.",
+        "Whether readers in practice confuse usage categories, interpretation status or generic correction notices; those are presentation risks, not observed user outcomes."
+      ]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful as a qualified orientation and a starting point for focused investigation; insufficient to establish runtime correctness or revision history.",
+    "reasons": [
+      "Communicates a coherent division between runtime, builder, timer registry and error classes.",
+      "Provides individually selectable references and explicitly separates composition from investigation-subject provenance.",
+      "Surfaces a consequential timer payload concern while preserving its source-interpretation status."
+    ],
+    "limitations": [
+      "Only a summary is supplied, with no progressive operation sequence or executed verification.",
+      "Evidence excerpts and demonstrated follow-up affordances are absent.",
+      "No concrete correction pair or later-investigation provenance is shown.",
+      "Dense prose and repeated usage/provenance metadata can obscure the most actionable uncertainty."
+    ]
+  }
+}

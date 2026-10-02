@@ -1,0 +1,72 @@
+Condition: summary. These are exact captured user-facing views. Scripted origin denotes controlled setup, not a natural investigator result. Current views display originals and correction links; replacement substitution and derived revision warnings are not supplied.
+
+QUESTIONS
+{
+  "version": 1,
+  "condition": "summary-only or progressive sequence; use only the supplied condition",
+  "questions": [
+    "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+    "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+    "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+    "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+    "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+    "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score."
+  ],
+  "answerFormat": "JSON with answers [{question,answer,support,unknowns}], usefulness {judgment,reasons,limitations}. Use only supplied user-facing views; no independent sources or tools."
+}
+
+VIEWS
+COMMAND: summarize fsm-engine
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-28ee01f8: fsm-engine
+
+@investigram-dc111a38 · interpretation
+Implements the stateful FSM instance and its typed factory. `define` delegates DSL capture, validation and table compilation to `FsmBuilderImpl`, then factories share that immutable-looking definition while each instance owns context, current state, FIFO event queue, timers and tracing state. Dispatch is synchronous at the outer call and re-entrant calls only enqueue; processing runs state begin actions, first matching guarded transition, then fallback handling, with an implicit stay when handlers exist but no guard matches. External transitions run exit, transition and entry actions, committing the target between transition and entry actions; internal transitions run only transition actions. Unknown events and known-but-unhandled events are distinct errors; any thrown guard/action/error clears queued events. Initial entry actions run during construction. The action API loops dispatch back into the queue and delegates keyed scheduling/cancellation to `TimerRegistry`; trace output records events, guards, transitions and actions. The README describes these broad semantics, but its timer-payload promise conflicts with the implementation: the adapter appears to pass no payload argument when `payload` is present and one `undefined` argument when it is absent.
+Referent: FSM runtime engine and factory implementation
+  Qualification: Interpretation of captured TypeScript source; no execution was performed.
+  Qualification: The README is an attributed package-level assertion, not proof of behavior.
+  Qualification: The apparent timer payload inversion follows the literal conditional in the captured source and may cause payload-bearing timer events to receive `undefined`.
+  Qualification: Dependency coverage is bounded to recognized project-owned source requests.
+  Composition: @investigram-1f0389d7, @investigram-2f1f0d4d, @investigram-9c64fa80
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-9c64fa80 · interpretation
+Defines the error taxonomy and diagnostic payloads: definition-time errors for missing, duplicate, unknown or unreachable structure, and runtime errors for unknown versus currently unhandled events. Runtime errors retain the FSM identifier; unhandled-event errors also retain state, event, payload and context.
+Referent: FSM definition/runtime error classes
+  Qualification: Interpretation of captured declarations and constructors; which call sites can trigger each class is established only where inspected.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-dc111a38
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:9005b07f7708207e8f24e52a62e67b90a7a1d58099c4fe95b259daeb0c278b8d, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:2223a19b7c84507271eb5dcafd0ce7c951322233ba64e5857e7344d6ae15d73d
+
+@investigram-2f1f0d4d · interpretation
+Maintains keyed timeout handles. Scheduling first replaces the same key, accepts relative milliseconds or `performance.now()` deadlines, clamps past/negative delays to zero, treats Infinity as never firing, rejects other non-finite values and likely epoch-domain deadlines, and supports single/all cancellation.
+Referent: Keyed timer scheduling utility used by FSM actions
+  Qualification: Interpretation of captured implementation and embedded tests; tests were not executed.
+  Qualification: The registry itself is generic; conversion from timer events to callbacks remains the engine's responsibility.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-dc111a38
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:5ae20a36be80e4d3426c537ab3f59d590e4dcd0d929812feb44017c3524f5e6a
+
+@investigram-1f0389d7 · interpretation
+Builds the executable definition tables behind the public DSL. It records states, event/fallback begins, entry/exit actions, guards and ordered transitions; rejects duplicate state/event declarations and transitions placed after an unconditional transition; validates initial/target states and reachability; then exposes the compiled tables consumed by the engine.
+Referent: DSL recording, validation and compilation implementation
+  Qualification: Interpretation of captured source; validation guarantees beyond the shown checks were not inferred.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-dc111a38
+  Evidence: session:95b386bb-5138-49a2-ac41-d49e8759bd24:captured-content:2223a19b7c84507271eb5dcafd0ce7c951322233ba64e5857e7344d6ae15d73d
+Attempt session:95b386bb-5138-49a2-ac41-d49e8759bd24:investigation-attempt:4c7d41887f91ba32c44af27c2607b0dfdf2676bb5e47404c218528f01f43beb9 (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 123430 tokens; input 121384 tokens (subset of total); output 2046 tokens (subset of total); cached-input 23552 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 563 tokens (subset of output)
+Session reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 123430 tokens; input 121384 tokens (subset of total); output 2046 tokens (subset of total); cached-input 23552 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 563 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+

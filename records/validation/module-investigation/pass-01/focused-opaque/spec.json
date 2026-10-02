@@ -1,0 +1,14 @@
+{
+  "id": "focused-opaque",
+  "pass": "module-summary-01",
+  "subject": "focused",
+  "manifest": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-01/manifest.json",
+  "project": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/focused/tsconfig.json",
+  "output": "/Users/ronen/postcode/app/_investigation/module-assessment-runs/focused-opaque",
+  "budget": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-01/request-budget.json",
+  "commands": [
+    "summarize opaque",
+    "usage",
+    "exit"
+  ]
+}

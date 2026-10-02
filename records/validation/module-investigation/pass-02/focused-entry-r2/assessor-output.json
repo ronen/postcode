@@ -1,0 +1,64 @@
+{
+  "findings": [
+    {
+      "category": "material-omission",
+      "claim": "The captured view supplies no substantive module account with which to communicate or assess the controlled entry case's distinct responsibilities and documentation conflict; the evaluator correctly recognizes this absence.",
+      "evidence": [
+        "Frozen reference, Controlled focused cases: entry.ts delegates to numeric clamping in normalize.ts and a module-scoped incrementing counter in counter.ts; the authored README's pure/stateless and same-argument deterministic claims conflict with the counter.",
+        "User view: 'Module @module-acc2ba39: next-sequence' is followed by a failed-attempt and usage report, with no behavioral explanation.",
+        "Evaluator answer 1: 'A substantive division of responsibility within the module is not communicated.' Evaluator answer 2: 'There is no substantive generated account to assess.'"
+      ],
+      "consequence": "This capture cannot support the intended comprehension of the entry fixture or recognition of its attributed documentation conflict. The omission is an observable limitation of the delivered view, not evidence that a displayed behavioral interpretation was false.",
+      "uncertainty": "The selected name next-sequence does not establish its mapping to entry.ts or counter.ts. The supplied artifacts do not reveal an underlying generated account, the reason for that selection, or whether other content existed before failure. The frozen reference is qualified source analysis, not runtime proof."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator accurately preserves the view's epistemic and accounting qualifications instead of inventing behavior or treating usage reports as billing evidence.",
+      "evidence": [
+        "User view: 'Generated accounts remain interpretation. Corrections are retained assertions, not established truth.'",
+        "User view reports three calls and 49,686 total tokens at both attempt and session scope, and states that reported usage is not confirmed billed usage and monetary attribution is unavailable, not zero.",
+        "Evaluator answer 2 treats selection, failure and usage as displayed reports, does not add the identical scope totals, and distinguishes the reported attempt model from the evaluator's own unknown model.",
+        "Evaluator answers 1 and 2 explicitly leave module behavior, implementation and correctness unestablished."
+      ],
+      "consequence": "The failure report is understood within its evidential limits, without repeating the fixture README's unsupported purity claim, inventing a business purpose, asserting charges, or claiming independent corroboration.",
+      "uncertainty": "The supplied report does not independently verify actual provider consumption, billing, runtime behavior or the evaluator's model configuration."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly distinguishes missing follow-up and correction views from demonstrated operations and presents its proposed next step as a request rather than an available capability.",
+      "evidence": [
+        "Evaluator answer 3 states that explanation, decomposition and examination views were not supplied.",
+        "Evaluator answer 4 distinguishes @module-acc2ba39 and the failed-attempt identifier from a displayed investigram reference, and labels requesting an earlier investigram with an explanation lens a desired next step.",
+        "Evaluator answer 5 says the generic correction caveat and inconsistency-target failure do not demonstrate a concrete correction or distinguish composition from later-investigation provenance."
+      ],
+      "consequence": "The response avoids claiming navigation, refinement, correction or provenance that the capture does not show. Summary-only absence of later views is not treated as a generation defect.",
+      "uncertainty": "Other views, controls and eligible references may exist outside this capture. The proposed explanation lens is not established as an available operation by the supplied artifacts."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "The invalid inconsistency-target report establishes a displayed failure but does not settle its cause, and the evaluator's presentation concerns remain plausible usability judgments rather than demonstrated misunderstandings.",
+      "evidence": [
+        "User view: 'investigation-failure: Inconsistency targets must be earlier investigrams.' No invalid target, originating request or generated payload is displayed.",
+        "Evaluator answer 6 points to the Module summary heading, repeated attempt/session usage details and absence of a recovery action, while acknowledging that surrounding interface controls may supply missing guidance.",
+        "The frozen reference supplies expected fixture behavior and assessment limitations, but no causal analysis of this particular failure or evidence about surrounding interface controls."
+      ],
+      "consequence": "The capture supports a limited judgment about failed comprehension delivery and recovery guidance. It does not support attributing the failure to a particular generation or orchestration defect, establishing actual user confusion, or drawing an implementation or milestone verdict.",
+      "uncertainty": "The cause and recoverability of the target-eligibility failure are unestablished. This is not shown to be an administrative request-ceiling interruption or the separate hard-limit control; neither classification should be inferred."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful as a qualified failure and usage report, but insufficient for the controlled entry case's module-comprehension objective.",
+    "reasons": [
+      "The evaluator faithfully identifies the absence of behavioral content and preserves the displayed interpretation and billing caveats.",
+      "The view does not communicate the frozen reference's clamping/counter distinction or attributed README conflict.",
+      "No eligible investigram or concrete recovery action is displayed, which limits continuation from this capture."
+    ],
+    "limitations": [
+      "Assessment uses only the supplied frozen reference, captured view and evaluator response; no independent source inspection or runtime verification was performed.",
+      "The selected next-sequence name cannot be conclusively mapped to a fixture source file from these artifacts.",
+      "No substantive generated interpretation is visible, so this assessment cannot diagnose its accuracy or the failure's root cause.",
+      "Missing later views are a scope limitation, not a generation defect. This assessment makes no independent implementation or milestone judgment.",
+      "The frozen reference describes purposeful development examples with shared implementation, selection and orchestration biases; fresh same-family contexts do not establish independent corroboration or general validity."
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "intervention": "none; normal frozen instructions and subject-based evidence",
+  "deliveredReadmes": [
+    {
+      "id": "session:f63c7428-6eb8-4c27-a452-d3885198394e:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7",
+      "wireId": "r35Pz4TF-_2s.3c",
+      "subject": "session:f63c7428-6eb8-4c27-a452-d3885198394e:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93",
+      "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/README.md",
+      "firstDeliveredExchange": 3,
+      "characters": 26916
+    }
+  ],
+  "requestedEvidenceKinds": {
+    "inspect": 4,
+    "exports": 1,
+    "dependencies": 2,
+    "dependents": 1,
+    "source": 11
+  },
+  "referenceResolutionCounts": [
+    {
+      "exchange": 1,
+      "bindings": 1,
+      "resolved": 4,
+      "unresolved": []
+    },
+    {
+      "exchange": 2,
+      "bindings": 119,
+      "resolved": 7,
+      "unresolved": []
+    },
+    {
+      "exchange": 3,
+      "bindings": 156,
+      "resolved": 4,
+      "unresolved": []
+    },
+    {
+      "exchange": 4,
+      "bindings": 160,
+      "resolved": 5,
+      "unresolved": []
+    },
+    {
+      "exchange": 5,
+      "bindings": 170,
+      "resolved": 65,
+      "unresolved": []
+    }
+  ],
+  "limitation": "References alone are not content delivery. First delivery is a provider request containing the captured README text; repeated history is deduplicated."
+}

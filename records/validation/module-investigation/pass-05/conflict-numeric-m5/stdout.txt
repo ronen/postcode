@@ -1,0 +1,1118 @@
+Session cf944535-525c-4132-9ccb-6ece9ead4964
+Inputs are assumed unchanged. Use help for commands; exit or EOF to finish.
+postcode> summarize classify
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-096f7ded: classify
+
+@investigram-104b4d62 · interpretation
+The classifier chooses one applicable label for each numeric input, preferring positive to even and then large. Inputs outside these categories return no label.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Displayed composition: @investigram-f976ffc0
+  Composition: @investigram-f976ffc0
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-096f7ded (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee
+
+@investigram-f976ffc0 · interpretation
+For a positive even number, the returned array contains the positive label only.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-096f7ded (provenance, not composition)
+  Composition parent: @investigram-104b4d62
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee
+
+Revision status @investigram-104b4d62: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-f976ffc0: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:4b0e70941c01fc7c4bcca6b7dff0ad22a733d7ebd51943b87c975eebee4a7a2c (accepted) reported usage: 2 calls; 0 unknown; 2 anomalous.
+Session reported usage: 2 calls; 0 unknown; 2 anomalous.
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+postcode> explain @investigram-104b4d62
+Explain · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-29017938 · interpretation
+Since classification selects at most one label, reading the first array element conveys the complete classification.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account; callers were not observed.
+  Operation: clarification; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-104b4d62 (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+
+Revision status @investigram-29017938: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-104b4d62: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:877ac581f161c4d23d04befc01ee0a8a90fb0dc9da777241ea0a2894ce1daeb8 (accepted) reported usage: 1 calls; 0 unknown; 1 anomalous.
+Session reported usage: 3 calls; 0 unknown; 3 anomalous.
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+postcode> decompose @investigram-29017938
+Decompose · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-98220f34 · interpretation
+A caller summarizing the first returned label need not represent additional classifications for the same number.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account, not an observation of a particular caller.
+  Operation: decomposition; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-29017938 (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:29017938df21907a09640c5cbf5e26f80166289d51ff199da900d3527e7d8016
+
+Revision status @investigram-98220f34: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-29017938: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:a858631580b9f108af1d161d013b6274ba5bc18a937956ab0eb497a79869eab5 (accepted) reported usage: 1 calls; 0 unknown; 1 anomalous.
+Session reported usage: 4 calls; 0 unknown; 4 anomalous.
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+postcode> examine @investigram-104b4d62
+Examine · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-192c6b0f · interpretation
+An alternative account of priority accompanies this interpretation.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Operation: examination; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-104b4d62 (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+
+@investigram-eadb6e02 · interpretation
+The classifier emits one label, preferring even, then large, then positive.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Operation: examination; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-104b4d62 (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+
+Revision status @investigram-192c6b0f: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-eadb6e02: original remains selected.
+  Revision page 1; 1 of 1 relationships/causes.
+
+Revision status @investigram-104b4d62: superseded; primary @investigram-eadb6e02.
+  Revision page 1; 1 of 1 relationships/causes.
+
+Correction reported by @investigram-192c6b0f: @investigram-104b4d62 → @investigram-eadb6e02
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The even category takes priority when multiple categories could apply.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+Attempt session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2e67fbee843531f2980d39c3512e18d041250a28750118a5855b930aa8e967ca (accepted) reported usage: 1 calls; 0 unknown; 1 anomalous.
+Session reported usage: 5 calls; 0 unknown; 5 anomalous.
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+postcode> decompose @investigram-104b4d62
+Decompose · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-ff82bd0a · interpretation
+A competing account of priority accompanies this interpretation.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Operation: decomposition; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-104b4d62 (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+
+@investigram-50714bb2 · interpretation
+The classifier emits one label, preferring large, then positive, then even.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Operation: decomposition; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-104b4d62 (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+
+Revision status @investigram-ff82bd0a: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-50714bb2: original remains selected; conflicting alternatives remain (family primary @investigram-50714bb2).
+  Revision page 1; 2 of 2 relationships/causes.
+
+Revision status @investigram-104b4d62: superseded; primary @investigram-50714bb2; conflicting alternatives remain (family primary @investigram-50714bb2).
+  Revision page 1; 2 of 2 relationships/causes.
+
+Correction reported by @investigram-ff82bd0a: @investigram-104b4d62 → @investigram-50714bb2
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The large threshold takes priority over the more general positive category.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-192c6b0f: @investigram-104b4d62 → @investigram-eadb6e02
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The even category takes priority when multiple categories could apply.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+Attempt session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:e5192a0525a501f9bed2472460f714fb7d3c98d09e1bb961a7bbd97bea0f564e (accepted) reported usage: 1 calls; 0 unknown; 1 anomalous.
+Session reported usage: 6 calls; 0 unknown; 6 anomalous.
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+postcode> inspect @investigram-104b4d62
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-104b4d62 · interpretation
+The classifier chooses one applicable label for each numeric input, preferring positive to even and then large. Inputs outside these categories return no label.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Displayed composition: @investigram-f976ffc0
+  Composition: @investigram-f976ffc0
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-096f7ded (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee
+
+@investigram-f976ffc0 · interpretation
+For a positive even number, the returned array contains the positive label only.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-096f7ded (provenance, not composition)
+  Composition parent: @investigram-104b4d62
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee
+
+Revision status @investigram-104b4d62: superseded; primary @investigram-50714bb2; conflicting alternatives remain (family primary @investigram-50714bb2).
+  Revision page 1; 2 of 2 relationships/causes.
+
+Revision status @investigram-f976ffc0: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Correction reported by @investigram-192c6b0f: @investigram-104b4d62 → @investigram-eadb6e02
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The even category takes priority when multiple categories could apply.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-ff82bd0a: @investigram-104b4d62 → @investigram-50714bb2
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The large threshold takes priority over the more general positive category.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Associated investigrams (explicit associations)
+Listing: available; 3 shown of 3.
+Use inspect @reference for retained content; no inference.
+@investigram-29017938 · interpretation
+  Revision: current original; needs reconsideration (2 causes); inspect this reference for details.
+  Since classification selects at most one label, reading the first array element conveys the complete classification.
+  Operation: clarification; origin: scripted; provenance: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:877ac581f161c4d23d04befc01ee0a8a90fb0dc9da777241ea0a2894ce1daeb8
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account; callers were not observed.
+  Association: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+@investigram-192c6b0f · interpretation
+  Revision: current original; needs reconsideration (1 causes); inspect this reference for details.
+  An alternative account of priority accompanies this interpretation.
+  Operation: examination; origin: scripted; provenance: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2e67fbee843531f2980d39c3512e18d041250a28750118a5855b930aa8e967ca
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Association: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+@investigram-ff82bd0a · interpretation
+  Revision: current original; inspect this reference for details.
+  A competing account of priority accompanies this interpretation.
+  Operation: decomposition; origin: scripted; provenance: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:e5192a0525a501f9bed2472460f714fb7d3c98d09e1bb961a7bbd97bea0f564e
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Association: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:4b0e70941c01fc7c4bcca6b7dff0ad22a733d7ebd51943b87c975eebee4a7a2c","forms":["full"]}],"coverage":"full-file","contentDigest":"8c500fd2a09328111cde51266aa6c87a7ff21f2f419906b24f93277968432bd1","mapping":"session:cf944535-525c-4132-9ccb-6ece9ead4964:source:7f76b3409b9f359faa7ce048ac16efa697ecf1de4a522f00f17d003d50e6ce22","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2e67fbee843531f2980d39c3512e18d041250a28750118a5855b930aa8e967ca","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:e5192a0525a501f9bed2472460f714fb7d3c98d09e1bb961a7bbd97bea0f564e","forms":["prior-interpretation"]}]}
+Session reported usage: 6 calls; 0 unknown; 6 anomalous.
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+postcode> inspect @investigram-eadb6e02
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-eadb6e02 · interpretation
+The classifier emits one label, preferring even, then large, then positive.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Operation: examination; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-104b4d62 (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+
+Revision status @investigram-eadb6e02: original remains selected; conflicting alternatives remain (family primary @investigram-50714bb2).
+  Needs reconsideration: 1 correction causes. This does not establish error or trigger inference.
+  Direct cause session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram-correction:3ed20c38a4be2bb3d4ed9912cd855d163e265aadaafc35c788ee8ed22d836835: @investigram-104b4d62 → @investigram-50714bb2; via @investigram-104b4d62.
+  Revision page 1; 2 of 2 relationships/causes.
+
+Correction reported by @investigram-192c6b0f: @investigram-104b4d62 → @investigram-eadb6e02
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The even category takes priority when multiple categories could apply.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-ff82bd0a: @investigram-104b4d62 → @investigram-50714bb2
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The large threshold takes priority over the more general positive category.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Associated investigrams (explicit associations)
+Listing: available; 0 shown of 0.
+Use inspect @reference for retained content; no inference.
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2e67fbee843531f2980d39c3512e18d041250a28750118a5855b930aa8e967ca","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:e5192a0525a501f9bed2472460f714fb7d3c98d09e1bb961a7bbd97bea0f564e","forms":["prior-interpretation"]}]}
+Session reported usage: 6 calls; 0 unknown; 6 anomalous.
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+postcode> inspect @investigram-50714bb2
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-50714bb2 · interpretation
+The classifier emits one label, preferring large, then positive, then even.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Operation: decomposition; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-104b4d62 (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+
+Revision status @investigram-50714bb2: original remains selected; conflicting alternatives remain (family primary @investigram-50714bb2).
+  Revision page 1; 2 of 2 relationships/causes.
+
+Correction reported by @investigram-192c6b0f: @investigram-104b4d62 → @investigram-eadb6e02
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The even category takes priority when multiple categories could apply.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-ff82bd0a: @investigram-104b4d62 → @investigram-50714bb2
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The large threshold takes priority over the more general positive category.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Associated investigrams (explicit associations)
+Listing: available; 0 shown of 0.
+Use inspect @reference for retained content; no inference.
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:e5192a0525a501f9bed2472460f714fb7d3c98d09e1bb961a7bbd97bea0f564e","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2e67fbee843531f2980d39c3512e18d041250a28750118a5855b930aa8e967ca","forms":["prior-interpretation"]}]}
+Session reported usage: 6 calls; 0 unknown; 6 anomalous.
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+postcode> inspect @investigram-29017938
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-29017938 · interpretation
+Since classification selects at most one label, reading the first array element conveys the complete classification.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account; callers were not observed.
+  Operation: clarification; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-104b4d62 (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+
+Revision status @investigram-29017938: original remains selected.
+  Needs reconsideration: 2 correction causes. This does not establish error or trigger inference.
+  Direct cause session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram-correction:6fa4a2a0676842c4ed68688deea55ced118044950a7a9028032335680b5aa6f6: @investigram-104b4d62 → @investigram-eadb6e02; via @investigram-104b4d62.
+  Direct cause session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram-correction:3ed20c38a4be2bb3d4ed9912cd855d163e265aadaafc35c788ee8ed22d836835: @investigram-104b4d62 → @investigram-50714bb2; via @investigram-104b4d62.
+  Revision page 1; 2 of 2 relationships/causes.
+
+Correction reported by @investigram-192c6b0f: @investigram-104b4d62 → @investigram-eadb6e02
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The even category takes priority when multiple categories could apply.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-ff82bd0a: @investigram-104b4d62 → @investigram-50714bb2
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The large threshold takes priority over the more general positive category.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Associated investigrams (explicit associations)
+Listing: available; 1 shown of 1.
+Use inspect @reference for retained content; no inference.
+@investigram-98220f34 · interpretation
+  Revision: current original; needs reconsideration (2 causes); inspect this reference for details.
+  A caller summarizing the first returned label need not represent additional classifications for the same number.
+  Operation: decomposition; origin: scripted; provenance: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:a858631580b9f108af1d161d013b6274ba5bc18a937956ab0eb497a79869eab5
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account, not an observation of a particular caller.
+  Association: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:29017938df21907a09640c5cbf5e26f80166289d51ff199da900d3527e7d8016 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:877ac581f161c4d23d04befc01ee0a8a90fb0dc9da777241ea0a2894ce1daeb8","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2e67fbee843531f2980d39c3512e18d041250a28750118a5855b930aa8e967ca","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:e5192a0525a501f9bed2472460f714fb7d3c98d09e1bb961a7bbd97bea0f564e","forms":["prior-interpretation"]}]}
+Session reported usage: 6 calls; 0 unknown; 6 anomalous.
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+postcode> inspect @investigram-98220f34
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-98220f34 · interpretation
+A caller summarizing the first returned label need not represent additional classifications for the same number.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account, not an observation of a particular caller.
+  Operation: decomposition; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-29017938 (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:29017938df21907a09640c5cbf5e26f80166289d51ff199da900d3527e7d8016
+
+Revision status @investigram-98220f34: original remains selected.
+  Needs reconsideration: 2 correction causes. This does not establish error or trigger inference.
+  Transitive cause session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram-correction:6fa4a2a0676842c4ed68688deea55ced118044950a7a9028032335680b5aa6f6: @investigram-104b4d62 → @investigram-eadb6e02; via @investigram-29017938.
+  Transitive cause session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram-correction:3ed20c38a4be2bb3d4ed9912cd855d163e265aadaafc35c788ee8ed22d836835: @investigram-104b4d62 → @investigram-50714bb2; via @investigram-29017938.
+  Revision page 1; 2 of 2 relationships/causes.
+
+Correction reported by @investigram-192c6b0f: @investigram-104b4d62 → @investigram-eadb6e02
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The even category takes priority when multiple categories could apply.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-ff82bd0a: @investigram-104b4d62 → @investigram-50714bb2
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The large threshold takes priority over the more general positive category.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Associated investigrams (explicit associations)
+Listing: available; 0 shown of 0.
+Use inspect @reference for retained content; no inference.
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:29017938df21907a09640c5cbf5e26f80166289d51ff199da900d3527e7d8016","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:a858631580b9f108af1d161d013b6274ba5bc18a937956ab0eb497a79869eab5","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2e67fbee843531f2980d39c3512e18d041250a28750118a5855b930aa8e967ca","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:e5192a0525a501f9bed2472460f714fb7d3c98d09e1bb961a7bbd97bea0f564e","forms":["prior-interpretation"]}]}
+Session reported usage: 6 calls; 0 unknown; 6 anomalous.
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+postcode> examine @investigram-98220f34
+Examine · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-0db46c6c · interpretation
+The selected account is directionally correct but underspecified: `classify` does not choose a single winning classification. Its three conditions are independent and append every matching label in the fixed order `positive`, `even`, then `large`. Consequently, reading only element zero is a lossy caller policy rather than classifier semantics; for example, a value satisfying all three conditions would return all three labels while a first-element summary would retain only `positive`.
+Referent: Static implementation behavior relevant to summarizing only the first label returned by the numeric classifier.
+  Qualification: Established by static inspection of the captured TypeScript source; runtime execution was not observed.
+  Qualification: The example is a direct logical consequence of the independent conditions and append order in the captured implementation.
+  Qualification: The nearby README describes an array of label strings and the same three available names, but it does not explain multiplicity or ordering and its placement alone does not establish applicability.
+  Displayed composition: @investigram-aad21081, @investigram-11c97394, @investigram-70da236d
+  Composition: @investigram-aad21081, @investigram-11c97394, @investigram-70da236d
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-98220f34 (provenance, not composition)
+  Unresolved inconsistency: All three earlier accounts describe a one-label classifier with a priority ordering. The captured implementation instead uses three independent conditionals and can append multiple labels; its append order is `positive`, then `even`, then `large`. Thus none of the proposed winner-priority orders represents the implementation.; targets: @investigram-104b4d62, @investigram-eadb6e02, @investigram-50714bb2
+    Qualification: This is a documentation-of-interpretation versus captured-implementation discrepancy; no runtime execution was performed.
+    Qualification: The earlier accounts were controlled scripted interpretations and are not independent corroboration.
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:cf944535-525c-4132-9ccb-6ece9ead4964:export:6b93e650f1cd2956d984207d77c26809e154c53d904388397a35ba2415307b03
+
+@investigram-aad21081 · interpretation
+Each predicate is evaluated separately: values greater than zero append `positive`; even values append `even`; values at least ten append `large`. There is no `else`, early return, or replacement of a previously appended label, so overlaps accumulate rather than compete by priority.
+Referent: The classifier's label accumulation mechanism.
+  Qualification: Static source interpretation only.
+  Qualification: JavaScript/TypeScript numeric operator semantics are assumed; unusual numeric values were not executed.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-98220f34 (provenance, not composition)
+  Composition parent: @investigram-0db46c6c
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee
+
+@investigram-11c97394 · interpretation
+The information lost by selecting the first element depends on overlap: a positive even value below ten yields `positive` then `even`; a positive odd value of at least ten yields `positive` then `large`; and a positive even value of at least ten yields `positive`, `even`, then `large`. By contrast, zero yields only `even`, and a negative odd value matches none of the three conditions.
+Referent: Representative overlap and non-overlap cases implied by the classifier implementation.
+  Qualification: These outcomes are statically derived examples, not observed test executions.
+  Qualification: The cases illustrate consequences of the captured predicates and are not claimed to exhaust JavaScript's numeric edge cases.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-98220f34 (provenance, not composition)
+  Composition parent: @investigram-0db46c6c
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee
+
+@investigram-70da236d · interpretation
+No concrete caller that selects the first element was established. The bounded incoming-dependency query returned no records, so the selected account should remain conditional about what a caller might do rather than claiming that repository code actually performs such a summary.
+Referent: Evidence limitation concerning actual callers of the classifier.
+  Qualification: The dependency analysis covers bounded project-owned source requests, not all value uses, runtime loading, unresolved requests, external consumers, or deployment behavior.
+  Qualification: An empty dependent result does not establish that no caller exists.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-98220f34 (provenance, not composition)
+  Composition parent: @investigram-0db46c6c
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:dependency-evaluation:3dd9a75beeebd0d9957a2e4d77702eddc209ce33fda4bfd40aa6a8415898e614
+
+Revision status @investigram-0db46c6c: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-aad21081: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-11c97394: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-70da236d: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-98220f34: original remains selected.
+  Needs reconsideration: 2 correction causes. This does not establish error or trigger inference.
+  Transitive cause session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram-correction:6fa4a2a0676842c4ed68688deea55ced118044950a7a9028032335680b5aa6f6: @investigram-104b4d62 → @investigram-eadb6e02; via @investigram-29017938.
+  Transitive cause session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram-correction:3ed20c38a4be2bb3d4ed9912cd855d163e265aadaafc35c788ee8ed22d836835: @investigram-104b4d62 → @investigram-50714bb2; via @investigram-29017938.
+  Revision page 1; 2 of 2 relationships/causes.
+
+Correction reported by @investigram-192c6b0f: @investigram-104b4d62 → @investigram-eadb6e02
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The even category takes priority when multiple categories could apply.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-ff82bd0a: @investigram-104b4d62 → @investigram-50714bb2
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The large threshold takes priority over the more general positive category.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+Attempt session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2df4b63843f09cc374dd7e68443201a5d04c2a8345202374ed1716b4262d5c31 (accepted) reported usage: 3 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 34650 tokens; input 31775 tokens (subset of total); output 2875 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1464 tokens (subset of output)
+Session reported usage: 9 calls; 0 unknown; 6 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 34650 tokens; input 31775 tokens (subset of total); output 2875 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1464 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> explain @investigram-eadb6e02
+Explain · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-1f1ed9c1 · interpretation
+The selected account's “one label” and priority description is inaccurate. The classifier builds an array and evaluates three independent conditions in source order: it appends `positive` when `value > 0`, appends `even` when `value % 2 === 0`, and appends `large` when `value >= 10`. More than one label can therefore be returned, always ordered `positive`, `even`, `large` among the conditions that match. For example, `12` yields all three labels; `11` yields `positive` and `large`; `-2` and `0` each yield only `even`; and `-1` yields an empty array. There is no winner-selection step and hence no priority in which `even` suppresses the other labels.
+Referent: Clarification and correction of the selected account of the numeric classifier.
+  Qualification: This is a static interpretation of the captured TypeScript source; runtime execution was not observed.
+  Qualification: The examples follow directly from the three displayed conditions and their append order.
+  Qualification: This corrects rather than merely elaborates the selected account because its single-label priority claim conflicts with the captured implementation.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-eadb6e02 (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:eadb6e027e30aa4bf916fcd04c08f26c2b37e3679cf6adde2eaef36dfe68659e
+
+@investigram-99cb5303 · interpretation
+The classifier returns an array containing every applicable label. It independently appends `positive` for values greater than zero, `even` for values whose remainder modulo two is zero, and `large` for values at least ten. Returned labels follow that same fixed append order, and the array is empty when no condition matches.
+Referent: Corrected account of the numeric classifier's label accumulation and ordering.
+  Qualification: Static interpretation of the captured TypeScript source; runtime execution was not observed.
+  Qualification: The account describes the implementation's explicit conditions and append order, not an inferred winner-priority policy.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-eadb6e02 (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee
+
+Revision status @investigram-1f1ed9c1: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-99cb5303: original remains selected; conflicting alternatives remain (family primary @investigram-99cb5303).
+  Revision page 1; 3 of 3 relationships/causes.
+
+Revision status @investigram-eadb6e02: superseded; primary @investigram-99cb5303; conflicting alternatives remain (family primary @investigram-99cb5303).
+  Needs reconsideration: 1 correction causes. This does not establish error or trigger inference.
+  Direct cause session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram-correction:3ed20c38a4be2bb3d4ed9912cd855d163e265aadaafc35c788ee8ed22d836835: @investigram-104b4d62 → @investigram-50714bb2; via @investigram-104b4d62.
+  Revision page 1; 3 of 3 relationships/causes.
+Unresolved inconsistency reported by @investigram-0db46c6c: All three earlier accounts describe a one-label classifier with a priority ordering. The captured implementation instead uses three independent conditionals and can append multiple labels; its append order is `positive`, then `even`, then `large`. Thus none of the proposed winner-priority orders represents the implementation.; targets @investigram-104b4d62, @investigram-eadb6e02, @investigram-50714bb2
+  Qualification: This is a documentation-of-interpretation versus captured-implementation discrepancy; no runtime execution was performed.
+  Qualification: The earlier accounts were controlled scripted interpretations and are not independent corroboration.
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:eadb6e027e30aa4bf916fcd04c08f26c2b37e3679cf6adde2eaef36dfe68659e, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:50714bb2c7c76eda5e7e42c6e0169667215f37b7032534c0652513c7d33f2c6e
+
+Correction reported by @investigram-1f1ed9c1: @investigram-eadb6e02 → @investigram-99cb5303
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:eadb6e027e30aa4bf916fcd04c08f26c2b37e3679cf6adde2eaef36dfe68659e
+  Reason: The selected account says the classifier emits one label and gives `even` priority. The captured source instead uses independent `if` statements that can append multiple labels, in the order `positive`, `even`, then `large`.
+  Qualification: The complete selected account was supplied in this session.
+  Qualification: Correction is based on static source inspection; runtime behavior was not observed.
+  Qualification: The earlier account was a controlled scripted interpretation and is not independent evidence.
+
+Correction reported by @investigram-192c6b0f: @investigram-104b4d62 → @investigram-eadb6e02
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The even category takes priority when multiple categories could apply.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-ff82bd0a: @investigram-104b4d62 → @investigram-50714bb2
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The large threshold takes priority over the more general positive category.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+Attempt session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:577f3d58e5f72dbcecc123244ca5f7af413671f6c72779dd069201ab2576ca12 (accepted) reported usage: 2 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 22110 tokens; input 20662 tokens (subset of total); output 1448 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 603 tokens (subset of output)
+Session reported usage: 11 calls; 0 unknown; 6 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 56760 tokens; input 52437 tokens (subset of total); output 4323 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2067 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> inspect @investigram-104b4d62 --source-detail
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-104b4d62 · interpretation
+The classifier chooses one applicable label for each numeric input, preferring positive to even and then large. Inputs outside these categories return no label.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Displayed composition: @investigram-f976ffc0
+  Composition: @investigram-f976ffc0
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-096f7ded (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee
+
+@investigram-f976ffc0 · interpretation
+For a positive even number, the returned array contains the positive label only.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-096f7ded (provenance, not composition)
+  Composition parent: @investigram-104b4d62
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee
+
+Revision status @investigram-104b4d62: superseded; primary @investigram-99cb5303; conflicting alternatives remain (family primary @investigram-99cb5303).
+  Revision page 1; 3 of 3 relationships/causes.
+
+Revision status @investigram-f976ffc0: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Unresolved inconsistency reported by @investigram-0db46c6c: All three earlier accounts describe a one-label classifier with a priority ordering. The captured implementation instead uses three independent conditionals and can append multiple labels; its append order is `positive`, then `even`, then `large`. Thus none of the proposed winner-priority orders represents the implementation.; targets @investigram-104b4d62, @investigram-eadb6e02, @investigram-50714bb2
+  Qualification: This is a documentation-of-interpretation versus captured-implementation discrepancy; no runtime execution was performed.
+  Qualification: The earlier accounts were controlled scripted interpretations and are not independent corroboration.
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:eadb6e027e30aa4bf916fcd04c08f26c2b37e3679cf6adde2eaef36dfe68659e, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:50714bb2c7c76eda5e7e42c6e0169667215f37b7032534c0652513c7d33f2c6e
+
+Correction reported by @investigram-192c6b0f: @investigram-104b4d62 → @investigram-eadb6e02
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The even category takes priority when multiple categories could apply.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-ff82bd0a: @investigram-104b4d62 → @investigram-50714bb2
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The large threshold takes priority over the more general positive category.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-1f1ed9c1: @investigram-eadb6e02 → @investigram-99cb5303
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:eadb6e027e30aa4bf916fcd04c08f26c2b37e3679cf6adde2eaef36dfe68659e
+  Reason: The selected account says the classifier emits one label and gives `even` priority. The captured source instead uses independent `if` statements that can append multiple labels, in the order `positive`, `even`, then `large`.
+  Qualification: The complete selected account was supplied in this session.
+  Qualification: Correction is based on static source inspection; runtime behavior was not observed.
+  Qualification: The earlier account was a controlled scripted interpretation and is not independent evidence.
+
+Associated investigrams (explicit associations)
+Listing: available; 3 shown of 3.
+Use inspect @reference for retained content; no inference.
+@investigram-29017938 · interpretation
+  Revision: current original; needs reconsideration (2 causes); inspect this reference for details.
+  Since classification selects at most one label, reading the first array element conveys the complete classification.
+  Operation: clarification; origin: scripted; provenance: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:877ac581f161c4d23d04befc01ee0a8a90fb0dc9da777241ea0a2894ce1daeb8
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account; callers were not observed.
+  Association: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+@investigram-192c6b0f · interpretation
+  Revision: current original; needs reconsideration (1 causes); inspect this reference for details.
+  An alternative account of priority accompanies this interpretation.
+  Operation: examination; origin: scripted; provenance: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2e67fbee843531f2980d39c3512e18d041250a28750118a5855b930aa8e967ca
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Association: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+@investigram-ff82bd0a · interpretation
+  Revision: current original; needs reconsideration (1 causes); inspect this reference for details.
+  A competing account of priority accompanies this interpretation.
+  Operation: decomposition; origin: scripted; provenance: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:e5192a0525a501f9bed2472460f714fb7d3c98d09e1bb961a7bbd97bea0f564e
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Association: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:4b0e70941c01fc7c4bcca6b7dff0ad22a733d7ebd51943b87c975eebee4a7a2c","forms":["full"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:577f3d58e5f72dbcecc123244ca5f7af413671f6c72779dd069201ab2576ca12","forms":["full"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2df4b63843f09cc374dd7e68443201a5d04c2a8345202374ed1716b4262d5c31","forms":["full"]}],"coverage":"full-file","contentDigest":"8c500fd2a09328111cde51266aa6c87a7ff21f2f419906b24f93277968432bd1","mapping":"session:cf944535-525c-4132-9ccb-6ece9ead4964:source:7f76b3409b9f359faa7ce048ac16efa697ecf1de4a522f00f17d003d50e6ce22","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2e67fbee843531f2980d39c3512e18d041250a28750118a5855b930aa8e967ca","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:e5192a0525a501f9bed2472460f714fb7d3c98d09e1bb961a7bbd97bea0f564e","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:577f3d58e5f72dbcecc123244ca5f7af413671f6c72779dd069201ab2576ca12","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2df4b63843f09cc374dd7e68443201a5d04c2a8345202374ed1716b4262d5c31","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:eadb6e027e30aa4bf916fcd04c08f26c2b37e3679cf6adde2eaef36dfe68659e","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:e5192a0525a501f9bed2472460f714fb7d3c98d09e1bb961a7bbd97bea0f564e","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:577f3d58e5f72dbcecc123244ca5f7af413671f6c72779dd069201ab2576ca12","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2df4b63843f09cc374dd7e68443201a5d04c2a8345202374ed1716b4262d5c31","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:50714bb2c7c76eda5e7e42c6e0169667215f37b7032534c0652513c7d33f2c6e","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:577f3d58e5f72dbcecc123244ca5f7af413671f6c72779dd069201ab2576ca12","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2df4b63843f09cc374dd7e68443201a5d04c2a8345202374ed1716b4262d5c31","forms":["prior-interpretation"]}]}
+
+Source support (captured locations and excerpts):
+[
+  {
+    "kind": "source-evidence",
+    "id": "session:cf944535-525c-4132-9ccb-6ece9ead4964:source:7f76b3409b9f359faa7ce048ac16efa697ecf1de4a522f00f17d003d50e6ce22",
+    "session": "session:cf944535-525c-4132-9ccb-6ece9ead4964",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/integrated-numeric/classify.ts",
+    "contentDigest": "8c500fd2a09328111cde51266aa6c87a7ff21f2f419906b24f93277968432bd1",
+    "start": 0,
+    "length": 271,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": "\"/Users/ronen/postcode/app/_investigation/module-assessment-sources/integrated-numeric/classify\""
+  }
+]
+Session reported usage: 11 calls; 0 unknown; 6 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 56760 tokens; input 52437 tokens (subset of total); output 4323 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2067 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> inspect @investigram-eadb6e02
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-eadb6e02 · interpretation
+The classifier emits one label, preferring even, then large, then positive.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Operation: examination; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-104b4d62 (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+
+Revision status @investigram-eadb6e02: superseded; primary @investigram-99cb5303; conflicting alternatives remain (family primary @investigram-99cb5303).
+  Needs reconsideration: 1 correction causes. This does not establish error or trigger inference.
+  Direct cause session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram-correction:3ed20c38a4be2bb3d4ed9912cd855d163e265aadaafc35c788ee8ed22d836835: @investigram-104b4d62 → @investigram-50714bb2; via @investigram-104b4d62.
+  Revision page 1; 3 of 3 relationships/causes.
+Unresolved inconsistency reported by @investigram-0db46c6c: All three earlier accounts describe a one-label classifier with a priority ordering. The captured implementation instead uses three independent conditionals and can append multiple labels; its append order is `positive`, then `even`, then `large`. Thus none of the proposed winner-priority orders represents the implementation.; targets @investigram-104b4d62, @investigram-eadb6e02, @investigram-50714bb2
+  Qualification: This is a documentation-of-interpretation versus captured-implementation discrepancy; no runtime execution was performed.
+  Qualification: The earlier accounts were controlled scripted interpretations and are not independent corroboration.
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:eadb6e027e30aa4bf916fcd04c08f26c2b37e3679cf6adde2eaef36dfe68659e, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:50714bb2c7c76eda5e7e42c6e0169667215f37b7032534c0652513c7d33f2c6e
+
+Correction reported by @investigram-192c6b0f: @investigram-104b4d62 → @investigram-eadb6e02
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The even category takes priority when multiple categories could apply.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-ff82bd0a: @investigram-104b4d62 → @investigram-50714bb2
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The large threshold takes priority over the more general positive category.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-1f1ed9c1: @investigram-eadb6e02 → @investigram-99cb5303
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:eadb6e027e30aa4bf916fcd04c08f26c2b37e3679cf6adde2eaef36dfe68659e
+  Reason: The selected account says the classifier emits one label and gives `even` priority. The captured source instead uses independent `if` statements that can append multiple labels, in the order `positive`, `even`, then `large`.
+  Qualification: The complete selected account was supplied in this session.
+  Qualification: Correction is based on static source inspection; runtime behavior was not observed.
+  Qualification: The earlier account was a controlled scripted interpretation and is not independent evidence.
+
+Associated investigrams (explicit associations)
+Listing: available; 1 shown of 1.
+Use inspect @reference for retained content; no inference.
+@investigram-1f1ed9c1 · interpretation
+  Revision: current original; inspect this reference for details.
+  The selected account's “one label” and priority description is inaccurate. The classifier builds an array and evaluates three independent conditions in source order: it appends `positive` when `value > 0`, appends `even` when `value % 2 === 0`, and appends `large` when `value >= 10`. More than one label can therefore be returned, always ordered `positive`, `even`, `large` among the conditions that [256 prose characters omitted]
+  Operation: clarification; origin: hosted; provenance: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:577f3d58e5f72dbcecc123244ca5f7af413671f6c72779dd069201ab2576ca12
+  Qualification: This is a static interpretation of the captured TypeScript source; runtime execution was not observed.
+  Qualification: The examples follow directly from the three displayed conditions and their append order.
+  Qualification: This corrects rather than merely elaborates the selected account because its single-label priority claim conflicts with the captured implementation.
+  Association: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:eadb6e027e30aa4bf916fcd04c08f26c2b37e3679cf6adde2eaef36dfe68659e (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2e67fbee843531f2980d39c3512e18d041250a28750118a5855b930aa8e967ca","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:e5192a0525a501f9bed2472460f714fb7d3c98d09e1bb961a7bbd97bea0f564e","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:577f3d58e5f72dbcecc123244ca5f7af413671f6c72779dd069201ab2576ca12","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2df4b63843f09cc374dd7e68443201a5d04c2a8345202374ed1716b4262d5c31","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:577f3d58e5f72dbcecc123244ca5f7af413671f6c72779dd069201ab2576ca12","forms":["full"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2df4b63843f09cc374dd7e68443201a5d04c2a8345202374ed1716b4262d5c31","forms":["full"]}],"coverage":"full-file","contentDigest":"8c500fd2a09328111cde51266aa6c87a7ff21f2f419906b24f93277968432bd1","mapping":"session:cf944535-525c-4132-9ccb-6ece9ead4964:source:7f76b3409b9f359faa7ce048ac16efa697ecf1de4a522f00f17d003d50e6ce22","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:eadb6e027e30aa4bf916fcd04c08f26c2b37e3679cf6adde2eaef36dfe68659e","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:e5192a0525a501f9bed2472460f714fb7d3c98d09e1bb961a7bbd97bea0f564e","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:577f3d58e5f72dbcecc123244ca5f7af413671f6c72779dd069201ab2576ca12","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2df4b63843f09cc374dd7e68443201a5d04c2a8345202374ed1716b4262d5c31","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:50714bb2c7c76eda5e7e42c6e0169667215f37b7032534c0652513c7d33f2c6e","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:577f3d58e5f72dbcecc123244ca5f7af413671f6c72779dd069201ab2576ca12","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2df4b63843f09cc374dd7e68443201a5d04c2a8345202374ed1716b4262d5c31","forms":["prior-interpretation"]}]}
+Session reported usage: 11 calls; 0 unknown; 6 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 56760 tokens; input 52437 tokens (subset of total); output 4323 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2067 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> inspect @investigram-50714bb2
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-50714bb2 · interpretation
+The classifier emits one label, preferring large, then positive, then even.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+  Operation: decomposition; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-104b4d62 (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+
+Revision status @investigram-50714bb2: original remains selected; conflicting alternatives remain (family primary @investigram-99cb5303).
+  Needs reconsideration: 1 correction causes. This does not establish error or trigger inference.
+  Direct cause session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram-correction:ae8518d51e6a909d851bf425f6fe7841e192df77b648bd2875ebaf5fe93c2f8a: @investigram-eadb6e02 → @investigram-99cb5303; via @investigram-eadb6e02.
+  Revision page 1; 3 of 3 relationships/causes.
+Unresolved inconsistency reported by @investigram-0db46c6c: All three earlier accounts describe a one-label classifier with a priority ordering. The captured implementation instead uses three independent conditionals and can append multiple labels; its append order is `positive`, then `even`, then `large`. Thus none of the proposed winner-priority orders represents the implementation.; targets @investigram-104b4d62, @investigram-eadb6e02, @investigram-50714bb2
+  Qualification: This is a documentation-of-interpretation versus captured-implementation discrepancy; no runtime execution was performed.
+  Qualification: The earlier accounts were controlled scripted interpretations and are not independent corroboration.
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:eadb6e027e30aa4bf916fcd04c08f26c2b37e3679cf6adde2eaef36dfe68659e, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:50714bb2c7c76eda5e7e42c6e0169667215f37b7032534c0652513c7d33f2c6e
+
+Correction reported by @investigram-192c6b0f: @investigram-104b4d62 → @investigram-eadb6e02
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The even category takes priority when multiple categories could apply.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-ff82bd0a: @investigram-104b4d62 → @investigram-50714bb2
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The large threshold takes priority over the more general positive category.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-1f1ed9c1: @investigram-eadb6e02 → @investigram-99cb5303
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:eadb6e027e30aa4bf916fcd04c08f26c2b37e3679cf6adde2eaef36dfe68659e
+  Reason: The selected account says the classifier emits one label and gives `even` priority. The captured source instead uses independent `if` statements that can append multiple labels, in the order `positive`, `even`, then `large`.
+  Qualification: The complete selected account was supplied in this session.
+  Qualification: Correction is based on static source inspection; runtime behavior was not observed.
+  Qualification: The earlier account was a controlled scripted interpretation and is not independent evidence.
+
+Associated investigrams (explicit associations)
+Listing: available; 0 shown of 0.
+Use inspect @reference for retained content; no inference.
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:e5192a0525a501f9bed2472460f714fb7d3c98d09e1bb961a7bbd97bea0f564e","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2e67fbee843531f2980d39c3512e18d041250a28750118a5855b930aa8e967ca","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:577f3d58e5f72dbcecc123244ca5f7af413671f6c72779dd069201ab2576ca12","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2df4b63843f09cc374dd7e68443201a5d04c2a8345202374ed1716b4262d5c31","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:577f3d58e5f72dbcecc123244ca5f7af413671f6c72779dd069201ab2576ca12","forms":["full"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2df4b63843f09cc374dd7e68443201a5d04c2a8345202374ed1716b4262d5c31","forms":["full"]}],"coverage":"full-file","contentDigest":"8c500fd2a09328111cde51266aa6c87a7ff21f2f419906b24f93277968432bd1","mapping":"session:cf944535-525c-4132-9ccb-6ece9ead4964:source:7f76b3409b9f359faa7ce048ac16efa697ecf1de4a522f00f17d003d50e6ce22","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:eadb6e027e30aa4bf916fcd04c08f26c2b37e3679cf6adde2eaef36dfe68659e","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:e5192a0525a501f9bed2472460f714fb7d3c98d09e1bb961a7bbd97bea0f564e","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:577f3d58e5f72dbcecc123244ca5f7af413671f6c72779dd069201ab2576ca12","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2df4b63843f09cc374dd7e68443201a5d04c2a8345202374ed1716b4262d5c31","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:50714bb2c7c76eda5e7e42c6e0169667215f37b7032534c0652513c7d33f2c6e","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:577f3d58e5f72dbcecc123244ca5f7af413671f6c72779dd069201ab2576ca12","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2df4b63843f09cc374dd7e68443201a5d04c2a8345202374ed1716b4262d5c31","forms":["prior-interpretation"]}]}
+Session reported usage: 11 calls; 0 unknown; 6 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 56760 tokens; input 52437 tokens (subset of total); output 4323 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2067 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> inspect @investigram-29017938
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-29017938 · interpretation
+Since classification selects at most one label, reading the first array element conveys the complete classification.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account; callers were not observed.
+  Operation: clarification; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-104b4d62 (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+
+Revision status @investigram-29017938: original remains selected.
+  Needs reconsideration: 2 correction causes. This does not establish error or trigger inference.
+  Direct cause session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram-correction:6fa4a2a0676842c4ed68688deea55ced118044950a7a9028032335680b5aa6f6: @investigram-104b4d62 → @investigram-eadb6e02; via @investigram-104b4d62.
+  Direct cause session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram-correction:3ed20c38a4be2bb3d4ed9912cd855d163e265aadaafc35c788ee8ed22d836835: @investigram-104b4d62 → @investigram-50714bb2; via @investigram-104b4d62.
+  Revision page 1; 2 of 2 relationships/causes.
+
+Correction reported by @investigram-192c6b0f: @investigram-104b4d62 → @investigram-eadb6e02
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The even category takes priority when multiple categories could apply.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-ff82bd0a: @investigram-104b4d62 → @investigram-50714bb2
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The large threshold takes priority over the more general positive category.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Associated investigrams (explicit associations)
+Listing: available; 1 shown of 1.
+Use inspect @reference for retained content; no inference.
+@investigram-98220f34 · interpretation
+  Revision: current original; needs reconsideration (2 causes); inspect this reference for details.
+  A caller summarizing the first returned label need not represent additional classifications for the same number.
+  Operation: decomposition; origin: scripted; provenance: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:a858631580b9f108af1d161d013b6274ba5bc18a937956ab0eb497a79869eab5
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account, not an observation of a particular caller.
+  Association: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:29017938df21907a09640c5cbf5e26f80166289d51ff199da900d3527e7d8016 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:877ac581f161c4d23d04befc01ee0a8a90fb0dc9da777241ea0a2894ce1daeb8","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2e67fbee843531f2980d39c3512e18d041250a28750118a5855b930aa8e967ca","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:e5192a0525a501f9bed2472460f714fb7d3c98d09e1bb961a7bbd97bea0f564e","forms":["prior-interpretation"]}]}
+Session reported usage: 11 calls; 0 unknown; 6 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 56760 tokens; input 52437 tokens (subset of total); output 4323 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2067 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> inspect @investigram-98220f34
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-98220f34 · interpretation
+A caller summarizing the first returned label need not represent additional classifications for the same number.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account, not an observation of a particular caller.
+  Operation: decomposition; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-29017938 (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:29017938df21907a09640c5cbf5e26f80166289d51ff199da900d3527e7d8016
+
+Revision status @investigram-98220f34: original remains selected.
+  Needs reconsideration: 2 correction causes. This does not establish error or trigger inference.
+  Transitive cause session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram-correction:6fa4a2a0676842c4ed68688deea55ced118044950a7a9028032335680b5aa6f6: @investigram-104b4d62 → @investigram-eadb6e02; via @investigram-29017938.
+  Transitive cause session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram-correction:3ed20c38a4be2bb3d4ed9912cd855d163e265aadaafc35c788ee8ed22d836835: @investigram-104b4d62 → @investigram-50714bb2; via @investigram-29017938.
+  Revision page 1; 2 of 2 relationships/causes.
+
+Correction reported by @investigram-192c6b0f: @investigram-104b4d62 → @investigram-eadb6e02
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The even category takes priority when multiple categories could apply.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-ff82bd0a: @investigram-104b4d62 → @investigram-50714bb2
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The large threshold takes priority over the more general positive category.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Associated investigrams (explicit associations)
+Listing: available; 1 shown of 1.
+Use inspect @reference for retained content; no inference.
+@investigram-0db46c6c · interpretation
+  Revision: current original; needs reconsideration (1 causes); inspect this reference for details.
+  The selected account is directionally correct but underspecified: `classify` does not choose a single winning classification. Its three conditions are independent and append every matching label in the fixed order `positive`, `even`, then `large`. Consequently, reading only element zero is a lossy caller policy rather than classifier semantics; for example, a value satisfying all three conditions  [89 prose characters omitted]
+  Operation: examination; origin: hosted; provenance: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2df4b63843f09cc374dd7e68443201a5d04c2a8345202374ed1716b4262d5c31
+  Qualification: Established by static inspection of the captured TypeScript source; runtime execution was not observed.
+  Qualification: The example is a direct logical consequence of the independent conditions and append order in the captured implementation.
+  Qualification: The nearby README describes an array of label strings and the same three available names, but it does not explain multiplicity or ordering and its placement alone does not establish applicability.
+  Association: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:98220f34b018ec7cdc3f9c1056c650a402fc5740feb982c9c79db30edaa9f0a3 (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:29017938df21907a09640c5cbf5e26f80166289d51ff199da900d3527e7d8016","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:a858631580b9f108af1d161d013b6274ba5bc18a937956ab0eb497a79869eab5","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2e67fbee843531f2980d39c3512e18d041250a28750118a5855b930aa8e967ca","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:e5192a0525a501f9bed2472460f714fb7d3c98d09e1bb961a7bbd97bea0f564e","forms":["prior-interpretation"]}]}
+Session reported usage: 11 calls; 0 unknown; 6 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 56760 tokens; input 52437 tokens (subset of total); output 4323 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2067 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> inspect @investigram-99cb5303
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-99cb5303 · interpretation
+The classifier returns an array containing every applicable label. It independently appends `positive` for values greater than zero, `even` for values whose remainder modulo two is zero, and `large` for values at least ten. Returned labels follow that same fixed append order, and the array is empty when no condition matches.
+Referent: Corrected account of the numeric classifier's label accumulation and ordering.
+  Qualification: Static interpretation of the captured TypeScript source; runtime execution was not observed.
+  Qualification: The account describes the implementation's explicit conditions and append order, not an inferred winner-priority policy.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-eadb6e02 (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee
+
+Revision status @investigram-99cb5303: original remains selected; conflicting alternatives remain (family primary @investigram-99cb5303).
+  Revision page 1; 3 of 3 relationships/causes.
+
+Correction reported by @investigram-192c6b0f: @investigram-104b4d62 → @investigram-eadb6e02
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The even category takes priority when multiple categories could apply.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-ff82bd0a: @investigram-104b4d62 → @investigram-50714bb2
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The large threshold takes priority over the more general positive category.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-1f1ed9c1: @investigram-eadb6e02 → @investigram-99cb5303
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:eadb6e027e30aa4bf916fcd04c08f26c2b37e3679cf6adde2eaef36dfe68659e
+  Reason: The selected account says the classifier emits one label and gives `even` priority. The captured source instead uses independent `if` statements that can append multiple labels, in the order `positive`, `even`, then `large`.
+  Qualification: The complete selected account was supplied in this session.
+  Qualification: Correction is based on static source inspection; runtime behavior was not observed.
+  Qualification: The earlier account was a controlled scripted interpretation and is not independent evidence.
+
+Associated investigrams (explicit associations)
+Listing: available; 0 shown of 0.
+Use inspect @reference for retained content; no inference.
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:577f3d58e5f72dbcecc123244ca5f7af413671f6c72779dd069201ab2576ca12","forms":["full"]}],"coverage":"full-file","contentDigest":"8c500fd2a09328111cde51266aa6c87a7ff21f2f419906b24f93277968432bd1","mapping":"session:cf944535-525c-4132-9ccb-6ece9ead4964:source:7f76b3409b9f359faa7ce048ac16efa697ecf1de4a522f00f17d003d50e6ce22","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:eadb6e027e30aa4bf916fcd04c08f26c2b37e3679cf6adde2eaef36dfe68659e","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:577f3d58e5f72dbcecc123244ca5f7af413671f6c72779dd069201ab2576ca12","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:e5192a0525a501f9bed2472460f714fb7d3c98d09e1bb961a7bbd97bea0f564e","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:577f3d58e5f72dbcecc123244ca5f7af413671f6c72779dd069201ab2576ca12","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2e67fbee843531f2980d39c3512e18d041250a28750118a5855b930aa8e967ca","forms":["prior-interpretation"]},{"provenance":"session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:e5192a0525a501f9bed2472460f714fb7d3c98d09e1bb961a7bbd97bea0f564e","forms":["prior-interpretation"]}]}
+Session reported usage: 11 calls; 0 unknown; 6 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 56760 tokens; input 52437 tokens (subset of total); output 4323 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2067 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> summarize classify
+Module summary
+References remain bound for this session.
+Retained outcome; no new investigation.
+Module @module-096f7ded: classify
+
+@investigram-99cb5303 · interpretation
+The classifier returns an array containing every applicable label. It independently appends `positive` for values greater than zero, `even` for values whose remainder modulo two is zero, and `large` for values at least ten. Returned labels follow that same fixed append order, and the array is empty when no condition matches.
+Referent: Corrected account of the numeric classifier's label accumulation and ordering.
+  Qualification: Static interpretation of the captured TypeScript source; runtime execution was not observed.
+  Qualification: The account describes the implementation's explicit conditions and append order, not an inferred winner-priority policy.
+  Updated display of @investigram-104b4d62; replacement uses its own composition.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-eadb6e02 (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee
+
+Revision status @investigram-104b4d62: superseded; primary @investigram-99cb5303; conflicting alternatives remain (family primary @investigram-99cb5303).
+  Revision page 1; 3 of 3 relationships/causes.
+
+Revision status @investigram-99cb5303: original remains selected; conflicting alternatives remain (family primary @investigram-99cb5303).
+  Revision page 1; 3 of 3 relationships/causes.
+
+Revision status @investigram-f976ffc0: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Displaced original composition (not incorporated into replacement): @investigram-104b4d62, @investigram-f976ffc0
+Unresolved inconsistency reported by @investigram-0db46c6c: All three earlier accounts describe a one-label classifier with a priority ordering. The captured implementation instead uses three independent conditionals and can append multiple labels; its append order is `positive`, then `even`, then `large`. Thus none of the proposed winner-priority orders represents the implementation.; targets @investigram-104b4d62, @investigram-eadb6e02, @investigram-50714bb2
+  Qualification: This is a documentation-of-interpretation versus captured-implementation discrepancy; no runtime execution was performed.
+  Qualification: The earlier accounts were controlled scripted interpretations and are not independent corroboration.
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:eadb6e027e30aa4bf916fcd04c08f26c2b37e3679cf6adde2eaef36dfe68659e, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:50714bb2c7c76eda5e7e42c6e0169667215f37b7032534c0652513c7d33f2c6e
+
+Correction reported by @investigram-192c6b0f: @investigram-104b4d62 → @investigram-eadb6e02
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The even category takes priority when multiple categories could apply.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-ff82bd0a: @investigram-104b4d62 → @investigram-50714bb2
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The large threshold takes priority over the more general positive category.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-1f1ed9c1: @investigram-eadb6e02 → @investigram-99cb5303
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:eadb6e027e30aa4bf916fcd04c08f26c2b37e3679cf6adde2eaef36dfe68659e
+  Reason: The selected account says the classifier emits one label and gives `even` priority. The captured source instead uses independent `if` statements that can append multiple labels, in the order `positive`, `even`, then `large`.
+  Qualification: The complete selected account was supplied in this session.
+  Qualification: Correction is based on static source inspection; runtime behavior was not observed.
+  Qualification: The earlier account was a controlled scripted interpretation and is not independent evidence.
+Attempt session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:4b0e70941c01fc7c4bcca6b7dff0ad22a733d7ebd51943b87c975eebee4a7a2c (accepted) reported usage: 2 calls; 0 unknown; 2 anomalous.
+Session reported usage: 11 calls; 0 unknown; 6 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 56760 tokens; input 52437 tokens (subset of total); output 4323 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2067 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> explain @investigram-104b4d62
+Explain · investigram
+References remain bound for this session.
+Retained outcome; no new investigation.
+
+@investigram-29017938 · interpretation
+Since classification selects at most one label, reading the first array element conveys the complete classification.
+Referent: The selected module behavior.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Inference from the supplied earlier account; callers were not observed.
+  Operation: clarification; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @investigram-104b4d62 (provenance, not composition)
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+
+Revision status @investigram-29017938: original remains selected.
+  Needs reconsideration: 2 correction causes. This does not establish error or trigger inference.
+  Direct cause session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram-correction:6fa4a2a0676842c4ed68688deea55ced118044950a7a9028032335680b5aa6f6: @investigram-104b4d62 → @investigram-eadb6e02; via @investigram-104b4d62.
+  Direct cause session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram-correction:3ed20c38a4be2bb3d4ed9912cd855d163e265aadaafc35c788ee8ed22d836835: @investigram-104b4d62 → @investigram-50714bb2; via @investigram-104b4d62.
+  Revision page 1; 2 of 2 relationships/causes.
+
+Revision status @investigram-104b4d62: superseded; primary @investigram-99cb5303; conflicting alternatives remain (family primary @investigram-99cb5303).
+  Revision page 1; 3 of 3 relationships/causes.
+Unresolved inconsistency reported by @investigram-0db46c6c: All three earlier accounts describe a one-label classifier with a priority ordering. The captured implementation instead uses three independent conditionals and can append multiple labels; its append order is `positive`, then `even`, then `large`. Thus none of the proposed winner-priority orders represents the implementation.; targets @investigram-104b4d62, @investigram-eadb6e02, @investigram-50714bb2
+  Qualification: This is a documentation-of-interpretation versus captured-implementation discrepancy; no runtime execution was performed.
+  Qualification: The earlier accounts were controlled scripted interpretations and are not independent corroboration.
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:eadb6e027e30aa4bf916fcd04c08f26c2b37e3679cf6adde2eaef36dfe68659e, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:50714bb2c7c76eda5e7e42c6e0169667215f37b7032534c0652513c7d33f2c6e
+
+Correction reported by @investigram-192c6b0f: @investigram-104b4d62 → @investigram-eadb6e02
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The even category takes priority when multiple categories could apply.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-ff82bd0a: @investigram-104b4d62 → @investigram-50714bb2
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:104b4d6208f23863ea807aec1fe7d5b8a23723609938d655d3e89e9edb168392
+  Reason: The large threshold takes priority over the more general positive category.
+  Qualification: Controlled assessment account supplied by scripted test setup, not a natural investigator result.
+  Qualification: Static interpretation; runtime behavior was not observed.
+
+Correction reported by @investigram-1f1ed9c1: @investigram-eadb6e02 → @investigram-99cb5303
+  Corrected subjects: session:cf944535-525c-4132-9ccb-6ece9ead4964:module:096f7dede2e3f0a5fab4bd1df6fe8f721631f464a9794b381b22f0be57953f43
+  Evidence: session:cf944535-525c-4132-9ccb-6ece9ead4964:captured-content:9b81d8e1c47cddc0186aa42d4e1b9a8087fdf53eaef2acef9402b2fef11533ee, session:cf944535-525c-4132-9ccb-6ece9ead4964:investigram:eadb6e027e30aa4bf916fcd04c08f26c2b37e3679cf6adde2eaef36dfe68659e
+  Reason: The selected account says the classifier emits one label and gives `even` priority. The captured source instead uses independent `if` statements that can append multiple labels, in the order `positive`, `even`, then `large`.
+  Qualification: The complete selected account was supplied in this session.
+  Qualification: Correction is based on static source inspection; runtime behavior was not observed.
+  Qualification: The earlier account was a controlled scripted interpretation and is not independent evidence.
+Attempt session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:877ac581f161c4d23d04befc01ee0a8a90fb0dc9da777241ea0a2894ce1daeb8 (accepted) reported usage: 1 calls; 0 unknown; 1 anomalous.
+Session reported usage: 11 calls; 0 unknown; 6 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 56760 tokens; input 52437 tokens (subset of total); output 4323 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2067 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> usage
+Investigation usage
+References remain bound for this session.
+Attempt session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:4b0e70941c01fc7c4bcca6b7dff0ad22a733d7ebd51943b87c975eebee4a7a2c (accepted) reported usage: 2 calls; 0 unknown; 2 anomalous.
+Attempt session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:877ac581f161c4d23d04befc01ee0a8a90fb0dc9da777241ea0a2894ce1daeb8 (accepted) reported usage: 1 calls; 0 unknown; 1 anomalous.
+Attempt session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:a858631580b9f108af1d161d013b6274ba5bc18a937956ab0eb497a79869eab5 (accepted) reported usage: 1 calls; 0 unknown; 1 anomalous.
+Attempt session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2e67fbee843531f2980d39c3512e18d041250a28750118a5855b930aa8e967ca (accepted) reported usage: 1 calls; 0 unknown; 1 anomalous.
+Attempt session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:e5192a0525a501f9bed2472460f714fb7d3c98d09e1bb961a7bbd97bea0f564e (accepted) reported usage: 1 calls; 0 unknown; 1 anomalous.
+Attempt session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:2df4b63843f09cc374dd7e68443201a5d04c2a8345202374ed1716b4262d5c31 (accepted) reported usage: 3 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 34650 tokens; input 31775 tokens (subset of total); output 2875 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1464 tokens (subset of output)
+Attempt session:cf944535-525c-4132-9ccb-6ece9ead4964:investigation-attempt:577f3d58e5f72dbcecc123244ca5f7af413671f6c72779dd069201ab2576ca12 (accepted) reported usage: 2 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 22110 tokens; input 20662 tokens (subset of total); output 1448 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 603 tokens (subset of output)
+Session reported usage: 11 calls; 0 unknown; 6 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 56760 tokens; input 52437 tokens (subset of total); output 4323 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2067 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> exit

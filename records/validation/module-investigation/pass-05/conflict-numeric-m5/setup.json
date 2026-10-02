@@ -1,0 +1,74 @@
+{
+  "id": "numeric-m5-conflicts",
+  "sequence": [
+    {
+      "operation": "functionality",
+      "recipe": {
+        "id": "numeric-m5-initial",
+        "prose": "The classifier chooses one applicable label for each numeric input, preferring positive to even and then large. Inputs outside these categories return no label.",
+        "childProse": "For a positive even number, the returned array contains the positive label only.",
+        "qualifications": [
+          "Controlled assessment account supplied by scripted test setup, not a natural investigator result.",
+          "Static interpretation; runtime behavior was not observed."
+        ],
+        "acquireSource": true
+      }
+    },
+    {
+      "operation": "clarification",
+      "recipe": {
+        "id": "numeric-m5-dependent",
+        "prose": "Since classification selects at most one label, reading the first array element conveys the complete classification.",
+        "qualifications": [
+          "Controlled assessment account supplied by scripted test setup, not a natural investigator result.",
+          "Inference from the supplied earlier account; callers were not observed."
+        ],
+        "citeSubject": true
+      }
+    },
+    {
+      "operation": "decomposition",
+      "recipe": {
+        "id": "numeric-m5-transitive",
+        "prose": "A caller summarizing the first returned label need not represent additional classifications for the same number.",
+        "qualifications": [
+          "Controlled assessment account supplied by scripted test setup, not a natural investigator result.",
+          "Inference from the supplied earlier account, not an observation of a particular caller."
+        ],
+        "citeSubject": true
+      }
+    },
+    {
+      "operation": "examination",
+      "recipe": {
+        "id": "numeric-m5-branch-b",
+        "prose": "An alternative account of priority accompanies this interpretation.",
+        "qualifications": [
+          "Controlled assessment account supplied by scripted test setup, not a natural investigator result.",
+          "Static interpretation; runtime behavior was not observed."
+        ],
+        "citeSubject": true,
+        "correction": {
+          "reason": "The even category takes priority when multiple categories could apply.",
+          "prose": "The classifier emits one label, preferring even, then large, then positive."
+        }
+      }
+    },
+    {
+      "operation": "decomposition",
+      "recipe": {
+        "id": "numeric-m5-branch-c",
+        "prose": "A competing account of priority accompanies this interpretation.",
+        "qualifications": [
+          "Controlled assessment account supplied by scripted test setup, not a natural investigator result.",
+          "Static interpretation; runtime behavior was not observed."
+        ],
+        "citeSubject": true,
+        "correction": {
+          "reason": "The large threshold takes priority over the more general positive category.",
+          "prose": "The classifier emits one label, preferring large, then positive, then even."
+        }
+      }
+    }
+  ]
+}

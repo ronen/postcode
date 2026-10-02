@@ -1,0 +1,13 @@
+{
+  "id": "merge-anything-m4",
+  "pass": "module-progressive-04",
+  "subject": "merge-anything",
+  "manifest": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-04/manifest.json",
+  "project": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/merge-anything/tsconfig.postcode-assessment.json",
+  "output": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-04/merge-anything-m4",
+  "budget": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-04/request-budget.json",
+  "incremental": true,
+  "commands": [
+    "summarize anonymous"
+  ]
+}

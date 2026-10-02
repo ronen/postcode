@@ -1,0 +1,6 @@
+{
+  "filesChecked": 48,
+  "jsonlRecordsChecked": 68,
+  "flagged": [],
+  "limitations": "Pattern and field checks are supplementary, do not inspect real credentials, and do not prove absence of all sensitive content. Exact opaque provider reasoning payloads are retained transport evidence, not decoded or evaluated."
+}

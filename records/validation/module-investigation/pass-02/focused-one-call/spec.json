@@ -1,0 +1,20 @@
+{
+  "id": "focused-one-call",
+  "pass": "module-summary-02",
+  "subject": "focused",
+  "manifest": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-02/manifest.json",
+  "project": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/focused/tsconfig.json",
+  "output": "/Users/ronen/postcode/app/_investigation/module-assessment-runs/focused-one-call",
+  "budget": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-02/request-budget.json",
+  "commands": [
+    "summarize opaque",
+    "usage",
+    "exit"
+  ],
+  "bounds": {
+    "milliseconds": 180000,
+    "calls": 1,
+    "toolCalls": 96,
+    "characters": 2000000
+  }
+}

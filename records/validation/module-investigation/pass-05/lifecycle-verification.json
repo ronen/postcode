@@ -1,0 +1,62 @@
+[
+  {
+    "case": "cockatiel-m5",
+    "immutableAccounts": 20,
+    "acceptedEvaluations": 4,
+    "corrections": 0,
+    "affectedAccountsObserved": 0,
+    "conflictingAccountsObserved": 0,
+    "displaySubstitutionsObserved": 0,
+    "retainedRepeats": 2,
+    "inspections": 3,
+    "derivedStateMatchesIndependentReconciliation": true
+  },
+  {
+    "case": "conflict-numeric-m5",
+    "immutableAccounts": 14,
+    "acceptedEvaluations": 7,
+    "corrections": 3,
+    "affectedAccountsObserved": 4,
+    "conflictingAccountsObserved": 4,
+    "displaySubstitutionsObserved": 1,
+    "retainedRepeats": 2,
+    "inspections": 11,
+    "derivedStateMatchesIndependentReconciliation": true
+  },
+  {
+    "case": "fsm-engine-m5",
+    "immutableAccounts": 20,
+    "acceptedEvaluations": 4,
+    "corrections": 0,
+    "affectedAccountsObserved": 0,
+    "conflictingAccountsObserved": 0,
+    "displaySubstitutionsObserved": 0,
+    "retainedRepeats": 2,
+    "inspections": 3,
+    "derivedStateMatchesIndependentReconciliation": true
+  },
+  {
+    "case": "merge-anything-m5",
+    "immutableAccounts": 12,
+    "acceptedEvaluations": 3,
+    "corrections": 0,
+    "affectedAccountsObserved": 0,
+    "conflictingAccountsObserved": 0,
+    "displaySubstitutionsObserved": 0,
+    "retainedRepeats": 2,
+    "inspections": 3,
+    "derivedStateMatchesIndependentReconciliation": true
+  },
+  {
+    "case": "refined-numeric-m5",
+    "immutableAccounts": 9,
+    "acceptedEvaluations": 5,
+    "corrections": 1,
+    "affectedAccountsObserved": 2,
+    "conflictingAccountsObserved": 0,
+    "displaySubstitutionsObserved": 1,
+    "retainedRepeats": 2,
+    "inspections": 7,
+    "derivedStateMatchesIndependentReconciliation": true
+  }
+]

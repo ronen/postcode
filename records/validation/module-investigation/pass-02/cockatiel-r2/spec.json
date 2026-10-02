@@ -1,0 +1,14 @@
+{
+  "id": "cockatiel-summary-r2",
+  "pass": "module-summary-02",
+  "subject": "cockatiel",
+  "manifest": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-02/manifest.json",
+  "project": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/cockatiel/tsconfig.json",
+  "output": "/Users/ronen/postcode/app/_investigation/module-assessment-runs/cockatiel-r2",
+  "budget": "/Users/ronen/postcode/app/records/validation/module-investigation/pass-02/request-budget.json",
+  "commands": [
+    "summarize executor",
+    "usage",
+    "exit"
+  ]
+}

@@ -1,0 +1,1038 @@
+Session dba39c44-7b2b-467e-b414-866b256bbd8e
+Inputs are assumed unchanged. Use help for commands; exit or EOF to finish.
+postcode> summarize fsm-engine
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-28ee01f8: fsm-engine
+
+@investigram-7c656898 · interpretation
+This module is the FSM runtime and instance factory. `define` turns a builder callback into one validated, compiled definition shared by independently stateful instances; each instance owns context, current state, a FIFO event queue, timers, identity, and tracing. It exports only `FsmEngine` and its conditional factory type.
+Referent: FSM engine runtime module
+  Qualification: Apparent behavior from captured TypeScript source; no execution was performed.
+  Qualification: The repository README is nearby project documentation and is attributed as intended behavior, not treated as proof.
+  Qualification: Dependency coverage is bounded to captured project-owned source requests.
+  Displayed composition: @investigram-a6f543c9, @investigram-04d79256, @investigram-300a00e5, @investigram-9314e47c
+  Composition: @investigram-a6f543c9, @investigram-04d79256, @investigram-300a00e5, @investigram-9314e47c
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:export:9a41ee02d968b322d61df136d4af61f958954537b210ff2e2a6180fbee30e856, session:dba39c44-7b2b-467e-b414-866b256bbd8e:export:c990c362ac2b8ed8e617bf4ab2a9de58eb96af0ba6aaa3b83a8379e61dd4166e, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-a6f543c9 · interpretation
+`define` delegates collection to `FsmBuilderImpl`, then eagerly validates and compiles lookup tables. The builder rejects missing/unknown/unreachable states, duplicate state/event declarations, unknown targets, and transitions placed after an unconditional transition; it records ordered guards/actions plus state-specific and fallback tables. The returned closure reuses that definition while constructing fresh instances and immediately runs initial-state entry actions.
+Referent: definition, validation, compilation, and instantiation
+  Qualification: Validation and table construction are delegated behavior observed in captured builder source.
+  Qualification: Reachability follows external transitions, with fallback targets treated as globally reachable edges.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-7c656898
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:2223a19b7c84507271eb5dcafd0ce7c951322233ba64e5857e7344d6ae15d73d, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:5f0b239941bada797164d6818c9cd0739deecbc2928e6cad7651fba1814d9ddb
+
+@investigram-04d79256 · interpretation
+`dispatch` always enqueues. The outermost call drains synchronously; re-entrant calls return and remain FIFO. For each event it rejects names absent from the compiled definition, runs state begin actions, tries transitions in declaration order with short-circuiting guards, then tries fallback begins/transitions. A declared transition set whose guards all fail is an implicit handled stay; no state or fallback transition is unhandled. External transitions run exit actions, transition actions, commit state, then entry actions; internal transitions run only transition actions. Any thrown guard/action/error clears queued work and escapes the outer dispatch.
+Referent: event dispatch and transition lifecycle
+  Qualification: Synchronous behavior is inferred from control flow; host scheduling beyond this call is not assessed.
+  Qualification: Action side effects and completed exit actions are not rolled back on failure; state is committed before entry actions but after transition actions.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-7c656898
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-300a00e5 · interpretation
+Actions receive a narrow API that can enqueue events and manage keyed timers. Timer scheduling defaults the key to the event, replaces an existing key, accepts relative delay or `performance.now()` deadline, clamps past/negative times to immediate, and treats `Infinity` as never firing; cancellation delegates wholly to `TimerRegistry`. Apparent defect: timer payload forwarding is reversed—when `payload` exists the engine passes no payload, while payload-less events receive an explicit `undefined`; this conflicts with the action-API type documentation and README’s promised timer payload.
+Referent: action effects and timer delegation
+  Qualification: The payload discrepancy is a source-level comparison, not a runtime test.
+  Qualification: Documentation assertions are attributed to the action-API source and repository README.
+  Qualification: Timer registry source includes embedded tests, but they were not executed and do not cover engine payload forwarding.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-7c656898
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:26bb1b56e1acf46f558d9c3267bef7d2db4f8fb3e246c6c26e4e5fe63a275ecd, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:5ae20a36be80e4d3426c537ab3f59d590e4dcd0d929812feb44017c3524f5e6a, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-9314e47c · interpretation
+`trace` toggles per-instance logging, optionally replaces the logger, resets elapsed-time origin, and returns the instance. Emitted lines combine machine/instance identity, elapsed time, current state/event, fallback status, and guard/action/transition details; unnamed callbacks get ordinal labels.
+Referent: instance tracing
+  Qualification: Trace formatting uses `performance.now()` and defaults to `console.log`.
+  Qualification: Falsy payloads are not rendered because payload output is guarded by a truthiness check.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-7c656898
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84
+
+Revision status @investigram-7c656898: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-a6f543c9: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-04d79256: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-300a00e5: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-9314e47c: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:ac29d94c89454b2f8bed5be2cf4d8f972f8633d49bd344a89929434dffd18960 (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 92226 tokens; input 89558 tokens (subset of total); output 2668 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 740 tokens (subset of output)
+Session reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 92226 tokens; input 89558 tokens (subset of total); output 2668 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 740 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> explain @investigram-04d79256
+Explain · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-a86b8e57 · interpretation
+`dispatch` is best understood as a synchronous queue drain, not as a direct recursive event handler. Every call first appends `{event, payload}` to the instance’s FIFO queue. If no drain is active, that call becomes the outer drain and processes queued items one at a time before returning. If an action dispatches another event while a drain is active, the nested call only appends the event and returns; the new event is processed after the current event has completely finished. Thus an event enqueued by an exit or transition action normally observes the state resulting from the current transition, despite having been requested before the state assignment. If the current processing throws before that queued event is reached, the queue is cleared instead.
+Referent: clarified event dispatch, handler selection, transition ordering, and failure semantics
+  Qualification: This account clarifies the earlier interpretation rather than correcting it; the implementation independently supports the earlier ordering summary.
+  Qualification: “Synchronous” describes the control flow of a call to `dispatch`; timer callbacks and other host scheduling are outside this account.
+  Qualification: Queueing prevents recursive event processing, but it does not make dispatch asynchronous: the outermost caller still drains successful re-entrant work before returning.
+  Displayed composition: @investigram-70695d40, @investigram-7472008d, @investigram-a17803e1
+  Composition: @investigram-70695d40, @investigram-7472008d, @investigram-a17803e1
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-04d79256 (provenance, not composition)
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigram:04d792564de8b14389e42828a34df575d94185115f6c3aa2bf8fe3cec87f0604, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84
+
+@investigram-70695d40 · interpretation
+For each dequeued item, the engine first asks whether the event occurs anywhere in the compiled definition. If not, it throws the unknown-event error before running begin actions or guards. For a known event, handling has two tiers. It runs the current state’s begin actions, then examines that state’s transitions in declaration order. Guards within one transition are also evaluated in order and stop at the first false result; the first transition whose guards all pass wins. Only if no state transition wins does the engine run fallback begin actions and try fallback transitions in the same fashion. In particular, fallback is attempted not only when the state has no transition, but also when the state has transitions whose guards all reject the event.
+Referent: state-specific then fallback handler selection
+  Qualification: Begin actions run before transition selection and can therefore have side effects even when every guard later fails or the event ultimately proves unhandled.
+  Qualification: A state transition that succeeds prevents fallback begin actions and fallback guards from running.
+  Qualification: The ordering described is the ordering of the arrays in the compiled definition; how the builder constructs those arrays was not re-investigated here.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-04d79256 (provenance, not composition)
+  Composition parent: @investigram-a86b8e57
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:5f0b239941bada797164d6818c9cd0739deecbc2928e6cad7651fba1814d9ddb
+
+@investigram-7472008d · interpretation
+“Handled” does not necessarily mean that a transition ran. If at least one state-specific or fallback transition was declared for the event, but every candidate fails its guards, the engine records an implicit stay and treats the event as handled: state is unchanged and no transition action runs. By contrast, begin actions alone do not establish handling. If neither tier has any transition for the event, the engine throws the unhandled-event error after any applicable state and fallback begin actions have already run. This differs from an unknown event: an unhandled event is present somewhere in the machine definition, just not transition-handled in the current state or fallback tier.
+Referent: implicit stay and distinction between unknown and unhandled events
+  Qualification: The implicit stay case requires a nonempty state or fallback transition array; merely having begin actions does not satisfy that test.
+  Qualification: The unhandled runtime error captures the machine identifier, current state, event, payload, and the context object; the unknown-event error captures the identifier, event, and payload.
+  Qualification: Side effects already performed by begin actions are not rolled back when the engine subsequently throws an unhandled-event error.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-04d79256 (provenance, not composition)
+  Composition parent: @investigram-a86b8e57
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:9005b07f7708207e8f24e52a62e67b90a7a1d58099c4fe95b259daeb0c278b8d
+
+@investigram-a17803e1 · interpretation
+Once a transition wins, an internal transition leaves the state unchanged and runs only its transition actions. An external transition computes its target, runs all source-state exit actions, then all transition actions, assigns the target to the current-state field, and finally runs the target-state entry actions. The assignment therefore is not an atomic boundary with the actions around it. An exception from an exit or transition action occurs before state commitment; an exception from an entry action occurs after commitment. In every case, earlier side effects remain, the pending event queue is discarded by the outer drain, the exception escapes, and the dispatching flag is reset so a later independent call can start a new drain.
+Referent: internal and external transition lifecycle, commit point, and partial failure
+  Qualification: No rollback mechanism is present for context mutations, external effects, completed actions, timer operations, or a state assignment already made.
+  Qualification: Events enqueued by an action are pending work rather than nested processing; they are lost if a later operation in the current drain throws before they are dequeued.
+  Qualification: The implementation comment says “Commit state first,” but the executable order assigns the state after exit and transition actions; this account follows the executable statements. No structured inconsistency is reported because the comment is repository text, not an earlier investigram.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-04d79256 (provenance, not composition)
+  Composition parent: @investigram-a86b8e57
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84
+
+Revision status @investigram-a86b8e57: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-70695d40: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-7472008d: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-a17803e1: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-04d79256: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:7f1fc016c649d93e7969a201d93e7501bb0a788525a411a3219f62041111b468 (accepted) reported usage: 2 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 30934 tokens; input 28629 tokens (subset of total); output 2305 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 786 tokens (subset of output)
+Session reported usage: 6 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 123160 tokens; input 118187 tokens (subset of total); output 4973 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1526 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> decompose @investigram-a17803e1
+Decompose · investigram
+References remain bound for this session.
+New investigation request.
+communication-failure: OpenAI request failed (HTTP 200); no automatic retry was made. Unclassified errors are not assumed transient.
+Selection: selected (1 matches).
+
+Revision status @investigram-a17803e1: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:aa3e6b10ae934a05c78a50b2a20962903201e372bd08de7e7ba51b149066c39b (communication-failure) reported usage: 1 calls; 1 unknown; 0 anomalous.
+Session reported usage: 7 calls; 1 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 123160 tokens; input 118187 tokens (subset of total); output 4973 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 1526 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> decompose @investigram-a17803e1
+Decompose · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-d74b9477 · interpretation
+Some smaller selectable aspects of the transition lifecycle are the internal-transition path, external pre-commit sequencing, state commitment and entry, the two action-failure boundaries, and outer dispatch cleanup.
+Referent: selected transition-lifecycle aspects in FsmEngine
+  Qualification: These aspects are a useful decomposition of the selected functionality, not an exhaustive or mutually exclusive partition.
+  Qualification: The account follows the executable ordering in the captured implementation; source inspection alone does not establish behavior in every runtime environment.
+  Displayed composition: @investigram-011724ec, @investigram-c35b2866, @investigram-505e10f5, @investigram-72c6b25e, @investigram-c7e665c6, @investigram-dc5b0f37
+  Composition: @investigram-011724ec, @investigram-c35b2866, @investigram-505e10f5, @investigram-72c6b25e, @investigram-c7e665c6, @investigram-dc5b0f37
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-a17803e1 (provenance, not composition)
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:symbol-claim:99fec5e23d838ca229fcc703cb55acd96218f8adaebdbe20b5812b50ff6ec84e, session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:201166b39df10c798ae2d55eb9f954ac2dc3849caa203ff660444961b13ccbf2
+
+@investigram-011724ec · interpretation
+Internal transition: keep the source state and run only the winning transition’s actions.
+Referent: internal winning-transition execution
+  Qualification: This applies after the transition’s guards pass; the implementation skips source exit actions, state assignment, and target entry actions.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-a17803e1 (provenance, not composition)
+  Composition parent: @investigram-d74b9477
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84
+
+@investigram-c35b2866 · interpretation
+External pre-commit sequence: resolve the target, run source exit actions, then run transition actions.
+Referent: external transition work before state commitment
+  Qualification: Actions within each configured list execute in array order.
+  Qualification: The trace of the target occurs before these actions, but the current-state field is not yet assigned.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-a17803e1 (provenance, not composition)
+  Composition parent: @investigram-d74b9477
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84
+
+@investigram-505e10f5 · interpretation
+External commit and entry: assign the target to the current-state field, then run that target’s entry actions.
+Referent: external transition state commitment and entry phase
+  Qualification: The assignment is the relevant state-commit point in this implementation; it is not an atomic transaction with surrounding actions.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-a17803e1 (provenance, not composition)
+  Composition parent: @investigram-d74b9477
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84
+
+@investigram-72c6b25e · interpretation
+Pre-commit failure: an exception from an exit or transition action prevents the state assignment.
+Referent: failure during external-transition actions before commitment
+  Qualification: Already completed action effects are not rolled back by the shown code.
+  Qualification: This aspect concerns exit and transition actions; guard failures and ordinary false guard results are separate cases.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-a17803e1 (provenance, not composition)
+  Composition parent: @investigram-d74b9477
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84
+
+@investigram-c7e665c6 · interpretation
+Post-commit failure: an exception from a target entry action escapes after the target state has already been assigned.
+Referent: failure during target-state entry after commitment
+  Qualification: The shown code provides no rollback of the state assignment or earlier side effects.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-a17803e1 (provenance, not composition)
+  Composition parent: @investigram-d74b9477
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84
+
+@investigram-dc5b0f37 · interpretation
+Dispatch cleanup: on an escaping processing error, discard queued events, rethrow the error, and reset the dispatching flag.
+Referent: outer event-drain cleanup after transition-processing failure
+  Qualification: Events enqueued re-entrantly are pending FIFO work and are cleared if still queued when the error reaches the outer drain.
+  Qualification: Resetting the flag permits a later independent dispatch to start another drain; it does not restore state, context, timers, or external effects.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-a17803e1 (provenance, not composition)
+  Composition parent: @investigram-d74b9477
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84
+
+Revision status @investigram-d74b9477: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-011724ec: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-c35b2866: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-505e10f5: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-72c6b25e: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-c7e665c6: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-dc5b0f37: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-a17803e1: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:becbbc734cfa365a75a98724006f94f3929433e1189201587ebdcdd90adc2ad4 (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 59100 tokens; input 57116 tokens (subset of total); output 1984 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 851 tokens (subset of output)
+Session reported usage: 11 calls; 1 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 182260 tokens; input 175303 tokens (subset of total); output 6957 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 2377 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> examine @investigram-c7e665c6
+Examine · investigram
+References remain bound for this session.
+New investigation request.
+
+@investigram-90cfd68f · interpretation
+The prior account is confirmed and can be sharpened: on an external transition, FsmEngine runs source-state exit actions and transition actions while the source state is still stored, then assigns the target state, and only then invokes target-state entry actions. Consequently, an exception from a target entry action is a post-commit failure: it propagates to the outermost dispatch call, but the machine remains in the target state. This is an explicitly documented runtime semantic as well as the direct ordering in the implementation.
+Referent: post-commit target-state entry-action failure semantics in FsmEngine
+  Qualification: This is static interpretation of captured TypeScript source and repository documentation; no runtime execution was performed.
+  Qualification: The conclusion concerns an external transition whose target-state entry action throws. It does not imply transactional rollback for user context, timers, logging, or arbitrary callback effects.
+  Qualification: The README is attributed documentation rather than independent proof, but its stated entry-failure rule agrees with the implementation ordering.
+  Qualification: The captured test file does not directly test a throwing target-state entry action, so the specific persistence of the target state is not independently demonstrated by a focused test in the supplied material.
+  Displayed composition: @investigram-569d1439, @investigram-f0c5e050, @investigram-1ed2124c
+  Composition: @investigram-569d1439, @investigram-f0c5e050, @investigram-1ed2124c
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-c7e665c6 (provenance, not composition)
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:a206a58b536d32536d0eedbe0a0d85c76174902315dad7e42b5f099f451ccb5a
+
+@investigram-569d1439 · interpretation
+The commit boundary is narrow and asymmetric. For an external transition, exit actions run first, then transition actions, then `#state = toState`, then target entry actions. Thus guard, exit-action, or transition-action exceptions occur before state assignment and leave the stored state at the source, whereas an entry-action exception occurs after assignment and leaves it at the target. The pre-commit callbacks may nevertheless already have mutated context or produced other side effects.
+Referent: state-assignment boundary relative to transition callbacks
+  Qualification: The state-persistence distinction follows from statement order and synchronous callback invocation in the captured implementation.
+  Qualification: Leaving the stored state unchanged is not equivalent to rolling back callback side effects.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-c7e665c6 (provenance, not composition)
+  Composition parent: @investigram-90cfd68f
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-f0c5e050 · interpretation
+The outer dispatch catch clears the entire pending event queue for any thrown guard or action, rethrows the same error, and the finally block resets the dispatching flag. Therefore, events enqueued re-entrantly before the failing entry action—including events queued by exit, transition, or earlier entry actions—are discarded rather than processed in the now-committed target state. After unwinding, a later top-level dispatch can start normally and will be handled from that target state.
+Referent: queue and dispatcher state after target-entry failure
+  Qualification: The statement that a later dispatch starts from the target follows from the target assignment, queue replacement, and `#isDispatching` reset; it was not exercised at runtime here.
+  Qualification: Queue clearing does not cancel timers already scheduled through the action API; timer management is separate from the event queue.
+  Qualification: The tests directly cover FIFO re-entrant processing and queue clearing after a transition-action exception, but not the post-commit entry-action variant.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-c7e665c6 (provenance, not composition)
+  Composition parent: @investigram-90cfd68f
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:a206a58b536d32536d0eedbe0a0d85c76174902315dad7e42b5f099f451ccb5a
+
+@investigram-1ed2124c · interpretation
+A target entry list is executed in declaration order with `forEach`. If a later entry action throws, earlier target entry actions have already completed; execution stops before subsequent entry actions. No compensating exit of the target, re-entry of the source, context snapshot, timer cancellation, or other rollback path appears in the dispatch error handler. The observable result can therefore be a committed target state with partially applied entry effects.
+Referent: partial entry-action effects without compensation
+  Qualification: The implementation establishes control-flow ordering, not the nature or reversibility of application-defined side effects.
+  Qualification: The absence claim is bounded to the supplied full fsm-engine module; callbacks themselves may implement their own compensation.
+  Qualification: The README advises catching errors inside actions, consistent with the engine not supplying transaction semantics.
+  Operation: examination; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-c7e665c6 (provenance, not composition)
+  Composition parent: @investigram-90cfd68f
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+Revision status @investigram-90cfd68f: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-569d1439: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-f0c5e050: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-1ed2124c: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-c7e665c6: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:558b7619ec781244b1e852f5b49d5dbaa57c037a142304222cf31b4d4ee28b2a (accepted) reported usage: 7 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 256510 tokens; input 254035 tokens (subset of total); output 2475 tokens (subset of total); cached-input 3840 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 920 tokens (subset of output)
+Session reported usage: 18 calls; 1 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 438770 tokens; input 429338 tokens (subset of total); output 9432 tokens (subset of total); cached-input 3840 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3297 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> inspect @investigram-7c656898 --source-detail
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-7c656898 · interpretation
+This module is the FSM runtime and instance factory. `define` turns a builder callback into one validated, compiled definition shared by independently stateful instances; each instance owns context, current state, a FIFO event queue, timers, identity, and tracing. It exports only `FsmEngine` and its conditional factory type.
+Referent: FSM engine runtime module
+  Qualification: Apparent behavior from captured TypeScript source; no execution was performed.
+  Qualification: The repository README is nearby project documentation and is attributed as intended behavior, not treated as proof.
+  Qualification: Dependency coverage is bounded to captured project-owned source requests.
+  Displayed composition: @investigram-a6f543c9, @investigram-04d79256, @investigram-300a00e5, @investigram-9314e47c
+  Composition: @investigram-a6f543c9, @investigram-04d79256, @investigram-300a00e5, @investigram-9314e47c
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:export:9a41ee02d968b322d61df136d4af61f958954537b210ff2e2a6180fbee30e856, session:dba39c44-7b2b-467e-b414-866b256bbd8e:export:c990c362ac2b8ed8e617bf4ab2a9de58eb96af0ba6aaa3b83a8379e61dd4166e, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-a6f543c9 · interpretation
+`define` delegates collection to `FsmBuilderImpl`, then eagerly validates and compiles lookup tables. The builder rejects missing/unknown/unreachable states, duplicate state/event declarations, unknown targets, and transitions placed after an unconditional transition; it records ordered guards/actions plus state-specific and fallback tables. The returned closure reuses that definition while constructing fresh instances and immediately runs initial-state entry actions.
+Referent: definition, validation, compilation, and instantiation
+  Qualification: Validation and table construction are delegated behavior observed in captured builder source.
+  Qualification: Reachability follows external transitions, with fallback targets treated as globally reachable edges.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-7c656898
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:2223a19b7c84507271eb5dcafd0ce7c951322233ba64e5857e7344d6ae15d73d, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:5f0b239941bada797164d6818c9cd0739deecbc2928e6cad7651fba1814d9ddb
+
+@investigram-04d79256 · interpretation
+`dispatch` always enqueues. The outermost call drains synchronously; re-entrant calls return and remain FIFO. For each event it rejects names absent from the compiled definition, runs state begin actions, tries transitions in declaration order with short-circuiting guards, then tries fallback begins/transitions. A declared transition set whose guards all fail is an implicit handled stay; no state or fallback transition is unhandled. External transitions run exit actions, transition actions, commit state, then entry actions; internal transitions run only transition actions. Any thrown guard/action/error clears queued work and escapes the outer dispatch.
+Referent: event dispatch and transition lifecycle
+  Qualification: Synchronous behavior is inferred from control flow; host scheduling beyond this call is not assessed.
+  Qualification: Action side effects and completed exit actions are not rolled back on failure; state is committed before entry actions but after transition actions.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-7c656898
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-300a00e5 · interpretation
+Actions receive a narrow API that can enqueue events and manage keyed timers. Timer scheduling defaults the key to the event, replaces an existing key, accepts relative delay or `performance.now()` deadline, clamps past/negative times to immediate, and treats `Infinity` as never firing; cancellation delegates wholly to `TimerRegistry`. Apparent defect: timer payload forwarding is reversed—when `payload` exists the engine passes no payload, while payload-less events receive an explicit `undefined`; this conflicts with the action-API type documentation and README’s promised timer payload.
+Referent: action effects and timer delegation
+  Qualification: The payload discrepancy is a source-level comparison, not a runtime test.
+  Qualification: Documentation assertions are attributed to the action-API source and repository README.
+  Qualification: Timer registry source includes embedded tests, but they were not executed and do not cover engine payload forwarding.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-7c656898
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:26bb1b56e1acf46f558d9c3267bef7d2db4f8fb3e246c6c26e4e5fe63a275ecd, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:5ae20a36be80e4d3426c537ab3f59d590e4dcd0d929812feb44017c3524f5e6a, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-9314e47c · interpretation
+`trace` toggles per-instance logging, optionally replaces the logger, resets elapsed-time origin, and returns the instance. Emitted lines combine machine/instance identity, elapsed time, current state/event, fallback status, and guard/action/transition details; unnamed callbacks get ordinal labels.
+Referent: instance tracing
+  Qualification: Trace formatting uses `performance.now()` and defaults to `console.log`.
+  Qualification: Falsy payloads are not rendered because payload output is guarded by a truthiness check.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-7c656898
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84
+
+Revision status @investigram-7c656898: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-a6f543c9: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-04d79256: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-300a00e5: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-9314e47c: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Associated investigrams (explicit associations)
+Listing: available; 0 shown of 0.
+Use inspect @reference for retained content; no inference.
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:ac29d94c89454b2f8bed5be2cf4d8f972f8633d49bd344a89929434dffd18960","forms":["full"]}],"coverage":"full-file","contentDigest":"71e8a8d50b2d32902b2d7ad6961f4ac73634e37062f132d58721bcbb9c6700f0","mapping":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:adb9ce1980e8b4bd9358750d3813426af93b6b84e25288586eea8cfc3e0d3a31","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:export:9a41ee02d968b322d61df136d4af61f958954537b210ff2e2a6180fbee30e856","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:ac29d94c89454b2f8bed5be2cf4d8f972f8633d49bd344a89929434dffd18960","forms":["full"]}],"information":{"type":"export","exportedName":"FsmEngine","symbol":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:symbol:705a9557fbed7bce97e09c07316dd27159d05366e7c64f690492368852f5a05f","origin":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:module:28ee01f871c5038ff17dab09c1a5c11ca53589990dd9c4649245a029996e56c4","roles":{"type":true,"value":true},"routes":[{"kind":"direct","typeOnly":false,"aliased":false,"via":null}]},"qualification":{"kind":"claim-context","id":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:expansion-context:e25723e9d0c6ef935fffb0675886c48d66af3f6d16ab7cc6781307e910696cc6","session":"session:dba39c44-7b2b-467e-b414-866b256bbd8e","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:module:28ee01f871c5038ff17dab09c1a5c11ca53589990dd9c4649245a029996e56c4","evidence":["session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:201166b39df10c798ae2d55eb9f954ac2dc3849caa203ff660444961b13ccbf2"],"status":"mechanically-derived","guarantee":"The compiler exposes this exported name; roles and forwarding are qualified by the recorded route.","limitations":[],"diagnostics":[],"inputs":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:analysis-inputs:2447a464c89f7484e3886be99ee5b234ba0d9af8cab47489d149b70019e2d378"}}
+  Support (exposure identified by provenance): {"id":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:export:c990c362ac2b8ed8e617bf4ab2a9de58eb96af0ba6aaa3b83a8379e61dd4166e","kind":"claim","method":"postcode/typescript-expansions@2;typescript@6.0.3","exposures":[{"provenance":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:ac29d94c89454b2f8bed5be2cf4d8f972f8633d49bd344a89929434dffd18960","forms":["full"]}],"information":{"type":"export","exportedName":"FsmEngineFactory","symbol":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:symbol:b14342d6db6c2e3ed2a00df6a90939a9a9b1ebe219e5d84a05d59ca8c0acd2f3","origin":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:module:28ee01f871c5038ff17dab09c1a5c11ca53589990dd9c4649245a029996e56c4","roles":{"type":true,"value":false},"routes":[{"kind":"direct","typeOnly":false,"aliased":false,"via":null}]},"qualification":{"kind":"claim-context","id":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:expansion-context:d3a1dbf130ff39d8b83adaf91219f21a02f794bb5c8509a8abaa42676a00cb9d","session":"session:dba39c44-7b2b-467e-b414-866b256bbd8e","method":"postcode/typescript-expansions@2;typescript@6.0.3","scope":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:module:28ee01f871c5038ff17dab09c1a5c11ca53589990dd9c4649245a029996e56c4","evidence":["session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:20c77b7ba0e87de930a4c418e23bd76858530ebf31c5492791f7e50933199673"],"status":"mechanically-derived","guarantee":"The compiler exposes this exported name; roles and forwarding are qualified by the recorded route.","limitations":[],"diagnostics":[],"inputs":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:analysis-inputs:2447a464c89f7484e3886be99ee5b234ba0d9af8cab47489d149b70019e2d378"}}
+  Support (exposure identified by provenance): {"id":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:ac29d94c89454b2f8bed5be2cf4d8f972f8633d49bd344a89929434dffd18960","forms":["full"]}],"coverage":"full-file","contentDigest":"d6153d0b8da1a1ae986c959b57687a8bb9b77ad4a8152fb906262076109fe2e3","mapping":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject.","Artifact placement does not establish documentation applicability or truth."]}
+  Support (exposure identified by provenance): {"id":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:d31ea771893838eba9e756e1436514fcf0bfe4b6648fa9708605f1850a89cff7","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:ac29d94c89454b2f8bed5be2cf4d8f972f8633d49bd344a89929434dffd18960","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:2223a19b7c84507271eb5dcafd0ce7c951322233ba64e5857e7344d6ae15d73d","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:ac29d94c89454b2f8bed5be2cf4d8f972f8633d49bd344a89929434dffd18960","forms":["full"]}],"coverage":"full-file","contentDigest":"3be6a893e9bf834e503ad526c18efcb2de3a5016480f7442b7a09d7710486daa","mapping":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:fb139cec5c39b36c62c03d967becc1429e0b4a2c5958218f94efc80bf7516180","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:dependency:f7c0b79edc646a2bbf2b77dda574890699fee3dc749235e6dd428ad812d75a7f","kind":"claim","method":"postcode/typescript-dependencies@2;typescript@6.0.3","exposures":[{"provenance":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:ac29d94c89454b2f8bed5be2cf4d8f972f8633d49bd344a89929434dffd18960","forms":["full"]}],"information":{"type":"dependency","child":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:module:fd42e085813524a5acab19c4929a9aa6ecfcd4a79ac3fd5bfd570ec94654a31e","occurrences":["session:dba39c44-7b2b-467e-b414-866b256bbd8e:dependency-occurrence:4f01de1f4e01fa7499668f32ca964a238b3f38d3dc8c72ccfcf4095cc228e337","session:dba39c44-7b2b-467e-b414-866b256bbd8e:dependency-occurrence:08feb8e317d202289e5fe439990879134a019aa96e26687c5bb6793bb4e89fea"],"mechanisms":["static-import"],"typeOnly":false},"qualification":{"kind":"claim-context","id":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:dependency-context:b4b37250b69b06d0eeaccae7877868cf1bd0aed37fd4eee6aa1ad8149cb68497","session":"session:dba39c44-7b2b-467e-b414-866b256bbd8e","method":"postcode/typescript-dependencies@2;typescript@6.0.3","scope":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:module:28ee01f871c5038ff17dab09c1a5c11ca53589990dd9c4649245a029996e56c4","evidence":["session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:ab9ef31a90420c5b8af94454af9ffea6bbbdede1aab0f1567585081341e53520","session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:4962ba278853a63fc9feab04bc9e3cca894877bafc2edff92ee0770ad6d1df33","session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:bf13769bc07f7105e100d3c2a206e29384b66e802c092c3261eb9e5f441767c0"],"status":"mechanically-derived","guarantee":"Bounded source-request evidence under the configured TypeScript environment; syntax diagnostics qualify interpretation.","limitations":["Source requests only: no value-use, emission, loader availability, execution, bundler, or deployment claims.","Only project-owned requests are analyzed; external module interiors are opaque.","CommonJS coverage is bare require with exactly one argument, complete lexical evidence, and affirmative captured context; aliases, properties and other APIs are excluded.","Defined ESM format overrides ambient declarations; preserve requires callable ambient corroboration; absent module options do not infer compiler defaults.","Nonliteral targets are not evaluated; resolved files outside the discovered population do not add modules."],"diagnostics":[],"inputs":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:analysis-inputs:2447a464c89f7484e3886be99ee5b234ba0d9af8cab47489d149b70019e2d378"}}
+  Support (exposure identified by provenance): {"id":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:5ae20a36be80e4d3426c537ab3f59d590e4dcd0d929812feb44017c3524f5e6a","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:ac29d94c89454b2f8bed5be2cf4d8f972f8633d49bd344a89929434dffd18960","forms":["full"]}],"coverage":"full-file","contentDigest":"315d04468c846641f5f755a45a35b116a1112f3be56813c4999141e1b35bcbff","mapping":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:a2217383b45252ecd02e0c070ed044aa21d44d79746852e3256dd3bda2fd1836","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:baf15ce7af81c0ba8a11b17764fab0ac856d289921ef91b73dcdfa0a3b0a38ac","kind":"source-evidence","method":"postcode/typescript-modules@12;typescript@6.0.3","exposures":[{"provenance":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:ac29d94c89454b2f8bed5be2cf4d8f972f8633d49bd344a89929434dffd18960","forms":["full"]}]}
+  Support (exposure identified by provenance): {"id":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:9005b07f7708207e8f24e52a62e67b90a7a1d58099c4fe95b259daeb0c278b8d","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:ac29d94c89454b2f8bed5be2cf4d8f972f8633d49bd344a89929434dffd18960","forms":["full"]}],"coverage":"full-file","contentDigest":"10f7278e11c276112bee5bc978b965853f23edd91932f524379473b3738f6330","mapping":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:311fd0f5e956fa6880606300a5b752386e7712b855a6295634d00f94ca0d177f","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:5f0b239941bada797164d6818c9cd0739deecbc2928e6cad7651fba1814d9ddb","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:ac29d94c89454b2f8bed5be2cf4d8f972f8633d49bd344a89929434dffd18960","forms":["full"]}],"coverage":"full-file","contentDigest":"eda933fbb329729f1937f302833008385fb85c2bb01a8552b2c04a0bc1c2b266","mapping":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:fb54afab50ed5b20abc605c6ebf93f2d3b0b4cdc269834500ead3545bc182212","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:26bb1b56e1acf46f558d9c3267bef7d2db4f8fb3e246c6c26e4e5fe63a275ecd","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:ac29d94c89454b2f8bed5be2cf4d8f972f8633d49bd344a89929434dffd18960","forms":["full"]}],"coverage":"full-file","contentDigest":"a30c38117a57c1a33a52df5ff76cd3630b819b125d65d5ddd4088e96ee15060a","mapping":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:65fd4309747d7df9b74e69c1920bce5944e4628321aee8e0b9d316fc85e3d405","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+
+Source support (captured locations and excerpts):
+[
+  {
+    "kind": "source-evidence",
+    "id": "session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:adb9ce1980e8b4bd9358750d3813426af93b6b84e25288586eea8cfc3e0d3a31",
+    "session": "session:dba39c44-7b2b-467e-b414-866b256bbd8e",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/fsm-engine.ts",
+    "contentDigest": "71e8a8d50b2d32902b2d7ad6961f4ac73634e37062f132d58721bcbb9c6700f0",
+    "start": 0,
+    "length": 14877,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": "\"/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/fsm-engine\""
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:201166b39df10c798ae2d55eb9f954ac2dc3849caa203ff660444961b13ccbf2",
+    "session": "session:dba39c44-7b2b-467e-b414-866b256bbd8e",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/fsm-engine.ts",
+    "contentDigest": "71e8a8d50b2d32902b2d7ad6961f4ac73634e37062f132d58721bcbb9c6700f0",
+    "start": 2470,
+    "length": 12406,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 62,
+        "column": 1
+      },
+      "to": {
+        "line": 433,
+        "column": 2
+      },
+      "excerpt": {
+        "text": "export class FsmEngine<State extends string, Events extends EventMap, Context = void> {\n  readonly #def:     FsmDefinition<State, Events, Context>\n  readonly #context: Context\n  readonly #id:      string",
+        "omittedCharacters": 12203
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:20c77b7ba0e87de930a4c418e23bd76858530ebf31c5492791f7e50933199673",
+    "session": "session:dba39c44-7b2b-467e-b414-866b256bbd8e",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/fsm-engine.ts",
+    "contentDigest": "71e8a8d50b2d32902b2d7ad6961f4ac73634e37062f132d58721bcbb9c6700f0",
+    "start": 1875,
+    "length": 262,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 49,
+        "column": 1
+      },
+      "to": {
+        "line": 51,
+        "column": 75
+      },
+      "excerpt": {
+        "text": "export type FsmEngineFactory<State extends string, Events extends EventMap, Context> = [Context] extends [void] \n  ? (params?: FactoryParams<Context>) => FsmEngine<State, Events, Context>\n  : (params: FactoryParams<Context>)  => FsmEngine<State, Events, Context>",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "session": "session:dba39c44-7b2b-467e-b414-866b256bbd8e",
+    "method": "postcode/organization@3",
+    "kind": "repository-artifact",
+    "id": "session:dba39c44-7b2b-467e-b414-866b256bbd8e:repository-artifact:d82ab49f91a6ba1662d933820377bd073d4da4fb04bd2911a20ecfde554cdd93",
+    "repository": "session:dba39c44-7b2b-467e-b414-866b256bbd8e:repository-evidence:dff828d8b80561c83ace18a0a30cab26bb4619b1b5ad67a3b748bbe5beac4908",
+    "artifact": {
+      "path": "README.md",
+      "kind": "file",
+      "tracked": true
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:d31ea771893838eba9e756e1436514fcf0bfe4b6648fa9708605f1850a89cff7",
+    "session": "session:dba39c44-7b2b-467e-b414-866b256bbd8e",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/fsm-engine.ts",
+    "contentDigest": "71e8a8d50b2d32902b2d7ad6961f4ac73634e37062f132d58721bcbb9c6700f0",
+    "start": 458,
+    "length": 43,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 7,
+        "column": 1
+      },
+      "to": {
+        "line": 7,
+        "column": 44
+      },
+      "excerpt": {
+        "text": "import { FsmBuilderImpl } from './dsl-impl'",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null,
+    "dependencyResolution": {
+      "writtenSpecifier": "./dsl-impl",
+      "status": "resolved",
+      "resolvedFile": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/dsl-impl.ts",
+      "targetBasis": "checker-symbol",
+      "mode": "esm"
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:fb139cec5c39b36c62c03d967becc1429e0b4a2c5958218f94efc80bf7516180",
+    "session": "session:dba39c44-7b2b-467e-b414-866b256bbd8e",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/dsl-impl.ts",
+    "contentDigest": "3be6a893e9bf834e503ad526c18efcb2de3a5016480f7442b7a09d7710486daa",
+    "start": 0,
+    "length": 12414,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": "\"/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/dsl-impl\""
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:ab9ef31a90420c5b8af94454af9ffea6bbbdede1aab0f1567585081341e53520",
+    "session": "session:dba39c44-7b2b-467e-b414-866b256bbd8e",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/fsm-engine.ts",
+    "contentDigest": "71e8a8d50b2d32902b2d7ad6961f4ac73634e37062f132d58721bcbb9c6700f0",
+    "start": 403,
+    "length": 54,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 6,
+        "column": 1
+      },
+      "to": {
+        "line": 6,
+        "column": 55
+      },
+      "excerpt": {
+        "text": "import type { ScheduleParams } from './timer-registry'",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null,
+    "dependencyResolution": {
+      "writtenSpecifier": "./timer-registry",
+      "status": "resolved",
+      "resolvedFile": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/timer-registry.ts",
+      "targetBasis": "checker-symbol",
+      "mode": "esm"
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:4962ba278853a63fc9feab04bc9e3cca894877bafc2edff92ee0770ad6d1df33",
+    "session": "session:dba39c44-7b2b-467e-b414-866b256bbd8e",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/timer-registry.ts",
+    "contentDigest": "315d04468c846641f5f755a45a35b116a1112f3be56813c4999141e1b35bcbff",
+    "start": 0,
+    "length": 6580,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": null
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:bf13769bc07f7105e100d3c2a206e29384b66e802c092c3261eb9e5f441767c0",
+    "session": "session:dba39c44-7b2b-467e-b414-866b256bbd8e",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/fsm-engine.ts",
+    "contentDigest": "71e8a8d50b2d32902b2d7ad6961f4ac73634e37062f132d58721bcbb9c6700f0",
+    "start": 589,
+    "length": 48,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 9,
+        "column": 1
+      },
+      "to": {
+        "line": 9,
+        "column": 49
+      },
+      "excerpt": {
+        "text": "import { TimerRegistry } from './timer-registry'",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null,
+    "dependencyResolution": {
+      "writtenSpecifier": "./timer-registry",
+      "status": "resolved",
+      "resolvedFile": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/timer-registry.ts",
+      "targetBasis": "checker-symbol",
+      "mode": "esm"
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:a2217383b45252ecd02e0c070ed044aa21d44d79746852e3256dd3bda2fd1836",
+    "session": "session:dba39c44-7b2b-467e-b414-866b256bbd8e",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/timer-registry.ts",
+    "contentDigest": "315d04468c846641f5f755a45a35b116a1112f3be56813c4999141e1b35bcbff",
+    "start": 0,
+    "length": 6580,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": "\"/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/timer-registry\""
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:baf15ce7af81c0ba8a11b17764fab0ac856d289921ef91b73dcdfa0a3b0a38ac",
+    "session": "session:dba39c44-7b2b-467e-b414-866b256bbd8e",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/fsm-engine.ts",
+    "contentDigest": "71e8a8d50b2d32902b2d7ad6961f4ac73634e37062f132d58721bcbb9c6700f0",
+    "start": 502,
+    "length": 86,
+    "location": {
+      "association": "span",
+      "from": {
+        "line": 8,
+        "column": 1
+      },
+      "to": {
+        "line": 8,
+        "column": 87
+      },
+      "excerpt": {
+        "text": "import { FsmEngineUnhandledEventError, FsmEngineUnknownEventError } from './fsm-error'",
+        "omittedCharacters": 0
+      }
+    },
+    "configuredRoot": true,
+    "compilerName": null,
+    "dependencyResolution": {
+      "writtenSpecifier": "./fsm-error",
+      "status": "resolved",
+      "resolvedFile": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/fsm-error.ts",
+      "targetBasis": "checker-symbol",
+      "mode": "esm"
+    }
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:311fd0f5e956fa6880606300a5b752386e7712b855a6295634d00f94ca0d177f",
+    "session": "session:dba39c44-7b2b-467e-b414-866b256bbd8e",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/fsm-error.ts",
+    "contentDigest": "10f7278e11c276112bee5bc978b965853f23edd91932f524379473b3738f6330",
+    "start": 0,
+    "length": 7882,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": "\"/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/fsm-error\""
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:fb54afab50ed5b20abc605c6ebf93f2d3b0b4cdc269834500ead3545bc182212",
+    "session": "session:dba39c44-7b2b-467e-b414-866b256bbd8e",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/defs.ts",
+    "contentDigest": "eda933fbb329729f1937f302833008385fb85c2bb01a8552b2c04a0bc1c2b266",
+    "start": 0,
+    "length": 2529,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": "\"/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/defs\""
+  },
+  {
+    "kind": "source-evidence",
+    "id": "session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:65fd4309747d7df9b74e69c1920bce5944e4628321aee8e0b9d316fc85e3d405",
+    "session": "session:dba39c44-7b2b-467e-b414-866b256bbd8e",
+    "method": "postcode/typescript-modules@12;typescript@6.0.3",
+    "path": "/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/fsm-action-api.ts",
+    "contentDigest": "a30c38117a57c1a33a52df5ff76cd3630b819b125d65d5ddd4088e96ee15060a",
+    "start": 0,
+    "length": 2031,
+    "location": {
+      "association": "file"
+    },
+    "configuredRoot": true,
+    "compilerName": "\"/Users/ronen/postcode/app/_investigation/module-assessment-sources/fsm-engine/src/fsm-action-api\""
+  }
+]
+Session reported usage: 18 calls; 1 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 438770 tokens; input 429338 tokens (subset of total); output 9432 tokens (subset of total); cached-input 3840 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3297 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> inspect @investigram-c7e665c6
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-c7e665c6 · interpretation
+Post-commit failure: an exception from a target entry action escapes after the target state has already been assigned.
+Referent: failure during target-state entry after commitment
+  Qualification: The shown code provides no rollback of the state assignment or earlier side effects.
+  Operation: decomposition; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-a17803e1 (provenance, not composition)
+  Composition parent: @investigram-d74b9477
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84
+
+Revision status @investigram-c7e665c6: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Associated investigrams (explicit associations)
+Listing: available; 1 shown of 1.
+Use inspect @reference for retained content; no inference.
+@investigram-90cfd68f · interpretation
+  Revision: current original; inspect this reference for details.
+  The prior account is confirmed and can be sharpened: on an external transition, FsmEngine runs source-state exit actions and transition actions while the source state is still stored, then assigns the target state, and only then invokes target-state entry actions. Consequently, an exception from a target entry action is a post-commit failure: it propagates to the outermost dispatch call, but the m [139 prose characters omitted]
+  Operation: examination; origin: hosted; provenance: session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:558b7619ec781244b1e852f5b49d5dbaa57c037a142304222cf31b4d4ee28b2a
+  Qualification: This is static interpretation of captured TypeScript source and repository documentation; no runtime execution was performed.
+  Qualification: The conclusion concerns an external transition whose target-state entry action throws. It does not imply transactional rollback for user context, timers, logging, or arbitrary callback effects.
+  Qualification: The README is attributed documentation rather than independent proof, but its stated entry-failure rule agrees with the implementation ordering.
+  Qualification: The captured test file does not directly test a throwing target-state entry action, so the specific persistence of the target state is not independently demonstrated by a focused test in the supplied material.
+  Association: session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigram:c7e665c60f84346e1996893073af625129b910539ae4e29701a10ec7979551dd (investigation-subject); Investigation selected this subject; this association does not establish interpretive correctness.; evidence: 
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:becbbc734cfa365a75a98724006f94f3929433e1189201587ebdcdd90adc2ad4","forms":["full"]}],"coverage":"full-file","contentDigest":"71e8a8d50b2d32902b2d7ad6961f4ac73634e37062f132d58721bcbb9c6700f0","mapping":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:adb9ce1980e8b4bd9358750d3813426af93b6b84e25288586eea8cfc3e0d3a31","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+Session reported usage: 18 calls; 1 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 438770 tokens; input 429338 tokens (subset of total); output 9432 tokens (subset of total); cached-input 3840 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3297 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> inspect @investigram-a86b8e57
+Inspect · investigram
+References remain bound for this session.
+
+@investigram-a86b8e57 · interpretation
+`dispatch` is best understood as a synchronous queue drain, not as a direct recursive event handler. Every call first appends `{event, payload}` to the instance’s FIFO queue. If no drain is active, that call becomes the outer drain and processes queued items one at a time before returning. If an action dispatches another event while a drain is active, the nested call only appends the event and returns; the new event is processed after the current event has completely finished. Thus an event enqueued by an exit or transition action normally observes the state resulting from the current transition, despite having been requested before the state assignment. If the current processing throws before that queued event is reached, the queue is cleared instead.
+Referent: clarified event dispatch, handler selection, transition ordering, and failure semantics
+  Qualification: This account clarifies the earlier interpretation rather than correcting it; the implementation independently supports the earlier ordering summary.
+  Qualification: “Synchronous” describes the control flow of a call to `dispatch`; timer callbacks and other host scheduling are outside this account.
+  Qualification: Queueing prevents recursive event processing, but it does not make dispatch asynchronous: the outermost caller still drains successful re-entrant work before returning.
+  Displayed composition: @investigram-70695d40, @investigram-7472008d, @investigram-a17803e1
+  Composition: @investigram-70695d40, @investigram-7472008d, @investigram-a17803e1
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-04d79256 (provenance, not composition)
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigram:04d792564de8b14389e42828a34df575d94185115f6c3aa2bf8fe3cec87f0604, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84
+
+@investigram-70695d40 · interpretation
+For each dequeued item, the engine first asks whether the event occurs anywhere in the compiled definition. If not, it throws the unknown-event error before running begin actions or guards. For a known event, handling has two tiers. It runs the current state’s begin actions, then examines that state’s transitions in declaration order. Guards within one transition are also evaluated in order and stop at the first false result; the first transition whose guards all pass wins. Only if no state transition wins does the engine run fallback begin actions and try fallback transitions in the same fashion. In particular, fallback is attempted not only when the state has no transition, but also when the state has transitions whose guards all reject the event.
+Referent: state-specific then fallback handler selection
+  Qualification: Begin actions run before transition selection and can therefore have side effects even when every guard later fails or the event ultimately proves unhandled.
+  Qualification: A state transition that succeeds prevents fallback begin actions and fallback guards from running.
+  Qualification: The ordering described is the ordering of the arrays in the compiled definition; how the builder constructs those arrays was not re-investigated here.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-04d79256 (provenance, not composition)
+  Composition parent: @investigram-a86b8e57
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:5f0b239941bada797164d6818c9cd0739deecbc2928e6cad7651fba1814d9ddb
+
+@investigram-7472008d · interpretation
+“Handled” does not necessarily mean that a transition ran. If at least one state-specific or fallback transition was declared for the event, but every candidate fails its guards, the engine records an implicit stay and treats the event as handled: state is unchanged and no transition action runs. By contrast, begin actions alone do not establish handling. If neither tier has any transition for the event, the engine throws the unhandled-event error after any applicable state and fallback begin actions have already run. This differs from an unknown event: an unhandled event is present somewhere in the machine definition, just not transition-handled in the current state or fallback tier.
+Referent: implicit stay and distinction between unknown and unhandled events
+  Qualification: The implicit stay case requires a nonempty state or fallback transition array; merely having begin actions does not satisfy that test.
+  Qualification: The unhandled runtime error captures the machine identifier, current state, event, payload, and the context object; the unknown-event error captures the identifier, event, and payload.
+  Qualification: Side effects already performed by begin actions are not rolled back when the engine subsequently throws an unhandled-event error.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-04d79256 (provenance, not composition)
+  Composition parent: @investigram-a86b8e57
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:9005b07f7708207e8f24e52a62e67b90a7a1d58099c4fe95b259daeb0c278b8d
+
+@investigram-a17803e1 · interpretation
+Once a transition wins, an internal transition leaves the state unchanged and runs only its transition actions. An external transition computes its target, runs all source-state exit actions, then all transition actions, assigns the target to the current-state field, and finally runs the target-state entry actions. The assignment therefore is not an atomic boundary with the actions around it. An exception from an exit or transition action occurs before state commitment; an exception from an entry action occurs after commitment. In every case, earlier side effects remain, the pending event queue is discarded by the outer drain, the exception escapes, and the dispatching flag is reset so a later independent call can start a new drain.
+Referent: internal and external transition lifecycle, commit point, and partial failure
+  Qualification: No rollback mechanism is present for context mutations, external effects, completed actions, timer operations, or a state assignment already made.
+  Qualification: Events enqueued by an action are pending work rather than nested processing; they are lost if a later operation in the current drain throws before they are dequeued.
+  Qualification: The implementation comment says “Commit state first,” but the executable order assigns the state after exit and transition actions; this account follows the executable statements. No structured inconsistency is reported because the comment is repository text, not an earlier investigram.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-04d79256 (provenance, not composition)
+  Composition parent: @investigram-a86b8e57
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84
+
+Revision status @investigram-a86b8e57: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-70695d40: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-7472008d: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-a17803e1: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Associated investigrams (explicit associations)
+Listing: available; 0 shown of 0.
+Use inspect @reference for retained content; no inference.
+Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.
+Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.
+  Support (exposure identified by provenance): {"id":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigram:04d792564de8b14389e42828a34df575d94185115f6c3aa2bf8fe3cec87f0604","kind":"investigram","method":"postcode/investigation@10","exposures":[{"provenance":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:7f1fc016c649d93e7969a201d93e7501bb0a788525a411a3219f62041111b468","forms":["prior-interpretation"]}]}
+  Support (exposure identified by provenance): {"id":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:7f1fc016c649d93e7969a201d93e7501bb0a788525a411a3219f62041111b468","forms":["full"]}],"coverage":"full-file","contentDigest":"71e8a8d50b2d32902b2d7ad6961f4ac73634e37062f132d58721bcbb9c6700f0","mapping":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:adb9ce1980e8b4bd9358750d3813426af93b6b84e25288586eea8cfc3e0d3a31","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:9005b07f7708207e8f24e52a62e67b90a7a1d58099c4fe95b259daeb0c278b8d","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:7f1fc016c649d93e7969a201d93e7501bb0a788525a411a3219f62041111b468","forms":["full"]}],"coverage":"full-file","contentDigest":"10f7278e11c276112bee5bc978b965853f23edd91932f524379473b3738f6330","mapping":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:311fd0f5e956fa6880606300a5b752386e7712b855a6295634d00f94ca0d177f","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+  Support (exposure identified by provenance): {"id":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:5f0b239941bada797164d6818c9cd0739deecbc2928e6cad7651fba1814d9ddb","kind":"captured-content","method":"postcode/subject-content@1","exposures":[{"provenance":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:7f1fc016c649d93e7969a201d93e7501bb0a788525a411a3219f62041111b468","forms":["full"]}],"coverage":"full-file","contentDigest":"eda933fbb329729f1937f302833008385fb85c2bb01a8552b2c04a0bc1c2b266","mapping":"session:dba39c44-7b2b-467e-b414-866b256bbd8e:source:fb54afab50ed5b20abc605c6ebf93f2d3b0b4cdc269834500ead3545bc182212","limitations":["First-observed content; acquisition is not atomic.","Full mapped file content can include code outside the selected subject."]}
+Session reported usage: 18 calls; 1 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 438770 tokens; input 429338 tokens (subset of total); output 9432 tokens (subset of total); cached-input 3840 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3297 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> explain @investigram-04d79256
+Explain · investigram
+References remain bound for this session.
+Retained outcome; no new investigation.
+
+@investigram-a86b8e57 · interpretation
+`dispatch` is best understood as a synchronous queue drain, not as a direct recursive event handler. Every call first appends `{event, payload}` to the instance’s FIFO queue. If no drain is active, that call becomes the outer drain and processes queued items one at a time before returning. If an action dispatches another event while a drain is active, the nested call only appends the event and returns; the new event is processed after the current event has completely finished. Thus an event enqueued by an exit or transition action normally observes the state resulting from the current transition, despite having been requested before the state assignment. If the current processing throws before that queued event is reached, the queue is cleared instead.
+Referent: clarified event dispatch, handler selection, transition ordering, and failure semantics
+  Qualification: This account clarifies the earlier interpretation rather than correcting it; the implementation independently supports the earlier ordering summary.
+  Qualification: “Synchronous” describes the control flow of a call to `dispatch`; timer callbacks and other host scheduling are outside this account.
+  Qualification: Queueing prevents recursive event processing, but it does not make dispatch asynchronous: the outermost caller still drains successful re-entrant work before returning.
+  Displayed composition: @investigram-70695d40, @investigram-7472008d, @investigram-a17803e1
+  Composition: @investigram-70695d40, @investigram-7472008d, @investigram-a17803e1
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-04d79256 (provenance, not composition)
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigram:04d792564de8b14389e42828a34df575d94185115f6c3aa2bf8fe3cec87f0604, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84
+
+@investigram-70695d40 · interpretation
+For each dequeued item, the engine first asks whether the event occurs anywhere in the compiled definition. If not, it throws the unknown-event error before running begin actions or guards. For a known event, handling has two tiers. It runs the current state’s begin actions, then examines that state’s transitions in declaration order. Guards within one transition are also evaluated in order and stop at the first false result; the first transition whose guards all pass wins. Only if no state transition wins does the engine run fallback begin actions and try fallback transitions in the same fashion. In particular, fallback is attempted not only when the state has no transition, but also when the state has transitions whose guards all reject the event.
+Referent: state-specific then fallback handler selection
+  Qualification: Begin actions run before transition selection and can therefore have side effects even when every guard later fails or the event ultimately proves unhandled.
+  Qualification: A state transition that succeeds prevents fallback begin actions and fallback guards from running.
+  Qualification: The ordering described is the ordering of the arrays in the compiled definition; how the builder constructs those arrays was not re-investigated here.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-04d79256 (provenance, not composition)
+  Composition parent: @investigram-a86b8e57
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:5f0b239941bada797164d6818c9cd0739deecbc2928e6cad7651fba1814d9ddb
+
+@investigram-7472008d · interpretation
+“Handled” does not necessarily mean that a transition ran. If at least one state-specific or fallback transition was declared for the event, but every candidate fails its guards, the engine records an implicit stay and treats the event as handled: state is unchanged and no transition action runs. By contrast, begin actions alone do not establish handling. If neither tier has any transition for the event, the engine throws the unhandled-event error after any applicable state and fallback begin actions have already run. This differs from an unknown event: an unhandled event is present somewhere in the machine definition, just not transition-handled in the current state or fallback tier.
+Referent: implicit stay and distinction between unknown and unhandled events
+  Qualification: The implicit stay case requires a nonempty state or fallback transition array; merely having begin actions does not satisfy that test.
+  Qualification: The unhandled runtime error captures the machine identifier, current state, event, payload, and the context object; the unknown-event error captures the identifier, event, and payload.
+  Qualification: Side effects already performed by begin actions are not rolled back when the engine subsequently throws an unhandled-event error.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-04d79256 (provenance, not composition)
+  Composition parent: @investigram-a86b8e57
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:9005b07f7708207e8f24e52a62e67b90a7a1d58099c4fe95b259daeb0c278b8d
+
+@investigram-a17803e1 · interpretation
+Once a transition wins, an internal transition leaves the state unchanged and runs only its transition actions. An external transition computes its target, runs all source-state exit actions, then all transition actions, assigns the target to the current-state field, and finally runs the target-state entry actions. The assignment therefore is not an atomic boundary with the actions around it. An exception from an exit or transition action occurs before state commitment; an exception from an entry action occurs after commitment. In every case, earlier side effects remain, the pending event queue is discarded by the outer drain, the exception escapes, and the dispatching flag is reset so a later independent call can start a new drain.
+Referent: internal and external transition lifecycle, commit point, and partial failure
+  Qualification: No rollback mechanism is present for context mutations, external effects, completed actions, timer operations, or a state assignment already made.
+  Qualification: Events enqueued by an action are pending work rather than nested processing; they are lost if a later operation in the current drain throws before they are dequeued.
+  Qualification: The implementation comment says “Commit state first,” but the executable order assigns the state after exit and transition actions; this account follows the executable statements. No structured inconsistency is reported because the comment is repository text, not an earlier investigram.
+  Operation: clarification; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @investigram-04d79256 (provenance, not composition)
+  Composition parent: @investigram-a86b8e57
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84
+
+Revision status @investigram-a86b8e57: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-70695d40: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-7472008d: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-a17803e1: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-04d79256: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:7f1fc016c649d93e7969a201d93e7501bb0a788525a411a3219f62041111b468 (accepted) reported usage: 2 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 30934 tokens; input 28629 tokens (subset of total); output 2305 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 786 tokens (subset of output)
+Session reported usage: 18 calls; 1 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 438770 tokens; input 429338 tokens (subset of total); output 9432 tokens (subset of total); cached-input 3840 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3297 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> summarize fsm-engine
+Module summary
+References remain bound for this session.
+Retained outcome; no new investigation.
+Module @module-28ee01f8: fsm-engine
+
+@investigram-7c656898 · interpretation
+This module is the FSM runtime and instance factory. `define` turns a builder callback into one validated, compiled definition shared by independently stateful instances; each instance owns context, current state, a FIFO event queue, timers, identity, and tracing. It exports only `FsmEngine` and its conditional factory type.
+Referent: FSM engine runtime module
+  Qualification: Apparent behavior from captured TypeScript source; no execution was performed.
+  Qualification: The repository README is nearby project documentation and is attributed as intended behavior, not treated as proof.
+  Qualification: Dependency coverage is bounded to captured project-owned source requests.
+  Displayed composition: @investigram-a6f543c9, @investigram-04d79256, @investigram-300a00e5, @investigram-9314e47c
+  Composition: @investigram-a6f543c9, @investigram-04d79256, @investigram-300a00e5, @investigram-9314e47c
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:export:9a41ee02d968b322d61df136d4af61f958954537b210ff2e2a6180fbee30e856, session:dba39c44-7b2b-467e-b414-866b256bbd8e:export:c990c362ac2b8ed8e617bf4ab2a9de58eb96af0ba6aaa3b83a8379e61dd4166e, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-a6f543c9 · interpretation
+`define` delegates collection to `FsmBuilderImpl`, then eagerly validates and compiles lookup tables. The builder rejects missing/unknown/unreachable states, duplicate state/event declarations, unknown targets, and transitions placed after an unconditional transition; it records ordered guards/actions plus state-specific and fallback tables. The returned closure reuses that definition while constructing fresh instances and immediately runs initial-state entry actions.
+Referent: definition, validation, compilation, and instantiation
+  Qualification: Validation and table construction are delegated behavior observed in captured builder source.
+  Qualification: Reachability follows external transitions, with fallback targets treated as globally reachable edges.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-7c656898
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:2223a19b7c84507271eb5dcafd0ce7c951322233ba64e5857e7344d6ae15d73d, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:5f0b239941bada797164d6818c9cd0739deecbc2928e6cad7651fba1814d9ddb
+
+@investigram-04d79256 · interpretation
+`dispatch` always enqueues. The outermost call drains synchronously; re-entrant calls return and remain FIFO. For each event it rejects names absent from the compiled definition, runs state begin actions, tries transitions in declaration order with short-circuiting guards, then tries fallback begins/transitions. A declared transition set whose guards all fail is an implicit handled stay; no state or fallback transition is unhandled. External transitions run exit actions, transition actions, commit state, then entry actions; internal transitions run only transition actions. Any thrown guard/action/error clears queued work and escapes the outer dispatch.
+Referent: event dispatch and transition lifecycle
+  Qualification: Synchronous behavior is inferred from control flow; host scheduling beyond this call is not assessed.
+  Qualification: Action side effects and completed exit actions are not rolled back on failure; state is committed before entry actions but after transition actions.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-7c656898
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-300a00e5 · interpretation
+Actions receive a narrow API that can enqueue events and manage keyed timers. Timer scheduling defaults the key to the event, replaces an existing key, accepts relative delay or `performance.now()` deadline, clamps past/negative times to immediate, and treats `Infinity` as never firing; cancellation delegates wholly to `TimerRegistry`. Apparent defect: timer payload forwarding is reversed—when `payload` exists the engine passes no payload, while payload-less events receive an explicit `undefined`; this conflicts with the action-API type documentation and README’s promised timer payload.
+Referent: action effects and timer delegation
+  Qualification: The payload discrepancy is a source-level comparison, not a runtime test.
+  Qualification: Documentation assertions are attributed to the action-API source and repository README.
+  Qualification: Timer registry source includes embedded tests, but they were not executed and do not cover engine payload forwarding.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-7c656898
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:26bb1b56e1acf46f558d9c3267bef7d2db4f8fb3e246c6c26e4e5fe63a275ecd, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:5ae20a36be80e4d3426c537ab3f59d590e4dcd0d929812feb44017c3524f5e6a, session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7
+
+@investigram-9314e47c · interpretation
+`trace` toggles per-instance logging, optionally replaces the logger, resets elapsed-time origin, and returns the instance. Emitted lines combine machine/instance identity, elapsed time, current state/event, fallback status, and guard/action/transition details; unnamed callbacks get ordinal labels.
+Referent: instance tracing
+  Qualification: Trace formatting uses `performance.now()` and defaults to `console.log`.
+  Qualification: Falsy payloads are not rendered because payload output is guarded by a truthiness check.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Investigation subject: @module-28ee01f8 (provenance, not composition)
+  Composition parent: @investigram-7c656898
+  Evidence: session:dba39c44-7b2b-467e-b414-866b256bbd8e:captured-content:1f85790b051988bba385e5ccef102bd912d7bd96d0744f848048586002da8b84
+
+Revision status @investigram-7c656898: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-a6f543c9: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-04d79256: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-300a00e5: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+
+Revision status @investigram-9314e47c: original remains selected.
+  Revision page 1; 0 of 0 relationships/causes.
+Attempt session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:ac29d94c89454b2f8bed5be2cf4d8f972f8633d49bd344a89929434dffd18960 (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 92226 tokens; input 89558 tokens (subset of total); output 2668 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 740 tokens (subset of output)
+Session reported usage: 18 calls; 1 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 438770 tokens; input 429338 tokens (subset of total); output 9432 tokens (subset of total); cached-input 3840 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3297 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> usage
+Investigation usage
+References remain bound for this session.
+Attempt session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:ac29d94c89454b2f8bed5be2cf4d8f972f8633d49bd344a89929434dffd18960 (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 92226 tokens; input 89558 tokens (subset of total); output 2668 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 740 tokens (subset of output)
+Attempt session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:7f1fc016c649d93e7969a201d93e7501bb0a788525a411a3219f62041111b468 (accepted) reported usage: 2 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 30934 tokens; input 28629 tokens (subset of total); output 2305 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 786 tokens (subset of output)
+Attempt session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:aa3e6b10ae934a05c78a50b2a20962903201e372bd08de7e7ba51b149066c39b (communication-failure) reported usage: 1 calls; 1 unknown; 0 anomalous.
+Attempt session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:becbbc734cfa365a75a98724006f94f3929433e1189201587ebdcdd90adc2ad4 (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 59100 tokens; input 57116 tokens (subset of total); output 1984 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 851 tokens (subset of output)
+Attempt session:dba39c44-7b2b-467e-b414-866b256bbd8e:investigation-attempt:558b7619ec781244b1e852f5b49d5dbaa57c037a142304222cf31b4d4ee28b2a (accepted) reported usage: 7 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 256510 tokens; input 254035 tokens (subset of total); output 2475 tokens (subset of total); cached-input 3840 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 920 tokens (subset of output)
+Session reported usage: 18 calls; 1 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 438770 tokens; input 429338 tokens (subset of total); output 9432 tokens (subset of total); cached-input 3840 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 3297 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+postcode> exit

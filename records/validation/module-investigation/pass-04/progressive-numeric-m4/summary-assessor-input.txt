@@ -1,0 +1,132 @@
+Condition: summary. Compare only supplied views, evaluator answers and frozen references. Milestone-4 views show originals and explicit correction links; automatic replacement selection and derived revision warnings are deferred. Scripted origin is an injected baseline, not a natural generation error. Reference preparer and orchestrator are the implementing agent, exact model identifier unavailable, OpenAI family; overlap limits independence. Reference scope may not settle deeper claims.
+
+RUBRIC
+{
+  "version": 1,
+  "task": "Compare supplied investigator views and view-only evaluator answers against the frozen source references. Use only supplied artifacts. Preserve uncertainty and cite specific displayed references or source locations.",
+  "categories": ["generation-error-repeated-by-evaluator", "presentation-misunderstanding", "successful-qualified-communication", "unsupported-evaluator-extrapolation", "material-omission", "reference-cannot-settle"],
+  "output": "JSON with findings [{category, claim, evidence, consequence, uncertainty}], subjectUsefulness {judgment, reasons, limitations}. No numeric aggregate score. Do not treat a summary-only absence of follow-up views as a generation defect. Do not treat administrative request-budget interruption as an interpretive or milestone failure."
+}
+
+FROZEN SOURCE REFERENCE
+# Progressive numeric fixture: frozen source-grounded reference
+
+Prepared by the implementing agent before any live run. Exact orchestrator model
+identifier unavailable; OpenAI family. Shared authorship and model-family overlap
+with assessment roles limit independence. The reference is never supplied to the
+investigator or view-only evaluator.
+
+Source: repository fixture [classify.ts](../../../../fixtures/progressive-investigation-assessment/classify.ts),
+[README](../../../../fixtures/progressive-investigation-assessment/README.md), and
+[configuration](../../../../fixtures/progressive-investigation-assessment/tsconfig.json).
+The manifest records the isolated local Git pin and every input hash. TypeScript
+6.0.3 analyzes it; no target function is executed by PostCode.
+
+The function creates a fresh array, independently tests three numeric conditions,
+and appends literal labels in source order: positive when value > 0, even when
+value % 2 === 0, large when value >= 10. It returns the array. The three independent
+if statements are neither an else-if partition nor exhaustive validation.
+For example, 12 receives positive, even, large; 3 receives positive; -2 receives
+even; -3 receives no label. The return path does not reject or throw for an input
+that satisfies none of the conditions. These conclusions are source-grounded
+static readings, not observed executions. Runtime callers, non-number JavaScript
+arguments, author intent and usefulness of the chosen threshold are unestablished.
+TypeScript's number annotation alone does not implement runtime validation.
+
+A supported decomposition may split by tested property, by accumulation versus
+classification, or another qualified selection. Its parts can overlap: 12 meets
+all three predicates. A diagram or list alone cannot establish mutual exclusion
+or exhaustive coverage. A qualified account of no further useful subdivision is
+also legitimate; assess whether the distinction was conveyed, not whether a
+particular exact wording appeared.
+
+The injected setup deliberately claims a mutually exclusive, exhaustive partition
+and rejection outside its classes. It is a scripted earlier interpretation, not a
+natural investigator error. Its child claims a positive number receives only the
+positive label. The frozen recipe carries this text and test-origin qualification.
+A live examination can correct the child and/or root after receiving complete
+context and source. Reporting a correction does not establish truth; assess its
+reason, evidence, target and replacement against these statements. Earlier
+records and composition must remain unchanged. Repeated milestone-4 views still
+show originals and explicit correction links; automatic replacement selection and
+derived revision warnings belong to milestone 5 and are not assessed as failed
+milestone-4 behavior.
+
+
+CAPTURED VIEWS
+COMMAND: summarize classify
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-54c04ef4: classify
+
+@investigram-1cecff9b · interpretation
+The module partitions numeric inputs into exactly one of positive, even or large, rejecting values outside those classes.
+Referent: The selected module behavior.
+  Qualification: Injected earlier interpretation for a controlled assessment, not a natural investigator result.
+  Qualification: This account has not acquired source evidence and remains unverified interpretation.
+  Composition: @investigram-33b17c63
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-54c04ef4 (provenance, not composition)
+
+@investigram-33b17c63 · interpretation
+Classification is mutually exclusive: a positive input receives only the positive label, so larger positive even inputs do not also receive even or large.
+Referent: The selected module behavior.
+  Qualification: Injected earlier interpretation for a controlled assessment, not a natural investigator result.
+  Qualification: This account has not acquired source evidence and remains unverified interpretation.
+  Operation: functionality; origin: scripted; provider/model: postcode-assessment/injected-earlier-interpretation
+  Investigation subject: @module-54c04ef4 (provenance, not composition)
+  Composition parent: @investigram-1cecff9b
+Attempt session:4add19ff-55e4-4c49-ad96-4a48d64014b0:investigation-attempt:b467b96a3e6fa3ed49905521685b947b6aacf20bb9f25a9f12e1224f45be2c62 (accepted) reported usage: 1 calls; 0 unknown; 1 anomalous.
+Session reported usage: 1 calls; 0 unknown; 1 anomalous.
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+
+
+VIEW-ONLY EVALUATOR
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The summary presents classify as a numeric classifier. The parent account says it partitions inputs into exactly one of positive, even or large and rejects values outside those classes. Its composed child elaborates the exclusivity claim: a positive input receives only positive, including larger positive even inputs. These describe claimed behavior, not a demonstrated division among implementation components. The displayed division is between a broad account and its narrower constituent account.",
+      "support": ["Module @module-54c04ef4: classify", "@investigram-1cecff9b: 'exactly one of positive, even or large' and 'rejecting values outside those classes'", "@investigram-33b17c63: 'a positive input receives only the positive label'", "The parent lists Composition: @investigram-33b17c63; the child lists Composition parent: @investigram-1cecff9b."],
+      "unknowns": ["Actual source behavior and implementation responsibilities are not supplied.", "The definition of large, supported numeric types, and the mechanism for rejection are unestablished."]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "Both behavioral conclusions are explicitly unverified interpretations from controlled, injected setup. Neither has source evidence or independent corroboration in this view. Their composition relationship and common investigation subject have displayed metadata support, but that metadata does not establish their behavioral claims. An accepted attempt and reported usage describe the recorded attempt, not validation of correctness.",
+      "support": ["Both accounts are labeled interpretation.", "Both carry 'Injected earlier interpretation for a controlled assessment, not a natural investigator result.'", "Both carry 'This account has not acquired source evidence and remains unverified interpretation.'", "Both show operation functionality, origin scripted, and provider/model postcode-assessment/injected-earlier-interpretation.", "The attempt is marked accepted and reports 1 calls, 0 unknown, 1 anomalous."],
+      "unknowns": ["Whether labels are actually exclusive or overlapping.", "Whether positive takes precedence and whether unmatched inputs are rejected.", "Boundary behavior, actual thresholds, and source evidence.", "The reason for the reported anomaly and any confirmed billed usage."]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "Only the summary view was supplied. No explanation, decomposition, or examination view is available, so no before-and-after improvement or substantive change can be assessed. Within the summary, the separately referenced child makes the exclusivity claim a distinct possible selection target, but this does not demonstrate a decomposition operation or its effects.",
+      "support": ["The condition is summary and the only command shown is summarize classify.", "@investigram-33b17c63 is a separately referenced interpretation with a displayed composition parent."],
+      "unknowns": ["Any results of explanation, decomposition, or examination.", "Whether subsequent investigation changes either claim."]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "I would select @investigram-33b17c63 with a source-evidence lens focused on label exclusivity. I would ask whether a positive input that also meets the even and large conditions receives one label or several, and what source behavior supports the answer. This is a proposed next investigation, not a capability demonstrated by the supplied view. The view supplies a session-bound reference and records a functionality operation, but shows no lens menu, selection command, or completed source examination.",
+      "support": ["@investigram-33b17c63 states that larger positive even inputs do not also receive even or large.", "'References remain bound for this session.'", "The displayed operation is functionality."],
+      "unknowns": ["Whether a source-evidence lens is available and how to invoke it.", "The implementation's actual classification behavior and the large threshold."]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No concrete correction, replacement account, or correction link is shown in this summary. The introductory and footer language discusses originals and correction handling, but does not identify a changed claim or replacement here. Composition is explicitly distinguished from investigation provenance: the parent contains the child, while each account's investigation subject is the module and is labeled provenance, not composition. No later-investigation provenance or correction history is supplied.",
+      "support": ["Composition: @investigram-33b17c63 and Composition parent: @investigram-1cecff9b", "Investigation subject: @module-54c04ef4 (provenance, not composition)", "'Corrections are retained assertions, not established truth.'", "'Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.'"],
+      "unknowns": ["Whether any correction exists outside this view.", "What would have changed and which reference would identify a replacement.", "Any later investigation's provenance or effect on composed accounts."]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The confident behavioral wording can be mistaken for established functionality despite the explicit qualifications. Repeating exclusivity in two composed interpretations could look like corroboration, although both share the same injected origin and lack source evidence. The heading Module summary and accepted attempt status may also imply more validation than is shown. Undefined large and rejection behavior limit practical understanding. Generic correction wording suggests correction material may be present, but none is identifiable here. The long attempt identifier and repeated usage disclaimers add clutter, while anomalous usage is unexplained. The summary is useful for identifying a precise claim to investigate and for distinguishing composition from subject provenance, but insufficient for trusting the module's behavior.",
+      "support": ["The parent asserts 'exactly one' and the child asserts 'mutually exclusive'.", "Both accounts repeat the same unverified scripted-origin qualifications.", "The heading is Module summary; the attempt is marked accepted.", "The footer discusses corrections and usage, including 1 anomalous, without a displayed correction or anomaly explanation."],
+      "unknowns": ["The intended meaning of accepted and the cause of anomalous usage.", "Whether other views provide thresholds, source evidence, correction links, or interaction guidance."]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful as a clearly qualified starting point for investigation, but insufficient as a verified account of functionality.",
+    "reasons": ["Stable displayed references isolate the broad behavior claim and the narrower exclusivity claim.", "Explicit qualifications disclose the controlled origin and lack of source evidence.", "Composition and investigation-subject provenance are labeled separately."],
+    "limitations": ["Only a summary is supplied, with no independent evidence or subsequent investigation views.", "No concrete correction or replacement is displayed.", "Confident repeated claims, undefined behavior, and unexplained status and usage details can impede interpretation.", "Available lenses and invocation mechanics are not demonstrated."]
+  }
+}

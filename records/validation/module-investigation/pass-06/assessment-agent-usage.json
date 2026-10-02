@@ -1,0 +1,33 @@
+{
+  "roles": [
+    {
+      "case": "dependent-numeric-m5",
+      "role": "sequence-assessor",
+      "dispatch": "dependent-numeric-m5/sequence-assessor-dispatch.json",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "usage": null,
+      "monetaryAttribution": null
+    },
+    {
+      "case": "dependent-numeric-m5",
+      "role": "sequence-evaluator",
+      "dispatch": "dependent-numeric-m5/sequence-evaluator-dispatch.json",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "usage": null,
+      "monetaryAttribution": null
+    }
+  ],
+  "referenceAndImplementationRole": {
+    "family": "OpenAI",
+    "model": null,
+    "usage": null,
+    "monetaryAttribution": null
+  },
+  "limitations": [
+    "Role usage may draw on the same subscription allowance, but is unavailable and not zero.",
+    "These roles are separate from the PostCode provider request ledger.",
+    "Shared family, reference preparation and orchestration limit independence."
+  ]
+}

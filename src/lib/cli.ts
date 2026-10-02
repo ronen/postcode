@@ -1,3 +1,7 @@
+import { runAuthentication } from './investigation/openai/auth-command.js';
+import type { ChatGPTCredentials } from './investigation/openai/chatgpt-credentials.js';
+import type { InvestigationRequest, InvestigatorAgent } from './investigation/contracts.js';
+import type { InvestigationBounds } from './investigation/execute.js';
 import path from 'node:path';
 import type { Readable } from 'node:stream';
 import { localFileObservationSink } from './observations.js';
@@ -8,8 +12,17 @@ import { inlineText } from './terminal-text.js';
 import { help, parseCommand } from './commands.js';
 import { publishCommand, openFailureText } from './command-execution.js';
 import { runShell } from './shell.js';
+import { configuredInvestigator, hostedDisclosure, chatGPTDisclosure } from './investigation/openai/configuration.js';
 
 export interface CliEnvironment {
+  /** Internal communication-boundary injection for tests and assessment. */
+  readonly authentication?: ChatGPTCredentials;
+  readonly investigator?: InvestigatorAgent;
+  /** Internal controlled-assessment injection; no public configuration route. */
+  readonly selectInvestigator?: (request: InvestigationRequest) => InvestigatorAgent;
+  readonly investigationBounds?: InvestigationBounds;
+  /** Internal setup substitution for offline tests. Production uses POSTCODE_INVESTIGATOR. */
+  readonly configureInvestigator?: typeof configuredInvestigator;
   readonly cwd: string;
   readonly checkout: string;
   readonly stdout: (text: string) => void;
@@ -19,14 +32,23 @@ export interface CliEnvironment {
 }
 
 export async function runCli(args: readonly string[], environment: CliEnvironment): Promise<number> {
+  if (args[0] === 'auth') return runAuthentication(args.slice(1), environment, environment.authentication);
   const parsed = parseCommand(args, environment.cwd);
   if (parsed.kind === 'help') { environment.stdout(help); return 0; }
   if (parsed.kind === 'error') { environment.stderr(parsed.message); return 2; }
   if (parsed.kind === 'exit') return 0;
+  if (!environment.investigator) {
+    const configured = await (environment.configureInvestigator ?? configuredInvestigator)(process.env.POSTCODE_INVESTIGATOR);
+    if (configured.kind === 'configuration-unavailable') { environment.stderr(`${configured.diagnostic}\n`); return 2; }
+    if (configured.kind === 'ready') {
+      environment.stderr(configured.agent.identity.configuration.billingRoute === 'chatgpt-plan' ? chatGPTDisclosure : hostedDisclosure);
+      environment = { ...environment, investigator: configured.agent };
+    }
+  }
   if (parsed.kind === 'shell') return runShell(parsed, environment);
   const destination = path.resolve(environment.checkout, '_observations');
   const localSink = localFileObservationSink(destination, parsed.configPath);
-  const remote = interactiveSession({ configPath: parsed.configPath, excludedOutputDirectories: [destination, path.resolve(environment.checkout, '_build')] });
+  const remote = interactiveSession({ configPath: parsed.configPath, excludedOutputDirectories: [destination, path.resolve(environment.checkout, '_build')] }, { ...(environment.selectInvestigator ? { selectInvestigator: environment.selectInvestigator } : {}), ...(environment.investigator ? { investigator: environment.investigator } : {}), ...(environment.investigationBounds ? { investigationBounds: environment.investigationBounds } : {}) });
   const interrupt = () => { void remote.interrupt().catch(() => {}); };
   process.on('SIGINT', interrupt);
   try {
@@ -39,7 +61,7 @@ export async function runCli(args: readonly string[], environment: CliEnvironmen
     }
     if (opened.status !== 'opened') { environment.stderr(openFailureText(opened)); return 2; }
     environment.stderr(`Local observations: ${inlineText(localSink.destination)} (may contain repository-derived text and explicitly requested source locations).\n`);
-    return await publishCommand({ id: opened.id, execute: remote.execute, check: remote.check }, parsed.request, args, parsed.configPath, 1,
+    return await publishCommand({ id: opened.id, execute: remote.execute, check: remote.check, usage: remote.usage }, parsed.request, args, parsed.configPath, 1,
       environment, environment.sink ?? localSink);
   } finally {
     process.removeListener('SIGINT', interrupt);

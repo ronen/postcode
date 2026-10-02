@@ -1,0 +1,212 @@
+You are a fresh source-informed assessor. Use only the supplied frozen reference, view and evaluator response. Do not independently inspect source or browse. These references are qualified source analysis, not runtime proof.
+
+RUBRIC
+{
+  "version": 1,
+  "task": "Compare supplied investigator views and view-only evaluator answers against the frozen source references. Use only supplied artifacts. Preserve uncertainty and cite specific displayed references or source locations.",
+  "categories": ["generation-error-repeated-by-evaluator", "presentation-misunderstanding", "successful-qualified-communication", "unsupported-evaluator-extrapolation", "material-omission", "reference-cannot-settle"],
+  "output": "JSON with findings [{category, claim, evidence, consequence, uncertainty}], subjectUsefulness {judgment, reasons, limitations}. No numeric aggregate score. Do not treat a summary-only absence of follow-up views as a generation defect. Do not treat administrative request-budget interruption as an interpretive or milestone failure."
+}
+
+FROZEN REFERENCE
+# Frozen source-grounded references — summary pass 01
+
+Prepared before any subject/fixture inference by the implementing agent. Exact
+model identifier is unavailable; the family is OpenAI. Shared implementation,
+reference selection and orchestration can bias judgments. These are purposeful
+development examples, not an unbiased or untouched validation set. This material
+must not be supplied to the investigator or view-only evaluators.
+
+The [manifest](manifest.json) fixes revisions, source/document/configuration hashes,
+Node 22.13.1, the **PostCode analyzer TypeScript 6.0.3**, and the selected hosted
+configuration. Installed subject build TypeScript versions do not replace that
+analyzer. Repository source, README and ordinary subject-based evidence are
+accessible; reference answers, selection rationale and this file are not.
+PostCode source inspection is not execution or proof of runtime guarantees.
+
+
+
+## merge-anything: public entry and delegated merging
+
+Source pin: [index.ts](https://github.com/mesqueeb/merge-anything/blob/bc7c79fe8fce89ed3350d7b3bdf7cdd1a7633906/src/index.ts).
+Selector `anonymous`, verified to select the public forwarding entry; conceptual
+handle is not a source path. The entry re-exports `extensions.ts` and `merge.ts`.
+The summary must follow delegation to explain functionality rather than stop at
+the fact that this file is a barrel.
+
+The human-approved effective configuration is the exact
+[override](merge-anything-override.json), beside the unchanged original config,
+extending it and setting only `ignoreDeprecations: "6.0"`. The inherited package
+is `@cycraft/tsconfig` 0.1.2, pinned by the repository lockfile and hashed in the
+manifest. Use this configuration and TypeScript 6.0.3 consistently throughout all
+assessment runs; attribute results to them, not to an unmodified-config run.
+The original config fails opening on deprecation diagnostics. The override was
+mechanically verified to open, not asserted equivalent by unperformed testing.
+
+Supported source conclusions from
+[merge.ts](https://github.com/mesqueeb/merge-anything/blob/bc7c79fe8fce89ed3350d7b3bdf7cdd1a7633906/src/merge.ts):
+
+- Lines 39–94 merge plain-object properties recursively, with plain-object and
+  symbol classification delegated to `is-what`. A non-plain newcomer replaces
+  the current value. Prior own properties absent from the newcomer are retained.
+- Own string and symbol properties are considered; `__proto__` is skipped. This
+  is specific source behavior, not a general security certification.
+- Lines 19–36 preserve enumerability when assigning values but do not preserve
+  every original descriptor or avoid evaluating getters.
+- Lines 101–124 fold inputs in order through the common implementation. Ordinary
+  merge replaces arrays; merge-and-compare applies a supplied comparison function;
+  merge-and-concat uses the array-concatenation helper when both values are arrays.
+- `extensions.ts` delegates array recognition to `is-what` and otherwise returns
+  the newcomer. Type utilities describe compile-time result shape, not runtime work.
+
+Acceptable interpretation: an entry exposing related merge strategies sharing
+recursive plain-object handling and replacement rules, with configurable comparison
+or array concatenation. Material limits: no subject execution; external predicate
+implementation is not established here. It is not a general deep clone: references
+can be retained, non-plain inputs can be returned directly, and zero extra inputs
+return the original. The README's always-new-object wording is broader than that
+source supports. Do not claim circular-input handling, rollback or general safety.
+
+
+
+## Assessment procedure and limitations
+
+Freeze the exact [instructions](instructions.json), general context-selection code
+hashes, model and route before inference. Keep production evidence access and
+guards unchanged except the labelled hard-limit control. No reference answers
+enter live context. The first pass has zero automatic repeat allowance; a
+diagnostic rerun requires a separately recorded question/count and preserves the
+original outcome. Administrative request-ceiling interruption is incomplete
+validation, not a semantic failure or hard milestone failure.
+
+Use the fixed `scripts/module-investigation/questions.json` for fresh view-only
+evaluators and `assessor-rubric.json` for separate fresh source-informed assessment.
+Retain exact prompts, inputs, outputs and available role configuration/usage.
+Unknown role usage is not zero. Fresh contexts and same-family agents do not
+establish independent corroboration. Per-subject results and focused cases stay
+separate; no universal acceptance score or prompt optimization search is intended.
+
+USER VIEW
+Module summary
+References remain bound for this session.
+New investigation request.
+investigation-failure: Invalid referent or association subject.
+Selection: selected (1 matches).
+Module @module-a44de3a8: anonymous
+Attempt session:90b7b148-abbe-42da-b0ad-c4d2c2016749:investigation-attempt:31cf8b9b9d68497f0274da558a2a9dcce00775ca651bcaecf3e7bf2a200aba57 (investigation-failure) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 154759 tokens; input 150709 tokens (subset of total); output 4050 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 270 tokens (subset of output)
+Session reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 154759 tokens; input 150709 tokens (subset of total); output 4050 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 270 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage
+
+EVALUATOR RESPONSE
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The view communicates that one module was selected and a new investigation attempt failed. It supplies session-bound module and attempt identifiers, reported model usage, and qualifications about interpretation, correction assertions, and billing. It communicates no actual module functionality or division of responsibility among implementation components. A limited responsibility boundary is explicit: generated accounts are interpretations, while provider settings govern optional purchased credits and token reports do not establish charges.",
+      "support": [
+        "Module summary; References remain bound for this session.",
+        "New investigation request. investigation-failure: Invalid referent or association subject.",
+        "Selection: selected (1 matches). Module @module-a44de3a8: anonymous",
+        "Generated accounts remain interpretation. Corrections are retained assertions, not established truth.",
+        "Optional purchased credits apply only under the user’s provider settings."
+      ],
+      "unknowns": [
+        "The selected module's purpose, contents, boundaries, dependencies, and responsibilities.",
+        "Which referent or association subject was invalid and why.",
+        "Whether any useful investigation result was produced before the failure."
+      ]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "No substantive generated account is displayed to classify as an interpretation. The view explicitly classifies any generated accounts as interpretations and corrections as retained assertions. Selection, failure status, and usage are displayed reports rather than independently established facts. Both attempt and session report four calls and 154759 total tokens, with input and output subsets; this is qualified provider-reported usage, not confirmed billed usage. No synthetic usage entry is actually displayed. These figures identify the reported investigation model, not the evaluator's model or usage.",
+      "support": [
+        "Attempt ... (investigation-failure) reported usage: 4 calls; 0 unknown; 0 anomalous.",
+        "Session reported usage: 4 calls; 0 unknown; 0 anomalous.",
+        "Reported model gpt-5.6-sol, service tier default: total 154759 tokens; input 150709 tokens (subset of total); output 4050 tokens (subset of total).",
+        "Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage.",
+        "Monetary attribution is unavailable, not zero."
+      ],
+      "unknowns": [
+        "The module's behavior and the truth of any possible account of it.",
+        "Actual billed usage, allowance consumption, credit charges, and monetary cost.",
+        "The failed operation's cause and a valid recovery action.",
+        "Evaluator model and usage metadata are not supplied."
+      ]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "Explanation, decomposition, and examination views were not supplied. The summary alone does not support a before-and-after comparison, demonstrate finer selection, or show any substantive change after examination.",
+      "support": [
+        "The supplied condition is summary-only; later sequence views not supplied.",
+        "The user-facing view contains a Module summary and an investigation-failure report."
+      ],
+      "unknowns": [
+        "What an explanation would clarify.",
+        "Whether decomposition would expose selectable parts.",
+        "Whether examination would revise any account."
+      ]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "No reference is explicitly identified as an investigram, and no available lenses are listed. The only displayed content reference I could nominate is @module-a44de3a8. I would request an explanatory lens on that module to learn its purpose and responsibilities, but this is a proposed next capability, not one demonstrated as available or successful. The attempt identifier identifies a failed attempt; the view does not establish that it can be selected for diagnosis.",
+      "support": [
+        "Module @module-a44de3a8: anonymous",
+        "References remain bound for this session.",
+        "Attempt session:90b7b148-abbe-42da-b0ad-c4d2c2016749:investigation-attempt:31cf8b9b9d68497f0274da558a2a9dcce00775ca651bcaecf3e7bf2a200aba57 (investigation-failure)"
+      ],
+      "unknowns": [
+        "Whether the module reference qualifies as an investigram reference or accepts an explanatory lens.",
+        "What lenses or navigation actions are actually available.",
+        "Whether another request would encounter the same invalid-referent failure."
+      ]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No correction is shown. The general statement about retained assertions provides no original, replacement, correction identifier, or change content. Composition provenance and later-investigation provenance cannot be distinguished: the module and failed-attempt identifiers do not explain their relationship in those terms.",
+      "support": [
+        "Corrections are retained assertions, not established truth.",
+        "The view displays a module identifier and a failed investigation attempt identifier without correction content or provenance links."
+      ],
+      "unknowns": [
+        "Whether any correction exists, what it changed, and what identifies its original and replacement.",
+        "How the module was composed and whether any later investigation contributed to its account.",
+        "The provenance or validation of any retained assertion."
+      ]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The view is useful as a failure and usage notice but offers very little module comprehension. The successful-selection wording beside an invalid-referent failure leaves unclear which operation failed. The anonymous label supplies no orientation, and the error names neither the offending subject nor a recovery action. Identical attempt and session usage blocks dominate the view and could invite double counting despite the subset warnings. Long identifiers and unexplained terms such as association subject and includedIn add reading effort. Generic correction and synthetic-usage notices may suggest relevant content exists even though none is displayed. The billing qualifications are helpful, especially the distinction between unavailable monetary attribution and zero cost.",
+      "support": [
+        "Selection: selected (1 matches).",
+        "investigation-failure: Invalid referent or association subject.",
+        "Module @module-a44de3a8: anonymous",
+        "Attempt and session each repeat four calls and the same token breakdown.",
+        "Categories with includedIn are subsets, not additional usage.",
+        "Monetary attribution is unavailable, not zero."
+      ],
+      "unknowns": [
+        "Whether additional interface controls, diagnostic details, or module content exist outside this supplied view.",
+        "How a user can resolve the error or obtain the requested investigation."
+      ]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful for noticing a failed investigation and understanding the limits of reported usage; insufficient for understanding the module or choosing a demonstrated next investigation action.",
+    "reasons": [
+      "Failure status and session-bound identifiers provide basic orientation.",
+      "Explicit interpretation and billing qualifications discourage unwarranted certainty.",
+      "No functional account, decomposition, explanation, examination, or correction is supplied.",
+      "Repeated usage details outweigh the sparse content and unresolved error."
+    ],
+    "limitations": [
+      "This assessment uses only the supplied summary view.",
+      "No independent sources, implementation evidence, or later sequence views were consulted.",
+      "Requested explanatory navigation is a proposed next step, not an observed capability.",
+      "No evaluator model or usage metadata is established by the supplied artifact."
+    ]
+  }
+}

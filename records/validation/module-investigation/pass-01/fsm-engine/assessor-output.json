@@ -1,0 +1,113 @@
+{
+  "findings": [
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The view communicates the principal division between definition construction, synchronous event execution, and action-facing timer and tracing services, and the evaluator preserves that division.",
+      "evidence": [
+        "@investigram-af5c440f delegates definition capture, validation, and compilation to the builder and names the runtime/factory surface; @investigram-d77cb43d supplies the builder account.",
+        "@investigram-026d2d6e describes FIFO dispatch, reentrant enqueueing, first passing guards, internal/external transitions, fallback handling, implicit stays, and unhandled events.",
+        "@investigram-e2b45025 separates action services, TimerRegistry delegation, and optional tracing; evaluator answer 1 cites each of these displayed accounts.",
+        "Frozen reference: fsm-engine.ts lines 119\u2013135, 184\u2013222, 241\u2013266, 271\u2013313, and 366\u2013376 support this overall responsibility split."
+      ],
+      "consequence": "The summary gives a useful source-qualified orientation and distinct references for a targeted next investigation.",
+      "uncertainty": "The frozen reference is qualified source analysis, not execution evidence; it does not independently settle every detailed builder or timer-registry assertion."
+    },
+    {
+      "category": "generation-error-repeated-by-evaluator",
+      "claim": "The view's claim that instances keep separate context is insufficiently qualified, and the evaluator repeats wording that can imply stronger isolation than the frozen reference supports.",
+      "evidence": [
+        "@investigram-af5c440f says instances keep 'separate state, context, queue, timers, and tracing state.'",
+        "Evaluator answer 1 says instances maintain 'their own mutable runtime data' and its support repeats 'separate state, context, queue, timers, and tracing state.'",
+        "Frozen reference for fsm-engine.ts lines 119\u2013135 distinguishes per-instance runtime state from caller-supplied context and explicitly says context is not deep-copied."
+      ],
+      "consequence": "A reader could infer that passing the same mutable context to multiple instances produces isolated context objects; the supplied reference does not support that guarantee.",
+      "uncertainty": "This is an isolation overstatement or ambiguity, not an explicit claim of cloning. Separate stored context references are compatible with caller-shared underlying objects, but neither the view nor evaluator explains that distinction."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly preserves the source-only status of the behavioral account and the unresolved timer payload forwarding issue.",
+      "evidence": [
+        "Every displayed investigram is labeled interpretation; @investigram-026d2d6e qualifies FIFO and ordering as source-level interpretations, not execution results.",
+        "@investigram-e2b45025 says timer/performance behavior was not executed, in-source tests do not establish a passing run, and payload forwarding is not characterized because the source expression warrants verification.",
+        "Evaluator answer 2 repeats these limits; answer 4 proposes a future investigation of @investigram-e2b45025 without claiming that examination or execution was demonstrated.",
+        "Frozen reference identifies the suspicious timer payload expression at fsm-engine.ts line 371 and prohibits treating correct forwarding as proven."
+      ],
+      "consequence": "A consequential uncertainty remains visible and supplies a precise follow-up question without converting source interpretation into runtime proof.",
+      "uncertainty": "Neither the frozen reference nor the display establishes the executed payload behavior or host timer behavior."
+    },
+    {
+      "category": "material-omission",
+      "claim": "The dispatch account and evaluator omit the frozen reference's explicit limit that queue cleanup does not roll back actions already run.",
+      "evidence": [
+        "@investigram-026d2d6e says the outer call 'clears pending work on failure' but does not describe the fate of completed action effects.",
+        "Evaluator answer 1 summarizes queueing and errors, and answer 2's consequential unknowns do not mention partial action effects or rollback.",
+        "Frozen reference for fsm-engine.ts lines 184\u2013222 says exceptions clear queued work and reset the dispatching flag but do not undo actions already run; its material limits also distinguish queued execution from rollback and thread-safety."
+      ],
+      "consequence": "The account is less useful for reasoning about failure recovery: clearing queued work does not establish atomic processing or reversal of caller action effects.",
+      "uncertainty": "Neither the view nor evaluator explicitly asserts rollback or thread-safety, so this is a missing consequential limitation rather than an observed false guarantee. The source-only qualifications remain meaningful."
+    },
+    {
+      "category": "material-omission",
+      "claim": "The precise point at which an external transition commits state is compressed out of the summary and remains absent from the evaluator's account of action ordering.",
+      "evidence": [
+        "@investigram-026d2d6e says external transitions run 'exit, transition, and entry actions around the state change.'",
+        "Evaluator answer 1 mentions action ordering and external versus internal transitions without specifying the commit point.",
+        "Frozen reference for fsm-engine.ts lines 271\u2013313 specifies exit actions, transition actions, state commit, then entry actions, and warns that an inline comment implying an earlier commit is inaccurate."
+      ],
+      "consequence": "Readers can recover the action sequence but cannot confidently determine which state is current during transition actions or what has committed if an action throws.",
+      "uncertainty": "The displayed wording is compatible with the correct sequence and does not repeat the misleading source comment. This is a focused precision gap, not evidence of a wrong ordering claim or a requirement for a summary to audit every detail."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "The detailed builder-validation and timer-registry assertions are faithfully attributed by the evaluator, but their complete accuracy cannot be established from this frozen reference alone.",
+      "evidence": [
+        "@investigram-d77cb43d lists duplicate-definition checks, reachability rules, and rejection of transitions after an unguarded transition.",
+        "@investigram-e2b45025 describes replacement by key, performance.now deadlines, clamping, infinity handling, cancellation, and replaceable logging.",
+        "The frozen reference confirms delegated building/validation/compilation and TimerRegistry scheduling and identifies those dependencies as reachable normal evidence, but does not reproduce enough of their implementation to settle these details.",
+        "Evaluator answer 2 correctly notes that displayed source identifiers do not expose their contents for independent checking."
+      ],
+      "consequence": "These details should remain attributed source interpretations; neither correctness nor a generation defect can be inferred merely from their presence or absence in the shorter frozen reference.",
+      "uncertainty": "Independent source inspection is excluded by this assessment's scope, and no subject test execution is supplied."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator distinguishes displayed composition from unshown later investigation or correction operations, and identifies potentially misleading correction boilerplate without inventing a correction history.",
+      "evidence": [
+        "@investigram-af5c440f explicitly labels its three Composition references.",
+        "The footer says this checkpoint shows immutable originals and explicit correction links, but the supplied accounts contain no identifiable original/replacement pair or correction link.",
+        "Evaluator answers 3 and 5 distinguish the summary's composition references from a later decomposition operation and say that no concrete correction or later-investigation provenance is displayed.",
+        "The rubric says absence of follow-up views in a summary-only condition must not be treated as a generation defect."
+      ],
+      "consequence": "The evaluation accurately limits sequence and correction conclusions to what is visible. Its criticism of the generic footer is grounded in the supplied display rather than evidence of a failed underlying correction mechanism.",
+      "uncertainty": "The frozen source reference does not establish UI interactions, actual clickability, underlying correction records, or later views. No milestone failure follows from their absence here."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator's concerns about usage repetition and dense metadata remain presentation risks rather than claims of actual double charging or demonstrated user misunderstanding.",
+      "evidence": [
+        "The supplied view repeats 4 calls and 161522 total tokens under Attempt reported usage and Session reported usage, with the same provider/model metadata.",
+        "Evaluator answer 6 calls this a 'possible double-counting impression despite their labels' and qualifies correctness misreadings as risks for readers who skim.",
+        "Evaluator answer 2 preserves the footer's distinction between reported usage and confirmed billing, and its usefulness limitations do not attribute investigation usage to the evaluator."
+      ],
+      "consequence": "The display may impede reading, but the evaluator does not turn duplicated presentation into a factual billing or behavioral defect.",
+      "uncertainty": "No observed reader behavior, billing verification, or interactive UI evidence is supplied. These are plausible presentation concerns, not demonstrated misunderstandings."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful for initial source-qualified orientation and selecting a focused follow-up; incomplete for reasoning about shared context, failure effects, and the exact state-commit boundary.",
+    "reasons": [
+      "The principal builder, runtime, and timer/tracing responsibilities align with the frozen source reference and are recovered accurately by the evaluator.",
+      "Runtime non-execution and the suspicious timer payload expression remain explicit, consequential qualifications.",
+      "The evaluator correctly treats composition as visible while reserving judgment on unshown later operations, corrections, and interactions.",
+      "The separate-context wording is repeated without the no-deep-copy qualification; rollback limits and the exact external-transition commit point remain underexplained.",
+      "Repeated metadata and generic correction-display boilerplate present credible clarity issues without establishing functional failures."
+    ],
+    "limitations": [
+      "Assessment used only the supplied frozen reference, captured summary, and evaluator response; no independent source inspection, browsing, or runtime execution occurred.",
+      "The frozen reference is qualified source analysis and does not settle all detailed dependency claims.",
+      "This summary-only condition cannot establish the quality or availability of later explanation, decomposition, examination, correction, or interactive controls; their absence is not a generation defect.",
+      "Purposeful development-example selection, shared reference preparation/orchestration, and same-family agents limit independence and generalization.",
+      "Displayed investigation usage is reported usage, not confirmed billing, evaluator usage, or evidence of runtime correctness."
+    ]
+  }
+}

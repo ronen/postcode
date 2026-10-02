@@ -1,0 +1,10 @@
+{"command":"summarize fsm-engine","at":"2026-10-01T15:13:18.841Z"}
+{"command":"explain @investigram-dc111a38","at":"2026-10-01T15:15:26.994Z"}
+{"command":"decompose @investigram-26489d1b","at":"2026-10-01T15:19:47.241Z"}
+{"command":"examine @investigram-8251c177","at":"2026-10-01T15:21:58.344Z"}
+{"command":"examine @investigram-8251c177","at":"2026-10-01T15:24:09.360Z"}
+{"command":"inspect @investigram-23572608","at":"2026-10-01T15:24:11.891Z"}
+{"command":"inspect @investigram-280ba8fb --source-detail","at":"2026-10-01T15:24:13.592Z"}
+{"command":"inspect fsm-engine","at":"2026-10-01T15:24:15.267Z"}
+{"command":"usage","at":"2026-10-01T15:24:17.230Z"}
+{"command":"exit","at":"2026-10-01T15:24:18.866Z"}

@@ -1,0 +1,75 @@
+{
+  "findings": [
+    {
+      "category": "material-omission",
+      "claim": "The captured failure view provides no functional account of the selected merge-anything entry or its delegated merge strategies.",
+      "evidence": [
+        "The user view displays 'investigation-failure: Invalid referent or association subject.' and 'Module @module-a44de3a8: anonymous', followed by usage and qualification notices; no implementation interpretation is displayed.",
+        "The frozen reference identifies index.ts at revision bc7c79fe8fce89ed3350d7b3bdf7cdd1a7633906 as the public forwarding entry, re-exporting extensions.ts and merge.ts.",
+        "The frozen reference attributes recursive plain-object handling and replacement to merge.ts lines 39–94, and ordered folding, comparison, and concatenation strategies to lines 101–124."
+      ],
+      "consequence": "The view cannot support understanding the module's purpose or division of responsibility. The evaluator correctly recognizes this missing functionality rather than supplying an invented account. This is a limitation of the captured failed result, not evidence of an incorrect generated merge explanation.",
+      "uncertainty": "No substantive generated interpretation is supplied. The artifact cannot establish whether useful content existed before the failure or elsewhere. Missing explanation, decomposition, and examination views in this summary-only condition are not generation defects."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator preserves the boundary between displayed reports and established module behavior.",
+      "evidence": [
+        "Evaluator answer 1 states that the view communicates 'no actual module functionality or division of responsibility among implementation components.'",
+        "Evaluator answer 2 states 'No substantive generated account is displayed' and treats selection, failure, and usage as displayed reports rather than independently established facts.",
+        "The frozen reference qualifies its own source conclusions as non-runtime evidence, leaves external is-what predicate implementation unestablished, and excludes general deep-clone, circular-input, rollback, and safety guarantees."
+      ],
+      "consequence": "The evaluator does not turn the anonymous module label or generic interpretation notice into unsupported behavioral claims. No source-level generation error repeated by the evaluator is demonstrable in this capture.",
+      "uncertainty": "This successful restraint does not demonstrate that a substantive merge interpretation would be accurate or useful; none is shown. The frozen reference is qualified source analysis, not runtime proof."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The usage qualifications are understood without unsupported billing or evaluator-metadata conclusions.",
+      "evidence": [
+        "The view reports four calls and 154759 total tokens in both attempt and session blocks and states 'Reported usage is not confirmed billed usage' and 'Monetary attribution is unavailable, not zero.'",
+        "Evaluator answer 2 reproduces the reported total, recognizes input and output as subsets, and explicitly distinguishes the investigation model from the evaluator's model and usage.",
+        "Evaluator answer 6 describes duplicate counting as a possible presentation risk, rather than actually adding the repeated attempt and session totals."
+      ],
+      "consequence": "The evaluator can use the artifact as a qualified failure and usage notice without inferring charges, zero cost, or its own role metadata. Repetition is a supported usability concern, not an observed evaluator misunderstanding.",
+      "uncertainty": "The supplied artifacts do not independently verify provider accounting, billed usage, or whether actual users would double count the repeated totals."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly marks follow-up navigation, correction content, and provenance as unestablished.",
+      "evidence": [
+        "Evaluator answer 3 says explanation, decomposition, and examination views were not supplied and declines a before-and-after comparison.",
+        "Evaluator answer 4 nominates @module-a44de3a8 only as a proposed explanatory request, explicitly saying no available lens or selectable diagnostic attempt is demonstrated.",
+        "Evaluator answer 5 distinguishes the generic 'Corrections are retained assertions' notice from an actual correction with an original, replacement, and provenance."
+      ],
+      "consequence": "The evaluator does not extrapolate an available investigation workflow, correction, or compositional history from identifiers and boilerplate. Its requested next step remains a future request, not evidence of working capability.",
+      "uncertainty": "The view cannot establish capabilities or provenance outside the supplied capture. Their absence here does not demonstrate that the underlying system lacks them."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "The supplied reference cannot determine the cause, scope, or remedy of the invalid-referent failure.",
+      "evidence": [
+        "The user view combines 'Selection: selected (1 matches).' with 'investigation-failure: Invalid referent or association subject.' without naming the offending referent or association.",
+        "Evaluator answers 1, 2, and 6 explicitly leave the failure cause and recovery action unknown.",
+        "The frozen reference describes the selected public entry, source-supported merge behavior, and the approved TypeScript 6.0.3 configuration override, but supplies no diagnostic evidence explaining this captured failure."
+      ],
+      "consequence": "The evaluator's concern about ambiguous failure presentation is grounded in the displayed wording. The capture does not justify attributing the failure to selection, configuration, source behavior, a particular generated association, or an administrative request ceiling, and does not establish a milestone outcome.",
+      "uncertainty": "Successful selection and later failure can coexist; their juxtaposition is not itself a contradiction. Neither a root cause nor a demonstrated recovery action can be inferred from these artifacts."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful as a qualified failure and usage notice; insufficient for understanding merge-anything or selecting a demonstrated next investigation action. The evaluator accurately communicates those limits.",
+    "reasons": [
+      "Failure status, module reference, attempt identity, and reported usage provide basic operational context.",
+      "The view omits the source-supported public-entry delegation and shared merge behavior needed for module comprehension.",
+      "The evaluator avoids filling that gap with unsupported behavior, billing, navigation, or provenance claims.",
+      "The anonymous label, unspecified invalid subject, and repeated usage detail impede orientation and recovery."
+    ],
+    "limitations": [
+      "Assessment uses only the supplied frozen reference, captured summary view, and evaluator response; no independent source inspection, browsing, or subject execution was performed.",
+      "The frozen reference is qualified source analysis with shared selection and orchestration limitations, not runtime proof or independent corroboration.",
+      "No substantive generated interpretation is available to assess for merge-semantic accuracy.",
+      "Summary-only absence of follow-up views is not treated as a generation defect, and the displayed invalid-referent failure is not reclassified as an administrative interruption or milestone failure.",
+      "The cause of failure, availability of outside interface capabilities, evaluator role usage, and actual charges remain unestablished."
+    ]
+  }
+}

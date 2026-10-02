@@ -21,6 +21,23 @@ The governing cross-cutting terminology is maintained in [core concepts](../core
 
 ## Responsibilities and flow
 
+The [investigation execution and session integration](investigation.md) supplies
+subject-based evidence queries, bounded dialogues and atomic retention for summary,
+explanation, decomposition and examination. Stable references support associated
+account inspection and exact historical access. Redisplay selects corrections with
+their own composition, preserves conflicts and exposes citation-based reconsideration
+warnings without automatic reassessment. Usage remains attributable across success,
+failure and cancellation.
+
+Hosted work explicitly selects OpenAI API-key billing or Sign in with ChatGPT and
+granted plan usage. The parent owns credentials, coordinated renewal, streaming
+transport and the authoritative usage ledger; credentials stay outside the worker
+and investigation context. Both routes share domain validation and structural
+reference translation. Scripted/offline tests exercise production boundaries;
+retained live formative evidence and its limitations are described in
+[STATUS](../../STATUS.md). See [hosted setup](../hosted-investigation.md) and the
+[CLI reference](../cli-reference.md#progressive-investigation-and-usage).
+
 Operational project opening lives in the TypeScript integration. It follows
 TypeScript configuration inheritance, file selection, package and module
 resolution, and automatic module detection. It disables emission because this
@@ -242,6 +259,20 @@ remain interpretable after the ephemeral store is discarded. Command-outcome
 records preserve actual status stderr and supplied requests. Refusals, failures,
 invalidation and interruption can carry command events without view references;
 only actual produced views have view-produced/source-escape events.
+
+Source-escape events are classified from the bounded source fields rendered by
+each view family and format, independently of the requested `sourceDetail` option.
+The request retains that option even when no source is presented. Empty containers,
+record references and omission counts alone produce no source-escape event.
+Events preserve the disclosure family in `sourceLevel` and identify actual
+`sourceForms` as locations, excerpts or both. Module file associations and
+repository/group/artifact paths count as locations without requiring excerpt text.
+Organization JSON includes a captured repository root even for a missing selection;
+that is actual location disclosure, whereas its human rendering omits that field.
+Dependency organization-support source records are likewise disclosed in JSON but
+not by the human summary of that collection. Embedded module detail is accounted
+for alongside organization paths. This classification follows existing rendered
+content; it neither reads source nor infers disclosure from prose or arbitrary IDs.
 
 The CLI discloses the project-specific sink destination on stderr. New batches
 are grouped by configured project and UTC date under the checkout’s ignored

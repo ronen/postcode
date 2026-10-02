@@ -1,0 +1,37 @@
+{
+  "acceptedChain": [
+    {
+      "operation": "functionality",
+      "subject": "session:b8e6dadb-dba2-45b5-ab7a-e5b7889f7a1a:module:a44de3a807693355148d21f3778aea4923d9bc7350ec5bd987cac239b8541ba0",
+      "root": "session:b8e6dadb-dba2-45b5-ab7a-e5b7889f7a1a:investigram:b5c6aa4c8bda00be30eb393588cd05d0015395b785cee53c8aed17a7bdbb4799"
+    },
+    {
+      "operation": "clarification",
+      "subject": "session:b8e6dadb-dba2-45b5-ab7a-e5b7889f7a1a:investigram:945594d0ad3f728b3a07f8d26ae95ccd240ad43b07e9eb8110ee9a4d82805a5d",
+      "root": "session:b8e6dadb-dba2-45b5-ab7a-e5b7889f7a1a:investigram:0371ef295476f92ec729a8b1ea2e8fb991833ac595c1bbb0538442ce0fa9178c"
+    },
+    {
+      "operation": "decomposition",
+      "subject": "session:b8e6dadb-dba2-45b5-ab7a-e5b7889f7a1a:investigram:c3a897c5832c2dedece6c09d07ecae64ae8be940d81d4c4e3d66e792f6102e85",
+      "root": "session:b8e6dadb-dba2-45b5-ab7a-e5b7889f7a1a:investigram:7f61b281ac4dc07a4828bab94cd1ab61efb974a709ba8bf01d406cecbf347549"
+    },
+    {
+      "operation": "examination",
+      "subject": "session:b8e6dadb-dba2-45b5-ab7a-e5b7889f7a1a:investigram:14c0ec881c9e300b108956930a30427148f68e221e7389d12d18497885c765b6",
+      "root": "session:b8e6dadb-dba2-45b5-ab7a-e5b7889f7a1a:investigram:4f621241e5f3b93ad2b59260ac46f506b77aba4edd8ca0c8770d9c30bc6956b2"
+    }
+  ],
+  "eachFollowUpTargetsTheImmediatelyPrecedingResult": true,
+  "sourceDisclosures": [
+    {
+      "command": 8,
+      "forms": [
+        "locations"
+      ],
+      "renderedLocations": 1
+    }
+  ],
+  "inconsistencies": [],
+  "newInconsistencyTargetsMeetCurrentCitationRule": true,
+  "limits": "Historical pass-05 runtime used; this is a post-run exposure check, not live verification of current acceptance code or semantic truth."
+}

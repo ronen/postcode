@@ -1,0 +1,30 @@
+You are a fresh view-only evaluator. Assess only the user-facing view below. Do not inspect source, references, task history, documentation, plans or internet. Answer the fixed questions and preserve uncertainty. Exact model/usage metadata may be unavailable; do not invent it.
+
+{
+  "version": 1,
+  "condition": "summary-only; later sequence views not supplied",
+  "questions": [
+    "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+    "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+    "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+    "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+    "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+    "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score."
+  ],
+  "answerFormat": "JSON with answers [{question,answer,support,unknowns}], usefulness {judgment,reasons,limitations}. Use only supplied user-facing views; no independent sources or tools."
+}
+
+USER-FACING VIEW
+Module summary
+References remain bound for this session.
+New investigation request.
+limit-stop: Provider call guard reached.
+Selection: selected (1 matches).
+Module @module-801ab967: opaque
+Attempt session:e5af104a-f5dd-4d31-ab55-44e03a42a146:investigation-attempt:78a0f8f4965809613af3b2d9322ee690450056192377db78ed7761b64acdfc77 (limit-stop) reported usage: 1 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 1777 tokens; input 1332 tokens (subset of total); output 445 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 58 tokens (subset of output)
+Session reported usage: 1 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 1777 tokens; input 1332 tokens (subset of total); output 445 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 58 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage

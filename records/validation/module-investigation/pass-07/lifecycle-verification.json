@@ -1,0 +1,14 @@
+[
+  {
+    "case": "merge-anything-m5",
+    "immutableAccounts": 18,
+    "acceptedEvaluations": 4,
+    "corrections": 0,
+    "affectedAccountsObserved": 0,
+    "conflictingAccountsObserved": 0,
+    "displaySubstitutionsObserved": 0,
+    "retainedRepeats": 2,
+    "inspections": 4,
+    "derivedStateMatchesIndependentReconciliation": true
+  }
+]

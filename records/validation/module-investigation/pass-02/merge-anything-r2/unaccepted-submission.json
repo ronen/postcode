@@ -1,0 +1,149 @@
+{
+  "status": "Rejected draft; not an accepted or displayed investigram",
+  "reason": "Invalid referent or association subject.",
+  "submission": {
+    "localId": "root-entry",
+    "prose": "Public entry point only: it wildcard-re-exports the merge API and its array helper. It implements no merge logic itself.",
+    "referent": {
+      "description": "the requested TypeScript entry module",
+      "subjects": [
+        "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:module:a44de3a807693355148d21f3778aea4923d9bc7350ec5bd987cac239b8541ba0"
+      ]
+    },
+    "qualifications": [
+      "Static reading of first-observed TypeScript sources; no runtime, packaging, tree-shaking, or mutation tests were performed."
+    ],
+    "evidence": [
+      "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:captured-content:8063a4d5515655c21e37335157b6da32def9e894222b525f84b99c3945f95649",
+      "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:dependency:ed268f1d30fc438081dd6ceffba6814b08906e6f770ff92ade7352ccb62823ac",
+      "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:dependency:2d10a79ac4e197e72485153249a6e2fe4025cf5d456e6fd8f8d98629fa585377"
+    ],
+    "associations": [
+      {
+        "subject": "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f",
+        "qualifications": [
+          "Wildcard value/type re-export target."
+        ],
+        "evidence": [
+          "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:source:82b9d31bae1f5b9b4f4418adfd25d9d00874d88e42d886a7fae53f8fc1e131b2"
+        ]
+      },
+      {
+        "subject": "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:module:ddcc1eda2912d7b145024422ac5a5a5bd5a3dc278b2e70bf05d7fa040914fee5",
+        "qualifications": [
+          "Wildcard value re-export target."
+        ],
+        "evidence": [
+          "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:source:67a8808144b0dfd073dbadbb0547e98bcffde5fc76f1aab70eefe01156ced1cf"
+        ]
+      }
+    ],
+    "children": [
+      {
+        "localId": "merge-core",
+        "prose": "Implements rightward, recursive merging. `merge` folds inputs in order. Only plain incoming objects recurse; primitives, arrays, functions, dates, class instances, and other non-plain values replace the prior value. Each merged plain-object level is rebuilt, while untouched nested values can retain source references. Own string and symbol properties are considered; enumerability is preserved, other descriptor attributes are reset for non-enumerables, and `__proto__` is skipped. `mergeAndCompare` delegates every assigned incoming property to a caller callback after any nested recursion; `mergeAndConcat` supplies the array-concatenation callback. The exported `Merge` type approximates the folded result.",
+        "referent": {
+          "description": "runtime merge implementation and exported result type",
+          "subjects": [
+            "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:module:2db3a56e652cf799aaa5f8b574d16e82df56ec2ad4bec82f47407628b9b4506f",
+            "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:symbol:55194f4f2135dfbcb0148ad0000f04388f91de411897e39ea77062d2cb15a251",
+            "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:symbol:94c5264a7031a9258cf116cc108ca7ea5302c88b6c35a2764a0521fdc7202145",
+            "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:symbol:60dd76f621d6d63440adfca11446e6004c21d285cd1cd97fe9012429832ad4",
+            "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:symbol:d6e1f7899095a4b8e6719a7c52fcbbfce80de39fad92ed0109aa48f820019989"
+          ]
+        },
+        "qualifications": [
+          "Behavior is inferred from source, not execution. Plain-object, array, and symbol classification is delegated to the external declaration-only `is-what` dependency, whose implementation was unavailable here.",
+          "The README claims new top-level objects, intact special instances, nested-reference retention, symbol/non-enumerable support, and overwrite/concat cases; these broadly match the implementation, but documentation remains an assertion."
+        ],
+        "evidence": [
+          "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:captured-content:7bde5cf454c31062a3249171cf62006f9680bb7fa4197f1ef9b049542e0e2579",
+          "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7"
+        ],
+        "associations": [
+          {
+            "subject": "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:module:52c2eae32518452dc625e6436fbacc5f7952504b6621d5bed37010fa57cde956",
+            "qualifications": [
+              "External, declaration-only evidence was available; runtime classifier behavior was not inspected."
+            ],
+            "evidence": [
+              "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:source:90c152bf8849483e7faf666a70e4fbc3d990a61f0600e14a78a998095205f1e4"
+            ]
+          },
+          {
+            "subject": "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:module:ddcc1eda2912d7b145024422ac5a5a5bd5a3dc278b2e70bf05d7fa040914fee5",
+            "qualifications": [
+              "Supplies the callback used by `mergeAndConcat`."
+            ],
+            "evidence": [
+              "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:source:20214c618e7f5a46ae53551aecb3dc35d82bba5fcab3bcf35412da8713cd4b97"
+            ]
+          }
+        ],
+        "children": [
+          {
+            "localId": "merge-types",
+            "prose": "Compile-time result shaping is delegated: `Assign` repeatedly applies deep type merging across the tuple, `Pop` supplies the last input type for non-record cases, and `PrettyPrint` expands intersections into readable mapped object types while stopping already-seen recursion.",
+            "referent": {
+              "description": "type-level helpers used to compute the public Merge type",
+              "subjects": [
+                "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:module:79b8297add64fe523f87f58a3be9467f8f9e2a313466517a10bcb36e547877c6",
+                "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:module:14f53644b8919e52a1da75e68bf03f9047d7e53057eeb6858159b9cf64515153",
+                "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:module:92481056bbc2e85ce5a0b1d999aed415b30649350845a1f680b1044dee2888af"
+              ]
+            },
+            "qualifications": [
+              "This describes TypeScript computation only, not runtime behavior. `Assign` further delegates the property-level operation to an uninspected `MergeDeep` module."
+            ],
+            "evidence": [
+              "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:captured-content:74dca925e00af1e4d8ff5392a6275a5f9629badac922808cdbae94b26f58340f",
+              "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:captured-content:adc561e2945ba6be219cc78844c7216800626454720292e8f75ab36bdbf88cbc",
+              "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:captured-content:0edd20422bed0aee5f55854002c178200bf3577e50e8b2668f73b4608c1f1f77",
+              "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:source:e8d31cc77ae274a753f7a7f34dbc2b6c693f8c8d6e41a9610d4059c17300ba70"
+            ],
+            "associations": [],
+            "children": [],
+            "corrections": [],
+            "inconsistencies": []
+          }
+        ],
+        "corrections": [],
+        "inconsistencies": []
+      },
+      {
+        "localId": "array-policy",
+        "prose": "Provides one merge policy: concatenate when both old and new values are arrays; otherwise return the new value unchanged. It is both publicly re-exported as `concatArrays` and injected into `mergeAndConcat`.",
+        "referent": {
+          "description": "array-concatenation comparison helper",
+          "subjects": [
+            "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:module:ddcc1eda2912d7b145024422ac5a5a5bd5a3dc278b2e70bf05d7fa040914fee5",
+            "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:symbol:f06fccccd95a6f49abaa7c957c07ac7a17eec850b76b9c8632e616e654ff1b19"
+          ]
+        },
+        "qualifications": [
+          "Behavior is inferred from source; array recognition delegates to the uninspected runtime implementation of `is-what`."
+        ],
+        "evidence": [
+          "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:captured-content:6f64ed2803e14f05072f46970bb3eee68517667fd9442ba8d3d0ad0536c50f83",
+          "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:export:d1dc4565982f53d9145db5ca29131d76590a666f1877a0943f3f967d09cbc6eb"
+        ],
+        "associations": [
+          {
+            "subject": "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:module:52c2eae32518452dc625e6436fbacc5f7952504b6621d5bed37010fa57cde956",
+            "qualifications": [
+              "Provides the imported array predicate; implementation unavailable in captured project evidence."
+            ],
+            "evidence": [
+              "session:90b7b148-abbe-42da-b0ad-c4d2c2016749:source:e2f8957e51d3b52fc4f55f2b2241b78b9a55202c16f7fe6d39141210d02d9d5c"
+            ]
+          }
+        ],
+        "children": [],
+        "corrections": [],
+        "inconsistencies": []
+      }
+    ],
+    "corrections": [],
+    "inconsistencies": []
+  }
+}

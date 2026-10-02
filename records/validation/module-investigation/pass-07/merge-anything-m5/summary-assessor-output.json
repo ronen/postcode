@@ -1,0 +1,126 @@
+{
+  "findings": [
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The summary follows the public entry's delegation and communicates the main runtime responsibilities accurately within the frozen reference's scope; the evaluator preserves that division.",
+      "evidence": [
+        "@investigram-b5c6aa4c calls the entry a public facade and composes @investigram-945594d0 and @investigram-eada3b01; evaluator answer 1 repeats this division.",
+        "@investigram-945594d0 and evaluator answer 1 describe ordered folding, recursive plain-object merging, replacement of other values, own string and symbol properties, enumerability preservation, and skipping __proto__.",
+        "Frozen reference: index.ts re-exports extensions.ts and merge.ts; merge.ts lines 39–94 support recursive plain-object handling, replacement, and property selection; lines 19–36 support enumerability preservation; lines 101–124 support ordered folding and the strategy variants."
+      ],
+      "consequence": "The view provides a usable functional map beyond merely identifying the entry as a barrel, and the evaluator does not collapse runtime behavior into the facade or type model.",
+      "uncertainty": "This is agreement with the supplied source reference, not independent source inspection or observed execution. The external classification predicates remain outside the established reference scope."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator retains consequential qualifications rather than treating generated behavior accounts, acceptance, or accounting as validation.",
+      "evidence": [
+        "@investigram-b5c6aa4c says runtime execution was not observed and README documentation is not proof of behavior.",
+        "@investigram-945594d0 distinguishes enumerability from full descriptor preservation and says nested values may remain by reference.",
+        "@investigram-eada3b01 distinguishes compile-time behavior from runtime merging.",
+        "Evaluator answers 1–2 preserve these boundaries and explicitly say accepted-attempt status and usage do not establish correctness or charges.",
+        "Frozen reference supports no subject execution, incomplete descriptor preservation, retained references, and compile-time rather than runtime work for type utilities."
+      ],
+      "consequence": "The evaluator's reading avoids unsupported claims of a general deep clone, complete descriptor copying, runtime/type equivalence, or general security certification.",
+      "uncertainty": "The reference does not independently establish billing or every detailed type claim. No execution-based guarantee follows from the supported source interpretation."
+    },
+    {
+      "category": "material-omission",
+      "claim": "The summary and evaluator convey retained nested references but omit two concrete identity limits and the reference's correction of the README's always-new-object wording.",
+      "evidence": [
+        "Frozen reference: non-plain inputs can be returned directly, zero extra inputs return the original, and the README's always-new-object wording is broader than source supports.",
+        "@investigram-945594d0 says non-plain values replace prior values and unmatched nested values remain by reference, but does not state either whole-result identity case or the always-new-object documentation discrepancy.",
+        "Evaluator answers 1–2 discuss nested reference retention and the callback documentation discrepancy but do not identify these additional identity limits."
+      ],
+      "consequence": "Readers receive a useful aliasing warning but an incomplete basis for deciding whether a call necessarily creates a new top-level result.",
+      "uncertainty": "Neither the summary nor evaluator actually claims that every call returns a new object. This is an omission, not a demonstrated false generation repeated by the evaluator."
+    },
+    {
+      "category": "material-omission",
+      "claim": "Delegation of plain-object, symbol, and array classification to is-what, and the resulting limit on externally established behavior, are not made explicit in the displayed functional accounts or evaluator's account of unknowns.",
+      "evidence": [
+        "Frozen reference: merge.ts delegates plain-object and symbol classification to is-what; extensions.ts delegates array recognition to is-what; external predicate implementation is not established here.",
+        "@investigram-945594d0 describes classification outcomes and includes an opaque dependency evidence reference, but does not name this dependency or qualify its unexamined implementation.",
+        "Evaluator answers 1–2 repeat the classification claims and note a dependency reference and unavailable underlying evidence without identifying this particular semantic boundary."
+      ],
+      "consequence": "The main dependency boundary is less actionable for a reader choosing follow-up work, especially for unusual values whose classification controls the merge strategy.",
+      "uncertainty": "The frozen reference supports the broad plain-object and replacement account. The omission does not demonstrate that arrays or class instances were misclassified in practice."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "The callback-on-new-properties detail and the detailed internal type algorithm are faithfully attributed to the supplied view by the evaluator, but cannot be independently adjudicated from the frozen reference's level of detail.",
+      "evidence": [
+        "@investigram-945594d0 says the callback applies to every incoming own property after recursive merging, including properties with no previous value, and contrasts this with README wording.",
+        "@investigram-eada3b01 describes Assign, MergeDeep, required and optional fields, PrettyPrint's seen-type guard, List.Pop, strict null checking, and casts asserting runtime/type correspondence.",
+        "Evaluator answers 1–2 repeat or attribute these displayed claims while noting that referenced source is unavailable for independent assessment.",
+        "Frozen reference states only that merge-and-compare applies a supplied comparison function and type utilities describe compile-time result shape; it does not supply the relevant detailed implementation or documentation excerpts."
+      ],
+      "consequence": "These details may guide a useful next investigation, but this assessment cannot label them established source findings, generation errors, or unsupported evaluator inventions merely from their presence in the view.",
+      "uncertainty": "The evaluator's repetition is supported as a description of the view. The underlying semantic and documentation claims remain unsettled by the frozen reference."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator correctly distinguishes current selection and composition from unshown correction, conflict, and reconsideration histories.",
+      "evidence": [
+        "All three revision status blocks say 'original remains selected' with '0 of 0 relationships/causes'.",
+        "The facade lists its two composition children; each account labels @module-a44de3a8 as 'provenance, not composition'.",
+        "Evaluator answers 5–6 report no concrete correction, replacement, causal chain, or reconsideration target and distinguish the README discrepancy from a revision conflict.",
+        "The supplied condition and footer say acceptance recency does not establish credibility and reconsideration records exposure rather than error, semantic reliance, or reassessment."
+      ],
+      "consequence": "Generic milestone semantics are not misread as evidence that particular accounts were corrected, conflicted, or erroneous, and the composition relationship remains intelligible.",
+      "uncertainty": "Only the summary is supplied. This does not establish the absence of histories elsewhere or demonstrate replacement redisplay, preservation on exact inspection, or causal navigation in operation."
+    },
+    {
+      "category": "successful-qualified-communication",
+      "claim": "The evaluator respects the summary-only condition and separates a proposed follow-up from a demonstrated capability or result.",
+      "evidence": [
+        "The only captured command is 'summarize anonymous'.",
+        "Evaluator answer 3 says explanation, decomposition, examination, and a before-and-after sequence were not supplied.",
+        "Evaluator answer 4 selects @investigram-945594d0 for a proposed runtime/evidence investigation and explicitly says that a lens interface, execution facility, and examination response are not demonstrated."
+      ],
+      "consequence": "The supplied view supports choosing a focused follow-up without inflating that choice into completed examination or evidence that further operations improved the account.",
+      "uncertainty": "Missing follow-up views do not constitute a generation defect or milestone failure, and the available capabilities outside this capture cannot be assessed."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "The evaluator's concern about presentation overhead has concrete displayed support, but actual reader confusion or impairment is not established.",
+      "evidence": [
+        "@investigram-b5c6aa4c repeats identical children under 'Displayed composition' and 'Composition'.",
+        "The accepted-attempt and session blocks repeat the six-call usage report; long opaque evidence identifiers occupy substantial display space.",
+        "The generic footer says conflicts remain unresolved while all account-specific revision blocks contain zero relationships/causes.",
+        "Evaluator answers 6–7 identify these features as potential impediments while correctly interpreting the account-specific statuses and keeping surrounding-interface usability unknown."
+      ],
+      "consequence": "Reducing repetition or localizing generic status guidance could plausibly improve scanning, but this evaluator did not exhibit the proposed conflict or validation misunderstanding.",
+      "uncertainty": "This is a qualitative presentation judgment. No comparative usability evidence, other reader responses, or surrounding interface behavior is supplied; a potential misunderstanding should not be classified as an observed one."
+    },
+    {
+      "category": "reference-cannot-settle",
+      "claim": "The frozen reference identifies the assessment toolchain, but the displayed summary and evaluator cannot independently establish how compiler configuration affects the detailed type account.",
+      "evidence": [
+        "Frozen reference specifies TypeScript 6.0.3 and a human-approved override setting only ignoreDeprecations to '6.0', inheriting lockfile-pinned @cycraft/tsconfig 0.1.2; the original configuration fails opening on deprecation diagnostics.",
+        "The reference says the override was mechanically verified to open and does not claim semantic equivalence from unperformed testing.",
+        "@investigram-eada3b01 says compiler settings were not independently assessed; evaluator answer 2 preserves uncertainty about satisfying the documented strict-null-checking requirement."
+      ],
+      "consequence": "This assessment is attributable to the supplied override and TypeScript version, while configuration-sensitive type claims remain qualified. The evaluator's lack of configuration knowledge is consistent with its supplied view.",
+      "uncertainty": "The reference does not provide the effective strict-null-checking setting or tests establishing configuration equivalence. Neither an unmodified-config run nor an incorrect-config run can be inferred."
+    }
+  ],
+  "subjectUsefulness": {
+    "judgment": "Useful as a qualified functional orientation and focused follow-up selector, with incomplete identity and dependency limits and substantial display overhead; insufficient for validating detailed behavior or milestone revision workflows.",
+    "reasons": [
+      "The source-supported account follows delegation from the public facade into runtime strategy variants and separates compile-time modeling.",
+      "The evaluator preserves no-execution, descriptor, reference-retention, documentation, and interpretation qualifications.",
+      "Distinct account references and composition labels support selecting the runtime account for further inquiry.",
+      "Account-specific original-selection statuses are read correctly despite generic revision language and repeated accounting.",
+      "Concrete omissions concern top-level result identity, the always-new-object documentation mismatch, and external predicate boundaries."
+    ],
+    "limitations": [
+      "No definite generation error repeated by the evaluator, observed presentation misunderstanding, or unsupported evaluator extrapolation is established by these supplied artifacts; uncertain detailed claims remain distinct from errors.",
+      "Only the summary condition is available. No absence of explanation, decomposition, examination, correction, or reconsideration views is treated as a generation defect or milestone failure.",
+      "The frozen reference is selective and does not settle the detailed callback timing, type algorithm, strict-null-checking setting, actual billing, or surrounding-interface usability.",
+      "Source conclusions remain source-informed: subject execution and external predicate implementation are not established.",
+      "Assessment provenance is the human-approved ignoreDeprecations override and TypeScript 6.0.3, not an unmodified-config run; opening success alone does not prove semantic equivalence.",
+      "The reference preparer and orchestrator are the implementing agent, from the OpenAI family with exact model identifier unavailable. That overlap limits assessment independence."
+    ]
+  }
+}

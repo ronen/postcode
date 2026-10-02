@@ -1,0 +1,10 @@
+{"command": "summarize fsm-engine", "rationale": "Pinned runtime-engine subject from the approved assessment."}
+{"command": "explain @investigram-dc111a38", "rationale": "Clarify the dense account of dispatch and transition behavior before choosing narrower aspects."}
+{"command": "decompose @investigram-26489d1b", "rationale": "Break the explained dispatch lifecycle into separately inspectable responsibilities, preserving its ordering and failure qualifications."}
+{"command": "examine @investigram-8251c177", "rationale": "Examine the selected failure-cleanup aspect for precise exception boundaries and what remains after an interrupted transition."}
+{"command": "examine @investigram-8251c177", "rationale": "Repeat the same selected examination to verify retained reuse."}
+{"command": "inspect @investigram-23572608", "rationale": "Inspect the earlier decomposition with its original composition and later-associated examination navigation."}
+{"command": "inspect @investigram-280ba8fb --source-detail", "rationale": "Inspect the accepted examination and explicitly disclosed supporting source locations."}
+{"command": "inspect fsm-engine", "rationale": "Inspect the module-associated account listing without new inference."}
+{"command": "usage", "rationale": "Capture cumulative authoritative usage."}
+{"command": "exit", "rationale": "Close the fixed assessment session."}

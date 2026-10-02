@@ -1,0 +1,106 @@
+{
+  "answers": [
+    {
+      "question": "What functionality and division of responsibility does the supplied view communicate? Cite displayed references or wording.",
+      "answer": "The module supplies a stateful FSM runtime and typed factory. The builder captures the DSL, checks its declared structure and compiles shared lookup tables; each engine instance owns current state, a context reference, a FIFO event queue, timers and trace settings. The engine drains top-level dispatch synchronously, defers re-entrant events until the current event finishes, tries state handling before fallback, and selects the first transition whose guards pass. Declared transitions whose guards all reject produce an implicit stay; globally unknown and currently unhandled events are different errors. External transitions run exit actions, transition actions, target assignment and entry actions; internal stays run transition actions alone. Initial entry occurs during construction. TimerRegistry manages keyed timeout handles, while the engine converts scheduled events into dispatch callbacks. Error classes supply definition/runtime diagnostics. The clarification says context is not copied and compiled tables are shared but not deep-frozen.",
+      "support": [
+        "@investigram-dc111a38: 'Implements the stateful FSM instance and its typed factory' and delegates capture, validation and compilation to FsmBuilderImpl.",
+        "@investigram-1f0389d7 and @investigram-c9f16bfd describe builder responsibilities, structural reachability and shared tables.",
+        "@investigram-2d65ea4b and @investigram-26489d1b explain context identity, FIFO dispatch, fallback and transition ordering.",
+        "@investigram-2f1f0d4d and @investigram-7edddb44 separate keyed handle management from the engine's callback adapter.",
+        "@investigram-9c64fa80 describes error classes; inspect fsm-engine lists FsmEngine [type+value] and FsmEngineFactory [type]."
+      ],
+      "unknowns": [
+        "These behavioral descriptions are displayed static interpretations, not observed executions.",
+        "The supplied view does not establish further validation guarantees, deep immutability, runtime enforcement of TypeScript constraints or exact host timer behavior.",
+        "The apparent timer-payload inversion is not execution-confirmed."
+      ]
+    },
+    {
+      "question": "Which conclusions are interpretations, which have other qualified support, and what consequential information remains unestablished?",
+      "answer": "Every investigram is explicitly labeled interpretation, including the timer-payload discrepancy, failure cleanup, logger failure and timer survival conclusions. The README and JSDoc supply attributed statements of intended behavior, not independent proof. Authored tests offer narrower qualified support: an internal-transition action queues an event and a later action throws, with an expectation that the queued event does not run; FIFO and guard-originated re-entrant examples also exist. These tests were read, not executed. Separately, module membership and effective exports are reported as established by TypeScript analysis within the stated coverage. Captured-content records establish what was exposed to an investigation and identify mappings/digests; they do not establish interpretive correctness or a simultaneous filesystem snapshot. An accepted attempt or repeated retained outcome is not additional runtime corroboration.",
+      "support": [
+        "@investigram-f0aae7a0: 'The tests were read as source and were not executed' and the cleanup test concerns an internal transition.",
+        "@investigram-280ba8fb: 'This is static interpretation of captured TypeScript source, not observed execution.'",
+        "inspect fsm-engine: 'Module membership and effective exports established by TypeScript analysis'; coverage is external-module SourceFiles and visible named ambient modules, and two generated-output locations are excluded.",
+        "Source-support records warn 'First-observed content; acquisition is not atomic' and 'Artifact placement does not establish documentation applicability or truth.'"
+      ],
+      "unknowns": [
+        "Actual runtime results for payload loss, logger exceptions, timer survival and post-failure reuse remain unestablished.",
+        "The captured tests do not establish behavior across begin, guard, exit, external-transition, entry, trace-logger and runtime-error failure phases; absence here does not establish absence of other tests.",
+        "Currency and completeness of documentation, guard satisfiability, behavior outside recognized dependency coverage and other compiler module categories remain unestablished.",
+        "Reported token usage does not establish billed usage or monetary charges; unavailable monetary attribution is not zero."
+      ]
+    },
+    {
+      "question": "What became clearer after explanation, more precisely selectable after decomposition, or substantively different after examination? If these views were not supplied, say so.",
+      "answer": "All three views are supplied. Explanation makes the one-time definition versus per-instance execution distinction concrete, clarifies shared mutable context, the exact state commit point, same-state external transitions, begin-action effects before guards, and the difference between readonly typing and runtime immutability. Decomposition turns the dispatch account into individually selectable references for queue admission, event classification, state/fallback precedence, guard ordering, external transitions, internal transitions and failure cleanup. Examination of the cleanup facet materially broadens the account: the drain-loop catch covers synchronous logger and unknown/unhandled-event errors as well as callback errors; the shifted event is not retried; scheduled timers survive queue clearing; the flag resets so later dispatch can proceed from surviving partial state. It also identifies existing authored test coverage while specifying its limits. Initial constructor entry is outside this dispatch cleanup boundary. The second examination is explicitly a retained outcome, not a new investigation.",
+      "support": [
+        "explain @investigram-dc111a38 produces @investigram-2d65ea4b with detailed lifecycle account @investigram-26489d1b.",
+        "decompose @investigram-26489d1b produces @investigram-23572608 and selectable children @investigram-d7f18532, @investigram-3ee0ffcb, @investigram-6f24de96, @investigram-41c7d145, @investigram-595b1fef, @investigram-18bb1272 and @investigram-8251c177.",
+        "examine @investigram-8251c177 produces @investigram-280ba8fb, with @investigram-0d65be59 for commitment, @investigram-9166567a for logger errors, @investigram-fafd3a60 for timers and @investigram-f0aae7a0 for test coverage.",
+        "Repeated examine command says 'Retained outcome; no new investigation.'"
+      ],
+      "unknowns": [
+        "The additional detail changes the communicated account, not the demonstrated runtime behavior; execution remains absent.",
+        "The decomposition explicitly remains overlapping and non-exhaustive."
+      ]
+    },
+    {
+      "question": "Which displayed investigram reference would you select next, with which lens, and what would you expect to learn? Distinguish a requested future capability from one shown as available.",
+      "answer": "I would select @investigram-7edddb44 with the examination lens to scrutinize the timer-event adapter's apparent payload inversion against its type/README contract. I would expect a focused account distinguishing handle scheduling from dispatch argument construction, identifying the exact scope of the discrepancy and any available authored tests. Selection of an investigram for examination is demonstrated by the failure-cleanup sequence; inspecting retained content, including source detail, is also demonstrated. I would additionally want execution-backed confirmation for payload-bearing and void timer events, but test execution is a requested future capability here, not one shown as available. Correction-aware replacement selection and warnings on derived accounts would likewise be desired future behavior, explicitly absent from these views.",
+      "support": [
+        "@investigram-7edddb44 says the adapter reverses argument-list construction and qualifies payload loss as following the literal conditional and dispatch handling.",
+        "The sequence demonstrates examine @investigram-8251c177 and inspect @investigram-280ba8fb --source-detail.",
+        "The footer states that replacement substitution and derived revision warnings are not yet presented."
+      ],
+      "unknowns": [
+        "A new examination's findings, additional evidence availability and runtime outcome cannot be predicted from the supplied views.",
+        "No test-running command or capability is demonstrated."
+      ]
+    },
+    {
+      "question": "Where correction is shown, what changed, what identifies original and replacement, and what remains uncertain? Can composition be distinguished from later-investigation provenance? If not shown, say so.",
+      "answer": "No concrete correction record or original-to-replacement link is displayed in this sequence, despite the introductory generic statement about correction links and the repeated correction caveats. The later @investigram-280ba8fb expands @investigram-8251c177 through examination; its investigation-subject relationship does not identify it as a correction replacement. I can therefore describe the expanded failure account but cannot name a correction's original/replacement pair or assert that an original has been superseded. Composition is distinguishable: @investigram-8251c177 is a child of decomposition @investigram-23572608, whose investigation subject is the earlier clarification @investigram-26489d1b. Examination @investigram-280ba8fb investigates @investigram-8251c177 and has its own four composition children. The labels explicitly separate those relationships. The later module association is also not composition or proof of correctness.",
+      "support": [
+        "@investigram-23572608 lists @investigram-8251c177 under Composition; the child names @investigram-23572608 as Composition parent.",
+        "@investigram-280ba8fb lists 'Investigation subject: @investigram-8251c177 (provenance, not composition)' and separately lists four composition children.",
+        "Footer: 'Corrections are retained assertions, not established truth' and 'Original accounts are displayed; replacement substitution and derived revision warnings are not yet presented.'",
+        "inspect fsm-engine calls associations explicit and warns that listing order does not establish authority."
+      ],
+      "unknowns": [
+        "Whether any concrete correction exists outside this supplied sequence, its exact asserted change, original and replacement identifiers, and effects on derived accounts are unknown.",
+        "No automatic substitution or propagation of correction status can be inferred."
+      ]
+    },
+    {
+      "question": "What wording, omissions, repetition or presentation could mislead or impede use? Give a qualitative usefulness judgment without a numeric score.",
+      "answer": "The sequence is useful for building a mental model and selecting a narrow follow-up, especially because it exposes qualifications and distinguishes composition from investigation provenance. It is cumbersome to scan: long hashes, usage reports, repeated caveats and entire repeated retained accounts obscure the few substantive changes. The summary's 'immutable-looking' can suggest a stronger guarantee than the later no-deep-freeze qualification, and 'handlers exist' is less precise than the clarification's requirement that transitions exist for implicit stay. The decomposition's 'always releases the dispatching flag' needs the later restriction to the outer dispatch try boundary, since constructor entry is separate. 'Source support (captured locations and excerpts)' supplies file identity metadata in the shown block but no code excerpts or line locations with which to check the claims. 'Analysis complete' is bounded by coverage limitations and must not be read as exhaustive comprehension. A zero associated-investigram listing can look like absence of related work despite visible composition children and history. The opening statement about correction links can imply concrete corrections are included when none is identifiable. Truncated module prose also makes the concise rediscovery view less self-contained.",
+      "support": [
+        "@investigram-dc111a38 uses 'immutable-looking' and 'handlers exist'; @investigram-2d65ea4b supplies narrower explanations.",
+        "@investigram-8251c177 says 'always releases the dispatching flag'; @investigram-280ba8fb limits the catch to the outer drain-loop try and excludes constructor entry.",
+        "inspect @investigram-280ba8fb --source-detail displays artifact paths src/fsm-engine.ts, README.md and tests/fsm-engine.test.ts under a heading mentioning excerpts, without showing their source text.",
+        "Inspect views display 'Listing: available; 0 shown of 0' alongside explicit warnings about associations and history.",
+        "The repeated examination labels itself retained, and module inspection marks prose and documentation omissions."
+      ],
+      "unknowns": [
+        "The supplied capture does not establish usability of reference navigation in an interactive interface or how much detail a user can hide.",
+        "This judgment concerns comprehension of the displayed sequence only, not implementation correctness."
+      ]
+    }
+  ],
+  "usefulness": {
+    "judgment": "Useful for progressive understanding and targeted investigation, with substantial presentation overhead and limited verification power.",
+    "reasons": [
+      "Explanation resolves important semantic ambiguities, decomposition supplies selectable facets, and examination adds consequential failure-boundary information.",
+      "Explicit qualification, evidence exposure and relationship labels help separate interpretation, stated contract, authored tests and compiler-established structure.",
+      "Retained outcomes and associated accounts support rediscovery without implying that repetition supplies new evidence."
+    ],
+    "limitations": [
+      "No runtime execution is supplied, and many important failure phases remain unconfirmed.",
+      "Repeated prose and provenance/usage metadata make substantive differences harder to locate.",
+      "No concrete correction pair is shown, and replacement substitution and derived revision warnings are explicitly absent.",
+      "Source-detail metadata identifies captured artifacts but does not expose the relevant code excerpts in the supplied view."
+    ]
+  }
+}

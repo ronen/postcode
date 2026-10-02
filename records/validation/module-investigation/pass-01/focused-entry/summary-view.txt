@@ -1,0 +1,36 @@
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-acc2ba39: next-sequence
+
+@investigram-277b134e · interpretation
+A thin public entry point: it adds no computation, but re-exports two unrelated value functions—numeric clamping and a stateful sequence counter—from their implementing modules.
+Referent: the requested TypeScript entry module
+  Qualification: Interpretation is based on first-observed TypeScript source and compiler-derived exports/dependencies; execution, emitted JavaScript, loader behavior, and deployment were not verified.
+  Qualification: The source-request analysis is bounded to recognized project-owned requests, so it does not establish complete runtime dependency absence.
+  Composition: @investigram-cab5aec0, @investigram-2b9ef522
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:e7b761e8-8356-41a1-8b99-2d3711e14b6d:source:9f4f8654e2a28ec1dfdf31a22eb5d20b9f771f33dedb2d9c2a6260b93eca7117, session:e7b761e8-8356-41a1-8b99-2d3711e14b6d:source:92dee8f1d33cf6bc34a36579ce1d22e66feebb8bd572d99254fbdfc63ce1541b, session:e7b761e8-8356-41a1-8b99-2d3711e14b6d:source:0ef852d88daac461a9857a961a527772cdc88e64d4f7c66e11853e2da099b043
+
+@investigram-2b9ef522 · interpretation
+`nextSequence()` owns module-local mutable state initialized to 0; each call applies `sequence += 1` and returns the new value, so the first call in a fresh module instance returns 1. State is shared by callers of that instance and has no exposed reset.
+Referent: the delegated stateful sequence implementation
+  Qualification: Behavior is inferred from first-observed TypeScript source, not execution; module instantiation/caching and long-run JavaScript number precision depend on the runtime.
+  Qualification: No exposed reset is established only for this full captured module source; it is not a claim about external process or module-reload mechanisms.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:e7b761e8-8356-41a1-8b99-2d3711e14b6d:source:1fb07b4f46ea353807dfecbd17c053ac222303be33c4dde9cd464a0783f094aa, session:e7b761e8-8356-41a1-8b99-2d3711e14b6d:source:001a9d3bf7d81b1142323abd5ccbd75fec3fa37290fbd71fa3d7f9686cc0b814
+
+@investigram-cab5aec0 · interpretation
+`normalize(value)` clamps ordinary numeric inputs to 0–100: negatives become 0, values above 100 become 100, and in-range values pass through. Because both comparisons with `NaN` are false, `NaN` also passes through.
+Referent: the delegated numeric-normalization implementation
+  Qualification: Behavior is inferred from the TypeScript expression, not observed by execution; JavaScript numeric comparison semantics are assumed.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:e7b761e8-8356-41a1-8b99-2d3711e14b6d:source:f2d73a409c55ee962947b0375ae1bb69ba9ed54cdc41a74824a8afef05f0c657, session:e7b761e8-8356-41a1-8b99-2d3711e14b6d:source:a4803e9065330cc5ccc21f1e67047e55de7490fc9879fe5cdd5d7ec26b96ba19
+Attempt session:e7b761e8-8356-41a1-8b99-2d3711e14b6d:investigation-attempt:4435796711fffd73d3e91d4e17e3cb2a9de5e95fa11fd30c96d8d2c9e45bdf59 (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 68870 tokens; input 65739 tokens (subset of total); output 3131 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 421 tokens (subset of output)
+Session reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 68870 tokens; input 65739 tokens (subset of total); output 3131 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 421 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+This checkpoint shows immutable originals and explicit correction links; replacement selection and reconsideration display arrive in a later milestone.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage

@@ -1,0 +1,35 @@
+Module summary
+References remain bound for this session.
+New investigation request.
+Module @module-acc2ba39: next-sequence
+
+@investigram-18866a7b · interpretation
+This entry is a two-name façade: it performs no computation itself, but re-exports `normalize` and `nextSequence` from separate implementation modules. Those exports have unlike semantics—bounded numeric clamping versus a mutable sequence counter—so they should not be assigned a stronger common responsibility merely because they share an entry point. The nearby README calls the API pure and stateless and says repeated arguments give repeated results; that is true of `normalize`, but contradicted by `nextSequence`, whose module-scoped value is incremented on every call.
+Referent: the requested entry module and its exported API
+  Qualification: Interpretation of captured TypeScript source and compiler-resolved re-export records; it does not establish runtime loader, bundler, deployment, or concurrency behavior.
+  Qualification: The README is nearby group documentation whose applicability is not guaranteed; its claims are attributed rather than accepted as implementation facts.
+  Qualification: No incoming dependents were returned by bounded project-owned source-request analysis, but that does not establish that external or otherwise unanalyzed callers are absent.
+  Composition: @investigram-867baefd, @investigram-3b0d3619
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:a3d82252-f59f-4e25-94ac-322ae3dae1cd:captured-content:70b04d446a2c528c013921a158ad9edf9c0e588f41696a6811d236ab34c334fa, session:a3d82252-f59f-4e25-94ac-322ae3dae1cd:export:919207ca16275a150befb2d26caed555ff9f8afceef63299607d9e2bb08cf522, session:a3d82252-f59f-4e25-94ac-322ae3dae1cd:export:949b5a0e581021614ffe94ab210b2c9515b0c4573d44af7f81f74c38c18de23c, session:a3d82252-f59f-4e25-94ac-322ae3dae1cd:dependency:35e686ceee13cd96eba488be95707111ea330310ddb85ea07a87eb3172ce3888, session:a3d82252-f59f-4e25-94ac-322ae3dae1cd:dependency:dda24ecc2e354798c8539229ef734f689daead55539e9eaccdc70b88aff17af6, session:a3d82252-f59f-4e25-94ac-322ae3dae1cd:captured-content:d6c65cf6316ced49ba12395bedfc489f475976534ea09b1c172f69484976c1b7, session:a3d82252-f59f-4e25-94ac-322ae3dae1cd:captured-content:d6de541ef38679e7c8b4d43d1dea1f40e9a70bfd9ed1b9aa275de0c4b3e9edf2, session:a3d82252-f59f-4e25-94ac-322ae3dae1cd:captured-content:48f20fb4b2aef27bd330850b0b4bca13987437fbbffa0bea6ea61bee13a8d628
+
+@investigram-3b0d3619 · interpretation
+`nextSequence()` owns module-scoped state initialized to 0; each call increments it and returns 1, then 2, and so on for that module instance. This is the stateful branch delegated behind the entry’s `nextSequence` export.
+Referent: incrementing sequence implementation
+  Qualification: The stated progression follows the captured source under ordinary sequential calls within one module instance; overflow, multiple loader instances, and concurrent execution are not characterized.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:a3d82252-f59f-4e25-94ac-322ae3dae1cd:captured-content:48f20fb4b2aef27bd330850b0b4bca13987437fbbffa0bea6ea61bee13a8d628, session:a3d82252-f59f-4e25-94ac-322ae3dae1cd:source:001a9d3bf7d81b1142323abd5ccbd75fec3fa37290fbd71fa3d7f9686cc0b814, session:a3d82252-f59f-4e25-94ac-322ae3dae1cd:export:949b5a0e581021614ffe94ab210b2c9515b0c4573d44af7f81f74c38c18de23c
+
+@investigram-867baefd · interpretation
+`normalize(value)` clamps numbers to the inclusive range 0–100: negatives become 0, values above 100 become 100, and in-range values pass through unchanged. It is the stateless branch delegated behind the entry’s `normalize` export.
+Referent: numeric normalization implementation
+  Qualification: The behavior is inferred directly from the captured function body; special JavaScript numeric values are not separately handled by the implementation.
+  Operation: functionality; origin: hosted; provider/model: openai/gpt-5.6-sol
+  Evidence: session:a3d82252-f59f-4e25-94ac-322ae3dae1cd:captured-content:d6de541ef38679e7c8b4d43d1dea1f40e9a70bfd9ed1b9aa275de0c4b3e9edf2, session:a3d82252-f59f-4e25-94ac-322ae3dae1cd:source:f2d73a409c55ee962947b0375ae1bb69ba9ed54cdc41a74824a8afef05f0c657, session:a3d82252-f59f-4e25-94ac-322ae3dae1cd:export:919207ca16275a150befb2d26caed555ff9f8afceef63299607d9e2bb08cf522
+Attempt session:a3d82252-f59f-4e25-94ac-322ae3dae1cd:investigation-attempt:bb8fe489661ef311fc4be65380ee28ff380fa228a8f34747235e5e5d7dd158df (accepted) reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 32819 tokens; input 31450 tokens (subset of total); output 1369 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 271 tokens (subset of output)
+Session reported usage: 4 calls; 0 unknown; 0 anomalous.
+  openai/gpt-5.6-sol (provider); billing route chatgpt-plan; reported model gpt-5.6-sol, service tier default: total 32819 tokens; input 31450 tokens (subset of total); output 1369 tokens (subset of total); cached-input 0 tokens (subset of input); cache-write-input 0 tokens (subset of input); reasoning 271 tokens (subset of output)
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage

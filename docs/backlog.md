@@ -20,6 +20,121 @@ Describe the need, why it matters, and relevant constraints without designing th
 
 ## Candidates
 
+## Configurable investigator model and reasoning effort
+
+Added: 2026-09-30
+Origin: human discussion following the ChatGPT-plan route's model-availability check
+Area: investigator configuration and usability
+
+Allow users to choose the investigator's model and reasoning effort from the
+configurations supported by their provider, account and authentication route.
+The module investigation assessment required a human-selected alternative when
+its intended model was unavailable through ChatGPT plan usage; product support
+should make such choices accessible without implementation edits.
+
+Provide defaults or recommendations, potentially per provider and access route,
+with an explanation of expected quality, latency and usage tradeoffs and their
+uncertainty. Recommendations could begin as curated defaults; automatic model
+selection and comparative benchmarking are separate possibilities.
+
+Preserve the effective configuration in investigation provenance and usage
+reports. Define when configuration changes take effect and how they interact
+with retained outcomes, without silently regenerating earlier investigations or
+switching billing routes.
+
+## Assess disclosure classification for paths outside sourceDetail
+
+Added: 2026-09-30
+Origin: [Module investigation milestone-2 round-3 review](../records/reviews/module-investigation/2026-09-29-milestone-2-round-3-findings.md)
+Area: observation semantics and source disclosure
+
+The source-disclosure correction classifies supported explicit source-detail fields
+by presentation and format. The reviewer did not assess paths carried outside
+`sourceDetail`, such as configuration paths in JSON analysis context, against the
+[actual-disclosure decision](decisions/adopt-identity-evidence-and-observation-constraints.md#record-the-actual-source-disclosure-level).
+The human directed recording this as an unassessed follow-up without expanding
+milestone 2. Neither compliance nor nonconformance has been established.
+
+A future assessment should distinguish source locations actually presented from
+operational/context paths retained only in observation records, account for human
+and JSON output, and establish whether any source-escape events are missing.
+This entry does not authorize a classification change or prescribe a redesign.
+
+
+## Diagnose execution-ownership cancellations in full-suite runs
+
+Status: diagnosed and corrected under the human-authorized milestone-3 prerequisite
+on 2026-09-30. The [diagnosis and regression record](../records/validation/module-investigation/2026-09-30-execution-ownership-diagnosis.md)
+reproduces the pending-readiness cancellation while confirming owner settlement
+and child exit. All 371 tests pass after correcting the harness. Historical
+results and their original uncertainty below remain preserved; exact historical
+child-startup timing was not captured.
+
+Added: 2026-09-29
+Origin: [Module investigation milestone-1 review](../records/reviews/module-investigation/2026-09-29-milestone-1-disposition.md)
+Area: execution ownership and test reliability
+
+The human deferred diagnosis while retaining this unresolved qualification on
+milestone validation. A bounded comparison reproduced the review's cancellation
+pattern on pre-implementation baseline
+`c15afdd3b03f588534ac386c2453c81da71ffb68` and corrected implementation
+`f5a974d364245a3c19f4afe70d8e5f92c1807729`. The pattern predates investigation
+implementation, but its cause and any production implications remain unknown.
+
+Reproduce in separate checkouts with Node.js 22.13.1 and the pinned dependencies.
+After `npm run build`, run these separately to distinguish isolation from the
+full suite (the symptom is intermittent; a pass does not resolve it):
+
+```sh
+node --test _build/test/execution-ownership.test.js
+node --test _build/test/*.test.js
+```
+
+Captured comparison results:
+
+| Checkout | Isolated execution ownership | Full suite |
+| --- | --- | --- |
+| Pre-implementation baseline | 13 passed, 0 cancelled | 283 passed, 0 failed, 13 cancelled; 296 total |
+| Corrected milestone 1 | 13 passed, 0 cancelled | 318 passed, 0 failed, 13 cancelled; 331 total |
+
+All 13 tests in `test/execution-ownership.test.ts` were affected: Git deadline/
+escalation/exit, unconfirmed cleanup, worker interruption during opening and
+validation, unexpected worker exit, worker send/close/late settlement, opening
+timeout/invalidation, interrupted publication, worker cleanup bounds, Git output
+limits, and failed spawn handling. The first test reported
+`Promise resolution is still pending but the event loop has already resolved`
+after approximately 364 ms on the baseline; the remaining 12 were cancelled by
+the parent. The reviewer also saw 13 cancellations in one full run, followed by
+successful isolated and full runs.
+
+The [validation record](../records/validation/module-investigation/2026-09-29-milestone-1-review-corrections.md)
+preserves runtime, chronology and comparison limits. Local scratch logs are
+`_investigation/baseline-ownership.log`, `baseline-full.log`,
+`current-ownership.log` and `current-full.log` in that directory; the durable
+results above do not depend on those uncommitted files being retained.
+Investigate the unresolved cause without treating isolated passes as a fully
+passing suite or assuming a load-related explanation. This entry does not
+authorize a cancellation-policy change.
+
+Milestone-2 integration development reproduced the same 13 cancellations in a
+359-test full run: 346 passed, zero failed, 13 cancelled, approximately 128.3
+seconds. The first execution-ownership test reported the same pending-promise/
+event-loop error after approximately 349.6 ms; the other 12 were cancelled by the
+parent. An earlier 357-test development run passed all tests. The
+[milestone-2 validation](../records/validation/module-investigation/2026-09-29-milestone-2.md)
+records the later 360/360 complete run and the final 13/13 isolated ownership run
+separately, alongside the final focused integration checks. This is another
+observation of the deferred concern, not a diagnosis or a change in its disposition.
+
+The milestone-2 reviewer ran the pinned target `a396f9b8e9b38ad344554cbe4c0e7677ded1ec0e`
+three times: 360 passed, zero failed or cancelled each time (about 125.5, 121.0
+and 117.4 seconds). These passes do not diagnose the concern. The human renewed
+qualified deferral through milestone 2 after that review, with diagnosis required
+before milestone 3's live, cost-bearing adapter work. The new parent-side dialogue,
+abort and usage state increases the importance of resolving the ownership concern
+before relying on live interruption and cleanup. See the
+[milestone-2 findings](../records/reviews/module-investigation/2026-09-29-milestone-2-round-1-findings.md).
+
 ## Consider grouping investigation operations in one dialogue
 
 Added: 2026-09-29
@@ -221,6 +336,30 @@ before making isolated formatting changes. Identify what deserves immediate
 attention, what should be progressively disclosed, and what belongs in a later
 visual interface. Preserve precise navigation, evidence, qualifications, and
 consequential omission disclosure while improving readability.
+
+The [milestone-4 progressive assessment](../records/validation/module-investigation/pass-04/report.md)
+adds captured examples: repeated full accounts and accounting/evidence metadata
+obscure what changed; investigram source-detail views can supply artifact paths
+and metadata without checkable excerpts or line positions; and standalone captured
+interpretive views omit effective compiler/configuration attribution that is
+available in the surrounding assessment record. Consider readable, bounded
+evidence navigation and concise provenance in the whole-journey review. These
+are formative observations, not measured human usability results or authorization
+for a presentation redesign.
+
+The [milestone-5 integrated assessment](../records/validation/module-investigation/pass-05/report.md)
+adds original/current account distinctions, causal warning pages and explicit
+conflicts to this journey. Assess whether repeated empty revision status obscures
+important warnings, and how users discover qualifications learned in follow-ups
+when the retained summary has no explicit correction. Preserve exact historical
+selection and avoid implying automatic synthesis or reassessment. These remain
+formative concerns, not a request to tune the current assessment. The
+[focused dependent-account sequence](../records/validation/module-investigation/pass-06/report.md)
+again exposes absent excerpts and dense repeated context. Its evaluator distinguishes
+compatible replacement accounts from the structural “conflicting alternatives”
+label, and local exact selection from family primary, but finds the wording demanding.
+Use these captures as further qualitative evidence for the same journey review,
+without implying measured misunderstanding or authorizing current-slice redesign.
 
 ## Investigate analysis parallelism and asynchronous I/O
 

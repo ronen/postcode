@@ -1,0 +1,115 @@
+{
+  "roles": [
+    {
+      "subject": "cockatiel-r2",
+      "role": "assessor",
+      "task": "/root/r2_assess_cockatiel",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+      "monetaryAttribution": null
+    },
+    {
+      "subject": "cockatiel-r2",
+      "role": "evaluator",
+      "task": "/root/r2_evaluate_cockatiel",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+      "monetaryAttribution": null
+    },
+    {
+      "subject": "focused-entry-r2",
+      "role": "assessor",
+      "task": "/root/r2_assess_entry",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+      "monetaryAttribution": null
+    },
+    {
+      "subject": "focused-entry-r2",
+      "role": "evaluator",
+      "task": "/root/r2_evaluate_entry",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+      "monetaryAttribution": null
+    },
+    {
+      "subject": "focused-one-call",
+      "role": "assessor",
+      "task": "/root/r2_assess_limit",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+      "monetaryAttribution": null
+    },
+    {
+      "subject": "focused-one-call",
+      "role": "evaluator",
+      "task": "/root/r2_evaluate_limit",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+      "monetaryAttribution": null
+    },
+    {
+      "subject": "fsm-engine-r2",
+      "role": "assessor",
+      "task": "/root/r2_assess_fsm",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+      "monetaryAttribution": null
+    },
+    {
+      "subject": "fsm-engine-r2",
+      "role": "evaluator",
+      "task": "/root/r2_evaluate_fsm",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+      "monetaryAttribution": null
+    },
+    {
+      "subject": "merge-anything-r2",
+      "role": "assessor",
+      "task": "/root/r2_assess_merge",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+      "monetaryAttribution": null
+    },
+    {
+      "subject": "merge-anything-r2",
+      "role": "evaluator",
+      "task": "/root/r2_evaluate_merge",
+      "model": "inherited; exact identifier unavailable",
+      "reasoning": "inherited; exact setting unavailable",
+      "family": "OpenAI",
+      "usage": null,
+      "billingRoute": "agent orchestration; unavailable attribution, separate from PostCode",
+      "monetaryAttribution": null
+    }
+  ],
+  "limitation": "Usage and monetary attribution are unavailable, not zero. These tool-hosted agents may share the account allowance; none are included as zero in PostCode totals. Each role has one fresh turn, no model override and no independent sources. Shared family/orchestration limits independence."
+}
