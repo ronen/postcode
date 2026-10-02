@@ -109,8 +109,10 @@ scope statements and limits still apply to everything else.
     with five delivery modes (bare, empty-excerpt, excerpt, mixed and full). It also
     covers the prepared-but-undelivered case. It asserts whole-unit rejection with no
     repair exchange, and that an excerpt does not mark the target complete.
-  - **Probe re-run.** I re-ran my round-1 probe mentally against the new code: an
-    empty `citations` set now rejects it.
+  - **Probe re-run.** I re-ran my round-1 offline probe (scratchpad only) against the
+    rebuilt `_build` at `f3189e3`. It is now rejected with
+    `InvalidSubmission: Inconsistency targets require substantively supplied content
+    recorded by a citation.`
 
 ### Non-defect observations
 
