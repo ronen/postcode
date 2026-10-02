@@ -417,6 +417,12 @@ Question: “F4 leaves the scale behavior untested and offers bounding the outpu
 
 Human answer: “Bound listings with regression coverage (Recommended)”
 
+### Milestone 5 F5 context priority — 2026-10-02
+
+Question: “F5 also notes that automatically included accounts expose the oldest correction link. May I instead prioritize the link leading to the current primary, with regression coverage and explicit paging for alternatives? I’ll independently fix the inaccurate omission reason and incomplete omission count.”
+
+Human answer: “Prioritize the current-primary link (Recommended)”
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
