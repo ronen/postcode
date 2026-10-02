@@ -1671,3 +1671,43 @@ Further human-arranged review is required under the original milestone-5 handoff
 with exact target `2c4bd8c5a9427e74f62f2d9cdb72a9417b57fd29` (this checkpoint adds
 only the task record). Milestone acceptance and the subsequent final integrated
 review remain pending. The task stays active.
+
+### Milestone 5 round-2 follow-up complete — 2026-10-02
+
+The human-arranged [round-2 review](../reviews/module-investigation/2026-10-02-milestone-5-round-2-findings.md)
+clears all six earlier findings and confirms the bounded dependent-account evidence
+gap is addressed. The reviewer independently passed 466 tests, reproduced F1's
+resolution, regenerated all four pass-06 audits byte-identically and checked the
+frozen fixture and unchanged historical records. Its recommendation is that evidence
+is sufficient for the milestone-5 gate; human acceptance remains separate.
+
+Both new low-severity observations are accepted and resolved. Human authorization
+`015ea9c` precedes investigation of unexercised R2-O1. A deterministic real-session
+reproduction fails when an accompanying replacement is displayed before the deeper
+original: the original and its child disappear from displacement. Correction
+`9d189d9` records displacement before skipping an already displayed body, preserving
+new-body bounds and avoiding duplicate display. Presentation identity advances to
+@11 and the architecture account describes the case. R2-O2 adds real-session coverage
+for both remaining truncation paths: 372 displaced accounts and 387 accompanying
+corrections yield 256-entry listings with exact omissions 116 and 131, matching human
+output. Exact inspection retrieves omitted children/corrections without inference.
+
+Four focused regressions pass. The complete suite at clean stationary
+`9d189d9e0e208881b3a037da88af0d49b52b61e0` passes **468 tests**, zero failures,
+cancellations or skips, 153.733 seconds (163.513 including build/monitor), with local
+test listeners permitted. Maximum monitor gap is 1.111 seconds, none over two seconds.
+No real credentials or provider requests were used. Historical failures and
+cancellation uncertainty remain preserved. `03f9cee` commits the updated
+[disposition](../reviews/module-investigation/2026-10-02-milestone-5-disposition.md)
+and [verification evidence](../validation/module-investigation/2026-10-02-milestone-5-round-2/verification.md),
+including the failing reproduction. Diff and local-link checks pass; fixture,
+pass-05/pass-06 captures, handoff and reviewer findings remain unchanged.
+
+The reviewer’s limits remain explicit: full formative role inputs/outputs, deeper
+wording analysis, upstream semantics, sleep monitoring and dry-run captures were
+not all independently reverified. These offline checks do not upgrade those areas.
+No live assessment, tuning, credential action or spending change occurred; diagnostic
+allowance remains two used/eight remaining. The local reproduced fix does not
+invalidate the re-review's substantive analysis; no additional milestone-5 re-review
+is judged necessary. Include the correction in final integrated review. Milestone-5
+acceptance still awaits the human, and the task remains active.
