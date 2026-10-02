@@ -411,6 +411,12 @@ This authorizes one focused sequence, not a general tuning pass, historical draf
 
 Record this follow-up under the task protocol and include the correction and assessment evidence in the review handoff. This does not accept the milestone or dispose of its other findings.
 
+### Milestone 5 F4 choice — 2026-10-02
+
+Question: “F4 leaves the scale behavior untested and offers bounding the output or documenting the limitation. May I investigate it with a deterministic large-history regression and add explicit bounds/omissions to displaced-account and revision-status listings? I recommend this over leaving output bounded only by session size.”
+
+Human answer: “Bound listings with regression coverage (Recommended)”
+
 ## Outcome
 
 ### Milestone 1 — domain execution checkpoint
