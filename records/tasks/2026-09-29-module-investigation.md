@@ -1759,3 +1759,76 @@ new live inference or access to real credentials. Final review must also identif
 any specific required-case deferral still needing human approval before closure.
 The task remains active; final integrated review and the human completion gate
 are outstanding.
+
+### Integrated round-1 dispositions and bounded completion — 2026-10-02
+
+Human direction `d0ef2e8` explicitly authorizes completing F1 and selects the F3
+exposure rule. Correction `921ad46` implements substantive citation for every
+unresolved-inconsistency target, without requiring complete target content.
+Identifier availability and prepared-but-undelivered content are insufficient;
+partial substantive delivery suffices. The accepted governing decision, instructions,
+schema and architecture record that distinction from replacement corrections.
+Investigation identity is @12 and both hosted adapter identities are @7. Root,
+nested, empty, bare, partial, full and mixed-target regressions preserve whole-unit
+rejection without repair. F2 refreshes README/architecture overview and the CLI
+heading/current links while retaining the historical anchor.
+
+At clean stationary `921ad46`, seven focused regressions and the complete offline
+suite pass: **469 tests**, zero failures/cancellations/skips, 196.162 seconds;
+212.187 including build/monitor. Maximum monitor gap is 1.121 seconds, none over
+two seconds. The initial diagnostic-message regression failure is retained and
+corrected. Local test listeners were permitted; offline checks used no real
+credentials or provider requests. Historical failures and cancellation uncertainty
+remain unchanged. Full evidence is in the
+[integrated correction verification](../validation/module-investigation/2026-10-02-integrated-corrections/verification.md).
+
+Freeze `5dd6d35` precedes the separately retained
+[pass-07 completion](../validation/module-investigation/pass-07/report.md).
+It uses an isolated export of the exact pass-05 runtime `e54a4c3` (production
+`9eb0b7d`), with investigation @10, presentation @9, adapter @6 and references @3.
+The human-selected gpt-5.6-sol / medium / ChatGPT-plan configuration, Node 22.13.1,
+TypeScript 6.0.3, source pin and exact approved ignoreDeprecations override remain
+fixed. Preflight/postflight verify the source, runtime and frozen material. The
+new rule is covered by current offline tests; this historical-runtime assessment
+is not a live test of F3 or later presentation fixes.
+
+One fresh merge-anything shell accepted summary, explanation, decomposition and
+examination; each follow-up targets an account from its immediately preceding
+result. No recovery, rejected submission, guard stop or reauthorization occurred.
+Four inspections and two retained redisplays made no further inference. One
+source-detail inspection disclosed a file location with a matching source-escape
+event; it did not supply an excerpt. The 16 provider requests report **416,143
+tokens**, with no missing or anomalous report. Exposure is reconstructed from
+actually sent content, not handle availability. No structured inconsistency was
+reported, so its post-run target check is vacuous. No other case was repeated.
+
+Fresh summary and sequence evaluators, followed by separate fresh source-informed
+assessors, find useful progressive understanding with substantial display overhead.
+The selective frozen reference supports core behavior but cannot independently
+settle deeper getter-order, callback, test-detail and type claims. No populated
+correction graph appears in this run; it adds no such evidence. Exact effective
+configuration is retained in assessment provenance but not readily recoverable
+from the supplied views. A criticism about descriptor qualifications is itself
+qualified because the summary already states that limit. These are formative,
+shared-family judgments, not independent runtime validation or a tuning mandate.
+Exact dispatches, inputs, outputs and separately unavailable role usage are retained.
+
+`1f53f5b` commits the completed evidence, all-finding
+[disposition](../reviews/module-investigation/2026-10-02-integrated-disposition.md)
+and updated [integrated account](../validation/module-investigation/integrated/report.md).
+Four new-pass audits, usage rendering and aggregation reproduce seven derived
+outputs byte-identically. Artifact syntax and supplementary credential-pattern
+checks flag nothing; they do not prove absolute secrecy. Local Markdown link and
+diff checks pass. Passes 01–06, original handoff and reviewer findings are unchanged.
+
+The aggregate is now **219 provider requests / 5,526,468 known reported tokens**,
+three historical missing reports, zero provider anomalies and fifteen synthetic
+reports excluded. Monetary and allowance-versus-credit attribution remain unknown;
+evaluator/assessor/preparer usage is separately unavailable. No purchases or spending
+settings changed. Diagnostic allowance remains two used/eight remaining.
+
+F1 is completed and F2/F3 are corrected and verified. All other review observations
+and scope limits are dispositioned without implying broader independent coverage.
+A focused re-check under the original integrated handoff is appropriate; another
+full integrated round is not proposed. The task remains active and final human
+acceptance remains outstanding.
