@@ -158,3 +158,14 @@ F3 remains covered deterministically, not by the historical-runtime live pass.
 The reviewer recommends sufficient evidence for the integrated gate. The human
 explicitly keeps the task open, with pushing and GitHub PR creation as the next step.
 This follow-up changes review records only and makes no new provider request.
+
+
+## Final acceptance
+
+After the supplementary [Copilot PR review](../../../reviews/module-investigation/2026-10-02-integrated-round-3-copilot-findings.md)
+reported no findings, the human explicitly approved task closure in `74a2699`.
+The review's `COMMENTED` state and general request for final human review are
+preserved; acceptance comes from the human, not an inferred GitHub approval.
+The [final disposition](../../../reviews/module-investigation/2026-10-02-integrated-disposition.md)
+retains all review and assessment limitations. This records acceptance without
+new inference, new verification claims or changes to prior captures or usage.
