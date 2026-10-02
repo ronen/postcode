@@ -6,7 +6,7 @@ Findings: [round 1](2026-10-02-milestone-5-round-1-findings.md)
 Reviewed target: `37837f8d1432df652c6cec7c839f101a5b3d2cea`
 Human decisions: `f21dd5e` (F2 and one focused assessment), `458fe44` (F4 bounds),
 `56912e6` (F5 current-primary context priority).
-Status: rounds 1 and 2 assessed; all findings/observations accepted and resolved; milestone-5 acceptance awaits the human; final integrated review remains.
+Status: milestone 5 accepted by the human on 2026-10-02 (`70aa34f`); rounds 1 and 2 resolved; final integrated review remains.
 
 | Finding | Assessment and disposition |
 | --- | --- |
@@ -106,3 +106,12 @@ retains the failing reproduction, passing focused cases and complete suite: **46
 passes**, zero failures/cancellations/skips, clean stationary `9d189d9`. No further
 milestone-5 re-review is judged necessary for these local corrections; this is an
 implementation-agent judgment, not a claim that the reviewer inspected the new fix.
+
+## Milestone acceptance
+
+The human accepted milestone 5 and directed preparation of final integrated review
+in `70aa34f`. Both rounds are dispositioned, including the reproduced R2-O1 fix and
+R2-O2 coverage. The milestone-5 gate is satisfied. Earlier pending statements above
+preserve their historical context; the acceptance does not rewrite failed live
+attempts or remove the reported limits. The task remains active for a separate
+integrated review across all five milestones and the final human completion gate.

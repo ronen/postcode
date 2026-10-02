@@ -1,0 +1,261 @@
+{
+  "passes": [
+    {
+      "assessmentPass": "pass-01",
+      "authenticationRoute": "chatgpt-sign-in",
+      "billingRoute": "chatgpt-plan",
+      "ledger": "pass-01/request-budget.json",
+      "usageReport": "pass-01/usage-report.json",
+      "roleUsage": "pass-01/assessment-agent-usage.json",
+      "sessions": [
+        {
+          "run": "cockatiel-summary",
+          "providerRequests": 5,
+          "knownReportedTokens": 204659,
+          "missingReports": 0
+        },
+        {
+          "run": "fsm-engine-summary",
+          "providerRequests": 4,
+          "knownReportedTokens": 161522,
+          "missingReports": 0
+        },
+        {
+          "run": "merge-anything-summary",
+          "providerRequests": 5,
+          "knownReportedTokens": 216892,
+          "missingReports": 0
+        },
+        {
+          "run": "focused-entry",
+          "providerRequests": 4,
+          "knownReportedTokens": 68870,
+          "missingReports": 0
+        },
+        {
+          "run": "focused-opaque",
+          "providerRequests": 3,
+          "knownReportedTokens": 14784,
+          "missingReports": 0
+        },
+        {
+          "run": "focused-hard-limit",
+          "providerRequests": 0,
+          "knownReportedTokens": 0,
+          "missingReports": 0
+        }
+      ],
+      "providerRequests": 21,
+      "knownReportedTokens": 666727,
+      "missingProviderReports": 0,
+      "anomalousProviderReports": 0,
+      "emptySyntheticReportsExcluded": 0
+    },
+    {
+      "assessmentPass": "pass-02",
+      "authenticationRoute": "chatgpt-sign-in",
+      "billingRoute": "chatgpt-plan",
+      "ledger": "pass-02/request-budget.json",
+      "usageReport": "pass-02/usage-report.json",
+      "roleUsage": "pass-02/assessment-agent-usage.json",
+      "sessions": [
+        {
+          "run": "focused-entry-r2",
+          "providerRequests": 3,
+          "knownReportedTokens": 49686,
+          "missingReports": 0
+        },
+        {
+          "run": "cockatiel-summary-r2",
+          "providerRequests": 5,
+          "knownReportedTokens": 182631,
+          "missingReports": 0
+        },
+        {
+          "run": "fsm-engine-summary-r2",
+          "providerRequests": 3,
+          "knownReportedTokens": 158883,
+          "missingReports": 0
+        },
+        {
+          "run": "merge-anything-summary-r2",
+          "providerRequests": 4,
+          "knownReportedTokens": 154759,
+          "missingReports": 0
+        },
+        {
+          "run": "focused-one-call",
+          "providerRequests": 1,
+          "knownReportedTokens": 1777,
+          "missingReports": 0
+        }
+      ],
+      "providerRequests": 16,
+      "knownReportedTokens": 547736,
+      "missingProviderReports": 0,
+      "anomalousProviderReports": 0,
+      "emptySyntheticReportsExcluded": 0
+    },
+    {
+      "assessmentPass": "pass-03",
+      "authenticationRoute": "chatgpt-sign-in",
+      "billingRoute": "chatgpt-plan",
+      "ledger": "pass-03/request-budget.json",
+      "usageReport": "pass-03/usage-report.json",
+      "roleUsage": "pass-03/assessment-agent-usage.json",
+      "sessions": [
+        {
+          "run": "focused-entry-r3",
+          "providerRequests": 4,
+          "knownReportedTokens": 32819,
+          "missingReports": 0
+        },
+        {
+          "run": "cockatiel-r3",
+          "providerRequests": 4,
+          "knownReportedTokens": 138247,
+          "missingReports": 0
+        },
+        {
+          "run": "fsm-engine-r3",
+          "providerRequests": 5,
+          "knownReportedTokens": 189563,
+          "missingReports": 0
+        },
+        {
+          "run": "merge-anything-r3",
+          "providerRequests": 6,
+          "knownReportedTokens": 203113,
+          "missingReports": 0
+        }
+      ],
+      "providerRequests": 19,
+      "knownReportedTokens": 563742,
+      "missingProviderReports": 0,
+      "anomalousProviderReports": 0,
+      "emptySyntheticReportsExcluded": 0
+    },
+    {
+      "assessmentPass": "pass-04",
+      "authenticationRoute": "chatgpt-sign-in",
+      "billingRoute": "chatgpt-plan",
+      "ledger": "pass-04/request-budget.json",
+      "usageReport": "pass-04/usage-report.json",
+      "roleUsage": "pass-04/assessment-agent-usage.json",
+      "sessions": [
+        {
+          "run": "cockatiel-m4",
+          "providerRequests": 18,
+          "knownReportedTokens": 361212,
+          "missingReports": 0
+        },
+        {
+          "run": "fsm-engine-m4",
+          "providerRequests": 17,
+          "knownReportedTokens": 489124,
+          "missingReports": 0
+        },
+        {
+          "run": "merge-anything-m4",
+          "providerRequests": 19,
+          "knownReportedTokens": 509575,
+          "missingReports": 0
+        },
+        {
+          "run": "progressive-numeric-m4",
+          "providerRequests": 10,
+          "knownReportedTokens": 100015,
+          "missingReports": 0
+        }
+      ],
+      "providerRequests": 64,
+      "knownReportedTokens": 1459926,
+      "missingProviderReports": 0,
+      "anomalousProviderReports": 0,
+      "emptySyntheticReportsExcluded": 1
+    },
+    {
+      "assessmentPass": "pass-05",
+      "authenticationRoute": "chatgpt-sign-in",
+      "billingRoute": "chatgpt-plan",
+      "ledger": "pass-05/request-budget.json",
+      "usageReport": "pass-05/usage-report.json",
+      "roleUsage": "pass-05/assessment-agent-usage.json",
+      "sessions": [
+        {
+          "run": "cockatiel-m5",
+          "providerRequests": 23,
+          "knownReportedTokens": 748232,
+          "missingReports": 0
+        },
+        {
+          "run": "fsm-engine-m5",
+          "providerRequests": 18,
+          "knownReportedTokens": 438770,
+          "missingReports": 1
+        },
+        {
+          "run": "merge-anything-m5",
+          "providerRequests": 17,
+          "knownReportedTokens": 302293,
+          "missingReports": 2
+        },
+        {
+          "run": "refined-numeric-m5",
+          "providerRequests": 10,
+          "knownReportedTokens": 137186,
+          "missingReports": 0
+        },
+        {
+          "run": "conflict-numeric-m5",
+          "providerRequests": 5,
+          "knownReportedTokens": 56760,
+          "missingReports": 0
+        }
+      ],
+      "providerRequests": 73,
+      "knownReportedTokens": 1683241,
+      "missingProviderReports": 3,
+      "anomalousProviderReports": 0,
+      "emptySyntheticReportsExcluded": 10
+    },
+    {
+      "assessmentPass": "pass-06",
+      "authenticationRoute": "chatgpt-sign-in",
+      "billingRoute": "chatgpt-plan",
+      "ledger": "pass-06/request-budget.json",
+      "usageReport": "pass-06/usage-report.json",
+      "roleUsage": "pass-06/assessment-agent-usage.json",
+      "sessions": [
+        {
+          "run": "dependent-numeric-m5",
+          "providerRequests": 10,
+          "knownReportedTokens": 188953,
+          "missingReports": 0
+        }
+      ],
+      "providerRequests": 10,
+      "knownReportedTokens": 188953,
+      "missingProviderReports": 0,
+      "anomalousProviderReports": 0,
+      "emptySyntheticReportsExcluded": 4
+    }
+  ],
+  "totals": {
+    "providerRequests": 203,
+    "knownReportedTokens": 5110325,
+    "missingProviderReports": 3,
+    "anomalousProviderReports": 0,
+    "emptySyntheticReportsExcluded": 15
+  },
+  "monetaryAttribution": null,
+  "assessmentRoleUsage": null,
+  "limitations": [
+    "Includes all six frozen assessment passes and their recovery attempts; failed calls are retained.",
+    "Token subsets are not added to total tokens. Missing reports are unknown, not zero.",
+    "API-key support has offline coverage; no API-billed assessment runs are recorded.",
+    "Diagnostic/connection requests are separate; see 2026-09-30-chatgpt-completed-items.md.",
+    "Evaluator, assessor, reference-preparer and orchestrator usage is separately unavailable, not zero.",
+    "ChatGPT included allowance versus optional purchased-credit attribution is unknown; API prices are not actual charges."
+  ]
+}
