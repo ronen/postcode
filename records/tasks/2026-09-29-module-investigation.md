@@ -1836,3 +1836,37 @@ and scope limits are dispositioned without implying broader independent coverage
 A focused re-check under the original integrated handoff is appropriate; another
 full integrated round is not proposed. The task remains active and final human
 acceptance remains outstanding.
+
+### Clean integrated re-review; task held open — 2026-10-02
+
+The human reports the clean review and explicitly keeps the task open in `4b167a6`.
+The [round-2 findings](../reviews/module-investigation/2026-10-02-integrated-round-2-findings.md),
+committed by the reviewer in `38143a7` and corrected by that reviewer in `1650282`
+to record the actual F3 probe rerun, clear all three prior findings with no new
+actionable findings or required cases awaiting deferral. The same reviewer/session
+performed the focused check at `f3189e3`; this is not another independent full
+integrated review. The reviewer recommends sufficient evidence for the final gate;
+that recommendation does not itself close or accept the task.
+
+Independent verification passed **469 tests**, zero failures/cancellations/skips,
+173.429 seconds (3:02.80 including build), at a clean unchanged checkout with local
+listeners permitted. All fifteen audits reproduced byte-identical outputs and the
+219-request / 5,526,468-known-token aggregate. The round-1 F3 probe was rerun against
+rebuilt output and rejected for missing substantive citation. Freeze chronology and
+unchanged earlier records were checked. No live inference, credentials, sleep
+monitor or historical-export preflight rerun was involved; prior review limits
+remain explicit, including deterministic-only coverage of F3.
+
+`70b08f9` updates the [disposition](../reviews/module-investigation/2026-10-02-integrated-disposition.md)
+and integrated account. It accepts all non-defect observations: reporter-content
+citations fit existing attribution; the source independently supports descriptor
+normalization, collision enumerability and eager getter reads; the generated account
+omits the possible second origin getter read on a collision; test-coverage statements
+remain unverified; location-only source-detail wording remains a backlog concern.
+Historical outputs and reviewer findings remain unchanged, with no tuning or new
+implementation work.
+
+This follow-up only changes review/task records. Diff and local-link checks pass;
+production and tests are unchanged, so no additional suite run or provider request
+was needed. Task status remains **active**, with no closing date. Pushing the branch
+and creating a GitHub PR are the next step; neither occurred in this follow-up.
