@@ -6,11 +6,11 @@ Findings: [round 1](2026-10-02-integrated-round-1-findings.md)
 Handoff: [integrated review](2026-10-02-integrated-handoff.md)
 Reviewed target: `f4328296cc8fff1f4d7fd820a4ca98ede6ce1f5c`
 Human direction: `d0ef2e8`
-Status: F2/F3 corrected pending complete verification; F1 bounded completion being prepared; final gate not accepted.
+Status: F1 completed; F2/F3 corrected and verified; ready for focused re-check; final gate not accepted.
 
 | Finding | Assessment and disposition |
 | --- | --- |
-| F1 | Accepted. The missing merge-anything integrated sequence is not implicitly deferred by milestone acceptance. The human explicitly chooses bounded completion. Recreate summary/explanation prerequisites in one fresh shell, then decomposition and examination, using pass 05's frozen configuration; preserve every prior attempt. Only this subject is in scope. Retain the new sequence and fresh formative roles separately; stop under the existing failure/recovery protocol rather than tune or broaden the run. |
+| F1 | Accepted. The missing merge-anything integrated sequence is not implicitly deferred by milestone acceptance. The human explicitly chooses bounded completion. Recreate summary/explanation prerequisites in one fresh shell, then decomposition and examination, using pass 05's frozen configuration; preserve every prior attempt. Only this subject was repeated. [Pass 07](../../validation/module-investigation/pass-07/report.md) records four accepted linked evaluations under the exact historical pass-05 runtime, with no recovery: 16 provider requests / 416,143 known tokens. Every follow-up targets the immediately preceding result. Fresh formative roles, actual exposure, inspections and reuse are retained separately. This completes the missing required chain without rewriting the original failure; semantic/presentation and role-independence limits remain. |
 | F2 | Accepted and corrected. README now places the delivered four-lens account in the CLI section, describes revision-aware redisplay, associated/exact inspection, paging and explicit billing routes, and links current capabilities/limits. Architecture overview describes the delivered integration and ChatGPT-plan route. Rename the CLI section and update current links, retaining its old anchor for historical links. No runtime change for this finding. |
 | F3 | Accepted; human chooses substantive citation for every target, without complete content. Record the dated clarification in the governing investigram decision. Acceptance requires each earlier target to appear in the actual exposure citation ledger; bare handles and prepared-but-undelivered content fail. Excerpts suffice, unlike replacement correction eligibility. Root/nested/multiple-target regressions preserve whole-unit rejection with no repair. Instructions/schema and architecture describe the rule; investigation identity advances to @12 and both adapter identities to @7. |
 
@@ -48,6 +48,17 @@ undermine the premise. These are qualified formative judgments, not a reliabilit
 estimate. Existing UI/UX and other backlog candidates remain outside this correction.
 
 ## Verification and review limits
+
+Correction `921ad46` passes seven focused contract/correction regressions and the
+[complete offline suite](../../validation/module-investigation/2026-10-02-integrated-corrections/verification.md):
+**469 tests**, zero failures/cancellations/skips, at a clean stationary checkout.
+The initial combined-error diagnostic regression failure is retained and fixed.
+The accepted governing clarification, instructions, schema, architecture and method
+identities agree. F2 current links and retained historical anchor pass local checks.
+Pass-07 preflight/postflight verifies unchanged frozen configuration; wire, usage,
+chain and immutable-lifecycle audits pass. No inconsistency was reported live, so
+its post-run citation check is vacuous; F3 is covered by deterministic regressions,
+not a claimed new live acceptance test. Historical pass records remain unchanged.
 
 Round 1 independently passed 468 tests and all eleven capture/accounting audits,
 with byte-identical outputs and a clean stationary checkout. It read the stated

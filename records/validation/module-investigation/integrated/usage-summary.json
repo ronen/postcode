@@ -239,11 +239,32 @@
       "missingProviderReports": 0,
       "anomalousProviderReports": 0,
       "emptySyntheticReportsExcluded": 4
+    },
+    {
+      "assessmentPass": "pass-07",
+      "authenticationRoute": "chatgpt-sign-in",
+      "billingRoute": "chatgpt-plan",
+      "ledger": "pass-07/request-budget.json",
+      "usageReport": "pass-07/usage-report.json",
+      "roleUsage": "pass-07/assessment-agent-usage.json",
+      "sessions": [
+        {
+          "run": "merge-anything-m5",
+          "providerRequests": 16,
+          "knownReportedTokens": 416143,
+          "missingReports": 0
+        }
+      ],
+      "providerRequests": 16,
+      "knownReportedTokens": 416143,
+      "missingProviderReports": 0,
+      "anomalousProviderReports": 0,
+      "emptySyntheticReportsExcluded": 0
     }
   ],
   "totals": {
-    "providerRequests": 203,
-    "knownReportedTokens": 5110325,
+    "providerRequests": 219,
+    "knownReportedTokens": 5526468,
     "missingProviderReports": 3,
     "anomalousProviderReports": 0,
     "emptySyntheticReportsExcluded": 15
@@ -251,7 +272,7 @@
   "monetaryAttribution": null,
   "assessmentRoleUsage": null,
   "limitations": [
-    "Includes all six frozen assessment passes and their recovery attempts; failed calls are retained.",
+    "Includes all seven frozen assessment passes and their recovery attempts; failed calls are retained.",
     "Token subsets are not added to total tokens. Missing reports are unknown, not zero.",
     "API-key support has offline coverage; no API-billed assessment runs are recorded.",
     "Diagnostic/connection requests are separate; see 2026-09-30-chatgpt-completed-items.md.",

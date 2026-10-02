@@ -1,0 +1,93 @@
+{
+  "runs": [
+    {
+      "role": "investigator-and-separately-marked-scripted-setup",
+      "session": "merge-anything-m5",
+      "calls": 16,
+      "missingCalls": 0,
+      "anomalousCalls": 0,
+      "groups": [
+        {
+          "agent": {
+            "provider": "openai",
+            "model": "gpt-5.6-sol",
+            "origin": "hosted",
+            "configuration": {
+              "adapter": "postcode/chatgpt-responses@6",
+              "sdk": "openai@7.25.0",
+              "authenticationRoute": "chatgpt-sign-in",
+              "billingRoute": "chatgpt-plan",
+              "reasoningEffort": "medium",
+              "store": false,
+              "streaming": true,
+              "references": "postcode/investigator-references@3",
+              "characterGuard": "canonical-domain-exchanges",
+              "retries": 0
+            }
+          },
+          "source": "provider",
+          "execution": {
+            "model": "gpt-5.6-sol",
+            "serviceTier": "default"
+          },
+          "categories": [
+            {
+              "category": "total",
+              "unit": "tokens",
+              "value": 416143,
+              "includedIn": null
+            },
+            {
+              "category": "input",
+              "unit": "tokens",
+              "value": 406853,
+              "includedIn": "total"
+            },
+            {
+              "category": "output",
+              "unit": "tokens",
+              "value": 9290,
+              "includedIn": "total"
+            },
+            {
+              "category": "cached-input",
+              "unit": "tokens",
+              "value": 41600,
+              "includedIn": "input"
+            },
+            {
+              "category": "cache-write-input",
+              "unit": "tokens",
+              "value": 0,
+              "includedIn": "input"
+            },
+            {
+              "category": "reasoning",
+              "unit": "tokens",
+              "value": 3135,
+              "includedIn": "output"
+            }
+          ],
+          "authenticationRoute": "chatgpt-sign-in",
+          "billingRoute": "chatgpt-plan",
+          "monetaryAttribution": {
+            "status": "unavailable",
+            "amount": null,
+            "currency": null,
+            "explanation": "Token usage does not identify included allowance versus optional purchased-credit charges. API prices are not ChatGPT credit prices."
+          }
+        }
+      ],
+      "limitations": [
+        "Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.",
+        "ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage"
+      ]
+    }
+  ],
+  "limitations": [
+    "Role totals are kept separate even when the same subscription allowance funds them.",
+    "Missing or anomalous usage and unavailable monetary attribution are unknown, not zero.",
+    "No API-equivalent estimate is presented as actual ChatGPT credit usage."
+  ],
+  "chatGPTUsageControls": "https://chatgpt.com/settings/usage"
+}

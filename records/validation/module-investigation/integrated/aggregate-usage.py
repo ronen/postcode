@@ -4,7 +4,7 @@ import json
 
 base = Path(__file__).resolve().parent.parent
 passes = []
-for number in range(1, 7):
+for number in range(1, 8):
     name = f'pass-{number:02}'
     folder = base / name
     ledger = json.loads((folder / 'request-budget.json').read_text())
@@ -45,7 +45,7 @@ result = dict(passes=passes, totals={key: sum(row[key] for row in passes) for ke
               ['providerRequests', 'knownReportedTokens', 'missingProviderReports',
                'anomalousProviderReports', 'emptySyntheticReportsExcluded']},
               monetaryAttribution=None, assessmentRoleUsage=None,
-              limitations=['Includes all six frozen assessment passes and their recovery attempts; failed calls are retained.',
+              limitations=['Includes all seven frozen assessment passes and their recovery attempts; failed calls are retained.',
                            'Token subsets are not added to total tokens. Missing reports are unknown, not zero.',
                            'API-key support has offline coverage; no API-billed assessment runs are recorded.',
                            'Diagnostic/connection requests are separate; see 2026-09-30-chatgpt-completed-items.md.',

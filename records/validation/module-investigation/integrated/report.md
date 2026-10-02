@@ -1,8 +1,9 @@
 # Integrated assessment and usage account
 
 Recorded: 2026-10-02. Milestones 1–5 are accepted by the human. This account
-consolidates existing evidence for final integrated review; it neither reruns live
-assessments nor closes the task. Earlier frozen records remain unchanged.
+consolidates evidence for final integrated review and now includes the bounded
+F1 completion explicitly authorized after round 1. It does not close the task.
+Earlier frozen records and the original handoff remain unchanged.
 
 ## Evidence across the passes
 
@@ -39,6 +40,13 @@ assessments nor closes the task. Earlier frozen records remain unchanged.
   the same original, not independent detection of another error. Tiny scripted source,
   selected examination, shared family/orchestration and generated wording weaknesses
   remain material limits.
+- [Pass 07](../pass-07/report.md): the human-authorized bounded merge-anything
+  completion recreates prerequisites in one fresh shell under the exact pass-05
+  frozen runtime/configuration. All four linked evaluations are accepted with no
+  recovery, completing the formerly missing summary-to-examination chain. It is
+  not a live test of current F3 acceptance or later presentation changes; historical
+  pass-05 failures remain unchanged. Separate formative roles and exposure audits
+  qualify the result rather than equating acceptance with correctness.
 
 The combined evidence supports useful, qualified progressive investigation and
 explicit correction in the tested cases. It also contains semantic omissions,
@@ -66,11 +74,12 @@ present. This is accounting reconciliation, not provider billing confirmation.
 | [pass-04](../pass-04/report.md) | 64 | 1,459,926 | 0 | 1 |
 | [pass-05](../pass-05/report.md) | 73 | 1,683,241 | 3 | 10 |
 | [pass-06](../pass-06/report.md) | 10 | 188,953 | 0 | 4 |
-| **Total** | **203** | **5,110,325** | **3** | **15** |
+| [pass-07](../pass-07/report.md) | 16 | 416,143 | 0 | 0 |
+| **Total** | **219** | **5,526,468** | **3** | **15** |
 
 All assessment inference used **gpt-5.6-sol / medium / ChatGPT-plan**, with explicit
 `chatgpt-sign-in` authentication. These totals include recovery attempts, rejected
-submissions, failures and controls, across 25 recorded sessions/runs. There are no
+submissions, failures and controls, across 26 recorded sessions/runs. There are no
 anomalous provider reports; the three missing reports are unknown consumption,
 not zero. The fifteen empty synthetic reports are separate test-origin accounting,
 not provider requests. Input/output/cached/reasoning subsets are not added to the
@@ -96,7 +105,8 @@ attempts, three with 2,659 reported tokens and two with unknown consumption; the
 are excluded above. Of the later ten-request diagnostic allowance, two were used
 and eight remain. Earlier auth/model-availability failures are retained in their
 own setup/diagnostic records; no missing consumption is silently converted to zero.
-No new request was made to prepare this integrated account.
+Initial handoff preparation made no new request. The subsequent F1 authorization
+added exactly the 16 pass-07 requests above; no other live case was repeated.
 
 ## Reproducibility and verification limits
 
@@ -105,12 +115,12 @@ configuration. Node 22.13.1 and TypeScript 6.0.3 were held fixed, as were the hu
 selected model and route. Merge-anything uses the approved additional configuration
 `{"extends":"./tsconfig.json","compilerOptions":{"ignoreDeprecations":"6.0"}}`;
 its original source/configuration are unchanged. Later method versions do not
-retroactively change prior attribution. Current production is `9d189d9`, including
-presentation @11 after pass 06's @10 freeze; no new live pass was performed for
-that deterministic presentation-order fix.
+retroactively change prior attribution. Current production is `921ad46`, with investigation @12, adapters @7 and
+presentation @11. Pass 07 deliberately retains pass 05's @10/@6/@9 runtime; it
+does not live-test the later acceptance or presentation corrections.
 
-The latest [complete offline suite](../2026-10-02-milestone-5-round-2/verification.md)
-passes 468 tests, zero failures/cancellations/skips, at clean stationary `9d189d9`.
+The latest [complete offline suite](../2026-10-02-integrated-corrections/verification.md)
+passes 469 tests, zero failures/cancellations/skips, at clean stationary `921ad46`.
 Earlier failing/cancelled runs remain evidence. The
 [readiness-race diagnosis](../2026-09-30-execution-ownership-diagnosis.md) corrected
 a reproducing harness defect before live work; attribution of every old cancellation
@@ -125,4 +135,6 @@ regeneration; no saved/resumable investigations; no monetary hard cap or remote
 cancellation guarantee. Credential protection does not absolutely isolate same-user
 processes. Source-detail excerpt gaps, dense output, paths outside sourceDetail and
 other recorded candidates remain in the [backlog](../../../../docs/backlog.md).
-This handoff preparation adds no implementation or scope change.
+The [integrated disposition](../../../reviews/module-investigation/2026-10-02-integrated-disposition.md)
+records the authorized F1 completion, F2 documentation refresh and F3 substantive
+citation requirement. Final acceptance remains outstanding.
