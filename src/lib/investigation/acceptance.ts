@@ -34,6 +34,7 @@ export function acceptInvestigation(value: unknown, context: AcceptanceContext):
   const localIds = new Set<string>(), visited = new Set<object>();
   const delivered = new Set([...context.suppliedEvidence, ...context.summarizedEvidence, ...exposure.citations]);
   const complete = new Set(exposure.completeTargets);
+  const cited = new Set(exposure.citations);
   const reference = (value: unknown, role: 'subject' | 'evidence' | 'target'): RecordId => {
     const id = text(value) as RecordId;
     const prior = exposure.history.get(id);
@@ -78,6 +79,7 @@ export function acceptInvestigation(value: unknown, context: AcceptanceContext):
         const inconsistency = object(value, ['targets', 'reason', 'qualifications', 'evidence']);
         const targets = array(inconsistency.targets).map(id => reference(id, 'subject'));
         if (!targets.length || targets.some(id => !exposure.history.get(id))) return invalid('Inconsistency targets must be earlier investigrams.');
+        if (targets.some(id => !cited.has(id))) return invalid('Inconsistency targets require substantively supplied content recorded by a citation.');
         return { targets, reason: text(inconsistency.reason), ...support(inconsistency) };
       }),
     };

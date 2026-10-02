@@ -303,6 +303,17 @@ structure and references; semantic inconsistency remains an interpretive
 judgment. A missing target or other structurally invalid reference still rejects
 the unit.
 
+**Clarification accepted 2026-10-02:** each unresolved-inconsistency target must
+have supplied substantive content to the reporting investigation, recorded through
+a citation. Identifier availability alone is insufficient. Substantive partial
+content, including an excerpt, may suffice; unlike a replacement correction, an
+unresolved inconsistency does not require complete target content. This validates
+exposure and attribution, not the semantic truth of the inconsistency. The human
+explicitly selected this rule in the integrated-review follow-up recorded in the
+[module-investigation task](../../records/tasks/2026-09-29-module-investigation.md).
+The rule prevents assertions against wholly unseen content while allowing qualified
+unresolved disagreement based on the content actually received.
+
 #### Presentation and historical access
 
 The reporting operation's view shows its accompanying corrections with targets,

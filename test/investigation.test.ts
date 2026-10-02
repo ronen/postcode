@@ -777,3 +777,41 @@ test('real evidence queries and retained investigram context encode without cano
   encode(omitted, 'bounded omitted context');
   t.diagnostic(`Encoded ${pending.length} real evidence queries across all nine kinds, plus full and bounded retained investigram context.`);
 });
+
+test('unresolved inconsistencies require substantive citation of every target without complete context or repair', async t => {
+  const f = await fixture(t);
+  const first = await accepted({ ...f.base, agent: new ScriptedInvestigator([() => ({ kind: 'submit', result: draft('first') })]) });
+  const second = await accepted({ ...f.base, agent: new ScriptedInvestigator([() => ({ kind: 'submit', result: draft('second') })]) });
+  const prior = history(first, second);
+  const prepared = new InvestigationContext(prior, f.base.session);
+  prepared.prepare(first.root); // Acquired/prepared, but never delivered to an exchange.
+  assert.throws(() => acceptInvestigation({ ...draft(), inconsistencies: [{ targets: [first.root],
+    reason: 'Unresolved.', qualifications: ['Interpretation.'], evidence: [] }] }, {
+    session: f.base.session, attempt: 'undelivered-inconsistency' as RecordId, request: f.base.request,
+    originatingModule: f.base.request.subject, instructions: 'test', agent: new ScriptedInvestigator([]).identity,
+    exposure: prepared, suppliedEvidence: [], summarizedEvidence: [], lookup: f.evidence.lookup,
+  }), /Inconsistency targets require substantively supplied content/);
+  for (const nested of [false, true]) for (const mode of ['bare', 'empty', 'excerpt', 'mixed', 'full'] as const) {
+    const value = { ...draft(), inconsistencies: [{ targets: mode === 'mixed' ? [first.root, second.root] : [first.root],
+      reason: 'The received wording may disagree.', qualifications: ['Unresolved interpretation of supplied content.'], evidence: [] }] };
+    const agent = new ScriptedInvestigator([
+      () => ({ kind: 'tools', requests: [
+        { kind: 'investigram', subject: first.root, ...(mode === 'full' ? {} : { parts: mode === 'bare' ? [] : ['prose'], excerptCharacters: mode === 'empty' ? 0 : 5 }) },
+        ...(mode === 'mixed' ? [{ kind: 'investigram' as const, subject: second.root, parts: [] }] : []),
+      ] }),
+      () => ({ kind: 'submit', result: nested ? { ...draft('parent'), children: [value] } : value }),
+    ]);
+    const result = await investigate({ ...f.base, history: prior, agent });
+    const allowed = mode === 'excerpt' || mode === 'full';
+    assert.equal(result.outcome.kind, allowed ? 'accepted' : 'investigation-failure', `${mode}, nested=${nested}`);
+    if (result.outcome.kind === 'accepted') {
+      assert.deepEqual(result.outcome.result.provenance.citations, [first.root]);
+      assert.equal(result.outcome.result.provenance.completeTargets.includes(first.root), mode === 'full');
+      assert.equal(result.outcome.result.investigrams.flatMap(item => item.inconsistencies).length, 1);
+    }
+    assert.equal(agent.inputs[0]!.length, 2, 'rejection is atomic with no validation-repair exchange');
+    assert.equal(agent.closes, 1);
+  }
+  assert.match(investigationInstructions('examination'), /Every target must have substantively supplied content recorded through a citation/);
+  assert.match(JSON.stringify(investigatorFunctions), /an excerpt may suffice, without complete target content/);
+});

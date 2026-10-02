@@ -517,7 +517,9 @@ bases establish additional retained outcomes. There is no eviction of earlier
 evidence to impose a memory bound.
 
 
-## Interpretation checkpoint: summary, inspection and usage
+<a id="interpretation-checkpoint-summary-inspection-and-usage"></a>
+
+## Progressive investigation and usage
 
 `summarize MODULE_HANDLE` (or `summarize @module-…` in the shell) requires exactly
 one module. Missing or ambiguous selection reports candidates without starting an

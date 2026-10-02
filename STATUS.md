@@ -28,7 +28,7 @@ configured TypeScript project.
   UTC date. Only complete batches become visible under final filenames; delivery
   and later cleanup warnings remain distinct.
 
-- **[Interpretation integration](docs/cli-reference.md#interpretation-checkpoint-summary-inspection-and-usage).**
+- **[Interpretation integration](docs/cli-reference.md#progressive-investigation-and-usage).**
   Summary, explanation, decomposition and examination requests, retained account
   navigation, associated-account inspection and attempt/session usage are
   integrated with the shell. Redisplay selects current replacement accounts while

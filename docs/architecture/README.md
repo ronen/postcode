@@ -21,13 +21,22 @@ The governing cross-cutting terminology is maintained in [core concepts](../core
 
 ## Responsibilities and flow
 
-The [investigation execution and session integration](investigation.md) add
-subject-based evidence queries, bounded interpretation dialogues, atomic retention,
-summary/inspection views and usage reporting. Tests inject a scripted investigator
-through the production worker path. An optional hosted summary adapter now has
-explicit enablement and macOS Keychain preflight; live verification is pending.
-Public follow-up lenses and correction-aware display remain later milestones of the
-[module-investigation plan](../plans/module-investigation.md).
+The [investigation execution and session integration](investigation.md) supplies
+subject-based evidence queries, bounded dialogues and atomic retention for summary,
+explanation, decomposition and examination. Stable references support associated
+account inspection and exact historical access. Redisplay selects corrections with
+their own composition, preserves conflicts and exposes citation-based reconsideration
+warnings without automatic reassessment. Usage remains attributable across success,
+failure and cancellation.
+
+Hosted work explicitly selects OpenAI API-key billing or Sign in with ChatGPT and
+granted plan usage. The parent owns credentials, coordinated renewal, streaming
+transport and the authoritative usage ledger; credentials stay outside the worker
+and investigation context. Both routes share domain validation and structural
+reference translation. Scripted/offline tests exercise production boundaries;
+retained live formative evidence and its limitations are described in
+[STATUS](../../STATUS.md). See [hosted setup](../hosted-investigation.md) and the
+[CLI reference](../cli-reference.md#progressive-investigation-and-usage).
 
 Operational project opening lives in the TypeScript integration. It follows
 TypeScript configuration inheritance, file selection, package and module

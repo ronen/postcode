@@ -14,7 +14,7 @@ const account = {
     corrections: { type: 'array', items: { type: 'object', additionalProperties: false,
       properties: { target: { type: 'string' }, correctedSubjects: strings, reason: { type: 'string' }, ...support, replacement: node },
       required: ['target', 'correctedSubjects', 'reason', 'qualifications', 'evidence', 'replacement'] } },
-    inconsistencies: { type: 'array', items: { type: 'object', additionalProperties: false, properties: { targets: { ...strings, description: 'One or more exact references to earlier investigrams in this session, never program subjects or source records. Describe documentation-versus-implementation discrepancies in attributed prose and qualifications instead.' }, reason: { type: 'string' }, ...support }, required: ['targets', 'reason', 'qualifications', 'evidence'] } },
+    inconsistencies: { type: 'array', items: { type: 'object', additionalProperties: false, properties: { targets: { ...strings, description: 'One or more exact references to earlier investigrams in this session, never program subjects or source records. Every target requires substantively supplied content recorded through a citation, not mere identifier availability; an excerpt may suffice, without complete target content. Describe documentation-versus-implementation discrepancies in attributed prose and qualifications instead.' }, reason: { type: 'string' }, ...support }, required: ['targets', 'reason', 'qualifications', 'evidence'] } },
   },
   required: ['localId', 'prose', 'referent', 'qualifications', 'evidence', 'associations', 'children', 'corrections', 'inconsistencies'],
 };

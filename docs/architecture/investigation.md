@@ -184,7 +184,11 @@ investigram is marked interpretation by PostCode, regardless of prose confidence
 or mechanical citations. Each correction constructs a disjoint replacement tree;
 recursive corrections and conflicting alternatives are valid. Unresolved
 inconsistencies target earlier investigrams in the same session and retain their
-qualifications. Operation instructions and the provider tool schema make that
+qualifications. Every target must have substantive exposure recorded in the
+reporting evaluation's citations; bare references and acquired-but-undelivered
+content do not qualify. An excerpt can suffice without complete target context,
+which remains required for replacement corrections. No semantic inconsistency is
+established by this validation. Operation instructions and the provider tool schema make that
 restriction explicit: documentation-versus-implementation discrepancies belong in
 attributed prose and qualification with supplied support, not in structured
 inconsistencies targeting program subjects or source records. Reference copying
