@@ -80,6 +80,10 @@ Interpretations currently have only hash identities; they need human-facing
 labels, which are themselves interpretation under
 [naming and terminology](../../foundation/product-design.md#25-naming-and-terminology).
 
+## Visual language
+
+See [visual language](visual-language.md) and [tokens.css](tokens.css).
+
 ## Qualification in layers
 
 At rest, a quiet cue says what kind of claim something is. On focus, one plain

@@ -1,0 +1,166 @@
+/*
+ * PostCode GUI design tokens: working draft.
+ * Non-governing working material; see visual-language.md beside this file.
+ *
+ * Themes: light values on :root; dark values apply when the OS prefers dark
+ * (unless data-theme="light") or when data-theme="dark" is set explicitly.
+ * Density: comfortable by default; data-density="compact" on an ancestor
+ * switches the size tokens.
+ */
+
+:root {
+  /* Typefaces: IBM Plex family (chosen 2026-10-03) */
+  --font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Neutrals: slightly warm */
+  --color-bg: #f6f6f3;          /* workspace ground */
+  --color-surface: #ffffff;     /* view cards */
+  --color-raised: #fbfbf9;      /* menus, inline embeds */
+  --color-text: #1c1d1f;        /* body text */
+  --color-muted: #5b5c60;       /* secondary text */
+  --color-faint: #6f7075;       /* provenance lines, hints */
+  --color-line: #d9d9d4;        /* borders */
+  --color-line-subtle: #efefeb; /* dividers inside a card */
+  --color-code-bg: #f0f0ec;
+
+  /* Interaction */
+  --color-accent: #2a4e9b;      /* links, focus, selection */
+  --color-selected: #e9eef8;    /* selected row */
+  --color-focus-glow: rgba(42, 78, 155, 0.14);
+
+  /* Attention (updated, needs attention): reserved, not decorative */
+  --color-attn: #8a5a00;
+  --color-attn-bg: #fbf4e2;
+
+  /* Claim kinds: used only by the cue icons */
+  --color-derived: #1e2b47;
+  --color-assertion: #8a4b0f;
+  --color-interpretation: #6b3fa0;
+  --color-observation: #1f5f59;
+  --color-cue-ink: var(--color-surface); /* mark drawn inside filled cues */
+
+  /* Shape */
+  --radius-row: 4px;
+  --radius-embed: 6px;
+  --radius-card: 8px;
+  --radius-chip: 12px;
+
+  /* Spacing scale */
+  --space-1: 2px;
+  --space-2: 4px;
+  --space-3: 6px;
+  --space-4: 8px;
+  --space-5: 10px;
+  --space-6: 12px;
+  --space-7: 14px;
+  --space-8: 16px;
+  --space-9: 24px;
+
+  /* Sizes: comfortable density */
+  --size-view-title: 16px;
+  --size-body: 14px;
+  --size-row: 13.5px;
+  --size-small: 12px;
+  --size-provenance: 11px;
+  --size-statement: 15px;        /* serif: recorded statements, interpretations */
+  --line-body: 1.5;
+  --line-statement: 1.55;
+  --size-cue: 16px;
+  --pad-card-x: 12px;
+  --pad-card-y: 10px;
+  --gap-section: 6px;
+  --width-column: 380px;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg: #161719;
+    --color-surface: #1f2023;
+    --color-raised: #25272a;
+    --color-text: #e9e7e2;
+    --color-muted: #a9a8a3;
+    --color-faint: #8b8a86;
+    --color-line: #34363a;
+    --color-line-subtle: #2a2c2f;
+    --color-code-bg: #2a2c30;
+    --color-accent: #93b2f2;
+    --color-selected: #26324a;
+    --color-focus-glow: rgba(147, 178, 242, 0.18);
+    --color-attn: #e3b04f;
+    --color-attn-bg: #33291a;
+    --color-derived: #b9c7e8;
+    --color-assertion: #e2a868;
+    --color-interpretation: #c6a6ee;
+    --color-observation: #7fc6b9;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --color-bg: #161719;
+  --color-surface: #1f2023;
+  --color-raised: #25272a;
+  --color-text: #e9e7e2;
+  --color-muted: #a9a8a3;
+  --color-faint: #8b8a86;
+  --color-line: #34363a;
+  --color-line-subtle: #2a2c2f;
+  --color-code-bg: #2a2c30;
+  --color-accent: #93b2f2;
+  --color-selected: #26324a;
+  --color-focus-glow: rgba(147, 178, 242, 0.18);
+  --color-attn: #e3b04f;
+  --color-attn-bg: #33291a;
+  --color-derived: #b9c7e8;
+  --color-assertion: #e2a868;
+  --color-interpretation: #c6a6ee;
+  --color-observation: #7fc6b9;
+  color-scheme: dark;
+}
+
+[data-density="compact"] {
+  --size-view-title: 14px;
+  --size-body: 12.5px;
+  --size-row: 12.5px;
+  --size-small: 11.5px;
+  --size-provenance: 10.5px;
+  --size-statement: 13.5px;
+  --line-body: 1.4;
+  --line-statement: 1.45;
+  --size-cue: 14px;
+  --pad-card-x: 10px;
+  --pad-card-y: 7px;
+  --gap-section: 3px;
+  --width-column: 320px;
+}
+
+/*
+ * Cue icons: reference implementation of the claim-kind marks.
+ * Each cue needs an accessible name (aria-label) and an inspectable meaning;
+ * the shape and colour are never the only carrier of the kind.
+ */
+.cue {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--size-cue);
+  block-size: var(--size-cue);
+  border-radius: 4px;
+  box-sizing: border-box;
+  flex: none;
+  vertical-align: middle;
+}
+.cue--derived { background: var(--color-derived); }
+.cue--derived::before { content: ""; inline-size: 38%; block-size: 38%; background: var(--color-cue-ink); }
+.cue--assertion { background: var(--color-assertion); }
+.cue--assertion::before { content: "\201C"; font: 700 calc(var(--size-cue) + 1px) / 1 Georgia, serif; color: var(--color-cue-ink); block-size: 56%; }
+.cue--interpretation { border: 1.5px solid var(--color-interpretation); background: var(--color-surface); }
+.cue--interpretation::before { content: ""; inline-size: 32%; block-size: 32%; border: 1.5px solid var(--color-interpretation); transform: rotate(45deg); }
+.cue--observation { background: var(--color-observation); }
+.cue--observation::before { content: ""; inline-size: 38%; block-size: 38%; border-radius: 50%; background: var(--color-cue-ink); box-shadow: 0 0 0 2px var(--color-observation), 0 0 0 3.5px var(--color-cue-ink); }
+.cue--unknown { border: 1.5px dashed var(--color-faint); background: var(--color-surface); }
+.cue--unknown::before { content: ""; inline-size: 44%; block-size: 1.5px; background: var(--color-faint); }
