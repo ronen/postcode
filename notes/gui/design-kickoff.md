@@ -102,6 +102,54 @@ labels, which are themselves interpretation under
 - **Saving workspaces** needs its own design pass: where they are kept, what
   they hold, and what an old one shows when its data is gone.
 
+## Suggested first slice
+
+A first journey that exercises the core GUI architecture without doing too
+much: a cut-down "Examine a module" (journey 2) run inside the workspace,
+plus one interpretation view.
+
+1. Open a repository: a plain list of groups and their modules.
+2. Open a module view: used by, relies on, the cycle it's in.
+3. Open its dependencies: click to show inline, double-click to open beside.
+4. Open "What it does" for a module: an interpretation, shown with its cue,
+   in serif, with a one-line note of what it's based on.
+
+What it exercises:
+
+- The view lifecycle: requested, laid out at once with what is known, a
+  spinner in the result area, then filled in. The interpretation view makes
+  the slow path real: real waits, and real transient failures (timeouts,
+  rate limits) as well as permanent ones.
+- Several views in one workspace: focus, collapse, the trail of what opened
+  what, and the click and double-click gestures.
+- The command mechanism: a handful of commands (open beside, collapse, focus
+  next or previous, back) on keys and in a palette.
+- The request and result contract with the core. Mechanical and
+  interpretation views are requested the same way and differ only in timing.
+- Tokens, light and dark themes, density, and the cues.
+
+Deliberately skipped, and why:
+
+- The treemap: a visual component, not architecture; a plain list will do.
+- The fuller qualification layers (opening the full record): the cue, serif
+  and basis line are enough to set the pattern.
+- Revision comparison: a further view kind, best added once the view
+  lifecycle is settled.
+- Agent integration, both ways: depends on stable view references.
+- Saving workspaces: still needs its own design pass.
+- Tabs and extra windows: one workspace in one window is enough to prove the
+  workspace model.
+- Dragging views to rearrange them: polish, not structure.
+- Out-of-date alerts: see below.
+
+Out-of-date views: not in the first slice; the core doesn't support updates
+yet, and the GUI won't need restructuring to add them later, because a view
+never changes on its own. Updating is just asking for the view again, which
+is the same path as opening it. One thing to keep from the start: each view
+result should carry what it rests on (the revision and the records it
+depends on), so being out of date can be worked out later without changing
+the request and result contract.
+
 ## Visual language
 
 See [visual language](visual-language.md) and [tokens.css](tokens.css).
