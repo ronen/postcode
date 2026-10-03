@@ -20,6 +20,27 @@ Describe the need, why it matters, and relevant constraints without designing th
 
 ## Candidates
 
+## Qualify evidence that modules are used for testing
+
+Added: 2026-10-03
+Origin: human discussion of test-code visibility in the planned GUI
+Area: mechanical analysis and presentation
+
+Investigate mechanical signals that a module is used for testing, including
+weaker location and naming clues (such as a top-level `test` directory or a
+`*.test.*` filename) and stronger evidence from known test frameworks.
+Distinguish what each signal establishes: a matching path or name, selection as
+a test entry by a runner's effective configuration, or a recognized test
+registration. Imports of testing APIs alone need not establish either of the
+latter claims.
+
+Assess which claims are practical across configurable discovery rules, globals,
+wrappers, and helper modules. Failure to recognize a signal must not imply that
+a module is non-test, and no such signal alone establishes that its contents
+are exclusively for testing. Consider how UIs could offer filtering or
+collapsing choices based on these distinct signals, with their epistemic
+qualifications visible and the treatment of unclassified modules explicit.
+
 ## Configurable investigator model and reasoning effort
 
 Added: 2026-09-30
