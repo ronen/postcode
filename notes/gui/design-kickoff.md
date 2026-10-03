@@ -80,6 +80,28 @@ Interpretations currently have only hash identities; they need human-facing
 labels, which are themselves interpretation under
 [naming and terminology](../../foundation/product-design.md#25-naming-and-terminology).
 
+## Behaviour decided before planning
+
+- **Keyboard:** build a command mechanism from the start, so every action can
+  be bound to a key and reached from a command palette. Follow OS and common
+  conventions for the bindings. Bindings need only be easy to change in code
+  for now; runtime configuration can come later. No need to settle the full
+  set now.
+- **Requesting a view starts its analysis.** The GUI doesn't run analyses
+  separately; opening a view requests it, and the backend does whatever is
+  needed.
+- **Opening a view:** the view appears at once, with everything already known
+  filled in (title, subject, provenance, layout). The main result area shows
+  a spinner until the result arrives.
+- **Failures come in two kinds,** with different icons:
+  - transient: the view says so and offers to try again;
+  - permanent: a hard failure; the view says what failed and offers no retry.
+- **When a view goes out of date** (the code or an analysis it rests on has
+  changed), the view shows an alert saying it's out of date, with a way to
+  update. It never changes on its own.
+- **Saving workspaces** needs its own design pass: where they are kept, what
+  they hold, and what an old one shows when its data is gone.
+
 ## Visual language
 
 See [visual language](visual-language.md) and [tokens.css](tokens.css).

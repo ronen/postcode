@@ -144,6 +144,10 @@ both.
 - Decide motion: expand/collapse and view-opening transitions, respecting
   reduced-motion settings.
 - Window chrome: Electron gives a native title bar by default.
+- Design the loading state (spinner in the result area) and two failure
+  icons: transient (retry) and permanent (hard failure). Keep both distinct
+  from the claim-kind cues and from the amber attention colour used for
+  out of date.
 - Check the green header mark in the dark theme.
 - Test the icon at real sizes to set where the engraving and then the
   perforations drop out, and choose the font for the small ⇒.
