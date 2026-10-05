@@ -114,8 +114,22 @@ classification is complete only when the relevant artifact support (including
 documentation associations), module population and placement are available and
 fully materialized by completed evaluation for that scope. Partial, unavailable
 or otherwise unestablished supporting information leaves it incomplete. This
-state is independent of how many modules presentation displays. Carry it into
-internal arrangement data for rendering without adding public JSON fields.
+state is independent of how many modules presentation displays. For the existing
+organization builder this is fully derivable from existing View fields: a group's
+`detail` must be `materialized`, and both `evaluations.repository` and
+`evaluations.placement` must be applicable, available, completed and fully
+materialized. Unrequested detail remains distinct from incomplete classification.
+Artifact placement and direct documentation-existence associations are produced
+by the same repository/layout evaluation; there is no separate documentation
+materialization outcome to omit. Placement state already incorporates module
+population and placement completeness. Captured-input limitations remain attached
+even to a complete classification.
+
+Define this predicate in core and apply it to the same outcome/detail fields in
+resolved content and in the self-sufficient arranged View. Rendering and JSON
+consumers need no side input, hidden arrangement flag or additional JSON field.
+If those inputs cease to cover a future classification, extend its explicit
+qualification rather than infer completeness from displayed content.
 `detail: materialized` indicates requested detail was supplied, not that all
 placement is complete. Context groups with `detail: not-requested` retain their
 zero-valued compatibility fields without establishing emptiness.
@@ -141,7 +155,8 @@ qualification whenever a requested artifact classification supplied for the
 Projection is incomplete; unrequested context-group detail does not establish
 either completeness or a new artifact classification. Preserve complete-case wording.
 Keep JSON field names, numeric calculations and existing evaluation metadata,
-and document `unanalyzed` as the legacy field for this qualified remainder.
+and document `unanalyzed` in [the CLI reference](../cli-reference.md) as the legacy
+field for this qualified remainder.
 Consumers must keep those counts attached to their supplied basis and outcomes.
 
 **Dependency structure and direct children/parents.** Preserve the stored graph,
@@ -452,15 +467,23 @@ visible changes are:
 - Investigation and associated-inspection Projection IDs, View IDs and responsible
   method metadata in JSON/observations, including the usage reporting descriptor's
   ID.
+- Bump the shared `methods.presentation` from `postcode/presentation@26` to
+  `postcode/presentation@27`. This changes all module, organization and dependency
+  View IDs and reported presentation-method metadata, including complete-case
+  output whose text is unchanged. Associated-inspection IDs also change through
+  their base View ID. Retain the shared method instead of introducing a separate
+  organization-presentation version.
 - Neutral “other captured artifacts” wording with adjacent incompleteness
   disclosure in organization inspection, tree counts and closing qualification
   when core-supplied classification is incomplete. Complete-case wording, JSON
   field names/calculations and existing evaluation metadata remain unchanged.
-  Document the qualified meaning of the legacy JSON `unanalyzed` field.
+  Document the qualified meaning of the legacy JSON `unanalyzed` field in
+  [the CLI reference](../cli-reference.md).
 
-Version the responsible presentation method for the wording change; View IDs
-keyed by that method version also change. Mechanical-only Projection and View
-identity formulas need not change. No entity or investigram identity is regenerated.
+Mechanical-only Projection and View identity formulas remain unchanged; the
+shared presentation-method bump changes View ID values, not their formulas.
+Mechanical Projection IDs, entity identities and investigram identities remain
+unchanged.
 
 Both investigation and associated-inspection **View formulas change**, not just
 the Projection inputs they previously inherited. Use these conceptual inputs
@@ -534,7 +557,12 @@ the neutral count label, adjacent incompleteness notice and closing explanation
 in inspection and tree output. Verify that displayed-module counts do not control
 the choice, complete-case wording is unchanged, and JSON numeric values, field
 names and evaluation metadata remain unchanged apart from permitted identity/
-method differences. The existing opening materialization summary remains present.
+method differences. Verify completeness can be reproduced solely from the View's
+existing evaluation/detail fields, including documentation-existence coverage.
+The existing opening materialization summary remains present. Comparison reports
+must explicitly account for the shared method bump in every mechanical View ID
+and reported method list, including unchanged complete-case output and associated
+inspection's base View; mechanical Projection and entity IDs remain unchanged.
 
 Identity checks must show that different formats, source-detail settings, revision
 pages, association continuations and reference lifetimes of one qualified result
