@@ -1,13 +1,17 @@
+import { resolveModuleProjection } from './module-content.js';
+import type { DocumentationContent, ModuleProjectionContent } from './module-content.js';
+import { presentQualification } from './qualification-view.js';
+import type { QualifiedRecord } from './projection-content.js';
 import { renderAssociatedInvestigations } from './investigation/associations.js';
 import type { AssociatedInvestigations } from './investigation/associations.js';
 import { boundedText, codePointLength, displayWidth, fitText, layoutText, padDisplay } from './terminal-layout.js';
 import { moduleLimitations, isCompositionContext } from './qualification-policy.js';
 import { completedMaterialization } from './evaluation-state.js';
-import { prepareCompositionViews, compositionAnnotation } from './composition-view.js';
+import { compositionView, compositionAnnotation } from './composition-view.js';
 import type { CompositionView } from './composition-view.js';
 import { inlineText, terminalText } from './terminal-text.js';
 import { identityReference, methods, recordId } from './identity.js';
-import { isModuleClaim, moduleStandardExpansions } from './records.js';
+import { moduleStandardExpansions } from './records.js';
 import type { Claim, ClaimContextRecord, EvaluationRecord, ExportClaim, ModuleClaim, ModuleExpansion, ProgramRecordStore, ProjectionRecord, RecordId, RecordedAssertion, SessionRecord, SourceEvidenceRecord, SymbolClaim } from './records.js';
 
 export interface Presentation {
@@ -57,52 +61,32 @@ export interface QualifiedView {
     readonly items: readonly { readonly label: string; readonly module: RecordId; readonly subject: RecordId; readonly role: 'module' | 'export' | 'symbol' | 'documentation'; readonly association?: Documentation['association']; readonly claims: readonly RecordId[]; readonly evidence: readonly SourceEvidenceRecord[] }[] };
 }
 
-/** Assembles a bounded view from already-materialized records. Neither this nor rendering evaluates. */
+/** Coordination preserves population-wide reference allocation independently of display bounds. */
 export function createView(store: ProgramRecordStore, projection: ProjectionRecord, presentation: Presentation): QualifiedView {
+  const content = resolveModuleProjection(store, projection);
+  const ids = store.entityIds(content.discovery.modules, 'module');
+  return arrangeModuleView(content, ids, presentation);
+}
+
+/** Pure presentation of an already selected answer. No store, acquisition or reference allocation. */
+export function arrangeModuleView(content: ModuleProjectionContent, entityIds: ReadonlyMap<RecordId, string>, presentation: Presentation): QualifiedView {
+  const { projection, session } = content;
   if (presentation.sourceDetail && projection.lens !== 'inspect') throw new Error('Source detail requires inspection');
-  const session = store.get(projection.session);
-  if (session.kind !== 'session') throw new Error('Expected analysis session');
-  const discovery = store.get(projection.evaluations[0]!);
-  if (discovery.kind !== 'evaluation') throw new Error('Expected discovery evaluation');
-  const entityIds = store.entityIds(discovery.modules, 'module');
-  const qualification = (id: RecordId): Qualification => {
-    const context = store.get(id);
-    if (context.kind !== 'claim-context') throw new Error('Expected Claim context');
-    const { kind: _kind, evidence: _evidence, inputs: _inputs, ...conceptual } = context;
-    return conceptual;
-  };
-  const expanded = projection.expansions.claims.map(id => store.get(id)).filter((record): record is Claim => record.kind === 'claim');
-  const expandedBySubject = new Map<RecordId, Claim[]>();
-  const docsBySubject = new Map<RecordId, { claim: Claim; order: number }[]>();
-  expanded.forEach((claim, order) => {
-    const bucket = expandedBySubject.get(claim.subject) ?? [];
-    bucket.push(claim); expandedBySubject.set(claim.subject, bucket);
-    if (claim.information.type === 'documentation-association') {
-      const docs = docsBySubject.get(claim.subject) ?? [];
-      docs.push({ claim, order }); docsBySubject.set(claim.subject, docs);
-    }
-  });
-  const modulePopulation = new Set(projection.modules);
-  const compositionView = prepareCompositionViews(store, projection.expansions.claims, projection.evaluations);
   const compact = presentation.format === 'unicode' && projection.lens === 'modules';
-  const displayedClaims = new Map<RecordId, Claim>();
+  const displayedClaims = new Map<RecordId, QualifiedRecord<Claim>>();
   type SourceGroup = Omit<NonNullable<QualifiedView['sourceDetail']>['items'][number], 'evidence'>;
   const sourceGroups = new Map<string, SourceGroup>();
-  const sourceGroup = (group: Omit<SourceGroup, 'claims'>, claims: readonly Claim[]) => {
+  const sourceGroup = (group: Omit<SourceGroup, 'claims'>, claims: readonly QualifiedRecord<Claim>[]) => {
     const key = JSON.stringify([group.module, group.subject, group.role, group.association]);
-    sourceGroups.set(key, { ...group, claims: [...new Set([...(sourceGroups.get(key)?.claims ?? []), ...claims.map(claim => claim.id)])] });
-    for (const claim of claims) displayedClaims.set(claim.id, claim);
+    sourceGroups.set(key, { ...group, claims: [...new Set([...(sourceGroups.get(key)?.claims ?? []), ...claims.map(claim => claim.record.id)])] });
+    for (const claim of claims) displayedClaims.set(claim.record.id, claim);
   };
   const excerpt = (text: string, maximum: number) => boundedText(text, maximum, presentation.format === 'unicode');
-  const documentation = (subjects: readonly RecordId[], maximumDocs: number, label: string, module: RecordId, subject: RecordId) => {
-    const associations = [...new Set(subjects)].flatMap(subject => docsBySubject.get(subject) ?? [])
-      .sort((a, b) => a.order - b.order).map(item => item.claim);
+  const documentation = (associations: readonly DocumentationContent[], maximumDocs: number, label: string, module: RecordId, subject: RecordId) => {
     const shown = associations.slice(0, maximumDocs);
-    const items: Documentation[] = shown.map(claim => {
-      if (claim.information.type !== 'documentation-association') throw new Error('Expected documentation association');
-      const assertion = store.get(claim.information.assertion);
-      if (assertion.kind !== 'recorded-assertion') throw new Error('Expected recorded assertion');
-      sourceGroup({ label: `Documentation for ${label}`, module, subject, role: 'documentation', association: claim.information.association }, [claim]);
+    const items: Documentation[] = shown.map(({ association, assertion: supported }) => {
+      const claim = association.record, assertion = supported.record;
+      sourceGroup({ label: `Documentation for ${label}`, module, subject, role: 'documentation', association: claim.information.association }, [association]);
       const maximumTags = projection.lens === 'inspect' ? 20 : 5;
       // Keep source-oriented examples/links in the assertion record, outside normal conceptual excerpts.
       const prose = assertion.text.replace(/```[\s\S]*?```/g, '').trim();
@@ -123,69 +107,39 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
       return { id: assertion.id, status: assertion.status,
         text: proseExcerpt.text, omittedTextCharacters: codePointLength(assertion.text) - codePointLength(proseExcerpt.text),
         tags, omittedTags: assertion.tags.length - tags.length,
-        association: claim.information.association, qualification: qualification(claim.context) };
+        association: claim.information.association, qualification: presentQualification(association.context) };
     });
     return { documentation: items, omittedDocumentation: associations.length - shown.length };
   };
-  const modules = projection.modules.map(id => {
-    const entity = store.get(id);
-    if (entity.kind !== 'module') throw new Error('Expected module');
-    const claim = store.get(entity.claim);
-    if (!isModuleClaim(claim)) throw new Error('Expected module claim');
-    // Keep the full population visible without letting external documentation dominate inventory.
+  const modules = content.modules.map(module => {
+    const { id, claim: supported } = module, claim = supported.record;
     const maximumDocs = compact ? 0 : projection.lens === 'inspect' ? 3 : claim.information.discoveryFacets.includes('project') ? 1 : 0;
     const sourceLabel = `${claim.information.handle} (${entityIds.get(id)!})`;
-    sourceGroup({ label: `Module ${sourceLabel}`, module: id, subject: id, role: 'module' }, [claim]);
-    const composition = compositionView(id);
-    for (const property of (expandedBySubject.get(id) ?? []).filter(record => record.information.type === 'module-composition')) {
+    sourceGroup({ label: `Module ${sourceLabel}`, module: id, subject: id, role: 'module' }, [supported]);
+    const composition = compositionView(module.composition);
+    for (const property of module.composition.claims) {
       sourceGroup({ label: `Composition ${sourceLabel}`, module: id, subject: id, role: 'module' }, [property]);
     }
-    const allExports = (expandedBySubject.get(id) ?? []).filter((record): record is ExportClaim => record.information.type === 'export');
-    const allSubjects = new Set([id, ...allExports.map(exported => exported.id), ...allExports.flatMap(exported => exported.information.symbol ? [exported.information.symbol] : [])]);
-    const allDocumentation = [...allSubjects].flatMap(subject => docsBySubject.get(subject) ?? []).flatMap(({ claim }) =>
-      claim.information.type === 'documentation-association' ? [claim.information.assertion] : []);
     const maximumExports = compact ? 3 : projection.lens === 'inspect' ? 50 : 6;
-    const exports = allExports.slice(0, maximumExports).map(exported => {
-      sourceGroup({ label: `Export ${exported.information.exportedName}`, module: id, subject: exported.id, role: 'export' }, [exported]);
-      let symbolInformation: SymbolClaim['information'] | null = null;
-      if (exported.information.symbol) {
-        const symbol = store.get(exported.information.symbol);
-        if (symbol.kind !== 'symbol') throw new Error('Expected symbol');
-        const symbolClaim = store.get(symbol.claim);
-        if (symbolClaim.kind !== 'claim' || symbolClaim.information.type !== 'symbol') throw new Error('Expected symbol claim');
-        symbolInformation = symbolClaim.information;
-        sourceGroup({ label: `Defining source for ${exported.information.exportedName}`, module: id, subject: exported.id, role: 'symbol' }, [symbolClaim]);
-      }
-      const origin = exported.information.origin ? store.get(exported.information.origin) : null;
-      const originClaim = origin?.kind === 'module' ? store.get(origin.claim) : null;
-      const originHandle = originClaim && isModuleClaim(originClaim) ? originClaim.information.handle : null;
-      return { ...exported.information, id: exported.id, qualification: qualification(exported.context), symbolInformation, originHandle, originEntityId: exported.information.origin ? entityIds.get(exported.information.origin) ?? null : null,
-        ...documentation([exported.id, ...(exported.information.symbol ? [exported.information.symbol] : [])], maximumDocs, `${exported.information.exportedName} · ${sourceLabel}`, id, exported.id) };
+    const exports = module.exports.slice(0, maximumExports).map(item => {
+      const exported = item.claim.record;
+      sourceGroup({ label: `Export ${exported.information.exportedName}`, module: id, subject: exported.id, role: 'export' }, [item.claim]);
+      if (item.symbol) sourceGroup({ label: `Defining source for ${exported.information.exportedName}`, module: id, subject: exported.id, role: 'symbol' }, [item.symbol]);
+      return { ...exported.information, id: exported.id, qualification: presentQualification(item.claim.context), symbolInformation: item.symbol?.record.information ?? null,
+        originHandle: item.origin?.record.information.handle ?? null, originEntityId: exported.information.origin ? entityIds.get(exported.information.origin) ?? null : null,
+        ...documentation(item.documentation, maximumDocs, `${exported.information.exportedName} · ${sourceLabel}`, id, exported.id) };
     });
-    const moduleDocumentation = documentation([id], maximumDocs, `module ${sourceLabel}`, id, id);
+    const moduleDocumentation = documentation(module.documentation, maximumDocs, `module ${sourceLabel}`, id, id);
     const shownDocumentation = [...moduleDocumentation.documentation, ...exports.flatMap(exported => exported.documentation)];
     const shownIds = new Set(shownDocumentation.map(doc => doc.id));
-    const omittedDocumentationInModule = allDocumentation.some(id => !shownIds.has(id))
+    const omittedDocumentationInModule = module.documentationIds.some(id => !shownIds.has(id))
       || shownDocumentation.some(doc => doc.omittedTextCharacters > 0 || doc.omittedTags > 0 || doc.tags.some(tag => tag.omittedTextCharacters > 0));
-    return { id, composition, entityId: entityIds.get(id)!, ...claim.information, qualification: qualification(claim.context), ...moduleDocumentation, omittedDocumentationInModule,
-      exports, omittedExports: allExports.length - exports.length };
+    return { id, composition, entityId: entityIds.get(id)!, ...claim.information, qualification: presentQualification(supported.context), ...moduleDocumentation, omittedDocumentationInModule,
+      exports, omittedExports: module.exports.length - exports.length };
   }).sort((left, right) => Number(right.discoveryFacets.includes('project')) - Number(left.discoveryFacets.includes('project')));
-  const evaluations = projection.evaluations.map(id => {
-    const outcome = store.get(id);
-    if (outcome.kind !== 'evaluation') throw new Error('Expected evaluation');
-    const { requirement, modules, applicability, availability, execution, materialization, reason, cost } = outcome;
-    return { id, requirement, modules, applicability, availability, execution, materialization, reason, cost };
-  });
-  const contextIds = new Set(projection.contexts);
-  for (const id of projection.evaluations) {
-    const outcome = store.get(id);
-    if (outcome.kind !== 'evaluation') continue;
-    for (const contextId of outcome.contexts) {
-      const context = store.get(contextId);
-      if (context.kind === 'claim-context' && (context.scope === 'configured-project' || modulePopulation.has(context.scope))) contextIds.add(contextId);
-    }
-  }
-  const contexts = [...contextIds].map(qualification);
+  const evaluations = content.evaluations.map(({ id, requirement, modules, applicability, availability, execution, materialization, reason, cost }) =>
+    ({ id, requirement, modules, applicability, availability, execution, materialization, reason, cost }));
+  const contexts = content.contexts.map(item => presentQualification(item.context));
   const contextsByScope = new Map<Qualification['scope'], Qualification[]>();
   for (const context of contexts) {
     const bucket = contextsByScope.get(context.scope) ?? [];
@@ -208,17 +162,13 @@ export function createView(store: ProgramRecordStore, projection: ProjectionReco
       level: 'declaration-locations-and-excerpts' as const,
       notice: 'Source locations and bounded excerpts supporting displayed claims only. Module source files are listed without full-file excerpts. Range ends are exclusive; ↪ marks a wrapped source line.',
       items: [...sourceGroups.values()].map(group => {
-        const { claims } = group;
         const evidence = new Map<string, SourceEvidenceRecord>();
-        for (const id of claims) {
+        for (const id of group.claims) {
           const claim = displayedClaims.get(id)!;
-          const context = store.get(claim.context);
-          if (context.kind !== 'claim-context') throw new Error('Expected Claim context');
-          for (const id of context.evidence) {
-            const record = store.get(id);
+          for (const record of claim.evidence) {
             if (record.kind !== 'source-evidence') throw new Error('Expected source evidence');
             // Resolution occurrences are not a module's declaration association.
-            if (claim.information.type === 'module' && record.resolution) continue;
+            if (claim.record.information.type === 'module' && record.resolution) continue;
             evidence.set(JSON.stringify([record.path, record.start, record.length]), record);
           }
         }

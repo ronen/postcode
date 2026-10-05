@@ -111,7 +111,26 @@ return all matches, sectioned from any matching modules.
 
 Group inspection shows all direct parents, subgroups and modules, with IDs and
 salient group annotations. It counts direct documentation artifacts and other
-unanalyzed artifacts, including opaque boundaries. Direct presence does not deny
+captured artifacts, including opaque boundaries. When classification is incomplete,
+inspection and tree counts use “other captured artifacts” with an adjacent
+“classification incomplete” notice. The closing qualification explains that “other”
+means no module or documentation association has been established in the supplied
+information. This applies even when some modules are successfully listed. Complete
+cases retain the existing “unanalyzed” wording.
+
+The legacy JSON field `groups[].artifacts.unanalyzed` keeps its name and calculation:
+it counts captured artifacts without a module or documentation association in the
+supplied information. With incomplete classification it does not establish that
+those artifacts have never been analyzed. JSON counts and evaluation metadata are
+unchanged. Classification is complete only for `detail: "materialized"` when both
+`evaluations.repository` and `evaluations.placement` are applicable, available,
+completed and fully materialized. Repository evaluation covers artifact placement
+and direct documentation-existence associations; placement state incorporates
+module-population completeness. Unrequested detail remains distinct from an empty
+established result. Rendering uses these existing View fields, with no hidden state
+or additive schema field.
+
+Direct presence does not deny
 descendant membership. `none` means completed placement found no selected-project
 modules in that group or its descendants. Unknown presence is qualified evaluation
 state, not a fourth property value. Documentation existence is direct and is not

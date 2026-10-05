@@ -1,18 +1,21 @@
 import { renderAssociatedInvestigations } from '../investigation/associations.js';
 import type { AssociatedInvestigations } from '../investigation/associations.js';
 import { displayWidth, padDisplay } from '../terminal-layout.js';
-import { prepareCompositionViews, compositionAnnotation } from '../composition-view.js';
+import { compositionView, compositionAnnotation } from '../composition-view.js';
 import type { CompositionView } from '../composition-view.js';
 import path from 'node:path';
 import { identityReference, methods, recordId } from '../identity.js';
-import { createView, renderUnicode } from '../presentation.js';
+import { arrangeModuleView, renderUnicode } from '../presentation.js';
 import type { Presentation, QualifiedView } from '../presentation.js';
-import type { ClaimContextRecord, EvaluationState, ModuleClaim, ProgramRecordStore, ProjectionRecord, RecordId } from '../records.js';
+import type { ClaimContextRecord, EvaluationState, ModuleClaim, ProgramRecordStore, RecordId } from '../records.js';
 import { moduleStandardExpansions } from '../records.js';
 import type { LayoutEvidence, RepositoryArtifact } from '../repository/evidence.js';
 import { inlineText } from '../terminal-text.js';
+import { artifactClassificationComplete, resolveOrganizationProjection } from './content.js';
+import type { OrganizationProjectionContent } from './content.js';
+import { presentQualification } from '../qualification-view.js';
 import { groupStandardExpansions } from './records.js';
-import type { GroupPropertiesClaim, ModulePlacementClaim, OrganizationClaims, OrganizationEvaluationRecord, OrganizationProjectionRecord } from './records.js';
+import type { GroupPropertiesClaim, ModulePlacementClaim, OrganizationEvaluationRecord, OrganizationProjectionRecord } from './records.js';
 
 export const organizationPresentationRequirements = {
   groups: groupStandardExpansions,
@@ -90,87 +93,45 @@ export interface QualifiedOrganizationView {
   };
 }
 
-/** Construct the qualified view from stored records. No repository or compiler reads. */
+/** Coordinate population bindings before arranging the resolved selection. */
 export function createOrganizationView(store: ProgramRecordStore, projection: OrganizationProjectionRecord,
   presentation: Presentation): QualifiedOrganizationView {
+  const content = resolveOrganizationProjection(store, projection);
+  const groups = store.entityIds(content.evaluation.groups, 'group');
+  const modules = store.entityIds(content.moduleEvaluation.modules, 'module');
+  const detail = content.moduleDetail ? store.entityIds(content.moduleDetail.discovery.modules, 'module') : new Map<RecordId, string>();
+  return arrangeOrganizationView(content, { groups, modules, detail }, presentation);
+}
+
+export function arrangeOrganizationView(content: OrganizationProjectionContent,
+  bindings: { readonly groups: ReadonlyMap<RecordId, string>; readonly modules: ReadonlyMap<RecordId, string>; readonly detail: ReadonlyMap<RecordId, string> },
+  presentation: Presentation): QualifiedOrganizationView {
+  const { projection, evaluation: outcome, repository: captured } = content;
   if (presentation.sourceDetail && projection.lens !== 'inspect') throw new Error('Source detail requires inspection');
-  if (!projection.expansions.requested.includes('group-details')) throw new Error('Organization presentation requires evaluated group-details');
-  const outcome = store.get(projection.evaluation);
-  if (outcome.kind !== 'organization-evaluation') throw new Error('Expected organization evaluation');
-  const captured = store.get(outcome.repository);
-  if (captured.kind !== 'repository-evidence') throw new Error('Expected repository evidence');
   const evidence = captured.capture.status === 'available' ? captured.capture.evidence : null;
   const layout = captured.layout;
-  const moduleEvaluation = store.get(outcome.moduleEvaluation);
-  if (moduleEvaluation.kind !== 'evaluation') throw new Error('Expected module evaluation');
-  const groupIds = store.entityIds(outcome.groups, 'group');
-  const moduleIds = store.entityIds(moduleEvaluation.modules, 'module');
-  const claims = outcome.claims.map(id => store.get(id) as OrganizationClaims);
-  const selectedClaims = new Set([...projection.claims, ...projection.expansions.claims]);
-  const available = claims.filter(claim => selectedClaims.has(claim.id));
-  const primaryGroups = new Map(claims.filter(claim => claim.information.type === 'group').map(claim => [claim.subject, claim]));
-  const groupProperties = new Map(claims.filter(claim => claim.information.type === 'group-properties').map(claim => [claim.subject, claim]));
-  const bySubject = new Map<RecordId, OrganizationClaims[]>();
-  const parents = new Map<RecordId, RecordId[]>();
-  for (const claim of available) {
-    const bucket = bySubject.get(claim.subject) ?? [];
-    bucket.push(claim); bySubject.set(claim.subject, bucket);
-    if (claim.information.type === 'group-containment') {
-      const bucket = parents.get(claim.information.child) ?? [];
-      bucket.push(claim.subject); parents.set(claim.information.child, bucket);
-    }
-  }
-  const qualification = (id: RecordId): Qualification => {
-    const context = store.get(id);
-    if (context.kind !== 'claim-context') throw new Error('Expected Claim context');
-    const { kind: _kind, evidence: _evidence, inputs: _inputs, ...result } = context;
-    return result;
-  };
-  const compositionView = prepareCompositionViews(store, projection.expansions.moduleClaims, projection.expansions.moduleEvaluations);
+  const groupContent = new Map(content.groups.map(item => [item.id, item]));
   const group = (id: RecordId): GroupReference => {
-    const claim = primaryGroups.get(id);
-    const properties = groupProperties.get(id);
-    if (claim?.information.type !== 'group' || properties?.information.type !== 'group-properties') throw new Error('Missing group properties');
-    return { id, entityId: groupIds.get(id)!, name: claim.information.name,
-      label: claim.information.name ?? '[repository root]', documented: properties.information.documented,
-      modulePresence: properties.information.modulePresence };
+    const { claim, properties } = content.referenceGroups[id]!;
+    return { id, entityId: bindings.groups.get(id)!, name: claim.record.information.name,
+      label: claim.record.information.name ?? '[repository root]', documented: properties.record.information.documented,
+      modulePresence: properties.record.information.modulePresence };
   };
-  const module = (placement: ModulePlacementClaim): ModuleReference => {
-    const entity = store.get(placement.subject);
-    if (entity.kind !== 'module') throw new Error('Expected module');
-    const claim = store.get(entity.claim) as ModuleClaim;
-    const { artifacts: _artifacts, reasons, ...information } = placement.information;
-    return { composition: compositionView(entity.id), id: entity.id, entityId: moduleIds.get(entity.id)!, name: claim.information.name,
+  const module = (item: OrganizationProjectionContent['modules'][number]): ModuleReference => {
+    const claim = item.claim.record;
+    const { artifacts: _artifacts, reasons, ...information } = item.placement.record.information;
+    return { composition: compositionView(item.composition), id: item.id, entityId: bindings.modules.get(item.id)!, name: claim.information.name,
       label: claim.information.name ?? claim.information.handle, handle: claim.information.handle,
       handleStatus: claim.information.handleStatus, handleProvenance: claim.information.handleProvenance,
       placement: { ...information, reasons: reasons.map(reason => reason === 'link-not-established' ? 'relationship-not-established' : reason) },
-      locations: information.groups.map(group), candidates: information.candidates.map(group), qualification: qualification(placement.context) };
+      locations: information.groups.map(group), candidates: information.candidates.map(group), qualification: presentQualification(item.placement.context) };
   };
-  const placements = available.filter((claim): claim is ModulePlacementClaim => claim.information.type === 'module-placement');
-  const membersByGroup = new Map<RecordId, ModulePlacementClaim[]>();
-  for (const placement of placements) for (const id of new Set(placement.information.groups)) {
-    const bucket = membersByGroup.get(id) ?? [];
-    bucket.push(placement); membersByGroup.set(id, bucket);
-  }
   const selected = new Set(projection.groups);
-  const groupPopulation = [...new Set([...projection.groups, ...projection.expansions.groups])];
-  const groups: GroupView[] = groupPopulation.map(id => {
-    const ownClaims = bySubject.get(id) ?? [];
-    const primary = primaryGroups.get(id)!;
-    const artifactClaims = ownClaims.filter(claim => claim.information.type === 'artifact-placement');
-    const documentation = ownClaims.filter(claim => claim.information.type === 'group-documentation');
-    const members = membersByGroup.get(id) ?? [];
-    const moduleArtifacts = new Set(members.flatMap(claim => claim.information.artifacts));
-    const documentationArtifacts = new Set(documentation.flatMap(claim => claim.information.type === 'group-documentation' ? [claim.information.artifact] : []));
-    const other = artifactClaims.flatMap(claim => claim.information.type === 'artifact-placement'
-      && !moduleArtifacts.has(claim.information.artifact) && !documentationArtifacts.has(claim.information.artifact) ? [claim.information.artifact] : []);
-    return { ...group(id), selected: selected.has(id), detail: selected.has(id) ? 'materialized' : 'not-requested', qualification: qualification(primary.context),
-      parents: [...new Set(parents.get(id) ?? [])].map(group),
-      subgroups: [...new Set(ownClaims.flatMap(claim => claim.information.type === 'group-containment' ? [claim.information.child] : []))].map(group),
-      modules: members.map(module), documentationCount: documentation.length,
-      artifacts: { total: artifactClaims.length, moduleAssociated: artifactClaims.filter(claim => claim.information.type === 'artifact-placement' && moduleArtifacts.has(claim.information.artifact)).length,
-        unanalyzed: other.length, opaqueBoundaries: other.filter(id => { const artifact = store.get(id); return artifact.kind === 'repository-artifact' && !!artifact.artifact.boundary; }).length },
-    };
+  const groups: GroupView[] = content.groups.map(item => {
+    const { total, moduleAssociated, unanalyzed, opaqueBoundaries } = item.summary;
+    return { ...group(item.id), selected: item.selected, detail: item.detail, qualification: presentQualification(content.referenceGroups[item.id]!.claim.context),
+      parents: item.parents.map(group), subgroups: item.subgroups.map(group), modules: item.modules.map(module), documentationCount: item.summary.documentationCount,
+      artifacts: { total, moduleAssociated, unanalyzed, opaqueBoundaries } };
   });
   const rows: TreeRow[] = [];
   const seen = new Set<RecordId>();
@@ -200,11 +161,10 @@ export function createOrganizationView(store: ProgramRecordStore, projection: Or
   }
   if (projection.lens === 'organization') omittedModulePlacements += groups.filter(group => group.selected && !seen.has(group.id))
     .reduce((sum, group) => sum + group.modules.length, 0);
-  const moduleDetail = projection.moduleProjection ? createView(store, store.get(projection.moduleProjection) as ProjectionRecord,
+  const moduleDetail = content.moduleDetail ? arrangeModuleView(content.moduleDetail, bindings.detail,
     { format: presentation.format, sourceDetail: presentation.sourceDetail }) : null;
-  const excluded = evidence?.exclusions.filter(item => item.contentDigest !== null) ?? [];
   const { applicability, availability, execution, materialization, reason, cost } = outcome;
-  const externalModules = claims.filter(claim => claim.information.type === 'module-placement' && claim.information.reasons.includes('external-module')).length;
+  const externalModules = content.externalModules.count;
   const linksByTarget = new Map<string, { link: LayoutEvidence['links'][number]; order: number }[]>();
   const linksByArtifact = new Map<string, { link: LayoutEvidence['links'][number]; order: number }>();
   if (presentation.sourceDetail) (layout?.links ?? []).forEach((link, order) => {
@@ -220,17 +180,11 @@ export function createOrganizationView(store: ProgramRecordStore, projection: Or
     id: recordId(projection.session, 'organization-view', { projection: identityReference(projection.session, projection.id), presentation, method: methods.presentation }),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,
       parameters: projection.parameters, selection: projection.selection },
-    presentation: { ...presentation, expansions: [...projection.expansions.requested, ...new Set(projection.expansions.moduleEvaluations.flatMap(id => {
-      const outcome = store.get(id); return outcome.kind === 'evaluation' && outcome.requirement !== 'modules' ? [outcome.requirement] : [];
-    }))] },
+    presentation: { ...presentation, expansions: [...projection.expansions.requested, ...new Set(content.moduleEvaluations.flatMap(outcome => outcome.requirement !== 'modules' ? [outcome.requirement] : []))] },
     evaluations: { repository: { id: outcome.id, applicability, availability, execution, materialization, reason, cost }, placement: outcome.placement },
-    repository: { provider: 'repository-layout', groups: outcome.groups.length, artifacts: evidence?.artifacts.length ?? 0,
-      consistency: 'first-observed', sparseCheckout: evidence?.sparseCheckout ?? null,
-      exclusions: { repository: excluded.filter(item => item.origin === 'repository').length, local: excluded.filter(item => item.origin === 'local').length,
-        global: excluded.filter(item => item.origin === 'global').length, outputLocations: evidence?.excludedOutputDirectories.length ?? 0 },
-      unestablishedRelationships: layout?.links.filter(link => link.targetRegion === null && !['file-target', 'artifact-target'].includes(link.outcome)).length ?? 0 },
-    qualifications: projection.contexts.map(qualification), groups,
-    placementExceptions: placements.filter(claim => claim.information.outcome !== 'established' && !claim.information.reasons.includes('external-module')).map(module),
+    repository: content.repositorySummary,
+    qualifications: content.contexts.map(item => presentQualification(item.context)), groups,
+    placementExceptions: content.modules.filter(item => item.placement.record.information.outcome !== 'established' && !item.placement.record.information.reasons.includes('external-module')).map(module),
     moduleDetail,
     display: { rows, selectedGroups: projection.groups.length,
       omittedSelectedGroups: projection.lens === 'organization' ? projection.groups.filter(id => !seen.has(id)).length : 0,
@@ -240,13 +194,9 @@ export function createOrganizationView(store: ProgramRecordStore, projection: Or
       notice: 'Captured group and artifact paths only; group documentation and other artifact contents are not reproduced. Module source detail, when selected, is separately bounded.',
       repositoryRoot: evidence?.root ?? null,
       groups: groups.filter(group => group.selected).map(group => {
-        const primary = primaryGroups.get(group.id)!;
-        const context = store.get(primary.context);
-        if (context.kind !== 'claim-context') throw new Error('Expected group context');
-        const region = context.evidence.map(id => store.get(id)).find(record => record.kind === 'repository-region');
+        const region = content.referenceGroups[group.id]!.claim.evidence.find(record => record.kind === 'repository-region');
         if (region?.kind !== 'repository-region' || !evidence) throw new Error('Expected group region');
-        const artifacts = (bySubject.get(group.id) ?? []).flatMap(claim => claim.information.type === 'artifact-placement' ? [store.get(claim.information.artifact)] : [])
-          .flatMap(record => record.kind === 'repository-artifact' ? [record.artifact] : []);
+        const artifacts = groupContent.get(group.id)!.artifacts.map(item => item.artifact.artifact);
         return { id: group.id, path: path.resolve(evidence.root, region.path), artifacts,
           links: [...new Set([...(linksByTarget.get(region.path) ?? []), ...artifacts.flatMap(artifact => {
             const link = linksByArtifact.get(artifact.path); return link ? [link] : [];
@@ -272,6 +222,7 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
   for (const [name, state] of Object.entries(view.evaluations)) {
     lines.push(`${name === 'repository' ? 'Repository layout' : 'Project placement'}: ${state.availability}, ${state.execution}, materialization ${state.materialization}${state.reason ? ` · ${inlineText(state.reason)}` : ''}`);
   }
+  const classificationComplete = (group: GroupView) => artifactClassificationComplete(view.evaluations.repository, view.evaluations.placement, group.detail);
   const groups = new Map(view.groups.map(group => [group.id, group]));
   const modules = new Map(view.groups.flatMap(group => group.modules.map(module => [module.id, module] as const)));
   if (inspection) {
@@ -288,7 +239,9 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
       lines.push('  Direct modules:');
       if (!group.modules.length) lines.push(view.evaluations.placement.materialization === 'full' ? '    None.' : '    None established; placement is incomplete.');
       for (const module of group.modules) lines.push(`    ${label(module)}${compositionAnnotation(module.composition)}${module.placement.outcome === 'multiple' ? ' · multiple placements' : ''}`);
-      lines.push(`  Other artifacts: ${group.artifacts.unanalyzed} unanalyzed · ${group.artifacts.opaqueBoundaries} opaque boundaries`);
+      lines.push(classificationComplete(group)
+        ? `  Other artifacts: ${group.artifacts.unanalyzed} unanalyzed · ${group.artifacts.opaqueBoundaries} opaque boundaries`
+        : `  Other captured artifacts: ${group.artifacts.unanalyzed} · ${group.artifacts.opaqueBoundaries} opaque boundaries (classification incomplete)`);
     }
     if (view.moduleDetail?.modules.length) lines.push('', 'Modules', renderUnicode(view.moduleDetail).trimEnd());
   } else {
@@ -301,7 +254,7 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
       const item = row.kind === 'group' ? groups.get(row.id)! : modules.get(row.id)!;
       const group = row.kind === 'group' ? item as GroupView : null;
       const name = padDisplay(inlineText(item.label), Math.max(0, width - row.depth * 2));
-      lines.push(`${'  '.repeat(row.depth)}${row.kind === 'group' ? '◆' : '·'} ${name}  ${item.entityId}${group ? ` · ${annotation(group)}${!group.selected ? ' · context group' : ''}${group.artifacts.unanalyzed ? ` · ${group.artifacts.unanalyzed} unanalyzed artifacts` : ''}` : ''}${row.kind === 'module' ? compositionAnnotation((item as ModuleReference).composition) : ''}${row.reference ? ' · reference (already expanded)' : ''}${row.pruned ? ` · descent pruned (${row.pruned === 'outside-project' ? 'outside project selection' : 'depth limit'})` : ''}`);
+      lines.push(`${'  '.repeat(row.depth)}${row.kind === 'group' ? '◆' : '·'} ${name}  ${item.entityId}${group ? ` · ${annotation(group)}${!group.selected ? ' · context group' : ''}${group.artifacts.unanalyzed ? ` · ${group.artifacts.unanalyzed} ${classificationComplete(group) ? 'unanalyzed artifacts' : 'other captured artifacts (classification incomplete)'}` : ''}` : ''}${row.kind === 'module' ? compositionAnnotation((item as ModuleReference).composition) : ''}${row.reference ? ' · reference (already expanded)' : ''}${row.pruned ? ` · descent pruned (${row.pruned === 'outside-project' ? 'outside project selection' : 'depth limit'})` : ''}`);
     }
     if (!view.display.rows.length) lines.push(view.projection.selection.populationEstablished ? 'No groups in this selection.' : 'No groups materialized for this selection.');
   }
@@ -330,7 +283,10 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
     `  ${view.display.externalModules} external modules outside this organization.`,
     '', 'Qualifications', '  Repository layout is one organizational account; architectural purpose is not established.',
     '  Documentation availability is direct existence only; contents and descendant applicability are not evaluated.',
-    '  Module presence describes the selected configured project; other artifacts remain unanalyzed.',
+    view.groups.filter(group => group.selected).every(classificationComplete)
+      && artifactClassificationComplete(view.evaluations.repository, view.evaluations.placement, 'materialized')
+      ? '  Module presence describes the selected configured project; other artifacts remain unanalyzed.'
+      : '  Module presence describes the selected configured project. Other captured artifacts have no module or documentation association established in the supplied information; classification is incomplete.',
     '  Re-exports only is a syntax property, not an API, purity, or safe-collapse claim.',
     '  Unnamed module leaves use generated navigation handles, not responsibility labels.',
     `  Repository-layout evidence left ${view.repository.unestablishedRelationships} relationships unestablished.`,

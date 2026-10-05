@@ -218,9 +218,16 @@ assertion: mechanically establishing its association does not establish that the
 text is true, current or complete. Unattached comments are not assigned a subject.
 
 Projection construction selects expansion claims and outcomes relevant to selected
-modules. View construction reads only materialized records and selects documented
-export/documentation limits; omitted exports, assertions, tags and text characters
-remain counted. Rendering receives a qualified view value and cannot query the
+modules. For module, organization and dependency Views, core resolution reads the
+Projection's retained basis into immutable, qualified content, including supporting
+contexts, inputs, evidence and complete selected populations. It does not take a
+format or display limit. Coordination binds the established entity populations;
+arrangement receives the resolved content and those bindings without a store
+handle. Arrangement applies export/documentation limits, tree and graph traversal,
+source-detail selection and omission accounting. This eager strategy is specific
+to these builders; it does not establish a general restriction on qualified lazy
+materialization or presentation pushdown. Omitted exports, assertions, tags and
+text characters remain counted. Rendering receives a qualified view value and cannot query the
 store or trigger analysis. Unicode and JSON use the same domain projection with
 different display limits. Unicode inventory lists project modules, counts collapsed
 external modules and retains their exceptional qualifications. Its qualified view records display coverage separately from analysis
