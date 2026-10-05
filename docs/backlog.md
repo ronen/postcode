@@ -20,6 +20,22 @@ Describe the need, why it matters, and relevant constraints without designing th
 
 ## Candidates
 
+## Audit existing view builders against the interface analysis boundary
+
+Added: 2026-10-05
+Origin: review of the interface and presentation boundary decision
+Area: projection construction and presentation
+
+Assess existing view builders, including investigation revision and association
+selection and organization evidence summaries, against the
+[views and analysis boundary](architectural-constraints.md#views-and-analysis-boundary).
+Determine which operations establish Claims about investigated subjects or
+retained interpretations and which arrange or summarize information already
+supplied for presentation. Judge responsibility rather than file names. Correct
+any confirmed violation while preserving established selection, qualification
+and evaluation behavior. The review identified potential ambiguity, not
+established nonconformance.
+
 ## Qualify evidence that modules are used for testing
 
 Added: 2026-10-03

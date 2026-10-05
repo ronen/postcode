@@ -23,6 +23,11 @@ Substantive changes require explicit human agreement and a corresponding accepte
 - Keep expected operational failures, unexpected defects or broken invariants, successful results containing diagnostics or limitations, and evaluation failures that prevent the intended result distinct. Do not convert an unexpected defect into an ordinary analysis outcome merely to continue execution. [[Evaluation and failure distinctions](decisions/adopt-qualification-and-evaluation-constraints.md#keep-evaluation-materialization-and-failure-distinctions-explicit)]
 - Preserve meaningful domain distinctions until presentation. Presentation may format or progressively disclose information, but must not collapse distinctions that affect what the result means or what may safely be concluded from it. [[Evaluation and failure distinctions](decisions/adopt-qualification-and-evaluation-constraints.md#keep-evaluation-materialization-and-failure-distinctions-explicit)]
 
+## Views and analysis boundary
+
+- Keep analysis, Evaluation and Projection construction independent of interfaces. GUI and other interface code may select Lens requests, request Evaluation, implement Presentations, manage interaction and instantiate Views, but must not establish new Claims about investigated subjects or retained interpretations. [[Views grounded in core projections](decisions/keep-views-grounded-in-core-projections.md)]
+- A Presentation may sort, group, filter and aggregate the qualified information, supporting evidence and evaluation outcomes made available by the core for its Projection. Preserve the Lens's question, the population actually counted, Claim qualification and evaluation materialization; disclose consequential filtering, aggregation and omission. [[Views grounded in core projections](decisions/keep-views-grounded-in-core-projections.md)]
+
 ## Session references and retained information
 
 - Once a session reference is bound to an entity, do not rebind it. Adding inputs, evidence, or results must not change that binding. [[Session references](decisions/transient-analysis-sessions.md#stable-reference-bindings-within-a-session)]
