@@ -31,6 +31,18 @@ Scope is the existing view-construction boundary. Do not add new program analyse
 
 ## Follow-ups
 
+### Proposal review and boundary scope
+
+See the review at \_view-construction-boundary-review/qualified-projection-construction.md; please address its findings; update the proposal and pause again for re-review. &#x20;
+
+For review points 6 and 7, which the review identifies as needing human decision:
+
+**6 — Source disclosure:** Holding or passing resolved core content internally is not itself disclosure. Any Presentation that exposes source from that content must do so through a View whose actual disclosure is classified and recorded. This applies equally to CLI and future GUI Presentations.
+
+**7 — Scope:** The boundary applies to current and future Presentations of these Projection families, including the GUI. Include a proposed architectural-constraints revision stating that arrangement consumes the qualified information selected for its Projection and cannot independently query accumulated session state to broaden or refresh that information. Account explicitly for the narrowly scoped reference-binding capability needed to preserve existing behavior.
+
+Keep eager resolution and “no display bounds in core construction” scoped to these builders. Do not establish a universal prohibition on presentation pushdown or lazy materialization, which the foundation permits when meaning and qualification are preserved.
+
 ## Outcome
 
 ## Verification
