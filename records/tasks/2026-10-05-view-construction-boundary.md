@@ -43,6 +43,32 @@ For review points 6 and 7, which the review identifies as needing human decision
 
 Keep eager resolution and “no display bounds in core construction” scoped to these builders. Do not establish a universal prohibition on presentation pushdown or lazy materialization, which the foundation permits when meaning and qualification are preserved.
 
+### Proposal re-review and incomplete artifact wording
+
+The opening-summary link below is normalized to a repository-relative path; the prompt is otherwise preserved verbatim.
+
+See the re-review at \_view-construction-boundary-review/qualified-projection-construction-re-review\.md ; again please address its findings, update the proposal and pause again for re-review. &#x20;
+
+
+
+There is one factual overstatement in point 2: the CLI **does** report repository and placement materialization in its [opening summary (line 272)](../../src/lib/organization/presentation.ts#L272), even when modules are present. But the underlying concern holds: “unanalyzed” makes a stronger claim than the set difference establishes. The later qualification “other artifacts remain unanalyzed” reinforces that problem.
+
+For point 2, **I recommend accepting a narrowly scoped wording change now—option (a)**. Deferring this would leave a known mismatch precisely where this work is making qualification explicit.
+
+I would go slightly further than merely appending “placement incomplete” to “unanalyzed”:
+
+- When the supporting classification is incomplete, use a neutral label such as **“other captured artifacts”**, with an adjacent incompleteness notice.
+- Explain that “other” means no module or documentation association has been established in the supplied information.
+- Apply this consistently to the inspection line, tree annotation, and closing qualification.
+- Preserve JSON field names, numeric calculations and existing evaluation metadata for compatibility; document the qualified meaning of the legacy `unanalyzed` field.
+- Base the wording on the core-supplied completeness information, including incomplete artifact support or module placement—not whether the group happens to contain displayed modules.
+
+For example:
+
+> Other captured artifacts: 7 · 2 opaque boundaries (classification incomplete)
+
+The proposal should list this as an explicitly permitted visible change. Verification should include **partial placement with some modules successfully listed**—the case that exposes the misleading wording—and confirm that complete cases and JSON counts remain unchanged.
+
 ## Outcome
 
 ## Verification
