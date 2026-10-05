@@ -8,4 +8,5 @@ Independent implementation-review handoffs, findings, and dispositions remain un
 
 ## Collections
 
+- [2026-10-05: View builders and the views and analysis boundary](2026-10-05-view-builder-boundary/REPORT.md) — classification of existing view-builder operations against the interface boundary; no confirmed violations, with findings that depend on an unassigned builder role.
 - [2026-09-27: Foundation readiness](2026-09-27-foundation-readiness/README.md) — paired library-reuse, state/resource, processing-cost, and supplementary foundation-readiness audits, with supporting evidence.
