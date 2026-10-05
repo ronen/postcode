@@ -140,6 +140,60 @@ This need not become a rigid schema or a single monolithic analysis. Possibiliti
 
 The summary could omit inapplicable questions, report unavailable answers explicitly, and let the human expand each answer into its supporting evidence. Omission would not imply an established negative answer, and a compact presentation would retain consequential qualification.
 
+## Responsibility-focused investigation
+
+A focused question for a module, function, or other component is: **What is it
+responsible for?** The implemented `summarize(module)` already addresses apparent
+responsibility as part of a broader account and permits mixed or unclear
+responsibilities. A focused investigation might be useful when that question
+deserves more attention than a terse summary can give it.
+
+The answer might identify one responsibility, several distinct responsibilities,
+or an unclear boundary. It should explain the behavior or outcome attributed to
+each responsibility and how the subject performs or delegates it, with supporting
+evidence and limitations. Neither a singular name nor the presence of several
+activities establishes whether the subject follows the single-responsibility
+principle; that judgment depends on which activities change for the same reason.
+
+This could be a focus of `summarize(subject)`, a follow-up investigation, or a
+narrower lens. Its useful scope and form remain open, especially for functions
+and components beyond the currently supported module-summary subject.
+
+## Qualified subject search
+
+PostCode could find subjects with a specified characteristic across a declared
+population. A query over already established facets or other qualified results
+may need no new analysis. A query that examines subjects not yet assessed would
+need Evaluation, potentially on demand, rather than a Presentation filter that
+silently treats missing information as a negative result.
+
+Results should distinguish established matches, assessed non-matches, and
+unassessed or unavailable subjects, with population coverage and each finding's
+qualification visible. Some characteristics may be mechanically established;
+others, such as having several distinct responsibilities, require interpretation
+and may remain unclear. A failure to identify one responsibility is not itself
+evidence that the subject has several or violates the single-responsibility
+principle. The useful query vocabulary and treatment of partial evaluation
+remain open.
+
+## Scoped audits across subjects
+
+An audit could ask a criterion-driven or exploratory question across a selected
+population and report supported findings, exceptions, and coverage. Unlike
+search for a known characteristic, an exploratory audit might discover patterns
+or formulate candidate concerns while examining subjects. A free-form request
+could help choose the question, but it would still need a bounded scope,
+explicit method, resource limits, and qualified results. An absence of reported
+findings must not be mistaken for an established clean bill of health.
+
+Assessing several subjects in one investigator dialogue might reduce repeated
+setup and context cost, but it is an execution choice rather than a different
+epistemological guarantee. Each subject-level finding needs attributable
+evidence, method, qualification, and outcome; shared context must not obscure
+which subjects were examined or how thoroughly. Whether a general audit Lens,
+more specific Lenses, or a composition of existing capabilities is useful
+remains open.
+
 ## Human contributions to interpretation and investigation
 
 A human could challenge an explanation, contribute rationale or other program
