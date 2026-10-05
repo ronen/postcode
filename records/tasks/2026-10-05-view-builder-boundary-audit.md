@@ -10,6 +10,8 @@ please start a task to perform the audit listed in the backlog "Audit existing v
 
 ## Follow-ups
 
+yes, remove the original backlog entry, and you can close the task
+
 ## Outcome
 
 ## Verification
