@@ -69,7 +69,10 @@ continues to permit presentation pushdown and lazy materialization when Lens
 meaning, selected population, qualification, materialization and retained-result
 semantics are preserved. A future projection-scoped access mechanism may realize
 that strategy; it cannot grant arrangement independent access to accumulated
-state. Presentation-declared standard expansions still precede Evaluation.
+state. Lazy or pushed-down work is planned and executed through Evaluation and
+core construction. Arrangement and rendering do not initiate Evaluation; an
+interaction needing more information issues a new request through those
+boundaries. Presentation-declared standard expansions still precede Evaluation.
 
 ##### Qualified inputs and arrangement by family
 
@@ -106,11 +109,40 @@ it does not establish that those artifacts lack such an association in the full
 program. `opaqueBoundaries` counts captured boundary markers within that same
 remainder. None of these is promoted to a complete classification merely because
 its arithmetic is exact. Complete evaluation still carries capture limitations.
-The CLI retains its numeric fields and their surrounding repository/placement
-outcomes and qualifications; consumers must not detach the counts from that basis.
+Core supplies classification completeness and its reasons with each summary:
+classification is complete only when the relevant artifact support (including
+documentation associations), module population and placement are available and
+fully materialized by completed evaluation for that scope. Partial, unavailable
+or otherwise unestablished supporting information leaves it incomplete. This
+state is independent of how many modules presentation displays. Carry it into
+internal arrangement data for rendering without adding public JSON fields.
 `detail: materialized` indicates requested detail was supplied, not that all
 placement is complete. Context groups with `detail: not-requested` retain their
 zero-valued compatibility fields without establishing emptiness.
+
+The existing opening summary already discloses repository and placement
+materialization, including when some modules are listed. Preserve that summary.
+For incomplete classification, additionally replace the stronger local
+“unanalyzed” labels with neutral wording and an adjacent notice:
+
+- Inspection: `Other captured artifacts: N · M opaque boundaries (classification incomplete)`.
+- Tree count annotation, where shown: `N other captured artifacts (classification incomplete)`.
+- Closing qualification: keep the configured-project scope statement and replace
+  “other artifacts remain unanalyzed” with “Other captured artifacts have no
+  module or documentation association established in the supplied information;
+  classification is incomplete.”
+
+“Other” describes the supplied information, not an assertion that those artifacts
+are outside analysis or cannot be associated. Use the core-supplied completeness
+state for the affected count and the View's closing qualification, including
+incomplete artifact support or module placement; neither a nonempty module list
+nor a complete-looking display can override it. Use the incomplete closing
+qualification whenever a requested artifact classification supplied for the
+Projection is incomplete; unrequested context-group detail does not establish
+either completeness or a new artifact classification. Preserve complete-case wording.
+Keep JSON field names, numeric calculations and existing evaluation metadata,
+and document `unanalyzed` as the legacy field for this qualified remainder.
+Consumers must keep those counts attached to their supplied basis and outcomes.
 
 **Dependency structure and direct children/parents.** Preserve the stored graph,
 selected subjects, relationships, non-edge requests, recognition coverage,
@@ -171,8 +203,22 @@ schedule and each call's population/order, including calls before selection:
 
 The arrangement capability is `bind(ids, kind)`: allocate or return compact
 spellings only for explicitly supplied IDs and kinds in the core result's
-reference population. That population includes navigable support, not just
-accounts whose bodies are shown. Validate the whole request before allocation.
+reference population. Include every ID in a bindable reference position of the
+resolved content, with its validated module, group or investigram kind:
+
+- selected and reachable accounts, including those display may omit, all
+  displaced originals and their composition descendants, and associated matches;
+- revision primaries/family primaries, row targets/replacements/reporters and
+  every cause's complete `via` list;
+- inconsistency reporters and targets, including inconsistencies on account
+  bodies, and every reporter/target/replacement in displaced corrections;
+- composition parents and investigation subjects, using the module binding
+  capability for module subjects, plus summarize candidates and the supplied
+  mechanical populations.
+
+Claim/evidence IDs remain precise references, not compact-bindable entities.
+This population authorizes binding only; it does not preallocate every member.
+Validate the whole request before allocation.
 The port returns only bindings, with no selector lookup, enumeration, record
 retrieval, evaluation or refresh operation. It cannot accept arbitrary session
 IDs outside its supplied population. Session-owned bindings remain append-only.
@@ -225,6 +271,9 @@ The existing builders must be brought into conformance with this boundary as
 part of the separation; their combined responsibilities are not an exception to
 the new constraint. Future Presentations of these families adopt the same
 arrangement and disclosure boundary without inheriting the CLI's eager strategy.
+After explicit human agreement, promote the decision and constraint additions
+together in one commit only with, or after, the conforming implementation; do not
+introduce a binding constraint over knowingly nonconforming current code.
 
 Data flow retains existing process boundaries:
 
@@ -256,8 +305,11 @@ this does not authorize speculative caching or new infrastructure.
 Verification must cover arrangement without content-store access, binding-port
 rejection of out-of-population/kind requests without partial allocation, established
 allocation order including collisions, and source classification for actual
-exposure. Population tests must distinguish a selected subset, evaluation-wide
-counts, partial/unavailable outcomes, established empty results and unrequested
+exposure. Every compact reference emitted by the existing CLI must be within the
+supplied typed reference population, including displaced descendants and support
+outside the displayed account bodies. Population tests must distinguish a selected
+subset, evaluation-wide counts, partial/unavailable outcomes, established empty
+results and unrequested
 group detail. Tests beyond display bounds must compare full core content with
 exact existing CLI omissions, including displayed-subset provenance/exposures.
 These obligations apply to the current builders; future Presentations must also
@@ -277,8 +329,15 @@ Projection record family in `ProgramRecordStore`. Its variants cover these cases
 | Exact investigram inspection, including missing selection | Historical-inspection variant retains exact selected IDs/status and associated selection; no generating evaluation is required |
 | Missing/ambiguous operation subject or unsupported subject/Lens combination, including children/parents/summarize on an investigram and follow-ups on a program subject | Investigation-request variant retains requested Lens, selector, selected IDs/status and unsupported-kind information; explicit no-evaluation outcome |
 | Configuration-unavailable or communication-failure without a retained evaluation | Investigation-request variant embeds the immutable unavailable outcome value, including code/diagnostic; evaluation reference is absent |
-| Associated inspection of a mechanical Projection, including zero matches | Associated-inspection variant references the mechanical basis and retains the full ordered association selection/revisions |
-| Usage-only request | No retained program Projection; retain the current JSON `projection` field as a compatibility reporting descriptor with `lens: usage`, no selected subjects and the existing empty selection fields |
+| Associated inspection of a mechanical Projection, including zero matches | Associated-inspection variant references the Projection whose mechanical View is shown and retains the explicit inspected subjects and full ordered association selection/revisions |
+| Usage-only request | No retained program Projection; keep the current JSON `projection` field as a compatibility reporting descriptor with `lens: usage`, no selected subjects and the existing empty selection fields |
+
+For module-only inspection routed through organization selection, the mechanical
+basis is the embedded module Projection whose View is shown, not the enclosing
+organization Projection. Inspected subjects still come from the organization
+selection's groups plus that module Projection's modules (the groups are empty
+in this case). Retain those subjects explicitly. Mixed/group inspection uses
+the shown organization Projection as its mechanical basis.
 
 The usage descriptor is not an investigation answer or new Lens. It keeps the
 existing schema shape while usage remains View reporting. No new program analysis
@@ -292,8 +351,10 @@ restricted evidence closure or a session watermark. At construction, the shared
 domain derivation considers session correction acceptance order, citation
 propagation and provenance exemptions. Retain its full results for accounts
 relevant to the selection: selected originals/primaries, reachable composition
-and accompanying accounts, displaced originals, and associated matches. Store
-primary/family-primary, conflict and reconsideration status, all ordered revision
+and accompanying accounts, displaced originals and all their composition
+descendants, and associated matches. Gather displaced corrections from every
+such descendant as well as its root. Store primary/family-primary, conflict and
+reconsideration status, all ordered revision
 rows with complete proximal `via` lists, and all qualified inconsistencies and
 reporter/ordinal attribution. These lists are not all possible citation paths.
 
@@ -373,19 +434,33 @@ while a new selection reflects relevant additions. Include transitive causes,
 whole-evaluation exemptions, competing correction branches, later descendants,
 inconsistency reporters and irrelevant insertions that shift absolute ranks but
 not relative ordering. Verify exact originals, displaced composition and the
-existing bounded investigator context as well as CLI pagination.
+existing bounded investigator context as well as CLI pagination. Verify the
+shown module Projection is the associated basis in module-only inspection,
+with the same inspected subjects; mixed/group cases retain their organization
+basis.
 
 ### Separate Projection identity from presentation and reporting identity
 
 #### Decision
 
-Preserve CLI commands, schema names/field layout, wording, ordering, selection,
+Preserve CLI commands, schema names/field layout, ordering, selection,
 evaluation behavior, bound module/group/investigram references, qualification,
-source disclosure and omission policy. The explicit visible change is to
-investigation and associated-inspection Projection IDs, View IDs and responsible
-method metadata in JSON/observations, including the usage reporting descriptor's
-ID. Mechanical-only Projection and View identity formulas need not change.
-No entity or investigram identity is regenerated.
+source disclosure and omission policy. Preserve wording except for the explicitly
+permitted incomplete-artifact classification change described above. The permitted
+visible changes are:
+
+- Investigation and associated-inspection Projection IDs, View IDs and responsible
+  method metadata in JSON/observations, including the usage reporting descriptor's
+  ID.
+- Neutral “other captured artifacts” wording with adjacent incompleteness
+  disclosure in organization inspection, tree counts and closing qualification
+  when core-supplied classification is incomplete. Complete-case wording, JSON
+  field names/calculations and existing evaluation metadata remain unchanged.
+  Document the qualified meaning of the legacy JSON `unanalyzed` field.
+
+Version the responsible presentation method for the wording change; View IDs
+keyed by that method version also change. Mechanical-only Projection and View
+identity formulas need not change. No entity or investigram identity is regenerated.
 
 Both investigation and associated-inspection **View formulas change**, not just
 the Projection inputs they previously inherited. Use these conceptual inputs
@@ -399,14 +474,23 @@ with explicit reference normalization:
 - Final investigation View ID = presentation method + that arrangement key +
   actual usage report.
 - Associated-inspection View ID = presentation method + composite Projection ID
-  + base mechanical View ID + association continuation (`after`) + reference
-  lifetime. Format/source detail are already inputs to the base View ID.
+  + base mechanical View ID + normalized association continuation (`after`) +
+  reference lifetime. Format/source detail are already inputs to the base View ID.
+
+Both formulas normalize `after` by the same rule: absent/null is an explicit
+no-continuation value; a token resolving within the Projection's frozen associated
+matches contributes `{ reference: identityReference(session, matched.id) }`; an
+unknown token contributes `{ literal: token }` in a disjoint key space. Resolve
+against supplied matches and their coordinated bindings, without a fresh session
+lookup. Keep the raw token in the existing View field for compatibility, but do
+not hash a resolved compact spelling. Normalize an omitted revision page to 1.
 
 The usage descriptor identifies the session and subjectless reporting request,
 not usage totals, format or pagination. Association and revision page controls
 remain presentation inputs even when they affect which account details appear.
-Missing and unknown continuation tokens remain explicit View inputs, not attempted
-record references or changes to the associated population.
+Absent and unknown continuation tokens remain explicit View inputs, not attempted
+record references or changes to the associated population. A resolved token
+identifies a position within that same population without narrowing it.
 
 Carry the usage-independent arrangement key beside the View in the internal
 worker result envelope and pass it explicitly to usage finalization. Do not add
@@ -440,14 +524,27 @@ needs its continuation in View identity once the Projection selects all matches.
 
 Compare full Unicode/JSON content and observations for fresh, accumulating and
 reordered requests. Keep expected method/Projection/View identity differences
-explicit in comparison reports; do not erase other fields to make comparisons
-pass. Any additional visible change requires separate human agreement.
+and the permitted incomplete-classification wording differences explicit in
+comparison reports; do not erase other fields to make comparisons pass. Any
+additional visible change requires separate human agreement.
+
+Wording checks must include partial placement with some modules successfully
+listed, and incomplete artifact support with completed module placement. Verify
+the neutral count label, adjacent incompleteness notice and closing explanation
+in inspection and tree output. Verify that displayed-module counts do not control
+the choice, complete-case wording is unchanged, and JSON numeric values, field
+names and evaluation metadata remain unchanged apart from permitted identity/
+method differences. The existing opening materialization summary remains present.
 
 Identity checks must show that different formats, source-detail settings, revision
 pages, association continuations and reference lifetimes of one qualified result
 share its Projection ID but have distinct applicable View IDs. Empty/unknown pages
-also retain their presentation identity. Changing authoritative usage changes the
-final View ID without changing its Projection or arrangement key; repeated
+also retain their presentation identity. Check that the same associated record
+reached with different compact spellings under reordered allocation normalizes
+to the same semantic continuation input in both formulas, while unknown literals
+remain distinct from resolved references and from no continuation. Changing
+authoritative usage changes the final View ID without changing its Projection
+or arrangement key; repeated
 finalization with the same usage is stable. First execution versus reuse keeps
 reporting distinguishable without changing a retained selection. Verify that all
 retained fields remain determined by Projection identity and that compact reference
