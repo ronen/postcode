@@ -69,6 +69,18 @@ For example:
 
 The proposal should list this as an explicitly permitted visible change. Verification should include **partial placement with some modules successfully listed**—the case that exposes the misleading wording—and confirm that complete cases and JSON counts remain unchanged.
 
+### Acceptance and implementation review gates
+
+Re-review is in \_view-construction-boundary-review/qualified-projection-construction-re-review-2.md&#x20;
+
+Accept point 1’s option (a), documenting the shared presentation-method bump and resulting ID/metadata changes.
+
+For point 2, derive completeness from existing View fields if they fully support it. Otherwise, add the smallest explicit completeness field needed, preserving existing fields and documenting the additive schema change. Keep rendering self-contained and qualification complete.
+
+Address point 3, update the proposal to reflect these resolutions
+
+No further re-review is needed, you may promote the proposal then proceed to the implementation.  As always, pause for discussion if significant unexpected issues arise; or if the implementation becomes sufficiently complex that intermediate review would materially reduce risk, pause for independent review after appropriate key developments.  Otherwise prepare a handoff and pause for final review before; don't close the task until explicit approval.
+
 ## Outcome
 
 ## Verification
