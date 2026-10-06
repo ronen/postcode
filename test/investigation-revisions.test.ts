@@ -1,3 +1,4 @@
+import { revisionPage } from '../src/lib/investigation/revision-page.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { InvestigationRevisions } from '../src/lib/investigation/revisions.js';
@@ -29,15 +30,15 @@ test('primary selection searches all branches; later descendants win without era
   const f = fixture();
   for (const name of ['A', 'B', 'C', 'D']) f.account(name);
   f.correction('AB', 'A', 'B'); f.correction('AC', 'A', 'C');
-  const earlier = f.snapshot().status(id('A'));
+  const earlier = f.snapshot().snapshot(id('A'));
   assert.equal(earlier.primary, 'C'); assert.equal(earlier.conflicting, true);
   f.correction('BD', 'B', 'D');
-  const status = f.snapshot().status(id('A'));
+  const status = f.snapshot().snapshot(id('A'));
   assert.equal(status.primary, 'D'); assert.equal(status.conflicting, true);
   assert.deepEqual(status.rows.map(item => item.correction), ['AB', 'AC', 'BD']);
   assert.equal(earlier.primary, 'C');
-  assert.equal(f.snapshot().status(id('C')).familyPrimary, 'D');
-  assert.equal(f.snapshot().status(id('C')).primary, 'C', 'precise C selection follows only its own descendants');
+  assert.equal(f.snapshot().snapshot(id('C')).familyPrimary, 'D');
+  assert.equal(f.snapshot().snapshot(id('C')).primary, 'C', 'precise C selection follows only its own descendants');
 });
 
 test('per-cause propagation stops at whole-evaluation exemptions and retains independent and alternate paths', () => {
@@ -49,15 +50,15 @@ test('per-cause propagation stops at whole-evaluation exemptions and retains ind
   f.account('through-aware', ['aware']); f.account('alternate', ['aware', 'Z']);
   f.account('partial', ['A']); f.account('provenance-only');
   let graph = f.snapshot();
-  for (const name of ['Y', 'Z', 'alternate', 'partial']) assert.equal(graph.status(id(name)).needsReconsideration, true, name);
-  for (const name of ['B', 'reporter-child', 'other-replacement', 'aware', 'aware-child', 'through-aware', 'provenance-only']) assert.equal(graph.status(id(name)).needsReconsideration, false, name);
-  assert.equal(graph.status(id('Y')).rows[0]!.cause!.direct, true);
-  assert.equal(graph.status(id('Z')).rows[0]!.cause!.direct, false);
-  assert.deepEqual(graph.status(id('alternate')).rows[0]!.cause!.via, ['Z']);
+  for (const name of ['Y', 'Z', 'alternate', 'partial']) assert.equal(graph.snapshot(id(name)).needsReconsideration, true, name);
+  for (const name of ['B', 'reporter-child', 'other-replacement', 'aware', 'aware-child', 'through-aware', 'provenance-only']) assert.equal(graph.snapshot(id(name)).needsReconsideration, false, name);
+  assert.equal(graph.snapshot(id('Y')).rows[0]!.cause!.direct, true);
+  assert.equal(graph.snapshot(id('Z')).rows[0]!.cause!.direct, false);
+  assert.deepEqual(graph.snapshot(id('alternate')).rows[0]!.cause!.via, ['Z']);
   f.account('C', ['A']); f.correction('AC', 'A', 'C'); graph = f.snapshot();
-  assert.equal(graph.status(id('aware')).causeCount, 1, 'earlier completeness cannot exempt an unseen correction');
-  assert.equal(graph.status(id('B')).causeCount, 1, 'producing one cause does not exempt another');
-  assert.equal(graph.status(id('Y')).causeCount, 2);
+  assert.equal(graph.snapshot(id('aware')).causeCount, 1, 'earlier completeness cannot exempt an unseen correction');
+  assert.equal(graph.snapshot(id('B')).causeCount, 1, 'producing one cause does not exempt another');
+  assert.equal(graph.snapshot(id('Y')).causeCount, 2);
   assert.equal(f.origins.find(item => item.id === 'p-B')!.citations.includes(id('A')), true);
 });
 
@@ -65,12 +66,14 @@ test('dense citation graphs and many causes remain bounded without enumerating p
   const f = fixture(); f.account('A');
   for (let n = 0; n < 80; n++) f.account(`N${n}`, ['A', ...Array.from({ length: n }, (_, i) => `N${i}`)]);
   for (let n = 0; n < 55; n++) { f.account(`R${n}`, ['A']); f.correction(`C${n}`, 'A', `R${n}`); }
-  const graph = f.snapshot(), first = graph.status(id('N79'));
+  const graph = f.snapshot(), full = graph.snapshot(id('N79')), first = revisionPage(full);
+  assert.equal(full.rows.length, 55); assert.equal(full.rows[0]!.cause!.via.length, 80);
+  assert.ok(Object.isFrozen(full.rows[0]!.cause!.via));
   assert.equal(first.causeCount, 55); assert.equal(first.rows.length, 24); assert.equal(first.nextPage, 2);
   assert.equal(first.rows[0]!.cause!.via.length, 8); assert.equal(first.rows[0]!.cause!.omittedVia, 72);
-  const all = [first, graph.status(id('N79'), 2), graph.status(id('N79'), 3)].flatMap(page => page.rows);
+  const all = [first, revisionPage(full, 2), revisionPage(full, 3)].flatMap(page => page.rows);
   assert.equal(all.length, 55); assert.equal(new Set(all.map(row => row.correction)).size, 55);
-  assert.equal(graph.status(id('N79'), 3).nextPage, null);
+  assert.equal(revisionPage(full, 3).nextPage, null);
   assert.ok(JSON.stringify(first).length < 9000);
 });
 
@@ -82,7 +85,7 @@ test('context pages preserve exact originals and distinguish reference availabil
   const graph = f.snapshot();
   const history = { get: (id: RecordId) => graph.accounts.get(id), provenance: (id: RecordId) => f.origins.find(item => item.id === id),
     correction: (id: RecordId) => f.corrections.find(item => item.id === id), corrections: (id: RecordId) => f.corrections.filter(item => item.target === id),
-    revision: (id: RecordId, page?: number) => graph.status(id, page) };
+    revision: (id: RecordId, page?: number) => revisionPage(graph.snapshot(id), page) };
   const context = new InvestigationContext(history, session);
   const partial = context.prepare(id('Y'), ['prose'], 0, { accounts: 1, characters: 60_000 });
   assert.equal(partial.accounts[0]!.id, 'Y');
@@ -113,7 +116,7 @@ test('incoming inconsistencies preserve qualification and count as reporter expo
   f.accounts[1] = { ...f.accounts[1]!, inconsistencies: [{ targets: [id('A')], reason: 'A qualified disagreement.', qualifications: ['Static interpretation only.'], evidence: [] }] };
   const graph = f.snapshot();
   const context = new InvestigationContext({ get: id => graph.accounts.get(id), provenance: id => f.origins.find(item => item.id === id),
-    correction: () => undefined, corrections: () => [], revision: (id, page) => graph.status(id, page) }, session);
+    correction: () => undefined, corrections: () => [], revision: (id, page) => revisionPage(graph.snapshot(id), page) }, session);
   const omitted = context.prepare(id('A'), [], undefined, { accounts: 1, characters: 0 });
   assert.deepEqual(omitted.accounts[0]!.revision!.omittedInconsistencyReporters, ['reporter']);
   context.supplied(omitted); assert.equal(context.citations.length, 0);
@@ -135,7 +138,7 @@ test('automatic context summarizes all incoming inconsistencies honestly and fol
   const graph = f.snapshot();
   const history = { get: (id: RecordId) => graph.accounts.get(id), provenance: (id: RecordId) => f.origins.find(item => item.id === id),
     correction: (id: RecordId) => f.corrections.find(item => item.id === id), corrections: (id: RecordId) => f.corrections.filter(item => item.target === id),
-    revision: (id: RecordId, page?: number) => graph.status(id, page) };
+    revision: (id: RecordId, page?: number) => revisionPage(graph.snapshot(id), page) };
   // Starting at B automatically includes A via family context. A's small
   // relationship summary must point through C to D, not the oldest A-to-B branch.
   const context = new InvestigationContext(history, session);

@@ -1,0 +1,22 @@
+{
+  "comparisons": 875,
+  "accounts": 175,
+  "corrections": 58,
+  "pages": [
+    1,
+    2,
+    3,
+    4,
+    9
+  ],
+  "preserved": [
+    "all fields and qualification",
+    "row and inconsistency ordering",
+    "serialized field ordering",
+    "primary and family-primary",
+    "conflicts and reconsideration",
+    "whole-evaluation exemptions",
+    "paging, omissions and empty pages"
+  ],
+  "differences": []
+}

@@ -1,3 +1,4 @@
+import { revisionPage } from './revision-page.js';
 import { sessionRevisions } from './revisions.js';
 import { freezeOwned } from '../immutable.js';
 import { identityReference, methods, recordId } from '../identity.js';
@@ -23,7 +24,7 @@ export function associatedView(store: ProgramRecordStore, session: SessionId, su
   const items = (valid ? matches.slice(index + 1, index + 25) : []).map(account => {
     const provenance = store.get(account.provenance);
     if (provenance.kind !== 'investigation-provenance') throw new Error('Expected investigation provenance');
-    const revision = revisions.status(account.id);
+    const revision = revisionPage(revisions.snapshot(account.id));
     const detail = { revision, prose: account.prose.slice(0, 400), omittedProseCharacters: Math.max(0, account.prose.length - 400),
       qualifications: account.qualifications, associations: account.associations.filter(item => subjects.includes(item.subject)),
       evidence: account.evidence, operation: provenance.request.operation, subject: provenance.request.subject,

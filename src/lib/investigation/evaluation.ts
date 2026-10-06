@@ -1,3 +1,4 @@
+import { revisionPage } from './revision-page.js';
 import { sessionRevisions } from './revisions.js';
 import { associatedInvestigrams } from './associations.js';
 import { canonical, identityReference, methods, recordId } from '../identity.js';
@@ -43,7 +44,7 @@ export function investigationEvaluation(store: ProgramRecordStore, analysis: Mod
     revision(id, page) {
       const count = store.investigations(session).length;
       if (count !== revisionCount) { revisions = sessionRevisions(store, session); revisionCount = count; }
-      return revisions.status(id, page);
+      return revisionPage(revisions.snapshot(id), page);
     },
     associated(subject) {
       const record = store.lookup(subject);

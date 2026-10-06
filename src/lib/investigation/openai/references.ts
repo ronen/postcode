@@ -123,6 +123,13 @@ export class InvestigatorReferences {
       case 'investigation-provenance': return this.#provenance()(record, path);
       case 'investigation-evaluation': fields = this.#fields(['attempt'], ['investigrams', 'corrections'], {
         request: this.#request(), outcome: object(this.#fields(['root'])) }); break;
+      case 'investigation-selection-projection': fields = this.#fields(['mechanical'], ['subjects', 'roots', 'displaced', 'associated'], {
+        selector: object(this.#fields(['reference'])), outcome: object(this.#fields(['evaluation'])),
+        relations: list(object(this.#fields(['original', 'account']))),
+        navigation: list(object(this.#fields(['account', 'compositionParent', 'investigationSubject']))),
+        revisions: list(object({ ...this.#fields(['original', 'primary', 'familyPrimary']),
+          inconsistencies: list(object({ ...this.#support(), ...this.#fields(['reporter'], ['targets']) })),
+          rows: list(object({ ...this.#fields(['correction', 'target', 'replacement', 'reporter']), cause: object(this.#fields([], ['via'])) })) })) }); break;
       default: return impossible(record);
     }
     return object({ ...this.#context(), ...fields })(record, path);

@@ -573,6 +573,12 @@ composition, provenance, citation indexes or earlier projections. Corrections ta
 effect at retention, independently of presentation. The context coordinator caches
 this derived snapshot only until another evaluation is retained.
 
+The domain result contains every ordered correction/cause row, the complete
+proximal-citation lists and every qualified incoming inconsistency with its
+reporter and ordinal. A separate delivery adapter applies the existing row and
+proximal-citation bounds for human Views and investigator context. Paging does
+not alter the domain derivation or its provenance exemptions.
+
 Primary selection considers every reachable branch, using accepted evaluation
 order and then correction array order within a simultaneous result as its stable
 tie-break. Recency does not establish credibility or resolve a conflict. A branch

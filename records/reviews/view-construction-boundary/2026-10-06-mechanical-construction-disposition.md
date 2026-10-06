@@ -132,16 +132,12 @@ human-approved F2 decision; it does not turn the reviewer recommendation into ac
 
 ## Gate conclusion
 
-**All findings are corrected; checkpoint acceptance remains a human decision.**
-The human explicitly resolved F2, and there is no remaining uncertainty or rejected
-finding in this disposition. These low-severity corrections were verified locally;
-no additional independent review round is requested by the implementing agent.
-The reviewer's recommendation that the boundary is sound enough to continue
-remains recorded separately from human acceptance of the checkpoint.
+**The human accepted this checkpoint as sufficient to continue.** After all four
+corrections and their verification were reported, the human instructed “continue
+with the task”; that instruction is preserved in the active task record. There is
+no remaining uncertainty or rejected finding in this disposition. Investigation
+work resumes without another mechanical review round.
 
-The approval received selected F2's wording rule. It is not recorded here as a
-separate decision to accept the overall checkpoint or close the task. Investigation
-work has not resumed. The human can accept this checkpoint or request another
-round under the original handoff. Canonical promotion, remaining investigation
-work and the final integrated-review gate are still outstanding; the task remains
-active and must not close without explicit approval.
+This is an intermediate gate, not task closure. Canonical promotion, remaining
+investigation work and the final integrated-review gate are still outstanding;
+the task remains active and must not close without explicit approval.

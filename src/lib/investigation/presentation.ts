@@ -1,3 +1,4 @@
+import { revisionPage } from './revision-page.js';
 import { sessionRevisions } from './revisions.js';
 import { associatedView, renderAssociatedInvestigations } from './associations.js';
 import { identityReference, methods, recordId } from '../identity.js';
@@ -69,7 +70,7 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
   const omissions = { displaced: displaced.size - displacedListing.length,
     displacedCorrections: displacedCorrections.size - displacedCorrectionListing.length,
     revisions: allRevisionSubjects.length - revisionSubjects.length };
-  const revisions = revisionSubjects.map(id => revisionIndex.status(id, request.revisionPage));
+  const revisions = revisionSubjects.map(id => revisionPage(revisionIndex.snapshot(id), request.revisionPage));
   for (const status of revisions) for (const row of status.rows) {
     const correction = store.get(row.correction);
     if (correction.kind !== 'investigram-correction') throw new Error('Expected correction');

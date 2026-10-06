@@ -1,5 +1,6 @@
 import type { Investigram, Correction, InvestigationProvenance } from './investigation/contracts.js';
 import type { InvestigationEvaluationRecord } from './investigation/evaluation.js';
+import type { InvestigationSelectionProjection } from './investigation/selection-record.js';
 import type { DependencyRecords, DependencyRelationshipClaim, DependencyOrganizationClaim, DependencyTargetStatus } from './dependencies/records.js';
 import type { OrganizationClaims, OrganizationRecords } from './organization/records.js';
 import type { CapturedContentRecord } from './evidence-access.js';
@@ -210,7 +211,7 @@ export interface ProjectionRecord extends RecordContext {
 }
 
 export type ProgramRecord = SessionRecord | AnalysisInputsRecord | ModuleRecord | SymbolRecord | Claim | RecordedAssertion
-  | SourceEvidenceRecord | ClaimContextRecord | EvaluationRecord | ProjectionRecord | OrganizationRecords | DependencyRecords | CapturedContentRecord | Investigram | Correction | InvestigationProvenance | InvestigationEvaluationRecord;
+  | SourceEvidenceRecord | ClaimContextRecord | EvaluationRecord | ProjectionRecord | OrganizationRecords | DependencyRecords | CapturedContentRecord | Investigram | Correction | InvestigationProvenance | InvestigationEvaluationRecord | InvestigationSelectionProjection;
 
 /** Only the domain operations currently used by discovery and lenses. */
 export interface ProgramRecordStore {
