@@ -635,7 +635,6 @@ test('associated inspection is bounded, navigable and independent of incidental 
   assert.equal(invalid.view.investigations.after, 'investigram-00000000');
   assert.equal(invalid.view.projection.id, otherInvalid.view.projection.id);
   assert.notEqual(invalid.view.id, otherInvalid.view.id);
-  assert.notEqual(invalid.view.id, otherInvalid.view.id);
   assert.equal(invalid.view.projection.id, invalidAgain.view.projection.id);
   assert.equal(invalid.view.id, invalidAgain.view.id);
   const humanInvalid = await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-00000000', presentation: { format: 'unicode', sourceDetail: false } });

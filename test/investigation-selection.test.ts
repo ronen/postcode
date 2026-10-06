@@ -390,11 +390,13 @@ test('arrangement is self-contained, preserves bounded disclosure and distinguis
   assert.deepEqual(finalizeInvestigationUsage(changed, { ...usage, missingCalls: 2 }, plain.investigationArrangementKey), changed);
   assert.notEqual(arrangeInvestigationView(content, options, { ...report, reused: true }, usage, bindings).view.id, plain.view.id);
   const unavailable = (requestId: string): InvestigationSelection => ({ ...result, evaluation: null,
-    unavailable: { kind: 'communication-failure', code: 'provider', diagnostic: 'Failed.', provider: { status: 500, requestId, body: 'error' } } });
+    unavailable: { provider: { status: 500, body: 'error', requestId }, kind: 'communication-failure', code: 'provider', diagnostic: 'Failed.' } });
   const one = createInvestigationView(store, f.session, { ...options, lens: 'summarize' }, [f.module], unavailable('one'), usage);
   const two = createInvestigationView(store, f.session, { ...options, lens: 'summarize' }, [f.module], unavailable('two'), usage);
   assert.equal(one.view.projection.id, two.view.projection.id); assert.notEqual(one.view.id, two.view.id);
   assert.equal(one.view.result!.unavailable!.provider!.requestId, 'one');
+  assert.equal(JSON.stringify(one.view.result!.unavailable), JSON.stringify(unavailable('one').unavailable),
+    'preserve the production adapter failure field order in JSON and observations');
   const use = createInvestigationView(store, f.session, { ...options, lens: 'usage', selector: null }, [], null, usage);
   assert.equal(store.lookup(use.view.projection.id), undefined, 'usage has a descriptor, not a retained program Projection');
   assert.equal(use.view.projection.lens, 'usage'); assert.deepEqual(use.view.selected, []);

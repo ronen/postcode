@@ -3,7 +3,8 @@ import path from 'node:path';
 import { writeFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 // Checkpoint-specific @26 → @27 mechanical comparison; no broad identity normalization.
-// Build both revisions, then pass BEFORE_BUILD AFTER_BUILD REPORT from the checkout root.
+// Build both revisions, then pass BEFORE_BUILD AFTER_BUILD REPORT from a Git checkout root.
+// Extracted source trees lack repository capture and exercise fewer organization Views.
 const [before, now, reportPath] = process.argv.slice(2);
 if (!before || !now || !reportPath) throw new Error('Expected two builds and a report path');
 const root = process.cwd();

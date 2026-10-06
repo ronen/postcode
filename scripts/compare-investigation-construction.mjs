@@ -94,8 +94,9 @@ function output(f, spec) {
         : spec.kind === 'unsupported' ? [id('A')] : [module];
     const result = spec.kind === 'summary' ? { ...f.result, reused: spec.reused ?? false }
       : spec.kind === 'failed' ? { ...f.result, evaluation: f.failed, attempt: f.failed.attempt }
-        : spec.kind === 'unavailable' ? { ...f.result, evaluation: null, unavailable: { kind: 'communication-failure', code: 'fixture',
-          diagnostic: 'Unavailable.', provider: { status: 500, body: { detail: 'retained reporting' }, requestId: 'provider-attempt' } } } : null;
+        : spec.kind === 'unavailable' ? { ...f.result, evaluation: null, unavailable: {
+          provider: { status: 500, body: { detail: 'retained reporting' }, requestId: 'provider-attempt' },
+          kind: 'communication-failure', code: 'fixture', diagnostic: 'Unavailable.' } } : null;
     const request = { lens: spec.kind === 'inspect' ? 'inspect' : spec.kind === 'usage' ? 'usage' : 'summarize',
       selector: spec.kind === 'usage' ? null : 'entry', presentation, ...(spec.after ? { after: spec.after } : {}),
       ...(spec.page ? { revisionPage: spec.page } : {}), referenceLifetime: spec.lifetime,

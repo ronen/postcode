@@ -68,7 +68,7 @@ export function arrangeInvestigationView(content: ArrangementContent,
     request: content.evaluation?.request ?? { operation: investigationOperations[request.lens as keyof typeof investigationOperations], subject: selected[0]!, parameters: {} },
     reused: reporting.reused, attempt: reporting.attempt, evaluation: content.evaluation,
     unavailable: selection?.variant === 'request' && selection.outcome.kind === 'unavailable'
-      ? { ...selection.outcome.value, ...(reporting.provider ? { provider: reporting.provider } : {}) } : null,
+      ? { ...(reporting.provider ? { provider: reporting.provider } : {}), ...selection.outcome.value } : null,
   } : null;
   const accounts = new Map<RecordId, Investigram>(), corrections = new Map<RecordId, Correction>();
   const provenances = new Map<RecordId, InvestigationProvenance>();
