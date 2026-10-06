@@ -83,6 +83,10 @@ test('organization artifact qualification uses supplied completeness with some m
   const completeView = createOrganizationView(store, completeProjection, { format: 'unicode', sourceDetail: false });
   assert.match(renderOrganizationView(completeView), /Other artifacts: 1 unanalyzed/);
   assert.match(renderOrganizationView(completeView), /other artifacts remain unanalyzed/);
+  const completeMiss = createOrganizationView(store, inspectOrganization(store, complete, 'missing'), { format: 'unicode', sourceDetail: false });
+  assert.deepEqual(completeMiss.groups, []);
+  assert.match(renderOrganizationView(completeMiss), /other artifacts remain unanalyzed/);
+  assert.doesNotMatch(renderOrganizationView(completeMiss), /classification is incomplete/);
   const partial: EvaluationRecord = { ...evaluation, id: recordId(evaluation.session, 'evaluation', 'partial-population'),
     modules: evaluation.modules.slice(0, 1), execution: 'stopped', materialization: 'partial', reason: 'Synthetic incomplete population.' };
   store.put([partial]);
@@ -128,6 +132,9 @@ test('organization artifact qualification uses supplied completeness with some m
     assert.deepEqual(JSON.parse(renderOrganizationView(json)).groups, view.groups);
     const tree = createOrganizationView(store, organization(store, outcome, 'repository'), { format: 'unicode', sourceDetail: false });
     assert.match(renderOrganizationView(tree), /\d other captured artifacts \(classification incomplete\)/);
+    const miss = createOrganizationView(store, inspectOrganization(store, outcome, 'missing'), { format: 'unicode', sourceDetail: false });
+    assert.deepEqual(miss.groups, []);
+    assert.match(renderOrganizationView(JSON.parse(JSON.stringify(miss))), /classification is incomplete\./);
     assert.equal(sourceDisclosure(view), null);
     for (const context of content.groups.filter(group => !group.selected)) {
       assert.equal(context.detail, 'not-requested');
@@ -239,6 +246,8 @@ test('unavailable repository content preserves qualification and a self-containe
     assert.equal(renderOrganizationView(JSON.parse(JSON.stringify(view))), rendered);
     assert.match(rendered, /Repository layout: unavailable/);
     assert.match(rendered, /Project placement: unavailable/);
+    assert.match(rendered, /classification is incomplete\./);
+    assert.doesNotMatch(rendered, /other artifacts remain unanalyzed/);
     assert.equal(sourceDisclosure(view), null);
   }
 });

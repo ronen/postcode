@@ -283,8 +283,8 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
     `  ${view.display.externalModules} external modules outside this organization.`,
     '', 'Qualifications', '  Repository layout is one organizational account; architectural purpose is not established.',
     '  Documentation availability is direct existence only; contents and descendant applicability are not evaluated.',
-    view.groups.filter(group => group.selected).every(classificationComplete)
-      && artifactClassificationComplete(view.evaluations.repository, view.evaluations.placement, 'materialized')
+    // Qualify the evaluation basis even when no groups match or layout is unavailable.
+    artifactClassificationComplete(view.evaluations.repository, view.evaluations.placement, 'materialized')
       ? '  Module presence describes the selected configured project; other artifacts remain unanalyzed.'
       : '  Module presence describes the selected configured project. Other captured artifacts have no module or documentation association established in the supplied information; classification is incomplete.',
     '  Re-exports only is a syntax property, not an API, purity, or safe-collapse claim.',

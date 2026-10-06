@@ -128,7 +128,10 @@ completed and fully materialized. Repository evaluation covers artifact placemen
 and direct documentation-existence associations; placement state incorporates
 module-population completeness. Unrequested detail remains distinct from an empty
 established result. Rendering uses these existing View fields, with no hidden state
-or additive schema field.
+or additive schema field. The closing qualification also uses repository and
+placement completeness when no groups are selected, including a missing selector
+or unavailable layout; an empty selection does not suppress the incompleteness
+notice about that evaluation basis.
 
 Direct presence does not deny
 descendant membership. `none` means completed placement found no selected-project
