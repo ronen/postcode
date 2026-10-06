@@ -6,12 +6,33 @@ import type { QualifiedRecord } from '../projection-content.js';
 import type { EvaluationState, ModuleClaim, ProgramRecordStore, ProjectionRecord, RecordId } from '../records.js';
 import type { ContainmentClaim, GroupClaim, GroupPropertiesClaim, ModulePlacementClaim, OrganizationClaims, OrganizationProjectionRecord } from './records.js';
 
+type ClassificationOutcome = Pick<EvaluationState, 'applicability' | 'availability' | 'execution' | 'materialization'>;
+export type ArtifactClassification = {
+  readonly state: 'complete' | 'not-requested'; readonly reasons: readonly [];
+} | {
+  readonly state: 'incomplete'; readonly reasons: readonly ('repository-incomplete' | 'placement-incomplete')[];
+};
+
+const outcomeComplete = (state: ClassificationOutcome) => state.applicability === 'applicable'
+  && state.availability === 'available' && completedMaterialization(state);
+
 /** Artifact placements and README-existence associations share repository evaluation.
- * Module-population completeness is already incorporated in placement state. */
-export function artifactClassificationComplete(repository: Pick<EvaluationState, 'applicability' | 'availability' | 'execution' | 'materialization'>,
-  placement: Pick<EvaluationState, 'applicability' | 'availability' | 'execution' | 'materialization'>, detail: 'materialized' | 'not-requested'): boolean {
-  return detail === 'materialized' && [repository, placement].every(state => state.applicability === 'applicable'
-    && state.availability === 'available' && completedMaterialization(state));
+ * Module-population completeness is already incorporated in placement state.
+ * Reasons identify the failing basis outcomes; their full qualification stays in the summary basis. */
+export function artifactClassification(repository: ClassificationOutcome, placement: ClassificationOutcome,
+  detail: 'materialized' | 'not-requested'): ArtifactClassification {
+  if (detail === 'not-requested') return Object.freeze({ state: 'not-requested', reasons: Object.freeze([] as const) });
+  const reasons: ('repository-incomplete' | 'placement-incomplete')[] = [];
+  if (!outcomeComplete(repository)) reasons.push('repository-incomplete');
+  if (!outcomeComplete(placement)) reasons.push('placement-incomplete');
+  return reasons.length ? Object.freeze({ state: 'incomplete', reasons: Object.freeze(reasons) })
+    : Object.freeze({ state: 'complete', reasons: Object.freeze([] as const) });
+}
+
+/** Compatibility wording is derivable from the existing public View fields. */
+export function artifactClassificationComplete(repository: ClassificationOutcome, placement: ClassificationOutcome,
+  detail: 'materialized' | 'not-requested'): boolean {
+  return artifactClassification(repository, placement, detail).state === 'complete';
 }
 
 /** Selects captured support and derives scoped summaries without a display traversal. */
@@ -89,7 +110,7 @@ export function resolveOrganizationProjection(store: ProgramRecordStore, project
       documentation: Object.freeze(documentation.map(claim => qualifiedRecord(store, claim))),
       summary: Object.freeze({ basis: Object.freeze({ repository: evaluation, modulePopulation: moduleEvaluation, placement: evaluation.placement }),
         documentationCount: documentation.length,
-        complete: artifactClassificationComplete(evaluation, evaluation.placement, detail),
+        classification: artifactClassification(evaluation, evaluation.placement, detail),
         total: artifacts.length, moduleAssociated: artifacts.filter(item => moduleArtifacts.has(item.artifact.id)).length,
         unanalyzed: other.length, opaqueBoundaries: other.filter(item => !!item.artifact.artifact.boundary).length }) });
   }));

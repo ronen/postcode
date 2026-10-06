@@ -383,12 +383,25 @@ remain available through a referenced module projection.
 
 The organization presentation declares group details and the common module
 standard expansions before evaluation. Using the same compiler preparation keeps
-navigation across lenses in a common captured analysis. View construction reads stored
-claims and captured paths, materializes bounded display rows and omission counts,
-and never invokes another lens or analysis. Rendering receives only that value.
+navigation across lenses in a common captured analysis. Core resolution reads the
+retained Projection's claims, qualification and captured paths into immutable content,
+including full selected relationships and summaries tied to their evaluation basis.
+Coordination binds the established entity populations. Arrangement consumes that
+content and its binding maps without store access, then applies tree limits and
+computes display omissions. Rendering receives only the arranged View; neither
+arrangement nor rendering invokes another Lens or analysis.
 Repository/project trees retain direct contextual siblings, distinguish pruning
 from selection, and expand a shared group once. Group inspection shows all direct
 relationships; adjacent summary records explicitly identify unrequested detail.
+Core artifact summaries distinguish complete, incomplete and unrequested
+classification, with reasons identifying incomplete repository or placement support.
+For incomplete classification, inspection and tree counts use “other captured
+artifacts” with an adjacent notice, and the closing qualification explains the
+absence of established module or documentation associations in the supplied
+information. The View's existing evaluation and detail fields suffice to reproduce
+that qualification; complete-case wording and the legacy JSON count fields remain
+unchanged. See the [CLI reference](../cli-reference.md#organization-and-group-inspection)
+for the meaning of `unanalyzed`.
 Module-only inspection reuses the existing qualified module view; mixed matches
 are sectioned by kind and retain that module view as embedded detail.
 

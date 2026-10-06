@@ -12,7 +12,7 @@ import { inspect, modules } from '../src/lib/projections.js';
 import { moduleStandardExpansions } from '../src/lib/records.js';
 import type { EvaluationRecord } from '../src/lib/records.js';
 import { sourceDisclosure } from '../src/lib/source-disclosure.js';
-import { artifactClassificationComplete, resolveOrganizationProjection } from '../src/lib/organization/content.js';
+import { artifactClassification, artifactClassificationComplete, resolveOrganizationProjection } from '../src/lib/organization/content.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
 import { arrangeOrganizationView, createOrganizationView, renderOrganizationView } from '../src/lib/organization/presentation.js';
 import { inspectOrganization, organization } from '../src/lib/organization/projections.js';
@@ -95,7 +95,8 @@ test('organization artifact qualification uses supplied completeness with some m
     const content = resolveOrganizationProjection(store, projection);
     frozen(content);
     const selected = content.groups.find(group => group.selected)!;
-    assert.equal(selected.summary.complete, false);
+    assert.deepEqual(selected.summary.classification, { state: 'incomplete',
+      reasons: [outcome === partialPlacement ? 'placement-incomplete' : 'repository-incomplete'] });
     assert.ok(selected.parents.length > 0);
     for (const parent of selected.parents) {
       const relationship = content.containment.find(item => item.record.subject === parent && item.record.information.child === selected.id);
@@ -113,7 +114,7 @@ test('organization artifact qualification uses supplied completeness with some m
     const group = view.groups.find(group => group.selected)!;
     assert.equal(group.artifacts.unanalyzed, outcome === partialPlacement ? 2 : 1);
     assert.equal(group.documentationCount, 1);
-    assert.equal(artifactClassificationComplete(view.evaluations.repository, view.evaluations.placement, group.detail), selected.summary.complete);
+    assert.equal(artifactClassificationComplete(view.evaluations.repository, view.evaluations.placement, group.detail), selected.summary.classification.state === 'complete');
     const text = renderOrganizationView(JSON.parse(JSON.stringify(view)));
     assert.match(text, /Other captured artifacts: \d · 0 opaque boundaries \(classification incomplete\)/);
     assert.match(text, /Other captured artifacts have no module or documentation association established in the supplied information; classification is incomplete\./);
@@ -130,7 +131,7 @@ test('organization artifact qualification uses supplied completeness with some m
     assert.equal(sourceDisclosure(view), null);
     for (const context of content.groups.filter(group => !group.selected)) {
       assert.equal(context.detail, 'not-requested');
-      assert.equal(context.summary.complete, false);
+      assert.deepEqual(context.summary.classification, { state: 'not-requested', reasons: [] });
     }
   }
   assert.equal(partialArtifacts.placement.materialization, 'full');
@@ -200,5 +201,44 @@ test('mechanical identities retain their formula and all use the shared presenta
     const key = { projection: identityReference(view.projection.session, view.projection.id), presentation, method: methods.presentation };
     assert.equal(view.id, recordId(view.projection.session, kind, key));
     assert.notEqual(view.id, recordId(view.projection.session, kind, { ...key, method: 'postcode/presentation@26' }));
+  }
+});
+
+
+test('artifact classification distinguishes unrequested support and identifies every incomplete basis', () => {
+  const full = { applicability: 'applicable', availability: 'available', execution: 'completed', materialization: 'full' } as const;
+  assert.deepEqual(artifactClassification(full, full, 'materialized'), { state: 'complete', reasons: [] });
+  for (const incomplete of [{ ...full, applicability: 'inapplicable' }, { ...full, availability: 'unavailable' },
+    { ...full, execution: 'stopped' }, { ...full, materialization: 'partial' }] as const) {
+    assert.deepEqual(artifactClassification(incomplete, full, 'materialized'), { state: 'incomplete', reasons: ['repository-incomplete'] });
+    assert.deepEqual(artifactClassification(full, incomplete, 'materialized'), { state: 'incomplete', reasons: ['placement-incomplete'] });
+    assert.deepEqual(artifactClassification(incomplete, incomplete, 'materialized'),
+      { state: 'incomplete', reasons: ['repository-incomplete', 'placement-incomplete'] });
+    assert.deepEqual(artifactClassification(incomplete, incomplete, 'not-requested'), { state: 'not-requested', reasons: [] });
+  }
+  assert.deepEqual(artifactClassification(full, full, 'not-requested'), { state: 'not-requested', reasons: [] });
+});
+
+test('unavailable repository content preserves qualification and a self-contained View', async t => {
+  const root = fixture(t, { 'sample.ts': 'export const value = 1;' });
+  rmSync(path.join(root, '.git'), { recursive: true });
+  const { store, evaluation } = await discover(path.join(root, 'tsconfig.json'));
+  const outcome = evaluateOrganization(store, evaluation);
+  assert.equal(outcome.availability, 'unavailable');
+  for (const projection of [organization(store, outcome, 'repository'), inspectOrganization(store, outcome, 'missing')]) {
+    const content = resolveOrganizationProjection(store, projection);
+    frozen(content);
+    assert.deepEqual(content.groups, []);
+    assert.equal(content.evaluation.availability, 'unavailable');
+    assert.equal(content.evaluation.placement.availability, 'unavailable');
+    const bindings = { groups: store.entityIds(content.evaluation.groups, 'group'), modules: store.entityIds(content.moduleEvaluation.modules, 'module'),
+      detail: store.entityIds(content.moduleDetail?.discovery.modules ?? [], 'module') };
+    const view = arrangeOrganizationView(structuredClone(content), bindings, { format: 'unicode', sourceDetail: false });
+    assert.deepEqual(view, createOrganizationView(store, projection, { format: 'unicode', sourceDetail: false }));
+    const rendered = renderOrganizationView(view);
+    assert.equal(renderOrganizationView(JSON.parse(JSON.stringify(view))), rendered);
+    assert.match(rendered, /Repository layout: unavailable/);
+    assert.match(rendered, /Project placement: unavailable/);
+    assert.equal(sourceDisclosure(view), null);
   }
 });
