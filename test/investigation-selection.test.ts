@@ -14,6 +14,11 @@ import { selectionIdentity } from '../src/lib/investigation/selection-record.js'
 import { selectAssociatedInspection, selectInvestigation } from '../src/lib/investigation/selection.js';
 import { resolveInvestigationContent } from '../src/lib/investigation/content.js';
 import { revisionPage } from '../src/lib/investigation/revision-page.js';
+import { arrangeInvestigationView, createInvestigationView, finalizeInvestigationUsage, renderInvestigationView } from '../src/lib/investigation/presentation.js';
+import { arrangeAssociatedInspection, associationContinuation } from '../src/lib/investigation/associations.js';
+import { createView } from '../src/lib/presentation.js';
+import { usageSummary } from '../src/lib/investigation/reporting.js';
+import { sourceDisclosure } from '../src/lib/source-disclosure.js';
 
 interface AccountSpec {
   name: string;
@@ -345,4 +350,73 @@ test('binding port cannot allocate outside its typed population, and eager resol
   assert.equal(port.bind([a], 'module').get(a), `module-${prefix}a`);
   assert.equal(port.bind([b], 'module').get(b), `module-${prefix}`);
   assert.throws(() => referenceBinding(f.store, sessionId(), content.references), /population/);
+});
+
+test('arrangement is self-contained, preserves bounded disclosure and distinguishes presentation from Projection identity', () => {
+  const f = fixture(), { id, store } = f;
+  const children = Array.from({ length: 270 }, (_, n) => `child-${n}`);
+  const result = f.publish([{ name: 'A', children }, ...children.map(name => ({ name, evidence: [id('module-claim-0')] }))], [],
+    { supplied: [id('module-claim-0')] });
+  const content = structuredClone(resolveInvestigationContent(store, f.select(result)));
+  const spellings = store.entityIds(content.references.filter(item => item.kind === 'investigram').map(item => item.id), 'investigram');
+  const modules = store.entityIds([f.module], 'module');
+  const calls: { ids: readonly RecordId[]; kind: string }[] = [];
+  const bindings = { bind(ids: readonly RecordId[], kind: 'module' | 'group' | 'investigram') {
+    calls.push({ ids, kind });
+    return new Map(ids.map(id => [id, (kind === 'investigram' ? spellings : modules).get(id)!]));
+  } };
+  const options = { selector: 'entry-0', presentation: { format: 'json' as const, sourceDetail: false } };
+  const report = { reused: false, attempt: result.attempt };
+  const usage = usageSummary([]);
+  const plain = arrangeInvestigationView(content, options, report, usage, bindings);
+  assert.equal(plain.view.accounts.length, 256); assert.equal(plain.view.omittedAccounts.length, 15);
+  assert.equal(sourceDisclosure(plain.view), null, 'held source is not disclosure');
+  assert.equal(calls[0]!.kind, 'investigram'); assert.equal(calls[1]!.kind, 'module'); assert.equal(calls[2]!.kind, 'module');
+  const variants = [
+    { ...options, presentation: { format: 'unicode' as const, sourceDetail: false } },
+    { ...options, presentation: { format: 'json' as const, sourceDetail: true } },
+    { ...options, revisionPage: 99 }, { ...options, after: 'unknown' }, { ...options, after: 'another-unknown' },
+    { ...options, referenceLifetime: 'command' as const },
+  ].map(options => arrangeInvestigationView(content, options, report, usage, bindings));
+  assert.equal(new Set([plain, ...variants].map(item => item.view.projection.id)).size, 1);
+  assert.equal(new Set([plain, ...variants].map(item => item.view.id)).size, 7);
+  assert.equal(arrangeInvestigationView(content, { ...options, revisionPage: 1 }, report, usage, bindings).view.id, plain.view.id);
+  const source = variants[1]!.view;
+  assert.ok(sourceDisclosure(source)); assert.equal(source.sourceDetail!.items.length, 1);
+  assert.equal(renderInvestigationView(JSON.parse(JSON.stringify(source))), renderInvestigationView(source));
+  assert.deepEqual(finalizeInvestigationUsage(plain.view, usage, plain.investigationArrangementKey), plain.view);
+  const changed = finalizeInvestigationUsage(plain.view, { ...usage, missingCalls: 2 }, plain.investigationArrangementKey);
+  assert.notEqual(changed.id, plain.view.id); assert.equal(changed.projection.id, plain.view.projection.id);
+  assert.deepEqual(finalizeInvestigationUsage(changed, { ...usage, missingCalls: 2 }, plain.investigationArrangementKey), changed);
+  assert.notEqual(arrangeInvestigationView(content, options, { ...report, reused: true }, usage, bindings).view.id, plain.view.id);
+  const unavailable = (requestId: string): InvestigationSelection => ({ ...result, evaluation: null,
+    unavailable: { kind: 'communication-failure', code: 'provider', diagnostic: 'Failed.', provider: { status: 500, requestId, body: 'error' } } });
+  const one = createInvestigationView(store, f.session, { ...options, lens: 'summarize' }, [f.module], unavailable('one'), usage);
+  const two = createInvestigationView(store, f.session, { ...options, lens: 'summarize' }, [f.module], unavailable('two'), usage);
+  assert.equal(one.view.projection.id, two.view.projection.id); assert.notEqual(one.view.id, two.view.id);
+  assert.equal(one.view.result!.unavailable!.provider!.requestId, 'one');
+  const use = createInvestigationView(store, f.session, { ...options, lens: 'usage', selector: null }, [], null, usage);
+  assert.equal(store.lookup(use.view.projection.id), undefined, 'usage has a descriptor, not a retained program Projection');
+  assert.equal(use.view.projection.lens, 'usage'); assert.deepEqual(use.view.selected, []);
+});
+
+test('association continuation identity uses precise selected matches in both View formulas', () => {
+  const f = fixture(), { store, module, id } = f;
+  f.publish([{ name: 'A' }, { name: 'associated', associations: [id('A'), module] }]);
+  const content = resolveInvestigationContent(store, f.historical('A'));
+  const options = { selector: 'A', presentation: { format: 'json' as const, sourceDetail: false } };
+  const bindings = (spelling: string) => ({ bind(ids: readonly RecordId[]) { return new Map(ids.map(id => [id, id === f.id('associated') ? spelling : `ref-${id}`])); } });
+  const first = arrangeInvestigationView(content, { ...options, after: 'short' }, null, usageSummary([]), bindings('short'));
+  const second = arrangeInvestigationView(content, { ...options, after: 'longer' }, null, usageSummary([]), bindings('longer'));
+  assert.equal(first.view.id, second.view.id); assert.equal(first.view.investigations!.after, 'short');
+  assert.equal(second.view.investigations!.after, 'longer');
+  const projection = inspect(store, f.evaluation, 'entry-0'), mechanical = createView(store, projection, options.presentation);
+  const associated = resolveInvestigationContent(store, selectAssociatedInspection(store, projection.id, [module]));
+  const one = arrangeAssociatedInspection(mechanical, associated, new Map([[id('associated'), 'short']]), 'short');
+  const two = arrangeAssociatedInspection(mechanical, associated, new Map([[id('associated'), 'longer']]), 'longer');
+  assert.equal(one.id, two.id); assert.equal(one.projection.id, associated.projection.id);
+  const unknown = arrangeAssociatedInspection(mechanical, associated, new Map([[id('associated'), 'short']]), 'unknown');
+  assert.notEqual(one.id, unknown.id); assert.equal(one.projection.id, unknown.projection.id);
+  assert.equal(unknown.investigations.status, 'unknown-continuation');
+  assert.deepEqual(associationContinuation(f.session, [], new Map(), null), associationContinuation(f.session, [], new Map()));
 });

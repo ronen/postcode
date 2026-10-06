@@ -9,7 +9,7 @@ export const methods = {
   investigation: 'postcode/investigation@12',
   investigationEvaluation: 'postcode/investigation-evaluation@2',
   investigationProjection: 'postcode/investigation-projection@1',
-  investigationPresentation: 'postcode/investigation-presentation@11',
+  investigationPresentation: 'postcode/investigation-presentation@12',
   discovery: 'postcode/typescript-modules@12',
   evaluation: 'postcode/evaluate-modules@5',
   dependencies: 'postcode/typescript-dependencies@2',

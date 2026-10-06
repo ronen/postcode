@@ -1,3 +1,4 @@
+import type { Investigram } from './contracts.js';
 import { methods, recordId } from '../identity.js';
 import type { ProgramRecordStore, RecordId, SessionId } from '../records.js';
 import type { InvestigationSelection } from './evaluation.js';
@@ -106,4 +107,11 @@ function derive(store: ProgramRecordStore, session: SessionId, selected: readonl
     ...[...relations].flat(), ...displaced, ...associated])];
   return { roots, relations: [...relations].map(([original, account]) => ({ original, account })), displaced: [...displaced],
     navigation, associated, revisions: revisionSubjects.map(id => index.snapshot(id)) };
+}
+
+/** Association roles are explicit; originating context and evidence mentions do not add matches. */
+export function associatedInvestigrams(store: ProgramRecordStore, session: SessionId, subjects: readonly RecordId[]): Investigram[] {
+  const selected = new Set(subjects);
+  return store.investigations(session).flatMap(item => item.investigrams).map(id => store.get(id))
+    .filter((item): item is Investigram => item.kind === 'investigram' && item.associations.some(item => selected.has(item.subject)));
 }

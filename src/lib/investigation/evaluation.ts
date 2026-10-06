@@ -1,6 +1,6 @@
 import { revisionPage } from './revision-page.js';
 import { sessionRevisions } from './revisions.js';
-import { associatedInvestigrams } from './associations.js';
+import { associatedInvestigrams } from './selection.js';
 import { canonical, identityReference, methods, recordId } from '../identity.js';
 import { freezeOwned } from '../immutable.js';
 import { evidenceAccess } from '../evidence-access.js';

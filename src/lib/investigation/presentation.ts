@@ -1,6 +1,11 @@
 import { revisionPage } from './revision-page.js';
-import { sessionRevisions } from './revisions.js';
-import { associatedView, renderAssociatedInvestigations } from './associations.js';
+import { resolveInvestigationContent } from './content.js';
+import type { InvestigationProjectionContent } from './content.js';
+import { selectInvestigation } from './selection.js';
+import { investigationOperations } from './selection-record.js';
+import { referenceBinding } from '../reference-binding.js';
+import type { ReferenceBinding } from '../reference-binding.js';
+import { arrangeAssociatedInvestigations, associationContinuation, renderAssociatedInvestigations } from './associations.js';
 import { identityReference, methods, recordId } from '../identity.js';
 import { freezeOwned } from '../immutable.js';
 import { inlineText, terminalText } from '../terminal-text.js';
@@ -11,29 +16,78 @@ import type { InvestigationSelection } from './evaluation.js';
 import { usageSummary } from './reporting.js';
 import type { InvestigationUsageReport } from './reporting.js';
 
-export function createInvestigationView(store: ProgramRecordStore, session: SessionId,
-  request: { lens: 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'usage' | 'children' | 'parents'; unsupportedSubject?: 'investigram' | 'program-subject'; after?: string; revisionPage?: number; selector: string | null; reference?: boolean; presentation: Presentation; referenceLifetime?: 'session' | 'command' },
+export interface InvestigationViewRequest {
+  readonly lens: 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'usage' | 'children' | 'parents';
+  readonly unsupportedSubject?: 'investigram' | 'program-subject';
+  readonly after?: string;
+  readonly revisionPage?: number;
+  readonly selector: string | null;
+  readonly reference?: boolean;
+  readonly presentation: Presentation;
+  readonly referenceLifetime?: 'session' | 'command';
+}
+export interface InvestigationReporting {
+  readonly reused: boolean;
+  readonly attempt: RecordId | null;
+  readonly provider?: NonNullable<NonNullable<InvestigationSelection['unavailable']>['provider']>;
+}
+interface UsageDescriptor { readonly id: RecordId; readonly session: SessionId; readonly lens: 'usage' }
+type ArrangementContent = Omit<InvestigationProjectionContent, 'projection'> & {
+  readonly projection: InvestigationProjectionContent['projection'] | UsageDescriptor;
+};
+
+export function createInvestigationView(store: ProgramRecordStore, session: SessionId, request: InvestigationViewRequest,
   selected: readonly RecordId[], result: InvestigationSelection | null, usage: InvestigationUsageReport) {
-  const revisionIndex = sessionRevisions(store, session);
+  const content: ArrangementContent = request.lens === 'usage' ? {
+    projection: { id: recordId(session, 'investigation-usage', [methods.investigationProjection]), session, lens: 'usage' },
+    evaluation: null, accounts: [], corrections: [], provenance: [], support: [], candidates: [], references: [],
+  } : resolveInvestigationContent(store, selectInvestigation(store, session, { ...request, lens: request.lens }, selected, result));
+  const reporting = result ? { reused: result.reused, attempt: result.attempt,
+    ...(result.unavailable?.provider ? { provider: result.unavailable.provider } : {}) } : null;
+  return arrangeInvestigationView(content, request, reporting, usage, referenceBinding(store, session, content.references));
+}
+
+/** Arrangement has complete frozen content and a binding-only capability, never a store. */
+export function arrangeInvestigationView(content: ArrangementContent,
+  options: Omit<InvestigationViewRequest, 'lens' | 'unsupportedSubject'>, reporting: InvestigationReporting | null,
+  usage: InvestigationUsageReport, bindings: ReferenceBinding) {
+  const session = content.projection.session;
+  const selection = content.projection.lens === 'usage' ? null : content.projection;
+  const request = { ...options, lens: content.projection.lens,
+    unsupportedSubject: selection?.variant === 'request' ? selection.unsupportedSubject : null };
+  const selected = selection?.subjects ?? [];
+  const coreAccounts = new Map(content.accounts.map(item => [item.id, item]));
+  const coreCorrections = new Map(content.corrections.map(item => [item.id, item]));
+  const coreOrigins = new Map(content.provenance.map(item => [item.id, item]));
+  const coreSupport = new Map(content.support.map(item => [item.record.id, item]));
+  const coreRevisions = new Map((selection?.revisions ?? []).map(item => [item.original, item]));
+  const coreRelations = new Map((selection?.relations ?? []).map(item => [item.original, item.account]));
+  const coreNavigation = new Map((selection?.navigation ?? []).map(item => [item.account, item]));
+  const referenceKinds = new Map(content.references.map(item => [item.id, item.kind]));
+  const result: InvestigationSelection | null = reporting ? {
+    request: content.evaluation?.request ?? { operation: investigationOperations[request.lens as keyof typeof investigationOperations], subject: selected[0]!, parameters: {} },
+    reused: reporting.reused, attempt: reporting.attempt, evaluation: content.evaluation,
+    unavailable: selection?.variant === 'request' && selection.outcome.kind === 'unavailable'
+      ? { ...selection.outcome.value, ...(reporting.provider ? { provider: reporting.provider } : {}) } : null,
+  } : null;
   const accounts = new Map<RecordId, Investigram>(), corrections = new Map<RecordId, Correction>();
   const provenances = new Map<RecordId, InvestigationProvenance>();
-  const roots = result?.evaluation?.outcome.kind === 'accepted' ? [result.evaluation.outcome.root] : request.lens === 'inspect' ? [...selected] : [];
+  const roots = selection?.roots ?? [];
   const display: { original: RecordId; account: RecordId; parent: RecordId | null; role: 'result' | 'accompanying' }[] = [];
   const pending = roots.map(original => ({ original, parent: null as RecordId | null, role: 'result' as 'result' | 'accompanying' }));
   const displaced = new Set<RecordId>(), omittedAccounts = new Set<RecordId>();
   const listingLimit = 256;
   const displacedCorrections = new Map<RecordId, { id: RecordId; reporter: RecordId; target: RecordId; replacement: RecordId }>();
-  const historical = request.lens === 'inspect';
   // Displaced composition is disclosed separately; it is never spliced into a replacement.
   const rememberDisplaced = (root: RecordId) => {
     const queue = [root];
     for (let index = 0; index < queue.length; index++) {
       const id = queue[index]!;
       if (displaced.has(id)) continue;
-      const account = revisionIndex.accounts.get(id)!;
+      const account = coreAccounts.get(id)!;
       displaced.add(id); queue.push(...account.children);
       for (const correctionId of account.corrections) {
-        const correction = store.get(correctionId);
+        const correction = coreCorrections.get(correctionId)!;
         if (correction.kind !== 'investigram-correction') throw new Error('Expected correction');
         const { reporter, target, replacement } = correction;
         displacedCorrections.set(correctionId, { id: correctionId, reporter, target, replacement });
@@ -42,27 +96,27 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
   };
   while (pending.length) {
     const entry = pending.shift()!;
-    const id = historical ? entry.original : revisionIndex.primary(entry.original);
+    const id = coreRelations.get(entry.original)!;
     if (!accounts.has(id) && accounts.size >= listingLimit) { omittedAccounts.add(id); continue; }
     // A primary already shown through an accompanying correction still displaces
     // this original, even though its body must not be displayed twice.
     if (id !== entry.original) rememberDisplaced(entry.original);
     if (accounts.has(id)) continue;
-    const account = revisionIndex.accounts.get(id);
+    const account = coreAccounts.get(id);
     if (!account) throw new Error('Expected investigram');
     accounts.set(id, account); display.push({ ...entry, account: id });
-    const provenance = store.get(account.provenance);
+    const provenance = coreOrigins.get(account.provenance)!;
     if (provenance.kind !== 'investigation-provenance') throw new Error('Expected investigation provenance');
     provenances.set(provenance.id, provenance);
     pending.push(...account.children.map(original => ({ original, parent: id, role: entry.role })));
     for (const correctionId of account.corrections) {
-      const correction = store.get(correctionId);
+      const correction = coreCorrections.get(correctionId)!;
       if (correction.kind !== 'investigram-correction') throw new Error('Expected correction');
       corrections.set(correctionId, correction);
       pending.push({ original: correction.replacement, parent: null, role: 'accompanying' });
     }
   }
-  const allRevisionSubjects = [...new Set([...selected.filter(id => revisionIndex.accounts.has(id)),
+  const allRevisionSubjects = [...new Set([...selected.filter(id => coreAccounts.has(id)),
     ...display.flatMap(item => [item.original, item.account]), ...displaced])];
   const revisionSubjects = allRevisionSubjects.slice(0, listingLimit);
   const displacedListing = [...displaced].slice(0, listingLimit);
@@ -70,9 +124,9 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
   const omissions = { displaced: displaced.size - displacedListing.length,
     displacedCorrections: displacedCorrections.size - displacedCorrectionListing.length,
     revisions: allRevisionSubjects.length - revisionSubjects.length };
-  const revisions = revisionSubjects.map(id => revisionPage(revisionIndex.snapshot(id), request.revisionPage));
+  const revisions = revisionSubjects.map(id => revisionPage(coreRevisions.get(id)!, request.revisionPage));
   for (const status of revisions) for (const row of status.rows) {
-    const correction = store.get(row.correction);
+    const correction = coreCorrections.get(row.correction)!;
     if (correction.kind !== 'investigram-correction') throw new Error('Expected correction');
     corrections.set(correction.id, correction);
   }
@@ -80,46 +134,35 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
   // reference. Its own inspect page supplies full qualified historical content.
   const inconsistencies = [...new Map(revisions.flatMap(item => item.inconsistencies).map(item => [`${item.reporter}:${item.ordinal}`, item])).values()];
   for (const correction of corrections.values()) {
-    const provenance = store.get(correction.provenance);
+    const provenance = coreOrigins.get(correction.provenance)!;
     if (provenance.kind !== 'investigation-provenance') throw new Error('Expected correction provenance');
     provenances.set(provenance.id, provenance);
   }
   for (const item of inconsistencies) {
-    const reporter = revisionIndex.accounts.get(item.reporter)!;
-    const provenance = store.get(reporter.provenance);
+    const reporter = coreAccounts.get(item.reporter)!;
+    const provenance = coreOrigins.get(reporter.provenance)!;
     if (provenance.kind !== 'investigation-provenance') throw new Error('Expected inconsistency provenance');
     provenances.set(provenance.id, provenance);
   }
-  const compositionParents = new Map(store.investigations(session).flatMap(item => item.investigrams).flatMap(id => {
-    const account = store.get(id);
-    return account.kind === 'investigram' ? account.children.map(child => [child, account.id] as const) : [];
-  }));
-  const navigation = [...accounts.values()].map(account => {
-    const provenance = provenances.get(account.provenance)!;
-    return { account: account.id, compositionParent: compositionParents.get(account.id) ?? null, investigationSubject: provenance.request.subject };
-  });
-  const navigable = navigation.flatMap(item => [item.compositionParent, item.investigationSubject]).filter((id): id is RecordId => id !== null && store.get(id).kind === 'investigram');
-  const references = new Map(store.entityIds([...new Set([...accounts.keys(), ...navigable, ...revisionSubjects, ...displacedListing,
+  const navigation = [...accounts.keys()].map(id => coreNavigation.get(id)!);
+  const navigable = navigation.flatMap(item => [item.compositionParent, item.investigationSubject]).filter((id): id is RecordId => id !== null && referenceKinds.get(id) === 'investigram');
+  const references = new Map(bindings.bind([...new Set([...accounts.keys(), ...navigable, ...revisionSubjects, ...displacedListing,
     ...displacedCorrectionListing.flatMap(item => [item.reporter, item.target, item.replacement]),
     ...omittedAccounts, ...revisions.flatMap(item => [item.primary, item.familyPrimary, ...item.rows.flatMap(row => [row.target, row.replacement, row.reporter, ...(row.cause?.via ?? [])])]), ...inconsistencies.flatMap(item => [item.reporter, ...item.targets]), ...[...accounts.values()].flatMap(item => item.inconsistencies.flatMap(item => item.targets)), ...[...corrections.values()].flatMap(item => [item.reporter, item.target, item.replacement])])], 'investigram'));
-  for (const [id, reference] of store.entityIds(navigation.map(item => item.investigationSubject).filter(id => store.get(id).kind === 'module'), 'module')) references.set(id, reference);
+  for (const [id, reference] of bindings.bind(navigation.map(item => item.investigationSubject).filter(id => referenceKinds.get(id) === 'module'), 'module')) references.set(id, reference);
   const support = new Set([...accounts.values()].flatMap(item => [...item.evidence, ...item.associations.flatMap(item => item.evidence), ...item.inconsistencies.flatMap(item => item.evidence)]));
   for (const correction of corrections.values()) correction.evidence.forEach(id => support.add(id));
   for (const item of inconsistencies) item.evidence.forEach(id => support.add(id));
-  const candidates = request.lens === 'summarize' && !request.unsupportedSubject ? selected.map(id => {
-    const module = store.get(id);
-    const claim = module.kind === 'module' ? store.get(module.claim) : null;
-    if (claim?.kind !== 'claim' || claim.information.type !== 'module') throw new Error('Expected module naming claim');
-    return { id, reference: store.entityIds([id], 'module').get(id)!, name: claim.information.name, handle: claim.information.handle };
-  }) : [];
+  const candidates = content.candidates.map(({ id, naming }) => ({ id, reference: bindings.bind([id], 'module').get(id)!,
+    name: naming.record.information.name, handle: naming.record.information.handle }));
   const supportDetails = [...support].map(id => {
-    const record = store.get(id);
-    const exposures = [...provenances.values()].flatMap(item => {
-      const forms = [...(item.suppliedEvidence.includes(id) ? ['full'] : []), ...(item.summarizedEvidence.includes(id) ? ['summary'] : []),
-        ...(item.citations.includes(id) ? ['prior-interpretation'] : [])];
-      return forms.length ? [{ provenance: item.id, forms }] : [];
+    const supplied = coreSupport.get(id)!;
+    const record = supplied.record;
+    const exposures = [...provenances.keys()].flatMap(id => {
+      const exposure = supplied.exposures.find(item => item.provenance === id);
+      return exposure ? [exposure] : [];
     });
-    const context = record.kind === 'claim' || record.kind === 'recorded-assertion' ? store.get(record.context) : null;
+    const context = record.kind === 'claim' || record.kind === 'recorded-assertion' ? supplied.qualification?.context : null;
     return { id, kind: record.kind, method: record.method, exposures,
       ...(record.kind === 'claim' ? { information: record.information } : {}),
       ...(record.kind === 'recorded-assertion' ? { assertion: record.text, tags: record.tags, status: record.status } : {}),
@@ -129,20 +172,20 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
   });
   const sources = new Map<RecordId, ProgramRecord>();
   if (request.presentation.sourceDetail) for (const id of support) {
-    const record = store.get(id);
-    const context = record.kind === 'claim' || record.kind === 'recorded-assertion' ? store.get(record.context) : record;
-    const ids = context.kind === 'claim-context' ? context.evidence : [record.kind === 'captured-content' ? record.mapping : record.id];
-    for (const id of ids) {
-      const source = store.get(id);
-      if (source.kind === 'source-evidence' || source.kind === 'repository-artifact') sources.set(source.id, source);
-    }
+    for (const source of coreSupport.get(id)!.sources) sources.set(source.id, source);
   }
-  const investigations = request.lens === 'inspect' ? associatedView(store, session, selected, request.after, request.referenceLifetime) : undefined;
-  const projection = { id: recordId(session, 'investigation-projection', [methods.investigationPresentation, request,
-    selected.map(id => identityReference(session, id)), result?.evaluation?.id ?? null, [...corrections.keys()], investigations ?? null, revisions, inconsistencies, displacedCorrectionListing, omissions]),
+  // Association allocation stays after the displayed references, module navigation and candidates.
+  const associatedReferences = request.lens === 'inspect' ? bindings.bind(selection!.associated, 'investigram') : new Map<RecordId, string>();
+  const investigations = request.lens === 'inspect'
+    ? arrangeAssociatedInvestigations(content as InvestigationProjectionContent, associatedReferences, request.after, request.referenceLifetime) : undefined;
+  const projection = { id: content.projection.id,
     session, lens: request.lens, subject: 'selected-subjects', parameters: { selector: request.selector, reference: request.reference ?? false },
-    selection: { matches: selected.length, status: request.unsupportedSubject ? 'unsupported-subject-lens' : selected.length === 1 ? 'selected' : selected.length ? 'ambiguous' : 'missing' } };
-  return finalizeInvestigationUsage({ schema: 'postcode-investigation-view/1-experimental' as const, id: projection.id, projection,
+    selection: { matches: selected.length, status: selection?.status ?? 'missing' } };
+  const arrangementKey = recordId(session, 'investigation-arrangement', [methods.investigationPresentation, identityReference(session, projection.id),
+    request.presentation, associationContinuation(session, selection?.associated ?? [], associatedReferences, request.after),
+    request.revisionPage ?? 1, request.referenceLifetime ?? 'session',
+    reporting ? { ...reporting, attempt: identityReference(session, reporting.attempt) } : null]);
+  const view = finalizeInvestigationUsage({ schema: 'postcode-investigation-view/1-experimental' as const, id: projection.id, projection,
     presentation: request.presentation, referenceLifetime: request.referenceLifetime ?? 'session',
     result, selected, candidates, unsupportedSubject: request.unsupportedSubject ?? null, references: [...references].map(([id, reference]) => ({ id, reference })),
     display, revisions, displaced: displacedListing, displacedCorrections: displacedCorrectionListing, omissions,
@@ -155,16 +198,17 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
       ...(['explain', 'decompose', 'examine'].includes(request.lens) && selected.length !== 1 ? ['Follow-up requires one exact investigram reference from this session.'] : []),
       ...(request.lens === 'summarize' && selected.length !== 1 ? ['Summary requires one exact module; resolve a missing or ambiguous selection before investigation.'] : [])],
     ...(request.presentation.sourceDetail ? { sourceDetail: { level: 'investigation-support' as const, items: [...sources.values()] } } : {}),
-  }, usage);
+  }, usage, arrangementKey);
+  return { view, investigationArrangementKey: arrangementKey };
 }
 /** Usage is view reporting, independent of the retained interpretation projection. */
 export function finalizeInvestigationUsage<T extends { readonly id: RecordId;
-  readonly projection: { readonly id: RecordId; readonly session: SessionId }; readonly usage: InvestigationUsageReport }>(view: T, usage: InvestigationUsageReport): T {
+  readonly projection: { readonly id: RecordId; readonly session: SessionId }; readonly usage: InvestigationUsageReport }>(view: T, usage: InvestigationUsageReport, arrangementKey: RecordId): T {
   const session = view.projection.session;
-  const id = recordId(session, 'investigation-view', [methods.investigationPresentation, identityReference(session, view.projection.id), usage]);
+  const id = recordId(session, 'investigation-view', [methods.investigationPresentation, identityReference(session, arrangementKey), usage]);
   return freezeOwned({ ...view, id, usage });
 }
-export type InvestigationView = ReturnType<typeof createInvestigationView>;
+export type InvestigationView = ReturnType<typeof arrangeInvestigationView>['view'];
 export function renderInvestigationView(view: InvestigationView): string {
   if (view.presentation.format === 'json') return `${JSON.stringify(view)}\n`;
   const reference = (id: RecordId) => view.references.find(item => item.id === id)?.reference ?? id;
