@@ -81,6 +81,10 @@ Address point 3, update the proposal to reflect these resolutions
 
 No further re-review is needed, you may promote the proposal then proceed to the implementation.  As always, pause for discussion if significant unexpected issues arise; or if the implementation becomes sufficiently complex that intermediate review would materially reduce risk, pause for independent review after appropriate key developments.  Otherwise prepare a handoff and pause for final review before; don't close the task until explicit approval.
 
+### Mechanical review disposition instructions
+
+the review is complete.  Please assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
+
 ## Outcome
 
 ## Verification
