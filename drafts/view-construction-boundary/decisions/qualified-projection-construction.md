@@ -153,7 +153,11 @@ incomplete artifact support or module placement; neither a nonempty module list
 nor a complete-looking display can override it. Use the incomplete closing
 qualification whenever a requested artifact classification supplied for the
 Projection is incomplete; unrequested context-group detail does not establish
-either completeness or a new artifact classification. Preserve complete-case wording.
+either completeness or a new artifact classification. When no groups are selected,
+preserve the conservative closing notice based on repository and placement
+completeness alone, including missing selectors and unavailable layout. This
+qualifies the supplied evaluation basis without inventing a group classification.
+Preserve complete-case wording.
 Keep JSON field names, numeric calculations and existing evaluation metadata,
 and document `unanalyzed` in [the CLI reference](../cli-reference.md) as the legacy
 field for this qualified remainder.
