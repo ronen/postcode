@@ -347,7 +347,7 @@ Projection record family in `ProgramRecordStore`. Its variants cover these cases
 | Summarize, explain, decompose or examine with accepted, limited or failed retained evaluation | Investigation-request variant references that evaluation; accepted results select its root and applicable replacements |
 | Exact investigram inspection, including missing selection | Historical-inspection variant retains exact selected IDs/status and associated selection; no generating evaluation is required |
 | Missing/ambiguous operation subject or unsupported subject/Lens combination, including children/parents/summarize on an investigram and follow-ups on a program subject | Investigation-request variant retains requested Lens, selector, selected IDs/status and unsupported-kind information; explicit no-evaluation outcome |
-| Configuration-unavailable or communication-failure without a retained evaluation | Investigation-request variant embeds the immutable unavailable outcome value, including code/diagnostic; evaluation reference is absent |
+| Configuration-unavailable or communication-failure without a retained evaluation | Investigation-request variant embeds only the immutable unavailable outcome's kind, code and diagnostic; evaluation reference is absent. Provider status/body/request ID remain request/View reporting |
 | Associated inspection of a mechanical Projection, including zero matches | Associated-inspection variant references the Projection whose mechanical View is shown and retains the explicit inspected subjects and full ordered association selection/revisions |
 | Usage-only request | No retained program Projection; keep the current JSON `projection` field as a compatibility reporting descriptor with `lens: usage`, no selected subjects and the existing empty selection fields |
 
@@ -394,6 +394,12 @@ session membership and preserves atomic immutable insertion. Attempt identifiers
 that name reporting events rather than retained records are not record references:
 keep them, along with `reused` and usage, in request/View reporting. An accepted
 evaluation still supplies its existing valid provenance references.
+
+Provider error status, body and request ID likewise remain invocation reporting.
+Unavailable selections retain only `kind`, `code` and `diagnostic`; differing
+provider reporting alone does not change their Projection identity. The View's
+arrangement key includes that reporting so the exposed request result remains
+distinguishable.
 
 Derive identity from the full retained semantic payload other than its own ID,
 normalizing only known reference positions. Every retained field must be
