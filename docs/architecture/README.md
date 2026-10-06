@@ -58,6 +58,17 @@ failures. Lens
 construction reads stored information, selects relevant subjects and context,
 and writes an addressable projection. It does not call TypeScript.
 
+For module, organization, dependency and investigation families, core construction
+resolves immutable qualified content before CLI arrangement. The content includes
+the supporting evaluation populations and qualification used for derived counts.
+Investigation selections are retained Projections with unpaged revision snapshots;
+associated inspection fixes its shown mechanical basis and full associated
+population. Arrangement applies display limits and source choices to that supplied
+content, with coordinated reference bindings or a restricted binding-only port.
+Rendering consumes the self-contained View. These responsibilities and their scope
+for future Presentations are set by the
+[qualified construction decision](../decisions/qualified-projection-construction.md).
+
 The current store adapter uses private in-memory maps. It clones and freezes
 records, requires each session record's own ID to equal its session identity,
 rejects conflicting replacements and invalid references (including entity
