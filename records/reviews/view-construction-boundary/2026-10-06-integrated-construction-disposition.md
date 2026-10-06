@@ -8,7 +8,7 @@ Handoff: [Final integrated review](2026-10-06-integrated-construction-handoff.md
 Findings: [Round 1](2026-10-06-integrated-construction-round-1-findings.md)
 Reviewed target: `16ec9ae261715735aa44f62e969ae0f49dc2942e`
 Correction: `0e82ee5`
-Status: findings addressed; human authorized push and PR creation; task remains active
+Status: findings addressed; human approved task closure after Copilot review
 
 ## Actionable finding
 
@@ -82,3 +82,18 @@ The human authorized pushing all changes and creating a PR with a concise summar
 while explicitly keeping the task open. This disposition supports that next step;
 it does not interpret the reviewer recommendation or PR authorization as approval
 to close the task. Explicit human closure approval remains required.
+
+## Closure after external PR review — 2026-10-06
+
+The [Copilot review](2026-10-06-integrated-construction-round-2-copilot-findings.md)
+examined PR #9 at `50ab76de48e22412303e6081caf861507d4d0a4b`, including the F1
+correction. It reports no findings; the complete retrieval contains no inline
+annotations or conversation comments. Its general recommendation for final human
+review is preserved, not treated as an automated approval.
+
+The human explicitly stated that the review was complete with no findings and
+authorized closing the task. There are no further corrections or unresolved
+findings. That explicit approval satisfies the final review and closure gate.
+Closure changes only repository records; existing verification remains applicable,
+and no new test execution is claimed. PR #9 remains open for the normal merge
+process; task closure does not merge or close the PR.
