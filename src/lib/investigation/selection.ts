@@ -32,7 +32,9 @@ export function selectInvestigation(store: ProgramRecordStore, session: SessionI
   const evaluation = result?.evaluation ? store.get(result.evaluation.id) : null;
   if (evaluation && evaluation.kind !== 'investigation-evaluation') throw new Error('Expected retained investigation evaluation');
   const outcome = evaluation ? { kind: 'evaluation' as const, evaluation: evaluation.id }
-    : result?.unavailable ? { kind: 'unavailable' as const, value: result.unavailable } : { kind: 'no-evaluation' as const };
+    : result?.unavailable ? { kind: 'unavailable' as const, value: {
+      kind: result.unavailable.kind, code: result.unavailable.code, diagnostic: result.unavailable.diagnostic,
+    } } : { kind: 'no-evaluation' as const };
   const roots = evaluation?.outcome.kind === 'accepted' ? [evaluation.outcome.root] : [];
   return retain(store, { kind: 'investigation-selection-projection', session, method: methods.investigationProjection,
     variant: 'request', lens: request.lens, selector, subjects: selected, status: selectionStatus(selected, request.unsupportedSubject),

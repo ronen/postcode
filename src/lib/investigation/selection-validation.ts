@@ -14,6 +14,9 @@ export function validateInvestigationSelection(record: InvestigationSelectionPro
     && (record.subjects.length !== 1 || record.subjects[0] !== record.selector.reference)) throw new Error('Invalid resolved selection reference');
   if (record.variant === 'request') {
     if (record.lens === 'inspect') throw new Error('Inspection requires the historical variant');
+    if ((record.lens === 'children' || record.lens === 'parents') && unsupported !== 'investigram') throw new Error('Investigation children/parents requires an unsupported investigram subject');
+    if (record.outcome.kind === 'no-evaluation' && record.status === 'selected') throw new Error('A selected operation subject requires an outcome');
+    if (record.outcome.kind === 'unavailable' && Object.keys(record.outcome.value).some(key => !['kind', 'code', 'diagnostic'].includes(key))) throw new Error('Unavailable selection cannot retain provider reporting');
     if (record.associated.length) throw new Error('Operation selection cannot include associated listing');
     if (record.outcome.kind === 'evaluation') {
       const evaluation = get(record.outcome.evaluation);

@@ -29,7 +29,7 @@ interface SelectionContent extends RecordContext {
 export type InvestigationSelectionProjection = SelectionContent & (
   | { readonly variant: 'request'; readonly unsupportedSubject: 'investigram' | 'program-subject' | null;
       readonly outcome: { readonly kind: 'evaluation'; readonly evaluation: RecordId }
-        | { readonly kind: 'unavailable'; readonly value: NonNullable<InvestigationSelection['unavailable']> }
+        | { readonly kind: 'unavailable'; readonly value: Pick<NonNullable<InvestigationSelection['unavailable']>, 'kind' | 'code' | 'diagnostic'> }
         | { readonly kind: 'no-evaluation' } }
   | { readonly variant: 'historical-inspection'; readonly lens: 'inspect' }
   | { readonly variant: 'associated-inspection'; readonly lens: 'inspect'; readonly mechanical: RecordId }

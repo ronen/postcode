@@ -110,6 +110,23 @@ test('request variants retain semantic outcomes without attempt reporting, pages
     assert.equal(resolveInvestigationContent(store, projection).evaluation, null);
   }
   assert.equal(store.investigations(session).length, retained, 'unavailable selections cannot become reusable evaluations');
+  const failed = (requestId: string): InvestigationSelection => ({ ...accepted, evaluation: null, unavailable: {
+    kind: 'communication-failure', code: 'provider-error', diagnostic: 'Request failed.', provider: { status: 500, requestId, body: { requestId } },
+  } });
+  const firstFailure = failed('one'), secondFailure = failed('two');
+  const unavailableProjection = f.select(firstFailure);
+  assert.equal(f.select(secondFailure), unavailableProjection, 'provider request IDs and bodies remain reporting, not Projection identity');
+  assert.equal(firstFailure.unavailable?.provider?.requestId, 'one', 'request reporting remains intact');
+  assert.deepEqual(unavailableProjection.variant === 'request' && unavailableProjection.outcome,
+    { kind: 'unavailable', value: { kind: 'communication-failure', code: 'provider-error', diagnostic: 'Request failed.' } });
+  assert.notEqual(f.select({ ...firstFailure, unavailable: { ...firstFailure.unavailable!, diagnostic: 'Different failure.' } }).id, unavailableProjection.id);
+  assert.throws(() => selectInvestigation(store, session, { lens: 'summarize', selector: 'entry' }, [module], null), /requires an outcome/);
+  for (const lens of ['children', 'parents'] as const) assert.throws(() =>
+    selectInvestigation(store, session, { lens, selector: 'A' }, [id('A')], null), /unsupported investigram/);
+  if (unavailableProjection.variant !== 'request') throw new Error('Expected request');
+  assert.throws(() => store.put([{ ...unavailableProjection, id: id('invalid-provider'),
+    outcome: { kind: 'unavailable', value: firstFailure.unavailable! } }]), /provider reporting/);
+  assert.throws(() => store.put([{ ...unavailableProjection, id: id('invalid-no-evaluation'), outcome: { kind: 'no-evaluation' } }]), /requires an outcome/);
   for (const selected of [[], [module, id('module2')]]) {
     const projection = selectInvestigation(store, session, { lens: 'summarize', selector: 'entry' }, selected, null);
     assert.equal(projection.status, selected.length ? 'ambiguous' : 'missing');
@@ -225,13 +242,15 @@ test('selection identity normalizes only known references and ignores irrelevant
   const a = scenario(sessionId(), false), b = scenario(sessionId(), true);
   assert.equal(identityReference(a.f.session, a.selection.id), identityReference(b.f.session, b.selection.id));
   const literal = a.f.id('module');
-  const literalSelection = selectInvestigation(a.f.store, a.f.session, { lens: 'summarize', selector: literal }, [a.f.module], null);
-  const referenceSelection = selectInvestigation(a.f.store, a.f.session, { lens: 'summarize', selector: literal, reference: true }, [a.f.module], null);
+  const unavailable: InvestigationSelection = { request: { operation: 'functionality', subject: a.f.module, parameters: {} },
+    reused: false, attempt: null, evaluation: null, unavailable: { kind: 'configuration-unavailable', code: 'disabled', diagnostic: 'Disabled.' } };
+  const literalSelection = selectInvestigation(a.f.store, a.f.session, { lens: 'summarize', selector: literal }, [a.f.module], unavailable);
+  const referenceSelection = selectInvestigation(a.f.store, a.f.session, { lens: 'summarize', selector: literal, reference: true }, [a.f.module], unavailable);
   assert.notEqual(literalSelection.id, referenceSelection.id);
   const { id: _id, ...payload } = literalSelection;
   assert.deepEqual((selectionIdentity(payload) as typeof payload).selector, { literal }, 'reference-shaped literal remains verbatim');
   assert.deepEqual(selectionIdentity(literalSelection), selectionIdentity(payload), 'own identity is never part of its key');
-  const spelling = selectInvestigation(a.f.store, a.f.session, { lens: 'summarize', selector: 'different-compact-spelling', reference: true }, [a.f.module], null);
+  const spelling = selectInvestigation(a.f.store, a.f.session, { lens: 'summarize', selector: 'different-compact-spelling', reference: true }, [a.f.module], unavailable);
   assert.equal(referenceSelection, spelling, 'resolved selectors retain the precise subject, not a spelling');
 });
 
