@@ -16,7 +16,7 @@ This document may be changed only through separate human-directed process mainte
 ## Dependencies and boundaries
 
 - Apply the single responsibility principle: keep each module or component focused on a coherent responsibility, and separate responsibilities that change for different reasons. Add new operations to an existing module or component when they fit its responsibility; do not split code merely to make units smaller. When introducing a boundary, identify the responsibility or dependency it isolates and prefer the simplest boundary sufficient for that purpose. Avoid coupling unrelated responsibilities for local convenience or introducing abstractions for hypothetical future needs.
-- Represent domain concepts explicitly when doing so preserves meaningful distinctions, enforces invariants, or prevents invalid combinations. Prefer the simplest adequate representation, such as a named type or record; not every named concept needs a class or wrapper.
+- Represent domain concepts and their meaningful distinctions explicitly when doing so preserves meaning, enforces invariants, or prevents invalid combinations. Concepts that are first-class in the user model should normally have explicit representations in the code.
 - Expose a component through its intended public boundary; do not expose internal helpers or coordination types merely for consumer convenience.
 - Keep transformations that require no external state independent of external I/O when those concerns are conceptually distinct.
 - Translate external data and failure models at the boundary when they should not become part of domain behavior. Preserve distinctions and information callers need to interpret results or respond appropriately to failures.

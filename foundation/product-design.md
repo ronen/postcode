@@ -41,7 +41,7 @@ Such observations might concern calls, time, allocation, coverage, values, stack
 
 ### 2.1 Lenses, Projections, Presentations, and Views
 
-PostCode distinguishes four related concepts that should not be used interchangeably. They need not become formal software abstractions prematurely; their immediate purpose is to keep the design vocabulary clear.
+PostCode distinguishes four related concepts that should not be used interchangeably.
 
 #### 2.1.1 Lens
 
