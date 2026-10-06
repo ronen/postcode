@@ -85,6 +85,12 @@ No further re-review is needed, you may promote the proposal then proceed to the
 
 the review is complete.  Please assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
 
+### F2 zero-selected-group wording
+
+Context: The agent recommended preserving the current closing incompleteness notice when no groups are selected and repository or placement is incomplete, simplifying the predicate and documenting that rule.
+
+yes go ahead with your recommendation
+
 ## Outcome
 
 ## Verification
