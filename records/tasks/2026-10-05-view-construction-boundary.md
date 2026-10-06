@@ -91,6 +91,12 @@ Context: The agent recommended preserving the current closing incompleteness not
 
 yes go ahead with your recommendation
 
+### Continue after mechanical checkpoint corrections
+
+Context: All mechanical checkpoint findings have recorded accepted dispositions and corrections. The next implementation stage is retained investigation selections and associated inspection.
+
+continue with the task
+
 ## Outcome
 
 ## Verification
