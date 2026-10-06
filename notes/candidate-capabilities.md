@@ -78,6 +78,103 @@ distinctions people find informative, confusing, or missing, and guide any
 broader categories, subjective-confidence scale, or visual marks. There is no
 need to settle a universal vocabulary or iconography in advance.
 
+## Explorative landscape orientation
+
+Entity-by-entity investigation and navigation could make individual parts easy
+to inspect while leaving the larger conceptual landscape difficult to see. A
+landscape-orientation capability could help a human approaching an unfamiliar
+subject form and retain a qualified account of the whole before, or while,
+investigating its parts.
+
+The subject could be an entire project or system, but the same questions could
+also apply recursively to a subsystem, module, or other meaningful scope. This
+therefore need not introduce a new product-model primitive. It could use a
+composite lens and Projection over an existing subject, or coordinate Views of
+several Projections.
+
+### Candidate orientation questions
+
+Distinct orientation needs may include:
+
+- **Purpose:** What problem does the subject solve, for whom, and what is its
+  central idea?
+- **Conceptual structure:** What are its major responsibilities or components,
+  and what relationships hold them together?
+- **External context:** What enters and leaves the subject, and which actors,
+  services, stores, or environments surround it?
+- **Behavioral shape:** What are the important initiating events or use cases,
+  and what broad sequence follows each?
+- **Information shape:** What important information exists, where does it
+  originate, and how is it transformed or retained?
+- **Constraints and invariants:** What requirements or maintained properties
+  organize the design?
+- **Evolution:** Which parts are stable, actively changing, or historically
+  consequential?
+
+These could become separate lenses, ingredients selected by
+`summarize(subject)`, or both. A landscape presentation could combine a concise
+account of purpose, a conceptual component map, external boundaries,
+representative behavioral and information journeys, notable constraints, and
+important unknowns or qualifications. It should remain a map into further
+investigation rather than attempting to include every detail.
+
+### Summary and parameter choices
+
+`summarize(subject)` could serve as an orientation entry point or router rather
+than as one comprehensive prose answer. Summary parameters might select or
+emphasize orientation information according to the human's current information
+need, familiarity with the subject, desired breadth and depth, information
+budget, or interest in purpose, structure, behavior, information, constraints,
+or history.
+
+Information selection and presentation remain distinct. Choosing to request
+behavioral shape rather than history changes the lens information requested;
+showing the resulting behavior as prose rather than a flow diagram changes its
+presentation. A compact presentation may omit detail but must retain
+consequential qualifications and make its selection and coverage intelligible.
+
+### Scope and qualification
+
+A repository root is one possible subject, but should not become synonymous
+with an entire system. A monorepo may contain several systems, and one system
+may span repositories, services, and environments. Future subjects might
+therefore include a project, deployed system, or explicit collection without
+changing the orientation questions.
+
+There may be no single correct decomposition into major components. Runtime
+processes, deployment units, conceptual responsibilities, user-facing
+capabilities, and repository organization offer different valid perspectives.
+Any component landscape should identify its organizing perspective rather than
+presenting one decomposition as the architecture.
+
+Likewise, a whole system may have no meaningful single control flow or data
+flow. Behavioral and information landscapes may be more useful when organized
+around representative scenarios, initiating events, or important kinds of
+information. The choice of what counts as representative may itself be
+interpretive and should remain visible.
+
+Accounts of purpose or a subject's “big idea” may draw on documentation,
+requirements, task history, repeated structural evidence, or interpretation.
+They must preserve those bases and their limitations rather than manufacture a
+confident architectural slogan. A useful overview also depends on aggressive
+omission, so its scope, selection method, and omitted classes of information
+may be as important as the material it includes.
+
+### Open questions
+
+Formative use could test whether these needs are already satisfied by
+`summarize(subject)`, existing dependency and organization views, and suitable
+parameters and presentations. It could also compare prose summaries with maps,
+flows, composed views, and persistent contextual presentations.
+
+Open questions include which orientation questions establish enough context to
+begin useful investigation, which apply at different subject scales, whether a
+landscape should be one composed view or a coordinated set of views, and how
+larger context should remain visible as the human navigates into individual
+subjects. A failure of current capabilities to express these views naturally
+would provide evidence for a product-model change; the concern alone does not
+yet establish that a new abstraction is needed.
+
 ## Explorative dependency landscape
 
 A dependency-landscape lens could show how organizational regions depend on one
