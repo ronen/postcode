@@ -18,6 +18,8 @@ Write an audit report with the mapping and evidence for each of the four concept
 
 ## Follow-ups
 
+Put P2 and P5 in the backlog.  For P1, P3, and P4, add entries for the questions behind them, linking to the audit and naming the proposed solutions as options, not decisions.   then you can close the task
+
 ## Outcome
 
 ## Verification
