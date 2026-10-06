@@ -101,6 +101,10 @@ continue with the task
 
 the review is complete.  Please assess and handle as usual.  Regarding F1, choose option (a).  No need for re-review, you can continue with the task after handling this
 
+### Final review disposition and pull request
+
+the review is complete.  Please assess and handle as usual.  Keep the task open, push everything, and create a PR.  The PR comment doesn't need to be overly detailed, just summarize what the task was for and what it did.
+
 ## Outcome
 
 ## Verification
