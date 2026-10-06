@@ -105,6 +105,10 @@ the review is complete.  Please assess and handle as usual.  Regarding F1, choos
 
 the review is complete.  Please assess and handle as usual.  Keep the task open, push everything, and create a PR.  The PR comment doesn't need to be overly detailed, just summarize what the task was for and what it did.
 
+### Approval to close
+
+Copilot did a review and had no findings.   You can close the task
+
 ## Outcome
 
 ## Verification
