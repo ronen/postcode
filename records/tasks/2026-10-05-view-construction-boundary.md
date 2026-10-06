@@ -1,8 +1,8 @@
 # Separate qualified view construction from presentation shaping
 
-Status: active
+Status: completed
 Opened: 2026-10-05
-Closed:
+Closed: 2026-10-06
 
 ## Task
 
@@ -111,4 +111,43 @@ Copilot did a review and had no findings.   You can close the task
 
 ## Outcome
 
+Separated qualified core construction from presentation arrangement for module,
+organization, dependency and investigation Views, including associated inspection.
+Core content preserves selected populations, evaluation outcomes and qualification;
+arrangement consumes that content with coordinated or restricted reference binding.
+Investigation Projections retain complete selections and revision snapshots,
+independent of display choices, invocation reporting and usage. Worker usage
+finalization uses an explicit arrangement key without accessing core content.
+
+Promoted the accepted [construction-boundary decision](../../docs/decisions/qualified-projection-construction.md),
+updated the architectural constraints and descriptive documentation, and resolved
+the view-builder backlog entry. Approved visible changes comprise the documented
+identity/method metadata changes and qualified neutral wording for incomplete
+artifact classification; legacy JSON fields and numeric calculations remain.
+The boundary includes future Presentations without implementing a GUI or imposing
+a universal prohibition on lazy materialization or presentation pushdown.
+
+All review findings were addressed, including restoration of production provider
+failure field order. The [final disposition](../reviews/view-construction-boundary/2026-10-06-integrated-construction-disposition.md)
+records the corrections and review gate. [PR #9](https://github.com/ronen/postcode/pull/9)
+contains the work. Copilot reported no findings, and the human explicitly approved
+task closure. No task work remains; closing this record does not merge the PR.
+
 ## Verification
+
+- Type checking and the full integrated suite passed: 486 tests, no failures or
+  skips. The independent reviewer reproduced that suite on the reviewed target.
+- After the final provider-failure ordering correction, type checking, build and
+  all 52 focused selection/integration tests passed; 486 full output/observation
+  comparison cases passed with the corrected production-shaped fixture.
+- Baseline comparisons covered 632 mechanical Views and 875 exact revision
+  results, preserving qualification, bindings, disclosure and omissions apart
+  from explicitly permitted changes. Independent review reproduced the reports.
+- [Integrated verification](../validation/view-construction-boundary/2026-10-06-integrated-construction.md)
+  and [post-correction comparison](../validation/view-construction-boundary/2026-10-06-integrated-correction-comparison.json)
+  retain the checks and coverage limits. No hosted inference, GUI, performance or
+  memory characterization is claimed.
+- [Copilot's complete review](../reviews/view-construction-boundary/2026-10-06-integrated-construction-round-2-copilot-findings.md)
+  reports no findings; retrieval found no inline annotations or conversation
+  comments. The human accepted the final gate. Closure changed records only and
+  required no new implementation test run.
