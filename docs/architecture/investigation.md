@@ -260,7 +260,7 @@ evidence and later interpretations do not regenerate retained requests.
 Module summary selection resolves exactly one module name, handle or bound
 reference before starting work. Missing and ambiguous selections expose their
 status and candidates without generation. Summary and exact investigram inspection
-construct views from retained records. Inspection never invokes investigation.
+select retained records through core construction. Inspection never invokes investigation.
 Known investigram references supplied to `children`, `parents` or `summarize`
 produce an explicit unsupported subject/lens selection and expected failure
 status, without coercion or generation. Missing references remain distinct.
@@ -268,6 +268,25 @@ Investigram bindings use the existing append-only session allocator with a disti
 `investigram-` prefix. Originals, composition children and replacements remain
 addressable. Redisplay selects explicit replacements; exact inspection retains originals. Public follow-up lenses and associated discovery use the same evaluation
 and correction-aware investigator context over earlier retained results.
+
+Core construction retains an immutable investigation selection Projection for each
+qualified answer. It fixes the selected subjects and outcome, original-to-selected
+account relationships, displacement, navigation, associated population and complete
+revision snapshots. Its identity excludes format, display limits, continuation,
+reference lifetime, usage and invocation reporting. Unavailable outcomes retain
+kind, code and diagnostic; provider status, body and request ID remain reporting.
+The store validates references and the selection's variant-specific invariants.
+
+Resolution follows only that Projection's fixed references and produces immutable,
+cloneable content with complete support and qualification. CLI arrangement consumes
+that content, applies display and page bounds, and obtains compact references
+through a capability restricted to the supplied reference population. It cannot
+retrieve records or refresh history. Later session work requires a new core
+selection; resolving or arranging an earlier selection preserves its answer.
+The [construction boundary decision](../decisions/qualified-projection-construction.md)
+also governs future Presentations of these families. Holding captured source in
+core content is not disclosure; each View classifies and records the source it
+actually exposes.
 
 The experimental investigation view includes selected operation/outcome and reuse,
 immutable accounts, corrections, generating provenance, evidence exposure, stable
@@ -317,9 +336,14 @@ investigation view, the parent finalizes its usage and rendering from the sealed
 snapshots. Subsequent usage views and command observations read those same snapshots;
 worker report updates supply termination/exposure metadata without replacing the
 sealed call reports. View identity includes the finalized usage snapshot separately
-from the interpretation projection identity, and finalization leaves retained
-accounts and earlier views unchanged. Direct in-process sessions continue to use
-their own domain ledger and termination boundary.
+from the interpretation projection identity. The worker envelope carries an
+explicit usage-independent arrangement key, including format, source choices,
+normalized continuation/page, reference lifetime and invocation reporting. The
+parent uses that key without accessing core content or reconstructing inputs from
+bounded View fields. Repeated finalization with the same usage is stable, and
+retained accounts and earlier Views remain unchanged. Subjectless usage has a
+reporting descriptor rather than a retained program Projection. Direct in-process
+sessions continue to use their own domain ledger and termination boundary.
 
 The parent retains received usage and the last dispatched-context snapshot
 when worker termination prevents a final worker report. Active interruption still
@@ -528,9 +552,12 @@ explicit qualified associations, including the investigation-subject and
 corrected-subject roles. Incidental mentions, referents and originating module
 context do not create associations. This section does not change mechanical
 information or turn interpretation into an intrinsic subject property. The
-inspection projection identifies its mechanical basis, retained listing and supplied
-continuation, including an invalid continuation. Different invalid references do
-not share a projection/view identity; reference lifetime also distinguishes views.
+inspection Projection fixes the shown mechanical Projection, inspected subjects,
+complete associated population and their revision snapshots. The continuation,
+including an invalid token, belongs to View identity; pages of the same selection
+share a Projection. A resolved continuation identifies its account independently
+of compact spelling. Unknown tokens remain literal View inputs, and reference
+lifetime also distinguishes Views.
 Pages contain at most 24 accounts, 400 prose code units each and 55,000 code units
 of detail with complete qualification. An oversized qualified entry keeps its
 selectable reference and an explicit omission. `--after` continues in append-only
@@ -572,6 +599,12 @@ It indexes correction links and reverse citations without changing stored accoun
 composition, provenance, citation indexes or earlier projections. Corrections take
 effect at retention, independently of presentation. The context coordinator caches
 this derived snapshot only until another evaluation is retained.
+
+The domain result contains every ordered correction/cause row, the complete
+proximal-citation lists and every qualified incoming inconsistency with its
+reporter and ordinal. A separate delivery adapter applies the existing row and
+proximal-citation bounds for human Views and investigator context. Paging does
+not alter the domain derivation or its provenance exemptions.
 
 Primary selection considers every reachable branch, using accepted evaluation
 order and then correction array order within a simultaneous result as its stable
@@ -617,8 +650,10 @@ proximal citations, with an omitted count and the complete immutable citation in
 available in provenance. `inspect @investigram --revision-page N` and
 `investigram(subject, revisionPage: N)` expose further pages. Rows preserve cause
 identity, distinguishing direct and transitive exposure without duplicating a cause
-for revised-subject disclosure. Current revision facets participate in projection
-identity, including associated-account inspections over unchanged mechanical data.
+for revised-subject disclosure. Core construction retains the complete relevant
+revision snapshots in Projection identity, including associated-account inspections
+over unchanged mechanical data. Paging consumes those snapshots without changing
+the retained selection or consulting newer session history.
 
 Context retains the exact requested account plus bounded correction-family and
 cause context. Automatically included accounts carry their own content and a

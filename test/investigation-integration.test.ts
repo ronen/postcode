@@ -473,6 +473,7 @@ for (const format of ['json', 'unicode'] as const) test(`CLI seals authoritative
     (item, _signal, report) => { callbacks.push(report); return { kind: 'submit', result: draft(item.request.subject) }; },
   ]);
   let closingWindows = 0, workerMissing: number | undefined, started = false, stdout = '';
+  const arrangementKeys = new Map<RecordId, RecordId>();
   const emit = Worker.prototype.emit;
   // Interpose only on delivery of the real worker's close message: its domain
   // ledger is already closed, but the parent dialogue is still accepting reports.
@@ -486,6 +487,9 @@ for (const format of ['json', 'unicode'] as const) test(`CLI seals authoritative
     }
     if (event === 'message' && message?.type === 'reply' && message.result?.view.schema === 'postcode-investigation-view/1-experimental'
       && message.result.view.projection.lens === 'summarize') workerMissing = message.result.view.usage.missingCalls;
+    if (event === 'message' && message?.type === 'reply' && message.result?.investigationArrangementKey) {
+      arrangementKeys.set(message.result.view.projection.id, message.result.investigationArrangementKey);
+    }
     const delivered = Reflect.apply(emit, this, [event, ...args]) as boolean;
     if (closing) {
       callbacks[2]!(syntheticUsage); // First report after closure must remain unknown.
@@ -512,8 +516,8 @@ for (const format of ['json', 'unicode'] as const) test(`CLI seals authoritative
     assert.equal(data.usage.calls, 3); assert.equal(data.usage.missingCalls, 1); assert.equal(data.usage.anomalousCalls, 0);
     assert.equal(data.usage.totals[0]!.categories.find(item => item.category === 'input')!.value, 40);
     assert.deepEqual(data.usage.attempts[0]!.usage.map(call => call.reports.length), [1, 1, 0]);
-    assert.deepEqual(finalizeInvestigationUsage(data, data.usage), data, 'finalization is idempotent');
-    const different = finalizeInvestigationUsage(data, { ...data.usage, missingCalls: 2 });
+    assert.deepEqual(finalizeInvestigationUsage(data, data.usage, arrangementKeys.get(data.projection.id)!), data, 'finalization is idempotent');
+    const different = finalizeInvestigationUsage(data, { ...data.usage, missingCalls: 2 }, arrangementKeys.get(data.projection.id)!);
     assert.equal(different.projection.id, data.projection.id); assert.notEqual(different.id, data.id);
     assert.ok(stdout.includes(rendered));
     if (format === 'json') assert.deepEqual(JSON.parse(rendered).usage, observed);
@@ -629,7 +633,7 @@ test('associated inspection is bounded, navigable and independent of incidental 
   assert.ok('investigations' in invalid.view && invalid.view.investigations);
   assert.equal(invalid.view.investigations.status, 'unknown-continuation');
   assert.equal(invalid.view.investigations.after, 'investigram-00000000');
-  assert.notEqual(invalid.view.projection.id, otherInvalid.view.projection.id);
+  assert.equal(invalid.view.projection.id, otherInvalid.view.projection.id);
   assert.notEqual(invalid.view.id, otherInvalid.view.id);
   assert.equal(invalid.view.projection.id, invalidAgain.view.projection.id);
   assert.equal(invalid.view.id, invalidAgain.view.id);
@@ -886,7 +890,8 @@ test('historical inspection pages expose every competing correction without chan
   assert.equal(first.revisions[0]!.rows.length, 24); assert.equal(first.revisions[0]!.nextPage, 2);
   assert.equal(second.revisions[0]!.rows.length, 2); assert.equal(second.revisions[0]!.nextPage, null);
   assert.equal(first.revisions[0]!.primary, second.revisions[0]!.primary);
-  assert.notEqual(first.projection.id, second.projection.id);
+  assert.equal(first.projection.id, second.projection.id);
+  assert.notEqual(first.id, second.id);
   assert.deepEqual(first.accounts, initial.accounts); assert.deepEqual(second.accounts, initial.accounts);
   assert.equal(new Set([...first.revisions[0]!.rows, ...second.revisions[0]!.rows].map(item => item.correction)).size, 26);
   assert.match(renderInvestigationView({ ...first, presentation: { format: 'unicode', sourceDetail: false } }), /--revision-page 2/);

@@ -58,6 +58,17 @@ failures. Lens
 construction reads stored information, selects relevant subjects and context,
 and writes an addressable projection. It does not call TypeScript.
 
+For module, organization, dependency and investigation families, core construction
+resolves immutable qualified content before CLI arrangement. The content includes
+the supporting evaluation populations and qualification used for derived counts.
+Investigation selections are retained Projections with unpaged revision snapshots;
+associated inspection fixes its shown mechanical basis and full associated
+population. Arrangement applies display limits and source choices to that supplied
+content, with coordinated reference bindings or a restricted binding-only port.
+Rendering consumes the self-contained View. These responsibilities and their scope
+for future Presentations are set by the
+[qualified construction decision](../decisions/qualified-projection-construction.md).
+
 The current store adapter uses private in-memory maps. It clones and freezes
 records, requires each session record's own ID to equal its session identity,
 rejects conflicting replacements and invalid references (including entity
@@ -218,9 +229,16 @@ assertion: mechanically establishing its association does not establish that the
 text is true, current or complete. Unattached comments are not assigned a subject.
 
 Projection construction selects expansion claims and outcomes relevant to selected
-modules. View construction reads only materialized records and selects documented
-export/documentation limits; omitted exports, assertions, tags and text characters
-remain counted. Rendering receives a qualified view value and cannot query the
+modules. For module, organization and dependency Views, core resolution reads the
+Projection's retained basis into immutable, qualified content, including supporting
+contexts, inputs, evidence and complete selected populations. It does not take a
+format or display limit. Coordination binds the established entity populations;
+arrangement receives the resolved content and those bindings without a store
+handle. Arrangement applies export/documentation limits, tree and graph traversal,
+source-detail selection and omission accounting. This eager strategy is specific
+to these builders; it does not establish a general restriction on qualified lazy
+materialization or presentation pushdown. Omitted exports, assertions, tags and
+text characters remain counted. Rendering receives a qualified view value and cannot query the
 store or trigger analysis. Unicode and JSON use the same domain projection with
 different display limits. Unicode inventory lists project modules, counts collapsed
 external modules and retains their exceptional qualifications. Its qualified view records display coverage separately from analysis
@@ -376,12 +394,25 @@ remain available through a referenced module projection.
 
 The organization presentation declares group details and the common module
 standard expansions before evaluation. Using the same compiler preparation keeps
-navigation across lenses in a common captured analysis. View construction reads stored
-claims and captured paths, materializes bounded display rows and omission counts,
-and never invokes another lens or analysis. Rendering receives only that value.
+navigation across lenses in a common captured analysis. Core resolution reads the
+retained Projection's claims, qualification and captured paths into immutable content,
+including full selected relationships and summaries tied to their evaluation basis.
+Coordination binds the established entity populations. Arrangement consumes that
+content and its binding maps without store access, then applies tree limits and
+computes display omissions. Rendering receives only the arranged View; neither
+arrangement nor rendering invokes another Lens or analysis.
 Repository/project trees retain direct contextual siblings, distinguish pruning
 from selection, and expand a shared group once. Group inspection shows all direct
 relationships; adjacent summary records explicitly identify unrequested detail.
+Core artifact summaries distinguish complete, incomplete and unrequested
+classification, with reasons identifying incomplete repository or placement support.
+For incomplete classification, inspection and tree counts use “other captured
+artifacts” with an adjacent notice, and the closing qualification explains the
+absence of established module or documentation associations in the supplied
+information. The View's existing evaluation and detail fields suffice to reproduce
+that qualification; complete-case wording and the legacy JSON count fields remain
+unchanged. See the [CLI reference](../cli-reference.md#organization-and-group-inspection)
+for the meaning of `unanalyzed`.
 Module-only inspection reuses the existing qualified module view; mixed matches
 are sectioned by kind and retain that module view as embedded detail.
 

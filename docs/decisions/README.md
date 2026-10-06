@@ -58,6 +58,7 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 
 ## Accepted decisions
 
+- [Separate qualified Projection construction from presentation shaping](qualified-projection-construction.md)
 - [Keep views grounded in core projections](keep-views-grounded-in-core-projections.md)
 - [Hosted authentication and billing routes](hosted-authentication-and-billing.md)
 - [Private investigator reference transport](investigator-reference-transport.md)

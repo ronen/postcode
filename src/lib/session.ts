@@ -1,4 +1,4 @@
-import { associatedView, withAssociatedInvestigations } from './investigation/associations.js';
+import { createAssociatedInspectionView } from './investigation/associations.js';
 import { methods } from './identity.js';
 import { investigationEvaluation } from './investigation/evaluation.js';
 import type { InvestigationDependencies } from './investigation/evaluation.js';
@@ -171,11 +171,11 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
       }
       const result = !unsupportedSubject && investigationLens && selected.length === 1
         ? await integration.evaluate({ operation: operation[investigationLens], subject: selected[0]!, parameters: {} }) : null;
-      const view = createInvestigationView(store, session, { ...request, ...(unsupportedSubject ? { unsupportedSubject } : {}), lens: lens as 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'usage' | 'children' | 'parents' }, selected, result, usage());
+      const { view, investigationArrangementKey } = createInvestigationView(store, session, { ...request, ...(unsupportedSubject ? { unsupportedSubject } : {}), lens: lens as 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'usage' | 'children' | 'parents' }, selected, result, usage());
       const context = store.get(session);
       if (context.kind !== 'session') throw new Error('Expected session');
       const repository = context.repository ? store.get(context.repository) : null;
-      return { view, rendered: renderInvestigationView(view), repositoryRoot: repository?.kind === 'repository-evidence' && repository.capture.status === 'available' ? repository.capture.evidence.root : null,
+      return { view, investigationArrangementKey, rendered: renderInvestigationView(view), repositoryRoot: repository?.kind === 'repository-evidence' && repository.capture.status === 'available' ? repository.capture.evidence.root : null,
         methods: [...context.methods, methods.investigationEvaluation, methods.investigationPresentation],
         failed: !!unsupportedSubject || !!investigationLens && (selected.length !== 1 || !result?.evaluation || result.evaluation.outcome.kind !== 'accepted') || !!interpretationInspection && selected.length !== 1 || view.investigations?.status === 'unknown-continuation' };
     }
@@ -203,14 +203,14 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
       : moduleOnly ? createView(store, moduleProjection!, presentation)
       : createOrganizationView(store, projection, presentation);
     const inspectedSubjects = projection.kind === 'organization-projection' ? [...projection.groups, ...(moduleProjection?.modules ?? [])] : projection.kind === 'projection' ? projection.modules : [];
-    const view = lens === 'inspect' ? withAssociatedInvestigations(mechanicalView, associatedView(store, session, inspectedSubjects, request.after, request.referenceLifetime)) : mechanicalView;
+    const view = lens === 'inspect' ? createAssociatedInspectionView(store, mechanicalView, inspectedSubjects, request.after, request.referenceLifetime) : mechanicalView;
     const rendered = view.schema === 'postcode-dependency-view/1-experimental' ? renderDependencyView(view)
       : view.schema === 'postcode-view/1-experimental' ? renderView(view) : renderOrganizationView(view);
     const context = store.get(projection.session);
     if (context.kind !== 'session') throw new Error('Expected analysis session');
     const captured = context.repository ? store.get(context.repository) : null;
     const repositoryRoot = captured?.kind === 'repository-evidence' && captured.capture.status === 'available' ? captured.capture.evidence.root : null;
-    return { view, rendered, repositoryRoot, methods: lens === 'inspect' ? [...context.methods, methods.investigationPresentation] : context.methods,
+    return { view, investigationArrangementKey: null, rendered, repositoryRoot, methods: lens === 'inspect' ? [...context.methods, methods.investigationPresentation] : context.methods,
       ...('investigations' in view && view.investigations?.status === 'unknown-continuation' ? { failed: true } : {}) };
   };
 }

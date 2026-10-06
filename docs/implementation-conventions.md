@@ -43,6 +43,12 @@ Agents may update this document only as part of authorized implementation work t
 
 - When changing analysis, record, handle, or projection semantics, update the responsible identity method version to reflect the change. [[Session context](decisions/transient-analysis-sessions.md#session-as-the-analysis-and-reference-context)]
 
+## Qualified construction and arrangement
+
+- Keep the current module, organization, dependency and investigation core content independent of CLI limits, terminal fitting and format/source choices. Resolve fixed retained references before arrangement; subsequent history changes require another core selection. [[Construction boundary](decisions/qualified-projection-construction.md#separate-qualified-construction-from-arrangement)]
+- Pass arrangement only the selected content, presentation/reporting inputs and coordinated bindings or the validated binding-only capability. Do not pass a store, lookup callback or history-refresh closure. Keep existing allocation populations and order explicit in coordination and arrangement.
+- Carry investigation's usage-independent arrangement key in the worker envelope. Finalize usage with that explicit key; do not add it to public JSON or reconstruct it from a bounded View. [[Identity separation](decisions/qualified-projection-construction.md#separate-projection-identity-from-presentation-and-reporting-identity)]
+
 ## Selection and session references
 
 - One-shot inspection accepts one exact name or generated handle and retains every match. Compact IDs and internal record keys belong to the producing session, without cross-invocation navigation. Library projection selection separates precise compact references from name/handle lookup. [[Session references](decisions/transient-analysis-sessions.md#stable-reference-bindings-within-a-session)]

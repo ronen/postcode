@@ -1,11 +1,14 @@
 import { completedMaterialization } from '../evaluation-state.js';
-import { compositionAnnotation, prepareCompositionViews } from '../composition-view.js';
+import { compositionAnnotation, compositionView } from '../composition-view.js';
 import type { CompositionView } from '../composition-view.js';
 import { identityReference, methods, recordId } from '../identity.js';
 import type { Presentation } from '../presentation.js';
 import { moduleStandardExpansions } from '../records.js';
 import type { ClaimContextRecord, EvaluationState, ModuleClaim, ProgramRecord, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
 import { inlineText } from '../terminal-text.js';
+import { resolveDependencyProjection } from './content.js';
+import type { DependencyProjectionContent } from './content.js';
+import { presentQualification } from '../qualification-view.js';
 import { dependencyLimitations } from './records.js';
 import type { DependencyCoverageRecord, DependencyGraph, DependencyOccurrenceRecord, DependencyOrganizationClaim, DependencyProjectionRecord, DependencyRelationshipClaim } from './records.js';
 
@@ -49,26 +52,20 @@ export interface QualifiedDependencyView {
 const state = ({ applicability, availability, execution, materialization, reason }: Outcome): Outcome => ({ applicability, availability, execution, materialization, reason });
 const full = (outcome: Outcome) => outcome.applicability === 'applicable' && outcome.availability === 'available' && completedMaterialization(outcome);
 
-/** Materializes display bounds from the stored graph; rendering below only formats this value. */
+/** Bind the established discovery population, then arrange resolved content. */
 export function createDependencyView(store: ProgramRecordStore, projection: DependencyProjectionRecord,
   presentation: Presentation): QualifiedDependencyView {
-  const evaluation = store.get(projection.evaluation);
-  if (evaluation.kind !== 'dependency-evaluation') throw new Error('Expected dependency evaluation');
-  const basis = store.get(evaluation.moduleEvaluation);
-  if (basis.kind !== 'evaluation') throw new Error('Expected module evaluation');
-  const ids = store.entityIds(basis.modules, 'module');
-  const qualification = (id: RecordId): Qualification => {
-    const context = store.get(id);
-    if (context.kind !== 'claim-context') throw new Error('Expected qualification');
-    const { kind: _kind, evidence: _evidence, inputs: _inputs, ...result } = context;
-    return result;
-  };
-  const expanded = projection.expansions.organization ? store.get(projection.expansions.organization) : null;
-  if (expanded && expanded.kind !== 'dependency-organization-evaluation') throw new Error('Expected organization expansion');
-  const organizationClaims = expanded?.claims.map(id => store.get(id) as DependencyOrganizationClaim) ?? [];
-  const allEdges = projection.relationships.map(id => store.get(id) as DependencyRelationshipClaim);
-  const compositionView = prepareCompositionViews(store, projection.expansions.moduleClaims, projection.expansions.moduleEvaluations);
-  const organizationByRelationship = new Map(organizationClaims.map(claim => [claim.subject, claim]));
+  const content = resolveDependencyProjection(store, projection);
+  const ids = store.entityIds(content.basis.modules, 'module');
+  return arrangeDependencyView(content, ids, presentation);
+}
+
+export function arrangeDependencyView(content: DependencyProjectionContent, ids: ReadonlyMap<RecordId, string>,
+  presentation: Presentation): QualifiedDependencyView {
+  const { projection, evaluation, basis, expanded } = content;
+  const allEdges = content.relationships.map(item => item.record);
+  const edgesById = new Map(content.relationships.map(item => [item.record.id, item]));
+  const organizationByRelationship = new Map(content.organization.map(item => [item.claim.record.subject, item]));
   const modulePopulation = new Set(projection.modules);
   const graph = projection.graph;
   const rows: Row[] = [];
@@ -112,30 +109,30 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
   }
   const maximumOccurrences = presentation.format === 'unicode' ? 20 : 50;
   const sourceItems: NonNullable<QualifiedDependencyView['sourceDetail']>['items'][number][] = [];
-  const source = (subject: RecordId, role: NonNullable<QualifiedDependencyView['sourceDetail']>['items'][number]['role'], evidenceId: RecordId) => {
+  const source = (subject: RecordId, role: NonNullable<QualifiedDependencyView['sourceDetail']>['items'][number]['role'], evidence: ProgramRecord) => {
     if (!presentation.sourceDetail) return;
-    const evidence = store.get(evidenceId);
     if (evidence.kind !== 'source-evidence') throw new Error('Expected captured source evidence');
     sourceItems.push({ subject, role, evidence });
   };
   const occurrence = (id: RecordId): OccurrenceView => {
-    const item = store.get(id);
-    if (item.kind !== 'dependency-occurrence') throw new Error('Expected occurrence');
-    source(id, 'request', item.evidence);
-    item.targetEvidence.forEach(evidence => source(id, 'target', evidence));
+    const contentItem = content.occurrences[id]!;
+    const item = contentItem.record;
+    source(id, 'request', contentItem.source);
+    contentItem.targets.forEach(evidence => source(id, 'target', evidence));
     const { owner, target, mechanism, typeOnly, targetStatus, commonjs } = item;
-    return { id, owner, target, mechanism, typeOnly, targetStatus, commonjs, qualification: qualification(item.context) };
+    return { id, owner, target, mechanism, typeOnly, targetStatus, commonjs, qualification: presentQualification(contentItem.context) };
   };
   const relationships: EdgeView[] = allEdges.filter(edge => selectedEdges.has(edge.id)).map(edge => {
-    const organization = organizationByRelationship.get(edge.id);
+    const organizationContent = organizationByRelationship.get(edge.id);
+    const organization = organizationContent?.claim.record;
     const endpoint = (item: DependencyOrganizationClaim['information']['occurrences'][number]['source']) => ({
       outcome: item.outcome, materialization: item.materialization, groups: item.groups, candidates: item.candidates });
     return { id: edge.id, parent: edge.subject, child: edge.information.child, typeOnly: edge.information.typeOnly,
-      mechanisms: edge.information.mechanisms, qualification: qualification(edge.context),
+      mechanisms: edge.information.mechanisms, qualification: presentQualification(edgesById.get(edge.id)!.context),
       occurrences: edge.information.occurrences.slice(0, maximumOccurrences).map(occurrence),
       omittedOccurrences: Math.max(0, edge.information.occurrences.length - maximumOccurrences),
       organization: organization ? { scheme: organization.information.scheme, classification: organization.information.classification,
-        qualification: qualification(organization.context), occurrences: organization.information.occurrences.slice(0, maximumOccurrences).map(item => ({
+        qualification: presentQualification(organizationContent!.claim.context), occurrences: organization.information.occurrences.slice(0, maximumOccurrences).map(item => ({
           occurrence: item.occurrence, status: item.status, classification: item.classification, source: endpoint(item.source), target: endpoint(item.target) })),
         omittedOccurrences: Math.max(0, organization.information.occurrences.length - maximumOccurrences) } : null };
   });
@@ -143,54 +140,32 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
   // Structure summarizes non-edge requests; explicit source escape exposes their bounded records.
   const requestIds = projection.lens === 'dependency-structure' && !presentation.sourceDetail ? [] : projection.nonEdgeRequests.slice(0, maximumResults);
   const requestResults = requestIds.map(occurrence);
-  const recognitionCoverage = projection.coverage.slice(0, maximumResults).map(id => {
-    const item = store.get(id);
-    if (item.kind !== 'dependency-coverage') throw new Error('Expected coverage outcome');
-    source(id, 'recognition-coverage', item.evidence);
-    return { id, owner: item.owner, outcome: item.outcome, commonjs: item.commonjs, qualification: qualification(item.context) };
+  const recognitionCoverage = content.coverage.slice(0, maximumResults).map(contentItem => {
+    const item = contentItem.record;
+    source(item.id, 'recognition-coverage', contentItem.source);
+    return { id: item.id, owner: item.owner, outcome: item.outcome, commonjs: item.commonjs, qualification: presentQualification(contentItem.context) };
   });
   requestResults.forEach(item => displayed.add(item.owner));
   recognitionCoverage.forEach(item => { if (item.owner && modulePopulation.has(item.owner)) displayed.add(item.owner); });
-  const modules = projection.modules.filter(id => displayed.has(id)).map(id => {
-    const module = store.get(id);
-    if (module.kind !== 'module') throw new Error('Expected module');
-    const claim = store.get(module.claim) as ModuleClaim;
-    const composition = compositionView(id);
-    for (const property of composition.claims) {
-      const context = store.get(property.qualification.id);
-      if (context.kind === 'claim-context') for (const evidence of context.evidence) source(property.id, 'composition', evidence);
-    }
+  const modules = content.modules.filter(item => displayed.has(item.id)).map(item => {
+    const { id } = item;
+    const claim = item.claim.record;
+    const composition = compositionView(item.composition);
+    for (const property of item.composition.claims) for (const evidence of property.evidence) source(property.record.id, 'composition', evidence);
     return { id, entityId: ids.get(id)!, name: claim.information.name, handle: claim.information.handle,
-      discoveryFacets: claim.information.discoveryFacets, opaque: !claim.information.discoveryFacets.includes('project'), composition, qualification: qualification(claim.context) };
+      discoveryFacets: claim.information.discoveryFacets, opaque: !claim.information.discoveryFacets.includes('project'), composition, qualification: presentQualification(item.claim.context) };
   });
-  const count = (references: readonly RecordId[], field: 'targetStatus' | 'outcome') => {
-    const counts: Record<string, number> = {};
-    for (const id of references) {
-      const item = store.get(id);
-      const key = item.kind === 'dependency-occurrence' && field === 'targetStatus' ? item.targetStatus : item.kind === 'dependency-coverage' ? item.outcome : null;
-      if (key) counts[key] = (counts[key] ?? 0) + 1;
-    }
-    return counts;
-  };
-  const sourceOrganization = organizationClaims.filter(claim => selectedEdges.has(claim.subject));
-  const boundedOrganization = sourceOrganization.slice(0, 50).map(claim => ({ ...claim,
+  const sourceOrganization = content.organization.filter(item => selectedEdges.has(item.claim.record.subject));
+  const boundedOrganization = sourceOrganization.slice(0, 50).map(({ claim: { record: claim } }) => ({ ...claim,
     information: { ...claim.information, occurrences: claim.information.occurrences.slice(0, maximumOccurrences) },
     omittedOccurrences: Math.max(0, claim.information.occurrences.length - maximumOccurrences) }));
   const organizationEvidence = new Map<RecordId, ProgramRecord>();
-  if (presentation.sourceDetail) for (const claim of boundedOrganization) for (const item of claim.information.occurrences) {
-    const supporting = [...item.source.groups, ...item.target.groups, ...item.source.candidates, ...item.target.candidates,
-      ...item.source.claims, ...item.target.claims, ...item.pairs.flatMap(pair => [...pair.commonAncestors, ...pair.containment])];
-    for (const id of supporting) {
-      const record = store.get(id);
-      const claim = record.kind === 'group' ? store.get(record.claim) : record;
-      if (claim.kind !== 'claim') continue;
-      organizationEvidence.set(claim.id, claim);
-      const context = store.get(claim.context);
-      if (context.kind !== 'claim-context') continue;
-      organizationEvidence.set(context.id, context);
-      for (const id of context.evidence) {
-        const evidence = store.get(id);
-        if (evidence.kind === 'repository-region' || evidence.kind === 'repository-artifact' || evidence.kind === 'source-evidence') organizationEvidence.set(id, evidence);
+  if (presentation.sourceDetail) for (const claim of sourceOrganization.slice(0, 50)) for (const item of claim.occurrences.slice(0, maximumOccurrences)) {
+    for (const support of item.support) {
+      organizationEvidence.set(support.record.id, support.record);
+      organizationEvidence.set(support.context.id, support.context);
+      for (const evidence of support.evidence) {
+        if (evidence.kind === 'repository-region' || evidence.kind === 'repository-artifact' || evidence.kind === 'source-evidence') organizationEvidence.set(evidence.id, evidence);
       }
     }
   }
@@ -209,14 +184,11 @@ export function createDependencyView(store: ProgramRecordStore, projection: Depe
     schema: 'postcode-dependency-view/1-experimental',
     id: recordId(projection.session, 'dependency-view', { method: methods.presentation, projection: identityReference(projection.session, projection.id), presentation }),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject, parameters: projection.parameters, selection: projection.selection },
-    presentation: { ...presentation, expansions: [...new Set(projection.expansions.moduleEvaluations.flatMap(id => {
-      const outcome = store.get(id); return outcome.kind === 'evaluation' && outcome.requirement !== 'modules' ? [outcome.requirement] : [];
-    })), ...(expanded ? ['repository-layout'] : [])] },
+    presentation: { ...presentation, expansions: [...new Set(content.moduleEvaluations.flatMap(outcome => outcome.requirement !== 'modules' ? [outcome.requirement] : [])), ...(expanded ? ['repository-layout'] : [])] },
     evaluations: { modules: state(basis), dependencies: state(evaluation), organization: expanded ? state(expanded) : null },
-    qualifications: projection.contexts.map(qualification), limitations, modules, subjects: projection.subjects, relationships, graph,
+    qualifications: content.contexts.map(item => presentQualification(item.context)), limitations, modules, subjects: projection.subjects, relationships, graph,
     requestResults, recognitionCoverage,
-    summary: { modules: projection.modules.length, discoveredModules: basis.modules.length, projectModules: basis.modules.filter(id => { const entity = store.get(id); if (entity.kind !== 'module') return false; const claim = store.get(entity.claim); return claim.kind === 'claim' && claim.information.type === 'module' && claim.information.discoveryFacets.includes('project'); }).length, relationships: projection.relationships.length,
-      requestsWithoutEdges: count(projection.nonEdgeRequests, 'targetStatus'), recognitionCoverage: count(projection.coverage, 'outcome') },
+    summary: content.summary,
     display: { rows, omittedModules: projection.modules.length - modules.length, omittedRelationships: projection.relationships.length - relationships.length,
       omittedOccurrences: relationships.reduce((sum, edge) => sum + edge.omittedOccurrences, 0),
       omittedRequestResults: projection.nonEdgeRequests.length - requestResults.length,

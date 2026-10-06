@@ -1,0 +1,18 @@
+{
+  "comparisons": 486,
+  "investigations": 384,
+  "associated": 102,
+  "observations": 486,
+  "bindingSchedules": 486,
+  "disclosures": 486,
+  "capturedInputComparisons": 3,
+  "collidingAccountReferences": true,
+  "validContinuationPages": true,
+  "permitted": [
+    "investigation/associated Projection and View IDs",
+    "investigation presentation method @11 to @12",
+    "registered investigation-projection@1 method",
+    "captured method registry and resulting analysis-inputs IDs/references"
+  ],
+  "differences": []
+}

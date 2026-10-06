@@ -1,5 +1,21 @@
 import type { ProgramRecordStore, RecordId, SessionId } from '../records.js';
 import type { Correction, Investigram, InvestigationProvenance, Inconsistency } from './contracts.js';
+import { freezeOwned } from '../immutable.js';
+
+/** Full domain result, independent of any delivery page or cause-path bound. */
+export interface RevisionSnapshot {
+  readonly original: RecordId;
+  readonly primary: RecordId;
+  readonly familyPrimary: RecordId;
+  readonly superseded: boolean;
+  readonly conflicting: boolean;
+  readonly needsReconsideration: boolean;
+  readonly causeCount: number;
+  readonly rows: readonly (Omit<RevisionRow, 'cause'> & {
+    readonly cause: null | { readonly direct: boolean; readonly via: readonly RecordId[] };
+  })[];
+  readonly inconsistencies: RevisionStatus['inconsistencies'];
+}
 
 export interface RevisionRow {
   readonly correction: RecordId;
@@ -91,7 +107,7 @@ export class InvestigationRevisions {
     return [...links.values()].sort((a, b) => this.#rank.get(a.id)! - this.#rank.get(b.id)!);
   }
   primary(id: RecordId): RecordId { return this.#links(id, false).at(-1)?.replacement ?? id; }
-  status(id: RecordId, page = 1): RevisionStatus {
+  snapshot(id: RecordId): RevisionSnapshot {
     const account = this.accounts.get(id);
     if (!account) throw new Error('Revision status requires an investigram');
     const family = this.#links(id, true), familyIds = new Set(family.map(item => item.id));
@@ -102,18 +118,16 @@ export class InvestigationRevisions {
     let conflicting = false;
     for (const link of family) { if (targets.has(link.target)) conflicting = true; targets.add(link.target); }
     const primary = this.primary(id);
-    const start = (page - 1) * 24;
     const inconsistencies = this.#inconsistencies.get(id) ?? [];
-    return { original: id, primary, familyPrimary: family.at(-1)?.replacement ?? id, superseded: primary !== id,
-      conflicting, needsReconsideration: causes.length > 0, causeCount: causes.length, page, total: rows.length,
-      inconsistencies: inconsistencies.slice(start, start + 24), inconsistencyCount: inconsistencies.length,
-      nextPage: start + 24 < Math.max(rows.length, inconsistencies.length) ? page + 1 : null,
-      rows: rows.slice(start, start + 24).map(item => {
+    return freezeOwned({ original: id, primary, familyPrimary: family.at(-1)?.replacement ?? id, superseded: primary !== id,
+      conflicting, needsReconsideration: causes.length > 0, causeCount: causes.length,
+      inconsistencies: structuredClone(inconsistencies),
+      rows: rows.map(item => {
         const citations = this.#origin(account).citations;
         const via = causeIds.has(item.id) ? citations.filter(cited => cited === item.target || this.#affected.get(item.id)!.has(cited)) : [];
         return { correction: item.id, target: item.target, replacement: item.replacement, reporter: item.reporter,
-          relationship: familyIds.has(item.id), cause: causeIds.has(item.id) ? { direct: citations.includes(item.target), via: via.slice(0, 8), omittedVia: Math.max(0, via.length - 8) } : null };
-      }) };
+          relationship: familyIds.has(item.id), cause: causeIds.has(item.id) ? { direct: citations.includes(item.target), via } : null };
+      }) });
   }
 }
 

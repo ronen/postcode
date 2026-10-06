@@ -1,0 +1,23 @@
+{
+  "compared": 632,
+  "byFamily": {
+    "module": 152,
+    "organization": 216,
+    "dependency": 264
+  },
+  "incompleteOrganization": 30,
+  "changedViewIds": 708,
+  "sourceClassifications": 632,
+  "fixtures": [
+    "empty",
+    "exports",
+    "diagnostics",
+    "module-population",
+    "organization",
+    "dependency-journey",
+    "dependency-contract",
+    "dependency-context/classic",
+    "dependency-context/mixed",
+    "dependency-context/preserve"
+  ]
+}

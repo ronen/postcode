@@ -1,29 +1,27 @@
-import { sessionRevisions } from './revisions.js';
+import { revisionPage } from './revision-page.js';
+import { resolveInvestigationContent } from './content.js';
+import type { InvestigationProjectionContent } from './content.js';
+import { selectAssociatedInspection } from './selection.js';
 import { freezeOwned } from '../immutable.js';
 import { identityReference, methods, recordId } from '../identity.js';
 import { inlineText } from '../terminal-text.js';
 import type { ProgramRecordStore, RecordId, SessionId } from '../records.js';
-import type { Investigram } from './contracts.js';
 
-/** Association roles are explicit; originating context and evidence mentions do not add matches. */
-export function associatedInvestigrams(store: ProgramRecordStore, session: SessionId, subjects: readonly RecordId[]): Investigram[] {
-  const selected = new Set(subjects);
-  return store.investigations(session).flatMap(item => item.investigrams).map(id => store.get(id))
-    .filter((item): item is Investigram => item.kind === 'investigram' && item.associations.some(item => selected.has(item.subject)));
-}
-
-export function associatedView(store: ProgramRecordStore, session: SessionId, subjects: readonly RecordId[], after?: string,
+/** Pure listing arrangement over a retained full association population. */
+export function arrangeAssociatedInvestigations(content: InvestigationProjectionContent, refs: ReadonlyMap<RecordId, string>, after?: string,
   lifetime: 'session' | 'command' = 'session') {
-  const revisions = sessionRevisions(store, session);
-  const matches = associatedInvestigrams(store, session, subjects);
-  const refs = store.entityIds(matches.map(item => item.id), 'investigram');
+  const subjects = content.projection.subjects;
+  const accounts = new Map(content.accounts.map(item => [item.id, item]));
+  const origins = new Map(content.provenance.map(item => [item.id, item]));
+  const revisions = new Map(content.projection.revisions.map(item => [item.original, item]));
+  const matches = content.projection.associated.map(id => accounts.get(id)!);
   const index = after === undefined ? -1 : matches.findIndex(item => refs.get(item.id) === after);
   const valid = after === undefined || index >= 0;
   let remaining = 55_000;
   const items = (valid ? matches.slice(index + 1, index + 25) : []).map(account => {
-    const provenance = store.get(account.provenance);
+    const provenance = origins.get(account.provenance)!;
     if (provenance.kind !== 'investigation-provenance') throw new Error('Expected investigation provenance');
-    const revision = revisions.status(account.id);
+    const revision = revisionPage(revisions.get(account.id)!);
     const detail = { revision, prose: account.prose.slice(0, 400), omittedProseCharacters: Math.max(0, account.prose.length - 400),
       qualifications: account.qualifications, associations: account.associations.filter(item => subjects.includes(item.subject)),
       evidence: account.evidence, operation: provenance.request.operation, subject: provenance.request.subject,
@@ -40,17 +38,34 @@ export function associatedView(store: ProgramRecordStore, session: SessionId, su
     limitations: ['Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.',
       'Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.'] });
 }
-export type AssociatedInvestigations = ReturnType<typeof associatedView>;
+export type AssociatedInvestigations = ReturnType<typeof arrangeAssociatedInvestigations>;
 
-/** Extend only declared subject inspection. Mechanical content remains its original snapshot. */
-export function withAssociatedInvestigations<T extends { readonly id: RecordId; readonly projection: { readonly id: RecordId; readonly session: SessionId } }>(
-  view: T, investigations: AssociatedInvestigations): T & { readonly investigations: AssociatedInvestigations } {
-  const session = view.projection.session;
-  const projection = { ...view.projection, id: recordId(session, 'associated-inspection-projection', [methods.investigationPresentation,
-    identityReference(session, view.projection.id), investigations.subjects.map(id => identityReference(session, id)),
-    investigations.items.map(item => identityReference(session, item.id)), investigations.total, investigations.omitted, investigations.status, investigations.after, investigations.items.map(item => item.detail?.revision ?? null)]) };
+/** Semantic continuation identity, resolved only within the frozen match population. */
+export function associationContinuation(session: SessionId, matches: readonly RecordId[], refs: ReadonlyMap<RecordId, string>, after?: string | null) {
+  if (after === undefined || after === null) return { none: true } as const;
+  const matched = matches.find(id => refs.get(id) === after);
+  return matched ? { reference: identityReference(session, matched) } : { literal: after };
+}
+
+/** Coordination preserves the all-match allocation after the mechanical View. */
+export function createAssociatedInspectionView<T extends { readonly id: RecordId; readonly projection: { readonly id: RecordId; readonly session: SessionId } }>(
+  store: ProgramRecordStore, view: T, subjects: readonly RecordId[], after?: string, lifetime: 'session' | 'command' = 'session') {
+  const selection = selectAssociatedInspection(store, view.projection.id, subjects);
+  const content = resolveInvestigationContent(store, selection);
+  const references = store.entityIds(selection.associated, 'investigram');
+  return arrangeAssociatedInspection(view, content, references, after, lifetime);
+}
+
+export function arrangeAssociatedInspection<T extends { readonly id: RecordId; readonly projection: { readonly id: RecordId; readonly session: SessionId } }>(
+  view: T, content: InvestigationProjectionContent, references: ReadonlyMap<RecordId, string>, after?: string, lifetime: 'session' | 'command' = 'session') {
+  const selection = content.projection;
+  if (selection.variant !== 'associated-inspection' || selection.mechanical !== view.projection.id) throw new Error('Associated inspection requires its selected mechanical View');
+  const session = selection.session;
+  const investigations = arrangeAssociatedInvestigations(content, references, after, lifetime);
+  const projection = { ...view.projection, id: selection.id };
   return freezeOwned({ ...view, projection, investigations,
-    id: recordId(session, 'associated-inspection-view', [methods.investigationPresentation, identityReference(session, view.id), identityReference(session, projection.id), investigations.referenceLifetime]) });
+    id: recordId(session, 'associated-inspection-view', [methods.investigationPresentation, identityReference(session, projection.id),
+      identityReference(session, view.id), associationContinuation(session, selection.associated, references, after), lifetime]) });
 }
 export function renderAssociatedInvestigations(value: AssociatedInvestigations | undefined): string {
   if (!value) return '';

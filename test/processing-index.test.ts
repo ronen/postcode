@@ -4,7 +4,8 @@ import { test } from 'node:test';
 import { locate } from '../src/lib/organization/placement.js';
 import { deriveLayout } from '../src/lib/repository/layout.js';
 import type { RepositoryEvidence } from '../src/lib/repository/evidence.js';
-import { prepareCompositionViews } from '../src/lib/composition-view.js';
+import { compositionView } from '../src/lib/composition-view.js';
+import { resolveComposition } from '../src/lib/composition-content.js';
 import type { ProgramRecord, ProgramRecordStore, RecordId, SessionId } from '../src/lib/records.js';
 
 test('repeated placement lookup reads artifact paths once per immutable capture/layout pair', () => {
@@ -49,10 +50,10 @@ test('selected composition preparation has linear store reads and keeps parallel
     }
     let reads = 0;
     const store = { get(key: RecordId) { reads++; const record = records.get(key); assert.ok(record); return record; } } as ProgramRecordStore;
-    const view = prepareCompositionViews(store, claims, evaluations);
+    const content = resolveComposition(store, claims, evaluations);
     const preparedReads = reads;
     for (let pass = 0; pass < 2; pass++) for (let index = 0; index < size; index++) {
-      const result = view(id(`module-${index}`));
+      const result = compositionView(content(id(`module-${index}`)));
       assert.deepEqual(result.claims.map(claim => claim.id), [`claim-${index}-a`, `claim-${index}-b`]);
       assert.deepEqual(result.evaluations.map(outcome => outcome.id), [`outcome-${index}`]);
     }

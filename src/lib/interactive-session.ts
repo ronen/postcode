@@ -144,7 +144,8 @@ export function interactiveSession(options: ProjectOptions, dependencies: {
       if (reply.result.view.schema === 'postcode-investigation-view/1-experimental') {
         // The close message precedes the result. Finalize from those sealed call
         // snapshots, which also feed observations and subsequent usage requests.
-        const view = finalizeInvestigationUsage(reply.result.view, usageReport());
+        if (!reply.result.investigationArrangementKey) throw new Error('Missing investigation arrangement identity');
+        const view = finalizeInvestigationUsage(reply.result.view, usageReport(), reply.result.investigationArrangementKey);
         return { ...reply.result, view, rendered: renderInvestigationView(view), methods: [...reply.result.methods], failed: reply.result.failed ?? false };
       }
       return reply.result;

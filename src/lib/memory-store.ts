@@ -1,4 +1,6 @@
 import type { InvestigationEvaluationRecord } from './investigation/evaluation.js';
+import { selectionReferences } from './investigation/selection-record.js';
+import { validateInvestigationSelection } from './investigation/selection-validation.js';
 import { freezeOwned } from './immutable.js';
 import path from 'node:path';
 import { completedMaterialization } from './evaluation-state.js';
@@ -7,6 +9,7 @@ import type { EvaluationRecord, ProgramRecord, ProgramRecordStore, RecordId, Ses
 
 function references(record: ProgramRecord): readonly RecordId[] {
   switch (record.kind) {
+    case 'investigation-selection-projection': return selectionReferences(record).map(item => item.id);
     case 'investigation-evaluation': return [record.request.subject, ...record.investigrams, ...record.corrections,
       ...(record.outcome.kind === 'accepted' ? [record.outcome.root, record.attempt] : [])];
     case 'investigram': return [record.provenance, record.originatingModule, ...record.referent.subjects, ...record.evidence,
@@ -91,6 +94,13 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
         }
       };
       switch (record.kind) {
+        case 'investigation-selection-projection':
+          for (const reference of selectionReferences(record)) {
+            const target = (pending.get(reference.id) ?? this.#records.get(reference.id))!;
+            if (reference.kinds && !reference.kinds.includes(target.kind)) throw new Error('Invalid investigation selection reference kind');
+          }
+          validateInvestigationSelection(record, id => (pending.get(id) ?? this.#records.get(id))!);
+          break;
         case 'investigation-evaluation':
           record.investigrams.forEach(id => requireKind(id, 'investigram'));
           record.corrections.forEach(id => requireKind(id, 'investigram-correction'));

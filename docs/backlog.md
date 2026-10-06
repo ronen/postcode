@@ -20,26 +20,6 @@ Describe the need, why it matters, and relevant constraints without designing th
 
 ## Candidates
 
-## Assign the role of view builders relative to Projections
-
-Added: 2026-10-05
-Origin: [view-builder boundary audit](../records/audits/2026-10-05-view-builder-boundary/REPORT.md)
-Area: projection construction and presentation
-
-The `create*View` builders take a Projection (or, for investigations, the
-session store) together with a Presentation, and return the schema-versioned
-value that interfaces render or consume. Each builder combines format-dependent
-display bounds and terminal fitting with interface-independent dereferencing,
-counts over evaluation populations and, for investigation lenses, the core
-selection of retained accounts, revisions and associations. Investigation
-lenses have no stored Projection record. Until this role is decided, it is
-unclear whether some counts conform to the
-[views and analysis boundary](architectural-constraints.md#views-and-analysis-boundary).
-Two examples are the organization view's evaluation-wide external-module total
-and its per-group artifact classification. Decide the role before GUI Views
-consume these values. Preserve the established selection, qualification and
-evaluation behavior.
-
 ## Qualify evidence that modules are used for testing
 
 Added: 2026-10-03
