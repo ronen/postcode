@@ -6,8 +6,8 @@ Date: 2026-10-06
 Task: [Separate qualified view construction from presentation shaping](../../tasks/2026-10-05-view-construction-boundary.md)
 Handoff: [Mechanical construction and arrangement checkpoint](2026-10-05-mechanical-construction-handoff.md)
 Findings: [Round 1](2026-10-05-mechanical-construction-round-1-findings.md)
-Correction target: `89f338a80fb96444f122253544cf5fc244d170d2`
-Status: F1, F3 and F4 corrected; F2 awaits human direction
+Correction target: `dc29244467627c613aac628ec2d7be7d08e6659c`
+Status: F1–F4 accepted and corrected
 
 ## Findings and dispositions
 
@@ -30,24 +30,23 @@ bases, and resolved summaries from partial-placement and partial-artifact fixtur
 
 ### F2 — Redundant closing predicate and implicit zero-group policy
 
-**Accepted clarity issue; requires human direction before correction.** The two
-conjuncts are redundant for selected groups, and the zero-selected-group case
-currently takes the evaluation-level result. The reviewer identifies an implicit
-choice between that conservative behavior and wording tied only to an actual
-selected artifact classification. The human's disposition instructions require
-consultation before proceeding through unresolved uncertainty.
+**Accepted and corrected following explicit human direction.** The two conjuncts
+were redundant for selected groups, and the zero-selected-group case took the
+evaluation-level result. The agent asked whether to preserve that conservative
+behavior or restrict the notice to an incomplete selected group. The human
+approved the recommendation to preserve the existing notice; that decision is
+recorded in the active task and clarified in the proposal awaiting promotion.
 
-The implementing agent asked whether to preserve the current incomplete closing
-notice when repository or placement is incomplete, including a missing selector
-or unavailable layout, or restrict that notice to an incomplete selected group.
-The recommendation is to preserve current behavior, simplify the predicate and
-comment the zero-group rule, as the reviewer suggested. No answer has yet been
-received. Neither that recommendation nor the alternative has been adopted, and
-the closing predicate and wording are unchanged by this correction.
+The closing qualification now uses the single repository/placement completeness
+predicate. A short code comment states that this applies when no groups match or
+layout is unavailable. The CLI reference documents the rule. This qualifies the
+evaluation basis without inventing a group classification or changing public
+output, counts, schema or identity.
 
-The new unavailable-repository regression test checks retained qualification,
-opening materialization notices, source classification and self-contained
-rendering. It deliberately leaves the pending closing-policy choice unasserted.
+Regression checks assert the incomplete closing notice for missing selectors with
+partial placement or partial artifact support, and for both repository-tree and
+inspection Views with unavailable layout. A complete-basis missing selection keeps
+the existing complete-case wording. Serialized Views remain self-sufficient.
 
 ### F3 — Unused store-reading composition helper
 
@@ -94,7 +93,14 @@ All six observations are accepted in the terms reported by the reviewer.
 
 ## Corrections and verification
 
-Correction commit: `89f338a80fb96444f122253544cf5fc244d170d2`.
+Correction commits:
+
+- F1, F3, F4 and unavailable-repository coverage: `89f338a80fb96444f122253544cf5fc244d170d2`.
+- F2's authorized proposal clarification: `354f204`.
+- F2 implementation, documentation and regression checks: `dc29244467627c613aac628ec2d7be7d08e6659c`.
+
+The following checks passed after the F2 correction as well as after the initial
+F1/F3/F4 correction:
 
 - `npm run check`: passed.
 - Fresh build followed by `node --test _build/test/projection-content.test.js _build/test/processing-index.test.js _build/test/organization.test.js`:
@@ -122,16 +128,20 @@ Round 1 reviewed `d98b4541c8c3851f638c69b4983f2dc30b893456`, under the linked or
 handoff, and returned no blocking or medium-severity defects. The reviewer
 recommended that the mechanical boundary was sound enough to continue, with F1–F4
 addressed within scope. This disposition records the corrections and the one
-remaining human decision; it does not turn that recommendation into acceptance.
+human-approved F2 decision; it does not turn the reviewer recommendation into acceptance.
 
 ## Gate conclusion
 
-**Human direction is still required for F2 and checkpoint acceptance.** The latest
-human instruction authorized assessment and clear in-scope corrections, not a
-choice through unresolved uncertainty or closure of the task. Investigation work
-has not resumed. No finding was rejected or materially qualified. Once F2 is
-resolved and verified, the human can determine whether this intermediate gate is
-sufficient or another round under the original handoff is needed. Canonical
-promotion, remaining investigation work and the final integrated-review gate are
-still outstanding; the task remains active and must not close without explicit
-approval.
+**All findings are corrected; checkpoint acceptance remains a human decision.**
+The human explicitly resolved F2, and there is no remaining uncertainty or rejected
+finding in this disposition. These low-severity corrections were verified locally;
+no additional independent review round is requested by the implementing agent.
+The reviewer's recommendation that the boundary is sound enough to continue
+remains recorded separately from human acceptance of the checkpoint.
+
+The approval received selected F2's wording rule. It is not recorded here as a
+separate decision to accept the overall checkpoint or close the task. Investigation
+work has not resumed. The human can accept this checkpoint or request another
+round under the original handoff. Canonical promotion, remaining investigation
+work and the final integrated-review gate are still outstanding; the task remains
+active and must not close without explicit approval.
