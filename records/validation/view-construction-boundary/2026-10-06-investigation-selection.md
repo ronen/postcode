@@ -32,8 +32,15 @@ The live CLI and investigator-context paths now use the full revision derivation
 through a separate adapter that preserves their existing page and proximal-citation
 bounds. Their builders otherwise retain the old implementation at this checkpoint.
 The new selection constructors, resolver and binding port are tested independently;
-they are not yet wired into request execution. No new public View schema, method
-metadata, source-disclosure behavior or View identity formula is introduced here.
+they are not yet wired into request execution. Registering the construction method
+adds `postcode/investigation-projection@1` to the existing shared session method
+list: the TypeScript session records all registered methods, so reported method
+lists include this addition even for mechanical requests. This is responsible
+method metadata, not evidence that a particular request constructed an
+investigation selection. No new public View schema, source-disclosure behavior,
+presentation-method bump or View identity formula is introduced here. The later
+full output/observation comparison must account explicitly for this method-list
+addition as well as the already approved identity changes.
 
 ## Checks and results
 
