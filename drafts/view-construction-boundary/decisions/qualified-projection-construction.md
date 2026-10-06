@@ -476,7 +476,10 @@ visible changes are:
 
 - Investigation and associated-inspection Projection IDs, View IDs and responsible
   method metadata in JSON/observations, including the usage reporting descriptor's
-  ID.
+  ID. Register `postcode/investigation-projection@1` for retained selections and
+  bump `postcode/investigation-presentation@11` to
+  `postcode/investigation-presentation@12` for the new arrangement and View
+  identity formulas.
 - Bump the shared `methods.presentation` from `postcode/presentation@26` to
   `postcode/presentation@27`. This changes all module, organization and dependency
   View IDs and reported presentation-method metadata, including complete-case
@@ -489,6 +492,13 @@ visible changes are:
   field names/calculations and existing evaluation metadata remain unchanged.
   Document the qualified meaning of the legacy JSON `unanalyzed` field in
   [the CLI reference](../cli-reference.md).
+
+The existing provider capture includes the complete method registry in its
+`analysis-inputs` value as well as session metadata. These method changes therefore
+change that captured value, its derived input-record ID and references to that ID
+in Claim context or disclosed investigation support. Preserve the remaining
+captured values and qualification; this is the existing consequence of recording
+method provenance, not a change to analysis or evaluation outcomes.
 
 Mechanical-only Projection and View identity formulas remain unchanged; the
 shared presentation-method bump changes View ID values, not their formulas.
