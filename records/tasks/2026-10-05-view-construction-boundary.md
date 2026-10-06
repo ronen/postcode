@@ -97,6 +97,10 @@ Context: All mechanical checkpoint findings have recorded accepted dispositions 
 
 continue with the task
 
+### Investigation selection review and continuation
+
+the review is complete.  Please assess and handle as usual.  Regarding F1, choose option (a).  No need for re-review, you can continue with the task after handling this
+
 ## Outcome
 
 ## Verification
