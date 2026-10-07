@@ -1,6 +1,16 @@
 # Proposed revisions to docs/core-concepts.md
 
-Replace the complete Lens, Projection, and Presentation and View definitions with the units below. Add the grouped definition at the stated insertion point and the localized additions to Claim context and Expansion. Other definitions, including Subject, remain unchanged pending the decision’s marked review question.
+Replace the complete Lens, Projection, and Presentation and View definitions with the units below. Add the grouped definition at the stated insertion point and apply the localized revisions to Subject, Claim context and Expansion. Other definitions remain unchanged.
+
+## Replacement paragraph and clarification in Subject
+
+Retain the term-level provenance and the configured-project paragraph. Replace the first definition paragraph with these two paragraphs:
+
+A **subject** is what a lens investigates or a claim concerns. This is a role, not another entity kind. Possible subjects are open-ended; examples include an entity, a collection of entities, a relationship, an identified qualified change, or an investigram. [[Investigrams as subjects](decisions/investigrams-and-progressive-investigation.md#separate-program-referents-from-interpretive-focus)]
+
+“What changed in this module between A and B?” investigates the module across separately identified captured states A and B. “Why was this dependency removed?” can investigate an identified, qualified change, with its relevant states and evidence still explicit. Subject designation does not replace program-input designation or captured-state attribution. This distinction permits further investigation of a change without introducing a new entity kind. [[Subjects and states](decisions/coordinated-views-and-qualified-results.md#keep-subject-open-ended-and-state-designation-explicit)]
+
+## Replacement definitions
 
 ### Lens
 
@@ -20,7 +30,7 @@ A Projection is a program-domain object, addressable within its Session, identif
 
 A produced Projection retains the information selected for that result. Later accumulation or input changes do not mutate its captured basis, selected content or qualification. For revision-oriented inputs, a following binding resolves a changing input again on subsequent requests; a pinned binding continues to use the same captured program state. A result from newly captured input identifies that new basis without changing earlier results. Pinning the input does not mean redisplaying an exact retained Projection. Reusing or rendering a retained Projection need not establish a different answer. For mechanical analyses, equivalent inputs, methods, requirements and completed evaluation preserve deterministic semantic content. Later evaluation may add information missing from incomplete work without changing the earlier Projection or outcome. Presentation choices describe how supplied information is shown and do not redefine the Lens question. [[Immutable information](decisions/transient-analysis-sessions.md#immutable-information-within-an-accumulating-session)] [[Bindings and refresh](decisions/coordinated-views-and-qualified-results.md#preserve-immutable-results-under-bindings-and-refresh)]
 
-Redisplay of an investigation result can select retained investigrams and explicit replacements into a new Projection while preserving earlier Projections. [[Retained interpretation selection](decisions/investigrams-and-progressive-investigation.md#associate-investigrams-with-subjects-and-select-retained-results)]
+A fresh request for investigation results can select retained investigrams and explicit replacements into a new Projection while preserving earlier Projections. The retained interpretations and correction/association selections supporting an answer are distinct from its captured program-state basis: either can affect the answer, but interpretation history is not thereby a captured program state and does not acquire following or pinned policies. Presenting an exact retained Projection preserves both its basis and its selected answer. [[Retained interpretation selection](decisions/investigrams-and-progressive-investigation.md#associate-investigrams-with-subjects-and-select-retained-results)] [[Presentation continuity](decisions/coordinated-views-and-qualified-results.md#preserve-the-selected-answer-during-presentation-changes)]
 
 ### Presentation and View
 
@@ -33,6 +43,8 @@ A **View** is an instantiated Presentation of a nonempty collection of Projectio
 One coordinating Presentation can relate several Projections through shared alignment, axes, anchoring or linked selection. Several independent Views placed together remain several Views; a common container or visual proximity alone does not make them one. Presentation relationships do not establish new relationships in the investigated program. Alignment requires established correspondence or an exact identity guarantee supplied by the inputs; deriving further correspondence or a new program claim requires core analysis and a qualified Projection. [[Interface boundary](decisions/coordinated-views-and-qualified-results.md#coordinate-supplied-information-without-deriving-new-program-claims)]
 
 Adding or removing an underlying Projection changes View composition, rather than merely rendering context. Such changes must be visible and recorded. Replacing displayed information with a result based on newly captured state must likewise expose and record the change of basis. These distinctions preserve investigation lineage and define meaning rather than requiring independently stored stages, a managed-View lifecycle or a universal View identity formula.
+
+Presentation-only actions, including paging and reformatting, preserve the selected answer and its qualifications. If an interaction instead refreshes the answer, its refresh behavior must be apparent and consequential changes in the answer, selection or qualifications disclosed. Disclosed reselection is distinct from the continuity of presenting the exact retained result with different presentation inputs. This does not require a warning for every identifier change or a comparison notice for every independently requested fresh investigation. [[Presentation continuity](decisions/coordinated-views-and-qualified-results.md#preserve-the-selected-answer-during-presentation-changes)]
 
 When the human has not expressed a more specific information need, PostCode may suggest a summary View as an initial View. Summary can also support recursive navigation; it is not a required default. A summary View may coordinate existing qualified results, show a synthesized summary Projection, or combine both. It does not require a summary Lens. [[Summary Views and navigation](decisions/coordinated-views-and-qualified-results.md#allow-summary-views-independently-of-summary-lenses)]
 
