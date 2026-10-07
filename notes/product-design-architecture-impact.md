@@ -1,6 +1,6 @@
 # Adoption impact and later Lens preparation
 
-This is review material for the draft package, not a plan or runtime-conformance certification. The baseline is commit `c0ed132`. Evidence comes from the revised product design, governing documents, the preserved [representation audit](../../records/audits/2026-10-06-user-model-concept-representations/REPORT.md), and targeted inspection of request dispatch, observation construction and dependency subject selection. No runtime probes or application tests were rerun for this documentation proposal.
+This is review material for the draft package, not a plan or runtime-conformance certification. The baseline is commit `c0ed132`. Evidence comes from the revised product design, governing documents, the preserved [representation audit](../records/audits/2026-10-06-user-model-concept-representations/REPORT.md), and targeted inspection of request dispatch, observation construction and dependency subject selection. No runtime probes or application tests were rerun for this documentation proposal.
 
 ## Conceptual changes
 
@@ -40,7 +40,7 @@ Deferring implementation here does not waive accurate current observations, refe
 
 ## Implications for subsequent Lens preparation
 
-The unchanged [Lens representation note](../../notes/lens-representation-proposal.md) is exploratory context only. It is not an approved plan, and no prescription in it is adopted by reference.
+The unchanged [Lens representation note](lens-representation-proposal.md) is exploratory context only. It is not an approved plan, and no prescription in it is adopted by reference.
 
 Retain its useful distinctions: Lens question versus execution operation; designation versus selected subjects versus parameters; applicability versus availability and failure; compatible reuse versus new evaluation; and qualified retained answers versus invocation reporting. A shared semantic vocabulary and easier Lens additions remain candidates to evaluate, not a mandate for one all-purpose table.
 
@@ -64,6 +64,6 @@ These are explicit deferrals, not unresolved assumptions needed to understand th
 
 ## Review and verification
 
-Review the [decision](decisions/coordinated-views-and-qualified-results.md), [foundation revisions](foundation/product-design-revisions.md), concepts and constraints together. The decision supersedes precisely three whole units; metadata files preserve complete forward/backward mappings and historical bodies. Its retained-boundaries section carries the replaced session heading's unaffected domain/storage text, avoiding accidental withdrawal of unrelated rules.
+Review the [decision ](../drafts/product-design-architecture/decisions/coordinated-views-and-qualified-results.md), [foundation revisions ](../drafts/product-design-architecture/foundation/product-design-revisions.md), concepts and constraints together. The decision supersedes precisely three whole units; metadata files preserve complete forward/backward mappings and historical bodies. Its retained-boundaries section carries the replaced session heading's unaffected domain/storage text, avoiding accidental withdrawal of unrelated rules.
 
 Verification completed: all revision destinations exist and insertion/replacement targets were checked against the baseline; 64 local links and anchors resolve against their actual draft or intended canonical destinations; the carried-forward domain/storage text matches the earlier heading exactly outside the identified conceptual paragraph. The worktree changes are confined to this 13-file draft package. Wording was checked for accidental implementation commitments and the three supersession mappings were compared in both directions. Application tests were not run because no implementation changed. Review is still pending; these checks do not constitute human acceptance or an independent review.

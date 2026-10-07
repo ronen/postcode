@@ -10,16 +10,16 @@ This package reconciles the application architecture with the revised product de
 
 | Draft | Intended destination or role |
 | --- | --- |
-| [Foundation revisions](foundation/product-design-revisions.md) | `foundation/product-design.md`; explicit human foundation adoption required |
-| [Decision](decisions/coordinated-views-and-qualified-results.md) | New `docs/decisions/coordinated-views-and-qualified-results.md` |
-| [Core concepts](core-concepts-revisions.md) | `docs/core-concepts.md` |
-| [Architectural constraints](architectural-constraints-revisions.md) | `docs/architectural-constraints.md` |
-| [Architecture overview](architecture/README-revisions.md) | `docs/architecture/README.md` |
-| [CLI reference](cli-reference-revisions.md) | `docs/cli-reference.md` |
-| [Backlog](backlog-revisions.md) | Additions to `docs/backlog.md`; candidates, not commitments |
-| [Decision index](decisions/README-revisions.md) | `docs/decisions/README.md` |
-| [Session metadata](decisions/transient-analysis-sessions-revisions.md), [projection metadata](decisions/initial-projection-architecture-decisions-revisions.md), [interface metadata](decisions/keep-views-grounded-in-core-projections-revisions.md) | Metadata-only revisions to the corresponding historical decisions |
-| [Adoption impact](adoption-impact.md) | Package review material; no automatic canonical destination |
+| [Foundation revisions](../drafts/product-design-architecture/foundation/product-design-revisions.md) | `foundation/product-design.md`; explicit human foundation adoption required |
+| [Decision](../drafts/product-design-architecture/decisions/coordinated-views-and-qualified-results.md) | New `docs/decisions/coordinated-views-and-qualified-results.md` |
+| [Core concepts](../drafts/product-design-architecture/core-concepts-revisions.md) | `docs/core-concepts.md` |
+| [Architectural constraints](../drafts/product-design-architecture/architectural-constraints-revisions.md) | `docs/architectural-constraints.md` |
+| [Architecture overview](../drafts/product-design-architecture/architecture/README-revisions.md) | `docs/architecture/README.md` |
+| [CLI reference](../drafts/product-design-architecture/cli-reference-revisions.md) | `docs/cli-reference.md` |
+| [Backlog](../drafts/product-design-architecture/backlog-revisions.md) | Additions to `docs/backlog.md`; candidates, not commitments |
+| [Decision index](../drafts/product-design-architecture/decisions/README-revisions.md) | `docs/decisions/README.md` |
+| [Session metadata](../drafts/product-design-architecture/decisions/transient-analysis-sessions-revisions.md), [projection metadata](../drafts/product-design-architecture/decisions/initial-projection-architecture-decisions-revisions.md), [interface metadata](../drafts/product-design-architecture/decisions/keep-views-grounded-in-core-projections-revisions.md) | Metadata-only revisions to the corresponding historical decisions |
+| [Adoption impact](product-design-architecture-impact.md) | Package review material; no automatic canonical destination |
 
 The package root mirrors `docs/`. The explicit exception is `foundation/product-design-revisions.md`, whose destination is the repository's `foundation/product-design.md`, not `docs/foundation/`. Revision files identify complete replacement units or exact insertion points. Links inside promotion-ready units target their intended canonical locations; they need not resolve inside this draft. This README and the impact assessment link to actual review material.
 
