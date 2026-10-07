@@ -1,17 +1,15 @@
-# Product-design architecture reconciliation
+# Product-design architecture reconciliation: review guide
 
-Status: in preparation — non-governing; awaiting human review
-Prepared: 2026-10-07
-Baseline: `c0ed132a7af4c479e21deab69d0d6dfe9330ca7f`
+Updated: 2026-10-07
+Baseline: `337451bd37f91004a14d56149c52b4491bef783a`
 
-This package reconciles the application architecture with the revised product design and the human's qualifications about immutable results, presentational counts and summary-first navigation. It proposes adoption only. It neither authorizes implementation nor promotes any document.
+This is non-governing review material, not a proposed canonical document. The draft adapts application architecture to the adopted [product design](../foundation/product-design.md); no foundation changes are proposed. The package remains unpromoted and awaits human-arranged review. It authorizes no implementation.
 
 ## Review order and destinations
 
-| Draft | Intended destination or role |
+| Draft | Intended canonical destination |
 | --- | --- |
-| [Foundation revisions](../drafts/product-design-architecture/foundation/product-design-revisions.md) | `foundation/product-design.md`; explicit human foundation adoption required |
-| [Decision](../drafts/product-design-architecture/decisions/coordinated-views-and-qualified-results.md) | New `docs/decisions/coordinated-views-and-qualified-results.md` |
+| [Decision](../drafts/product-design-architecture/decisions/coordinated-views-and-qualified-results.md) | `docs/decisions/coordinated-views-and-qualified-results.md` |
 | [Core concepts](../drafts/product-design-architecture/core-concepts-revisions.md) | `docs/core-concepts.md` |
 | [Architectural constraints](../drafts/product-design-architecture/architectural-constraints-revisions.md) | `docs/architectural-constraints.md` |
 | [Architecture overview](../drafts/product-design-architecture/architecture/README-revisions.md) | `docs/architecture/README.md` |
@@ -19,20 +17,23 @@ This package reconciles the application architecture with the revised product de
 | [Backlog](../drafts/product-design-architecture/backlog-revisions.md) | Additions to `docs/backlog.md`; candidates, not commitments |
 | [Decision index](../drafts/product-design-architecture/decisions/README-revisions.md) | `docs/decisions/README.md` |
 | [Session metadata](../drafts/product-design-architecture/decisions/transient-analysis-sessions-revisions.md), [projection metadata](../drafts/product-design-architecture/decisions/initial-projection-architecture-decisions-revisions.md), [interface metadata](../drafts/product-design-architecture/decisions/keep-views-grounded-in-core-projections-revisions.md) | Metadata-only revisions to the corresponding historical decisions |
-| [Adoption impact](product-design-architecture-impact.md) | Package review material; no automatic canonical destination |
 
-The package root mirrors `docs/`. The explicit exception is `foundation/product-design-revisions.md`, whose destination is the repository's `foundation/product-design.md`, not `docs/foundation/`. Revision files identify complete replacement units or exact insertion points. Links inside promotion-ready units target their intended canonical locations; they need not resolve inside this draft. This README and the impact assessment link to actual review material.
+The package root mirrors `docs/`. Revision files identify complete replacement units or exact insertion points. Links inside promotion-ready units target their intended canonical locations; those files need not exist inside the draft directory. Only proposed canonical documents or revisions remain under `drafts/product-design-architecture/`.
+
+The separate [impact assessment](product-design-architecture-impact.md) records implementation limitations, known conformance issues, later choices and implications for Lens preparation. It is non-permanent supporting material. No draft file links to or depends on either this guide or the assessment; context required after promotion is carried in the proposed decision and backlog.
 
 ## Choices presented for adoption
 
-A Lens may use several contributions without a separate composite-Lens category. One View may coordinate independently qualified Projections, each of which may concern several captured program states. Presentation can describe a supplied population and coordinate established information; new program claims require core analysis and a qualified Projection. Live bindings govern future requests, not mutation of results. Summary-first remains the default for an unspecified information need and does not require a summary Lens.
+A Lens may use several contributions without a separate composite-Lens category. One View may coordinate independently qualified Projections, each of which may concern several captured program states. Presentation can count an explicitly supplied qualified population and coordinate established information; deriving new program information requires core analysis and a qualified Projection.
 
-These choices follow the human's direction. No unresolved consequential choice blocks preparation of this package. The impact assessment identifies consequential implementation choices that remain unaccepted and must be resolved before the relevant later work. In particular, this package does not settle a universal identity scheme, a workspace lifecycle, Lens registration, or any public schema migration.
+Requests designate inputs and binding policies. Following resolves a changing input again; pinned requests continue using the same captured program state. A Projection identifies its captured basis and retains its qualified result. References distinguish that result from a request repeatable under current bindings. A summary View may be suggested when no more specific need is expressed; it is not a mandatory default and need not depend on a summary Lens.
 
-## Promotion boundary
+The updated product design supports these changes without a foundation amendment. No blocking architectural difficulty has been identified. Later implementation choices remain explicit in the decision and backlog rather than being silently accepted in this proposal. The CLI's current limited subset remains supported.
 
-The human arranges review and directs any later promotion. Review the foundation amendment, decision, governing revisions and metadata together. If accepted, adopt the foundation wording before or atomically with the dependent architecture changes; set the decision to `accepted` with the actual decision date. Reconcile intervening changes against the baseline rather than replacing current files blindly.
+## Later promotion
 
-Apply the three metadata revisions and decision-index updates in the same promotion as the new decision and governing revisions. Preserve earlier decision bodies, their rationale, previous supersession mappings, concluded tasks, audits and reviews. Older mappings continue to point to the historical replacement; its new forward mapping supplies the next link in the chain. Do not retroactively rewrite those mappings or records.
+The human directs promotion after review. On acceptance, set the decision's status and actual decision date, reconcile intervening canonical changes, and apply the decision, governing revisions, descriptive revisions, backlog additions, supersession metadata and index updates together. The foundation remains unchanged.
 
-Carry required context from the impact assessment into the decision and backlog (the proposed text already does so). Do not promote this README or its note links into an accepted decision. Check destination links and remove the promoted draft material only when the human directs promotion. There is no implementation plan or task record: this is exploration and proposal preparation under the planning workflow.
+Preserve historical decision bodies, their rationale, previous supersession mappings, concluded tasks, audits and reviews. Earlier mappings continue to point to their historical replacement; its new forward mapping supplies the next link in the chain. Do not retroactively rewrite those mappings or records.
+
+Check destination links and retain all required canonical context before removing promoted drafts. This guide and assessment are not promotion inputs and may be removed separately at human direction. No task record was opened because this work is proposal preparation rather than implementation.
