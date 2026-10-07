@@ -78,11 +78,13 @@ Conceptually:
 projection = lens(program_states, subject, lens_parameters)
 ```
 
-`program_states` identifies the repository revisions, working-tree states, or other program states to which the lens is applied. Many lenses use one state; comparison and historical lenses may use more than one. When order matters, the collection preserves it. A subject may itself be a collection.
+`program_states` identifies the captured repository revisions, working-tree states, or other program states to which the lens is applied. A request may instead designate changing program inputs; their binding policies determine which states are captured when the request is performed. Many lenses use one state; comparison and historical lenses may use more than one. When order matters, the collection preserves it. A subject may itself be a collection.
 
-The lens parameter values are part of the projection's identity and must remain distinct from choices about how the projection is presented.
+The projection's subject, lens, lens parameter values, and captured program states must remain identifiable. Lens parameter values must remain distinct from choices about how the projection is presented.
 
 A projection includes both its content and the qualifications needed to understand what that content establishes.
+
+A produced projection identifies the program states captured as the basis for its content, supporting evidence, method, and qualifications. A branch, working tree, index, or continuing stream does not by itself identify that captured basis; different captures of a changing input must be distinguishable. When resulting information is based on newly captured input, its content and qualifications must remain associated with that new basis rather than appearing to continue unchanged from earlier evidence.
 
 For example, applying a callers lens to `MediaManager` might produce:
 
@@ -128,7 +130,7 @@ If combining projections derives correlations, priorities, reconciliations, summ
 
 A presentation may accept presentation-specific parameters such as sorting, grouping, layout, filtering, expansion depth, or whether to show implementation names, descriptive labels, or both. Consequential filtering, grouping, or omission must remain visible so that presentation does not make any input projection appear more complete than the information shown.
 
-Sorting, exact grouping by fields already present in an input projection, and reporting the cardinality of displayed items or groups may remain presentational because they describe the rendered input. They must not imply coverage or completeness beyond that projection's qualifications. Clustering by inferred similarity, deriving categories, or presenting an aggregate as a new claim about the program instead requires a lens and qualified projection.
+Sorting, exact grouping by fields already present in an input projection, and reporting exact counts over an explicitly identified population supplied by a projection may remain presentational. For example, a presentation may report “87 dependencies; showing 20” when its input projection supplies a qualified population of 87 dependencies; one that receives only 20 cannot infer the larger total. Counting rows across overlapping projections does not establish a count of distinct program entities unless their correspondence is already established. These operations must not imply coverage or completeness beyond the input projections' qualifications. Clustering by inferred similarity, deriving categories or correspondence, extrapolating a broader total, or presenting an aggregate as a new claim about the program instead requires a lens and qualified projection.
 
 Presentations may share common interaction affordances such as hover or focus detail, subject and relationship selection, contextual lens application, expansion and collapse of evidence or qualifications, opening or pinning views, and copying stable references for coding-agent prompts.
 
@@ -148,7 +150,7 @@ view = presentation(projections, context, presentation_parameters)
 
 Several independent views placed beside one another remain several views in a workspace. A single presentation of several projections is one view when it defines relationships among them—such as shared alignment, axes, anchoring, or linked selection—that would be lost if they were presented independently. Neither visual proximity nor a shared container alone makes them one view. This distinction concerns the presentation and interaction offered to the human, not whether the implementation uses one or several UI components.
 
-Adding or removing an underlying projection changes the view's composition rather than merely its rendering context. Such changes must remain visible and be recorded. Whether the implementation treats the result as continued evolution of the existing view or as a newly derived view is an implementation design decision; the relevant continuity and derivation must remain available.
+Adding or removing an underlying projection changes the view's composition rather than merely its rendering context. Such changes must remain visible and be recorded. Replacing information shown in a view with a result based on newly captured state must likewise make the change of basis visible and recorded.
 
 #### 2.1.5 Logical Model and Execution Planning
 
@@ -167,7 +169,7 @@ plan = optimize(
 view = execute(plan)
 ```
 
-Each projection request identifies one or more program states, a subject, a lens, and lens parameter values. Presentation requirements such as filtering, ordering, field selection, or pagination may be pushed into a lens or underlying analysis. Lens and lens-parameter choices may likewise select a narrower or less expensive analysis.
+Each projection request designates one or more program inputs, with binding policies where applicable, together with a subject, lens, and lens parameter values. Execution resolves those inputs to the captured program states recorded by the projection. Presentation requirements such as filtering, ordering, field selection, or pagination may be pushed into a lens or underlying analysis. Lens and lens-parameter choices may likewise select a narrower or less expensive analysis.
 
 These optimizations must preserve the conceptual distinctions. Lens parameters define the information requested; presentation parameters define how it is shown; pushdown is an execution strategy rather than a reclassification of those choices. Partial or lazy materialization must retain explicit coverage and limitation information, and a change in execution plan must not masquerade as a change in the projected program information.
 
@@ -558,18 +560,16 @@ A workspace contains an arbitrary number of views, each presenting one or more p
 
 Presentation parameters may express choices such as sorting, grouping, layout, filtering, expansion depth, or label style. Presentation context might eventually include the current investigation, the number and shape of results, available screen space, neighbouring views, user preferences, and previous interaction.
 
-A revision may be the current working tree, a branch, or a commit. Staged or index state may also be useful.
+A revision-oriented input may designate a working tree, branch, commit, or staged or index state. Its binding policy may be:
 
-A program state used by a projection may be:
+- **following:** subsequent requests resolve a changing input again;
+- **pinned:** subsequent requests continue to use the same captured program state.
 
-- **live:** it follows a working tree or branch;
-- **pinned:** it remains attached to a particular revision.
+These policies select inputs for subsequent requests. The information shown by a presentation must remain associated with the captured program state or states that form its basis.
 
-Live and pinned describe revision-oriented program states. Other inputs, such as runtime observations, retain bindings appropriate to their source—for example, an execution, observation interval, or continuing stream—and need not fit that classification.
+Other inputs, such as runtime observations, retain bindings appropriate to their source—for example, an execution, observation interval, or continuing stream. A projection based on such inputs still identifies the observations captured as its basis; later observations do not silently become support for information attributed to an earlier interval.
 
-A projection may combine program states with different revision bindings, as in a comparison between a working tree and a commit. A multi-projection view may in turn combine projections with different bindings.
-
-When program states represented within one view differ or refresh at different times, the presentation must expose their associations and timing rather than imply that they form a synchronized snapshot.
+A projection may concern several captured states obtained under different binding policies, as in a comparison between a working tree and a commit. A multi-projection view may likewise coordinate projections obtained under different policies. The presentation must preserve the association of each projection and claim with its captured states, including meaningful order or roles, capture timing, and relevant capture limitations, rather than imply that the states form a synchronized snapshot.
 
 The user constructs the working surface appropriate to the current problem rather than operating within a predetermined dashboard.
 
@@ -577,7 +577,7 @@ A workspace organizes its views as an investigation graph. Views are nodes; rela
 
 A comparison may be constructed directly as one multi-projection view or as a new view derived from projections already shown in earlier views. Investigation-graph relationships preserve the relevant lineage in either case.
 
-Derivation, placement, revision binding, and investigation role are distinct. A view may be embedded in another view, placed alongside it, or moved into a linked workspace. The revision binding of each program state underlying its projections is independent of whether the view is a root or descendant of the investigation. A view can become the root of a linked workspace without pinning those states and without losing its derivation history.
+Derivation, placement, input binding, and investigation role are distinct. A view may be embedded in another view, placed alongside it, or moved into a linked workspace. The binding policy for each input underlying its projections is independent of whether the view is a root or descendant of the investigation. A view can become the root of a linked workspace without changing those binding policies or losing its derivation history.
 
 A PostCode workspace may comprise multiple such linked workspaces, each preserving its own focal subject and collection of views. Collectively, they form the workspace through which the human conducts an investigation.
 
@@ -695,9 +695,11 @@ The initial mechanism can be a machine-readable context artifact that PostCode k
 
 The purpose is not merely to give the agent another description of the repository. It is to let the human refer directly to PostCode context in a prompt: the focused view, a projected relationship, a qualified summary, or the current investigation. The agent can then resolve that reference without requiring the human to translate the projection back into filenames, symbols, and implementation details.
 
+References exposed through this context must distinguish a projection over its captured basis from a request that can be repeated using currently bound inputs.
+
 The artifact should describe at least:
 
-- the repositories and program states represented in the workspace, including their association with each projection;
+- the repositories, designated program inputs and binding policies, and captured states represented in the workspace, including their association with each projection;
 - the current operational task and information need, where formalized;
 - the open views and their stable identifiers;
 - which view or subject currently has the human's focus;
@@ -719,7 +721,7 @@ machine-readable context artifact
 external coding agent
 ```
 
-The context artifact should be generated state rather than a canonical program representation. It should not normally be committed, and updating it should not dirty the repository or trigger PostCode to analyze its own output. It should be written atomically and carry enough revision information for an agent to recognize when any projection or other context no longer describes its associated program state.
+The context artifact should be generated state rather than a canonical program representation. It should not normally be committed, and updating it should not dirty the repository or trigger PostCode to analyze its own output. It should be written atomically and carry enough revision information for an agent to recognize when a projection's captured basis differs from the state its binding would select for a subsequent request.
 
 A compact manifest may be preferable to duplicating every projection into one indefinitely growing file. The manifest can describe the current workspace and point to separate machine-readable projection records when necessary. The exact representation can emerge with the implementation, but it should be documented and stable enough that different coding agents can consume it without bespoke integration.
 
@@ -738,7 +740,7 @@ Project instructions can ask the agent to leave a structured response artifact o
 - constraints, uncertainty, or missing information encountered;
 - tests or other verification performed;
 - source entities affected;
-- projections that should be refreshed or shown;
+- projection requests that should be repeated or results that should be shown;
 - questions that another lens might help answer.
 
 Agent-supplied context must retain its provenance and epistemological status. An agent's account of its rationale, behavior, or interpretation is a recorded assertion or interpretation, not a derived fact merely because it was written in a structured form.
@@ -750,8 +752,8 @@ The response artifact should be associated with the relevant repository state an
 The file-based exchange can later develop into a more interactive protocol. An external agent might:
 
 - query PostCode lenses directly;
-- refer to projections and views by stable identifier;
-- request a new projection or refresh;
+- refer to projections and views through stable references that preserve captured-basis distinctions;
+- request a new projection or repeat the request underlying a projection using its current bindings;
 - contribute rationale or uncertainty during development rather than only after a task;
 - suggest useful additions to the current investigation.
 
