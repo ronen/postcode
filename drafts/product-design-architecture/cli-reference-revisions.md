@@ -1,0 +1,11 @@
+# Proposed revisions to docs/cli-reference.md
+
+Insert this section immediately before “First use”. Existing command instructions, defaults and output descriptions remain unchanged.
+
+## Product model and current CLI scope
+
+A product View may coordinate multiple independently qualified Projections, and a Projection may concern several captured program states. This CLI exposes a limited single-state implementation through its existing commands and family-specific View schemas. It does not accept arbitrary collections of Projections, analyze several revisions together, follow a live branch or working tree, or save a workspace.
+
+The product's summary-first default applies when the human has not expressed a more specific information need; a summary View need not use a summary Lens. The current no-argument command remains `modules`, and `summarize` requests a module interpretation. No automatic general summary selection is implemented.
+
+Each produced Projection retains its selected information and qualification. Repeating a command requests a selection again: changes to accumulated interpretation can yield a new Projection, including when requesting another page or format. The current commands cannot explicitly redisplay a particular retained Projection. This does not mutate earlier results. Input changes follow the separate [session invalidation contract](#input-stability-and-retained-work), not a live-refresh policy.

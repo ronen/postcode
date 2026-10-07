@@ -1,0 +1,23 @@
+# Proposed revisions to docs/architectural-constraints.md
+
+## Replace the first two bullets under Views and analysis boundary
+
+- Keep analysis, Evaluation and Projection construction independent of interfaces. GUI and other interface code may select Lens requests and supplied Projections, request Evaluation, implement Presentations, manage interaction and instantiate Views over one or more independently qualified Projections. They must not establish new Claims about investigated subjects or retained interpretations. New program information requires core analysis and a qualified Projection. [[Coordinated interface boundary](decisions/coordinated-views-and-qualified-results.md#coordinate-supplied-information-without-deriving-new-program-claims)]
+- A Presentation may sort, group by supplied fields, filter, progressively disclose and descriptively aggregate the qualified information, supporting evidence and outcomes supplied by the core for its input Projections. It may describe the full supplied population or a filtered/displayed subset: “87 dependencies; showing 20” is valid when 87 is established for that supplied population. Identify the population actually counted, retain each contribution's qualification and materialization, and disclose consequential aggregation, filtering and omission. A displayed count does not establish complete analysis; unsupported totals, inferred classification or correspondence, and aggregates establishing new program claims require core analysis and a qualified Projection. [[Population descriptions](decisions/coordinated-views-and-qualified-results.md#coordinate-supplied-information-without-deriving-new-program-claims)]
+
+## Add after those replacement bullets
+
+- Preserve each Projection's identity, subject, Lens, parameters, captured program-state basis, qualification and relevant outcomes when coordinating it with others. Align or overlay only through correspondence already established by the inputs or an exact identity guarantee they supply. Displaying results together does not establish changes, correlations or flows. [[Coordinated interface boundary](decisions/coordinated-views-and-qualified-results.md#coordinate-supplied-information-without-deriving-new-program-claims)]
+- Make additions, removals and replacements of underlying Projections visible and record them as View composition changes. Do not treat them as rendering-context changes or infer program relationships from presentation coordination or investigation lineage. Preserve continuity and derivation regardless of a later choice to retain or replace View identity. [[View composition](decisions/coordinated-views-and-qualified-results.md#generalize-lens-results-and-view-composition)]
+
+The three existing bullets from “For module, organization, dependency and investigation Projection families” through the binding-only capability remain unchanged. They apply to each supplied input; this extension does not replace their family-specific construction, lazy-materialization, binding or source-disclosure contracts.
+
+## Add a section after Views and analysis boundary
+
+## Program states, bindings and summary navigation
+
+- Preserve the association of every Projection's claims and evidence with their captured program states, including meaningful order or roles and capture/refresh timing and limitations. Multi-state results and coordinated Views must not imply a synchronized snapshot, complete capture or cross-state correspondence unless their basis supports it. [[Bindings and refresh](decisions/coordinated-views-and-qualified-results.md#preserve-immutable-results-under-bindings-and-refresh)]
+- Treat following a branch, working tree or stream as a policy for subsequent requests or refresh, not mutation of a produced Projection. Retain earlier results and their basis and qualification; a refresh produces another result. The current unchanged-input session precondition and invalidation policy remain in force until explicitly replaced. [[Bindings and refresh](decisions/coordinated-views-and-qualified-results.md#preserve-immutable-results-under-bindings-and-refresh)]
+- Use summary-first as the default starting experience and recursive-navigation model when the human has not expressed a more specific information need. A summary View may coordinate separately qualified Projections or present a synthesized account; do not require a summary Lens for every summary View. Explicit requests take precedence. Current CLI defaults remain an explicitly limited implementation subset. [[Summary-first navigation](decisions/coordinated-views-and-qualified-results.md#preserve-summary-first-navigation-independently-of-summary-lenses)]
+
+All remaining constraints and their provenance remain unchanged.
