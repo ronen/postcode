@@ -12,6 +12,7 @@ Use [`drafts/`](../drafts/) for canonical-shaped proposals, an ignored root unde
 
 ## Current notes
 
+- [Lens representation and subject selection proposal](lens-representation-proposal.md)
 - [Candidate capabilities](candidate-capabilities.md)
 - [Dependency landscape](dependency-landscape.md)
 - [Explorative capabilities](explorative-capabilities.md)
