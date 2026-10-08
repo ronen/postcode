@@ -238,6 +238,8 @@ repository evidence. Sink failures produce a warning while preserving the view.
 PostCode does not read historical observation streams or prescribe sink retention.
 Do not commit real-project observations without explicit human approval.
 
+Recorded output remains evidence of what PostCode displayed, but observations do not yet generally identify the captured program basis supporting it. The [bounded provenance correction](docs/backlog.md#preserve-captured-basis-attribution-in-observations) must precede reliance on newly collected observations for assessments requiring attribution to a particular program state.
+
 These observations support later work by the
 [PostCode Research Project](https://github.com/ronen/postcode-research).
 Contemporaneous subjective-note capture and remote research export remain deferred.

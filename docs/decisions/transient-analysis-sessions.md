@@ -1,6 +1,6 @@
 # Transient analysis sessions
 
-Status: accepted
+Status: partially superseded
 Decided: 2026-09-23
 Arising from: [Transient interactive session shell](../plans/transient-session-shell.md)
 Scope: session context, reference binding, accumulated analysis, and CLI/observation lifecycle
@@ -22,6 +22,10 @@ Supersedes:
 - [Module inventory — Preserve Claim context and evaluation outcomes distinctly](initial-module-inventory-decisions.md#preserve-claim-context-and-evaluation-outcomes-distinctly)
 - [Observation recording — Record normal view production automatically](initial-observation-recording-decisions.md#record-normal-view-production-automatically)
 - [Repository organization — Keep organization schemes explicit and separate](repository-organization-decisions.md#keep-organization-schemes-explicit-and-separate)
+
+Superseded in part:
+
+- [Retained domain and storage boundaries](#retained-domain-and-storage-boundaries) is replaced in full by [Generalize Lens results and View composition](coordinated-views-and-qualified-results.md#generalize-lens-results-and-view-composition), [Preserve immutable results under bindings and refresh](coordinated-views-and-qualified-results.md#preserve-immutable-results-under-bindings-and-refresh), and [Retain unaffected domain and storage commitments](coordinated-views-and-qualified-results.md#retain-unaffected-domain-and-storage-commitments).
 
 ## Context
 

@@ -1,7 +1,7 @@
 # Coordinate Views while preserving qualified results
 
-Status: in preparation
-Decided: pending human acceptance
+Status: accepted
+Decided: 2026-10-08
 Arising from: human strategy discussion following the product-design revision in commit `c0ed132a7af4c479e21deab69d0d6dfe9330ca7f`, as clarified by commit `337451bd37f91004a14d56149c52b4491bef783a` and the human’s instruction to conform application architecture to the adopted foundation
 Scope: Lens and Projection meaning, Presentation and View composition, state qualification, interface analysis boundaries, and the relationship between product direction and the current implementation subset
 Supersedes:

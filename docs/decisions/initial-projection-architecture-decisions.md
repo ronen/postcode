@@ -10,6 +10,7 @@ Superseded in part:
 - [Isolate storage behind ProgramRecordStore](#isolate-storage-behind-programrecordstore) is replaced by [Retained domain and storage boundaries](transient-analysis-sessions.md#retained-domain-and-storage-boundaries).
 - [Use deterministic logical identity independently of persistence](#use-deterministic-logical-identity-independently-of-persistence) is replaced by [Session as the analysis and reference context](transient-analysis-sessions.md#session-as-the-analysis-and-reference-context), [Stable reference bindings within a session](transient-analysis-sessions.md#stable-reference-bindings-within-a-session).
 - [Make projection and evaluation state first-class records](#make-projection-and-evaluation-state-first-class-records) is replaced by [Immutable information within an accumulating session](transient-analysis-sessions.md#immutable-information-within-an-accumulating-session), [Retained domain and storage boundaries](transient-analysis-sessions.md#retained-domain-and-storage-boundaries).
+- [Separate lens requirements, evaluation, and projection construction](#separate-lens-requirements-evaluation-and-projection-construction) is replaced in full by [Generalize Lens results and View composition](coordinated-views-and-qualified-results.md#generalize-lens-results-and-view-composition) and [Keep evaluation and qualified construction independent of presentation](coordinated-views-and-qualified-results.md#keep-evaluation-and-qualified-construction-independent-of-presentation).
 
 ## Context
 

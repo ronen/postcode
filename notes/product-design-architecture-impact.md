@@ -1,14 +1,15 @@
-# Adoption impact and later Lens preparation
+# Adopted architecture reconciliation: impact and later Lens preparation
 
 Updated: 2026-10-08
 Foundation baseline: `337451bd37f91004a14d56149c52b4491bef783a`
-Proposal coverage: `c934b3e` (agreed observation-provenance deferral following `0bb24fe`).
+Adopted: 2026-10-08
+Decision: [Coordinate Views while preserving qualified results](../docs/decisions/coordinated-views-and-qualified-results.md)
 
-This is review material for the draft package, not a plan or runtime-conformance certification. The assessment is non-permanent supporting material; no proposed canonical file links to it or requires it for interpretation. Evidence comes from the revised product design, governing documents, the preserved [representation audit](../records/audits/2026-10-06-user-model-concept-representations/REPORT.md), and targeted inspection of request dispatch, observation construction and dependency subject selection. No runtime probes or application tests were rerun for this documentation proposal.
+This note describes the final adopted architecture reconciliation and its implementation impact. It is non-governing, non-permanent supporting material, not an implementation plan or runtime-conformance certification. Canonical documents do not depend on it. Evidence comes from the revised product design, governing documents, the preserved [representation audit](../records/audits/2026-10-06-user-model-concept-representations/REPORT.md), and targeted inspection of request dispatch, observation construction and dependency subject selection. Promotion changed documentation only; it did not change runtime behavior or perform a new runtime conformance audit.
 
-## Conceptual changes
+## Adopted conceptual changes
 
-| Change | Adoption effect |
+| Change | Adopted meaning or requirement |
 | --- | --- |
 | One Presentation/View may coordinate several Projections | Removes universal single-input wording; preserves every input's independent identity, state basis, qualification and population. A coordinated View is distinguished by shared presentation/interaction relationships, not a shared container. |
 | One Lens may use several analyses or qualified contributions | Removes a special composite-Lens category and any one-to-one execution assumption. It does not impose component records or a Lens registry. |
@@ -17,17 +18,17 @@ This is review material for the draft package, not a plan or runtime-conformance
 | Subject and changes | Keeps Subject open-ended. Investigating a module across captured states differs from investigating an identified qualified change; states and evidence remain explicit. No change entity or implementation is introduced. |
 | Stable presentation | Paging and reformatting preserve the selected answer. Refresh must be apparent and consequential answer/selection/qualification changes disclosed. Retained interpretation selections are distinct from captured program states; no interpretation-history binding policy is introduced. |
 | Selection inspectability | Exposes actual choices, criteria used at the time and consequential omissions; later defaults cannot reconstruct the explanation. No general planner or separate plan artifact is required. |
-| Observation recording | Records presented Projections, composition and captured-state associations; makes composition and basis changes visible and recorded. This is independent of workspace persistence. |
+| Observation recording | Requires recording presented Projections, composition and captured-state associations, with composition and basis changes visible and recorded. This is independent of workspace persistence. |
 | Counts and aggregates | Retains the accepted full-supplied-population permission, including “87 dependencies; showing 20”. New program claims require analysis. Exact arithmetic does not erase partiality or establish coverage; the presentational examples are not an exhaustive whitelist of UI computation. |
 | Optional summary entry | A summary View may be suggested for an unspecified need, using coordination, synthesis or both. There is no required summary-first default and no requirement for a summary Lens. |
 
-The earlier draft incorrectly proposed restoring a mandatory summary default and amending the foundation. Those changes are withdrawn. The current foundation intentionally permits, rather than requires, summary suggestions and now explicitly describes supplied-population counts, captured states, following/pinned input policies and captured-result versus repeatable-request references. The draft conforms to those choices without requesting foundation revisions.
+The adopted architecture conforms to the existing foundation without amending it. Summary suggestions remain optional; supplied-population counts, captured states, following/pinned input policies and captured-result versus repeatable-request references retain the meanings established by the product design.
 
 ## Implementation limitations permitted at adoption
 
 The CLI remains a transient single-project, single-state implementation with family-specific, single-top-level-Projection View descriptors. Existing embedded module bases and associated-inspection records remain legitimate; they are not evidence of arbitrary multi-Projection View support. The eager evaluation/construction strategy, interface-independent qualified content, immutable records and existing identity formulas remain supported.
 
-There is no general multi-state analysis, multi-Projection GUI, live refresh, persisted workspace, or planner commitment. Detected input changes still invalidate the session. The no-argument `modules` default is compatible with optional summary suggestions. Module-only interpretation is a limited capability, not a definition of every summary View or a failure to implement a mandatory entry default. Descriptive architecture and CLI revisions explain these limits without claiming changed behavior; `STATUS.md` need not change because no externally meaningful capability changes in this proposal.
+There is no general multi-state analysis, multi-Projection GUI, live refresh, persisted workspace, or planner commitment. Detected input changes still invalidate the session. The no-argument `modules` default is compatible with optional summary suggestions. Module-only interpretation is a limited capability, not a definition of every summary View or a failure to implement a mandatory entry default. The [implemented architecture](../docs/architecture/README.md#implemented-subset-of-the-product-model) and [CLI reference](../docs/cli-reference.md#product-model-and-current-cli-scope) explain these limits. `STATUS.md` is unchanged because adoption introduces no runtime capability.
 
 GUI plans must identify missing core capabilities needed for qualified results, without requiring all of them to be built first. Coordinating several existing Projections from one Session does not inherently require multi-state support. Additional captures do require a deliberate identity, namespace, reuse and session-scope policy: separate Sessions per capture and an extended multi-capture Session remain different possibilities. Reusing a key is not evidence of semantic correspondence, and required attribution does not prescribe new state fields or keys in every family.
 
@@ -35,7 +36,7 @@ No current source layout, type, schema, method version or migration is selected.
 
 ## Known conformance and correctness issues
 
-| Evidence | Current implication | Treatment in this package |
+| Evidence | Current implication | Adopted treatment |
 | --- | --- | --- |
 | Audit F1; `src/lib/observations.ts` retains a fallback navigation description | Follow-up and some unsupported requests are described as inventory. This misstates current requests. | Existing correction candidate remains open. It need not wait for Lens redesign, a GUI or multi-state support. |
 | Audit F2; dependency selection still calls module inspection | Bound unsupported group references can be reported as unknown. Applicability and reference existence are conflated. | Existing correction candidate remains open; later scope must settle accurate refusal vocabulary. |
@@ -47,7 +48,7 @@ No current source layout, type, schema, method version or migration is selected.
 
 These findings survive the conceptual revision to the extent described. The preserved audit evaluated the earlier product model; its broader prescriptions are not newly accepted requirements. Targeted source inspection supports continued relevance of F1/F2/F4 and observation field conflation; it is not a fresh comprehensive audit. The audit's statement that the Projection layer needs no change is bounded to its baseline and cannot rule out later multi-state or multi-input work.
 
-Deferring implementation here does not waive accurate current observations, reference status or population claims. The decision records the known issues, the draft backlog preserves existing candidates and adds the captured-basis observation candidate, and the CLI scope wording exposes the current reselection limitation. Both the observation gap's deferral and F6's deferral are agreed. Recorded output remains evidence of what PostCode displayed, but observations do not generally establish the captured program basis supporting that output. Remediation is outside the authorized proposal scope.
+Deferring implementation here does not waive accurate current observations, reference status or population claims. The decision records the known issues, the [backlog](../docs/backlog.md) preserves existing candidates and includes the [captured-basis observation correction](../docs/backlog.md#preserve-captured-basis-attribution-in-observations), and the CLI scope wording exposes the current reselection limitation. Both the observation gap's deferral and F6's deferral are agreed. Recorded output remains evidence of what PostCode displayed, but observations do not generally establish the captured program basis supporting that output. Adoption authorizes no implementation. The limitation and required correction milestone are also visible in the [CLI observation reference](../docs/cli-reference.md#source-detail-and-observations) and [README](../README.md#observability).
 
 ## Bounded source evidence for the observation gap
 
@@ -87,8 +88,10 @@ Do not import the note's suggested implementation scope (F1–F4 together), one-
 
 These are follow-up implementation choices, with the observation correction required before the specified reliance on newly collected observations. The human has explicitly agreed its deferral for architectural adoption and interface exploration. F6 remains another current gap with its agreed deferral unchanged. Neither deferral establishes conformance or removes the existing obligations. No consequential adoption choice remains unresolved; the conceptual model remains compatible with the foundation and immutable results.
 
-## Review and verification
+## Promotion and verification
 
-Review the [decision](../drafts/product-design-architecture/decisions/coordinated-views-and-qualified-results.md), proposed concepts and constraints against the [adopted product design](../foundation/product-design.md). The [review guide](product-design-architecture-review.md) lists the ten proposed canonical files. The decision still supersedes precisely three whole units; metadata files preserve forward/backward mappings and historical bodies. Its retained-boundaries section carries the replaced session heading’s unaffected domain/storage text.
+The human accepted the reconciliation on 2026-10-08. The [decision](../docs/decisions/coordinated-views-and-qualified-results.md) is accepted; the [core concepts](../docs/core-concepts.md), [architectural constraints](../docs/architectural-constraints.md), [implemented architecture](../docs/architecture/README.md), [CLI reference](../docs/cli-reference.md) and [backlog](../docs/backlog.md) incorporate the approved revisions. The [decision index](../docs/decisions/README.md) and forward/backward supersession metadata identify precisely the three replaced units. Historical decision bodies and their earlier mappings remain intact; unaffected domain/storage commitments are carried forward.
 
-The re-review corrections retain ten canonical-shaped proposal files, with no links from them to notes or disposable material. Verification passed for this revision: proposed destinations and local links/anchors resolve, carried-forward domain/storage provisions match the preserved decision, whitespace is clean, and the resolved observation-provenance review annotation has been removed. Supersession metadata and the three-unit replacement scope are unchanged. Foundation, canonical documentation, application code, human-maintained instructions, historical records and the original Lens note remain unchanged. These two reconciliation notes are refreshed at the human's direction. No application tests or fresh runtime audit are required for the documentation-only edits; targeted source inspection supports the observation finding. The package is ready for final review or acceptance and remains unpromoted; no implementation is authorized.
+The promoted draft package and its review guide have been removed. This impact note remains as supporting context with canonical links. No canonical document depends on notes or disposable review material. Foundation, application code, human-maintained development instructions, concluded records and the exploratory Lens representation note remain unchanged.
+
+Promotion verification passed: 312 local links and anchors in the changed/new documents resolve, including the new observation-backlog anchor; 24 inbound references to replaced units remain valid through preserved headings and supersession metadata. Promoted units match the approved content, and historical bodies, original decision dates, earlier mappings and unaffected domain/storage commitments are preserved. No links remain to the removed package or review guide; canonical documents have no dependencies on notes or disposable review material. Whitespace and promotion scope checks passed. No application tests are required for this documentation-only adoption. The agreed F6 and observation-provenance deferrals remain in force, with no implementation authorized.

@@ -59,7 +59,7 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 ## Accepted decisions
 
 - [Separate qualified Projection construction from presentation shaping](qualified-projection-construction.md)
-- [Keep views grounded in core projections](keep-views-grounded-in-core-projections.md)
+- [Coordinate Views while preserving qualified results](coordinated-views-and-qualified-results.md)
 - [Hosted authentication and billing routes](hosted-authentication-and-billing.md)
 - [Private investigator reference transport](investigator-reference-transport.md)
 
@@ -68,7 +68,7 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 - [Investigator execution and evidence access](investigator-execution-and-evidence-access.md)
 - [Facets for subjects](facets-for-subjects.md)
 - [Reference lifetime disclosure](reference-lifetime-disclosure.md)
-- [Transient analysis sessions](transient-analysis-sessions.md)
+- [Transient analysis sessions](transient-analysis-sessions.md) — partially superseded; see the record’s heading mappings.
 - [Initial core-concepts decisions](initial-core-concepts-decisions.md) — partially superseded; see the record’s heading mappings.
 - [Identity, evidence, and observation constraints](adopt-identity-evidence-and-observation-constraints.md) — partially superseded; see the record’s heading mappings.
 - [Qualification and evaluation constraints](adopt-qualification-and-evaluation-constraints.md)

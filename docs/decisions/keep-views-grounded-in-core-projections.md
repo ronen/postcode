@@ -1,9 +1,11 @@
 # Keep views grounded in core projections
 
-Status: accepted
+Status: superseded
 Decided: 2026-10-05
 Arising from: human discussion before planning the first GUI slice
 Scope: PostCode interfaces presenting information about an investigated program
+
+Superseded by: [Keep evaluation and qualified construction independent of presentation](coordinated-views-and-qualified-results.md#keep-evaluation-and-qualified-construction-independent-of-presentation) and [Coordinate supplied information without deriving new program claims](coordinated-views-and-qualified-results.md#coordinate-supplied-information-without-deriving-new-program-claims).
 
 ## Context
 
