@@ -1,7 +1,9 @@
 # Product-design architecture reconciliation: review guide
 
-Updated: 2026-10-07
-Baseline: `337451bd37f91004a14d56149c52b4491bef783a`
+Updated: 2026-10-08
+Foundation baseline: `337451bd37f91004a14d56149c52b4491bef783a`
+
+Proposal coverage: `0bb24fe` (re-review corrections following `9deb123`).
 
 This is non-governing review material, not a proposed canonical document. The draft adapts application architecture to the adopted [product design](../foundation/product-design.md); no foundation changes are proposed. The package remains unpromoted and awaits human-arranged review. It authorizes no implementation.
 
@@ -28,7 +30,21 @@ A Lens may use several contributions without a separate composite-Lens category.
 
 Requests designate inputs and binding policies. Following resolves a changing input again; pinned requests continue using the same captured program state. A Projection identifies its captured basis and retains its qualified result. References distinguish that result from a request repeatable under current bindings. A summary View may be suggested when no more specific need is expressed; it is not a mandatory default and need not depend on a summary Lens.
 
-The updated product design supports these changes without a foundation amendment. No blocking architectural difficulty has been identified. Later implementation choices remain explicit in the decision and backlog rather than being silently accepted in this proposal. The CLI's current limited subset remains supported.
+Subject stays open-ended. A question about what changed in a module investigates the module across separately identified captured states; a question about why an identified dependency change occurred can investigate that qualified change. Neither hides state designation in the subject or introduces a change entity kind.
+
+Presentation-only actions, including paging and reformatting, preserve the selected answer. An interaction that refreshes must make that behavior apparent and disclose consequential changes in answer, selection or qualifications. Retained interpretations and correction/association selections are distinct from captured program states and acquire no following/pinned policies. F6 is an acknowledged current human-facing continuity/disclosure limitation with explicitly deferred remediation. Exact retained-Projection presentation is the implementation direction; disclosed reselection may be an interim treatment but is not equivalent continuity.
+
+PostCode must expose the selections actually made and their criteria at the time, without reconstructing explanations from changed defaults. This does not require a general planner or stored plan artifact. Output-form or length choices remain presentational only when they change rendering or abbreviation. GUI plans identify missing core capabilities instead of assigning new program derivation to View code; those capabilities need not all be implemented first.
+
+Observations must record the actual Projections and their View composition, preserving their associations with captured states and recording composition/basis changes. Recording does not itself require workspace persistence. A newly confirmed current observation-provenance gap is distinguished from future multi-state support below.
+
+The foundation remains unchanged. Captured-basis attribution does not prescribe a state field or new key in every family. Coordinating several Projections from one existing Session does not inherently require multi-state support. Legitimate component use requires attributable meaning, method, basis and qualification, not a universal direct pointer. The choice between a qualified Projection selection and View coordination follows requested meaning; shared display alone requires no outer Projection.
+
+## Open adoption choice
+
+Ordinary module observations retain the presented View but omit its retained analysis-input basis. Source-detail evidence can include item digests without establishing complete captured-state attribution. This is a current recording gap, separate from the core's retained qualified support and from F6. The proposed decision's [observation-provenance section](../drafts/product-design-architecture/decisions/coordinated-views-and-qualified-results.md#current-observation-provenance-gap) marks one consequential choice: accept the package with this gap explicitly deferred, or require a separately authorized bounded correction before acceptance. Adding a backlog candidate does not settle that choice.
+
+Subject and F6 semantics are settled; no further choice about them is pending. Implementation designs remain scoped to future capabilities, and no implementation is authorized by this package.
 
 ## Later promotion
 
