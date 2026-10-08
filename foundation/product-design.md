@@ -495,11 +495,25 @@ The important rule is:
 
 Text is a first-class presentation. A view need not be graphical, and its underlying projections need not be mechanically derived, provided the provenance and epistemological status of their claims remain visible.
 
+Resolving a request may depend on qualified information that PostCode has not yet established. Query planning may request and consume that information, but must not itself derive the population used for subject resolution or other program claims. The information and its qualifications must remain attributable to the resulting selection, ambiguity, or inability to resolve the request. Failure to resolve a subject must not conceal established candidates, incomplete coverage, unavailable analysis, or other consequential outcomes.
+
+#### 3.1.1 System-Initiated Investigation
+
+Analysis that PostCode initiates to satisfy an explicit request from a human or external agent—including prerequisite work not separately requested—is part of that request and is governed by its resource constraints and the choices described in [Resource-Bounded Analysis](#2151-resource-bounded-analysis). System-initiated investigation is work that PostCode undertakes without such an initiating request.
+
+PostCode may initiate investigations when doing so facilitates orientation, a suggested initial view, navigation, or anticipated later interaction. For example, it might request qualified analysis that establishes a population of modules whose names can subsequently be used to resolve a designation. System-initiated investigation uses the same analysis, provenance, and qualification mechanisms as explicitly requested work, but need not create a visible view.
+
+System-initiated investigation may proceed only within resource policies the human has authorized for such work. Work that would exceed those limits or materially delay an explicit request remains deferred unless the human authorizes it. Subject to those constraints, whether the work is performed eagerly, lazily, during navigation, or in response to a later need is an implementation decision.
+
+When system-initiated work influences what PostCode shows, selects, suggests, or reports, its trigger, captured basis, relevant result, and qualifications must be inspectable from that outcome. Reusing an earlier result does not make it current merely because its input has a following binding.
+
 ### 3.2 Summary as Initial View and Recursive Navigation
 
 When the human has not expressed a more specific information need, PostCode may suggest a summary view as an initial view for the subject:
 
 > **Summarize the subject.**
+
+When PostCode constructs such a suggested view without an explicit request, it is one application of system-initiated investigation.
 
 PostCode constructs an appropriate summary view by selecting one or more projections and a presentation. For an unfamiliar subject, the view can provide an overview of its structure, behavior, and role; for a familiar subject, it can provide efficient access to details relevant to the current investigation. It may satisfy the human's current purpose or help them select a further lens or reach a further subject of investigation.
 
@@ -706,6 +720,7 @@ The artifact should describe at least:
 - the presentation and presentation parameter values underlying each view;
 - the subjects and projections underlying each view, including each projection's lens and lens parameter values;
 - each projection's content, provenance, epistemological status, and limitations;
+- system-initiated results that materially influenced current selections or suggestions, including references to their captured basis and qualifications;
 - source entities or locations that allow an agent to reconnect projected concepts to the implementation;
 - relationships among views, including derivation, placement, live dependencies, and investigation roots.
 
@@ -767,7 +782,7 @@ This does not preclude separate operational telemetry, diagnostics, or product a
 
 #### 3.8.1 Automatic Event Capture
 
-PostCode should automatically record relevant interaction events, including prompts and prose requests submitted to PostCode; prompts sent to coding agents, when available; selected lenses, lens parameter values, projections and their composition within views, presentations, presentation parameter values, and resulting views; navigation; source escape-hatch use; unavailable, refused, or failed projection requests; analysis applicability and availability, execution state, and result materialization; resource estimates, budgets or thresholds, user choices, and actual resource use where available; workspace changes; and interactions with coding-agent context.
+PostCode should automatically record relevant interaction events, including prompts and prose requests submitted to PostCode; prompts sent to coding agents, when available; system-initiated investigations and their triggering context; selected lenses, lens parameter values, projections and their composition within views, presentations, presentation parameter values, and resulting views; navigation; source escape-hatch use; unavailable, refused, or failed projection requests; analysis applicability and availability, execution state, and result materialization; resource estimates, budgets or thresholds, user choices, and actual resource use where available; workspace changes; and interactions with coding-agent context.
 
 #### 3.8.2 Contemporaneous Subjective Observations
 
@@ -783,6 +798,7 @@ Each recorded event should include provenance and context metadata sufficient to
 - the version of PostCode that produced it;
 - the repository state or states relevant to the event, including their Git commits and any relevant working-tree changes, and their association with the projections involved;
 - a session identifier, where applicable, allowing related events to be grouped without assuming that a session corresponds to a single investigation or task;
+- whether the work was initiated by a human, an external agent, or PostCode, including the trigger for system-initiated work;
 - the current operational task and relevant contextual information, where available;
 - whether the event arose from genuine use of PostCode for software investigation or development or from testing or debugging PostCode itself.
 
