@@ -11,3 +11,9 @@ The product may suggest a summary View when the human has not expressed a more s
 Each produced Projection retains its selected information and qualification. Repeating a command requests a selection again: changes to retained interpretation or correction/association selections can yield a different answer, including when requesting another page or format. Those supporting selections are distinct from captured program states. Input changes follow the separate [session invalidation contract](#input-stability-and-retained-work), not a live-refresh policy.
 
 Current commands cannot explicitly redisplay a particular retained Projection. They preserve earlier stored results but cannot guarantee that successive pages or formats present the same selected answer. Separate commands and changed Projection IDs in JSON do not provide sufficient human-facing refresh disclosure for paging. This known continuity/disclosure limitation (F6) remains deferred for [separately scoped remediation](backlog.md#allow-a-view-to-be-requested-for-an-existing-projection).
+
+## Addition to Source detail and observations
+
+Insert after the paragraph ending “read historical batches, migrate them, scavenge staging residue or prescribe retention.”:
+
+Recorded output remains evidence of what PostCode displayed, but observations do not yet generally identify the captured program basis supporting it. The [bounded provenance correction](backlog.md#preserve-captured-basis-attribution-in-observations) must precede reliance on newly collected observations for assessments requiring attribution to a particular program state.
