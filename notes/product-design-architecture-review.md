@@ -3,7 +3,7 @@
 Updated: 2026-10-08
 Foundation baseline: `337451bd37f91004a14d56149c52b4491bef783a`
 
-Proposal coverage: `0bb24fe` (re-review corrections following `9deb123`).
+Proposal coverage: `c934b3e` (agreed observation-provenance deferral following `0bb24fe`).
 
 This is non-governing review material, not a proposed canonical document. The draft adapts application architecture to the adopted [product design](../foundation/product-design.md); no foundation changes are proposed. The package remains unpromoted and awaits human-arranged review. It authorizes no implementation.
 
@@ -40,11 +40,15 @@ Observations must record the actual Projections and their View composition, pres
 
 The foundation remains unchanged. Captured-basis attribution does not prescribe a state field or new key in every family. Coordinating several Projections from one existing Session does not inherently require multi-state support. Legitimate component use requires attributable meaning, method, basis and qualification, not a universal direct pointer. The choice between a qualified Projection selection and View coordination follows requested meaning; shared display alone requires no outer Projection.
 
-## Open adoption choice
+## Agreed observation-provenance deferral
 
-Ordinary module observations retain the presented View but omit its retained analysis-input basis. Source-detail evidence can include item digests without establishing complete captured-state attribution. This is a current recording gap, separate from the core's retained qualified support and from F6. The proposed decision's [observation-provenance section](../drafts/product-design-architecture/decisions/coordinated-views-and-qualified-results.md#current-observation-provenance-gap) marks one consequential choice: accept the package with this gap explicitly deferred, or require a separately authorized bounded correction before acceptance. Adding a backlog candidate does not settle that choice.
+Ordinary module observations retain the presented View but omit its retained analysis-input basis. Source-detail evidence can include item digests without establishing complete captured-state attribution. This is a current limitation relevant to existing observation obligations, separate from the core's retained qualified support and from F6. Recorded output remains evidence of what PostCode displayed, but observations do not generally establish the captured program basis supporting that output.
 
-Subject and F6 semantics are settled; no further choice about them is pending. Implementation designs remain scoped to future capabilities, and no implementation is authorized by this package.
+The proposed decision's [observation-provenance section](../drafts/product-design-architecture/decisions/coordinated-views-and-qualified-results.md#current-observation-provenance-gap) explicitly defers correction. It need not precede architectural acceptance or interface exploration. The bounded correction must precede reliance on newly collected observations for assessments requiring attribution to a particular program state; the backlog candidate and conformance links remain.
+
+Identifying the captured basis does not require retaining everything needed to reproduce an investigation. The follow-up must not silently become a durable analysis store or repository archive, and neither a commit hash nor references into a discarded store can be assumed sufficient. Representation and any necessary bounded retention remain later design choices.
+
+Subject and F6 decisions and their implementation deferrals remain unchanged. No consequential adoption choice is unresolved; the package is ready for final review or acceptance. It remains unpromoted and authorizes no implementation.
 
 ## Later promotion
 
