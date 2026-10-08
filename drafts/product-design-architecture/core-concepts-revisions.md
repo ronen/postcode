@@ -1,6 +1,6 @@
 # Proposed revisions to docs/core-concepts.md
 
-Replace the complete Lens, Projection, and Presentation and View definitions with the units below. Add the grouped definition at the stated insertion point and apply the localized revisions to Subject, Claim context and Expansion. Other definitions remain unchanged.
+Replace the complete Lens, Projection, and Presentation and View definitions with the units below. Add the grouped definition at the stated insertion point and apply the localized revisions to Subject, Session, Claim context and Expansion. Other definitions remain unchanged.
 
 ## Replacement paragraph and clarification in Subject
 
@@ -73,4 +73,10 @@ A **program input** is a designated source of program information, such as a rep
 
 A **captured program state** is the program information captured from a designated input as the basis for a result, with attributable scope, capture timing and limitations. It need not be an exhaustive or atomic snapshot. An input designation or Session identifier alone is not that captured basis.
 
-A **Projection request** designates program inputs and applicable bindings, a subject, a Lens and Lens parameter values. Execution resolves the inputs to captured states; the resulting Projection identifies the basis actually used. Repeating the request is distinct from presenting an exact retained Projection. These distinctions prescribe neither a storage schema nor a planner. A Session supplies analysis and reference context, not a following or pinned input binding.
+A **Projection request** designates program inputs and applicable bindings, a subject, a Lens and Lens parameter values. Execution resolves the inputs to captured states; the resulting [Projection](#projection) identifies the basis actually used. Repeating the request is distinct from presenting an exact retained Projection. These distinctions prescribe neither a storage schema nor a planner. A Session supplies analysis and reference context, not a following or pinned input binding.
+
+## Replacement paragraph in Session
+
+Retain the term-level provenance and all later paragraphs. Replace the first definition paragraph with:
+
+A **Session** is a continuing context for investigation, retaining subject-reference bindings, captured evidence, analysis results, evaluation outcomes, and projections. Its accumulated information can grow as requests require additional analysis or inputs. A session is not an immutable description of a fixed, completely observed input set, a workspace of managed views, or a following binding for changing program inputs. [[Input bindings and Session context](decisions/coordinated-views-and-qualified-results.md#define-request-inputs-and-captured-states)]

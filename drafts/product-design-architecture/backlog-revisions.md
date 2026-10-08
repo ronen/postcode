@@ -26,6 +26,12 @@ Append:
 
 Assess nonempty multi-Projection input collections, contribution/state attribution, exact correspondence guarantees, and the distinction between coordinating one View and placing independent Views together. Decide how composition changes are recorded and how continuity relates to identity before implementing a managed View lifecycle. Preserve population counts and qualification through arrangement; do not hide new analysis inside cross-Projection coordination. Revisit the audit’s presentation-context question: available space, interaction state, reference lifetime and per-input usage/reporting need explicit treatment rather than inheriting current CLI identity formulas. Decide which input orders or roles are meaningful, which are presentation choices, and which do not affect identity. Preserve meaningful before/after roles without imposing ordered identity on every collection. No multi-Projection GUI implementation is authorized by the conceptual decision.
 
+## Replace the last paragraph of the existing “Allow a View to be requested for an existing Projection” entry
+
+Replace the paragraph beginning “Consider a request form that names a retained Projection” with:
+
+The intended implementation direction is a request form that names an exact retained Projection together with new presentation inputs, so that paging and reformatting keep the same answer. Keep exact-result redisplay distinct from repeating a request with pinned inputs: pinning selects the same captured program state, not necessarily the same retained analysis result. Preserve this distinction in agent-context references and future interface wording.
+
 ## Add to “Allow a View to be requested for an existing Projection”
 
 Append:
@@ -34,11 +40,21 @@ F6 is a current human-facing continuity/disclosure limitation, with remediation 
 
 Separate presenting a captured result from repeating a request under its input binding: following resolves a changing input again, while pinned continues to use the same captured program state. Retained interpretation and correction/association selections also support the answer, but are not thereby captured program states and acquire no following or pinned policies. Preserve explicit earlier results and reference bindings. Remediation does not depend on live refresh, multi-state analysis or GUI support and must precede any claim that current paging preserves one selected answer. Any new request or schema requires its own compatibility and identity decision; no implementation or session-lifecycle change is authorized here.
 
-## Replace the last paragraph of the existing “Allow a View to be requested for an existing Projection” entry
+## Add this complete candidate
 
-Replace the paragraph beginning “Consider a request form that names a retained Projection” (before appending the addition above) with:
+## Preserve captured-basis attribution in observations
 
-The intended implementation direction is a request form that names an exact retained Projection together with new presentation inputs, so that paging and reformatting keep the same answer. Keep exact-result redisplay distinct from repeating a request with pinned inputs: pinning selects the same captured program state, not necessarily the same retained analysis result. Preserve this distinction in agent-context references and future interface wording.
+Added: 2026-10-08
+Origin: [Current observation provenance gap](decisions/coordinated-views-and-qualified-results.md#current-observation-provenance-gap)
+Area: observation provenance and qualified result attribution
+
+Current observation batches do not generally preserve an exported association between the presented Projection and its captured program-state basis. Ordinary module inventory is a confirmed case: the batch retains a conceptual View and session/path/method context, but not the retained analysis-input support. Session-local identifiers and configured paths do not establish that basis after the ephemeral store is gone. Optional source-detail evidence digests describe disclosed items, not a complete state association. This is a current recording gap, independent of future multi-state or GUI capability.
+
+Assess and correct the bounded observation export path so that the recorded result remains attributable to the basis actually used, including capture limitations and the repository-state provenance required by the product design. Do not reconstruct provenance by reading a later working tree. Determine what can be supplied from retained support, which references remain resolvable after session closure, and which additional capture or retention information is necessary. Choose schema, disclosure and compatibility treatment from that assessment; do not prescribe a state field in every record family or imply that a commit alone captures relevant working-tree inputs.
+
+Include associated-inspection attribution in the assessment: its exported descriptor uses the composite selection ID while retaining mechanical descriptor fields, and omits the explicit mechanical support reference retained in core. Check whether the observation adequately describes the actual qualified answer and its support. A composed Projection does not inherently become a View of two independent Projections; preserve the accepted composition contract without requiring universal direct component pointers.
+
+Resolve urgency and any adoption-time remediation deferral with the human before accepting this package. The decision records the open choice. Until corrected, do not rely on current observations as complete captured-basis provenance. Keep this work separate from F1 request-description fixes unless an approved implementation scope deliberately combines them. This candidate authorizes no implementation or rewriting of historical observations.
 
 ## Add this complete candidate
 
