@@ -8,11 +8,13 @@ Follow these guidelines unless a concrete conflict or circumstance makes a depar
 
 This document may be changed only through separate human-directed process maintenance. Agents performing product planning or implementation may report or propose improvements, but must not modify it as part of that work.
 
+<a id="repository-organization"></a>
 ## Repository organization
 
 - Prefer logical internal boundaries under `src/lib/` until there is evidence that a component needs an independently versioned package boundary.
 - Create directories when they receive meaningful content; do not use placeholder files to materialize a speculative structure.
 
+<a id="dependencies-and-boundaries"></a>
 ## Dependencies and boundaries
 
 - Apply the single responsibility principle: keep each module or component focused on a coherent responsibility, and separate responsibilities that change for different reasons. Add new operations to an existing module or component when they fit its responsibility; do not split code merely to make units smaller. When introducing a boundary, identify the responsibility or dependency it isolates and prefer the simplest boundary sufficient for that purpose. Avoid coupling unrelated responsibilities for local convenience or introducing abstractions for hypothetical future needs.
@@ -24,15 +26,18 @@ This document may be changed only through separate human-directed process mainte
 - Before adding helpers or policy rules, look for suitable implementations both in the codebase and in libraries already used by the project. Prefer using them when their behavior fits and doing so respects the intended dependency boundaries. Share logic that expresses the same responsibility and should change together, especially classifications and validation rules. Establish semantic equivalence before consolidating similar code; preserve meaningful differences in behavior and avoid introducing inappropriate coupling merely to remove duplication.
 - Before implementing substantial generic functionality, check whether a suitable established library already exists. Prefer using one when it meaningfully reduces implementation, testing, or maintenance burden. Assess its fitness, maturity, maintenance posture, license, and integration cost. Avoid adding new dependencies solely for trivial functionality, and keep external assumptions from unnecessarily shaping the application’s core concepts.
 
+<a id="state-and-resource-lifetimes"></a>
 ## State and resource lifetimes
 
 - When maintaining multiple representations of the same state, identify which is authoritative and how the others remain consistent. Prefer deriving redundant values when practical. If maintained copies or caches are necessary, make their update and invalidation rules explicit where applicable. Distinguish these from intentional snapshots that preserve an earlier state and must not be updated to match later changes.
 - Make ownership and cleanup responsibilities explicit for resources that require release or termination. Release resources when their intended lifetime ends, accounting for failure, cancellation, and partial initialization as well as normal completion. Keep acquisition and cleanup structurally connected when practical; an intentional transfer of ownership must also transfer responsibility for cleanup.
 
+<a id="processing-cost"></a>
 ## Processing cost
 
 - Consider how processing cost grows with input size, including work repeated across calls. Unless the total cost is known to remain negligible given input size, execution frequency, and cost per operation, avoid unnecessary repeated work when a straightforward change would reduce the cost without materially complicating the design—for example, replacing repeated full-collection scans with a lookup or index. Use representative measurements to establish performance priorities and justify more complex optimizations.
 
+<a id="tests-and-fixtures"></a>
 ## Tests and fixtures
 
 - Focus tests on public behavior and important boundaries, choosing cases that distinguish correct behavior from plausible defects. Derive expected outcomes from requirements or independently understood examples rather than reproducing the implementation's assumptions. Test internal details when they provide useful coverage beyond those behavior checks.
@@ -40,10 +45,12 @@ This document may be changed only through separate human-directed process mainte
 - Before creating fixture or test infrastructure, look for existing assets that express the same concept.
 - Identify sources of nondeterminism, such as clocks, randomness, ordering, and concurrency. Control them in tests where needed for reproducible checks, while preserving necessary production behavior and testing any guarantees about that behavior.
 
+<a id="output-safety"></a>
 ## Output safety
 
 - Treat repository-derived text, configuration values, invocation input, and other externally supplied strings as untrusted at terminal-output boundaries. Render terminal controls visibly or otherwise neutralize their effects without changing the underlying stored values.
 
+<a id="implementation-anomalies"></a>
 ## Implementation anomalies
 
 - When work reveals code that conflicts with these guidelines, assess its significance. Consider correcting it when the correction supports the authorized task and introduces no separate design decision or material scope expansion. Otherwise, report material concerns through the workflow's [unexpected-findings process](workflow.md#unexpected-findings).

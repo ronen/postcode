@@ -10,6 +10,7 @@ Exploration, discussion, and preliminary planning do not require a task record. 
 
 Planning must not be treated as authorization to implement. Unresolved choices should remain in drafts or discussion until the human approves a plan or accepts and records a decision.
 
+<a id="human-directed-process-maintenance"></a>
 ### 1.2 Human-directed process maintenance
 
 Human-directed process maintenance reviews or changes the repository's development instructions under `dev/`. It is initiated and guided by the human, conducted separately from product planning and implementation, and does not require an implementation task record.
@@ -76,6 +77,7 @@ Pre-existing or trivial inconsistencies do not all require investigation. Releva
 
 The responsibilities below supplement the plans, task records, review records, validation records, and other artifacts prescribed by their respective workflows. Use the [documentation guide](../docs/README.md) to locate the appropriate repository documentation.
 
+<a id="governing-architecture-and-decisions"></a>
 ### Governing architecture and decisions
 
 [`docs/core-concepts.md`](../docs/core-concepts.md) is the governing current statement of cross-cutting architectural concepts. A semantic change requires explicit human agreement and a corresponding accepted decision record; update the concepts document and decision log together. Typographical, link, and other editorial corrections that do not change meaning do not require a decision. If classification is unclear, treat the change as semantic and ask the human. If the core concepts and an accepted decision disagree, report the inconsistency rather than silently choosing or reconciling them.
@@ -84,6 +86,7 @@ The responsibilities below supplement the plans, task records, review records, v
 
 Record a decision under [`docs/decisions/`](../docs/decisions/) when a choice has meaningful, durable consequences; constrains later work; or is likely to be repeatedly reconsidered. Routine implementation details do not require decision records.
 
+<a id="references-in-historical-records"></a>
 ### References in historical records
 
 For records whose lifecycle preserves their historical content (see the [examples in the process conventions](process-conventions.md#historical-records)), preserve links as recorded. Interpret historical references against the explicitly identified baseline where applicable, or otherwise the historical context in which the relevant text was recorded; a later metadata update does not change that context. Later changes to link destinations do not by themselves make the record defective or authorize retrospective link repairs.
@@ -92,12 +95,14 @@ Follow the applicable lifecycle and its human-authorization requirements for cor
 
 Historical context does not remove an accepted decision's continuing authority. Treat a conflict with current governing material, or uncertainty about a still-binding decision caused by a changed reference, as an [unexpected finding](#unexpected-findings). When changing a governing document, inspect incoming references, assess those affected by the change, and report to the human any historical record that may need a separate clarification to remain intelligible or to make its continuing authority clear.
 
+<a id="descriptive-architecture"></a>
 ### Descriptive architecture
 
 Store architecture documentation under [`docs/architecture/`](../docs/architecture/). Architecture documentation is selective and descriptive, not a source of prescriptive requirements. Include information when it defines a major responsibility or boundary; explains important dependency direction or data flow; describes a process, storage, deployment, trust, or security boundary; records a system-wide invariant or operational constraint; or helps orient work across multiple components or tasks. It should be durable, cross-cutting, and necessary to understand the system beyond what the implementation directly reveals.
 
 Do not turn architecture documentation into a file, class, function, or API inventory. Exclude copied interfaces, details readily discoverable from nearby source, transient implementation mechanics, speculative future structure, and rationale already preserved in a decision record. Begin with [`docs/architecture/README.md`](../docs/architecture/README.md) as the single overview, and add further documents only when a stable area needs its own conceptual explanation. Link descriptions to the accepted decisions that govern them. If the implementation, architecture documentation, and a governing decision disagree, treat that divergence as an unexpected finding rather than silently changing the decision or presenting the description as normative.
 
+<a id="foundation-and-workflow"></a>
 ### Foundation and workflow
 
 Do not modify governing documents under [`foundation/`](../foundation/) unless the human explicitly authorizes a foundation revision. Authorization for implementation that conflicts with the foundation is not authorization to revise it; report the conflict and seek direction.
