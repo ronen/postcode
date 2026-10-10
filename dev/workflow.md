@@ -85,7 +85,11 @@ Record a decision under [`docs/decisions/`](../docs/decisions/) when a choice ha
 
 ### References in historical records
 
-Links in historical records are preserved as recorded and interpreted against the repository revision to which the record pertains. Later changes to their destinations do not require retrospective link updates. Material corrections or changes of governing authority are recorded separately, with an explicit reference to the affected record. When changing a governing document, inspect incoming references and assess whether any historical record needs a separate clarification to remain intelligible or to make its continuing authority clear.
+For records whose lifecycle preserves their historical content—such as accepted decisions, concluded task records, and preserved review findings—preserve links as recorded. Interpret historical references against the explicitly identified baseline where applicable, or otherwise the historical context in which the relevant text was recorded; a later metadata update does not change that context. Later changes to link destinations do not by themselves make the record defective or authorize retrospective link repairs.
+
+Follow the applicable lifecycle and its human-authorization requirements for corrections, clarifications, and changes of governing authority. Record material corrections or superseding decisions separately, explicitly identifying the affected record. This does not prevent required lifecycle metadata updates or mechanical link changes expressly permitted when relocating records.
+
+Historical context does not remove an accepted decision's continuing authority. Treat a conflict with current governing material, or uncertainty about a still-binding decision caused by a changed reference, as an unexpected finding under §5. When changing a governing document, inspect incoming references, assess those affected by the change, and report to the human any historical record that may need a separate clarification to remain intelligible or to make its continuing authority clear.
 
 ### Descriptive architecture
 
