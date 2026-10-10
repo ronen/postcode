@@ -86,7 +86,7 @@ Record a decision under [`docs/decisions/`](../docs/decisions/) when a choice ha
 
 ### References in historical records
 
-For records whose lifecycle preserves their historical content (see the [examples in the process conventions](process-conventions.md#durable-notes)), preserve links as recorded. Interpret historical references against the explicitly identified baseline where applicable, or otherwise the historical context in which the relevant text was recorded; a later metadata update does not change that context. Later changes to link destinations do not by themselves make the record defective or authorize retrospective link repairs.
+For records whose lifecycle preserves their historical content (see the [examples in the process conventions](process-conventions.md#historical-records)), preserve links as recorded. Interpret historical references against the explicitly identified baseline where applicable, or otherwise the historical context in which the relevant text was recorded; a later metadata update does not change that context. Later changes to link destinations do not by themselves make the record defective or authorize retrospective link repairs.
 
 Follow the applicable lifecycle and its human-authorization requirements for corrections, clarifications, and changes of governing authority. Record material corrections or superseding decisions separately, explicitly identifying the affected record. This does not prevent required lifecycle metadata updates or mechanical link changes expressly permitted when relocating records.
 
