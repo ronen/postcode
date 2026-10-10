@@ -83,6 +83,10 @@ The responsibilities below supplement the plans, task records, review records, v
 
 Record a decision under [`docs/decisions/`](../docs/decisions/) when a choice has meaningful, durable consequences; constrains later work; or is likely to be repeatedly reconsidered. Routine implementation details do not require decision records.
 
+### References in historical records
+
+Links in historical records are preserved as recorded and interpreted against the repository revision to which the record pertains. Later changes to their destinations do not require retrospective link updates. Material corrections or changes of governing authority are recorded separately, with an explicit reference to the affected record. When changing a governing document, inspect incoming references and assess whether any historical record needs a separate clarification to remain intelligible or to make its continuing authority clear.
+
 ### Descriptive architecture
 
 Store architecture documentation under [`docs/architecture/`](../docs/architecture/). Architecture documentation is selective and descriptive, not a source of prescriptive requirements. Include information when it defines a major responsibility or boundary; explains important dependency direction or data flow; describes a process, storage, deployment, trust, or security boundary; records a system-wide invariant or operational constraint; or helps orient work across multiple components or tasks. It should be durable, cross-cutting, and necessary to understand the system beyond what the implementation directly reveals.
