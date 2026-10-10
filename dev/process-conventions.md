@@ -2,6 +2,12 @@
 
 This document contains human-maintained conventions governing how development work is conducted in this repository. It supplements the adopted [baseline conventions](../foundation/baseline-conventions.md) and may be changed only through separate human-directed process maintenance.
 
+<a id="documentation-links"></a>
+## Documentation Links
+
+- Prefer explicit HTML anchors, such as `<a id="unexpected-findings"></a>`, for links to sections within repository Markdown documents. Use stable, descriptive lowercase slugs with hyphens, independent of section numbering or exact heading wording, rather than relying on Markdown-generated heading anchors.
+- Preserve an anchor when its section is renamed or reordered while retaining the same meaning. Adding anchors or updating links remains subject to the target document's editing and historical-record rules.
+
 ## Disposable Scratch Material
 
 - Put repository-specific scratch files and directories under a descriptively named root-level directory beginning with `_`, such as `_analysis/`, `_investigation/`, or `_rendered/`. The root `.gitignore` reserves this namespace for uncommitted working material.
@@ -23,6 +29,7 @@ This document contains human-maintained conventions governing how development wo
 - When promoting draft artifacts, carry the necessary context into the resulting canonical documents and link those documents to one another. Git history may preserve their shared drafting provenance.
 - The human directs promotion. Content moved or incorporated into a canonical location must independently satisfy the approval requirements for that document type.
 
+<a id="durable-notes"></a>
 ## Durable Non-Governing Notes
 
 - Use [`notes/`](../notes/) for committed, human-curated exploratory material that should remain available across sessions without becoming governing or acquiring a permanent historical-record role. This includes durable planning notes, alternatives, unresolved questions, investigation results, and shelved thinking.

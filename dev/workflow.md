@@ -56,6 +56,7 @@ Follow the [planning workflow](planning.md) for plan contents, provisional worki
 - Avoid speculative abstractions and empty structural scaffolding. Create directories and extension points when they acquire a concrete use.
 - Keep outputs deterministic where practical, particularly schemas, projections, snapshots, and generated agent context.
 
+<a id="unexpected-findings"></a>
 ## 5. Unexpected Findings
 
 Implementation, documentation, planning, decisions, and verification may reveal anomalies or contradictions. Treat an unexpected finding as evidence to investigate, not as proof of a particular explanation or an automatic instruction to clean up.
@@ -85,11 +86,11 @@ Record a decision under [`docs/decisions/`](../docs/decisions/) when a choice ha
 
 ### References in historical records
 
-For records whose lifecycle preserves their historical content (see the [examples in the process conventions](process-conventions.md#durable-non-governing-notes)), preserve links as recorded. Interpret historical references against the explicitly identified baseline where applicable, or otherwise the historical context in which the relevant text was recorded; a later metadata update does not change that context. Later changes to link destinations do not by themselves make the record defective or authorize retrospective link repairs.
+For records whose lifecycle preserves their historical content (see the [examples in the process conventions](process-conventions.md#durable-notes)), preserve links as recorded. Interpret historical references against the explicitly identified baseline where applicable, or otherwise the historical context in which the relevant text was recorded; a later metadata update does not change that context. Later changes to link destinations do not by themselves make the record defective or authorize retrospective link repairs.
 
 Follow the applicable lifecycle and its human-authorization requirements for corrections, clarifications, and changes of governing authority. Record material corrections or superseding decisions separately, explicitly identifying the affected record. This does not prevent required lifecycle metadata updates or mechanical link changes expressly permitted when relocating records.
 
-Historical context does not remove an accepted decision's continuing authority. Treat a conflict with current governing material, or uncertainty about a still-binding decision caused by a changed reference, as an [unexpected finding](#5-unexpected-findings). When changing a governing document, inspect incoming references, assess those affected by the change, and report to the human any historical record that may need a separate clarification to remain intelligible or to make its continuing authority clear.
+Historical context does not remove an accepted decision's continuing authority. Treat a conflict with current governing material, or uncertainty about a still-binding decision caused by a changed reference, as an [unexpected finding](#unexpected-findings). When changing a governing document, inspect incoming references, assess those affected by the change, and report to the human any historical record that may need a separate clarification to remain intelligible or to make its continuing authority clear.
 
 ### Descriptive architecture
 
