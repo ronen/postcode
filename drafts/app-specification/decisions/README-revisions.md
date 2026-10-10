@@ -11,6 +11,7 @@ Decision records preserve consequential accepted choices and the reasoning avail
 ## Replace “Governing-document changes”
 
 <!-- BEGIN PROMOTION CONTENT -->
+<a id="governing-document-changes"></a>
 ## Governing-document changes
 
 [`docs/core-concepts.md`](../core-concepts.md) records the governing current cross-cutting architectural terminology, and [`docs/architectural-constraints.md`](../architectural-constraints.md) records the governing current cross-cutting rules. Decision records preserve why either was adopted or changed. Every semantic change to the core concepts and every substantive change to the architectural constraints requires explicit human agreement and a corresponding accepted decision record. Update the affected governing document and decision log in the same commit so the current statement and its history do not diverge.
@@ -23,6 +24,7 @@ The human-maintained [application specification](../app-specification.md) govern
 ## Replace the “Accepted decisions” heading with itself and the new first entry
 
 <!-- BEGIN PROMOTION CONTENT -->
+<a id="accepted-decisions"></a>
 ## Accepted decisions
 
 - [Separate research concepts from application specification](application-specification-boundaries.md)

@@ -2,9 +2,10 @@
 
 Each block below is a complete replacement or addition at the identified destination. Unlisted material remains unchanged.
 
-## Replace “Consider summary suggestions and recursive navigation”, preserving it and adding two reconciliation candidates after it
+## Replace “Consider summary suggestions and recursive navigation”, preserving it and adding three reconciliation candidates after it
 
 <!-- BEGIN PROMOTION CONTENT -->
+<a id="consider-summary-suggestions-and-recursive-navigation"></a>
 ## Consider summary suggestions and recursive navigation
 
 Added: 2026-10-07
@@ -13,6 +14,7 @@ Area: entry experience and navigation
 
 The product permits suggesting a summary View when no more specific information need is expressed; it does not mandate that default. The CLI’s module-inventory default is compatible with that direction, while `summarize` offers the implemented module interpretation. Consider whether summary suggestions and recursive navigation would be useful in future interface work, distinguishing coordination of qualified inputs from synthesis of a new answer. Define useful selection and omission disclosure without requiring a summary Lens for every subject. No change to current commands or immediate GUI work is implied.
 
+<a id="assess-investigation-initiation-and-parent-attribution"></a>
 ## Assess investigation initiation and parent attribution
 
 Added: 2026-10-10
@@ -23,6 +25,7 @@ Assess current prerequisite analyses and interpretation evidence requests agains
 
 Record concrete gaps and propose bounded remediation without requiring a general planner or a record for every implementation step. Preserve existing operation reuse, failure retention, cancellation ownership, and construction boundaries. Coordinate with existing request-misreporting and captured-basis entries rather than duplicating them. Complete attribution assessment before relying on current observations for initiation/resource-policy evaluation; establish authorization and attribution before adding autonomous execution.
 
+<a id="design-a-bounded-shared-context-interface-for-coding-agents"></a>
 ## Design a bounded shared-context interface for coding agents
 
 Added: 2026-10-10
@@ -32,11 +35,22 @@ Area: external-agent context and reference lifecycle
 Choose a first useful exchange that lets an external coding agent identify the focused/open Views and their qualified information without translating them manually into source coordinates. Distinguish exact retained Projection references from repeatable requests, disclose their lifetime and captured basis, and preserve source mappings, provenance, and relevant derivation. Assess current interfaces before selecting a transport or artifact format. Define which Workspaces/windows are included, how active focus is selected, and how the human can inspect that scope; a most-recently-active-window policy is a candidate, not an inherited requirement.
 
 If using a generated artifact, specify publication, revision, and evidence-exclusion behavior. Do not require richer Workspace purpose/context machinery or persistence just to share existing Views and focus. No particular agent host, file format, or implementation milestone is selected by this candidate.
+<a id="assess-and-preserve-navigation-origin-lineage"></a>
+## Assess and preserve navigation-origin lineage
+
+Added: 2026-10-10
+Origin: [Application specification conformance](decisions/application-specification-boundaries.md#adoption-and-conformance)
+Area: investigation context, navigation provenance, interfaces
+
+The CLI retains selected subjects for investigram follow-ups, but not general origin-View relationships for ordinary navigation. Projections and observation batches do not by themselves reconstruct where the human found a reference. Disclose that limited context rather than claiming full investigation history.
+
+Assess which CLI and future GUI interactions establish discovery, source-navigation, and derivation origins, which existing records preserve them, and where origin is unavailable. Scope bounded retention and inspection support before claiming full navigation-origin history. Do not infer a source View merely because it previously displayed the same reference. Preserve qualified captured bases and distinguish navigation origin from program relationships and evidence dependencies. This does not require persistent Workspaces, a separately stored View object, or a general history service.
 <!-- END PROMOTION CONTENT -->
 
 ## Replace “Provide Git history as investigator evidence” to update its governing reference
 
 <!-- BEGIN PROMOTION CONTENT -->
+<a id="provide-git-history-as-investigator-evidence"></a>
 ## Provide Git history as investigator evidence
 
 Added: 2026-09-29
@@ -62,6 +76,7 @@ it.
 ## Replace “Decide how lenses are represented”, preserving it and adding the specification reconciliation dependency
 
 <!-- BEGIN PROMOTION CONTENT -->
+<a id="decide-how-lenses-are-represented"></a>
 ## Decide how lenses are represented
 
 Added: 2026-10-06
@@ -86,6 +101,7 @@ Reconcile the follow-up design with the [application specification](app-specific
 ## Replace “Review the investigation UI and UX as a whole”, preserving existing evidence and adding the Workspace direction
 
 <!-- BEGIN PROMOTION CONTENT -->
+<a id="review-the-investigation-ui-and-ux-as-a-whole"></a>
 ## Review the investigation UI and UX as a whole
 
 Added: 2026-09-23

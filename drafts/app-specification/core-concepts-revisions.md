@@ -11,6 +11,7 @@ This document states PostCode's governing cross-cutting architectural terminolog
 ## Replace “Evaluation”
 
 <!-- BEGIN PROMOTION CONTENT -->
+<a id="evaluation"></a>
 ### Evaluation
 
 *[decision: [Initial core concepts](decisions/initial-core-concepts-decisions.md#distinguish-claim-content-evidence-qualification-and-evaluation)]*
@@ -25,6 +26,7 @@ An **evaluation outcome** describes what occurred in that attempt: applicability
 
 An outcome can exist without a produced claim or entity, and an incomplete attempt can have usable qualified results. An established empty result is therefore different from the absence of a result. Evaluation outcome and Claim context describe different things even when an outcome helps explain a projection's coverage or limitations.
 
+<a id="investigation-initiation"></a>
 ### Investigation initiation
 
 *[decision: [Application specification boundaries](decisions/application-specification-boundaries.md#attribute-system-initiated-investigation-and-constrain-autonomous-work)]*
@@ -37,6 +39,7 @@ Request-scoped work serves its parent; work outside that purpose or continuing a
 ## Replace “Session”
 
 <!-- BEGIN PROMOTION CONTENT -->
+<a id="session"></a>
 ### Session
 
 *[decision: [Transient analysis sessions](decisions/transient-analysis-sessions.md#session-as-the-analysis-and-reference-context)]*
@@ -57,6 +60,7 @@ Immutability is a property of retained information, distinct from retention dura
 ## Replace “Presentation and View”, preserving its definition and adding “Investigation context” and “Workspace” immediately after it
 
 <!-- BEGIN PROMOTION CONTENT -->
+<a id="presentation-and-view"></a>
 ### Presentation and View
 
 *[decision: [Coordinate Views while preserving qualified results](decisions/coordinated-views-and-qualified-results.md#generalize-lens-results-and-view-composition)]*
@@ -73,12 +77,14 @@ Presentation-only actions, including paging and reformatting, preserve the selec
 
 When the human has not expressed a more specific information need, PostCode may suggest a summary View as an initial View. Summary can also support recursive navigation; it is not a required default. A summary View may coordinate existing qualified results, show a synthesized summary Projection, or combine both. It does not require a summary Lens. [[Summary Views and navigation](decisions/coordinated-views-and-qualified-results.md#allow-summary-views-independently-of-summary-lenses)]
 
+<a id="investigation-context"></a>
 ### Investigation context
 
 *[decision: [Application specification boundaries](decisions/application-specification-boundaries.md#start-with-a-workspace-as-a-collection-and-arrangement-of-views)]*
 
 An **investigation context** comprises the Views accumulated while following subjects, relationships, and questions, together with their captured bases and relevant lineage. It identifies what each View shows and how it relates to the investigation. It can span Workspace arrangements and does not imply a separately stored context object, common captured state, or persistent Session. The [application specification](app-specification.md#workspaces-and-navigation) states the retained-lineage contract.
 
+<a id="workspace"></a>
 ### Workspace
 
 *[decision: [Application specification boundaries](decisions/application-specification-boundaries.md#start-with-a-workspace-as-a-collection-and-arrangement-of-views)]*

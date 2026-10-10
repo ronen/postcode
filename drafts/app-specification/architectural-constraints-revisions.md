@@ -11,6 +11,7 @@ The constraints conform to the adopted [product design](../foundation/product-de
 ## Replace “Evaluation and failure”, preserving its rules and adding an initiation section after it
 
 <!-- BEGIN PROMOTION CONTENT -->
+<a id="evaluation-and-failure"></a>
 ## Evaluation and failure
 
 - Keep reusable investigation operations distinct from their consuming lenses. The evaluation layer selects retained outcomes and missing operations and coordinates execution through the domain interpretation boundary; projections consume materialized results. [[Investigation operations and lenses](decisions/investigation-operations-and-lenses.md)]
@@ -19,6 +20,7 @@ The constraints conform to the adopted [product design](../foundation/product-de
 - Keep expected operational failures, unexpected defects or broken invariants, successful results containing diagnostics or limitations, and evaluation failures that prevent the intended result distinct. Do not convert an unexpected defect into an ordinary analysis outcome merely to continue execution. [[Evaluation and failure distinctions](decisions/adopt-qualification-and-evaluation-constraints.md#keep-evaluation-materialization-and-failure-distinctions-explicit)]
 - Preserve meaningful domain distinctions until presentation. Presentation may format or progressively disclose information, but must not collapse distinctions that affect what the result means or what may safely be concluded from it. [[Evaluation and failure distinctions](decisions/adopt-qualification-and-evaluation-constraints.md#keep-evaluation-materialization-and-failure-distinctions-explicit)]
 
+<a id="investigation-initiation-and-request-attribution"></a>
 ## Investigation initiation and request attribution
 
 - Obtain additional qualified information needed for request resolution through analysis, Evaluation, and core construction. Request interpretation must not independently derive program claims or the population used to resolve subjects. Preserve established candidates and consequential incompleteness, ambiguity, unavailability, or inability to resolve. [[Investigation initiation](decisions/application-specification-boundaries.md#attribute-system-initiated-investigation-and-constrain-autonomous-work)]
@@ -30,6 +32,7 @@ The constraints conform to the adopted [product design](../foundation/product-de
 ## Replace “Session references and retained information”, preserving existing rules and adding the retention distinction
 
 <!-- BEGIN PROMOTION CONTENT -->
+<a id="session-references-and-retained-information"></a>
 ## Session references and retained information
 
 - Once a session reference is bound to an entity, do not rebind it. Adding inputs, evidence, or results must not change that binding. [[Session references](decisions/transient-analysis-sessions.md#stable-reference-bindings-within-a-session)]

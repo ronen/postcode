@@ -5,6 +5,7 @@ Each block below is a complete replacement or addition at the identified destina
 ## Replace “Product model and current CLI scope”, preserving current limitations
 
 <!-- BEGIN PROMOTION CONTENT -->
+<a id="product-model-and-current-cli-scope"></a>
 ## Product model and current CLI scope
 
 The [application specification](app-specification.md) describes intended behavior; the [capability reference](capability-reference.md) describes the current toolbox.

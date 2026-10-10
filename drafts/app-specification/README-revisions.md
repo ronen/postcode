@@ -11,14 +11,17 @@ Adopted research concepts and baseline development material live under [`foundat
 ## Replace “Core concepts”, adding the specification and capability-reference entries immediately before it
 
 <!-- BEGIN PROMOTION CONTENT -->
+<a id="application-specification"></a>
 ### Application specification
 
 [`app-specification.md`](app-specification.md) governs intended application behavior, UX, semantic contracts, and high-level architecture within the research foundation. It does not claim full implementation or authorize work. It is human-maintained: agents prepare changes only under explicit human direction during design or planning. Implementing agents report gaps or contradictions rather than changing it during implementation. Consequential changes require accepted decisions.
 
+<a id="capability-reference"></a>
 ### Capability reference
 
 [`capability-reference.md`](capability-reference.md) describes supported investigations and Views, their meanings, applicability, and limitations. The project status gives a concise overview and significant limits; this reference gives per-action meanings, applicability, and limitations. The CLI reference supplies syntax and detailed command behavior. It does not prioritize particular Lenses as architecture or turn research candidates into delivered capabilities.
 
+<a id="core-concepts"></a>
 ### Core concepts
 
 [`core-concepts.md`](core-concepts.md) states PostCode's governing cross-cutting architectural terminology and the relationships necessary to define it. It records what the terms mean now; accepted decision records preserve why the concepts were adopted or changed. Semantic changes require explicit human agreement and a corresponding accepted decision record.
@@ -27,6 +30,7 @@ Adopted research concepts and baseline development material live under [`foundat
 ## Replace “Architecture”
 
 <!-- BEGIN PROMOTION CONTENT -->
+<a id="architecture"></a>
 ### Architecture
 
 Architecture documentation is a selective, descriptive map of how the current system works, not an exhaustive inventory of the implementation or a source of prescriptive requirements. It describes major boundaries, responsibilities, data flows, and operational constraints. Intended high-level responsibilities and guarantees belong in the application specification and governing architectural documents; scoped implementation proposals belong in plans and decisions. Neither belongs here as if already implemented.
@@ -37,6 +41,7 @@ Create architecture documentation under `architecture/` when there is implemente
 ## Replace “Decisions”
 
 <!-- BEGIN PROMOTION CONTENT -->
+<a id="decisions"></a>
 ### Decisions
 
 [`decisions/`](decisions/) preserves consequential choices explicitly accepted by the human, together with their context, rationale, and consequences. Accepted decisions are prescriptive and binding within their stated scope unless superseded; they authorize and explain substantive changes to the governing application specification, core concepts, and architectural constraints, while architecture documentation describes the resulting implemented shape.
@@ -45,6 +50,7 @@ Create architecture documentation under `architecture/` when there is implemente
 ## Replace “Implementation conventions”
 
 <!-- BEGIN PROMOTION CONTENT -->
+<a id="implementation-conventions"></a>
 ### Implementation conventions
 
 [`implementation-conventions.md`](implementation-conventions.md) records repeatable application-level engineering practices within the application specification and governing architecture. These conventions may evolve with authorized implementation work, but cannot introduce consequential product behavior, conceptual semantics, architectural boundaries, guarantees, or lifecycle policy in place of an accepted decision or governing architectural constraint.
