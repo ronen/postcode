@@ -17,7 +17,7 @@ This document states PostCode's governing cross-cutting architectural terminolog
 
 **Evaluation** is PostCode's attempt to materialize requested information through applicable analyses. Information requirements include those arising from lenses and any standard expansions requested by presentations. Execution constraints describe the conditions under which the attempt is made, rather than the question the lens asks.
 
-Requirements can also arise from system-initiated investigation serving an explicit parent request or authorized autonomous work. Request resolution consumes qualified results without independently establishing program claims or a subject population. [[Investigation initiation](decisions/application-specification-boundaries.md#attribute-system-initiated-investigation-and-constrain-autonomous-work)]
+Requirements can also arise from system-initiated investigation serving an explicit parent request or authorized autonomous work. [[Investigation initiation](decisions/application-specification-boundaries.md#attribute-system-initiated-investigation-and-constrain-autonomous-work)]
 
 Applicable analyses include interpretation, which produces investigrams and their supporting context. [[Interpretation and evaluation](decisions/investigator-execution-and-evidence-access.md#integrate-interpretation-with-evaluation-and-qualified-evidence-access)]
 
@@ -29,9 +29,9 @@ An outcome can exist without a produced claim or entity, and an incomplete attem
 
 *[decision: [Application specification boundaries](decisions/application-specification-boundaries.md#attribute-system-initiated-investigation-and-constrain-autonomous-work)]*
 
-**System-initiated investigation** is additional investigation PostCode initiates without a separate human or external-agent request for that work. It can be **request-scoped**, serving an explicit parent request, or **autonomous**, with no parent request. The initiating actor is distinct from the actor authorizing the parent. Selecting unspecified request elements without additional investigation is not itself system-initiated investigation.
+**System-initiated investigation** is additional investigation PostCode initiates without a separate human or external-agent request for that work. It can be **request-scoped**, serving an explicit parent request, or **autonomous**, with no parent request. The initiating actor is distinct from the actor authorizing the parent. Selecting unspecified elements to answer an expressed information need is request interpretation; the selected answer remains explicitly requested work. Obtaining additional qualified information needed to resolve the request can be system-initiated investigation.
 
-Request-scoped work remains attributable to satisfying the parent and governed by its constraints. Work outside that purpose or continuing after the parent's satisfaction or cancellation is autonomous. These distinctions describe purpose, provenance, and resource governance, not a particular scheduler or separate visible View.
+Request-scoped work serves its parent; work outside that purpose or continuing after the parent’s satisfaction or cancellation is autonomous. Resource governance and attribution obligations are in the [architectural constraints](architectural-constraints.md#investigation-initiation-and-request-attribution). These meanings do not prescribe a scheduler or separate visible View.
 <!-- END PROMOTION CONTENT -->
 
 ## Replace “Session”
@@ -51,10 +51,10 @@ The initial session opens one configured project and assumes its relevant inputs
 
 A transient session ends with its process. References have meaning within the active session. Observations carry a session identifier to correlate commands within the session; this identifier does not establish the evidential basis or consistency of program claims. Persistence and any future validity policy for reopening a session are separate decisions.
 
-Immutability preserves retained information and reference meaning; it does not establish retention duration, disposal policy, persistence, or availability after restart. Discarded information must not be replaced by silently retargeting its reference. Mutable focus, layout, and current derived status are distinct from immutable retained records. [[Immutability and retention](decisions/application-specification-boundaries.md#distinguish-immutable-information-from-retention-policy)]
+Immutability is a property of retained information, distinct from retention duration, disposal, persistence, and availability after restart. It does not imply immutability of focus, layout, or derived current status. See the [retained-information constraints](architectural-constraints.md#session-references-and-retained-information) for the obligations. [[Immutability and retention](decisions/application-specification-boundaries.md#distinguish-immutable-information-from-retention-policy)]
 <!-- END PROMOTION CONTENT -->
 
-## Replace “Presentation and View”, preserving its definition and adding “Workspace” immediately after it
+## Replace “Presentation and View”, preserving its definition and adding “Investigation context” and “Workspace” immediately after it
 
 <!-- BEGIN PROMOTION CONTENT -->
 ### Presentation and View
@@ -73,11 +73,17 @@ Presentation-only actions, including paging and reformatting, preserve the selec
 
 When the human has not expressed a more specific information need, PostCode may suggest a summary View as an initial View. Summary can also support recursive navigation; it is not a required default. A summary View may coordinate existing qualified results, show a synthesized summary Projection, or combine both. It does not require a summary Lens. [[Summary Views and navigation](decisions/coordinated-views-and-qualified-results.md#allow-summary-views-independently-of-summary-lenses)]
 
+### Investigation context
+
+*[decision: [Application specification boundaries](decisions/application-specification-boundaries.md#start-with-a-workspace-as-a-collection-and-arrangement-of-views)]*
+
+An **investigation context** comprises the Views accumulated while following subjects, relationships, and questions, together with their captured bases and relevant lineage. It identifies what each View shows and how it relates to the investigation. It can span Workspace arrangements and does not imply a separately stored context object, common captured state, or persistent Session. The [application specification](app-specification.md#workspaces-and-navigation) states the retained-lineage contract.
+
 ### Workspace
 
 *[decision: [Application specification boundaries](decisions/application-specification-boundaries.md#start-with-a-workspace-as-a-collection-and-arrangement-of-views)]*
 
 A **Workspace** is a collection and arrangement of Views. It is a UX organization, distinct from a Session, a program subject, and a single View coordinating several Projections. Views in a Workspace need not share a subject, captured state, or evidence. Placement is distinct from discovery, derivation, and program relationships.
 
-The initial model does not require a permanent root subject, name, formal task, shared-context object, or persistence. Richer shared investigation context remains a future UX possibility; ordinary interface focus is sufficient for the initial model.
+The initial model does not require a permanent root subject, name, formal task, shared-context object, or persistence. Shared Workspace purpose and defaults remain future UX possibilities, distinct from the investigation context already represented by Views, their bases, and lineage. Ordinary interface focus is sufficient for the initial model.
 <!-- END PROMOTION CONTENT -->

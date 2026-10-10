@@ -1,4 +1,4 @@
-# Supported investigations and views
+# Capability reference
 
 This reference describes the current toolbox. The [application specification](app-specification.md) defines intended application behavior and shared contracts; inclusion here describes support, not architectural priority or a promise that a capability is the preferred starting point. [Project status](../STATUS.md) summarizes current scope, and the [CLI reference](cli-reference.md) supplies syntax, options, and detailed limitations.
 
@@ -11,7 +11,7 @@ PostCode currently provides a development CLI over one configured TypeScript pro
 | `modules` | Inventory of modules in the configured project | The supported TypeScript population and analysis limitations qualify the inventory; it is not a whole-repository architectural account. |
 | `organization project` / `organization repository` | Organization under a project or repository scheme | Groups provide a navigation scheme, not a canonical decomposition of the program. Repository mode does not analyze every project in the repository. |
 | `inspect` | Detail about the selected module or group, with associated retained interpretations where present | Exact names and generated handles can be missing or ambiguous. Inspection of a retained investigram has the separate meaning described below. |
-| `dependencies` | Qualified dependency information for the project | Supported relations and resolution limits remain explicit. An opaque external endpoint does not establish an empty interior. |
+| `dependencies` | Qualified dependency information and cycles for the project | Supported relations and resolution limits remain explicit. An opaque external endpoint does not establish an empty interior. |
 | `children` / `parents` | Outgoing or incoming module dependencies | These names describe dependency direction, not a universal containment hierarchy. Subject applicability and resolution are limited to the current command family. |
 
 See [inventory and inspection](cli-reference.md#inventory-and-inspection), [organization](cli-reference.md#organization-and-group-inspection), and [dependency investigation](cli-reference.md#dependency-investigation) for supported populations, selection forms, paging, and qualifications.
@@ -35,6 +35,8 @@ Repeated investigation requests reuse retained outcomes under the current operat
 ## Presentation and operational facilities
 
 Unicode text and experimental JSON are the current presentation formats. Paging, continuation, source disclosure, and correction-detail options depend on the command family; the CLI reference is authoritative for their syntax. `--source-detail` reveals captured supporting source where supported and records that disclosure. Evidence sent only to the Investigator is distinct from source shown to the human.
+
+`shell` provides successive requests in one transient Session. `auth chatgpt` supports the documented sign-in and account-management commands; authentication alone does not enable transmission of a project. See [commands](cli-reference.md#commands) and [hosted setup](hosted-investigation.md).
 
 `usage` reports execution attempts and available provider usage, including unsuccessful attempts, without inference. It is operational reporting, not a program Lens; its current lens-shaped descriptor is a compatibility detail. Unknown measurements are not zero, and reported totals are not confirmed billing.
 

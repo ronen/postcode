@@ -27,3 +27,9 @@ The human-maintained [application specification](../app-specification.md) govern
 
 - [Separate research concepts from application specification](application-specification-boundaries.md)
 <!-- END PROMOTION CONTENT -->
+
+## Replace the acceptance paragraph beginning “A decision is accepted only through explicit human agreement”
+
+<!-- BEGIN PROMOTION CONTENT -->
+A decision is accepted only through explicit human agreement. Agents may develop and evaluate alternatives in drafts or discussion, but must not accept a decision themselves. An accepted decision must conform to governing foundation material, the application specification, core concepts, and architectural constraints unless it explicitly changes an affected governing document through the process below. A choice that conflicts with foundation material requires an explicitly authorized foundation revision before it can be accepted. Within its stated scope, an accepted decision is prescriptive and binding on subsequent work until it is superseded.
+<!-- END PROMOTION CONTENT -->

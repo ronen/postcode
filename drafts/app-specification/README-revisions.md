@@ -15,9 +15,9 @@ Adopted research concepts and baseline development material live under [`foundat
 
 [`app-specification.md`](app-specification.md) governs intended application behavior, UX, semantic contracts, and high-level architecture within the research foundation. It does not claim full implementation or authorize work. It is human-maintained: agents prepare changes only under explicit human direction during design or planning. Implementing agents report gaps or contradictions rather than changing it during implementation. Consequential changes require accepted decisions.
 
-### Supported capabilities
+### Capability reference
 
-[`capability-reference.md`](capability-reference.md) describes supported investigations and Views, their meanings, applicability, and limitations. It complements the CLI reference and project status. It does not prioritize particular Lenses as architecture or turn research candidates into delivered capabilities.
+[`capability-reference.md`](capability-reference.md) describes supported investigations and Views, their meanings, applicability, and limitations. The project status gives a concise overview and significant limits; this reference gives per-action meanings, applicability, and limitations. The CLI reference supplies syntax and detailed command behavior. It does not prioritize particular Lenses as architecture or turn research candidates into delivered capabilities.
 
 ### Core concepts
 
@@ -40,4 +40,18 @@ Create architecture documentation under `architecture/` when there is implemente
 ### Decisions
 
 [`decisions/`](decisions/) preserves consequential choices explicitly accepted by the human, together with their context, rationale, and consequences. Accepted decisions are prescriptive and binding within their stated scope unless superseded; they authorize and explain substantive changes to the governing application specification, core concepts, and architectural constraints, while architecture documentation describes the resulting implemented shape.
+<!-- END PROMOTION CONTENT -->
+
+## Replace “Implementation conventions”
+
+<!-- BEGIN PROMOTION CONTENT -->
+### Implementation conventions
+
+[`implementation-conventions.md`](implementation-conventions.md) records repeatable application-level engineering practices within the application specification and governing architecture. These conventions may evolve with authorized implementation work, but cannot introduce consequential product behavior, conceptual semantics, architectural boundaries, guarantees, or lifecycle policy in place of an accepted decision or governing architectural constraint.
+<!-- END PROMOTION CONTENT -->
+
+## Replace the introductory CLI and hosted-inference navigation paragraphs
+
+<!-- BEGIN PROMOTION CONTENT -->
+For supported questions and actions, begin with the [capability reference](capability-reference.md); for command syntax and detailed behavior, use the [CLI reference](cli-reference.md). Optional hosted inference has a separate [setup and transmission disclosure](hosted-investigation.md).
 <!-- END PROMOTION CONTENT -->

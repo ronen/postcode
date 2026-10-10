@@ -394,7 +394,7 @@ PostCode is used as the instrument of a research project. It therefore produces 
 
 The observation stream includes relevant requests, choices, investigations, results, qualifications, navigation, source excursions, investigation-context evolution, resource decisions, agent-context interaction, and contemporaneous subjective reports. It distinguishes human-, agent-, and PostCode-initiated activity; for PostCode-initiated investigation, it also distinguishes request-scoped from autonomous work and retains the parent request or autonomous trigger. The stream preserves enough provenance to relate observations to the PostCode version, repository state, session, task, and research-versus-development context.
 
-Research observations are kept in designated storage outside the investigated repository, consistent with the [generated-output evidence boundary](#generated-output-evidence-boundary). Development diagnostics and operational telemetry may use different mechanisms and must not silently enter the research evidence stream.
+In research use, research observations are kept in designated storage outside the investigated repository, consistent with the [generated-output evidence boundary](#generated-output-evidence-boundary). Development diagnostics and operational telemetry may use different mechanisms and must not silently enter the research evidence stream.
 
 <a id="projection-scope"></a>
 
@@ -438,64 +438,3 @@ Outputs produced by PostCode about a repository—including observations, export
 PostCode may retain, reuse, and compare its outputs as PostCode-produced artifacts with their provenance intact. It must support storing them outside the analyzed repository or explicitly excluding their locations from repository evidence.
 
 Markings within generated output may supplement but must not replace its separation from repository evidence.
-
-
-## Historical section navigation
-
-Earlier accepted records link to numbered sections of the former combined product/application design. The entries below preserve navigation after the split; they do not reproduce those historical sections or reinstate their former wording. Use the cited record and its Git history when interpreting a historical rationale. Current application choices are in the application specification; illustrative Lens families remain possibilities rather than implementation commitments.
-
-<a id="215-logical-model-and-execution-planning"></a>
-
-**Logical model and execution planning.** See the [current treatment](../docs/app-specification.md#responsibilities-and-boundaries).
-
-<a id="2151-resource-bounded-analysis"></a>
-
-**Resource-bounded analysis.** See the [current treatment](../docs/app-specification.md#resource-bounded-work-and-outcomes).
-
-<a id="32-summary-as-initial-view-and-recursive-navigation"></a>
-
-**Summary and recursive navigation.** See the [current treatment](../docs/app-specification.md#initial-views-and-further-investigation).
-
-<a id="33-workspace-model"></a>
-
-**Workspace model.** See the [current treatment](../docs/app-specification.md#workspaces-and-navigation).
-
-<a id="34-navigation-through-views"></a>
-
-**Navigation through Views.** See the [current treatment](../docs/app-specification.md#workspaces-and-navigation).
-
-<a id="36-revision-and-projection-comparison"></a>
-
-**Revision and Projection comparison.** See the [current treatment](../docs/app-specification.md#comparison-and-conceptual-change).
-
-<a id="371-shared-machine-readable-context"></a>
-
-**Shared machine-readable context.** See the [current treatment](../docs/app-specification.md#shared-context-for-external-coding-agents).
-
-<a id="372-agent-supplied-context"></a>
-
-**Agent-supplied context.** See the [current treatment](../docs/app-specification.md#incoming-agent-context-and-interactive-exchange).
-
-<a id="411-summary-lenses"></a>
-
-**Illustrative summary Lenses.** See the [current treatment](#illustrative-lens-families).
-
-<a id="413-entity-cross-reference-lenses"></a>
-
-**Illustrative cross-reference Lenses.** See the [current treatment](#illustrative-lens-families).
-
-<a id="414-test-lenses"></a>
-
-**Illustrative test Lenses.** See the [current treatment](#illustrative-lens-families).
-
-<a id="415-path-lenses"></a>
-
-**Illustrative path Lenses.** See the [current treatment](#illustrative-lens-families).
-
-<a id="416-temporal-and-revision-lenses"></a>
-
-**Illustrative temporal and revision Lenses.** See the [current treatment](#illustrative-lens-families).
-
-<a id="418-external-dependency-lenses"></a>
-
-**Illustrative external-dependency Lenses.** See the [current treatment](#illustrative-lens-families).
