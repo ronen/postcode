@@ -6,14 +6,13 @@ Use descriptive, unnumbered filenames, such as `initial-product-slice.md` or `ag
 
 ## Approved upcoming work
 
-- [Module investigation](module-investigation.md) — approved; implementation has not begun. Depends on the foundation-readiness plan's completed and reviewed boundaries.
-
 - [Explicit Lenses and qualified request resolution](lens-request-model.md) — approved; implementation has not begun. Covers the request model across every existing capability, audit F1–F4, outcome lifetime and identity, bounded Presentation compatibility and extension evidence.
 
 ## Completed work
 
 - [Foundation readiness](foundation-readiness.md) — completed after M5 review and human-authorized closure; two filesystem case-rule defects remain explicitly deferred in the [backlog](../backlog.md).
 - [Transient interactive session shell](transient-session-shell.md) — completed.
+- [Module investigation](module-investigation.md) — completed; the [implementation task](../../records/tasks/2026-09-29-module-investigation.md) closed on 2026-10-02.
 
 ## Lifecycle
 

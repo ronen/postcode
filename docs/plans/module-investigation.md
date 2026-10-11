@@ -1,8 +1,8 @@
 # Module investigation
 
-Status: approved
+Status: completed
 Created: 2026-09-24
-Updated: 2026-09-29
+Updated: 2026-10-11
 Superseded by:
 
 ## Outcome and use narrative
