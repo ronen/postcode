@@ -43,7 +43,13 @@ The task remains active and no milestone is declared complete. Qualified subject
 
 Review corrections, 2026-10-11: all five actionable round-one findings were accepted and corrected in `4c9c3e0` and `709ea65d9ffe7f21e60306fa2d02ba9c0b74dd5f`. The [disposition](../reviews/lens-request-model/2026-10-11-request-publication-disposition.md) records each judgment, the human-directed F3/F4 behavior, and the exact corrected target. Dependency Lens vocabulary and designation validation now agree with the plan; usage refuses and preserves extra inputs; malformed input receives a safe caller refusal with explicit representation limits; unexpected post-validation failures remain defects; the usage schema's optional context is documented. The reviewer's intermittent CLI failure remains unexplained. Wider implementation remains paused pending human direction on that uncertainty and acceptance of the intermediate gate. The task remains active and the outstanding plan work above remains required.
 
+Intermittent-failure investigation, 2026-10-11: authorized by the follow-up above and recorded in the disposition. The named test parsed stdout before checking the command's status, masking any pre-publication failure as a JSON syntax error. A controlled input change reproduced the exact error through a legitimate Session invalidation; this does not establish the historical cause. Commit `42038cb207eefe6c4993a27511cf1b5627f23159` adds exit-status/stderr assertions while preserving all output checks. Product behavior is unchanged. The original failure was not reproduced under stable inputs, and its cause remains unconfirmed. Wider implementation remains paused for the human's intermediate-gate decision.
+
 ## Verification
+
+### Intermittent-failure investigation verification
+
+An instrumented full offline suite passed all 503 tests. Eight concurrent repeats of the named test passed during that run, with no invalidation traced for its fixture. After rebuilding to remove the temporary instrumentation, `npm run check` and the isolated named test passed. A separate controlled fixture demonstrated exit 0/valid JSON without an input change and exit 2/empty stdout/Session-invalidated diagnostics after an input change; parsing the latter reproduced the exact reported exception. The disposition records evidence and limits. `git diff --check` passed; no paid inference was used.
 
 ### Review-correction verification
 
