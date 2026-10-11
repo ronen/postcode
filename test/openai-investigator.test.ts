@@ -1,3 +1,4 @@
+import { requireView } from './request-helpers.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { writeFileSync } from 'node:fs';
@@ -218,8 +219,8 @@ test('SDK service failure after evidence retains usage and acquisition, but a la
   assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
   t.after(() => opened.session.close());
   const command = { lens: 'summarize' as const, selector: 'entry', presentation: { format: 'json' as const, sourceDetail: false } };
-  const first = (await opened.session.execute(command)).view as InvestigationView;
-  const second = (await opened.session.execute(command)).view as InvestigationView;
+  const first = requireView(await opened.session.execute(command)).view as InvestigationView;
+  const second = requireView(await opened.session.execute(command)).view as InvestigationView;
   assert.equal(calls, 4); assert.equal(second.accounts.length, 0); assert.equal(second.result!.reused, false);
   assert.equal(first.usage.missingCalls, 1); assert.equal(second.usage.missingCalls, 2);
   assert.equal(second.usage.totals[0]!.categories.find(c => c.category === 'total')!.value, 300);

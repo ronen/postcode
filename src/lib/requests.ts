@@ -61,16 +61,107 @@ interface RequestChoices {
 export type NormalizedRequest = RequestChoices & (
   | { readonly kind: 'lens'; readonly lens: LensId; readonly question: string; readonly designation: SubjectDesignation;
       readonly parameters: Readonly<Record<string, ParameterValue>>; readonly programInput: 'session-configured-project' }
-  | { readonly kind: 'report'; readonly report: 'usage' }
+  | { readonly kind: 'report'; readonly report: 'usage'; readonly suppliedInputs?: Pick<ViewRequest, 'selector' | 'subject' | 'reference' | 'parameters'> }
+  | RejectedRequest
 );
+
+export interface RejectedInputProblem {
+  readonly field: string;
+  readonly reason: string;
+  readonly representation: 'preserved' | 'omitted';
+  readonly omittedField?: string;
+}
+export type RejectedRequest = RequestChoices & {
+  readonly kind: 'rejected';
+  /** Supplied values are evidence of rejected input, not a validated Lens request. */
+  readonly input: Readonly<Record<string, ParameterValue>>;
+  readonly problems: readonly RejectedInputProblem[];
+};
+export type CapturedRequest = { readonly input: ViewRequest; readonly normalized: NormalizedRequest }
+  | { readonly input: null; readonly normalized: RejectedRequest };
+
+/** A rejected value must never make its own report unserializable. */
+function representationProblem(value: unknown, field: string, ancestors = new Set<object>()): { field: string; reason: string } | null {
+  if (value === null || typeof value === 'string' || typeof value === 'boolean' || typeof value === 'number' && Number.isFinite(value)) return null;
+  if (typeof value === 'number') return { field, reason: 'Non-finite numbers cannot be represented as JSON request data.' };
+  if (typeof value !== 'object') return { field, reason: `A ${typeof value} value cannot be represented as JSON request data.` };
+  if (ancestors.has(value)) return { field, reason: 'A cyclic value cannot be represented as JSON request data.' };
+  if (!Array.isArray(value) && Object.getPrototypeOf(value) !== Object.prototype && Object.getPrototypeOf(value) !== null) {
+    return { field, reason: 'Only plain objects and arrays can be represented as structured request data.' };
+  }
+  if (Array.isArray(value) && (Object.keys(value).length !== value.length || Object.keys(value).some((key, index) => key !== String(index)))) return { field, reason: 'Sparse arrays or array properties cannot be preserved as JSON request data.' };
+  ancestors.add(value);
+  try {
+    for (const key of Reflect.ownKeys(value)) {
+      if (typeof key === 'symbol') return { field, reason: 'Symbol keys cannot be represented as JSON request data.' };
+      if (Array.isArray(value) && key === 'length') continue;
+      const descriptor = Object.getOwnPropertyDescriptor(value, key)!;
+      if (!descriptor.enumerable) return { field: `${field}.${key}`, reason: 'Non-enumerable properties cannot be preserved as JSON request data.' };
+      if (!('value' in descriptor)) return { field: `${field}.${key}`, reason: 'Accessor properties cannot be captured as request data without executing caller code.' };
+      const problem = representationProblem(descriptor.value, `${field}.${key}`, ancestors);
+      if (problem) return problem;
+    }
+    return null;
+  } finally { ancestors.delete(value); }
+}
+
+/** Capture before any asynchronous work; only known input defects become refusals. */
+export function captureRequest(request: ViewRequest): CapturedRequest {
+  const fields: [string, ParameterValue][] = [], problems: RejectedInputProblem[] = [];
+  for (const key of Reflect.ownKeys(request)) {
+    if (typeof key === 'symbol') {
+      problems.push({ field: '(symbol key)', reason: 'Symbol-keyed input cannot be represented in a request report.', representation: 'omitted' });
+      continue;
+    }
+    const descriptor = Object.getOwnPropertyDescriptor(request, key)!;
+    if (!('value' in descriptor)) {
+      problems.push({ field: key, reason: 'Accessor input cannot be captured without executing caller code.', representation: 'omitted', omittedField: key });
+      continue;
+    }
+    if (descriptor.value === undefined) continue;
+    const problem = representationProblem(descriptor.value, key);
+    if (problem) { problems.push({ ...problem, representation: 'omitted', omittedField: key }); continue; }
+    try { fields.push([key, structuredClone(descriptor.value) as ParameterValue]); }
+    catch (error) {
+      if (!(error instanceof DOMException) || error.name !== 'DataCloneError') throw error;
+      problems.push({ field: key, reason: 'This value cannot be cloned across the request boundary.', representation: 'omitted', omittedField: key });
+    }
+  }
+  const input = Object.fromEntries(fields);
+  const suppliedLens = input.lens;
+  if (typeof suppliedLens !== 'string' || suppliedLens !== 'usage' && !Object.hasOwn(commandLenses, suppliedLens) && !Object.hasOwn(lenses, suppliedLens)) {
+    problems.push({ field: 'lens', reason: 'The supplied name does not identify a registered Lens or report.', representation: 'lens' in input ? 'preserved' : 'omitted' });
+  }
+  if (problems.length) {
+    const presentation = input.presentation as unknown as Presentation | undefined;
+    return { input: null, normalized: freezeOwned({ kind: 'rejected', input, problems,
+      presentation: { format: presentation?.format === 'json' ? 'json' : 'unicode', sourceDetail: false },
+      referenceLifetime: input.referenceLifetime === 'command' ? 'command' : 'session' }) };
+  }
+  const snapshot = freezeOwned(input) as unknown as ViewRequest;
+  return { input: snapshot, normalized: normalizeCapturedRequest(snapshot) };
+}
 
 /** Interface spellings never become semantic Lens parameters. */
 export function normalizeRequest(request: ViewRequest): NormalizedRequest {
+  return captureRequest(request).normalized;
+}
+
+function normalizeCapturedRequest(request: ViewRequest): NormalizedRequest {
   const choices: RequestChoices = { presentation: { ...request.presentation,
     ...(request.after === undefined ? {} : { after: request.after }),
     ...(request.revisionPage === undefined ? {} : { revisionPage: request.revisionPage }) },
     referenceLifetime: request.referenceLifetime ?? 'session' };
-  if (request.lens === 'usage') return freezeOwned({ ...choices, kind: 'report', report: 'usage' });
+  if (request.lens === 'usage') {
+    const parameters = request.parameters;
+    const extra = request.selector !== null || request.subject !== undefined || request.reference === true
+      || parameters !== undefined && (!parameters || typeof parameters !== 'object' || Array.isArray(parameters) || Object.keys(parameters).length > 0);
+    return freezeOwned({ ...choices, kind: 'report', report: 'usage', ...(extra ? { suppliedInputs: {
+      selector: request.selector, ...(request.subject === undefined ? {} : { subject: request.subject }),
+      ...(request.reference === undefined ? {} : { reference: request.reference }),
+      ...(parameters === undefined ? {} : { parameters }),
+    } } : {}) });
+  }
   const id = Object.hasOwn(commandLenses, request.lens) ? commandLenses[request.lens as CommandLens] : request.lens as LensId;
   const definition = Object.hasOwn(lenses, id) ? lenses[id] : undefined;
   if (!definition) throw new Error('Unknown Lens definition');
@@ -83,7 +174,7 @@ export function normalizeRequest(request: ViewRequest): NormalizedRequest {
 }
 
 export function invalidParameters(request: NormalizedRequest): string | null {
-  if (request.kind === 'report') return null;
+  if (request.kind !== 'lens') return null;
   if (!request.parameters || typeof request.parameters !== 'object' || Array.isArray(request.parameters) || Object.getPrototypeOf(request.parameters) !== Object.prototype) return 'Lens parameters must be an object.';
   const unexpected = Object.keys(request.parameters).filter(key => !Object.hasOwn(lenses[request.lens].parameters, key));
   return unexpected.length ? `Lens ${request.lens} declares no parameters; unexpected: ${unexpected.join(', ')}.` : null;
@@ -107,4 +198,9 @@ export function invalidDesignation(request: NormalizedRequest, supplied: ViewReq
     return `Lens ${definition.id} requires a project or repository subject, not a selector.`;
   }
   return null;
+}
+
+export function invalidReportInputs(request: NormalizedRequest): string | null {
+  return request.kind === 'report' && request.suppliedInputs
+    ? 'Usage is subjectless and accepts no selector, subject, reference designation, or nonempty parameters.' : null;
 }

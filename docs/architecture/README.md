@@ -45,7 +45,12 @@ parameters and presentation choices independently of the resulting answer. A
 static Lens declaration supplies the question and consuming operation mapping;
 selection validation shares that mapping and subject applicability. Command spellings
 map to normalized Lens identities; dependency identities agree with retained answers.
-Missing or incompatible designation modes are refused before Evaluation. Invocation
+Missing or incompatible designation modes are refused before Evaluation. Usage is
+subjectless and refuses extraneous designation or parameter inputs. Unknown names
+and unrepresentable values produce rejected-input context and a resolution report,
+with explicit omissions where the supplied data cannot safely cross the worker or
+JSON reporting boundary. The parent handles untransportable input before posting
+it to the worker, using the same refusal renderer and input checks. Invocation
 correlation belongs to the returned request context and does not enter retained
 Projection or reusable operation identity.
 

@@ -1,4 +1,6 @@
-import { finalizeRequestReport, renderRequestReport } from './request-reporting.js';
+import { randomUUID } from 'node:crypto';
+import { captureRequest } from './requests.js';
+import { finalizeRequestReport, renderRequestReport, rejectedRequestResult } from './request-reporting.js';
 import { freezeOwned } from './immutable.js';
 import type { InvestigationRequest, AgentIdentity, InvestigatorAgent, AgentDialogue, AgentReply, AttemptReport, CallUsage } from './investigation/contracts.js';
 import { finalizeInvestigationUsage, renderInvestigationView } from './investigation/presentation.js';
@@ -140,7 +142,17 @@ export function interactiveSession(options: ProjectOptions, dependencies: {
   return {
     opening, usage: usageReport,
     async execute(request: ViewRequest, execution: ExecutionOptions = {}): Promise<ExecutedRequest> {
-      const reply = await send({ type: 'execute', request, execution });
+      const captured = captureRequest(request);
+      execution = { ...execution };
+      if (captured.input === null) {
+        const opened = await opening;
+        if (opened.status !== 'opened') throw new Error('Request requires an opened Session');
+        await send({ type: 'check' });
+        const result = rejectedRequestResult(opened.id, { id: execution.requestId ?? randomUUID(), initiator: 'caller', request: captured.normalized }, usageReport());
+        if (!execution.deferPublicationCheck) await send({ type: 'check' });
+        return result;
+      }
+      const reply = await send({ type: 'execute', request: captured.input, execution });
       if (!reply.result) throw new Error('Worker returned no request result');
       if (reply.result.kind === 'resolution') {
         const report = finalizeRequestReport(reply.result.report, usageReport());

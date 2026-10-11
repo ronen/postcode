@@ -492,7 +492,7 @@ for (const format of ['json', 'unicode'] as const) test(`CLI seals authoritative
     }
     if (event === 'message' && message?.type === 'reply' && message.result?.kind === 'view' && message.result.view.schema === 'postcode-investigation-view/1-experimental'
       && message.result.view.projection.lens === 'summarize') workerMissing = message.result.view.usage.missingCalls;
-    if (event === 'message' && message?.type === 'reply' && message.result?.investigationArrangementKey) {
+    if (event === 'message' && message?.type === 'reply' && message.result?.kind === 'view' && message.result.investigationArrangementKey) {
       arrangementKeys.set(message.result.view.projection.id, message.result.investigationArrangementKey);
     }
     const delivered = Reflect.apply(emit, this, [event, ...args]) as boolean;

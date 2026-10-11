@@ -347,8 +347,16 @@ designations, incompatible project/repository subjects, and selectors for popula
 Lenses return `invalid-designation` before Evaluation. Dependency requests normalize
 the CLI spellings `dependencies`, `children`, and `parents` to `dependency-structure`,
 `dependency-children`, and `dependency-parents`; direct callers can use either spelling.
-Usage reports and these
-resolution reports have no program Projection or View and emit no `view-produced`
+Usage calls with a selector, subject, reference designation, or nonempty parameters
+return `invalid-report-inputs` and retain those inputs under `suppliedInputs`.
+Unknown Lens names and unrepresentable input return `invalid-request`. Their request
+context is explicitly `kind: rejected`: it preserves safe supplied fields under
+`input`, including the original Lens name, without identifying it as a valid Lens.
+Each problem identifies the affected field and reason; values that cannot be copied
+or represented in JSON are omitted with an explicit representation limit. The raw
+invocation is also omitted from rejected-input command observations to avoid trying
+to serialize it again. Unexpected failures after validation remain internal defects.
+Usage reports and these resolution reports have no program Projection or View and emit no `view-produced`
 event. Their JSON families are `postcode-investigation-usage/1-experimental` and
 `postcode-resolution/1-experimental`. Other subject-resolution failures still use
 the existing family result paths pending the remaining [request-model work](plans/lens-request-model.md).

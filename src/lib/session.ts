@@ -1,9 +1,9 @@
 import { freezeOwned } from './immutable.js';
 import { randomUUID } from 'node:crypto';
-import { lenses, normalizeRequest, invalidParameters, invalidDesignation } from './requests.js';
-import type { ViewRequest } from './requests.js';
+import { lenses, captureRequest, invalidParameters, invalidDesignation, invalidReportInputs } from './requests.js';
+import type { ViewRequest, CapturedRequest } from './requests.js';
 export type { ViewRequest } from './requests.js';
-import { renderRequestReport } from './request-reporting.js';
+import { renderRequestReport, rejectedRequestResult } from './request-reporting.js';
 import type { RequestContext, ResolutionReport, UsageReport } from './request-reporting.js';
 import { createAssociatedInspectionView } from './investigation/associations.js';
 import { methods } from './identity.js';
@@ -114,12 +114,12 @@ export async function openSession(options: ProjectOptions, lifetime: { runGit?: 
       await check(); return state!.evaluate(request);
     }),
     execute: (request: ViewRequest, execution: ExecutionOptions = {}) => {
-      request = freezeOwned(structuredClone(request));
+      const captured = captureRequest(request);
       execution = { ...execution };
       return operation(async () => {
         await check();
         try {
-          const result = await state!.execute(request, execution.requestId);
+          const result = await state!.execute(captured, execution.requestId);
           if (!execution.deferPublicationCheck) await check();
           alive();
           return result;
@@ -139,13 +139,17 @@ export async function openSession(options: ProjectOptions, lifetime: { runGit?: 
 
 function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalysis, session: SessionId,
   integration: ReturnType<typeof investigationEvaluation>, usage: () => ReturnType<typeof usageSummary>) {
-  return async (request: ViewRequest, requestId: string = randomUUID()) => {
-    const context: RequestContext = freezeOwned({ id: requestId, initiator: 'caller', request: normalizeRequest(request) });
+  return async (capturedRequest: CapturedRequest, requestId: string = randomUUID()) => {
+    const context: RequestContext = freezeOwned({ id: requestId, initiator: 'caller', request: capturedRequest.normalized });
+    if (context.request.kind === 'rejected') return rejectedRequestResult(session, context, usage());
+    const request = capturedRequest.input;
+    if (!request) throw new Error('Validated request input missing');
     const parameterError = invalidParameters(context.request);
-    const invalid = parameterError ?? invalidDesignation(context.request, request);
+    const reportError = invalidReportInputs(context.request);
+    const invalid = parameterError ?? reportError ?? invalidDesignation(context.request, request);
     if (invalid) {
       const report: ResolutionReport = { schema: 'postcode-resolution/1-experimental', session, context, usage: usage(),
-        resolution: { reason: parameterError ? 'invalid-parameters' : 'invalid-designation', explanation: invalid, candidates: [], criteria: [parameterError ? 'Declared Lens parameters' : 'Declared Lens subjects and cardinality'], qualifications: [], prerequisites: [], retainedAnswers: [] } };
+        resolution: { reason: parameterError ? 'invalid-parameters' : reportError ? 'invalid-report-inputs' : 'invalid-designation', explanation: invalid, candidates: [], criteria: [parameterError ? 'Declared Lens parameters' : reportError ? 'Subjectless usage report' : 'Declared Lens subjects and cardinality'], qualifications: [], prerequisites: [], retainedAnswers: [] } };
       return { kind: 'resolution' as const, context, report, rendered: renderRequestReport(report), failed: true };
     }
     if (context.request.kind === 'report') {

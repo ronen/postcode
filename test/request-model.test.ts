@@ -190,3 +190,136 @@ test('missing and inapplicable designation modes are refused before Evaluation',
   }
   assert.equal(put.mock.calls.length, 0);
 });
+
+test('usage refuses and preserves extraneous designation and parameters without Evaluation', async t => {
+  const opened = await openSession({ configPath });
+  if (opened.status !== 'opened') throw new Error('Expected project');
+  t.after(() => opened.session.close());
+  const put = t.mock.method(MemoryProgramRecordStore.prototype, 'put');
+  for (const inputs of [
+    { selector: 'entry' }, { selector: 'module-12345678', reference: true },
+    { selector: null, subject: 'project' as const }, { selector: null, subject: 'repository' as const },
+    { selector: null, parameters: { bogus: 1 } },
+    { selector: 'entry', subject: 'project' as const, parameters: { bogus: [true, null] } },
+  ]) {
+    const result = await opened.session.execute({ lens: 'usage', ...inputs, presentation });
+    assert.equal(result.kind, 'resolution');
+    if (result.kind !== 'resolution') throw new Error('Expected refusal');
+    assert.equal(result.report.resolution.reason, 'invalid-report-inputs');
+    assert.equal(result.context.request.kind, 'report');
+    if (result.context.request.kind !== 'report') throw new Error('Expected usage request');
+    assert.deepEqual(result.context.request.suppliedInputs, inputs);
+    assert.deepEqual(JSON.parse(result.rendered), result.report);
+    assert.equal(result.report.usage.calls, 0);
+  }
+  assert.equal((await opened.session.execute({ lens: 'usage', selector: null, parameters: {}, presentation })).kind, 'usage');
+  assert.equal(put.mock.calls.length, 0);
+});
+
+test('unknown Lens names are preserved as rejected input and never treated as Lens identities', async t => {
+  const opened = await openSession({ configPath });
+  if (opened.status !== 'opened') throw new Error('Expected project');
+  t.after(() => opened.session.close());
+  const put = t.mock.method(MemoryProgramRecordStore.prototype, 'put');
+  for (const lens of ['absent-lens', 'toString', 'constructor', '__proto__']) {
+    const result = await opened.session.execute({ lens, selector: null, presentation } as ViewRequest);
+    assert.equal(result.kind, 'resolution');
+    if (result.kind !== 'resolution' || result.context.request.kind !== 'rejected') throw new Error('Expected rejected input');
+    assert.equal(result.report.resolution.reason, 'invalid-request');
+    assert.equal(result.context.request.input.lens, lens);
+    assert.equal('lens' in result.context.request, false);
+    assert.deepEqual(result.context.request.problems, [{ field: 'lens', reason: 'The supplied name does not identify a registered Lens or report.', representation: 'preserved' }]);
+    assert.deepEqual(JSON.parse(result.rendered), result.report);
+  }
+  assert.equal(put.mock.calls.length, 0);
+});
+
+test('unrepresentable input reports affected fields and omissions without executing accessors', () => {
+  const cyclic: { self?: unknown } = {}; cyclic.self = cyclic;
+  let reads = 0;
+  const accessor = { get secret() { reads++; throw new Error('Must not execute caller accessor'); } };
+  for (const parameters of [{ value: () => {} }, { value: Symbol('value') }, { value: 1n }, cyclic,
+    { value: Infinity }, { value: new Map() }, accessor, new Proxy({}, {})]) {
+    const request = normalizeRequest({ lens: 'inspect', selector: 'entry', parameters, presentation } as ViewRequest);
+    assert.equal(request.kind, 'rejected');
+    if (request.kind !== 'rejected') throw new Error('Expected rejected input');
+    assert.equal(request.input.lens, 'inspect');
+    assert.equal('parameters' in request.input, false);
+    assert.ok(request.problems.some(problem => problem.field.startsWith('parameters') && problem.representation === 'omitted' && problem.omittedField === 'parameters' && problem.reason.length > 0));
+    assert.doesNotThrow(() => JSON.stringify(request));
+  }
+  assert.equal(reads, 0);
+});
+
+test('direct and worker publication refuse malformed input with serializable observations and remain usable', async t => {
+  const opened = await openSession({ configPath });
+  if (opened.status !== 'opened') throw new Error('Expected project');
+  const remote = interactiveSession({ configPath });
+  t.after(async () => { await remote.close(); await opened.session.close(); });
+  const opening = await remote.opening;
+  if (opening.status !== 'opened') throw new Error('Expected worker');
+  const cycle: { self?: unknown } = {}; cycle.self = cycle;
+  for (const session of [opened.session, { id: opening.id, execute: remote.execute, check: remote.check, usage: remote.usage }]) {
+    for (const request of [
+      { lens: '__proto__', selector: null, presentation },
+      { lens: 'inspect', selector: 'entry', parameters: { value: () => {} }, presentation },
+      { lens: 'usage', selector: null, parameters: cycle, presentation },
+      { lens: 'usage', selector: 'entry', parameters: { bogus: 1 }, presentation },
+    ] as ViewRequest[]) {
+      let stdout = '', stderr = '';
+      const batches: ObservationBatch[] = [];
+      const code = await publishCommand(session, request, request, configPath, 1,
+        { stdout(text) { stdout += text; }, stderr(text) { stderr += text; } },
+        { async submit(batch) { JSON.stringify(batch); batches.push(batch); return { accepted: true }; } });
+      assert.equal(code, 3, stderr);
+      assert.equal(stderr, '');
+      const report = JSON.parse(stdout);
+      assert.equal(report.schema, 'postcode-resolution/1-experimental');
+      assert.equal(batches[0]!.events.at(-1)!.type, 'command-refused');
+      assert.equal(batches[0]!.events.some(event => event.type === 'view-produced'), false);
+      assert.equal(batches[0]!.records.some(record => record.kind === 'qualified-view'), false);
+      if (report.context.request.kind === 'rejected' && report.context.request.problems.some((problem: { representation: string }) => problem.representation === 'omitted')) {
+        assert.match(report.resolution.qualifications.join(' '), /Representation limit: parameters is omitted/);
+      }
+    }
+    assert.equal((await session.execute({ lens: 'usage', selector: null, presentation })).kind, 'usage');
+  }
+});
+
+test('unexpected failures after validation remain defects, including a later cloning failure', async () => {
+  for (const error of [new Error('Unexpected execution failure'), new DOMException('Unexpected later clone failure', 'DataCloneError')]) {
+    const batches: ObservationBatch[] = [];
+    let stderr = '';
+    const code = await publishCommand({ id: 'test-session', execute() { throw error; }, check() {} },
+      { lens: 'modules', selector: null, presentation }, 'modules', configPath, 1,
+      { stdout() { assert.fail('No program output expected'); }, stderr(text) { stderr += text; } },
+      { async submit(batch) { batches.push(batch); return { accepted: true }; } });
+    assert.equal(code, 1);
+    assert.match(stderr, /Internal failure: Unexpected/);
+    assert.equal(batches[0]!.events.at(-1)!.type, 'command-defect');
+    assert.equal(batches[0]!.records.some(record => record.kind === 'resolution-result'), false);
+  }
+});
+
+test('abnormal final usage uses captured presentation without rereading rejected accessor input', async () => {
+  const { SessionInvalidated } = await import('../src/lib/execution-errors.js');
+  const { usageSummary } = await import('../src/lib/investigation/reporting.js');
+  const { recordId, sessionId } = await import('../src/lib/identity.js');
+  const id = sessionId();
+  const subject = recordId(id, 'module', ['fixture', 'subject']);
+  const usage = usageSummary([{ session: id, attempt: recordId(id, 'attempt', ['fixture', 'attempt']),
+    request: { operation: 'functionality', subject, parameters: {} },
+    agent: { provider: 'postcode-test', model: 'scripted', origin: 'scripted', configuration: {} },
+    instructions: 'Controlled prior attempt', termination: 'interrupted', elapsedMilliseconds: 0,
+    usage: [], deliveries: [], suppliedEvidence: [], summarizedEvidence: [] }]);
+  let reads = 0, stderr = '';
+  const request = { lens: 'modules', selector: null, get presentation(): never { reads++; throw new Error('Must not reread rejected input'); } } as ViewRequest;
+  const batches: ObservationBatch[] = [];
+  const code = await publishCommand({ id, execute() { throw new SessionInvalidated(); }, check() {}, usage: () => usage },
+    request, request, configPath, 1, { stdout() { assert.fail('No output before invalidation'); }, stderr(text) { stderr += text; } },
+    { async submit(batch) { JSON.stringify(batch); batches.push(batch); return { accepted: true }; } });
+  assert.equal(code, 2);
+  assert.equal(reads, 0);
+  assert.match(stderr, /Final investigation usage/);
+  assert.equal(batches[0]!.events.at(-1)!.type, 'session-invalidated');
+});

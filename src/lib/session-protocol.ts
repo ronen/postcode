@@ -1,4 +1,4 @@
-import type { RecordId } from './records.js';
+import type { RecordId, SessionId } from './records.js';
 import type { AgentInput, AgentReply, AgentIdentity, InvestigationRequest, AttemptReport, ReportedUsage } from './investigation/contracts.js';
 import type { openSession, ViewRequest, ExecutionOptions } from './session.js';
 import type { GitRequest, GitResult } from './git-execution.js';
@@ -6,7 +6,7 @@ import { AnalysisFailure, SessionInvalidated, CleanupIncomplete, GitFailure } fr
 
 type Opened = Extract<Awaited<ReturnType<typeof openSession>>, { status: 'opened' }>;
 export type ExecutedRequest = Awaited<ReturnType<Opened['session']['execute']>>;
-export type Opening = { status: 'opened'; id: string } | Exclude<Awaited<ReturnType<typeof openSession>>, Opened>;
+export type Opening = { status: 'opened'; id: SessionId } | Exclude<Awaited<ReturnType<typeof openSession>>, Opened>;
 export type WireError = { kind: 'invalidated' | 'unavailable' | 'cleanup' | 'git' | 'defect'; message: string; operation?: string; code?: string | number | null };
 export function encodeError(error: unknown): WireError {
   if (error instanceof SessionInvalidated) return { kind: 'invalidated', message: error.message };
