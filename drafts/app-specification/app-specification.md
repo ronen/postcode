@@ -249,7 +249,7 @@ Preserve enough provenance to relate observations to PostCode version, relevant 
 <a id="delivery-and-lifecycle"></a>
 ### Delivery and lifecycle
 
-Released production builds deliver research observations to designated research storage using configuration selected when the build is produced. Development/test builds may suppress capture or use another destination, including an explicitly excluded location within the development repository. The foundation’s “In research use” provision is read together with its generated-output boundary; it does not withdraw development/test sink behavior or make build type alone determine whether observations can be used in research. Preserve the distinction between research use and development/testing, and maintain explicit exclusion wherever generated output is retained in the investigated repository.
+For research use, PostCode delivers observation records to a designated research destination, subject to the [generated-output evidence boundary](#generated-output-evidence-boundary). Released production builds use delivery configuration selected when the build is produced. Development/test builds may suppress recording or use another destination, including an explicitly excluded location within the development repository. These application delivery choices preserve the evidence boundary independently of storage location.
 
 Make delivery failure visible without invalidating an otherwise successfully produced View. Sink acceptance, post-acceptance cleanup, retention, migration, historical reading, and producer-side caching remain separate concerns. Existing local acceptance guarantees complete no-overwrite publication, not power-loss durability. Observations are evidence of use, not operational state for restoring a Session or its reference bindings.
 
@@ -258,9 +258,9 @@ Operational diagnostics or product telemetry can use other mechanisms but must n
 <a id="generated-output-evidence-boundary"></a>
 ### Generated-output evidence boundary
 
-PostCode outputs about a repository—including observations, exported Views, context artifacts, CLI output, caches, and reports—must not silently become independent evidence in subsequent analysis of that repository. Keep them outside it or enforce an explicit exclusion policy. Generic directory names, Git-ignore status, or markings in content do not establish that boundary.
+PostCode outputs about a repository—including observation records, exported Views, context artifacts, CLI output, caches, and reports—must not become independent repository evidence in subsequent analysis of that same repository. Keep them outside it or enforce an explicit exclusion policy. Generic directory names, Git-ignore status, or markings in content do not establish that boundary.
 
-Outputs can be retained, reused, and compared as PostCode-produced artifacts with their provenance intact. Outputs about other repositories can remain development/test evidence about PostCode. When PostCode investigates itself, exclude locally retained outputs about itself from repository evidence. Sink selection and storage convenience do not waive this obligation.
+Outputs can be retained, revisited for historical purposes, reused, and compared as PostCode-produced artifacts, provided their provenance and separation from repository evidence remain intact. The boundary governs their evidential role, not all access to or use of them. For example, comparing two earlier summaries can show how PostCode’s accounts changed; their agreement does not independently corroborate a claim about the program. Outputs about other repositories can remain development/test evidence about PostCode. When PostCode investigates itself, exclude locally retained outputs about itself from repository evidence. Sink selection and storage convenience do not waive this obligation.
 
 <a id="scope-and-future-refinement"></a>
 ## Scope and future refinement
