@@ -29,6 +29,12 @@ For F4, also go with your recommendation.  Two details matter:
 
 Keep this handling narrow: an unexpected failure *after successful validation* remains an internal defect.
 
+### 2026-10-11 — Investigate intermittent verification failure
+
+Context: The agent asked whether to investigate the reviewer's earlier intermittent CLI JSON failure next, while keeping wider implementation paused. The human replied:
+
+yes investigate it
+
 ## Outcome
 
 Intermediate checkpoint, 2026-10-11: implementation commit `a9c8189f042d5fe6cabf27db414b995a5972d0f6` establishes normalized request reporting, shared Lens-to-operation declarations, explicit View/usage/parameter-resolution execution alternatives, parent usage finalization and observation-envelope version 2. Usage no longer has a synthetic Projection/View descriptor. Module matching is shared without the dependency-selection inspection side effect. The local observation convention now specifies version-two batches; user-facing and descriptive documentation records the implemented subset and remaining gaps.
