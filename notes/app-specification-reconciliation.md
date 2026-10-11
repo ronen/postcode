@@ -146,7 +146,7 @@ For example, investigating “why synchronization is slow” might bring togethe
 
 Questions for later include how the human supplies or corrects inferred context; which choices it influences and how those choices are inspected or overridden; how context evolves when an investigation branches; and what agent sharing includes. Workspace membership alone must not imply a common captured state, establish a program relationship, or make one View evidence for another. Preserve the distinction between request defaults and existing results, and between explicit choices and inferred purpose. Shared context and persistence remain independent: either could be useful without the other.
 
-**Possible later documentation:** a candidate-future-UX note beside the existing candidate-capabilities note could retain such possibilities. Creating that separate document now is premature. First turn this discussion into a draft proposal and review and promote it; retain these ideas here in the meantime. No future-UX document or additional design work is authorized by this suggestion.
+**Subsequent documentation:** creating a separate candidate-UX note was deferred until review and promotion. After adoption, the human authorized [Candidate UX](candidate-ux.md), which now carries these possibilities alongside candidate capabilities.
 
 This stages refinement of the richer baseline model rather than silently withdrawing its continuity and lineage aspirations. The eventual specification should distinguish the initial UX choice, future context possibilities, and separately deferred continuity requirements.
 
@@ -402,9 +402,9 @@ Checked 405 relative links across the 16 canonical destinations after promotion,
 
 ## Impact and follow-up after adoption
 
-### Candidate future UX
+### Candidate UX
 
-After review and promotion, consider creating `notes/candidate-future-ux.md` alongside candidate capabilities, under separate human direction. Carry forward richer optional Workspace context, shared purpose and defaults, context-sensitive suggestions, different Workspace kinds and initial Views, brief inspection versus keeping a View, and evolution beyond an initial subject. Preserve open questions about inferred versus explicit context, human correction, inspectable choices, branching, and agent sharing. Keep continuity/save-resume requirements undecided until further experience. The present package does not create that file or require its infrastructure.
+Completed after promotion under separate human direction: [Candidate UX](candidate-ux.md) carries richer optional Workspace context, specialized Workspace kinds and initial Views, brief inspection and branches, continuing orientation, discoverable actions, suggestions, continuity experiences, qualification/history presentation, and agent sharing. Entries identify human needs, proposed experiences, dependencies, uncertainties, and useful formative experience. They preserve the adopted simple Workspace and leave continuity/save-resume requirements undecided. Existing GUI notes supplied ideas but still need their own reconciliation; no candidate is an implementation commitment or a prerequisite for the first useful GUI.
 
 ### Lens representation follow-up
 

@@ -4,6 +4,8 @@ This non-governing inventory keeps possible future analyses, lenses, presentatio
 
 The [backlog](../docs/backlog.md) records broader worthwhile work and concerns; this inventory gives exploratory product capabilities room to retain their questions, evidence distinctions, and open alternatives. Inclusion here assigns no priority. Any selected capability still needs the applicable planning, decision, and task authorization before implementation.
 
+[Candidate UX](candidate-ux.md) explores how someone could initiate, navigate, organize, and continue these investigations. This inventory focuses on what PostCode could help someone discover or establish. Ideas may span both; cross-link their complementary questions rather than duplicate their rationale.
+
 ## Investigation across changing repository states
 
 PostCode could continue an investigation as the repository or worktree changes,

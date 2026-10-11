@@ -14,6 +14,7 @@ Use [`drafts/`](../drafts/) for canonical-shaped proposals, an ignored root unde
 
 - [Lens representation and subject selection proposal](lens-representation-proposal.md)
 - [Candidate capabilities](candidate-capabilities.md)
+- [Candidate UX](candidate-ux.md)
 - [Dependency landscape](dependency-landscape.md)
 - [Explorative capabilities](explorative-capabilities.md)
 - GUI: [design kickoff](gui/design-kickoff.md), [analysis needs](gui/analysis-needs.md), [visual language](gui/visual-language.md)
