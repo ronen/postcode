@@ -14,6 +14,21 @@ Please implement the approved plan at `docs/plans/lens-request-model.md`. This i
 
 The review is complete.  Please assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
 
+### 2026-10-11 — F3 and F4 behavior
+
+Context: The agent asked, “For F3, I recommend refusing usage requests that supply a selector, subject, or nonempty parameters, and retaining those rejected inputs in the resolution report. Should I use that behavior? Usage is defined as subjectless in the approved plan.” The human selected:
+
+Refuse and preserve rejected inputs (recommended)
+
+The subsequent human direction was:
+
+For F4, also go with your recommendation.  Two details matter:
+
+- Preserve the supplied Lens name as rejected input, without pretending it identifies a valid Lens.
+- Non-cloneable values cannot necessarily be preserved verbatim in a report. Record the affected field and an intelligible reason, explicitly indicating any representation limit. Reporting must not fail while trying to serialize the rejected input.
+
+Keep this handling narrow: an unexpected failure *after successful validation* remains an internal defect.
+
 ## Outcome
 
 Intermediate checkpoint, 2026-10-11: implementation commit `a9c8189f042d5fe6cabf27db414b995a5972d0f6` establishes normalized request reporting, shared Lens-to-operation declarations, explicit View/usage/parameter-resolution execution alternatives, parent usage finalization and observation-envelope version 2. Usage no longer has a synthetic Projection/View descriptor. Module matching is shared without the dependency-selection inspection side effect. The local observation convention now specifies version-two batches; user-facing and descriptive documentation records the implemented subset and remaining gaps.
