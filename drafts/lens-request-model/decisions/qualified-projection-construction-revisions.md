@@ -1,10 +1,13 @@
 # Proposed revisions to docs/decisions/qualified-projection-construction.md
 
-## Replace lifecycle metadata and add forward supersession mappings
+## Replacement metadata block
 
-Status: partially superseded
+Status: superseded
+Decided: 2026-10-06
+Arising from: [View-construction boundary task](../../records/tasks/2026-10-05-view-construction-boundary.md)
+Scope: current and future Presentations of the module, organization, dependency and investigation Projection families, including associated-investigram inspection and GUI Presentations; the eager construction strategy applies only to the existing builders
+Superseded by:
 
-Superseded in part:
-- [Separate qualified construction from arrangement](#separate-qualified-construction-from-arrangement): only usage-descriptor data flow, by [Report actual requests and outcomes](lens-application-and-request-outcomes.md#report-actual-requests-and-outcomes). Arrangement isolation, qualified inputs, binding-only access and source disclosure remain accepted.
-- [Retain investigation selections with derived revision snapshots](#retain-investigation-selections-with-derived-revision-snapshots): missing exact-inspection and missing/ambiguous/unsupported application retention, and the blanket all-non-usage retention requirement, by [Return unsettled applications as resolution results](lens-application-and-request-outcomes.md#return-unsettled-applications-as-resolution-results); usage-only descriptor retention by [Report actual requests and outcomes](lens-application-and-request-outcomes.md#report-actual-requests-and-outcomes); designation-bearing retained payload/identity prescriptions by [Give equivalent qualified answers repeatable identity](lens-application-and-request-outcomes.md#give-equivalent-qualified-answers-repeatable-identity). Valid failed/limited/unavailable selections, derived revision snapshots and atomic immutable retention remain accepted.
-- [Separate Projection identity from presentation and reporting identity](#separate-projection-identity-from-presentation-and-reporting-identity): preservation of designation-sensitive mechanical formulas and descriptor-dependent reporting formulas by [Give equivalent qualified answers repeatable identity](lens-application-and-request-outcomes.md#give-equivalent-qualified-answers-repeatable-identity) and [Report actual requests and outcomes](lens-application-and-request-outcomes.md#report-actual-requests-and-outcomes); schema-name/field-layout and wording preservation restrictions only for the enumerated request-model changes by [Permit direct changes to affected experimental outputs](experimental-structured-outputs.md#permit-direct-changes-to-affected-experimental-outputs). Unaffected semantic preservation, explicit arrangement inputs, frozen continuation normalization, self-sufficient parent rendering and authoritative usage finalization remain accepted.
+- [Lens application, request outcomes and qualified answer identity](lens-application-and-request-outcomes.md).
+- [Qualified construction under the request model](qualified-construction-under-the-request-model.md), including the [complete headed-decision mapping](qualified-construction-under-the-request-model.md#supersession-mapping).
+- [Experimental structured outputs during early development](experimental-structured-outputs.md).
