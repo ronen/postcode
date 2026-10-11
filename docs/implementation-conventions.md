@@ -45,9 +45,9 @@ Agents may update this document only as part of authorized implementation work t
 
 ## Qualified construction and arrangement
 
-- Keep the current module, organization, dependency and investigation core content independent of CLI limits, terminal fitting and format/source choices. Resolve fixed retained references before arrangement; subsequent history changes require another core selection. [[Construction boundary](decisions/qualified-projection-construction.md#separate-qualified-construction-from-arrangement)]
+- Keep the current module, organization, dependency and investigation core content independent of CLI limits, terminal fitting and format/source choices. Resolve fixed retained references before arrangement; subsequent history changes require another core selection. [[Construction boundary](decisions/qualified-construction-under-the-request-model.md#preserve-qualified-construction-and-arrangement-isolation)]
 - Pass arrangement only the selected content, presentation/reporting inputs and coordinated bindings or the validated binding-only capability. Do not pass a store, lookup callback or history-refresh closure. Keep existing allocation populations and order explicit in coordination and arrangement.
-- Carry investigation's usage-independent arrangement key in the worker envelope. Finalize usage with that explicit key; do not add it to public JSON or reconstruct it from a bounded View. [[Identity separation](decisions/qualified-projection-construction.md#separate-projection-identity-from-presentation-and-reporting-identity)]
+- Carry the investigation View's usage-independent arrangement key in the worker envelope. Finalize usage with that explicit key; do not add it to public JSON or reconstruct it from a bounded View. Usage reports and resolution results use explicit non-View alternatives and require no descriptor or arrangement key for a fabricated Projection. [[Identity separation](decisions/qualified-construction-under-the-request-model.md#separate-answer-view-and-report-identity)] [[Current request-model conformance gaps](decisions/lens-application-and-request-outcomes.md#adoption-and-conformance)]
 
 ## Selection and session references
 

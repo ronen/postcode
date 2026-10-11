@@ -1,6 +1,7 @@
 # Experimental structured outputs during early development
 
-Status: in preparation
+Status: accepted
+Decided: 2026-10-11
 Arising from: [Explicit Lenses and qualified request resolution](../plans/lens-request-model.md)
 Scope: temporary compatibility policy for structured application outputs, and the specific output changes in the Lens request-model work
 Supersedes: [Qualified construction — Separate Projection identity from presentation and reporting identity](qualified-projection-construction.md#separate-projection-identity-from-presentation-and-reporting-identity), the whole headed decision, jointly with [Lens application and request outcomes](lens-application-and-request-outcomes.md) and [Qualified construction under the request model](qualified-construction-under-the-request-model.md). Their [mapping](qualified-construction-under-the-request-model.md#supersession-mapping) carries forward its unaffected identity, qualification and reporting commitments.

@@ -64,7 +64,6 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 
 - [Separate research concepts from application specification](application-specification-boundaries.md)
 
-- [Separate qualified Projection construction from presentation shaping](qualified-projection-construction.md)
 - [Coordinate Views while preserving qualified results](coordinated-views-and-qualified-results.md)
 - [Hosted authentication and billing routes](hosted-authentication-and-billing.md)
 - [Private investigator reference transport](investigator-reference-transport.md)
@@ -87,6 +86,10 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 - [Module composition property decision](module-composition-property-decision.md)
 - [Dependency and organization integration decisions](dependency-organization-integration-decisions.md)
 - [Subject-kind standard expansion decision](subject-kind-standard-expansion-decision.md)
+
+- [Lens application, request outcomes and qualified answer identity](lens-application-and-request-outcomes.md)
+- [Qualified construction under the request model](qualified-construction-under-the-request-model.md)
+- [Experimental structured outputs during early development](experimental-structured-outputs.md)
 
 ## Suggested Contents
 

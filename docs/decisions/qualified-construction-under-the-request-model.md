@@ -1,6 +1,7 @@
 # Qualified construction under the request model
 
-Status: in preparation
+Status: accepted
+Decided: 2026-10-11
 Arising from: [Explicit Lenses and qualified request resolution](../plans/lens-request-model.md)
 Scope: module, organization, dependency and investigation qualified construction, retained support, arrangement, identity and reporting
 Supersedes: [Separate qualified Projection construction from presentation shaping](qualified-projection-construction.md), the complete record, jointly with [Lens application and request outcomes](lens-application-and-request-outcomes.md) and [Experimental structured outputs](experimental-structured-outputs.md).
