@@ -3,7 +3,7 @@ import type { InvestigationSelection } from './evaluation.js';
 import type { RevisionSnapshot } from './revisions.js';
 import { identityReference } from '../identity.js';
 
-export type InvestigationLens = 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'children' | 'parents';
+export type InvestigationLens = 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'dependency-children' | 'dependency-parents';
 export type SelectionSelector = null | { readonly literal: string } | { readonly reference: RecordId } | { readonly unresolvedReference: string };
 export interface SelectionRelation { readonly original: RecordId; readonly account: RecordId }
 export interface AccountNavigation {

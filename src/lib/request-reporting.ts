@@ -12,7 +12,7 @@ export interface RequestContext {
   readonly request: NormalizedRequest;
 }
 export interface ResolutionInformation {
-  readonly reason: 'invalid-parameters';
+  readonly reason: 'invalid-parameters' | 'invalid-designation';
   readonly explanation: string;
   readonly candidates: readonly { readonly id: RecordId; readonly kind: 'module' | 'group' | 'investigram'; readonly reference: string }[];
   readonly criteria: readonly string[];

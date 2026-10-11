@@ -16,7 +16,7 @@ const configPath = path.resolve('fixtures/dependency-journey/tsconfig.json');
 const presentation = { format: 'json' as const, sourceDetail: false };
 
 test('all current Lens requests separate question, designation, parameters and presentation', () => {
-  const expected: readonly LensId[] = ['modules', 'organization', 'dependencies', 'children', 'parents', 'inspect', 'summarize', 'explain', 'decompose', 'examine'];
+  const expected: readonly LensId[] = ['modules', 'organization', 'dependency-structure', 'dependency-children', 'dependency-parents', 'inspect', 'summarize', 'explain', 'decompose', 'examine'];
   assert.deepEqual(Object.keys(lenses).sort(), [...expected].sort());
   for (const lens of expected) {
     for (const reference of [true, false]) {
@@ -139,4 +139,54 @@ for (const afterOutput of [false, true]) test(`non-View publication checks input
   assert.equal(batch.events.at(-1)!.type, 'session-invalidated');
   const context = batch.records.find(item => item.kind === 'request')!.value as RequestContext;
   assert.equal(context.request.kind, 'report');
+});
+
+test('dependency command spellings normalize to the Lens identity of the retained answer', async t => {
+  const { parseCommand } = await import('../src/lib/commands.js');
+  const opened = await openSession({ configPath });
+  if (opened.status !== 'opened') throw new Error('Expected project');
+  t.after(() => opened.session.close());
+  for (const [spelling, identity] of [['dependencies', 'dependency-structure'], ['children', 'dependency-children'], ['parents', 'dependency-parents']] as const) {
+    const parsed = parseCommand([spelling, ...(spelling === 'dependencies' ? [] : ['entry']), '--json'], '.');
+    if (parsed.kind !== 'view') throw new Error('Expected command');
+    assert.equal(parsed.request.lens, identity);
+    const batches: ObservationBatch[] = [];
+    const code = await publishCommand(opened.session, parsed.request, spelling, configPath, 1,
+      { stdout() {}, stderr() {} }, { async submit(batch) { batches.push(batch); return { accepted: true }; } });
+    assert.equal(code, 0);
+    const request = batches[0]!.records.find(item => item.kind === 'request')!.value as RequestContext;
+    assert.equal(request.request.kind === 'lens' && request.request.lens, identity);
+    const view = batches[0]!.records.find(item => item.kind === 'qualified-view')!.value as { projection: { lens: string } };
+    assert.equal(view.projection.lens, identity);
+    const direct = requireView(await opened.session.execute({ ...parsed.request, lens: spelling }));
+    assert.equal(direct.context.request.kind === 'lens' && direct.context.request.lens, identity);
+    assert.equal(direct.view.projection.lens, identity);
+  }
+});
+
+test('missing and inapplicable designation modes are refused before Evaluation', async t => {
+  const opened = await openSession({ configPath });
+  if (opened.status !== 'opened') throw new Error('Expected project');
+  t.after(() => opened.session.close());
+  const put = t.mock.method(MemoryProgramRecordStore.prototype, 'put');
+  const requests: ViewRequest[] = [];
+  for (const lens of ['inspect', 'dependency-children', 'dependency-parents', 'summarize', 'explain', 'decompose', 'examine'] as const) {
+    requests.push({ lens, selector: null, presentation });
+    for (const subject of ['project', 'repository'] as const) requests.push({ lens, selector: null, subject, presentation });
+  }
+  for (const lens of ['modules', 'dependency-structure'] as const) requests.push({ lens, selector: null, subject: 'repository', presentation });
+  for (const lens of ['modules', 'dependency-structure', 'organization'] as const) {
+    for (const reference of [true, false]) requests.push({ lens, selector: 'entry', reference, presentation });
+  }
+  requests.push({ lens: 'inspect', selector: 'entry', subject: 'project', presentation });
+  for (const request of requests) {
+    const result = await opened.session.execute(request);
+    assert.equal(result.kind, 'resolution', JSON.stringify(request));
+    if (result.kind !== 'resolution') throw new Error('Expected resolution');
+    assert.equal(result.report.resolution.reason, 'invalid-designation');
+    assert.deepEqual(result.report.resolution.prerequisites, []);
+    assert.deepEqual(result.report.resolution.retainedAnswers, []);
+    assert.equal('view' in result, false);
+  }
+  assert.equal(put.mock.calls.length, 0);
 });

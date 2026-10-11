@@ -342,7 +342,12 @@ The request record carries the actual normalized Lens or report request, includi
 subject designation, true Lens parameters, presentation choices and reference lifetime.
 It is independent of the produced View's descriptor. Current public Lenses declare
 no semantic parameters; direct Session calls supplying undeclared parameters return
-an `invalid-parameters` resolution report before Evaluation. Usage reports and these
+an `invalid-parameters` resolution report before Evaluation. Missing required subject
+designations, incompatible project/repository subjects, and selectors for population
+Lenses return `invalid-designation` before Evaluation. Dependency requests normalize
+the CLI spellings `dependencies`, `children`, and `parents` to `dependency-structure`,
+`dependency-children`, and `dependency-parents`; direct callers can use either spelling.
+Usage reports and these
 resolution reports have no program Projection or View and emit no `view-produced`
 event. Their JSON families are `postcode-investigation-usage/1-experimental` and
 `postcode-resolution/1-experimental`. Other subject-resolution failures still use
@@ -649,7 +654,11 @@ be cited until inspected. One-shot summaries disclose `referenceLifetime: comman
 their references expire when the command ends. Shell references last only for that
 session and cannot restore work in a later invocation. Abnormal final JSON usage is
 reported on stderr using `postcode-investigation-usage/1-experimental` and retained
-in the command observation, without fabricating a successful result view.
+in the command observation, without fabricating a successful result view. This is
+the same usage-report family as explicit `usage` output: `schema`, `session`, and
+`usage` are always present; `context` is present for an explicit usage request and
+absent for the abnormal final-usage supplement on stderr. The enclosing command
+observation identifies the interrupted or failed request.
 
 Correction metadata listings are bounded separately from account bodies: at most
 256 displaced accounts, 256 accompanying correction references and 256 revision

@@ -1,6 +1,6 @@
 import { freezeOwned } from './immutable.js';
 import { randomUUID } from 'node:crypto';
-import { lenses, normalizeRequest, invalidParameters } from './requests.js';
+import { lenses, normalizeRequest, invalidParameters, invalidDesignation } from './requests.js';
 import type { ViewRequest } from './requests.js';
 export type { ViewRequest } from './requests.js';
 import { renderRequestReport } from './request-reporting.js';
@@ -141,10 +141,11 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
   integration: ReturnType<typeof investigationEvaluation>, usage: () => ReturnType<typeof usageSummary>) {
   return async (request: ViewRequest, requestId: string = randomUUID()) => {
     const context: RequestContext = freezeOwned({ id: requestId, initiator: 'caller', request: normalizeRequest(request) });
-    const invalid = invalidParameters(context.request);
+    const parameterError = invalidParameters(context.request);
+    const invalid = parameterError ?? invalidDesignation(context.request, request);
     if (invalid) {
       const report: ResolutionReport = { schema: 'postcode-resolution/1-experimental', session, context, usage: usage(),
-        resolution: { reason: 'invalid-parameters', explanation: invalid, candidates: [], criteria: ['Declared Lens parameters'], qualifications: [], prerequisites: [], retainedAnswers: [] } };
+        resolution: { reason: parameterError ? 'invalid-parameters' : 'invalid-designation', explanation: invalid, candidates: [], criteria: [parameterError ? 'Declared Lens parameters' : 'Declared Lens subjects and cardinality'], qualifications: [], prerequisites: [], retainedAnswers: [] } };
       return { kind: 'resolution' as const, context, report, rendered: renderRequestReport(report), failed: true };
     }
     if (context.request.kind === 'report') {
@@ -152,7 +153,8 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
       return { kind: 'usage' as const, context, report, rendered: renderRequestReport(report), failed: false };
     }
     const definition = lenses[context.request.lens];
-    const { lens, selector, presentation } = request;
+    const { selector, presentation } = request;
+    const lens = context.request.lens;
     const operation = definition.requirements.kind === 'interpretation' ? definition.requirements.operation : null;
     const investigationLens = operation !== null;
     const followup = investigationLens && definition.subjects.includes('investigram');
@@ -160,7 +162,7 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
     const investigram = request.reference && selector?.startsWith('investigram-')
       ? [...store.entityIds(store.investigations(session).flatMap(item => item.investigrams), 'investigram')]
         .find(([, reference]) => reference === selector)?.[0] : undefined;
-    let unsupportedSubject: 'investigram' | 'program-subject' | undefined = investigram && (lens === 'children' || lens === 'parents' || lens === 'summarize') ? 'investigram' as const : undefined;
+    let unsupportedSubject: 'investigram' | 'program-subject' | undefined = investigram && (lens === 'dependency-children' || lens === 'dependency-parents' || lens === 'summarize') ? 'investigram' as const : undefined;
     if (investigationLens || interpretationInspection || unsupportedSubject) {
       const basis = evaluateModules(store, analysis);
       let selected: RecordId[] = [];
@@ -184,7 +186,7 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
       }
       const result = !unsupportedSubject && investigationLens && selected.length === 1
         ? await integration.evaluate({ operation: operation!, subject: selected[0]!, parameters: {} }) : null;
-      const { view, investigationArrangementKey } = createInvestigationView(store, session, { ...request, ...(unsupportedSubject ? { unsupportedSubject } : {}), lens: lens as 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'children' | 'parents' }, selected, result, usage());
+      const { view, investigationArrangementKey } = createInvestigationView(store, session, { ...request, ...(unsupportedSubject ? { unsupportedSubject } : {}), lens: lens as 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'dependency-children' | 'dependency-parents' }, selected, result, usage());
       const sessionContext = store.get(session);
       if (sessionContext.kind !== 'session') throw new Error('Expected session');
       const repository = sessionContext.repository ? store.get(sessionContext.repository) : null;
@@ -201,8 +203,8 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
     const organizationOutcome = lens === 'modules' ? null : evaluateOrganization(store, evaluation, organizationPresentationRequirements.groups);
     const dependencyOrganization = dependencyLens ? evaluateDependencyOrganization(store, dependencyOutcome!, organizationOutcome!) : null;
     const projection = dependencyLens
-      ? lens === 'dependencies' ? dependencyStructure(store, dependencyOutcome!, dependencyOrganization!.id)
-        : lens === 'children' ? dependencyChildren(store, dependencyOutcome!, selector!, request.reference ?? false, dependencyOrganization!.id)
+      ? lens === 'dependency-structure' ? dependencyStructure(store, dependencyOutcome!, dependencyOrganization!.id)
+        : lens === 'dependency-children' ? dependencyChildren(store, dependencyOutcome!, selector!, request.reference ?? false, dependencyOrganization!.id)
           : dependencyParents(store, dependencyOutcome!, selector!, request.reference ?? false, dependencyOrganization!.id)
       : lens === 'modules' ? modules(store, evaluation) : lens === 'inspect'
         ? inspectOrganization(store, organizationOutcome!, selector!, request.reference ?? false)

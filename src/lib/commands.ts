@@ -1,6 +1,8 @@
 import { parseArgs } from 'node:util';
 import path from 'node:path';
 import type { ViewRequest } from './session.js';
+import { commandLenses } from './requests.js';
+import type { CommandLens } from './requests.js';
 import { inlineText } from './terminal-text.js';
 
 export const help = `PostCode — modules, organization, dependencies and investigation\n
@@ -112,12 +114,12 @@ export function parseCommand(args: readonly string[], cwd: string, interactive =
   const reference = interactive && !literal && selector?.startsWith('@') === true;
   if (values['revision-page'] !== undefined && (!reference || !selector?.startsWith('@investigram-'))) return error('--revision-page requires an exact investigram reference.');
   if (followup && !reference) return error('follow-up lenses require an exact @investigram reference in the shell.');
-  return { kind: 'view', configPath, request: { lens: lens as ViewRequest['lens'],
+  return { kind: 'view', configPath, request: { lens: lens === 'usage' ? 'usage' : commandLenses[lens as CommandLens],
     ...(lens === 'summarize' || lens === 'usage' || lens === 'inspect' || followup ? { referenceLifetime: interactive ? 'session' as const : 'command' as const } : {}),
     ...(values.after === undefined ? {} : { after: values.after.replace(/^@/, '') }),
     ...(values['revision-page'] === undefined ? {} : { revisionPage: Number(values['revision-page']) }),
     selector: reference ? selector!.slice(1) : selector, ...(reference ? { reference: true } : {}),
-    subject: positional[1] === 'repository' ? 'repository' : 'project', presentation: { format: json ? 'json' : 'unicode', sourceDetail } } };
+    ...(lens === 'organization' ? { subject: positional[1] === 'repository' ? 'repository' as const : 'project' as const } : {}), presentation: { format: json ? 'json' : 'unicode', sourceDetail } } };
 }
 
 /** Deliberately a tokenizer, without interpolation, pipes, redirection or execution. */

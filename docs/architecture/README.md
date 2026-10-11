@@ -43,12 +43,14 @@ The product permits a summary suggestion when no more specific information need 
 Session execution normalizes the requested question, subject designation, Lens
 parameters and presentation choices independently of the resulting answer. A
 static Lens declaration supplies the question and consuming operation mapping;
-selection validation shares that mapping and subject applicability. Invocation
+selection validation shares that mapping and subject applicability. Command spellings
+map to normalized Lens identities; dependency identities agree with retained answers.
+Missing or incompatible designation modes are refused before Evaluation. Invocation
 correlation belongs to the returned request context and does not enter retained
 Projection or reusable operation identity.
 
 The worker result distinguishes a program View, a subjectless usage report and a
-parameter-resolution report. The parent finalizes reports using its authoritative
+request-resolution report. The parent finalizes reports using its authoritative
 usage ledger. Publication uses the actual normalized request for version-two
 observations, including follow-ups, and emits a View event only for a program
 View. Input checks and observation-delivery warnings apply to every alternative.

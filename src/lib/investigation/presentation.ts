@@ -17,7 +17,7 @@ import { usageSummary } from './reporting.js';
 import type { InvestigationUsageReport } from './reporting.js';
 
 export interface InvestigationViewRequest {
-  readonly lens: 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'children' | 'parents';
+  readonly lens: 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'dependency-children' | 'dependency-parents';
   readonly unsupportedSubject?: 'investigram' | 'program-subject';
   readonly after?: string;
   readonly revisionPage?: number;

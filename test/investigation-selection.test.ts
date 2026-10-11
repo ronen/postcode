@@ -126,7 +126,7 @@ test('request variants retain semantic outcomes without attempt reporting, pages
     { kind: 'unavailable', value: { kind: 'communication-failure', code: 'provider-error', diagnostic: 'Request failed.' } });
   assert.notEqual(f.select({ ...firstFailure, unavailable: { ...firstFailure.unavailable!, diagnostic: 'Different failure.' } }).id, unavailableProjection.id);
   assert.throws(() => selectInvestigation(store, session, { lens: 'summarize', selector: 'entry' }, [module], null), /requires an outcome/);
-  for (const lens of ['children', 'parents'] as const) assert.throws(() =>
+  for (const lens of ['dependency-children', 'dependency-parents'] as const) assert.throws(() =>
     selectInvestigation(store, session, { lens, selector: 'A' }, [id('A')], null), /unsupported investigram/);
   if (unavailableProjection.variant !== 'request') throw new Error('Expected request');
   assert.throws(() => store.put([{ ...unavailableProjection, id: id('invalid-provider'),
@@ -137,7 +137,7 @@ test('request variants retain semantic outcomes without attempt reporting, pages
     assert.equal(projection.status, selected.length ? 'ambiguous' : 'missing');
     assert.deepEqual(projection.variant === 'request' && projection.outcome, { kind: 'no-evaluation' });
   }
-  for (const lens of ['summarize', 'children', 'parents'] as const) {
+  for (const lens of ['summarize', 'dependency-children', 'dependency-parents'] as const) {
     const projection = selectInvestigation(store, session, { lens, selector: 'A', reference: true, unsupportedSubject: 'investigram' }, [id('A')], null);
     assert.equal(projection.status, 'unsupported-subject-lens'); assert.deepEqual(projection.roots, []);
   }
