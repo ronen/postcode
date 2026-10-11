@@ -1,8 +1,14 @@
 # Candidate UX
 
+This note is a place to remember ideas that have arisen and seem potentially promising, for future consideration rather than current planning. Ideas may be loosely formed or incomplete and have not necessarily been evaluated or reviewed; some explore new possibilities, while others may explore ways to fulfil existing requirements or improve existing capabilities. Consistent headings and detailed prose help preserve the thinking; they do not indicate maturity, validation, or readiness for implementation.
+
+These notes are non-governing, are not an approved roadmap, and do not authorize implementation.
+
 This inventory explores possible investigation experiences, organized around human needs, proposed experiences, potential value, dependencies, uncertainties, and what practical experience would help evaluate them.
 
 [Candidate capabilities](candidate-capabilities.md) explores what PostCode could help someone discover or establish. This note explores how someone could initiate, navigate, organize, and continue that investigation. Ideas can span both: cross-links connect the experience to the relevant capability questions without duplicating their rationale or forcing an artificial separation.
+
+For a bounded GUI experiment, [question discovery](#discoverable-questions-and-named-actions), [brief inspection](#brief-inspection-and-investigation-branches), and [qualification disclosure](#qualification-and-changing-accounts) offer readily explorable experiences using questions, inspection results, and qualifications already available in the [current toolbox](../docs/capability-reference.md). A prototype could stay within those capabilities without settling every option in an entry. Experiences involving durable resumption, comparison across program states, or new landscape analyses need substantial capability work beyond presentation. This distinction helps choose an experiment; it assigns no priority or implementation commitment.
 
 <a id="richer-workspace-context"></a>
 ## Richer Workspace context
@@ -15,7 +21,7 @@ Context could be enabled for selected Workspaces, offered automatically when use
 
 **Dependencies and uncertainties.** Which choices should context influence, and when does helpful inference become an unwanted constraint? When an investigation branches, should the new Workspace inherit the purpose and defaults, offer to revise them, or start afresh? Which context should be included in [agent sharing](#sharing-investigation-context-with-an-agent)? Changing defaults must not reinterpret existing results. Membership does not establish shared captured state, a program relationship, or one View as evidence for another. Rich context and persistence are independent; either could be useful without the other. See [human contributions](candidate-capabilities.md#human-contributions-to-interpretation-and-investigation) for the different meanings of assertions, preferences, and clarified focus.
 
-**Experience to evaluate.** Follow an investigation that changes direction and branches into another Workspace, comparing ordinary View focus with shared purpose. Observe repeated clarification, surprising selections, and whether the human can explain and correct the resulting choices. Check whether inherited context helps the branch or holds it to an earlier question, and whether the human can tell what context an agent would receive.
+**Experience to evaluate.** Follow an investigation that changes direction and branches into another Workspace, comparing ordinary View focus with shared purpose. Does shared context reduce clarification more than it creates surprising assumptions and correction work? Check whether inherited context helps the branch or holds it to an earlier question, whether the human can explain and correct the resulting choices, and whether they can tell what context an agent would receive.
 
 <a id="workspace-kinds-and-starting-views"></a>
 ## Workspace kinds and starting Views
@@ -26,7 +32,7 @@ Context could be enabled for selected Workspaces, offered automatically when use
 
 **Dependencies and uncertainties.** Are named kinds useful, or would choosing an initial question suffice? Each preset depends on actual capabilities; revision comparison cannot be supplied by layout alone. Under the [initial-View contract](../docs/app-specification.md#initial-views-and-further-investigation), opening must communicate the request it makes and respect its resource constraints. Starting arrangements do not authorize unrelated background investigation.
 
-**Experience to evaluate.** Try the same orientation and focused-examination tasks with a generic start and suggested arrangements. Look for useful context, unnecessary work, and difficulty escaping the initial framing. Related capability: [landscape orientation](candidate-capabilities.md#explorative-landscape-orientation).
+**Experience to evaluate.** Try the same orientation and focused-examination tasks with a generic start, a good initial-question chooser, and suggested arrangements. Do presets supply useful context beyond choosing the first question, or mainly introduce unnecessary work and difficulty escaping the initial framing? Related capability: [landscape orientation](candidate-capabilities.md#explorative-landscape-orientation).
 
 <a id="brief-inspection-and-investigation-branches"></a>
 ## Brief inspection and investigation branches
@@ -50,7 +56,7 @@ Context could be enabled for selected Workspaces, offered automatically when use
 
 **Dependencies and uncertainties.** The information and qualification questions belong in [landscape orientation](candidate-capabilities.md#explorative-landscape-orientation) and [dependency landscape](candidate-capabilities.md#explorative-dependency-landscape). The UX question is how much context should remain visible. A map must not imply a canonical decomposition, established relationship, or shared captured basis that its inputs do not support. A retained overview is not necessarily live.
 
-**Experience to evaluate.** Compare an ordinary overview that can be revisited with one kept visible during a multi-step investigation. Look for improved orientation, visual crowding, and unwarranted trust in the overview's completeness.
+**Experience to evaluate.** Compare an ordinary overview that can be revisited with one kept visible during a multi-step investigation. Does keeping it visible help someone choose their next investigation, or merely occupy space? Look for visual crowding and unwarranted trust in the overview's completeness as well as improved orientation.
 
 <a id="discoverable-questions-and-named-actions"></a>
 ## Discoverable questions and named actions
@@ -65,6 +71,28 @@ Context could be enabled for selected Workspaces, offered automatically when use
 
 **Related exploration.** The [discussion of Lens vocabulary](gui/design-kickoff.md#open-question-is-lens-a-user-facing-notion) explores questions, captions, and editable parameters as user-facing concepts.
 
+<a id="resolving-an-unclear-request"></a>
+## Resolving an unclear request
+
+**Human need and value.** A name may match several subjects, a question may not apply to the selected subject, or available information may be insufficient to settle the request. Someone needs to understand what remains unclear and continue without reconstructing the investigation.
+
+**Proposed experience.** Show the unresolved request with enough context to choose among candidates, refine the question, or inspect the available information and its limitations. Clarification could happen inline with the request or in a nearby inspection, preserving explicit choices and the route that led there. A refinement could make clear what it carries forward and what it changes.
+
+**Dependencies and uncertainties.** The adopted [request-resolution contract](../docs/app-specification.md#interpreting-and-resolving-requests) establishes the information to preserve; the interaction remains open. How much context should survive refinement, and when should earlier choices be reconsidered? Multiple candidates need not imply ambiguity when the question accepts a collection. Missing information, an unsupported application, an established empty answer, and failure while producing a valid answer have different meanings. Candidate references remain subject to their supported lifetime; keeping clarification visible does not make them durable.
+
+**Experience to evaluate.** Try ambiguous names, inapplicable questions, and incomplete discovery. Ask people to explain what prevented an answer and continue by selecting, refining, or inspecting. Compare inline clarification with a separate step, observing repeated input, lost context, and unintended inherited choices. Does the interaction help resolve the request, or merely make the obstacle more elaborate?
+
+<a id="staying-in-control-while-investigation-proceeds"></a>
+## Staying in control while investigation proceeds
+
+**Human need and value.** Between choosing an investigation and reading its answer, someone needs to know what work is underway, whether useful information is already available, and how to stop expensive work or change direction. Failure should leave an intelligible next step.
+
+**Proposed experience.** Explore a request-local account of current work, including prerequisites, available partial results, and resource use or estimates where supported. The human could inspect usable findings, stop, revise the request, or recover from failure with the earlier question and available results still in view. Progress toward producing an answer would remain distinct from confidence in that answer.
+
+**Dependencies and uncertainties.** The [resource and outcome contract](../docs/app-specification.md#resource-bounded-work-and-outcomes) and [initiation contract](../docs/app-specification.md#system-initiated-investigation) govern the work and its attribution. Which details help someone decide whether to continue, and how should uncertain cost or progress be conveyed? Partial information is usable only where its acceptance contract permits it; unfinished interpretation is not automatically a retained answer. Requesting cancellation, completing the request, and confirming resource cleanup are distinct. Changing direction or retrying must expose any new work and its resource implications. These experiences need not commit to a general background-task interface.
+
+**Experience to evaluate.** Follow a slow investigation with prerequisite work, usable partial information, cancellation, and a failed attempt. Ask people what is running, what they can conclude so far, and what stopping or retrying will do. Observe whether disclosure supports timely decisions or mainly distracts, whether progress is mistaken for confidence, and whether recovery avoids unnecessary repetition without promising unsupported resumption.
+
 <a id="context-sensitive-suggestions"></a>
 ## Context-sensitive suggestions
 
@@ -74,7 +102,7 @@ Context could be enabled for selected Workspaces, offered automatically when use
 
 **Dependencies and uncertainties.** Distinguish displaying an available action from investigating to decide whether to recommend it, and from executing it. New claims require analysis; prerequisite or autonomous work follows the [initiation and resource contracts](../docs/app-specification.md#system-initiated-investigation). How should estimated cost, uncertainty, and consequential omissions be conveyed without overwhelming the choice?
 
-**Experience to evaluate.** Compare a straightforward operation menu with suggestions during an unfamiliar task. Track useful discoveries, distraction, repeated dismissals, and whether the human understands what work has already occurred versus what accepting a suggestion will request.
+**Experience to evaluate.** Compare a straightforward operation menu with suggestions during an unfamiliar task. Do suggestions reveal useful directions beyond those people find through the ordinary menu, or mainly repeat available actions and distract? Track repeated dismissals and whether the human understands what work has already occurred versus what accepting a suggestion will request.
 
 <a id="returning-to-an-investigation"></a>
 ## Returning to an investigation
