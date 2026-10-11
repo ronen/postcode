@@ -1,6 +1,6 @@
 import { completedMaterialization } from '../evaluation-state.js';
 import { identityReference, compare, methods, recordId } from '../identity.js';
-import { inspect } from '../projections.js';
+import { selectModules } from '../module-selection.js';
 import { isModuleClaim } from '../records.js';
 import type { EvaluationState, ProgramRecordStore, RecordId } from '../records.js';
 import { deriveDependencyGraph } from './graph.js';
@@ -27,7 +27,7 @@ function project(store: ProgramRecordStore, evaluation: DependencyEvaluationReco
   });
   const population = moduleClaims.filter(claim => claim.information.discoveryFacets.includes('project')).map(claim => claim.subject);
   const projectModules = new Set(population);
-  const selected = selector === null ? null : inspect(store, basis, selector, reference);
+  const selected = selector === null ? null : selectModules(store, basis, selector, reference);
   const subjects = selected?.modules ?? population;
   const subjectSet = new Set(subjects);
   const allRelationships = evaluation.relationships.map(id => {

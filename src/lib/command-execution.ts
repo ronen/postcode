@@ -1,3 +1,6 @@
+import { randomUUID } from 'node:crypto';
+import { normalizeRequest } from './requests.js';
+import type { RequestContext } from './request-reporting.js';
 import { usageSummary } from './investigation/reporting.js';
 import { usageLines } from './investigation/presentation.js';
 import type { InvestigationUsageReport } from './investigation/reporting.js';
@@ -6,7 +9,7 @@ import type { ObservationSink } from './observations.js';
 import { AnalysisFailure, SessionInvalidated } from './execution-errors.js';
 import type { ViewRequest, ExecutionOptions } from './session.js';
 import { CommandInterrupted } from './execution-errors.js';
-import type { ExecutedView } from './session-protocol.js';
+import type { ExecutedRequest } from './session-protocol.js';
 import { inlineText } from './terminal-text.js';
 
 interface Output {
@@ -30,19 +33,20 @@ export async function submitObservation(sink: ObservationSink, batch: ReturnType
 /** Shared publication and observation boundary for one-shot and interactive requests. */
 export async function publishCommand(session: {
   readonly id: string;
-  execute(request: ViewRequest, execution?: ExecutionOptions): ExecutedView | Promise<ExecutedView>;
+  execute(request: ViewRequest, execution?: ExecutionOptions): ExecutedRequest | Promise<ExecutedRequest>;
   check(): void | Promise<void>;
   usage?(): InvestigationUsageReport;
 }, request: ViewRequest, supplied: unknown, configPath: string, command: number, output: Output, sink: ObservationSink): Promise<number> {
-  let published: ExecutedView | undefined, stdout = '', stderr = '';
-  let status: 'completed' | 'invalidated' | 'failed' | 'defect' | 'interrupted' = 'completed', code = 0;
+  let published: ExecutedRequest | undefined, stdout = '', stderr = '';
+  const context: RequestContext = { id: randomUUID(), initiator: 'caller', request: normalizeRequest(request) };
+  let status: 'completed' | 'refused' | 'invalidated' | 'failed' | 'defect' | 'interrupted' = 'completed', code = 0;
   try {
-    const result = await session.execute(request, { deferPublicationCheck: true });
+    const result = await session.execute(request, { deferPublicationCheck: true, requestId: context.id });
     await session.check();
     output.stdout(result.rendered);
     stdout = result.rendered; published = result;
     await session.check();
-    if ('failed' in result && result.failed) { status = 'failed'; code = 3; }
+    if ('failed' in result && result.failed) { status = result.kind === 'resolution' ? 'refused' : 'failed'; code = 3; }
   } catch (error) {
     status = error instanceof SessionInvalidated ? 'invalidated' : error instanceof CommandInterrupted ? 'interrupted'
       : error instanceof AnalysisFailure ? 'failed' : 'defect';
@@ -57,9 +61,10 @@ export async function publishCommand(session: {
         ...usageLines(usage, 'Session'), ...usage.limitations.map(inlineText)].join('\n') + '\n';
     stderr += final; output.stderr(final);
   }
-  const produced = published ? observationBatch(published.view, stdout,
-    { configPath, repositoryRoot: published.repositoryRoot, methods: published.methods }, command) : undefined;
-  await submitObservation(sink, commandObservation(session.id, command, { supplied, request, configPath }, status, stdout, stderr, produced, usage), output);
+  const produced = published?.kind === 'view' ? observationBatch(published.view, stdout,
+    { configPath, repositoryRoot: published.repositoryRoot, methods: published.methods }, published.context, command) : undefined;
+  await submitObservation(sink, commandObservation(session.id, command, { supplied, context: published?.context ?? context, configPath }, status, stdout, stderr, produced, usage,
+    published && published.kind !== 'view' ? { kind: published.kind === 'resolution' ? 'resolution-result' : 'usage-report', value: published.report } : undefined, published?.context ?? context), output);
   return code;
 }
 

@@ -335,16 +335,25 @@ in the PostCode checkout. The label comes from the configured project directory,
 and the six-character key hashes its normalized absolute configuration path.
 Repeated sessions share the grouping; different configurations are disambiguated.
 One UTC submission time supplies both date and time. The project-specific destination
-is disclosed on stderr. Refusals and failures use the same project grouping. Format-version-1 batches carry `session` and `command` (1 for one-shot),
+is disclosed on stderr. Refusals and failures use the same project grouping. Format-version-2 batches carry `session` and `command` (1 for one-shot),
 with independent batch/event UUIDs. They contain request/context, the qualified view and exact output;
 they may contain repository-derived text and explicitly requested source detail.
+The request record carries the actual normalized Lens or report request, including
+subject designation, true Lens parameters, presentation choices and reference lifetime.
+It is independent of the produced View's descriptor. Current public Lenses declare
+no semantic parameters; direct Session calls supplying undeclared parameters return
+an `invalid-parameters` resolution report before Evaluation. Usage reports and these
+resolution reports have no program Projection or View and emit no `view-produced`
+event. Their JSON families are `postcode-investigation-usage/1-experimental` and
+`postcode-resolution/1-experimental`. Other subject-resolution failures still use
+the existing family result paths pending the remaining [request-model work](plans/lens-request-model.md).
 Expected analysis failures use outcome `failed` and event `command-failed`;
 unexpected defects use outcome `defect` and event `command-defect`. Neither
 invents a view when no output was published.
 Nothing is sent remotely. Files are created with private permissions and ignored
 by Git. A batch becomes accepted when its complete, closed staging file is linked
 to the final name without replacing any existing file. Delivery failure warns
-without changing a successful view/status. A later staging-cleanup failure reports
+without changing a delivered View/report or its command status. A later staging-cleanup failure reports
 that publication succeeded, separately from non-delivery. Unsupported publication
 fails visibly. This does not guarantee persistence after power loss or cleanup
 after a crash. Existing observation files remain in place; the producer does not
@@ -616,7 +625,7 @@ originals with current revision status. Result redisplay selects replacements;
 inspection preserves the original and exposes alternatives and reconsideration causes.
 
 `usage` and `usage --json` expose per-attempt and session reported usage without
-inference, including failed attempts. Summary views also include their attempt and
+inference, including failed attempts. Usage is a subjectless report, with no Lens or Projection descriptor. Summary views also include their attempt and
 session usage. Provider/model/configuration, units and category subset relationships
 remain distinct, including actual returned model and service tier when reported. Synthetic test usage is labeled separately; unknown and anomalous
 calls are not zero and are excluded from trusted totals. Aggregate numeric overflow
@@ -629,7 +638,7 @@ remain explicit. Usage received after a reply while the dialogue remains active
 is still attributed to that call; late reports from a closed dialogue are ignored.
 CLI views and observations use the parent ledger's snapshot at dialogue closure,
 including reports received after the worker finished but before parent closure.
-Subsequent `usage` views use the same accepted reports, without counting duplicates
+Subsequent `usage` reports use the same accepted reports, without counting duplicates
 or incorporating reports that arrived after closure.
 
 Investigation JSON uses `postcode-investigation-view/1-experimental`, containing

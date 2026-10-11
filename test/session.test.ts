@@ -1,3 +1,4 @@
+import { requireView, programOutput } from './request-helpers.js';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { test } from 'node:test';
@@ -18,11 +19,11 @@ test('published navigation observations distinguish session references from exac
   if (opened.status !== 'opened') throw new Error('Expected project');
   const { session } = opened;
   try {
-    const inventory = (await session.execute({ ...request, lens: 'modules', presentation: { format: 'json', sourceDetail: false } }));
+    const inventory = (requireView(await session.execute({ ...request, lens: 'modules', presentation: { format: 'json', sourceDetail: false } })));
     if (inventory.view.schema !== 'postcode-view/1-experimental') throw new Error('Expected inventory');
     const reference = inventory.view.modules.find(module => module.handle === 'forward')!.entityId;
-    const organization = (await session.execute({ ...request, lens: 'organization', subject: 'repository',
-      presentation: { format: 'json', sourceDetail: false } }));
+    const organization = (requireView(await session.execute({ ...request, lens: 'organization', subject: 'repository',
+      presentation: { format: 'json', sourceDetail: false } })));
     if (organization.view.schema !== 'postcode-organization-view/1-experimental') throw new Error('Expected organization');
     const group = organization.view.groups[0]!.entityId;
     const cases = [
@@ -42,12 +43,11 @@ test('published navigation observations distinguish session references from exac
         { async submit(batch) { observed = batch; return { accepted: true }; } });
       assert.equal(code, 0, item.command);
       assert.equal(observed!.session, session.id);
-      const recorded = observed!.records.find(record => record.kind === 'request')!.value as {
-        lensParameters: { reference: boolean }; navigation: string;
-      };
-      assert.equal(recorded.lensParameters.reference, item.reference, item.command);
-      assert.match(recorded.navigation, item.reference ? /Session-local entity reference supplied/ : /Exact name or handle supplied for lookup/, item.command);
-      assert.doesNotMatch(recorded.navigation, /no previous view/, item.command);
+      const recorded = observed!.records.find(record => record.kind === 'request')!.value as import('../src/lib/request-reporting.js').RequestContext;
+      assert.equal(recorded.request.kind, 'lens');
+      if (recorded.request.kind !== 'lens') throw new Error('Expected Lens request');
+      assert.equal(recorded.request.designation.kind, item.reference ? 'reference' : 'name', item.command);
+      assert.deepEqual(recorded.request.parameters, {});
       const view = observed!.records.find(record => record.kind === 'qualified-view')!.value as {
         projection: { selection: { matches: number; referenceStatus: string } };
       };
@@ -68,21 +68,21 @@ test('one-shot sessions own a project, produce correlated views, and release the
   const second = (await open());
   try {
     assert.notEqual(first.id, second.id);
-    const a = (await first.execute(request)), b = (await second.execute(request));
+    const a = (requireView(await first.execute(request))), b = (requireView(await second.execute(request)));
     assert.equal(a.view.projection.session, first.id);
     assert.equal(b.view.projection.session, second.id);
     assert.deepEqual(normalizeSession(a.view), normalizeSession(b.view));
     assert.deepEqual(normalizeSession(a.rendered), normalizeSession(b.rendered));
-    const batch = observationBatch(a.view, a.rendered, { configPath, repositoryRoot: a.repositoryRoot, methods: a.methods }, 1);
+    const batch = observationBatch(a.view, a.rendered, { configPath, repositoryRoot: a.repositoryRoot, methods: a.methods }, a.context, 1);
     assert.equal(batch.session, first.id);
     assert.equal(batch.command, 1);
-    assert.equal(batch.formatVersion, 1);
+    assert.equal(batch.formatVersion, 2);
     assert.deepEqual(batch.events.map(event => event.type), ['view-produced', 'source-escape']);
     assert.equal(batch.records.find(record => record.kind === 'rendered-output')!.value, a.rendered);
-    assert.deepEqual((await first.execute(request)), a);
-    assert.throws(() => observationBatch(a.view, a.rendered, { configPath, repositoryRoot: a.repositoryRoot, methods: a.methods }, 0), /command order/);
+    assert.deepEqual(programOutput((requireView(await first.execute(request)))), programOutput(a));
+    assert.throws(() => observationBatch(a.view, a.rendered, { configPath, repositoryRoot: a.repositoryRoot, methods: a.methods }, a.context, 0), /command order/);
   } finally { await first.close(); await second.close(); }
-  await assert.rejects(async () => (await first.execute(request)), /closed/);
+  await assert.rejects(async () => (requireView(await first.execute(request))), /closed/);
   await first.close();
 });
 
@@ -113,24 +113,24 @@ test('accumulation preserves complete earlier views and precise references acros
   if (opened.status !== 'opened') return;
   const { session } = opened;
   try {
-    const inventory = (await session.execute({ ...request, lens: 'modules', presentation: { format: 'json', sourceDetail: false } }));
+    const inventory = (requireView(await session.execute({ ...request, lens: 'modules', presentation: { format: 'json', sourceDetail: false } })));
     const before = (await structuredClone(inventory));
-    const dependency = (await session.execute(request));
-    assert.deepEqual((await session.execute({ ...request, lens: 'modules', presentation: { format: 'json', sourceDetail: false } })), before);
-    assert.deepEqual(inventory, before);
-    assert.deepEqual((await session.execute(request)), dependency);
+    const dependency = (requireView(await session.execute(request)));
+    assert.deepEqual(programOutput((requireView(await session.execute({ ...request, lens: 'modules', presentation: { format: 'json', sourceDetail: false } })))), programOutput(before));
+    assert.deepEqual(programOutput(inventory), programOutput(before));
+    assert.deepEqual(programOutput((requireView(await session.execute(request)))), programOutput(dependency));
     if (inventory.view.schema !== 'postcode-view/1-experimental') throw new Error('Expected inventory');
     const module = inventory.view.modules.find(item => item.handle === 'forward')!;
-    const selected = (await session.execute({ ...request, lens: 'inspect', selector: module.entityId, reference: true }));
+    const selected = (requireView(await session.execute({ ...request, lens: 'inspect', selector: module.entityId, reference: true })));
     assert.equal(selected.view.projection.selection.matches, 1);
     assert.ok(selected.rendered.includes(module.entityId));
-    await session.execute({ ...request, lens: 'organization', subject: 'repository', presentation: { format: 'json', sourceDetail: false } });
-    assert.deepEqual((await session.execute(request)), dependency);
+    requireView(await session.execute({ ...request, lens: 'organization', subject: 'repository', presentation: { format: 'json', sourceDetail: false } }));
+    assert.deepEqual(programOutput((requireView(await session.execute(request)))), programOutput(dependency));
     const fresh = (await openSession({ configPath }));
     if (fresh.status !== 'opened') throw new Error('Expected project');
     try {
-      assert.deepEqual((await normalizeSession((await fresh.session.execute(request)))), (await normalizeSession(dependency)));
-      assert.deepEqual((await normalizeSession((await fresh.session.execute({ ...request, lens: 'modules', presentation: { format: 'json', sourceDetail: false } })))), (await normalizeSession(inventory)));
+      assert.deepEqual((await normalizeSession(programOutput((requireView(await fresh.session.execute(request)))))), (await normalizeSession(programOutput(dependency))));
+      assert.deepEqual((await normalizeSession(programOutput((requireView(await fresh.session.execute({ ...request, lens: 'modules', presentation: { format: 'json', sourceDetail: false } })))))), (await normalizeSession(programOutput(inventory))));
     } finally { await fresh.session.close(); }
   } finally { await session.close(); }
 });
@@ -154,9 +154,9 @@ test('Unicode reference misses preserve reference syntax and status in organizat
   if (opened.status !== 'opened') throw new Error('Expected project');
   const inspection = { ...request, lens: 'inspect' as const, selector: 'forward', presentation: { format: 'unicode' as const, sourceDetail: false } };
   try {
-    const exact = (await opened.session.execute(inspection));
+    const exact = (requireView(await opened.session.execute(inspection)));
     assert.equal(exact.view.projection.selection.matches, 1);
-    const miss = (await opened.session.execute({ ...inspection, reference: true }));
+    const miss = (requireView(await opened.session.execute({ ...inspection, reference: true })));
     assert.equal(miss.view.projection.selection.matches, 0);
     assert.match(miss.rendered, /0 exact matches for @forward · unknown-reference/);
     assert.equal(miss.view.schema, 'postcode-organization-view/1-experimental');

@@ -1,3 +1,6 @@
+import { finalizeRequestReport } from '../src/lib/request-reporting.js';
+import type { UsageReport } from '../src/lib/request-reporting.js';
+import { requireView } from './request-helpers.js';
 import { InvestigatorReferences } from '../src/lib/investigation/openai/references.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
@@ -41,7 +44,8 @@ function summaryAgent() {
   ]);
 }
 const summary = { lens: 'summarize' as const, selector: 'entry', presentation: { format: 'json' as const, sourceDetail: false } };
-function view(result: { view: { schema: string } }): InvestigationView {
+function view(executed: import('../src/lib/session-protocol.js').ExecutedRequest): InvestigationView {
+  const result = requireView(executed);
   assert.equal(result.view.schema, 'postcode-investigation-view/1-experimental');
   return result.view as InvestigationView;
 }
@@ -150,6 +154,7 @@ test('CLI worker summary, reuse, exact child inspection, source traceability and
     sink: { async submit(batch) {
       batches.push(batch);
       driver.run(() => {
+        if (batch.records.some(item => item.kind === 'usage-report')) { input.end(); return; }
         const data = batch.records.find(item => item.kind === 'qualified-view')!.value as InvestigationView;
         if (batches.length === 1) { assert.equal(data.accounts.length, 2); rootReference = data.references.find(item => item.id === data.accounts[0]!.id)!.reference; input.write('summarize entry\n'); }
         else if (batches.length === 2) { assert.equal(data.result!.reused, true); input.write(`inspect @${data.references.find(item => item.id === data.accounts[1]!.id)!.reference}\n`); }
@@ -406,7 +411,7 @@ for (const shell of [false, true]) test(`usage arriving after a reply remains at
   });
   assert.equal(code, 0);
   for (const batch of batches) {
-    const data = batch.records.find(item => item.kind === 'qualified-view')!.value as InvestigationView;
+    const data = batch.records.find(item => item.kind === 'qualified-view' || item.kind === 'usage-report')!.value as InvestigationView | UsageReport;
     const observed = batch.records.find(item => item.kind === 'investigation-usage')!.value as InvestigationUsageReport;
     assert.equal(data.usage.calls, 2); assert.equal(data.usage.missingCalls, 0);
     assert.deepEqual(data.usage, observed);
@@ -485,7 +490,7 @@ for (const format of ['json', 'unicode'] as const) test(`CLI seals authoritative
       callbacks[0]!(syntheticUsage); // Existing report, not another charged call.
       callbacks[1]!(syntheticUsage); callbacks[1]!(syntheticUsage);
     }
-    if (event === 'message' && message?.type === 'reply' && message.result?.view.schema === 'postcode-investigation-view/1-experimental'
+    if (event === 'message' && message?.type === 'reply' && message.result?.kind === 'view' && message.result.view.schema === 'postcode-investigation-view/1-experimental'
       && message.result.view.projection.lens === 'summarize') workerMissing = message.result.view.usage.missingCalls;
     if (event === 'message' && message?.type === 'reply' && message.result?.investigationArrangementKey) {
       arrangementKeys.set(message.result.view.projection.id, message.result.investigationArrangementKey);
@@ -508,7 +513,7 @@ for (const format of ['json', 'unicode'] as const) test(`CLI seals authoritative
   assert.equal(batches.length, 2);
   let first: InvestigationUsageReport | undefined;
   for (const batch of batches) {
-    const data = batch.records.find(item => item.kind === 'qualified-view')!.value as InvestigationView;
+    const data = batch.records.find(item => item.kind === 'qualified-view' || item.kind === 'usage-report')!.value as InvestigationView | UsageReport;
     const observed = batch.records.find(item => item.kind === 'investigation-usage')!.value as InvestigationUsageReport;
     const rendered = batch.records.find(item => item.kind === 'rendered-output')!.value as string;
     assert.deepEqual(data.usage, observed);
@@ -516,9 +521,15 @@ for (const format of ['json', 'unicode'] as const) test(`CLI seals authoritative
     assert.equal(data.usage.calls, 3); assert.equal(data.usage.missingCalls, 1); assert.equal(data.usage.anomalousCalls, 0);
     assert.equal(data.usage.totals[0]!.categories.find(item => item.category === 'input')!.value, 40);
     assert.deepEqual(data.usage.attempts[0]!.usage.map(call => call.reports.length), [1, 1, 0]);
-    assert.deepEqual(finalizeInvestigationUsage(data, data.usage, arrangementKeys.get(data.projection.id)!), data, 'finalization is idempotent');
-    const different = finalizeInvestigationUsage(data, { ...data.usage, missingCalls: 2 }, arrangementKeys.get(data.projection.id)!);
-    assert.equal(different.projection.id, data.projection.id); assert.notEqual(different.id, data.id);
+    if (data.schema === 'postcode-investigation-view/1-experimental') {
+      assert.deepEqual(finalizeInvestigationUsage(data, data.usage, arrangementKeys.get(data.projection.id)!), data, 'finalization is idempotent');
+      const different = finalizeInvestigationUsage(data, { ...data.usage, missingCalls: 2 }, arrangementKeys.get(data.projection.id)!);
+      assert.equal(different.projection.id, data.projection.id); assert.notEqual(different.id, data.id);
+    } else {
+      assert.deepEqual(finalizeRequestReport(data, data.usage), data);
+      assert.equal('projection' in data, false);
+      assert.ok(!batch.events.some(item => item.type === 'view-produced'));
+    }
     assert.ok(stdout.includes(rendered));
     if (format === 'json') assert.deepEqual(JSON.parse(rendered).usage, observed);
     else { assert.match(rendered, /Session reported usage: 3 calls; 1 unknown; 0 anomalous/); assert.match(rendered, /input 40 tokens/); }
@@ -562,6 +573,7 @@ for (const format of ['json', 'unicode'] as const) test(`progressive worker lens
     stdout: text => { output += text; if (!started && text.includes('postcode> ')) { started = true; setImmediate(() => input.write('summarize entry\n')); } }, stderr: () => {},
     sink: { async submit(batch) {
       batches.push(batch); driver.run(() => {
+        if (batch.records.some(item => item.kind === 'usage-report')) { input.end(); return; }
         const observedView = batch.records.find(item => item.kind === 'qualified-view');
         assert.ok(observedView, JSON.stringify(batch));
         const data = observedView.value as InvestigationView;
@@ -603,6 +615,18 @@ for (const format of ['json', 'unicode'] as const) test(`progressive worker lens
     refs.close();
   }
   assert.equal(batches.length, 8);
+  const expectedLenses = ['summarize', 'decompose', 'explain', 'examine', 'examine', 'inspect', 'inspect'];
+  for (const [index, lens] of expectedLenses.entries()) {
+    const context = batches[index]!.records.find(item => item.kind === 'request')!.value as import('../src/lib/request-reporting.js').RequestContext;
+    assert.equal(context.request.kind, 'lens');
+    if (context.request.kind !== 'lens') throw new Error('Expected Lens request');
+    assert.equal(context.request.lens, lens);
+    assert.equal(context.request.designation.kind, index === 0 || index === 6 ? 'name' : 'reference');
+    assert.deepEqual(context.request.parameters, {});
+  }
+  const usageRequest = batches[7]!.records.find(item => item.kind === 'request')!.value as import('../src/lib/request-reporting.js').RequestContext;
+  assert.equal(usageRequest.request.kind, 'report');
+  assert.ok(!batches[7]!.events.some(item => item.type === 'view-produced'));
   assert.ok(batches.every((batch, index) => index === 5 || !batch.events.some(item => item.type === 'source-escape')));
   assert.match(output, format === 'unicode' ? /Investigation subject: .*provenance, not composition/ : /"navigation"/);
   const usages = batches.at(-1)!.records.find(item => item.kind === 'investigation-usage')!.value as InvestigationUsageReport;
@@ -614,21 +638,21 @@ test('associated inspection is bounded, navigable and independent of incidental 
     children: Array.from({ length: 30 }, (_, i) => ({ ...draft(item.request.subject, [], `part-${i}`),
       associations: [{ subject: item.request.subject, qualifications: ['Explicitly described.'], evidence: [] }] })) } })]);
   const f = await session(t, agent);
-  const before = await f.session.execute({ ...summary, lens: 'inspect' });
+  const before = requireView(await f.session.execute({ ...summary, lens: 'inspect' }));
   assert.equal('investigations' in before.view && before.view.investigations?.total, 0);
   const original = JSON.stringify(before.view);
   const generated = view(await f.session.execute(summary));
-  const first = await f.session.execute({ ...summary, lens: 'inspect' });
+  const first = requireView(await f.session.execute({ ...summary, lens: 'inspect' }));
   assert.ok('investigations' in first.view && first.view.investigations);
   assert.equal(first.view.investigations.total, 31); assert.equal(first.view.investigations.items.length, 24);
-  const second = await f.session.execute({ ...summary, lens: 'inspect', after: first.view.investigations.next! });
+  const second = requireView(await f.session.execute({ ...summary, lens: 'inspect', after: first.view.investigations.next! }));
   assert.ok('investigations' in second.view && second.view.investigations);
   assert.equal(second.view.investigations.items.length, 7); assert.equal(second.view.investigations.next, null);
   assert.equal(new Set([...first.view.investigations.items, ...second.view.investigations.items].map(item => item.id)).size, 31);
   assert.equal(JSON.stringify(before.view), original); assert.notEqual(before.view.projection.id, first.view.projection.id);
-  const invalid = await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-00000000' });
-  const otherInvalid = await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-11111111' });
-  const invalidAgain = await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-00000000' });
+  const invalid = requireView(await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-00000000' }));
+  const otherInvalid = requireView(await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-11111111' }));
+  const invalidAgain = requireView(await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-00000000' }));
   assert.equal(invalid.failed, true); assert.equal(otherInvalid.failed, true);
   assert.ok('investigations' in invalid.view && invalid.view.investigations);
   assert.equal(invalid.view.investigations.status, 'unknown-continuation');
@@ -637,7 +661,7 @@ test('associated inspection is bounded, navigable and independent of incidental 
   assert.notEqual(invalid.view.id, otherInvalid.view.id);
   assert.equal(invalid.view.projection.id, invalidAgain.view.projection.id);
   assert.equal(invalid.view.id, invalidAgain.view.id);
-  const humanInvalid = await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-00000000', presentation: { format: 'unicode', sourceDetail: false } });
+  const humanInvalid = requireView(await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-00000000', presentation: { format: 'unicode', sourceDetail: false } }));
   assert.match(humanInvalid.rendered, /continuation reference is not in this listing/);
   assert.match(humanInvalid.rendered, /without --after/);
   assert.equal(agent.inputs.length, 1);

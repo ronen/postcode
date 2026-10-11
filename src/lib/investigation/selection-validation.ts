@@ -1,7 +1,8 @@
+import { operationForLens, lenses } from '../requests.js';
 import { canonical } from '../identity.js';
 import type { ProgramRecordStore, RecordId } from '../records.js';
 import type { InvestigationSelectionProjection } from './selection-record.js';
-import { investigationOperations, selectionStatus } from './selection-record.js';
+import { selectionStatus } from './selection-record.js';
 
 /** Structural invariants supplement the store's kind/session reference validation. */
 export function validateInvestigationSelection(record: InvestigationSelectionProjection, get: ProgramRecordStore['get']): void {
@@ -22,17 +23,17 @@ export function validateInvestigationSelection(record: InvestigationSelectionPro
       const evaluation = get(record.outcome.evaluation);
       if (evaluation.kind !== 'investigation-evaluation' || record.subjects.length !== 1
         || record.subjects[0] !== evaluation.request.subject || unsupported
-        || !(record.lens in investigationOperations) || investigationOperations[record.lens as keyof typeof investigationOperations] !== evaluation.request.operation
+        || operationForLens(record.lens) === null || operationForLens(record.lens) !== evaluation.request.operation
         || canonical(record.roots) !== canonical(evaluation.outcome.kind === 'accepted' ? [evaluation.outcome.root] : [])) {
         throw new Error('Invalid selected evaluation');
       }
     } else if (record.roots.length) throw new Error('Selection without evaluation cannot have result roots');
     if (record.outcome.kind === 'unavailable' && (record.subjects.length !== 1 || unsupported
-      || !(record.lens in investigationOperations)
+      || operationForLens(record.lens) === null
       || !['configuration-unavailable', 'communication-failure'].includes(record.outcome.value.kind)
       || typeof record.outcome.value.code !== 'string' || typeof record.outcome.value.diagnostic !== 'string')) throw new Error('Invalid unavailable selection');
-    const expectedKind = unsupported === 'investigram' ? ['investigram'] : unsupported === 'program-subject' ? ['module', 'group']
-      : record.lens === 'summarize' ? ['module'] : ['investigram'];
+    const expectedKind: readonly string[] = unsupported === 'investigram' ? ['investigram'] : unsupported === 'program-subject' ? ['module', 'group']
+      : lenses[record.lens].subjects;
     if (record.subjects.some(id => !expectedKind.includes(get(id).kind))) throw new Error('Invalid operation subject kind');
     if (unsupported && record.outcome.kind !== 'no-evaluation') throw new Error('Unsupported selection cannot have evaluation');
   } else {

@@ -4,7 +4,6 @@ import type { RevisionSnapshot } from './revisions.js';
 import { identityReference } from '../identity.js';
 
 export type InvestigationLens = 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'children' | 'parents';
-export const investigationOperations = { summarize: 'functionality', explain: 'clarification', decompose: 'decomposition', examine: 'examination' } as const;
 export type SelectionSelector = null | { readonly literal: string } | { readonly reference: RecordId } | { readonly unresolvedReference: string };
 export interface SelectionRelation { readonly original: RecordId; readonly account: RecordId }
 export interface AccountNavigation {

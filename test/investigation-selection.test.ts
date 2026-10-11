@@ -397,9 +397,7 @@ test('arrangement is self-contained, preserves bounded disclosure and distinguis
   assert.equal(one.view.result!.unavailable!.provider!.requestId, 'one');
   assert.equal(JSON.stringify(one.view.result!.unavailable), JSON.stringify(unavailable('one').unavailable),
     'preserve the production adapter failure field order in JSON and observations');
-  const use = createInvestigationView(store, f.session, { ...options, lens: 'usage', selector: null }, [], null, usage);
-  assert.equal(store.lookup(use.view.projection.id), undefined, 'usage has a descriptor, not a retained program Projection');
-  assert.equal(use.view.projection.lens, 'usage'); assert.deepEqual(use.view.selected, []);
+
 });
 
 test('association continuation identity uses precise selected matches in both View formulas', () => {

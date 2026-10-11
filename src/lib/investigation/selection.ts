@@ -1,9 +1,10 @@
+import { operationForLens } from '../requests.js';
 import type { Investigram } from './contracts.js';
 import { methods, recordId } from '../identity.js';
 import type { ProgramRecordStore, RecordId, SessionId } from '../records.js';
 import type { InvestigationSelection } from './evaluation.js';
 import type { InvestigationLens, InvestigationSelectionProjection, SelectionPayload, SelectionSelector } from './selection-record.js';
-import { investigationOperations, selectionIdentity, selectionStatus } from './selection-record.js';
+import { selectionIdentity, selectionStatus } from './selection-record.js';
 import { sessionRevisions } from './revisions.js';
 
 export interface InvestigationSelectionRequest {
@@ -26,8 +27,8 @@ export function selectInvestigation(store: ProgramRecordStore, session: SessionI
       status: selectionStatus(selected), ...derive(store, session, selected, selected, true, true) });
   }
   if (result && (selected.length !== 1 || result.request.subject !== selected[0] || request.unsupportedSubject
-    || !(request.lens in investigationOperations)
-    || investigationOperations[request.lens as keyof typeof investigationOperations] !== result.request.operation)) {
+    || operationForLens(request.lens) === null
+    || operationForLens(request.lens)! !== result.request.operation)) {
     throw new Error('Investigation outcome must describe the selected subject');
   }
   const evaluation = result?.evaluation ? store.get(result.evaluation.id) : null;

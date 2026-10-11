@@ -1,4 +1,4 @@
-import { completedMaterialization } from './evaluation-state.js';
+import { selectModules } from './module-selection.js';
 import { identityReference, methods, recordId } from './identity.js';
 import type { EvaluationRecord, ModuleClaim, ProgramRecordStore, ProjectionRecord, RecordId } from './records.js';
 import { isModuleClaim } from './records.js';
@@ -17,15 +17,7 @@ function project(store: ProgramRecordStore, evaluation: EvaluationRecord, select
   if (stored.kind !== 'evaluation') throw new Error('Expected stored evaluation');
   evaluation = stored;
   const lens = selector === null ? 'modules' : 'inspect';
-  const entityIds = store.entityIds(evaluation.modules, 'module');
-  const modules = evaluation.modules.filter(id => {
-    if (selector === null) return true;
-    if (selector === id) return true;
-    if (reference) return selector === entityIds.get(id);
-    const claim = moduleClaim(store, id);
-    return selector === claim.information.name || selector === claim.information.handle;
-  });
-  const referenceStatus = reference && modules.length === 0 ? 'unknown-reference' : 'current';
+  const { modules, selection } = selectModules(store, evaluation, selector, reference);
   const claims = modules.map(id => moduleClaim(store, id));
   const expansions = store.evaluations(evaluation.session).filter(outcome => outcome.basis === evaluation.id);
   const relevantExpansions = expansions.filter(outcome => outcome.modules.some(id => modules.includes(id)) || outcome.modules.length === 0);
@@ -55,12 +47,7 @@ function project(store: ProgramRecordStore, evaluation: EvaluationRecord, select
     contexts: [...new Set([...evaluation.contexts, ...claims.map(claim => claim.context)])],
     evaluations: [evaluation.id, ...relevantExpansions.map(outcome => outcome.id)],
     expansions: { requested: [...new Set(expansions.flatMap(outcome => outcome.requirement === 'modules' ? [] : [outcome.requirement]))], claims: [...new Set(expansionClaims)] },
-    selection: {
-      matches: modules.length, population: evaluation.modules.length,
-      populationEstablished: completedMaterialization(evaluation),
-      subset: selector !== null && modules.length < evaluation.modules.length,
-      referenceStatus,
-    },
+    selection,
   };
   store.put([projection]);
   return projection;

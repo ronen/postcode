@@ -1,3 +1,4 @@
+import type { RequestContext } from './request-reporting.js';
 import { sourceDisclosure } from './source-disclosure.js';
 import type { SourceDisclosureLevel, SourceDisclosureForm } from './source-disclosure.js';
 import type { InvestigationUsageReport } from './investigation/reporting.js';
@@ -10,11 +11,11 @@ import type { QualifiedView } from './presentation.js';
 import type { QualifiedOrganizationView } from './organization/presentation.js';
 
 export interface ObservationBatch {
-  readonly formatVersion: 1;
+  readonly formatVersion: 2;
   readonly id: string;
   readonly session: string;
   readonly command: number;
-  readonly records: readonly { readonly id: string; readonly kind: 'request' | 'analysis-context' | 'qualified-view' | 'rendered-output' | 'command-outcome' | 'investigation-usage'; readonly value: unknown }[];
+  readonly records: readonly { readonly id: string; readonly kind: 'request' | 'analysis-context' | 'qualified-view' | 'rendered-output' | 'command-outcome' | 'investigation-usage' | 'resolution-result' | 'usage-report'; readonly value: unknown }[];
   readonly events: readonly {
     readonly id: string; readonly type: 'view-produced' | 'source-escape' | 'command-completed' | 'command-refused' | 'session-invalidated' | 'command-failed' | 'command-defect' | 'command-interrupted';
     readonly request: string; readonly analysis: string; readonly view?: string; readonly rendered: string;
@@ -30,7 +31,7 @@ export interface ObservationSink {
 /** No UUID registry, historical reads, producer retention policy, or operational-store dependency. */
 export function observationBatch(view: QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | InvestigationView, rendered: string, context: {
   readonly configPath: string; readonly repositoryRoot: string | null; readonly methods: readonly string[];
-}, command = 1): ObservationBatch {
+}, requestValue: RequestContext, command = 1): ObservationBatch {
   if (!Number.isSafeInteger(command) || command < 1) throw new Error('Invalid command order');
   const request = randomUUID();
   const analysis = randomUUID();
@@ -38,15 +39,8 @@ export function observationBatch(view: QualifiedView | QualifiedOrganizationView
   const output = randomUUID();
   const references = { request, analysis, view: artifact, rendered: output };
   const disclosed = rendered.length ? sourceDisclosure(view) : null;
-  return { formatVersion: 1, id: randomUUID(), session: view.projection.session, command, records: [
-    { id: request, kind: 'request', value: {
-      lens: view.projection.lens, subject: view.projection.subject, lensParameters: view.projection.parameters,
-      presentation: view.presentation, navigation: ['inspect', 'dependency-children', 'dependency-parents'].includes(view.projection.lens)
-        ? view.projection.parameters.reference
-          ? 'Session-local entity reference supplied; resolution is within this session only, with no cross-invocation continuity.'
-          : 'Exact name or handle supplied for lookup; no session-reference or cross-invocation continuity is asserted.'
-        : view.projection.lens === 'summarize' || view.projection.lens === 'usage' ? 'Investigation or usage requested; references are scoped to this producing session.' : view.projection.lens === 'organization' ? 'Organization investigation requested for the stated subject.' : view.projection.lens === 'dependency-structure' ? 'Project dependency structure requested.' : 'Configured-project inventory requested.',
-    } },
+  return { formatVersion: 2, id: randomUUID(), session: view.projection.session, command, records: [
+    { id: request, kind: 'request', value: requestValue },
     { id: analysis, kind: 'analysis-context', value: { ...context, session: view.projection.session } },
     { id: artifact, kind: 'qualified-view', value: view },
     { id: output, kind: 'rendered-output', value: rendered },
@@ -101,19 +95,20 @@ export function localFileObservationSink(directory: string, configPath: string, 
 /** Refusals and failures have no fabricated view or source-disclosure event. */
 export function commandObservation(session: string, command: number, requestValue: unknown,
   status: 'completed' | 'refused' | 'invalidated' | 'failed' | 'defect' | 'interrupted',
-  stdout: string, stderr: string, produced?: ObservationBatch, usage?: InvestigationUsageReport): ObservationBatch {
+  stdout: string, stderr: string, produced?: ObservationBatch, usage?: InvestigationUsageReport, report?: { readonly kind: 'resolution-result' | 'usage-report'; readonly value: unknown }, requestContext?: RequestContext): ObservationBatch {
   if (!Number.isSafeInteger(command) || command < 1) throw new Error('Invalid command order');
   const request = produced?.records.find(item => item.kind === 'request')?.id ?? randomUUID();
   const analysis = produced?.records.find(item => item.kind === 'analysis-context')?.id ?? randomUUID();
   const rendered = produced?.records.find(item => item.kind === 'rendered-output')?.id ?? randomUUID();
   const records: ObservationBatch['records'][number][] = produced ? [...produced.records] : [
-    { id: request, kind: 'request', value: requestValue },
+    { id: request, kind: 'request', value: requestContext ?? requestValue },
     { id: analysis, kind: 'analysis-context', value: { session } },
     { id: rendered, kind: 'rendered-output', value: stdout },
   ];
+  if (report) records.push({ id: randomUUID(), ...report });
   if (usage?.attempts.length) records.push({ id: randomUUID(), kind: 'investigation-usage', value: usage });
   records.push({ id: randomUUID(), kind: 'command-outcome', value: { status, request: requestValue, stderr } });
   const type = status === 'invalidated' ? 'session-invalidated' : `command-${status}` as const;
-  return { formatVersion: 1, id: produced?.id ?? randomUUID(), session, command, records,
+  return { formatVersion: 2, id: produced?.id ?? randomUUID(), session, command, records,
     events: [...(produced?.events ?? []), { id: randomUUID(), type, request, analysis, rendered }] };
 }

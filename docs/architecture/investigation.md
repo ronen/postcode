@@ -333,7 +333,7 @@ otherwise unknown calls. Duplicate reports still count once.
 
 The worker's close message precedes its result message. On receiving a completed
 investigation view, the parent finalizes its usage and rendering from the sealed
-snapshots. Subsequent usage views and command observations read those same snapshots;
+snapshots. Subsequent usage reports and command observations read those same snapshots;
 worker report updates supply termination/exposure metadata without replacing the
 sealed call reports. View identity includes the finalized usage snapshot separately
 from the interpretation projection identity. The worker envelope carries an
@@ -341,8 +341,10 @@ explicit usage-independent arrangement key, including format, source choices,
 normalized continuation/page, reference lifetime and invocation reporting. The
 parent uses that key without accessing core content or reconstructing inputs from
 bounded View fields. Repeated finalization with the same usage is stable, and
-retained accounts and earlier Views remain unchanged. Subjectless usage has a
-reporting descriptor rather than a retained program Projection. Direct in-process
+retained accounts and earlier Views remain unchanged. Subjectless usage travels as an explicit report alternative with no program
+Projection, View or content identity. The parent replaces its usage from the same
+sealed ledger and re-renders it without core access; parameter-resolution reports
+use that same finalization boundary. Direct in-process
 sessions continue to use their own domain ledger and termination boundary.
 
 The parent retains received usage and the last dispatched-context snapshot

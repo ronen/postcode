@@ -63,8 +63,8 @@ for (const format of ['unicode', 'json'] as const) test(`source observations fol
   driver.verify(); assert.equal(code, 0, stderr); assert.equal(batches.length, commands.length + 1);
   for (let index = 0; index < commands.length; index++) {
     const command = commands[index]!, batch = batches[index + 1]!, view = dataOf(batch);
-    const request = batch.records.find(item => item.kind === 'request')!.value as { presentation: { sourceDetail: boolean } };
-    assert.equal(request.presentation.sourceDetail, command.includes('--source-detail'), command);
+    const request = batch.records.find(item => item.kind === 'request')!.value as import('../src/lib/request-reporting.js').RequestContext;
+    assert.equal(request.request.presentation.sourceDetail, command.includes('--source-detail'), command);
     const rendered = batch.records.find(item => item.kind === 'rendered-output')!.value as string;
     assert.ok(stdout.includes(rendered));
     const actual = escapes(batch);
@@ -84,15 +84,15 @@ for (const format of ['unicode', 'json'] as const) test(`source observations fol
       const noExcerpts = { ...view, sourceDetail: { ...view.sourceDetail!, items: view.sourceDetail!.items.map(item => ({ ...item,
         evidence: item.evidence.map(evidence => evidence.location.association === 'file' ? evidence : { ...evidence,
           location: { ...evidence.location, excerpt: { ...evidence.location.excerpt, text: '' } } }) })) } };
-      const event = escapes(observationBatch(noExcerpts, renderView(noExcerpts), { configPath: config, repositoryRoot: root, methods: [] }))[0]!;
+      const event = escapes(observationBatch(noExcerpts, renderView(noExcerpts), { configPath: config, repositoryRoot: root, methods: [] }, request))[0]!;
       assert.deepEqual(event.sourceForms, ['locations'], 'empty excerpts do not erase genuine locations or claim text disclosure');
       const hidden = { ...view, modules: [] };
-      assert.equal(escapes(observationBatch(hidden, renderView(hidden), { configPath: config, repositoryRoot: root, methods: [] })).length,
+      assert.equal(escapes(observationBatch(hidden, renderView(hidden), { configPath: config, repositoryRoot: root, methods: [] }, request)).length,
         format === 'json' ? 1 : 0, 'Unicode does not render source items for omitted modules; JSON serializes them');
     }
     if (view.schema === 'postcode-dependency-view/1-experimental' && index === 10) {
       const embedded = { ...view, sourceDetail: { ...view.sourceDetail!, items: [], organizationEvidence: view.sourceDetail!.items.map(item => item.evidence) } };
-      assert.equal(escapes(observationBatch(embedded, renderDependencyView(embedded), { configPath: config, repositoryRoot: root, methods: [] })).length,
+      assert.equal(escapes(observationBatch(embedded, renderDependencyView(embedded), { configPath: config, repositoryRoot: root, methods: [] }, request)).length,
         format === 'json' ? 1 : 0, 'organization-support source records are embedded only by JSON');
     }
     // Exercise present-but-empty containers and metadata-only containers through
@@ -108,7 +108,7 @@ for (const format of ['unicode', 'json'] as const) test(`source observations fol
       case 'postcode-investigation-view/1-experimental':
         empty = { ...view, sourceDetail: { level: 'investigation-support', items: [] } }; render = renderInvestigationView; break;
     }
-    if (view.sourceDetail) assert.deepEqual(escapes(observationBatch(empty, render(empty as never), { configPath: config, repositoryRoot: root, methods: [] })), [], `empty ${view.schema}`);
+    if (view.sourceDetail) assert.deepEqual(escapes(observationBatch(empty, render(empty as never), { configPath: config, repositoryRoot: root, methods: [] }, request)), [], `empty ${view.schema}`);
   }
   assert.equal(agent.inputs.length, 1, 'source observation does not invoke investigation');
 });

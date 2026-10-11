@@ -1,3 +1,4 @@
+import { finalizeRequestReport, renderRequestReport } from './request-reporting.js';
 import { freezeOwned } from './immutable.js';
 import type { InvestigationRequest, AgentIdentity, InvestigatorAgent, AgentDialogue, AgentReply, AttemptReport, CallUsage } from './investigation/contracts.js';
 import { finalizeInvestigationUsage, renderInvestigationView } from './investigation/presentation.js';
@@ -11,9 +12,9 @@ import { GitExecutionOwner, executionLimits, reportExit } from './git-execution.
 import type { ViewRequest, ExecutionOptions } from './session.js';
 import type { ProjectOptions } from './typescript/project.js';
 import { decodeError, encodeError } from './session-protocol.js';
-import type { Opening, WorkerReply, WorkerRequest, ExecutedView } from './session-protocol.js';
+import type { Opening, WorkerReply, WorkerRequest, ExecutedRequest } from './session-protocol.js';
 export { CommandInterrupted } from './execution-errors.js';
-export type { ExecutedView } from './session-protocol.js';
+export type { ExecutedRequest } from './session-protocol.js';
 
 type Reply = Extract<WorkerReply, { type: 'reply' }>;
 /** One operation; the parent owns Git and cleanup independently of compiler disposal. */
@@ -138,9 +139,17 @@ export function interactiveSession(options: ProjectOptions, dependencies: {
   };
   return {
     opening, usage: usageReport,
-    async execute(request: ViewRequest, execution: ExecutionOptions = {}): Promise<ExecutedView> {
+    async execute(request: ViewRequest, execution: ExecutionOptions = {}): Promise<ExecutedRequest> {
       const reply = await send({ type: 'execute', request, execution });
-      if (!reply.result) throw new Error('Worker returned no view');
+      if (!reply.result) throw new Error('Worker returned no request result');
+      if (reply.result.kind === 'resolution') {
+        const report = finalizeRequestReport(reply.result.report, usageReport());
+        return { ...reply.result, report, rendered: renderRequestReport(report) };
+      }
+      if (reply.result.kind === 'usage') {
+        const report = finalizeRequestReport(reply.result.report, usageReport());
+        return { ...reply.result, report, rendered: renderRequestReport(report) };
+      }
       if (reply.result.view.schema === 'postcode-investigation-view/1-experimental') {
         // The close message precedes the result. Finalize from those sealed call
         // snapshots, which also feed observations and subsequent usage requests.

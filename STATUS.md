@@ -1,6 +1,6 @@
 # Project Status
 
-Last reviewed: 2026-10-02
+Last reviewed: 2026-10-11
 
 PostCode is currently available as a development CLI for investigating one
 configured TypeScript project.
@@ -26,8 +26,8 @@ This page summarizes current capabilities and significant limits. The [capabilit
   displayed information. Terminal wrapping preserves combining characters and emoji,
   measures display width, and visibly escapes control characters.
 - **[Local observation recording](README.md#observability).**
-  Commands record requests, outcomes and presented views, grouped by project and
-  UTC date. Only complete batches become visible under final filenames; delivery
+  Commands record their actual requested question, designation, outcomes and presented
+  views, grouped by project and UTC date. Usage is reported without a program View. Only complete batches become visible under final filenames; delivery
   and later cleanup warnings remain distinct.
 
 - **[Interpretation integration](docs/cli-reference.md#progressive-investigation-and-usage).**
@@ -41,6 +41,10 @@ This page summarizes current capabilities and significant limits. The [capabilit
   macOS Keychain credentials. Billing routes are selected explicitly.
 
 ## Current limits
+
+- **[Request-model integration](docs/plans/lens-request-model.md):** normalized request
+  reporting and non-View usage are implemented. Shared qualified subject resolution,
+  answer identity and prerequisite attribution remain in progress.
 
 - **Hosted interpretation:** [formative assessments](records/validation/module-investigation/pass-01/report.md)
   show useful source-qualified summaries alongside omitted qualifications. A

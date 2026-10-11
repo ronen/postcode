@@ -220,7 +220,7 @@ limits, scope, evidence qualifications, and navigation examples.
 ## Observability
 
 Each accepted shell command and each one-shot view request submits an experimental
-version-one observation batch to a timestamped local file under a UTC date
+version-two observation batch to a timestamped local file under a UTC date
 subdirectory of this PostCode checkout's `_observations/` directory. The CLI
 discloses that absolute root destination on stderr.
 The batch carries the session identifier and command order (1 for one-shot use),

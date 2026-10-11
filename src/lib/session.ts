@@ -1,3 +1,10 @@
+import { freezeOwned } from './immutable.js';
+import { randomUUID } from 'node:crypto';
+import { lenses, normalizeRequest, invalidParameters } from './requests.js';
+import type { ViewRequest } from './requests.js';
+export type { ViewRequest } from './requests.js';
+import { renderRequestReport } from './request-reporting.js';
+import type { RequestContext, ResolutionReport, UsageReport } from './request-reporting.js';
 import { createAssociatedInspectionView } from './investigation/associations.js';
 import { methods } from './identity.js';
 import { investigationEvaluation } from './investigation/evaluation.js';
@@ -26,24 +33,14 @@ import type { EvaluationRecord, ProjectionRecord } from './records.js';
 
 import type { ModuleAnalysis } from './evaluation.js';
 import type { SessionId } from './records.js';
-import type { Presentation } from './presentation.js';
 import { openTypeScriptProject } from './typescript/project.js';
 import type { ProjectOptions } from './typescript/project.js';
 
 export { AnalysisFailure, SessionInvalidated } from './execution-errors.js';
 
-export interface ViewRequest {
-  readonly lens: 'modules' | 'inspect' | 'organization' | 'dependencies' | 'children' | 'parents' | 'summarize' | 'explain' | 'decompose' | 'examine' | 'usage';
-  readonly selector: string | null;
-  readonly after?: string;
-  readonly revisionPage?: number;
-  readonly referenceLifetime?: 'session' | 'command';
-  readonly reference?: boolean;
-  readonly subject?: 'project' | 'repository';
-  readonly presentation: Presentation;
-}
-
 export interface ExecutionOptions {
+  /** Occurrence correlation supplied by a publisher, never a reusable-work key. */
+  readonly requestId?: string;
   /** The publisher must check after delivery and before emitting this result. */
   readonly deferPublicationCheck?: boolean;
 }
@@ -116,18 +113,22 @@ export async function openSession(options: ProjectOptions, lifetime: { runGit?: 
     evaluateInvestigation: (request: InvestigationRequest) => operation(async () => {
       await check(); return state!.evaluate(request);
     }),
-    execute: (request: ViewRequest, execution: ExecutionOptions = {}) => operation(async () => {
-      await check();
-      try {
-        const result = await state!.execute(request);
-        if (!execution.deferPublicationCheck) await check();
-        alive();
-        return result;
-      } catch (error) {
-        if (operationalIO(error)) { await check(); throw new AnalysisFailure(error.message); }
-        throw error;
-      }
-    }),
+    execute: (request: ViewRequest, execution: ExecutionOptions = {}) => {
+      request = freezeOwned(structuredClone(request));
+      execution = { ...execution };
+      return operation(async () => {
+        await check();
+        try {
+          const result = await state!.execute(request, execution.requestId);
+          if (!execution.deferPublicationCheck) await check();
+          alive();
+          return result;
+        } catch (error) {
+          if (operationalIO(error)) { await check(); throw new AnalysisFailure(error.message); }
+          throw error;
+        }
+      });
+    },
     async close() {
       state = undefined;
       lifetime.signal?.removeEventListener('abort', interrupt);
@@ -138,17 +139,29 @@ export async function openSession(options: ProjectOptions, lifetime: { runGit?: 
 
 function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalysis, session: SessionId,
   integration: ReturnType<typeof investigationEvaluation>, usage: () => ReturnType<typeof usageSummary>) {
-  return async (request: ViewRequest) => {
+  return async (request: ViewRequest, requestId: string = randomUUID()) => {
+    const context: RequestContext = freezeOwned({ id: requestId, initiator: 'caller', request: normalizeRequest(request) });
+    const invalid = invalidParameters(context.request);
+    if (invalid) {
+      const report: ResolutionReport = { schema: 'postcode-resolution/1-experimental', session, context, usage: usage(),
+        resolution: { reason: 'invalid-parameters', explanation: invalid, candidates: [], criteria: ['Declared Lens parameters'], qualifications: [], prerequisites: [], retainedAnswers: [] } };
+      return { kind: 'resolution' as const, context, report, rendered: renderRequestReport(report), failed: true };
+    }
+    if (context.request.kind === 'report') {
+      const report: UsageReport = { schema: 'postcode-investigation-usage/1-experimental', session, context, usage: usage() };
+      return { kind: 'usage' as const, context, report, rendered: renderRequestReport(report), failed: false };
+    }
+    const definition = lenses[context.request.lens];
     const { lens, selector, presentation } = request;
-    const operation = { summarize: 'functionality', explain: 'clarification', decompose: 'decomposition', examine: 'examination' } as const;
-    const investigationLens = lens in operation ? lens as keyof typeof operation : null;
-    const followup = investigationLens !== null && lens !== 'summarize';
+    const operation = definition.requirements.kind === 'interpretation' ? definition.requirements.operation : null;
+    const investigationLens = operation !== null;
+    const followup = investigationLens && definition.subjects.includes('investigram');
     const interpretationInspection = lens === 'inspect' && request.reference && selector?.startsWith('investigram-');
     const investigram = request.reference && selector?.startsWith('investigram-')
       ? [...store.entityIds(store.investigations(session).flatMap(item => item.investigrams), 'investigram')]
         .find(([, reference]) => reference === selector)?.[0] : undefined;
     let unsupportedSubject: 'investigram' | 'program-subject' | undefined = investigram && (lens === 'children' || lens === 'parents' || lens === 'summarize') ? 'investigram' as const : undefined;
-    if (investigationLens || lens === 'usage' || interpretationInspection || unsupportedSubject) {
+    if (investigationLens || interpretationInspection || unsupportedSubject) {
       const basis = evaluateModules(store, analysis);
       let selected: RecordId[] = [];
       if (unsupportedSubject) selected = [investigram!];
@@ -170,16 +183,16 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
         }
       }
       const result = !unsupportedSubject && investigationLens && selected.length === 1
-        ? await integration.evaluate({ operation: operation[investigationLens], subject: selected[0]!, parameters: {} }) : null;
-      const { view, investigationArrangementKey } = createInvestigationView(store, session, { ...request, ...(unsupportedSubject ? { unsupportedSubject } : {}), lens: lens as 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'usage' | 'children' | 'parents' }, selected, result, usage());
-      const context = store.get(session);
-      if (context.kind !== 'session') throw new Error('Expected session');
-      const repository = context.repository ? store.get(context.repository) : null;
-      return { view, investigationArrangementKey, rendered: renderInvestigationView(view), repositoryRoot: repository?.kind === 'repository-evidence' && repository.capture.status === 'available' ? repository.capture.evidence.root : null,
-        methods: [...context.methods, methods.investigationEvaluation, methods.investigationPresentation],
+        ? await integration.evaluate({ operation: operation!, subject: selected[0]!, parameters: {} }) : null;
+      const { view, investigationArrangementKey } = createInvestigationView(store, session, { ...request, ...(unsupportedSubject ? { unsupportedSubject } : {}), lens: lens as 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'children' | 'parents' }, selected, result, usage());
+      const sessionContext = store.get(session);
+      if (sessionContext.kind !== 'session') throw new Error('Expected session');
+      const repository = sessionContext.repository ? store.get(sessionContext.repository) : null;
+      return { kind: 'view' as const, context, view, investigationArrangementKey, rendered: renderInvestigationView(view), repositoryRoot: repository?.kind === 'repository-evidence' && repository.capture.status === 'available' ? repository.capture.evidence.root : null,
+        methods: [...sessionContext.methods, methods.investigationEvaluation, methods.investigationPresentation],
         failed: !!unsupportedSubject || !!investigationLens && (selected.length !== 1 || !result?.evaluation || result.evaluation.outcome.kind !== 'accepted') || !!interpretationInspection && selected.length !== 1 || view.investigations?.status === 'unknown-continuation' };
     }
-    const dependencyLens = ['dependencies', 'children', 'parents'].includes(lens);
+    const dependencyLens = definition.requirements.kind === 'dependencies';
     // Provider/evaluation reuse owns input-basis validity; an outer cache could hide new acquisition.
     const dependencyOutcome = dependencyLens ? evaluateDependencies(store, analysis, dependencyPresentationRequirements.modules) : null;
     const expansions = lens === 'modules' ? presentationRequirements(presentation) : organizationPresentationRequirements.modules;
@@ -206,11 +219,11 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
     const view = lens === 'inspect' ? createAssociatedInspectionView(store, mechanicalView, inspectedSubjects, request.after, request.referenceLifetime) : mechanicalView;
     const rendered = view.schema === 'postcode-dependency-view/1-experimental' ? renderDependencyView(view)
       : view.schema === 'postcode-view/1-experimental' ? renderView(view) : renderOrganizationView(view);
-    const context = store.get(projection.session);
-    if (context.kind !== 'session') throw new Error('Expected analysis session');
-    const captured = context.repository ? store.get(context.repository) : null;
+    const sessionContext = store.get(projection.session);
+    if (sessionContext.kind !== 'session') throw new Error('Expected analysis session');
+    const captured = sessionContext.repository ? store.get(sessionContext.repository) : null;
     const repositoryRoot = captured?.kind === 'repository-evidence' && captured.capture.status === 'available' ? captured.capture.evidence.root : null;
-    return { view, investigationArrangementKey: null, rendered, repositoryRoot, methods: lens === 'inspect' ? [...context.methods, methods.investigationPresentation] : context.methods,
+    return { kind: 'view' as const, context, view, investigationArrangementKey: null, rendered, repositoryRoot, methods: lens === 'inspect' ? [...sessionContext.methods, methods.investigationPresentation] : sessionContext.methods,
       ...('investigations' in view && view.investigations?.status === 'unknown-continuation' ? { failed: true } : {}) };
   };
 }

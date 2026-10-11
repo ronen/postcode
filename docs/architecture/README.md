@@ -37,6 +37,31 @@ Recorded output remains evidence of what PostCode displayed, but observations do
 
 The product permits a summary suggestion when no more specific information need has been expressed; it does not require a summary-first default. The current no-argument CLI command lists modules, and `summarize` requests the implemented module interpretation. This is compatible with the optional suggestion, although the CLI does not provide a general summary View selector. Adoption of the conceptual model changes neither command behavior nor the current schema and identity contracts.
 
+<a id="request-publication"></a>
+## Request publication
+
+Session execution normalizes the requested question, subject designation, Lens
+parameters and presentation choices independently of the resulting answer. A
+static Lens declaration supplies the question and consuming operation mapping;
+selection validation shares that mapping and subject applicability. Invocation
+correlation belongs to the returned request context and does not enter retained
+Projection or reusable operation identity.
+
+The worker result distinguishes a program View, a subjectless usage report and a
+parameter-resolution report. The parent finalizes reports using its authoritative
+usage ledger. Publication uses the actual normalized request for version-two
+observations, including follow-ups, and emits a View event only for a program
+View. Input checks and observation-delivery warnings apply to every alternative.
+Module matching is shared between module and dependency selection without
+constructing an unused inspection answer.
+
+This is an intermediate implementation of the [request-model plan](../plans/lens-request-model.md).
+Qualified subject resolution, unsuccessful-lookup retention, designation-free
+answer identity, prerequisite/evidence attribution, runtime Presentation
+compatibility and extension demonstrations remain to be integrated. Existing
+family descriptors still retain lookup fields; declaration of prospective result
+contracts does not yet establish runtime compatibility across the toolbox.
+
 ## Responsibilities and flow
 
 The [investigation execution and session integration](investigation.md) supplies

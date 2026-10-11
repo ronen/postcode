@@ -284,3 +284,18 @@ test('store rejects invalid component indices and missing organization occurrenc
       information: { ...claim.information, occurrences: [] } }]), /every supporting occurrence/);
   });
 });
+
+test('dependency subject lookup never constructs an unused module inspection Projection', async t => {
+  await fixture({ 'a.ts': "import './b'; export {};", 'b.ts': 'export {};' }, async root => {
+    const { store, evaluation, basis, module } = await analyze(root);
+    const retained: string[] = [];
+    const put = store.put.bind(store);
+    t.mock.method(store, 'put', (records: readonly import('../src/lib/records.js').ProgramRecord[]) => { retained.push(...records.map(record => record.kind)); put(records); });
+    const byName = dependencyChildren(store, evaluation, 'a');
+    const binding = store.entityIds(basis.modules, 'module').get(module('a'))!;
+    const byReference = dependencyParents(store, evaluation, binding, true);
+    assert.deepEqual(byName.subjects, [module('a')]);
+    assert.deepEqual(byReference.subjects, [module('a')]);
+    assert.deepEqual(retained, ['dependency-projection', 'dependency-projection']);
+  });
+});
