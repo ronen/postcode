@@ -27,3 +27,15 @@ This candidate creates no schedule or requirement to implement those capabilitie
 ## Add to “Review the investigation UI and UX as a whole” after its last paragraph
 
 Decide how visible Lens terminology and identifiers should be to users, and how an interface offers the applicable questions for a selected subject, captions answers and exposes meaningful parameters. The [Lens request-model plan](plans/lens-request-model.md) supplies explicit applicability and question definitions; it does not choose GUI controls or require the interface to use the word “Lens”. Keep these interaction choices in the broader UX review.
+
+## Add “Establish conformance to the Lens request model”
+
+## Establish conformance to the Lens request model
+
+Added: 2026-10-11
+Origin: [Lens request-model adoption and conformance](decisions/lens-application-and-request-outcomes.md#adoption-and-conformance)
+Area: request coordination, qualified answers and publication
+
+The Lens request-model contracts are adopted before their conforming implementation. Current gaps include distributed Lens/applicability policy, designation-sensitive answer identity, retained lookup-failure Projections, the usage descriptor, inferred request reporting, incomplete prerequisite attribution and unexercised runtime compatibility contracts. These affect current reporting accuracy and prevent claiming conformance to the new request model.
+
+The existing [Lens request-model plan](plans/lens-request-model.md#milestones-and-verification) contains the remediation and verification; this entry tracks that work rather than proposing another plan or duplicating its scope. Complete it before claiming conformance or relying on these contracts for new interface capabilities. Preserve current limitation disclosures until verification supports their removal. Broader attribution, captured-basis export, exact retained-answer redisplay and navigation-origin work remain separately scoped.

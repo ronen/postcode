@@ -128,7 +128,7 @@ Deriving request meaning from produced Views causes F1 and cannot honestly descr
 
 #### Consequences
 
-The replacement [construction/reporting contracts](qualified-construction-under-the-request-model.md) remove the usage-only descriptor and its identity/data flow. The companion output decision specifies affected experimental shapes and observation-envelope versioning. Preserve subjectless usage semantics, sealed attempt usage, independent acceptance/usage accounting, source evidence controls, sink selection/lifecycle and warning behavior. Further substantial output architecture requires a separate scope decision.
+The replacement [construction/reporting contracts](qualified-construction-under-the-request-model.md) remove the usage-only descriptor and its identity/data flow. The companion output decision specifies affected experimental shapes and observation-envelope versioning. Preserve subjectless usage semantics, sealed attempt usage, independent acceptance/usage accounting, source evidence controls, sink selection/lifecycle and warning behavior. Retain consequential generating attribution with its supported results for the Session lifetime, separately from later consumption. Later requests must not overwrite the recorded origin or insert invocation-specific attribution into immutable shared answer payloads or reusable-work identity. This requires no new public referent or identity guarantee; internal correlation identifiers and metadata encoding remain implementation choices. Further substantial output architecture requires a separate scope decision.
 
 ### Match qualified results to Presentations explicitly
 
@@ -152,7 +152,19 @@ Use current family arrangements and their formats/options as the initial units; 
 
 ## Adoption and conformance
 
-Adoption establishes contracts and a plan, not implementation conformance. Complete the plan's integration and verification before claiming every current path satisfies them. The initial source assessment identifies absent explicit initiation/parent links in resolution/evidence/publication paths and includes bounded remediation. Recheck the field-level trace before broad record changes; substantial additional gaps require human scope review.
+These contracts and their application-specification, concept and constraint provisions apply on adoption, with the known implementation gaps below explicitly accepted pending completion of the [Lens request-model plan](../plans/lens-request-model.md#milestones-and-verification). Their promotion is not deferred until implementation. Adoption does not establish conformance: complete the plan's integration and verification before claiming every current path satisfies them.
+
+| Current gap and consequence | Remediation in the existing plan |
+| --- | --- |
+| Lens policy and parameter meaning are distributed; resolution is embedded in dispatch/construction and dependency selection creates an unused inspection answer. | M1 establishes definitions and request context; M2 introduces shared resolution and independent selection. |
+| Failed lookups retain Projections, and compatible bound targets can be mistaken for unknown references. Returned planning information lacks the new self-contained contract. | M2 implements the family outcome table, target/materialization distinction and resolution-result delivery. |
+| Answer payloads/identity contain designation, usage has a lens-shaped descriptor, and publication infers request meaning from Views. | M3 separates immutable answers, updates family identity methods and publishes actual requests through View and non-View alternatives, including the changed observation envelope. |
+| Explicit parent/initiator attribution is incomplete, including evidence-work and failed/interrupted paths. | M1–M3 implement and verify the bounded attribution trace. Broader assessment remains separately scoped. |
+| Runtime result/Presentation compatibility and local additions are not yet established across the toolbox. | M1 exercises the declarations; M4 integrates every current path and demonstrates both extension cases. |
+
+The governing documents link to this disclosure while these gaps remain. The [conformance backlog entry](../backlog.md#establish-conformance-to-the-lens-request-model) tracks completion under this existing plan; it does not require another plan or authorize implementation. Existing defects and limitations remain disclosed. Implementation updates the affected descriptions and gap links only after verification establishes conformance; unresolved gaps require explicit disposition rather than an assumed completion.
+
+The initial source assessment identifies absent explicit initiation/parent links in resolution/evidence/publication paths and includes bounded remediation. Recheck the field-level trace before broad record changes; substantial additional gaps require human scope review.
 
 This decision is reflected in the application specification, core concepts and architectural constraints. The [complete supersession mapping](qualified-construction-under-the-request-model.md#supersession-mapping) carries forward unaffected commitments from the replaced headed decisions. Exact retained-answer redisplay, captured-basis observation export, navigation lineage and general Presentation/GUI design remain separately tracked.
 
