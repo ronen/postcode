@@ -35,7 +35,14 @@ Intermediate checkpoint, 2026-10-11: implementation commit `a9c8189f042d5fe6cabf
 
 The task remains active and no milestone is declared complete. Qualified subject resolution and retention changes, answer identity, prerequisite/evidence attribution, runtime Presentation compatibility, operation/extension seams and demonstrations, and full-plan verification remain required. The [intermediate review handoff](../reviews/lens-request-model/2026-10-11-request-publication-handoff.md) enumerates that work. Implementation pauses for human-arranged review under the development workflow before expanding this shared boundary into the remaining family migrations. Final integrated review and human gate acceptance will still be required before closure.
 
+Review corrections, 2026-10-11: all five actionable round-one findings were accepted and corrected in `4c9c3e0` and `709ea65d9ffe7f21e60306fa2d02ba9c0b74dd5f`. The [disposition](../reviews/lens-request-model/2026-10-11-request-publication-disposition.md) records each judgment, the human-directed F3/F4 behavior, and the exact corrected target. Dependency Lens vocabulary and designation validation now agree with the plan; usage refuses and preserves extra inputs; malformed input receives a safe caller refusal with explicit representation limits; unexpected post-validation failures remain defects; the usage schema's optional context is documented. The reviewer's intermittent CLI failure remains unexplained. Wider implementation remains paused pending human direction on that uncertainty and acceptance of the intermediate gate. The task remains active and the outstanding plan work above remains required.
+
 ## Verification
 
+### Review-correction verification
+
+Final `npm run check` passed. Final `npm test` passed all 503 tests, including the reviewer's previously failing CLI test and new refusal/serialization regressions. Focused runs passed 26 and 35 tests; `git diff --check` passed. An earlier full run was contaminated by creating a repository file during input-sensitive tests; stable reruns passed. The disposition preserves that distinction and does not treat passing reruns as an explanation of the reviewer's intermittent failure. Existing offline loopback tests ran with permission; no paid inference was used.
+
+### Intermediate-checkpoint verification
 
 At the intermediate checkpoint, `npm run check` passed and `npm test` passed all 495 tests. Existing offline sign-in tests required local loopback permission: a sandbox bind probe returned `EPERM`, and the final full run passed with that permission. No paid inference was used. Focused coverage and the initial failures/corrections are recorded in the review handoff. `git diff --check` passed. These results verify the checkpoint, not completion of the approved plan.
