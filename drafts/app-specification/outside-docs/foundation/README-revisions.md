@@ -8,7 +8,7 @@ Each block below is a complete replacement or addition at the identified destina
 <a id="governing-documents"></a>
 ## Governing Documents
 
-- [`product-design.md`](product-design.md) defines the research product hypothesis and conceptual/semantic commitments necessary for evaluation. It is aspirational about implementation status. Local application behavior, UX, and high-level architecture are governed by the human-maintained [application specification](../docs/app-specification.md), which must conform to this foundation. Plans and decisions must also conform unless the human explicitly authorizes a foundation revision.
+- [product-design.md](product-design.md) is the adopted governing conceptual description of PostCode. It defines the product hypothesis and the principles the application must preserve. It is aspirational about implementation status; application plans and decisions must conform to it unless the human explicitly authorizes a foundation revision.
 - [`task-protocol.md`](task-protocol.md) governs how authorized implementation tasks are opened, recorded, followed up, verified, and concluded.
 - [`baseline-conventions.md`](baseline-conventions.md) contains baseline development conventions adopted across the application.
 <!-- END PROMOTION CONTENT -->

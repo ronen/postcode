@@ -237,6 +237,8 @@ Runtime adapters may expose debugger, profiler, tracer, or test-runner observati
 <a id="research-observations-and-generated-output"></a>
 ## Research observations and generated output
 
+This section elaborates the foundation’s [Research Observation Support](../foundation/product-design.md#research-observation-support) with application-specific capture, delivery, and lifecycle requirements.
+
 <a id="interaction-capture-and-subjective-reports"></a>
 ### Interaction capture and subjective reports
 
@@ -249,7 +251,7 @@ Preserve enough provenance to relate observations to PostCode version, relevant 
 <a id="delivery-and-lifecycle"></a>
 ### Delivery and lifecycle
 
-For research use, PostCode delivers observation records to a designated research destination, subject to the [generated-output evidence boundary](#generated-output-evidence-boundary). Released production builds use delivery configuration selected when the build is produced. Development/test builds may suppress recording or use another destination, including an explicitly excluded location within the development repository. These application delivery choices preserve the evidence boundary independently of storage location.
+Released production builds deliver observations to the destination required by [Research Observation Support](../foundation/product-design.md#research-observation-support), using configuration selected when the build is produced. Development/test builds may suppress recording or use another destination, including a location within the development repository that is explicitly excluded from repository evidence. Whatever destination is used, observation records must not be treated as independent repository evidence.
 
 Make delivery failure visible without invalidating an otherwise successfully produced View. Sink acceptance, post-acceptance cleanup, retention, migration, historical reading, and producer-side caching remain separate concerns. Existing local acceptance guarantees complete no-overwrite publication, not power-loss durability. Observations are evidence of use, not operational state for restoring a Session or its reference bindings.
 
@@ -261,6 +263,8 @@ Operational diagnostics or product telemetry can use other mechanisms but must n
 PostCode outputs about a repository—including observation records, exported Views, context artifacts, CLI output, caches, and reports—must not become independent repository evidence in subsequent analysis of that same repository. Keep them outside it or enforce an explicit exclusion policy. Generic directory names, Git-ignore status, or markings in content do not establish that boundary.
 
 Outputs can be retained, revisited for historical purposes, reused, and compared as PostCode-produced artifacts, provided their provenance and separation from repository evidence remain intact. The boundary governs their evidential role, not all access to or use of them. For example, comparing two earlier summaries can show how PostCode’s accounts changed; their agreement does not independently corroborate a claim about the program. Outputs about other repositories can remain development/test evidence about PostCode. When PostCode investigates itself, exclude locally retained outputs about itself from repository evidence. Sink selection and storage convenience do not waive this obligation.
+
+Repository content derived from PostCode output does not independently corroborate the originating conclusions. Preserve supplied provenance identifying that origin where available; this does not require detecting otherwise unknown derivation.
 
 <a id="scope-and-future-refinement"></a>
 ## Scope and future refinement
