@@ -681,10 +681,13 @@ test('documentation wraps without changing stored text and source excerpts stay 
 });
 
 test('source hierarchy preserves forwarding, defining syntax and mixed documentation before the closing sections', async () => {
-  const inventory = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+  const listed = await invoke(['--project', config, '--json']);
+  assert.equal(listed.exit, 0, listed.stderr);
+  const inventory = JSON.parse(listed.stdout) as QualifiedView;
   for (const handle of ['origin', 'chain']) {
     const module = inventory.modules.find(item => item.handle === handle)!;
     const result = await invoke(['inspect', module.handle, '--project', config, '--source-detail']);
+    assert.equal(result.exit, 0, result.stderr);
     const text = result.stdout;
     const source = text.slice(text.indexOf('SOURCE DETAIL'), text.indexOf('\nStatus\n'));
     assert.ok(text.indexOf('SOURCE DETAIL') < text.indexOf('\nStatus\n'));
