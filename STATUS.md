@@ -5,6 +5,8 @@ Last reviewed: 2026-10-02
 PostCode is currently available as a development CLI for investigating one
 configured TypeScript project.
 
+This page summarizes current capabilities and significant limits. The [capability reference](docs/capability-reference.md) describes individual supported actions; the [CLI reference](docs/cli-reference.md) supplies syntax and detailed behavior.
+
 ## Implemented capabilities
 
 - **[Interactive investigation](docs/cli-reference.md#commands).**

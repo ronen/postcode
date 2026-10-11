@@ -1,6 +1,6 @@
 # Core Concepts
 
-This document states PostCode's governing cross-cutting architectural terminology and the relationships necessary to define it. It says what the terms mean now; accepted [decision records](decisions/) preserve why the concepts were adopted or changed. It conforms to the adopted [product design](../foundation/product-design.md), which governs product direction rather than implementation architecture. Binding cross-cutting rules that implementations must follow are stated separately in [architectural constraints](architectural-constraints.md).
+This document states PostCode's governing cross-cutting architectural terminology and the relationships necessary to define it. It says what the terms mean now; accepted [decision records](decisions/) preserve why the concepts were adopted or changed. It conforms to the adopted [product design](../foundation/product-design.md), which establishes research concepts and commitments. The [application specification](app-specification.md) governs intended behavior and high-level application design. Binding cross-cutting rules that implementations must follow are stated separately in [architectural constraints](architectural-constraints.md).
 
 This document is not an exhaustive ontology or an inventory of implementation types. It defines only concepts and distinctions that need to remain stable across plans and slices. Definitions do not prescribe classes, interfaces, schemas, storage, module boundaries, or language-specific representations. Examples illustrate meanings, not a list of implemented capabilities.
 
@@ -94,11 +94,14 @@ A **captured program state** is the program information captured from a designat
 
 A **Projection request** designates program inputs and applicable bindings, a subject, a Lens and Lens parameter values. Execution resolves the inputs to captured states; the resulting [Projection](#projection) identifies the basis actually used. Repeating the request is distinct from presenting an exact retained Projection. These distinctions prescribe neither a storage schema nor a planner. A Session supplies analysis and reference context, not a following or pinned input binding.
 
+<a id="evaluation"></a>
 ### Evaluation
 
 *[decision: [Initial core concepts](decisions/initial-core-concepts-decisions.md#distinguish-claim-content-evidence-qualification-and-evaluation)]*
 
-**Evaluation** is PostCode's attempt to materialize requested information through applicable analyses. The information requirements arise from lenses and any standard expansions requested by presentations. Execution constraints describe the conditions under which the attempt is made, rather than the question the lens asks.
+**Evaluation** is PostCode's attempt to materialize requested information through applicable analyses. Information requirements include those arising from lenses and any standard expansions requested by presentations. Execution constraints describe the conditions under which the attempt is made, rather than the question the lens asks.
+
+Requirements can also arise from system-initiated investigation serving an explicit parent request or authorized autonomous work. [[Investigation initiation](decisions/application-specification-boundaries.md#attribute-system-initiated-investigation-and-constrain-autonomous-work)]
 
 Applicable analyses include interpretation, which produces investigrams and their supporting context. [[Interpretation and evaluation](decisions/investigator-execution-and-evidence-access.md#integrate-interpretation-with-evaluation-and-qualified-evidence-access)]
 
@@ -106,12 +109,22 @@ An **evaluation outcome** describes what occurred in that attempt: applicability
 
 An outcome can exist without a produced claim or entity, and an incomplete attempt can have usable qualified results. An established empty result is therefore different from the absence of a result. Evaluation outcome and Claim context describe different things even when an outcome helps explain a projection's coverage or limitations.
 
+<a id="investigation-initiation"></a>
+### Investigation initiation
+
+*[decision: [Application specification boundaries](decisions/application-specification-boundaries.md#attribute-system-initiated-investigation-and-constrain-autonomous-work)]*
+
+**System-initiated investigation** is additional investigation PostCode initiates without a separate human or external-agent request for that work. It can be **request-scoped**, serving an explicit parent request, or **autonomous**, with no parent request. The initiating actor is distinct from the actor authorizing the parent. Selecting unspecified elements to answer an expressed information need is request interpretation; the selected answer remains explicitly requested work. Obtaining additional qualified information needed to resolve the request can be system-initiated investigation.
+
+Request-scoped work serves its parent; work outside that purpose or continuing after the parent’s satisfaction or cancellation is autonomous. Resource governance and attribution obligations are in the [architectural constraints](architectural-constraints.md#investigation-initiation-and-request-attribution). These meanings do not prescribe a scheduler or separate visible View.
+
 ### Investigator
 
 *[decision: [Investigator execution and evidence access](decisions/investigator-execution-and-evidence-access.md#integrate-interpretation-with-evaluation-and-qualified-evidence-access)]*
 
 An **Investigator** is an AI agent that investigates a subject through a dialogue with PostCode, using supplied context and requesting additional evidence as needed, and submits an interpretation for validation.
 
+<a id="session"></a>
 ### Session
 
 *[decision: [Transient analysis sessions](decisions/transient-analysis-sessions.md#session-as-the-analysis-and-reference-context)]*
@@ -125,6 +138,8 @@ References bound to investigrams likewise retain their original targets througho
 The initial session opens one configured project and assumes its relevant inputs remain unchanged. Detection of a relevant change invalidates the session for further investigation; detection is best-effort and capture remains non-atomic. This does not establish earlier contents of an input first observed later.
 
 A transient session ends with its process. References have meaning within the active session. Observations carry a session identifier to correlate commands within the session; this identifier does not establish the evidential basis or consistency of program claims. Persistence and any future validity policy for reopening a session are separate decisions.
+
+Immutability is a property of retained information, distinct from retention duration, disposal, persistence, and availability after restart. It does not imply immutability of focus, layout, or derived current status. See the [retained-information constraints](architectural-constraints.md#session-references-and-retained-information) for the obligations. [[Immutability and retention](decisions/application-specification-boundaries.md#distinguish-immutable-information-from-retention-policy)]
 
 ## Investigation and representation
 
@@ -162,6 +177,7 @@ An investigram may carry accompanying corrections identifying earlier targets, r
 
 An investigram's citation index records prior investigrams supplied to the investigator during its generating evaluation, without asserting reliance or endorsement. "Needs reconsideration" is a session-derived property indicating corrected context reached through those citations; the investigram and its index remain immutable. [[Citation exposure and reconsideration](decisions/investigrams-and-progressive-investigation.md#record-citation-exposure-and-derive-reconsideration-status)]
 
+<a id="presentation-and-view"></a>
 ### Presentation and View
 
 *[decision: [Coordinate Views while preserving qualified results](decisions/coordinated-views-and-qualified-results.md#generalize-lens-results-and-view-composition)]*
@@ -177,6 +193,22 @@ Adding or removing an underlying Projection changes View composition, rather tha
 Presentation-only actions, including paging and reformatting, preserve the selected answer and its qualifications. If an interaction instead refreshes the answer, its refresh behavior must be apparent and consequential changes in the answer, selection or qualifications disclosed. Disclosed reselection is distinct from the continuity of presenting the exact retained result with different presentation inputs. This does not require a warning for every identifier change or a comparison notice for every independently requested fresh investigation. [[Presentation continuity](decisions/coordinated-views-and-qualified-results.md#preserve-the-selected-answer-during-presentation-changes)]
 
 When the human has not expressed a more specific information need, PostCode may suggest a summary View as an initial View. Summary can also support recursive navigation; it is not a required default. A summary View may coordinate existing qualified results, show a synthesized summary Projection, or combine both. It does not require a summary Lens. [[Summary Views and navigation](decisions/coordinated-views-and-qualified-results.md#allow-summary-views-independently-of-summary-lenses)]
+
+<a id="investigation-context"></a>
+### Investigation context
+
+*[decision: [Application specification boundaries](decisions/application-specification-boundaries.md#start-with-a-workspace-as-a-collection-and-arrangement-of-views)]*
+
+An **investigation context** comprises the Views accumulated while following subjects, relationships, and questions, together with their captured bases and relevant lineage. It identifies what each View shows and how it relates to the investigation. It can span Workspace arrangements and does not imply a separately stored context object, common captured state, or persistent Session. The [application specification](app-specification.md#workspaces-and-navigation) states the retained-lineage contract.
+
+<a id="workspace"></a>
+### Workspace
+
+*[decision: [Application specification boundaries](decisions/application-specification-boundaries.md#start-with-a-workspace-as-a-collection-and-arrangement-of-views)]*
+
+A **Workspace** is a collection and arrangement of Views. It is a UX organization, distinct from a Session, a program subject, and a single View coordinating several Projections. Views in a Workspace need not share a subject, captured state, or evidence. Placement is distinct from discovery, derivation, and program relationships.
+
+The initial model does not require a permanent root subject, name, formal task, shared-context object, or persistence. Shared Workspace purpose and defaults remain future UX possibilities, distinct from the investigation context already represented by Views, their bases, and lineage. Ordinary interface focus is sufficient for the initial model.
 
 ### Expansion
 

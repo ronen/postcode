@@ -2,13 +2,13 @@
 
 Prepared for discussion, 2026-10-10. This note is non-governing. It proposes document boundaries and identifies decisions needed before preparing an adoption package; it does not authorize implementation.
 
-Updated through draft review and follow-up discussion on 2026-10-11. The coordinated draft was authorized, prepared, and reviewed; the latest revisions incorporate the agreements recorded below. The package remains unadopted and does not authorize implementation. Earlier exploratory passages provide discussion context; the draft-review and follow-up sections describe the current disposition.
+Adopted and promoted on 2026-10-11 after explicit human approval, including the foundation replacement. The application specification, capability reference, accepted decision, and coordinated revisions are now canonical. Adoption does not authorize implementation. Earlier exploratory passages and review dispositions below preserve discussion context; the promotion outcome and impact/follow-up sections describe the remaining work.
 
 ## Recommendation and baseline
 
 Create `docs/app-specification.md` as the human-maintained specification of intended application behavior and high-level application design. Keep the research foundation responsible for the conceptual commitments the application must preserve, core concepts responsible for shared terminology, and architectural constraints responsible for cross-cutting implementation obligations. Use the specification to explain what the human or external agent can request, observe, inspect, and rely on, together with the major application responsibilities and relationships that support it. Avoid turning it into either a second conceptual glossary or an implementation inventory.
 
-The content baseline is the supplied **Expanded Product Design Before the Conceptual Split**, frozen at research revision `87f74eb`. Its detailed requirements survive their removal from the research document. The supplied narrower **PostCode: Product Design**, with the 2026-10-11 research-observations revision of §§3.1.1, 3.6.1, 3.7, and 5, is the proposed research foundation, not yet adopted. The currently [adopted foundation](../foundation/product-design.md) remains governing until explicit adoption, but must not be used to roll back the expanded baseline. Source section numbers below refer to the expanded baseline unless explicitly identified otherwise; the substantive context needed for discussion is included here.
+The content baseline is the supplied **Expanded Product Design Before the Conceptual Split**, frozen at research revision `87f74eb`. Its detailed requirements survive their removal from the research document. The supplied narrower **PostCode: Product Design**, with the 2026-10-11 research-observations revision of §§3.1.1, 3.6.1, 3.7, and 5, is now the [adopted research foundation](../foundation/product-design.md). The older foundation was not used to roll back the expanded baseline during reconciliation. Source section numbers below refer to the expanded baseline unless explicitly identified otherwise; the substantive context needed for discussion is included here.
 
 Local accepted commitments also survive. In particular, the [coordinated-views decision](../docs/decisions/coordinated-views-and-qualified-results.md) already reconciles multi-projection Views, captured states, immutable answers, presentation continuity, and optional summary navigation. The [qualified-construction decision](../docs/decisions/qualified-projection-construction.md) and the interpretation/session decisions add contracts absent from both supplied designs. This reconciliation should build on them rather than reopen their settled choices incidentally.
 
@@ -272,31 +272,31 @@ The distinction between shared architecture and toolbox entries is also agreed. 
 
 Correction/disagreement disclosure and qualified reconsideration belong to the epistemological contract; access to earlier interpretations is intended UX behavior. Explicit immutability of retained evidence and qualified results is a high-level architectural commitment. It is distinct from retention duration and persistence, and does not prescribe UI state-management techniques.
 
-The human authorized the coordinated draft on 2026-10-10, with this note retained for impact and follow-up work. The draft is ready for review, not approved or promoted. Its proposed initiation/resource rules carry forward the expanded baseline; its minimal new terminology is Workspace, investigation context, and investigation initiation, without introducing a formal shared-purpose object.
+The human authorized the coordinated draft on 2026-10-10, with this note retained for impact and follow-up work. After the review rounds recorded below, the human approved promotion on 2026-10-11. Its proposed initiation/resource rules carry forward the expanded baseline; its minimal new terminology is Workspace, investigation context, and investigation initiation, without introducing a formal shared-purpose object.
 
-Preparation checked the supplied designs against relevant governing concepts, constraints, accepted decisions, plans, and descriptive documentation. This is a documentation reconciliation, not a new runtime conformance audit. A prematurely created candidate-future-UX note and its index entry were removed; the useful context remains here pending review and promotion. No supplied source, canonical specification, process instruction, or application code has changed; existing capability and GUI exploration notes remain untouched.
+Preparation checked the supplied designs against relevant governing concepts, constraints, accepted decisions, plans, and descriptive documentation. This is a documentation reconciliation, not a new runtime conformance audit. A prematurely created candidate-future-UX note and its index entry were removed; the useful context remains here pending review and promotion. Preparation left supplied sources, canonical documents, process instructions, and application code unchanged. Promotion subsequently changed the approved canonical documentation; supplied sources, process instructions, application code, and existing capability and GUI exploration notes remain untouched.
 
-## Draft package and review map
+## Promoted package and review map
 
-Start with the [application specification draft](../drafts/app-specification/app-specification.md), then the [decision draft](../drafts/app-specification/decisions/application-specification-boundaries.md). The [capability reference draft](../drafts/app-specification/capability-reference.md) describes the supported toolbox separately. This note remains the review and follow-up guide; it is not part of canonical promotion.
+Start with the [application specification](../docs/app-specification.md), then the [accepted decision](../docs/decisions/application-specification-boundaries.md). The [capability reference](../docs/capability-reference.md) describes the supported toolbox separately. This note remains a non-governing account of the discussion, reviews, and follow-up work.
 
-The package root corresponds to `docs/`. Each `-revisions.md` file identifies complete replacement/addition units. Its promotion-content blocks use links relative to the canonical destination, so some links intentionally do not resolve from the draft location.
+The completed draft package is preserved in Git through draft commit `0187d5f`; its review note was committed as `b819f3a` before promotion. Approved revision blocks were merged into current canonical documents, and the promoted draft files were removed. The links below now point to canonical destinations.
 
-| Draft artifact | Canonical destination / review purpose |
+| Canonical document | Promoted content / review purpose |
 | --- | --- |
-| [app-specification.md](../drafts/app-specification/app-specification.md) | New `docs/app-specification.md`: intended behavior and high-level architecture. |
-| [capability-reference.md](../drafts/app-specification/capability-reference.md) | New `docs/capability-reference.md`: current supported questions, actions, presentations, and limitations. |
-| [decisions/application-specification-boundaries.md](../drafts/app-specification/decisions/application-specification-boundaries.md) | New decision: document authority, simple Workspace, initiation attribution, and immutability versus retention. Set acceptance metadata only on approval. |
-| [core-concepts-revisions.md](../drafts/app-specification/core-concepts-revisions.md) | Role paragraph; localized Evaluation and Session additions; investigation-initiation and Workspace definitions. Existing term provenance remains. |
-| [architectural-constraints-revisions.md](../drafts/app-specification/architectural-constraints-revisions.md) | Role paragraph; initiation/parent/resource/attribution rules; retention distinction. Existing rules preserved. |
-| [backlog-revisions.md](../drafts/app-specification/backlog-revisions.md) | Three new candidates: initiation-attribution assessment, bounded shared agent context, and navigation-origin lineage. Reconcile existing Lens/GUI candidates and the Git-history reference. |
-| [README-revisions.md](../drafts/app-specification/README-revisions.md), [decisions/README-revisions.md](../drafts/app-specification/decisions/README-revisions.md), [implementation-conventions-revisions.md](../drafts/app-specification/implementation-conventions-revisions.md) | Document authority, navigation, decision requirements, and subordinate conventions. |
-| [plans/module-investigation-revisions.md](../drafts/app-specification/plans/module-investigation-revisions.md) | Update the architectural-basis passage without changing the approved slice or inferring lifecycle status. |
-| [architecture/README-revisions.md](../drafts/app-specification/architecture/README-revisions.md), [cli-reference-revisions.md](../drafts/app-specification/cli-reference-revisions.md) | Link intended design and current support; retain current limitations. |
-| [outside-docs/foundation/product-design.md](../drafts/app-specification/outside-docs/foundation/product-design.md) | **Outside `docs/`: complete replacement of `foundation/product-design.md`.** Supplied 2026-10-11 research-observations revision preserved exactly; no local navigation appendix. Requires explicit foundation adoption. |
-| [outside-docs/foundation/README-revisions.md](../drafts/app-specification/outside-docs/foundation/README-revisions.md) | **Outside `docs/`: `foundation/README.md`.** Use the research-owned description of conceptual authority and application conformance. |
-| [outside-docs/README-revisions.md](../drafts/app-specification/outside-docs/README-revisions.md) | **Outside `docs/`: root `README.md`.** Add conceptual/intended/supported navigation. |
-| [outside-docs/STATUS-revisions.md](../drafts/app-specification/outside-docs/STATUS-revisions.md) | **Outside `docs/`: `STATUS.md`.** Link the per-action capability reference while retaining the concise capability/limits summary and existing review date. |
+| [docs/app-specification.md](../docs/app-specification.md) | New `docs/app-specification.md`: intended behavior and high-level architecture. |
+| [docs/capability-reference.md](../docs/capability-reference.md) | New `docs/capability-reference.md`: current supported questions, actions, presentations, and limitations. |
+| [docs/decisions/application-specification-boundaries.md](../docs/decisions/application-specification-boundaries.md) | New decision: document authority, simple Workspace, initiation attribution, and immutability versus retention. Accepted on 2026-10-11. |
+| [docs/core-concepts.md](../docs/core-concepts.md) | Role paragraph; localized Evaluation and Session additions; investigation-initiation and Workspace definitions. Existing term provenance remains. |
+| [docs/architectural-constraints.md](../docs/architectural-constraints.md) | Role paragraph; initiation/parent/resource/attribution rules; retention distinction. Existing rules preserved. |
+| [docs/backlog.md](../docs/backlog.md) | Three new candidates: initiation-attribution assessment, bounded shared agent context, and navigation-origin lineage. Reconcile existing Lens/GUI candidates and the Git-history reference. |
+| [docs/README.md](../docs/README.md), [docs/decisions/README.md](../docs/decisions/README.md), [docs/implementation-conventions.md](../docs/implementation-conventions.md) | Document authority, navigation, decision requirements, and subordinate conventions. |
+| [docs/plans/module-investigation.md](../docs/plans/module-investigation.md) | Update the architectural-basis passage without changing the approved slice or inferring lifecycle status. |
+| [docs/architecture/README.md](../docs/architecture/README.md), [docs/cli-reference.md](../docs/cli-reference.md) | Link intended design and current support; retain current limitations. |
+| [foundation/product-design.md](../foundation/product-design.md) | **Outside `docs/`: complete replacement of `foundation/product-design.md`.** Supplied 2026-10-11 research-observations revision preserved exactly; no local navigation appendix. Explicitly adopted on 2026-10-11. |
+| [foundation/README.md](../foundation/README.md) | **Outside `docs/`: `foundation/README.md`.** Use the research-owned description of conceptual authority and application conformance. |
+| [README.md](../README.md) | **Outside `docs/`: root `README.md`.** Add conceptual/intended/supported navigation. |
+| [STATUS.md](../STATUS.md) | **Outside `docs/`: `STATUS.md`.** Link the per-action capability reference while retaining the concise capability/limits summary and existing review date. |
 
 ### Meaning preserved, staged, or changed
 
@@ -313,22 +313,22 @@ The package root corresponds to `docs/`. Each `-revisions.md` file identifies co
 | §4: capability examples/language support | Examples remain illustrative, not prioritized requirements. General and conditional qualification rules survive in the spec; the separate reference lists actual support. No new Lens family or language implementation commitment. |
 | Accepted local interpretation and construction contracts | Retained unchanged, with references. Explicit immutability is clarified as distinct from retention. No pending Lens-representation policy is adopted. |
 
-No accepted headed decision is replaced by this draft, so there are no decision supersession mappings to apply. The new decision supplements existing decisions; historical accepted bodies and completed plans/records remain untouched. Reassess this if review changes a substantive contract. The existing supersession mappings made by earlier decisions must remain intact.
+No earlier accepted headed decision is replaced by the adopted package, so no decision supersession mappings were needed. The new decision supplements existing decisions; historical accepted bodies and completed plans/records remain untouched. Reassess this if review changes a substantive contract. The existing supersession mappings made by earlier decisions must remain intact.
 
 **Historical foundation links:** the replacement is exactly the clarified supplied research document. Historical anchors may cease to resolve against today’s file; that is expected under the agreed policy. Mutable plan/backlog references are migrated. Accepted records retain their original links and rationale; see the substantive reference assessment below.
 
-### Points to review before promotion
+### Points covered during review
 
 - Whether the specification draws the intended line between stable application guarantees and delegated implementation choices. In particular, the extensibility passage describes evidence from representative additions without selecting a registry or requiring each Lens to be prompt-only.
 - The initiation-attribution obligations and the proposed scoped assessment of existing prerequisite work. These preserve the expanded baseline but have not received a fresh full runtime conformance audit.
 - The historical-reference assessment below and the supported-capability reference. Its current limitations must remain accurate when promoted.
 - The three new backlog candidates and additions to existing Lens/GUI entries. They define useful work without selecting a delivery sequence or authorizing implementation.
 
-### Promotion and process dependencies
+### Promotion outcome and remaining process dependencies
 
-Review the 16 canonical destinations as one coordinated package. Explicitly approve the foundation replacement and decision; merge revisions into the then-current documents, set acceptance metadata, preserve existing decision history, and verify links in their canonical locations. Promotion does not authorize code changes. Retain this note for the independent follow-ups below rather than deleting it with the drafts.
+The human approved the coordinated package, including the foundation replacement, on 2026-10-11. All 16 canonical destinations were promoted together, the new decision was marked accepted with that date, and existing accepted decision history and plan lifecycle metadata were preserved. The merged revisions match the final reviewed draft content; the foundation matches the supplied research text byte for byte. Canonical links were checked with the historical exceptions assessed below. This note is retained for independent follow-ups; promotion does not authorize code changes.
 
-Separately update `AGENTS.md` and the applicable `dev/` guidance under human-directed process maintenance: direct agents to the spec, establish human ownership, distinguish intended from implemented behavior, preserve decision requirements, and delegate ordinary mechanics within the contracts. Include reviewer reading guidance in `dev/review.md` and identify the capability reference as descriptive current-support documentation. The human has already updated the historical-reference guidance; that item is resolved. No process edits are bundled here. Until promotion, existing authorized work continues under adopted guidance; the draft does not pause it. Establish the remaining process changes before implementing under the new arrangement. The plan-index discrepancy about whether module investigation has begun also needs human lifecycle reconciliation; neither its status nor historical records were rewritten.
+Separately update `AGENTS.md` and the applicable `dev/` guidance under human-directed process maintenance: direct agents to the spec, establish human ownership, distinguish intended from implemented behavior, preserve decision requirements, and delegate ordinary mechanics within the contracts. Include reviewer reading guidance in `dev/review.md` and identify the capability reference as descriptive current-support documentation. The human has already updated the historical-reference guidance; that item is resolved. No process edits are bundled here. The draft did not pause existing authorized work or enlarge its scope. Establish the remaining process changes before implementing under the new arrangement. The plan-index discrepancy about whether module investigation has begun also needs human lifecycle reconciliation; neither its status nor historical records were rewritten.
 
 ### Historical-reference assessment
 
@@ -370,7 +370,7 @@ Claude re-reviewed draft `9741cfe` and note `ed9fc81` on 2026-10-10, agreed with
 - **N4 — research storage:** did not adopt the suggested unconditional outside-repository sentence. It would narrow the prior human-agreed reading of §3.7 together with §5’s explicit-exclusion alternative. At that review round the concern remained for human consideration. The subsequent supplied foundation revision and human clarification resolve it below.
 - **N5 — optional refinements:** retained the existing decision heading for investigation context/Workspace provenance and the note’s stated distinction between exploratory history and current disposition. Neither requires a further conceptual change.
 
-Those revisions subsequently received the second re-review described below; the package remains unadopted. Validation includes the focused source inspection described above and document checks, not runtime probes or a comprehensive conformance audit.
+Those revisions subsequently received the second re-review described below; the package was not yet adopted at that stage. Validation includes the focused source inspection described above and document checks, not runtime probes or a comprehensive conformance audit.
 
 ### Second re-review and final observation-boundary clarification
 
@@ -380,7 +380,7 @@ After considering N4’s alternatives, the human supplied a new research-observa
 
 The full foundation draft now matches that supplied version exactly. Besides §3.7’s designated research destination, the input changes “stream” to “records” in initiation attribution, explicitly subjects shared agent context to §5, removes “silently” from the prohibition on independent repository evidence, and preserves artifact reuse conditional on provenance and evidence separation. The app specification and decision now state this resolved boundary without the earlier disputed interpretation. No new accepted-decision supersession is necessary: the current evidence-exclusion decision already prohibits the feedback loop and permits explicitly excluded output locations.
 
-Added the missing `governing-documents` anchor to the foundation README revision. That fixes the nit without altering the supplied foundation design. These changes implement the human’s clarified direction and subsequently received the third re-review below; the package remains unadopted.
+Added the missing `governing-documents` anchor to the foundation README revision. That fixes the nit without altering the supplied foundation design. These changes implement the human’s clarified direction and subsequently received the third re-review below; the package was not yet adopted at that stage.
 
 ### Third re-review and foundation-guide wording
 
@@ -394,11 +394,11 @@ The human also supplied the research-owned wording for the foundation README’s
 
 ### Fourth re-review
 
-Claude’s fourth re-review covered draft `9cc8cdb` and note `9e5a5b0` on 2026-10-11. It confirmed O1–O3 resolved, found no new findings, and judged the package ready for the human’s adoption decision. The human requested the cosmetic filename-backtick adjustment in the foundation README draft; it is applied without changing the supplied wording. The package remains unadopted.
+Claude’s fourth re-review covered draft `9cc8cdb` and note `9e5a5b0` on 2026-10-11. It confirmed O1–O3 resolved, found no new findings, and judged the package ready for the human’s adoption decision. The human requested the cosmetic filename-backtick adjustment in the foundation README draft; it is applied without changing the supplied wording. The package was not yet adopted at that review stage.
 
-### Draft verification
+### Draft and promotion verification
 
-Checked 405 relative links across the 16 proposed canonical destinations, with no unresolved promotion targets. Revision blocks match the checked promoted contents, and note file links resolve. The historical inventory found 20 incoming references outside notes/drafts; nine anchors in three historical records cease to resolve in the new foundation. Their meaning and continuing authority were assessed above rather than repairing them to satisfy a current-tree link check. The foundation draft equals the supplied 2026-10-11 research-observations document byte for byte; no local appendix remains. This remains documentation review, without a new runtime conformance audit. No canonical files, source inputs, accepted records, or unrelated notes are changed by these revisions.
+Checked 405 relative links across the 16 canonical destinations after promotion, with no unresolved targets in the promoted content. Revision blocks match the promoted contents, acceptance metadata is set, and note links now resolve to canonical files. The historical inventory found 20 incoming references outside notes/drafts; nine anchors in three historical records cease to resolve in the new foundation. Their meaning and continuing authority were assessed above rather than repairing them to satisfy a current-tree link check. The adopted foundation equals the supplied 2026-10-11 research-observations document byte for byte; no local appendix remains. This remains documentation review, without a new runtime conformance audit. Promotion changes only the approved canonical documentation, removes the promoted draft artifacts, and updates this note. Source inputs, prior accepted records, process instructions, and unrelated notes remain unchanged.
 
 ## Impact and follow-up after adoption
 

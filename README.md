@@ -8,7 +8,7 @@ Those views preserve the provenance, epistemological status, and limitations of 
 
 As an initial simplification, PostCode's projections and views are read-only. Humans continue to direct program changes by instructing coding agents in prose.
 
-See [`foundation/product-design.md`](foundation/product-design.md) for the full conceptual design.
+See the [research product design](foundation/product-design.md) for conceptual commitments, the [application specification](docs/app-specification.md) for intended application behavior and high-level design, and the [capability reference](docs/capability-reference.md) for the current toolbox.
 
 ## Development
 

@@ -2,7 +2,7 @@
 
 This document states PostCode's current binding, cross-cutting architectural constraints. It is the concise operational source for rules that implementations must preserve across plans and slices. Accepted [decision records](decisions/) preserve why these constraints were adopted or changed.
 
-The constraints conform to the adopted [product design](../foundation/product-design.md) and use the governing terminology in [core concepts](core-concepts.md). They do not describe the implementation, repeat routine implementation conventions, or collect every consequence of every accepted decision. Descriptive implementation architecture belongs under [`docs/architecture/`](architecture/), and repeatable mechanical practices belong in [implementation conventions](implementation-conventions.md).
+The constraints conform to the adopted [product design](../foundation/product-design.md), state binding cross-cutting obligations consistent with the [application specification](app-specification.md), and use the governing terminology in [core concepts](core-concepts.md). They do not describe the implementation, repeat routine implementation conventions, or collect every consequence of every accepted decision. Descriptive implementation architecture belongs under [`docs/architecture/`](architecture/), and repeatable mechanical practices belong in [implementation conventions](implementation-conventions.md).
 
 Substantive changes require explicit human agreement and a corresponding accepted decision record, with both updated in the same commit. Append to every constraint a short bracketed link to the decision that established or most recently changed it. Follow the [development workflow](../dev/workflow.md#documentation) when changing this document. If this document and an accepted decision disagree, treat the inconsistency as an unexpected finding rather than silently choosing or reconciling them.
 
@@ -15,6 +15,7 @@ Substantive changes require explicit human agreement and a corresponding accepte
 - Keep consequential qualification visible in the human-facing view. A weaker, partial, historical, asserted, observed, or inferred claim must not masquerade as a stronger one. [[Preserve claim qualification](decisions/adopt-qualification-and-evaluation-constraints.md#preserve-claim-qualification-throughout-processing-and-presentation)]
 - Prefer explicit unavailability, refusal, partiality, or limitation to plausible unsupported output. [[Preserve claim qualification](decisions/adopt-qualification-and-evaluation-constraints.md#preserve-claim-qualification-throughout-processing-and-presentation)]
 
+<a id="evaluation-and-failure"></a>
 ## Evaluation and failure
 
 - Keep reusable investigation operations distinct from their consuming lenses. The evaluation layer selects retained outcomes and missing operations and coordinates execution through the domain interpretation boundary; projections consume materialized results. [[Investigation operations and lenses](decisions/investigation-operations-and-lenses.md)]
@@ -22,6 +23,14 @@ Substantive changes require explicit human agreement and a corresponding accepte
 - Preserve usable qualified information from partial, stopped, or failed evaluation when the analysis method permits it. Do not make an absent result indistinguishable from an established empty result. [[Evaluation and failure distinctions](decisions/adopt-qualification-and-evaluation-constraints.md#keep-evaluation-materialization-and-failure-distinctions-explicit)]
 - Keep expected operational failures, unexpected defects or broken invariants, successful results containing diagnostics or limitations, and evaluation failures that prevent the intended result distinct. Do not convert an unexpected defect into an ordinary analysis outcome merely to continue execution. [[Evaluation and failure distinctions](decisions/adopt-qualification-and-evaluation-constraints.md#keep-evaluation-materialization-and-failure-distinctions-explicit)]
 - Preserve meaningful domain distinctions until presentation. Presentation may format or progressively disclose information, but must not collapse distinctions that affect what the result means or what may safely be concluded from it. [[Evaluation and failure distinctions](decisions/adopt-qualification-and-evaluation-constraints.md#keep-evaluation-materialization-and-failure-distinctions-explicit)]
+
+<a id="investigation-initiation-and-request-attribution"></a>
+## Investigation initiation and request attribution
+
+- Obtain additional qualified information needed for request resolution through analysis, Evaluation, and core construction. Request interpretation must not independently derive program claims or the population used to resolve subjects. Preserve established candidates and consequential incompleteness, ambiguity, unavailability, or inability to resolve. [[Investigation initiation](decisions/application-specification-boundaries.md#attribute-system-initiated-investigation-and-constrain-autonomous-work)]
+- Distinguish the initiator of additional investigation from the actor authorizing its parent. Attribute request-scoped system-initiated work to an explicit parent and govern it by that request's purpose, constraints, and resource choices. [[Investigation initiation](decisions/application-specification-boundaries.md#attribute-system-initiated-investigation-and-constrain-autonomous-work)]
+- Treat work outside the parent's purpose or continuing after satisfaction or cancellation as autonomous. Autonomous work requires human-authorized resource policies; defer work exceeding those policies or materially delaying an explicit request unless authorized. Hosted-service enablement alone is not autonomous resource authorization. [[Investigation initiation](decisions/application-specification-boundaries.md#attribute-system-initiated-investigation-and-constrain-autonomous-work)]
+- When additional investigation influences selection, ambiguity, inability to resolve, suggestions, Views, or reports, keep its trigger, parent where applicable, captured basis, relevant results, and qualifications inspectable from that outcome and attributable in observations. Reuse does not establish freshness merely because the input has a following binding. [[Investigation initiation](decisions/application-specification-boundaries.md#attribute-system-initiated-investigation-and-constrain-autonomous-work)] [[Current initiation-attribution assessment gap](decisions/application-specification-boundaries.md#adoption-and-conformance)]
 
 ## Views and analysis boundary
 
@@ -49,6 +58,7 @@ Substantive changes require explicit human agreement and a corresponding accepte
 - When exposing references in coding-agent context, distinguish an exact Projection over its captured basis from a request repeatable using currently bound inputs. Preserve the associations among designated inputs, binding policies, captured states and results, including a visible difference between a shown basis and what a subsequent request would select. [[Bindings and refresh](decisions/coordinated-views-and-qualified-results.md#preserve-immutable-results-under-bindings-and-refresh)]
 - Respect explicit information needs and choices when selecting an initial or subsequent View. Do not require a summary Lens for a summary View that coordinates independently qualified Projections; synthesis of a new account remains core analysis. [[Summary Views and navigation](decisions/coordinated-views-and-qualified-results.md#allow-summary-views-independently-of-summary-lenses)]
 
+<a id="session-references-and-retained-information"></a>
 ## Session references and retained information
 
 - Once a session reference is bound to an entity, do not rebind it. Adding inputs, evidence, or results must not change that binding. [[Session references](decisions/transient-analysis-sessions.md#stable-reference-bindings-within-a-session)]
@@ -59,6 +69,8 @@ Substantive changes require explicit human agreement and a corresponding accepte
 - Under the initial unchanged-input session contract, detected relevant input changes invalidate further investigation. Disclose best-effort detection and non-atomic capture; do not claim comprehensive freshness validation. [[Input stability](decisions/transient-analysis-sessions.md#stable-inputs-as-the-session-precondition)]
 
 - When presenting references that will expire before they can be used as subjects of a subsequent request, make that limitation clear in the surrounding presentation. [[Reference lifetime disclosure](decisions/reference-lifetime-disclosure.md)]
+
+- Keep immutability distinct from retention, disposal, persistence, and availability. Preserve the content and support of retained evidence/results and the meaning of their references; disposal must not silently retarget a reference. This does not prohibit changing Workspace layout, focus, defaults, display selection, or derived current reconsideration status. [[Immutability and retention](decisions/application-specification-boundaries.md#distinguish-immutable-information-from-retention-policy)]
 
 ## Retained interpretation
 

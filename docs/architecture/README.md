@@ -17,7 +17,7 @@ users own Git in their calling process and await opening, execution, validation 
 close. The [execution decision](../decisions/execution-ownership-and-cancellation.md)
 governs this lifetime boundary. Other governing choices are the accepted [projection architecture decisions](../decisions/initial-projection-architecture-decisions.md)
 and [module inventory decisions](../decisions/initial-module-inventory-decisions.md).
-The governing cross-cutting terminology is maintained in [core concepts](../core-concepts.md), and binding cross-cutting rules are maintained in [architectural constraints](../architectural-constraints.md); this document describes how the current implementation realizes them.
+The governing cross-cutting terminology is maintained in [core concepts](../core-concepts.md), and binding cross-cutting rules are maintained in [architectural constraints](../architectural-constraints.md); this document describes how the current implementation realizes them. The [application specification](../app-specification.md) describes the broader intended application design; adopting it does not establish conformance or implement its future capabilities.
 
 ## Implemented subset of the product model
 

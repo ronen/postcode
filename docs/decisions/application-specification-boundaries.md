@@ -1,7 +1,7 @@
 # Separate research concepts from application specification
 
-Status: in review
-Decided: [set on acceptance]
+Status: accepted
+Decided: 2026-10-11
 Arising from: Human-directed reconciliation of the research product design and local application design, October 2026
 Scope: Document authority, initial Workspace meaning, investigation initiation and attribution, and retained-information lifecycle distinctions
 

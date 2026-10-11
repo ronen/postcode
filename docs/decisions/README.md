@@ -1,8 +1,8 @@
 # Decisions
 
-Decision records preserve consequential accepted choices and the reasoning available when those choices were made. They complement the governing [core concepts](../core-concepts.md), [architectural constraints](../architectural-constraints.md), and descriptive architecture documentation rather than replacing them. Do not create a decision record until the decision has been accepted; keep unresolved choices in drafts or discussion.
+Decision records preserve consequential accepted choices and the reasoning available when those choices were made. They complement the human-maintained [application specification](../app-specification.md), governing [core concepts](../core-concepts.md), [architectural constraints](../architectural-constraints.md), and descriptive architecture documentation rather than replacing them. Do not create a decision record until the decision has been accepted; keep unresolved choices in drafts or discussion.
 
-A decision is accepted only through explicit human agreement. Agents may develop and evaluate alternatives in drafts or discussion, but must not accept a decision themselves. An accepted decision must conform to governing foundation material, core concepts, and architectural constraints unless it explicitly changes an affected governing document through the process below. A choice that conflicts with foundation material requires an explicitly authorized foundation revision before it can be accepted. Within its stated scope, an accepted decision is prescriptive and binding on subsequent work until it is superseded.
+A decision is accepted only through explicit human agreement. Agents may develop and evaluate alternatives in drafts or discussion, but must not accept a decision themselves. An accepted decision must conform to governing foundation material, the application specification, core concepts, and architectural constraints unless it explicitly changes an affected governing document through the process below. A choice that conflicts with foundation material requires an explicitly authorized foundation revision before it can be accepted. Within its stated scope, an accepted decision is prescriptive and binding on subsequent work until it is superseded.
 
 Use descriptive, unnumbered filenames, such as `keep-analysis-core-independent-of-desktop-ui.md` or `initial-product-slice-architecture.md`. Store decisions globally by subject rather than nesting them under the plan or task where they arose.
 
@@ -19,11 +19,14 @@ Create a record when a choice:
 
 Routine implementation choices do not require decision records.
 
+<a id="governing-document-changes"></a>
 ## Governing-document changes
 
 [`docs/core-concepts.md`](../core-concepts.md) records the governing current cross-cutting architectural terminology, and [`docs/architectural-constraints.md`](../architectural-constraints.md) records the governing current cross-cutting rules. Decision records preserve why either was adopted or changed. Every semantic change to the core concepts and every substantive change to the architectural constraints requires explicit human agreement and a corresponding accepted decision record. Update the affected governing document and decision log in the same commit so the current statement and its history do not diverge.
 
 Follow the [development workflow](../../dev/workflow.md#documentation) when changing either governing document. If a governing document and an accepted decision disagree, report the inconsistency rather than silently deciding which source to follow.
+
+The human-maintained [application specification](../app-specification.md) governs intended application behavior and high-level design. Agents prepare its changes only under explicit human direction during design or planning; implementing agents report gaps and contradictions. Consequential changes require accepted decisions and coordinated updates to affected governing documents. A narrower research foundation does not by itself withdraw local application requirements.
 
 ## Lifecycle
 
@@ -56,7 +59,10 @@ When the last remaining accepted decision in a partially superseded record is la
 
 This directory's `README.md` is also the entry point for decisions. Once decision records exist, maintain a concise list of currently accepted decisions here, linking to their records without duplicating their contents.
 
+<a id="accepted-decisions"></a>
 ## Accepted decisions
+
+- [Separate research concepts from application specification](application-specification-boundaries.md)
 
 - [Separate qualified Projection construction from presentation shaping](qualified-projection-construction.md)
 - [Coordinate Views while preserving qualified results](coordinated-views-and-qualified-results.md)

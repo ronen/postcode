@@ -69,7 +69,10 @@ EOF finishes an already accepted command and its observation submission. Project
 when TypeScript supplies them. Observation delivery failure is a visible warning
 and preserves the view.
 
+<a id="product-model-and-current-cli-scope"></a>
 ## Product model and current CLI scope
+
+The [application specification](app-specification.md) describes intended behavior; the [capability reference](capability-reference.md) describes the current toolbox.
 
 A product View may coordinate multiple independently qualified Projections, and a Projection may concern several captured program states. This CLI exposes a limited single-state implementation through its existing commands and family-specific View schemas. It does not accept arbitrary collections of Projections, analyze several revisions together, follow a live branch or working tree, or save a workspace.
 
