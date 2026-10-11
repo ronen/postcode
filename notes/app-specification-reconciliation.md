@@ -390,7 +390,11 @@ Claude’s third re-review covered draft `45c3fae` and note `69b8033` on 2026-10
 - **O2 — agent-mediated re-entry:** added an explicit clarification to the specification’s generated-output evidence boundary: repository content derived from PostCode output does not independently corroborate the originating conclusions, and supplied origin provenance must be preserved where available. This does not require detecting otherwise unknown derivation. Implementation follow-up remains below; the semantic obligation is not deferred to that work.
 - **O3 — research-source revision:** resolved by human agreement that local adoption history identifies the governing text. Cite the local adoption commit explicitly when useful; normally that provenance is implicit in Git history. An upstream revision may be recorded if supplied, but is not required and cannot be independently verified from this repository alone. No separate document version number or recurring upstream-revision bookkeeping is required.
 
-The human also supplied the research-owned wording for the foundation README’s product-design entry. The draft now uses that sentence exactly, preserving the explicit heading anchor. Local document-allocation guidance remains in the application documentation rather than being added to that entry. This wording replacement and the note additions above have been checked locally; they do not constitute adoption or an additional independent review.
+The human also supplied the research-owned wording for the foundation README’s product-design entry. The draft preserves that wording and the explicit heading anchor, with backticks around the filename for consistency with neighboring entries. Local document-allocation guidance remains in the application documentation rather than being added to that entry. These changes do not constitute adoption.
+
+### Fourth re-review
+
+Claude’s fourth re-review covered draft `9cc8cdb` and note `9e5a5b0` on 2026-10-11. It confirmed O1–O3 resolved, found no new findings, and judged the package ready for the human’s adoption decision. The human requested the cosmetic filename-backtick adjustment in the foundation README draft; it is applied without changing the supplied wording. The package remains unadopted.
 
 ### Draft verification
 
