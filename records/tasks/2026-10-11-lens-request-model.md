@@ -70,6 +70,14 @@ Yes, continue
 
 The review is complete.  As usual:  Please assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
 
+### 2026-10-12 — F2 canonical collections and explicit embedded-empty detail
+
+Yes, I agree with both.
+**Canonical ordering** is appropriate for these collection inspections because caller order has no defined meaning. Use evaluation-population order, followed by outside-population subjects in a deterministic order based on record identity—not compact reference spelling. Canonicalize the constructed payload consistently, not just its identity key, and preserve reference-allocation behavior. This should remain scoped to these unordered selections; future Lenses with meaningful subject order or roles must preserve those distinctions.
+**A separate embedded-empty constructor** makes the legitimate exception explicit. Group-only inspection can still contain empty module detail, while ordinary inspection requires at least one resolved subject. Keep valid empty inventory/population answers unaffected.
+One boundary detail: an empty selection reaching the ordinary resolved-subject constructor is an **internal invariant violation**. An unsuccessful user lookup should still return a resolution result from coordination, without calling that constructor.
+The useful regression checks are equal payloads/IDs for permutations of the same subjects, deterministic outside-population ordering, rejection of empty ordinary inspection, and preservation of legitimate embedded-empty detail. I see no reason to choose the alternatives.
+
 ## Outcome
 
 Intermediate checkpoint, 2026-10-11: implementation commit `a9c8189f042d5fe6cabf27db414b995a5972d0f6` establishes normalized request reporting, shared Lens-to-operation declarations, explicit View/usage/parameter-resolution execution alternatives, parent usage finalization and observation-envelope version 2. Usage no longer has a synthetic Projection/View descriptor. Module matching is shared without the dependency-selection inspection side effect. The local observation convention now specifies version-two batches; user-facing and descriptive documentation records the implemented subset and remaining gaps.
