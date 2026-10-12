@@ -706,6 +706,18 @@ the same usage-report family as explicit `usage` output: `schema`, `session`, an
 absent for the abnormal final-usage supplement on stderr. The enclosing command
 observation identifies the interrupted or failed request.
 
+Command observations also contain a `request-work` record with the initiating request,
+its purpose and inherited investigation guards, qualified prerequisite outcomes,
+actual provider/evaluation reuse, and current consumption of retained information.
+First-generating attribution remains separate from later requests. Evidence-query
+reports distinguish acquired information from information actually delivered to the
+investigator, including response-size omissions and unavailable queries. Forced worker
+termination preserves received facts and labels the report incomplete. These reports
+do not claim fresh inputs, impose a new whole-command allowance, or extend Session
+reference validity. Non-View JSON reports carry `attribution`; successful View JSON
+remains a View, with the separate execution work report retained in its observation.
+Attempt usage details include their originating parent context.
+
 Correction metadata listings are bounded separately from account bodies: at most
 256 displaced accounts, 256 accompanying correction references and 256 revision
 statuses appear, with explicit omitted counts. Inspect exact original or reporter

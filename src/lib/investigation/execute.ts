@@ -1,3 +1,4 @@
+import type { RequestWork, EvidenceWorkHandle, WorkScope } from '../work-attribution.js';
 import { performance } from 'node:perf_hooks';
 import { recordId, methods } from '../identity.js';
 import { randomUUID } from 'node:crypto';
@@ -11,8 +12,10 @@ import type { AgentDialogue, AttemptReport, ContextPart, InvestigationExecution,
   InvestigationOutcome, InvestigationRequest, InvestigatorAgent, InvestigatorTool, ToolResponse } from './contracts.js';
 import { InvestigationUsage } from './usage.js';
 
-export interface InvestigationBounds { readonly milliseconds: number; readonly calls: number; readonly toolCalls: number; readonly characters: number }
-export const investigationBounds: InvestigationBounds = Object.freeze({ milliseconds: 180_000, calls: 32, toolCalls: 96, characters: 2_000_000 });
+import { investigationBounds } from './bounds.js';
+import type { InvestigationBounds } from './bounds.js';
+export { investigationBounds } from './bounds.js';
+export type { InvestigationBounds } from './bounds.js';
 export const evidenceResponseCharacters = 60_000;
 
 /** Preserve qualification as a unit. Oversized evidence remains captured but is not delivered. */
@@ -27,11 +30,12 @@ function boundedEvidence(response: EvidenceResponse): EvidenceResponse {
 }
 export interface InvestigationEvidence {
   lookup(id: RecordId): ProgramRecord | undefined;
-  query(query: EvidenceQuery, signal: AbortSignal): EvidenceResponse | Promise<EvidenceResponse>;
+  query(query: EvidenceQuery, signal: AbortSignal, work?: WorkScope): EvidenceResponse | Promise<EvidenceResponse>;
 }
 export interface InvestigationOptions {
   readonly session: SessionId;
   readonly request: InvestigationRequest;
+  readonly work?: RequestWork;
   readonly evidence: InvestigationEvidence;
   readonly history: InvestigationHistory;
   readonly agent: InvestigatorAgent;
@@ -83,6 +87,8 @@ export async function investigate(options: InvestigationOptions): Promise<Invest
   }
   const originatingModule = prior?.originatingModule ?? request.subject;
   const attempt = recordId(options.session, 'investigation-attempt', [methods.investigation, randomUUID()]);
+  const attribution = options.work?.scope(`Execute interpretation operation: ${request.operation}.`, attempt);
+  attribution?.record('interpretation', 'started', { records: [] });
   const identity = freezeOwned(structuredClone(options.agent.identity));
   const instructions = investigationInstructions(request.operation);
   const exposure = new InvestigationContext(options.history, options.session);
@@ -118,12 +124,15 @@ export async function investigate(options: InvestigationOptions): Promise<Invest
     characters += encoded.length;
     if (characters > bounds.characters) { stop(new LimitStop('Dialogue character guard reached.')); throw stopped; }
   };
-  const report = (): AttemptReport => freezeOwned(structuredClone({ attempt, session: options.session, request, agent: identity, instructions, termination,
+  const report = (): AttemptReport => freezeOwned(structuredClone({ ...(options.work ? { parent: options.work.context } : {}), attempt, session: options.session, request, agent: identity, instructions, termination,
     elapsedMilliseconds: performance.now() - start, usage: options.usage.calls(attempt), deliveries: exposure.deliveries, suppliedEvidence: [...suppliedEvidence], summarizedEvidence: [...summarizedEvidence] }));
   let outcome: InvestigationOutcome | undefined;
+  let deliveries: (EvidenceWorkHandle | undefined)[] = [];
   try {
     await wait(options.check);
+    const initial = prior ? options.work?.evidence({ kind: 'initial-context', subject: prior.id }, attempt) : undefined;
     let responses: ToolResponse[] = prior ? [exposure.prepare(prior.id)] : [];
+    if (responses[0]) { initial?.acquired(responses[0]); deliveries = [initial]; }
     dialogue = options.agent.open();
     for (;;) {
       alive();
@@ -140,6 +149,7 @@ export async function investigate(options: InvestigationOptions): Promise<Invest
             response.repositories?.forEach(item => summarizedEvidence.add(item.id));
           }
         }
+        deliveries.forEach(delivery => delivery?.delivered());
         options.onProgress?.(freezeOwned({ ...report(), termination: 'running' }));
         const recordUsage = options.usage.start(attempt, ++calls, identity);
         return dialogue!.exchange(input, controller.signal, usage => { if (activeUsage) recordUsage(usage); });
@@ -165,18 +175,28 @@ export async function investigate(options: InvestigationOptions): Promise<Invest
       if (reply.kind === 'configuration-unavailable' || reply.kind === 'communication-failure') { outcome = reply; break; }
       if (reply.kind !== 'tools') { outcome = { kind: 'investigation-failure', reason: `Investigator ended without accepted submission (${reply.kind}).` }; break; }
       if (!Array.isArray(reply.requests)) throw new InvalidSubmission('Malformed tool exchange.');
-      responses = [];
+      responses = []; deliveries = [];
       for (const candidate of reply.requests) {
         if (++toolCalls > bounds.toolCalls) throw new LimitStop('Evidence tool guard reached.');
         await wait(options.check);
         const query = tool(candidate);
+        const evidenceWork = options.work?.evidence(query ?? { kind: 'invalid' }, attempt);
         let response: ToolResponse;
         if (!query) response = { status: 'unavailable', selected: [], records: [], limitations: ['Unsupported tool request; paths and arbitrary reads are not permitted.'] };
         else if (query.kind === 'investigations') response = exposure.list(query.subject, query.cursor);
         else if (query.kind === 'investigram') response = exposure.prepare(query.subject, query.parts as readonly ContextPart[] | undefined, query.excerptCharacters, undefined, query.revisionPage);
-        else response = boundedEvidence(await wait(() => options.evidence.query(query, controller.signal)));
+        else {
+          const acquired = await wait(async () => {
+            const value = await options.evidence.query(query, controller.signal, evidenceWork?.scope);
+            evidenceWork?.acquired(value);
+            return value;
+          });
+          response = boundedEvidence(acquired);
+          if (response !== acquired) evidenceWork?.withheld(response.limitations[0]!);
+        }
+        if (!query || query.kind === 'investigations' || query.kind === 'investigram') evidenceWork?.acquired(response);
         await wait(options.check);
-        responses.push(response);
+        responses.push(response); deliveries.push(evidenceWork);
       }
     }
   } catch (error) {
@@ -193,7 +213,10 @@ export async function investigate(options: InvestigationOptions): Promise<Invest
     clearTimeout(timer);
     options.signal?.removeEventListener('abort', interrupt);
     controller.abort();
-    try { dialogue?.close(); } finally { options.onReport?.(report()); }
+    try { dialogue?.close(); } finally {
+      attribution?.record('interpretation', 'finished', { records: [], limitations: [termination] });
+      options.onReport?.(report());
+    }
   }
   if (!outcome) throw new Error('Investigation ended without an outcome');
   return freezeOwned(structuredClone({ outcome, report: report() }));

@@ -91,7 +91,7 @@ port.on('message', async (message: WorkerRequest) => {
   finally { active = false; }
 });
 try {
-  opened = await openSession(configuration, { runGit, investigation: {
+  opened = await openSession(configuration, { runGit, onWork: report => send({ type: 'work-report', operation, report }), investigation: {
     ...(configuration.investigatorIdentity ? { agent: bridge(configuration.investigatorIdentity) } : {}),
     ...(configuration.selectInvestigator ? { selectAgent: (request: InvestigationRequest) => new Promise<InvestigatorAgent>((resolve, reject) => {
       const id = ++selectionId; selections.set(id, { operation, resolve, reject });

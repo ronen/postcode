@@ -1,3 +1,5 @@
+import { workState } from './work-attribution.js';
+import type { WorkScope } from './work-attribution.js';
 import { completedMaterialization } from './evaluation-state.js';
 import type { ContentResult } from './evidence-access.js';
 import type { DependencyResult } from './dependencies/records.js';
@@ -21,19 +23,22 @@ export interface DiscoveryResult extends EvaluationState {
 
 /** Language-specific objects stay behind this boundary. Results refer to stored domain records. */
 export interface ModuleAnalysis {
-  discover(store: ProgramRecordStore, expansions?: readonly ModuleExpansion[], dependencies?: boolean): DiscoveryResult;
-  acquireContent?(store: ProgramRecordStore, subject: RecordId): ContentResult;
+  discover(store: ProgramRecordStore, expansions?: readonly ModuleExpansion[], dependencies?: boolean, work?: WorkScope): DiscoveryResult;
+  acquireContent?(store: ProgramRecordStore, subject: RecordId, work?: WorkScope): ContentResult;
 }
 
-export function evaluateModules(store: ProgramRecordStore, analysis: ModuleAnalysis, expansions: readonly ModuleExpansion[] = []): EvaluationRecord {
-  const result = analysis.discover(store, expansions);
-  return recordModuleEvaluation(store, result);
+export function evaluateModules(store: ProgramRecordStore, analysis: ModuleAnalysis, expansions: readonly ModuleExpansion[] = [], work?: WorkScope): EvaluationRecord {
+  work?.check();
+  const result = analysis.discover(store, expansions, undefined, work);
+  work?.check();
+  return recordModuleEvaluation(store, result, work);
 }
 
 const retained = new WeakMap<ProgramRecordStore, Map<string, EvaluationRecord>>();
 
 /** Shared recording path for discovery invoked by an additional lens requirement. */
-export function recordModuleEvaluation(store: ProgramRecordStore, discovery: DiscoveryResult): EvaluationRecord {
+export function recordModuleEvaluation(store: ProgramRecordStore, discovery: DiscoveryResult, work?: WorkScope): EvaluationRecord {
+  work?.check();
   const { expansions: expanded = [], dependencies: _dependencies, retryBasis, ...result } = discovery;
   if (retryBasis !== undefined) {
     const basis = store.get(retryBasis);
@@ -42,7 +47,10 @@ export function recordModuleEvaluation(store: ProgramRecordStore, discovery: Dis
   const complete = [result, ...expanded].every(completedMaterialization);
   const key = canonical([result, expanded, complete ? null : retryBasis ?? null]);
   const reused = retained.get(store)?.get(key);
-  if (reused) return reused;
+  if (reused) {
+    attribute(reused, 'reused');
+    return reused;
+  }
   const attempt = store.evaluations(result.session)
     .filter(outcome => outcome.requirement === 'modules' && outcome.basis === undefined).length + 1;
   const method = methods.evaluation;
@@ -61,5 +69,15 @@ export function recordModuleEvaluation(store: ProgramRecordStore, discovery: Dis
     if (!cache) { cache = new Map(); retained.set(store, cache); }
     cache.set(key, owned);
   }
+  attribute(owned, 'established');
   return owned;
+
+  function attribute(outcome: EvaluationRecord, disposition: 'established' | 'reused') {
+    if (!work) return;
+    work.record('module-evaluation', disposition, { records: [outcome.id], state: workState(outcome) });
+    for (const expansion of store.evaluations(outcome.session)) if (expansion.basis === outcome.id) {
+      work.record('module-expansion-evaluation', disposition, { records: [expansion.id], state: workState(expansion),
+        limitations: [`Requested expansion: ${expansion.requirement}.`] });
+    }
+  }
 }

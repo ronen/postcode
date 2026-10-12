@@ -1,3 +1,5 @@
+import { workState } from '../work-attribution.js';
+import type { WorkScope } from '../work-attribution.js';
 import { recordModuleEvaluation } from '../evaluation.js';
 import type { ModuleAnalysis } from '../evaluation.js';
 import { identityReference, methods, recordId } from '../identity.js';
@@ -6,9 +8,12 @@ import type { DependencyEvaluationRecord } from './records.js';
 
 /** Explicit requirement; discovery-only callers do not silently request this lens. */
 export function evaluateDependencies(store: ProgramRecordStore, analysis: ModuleAnalysis,
-  expansions: readonly ModuleExpansion[] = []): DependencyEvaluationRecord {
-  const result = analysis.discover(store, expansions, true);
-  const basis = recordModuleEvaluation(store, result);
+  expansions: readonly ModuleExpansion[] = [], work?: WorkScope): DependencyEvaluationRecord {
+  work?.check();
+  const result = analysis.discover(store, expansions, true, work);
+  work?.check();
+  const basis = recordModuleEvaluation(store, result, work);
+  work?.check();
   const method = methods.dependencyEvaluation;
   const outcome: DependencyEvaluationRecord = {
     ...(result.dependencies ?? {
@@ -26,8 +31,12 @@ export function evaluateDependencies(store: ProgramRecordStore, analysis: Module
       contexts: result.dependencies.contexts.map(id => identityReference(result.session, id)),
     } : null }),
   };
+  const firstRetention = store.lookup(outcome.id) === undefined;
   store.put([outcome]);
   const owned = store.get(outcome.id);
   if (owned.kind !== 'dependency-evaluation') throw new Error('Expected retained dependency-evaluation');
+  // This path derives and validates an outcome on every call, even when insertion
+  // returns an equal retained object. Provider reuse is reported independently.
+  work?.record('dependency-evaluation', 'established', { records: [owned.id], state: workState(owned) }, firstRetention ? [owned.id] : []);
   return owned;
 }

@@ -1,3 +1,4 @@
+import type { InitiationContext, WorkReport } from './work-attribution.js';
 import { usageSummary } from './investigation/reporting.js';
 import { freezeOwned } from './immutable.js';
 import { completedMaterialization } from './evaluation-state.js';
@@ -8,9 +9,7 @@ import type { NormalizedRequest } from './requests.js';
 import type { RecordId, SessionId } from './records.js';
 import type { LookupSupport, SubjectResolution } from './subject-resolution.js';
 
-export interface RequestContext {
-  readonly id: string;
-  readonly initiator: 'caller';
+export interface RequestContext extends InitiationContext {
   readonly request: NormalizedRequest;
 }
 export interface ResolutionInformation {
@@ -29,12 +28,14 @@ export interface ResolutionReport {
   readonly context: RequestContext;
   readonly resolution: ResolutionInformation;
   readonly usage: InvestigationUsageReport;
+  readonly attribution?: WorkReport;
 }
 export interface UsageReport {
   readonly schema: 'postcode-investigation-usage/1-experimental';
   readonly session: SessionId;
   readonly context: RequestContext;
   readonly usage: InvestigationUsageReport;
+  readonly attribution?: WorkReport;
 }
 
 /** Reports carry occurrence context; they have no program answer or content identity. */

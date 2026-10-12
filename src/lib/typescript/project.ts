@@ -1,3 +1,5 @@
+import { workState } from '../work-attribution.js';
+import type { WorkScope } from '../work-attribution.js';
 import { diagnosticLookup } from './diagnostics.js';
 import { outputBoundary, OutputBoundaryFailure } from '../output-boundary.js';
 import type { RunGit } from '../git-execution.js';
@@ -121,11 +123,15 @@ export async function openTypeScriptProject(options: ProjectOptions, runGit?: Ru
   return { status: 'opened', session, changed: async () =>
     canonical([process.cwd(), process.env, process.versions]) !== environment || inputs.changed()
       || canonical(await captureRepository(configPath, policy, runGit)) !== repositoryBasis,
-    analysis: { discover: (store, expansions, dependencies) => materialize(store, expansions ?? [], dependencies ?? false), acquireContent } };
+    analysis: { discover: (store, expansions, dependencies, work) => materialize(store, expansions ?? [], dependencies ?? false, work), acquireContent } };
 
-  function acquireContent(store: ProgramRecordStore, subjectId: RecordId): ContentResult {
+  function acquireContent(store: ProgramRecordStore, subjectId: RecordId, work?: WorkScope): ContentResult {
+    work?.check();
     const subject = store.lookup(subjectId);
-    const unavailable = (reason: string): ContentResult => ({ status: 'unavailable', captures: [], limitations: [reason] });
+    const unavailable = (reason: string): ContentResult => {
+      work?.record('content', 'unavailable', { records: [], limitations: [reason] });
+      return { status: 'unavailable', captures: [], limitations: [reason] };
+    };
     if (!subject || subject.session !== session) return unavailable('Unknown subject in the opened project.');
     const mappings: { id: RecordId; path: string; expected?: string }[] = [];
     if (subject.kind === 'module') {
@@ -151,12 +157,14 @@ export async function openTypeScriptProject(options: ProjectOptions, runGit?: Ru
     const captures: RecordId[] = [];
     const limitations: string[] = [];
     for (const mapping of mappings) {
+      work?.check();
       if (inputs.excluded(mapping.path)) { limitations.push('Mapped content is excluded by the shared output boundary.'); continue; }
       const id = recordId(session, 'captured-content', { method: methods.content, subject: identityReference(session, subject.id), mapping: identityReference(session, mapping.id) });
       const existing = store.lookup(id);
       if (existing) {
         if (existing.kind !== 'captured-content') throw new Error('Expected retained subject content');
         captures.push(id);
+        work?.record('content', 'reused', { records: [id], limitations: existing.limitations });
         continue;
       }
       const text = inputs.system.readFile(mapping.path);
@@ -171,15 +179,18 @@ export async function openTypeScriptProject(options: ProjectOptions, runGit?: Ru
           ...(subject.kind === 'repository-artifact' ? ['Artifact placement does not establish documentation applicability or truth.'] : [])] };
       store.put([{ kind: 'analysis-inputs', id: inputId, session, method: inputMethod, value }, record]);
       captures.push(id);
+      work?.record('content', 'established', { records: [id], limitations: record.limitations });
     }
     if (!mappings.length) limitations.push('No supported source mapping is established.');
+    if (limitations.length) work?.record('content', 'unavailable', { records: [], limitations });
     return { status: captures.length === 0 ? 'unavailable' : limitations.length ? 'partial' : 'available', captures, limitations };
   }
 
-  function materialize(store: ProgramRecordStore, expansions: readonly ModuleExpansion[], dependencies: boolean) {
+  function materialize(store: ProgramRecordStore, expansions: readonly ModuleExpansion[], dependencies: boolean, work?: WorkScope) {
+    work?.check();
     let discovery = materializers.get(store);
     if (!discovery) { discovery = prepareDiscovery(); materializers.set(store, discovery); }
-    return discovery(store, expansions, dependencies);
+    return discovery(store, expansions, dependencies, work);
   }
 
   function prepareDiscovery() {
@@ -249,10 +260,15 @@ export async function openTypeScriptProject(options: ProjectOptions, runGit?: Ru
     let compositionCache: Retained<ReturnType<ReturnType<typeof prepareComposition>>> | undefined;
     let dependencyCache: Retained<ReturnType<ReturnType<typeof prepareDependencies>>> | undefined;
     const results = new Map<string, Retained<DiscoveryResult>>();
-    return function discover(store: ProgramRecordStore, requested: readonly ModuleExpansion[], dependencies: boolean): DiscoveryResult {
+    return function discover(store: ProgramRecordStore, requested: readonly ModuleExpansion[], dependencies: boolean, work?: WorkScope): DiscoveryResult {
+      work?.check();
       const requestKey = canonical([[...new Set(requested)].sort(compare), dependencies]);
       const prior = current(results.get(requestKey));
-      if (prior) return prior;
+      if (prior) {
+        attribute(prior, true, true, true);
+        return prior;
+      }
+      const reusedCore = core !== undefined;
       // Acquire dependency inputs before deciding whether partial expansions need another attempt.
       const cachedDependencies = dependencies ? current(dependencyCache) : undefined;
       const preparedDependencies = dependencies && !cachedDependencies ? prepareDependencies(program, host, candidates) : undefined;
@@ -406,12 +422,14 @@ export async function openTypeScriptProject(options: ProjectOptions, runGit?: Ru
       const expansions = preparedExpansions?.(session, evidence);
       const composition = preparedComposition?.(session, evidence);
       const dependencyResult = preparedDependencies?.(session, evidence);
+      const firstRetained = new Set<RecordId>();
       store.put([...records, ...(expansions?.records ?? []), ...(dependencyResult?.records ?? []), ...(composition?.records ?? [])]
         .map(record => {
           if (record.kind !== 'claim-context') return record;
           // A repeated claim keeps the input basis on which it was first established.
           // The store still checks every other field for immutable-record collisions.
           const retained = store.lookup(record.id);
+          if (!retained) firstRetained.add(record.id);
           if (retained && retained.kind !== 'claim-context') throw new Error('Expected historical Claim context');
           const basis = retained?.inputs ?? inputId;
           return { ...record, inputs: basis };
@@ -437,7 +455,21 @@ export async function openTypeScriptProject(options: ProjectOptions, runGit?: Ru
       freezeOwned(result);
       if (stable) results.set(requestKey, keep(result,
         (result.expansions ?? []).every(completedMaterialization) && (!result.dependencies || completedMaterialization(result.dependencies)), inputs.revision()));
+      attribute(result, reusedCore, !!cachedExpansions, !!cachedComposition, !!cachedDependencies, firstRetained);
       return result;
+
+      function attribute(result: DiscoveryResult, reusedCore: boolean, reusedExpansions: boolean,
+        reusedComposition: boolean, reusedDependencies = true, firstRetained = new Set<RecordId>()) {
+        work?.record('provider-modules', reusedCore ? 'reused' : 'established', {
+          records: result.contexts, state: workState(result), limitations: ['Materialization over captured Session inputs; no new freshness guarantee.'],
+        }, result.contexts.filter(id => firstRetained.has(id)));
+        for (const expansion of result.expansions ?? []) work?.record('provider-expansion',
+          (expansion.requirement === 'composition' ? reusedComposition : reusedExpansions) ? 'reused' : 'established',
+          { records: expansion.contexts, state: workState(expansion), limitations: [`Requested expansion: ${expansion.requirement}.`] }, expansion.contexts.filter(id => firstRetained.has(id)));
+        if (result.dependencies) work?.record('provider-dependencies', reusedDependencies ? 'reused' : 'established', {
+          records: result.dependencies.contexts, state: workState(result.dependencies),
+        }, result.dependencies.contexts.filter(id => firstRetained.has(id)));
+      }
     };
   }
 }

@@ -11,6 +11,24 @@ retains live evidence and its limitations. The governing contracts are
 [investigrams](../decisions/investigrams-and-progressive-investigation.md), and
 [operations and lenses](../decisions/investigation-operations-and-lenses.md).
 
+## Request context and work attribution
+
+Session entry supplies [request-scoped attribution](README.md#request-work-attribution)
+separately from the operation's semantic inputs. The accepted interpretation and its
+reusable key remain unchanged. Original generating context is retained alongside
+Session outcomes; current consumption reports preserve that origin. Attempt reports
+carry the parent context, including actual guards, on success, failure and interruption.
+Direct operation calls establish a parent without needing observation delivery.
+
+Evidence queries and initial prior-account context record their purpose, triggering
+attempt, qualified outcome and delivery state. Provider/evaluator reports distinguish
+actual acquisition/derivation from retained work and pure retrieval. A response omitted
+by the 60,000-character bound retains its acquired record references and reason but
+never enters the exposure sets. Evidence acquired before another guard stops dispatch
+remains marked not delivered. A query that never returns has an unknown outcome;
+a late completion cannot alter the sealed report or authorize more work. Worker
+termination exposes only received facts and explicitly discloses incompleteness.
+
 ## Evaluation and evidence
 
 Existing module, dependency and organization evaluators continue to own mechanical

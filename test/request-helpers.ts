@@ -7,8 +7,8 @@ export function requireView(result: ExecutedRequest) {
 }
 
 /** Compare program outputs independently of their distinct invocation occurrences. */
-export function programOutput<T extends { readonly context: unknown }>(result: T) {
-  const { context: _context, ...output } = result;
+export function programOutput<T extends { readonly context: unknown; readonly attribution: unknown }>(result: T) {
+  const { context: _context, attribution: _attribution, ...output } = result;
   return output;
 }
 

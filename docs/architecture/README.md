@@ -100,9 +100,51 @@ subjects and population qualifications appear in View JSON; Unicode labels only
 incomplete or unavailable lookup coverage separately from answer qualification.
 This context participates in View identity without
 altering answer identity. Arrangement still has no lookup or Evaluation access.
-Prerequisite/evidence attribution, runtime Presentation compatibility and extension
-demonstrations remain to be integrated. Declaration of prospective result contracts
+The bounded request/work attribution path is implemented as described below. Runtime
+Presentation compatibility and extension demonstrations remain to be integrated. Declaration of prospective result contracts
 does not yet establish runtime compatibility across the toolbox.
+
+<a id="request-work-attribution"></a>
+## Request work attribution
+
+Every Session request and direct interpretation entry establishes a frozen parent
+context before validation/work: correlation, normalized need, caller role, purpose
+and actual inherited investigation guards. Caller identity is not assumed to be
+human. There is no numeric whole-request budget. Requested-answer work remains
+distinct from PostCode's subject-resolution prerequisites and investigator-triggered
+evidence work. Evidence triggers include the query and its attempt-local occurrence.
+
+Provider, evaluator and pure-derivation boundaries report execution where they know
+it. TypeScript reports reuse per module/expansion/dependency component and captured
+content. The module evaluator separately reports new versus retained qualified
+outcomes, including expansion outcomes; pure organization derivations report their
+own reuse. Dependency outcome construction still derives and validates each time,
+so an equal retained ID is not reported as skipped execution. First-retention
+attribution lives alongside supported records in Session-owned metadata. Re-derived
+equal records do not overwrite it or invent an origin for previously untracked work.
+Unknown origins are explicit. This adds no reusable-work key inputs or retained
+answer fields, and neither reuse nor new materialization claims fresh inputs.
+
+Returned execution envelopes carry immutable work reports separately from Views.
+Non-View JSON reports include them. The Session exposes its latest execution report
+for failure handling, not a request-history catalog. Interpretation attempts carry
+their parent context; retained operation reuse and exact/associated selection record
+current consumption with original attribution. Evidence reporting preserves qualified
+outcomes, page limits and support separately from delivery: captured-but-withheld,
+acquired-but-not-dispatched and actually dispatched information remain distinguishable.
+Pure retrieval/continuation records consumption without claiming new acquisition.
+Exposure and citation eligibility still depend solely on actual dispatch.
+
+Operation-tagged worker progress sends snapshots of facts already known. The parent
+seals received facts on forced termination and labels the report incomplete; late
+messages cannot replace it. Thrown execution failures preserve completed boundary
+facts while disclosing that work without returned outcomes is unknown. Version-two
+command observations include the work report for successful, refused and abnormal
+requests independently of sink success. Publication validity/outcome remains distinct
+from execution completion: a later input check can suppress a completed result.
+Closing releases core state while already returned report snapshots remain usable.
+This is bounded attribution at existing boundaries, not an autonomous scheduler,
+request store or post-Session export of captured program inputs.
 
 ## Responsibilities and flow
 

@@ -1,4 +1,5 @@
-import { randomUUID } from 'node:crypto';
+import { initiation } from './work-attribution.js';
+import type { WorkReport } from './work-attribution.js';
 import { normalizeRequest } from './requests.js';
 import type { RequestContext } from './request-reporting.js';
 import { usageSummary } from './investigation/reporting.js';
@@ -36,12 +37,13 @@ export async function publishCommand(session: {
   execute(request: ViewRequest, execution?: ExecutionOptions): ExecutedRequest | Promise<ExecutedRequest>;
   check(): void | Promise<void>;
   usage?(): InvestigationUsageReport;
+  work?(): WorkReport | undefined;
 }, request: ViewRequest, supplied: unknown, configPath: string, command: number, output: Output, sink: ObservationSink): Promise<number> {
   let published: ExecutedRequest | undefined, stdout = '', stderr = '';
   let context: RequestContext | undefined;
   let status: 'completed' | 'refused' | 'invalidated' | 'failed' | 'defect' | 'interrupted' = 'completed', code = 0;
   try {
-    context = { id: randomUUID(), initiator: 'caller', request: normalizeRequest(request) };
+    context = initiation(normalizeRequest(request));
     const result = await session.execute(request, { deferPublicationCheck: true, requestId: context.id });
     await session.check();
     output.stdout(result.rendered);
@@ -62,11 +64,14 @@ export async function publishCommand(session: {
         ...usageLines(usage, 'Session'), ...usage.limitations.map(inlineText)].join('\n') + '\n';
     stderr += final; output.stderr(final);
   }
+  const candidate = session.work?.();
+  const work = candidate?.context.id === context?.id ? candidate : published?.attribution;
+  if (work && work.context.request.kind !== 'operation') context = work.context as RequestContext;
   const produced = published?.kind === 'view' ? observationBatch(published.view, stdout,
     { configPath, repositoryRoot: published.repositoryRoot, methods: published.methods }, published.context, command, published.resolution) : undefined;
   await submitObservation(sink, commandObservation(session.id, command, { supplied: context?.request.kind === 'rejected'
     ? { representation: 'omitted', reason: 'Raw invocation omitted; see rejected request input and representation limits.' } : supplied, context: published?.context ?? context, configPath }, status, stdout, stderr, produced, usage,
-    published && published.kind !== 'view' ? { kind: published.kind === 'resolution' ? 'resolution-result' : 'usage-report', value: published.report } : undefined, published?.context ?? context), output);
+    published && published.kind !== 'view' ? { kind: published.kind === 'resolution' ? 'resolution-result' : 'usage-report', value: published.report } : undefined, published?.context ?? context, work), output);
   return code;
 }
 

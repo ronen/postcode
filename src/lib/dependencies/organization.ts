@@ -1,3 +1,5 @@
+import { workState } from '../work-attribution.js';
+import type { WorkScope } from '../work-attribution.js';
 import { directedGraph } from '../directed-graph.js';
 import { completedMaterialization } from '../evaluation-state.js';
 import { identityReference, compare, methods, recordId } from '../identity.js';
@@ -12,7 +14,8 @@ const complete = (state: Pick<EvaluationState, 'availability' | 'execution' | 'm
 
 /** Requested relationship expansion. Uses captured placement/containment only; no I/O. */
 export function evaluateDependencyOrganization(store: ProgramRecordStore, dependency: DependencyEvaluationRecord,
-  organization: OrganizationEvaluationRecord): DependencyOrganizationEvaluation {
+  organization: OrganizationEvaluationRecord, work?: WorkScope): DependencyOrganizationEvaluation {
+  work?.check();
   const storedDependency = store.get(dependency.id);
   const storedOrganization = store.get(organization.id);
   if (storedDependency.kind !== 'dependency-evaluation' || storedOrganization.kind !== 'organization-evaluation'
@@ -29,6 +32,7 @@ export function evaluateDependencyOrganization(store: ProgramRecordStore, depend
   const retained = store.lookup(id);
   if (retained) {
     if (retained.kind !== 'dependency-organization-evaluation') throw new Error('Unexpected derived record kind');
+    work?.record('dependency-organization-evaluation', 'reused', { records: [retained.id], state: workState(retained) });
     return retained;
   }
   const claims = organization.claims.map(id => store.get(id));
@@ -166,5 +170,6 @@ export function evaluateDependencyOrganization(store: ProgramRecordStore, depend
   store.put([...records, ...expanded, result]);
   const owned = store.get(result.id);
   if (owned.kind !== 'dependency-organization-evaluation') throw new Error('Expected retained dependency-organization-evaluation');
+  work?.record('dependency-organization-evaluation', 'established', { records: [owned.id], state: workState(owned) });
   return owned;
 }

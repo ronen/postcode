@@ -141,7 +141,9 @@ test('normal views omit source facets and raw evidence; inspection source escape
   assert.ok(detail.sourceDetail.items.flatMap(claim => claim.evidence).every(evidence => evidence.path.endsWith('/ambient.d.ts')));
   const batch = inspected.batches[0]!;
   assert.deepEqual(batch.events.map(event => event.type), ['view-produced', 'source-escape', 'command-completed']);
-  assert.equal(batch.records.length, 6);
+  assert.deepEqual(batch.records.map(item => item.kind).sort(), [
+    'analysis-context', 'command-outcome', 'qualified-view', 'rendered-output', 'request', 'request-work', 'resolution-information',
+  ]);
   assert.ok(batch.records.some(item => item.kind === 'resolution-information'));
   assert.equal(batch.events[1]!.sourceLevel, 'declaration-locations-and-excerpts');
   const missing = await invoke(['inspect', 'no match', '--project', config, '--json']);

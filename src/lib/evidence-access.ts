@@ -1,3 +1,4 @@
+import type { WorkScope } from './work-attribution.js';
 import { evaluateModules } from './evaluation.js';
 import type { ModuleAnalysis } from './evaluation.js';
 import { evaluateDependencies } from './dependencies/evaluate.js';
@@ -37,7 +38,8 @@ export function evidenceAccess(store: ProgramRecordStore, analysis: ModuleAnalys
   const delivery = evidenceDelivery(store, session);
   return {
     lookup: (id: RecordId) => { const item = store.lookup(id); return item?.session === session ? item : undefined; },
-    query(query: EvidenceQuery): EvidenceResponse {
+    query(query: EvidenceQuery, _signal?: AbortSignal, work?: WorkScope): EvidenceResponse {
+      work?.check();
       const subject = 'subject' in query ? store.lookup(query.subject) : undefined;
       if ('subject' in query && (!subject || subject.session !== session)) return unavailable('Unknown subject in this session.');
       const key = canonical({ kind: query.kind, ...('subject' in query ? { subject: query.subject } : {}) });
@@ -48,8 +50,8 @@ export function evidenceAccess(store: ProgramRecordStore, analysis: ModuleAnalys
           return unavailable('This internal record is not an inspectable program subject or evidence item.');
         }
         if (subject!.kind === 'module') {
-          const modules = evaluateModules(store, analysis);
-          const organization = evaluateOrganization(store, modules);
+          const modules = evaluateModules(store, analysis, [], work);
+          const organization = evaluateOrganization(store, modules, undefined, work);
           const claims = organization.claims.map(id => store.get(id)).filter(record => record.kind === 'claim');
           const placements = claims.filter(claim => claim.subject === subject!.id && claim.information.type === 'module-placement');
           const parents = new Map<RecordId, typeof claims>();
@@ -78,7 +80,7 @@ export function evidenceAccess(store: ProgramRecordStore, analysis: ModuleAnalys
       if (query.kind === 'source') {
         if (subject!.kind !== 'module' && subject!.kind !== 'repository-artifact') return unavailable('Source requires a module or organization artifact reference.');
         if (!analysis.acquireContent) return unavailable('Content acquisition is unavailable from this provider.');
-        const result = analysis.acquireContent(store, subject!.id);
+        const result = analysis.acquireContent(store, subject!.id, work);
         return { status: result.status, ...delivery.compose(result.captures), selected: result.captures, limitations: result.limitations };
       }
       if (['exports', 'dependencies', 'dependents', 'membership'].includes(query.kind) && subject!.kind !== 'module') {
@@ -86,7 +88,7 @@ export function evidenceAccess(store: ProgramRecordStore, analysis: ModuleAnalys
       }
       if (query.kind === 'group' && subject!.kind !== 'group') return unavailable('Group navigation requires a group.');
       if (query.kind === 'dependencies' || query.kind === 'dependents') {
-        const evaluation = evaluateDependencies(store, analysis);
+        const evaluation = evaluateDependencies(store, analysis, [], work);
         const relationships = evaluation.relationships.filter(id => {
           const claim = store.get(id);
           return claim.kind === 'claim' && claim.information.type === 'dependency'
@@ -109,7 +111,7 @@ export function evidenceAccess(store: ProgramRecordStore, analysis: ModuleAnalys
           ...(!evaluation.projectModules.includes(subject!.id) ? ['This subject is outside the analyzed project-owner population; its interior is opaque.'] : []),
         ]);
       }
-      const modules = evaluateModules(store, analysis, query.kind === 'exports' ? ['exports', 'documentation'] : []);
+      const modules = evaluateModules(store, analysis, query.kind === 'exports' ? ['exports', 'documentation'] : [], work);
       if (query.kind === 'modules') return delivery.select(key, modules.modules, [modules], [], undefined, true);
       if (query.kind === 'exports') {
         const expansions = store.evaluations(session).filter(item => item.basis === modules.id && item.modules.includes(subject!.id));
@@ -119,7 +121,7 @@ export function evidenceAccess(store: ProgramRecordStore, analysis: ModuleAnalys
           missing.map(requirement => `The provider did not supply ${requirement} for this module; absence is not established.`),
           missing.length ? expansions.length ? 'partial' : 'unavailable' : undefined);
       }
-      const organization = evaluateOrganization(store, modules);
+      const organization = evaluateOrganization(store, modules, undefined, work);
       const selected = query.kind === 'organization' ? organization.groups : organization.claims.filter(id => {
         const claim = store.get(id);
         if (claim.kind !== 'claim') return false;

@@ -1,7 +1,8 @@
 import { resolutionContext } from './resolution-context.js';
 import { resolveSubjects, resolutionExplanation } from './subject-resolution.js';
 import { freezeOwned } from './immutable.js';
-import { randomUUID } from 'node:crypto';
+import { initiation, RequestWork } from './work-attribution.js';
+import type { WorkReport } from './work-attribution.js';
 import { lenses, captureRequest, invalidParameters, invalidDesignation, invalidReportInputs } from './requests.js';
 import type { ViewRequest, CapturedRequest } from './requests.js';
 export type { ViewRequest } from './requests.js';
@@ -48,7 +49,9 @@ export interface ExecutionOptions {
 }
 
 /** One configured project and its accumulating transient program records. */
-export async function openSession(options: ProjectOptions, lifetime: { runGit?: RunGit; signal?: AbortSignal; investigation?: InvestigationDependencies } = {}) {
+export async function openSession(options: ProjectOptions, lifetime: { runGit?: RunGit; signal?: AbortSignal; investigation?: InvestigationDependencies; onWork?: (report: WorkReport) => void } = {}) {
+  const investigation = { ...lifetime.investigation, ...(lifetime.investigation?.bounds
+    ? { bounds: freezeOwned(structuredClone(lifetime.investigation.bounds)) } : {}) };
   const owner = lifetime.runGit ? undefined : new GitExecutionOwner();
   const controller = new AbortController();
   const reports = new Map<RecordId, AttemptReport>();
@@ -80,7 +83,7 @@ export async function openSession(options: ProjectOptions, lifetime: { runGit?: 
     return opened;
   }
   const id: SessionId = opened.session;
-  let state: { execute: ReturnType<typeof requestExecutor>; evaluate(request: InvestigationRequest): ReturnType<ReturnType<typeof investigationEvaluation>['evaluate']>; changed: () => Promise<boolean> } | undefined;
+  let state: { store: MemoryProgramRecordStore; execute: ReturnType<typeof requestExecutor>; evaluate(request: InvestigationRequest, work: RequestWork): ReturnType<ReturnType<typeof investigationEvaluation>['evaluate']>; changed: () => Promise<boolean> } | undefined;
   let invalid = false;
   const check = async () => {
     alive();
@@ -98,35 +101,63 @@ export async function openSession(options: ProjectOptions, lifetime: { runGit?: 
     if (invalid) { const error = new SessionInvalidated(); controller.abort(error); throw error; }
   };
   const store = new MemoryProgramRecordStore();
-  const integration = investigationEvaluation(store, opened.analysis, id, usage, { ...lifetime.investigation,
-    onReport: report => { reports.set(report.attempt, report); lifetime.investigation?.onReport?.(report); },
-    onProgress: report => { reports.set(report.attempt, report); lifetime.investigation?.onProgress?.(report); },
+  const integration = investigationEvaluation(store, opened.analysis, id, usage, { ...investigation,
+    onReport: report => { reports.set(report.attempt, report); investigation.onReport?.(report); },
+    onProgress: report => { reports.set(report.attempt, report); investigation.onProgress?.(report); },
   }, check, controller.signal);
-  state = { execute: requestExecutor(store, opened.analysis, id, integration, usageReport), changed: opened.changed,
-    evaluate: request => { evaluateModules(store, opened.analysis); return integration.evaluate(request); } };
+  state = { store, execute: requestExecutor(store, opened.analysis, id, integration, usageReport), changed: opened.changed,
+    evaluate: (request, work) => {
+      evaluateModules(store, opened.analysis, [], work.scope('Establish the module basis for direct interpretation.'));
+      return integration.evaluate(request, work);
+    } };
   const operation = async <T>(run: () => Promise<T>): Promise<T> => {
     alive();
     if (busy) throw new Error('Concurrent session command');
     busy = true;
     try { return await run(); } finally { busy = false; }
   };
+  let latestWork: WorkReport | undefined;
+  const progress = (report: WorkReport) => { latestWork = report; lifetime.onWork?.(report); };
+  const failWork = (work: RequestWork, error: unknown) => work.finish(error instanceof CommandInterrupted ? 'interrupted'
+    : error instanceof SessionInvalidated ? 'invalidated' : error instanceof AnalysisFailure ? 'failed' : 'defect',
+    'Execution threw before completing the request; work without a returned boundary outcome is unknown.');
   return { status: 'opened' as const, session: {
-    id, check: () => operation(check), usage: usageReport,
+    id, check: () => operation(check), usage: usageReport, work: () => latestWork,
     evaluateInvestigation: (request: InvestigationRequest) => operation(async () => {
-      await check(); return state!.evaluate(request);
+      const context = initiation({ kind: 'operation', operation: request }, undefined, investigation.bounds);
+      const work = new RequestWork(context, state!.store, progress, controller.signal); progress(work.snapshot());
+      try {
+        await check();
+        const result = await state!.evaluate(context.request.operation, work);
+        await check(); alive();
+        return { ...result, context, attribution: work.finish(result.unavailable || result.evaluation?.outcome.kind !== 'accepted' ? 'failed' : 'completed') };
+      } catch (error) { failWork(work, error); throw error; }
     }),
     execute: (request: ViewRequest, execution: ExecutionOptions = {}) => {
       const captured = captureRequest(request);
       execution = { ...execution };
       return operation(async () => {
-        await check();
+        const context = initiation(captured.normalized, execution.requestId, investigation.bounds);
+        const work = new RequestWork(context, state!.store, progress, controller.signal); progress(work.snapshot());
         try {
-          const result = await state!.execute(captured, execution.requestId);
+          await check();
+          const result = await state!.execute(captured, context, work);
           if (!execution.deferPublicationCheck) await check();
           alive();
-          return result;
+          const attribution = work.finish(result.kind === 'resolution' ? 'refused' : 'failed' in result && result.failed ? 'failed' : 'completed');
+          if (result.kind === 'view') return { ...result, attribution };
+          if (result.kind === 'resolution') {
+            const report = freezeOwned({ ...result.report, attribution });
+            return { ...result, report, attribution, rendered: renderRequestReport(report) };
+          }
+          const report = freezeOwned({ ...result.report, attribution });
+          return { ...result, report, attribution, rendered: renderRequestReport(report) };
         } catch (error) {
-          if (operationalIO(error)) { await check(); throw new AnalysisFailure(error.message); }
+          if (operationalIO(error)) {
+            try { await check(); } catch (invalid) { failWork(work, invalid); throw invalid; }
+            error = new AnalysisFailure(error.message);
+          }
+          failWork(work, error);
           throw error;
         }
       });
@@ -141,8 +172,17 @@ export async function openSession(options: ProjectOptions, lifetime: { runGit?: 
 
 function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalysis, session: SessionId,
   integration: ReturnType<typeof investigationEvaluation>, usage: () => ReturnType<typeof usageSummary>) {
-  return async (capturedRequest: CapturedRequest, requestId: string = randomUUID()) => {
-    const context: RequestContext = freezeOwned({ id: requestId, initiator: 'caller', request: capturedRequest.normalized });
+  return async (capturedRequest: CapturedRequest, context: RequestContext, work: RequestWork) => {
+    const lookupWork = work.scope('Establish qualified populations to resolve the requested subject.', null, 'resolution-prerequisite');
+    const answerWork = work.scope('Materialize requirements and declared expansions for the requested answer.');
+    const consumeInterpretation = (projection: RecordId) => {
+      const selection = store.get(projection);
+      if (selection.kind !== 'investigation-selection-projection') return;
+      const records = [...new Set([...selection.relations.flatMap(item => [item.original, item.account]),
+        ...selection.displaced, ...selection.associated])];
+      if (records.length) answerWork.record('interpretation', 'consumed', { records,
+        limitations: ['Retained interpretation and revision/association selection; no new inference or independent corroboration.'] });
+    };
     if (context.request.kind === 'rejected') return rejectedRequestResult(session, context, usage());
     const request = capturedRequest.input;
     if (!request) throw new Error('Validated request input missing');
@@ -167,9 +207,9 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
     // Literal lookup evaluates only the populations required to identify applicable subjects.
     const designation = context.request.designation;
     const lookupModules = designation.kind === 'name' && definition.subjects.includes('module')
-      ? evaluateModules(store, analysis, investigationLens ? [] : organizationPresentationRequirements.modules) : undefined;
+      ? evaluateModules(store, analysis, investigationLens ? [] : organizationPresentationRequirements.modules, lookupWork) : undefined;
     const lookupOrganization = lookupModules && definition.subjects.includes('group')
-      ? evaluateOrganization(store, lookupModules, organizationPresentationRequirements.groups) : undefined;
+      ? evaluateOrganization(store, lookupModules, organizationPresentationRequirements.groups, lookupWork) : undefined;
     const resolution = resolveSubjects(store, session, definition, designation,
       { ...(lookupModules ? { modules: lookupModules } : {}), ...(lookupOrganization ? { organization: lookupOrganization } : {}) });
     if (resolution.status !== 'resolved') {
@@ -181,12 +221,15 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
     const selected = resolution.candidates.map(candidate => candidate.id);
     const interpretationInspection = lens === 'inspect' && resolution.candidates[0]?.kind === 'investigram';
     if (investigationLens || interpretationInspection) {
-      const basis = evaluateModules(store, analysis);
+      const basis = evaluateModules(store, analysis, [], answerWork);
+      answerWork.check();
       if (definition.subjects.includes('module') && investigationLens) store.entityIds(basis.modules, 'module');
       else store.entityIds(store.investigations(session).flatMap(item => item.investigrams), 'investigram');
       const result = investigationLens && selected.length === 1
-        ? await integration.evaluate({ operation: operation!, subject: selected[0]!, parameters: {} }) : null;
+        ? await integration.evaluate({ operation: operation!, subject: selected[0]!, parameters: {} }, work) : null;
+      answerWork.check();
       const { view, investigationArrangementKey } = createInvestigationView(store, session, { ...request, resolution: displayResolution, lens: lens as 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'dependency-children' | 'dependency-parents' }, selected, result, usage());
+      consumeInterpretation(view.projection.id);
       const sessionContext = store.get(session);
       if (sessionContext.kind !== 'session') throw new Error('Expected session');
       const repository = sessionContext.repository ? store.get(sessionContext.repository) : null;
@@ -196,12 +239,13 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
     }
     const dependencyLens = definition.requirements.kind === 'dependencies';
     // Provider/evaluation reuse owns input-basis validity; an outer cache could hide new acquisition.
-    const dependencyOutcome = dependencyLens ? evaluateDependencies(store, analysis, dependencyPresentationRequirements.modules) : null;
+    const dependencyOutcome = dependencyLens ? evaluateDependencies(store, analysis, dependencyPresentationRequirements.modules, answerWork) : null;
     const expansions = lens === 'modules' ? presentationRequirements(presentation) : organizationPresentationRequirements.modules;
     const evaluation = dependencyOutcome ? store.get(dependencyOutcome.moduleEvaluation) as EvaluationRecord
-      : evaluateModules(store, analysis, expansions);
-    const organizationOutcome = lens === 'modules' ? null : evaluateOrganization(store, evaluation, organizationPresentationRequirements.groups);
-    const dependencyOrganization = dependencyLens ? evaluateDependencyOrganization(store, dependencyOutcome!, organizationOutcome!) : null;
+      : evaluateModules(store, analysis, expansions, answerWork);
+    const organizationOutcome = lens === 'modules' ? null : evaluateOrganization(store, evaluation, organizationPresentationRequirements.groups, answerWork);
+    const dependencyOrganization = dependencyLens ? evaluateDependencyOrganization(store, dependencyOutcome!, organizationOutcome!, answerWork) : null;
+    answerWork.check();
     const projection = dependencyLens
       ? lens === 'dependency-structure' ? dependencyStructure(store, dependencyOutcome!, dependencyOrganization!.id)
         : lens === 'dependency-children' ? dependencyChildren(store, dependencyOutcome!, selected, dependencyOrganization!.id)
@@ -219,6 +263,7 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
       : createOrganizationView(store, projection, presentation, displayResolution);
     const inspectedSubjects = projection.kind === 'organization-projection' ? [...projection.groups, ...(moduleProjection?.modules ?? [])] : projection.kind === 'projection' ? projection.modules : [];
     const view = lens === 'inspect' ? createAssociatedInspectionView(store, mechanicalView, inspectedSubjects, request.after, request.referenceLifetime) : mechanicalView;
+    consumeInterpretation(view.projection.id);
     const rendered = view.schema === 'postcode-dependency-view/1-experimental' ? renderDependencyView(view)
       : view.schema === 'postcode-view/1-experimental' ? renderView(view) : renderOrganizationView(view);
     const sessionContext = store.get(projection.session);

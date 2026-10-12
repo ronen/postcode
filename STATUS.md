@@ -27,7 +27,8 @@ This page summarizes current capabilities and significant limits. The [capabilit
   measures display width, and visibly escapes control characters.
 - **[Local observation recording](README.md#observability).**
   Commands record their actual requested question, designation, outcomes and presented
-  views, grouped by project and UTC date. Usage is reported without a program View. Only complete batches become visible under final filenames; delivery
+  views, grouped by project and UTC date. Request-scoped work reports distinguish
+  prerequisite analysis, reuse and evidence delivery, preserving received facts on interruption. Usage is reported without a program View. Only complete batches become visible under final filenames; delivery
   and later cleanup warnings remain distinct.
 
 - **[Interpretation integration](docs/cli-reference.md#progressive-investigation-and-usage).**
@@ -46,8 +47,8 @@ This page summarizes current capabilities and significant limits. The [capabilit
   reporting, non-View usage and qualified subject resolution are implemented at the
   request boundary. Unsuccessful lookups return reports with candidates and limits.
   Equivalent names and references share retained answers while preserving lookup
-  context in displayed results. Prerequisite attribution, Presentation compatibility
-  and extension demonstrations remain in progress.
+  context in displayed results. Bounded prerequisite/evidence attribution is implemented;
+  Presentation compatibility and extension demonstrations remain in progress.
 
 - **Hosted interpretation:** [formative assessments](records/validation/module-investigation/pass-01/report.md)
   show useful source-qualified summaries alongside omitted qualifications. A

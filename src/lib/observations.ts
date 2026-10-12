@@ -1,3 +1,4 @@
+import type { WorkReport } from './work-attribution.js';
 import type { SubjectResolution } from './subject-resolution.js';
 import type { RequestContext } from './request-reporting.js';
 import { sourceDisclosure } from './source-disclosure.js';
@@ -16,7 +17,7 @@ export interface ObservationBatch {
   readonly id: string;
   readonly session: string;
   readonly command: number;
-  readonly records: readonly { readonly id: string; readonly kind: 'request' | 'analysis-context' | 'qualified-view' | 'rendered-output' | 'command-outcome' | 'investigation-usage' | 'resolution-result' | 'resolution-information' | 'usage-report'; readonly value: unknown }[];
+  readonly records: readonly { readonly id: string; readonly kind: 'request' | 'analysis-context' | 'qualified-view' | 'rendered-output' | 'command-outcome' | 'investigation-usage' | 'resolution-result' | 'resolution-information' | 'usage-report' | 'request-work'; readonly value: unknown }[];
   readonly events: readonly {
     readonly id: string; readonly type: 'view-produced' | 'source-escape' | 'command-completed' | 'command-refused' | 'session-invalidated' | 'command-failed' | 'command-defect' | 'command-interrupted';
     readonly request: string; readonly analysis: string; readonly view?: string; readonly rendered: string;
@@ -97,7 +98,7 @@ export function localFileObservationSink(directory: string, configPath: string, 
 /** Refusals and failures have no fabricated view or source-disclosure event. */
 export function commandObservation(session: string, command: number, requestValue: unknown,
   status: 'completed' | 'refused' | 'invalidated' | 'failed' | 'defect' | 'interrupted',
-  stdout: string, stderr: string, produced?: ObservationBatch, usage?: InvestigationUsageReport, report?: { readonly kind: 'resolution-result' | 'usage-report'; readonly value: unknown }, requestContext?: RequestContext): ObservationBatch {
+  stdout: string, stderr: string, produced?: ObservationBatch, usage?: InvestigationUsageReport, report?: { readonly kind: 'resolution-result' | 'usage-report'; readonly value: unknown }, requestContext?: RequestContext, work?: WorkReport): ObservationBatch {
   if (!Number.isSafeInteger(command) || command < 1) throw new Error('Invalid command order');
   const request = produced?.records.find(item => item.kind === 'request')?.id ?? randomUUID();
   const analysis = produced?.records.find(item => item.kind === 'analysis-context')?.id ?? randomUUID();
@@ -107,6 +108,7 @@ export function commandObservation(session: string, command: number, requestValu
     { id: analysis, kind: 'analysis-context', value: { session } },
     { id: rendered, kind: 'rendered-output', value: stdout },
   ];
+  if (work) records.push({ id: randomUUID(), kind: 'request-work', value: work });
   if (report) records.push({ id: randomUUID(), ...report });
   if (usage?.attempts.length) records.push({ id: randomUUID(), kind: 'investigation-usage', value: usage });
   records.push({ id: randomUUID(), kind: 'command-outcome', value: { status, request: requestValue, stderr } });

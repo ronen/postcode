@@ -61,7 +61,7 @@ export async function runCli(args: readonly string[], environment: CliEnvironmen
     }
     if (opened.status !== 'opened') { environment.stderr(openFailureText(opened)); return 2; }
     environment.stderr(`Local observations: ${inlineText(localSink.destination)} (may contain repository-derived text and explicitly requested source locations).\n`);
-    return await publishCommand({ id: opened.id, execute: remote.execute, check: remote.check, usage: remote.usage }, parsed.request, args, parsed.configPath, 1,
+    return await publishCommand({ id: opened.id, execute: remote.execute, check: remote.check, usage: remote.usage, work: remote.work }, parsed.request, args, parsed.configPath, 1,
       environment, environment.sink ?? localSink);
   } finally {
     process.removeListener('SIGINT', interrupt);

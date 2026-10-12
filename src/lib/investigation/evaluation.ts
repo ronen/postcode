@@ -1,3 +1,4 @@
+import type { RequestWork } from '../work-attribution.js';
 import { revisionPage } from './revision-page.js';
 import { sessionRevisions } from './revisions.js';
 import { associatedInvestigrams } from './selection.js';
@@ -58,21 +59,30 @@ export function investigationEvaluation(store: ProgramRecordStore, analysis: Mod
       .map(id => store.get(id)).filter((item): item is Correction => item.kind === 'investigram-correction' && item.target === id); },
   };
   const key = (request: InvestigationRequest) => canonical(request);
-  return { evidence, history, async evaluate(request: InvestigationRequest): Promise<InvestigationSelection> {
+  return { evidence, history, async evaluate(request: InvestigationRequest, work?: RequestWork): Promise<InvestigationSelection> {
     request = freezeOwned(structuredClone(request));
     await check();
     const retained = store.investigations(session).find(item => key(item.request) === key(request));
-    if (retained) return { request, reused: true, attempt: retained.attempt, evaluation: retained, unavailable: null };
+    const attribution = work?.scope(`Evaluate interpretation operation: ${request.operation}.`);
+    if (retained) {
+      attribution?.record('interpretation', 'reused', { records: [retained.id, ...(retained.outcome.kind === 'accepted' ? [retained.attempt] : [])], limitations: [retained.outcome.kind, ...('reason' in retained.outcome ? [retained.outcome.reason] : [])] });
+      return { request, reused: true, attempt: retained.attempt, evaluation: retained, unavailable: null };
+    }
     const agent = dependencies.selectAgent ? await dependencies.selectAgent(request) : dependencies.agent;
-    if (!agent) return { request, reused: false, attempt: null, evaluation: null, unavailable: {
-      kind: 'configuration-unavailable', code: 'investigator-not-configured', diagnostic: 'Investigation is disabled. See docs/hosted-investigation.md for intentional hosted enablement and credential setup.',
-    } };
+    if (!agent) {
+      attribution?.record('interpretation', 'unavailable', { records: [], limitations: ['Investigator not configured.'] });
+      return { request, reused: false, attempt: null, evaluation: null, unavailable: {
+        kind: 'configuration-unavailable', code: 'investigator-not-configured', diagnostic: 'Investigation is disabled. See docs/hosted-investigation.md for intentional hosted enablement and credential setup.',
+      } };
+    }
     const execution = await investigate({ session, request, evidence, history, usage, agent, check, signal,
       ...(dependencies.bounds ? { bounds: dependencies.bounds } : {}),
+      ...(work ? { work } : {}),
       onReport: dependencies.onReport, onProgress: dependencies.onProgress });
     if (signal.aborted) throw signal.reason;
     const outcome = execution.outcome;
     if (outcome.kind === 'communication-failure' || outcome.kind === 'configuration-unavailable') {
+      work?.scope(`Evaluate interpretation operation: ${request.operation}.`, execution.report.attempt).record('interpretation', 'unavailable', { records: [], limitations: [outcome.kind, outcome.code, outcome.diagnostic] });
       return { request, reused: false, attempt: execution.report.attempt, evaluation: null, unavailable: outcome };
     }
     if (outcome.kind !== 'accepted' && !('reason' in outcome)) throw new Error('Unexpected investigation outcome');
@@ -86,6 +96,7 @@ export function investigationEvaluation(store: ProgramRecordStore, analysis: Mod
     store.put([...(accepted ? [accepted.provenance, ...accepted.investigrams, ...accepted.corrections] : []), evaluation]);
     const stored = store.get(evaluation.id);
     if (stored.kind !== 'investigation-evaluation') throw new Error('Expected retained investigation outcome');
+    work?.scope(`Evaluate interpretation operation: ${request.operation}.`, execution.report.attempt).record('interpretation', 'established', { records: [stored.id, ...(stored.outcome.kind === 'accepted' ? [stored.attempt] : []), ...stored.investigrams, ...stored.corrections], limitations: [stored.outcome.kind, ...('reason' in stored.outcome ? [stored.outcome.reason] : [])] });
     return { request, reused: false, attempt: execution.report.attempt, evaluation: stored, unavailable: null };
   } };
 }

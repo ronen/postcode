@@ -1,3 +1,4 @@
+import type { InitiationContext } from '../work-attribution.js';
 import type { RevisionStatus } from './revisions.js';
 import type { EvidenceQuery, EvidenceResponse } from '../evidence-access.js';
 import type { RecordContext, RecordId, SessionId } from '../records.js';
@@ -180,6 +181,7 @@ export interface InvestigatorAgent {
   open(): AgentDialogue;
 }
 export interface AttemptReport {
+  readonly parent?: InitiationContext;
   readonly attempt: RecordId;
   readonly session: SessionId;
   readonly request: InvestigationRequest;
