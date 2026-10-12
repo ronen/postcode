@@ -717,6 +717,8 @@ do not claim fresh inputs, impose a new whole-command allowance, or extend Sessi
 reference validity. Non-View JSON reports carry `attribution`; successful View JSON
 remains a View, with the separate execution work report retained in its observation.
 Attempt usage details include their originating parent context.
+Work status describes execution; a later publication check can withhold a completed
+result, so the separate command outcome can still be `invalidated`.
 
 Correction metadata listings are bounded separately from account bodies: at most
 256 displaced accounts, 256 accompanying correction references and 256 revision

@@ -1,4 +1,4 @@
-import { workState } from '../work-attribution.js';
+import { workState, recordExpansionWork } from '../work-attribution.js';
 import type { WorkScope } from '../work-attribution.js';
 import { diagnosticLookup } from './diagnostics.js';
 import { outputBoundary, OutputBoundaryFailure } from '../output-boundary.js';
@@ -463,9 +463,11 @@ export async function openTypeScriptProject(options: ProjectOptions, runGit?: Ru
         work?.record('provider-modules', reusedCore ? 'reused' : 'established', {
           records: result.contexts, state: workState(result), limitations: ['Materialization over captured Session inputs; no new freshness guarantee.'],
         }, result.contexts.filter(id => firstRetained.has(id)));
-        for (const expansion of result.expansions ?? []) work?.record('provider-expansion',
-          (expansion.requirement === 'composition' ? reusedComposition : reusedExpansions) ? 'reused' : 'established',
-          { records: expansion.contexts, state: workState(expansion), limitations: [`Requested expansion: ${expansion.requirement}.`] }, expansion.contexts.filter(id => firstRetained.has(id)));
+        if (work) recordExpansionWork(work, 'provider-expansion', (result.expansions ?? []).map(expansion => ({
+          requirement: expansion.requirement,
+          disposition: (expansion.requirement === 'composition' ? reusedComposition : reusedExpansions) ? 'reused' : 'established',
+          records: expansion.contexts, state: expansion, firstRetained: expansion.contexts.filter(id => firstRetained.has(id)),
+        })));
         if (result.dependencies) work?.record('provider-dependencies', reusedDependencies ? 'reused' : 'established', {
           records: result.dependencies.contexts, state: workState(result.dependencies),
         }, result.dependencies.contexts.filter(id => firstRetained.has(id)));

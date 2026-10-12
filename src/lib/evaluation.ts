@@ -1,4 +1,4 @@
-import { workState } from './work-attribution.js';
+import { workState, recordExpansionWork } from './work-attribution.js';
 import type { WorkScope } from './work-attribution.js';
 import { completedMaterialization } from './evaluation-state.js';
 import type { ContentResult } from './evidence-access.js';
@@ -75,9 +75,8 @@ export function recordModuleEvaluation(store: ProgramRecordStore, discovery: Dis
   function attribute(outcome: EvaluationRecord, disposition: 'established' | 'reused') {
     if (!work) return;
     work.record('module-evaluation', disposition, { records: [outcome.id], state: workState(outcome) });
-    for (const expansion of store.evaluations(outcome.session)) if (expansion.basis === outcome.id) {
-      work.record('module-expansion-evaluation', disposition, { records: [expansion.id], state: workState(expansion),
-        limitations: [`Requested expansion: ${expansion.requirement}.`] });
-    }
+    recordExpansionWork(work, 'module-expansion-evaluation', store.evaluations(outcome.session)
+      .filter(expansion => expansion.basis === outcome.id)
+      .map(expansion => ({ requirement: expansion.requirement, disposition, records: [expansion.id], state: expansion })));
   }
 }

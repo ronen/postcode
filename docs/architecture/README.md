@@ -125,6 +125,13 @@ equal records do not overwrite it or invent an origin for previously untracked w
 Unknown origins are explicit. This adds no reusable-work key inputs or retained
 answer fields, and neither reuse nor new materialization claims fresh inputs.
 
+Expansion reporting groups equal per-expansion qualifications by requirement within
+each provider/evaluator call. Each group keeps its count, exact record identities and
+their generating origins; different qualifications and reuse dispositions stay
+separate. A report carries its current parent once, plus a table of distinct earlier
+parents. Origin references resolve entirely within that report. Detail still scales
+with supported record identities and evidence queries; no detail is silently capped.
+
 Returned execution envelopes carry immutable work reports separately from Views.
 Non-View JSON reports include them. The Session exposes its latest execution report
 for failure handling, not a request-history catalog. Interpretation attempts carry
@@ -135,7 +142,9 @@ acquired-but-not-dispatched and actually dispatched information remain distingui
 Pure retrieval/continuation records consumption without claiming new acquisition.
 Exposure and citation eligibility still depend solely on actual dispatch.
 
-Operation-tagged worker progress sends snapshots of facts already known. The parent
+Operation-tagged worker progress sends newly recorded work and indexed evidence
+updates, rather than repeatedly transmitting the accumulated report. Entries are
+frozen once; full immutable report containers are built on demand. The parent
 seals received facts on forced termination and labels the report incomplete; late
 messages cannot replace it. Thrown execution failures preserve completed boundary
 facts while disclosing that work without returned outcomes is unknown. Version-two

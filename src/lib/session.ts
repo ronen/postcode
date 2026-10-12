@@ -2,7 +2,7 @@ import { resolutionContext } from './resolution-context.js';
 import { resolveSubjects, resolutionExplanation } from './subject-resolution.js';
 import { freezeOwned } from './immutable.js';
 import { initiation, RequestWork } from './work-attribution.js';
-import type { WorkReport } from './work-attribution.js';
+import type { WorkProgress, WorkReport } from './work-attribution.js';
 import { lenses, captureRequest, invalidParameters, invalidDesignation, invalidReportInputs } from './requests.js';
 import type { ViewRequest, CapturedRequest } from './requests.js';
 export type { ViewRequest } from './requests.js';
@@ -49,7 +49,7 @@ export interface ExecutionOptions {
 }
 
 /** One configured project and its accumulating transient program records. */
-export async function openSession(options: ProjectOptions, lifetime: { runGit?: RunGit; signal?: AbortSignal; investigation?: InvestigationDependencies; onWork?: (report: WorkReport) => void } = {}) {
+export async function openSession(options: ProjectOptions, lifetime: { runGit?: RunGit; signal?: AbortSignal; investigation?: InvestigationDependencies; onWork?: (progress: WorkProgress) => void } = {}) {
   const investigation = { ...lifetime.investigation, ...(lifetime.investigation?.bounds
     ? { bounds: freezeOwned(structuredClone(lifetime.investigation.bounds)) } : {}) };
   const owner = lifetime.runGit ? undefined : new GitExecutionOwner();
@@ -117,20 +117,25 @@ export async function openSession(options: ProjectOptions, lifetime: { runGit?: 
     try { return await run(); } finally { busy = false; }
   };
   let latestWork: WorkReport | undefined;
-  const progress = (report: WorkReport) => { latestWork = report; lifetime.onWork?.(report); };
-  const failWork = (work: RequestWork, error: unknown) => work.finish(error instanceof CommandInterrupted ? 'interrupted'
+  let currentWork: RequestWork | undefined;
+  const finishWork = (work: RequestWork, status: Exclude<WorkReport['status'], 'running'>, reason?: string) => {
+    latestWork = work.finish(status, reason); currentWork = undefined;
+    return latestWork;
+  };
+  const progress = lifetime.onWork;
+  const failWork = (work: RequestWork, error: unknown) => finishWork(work, error instanceof CommandInterrupted ? 'interrupted'
     : error instanceof SessionInvalidated ? 'invalidated' : error instanceof AnalysisFailure ? 'failed' : 'defect',
     'Execution threw before completing the request; work without a returned boundary outcome is unknown.');
   return { status: 'opened' as const, session: {
-    id, check: () => operation(check), usage: usageReport, work: () => latestWork,
+    id, check: () => operation(check), usage: usageReport, work: () => currentWork?.snapshot() ?? latestWork,
     evaluateInvestigation: (request: InvestigationRequest) => operation(async () => {
       const context = initiation({ kind: 'operation', operation: request }, undefined, investigation.bounds);
-      const work = new RequestWork(context, state!.store, progress, controller.signal); progress(work.snapshot());
+      const work = new RequestWork(context, state!.store, progress, controller.signal); currentWork = work;
       try {
         await check();
         const result = await state!.evaluate(context.request.operation, work);
         await check(); alive();
-        return { ...result, context, attribution: work.finish(result.unavailable || result.evaluation?.outcome.kind !== 'accepted' ? 'failed' : 'completed') };
+        return { ...result, context, attribution: finishWork(work, result.unavailable || result.evaluation?.outcome.kind !== 'accepted' ? 'failed' : 'completed') };
       } catch (error) { failWork(work, error); throw error; }
     }),
     execute: (request: ViewRequest, execution: ExecutionOptions = {}) => {
@@ -138,13 +143,13 @@ export async function openSession(options: ProjectOptions, lifetime: { runGit?: 
       execution = { ...execution };
       return operation(async () => {
         const context = initiation(captured.normalized, execution.requestId, investigation.bounds);
-        const work = new RequestWork(context, state!.store, progress, controller.signal); progress(work.snapshot());
+        const work = new RequestWork(context, state!.store, progress, controller.signal); currentWork = work;
         try {
           await check();
           const result = await state!.execute(captured, context, work);
           if (!execution.deferPublicationCheck) await check();
           alive();
-          const attribution = work.finish(result.kind === 'resolution' ? 'refused' : 'failed' in result && result.failed ? 'failed' : 'completed');
+          const attribution = finishWork(work, result.kind === 'resolution' ? 'refused' : 'failed' in result && result.failed ? 'failed' : 'completed');
           if (result.kind === 'view') return { ...result, attribution };
           if (result.kind === 'resolution') {
             const report = freezeOwned({ ...result.report, attribution });

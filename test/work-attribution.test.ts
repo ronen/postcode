@@ -10,8 +10,9 @@ import { interactiveSession } from '../src/lib/interactive-session.js';
 import { publishCommand } from '../src/lib/command-execution.js';
 import type { ObservationBatch } from '../src/lib/observations.js';
 import { CommandInterrupted } from '../src/lib/execution-errors.js';
-import { initiation, RequestWork } from '../src/lib/work-attribution.js';
+import { initiation, RequestWork, WorkReportState, recordExpansionWork } from '../src/lib/work-attribution.js';
 import type { WorkReport, AttributedWork } from '../src/lib/work-attribution.js';
+import { freezeOwned } from '../src/lib/immutable.js';
 import { normalizeRequest } from '../src/lib/requests.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
@@ -61,13 +62,15 @@ test('request attribution separates prerequisite work, actual provider reuse and
   const repeat = await opened.session.execute(inventory);
   assert.equal(repeat.kind, 'view');
   assert.notEqual(first.context.id, repeat.context.id);
+  assert.deepEqual(repeat.attribution.parents, [first.context]);
+  assert.deepEqual(first.attribution.parents, []);
   assert.deepEqual(first.view, repeat.view);
   for (const boundary of ['provider-modules', 'module-evaluation']) {
     assert.equal(first.attribution.work.find(item => item.boundary === boundary)!.disposition, 'established');
     const reused: AttributedWork = repeat.attribution.work.find(item => item.boundary === boundary)!;
     assert.equal(reused.disposition, 'reused');
-    assert.equal(reused.current.parent.id, repeat.context.id);
-    assert.ok(reused.generating.every(item => item.origin?.parent.id === first.context.id));
+    assert.equal(reused.current.parent, repeat.context.id);
+    assert.ok(reused.generating.every(item => item.origin?.parent === first.context.id));
   }
   const missing = await opened.session.execute({ ...summary, selector: 'absent-candidate' });
   assert.equal(missing.kind, 'resolution');
@@ -80,7 +83,7 @@ test('request attribution separates prerequisite work, actual provider reuse and
   const repeated = await opened.session.execute({ ...inventory, lens: 'dependencies' });
   const provider = repeated.attribution.work.find(item => item.boundary === 'provider-dependencies')!;
   assert.equal(provider.disposition, 'reused');
-  assert.ok(provider.generating.every(item => item.origin?.parent.id === dependencies.context.id));
+  assert.ok(provider.generating.every(item => item.origin?.parent === dependencies.context.id));
   assert.equal(repeated.attribution.work.find(item => item.boundary === 'dependency-evaluation')!.disposition, 'established', 'the dependency evaluator actually re-derives, even though its record ID is equal');
   assert.equal(JSON.stringify(first), snapshot, 'later consumption cannot mutate the earlier snapshot');
   const refused = await opened.session.execute({ ...inventory, parameters: { wrong: true } });
@@ -111,7 +114,7 @@ test('partial provider outcomes retry without an assurance and retain current ve
   assert.equal(third.id, fourth.id);
   assert.equal(calls, 4, 'no outer cache may hide the provider retry decision');
   assert.deepEqual(contexts.map(report => report.work[0]!.disposition), ['established', 'established', 'established', 'reused']);
-  assert.equal(contexts[3]!.work[0]!.generating[0]!.origin!.parent.id, contexts[2]!.context.id);
+  assert.equal(contexts[3]!.work[0]!.generating[0]!.origin!.parent, contexts[2]!.context.id);
   assert.equal(contexts[3]!.work[0]!.outcome.state!.reason, 'Controlled incomplete population.');
 });
 
@@ -156,7 +159,7 @@ test('evidence attribution preserves withheld capture, unavailability, reuse and
   assert.deepEqual(second.attribution.evidence, []);
   const reused = second.attribution.work.find(item => item.boundary === 'interpretation')!;
   assert.equal(reused.disposition, 'reused');
-  assert.ok(reused.generating.every(item => item.origin!.parent.id === first.context.id));
+  assert.ok(reused.generating.every(item => item.origin!.parent === first.context.id));
   const operation = { ...answer.result!.request };
   const pending = opened.session.evaluateInvestigation(operation);
   operation.subject = 'mutated-after-entry' as RecordId;
@@ -175,7 +178,7 @@ test('evidence attribution preserves withheld capture, unavailability, reuse and
   assert.equal(followup.attribution.work.find(item => item.boundary === 'evidence-retrieval')!.disposition, 'consumed');
   const inspected = await opened.session.execute({ ...summary, lens: 'inspect', selector: answer.accounts[0]!.id, reference: true });
   const consumption = inspected.attribution.work.find(item => item.boundary === 'interpretation' && item.disposition === 'consumed')!;
-  assert.ok(consumption.generating.some(item => item.record === answer.accounts[0]!.id && item.origin?.parent.id === first.context.id));
+  assert.ok(consumption.generating.some(item => item.records.includes(answer.accounts[0]!.id) && item.origin?.parent === first.context.id));
   assert.equal(agent.inputs.length, 2, 'historical inspection starts no inference');
 });
 
@@ -312,7 +315,7 @@ test('a cancelled asynchronous evidence query retains known acquisition but neve
 test('cancellation during provider reporting prevents the next evaluation boundary', async t => {
   const controller = new AbortController();
   const opened = await openSession({ configPath: fixture(t).configPath }, { signal: controller.signal,
-    onWork(report) { if (report.work.some(item => item.boundary === 'provider-modules')) controller.abort(); },
+    onWork(progress) { if (progress.kind === 'work' && progress.entry.boundary === 'provider-modules') controller.abort(); },
   });
   assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
   const put = t.mock.method(MemoryProgramRecordStore.prototype, 'put');
@@ -335,4 +338,77 @@ test('a completed parent cannot authorize another provider call through its old 
   work.finish('completed');
   assert.throws(() => evaluateModules(store, opened.analysis, [], scope), /Request work has ended/);
   assert.equal(discover.mock.calls.length, 1);
+});
+
+test('attribution progress transports each work entry once and reconstructs immutable complete reports', () => {
+  const context = initiation(normalizeRequest(inventory));
+  let received: WorkReportState | undefined;
+  let bytes = 0;
+  const work = new RequestWork(context, new MemoryProgramRecordStore(), progress => {
+    bytes += Buffer.byteLength(JSON.stringify(progress));
+    const owned = freezeOwned(structuredClone(progress));
+    if (owned.kind === 'start') received = new WorkReportState(owned.context);
+    else received!.apply(owned);
+  });
+  const scope = work.scope('Materialize a large controlled population.');
+  for (let index = 0; index < 4_000; index++) scope.record('content', 'established', {
+    records: [`controlled-record-${index.toString().padStart(4, '0')}` as RecordId],
+  });
+  const earlier = received!.snapshot();
+  const final = work.finish('completed');
+  assert.deepEqual(received!.snapshot(), final);
+  assert.equal(earlier.status, 'running');
+  assert.equal(final.work.length, 4_000);
+  assert.ok(bytes < Buffer.byteLength(JSON.stringify(final)) * 1.5, 'incremental transport must stay proportional to final facts, not accumulated snapshots');
+  assert.ok(Object.isFrozen(final.work) && Object.isFrozen(final.work[0]!.generating[0]!.origin));
+  assert.equal(final.work[0], work.snapshot().work[0], 'snapshot containers share already immutable entries');
+  assert.deepEqual(final.parents, []);
+});
+
+test('expansion reporting groups equal states without hiding qualifications or first-retention limits', () => {
+  const work = new RequestWork(initiation(normalizeRequest(inventory)), new MemoryProgramRecordStore());
+  const state = { applicability: 'applicable' as const, availability: 'available' as const, execution: 'completed' as const,
+    materialization: 'full' as const, reason: null, cost: { measure: 'modules', value: 1 } };
+  recordExpansionWork(work.scope('Materialize expansions.'), 'module-expansion-evaluation', [
+    { requirement: 'exports', disposition: 'established', state, records: ['a' as RecordId] },
+    { requirement: 'exports', disposition: 'established', state, records: ['b' as RecordId], firstRetained: [] },
+    { requirement: 'exports', disposition: 'established', state: { ...state, materialization: 'partial', reason: 'Unavailable part.' }, records: ['c' as RecordId] },
+    { requirement: 'exports', disposition: 'reused', state, records: ['d' as RecordId] },
+  ]);
+  const report = work.finish('completed');
+  assert.deepEqual(report.work.map(item => [item.disposition, item.outcome.records, item.outcome.expansion?.count, item.outcome.state?.reason]), [
+    ['established', ['a', 'b'], 2, null], ['established', ['c'], 1, 'Unavailable part.'], ['reused', ['d'], 1, null],
+  ]);
+  assert.ok(report.work[0]!.generating[0]!.origin);
+  assert.equal(report.work[0]!.generating[1]!.origin, null);
+  assert.equal(report.work[2]!.generating[0]!.origin, null);
+});
+
+test('hundreds of modules produce boundary-sized expansion reports with complete record attribution', async t => {
+  const project = fixture(t);
+  for (let index = 1; index < 500; index++) writeFileSync(path.join(project.root, `other${index}.ts`), `export const other${index} = ${index};`);
+  let events = 0, bytes = 0;
+  const opened = await openSession({ configPath: project.configPath }, { onWork(progress) {
+    events++; bytes += Buffer.byteLength(JSON.stringify(progress));
+  } });
+  assert.equal(opened.status, 'opened');
+  t.after(() => opened.session.close());
+  const first = await opened.session.execute(inventory);
+  const expansions = first.attribution.work.filter(item => item.boundary === 'module-expansion-evaluation');
+  assert.ok(expansions.length > 0 && expansions.length < 12);
+  assert.ok(expansions.reduce((count, item) => count + item.outcome.expansion!.count, 0) >= 1_000);
+  for (const expansion of expansions) {
+    assert.equal(expansion.outcome.records.length, expansion.outcome.expansion!.count);
+    assert.deepEqual(expansion.generating.flatMap(item => item.records), expansion.outcome.records);
+    assert.ok(expansion.generating.every(item => item.origin?.parent === first.context.id));
+  }
+  const reportBytes = Buffer.byteLength(JSON.stringify(first.attribution));
+  assert.ok(events < 32, 'provider/evaluator expansion reports are grouped by requirement and qualification');
+  assert.ok(bytes < reportBytes * 1.5, 'worker progress does not repeatedly transmit earlier facts');
+  assert.ok(reportBytes < 1_500_000, 'report size includes record identities, not repeated parent descriptions');
+  const repeat = await opened.session.execute(inventory);
+  assert.deepEqual(repeat.attribution.parents, [first.context]);
+  assert.deepEqual(repeat.kind === 'view' && repeat.view, first.kind === 'view' && first.view);
+  assert.ok(repeat.attribution.work.filter(item => item.boundary === 'module-expansion-evaluation')
+    .every(item => item.disposition === 'reused' && item.generating.every(generation => generation.origin?.parent === first.context.id)));
 });

@@ -1,4 +1,4 @@
-import type { WorkReport } from './work-attribution.js';
+import type { WorkProgress } from './work-attribution.js';
 import type { RecordId, SessionId } from './records.js';
 import type { AgentInput, AgentReply, AgentIdentity, InvestigationRequest, AttemptReport, ReportedUsage } from './investigation/contracts.js';
 import type { openSession, ViewRequest, ExecutionOptions } from './session.js';
@@ -35,6 +35,6 @@ export type WorkerReply = { type: 'reply'; operation: number; opening?: Opening;
   | { type: 'agent-select'; operation: number; id: number; request: InvestigationRequest }
   | { type: 'agent-exchange'; operation: number; id: number; call: number; input: AgentInput }
   | { type: 'agent-close'; operation: number; attempt: RecordId }
-  | { type: 'work-report'; operation: number; report: WorkReport }
+  | { type: 'work-progress'; operation: number; progress: WorkProgress }
   | { type: 'attempt-report'; operation: number; report: AttemptReport }
   | { type: 'git'; operation: number; id: number; request: GitRequest };

@@ -29,7 +29,8 @@ export function initiation<T extends InitiationContext['request']>(request: T, i
 }
 
 export interface WorkOrigin {
-  readonly parent: InitiationContext;
+  /** Resolved by this report's context or parents, never an external history lookup. */
+  readonly parent: string;
   readonly initiator: 'caller' | 'PostCode';
   readonly role: 'requested-answer' | 'resolution-prerequisite' | 'interpretation-evidence';
   readonly purpose: string;
@@ -41,6 +42,8 @@ type WorkState = Omit<EvaluationState, 'cost'> & { readonly cost: { readonly mea
 export interface WorkOutcome {
   readonly records: readonly RecordId[];
   readonly state?: WorkState;
+  /** Grouped expansions share this exact per-expansion qualification and cost. */
+  readonly expansion?: { readonly requirement: string; readonly count: number };
   readonly limitations?: readonly string[];
 }
 export interface AttributedWork {
@@ -51,15 +54,57 @@ export interface AttributedWork {
   readonly current: WorkOrigin;
   readonly outcome: WorkOutcome;
   /** Unknown origins are explicit; consuming untracked information cannot establish its origin. */
-  readonly generating: readonly { readonly record: RecordId; readonly origin: WorkOrigin | null }[];
+  readonly generating: readonly { readonly records: readonly RecordId[]; readonly origin: WorkOrigin | null }[];
 }
 export interface WorkReport {
   readonly context: InitiationContext;
+  /** Distinct earlier parents; the current parent is already present as context. */
+  readonly parents: readonly InitiationContext[];
   readonly status: 'running' | 'completed' | 'refused' | 'failed' | 'invalidated' | 'interrupted' | 'defect';
   readonly completeness: 'complete' | 'incomplete';
   readonly work: readonly AttributedWork[];
   readonly evidence: readonly EvidenceWork[];
   readonly limitations: readonly string[];
+}
+
+/** Append-only work and indexed evidence replacements; never resend accumulated history. */
+export type WorkProgress = { readonly kind: 'start'; readonly context: InitiationContext }
+  | { readonly kind: 'work'; readonly entry: AttributedWork; readonly parents: readonly InitiationContext[] }
+  | { readonly kind: 'evidence'; readonly index: number; readonly entry: EvidenceWork }
+  | { readonly kind: 'finish'; readonly status: Exclude<WorkReport['status'], 'running'>; readonly incompleteReason?: string };
+
+/** Owns received facts. Full immutable snapshots are built only when requested. */
+export class WorkReportState {
+  private readonly parents = new Map<string, InitiationContext>();
+  private readonly work: AttributedWork[] = [];
+  private readonly evidence: EvidenceWork[] = [];
+  private status: WorkReport['status'] = 'running';
+  private incompleteReason: string | undefined;
+  private unknownOrigin = false;
+  constructor(readonly context: InitiationContext) {}
+
+  apply(progress: Exclude<WorkProgress, { kind: 'start' }>): void {
+    if (this.status !== 'running') return;
+    if (progress.kind === 'work') {
+      for (const parent of progress.parents) this.parents.set(parent.id, parent);
+      this.work.push(progress.entry);
+      this.unknownOrigin ||= progress.entry.generating.some(item => item.origin === null);
+    } else if (progress.kind === 'evidence') this.evidence[progress.index] = progress.entry;
+    else { this.status = progress.status; this.incompleteReason = progress.incompleteReason; }
+  }
+
+  snapshot(): WorkReport {
+    const unfinished = this.status !== 'running' && this.evidence.some(item => item.outcome === null);
+    // Entries and context are already deeply owned/frozen. Only these new containers
+    // need freezing; recursively revisiting old entries makes recording quadratic.
+    return Object.freeze({ context: this.context, parents: Object.freeze([...this.parents.values()]), status: this.status,
+      completeness: unfinished || this.incompleteReason ? 'incomplete' : 'complete',
+      work: Object.freeze([...this.work]), evidence: Object.freeze([...this.evidence]), limitations: Object.freeze([
+        ...(unfinished ? ['An evidence query did not return before execution ended; its acquisition outcome is unknown.'] : []),
+        ...(this.incompleteReason ? [this.incompleteReason] : []),
+        ...(this.unknownOrigin ? ['Generating attribution is unknown for untracked support; consumption does not imply new acquisition.'] : []),
+      ]) });
+  }
 }
 
 export interface EvidenceWork {
@@ -92,18 +137,27 @@ export interface EvidenceWorkHandle {
 
 // Attribution has the same lifetime as the supported Session store. It is neither
 // record payload nor an input to reusable-work/answer identity.
-const origins = new WeakMap<ProgramRecordStore, Map<RecordId, WorkOrigin>>();
+const origins = new WeakMap<ProgramRecordStore, Map<RecordId, { origin: WorkOrigin; parent: InitiationContext }>>();
 
 export class RequestWork {
-  private readonly work: AttributedWork[] = [];
+  private readonly report: WorkReportState;
+  private readonly reportedParents = new Set<string>();
   private readonly evidenceWork: EvidenceWork[] = [];
   private status: WorkReport['status'] = 'running';
-  private incompleteReason: string | undefined;
   constructor(readonly context: InitiationContext, private readonly store: ProgramRecordStore,
-    private readonly progress?: (report: WorkReport) => void, private readonly signal?: AbortSignal) {}
+    private readonly progress?: (progress: WorkProgress) => void, private readonly signal?: AbortSignal) {
+    this.report = new WorkReportState(context);
+    this.reportedParents.add(context.id);
+    progress?.({ kind: 'start', context });
+  }
+
+  private emit(progress: Exclude<WorkProgress, { kind: 'start' }>): void {
+    this.report.apply(progress);
+    this.progress?.(progress);
+  }
 
   scope(purpose: string, attempt: RecordId | null = null, role: WorkOrigin['role'] = 'requested-answer', trigger: EvidenceWork['query'] | null = null, sequence: number | null = null): WorkScope {
-    const current: WorkOrigin = freezeOwned(structuredClone({ parent: this.context, initiator: role === 'requested-answer' ? 'caller' as const : 'PostCode' as const, role, purpose, attempt, trigger, sequence }));
+    const current: WorkOrigin = freezeOwned(structuredClone({ parent: this.context.id, initiator: role === 'requested-answer' ? 'caller' as const : 'PostCode' as const, role, purpose, attempt, trigger, sequence }));
     return { check: () => {
       this.signal?.throwIfAborted();
       if (this.status !== 'running') throw new Error('Request work has ended');
@@ -111,10 +165,23 @@ export class RequestWork {
       if (this.status !== 'running') return; // Late completions cannot rewrite a sealed request.
       let retained = origins.get(this.store);
       if (!retained) { retained = new Map(); origins.set(this.store, retained); }
-      if (disposition === 'established') for (const id of firstRetained) if (!retained.has(id)) retained.set(id, current);
-      this.work.push(freezeOwned(structuredClone({ boundary, disposition, current, outcome,
-        generating: outcome.records.map(record => ({ record, origin: retained.get(record) ?? null })) })));
-      this.progress?.(this.snapshot());
+      if (disposition === 'established') for (const id of firstRetained) if (!retained.has(id)) retained.set(id, { origin: current, parent: this.context });
+      const parents: InitiationContext[] = [];
+      const generations = new Map<WorkOrigin | null, RecordId[]>();
+      for (const record of outcome.records) {
+        const original = retained.get(record);
+        if (original && !this.reportedParents.has(original.parent.id)) {
+          this.reportedParents.add(original.parent.id); parents.push(original.parent);
+        }
+        const origin = original?.origin ?? null;
+        let records = generations.get(origin);
+        if (!records) { records = []; generations.set(origin, records); }
+        records.push(record);
+      }
+      const generating = [...generations].map(([origin, records]) => Object.freeze({ origin, records: Object.freeze(records) }));
+      const entry = Object.freeze({ boundary, disposition, current, outcome: freezeOwned(structuredClone(outcome)),
+        generating: Object.freeze(generating) });
+      this.emit({ kind: 'work', entry, parents: Object.freeze(parents) });
     } };
   }
 
@@ -122,11 +189,11 @@ export class RequestWork {
     const purpose = query.kind === 'initial-context' ? 'Supply the selected prior interpretation as initial context.'
       : `Satisfy the investigator's ${query.kind} evidence query.`;
     const index = this.evidenceWork.length;
-    const current: WorkOrigin = { parent: this.context, initiator: 'PostCode', role: 'interpretation-evidence', purpose, attempt, trigger: query, sequence: index };
+    const current: WorkOrigin = { parent: this.context.id, initiator: 'PostCode', role: 'interpretation-evidence', purpose, attempt, trigger: query, sequence: index };
     const update = (fields: Partial<EvidenceWork>) => {
       if (this.status !== 'running') return;
       this.evidenceWork[index] = freezeOwned(structuredClone({ ...this.evidenceWork[index]!, ...fields }));
-      this.progress?.(this.snapshot());
+      this.emit({ kind: 'evidence', index, entry: this.evidenceWork[index]! });
     };
     update({ current, query, outcome: null, delivery: 'not-delivered', reason: null });
     const scope = this.scope(purpose, attempt, 'interpretation-evidence', query, index);
@@ -157,21 +224,11 @@ export class RequestWork {
     } };
   }
 
-  snapshot(): WorkReport {
-    const unfinished = this.status !== 'running' && this.evidenceWork.some(item => item.outcome === null);
-    return freezeOwned({ context: this.context, status: this.status, completeness: unfinished || this.incompleteReason ? 'incomplete' : 'complete',
-      work: [...this.work], evidence: [...this.evidenceWork], limitations: [
-        ...(unfinished ? ['An evidence query did not return before execution ended; its acquisition outcome is unknown.'] : []),
-        ...(this.incompleteReason ? [this.incompleteReason] : []),
-        ...(this.work.some(item => item.generating.some(generation => generation.origin === null))
-          ? ['Generating attribution is unknown for untracked support; consumption does not imply new acquisition.'] : []),
-      ] });
-  }
+  snapshot(): WorkReport { return this.report.snapshot(); }
   finish(status: Exclude<WorkReport['status'], 'running'>, incompleteReason?: string): WorkReport {
-    this.status = status; this.incompleteReason = incompleteReason;
-    const report = this.snapshot();
-    this.progress?.(report);
-    return report;
+    this.status = status;
+    this.emit({ kind: 'finish', status, ...(incompleteReason ? { incompleteReason } : {}) });
+    return this.snapshot();
   }
 }
 
@@ -190,4 +247,29 @@ export function workState(value: WorkState): WorkState {
 export function incompleteWork(report: WorkReport, status: 'interrupted' | 'invalidated' | 'failed' | 'defect'): WorkReport {
   return freezeOwned({ ...report, status, completeness: 'incomplete', limitations: [...report.limitations,
     'Execution ended before a final work report was received. Only received facts are recorded; unfinished work is unknown.'] });
+}
+
+/** Aggregate only equal per-expansion states within one provider/evaluator call. */
+export function recordExpansionWork(work: WorkScope, boundary: 'provider-expansion' | 'module-expansion-evaluation',
+  expansions: Iterable<{ requirement: string; disposition: 'established' | 'reused'; state: WorkState;
+    records: readonly RecordId[]; firstRetained?: readonly RecordId[] }>): void {
+  const groups = new Map<string, { requirement: string; disposition: 'established' | 'reused'; state: WorkState;
+    count: number; records: Set<RecordId>; firstRetained: Set<RecordId> }>();
+  for (const expansion of expansions) {
+    const state = workState(expansion.state);
+    const key = JSON.stringify([expansion.requirement, expansion.disposition, state]);
+    let group = groups.get(key);
+    if (!group) {
+      group = { requirement: expansion.requirement, disposition: expansion.disposition, state,
+        count: 0, records: new Set(), firstRetained: new Set() };
+      groups.set(key, group);
+    }
+    group.count++;
+    for (const id of expansion.records) group.records.add(id);
+    for (const id of expansion.firstRetained ?? expansion.records) group.firstRetained.add(id);
+  }
+  for (const group of groups.values()) work.record(boundary, group.disposition, {
+    records: [...group.records], state: group.state, expansion: { requirement: group.requirement, count: group.count },
+    limitations: [`Requested expansion: ${group.requirement}. Qualification and cost apply to each of ${group.count} expansion outcomes.`],
+  }, [...group.firstRetained]);
 }

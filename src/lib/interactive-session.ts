@@ -1,4 +1,4 @@
-import { initiation, incompleteWork } from './work-attribution.js';
+import { initiation, incompleteWork, WorkReportState } from './work-attribution.js';
 import type { WorkReport } from './work-attribution.js';
 import { captureRequest } from './requests.js';
 import { finalizeRequestReport, renderRequestReport, rejectedRequestResult } from './request-reporting.js';
@@ -32,7 +32,13 @@ export function interactiveSession(options: ProjectOptions, dependencies: {
   } });
   const usage = new InvestigationUsage();
   const reports = new Map<RecordId, AttemptReport>();
-  let latestWork: WorkReport | undefined;
+  let workState: WorkReportState | undefined;
+  let sealedWork: WorkReport | undefined;
+  const latestWork = () => sealedWork ?? workState?.snapshot();
+  const sealWork = (status: 'interrupted' | 'invalidated' | 'failed' | 'defect') => {
+    const report = latestWork();
+    if (report?.status === 'running') sealedWork = incompleteWork(report, status);
+  };
   const started = new Map<RecordId, number>();
   const closedDialogues = new Map<RecordId, readonly CallUsage[]>();
   const selectedAgents = new Map<number, { agent: InvestigatorAgent; identity: AgentIdentity }>();
@@ -54,7 +60,7 @@ export function interactiveSession(options: ProjectOptions, dependencies: {
   const receive = (id: number) => new Promise<Reply>((resolve, reject) => { pending = { id, resolve, reject }; });
   const settleError = (error: Error) => { const current = pending; pending = undefined; current?.reject(error); };
   const dispose = (reason: Error) => {
-    if (latestWork?.status === 'running') latestWork = incompleteWork(latestWork, reason instanceof CommandInterrupted ? 'interrupted' : 'defect');
+    sealWork(reason instanceof CommandInterrupted ? 'interrupted' : 'defect');
     ended = true; settleError(reason); selectedAgents.clear();
     for (const [attempt, report] of reports) if (report.termination === 'running') reports.set(attempt, { ...report, termination: reason instanceof CommandInterrupted ? 'interrupted' : 'defect', elapsedMilliseconds: performance.now() - (started.get(attempt) ?? performance.now()) });
     const agentErrors = [...dialogues.keys()].map(closeDialogue).filter((error): error is Error => error !== undefined);
@@ -82,7 +88,12 @@ export function interactiveSession(options: ProjectOptions, dependencies: {
   };
   worker.on('message', (message: WorkerReply) => {
     if (ended || !pending || pending.id !== message.operation) return;
-    if (message.type === 'work-report') { latestWork = freezeOwned(message.report); return; }
+    if (message.type === 'work-progress') {
+      const progress = freezeOwned(message.progress);
+      if (progress.kind === 'start') workState = new WorkReportState(progress.context);
+      else workState?.apply(progress);
+      return;
+    }
     if (message.type === 'attempt-report') {
       if (!started.has(message.report.attempt)) started.set(message.report.attempt, performance.now() - message.report.elapsedMilliseconds);
       reports.set(message.report.attempt, message.report); return;
@@ -145,14 +156,14 @@ export function interactiveSession(options: ProjectOptions, dependencies: {
     return response;
   };
   return {
-    opening, usage: usageReport, work: () => latestWork,
+    opening, usage: usageReport, work: latestWork,
     async execute(request: ViewRequest, execution: ExecutionOptions = {}): Promise<ExecutedRequest> {
       const captured = captureRequest(request);
       execution = { ...execution };
       if (pending && pending.id !== 0) throw new Error('Concurrent session command');
       const context = initiation(captured.normalized, execution.requestId, bounds);
       execution = { ...execution, requestId: context.id };
-      latestWork = freezeOwned({ context, status: 'running', completeness: 'complete', work: [], evidence: [], limitations: [] });
+      workState = new WorkReportState(context); sealedWork = undefined;
       try {
         if (captured.input === null) {
           const opened = await opening;
@@ -160,8 +171,8 @@ export function interactiveSession(options: ProjectOptions, dependencies: {
           await send({ type: 'check' });
           const result = rejectedRequestResult(opened.id, context, usageReport());
           if (!execution.deferPublicationCheck) await send({ type: 'check' });
-          const attribution: WorkReport = freezeOwned({ ...latestWork!, status: 'refused' });
-          latestWork = attribution;
+          const attribution: WorkReport = freezeOwned({ ...latestWork()!, status: 'refused' });
+          sealedWork = attribution;
           const report = freezeOwned({ ...result.report, attribution });
           return { ...result, report, attribution, rendered: renderRequestReport(report) };
         }
@@ -184,7 +195,7 @@ export function interactiveSession(options: ProjectOptions, dependencies: {
         }
         return reply.result;
       } catch (error) {
-        if (latestWork?.status === 'running') latestWork = incompleteWork(latestWork, error instanceof CommandInterrupted ? 'interrupted'
+        sealWork(error instanceof CommandInterrupted ? 'interrupted'
           : error instanceof SessionInvalidated ? 'invalidated' : error instanceof AnalysisFailure ? 'failed' : 'defect');
         throw error;
       }
