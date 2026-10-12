@@ -582,6 +582,9 @@ test('basename mnemonic evidence stays distinct from names and precise scoped En
     assert.match(zero.stdout, /Subject: absent/);
     assert.match(zero.stdout, /Reason: lookup-unavailable/);
     assert.match(zero.stdout, /lookup information.*unavailable/);
+    assert.match(zero.stdout, /Modules: fully established; no match/);
+    assert.match(zero.stdout, /Groups: applicable, unavailable, deferred, none; no match established; not-in-worktree: repository discovery/);
+    assert.match(zero.stdout, /Repository layout is unavailable/);
     assert.equal(zero.stdout.includes('export information is qualified'), false);
     const unicode = (await invoke(['--project', config])).stdout;
     assert.ok(unicode.includes(long));

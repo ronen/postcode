@@ -344,7 +344,9 @@ It is independent of the produced View's descriptor. Current public Lenses decla
 no semantic parameters; direct Session calls supplying undeclared parameters return
 an `invalid-parameters` resolution report before Evaluation. Missing required subject
 designations, incompatible project/repository subjects, and selectors for population
-Lenses return `invalid-designation` before Evaluation. Dependency requests normalize
+Lenses return `invalid-designation` before Evaluation. Direct name designations for
+`explain`, `decompose`, and `examine` also return `invalid-designation`: investigrams
+require precise references and have no lookup names. Dependency requests normalize
 the CLI spellings `dependencies`, `children`, and `parents` to `dependency-structure`,
 `dependency-children`, and `dependency-parents`; direct callers can use either spelling.
 Usage calls with a selector, subject, reference designation, or nonempty parameters
@@ -362,6 +364,8 @@ event. Their JSON families are `postcode-investigation-usage/1-experimental` and
 ambiguous single-subject requests and known incompatible targets also return resolution
 reports (exit status 3), with no requested-application Projection. Incomplete or
 unavailable lookup populations are distinguished from an established no-match result.
+Text reports describe each supporting population separately, preserving an established
+module no-match even when group lookup is unavailable.
 Reports retain candidates and usable Session references, selection criteria,
 prerequisite outcome summaries and qualification. One-shot references still expire
 at command completion. A known group passed to `children` or `parents` is unsupported;

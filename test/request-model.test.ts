@@ -179,11 +179,17 @@ test('missing and inapplicable designation modes are refused before Evaluation',
     for (const reference of [true, false]) requests.push({ lens, selector: 'entry', reference, presentation });
   }
   requests.push({ lens: 'inspect', selector: 'entry', subject: 'project', presentation });
+  for (const lens of ['explain', 'decompose', 'examine'] as const) requests.push({ lens, selector: 'foo', presentation });
   for (const request of requests) {
     const result = await opened.session.execute(request);
     assert.equal(result.kind, 'resolution', JSON.stringify(request));
     if (result.kind !== 'resolution') throw new Error('Expected resolution');
     assert.equal(result.report.resolution.reason, 'invalid-designation');
+    if (request.selector === 'foo') {
+      assert.match(result.report.resolution.explanation, /requires a precise investigram reference/);
+      assert.doesNotMatch(result.report.resolution.explanation, /population|matches/);
+      assert.deepEqual(result.report.context.request.kind === 'lens' && result.report.context.request.designation, { kind: 'name', value: 'foo' });
+    }
     assert.deepEqual(result.report.resolution.prerequisites, []);
     assert.deepEqual(result.report.resolution.retainedAnswers, []);
     assert.equal('view' in result, false);

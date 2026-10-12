@@ -197,6 +197,9 @@ export function invalidDesignation(request: NormalizedRequest, supplied: ViewReq
   if ((request.designation.kind === 'name' || request.designation.kind === 'reference') && definition.cardinality === 'population') {
     return `Lens ${definition.id} requires a project or repository subject, not a selector.`;
   }
+  if (request.designation.kind === 'name' && !definition.subjects.some(kind => kind === 'module' || kind === 'group')) {
+    return `Lens ${definition.id} requires a precise investigram reference; investigrams cannot be designated by name.`;
+  }
   return null;
 }
 

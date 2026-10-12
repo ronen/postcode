@@ -1,5 +1,6 @@
 import { usageSummary } from './investigation/reporting.js';
 import { freezeOwned } from './immutable.js';
+import { completedMaterialization } from './evaluation-state.js';
 import { inlineText } from './terminal-text.js';
 import { usageLines } from './investigation/presentation.js';
 import type { InvestigationUsageReport } from './investigation/reporting.js';
@@ -48,6 +49,13 @@ export function renderRequestReport(report: ResolutionReport | UsageReport): str
     `Reason: ${report.resolution.reason}`, inlineText(report.resolution.explanation),
     ...report.resolution.candidates.map(candidate => `  ${candidate.kind}: ${inlineText(candidate.reference)}`),
     ...report.resolution.criteria.map(inlineText),
+    ...(report.resolution.support ?? []).map(support => {
+      const kind = support.kind === 'evaluation' ? 'module' : 'group';
+      const established = support.applicability === 'applicable' && support.availability === 'available' && completedMaterialization(support);
+      const matches = report.resolution.candidates.filter(candidate => candidate.kind === kind && support.population.includes(candidate.id)).length;
+      const state = established ? 'fully established' : `${support.applicability}, ${support.availability}, ${support.execution}, ${support.materialization}`;
+      return `${kind === 'module' ? 'Modules' : 'Groups'}: ${state}; ${matches ? `${matches} ${matches === 1 ? 'match' : 'matches'}` : established ? 'no match' : 'no match established'}${support.reason ? `; ${inlineText(support.reason)}` : ''}`;
+    }),
     ...report.resolution.qualifications.map(inlineText),
     ...(report.resolution.candidates.length ? [report.context.request.referenceLifetime === 'command'
       ? 'References expire when this command completes.' : 'References remain usable while this Session is valid.'] : []),
