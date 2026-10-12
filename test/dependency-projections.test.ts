@@ -86,8 +86,8 @@ test('focused lenses retain only direct edges, nonedges stay with their owner an
     assert.equal(external.relationships.length, 0);
     assert.equal(dependencyParents(store, evaluation, module('t')).relationships.length, 1);
     const compact = store.entityIds(basis.modules, 'module').get(module('a'))!;
-    assert.throws(() => dependencyChildren(store, evaluation, compact), /request coordination/);
-    assert.throws(() => dependencyChildren(store, evaluation, 'module-00000000', true), /request coordination/);
+    assert.throws(() => dependencyChildren(store, evaluation, compact), /\(missing\)/);
+    assert.throws(() => dependencyChildren(store, evaluation, 'module-00000000', true), /\(unknown-reference\)/);
     assert.deepEqual(dependencyChildren(store, evaluation, compact, true).subjects, [module('a')]);
     const partial = { ...evaluation, id: recordId(evaluation.session, 'partial', 1), execution: 'stopped' as const, materialization: 'partial' as const };
     store.put([partial]);

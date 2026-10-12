@@ -9,7 +9,7 @@ export const methods = {
   investigation: 'postcode/investigation@12',
   investigationEvaluation: 'postcode/investigation-evaluation@2',
   investigationProjection: 'postcode/investigation-projection@3',
-  investigationPresentation: 'postcode/investigation-presentation@14',
+  investigationPresentation: 'postcode/investigation-presentation@15',
   discovery: 'postcode/typescript-modules@12',
   evaluation: 'postcode/evaluate-modules@5',
   dependencies: 'postcode/typescript-dependencies@2',
@@ -19,7 +19,7 @@ export const methods = {
   dependencyOrganization: 'postcode/dependency-organization@1',
   projection: 'postcode/projection@12',
   expansions: 'postcode/typescript-expansions@2',
-  presentation: 'postcode/presentation@29',
+  presentation: 'postcode/presentation@30',
   handles: 'postcode/module-handles@5',
   organization: 'postcode/organization@3',
 } as const;

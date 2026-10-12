@@ -11,7 +11,7 @@ import { createView } from '../src/lib/presentation.js';
 import { resolveSubjects } from '../src/lib/subject-resolution.js';
 import { resolutionContext, resolutionContextIdentity } from '../src/lib/resolution-context.js';
 import { lenses } from '../src/lib/requests.js';
-import { recordId } from '../src/lib/identity.js';
+import { identityReference, recordId } from '../src/lib/identity.js';
 import type { EvaluationRecord, ProjectionRecord } from '../src/lib/records.js';
 
 const configPath = path.resolve('fixtures/dependency-journey/tsconfig.json');
@@ -88,4 +88,7 @@ test('partial lookup context stays separate from selected answer support and rem
   assert.deepEqual(shown, before);
   assert.notDeepEqual(resolutionContextIdentity(basis.session, { ...context, designation: { kind: 'name', value: basis.session } }),
     resolutionContextIdentity(basis.session, { ...context, designation: { kind: 'name', value: 'session' } }), 'literal Session-shaped names remain literal');
+  assert.notDeepEqual(resolutionContextIdentity(basis.session, { ...context, designation: { kind: 'reference', value: entity.id } }),
+    resolutionContextIdentity(basis.session, { ...context, designation: { kind: 'name', value: identityReference(basis.session, entity.id)! } }),
+    'a literal name and a raw reference with the same normalized spelling have distinct context identity');
 });

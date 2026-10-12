@@ -83,7 +83,7 @@ test('organization artifact qualification uses supplied completeness with some m
   const completeView = createOrganizationView(store, completeProjection, { format: 'unicode', sourceDetail: false });
   assert.match(renderOrganizationView(completeView), /Other artifacts: 1 unanalyzed/);
   assert.match(renderOrganizationView(completeView), /other artifacts remain unanalyzed/);
-  assert.throws(() => inspectOrganization(store, complete, 'missing'), /request coordination/);
+  assert.throws(() => inspectOrganization(store, complete, 'missing'), /\(missing\)/);
   const partial: EvaluationRecord = { ...evaluation, id: recordId(evaluation.session, 'evaluation', 'partial-population'),
     modules: evaluation.modules.slice(0, 1), execution: 'stopped', materialization: 'partial', reason: 'Synthetic incomplete population.' };
   store.put([partial]);
@@ -129,7 +129,7 @@ test('organization artifact qualification uses supplied completeness with some m
     assert.deepEqual(JSON.parse(renderOrganizationView(json)).groups, view.groups);
     const tree = createOrganizationView(store, organization(store, outcome, 'repository'), { format: 'unicode', sourceDetail: false });
     assert.match(renderOrganizationView(tree), /\d other captured artifacts \(classification incomplete\)/);
-    assert.throws(() => inspectOrganization(store, outcome, 'missing'), /request coordination/);
+    assert.throws(() => inspectOrganization(store, outcome, 'missing'), /\(lookup-incomplete\)/);
     assert.match(renderOrganizationView(JSON.parse(JSON.stringify(tree))), /classification is incomplete\./);
     assert.equal(sourceDisclosure(view), null);
     for (const context of content.groups.filter(group => !group.selected)) {
@@ -198,12 +198,12 @@ test('mechanical View identities include resolution context and use the shared p
   const presentation = { format: 'json' as const, sourceDetail: false };
   const views = [createView(store, modules(store, evaluation), presentation), createOrganizationView(store, organizationProjection, presentation),
     createDependencyView(store, dependencyProjection, presentation)];
-  assert.equal(methods.presentation, 'postcode/presentation@29');
+  assert.equal(methods.presentation, 'postcode/presentation@30');
   for (const [index, view] of views.entries()) {
     const kind = ['view', 'organization-view', 'dependency-view'][index]!;
     const key: { projection: string | null; presentation: typeof presentation; resolution: null; method: string } = { projection: identityReference(view.projection.session, view.projection.id), presentation, resolution: null, method: methods.presentation };
     assert.equal(view.id, recordId(view.projection.session, kind, key));
-    assert.notEqual(view.id, recordId(view.projection.session, kind, { ...key, method: 'postcode/presentation@28' }));
+    assert.notEqual(view.id, recordId(view.projection.session, kind, { ...key, method: 'postcode/presentation@29' }));
   }
 });
 
@@ -228,7 +228,7 @@ test('unavailable repository content preserves qualification and a self-containe
   const { store, evaluation } = await discover(path.join(root, 'tsconfig.json'));
   const outcome = evaluateOrganization(store, evaluation);
   assert.equal(outcome.availability, 'unavailable');
-  assert.throws(() => inspectOrganization(store, outcome, 'missing'), /request coordination/);
+  assert.throws(() => inspectOrganization(store, outcome, 'missing'), /\(lookup-unavailable\)/);
   for (const projection of [organization(store, outcome, 'repository'), organization(store, outcome, 'configured-project')]) {
     const content = resolveOrganizationProjection(store, projection);
     frozen(content);

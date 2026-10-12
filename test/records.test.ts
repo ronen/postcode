@@ -227,5 +227,5 @@ test('multiple sessions coexist; old record IDs do not bind in another session',
   assert.equal(initial.store.evaluations(initial.evaluation.session).length, 1);
   assert.equal(initial.store.evaluations(next.evaluation.session).length, 1);
   assert.throws(() => inspect(initial.store, next.evaluation, initial.claims[0]!.subject), /Invalid resolved module subject/);
-  assert.throws(() => inspect(initial.store, next.evaluation, initial.claims[0]!.information.handle), /request coordination/);
+  assert.throws(() => inspect(initial.store, next.evaluation, initial.claims[0]!.information.handle), /\(missing\)/);
 });

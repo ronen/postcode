@@ -1,4 +1,4 @@
-import { lookupDescription, resolutionContextIdentity } from '../resolution-context.js';
+import { lookupDescription, lookupQualifications, resolutionContextIdentity } from '../resolution-context.js';
 import type { ResolutionContext } from '../resolution-context.js';
 import { renderAssociatedInvestigations } from '../investigation/associations.js';
 import type { AssociatedInvestigations } from '../investigation/associations.js';
@@ -224,7 +224,7 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
     `Session ${view.projection.session.replace(/^session:/, '')}`,
     inspection ? `${view.projection.selection.matches} ${lookupDescription(view.resolution, view.projection.selection.matches) ?? 'selected subjects'}`
       : `${view.display.selectedGroups} selected groups · ${view.repository.groups} repository groups`];
-  lines.push(...(view.resolution?.qualifications ?? []).map(inlineText));
+  lines.push(...lookupQualifications(view.resolution));
   if (view.projection.selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; their detail is unavailable in this answer.');
   if (!view.projection.selection.populationEstablished) lines.push('Selection population is not fully established.');
   for (const [name, state] of Object.entries(view.evaluations)) {

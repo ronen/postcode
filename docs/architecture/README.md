@@ -89,8 +89,9 @@ remain supported. Investigation selections retain frozen revision and associatio
 snapshots, including valid failed and unavailable outcomes.
 
 Arrangement receives a frozen lookup context separately. Its designation, criteria,
-subjects and population qualifications appear in View JSON; Unicode retains relevant
-lookup wording and qualifications. This context participates in View identity without
+subjects and population qualifications appear in View JSON; Unicode labels only
+incomplete or unavailable lookup coverage separately from answer qualification.
+This context participates in View identity without
 altering answer identity. Arrangement still has no lookup or Evaluation access.
 Prerequisite/evidence attribution, runtime Presentation compatibility and extension
 demonstrations remain to be integrated. Declaration of prospective result contracts

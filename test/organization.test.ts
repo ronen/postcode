@@ -87,13 +87,13 @@ test('explicit references select group IDs and inspect artifact-only groups outs
     const manual = groups(store, outcome).get('manual')!;
     const compact = store.entityIds(outcome.groups, 'group').get(manual)!;
     assert.match(compact, /^group-[a-f0-9]{8,64}$/);
-    assert.throws(() => inspectOrganization(store, outcome, compact), /request coordination/);
+    assert.throws(() => inspectOrganization(store, outcome, compact), /\(missing\)/);
     assert.deepEqual(inspectOrganization(store, outcome, compact, true).groups, [manual]);
-    assert.throws(() => inspectOrganization(store, outcome, 'group-00000000', true), /request coordination/);
+    assert.throws(() => inspectOrganization(store, outcome, 'group-00000000', true), /\(unknown-reference\)/);
     assert.deepEqual(inspectOrganization(store, outcome, manual).groups, [manual]);
     assert.deepEqual(inspectOrganization(store, outcome, 'manual').groups, [manual]);
-    assert.throws(() => inspectOrganization(store, outcome, 'data/value.json'), /request coordination/);
-    assert.throws(() => inspectOrganization(store, outcome, 'repository'), /request coordination/);
+    assert.throws(() => inspectOrganization(store, outcome, 'data/value.json'), /\(missing\)/);
+    assert.throws(() => inspectOrganization(store, outcome, 'repository'), /\(missing\)/);
   });
 });
 

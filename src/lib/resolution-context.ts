@@ -1,7 +1,8 @@
 import { identityReference } from './identity.js';
 import { freezeOwned } from './immutable.js';
+import { completedMaterialization } from './evaluation-state.js';
 import { inlineText } from './terminal-text.js';
-import type { RecordId, SessionId } from './records.js';
+import type { EvaluationState, RecordId, SessionId } from './records.js';
 import type { SubjectDesignation } from './requests.js';
 import type { SubjectResolution } from './subject-resolution.js';
 
@@ -14,10 +15,10 @@ export interface ResolutionContext {
   readonly populations: readonly {
     readonly kind: 'evaluation' | 'organization-evaluation';
     readonly size: number;
-    readonly applicability: string;
-    readonly availability: string;
-    readonly execution: string;
-    readonly materialization: string;
+    readonly applicability: EvaluationState['applicability'];
+    readonly availability: EvaluationState['availability'];
+    readonly execution: EvaluationState['execution'];
+    readonly materialization: EvaluationState['materialization'];
     readonly reason: string | null;
   }[];
 }
@@ -37,5 +38,15 @@ export function resolutionContextIdentity(session: SessionId, context?: Resoluti
 export function lookupDescription(context: ResolutionContext | undefined, matches: number): string | null {
   const designation = context?.designation;
   if (!designation || !('value' in designation)) return null;
-  return `${matches === 0 ? 'no exact match' : matches === 1 ? 'exact match' : 'exact matches'} for ${designation.kind === 'reference' ? '@' : ''}${inlineText(designation.value)}${designation.kind === 'reference' ? ' · current' : ''}`;
+  return `${matches === 0 ? 'no exact match' : matches === 1 ? 'exact match' : 'exact matches'} for ${designation.kind === 'reference' ? '@' : ''}${inlineText(designation.value)}`;
+}
+
+/** Text highlights limits on finding other matches; JSON retains all supplied qualifications. */
+export function lookupQualifications(context?: ResolutionContext): readonly string[] {
+  return (context?.populations ?? []).flatMap(population => {
+    if (population.applicability === 'applicable' && population.availability === 'available' && completedMaterialization(population)) return [];
+    const status = population.applicability !== 'applicable' ? 'not applicable'
+      : population.availability === 'unavailable' ? 'unavailable' : 'incomplete';
+    return [`Lookup (${population.kind === 'evaluation' ? 'modules' : 'groups'}): ${status} · ${inlineText(population.reason ?? 'Other matches may be unknown.')}`];
+  });
 }

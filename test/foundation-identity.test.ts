@@ -40,10 +40,10 @@ test('identity normalizes only explicitly identified local references and retain
 
 test('unresolved literal selectors cannot manufacture retained answers', async () => {
   const { store, evaluation } = await discover('fixtures/empty/tsconfig.json');
-  for (const literal of [evaluation.session, 'session']) assert.throws(() => inspect(store, evaluation, literal), /request coordination/);
+  for (const literal of [evaluation.session, 'session']) assert.throws(() => inspect(store, evaluation, literal), /\(missing\)/);
 });
 
-test('resolved internal selectors cannot collide with literal normalized spellings in any projection family', async t => {
+test('distinct subjects selected by resolved ID and literal name retain different answers in every mechanical family', async t => {
   const directory = temporaryDirectory(t, 'postcode-selector-collision-');
   execFileSync('git', ['init', '--quiet', directory]);
   const configPath = path.join(directory, 'tsconfig.json');

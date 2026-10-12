@@ -1,4 +1,4 @@
-import { resolutionContextIdentity } from '../resolution-context.js';
+import { lookupQualifications, resolutionContextIdentity } from '../resolution-context.js';
 import type { ResolutionContext } from '../resolution-context.js';
 import { operationForLens } from '../requests.js';
 import { revisionPage } from './revision-page.js';
@@ -46,24 +46,24 @@ export function arrangeInvestigationView(content: InvestigationProjectionContent
   const session = content.projection.session;
   const selection = content.projection;
   const request = { ...options, lens: content.projection.lens };
-  const selected = selection?.subjects ?? [];
+  const selected = selection.subjects;
   const coreAccounts = new Map(content.accounts.map(item => [item.id, item]));
   const coreCorrections = new Map(content.corrections.map(item => [item.id, item]));
   const coreOrigins = new Map(content.provenance.map(item => [item.id, item]));
   const coreSupport = new Map(content.support.map(item => [item.record.id, item]));
-  const coreRevisions = new Map((selection?.revisions ?? []).map(item => [item.original, item]));
-  const coreRelations = new Map((selection?.relations ?? []).map(item => [item.original, item.account]));
-  const coreNavigation = new Map((selection?.navigation ?? []).map(item => [item.account, item]));
+  const coreRevisions = new Map(selection.revisions.map(item => [item.original, item]));
+  const coreRelations = new Map(selection.relations.map(item => [item.original, item.account]));
+  const coreNavigation = new Map(selection.navigation.map(item => [item.account, item]));
   const referenceKinds = new Map(content.references.map(item => [item.id, item.kind]));
   const result: InvestigationSelection | null = reporting ? {
     request: content.evaluation?.request ?? { operation: operationForLens(request.lens)!, subject: selected[0]!, parameters: {} },
     reused: reporting.reused, attempt: reporting.attempt, evaluation: content.evaluation,
-    unavailable: selection?.variant === 'request' && selection.outcome.kind === 'unavailable'
+    unavailable: selection.variant === 'request' && selection.outcome.kind === 'unavailable'
       ? { ...(reporting.provider ? { provider: reporting.provider } : {}), ...selection.outcome.value } : null,
   } : null;
   const accounts = new Map<RecordId, Investigram>(), corrections = new Map<RecordId, Correction>();
   const provenances = new Map<RecordId, InvestigationProvenance>();
-  const roots = selection?.roots ?? [];
+  const roots = selection.roots;
   const display: { original: RecordId; account: RecordId; parent: RecordId | null; role: 'result' | 'accompanying' }[] = [];
   const pending = roots.map(original => ({ original, parent: null as RecordId | null, role: 'result' as 'result' | 'accompanying' }));
   const displaced = new Set<RecordId>(), omittedAccounts = new Set<RecordId>();
@@ -166,14 +166,14 @@ export function arrangeInvestigationView(content: InvestigationProjectionContent
     for (const source of coreSupport.get(id)!.sources) sources.set(source.id, source);
   }
   // Association allocation stays after the displayed references, module navigation and candidates.
-  const associatedReferences = request.lens === 'inspect' ? bindings.bind(selection!.associated, 'investigram') : new Map<RecordId, string>();
+  const associatedReferences = request.lens === 'inspect' ? bindings.bind(selection.associated, 'investigram') : new Map<RecordId, string>();
   const investigations = request.lens === 'inspect'
     ? arrangeAssociatedInvestigations(content as InvestigationProjectionContent, associatedReferences, request.after, request.referenceLifetime) : undefined;
   const projection = { id: content.projection.id,
     session, lens: request.lens, subject: 'selected-subjects', parameters: {},
-    selection: { matches: selected.length, status: selection?.status ?? 'missing' } };
+    selection: { matches: selected.length, status: selection.status } };
   const arrangementKey = recordId(session, 'investigation-arrangement', [methods.investigationPresentation, identityReference(session, projection.id),
-    request.presentation, associationContinuation(session, selection?.associated ?? [], associatedReferences, request.after),
+    request.presentation, associationContinuation(session, selection.associated, associatedReferences, request.after),
     request.revisionPage ?? 1, request.referenceLifetime ?? 'session', resolutionContextIdentity(session, request.resolution),
     reporting ? { ...reporting, attempt: identityReference(session, reporting.attempt) } : null]);
   const view = finalizeInvestigationUsage({ schema: 'postcode-investigation-view/1-experimental' as const, id: projection.id, projection,
@@ -186,8 +186,7 @@ export function arrangeInvestigationView(content: InvestigationProjectionContent
     support: supportDetails, usage,
     limitations: ['Generated accounts remain interpretation. Corrections are retained assertions, not established truth.',
       'Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.',
-      ...(['explain', 'decompose', 'examine'].includes(request.lens) && selected.length !== 1 ? ['Follow-up requires one exact investigram reference from this session.'] : []),
-      ...(request.lens === 'summarize' && selected.length !== 1 ? ['Summary requires one exact module; resolve a missing or ambiguous selection before investigation.'] : [])],
+    ],
     ...(request.presentation.sourceDetail ? { sourceDetail: { level: 'investigation-support' as const, items: [...sources.values()] } } : {}),
   }, usage, arrangementKey);
   return { view, investigationArrangementKey: arrangementKey };
@@ -205,7 +204,7 @@ export function renderInvestigationView(view: InvestigationView): string {
   const reference = (id: RecordId) => view.references.find(item => item.id === id)?.reference ?? id;
   const lines = [view.projection.lens === 'summarize' ? 'Module summary' : requestTitle(view.projection.lens)];
   lines.push(view.referenceLifetime === 'command' ? 'References expire when this command ends. Use the shell for follow-up inspection.' : 'References remain bound for this session.');
-  lines.push(...(view.resolution?.qualifications ?? []).map(inlineText));
+  lines.push(...lookupQualifications(view.resolution));
   if (view.result) {
     lines.push(view.result.reused ? 'Retained outcome; no new investigation.' : 'New investigation request.');
     const outcome = view.result.evaluation?.outcome ?? view.result.unavailable;

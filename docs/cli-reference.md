@@ -392,7 +392,10 @@ answer when the question, parameters and supporting information are otherwise eq
 The Projection descriptor contains semantic parameters only (currently empty);
 lookup spelling and population qualification are exposed separately under the View's
 `resolution` field. That context can give Views different IDs without changing their
-shared answer. Repeated compatible interpretations reuse the original work and usage.
+shared answer. Unicode labels incomplete or unavailable lookup coverage separately
+as `Lookup (modules)` or `Lookup (groups)`; general provider limitations stay in
+JSON resolution context and the answer's own qualification where applicable.
+Repeated compatible interpretations reuse the original work and usage.
 Prerequisite attribution and runtime Presentation compatibility remain part of the
 ongoing [request-model work](plans/lens-request-model.md).
 Expected analysis failures use outcome `failed` and event `command-failed`;

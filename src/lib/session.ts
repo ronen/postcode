@@ -192,7 +192,7 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
       const repository = sessionContext.repository ? store.get(sessionContext.repository) : null;
       return { kind: 'view' as const, context, resolution, view, investigationArrangementKey, rendered: renderInvestigationView(view), repositoryRoot: repository?.kind === 'repository-evidence' && repository.capture.status === 'available' ? repository.capture.evidence.root : null,
         methods: [...sessionContext.methods, methods.investigationEvaluation, methods.investigationPresentation],
-        failed: !!investigationLens && (selected.length !== 1 || !result?.evaluation || result.evaluation.outcome.kind !== 'accepted') || !!interpretationInspection && selected.length !== 1 || view.investigations?.status === 'unknown-continuation' };
+        failed: !!investigationLens && (!result?.evaluation || result.evaluation.outcome.kind !== 'accepted') || view.investigations?.status === 'unknown-continuation' };
     }
     const dependencyLens = definition.requirements.kind === 'dependencies';
     // Provider/evaluation reuse owns input-basis validity; an outer cache could hide new acquisition.

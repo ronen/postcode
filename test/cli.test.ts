@@ -44,6 +44,36 @@ function invoke(args: string[], options: { sink?: ObservationSink; checkout?: st
   return invokeCli(args, options);
 }
 
+test('successful Unicode lookup labels only incomplete coverage while JSON retains all limitations', async t => {
+  const root = temporaryDirectory(t, 'postcode-lookup-context-');
+  const project = path.join(root, 'tsconfig.json');
+  writeFileSync(project, '{"compilerOptions":{"noLib":true,"types":[]},"files":["widget.ts"]}');
+  writeFileSync(path.join(root, 'widget.ts'), 'export const value = 1;');
+  execFileSync('git', ['init', '--quiet', root]);
+  const complete = await invoke(['inspect', 'widget', '--project', project]);
+  assert.equal(complete.exit, 0, complete.stderr + complete.stdout);
+  const view = complete.batches[0]!.records.find(item => item.kind === 'qualified-view')!.value as QualifiedView;
+  assert.ok(view.resolution!.qualifications.length > 0);
+  assert.ok(view.resolution!.populations.every(population => population.availability === 'available' && population.materialization === 'full'));
+  assert.doesNotMatch(complete.stdout, /^Lookup /m);
+  for (const limitation of view.resolution!.qualifications) assert.equal(complete.stdout.split('\n').includes(limitation), false);
+
+  // Exercise the CLI renderer with a supplied partial lookup, independently of answer support.
+  const partial = { ...view, resolution: { ...view.resolution!, populations: view.resolution!.populations.map(population =>
+    population.kind === 'evaluation' ? { ...population, execution: 'stopped' as const, materialization: 'partial' as const,
+      reason: 'Other matches may be unknown.\u001b' } : population) } };
+  const rendered = renderUnicode(partial);
+  assert.deepEqual(rendered.split('\n').filter(line => line.startsWith('Lookup ')),
+    ['Lookup (modules): incomplete · Other matches may be unknown.\\u001b']);
+  assert.deepEqual(JSON.parse(JSON.stringify(partial)).resolution.qualifications, view.resolution!.qualifications);
+
+  rmSync(path.join(root, '.git'), { recursive: true });
+  const unavailable = await invoke(['inspect', 'widget', '--project', project]);
+  assert.equal(unavailable.exit, 0, unavailable.stderr + unavailable.stdout);
+  assert.match(unavailable.stdout, /^Lookup \(groups\): unavailable · /m);
+  assert.doesNotMatch(unavailable.stdout, /^Lookup \(modules\):/m);
+});
+
 function copyTestCheckout(checkout: string) {
   cpSync(new URL('../src', import.meta.url), path.join(checkout, '_build/src'), { recursive: true });
   writeFileSync(path.join(checkout, 'package.json'), '{"type":"module"}');

@@ -112,7 +112,7 @@ test('inspect exact names and handles preserves applicable context and refuses u
     assert.ok(projection.contexts.includes(ambient.context));
   }
   for (const selector of ['ambient', 'ambient-*', 'missing']) {
-    assert.throws(() => inspect(store, evaluation, selector), /request coordination/);
+    assert.throws(() => inspect(store, evaluation, selector), /\(missing\)/);
   }
 });
 
@@ -136,8 +136,8 @@ test('exact names remain usable when they collide with compact IDs; scoped IDs s
     assert.ok(currentName.contexts.includes(named.context));
     assert.deepEqual(inspect(store, evaluation, selector, true).modules, [ordinary.subject]);
     assert.deepEqual(inspect(store, evaluation, ids.get(named.subject)!, true).modules, [named.subject]);
-    assert.throws(() => inspect(store, evaluation, ids.get(named.subject)!), /request coordination/);
-    assert.throws(() => inspect(store, evaluation, 'module-00000000', true), /request coordination/);
+    assert.throws(() => inspect(store, evaluation, ids.get(named.subject)!), /\(missing\)/);
+    assert.throws(() => inspect(store, evaluation, 'module-00000000', true), /\(unknown-reference\)/);
   });
 });
 

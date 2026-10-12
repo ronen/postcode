@@ -55,10 +55,10 @@ test('published navigation observations distinguish session references from exac
         continue;
       }
       const view = observed!.records.find(record => record.kind === 'qualified-view')!.value as {
-        projection: { selection: { matches: number; referenceStatus: string } };
+        projection: { selection: { matches: number } };
       };
       assert.equal(view.projection.selection.matches, item.matches, item.command);
-      if (item.reference && item.matches === 0) assert.equal(view.projection.selection.referenceStatus, 'unknown-reference');
+      if (item.reference) assert.doesNotMatch(observed!.records.find(record => record.kind === 'rendered-output')!.value as string, / · current/);
     }
   } finally { await session.close(); }
 });

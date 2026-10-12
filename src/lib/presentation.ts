@@ -1,4 +1,4 @@
-import { lookupDescription, resolutionContextIdentity } from './resolution-context.js';
+import { lookupDescription, lookupQualifications, resolutionContextIdentity } from './resolution-context.js';
 import type { ResolutionContext } from './resolution-context.js';
 import { resolveModuleProjection } from './module-content.js';
 import type { DocumentationContent, ModuleProjectionContent } from './module-content.js';
@@ -197,7 +197,7 @@ export function renderUnicode(view: QualifiedView): string {
     `Session ${view.projection.session.replace(/^session:/, '')}`,
     inventory ? `${selection.population} module${selection.population === 1 ? '' : 's'} found · ${view.modules.length} listed${view.display.collapsedModules ? ` · ${view.display.collapsedModules} external module${view.display.collapsedModules === 1 ? '' : 's'} collapsed` : ''}`
       : `${selection.matches} module${selection.matches === 1 ? '' : 's'} selected from ${selection.population}${lookupDescription(view.resolution, selection.matches) ? ` · ${lookupDescription(view.resolution, selection.matches)}` : ''}`];
-  lines.push(...(view.resolution?.qualifications ?? []).map(inlineText));
+  lines.push(...lookupQualifications(view.resolution));
   if (selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; their detail is unavailable in this answer.');
   if (!selection.populationEstablished) lines.push('Module population is not established.');
   const outcomeGroups = new Map<string, number>();

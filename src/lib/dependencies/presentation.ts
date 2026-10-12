@@ -1,4 +1,4 @@
-import { lookupDescription, resolutionContextIdentity } from '../resolution-context.js';
+import { lookupDescription, lookupQualifications, resolutionContextIdentity } from '../resolution-context.js';
 import type { ResolutionContext } from '../resolution-context.js';
 import { completedMaterialization } from '../evaluation-state.js';
 import { compositionAnnotation, compositionView } from '../composition-view.js';
@@ -223,7 +223,7 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
     'Analysis outcomes below describe supported source requests, not complete runtime behavior.',
     `Display bounds: ${counted(view.display.omittedModules, 'module')} and ${counted(view.display.omittedRelationships, 'relationship')} omitted; ${counted(view.display.prunedComponents, 'further descent')} pruned.`];
   for (const [name, outcome] of Object.entries(view.evaluations)) if (outcome) lines.push(`${name}: ${outcome.availability}, ${outcome.execution}, materialization ${outcome.materialization}${outcome.reason ? ` · ${inlineText(outcome.reason)}` : ''}`);
-  lines.push(...(view.resolution?.qualifications ?? []).map(inlineText));
+  lines.push(...lookupQualifications(view.resolution));
   if (view.projection.subject === 'selected-modules') {
     if (view.projection.selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; dependency detail is unavailable in this answer.');
     lines.push(`${view.projection.selection.matches} ${lookupDescription(view.resolution, view.projection.selection.matches) ?? 'selected modules'}`);

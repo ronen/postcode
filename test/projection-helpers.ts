@@ -20,7 +20,7 @@ function subjects(store: ProgramRecordStore, modules: EvaluationRecord, selector
   if (record && (record.kind === 'module' || record.kind === 'group')) return [record.id];
   const result = resolveSubjects(store, modules.session, lenses.inspect, { kind: reference ? 'reference' : 'name', value: selector },
     { modules, ...(organization ? { organization } : {}) });
-  if (result.status !== 'resolved') throw new Error('Unresolved designation must be handled by request coordination');
+  if (result.status !== 'resolved') throw new Error(`Unresolved designation (${result.status}) must be handled by request coordination`);
   return result.candidates.map(item => item.id);
 }
 
