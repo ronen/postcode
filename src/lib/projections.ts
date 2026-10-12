@@ -56,5 +56,11 @@ export function modules(store: ProgramRecordStore, evaluation: EvaluationRecord)
 }
 
 export function inspect(store: ProgramRecordStore, evaluation: EvaluationRecord, subjects: readonly RecordId[]): ProjectionRecord {
+  if (subjects.length === 0) throw new Error('Module inspection requires at least one resolved subject');
   return project(store, evaluation, subjects);
+}
+
+/** Legitimate empty module detail embedded in a resolved group inspection, never an unsuccessful lookup. */
+export function emptyModuleDetail(store: ProgramRecordStore, evaluation: EvaluationRecord): ProjectionRecord {
+  return project(store, evaluation, []);
 }

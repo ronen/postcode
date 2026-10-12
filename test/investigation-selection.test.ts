@@ -3,6 +3,7 @@ import { test } from 'node:test';
 import { digest, identityReference, recordId, sessionId } from '../src/lib/identity.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { inspect } from './projection-helpers.js';
+import { emptyModuleDetail } from '../src/lib/projections.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
 import { inspectOrganization } from './projection-helpers.js';
 import { referenceBinding } from '../src/lib/reference-binding.js';
@@ -271,7 +272,7 @@ test('retention has no revision, proximal-citation, association-page or prose bo
   const associated = selectAssociatedInspection(store, mechanical.id, [module]);
   assert.deepEqual(associated.associated, Array.from({ length: 27 }, (_, n) => id(`replacement-${n}`)));
   assert.equal(resolveInvestigationContent(store, associated).accounts.filter(item => associated.associated.includes(item.id)).length, 27);
-  const emptyMechanical = inspect(store, f.evaluation, 'embedded-empty', false, []);
+  const emptyMechanical = emptyModuleDetail(store, f.evaluation);
   const empty = selectAssociatedInspection(store, emptyMechanical.id, []);
   assert.equal(empty.variant, 'associated-inspection'); assert.deepEqual(empty.associated, []);
   assert.equal(store.get(empty.id), empty);

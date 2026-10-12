@@ -85,7 +85,14 @@ status. All four families key the complete qualified selection, normalizing only
 declared reference positions. Names and precise references therefore share an answer
 when the question, subjects, parameters and support are equal. Failed resolution
 does not construct a requested answer; valid empty populations and embedded details
-remain supported. Investigation selections retain frozen revision and association
+remain supported. Current unordered collection constructors canonicalize the full
+payload in evaluation-population order, with outside-population subjects ordered by
+record ID. Binding schedules are independent of this ordering. Ordinary module
+inspection rejects empty resolved input as an invariant violation; group-only
+inspection uses an explicit empty-module-detail constructor. These rules implement
+the [unordered collection decision](../decisions/unordered-collection-inspection.md)
+and do not redefine meaningful order or roles in other Lenses.
+Investigation selections retain frozen revision and association
 snapshots, including valid failed and unavailable outcomes.
 
 Arrangement receives a frozen lookup context separately. Its designation, criteria,

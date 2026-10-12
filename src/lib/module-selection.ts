@@ -1,11 +1,12 @@
 import { completedMaterialization } from './evaluation-state.js';
+import { orderCollectionSubjects } from './collection-selection.js';
 import { isModuleClaim } from './records.js';
 import type { EvaluationRecord, ProgramRecordStore, RecordId } from './records.js';
 
 /** Construction consumes an explicit selection; null denotes the configured population. */
 export function selectResolvedModules(store: ProgramRecordStore, evaluation: EvaluationRecord, subjects: readonly RecordId[] | null) {
   store.entityIds(evaluation.modules, 'module');
-  const modules = [...(subjects ?? evaluation.modules)];
+  const modules = subjects === null ? [...evaluation.modules] : orderCollectionSubjects(evaluation.modules, subjects);
   if (new Set(modules).size !== modules.length) throw new Error('Duplicate resolved module subject');
   for (const id of modules) {
     const entity = store.get(id);

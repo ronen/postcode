@@ -1,8 +1,9 @@
 import { mechanicalAnswerIdentity } from '../answer-identity.js';
+import { orderCollectionSubjects } from '../collection-selection.js';
 import { directedGraph } from '../directed-graph.js';
 import { completedMaterialization } from '../evaluation-state.js';
 import { compare, methods, recordId } from '../identity.js';
-import { inspect as inspectModules } from '../projections.js';
+import { emptyModuleDetail, inspect as inspectModules } from '../projections.js';
 import type { EvaluationRecord, ProgramRecordStore, RecordId } from '../records.js';
 import type { GroupClaim, OrganizationClaims, OrganizationEvaluationRecord, OrganizationProjectionRecord } from './records.js';
 
@@ -38,9 +39,9 @@ function project(store: ProgramRecordStore, evaluation: OrganizationEvaluationRe
     if (resolvedGroups.length + resolvedModules.length !== resolved.length || new Set(resolved).size !== resolved.length
       || resolved.some(id => store.get(id).session !== evaluation.session)) throw new Error('Invalid inspection subject');
     // Empty module detail is a genuine embedded part of a settled group inspection.
-    const moduleView = inspectModules(store, moduleEvaluation, resolvedModules);
+    const moduleView = resolvedModules.length ? inspectModules(store, moduleEvaluation, resolvedModules) : emptyModuleDetail(store, moduleEvaluation);
     moduleProjection = moduleView.id;
-    selected = new Set(resolvedGroups);
+    selected = new Set(orderCollectionSubjects(evaluation.groups, resolvedGroups));
     selectedModules = moduleView.modules;
   }
   const groupPopulation = new Set(evaluation.groups), modulePopulation = new Set(moduleEvaluation.modules);
