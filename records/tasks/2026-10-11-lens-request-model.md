@@ -59,7 +59,13 @@ Qualified subject-resolution checkpoint, 2026-10-12: following the human's accep
 
 The [qualified subject-resolution handoff](../reviews/lens-request-model/2026-10-12-subject-resolution-handoff.md) establishes the next intermediate review gate under the development workflow. Implementation pauses for human-arranged independent review before the remaining migrations build on this cross-family boundary. No milestone is declared complete: the bounded attribution trace, direct operation context, legacy low-level selection migration, four-family answer identity, runtime compatibility, extension demonstrations and final integrated review remain required. The task remains active. The historical intermittent failure's cause remains unconfirmed; this checkpoint does not claim to repair it.
 
+On 2026-10-12, F2 and F3 were corrected in `fd1ddfbe145407cadbaa6baa03fdc550b0d6efa8`: Unicode reports preserve each lookup population's established match outcome and unavailable/incomplete state, and investigram-only Lenses reject direct name designation before Evaluation. The [subject-resolution disposition](../reviews/lens-request-model/2026-10-12-subject-resolution-disposition.md) records every finding. F1's unsuccessful allocation schedule and F4's raw record-ID designation policy await explicit human choices; neither has been changed. Wider implementation remains paused and the task remains active pending those choices and acceptance of the intermediate gate.
+
 ## Verification
+
+### Subject-resolution review corrections
+
+`npm run check` and build passed. Of 59 targeted direct-request, subject-resolution and CLI tests, 58 initially passed; a new F2 assertion confused the concrete unavailable reason with its separate qualification. After correcting that assertion, the affected CLI test passed. The disposition preserves this distinction and the reviewer's residual coverage limits. `git diff --check` passed. No full-suite rerun is claimed for this correction, and no paid inference was used.
 
 ### Qualified subject-resolution checkpoint verification
 
