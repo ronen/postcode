@@ -4,7 +4,6 @@ import type { RevisionSnapshot } from './revisions.js';
 import { identityReference } from '../identity.js';
 
 export type InvestigationLens = 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'dependency-children' | 'dependency-parents';
-export type SelectionSelector = null | { readonly literal: string } | { readonly reference: RecordId } | { readonly unresolvedReference: string };
 export interface SelectionRelation { readonly original: RecordId; readonly account: RecordId }
 export interface AccountNavigation {
   readonly account: RecordId;
@@ -14,9 +13,8 @@ export interface AccountNavigation {
 interface SelectionContent extends RecordContext {
   readonly kind: 'investigation-selection-projection';
   readonly lens: InvestigationLens;
-  readonly selector: SelectionSelector;
   readonly subjects: readonly RecordId[];
-  readonly status: 'selected' | 'ambiguous' | 'missing' | 'unsupported-subject-lens';
+  readonly status: 'selected' | 'empty';
   readonly roots: readonly RecordId[];
   /** Incoming originals remain separate even when they choose the same account. */
   readonly relations: readonly SelectionRelation[];
@@ -26,10 +24,9 @@ interface SelectionContent extends RecordContext {
   readonly revisions: readonly RevisionSnapshot[];
 }
 export type InvestigationSelectionProjection = SelectionContent & (
-  | { readonly variant: 'request'; readonly unsupportedSubject: 'investigram' | 'program-subject' | null;
+  | { readonly variant: 'request';
       readonly outcome: { readonly kind: 'evaluation'; readonly evaluation: RecordId }
-        | { readonly kind: 'unavailable'; readonly value: Pick<NonNullable<InvestigationSelection['unavailable']>, 'kind' | 'code' | 'diagnostic'> }
-        | { readonly kind: 'no-evaluation' } }
+        | { readonly kind: 'unavailable'; readonly value: Pick<NonNullable<InvestigationSelection['unavailable']>, 'kind' | 'code' | 'diagnostic'> } }
   | { readonly variant: 'historical-inspection'; readonly lens: 'inspect' }
   | { readonly variant: 'associated-inspection'; readonly lens: 'inspect'; readonly mechanical: RecordId }
 );
@@ -39,11 +36,10 @@ export type SelectionPayload = WithoutId<InvestigationSelectionProjection>;
 type Kind = ProgramRecord['kind'];
 const subjects: readonly Kind[] = ['module', 'group', 'investigram'];
 /** One explicit inventory of reference positions for validation and identity.
- * Prose, selector literals, diagnostics and qualification strings remain literal. */
+ * Prose, diagnostics and qualification strings remain literal. */
 function mapReferences(value: SelectionPayload, ref: (id: RecordId, kinds: readonly Kind[] | null) => RecordId): SelectionPayload {
   const account = (id: RecordId) => ref(id, ['investigram']);
   return { ...value, session: ref(value.session, ['session']) as SessionId,
-    selector: value.selector && 'reference' in value.selector ? { reference: ref(value.selector.reference, subjects) } : value.selector,
     subjects: value.subjects.map(id => ref(id, subjects)), roots: value.roots.map(account),
     relations: value.relations.map(item => ({ original: account(item.original), account: account(item.account) })),
     displaced: value.displaced.map(account), associated: value.associated.map(account),
@@ -73,6 +69,6 @@ export function selectionReferences(payload: SelectionPayload): readonly { reado
   return references;
 }
 
-export function selectionStatus(subjects: readonly RecordId[], unsupported?: string): InvestigationSelectionProjection['status'] {
-  return unsupported ? 'unsupported-subject-lens' : subjects.length === 1 ? 'selected' : subjects.length ? 'ambiguous' : 'missing';
+export function selectionStatus(subjects: readonly RecordId[]): InvestigationSelectionProjection['status'] {
+  return subjects.length ? 'selected' : 'empty';
 }

@@ -428,7 +428,7 @@ test('handles repeat current lookups while IDs do not provide cross-invocation n
     const module = before.modules[0]!;
     assert.equal(module.handle, 'run-cli');
     const unscoped = JSON.parse((await invoke(['inspect', module.handle, '--project', config, '--json'])).stdout) as QualifiedView;
-    assert.equal(unscoped.projection.selection.referenceStatus, 'current');
+    assert.deepEqual(unscoped.resolution?.designation, { kind: 'name', value: module.handle });
     assert.equal(unscoped.projection.selection.matches, 1);
     writeFileSync(entry, 'export function runCli() { return 1; }');
     const after = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
@@ -773,8 +773,8 @@ test('Unicode inline names and paths cannot inject structure while JSON and wrap
       // Exercise module-name and selector interpolation independently of compiler naming rules.
       const labelled = structuredClone(json);
       (labelled.modules[0] as { name: string | null }).name = name;
-      const parameters = labelled.projection.parameters as { selector: string | null };
-      parameters.selector = name;
+      assert.ok(labelled.resolution);
+      (labelled.resolution as { designation: { kind: 'name'; value: string } }).designation = { kind: 'name', value: name };
       assert.equal(renderUnicode(labelled).includes(name), false);
       assert.ok(renderUnicode(labelled).includes(escaped));
       if (module === file) {

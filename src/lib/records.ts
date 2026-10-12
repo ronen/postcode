@@ -195,7 +195,7 @@ export interface ProjectionRecord extends RecordContext {
   readonly kind: 'projection';
   readonly lens: 'modules' | 'inspect';
   readonly subject: 'configured-project' | 'selected-modules';
-  readonly parameters: { readonly selector: string | null; readonly reference: boolean };
+  readonly parameters: Readonly<Record<string, never>>;
   readonly modules: readonly RecordId[];
   readonly claims: readonly RecordId[];
   readonly contexts: readonly RecordId[];
@@ -208,7 +208,6 @@ export interface ProjectionRecord extends RecordContext {
     readonly population: number;
     readonly populationEstablished: boolean;
     readonly subset: boolean;
-    readonly referenceStatus: 'current' | 'unknown-reference';
   };
 }
 

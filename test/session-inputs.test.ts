@@ -12,7 +12,7 @@ import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { evaluateModules } from '../src/lib/evaluation.js';
 import { evidenceAccess } from '../src/lib/evidence-access.js';
 import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
-import { modules } from '../src/lib/projections.js';
+import { modules } from './projection-helpers.js';
 import { openSession, SessionInvalidated, AnalysisFailure } from '../src/lib/session.js';
 import type { ProgramRecord } from '../src/lib/records.js';
 import type { ObservationBatch } from '../src/lib/observations.js';

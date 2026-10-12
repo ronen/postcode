@@ -10,7 +10,7 @@ import type { ObservationSink } from '../src/lib/observations.js';
 import { createOrganizationView, organizationPresentationRequirements, renderOrganizationView } from '../src/lib/organization/presentation.js';
 import type { QualifiedOrganizationView } from '../src/lib/organization/presentation.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
-import { inspectOrganization, organization } from '../src/lib/organization/projections.js';
+import { inspectOrganization, organization } from './projection-helpers.js';
 import { evaluateModules } from '../src/lib/evaluation.js';
 import { recordId } from '../src/lib/identity.js';
 import type { QualifiedView } from '../src/lib/presentation.js';

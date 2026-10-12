@@ -94,6 +94,7 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
         }
       };
       if (record.kind === 'projection' || record.kind === 'organization-projection' || record.kind === 'dependency-projection') {
+        if (Object.keys(record.parameters).length || 'referenceStatus' in record.selection) throw new Error('Invocation-specific fields cannot be retained in an answer');
         const get = (id: RecordId) => pending.get(id) ?? this.#records.get(id);
         let subjects: readonly RecordId[], population: readonly RecordId[];
         if (record.kind === 'projection') {

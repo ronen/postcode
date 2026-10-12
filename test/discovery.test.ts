@@ -8,7 +8,7 @@ import { evaluateModules } from '../src/lib/evaluation.js';
 import { methods } from '../src/lib/identity.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { createView } from '../src/lib/presentation.js';
-import { inspect, modules } from '../src/lib/projections.js';
+import { inspect, modules } from './projection-helpers.js';
 import type { SourceEvidenceRecord } from '../src/lib/records.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
 import { discover, inputBasis, normalizeSession } from './helpers.js';
@@ -101,7 +101,7 @@ test('encountered parse diagnostics qualify discovery without unrelated semantic
     .filter(context => context.diagnostics.length > 0).length, 1);
 });
 
-test('inspect exact names, handles and IDs preserves zero/one selection and applicable context', async () => {
+test('inspect exact names and handles preserves applicable context and refuses unresolved names', async () => {
   const { store, evaluation, claims } = (await discover(fixture('module-population')));
   const ambient = claims.find(claim => claim.information.name === 'ambient-one')!;
   for (const selector of ['ambient-one', ambient.information.handle]) {
@@ -112,7 +112,7 @@ test('inspect exact names, handles and IDs preserves zero/one selection and appl
     assert.ok(projection.contexts.includes(ambient.context));
   }
   for (const selector of ['ambient', 'ambient-*', 'missing']) {
-    assert.equal(inspect(store, evaluation, selector).selection.matches, 0);
+    assert.throws(() => inspect(store, evaluation, selector), /request coordination/);
   }
 });
 
@@ -131,15 +131,13 @@ test('exact names remain usable when they collide with compact IDs; scoped IDs s
     assert.equal(ids.get(ordinary.subject), selector);
 
     const currentName = inspect(store, evaluation, selector);
-    assert.equal(currentName.selection.referenceStatus, 'current');
+    assert.deepEqual(currentName.parameters, {});
     assert.deepEqual(currentName.modules, [named.subject]);
     assert.ok(currentName.contexts.includes(named.context));
     assert.deepEqual(inspect(store, evaluation, selector, true).modules, [ordinary.subject]);
     assert.deepEqual(inspect(store, evaluation, ids.get(named.subject)!, true).modules, [named.subject]);
-    assert.equal(inspect(store, evaluation, ids.get(named.subject)!).selection.referenceStatus, 'current');
-    const stale = inspect(store, evaluation, 'module-00000000', true);
-    assert.equal(stale.selection.referenceStatus, 'unknown-reference');
-    assert.deepEqual(stale.modules, []);
+    assert.throws(() => inspect(store, evaluation, ids.get(named.subject)!), /request coordination/);
+    assert.throws(() => inspect(store, evaluation, 'module-00000000', true), /request coordination/);
   });
 });
 
@@ -168,7 +166,7 @@ test('generated handles avoid compact Entity IDs across basename, language-name 
       new Set(['source-basename', 'language-name', 'declared-export']));
     assert.deepEqual(inspect(store, evaluation, `handle-${selector}`).modules,
       rewritten.map(claim => claim.subject));
-    assert.equal(inspect(store, evaluation, `handle-${selector}`).selection.referenceStatus, 'current');
+    assert.deepEqual(inspect(store, evaluation, `handle-${selector}`).parameters, {});
     assert.deepEqual(inspect(store, evaluation, selector, true).modules, [ordinary.subject]);
     const named = claims.find(claim => claim.information.name === selector)!;
     assert.deepEqual(inspect(store, evaluation, selector).modules, [named.subject]);

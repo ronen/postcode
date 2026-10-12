@@ -91,7 +91,7 @@ export interface OrganizationProjectionRecord extends RecordContext {
   readonly kind: 'organization-projection';
   readonly lens: 'organization' | 'inspect';
   readonly subject: 'repository' | 'configured-project' | 'selected-entities';
-  readonly parameters: { readonly selector: string | null; readonly reference: boolean };
+  readonly parameters: Readonly<Record<string, never>>;
   readonly evaluation: RecordId;
   readonly moduleProjection: RecordId | null;
   readonly groups: readonly RecordId[];
@@ -108,7 +108,6 @@ export interface OrganizationProjectionRecord extends RecordContext {
     readonly population: number;
     readonly populationEstablished: boolean;
     readonly materialization: 'none' | 'partial' | 'full';
-    readonly referenceStatus: 'current' | 'unknown-reference';
   };
 }
 

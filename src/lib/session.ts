@@ -1,3 +1,4 @@
+import { resolutionContext } from './resolution-context.js';
 import { resolveSubjects, resolutionExplanation } from './subject-resolution.js';
 import { freezeOwned } from './immutable.js';
 import { randomUUID } from 'node:crypto';
@@ -176,9 +177,8 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
         resolution: { ...resolution, reason: resolution.status, explanation: resolutionExplanation(resolution), retainedAnswers: [] } });
       return { kind: 'resolution' as const, context, report, rendered: renderRequestReport(report), failed: true };
     }
+    const displayResolution = resolutionContext(designation, resolution);
     const selected = resolution.candidates.map(candidate => candidate.id);
-    // Precise spellings identify the same retained answer; keep the supplied spelling in context.
-    const selector = designation.kind === 'reference' ? selected[0]! : request.selector;
     const interpretationInspection = lens === 'inspect' && resolution.candidates[0]?.kind === 'investigram';
     if (investigationLens || interpretationInspection) {
       const basis = evaluateModules(store, analysis);
@@ -186,7 +186,7 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
       else store.entityIds(store.investigations(session).flatMap(item => item.investigrams), 'investigram');
       const result = investigationLens && selected.length === 1
         ? await integration.evaluate({ operation: operation!, subject: selected[0]!, parameters: {} }) : null;
-      const { view, investigationArrangementKey } = createInvestigationView(store, session, { ...request, selector, lens: lens as 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'dependency-children' | 'dependency-parents' }, selected, result, usage());
+      const { view, investigationArrangementKey } = createInvestigationView(store, session, { ...request, resolution: displayResolution, lens: lens as 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'dependency-children' | 'dependency-parents' }, selected, result, usage());
       const sessionContext = store.get(session);
       if (sessionContext.kind !== 'session') throw new Error('Expected session');
       const repository = sessionContext.repository ? store.get(sessionContext.repository) : null;
@@ -204,19 +204,19 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
     const dependencyOrganization = dependencyLens ? evaluateDependencyOrganization(store, dependencyOutcome!, organizationOutcome!) : null;
     const projection = dependencyLens
       ? lens === 'dependency-structure' ? dependencyStructure(store, dependencyOutcome!, dependencyOrganization!.id)
-        : lens === 'dependency-children' ? dependencyChildren(store, dependencyOutcome!, selector!, request.reference ?? false, dependencyOrganization!.id, selected)
-          : dependencyParents(store, dependencyOutcome!, selector!, request.reference ?? false, dependencyOrganization!.id, selected)
+        : lens === 'dependency-children' ? dependencyChildren(store, dependencyOutcome!, selected, dependencyOrganization!.id)
+          : dependencyParents(store, dependencyOutcome!, selected, dependencyOrganization!.id)
       : lens === 'modules' ? modules(store, evaluation) : lens === 'inspect'
-        ? inspectOrganization(store, organizationOutcome!, selector!, request.reference ?? false, selected)
+        ? inspectOrganization(store, organizationOutcome!, selected)
         : organization(store, organizationOutcome!, request.subject === 'repository' ? 'repository' : 'configured-project');
     const moduleProjection = projection.kind === 'organization-projection' && projection.moduleProjection
       ? store.get(projection.moduleProjection) as ProjectionRecord : null;
     const moduleOnly = projection.kind === 'organization-projection' && projection.lens === 'inspect' && projection.groups.length === 0
       && moduleProjection !== null && (moduleProjection.modules.length > 0 || organizationOutcome!.groups.length === 0);
-    const mechanicalView = projection.kind === 'dependency-projection' ? createDependencyView(store, projection, presentation)
-      : projection.kind === 'projection' ? createView(store, projection, presentation)
-      : moduleOnly ? createView(store, moduleProjection!, presentation)
-      : createOrganizationView(store, projection, presentation);
+    const mechanicalView = projection.kind === 'dependency-projection' ? createDependencyView(store, projection, presentation, displayResolution)
+      : projection.kind === 'projection' ? createView(store, projection, presentation, displayResolution)
+      : moduleOnly ? createView(store, moduleProjection!, presentation, displayResolution)
+      : createOrganizationView(store, projection, presentation, displayResolution);
     const inspectedSubjects = projection.kind === 'organization-projection' ? [...projection.groups, ...(moduleProjection?.modules ?? [])] : projection.kind === 'projection' ? projection.modules : [];
     const view = lens === 'inspect' ? createAssociatedInspectionView(store, mechanicalView, inspectedSubjects, request.after, request.referenceLifetime) : mechanicalView;
     const rendered = view.schema === 'postcode-dependency-view/1-experimental' ? renderDependencyView(view)

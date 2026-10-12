@@ -1,6 +1,6 @@
 # Project Status
 
-Last reviewed: 2026-10-11
+Last reviewed: 2026-10-12
 
 PostCode is currently available as a development CLI for investigating one
 configured TypeScript project.
@@ -45,7 +45,9 @@ This page summarizes current capabilities and significant limits. The [capabilit
 - **[Request-model integration](docs/plans/lens-request-model.md):** normalized request
   reporting, non-View usage and qualified subject resolution are implemented at the
   request boundary. Unsuccessful lookups return reports with candidates and limits.
-  Answer identity, prerequisite attribution and Presentation compatibility remain in progress.
+  Equivalent names and references share retained answers while preserving lookup
+  context in displayed results. Prerequisite attribution, Presentation compatibility
+  and extension demonstrations remain in progress.
 
 - **Hosted interpretation:** [formative assessments](records/validation/module-investigation/pass-01/report.md)
   show useful source-qualified summaries alongside omitted qualifications. A

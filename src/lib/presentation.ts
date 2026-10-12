@@ -1,3 +1,5 @@
+import { lookupDescription, resolutionContextIdentity } from './resolution-context.js';
+import type { ResolutionContext } from './resolution-context.js';
 import { resolveModuleProjection } from './module-content.js';
 import type { DocumentationContent, ModuleProjectionContent } from './module-content.js';
 import { presentQualification } from './qualification-view.js';
@@ -41,6 +43,7 @@ export interface QualifiedView {
   readonly investigations?: AssociatedInvestigations;
   readonly schema: 'postcode-view/1-experimental';
   readonly id: RecordId;
+  readonly resolution?: ResolutionContext;
   readonly projection: Pick<ProjectionRecord, 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
   readonly presentation: Presentation & { readonly expansions: readonly ModuleExpansion[] };
   readonly analysis: SessionRecord['analysis'] | null;
@@ -62,15 +65,15 @@ export interface QualifiedView {
 }
 
 /** Coordination preserves population-wide reference allocation independently of display bounds. */
-export function createView(store: ProgramRecordStore, projection: ProjectionRecord, presentation: Presentation): QualifiedView {
+export function createView(store: ProgramRecordStore, projection: ProjectionRecord, presentation: Presentation, resolution?: ResolutionContext): QualifiedView {
   const content = resolveModuleProjection(store, projection);
   const population = store.entityIds(content.discovery.modules, 'module');
   const ids = new Map([...population, ...store.entityIds(projection.modules, 'module')]);
-  return arrangeModuleView(content, ids, presentation);
+  return arrangeModuleView(content, ids, presentation, resolution);
 }
 
 /** Pure presentation of an already selected answer. No store, acquisition or reference allocation. */
-export function arrangeModuleView(content: ModuleProjectionContent, entityIds: ReadonlyMap<RecordId, string>, presentation: Presentation): QualifiedView {
+export function arrangeModuleView(content: ModuleProjectionContent, entityIds: ReadonlyMap<RecordId, string>, presentation: Presentation, resolution?: ResolutionContext): QualifiedView {
   const { projection, session } = content;
   if (presentation.sourceDetail && projection.lens !== 'inspect') throw new Error('Source detail requires inspection');
   const compact = presentation.format === 'unicode' && projection.lens === 'modules';
@@ -149,7 +152,8 @@ export function arrangeModuleView(content: ModuleProjectionContent, entityIds: R
   const collapsed = compact ? modules.filter(module => !module.discoveryFacets.includes('project')) : [];
   const listed = compact ? modules.filter(module => module.discoveryFacets.includes('project')) : modules;
   return {
-    schema: 'postcode-view/1-experimental', id: recordId(projection.session, 'view', { projection: identityReference(projection.session, projection.id), presentation, method: methods.presentation }),
+    schema: 'postcode-view/1-experimental', id: recordId(projection.session, 'view', { projection: identityReference(projection.session, projection.id), presentation, resolution: resolutionContextIdentity(projection.session, resolution), method: methods.presentation }),
+    ...(resolution ? { resolution } : {}),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,
       parameters: projection.parameters, selection: projection.selection },
     presentation: { ...presentation, expansions: projection.expansions.requested },
@@ -192,7 +196,8 @@ export function renderUnicode(view: QualifiedView): string {
   const lines = [`${inventory ? 'Modules' : 'Inspect'} · configured TypeScript project`,
     `Session ${view.projection.session.replace(/^session:/, '')}`,
     inventory ? `${selection.population} module${selection.population === 1 ? '' : 's'} found · ${view.modules.length} listed${view.display.collapsedModules ? ` · ${view.display.collapsedModules} external module${view.display.collapsedModules === 1 ? '' : 's'} collapsed` : ''}`
-      : `${selection.matches} module${selection.matches === 1 ? '' : 's'} selected from ${selection.population} · ${selection.matches === 0 ? 'no exact match' : selection.matches === 1 ? 'exact match' : 'exact matches'} for ${view.projection.parameters.reference ? '@' : ''}${inlineText(view.projection.parameters.selector ?? '')}${view.projection.parameters.reference ? ` · ${selection.referenceStatus}` : ''}`];
+      : `${selection.matches} module${selection.matches === 1 ? '' : 's'} selected from ${selection.population}${lookupDescription(view.resolution, selection.matches) ? ` · ${lookupDescription(view.resolution, selection.matches)}` : ''}`];
+  lines.push(...(view.resolution?.qualifications ?? []).map(inlineText));
   if (selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; their detail is unavailable in this answer.');
   if (!selection.populationEstablished) lines.push('Module population is not established.');
   const outcomeGroups = new Map<string, number>();

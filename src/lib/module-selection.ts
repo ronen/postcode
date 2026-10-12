@@ -2,14 +2,11 @@ import { completedMaterialization } from './evaluation-state.js';
 import { isModuleClaim } from './records.js';
 import type { EvaluationRecord, ProgramRecordStore, RecordId } from './records.js';
 
-/** Qualified lookup without constructing or retaining an answer to another Lens. */
-export function selectModules(store: ProgramRecordStore, evaluation: EvaluationRecord, selector: string | null, reference = false, resolved?: readonly RecordId[]) {
-  const bindings = store.entityIds(evaluation.modules, 'module');
-  const modules = resolved ? [...resolved] : evaluation.modules.filter(id => {
-    if (selector === null || selector === id) return true;
-    if (reference) return selector === bindings.get(id);
-    return moduleMatches(store, id, selector);
-  });
+/** Construction consumes an explicit selection; null denotes the configured population. */
+export function selectResolvedModules(store: ProgramRecordStore, evaluation: EvaluationRecord, subjects: readonly RecordId[] | null) {
+  store.entityIds(evaluation.modules, 'module');
+  const modules = [...(subjects ?? evaluation.modules)];
+  if (new Set(modules).size !== modules.length) throw new Error('Duplicate resolved module subject');
   for (const id of modules) {
     const entity = store.get(id);
     if (entity.kind !== 'module' || entity.session !== evaluation.session) throw new Error('Invalid resolved module subject');
@@ -17,8 +14,7 @@ export function selectModules(store: ProgramRecordStore, evaluation: EvaluationR
   const population = new Set(evaluation.modules);
   const outsidePopulation = modules.filter(id => !population.has(id));
   return { modules, selection: { ...(outsidePopulation.length ? { outsidePopulation } : {}), matches: modules.length, population: evaluation.modules.length,
-    populationEstablished: completedMaterialization(evaluation), subset: selector !== null && modules.length < evaluation.modules.length,
-    referenceStatus: reference && modules.length === 0 ? 'unknown-reference' as const : 'current' as const } };
+    populationEstablished: completedMaterialization(evaluation), subset: subjects !== null && modules.length < evaluation.modules.length } };
 }
 
 /** Exact language names and generated handles share one matching rule. */

@@ -8,19 +8,19 @@ import { evaluateModules } from '../src/lib/evaluation.js';
 import { identityReference, methods, recordId } from '../src/lib/identity.js';
 import { resolveModuleProjection } from '../src/lib/module-content.js';
 import { arrangeModuleView, createView, renderUnicode } from '../src/lib/presentation.js';
-import { inspect, modules } from '../src/lib/projections.js';
+import { inspect, modules } from './projection-helpers.js';
 import { moduleStandardExpansions } from '../src/lib/records.js';
 import type { EvaluationRecord } from '../src/lib/records.js';
 import { sourceDisclosure } from '../src/lib/source-disclosure.js';
 import { artifactClassification, artifactClassificationComplete, resolveOrganizationProjection } from '../src/lib/organization/content.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
 import { arrangeOrganizationView, createOrganizationView, renderOrganizationView } from '../src/lib/organization/presentation.js';
-import { inspectOrganization, organization } from '../src/lib/organization/projections.js';
+import { inspectOrganization, organization } from './projection-helpers.js';
 import { resolveDependencyProjection } from '../src/lib/dependencies/content.js';
 import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
 import { evaluateDependencyOrganization } from '../src/lib/dependencies/organization.js';
 import { arrangeDependencyView, createDependencyView, renderDependencyView } from '../src/lib/dependencies/presentation.js';
-import { dependencyChildren, dependencyStructure } from '../src/lib/dependencies/projections.js';
+import { dependencyChildren, dependencyStructure } from './projection-helpers.js';
 import { temporaryDirectory } from './cli-helpers.js';
 import { discover } from './helpers.js';
 
@@ -83,10 +83,7 @@ test('organization artifact qualification uses supplied completeness with some m
   const completeView = createOrganizationView(store, completeProjection, { format: 'unicode', sourceDetail: false });
   assert.match(renderOrganizationView(completeView), /Other artifacts: 1 unanalyzed/);
   assert.match(renderOrganizationView(completeView), /other artifacts remain unanalyzed/);
-  const completeMiss = createOrganizationView(store, inspectOrganization(store, complete, 'missing'), { format: 'unicode', sourceDetail: false });
-  assert.deepEqual(completeMiss.groups, []);
-  assert.match(renderOrganizationView(completeMiss), /other artifacts remain unanalyzed/);
-  assert.doesNotMatch(renderOrganizationView(completeMiss), /classification is incomplete/);
+  assert.throws(() => inspectOrganization(store, complete, 'missing'), /request coordination/);
   const partial: EvaluationRecord = { ...evaluation, id: recordId(evaluation.session, 'evaluation', 'partial-population'),
     modules: evaluation.modules.slice(0, 1), execution: 'stopped', materialization: 'partial', reason: 'Synthetic incomplete population.' };
   store.put([partial]);
@@ -132,9 +129,8 @@ test('organization artifact qualification uses supplied completeness with some m
     assert.deepEqual(JSON.parse(renderOrganizationView(json)).groups, view.groups);
     const tree = createOrganizationView(store, organization(store, outcome, 'repository'), { format: 'unicode', sourceDetail: false });
     assert.match(renderOrganizationView(tree), /\d other captured artifacts \(classification incomplete\)/);
-    const miss = createOrganizationView(store, inspectOrganization(store, outcome, 'missing'), { format: 'unicode', sourceDetail: false });
-    assert.deepEqual(miss.groups, []);
-    assert.match(renderOrganizationView(JSON.parse(JSON.stringify(miss))), /classification is incomplete\./);
+    assert.throws(() => inspectOrganization(store, outcome, 'missing'), /request coordination/);
+    assert.match(renderOrganizationView(JSON.parse(JSON.stringify(tree))), /classification is incomplete\./);
     assert.equal(sourceDisclosure(view), null);
     for (const context of content.groups.filter(group => !group.selected)) {
       assert.equal(context.detail, 'not-requested');
@@ -194,7 +190,7 @@ test('dependency content keeps unbounded occurrences, graph and qualified organi
   assert.equal(structure.relationships.length, 1);
 });
 
-test('mechanical identities retain their formula and all use the shared presentation method bump', async () => {
+test('mechanical View identities include resolution context and use the shared presentation method bump', async () => {
   const { store, analysis } = await discover(path.resolve('fixtures/dependency-journey/tsconfig.json'));
   const evaluation = evaluateModules(store, analysis, moduleStandardExpansions);
   const organizationProjection = organization(store, evaluateOrganization(store, evaluation));
@@ -202,12 +198,12 @@ test('mechanical identities retain their formula and all use the shared presenta
   const presentation = { format: 'json' as const, sourceDetail: false };
   const views = [createView(store, modules(store, evaluation), presentation), createOrganizationView(store, organizationProjection, presentation),
     createDependencyView(store, dependencyProjection, presentation)];
-  assert.equal(methods.presentation, 'postcode/presentation@28');
+  assert.equal(methods.presentation, 'postcode/presentation@29');
   for (const [index, view] of views.entries()) {
     const kind = ['view', 'organization-view', 'dependency-view'][index]!;
-    const key = { projection: identityReference(view.projection.session, view.projection.id), presentation, method: methods.presentation };
+    const key: { projection: string | null; presentation: typeof presentation; resolution: null; method: string } = { projection: identityReference(view.projection.session, view.projection.id), presentation, resolution: null, method: methods.presentation };
     assert.equal(view.id, recordId(view.projection.session, kind, key));
-    assert.notEqual(view.id, recordId(view.projection.session, kind, { ...key, method: 'postcode/presentation@27' }));
+    assert.notEqual(view.id, recordId(view.projection.session, kind, { ...key, method: 'postcode/presentation@28' }));
   }
 });
 
@@ -232,7 +228,8 @@ test('unavailable repository content preserves qualification and a self-containe
   const { store, evaluation } = await discover(path.join(root, 'tsconfig.json'));
   const outcome = evaluateOrganization(store, evaluation);
   assert.equal(outcome.availability, 'unavailable');
-  for (const projection of [organization(store, outcome, 'repository'), inspectOrganization(store, outcome, 'missing')]) {
+  assert.throws(() => inspectOrganization(store, outcome, 'missing'), /request coordination/);
+  for (const projection of [organization(store, outcome, 'repository'), organization(store, outcome, 'configured-project')]) {
     const content = resolveOrganizationProjection(store, projection);
     frozen(content);
     assert.deepEqual(content.groups, []);

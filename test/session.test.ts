@@ -167,10 +167,5 @@ test('Unicode reference misses preserve reference syntax and status in organizat
     assert.equal(miss.report.resolution.reason, 'unknown-reference');
     assert.match(miss.rendered, /Subject: @forward/);
     assert.match(miss.rendered, /Reason: unknown-reference/);
-    const { inspect } = await import('../src/lib/projections.js');
-    const { createView, renderUnicode } = await import('../src/lib/presentation.js');
-    const { store, evaluation } = (await discover(configPath));
-    const moduleMiss = createView(store, inspect(store, evaluation, 'forward', true), inspection.presentation);
-    assert.match(renderUnicode(moduleMiss), /no exact match for @forward · unknown-reference/);
   } finally { await opened.session.close(); }
 });

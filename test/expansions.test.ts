@@ -7,7 +7,7 @@ import { normalizeSession } from './helpers.js';
 import { evaluateModules } from '../src/lib/evaluation.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { createView, renderView } from '../src/lib/presentation.js';
-import { inspect, modules } from '../src/lib/projections.js';
+import { inspect, modules } from './projection-helpers.js';
 import type { ClaimContextRecord, ExportClaim, ModuleExpansion, RecordedAssertion, SourceEvidenceRecord, SymbolClaim, SymbolRecord } from '../src/lib/records.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
 
@@ -117,7 +117,7 @@ test('unresolved export targets produce partial expansion outcomes even when no 
 test('requested expansion kinds are unique while qualified evaluation scopes remain per module', async () => {
   const { store, evaluation, projection } = (await expanded());
   assert.ok(projection.modules.length > 1);
-  for (const selected of [projection, inspect(store, evaluation, projection.modules[0]!), inspect(store, evaluation, 'absent')]) {
+  for (const selected of [projection, inspect(store, evaluation, projection.modules[0]!), inspect(store, evaluation, 'embedded-empty', false, [])]) {
     assert.deepEqual(selected.expansions.requested, ['exports', 'documentation']);
     const view = createView(store, selected, { format: 'json', sourceDetail: false });
     const serialized = JSON.parse(renderView(view)) as typeof view;

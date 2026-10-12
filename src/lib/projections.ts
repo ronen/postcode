@@ -1,5 +1,6 @@
-import { selectModules } from './module-selection.js';
-import { identityReference, methods, recordId } from './identity.js';
+import { mechanicalAnswerIdentity } from './answer-identity.js';
+import { selectResolvedModules } from './module-selection.js';
+import { methods, recordId } from './identity.js';
 import type { EvaluationRecord, ModuleClaim, ProgramRecordStore, ProjectionRecord, RecordId } from './records.js';
 import { isModuleClaim } from './records.js';
 
@@ -12,12 +13,12 @@ function moduleClaim(store: ProgramRecordStore, id: RecordId): ModuleClaim {
 }
 
 /** Construction reads materialized state only; it has no language-provider access. */
-function project(store: ProgramRecordStore, evaluation: EvaluationRecord, selector: string | null, reference = false, resolved?: readonly RecordId[]): ProjectionRecord {
+function project(store: ProgramRecordStore, evaluation: EvaluationRecord, subjects: readonly RecordId[] | null): ProjectionRecord {
   const stored = store.get(evaluation.id);
   if (stored.kind !== 'evaluation') throw new Error('Expected stored evaluation');
   evaluation = stored;
-  const lens = selector === null ? 'modules' : 'inspect';
-  const { modules, selection } = selectModules(store, evaluation, selector, reference, resolved);
+  const lens = subjects === null ? 'modules' : 'inspect';
+  const { modules, selection } = selectResolvedModules(store, evaluation, subjects);
   const claims = modules.map(id => moduleClaim(store, id));
   const expansions = store.evaluations(evaluation.session).filter(outcome => outcome.basis === evaluation.id);
   const relevantExpansions = expansions.filter(outcome => outcome.modules.some(id => modules.includes(id)) || outcome.modules.length === 0);
@@ -35,20 +36,17 @@ function project(store: ProgramRecordStore, evaluation: EvaluationRecord, select
     const claim = store.get(id);
     return claim.kind === 'claim' && selected.has(claim.subject);
   });
-  const selectedReference = modules.find(id => id === selector);
-  // A resolved reference and a literal selector must occupy disjoint key spaces.
-  const selectorKey = selectedReference ? { reference: identityReference(evaluation.session, selectedReference) } : selector;
   const method = methods.projection;
-  const projection: ProjectionRecord = {
+  const payload: Omit<ProjectionRecord, 'id'> = {
     kind: 'projection', method, session: evaluation.session,
-    id: recordId(evaluation.session, 'projection', { method, lens, selector: selectorKey, reference, subjects: modules.map(id => identityReference(evaluation.session, id)), evaluation: identityReference(evaluation.session, evaluation.id) }),
-    lens, subject: selector === null ? 'configured-project' : 'selected-modules',
-    parameters: { selector, reference }, modules, claims: claims.map(claim => claim.id),
+    lens, subject: subjects === null ? 'configured-project' : 'selected-modules',
+    parameters: {}, modules, claims: claims.map(claim => claim.id),
     contexts: [...new Set([...evaluation.contexts, ...claims.map(claim => claim.context)])],
     evaluations: [evaluation.id, ...relevantExpansions.map(outcome => outcome.id)],
     expansions: { requested: [...new Set(expansions.flatMap(outcome => outcome.requirement === 'modules' ? [] : [outcome.requirement]))], claims: [...new Set(expansionClaims)] },
     selection,
   };
+  const projection = { ...payload, id: recordId(evaluation.session, 'projection', mechanicalAnswerIdentity(payload)) };
   store.put([projection]);
   return projection;
 }
@@ -57,6 +55,6 @@ export function modules(store: ProgramRecordStore, evaluation: EvaluationRecord)
   return project(store, evaluation, null);
 }
 
-export function inspect(store: ProgramRecordStore, evaluation: EvaluationRecord, selector: string, reference = false, resolved?: readonly RecordId[]): ProjectionRecord {
-  return project(store, evaluation, selector, reference, resolved);
+export function inspect(store: ProgramRecordStore, evaluation: EvaluationRecord, subjects: readonly RecordId[]): ProjectionRecord {
+  return project(store, evaluation, subjects);
 }

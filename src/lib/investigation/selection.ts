@@ -1,46 +1,45 @@
-import { operationForLens } from '../requests.js';
+import { operationForLens, lenses } from '../requests.js';
 import type { Investigram } from './contracts.js';
 import { methods, recordId } from '../identity.js';
 import type { ProgramRecordStore, RecordId, SessionId } from '../records.js';
 import type { InvestigationSelection } from './evaluation.js';
-import type { InvestigationLens, InvestigationSelectionProjection, SelectionPayload, SelectionSelector } from './selection-record.js';
+import type { InvestigationLens, InvestigationSelectionProjection, SelectionPayload } from './selection-record.js';
 import { selectionIdentity, selectionStatus } from './selection-record.js';
 import { sessionRevisions } from './revisions.js';
 
 export interface InvestigationSelectionRequest {
   readonly lens: InvestigationLens;
-  readonly selector: string | null;
-  readonly reference?: boolean;
-  readonly unsupportedSubject?: 'investigram' | 'program-subject';
 }
 
 /** Selects against accumulated history once. Reconstruction uses only the record. */
 export function selectInvestigation(store: ProgramRecordStore, session: SessionId, request: InvestigationSelectionRequest,
   selected: readonly RecordId[], result: InvestigationSelection | null): InvestigationSelectionProjection {
-  const selector: SelectionSelector = request.selector === null ? null : request.reference
-    ? selected.length === 1 ? { reference: selected[0]! } : { unresolvedReference: request.selector }
-    : { literal: request.selector };
-  if (request.lens === 'inspect' && !request.unsupportedSubject) {
+  if (selected.length !== 1 || store.get(selected[0]!).session !== session
+    || !lenses[request.lens].subjects.some(kind => kind === store.get(selected[0]!).kind)
+    || request.lens !== 'inspect' && operationForLens(request.lens) === null) throw new Error('Expected one applicable resolved investigation subject');
+  if (request.lens === 'inspect') {
+    if (store.get(selected[0]!).kind !== 'investigram') throw new Error('Exact interpretation inspection requires an investigram');
     if (result !== null) throw new Error('Historical inspection has no generating evaluation');
     return retain(store, { kind: 'investigation-selection-projection', session, method: methods.investigationProjection,
-      variant: 'historical-inspection', lens: 'inspect', selector, subjects: selected,
+      variant: 'historical-inspection', lens: 'inspect', subjects: selected,
       status: selectionStatus(selected), ...derive(store, session, selected, selected, true, true) });
   }
-  if (result && (selected.length !== 1 || result.request.subject !== selected[0] || request.unsupportedSubject
+  if (result && (selected.length !== 1 || result.request.subject !== selected[0]
     || operationForLens(request.lens) === null
     || operationForLens(request.lens)! !== result.request.operation)) {
     throw new Error('Investigation outcome must describe the selected subject');
   }
   const evaluation = result?.evaluation ? store.get(result.evaluation.id) : null;
   if (evaluation && evaluation.kind !== 'investigation-evaluation') throw new Error('Expected retained investigation evaluation');
+  if (!evaluation && !result?.unavailable) throw new Error('A selected operation subject requires an outcome');
   const outcome = evaluation ? { kind: 'evaluation' as const, evaluation: evaluation.id }
-    : result?.unavailable ? { kind: 'unavailable' as const, value: {
-      kind: result.unavailable.kind, code: result.unavailable.code, diagnostic: result.unavailable.diagnostic,
-    } } : { kind: 'no-evaluation' as const };
+    : { kind: 'unavailable' as const, value: {
+      kind: result!.unavailable!.kind, code: result!.unavailable!.code, diagnostic: result!.unavailable!.diagnostic,
+    } };
   const roots = evaluation?.outcome.kind === 'accepted' ? [evaluation.outcome.root] : [];
   return retain(store, { kind: 'investigation-selection-projection', session, method: methods.investigationProjection,
-    variant: 'request', lens: request.lens, selector, subjects: selected, status: selectionStatus(selected, request.unsupportedSubject),
-    unsupportedSubject: request.unsupportedSubject ?? null, outcome, ...derive(store, session, selected, roots, false, false) });
+    variant: 'request', lens: request.lens, subjects: selected, status: selectionStatus(selected),
+    outcome, ...derive(store, session, selected, roots, false, false) });
 }
 
 /** The mechanical argument is the Projection actually shown, including embedded module inspection. */
@@ -50,7 +49,7 @@ export function selectAssociatedInspection(store: ProgramRecordStore, mechanical
   if (basis.kind !== 'projection' && basis.kind !== 'organization-projection') throw new Error('Expected mechanical inspection Projection');
   if (basis.lens !== 'inspect') throw new Error('Expected inspection lens');
   return retain(store, { kind: 'investigation-selection-projection', session: basis.session, method: methods.investigationProjection,
-    variant: 'associated-inspection', lens: 'inspect', selector: null, mechanical, subjects, status: selectionStatus(subjects),
+    variant: 'associated-inspection', lens: 'inspect', mechanical, subjects, status: selectionStatus(subjects),
     ...derive(store, basis.session, subjects, [], true, true) });
 }
 

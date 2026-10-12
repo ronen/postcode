@@ -43,7 +43,7 @@ test('representative journey preserves direct intermediates, shared parents, com
   const detail = JSON.parse(inspected.stdout) as QualifiedView;
   assert.equal(detail.modules.length, 1);
   assert.equal(detail.modules[0]!.composition.claims[0]!.property, 're-exports-only');
-  assert.equal(viewOf(await invoke(config, ['children', module('left').handle, '--json'])).projection.selection.referenceStatus, 'current');
+  assert.deepEqual(viewOf(await invoke(config, ['children', module('left').handle, '--json'])).resolution?.designation, { kind: 'name', value: module('left').handle });
   const copied = await invoke(config, ['parents', module('shared').entityId, '--json']);
   assert.equal(copied.exit, 3);
   assert.equal(JSON.parse(copied.stdout).resolution.reason, 'missing');

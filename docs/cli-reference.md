@@ -150,9 +150,8 @@ and direct documentation-existence associations; placement state incorporates
 module-population completeness. Unrequested detail remains distinct from an empty
 established result. Rendering uses these existing View fields, with no hidden state
 or additive schema field. The closing qualification also uses repository and
-placement completeness when no groups are selected, including a missing selector
-or unavailable layout; an empty selection does not suppress the incompleteness
-notice about that evaluation basis.
+placement completeness when a valid population answer selects no groups, including
+unavailable layout. Missing selectors instead receive a qualified resolution report.
 
 Direct presence does not deny
 descendant membership. `none` means completed placement found no selected-project
@@ -386,8 +385,16 @@ references can therefore have different collision lengths after unsuccessful loo
 Successful observation batches include a separate `resolution-information` record.
 Known compatible subjects omitted from a supplied evaluation remain identified and
 produce a qualified answer with explicit unavailable detail; that omission never
-establishes subject absence. Answer identity and prerequisite attribution remain
-part of the ongoing [request-model work](plans/lens-request-model.md).
+establishes subject absence.
+
+Names, handles and explicit references selecting the same subjects share a retained
+answer when the question, parameters and supporting information are otherwise equal.
+The Projection descriptor contains semantic parameters only (currently empty);
+lookup spelling and population qualification are exposed separately under the View's
+`resolution` field. That context can give Views different IDs without changing their
+shared answer. Repeated compatible interpretations reuse the original work and usage.
+Prerequisite attribution and runtime Presentation compatibility remain part of the
+ongoing [request-model work](plans/lens-request-model.md).
 Expected analysis failures use outcome `failed` and event `command-failed`;
 unexpected defects use outcome `defect` and event `command-defect`. Neither
 invents a view when no output was published.

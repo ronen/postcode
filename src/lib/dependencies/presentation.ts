@@ -1,3 +1,5 @@
+import { lookupDescription, resolutionContextIdentity } from '../resolution-context.js';
+import type { ResolutionContext } from '../resolution-context.js';
 import { completedMaterialization } from '../evaluation-state.js';
 import { compositionAnnotation, compositionView } from '../composition-view.js';
 import type { CompositionView } from '../composition-view.js';
@@ -32,6 +34,7 @@ type Row = { readonly component: number; readonly depth: number; readonly refere
 
 export interface QualifiedDependencyView {
   readonly schema: 'postcode-dependency-view/1-experimental'; readonly id: RecordId;
+  readonly resolution?: ResolutionContext;
   readonly projection: Pick<DependencyProjectionRecord, 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
   readonly presentation: Presentation & { readonly expansions: readonly string[] };
   readonly evaluations: { readonly modules: Outcome; readonly dependencies: Outcome; readonly organization: Outcome | null };
@@ -54,15 +57,15 @@ const full = (outcome: Outcome) => outcome.applicability === 'applicable' && out
 
 /** Bind the established discovery population, then arrange resolved content. */
 export function createDependencyView(store: ProgramRecordStore, projection: DependencyProjectionRecord,
-  presentation: Presentation): QualifiedDependencyView {
+  presentation: Presentation, resolution?: ResolutionContext): QualifiedDependencyView {
   const content = resolveDependencyProjection(store, projection);
   const population = store.entityIds(content.basis.modules, 'module');
   const ids = new Map([...population, ...store.entityIds(projection.modules, 'module')]);
-  return arrangeDependencyView(content, ids, presentation);
+  return arrangeDependencyView(content, ids, presentation, resolution);
 }
 
 export function arrangeDependencyView(content: DependencyProjectionContent, ids: ReadonlyMap<RecordId, string>,
-  presentation: Presentation): QualifiedDependencyView {
+  presentation: Presentation, resolution?: ResolutionContext): QualifiedDependencyView {
   const { projection, evaluation, basis, expanded } = content;
   const allEdges = content.relationships.map(item => item.record);
   const edgesById = new Map(content.relationships.map(item => [item.record.id, item]));
@@ -183,7 +186,8 @@ export function arrangeDependencyView(content: DependencyProjectionContent, ids:
   sourceItems.sort((a, b) => sourcePriority(a) - sourcePriority(b));
   const result: QualifiedDependencyView = {
     schema: 'postcode-dependency-view/1-experimental',
-    id: recordId(projection.session, 'dependency-view', { method: methods.presentation, projection: identityReference(projection.session, projection.id), presentation }),
+    id: recordId(projection.session, 'dependency-view', { method: methods.presentation, projection: identityReference(projection.session, projection.id), presentation, resolution: resolutionContextIdentity(projection.session, resolution) }),
+    ...(resolution ? { resolution } : {}),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject, parameters: projection.parameters, selection: projection.selection },
     presentation: { ...presentation, expansions: [...new Set(content.moduleEvaluations.flatMap(outcome => outcome.requirement !== 'modules' ? [outcome.requirement] : [])), ...(expanded ? ['repository-layout'] : [])] },
     evaluations: { modules: state(basis), dependencies: state(evaluation), organization: expanded ? state(expanded) : null },
@@ -219,9 +223,10 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
     'Analysis outcomes below describe supported source requests, not complete runtime behavior.',
     `Display bounds: ${counted(view.display.omittedModules, 'module')} and ${counted(view.display.omittedRelationships, 'relationship')} omitted; ${counted(view.display.prunedComponents, 'further descent')} pruned.`];
   for (const [name, outcome] of Object.entries(view.evaluations)) if (outcome) lines.push(`${name}: ${outcome.availability}, ${outcome.execution}, materialization ${outcome.materialization}${outcome.reason ? ` · ${inlineText(outcome.reason)}` : ''}`);
-  if (view.projection.parameters.selector !== null) {
+  lines.push(...(view.resolution?.qualifications ?? []).map(inlineText));
+  if (view.projection.subject === 'selected-modules') {
     if (view.projection.selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; dependency detail is unavailable in this answer.');
-    lines.push(`${view.projection.selection.matches} exact ${view.projection.selection.matches === 1 ? 'match' : 'matches'} · ${view.projection.selection.referenceStatus}`);
+    lines.push(`${view.projection.selection.matches} ${lookupDescription(view.resolution, view.projection.selection.matches) ?? 'selected modules'}`);
     for (const subject of view.subjects) lines.push(`Selected: ${label(subject)}`);
   }
   if (view.graph) {

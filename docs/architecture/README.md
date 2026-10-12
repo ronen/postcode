@@ -79,13 +79,22 @@ that the supplied population omits them. Arrangement exposes unavailable detail
 without inventing population membership or complete empty results.
 
 This is an intermediate implementation of the [request-model plan](../plans/lens-request-model.md).
-The public request path uses shared qualified resolution. Legacy directly callable
-family builders still accept lookup arguments and retain their earlier unsuccessful
-selection forms; their migration accompanies designation-free answer identity.
+The public request path uses shared qualified resolution. Family constructors accept
+resolved subjects and retain qualified answers without lookup spelling or lookup
+status. All four families key the complete qualified selection, normalizing only
+declared reference positions. Names and precise references therefore share an answer
+when the question, subjects, parameters and support are equal. Failed resolution
+does not construct a requested answer; valid empty populations and embedded details
+remain supported. Investigation selections retain frozen revision and association
+snapshots, including valid failed and unavailable outcomes.
+
+Arrangement receives a frozen lookup context separately. Its designation, criteria,
+subjects and population qualifications appear in View JSON; Unicode retains relevant
+lookup wording and qualifications. This context participates in View identity without
+altering answer identity. Arrangement still has no lookup or Evaluation access.
 Prerequisite/evidence attribution, runtime Presentation compatibility and extension
-demonstrations remain to be integrated. Existing
-family descriptors still retain lookup fields; declaration of prospective result
-contracts does not yet establish runtime compatibility across the toolbox.
+demonstrations remain to be integrated. Declaration of prospective result contracts
+does not yet establish runtime compatibility across the toolbox.
 
 ## Responsibilities and flow
 

@@ -71,6 +71,11 @@ test('operation retention is independent of presentation and exact inspection pr
   assert.deepEqual(repeated.accounts, first.accounts);
   assert.equal(agent.inputs.length, 1);
   assert.equal(repeated.usage.calls, 2);
+  const moduleReference = first.references.find(item => item.id === first.selected[0])!.reference;
+  const byReference = view(await f.session.execute({ ...summary, selector: moduleReference, reference: true }));
+  assert.deepEqual(byReference.projection, first.projection, 'name and reference reuse the same retained answer snapshot');
+  assert.notEqual(byReference.id, first.id, 'exposed resolution and reuse reporting affect the View');
+  assert.equal(agent.inputs.length, 1);
   const reference = first.references.find(item => item.id === first.accounts[0]!.id)!.reference;
   const inspected = view(await f.session.execute({ lens: 'inspect', selector: reference, reference: true, presentation: { format: 'json', sourceDetail: true } }));
   assert.deepEqual(inspected.accounts, first.accounts);

@@ -94,7 +94,7 @@ export function resolveInvestigationContent(store: ProgramRecordStore, projectio
     return { record, qualification, inputs: capturedInputs ?? qualification?.inputs ?? null, exposures,
       sources: sourceCandidates.filter(item => item.kind === 'source-evidence' || item.kind === 'repository-artifact') };
   });
-  const candidates = projection.lens === 'summarize' && projection.variant === 'request' && !projection.unsupportedSubject
+  const candidates = projection.lens === 'summarize' && projection.variant === 'request'
     ? projection.subjects.map(id => {
       const module = store.get(id), claim = module.kind === 'module' ? store.get(module.claim) : null;
       if (claim?.kind !== 'claim' || claim.information.type !== 'module') throw new Error('Expected module naming claim');

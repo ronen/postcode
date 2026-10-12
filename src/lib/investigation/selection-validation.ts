@@ -6,39 +6,34 @@ import { selectionStatus } from './selection-record.js';
 
 /** Structural invariants supplement the store's kind/session reference validation. */
 export function validateInvestigationSelection(record: InvestigationSelectionProjection, get: ProgramRecordStore['get']): void {
-  const unsupported = record.variant === 'request' ? record.unsupportedSubject ?? undefined : undefined;
+  if ('selector' in record || 'unsupportedSubject' in record) throw new Error('Invocation-specific fields cannot be retained in an answer');
   for (const ids of [record.subjects, record.displaced, record.associated]) {
     if (new Set(ids).size !== ids.length) throw new Error('Duplicate investigation selection subject');
   }
-  if (record.status !== selectionStatus(record.subjects, unsupported)) throw new Error('Invalid investigation selection status');
-  if (record.selector && 'reference' in record.selector
-    && (record.subjects.length !== 1 || record.subjects[0] !== record.selector.reference)) throw new Error('Invalid resolved selection reference');
+  if (record.status !== selectionStatus(record.subjects)) throw new Error('Invalid investigation selection status');
   if (record.variant === 'request') {
     if (record.lens === 'inspect') throw new Error('Inspection requires the historical variant');
-    if ((record.lens === 'dependency-children' || record.lens === 'dependency-parents') && unsupported !== 'investigram') throw new Error('Investigation children/parents requires an unsupported investigram subject');
-    if (record.outcome.kind === 'no-evaluation' && record.status === 'selected') throw new Error('A selected operation subject requires an outcome');
+    if (record.subjects.length !== 1 || operationForLens(record.lens) === null) throw new Error('Expected one applicable resolved operation subject');
+    if (!['evaluation', 'unavailable'].includes(record.outcome.kind)) throw new Error('A selected operation subject requires an outcome');
     if (record.outcome.kind === 'unavailable' && Object.keys(record.outcome.value).some(key => !['kind', 'code', 'diagnostic'].includes(key))) throw new Error('Unavailable selection cannot retain provider reporting');
     if (record.associated.length) throw new Error('Operation selection cannot include associated listing');
     if (record.outcome.kind === 'evaluation') {
       const evaluation = get(record.outcome.evaluation);
       if (evaluation.kind !== 'investigation-evaluation' || record.subjects.length !== 1
-        || record.subjects[0] !== evaluation.request.subject || unsupported
+        || record.subjects[0] !== evaluation.request.subject
         || operationForLens(record.lens) === null || operationForLens(record.lens) !== evaluation.request.operation
         || canonical(record.roots) !== canonical(evaluation.outcome.kind === 'accepted' ? [evaluation.outcome.root] : [])) {
         throw new Error('Invalid selected evaluation');
       }
     } else if (record.roots.length) throw new Error('Selection without evaluation cannot have result roots');
-    if (record.outcome.kind === 'unavailable' && (record.subjects.length !== 1 || unsupported
+    if (record.outcome.kind === 'unavailable' && (record.subjects.length !== 1
       || operationForLens(record.lens) === null
       || !['configuration-unavailable', 'communication-failure'].includes(record.outcome.value.kind)
       || typeof record.outcome.value.code !== 'string' || typeof record.outcome.value.diagnostic !== 'string')) throw new Error('Invalid unavailable selection');
-    const expectedKind: readonly string[] = unsupported === 'investigram' ? ['investigram'] : unsupported === 'program-subject' ? ['module', 'group']
-      : lenses[record.lens].subjects;
-    if (record.subjects.some(id => !expectedKind.includes(get(id).kind))) throw new Error('Invalid operation subject kind');
-    if (unsupported && record.outcome.kind !== 'no-evaluation') throw new Error('Unsupported selection cannot have evaluation');
+    if (record.subjects.some(id => !lenses[record.lens].subjects.some(kind => kind === get(id).kind))) throw new Error('Invalid operation subject kind');
   } else {
     if (record.lens !== 'inspect') throw new Error('Invalid inspection lens');
-    if (record.variant === 'historical-inspection' && (canonical(record.roots) !== canonical(record.subjects)
+    if (record.variant === 'historical-inspection' && (record.subjects.length !== 1 || canonical(record.roots) !== canonical(record.subjects)
       || record.subjects.some(id => get(id).kind !== 'investigram'))) throw new Error('Historical roots must preserve exact investigram subjects');
     if (record.variant === 'associated-inspection') {
       const basis = get(record.mechanical);

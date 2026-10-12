@@ -2,9 +2,9 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { digest, identityReference, recordId, sessionId } from '../src/lib/identity.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
-import { inspect } from '../src/lib/projections.js';
+import { inspect } from './projection-helpers.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
-import { inspectOrganization } from '../src/lib/organization/projections.js';
+import { inspectOrganization } from './projection-helpers.js';
 import { referenceBinding } from '../src/lib/reference-binding.js';
 import type { EvaluationRecord, ProgramRecord, ProgramRecordStore, RecordId, SessionId } from '../src/lib/records.js';
 import type { Correction, Investigram, InvestigationProvenance, Inconsistency } from '../src/lib/investigation/contracts.js';
@@ -80,8 +80,8 @@ function fixture(session: SessionId = sessionId()) {
     store.put([provenance, ...accounts, ...corrections, evaluation]);
     return { request: evaluation.request, reused: false, attempt: evaluation.attempt, evaluation, unavailable: null };
   }
-  const select = (result: InvestigationSelection) => selectInvestigation(store, session, { lens: 'summarize', selector: 'entry-0' }, [module], result);
-  const historical = (name: string) => selectInvestigation(store, session, { lens: 'inspect', selector: name, reference: true }, [id(name)], null);
+  const select = (result: InvestigationSelection) => selectInvestigation(store, session, { lens: 'summarize' }, [module], result);
+  const historical = (name: string) => selectInvestigation(store, session, { lens: 'inspect' }, [id(name)], null);
   return { store, session, base, id, module, context, source, inputs, evaluation, publish, select, historical };
 }
 
@@ -125,30 +125,25 @@ test('request variants retain semantic outcomes without attempt reporting, pages
   assert.deepEqual(unavailableProjection.variant === 'request' && unavailableProjection.outcome,
     { kind: 'unavailable', value: { kind: 'communication-failure', code: 'provider-error', diagnostic: 'Request failed.' } });
   assert.notEqual(f.select({ ...firstFailure, unavailable: { ...firstFailure.unavailable!, diagnostic: 'Different failure.' } }).id, unavailableProjection.id);
-  assert.throws(() => selectInvestigation(store, session, { lens: 'summarize', selector: 'entry' }, [module], null), /requires an outcome/);
+  assert.throws(() => selectInvestigation(store, session, { lens: 'summarize' }, [module], null), /requires an outcome/);
   for (const lens of ['dependency-children', 'dependency-parents'] as const) assert.throws(() =>
-    selectInvestigation(store, session, { lens, selector: 'A' }, [id('A')], null), /unsupported investigram/);
+    selectInvestigation(store, session, { lens }, [id('A')], null), /resolved investigation subject/);
   if (unavailableProjection.variant !== 'request') throw new Error('Expected request');
   assert.throws(() => store.put([{ ...unavailableProjection, id: id('invalid-provider'),
     outcome: { kind: 'unavailable', value: firstFailure.unavailable! } }]), /provider reporting/);
-  assert.throws(() => store.put([{ ...unavailableProjection, id: id('invalid-no-evaluation'), outcome: { kind: 'no-evaluation' } }]), /requires an outcome/);
+  assert.throws(() => store.put([{ ...unavailableProjection, id: id('invalid-no-evaluation'), outcome: { kind: 'no-evaluation' } } as unknown as InvestigationSelectionProjection]), /requires an outcome/);
   for (const selected of [[], [module, id('module2')]]) {
-    const projection = selectInvestigation(store, session, { lens: 'summarize', selector: 'entry' }, selected, null);
-    assert.equal(projection.status, selected.length ? 'ambiguous' : 'missing');
-    assert.deepEqual(projection.variant === 'request' && projection.outcome, { kind: 'no-evaluation' });
+    assert.throws(() => selectInvestigation(store, session, { lens: 'summarize' }, selected, null), /resolved investigation subject/);
   }
   for (const lens of ['summarize', 'dependency-children', 'dependency-parents'] as const) {
-    const projection = selectInvestigation(store, session, { lens, selector: 'A', reference: true, unsupportedSubject: 'investigram' }, [id('A')], null);
-    assert.equal(projection.status, 'unsupported-subject-lens'); assert.deepEqual(projection.roots, []);
+    assert.throws(() => selectInvestigation(store, session, { lens }, [id('A')], null), /resolved investigation subject/);
   }
-  const unsupported = selectInvestigation(store, session, { lens: 'explain', selector: 'entry', unsupportedSubject: 'program-subject' }, [module], null);
-  assert.equal(unsupported.status, 'unsupported-subject-lens');
-  const missing = selectInvestigation(store, session, { lens: 'inspect', selector: 'investigram-later', reference: true }, [], null);
-  assert.equal(missing.variant, 'historical-inspection'); assert.deepEqual(missing.associated, []);
-  const bound = selectInvestigation(store, session, { lens: 'inspect', selector: 'investigram-later', reference: true }, [id('A')], null);
-  assert.notEqual(bound.id, missing.id); assert.equal(store.get(missing.id), missing);
-  assert.deepEqual(missing.selector, { unresolvedReference: 'investigram-later' });
-  assert.deepEqual(bound.selector, { reference: id('A') });
+  assert.throws(() => selectInvestigation(store, session, { lens: 'explain' }, [module], null), /resolved investigation subject/);
+  assert.throws(() => selectInvestigation(store, session, { lens: 'inspect' }, [], null), /resolved investigation subject/);
+  const bound = selectInvestigation(store, session, { lens: 'inspect' }, [id('A')], null);
+  assert.deepEqual(bound.subjects, [id('A')]);
+  assert.equal('selector' in bound, false);
+  assert.throws(() => store.put([{ ...bound, id: id('invalid-lookup'), selector: { literal: 'A' } } as unknown as InvestigationSelectionProjection]), /Invocation-specific/);
 });
 
 test('retained snapshots reconstruct without session enumeration after corrections, associations and inconsistencies accumulate', () => {
@@ -247,17 +242,14 @@ test('selection identity normalizes only known references and ignores irrelevant
   }
   const a = scenario(sessionId(), false), b = scenario(sessionId(), true);
   assert.equal(identityReference(a.f.session, a.selection.id), identityReference(b.f.session, b.selection.id));
-  const literal = a.f.id('module');
   const unavailable: InvestigationSelection = { request: { operation: 'functionality', subject: a.f.module, parameters: {} },
     reused: false, attempt: null, evaluation: null, unavailable: { kind: 'configuration-unavailable', code: 'disabled', diagnostic: 'Disabled.' } };
-  const literalSelection = selectInvestigation(a.f.store, a.f.session, { lens: 'summarize', selector: literal }, [a.f.module], unavailable);
-  const referenceSelection = selectInvestigation(a.f.store, a.f.session, { lens: 'summarize', selector: literal, reference: true }, [a.f.module], unavailable);
-  assert.notEqual(literalSelection.id, referenceSelection.id);
-  const { id: _id, ...payload } = literalSelection;
-  assert.deepEqual((selectionIdentity(payload) as typeof payload).selector, { literal }, 'reference-shaped literal remains verbatim');
-  assert.deepEqual(selectionIdentity(literalSelection), selectionIdentity(payload), 'own identity is never part of its key');
-  const spelling = selectInvestigation(a.f.store, a.f.session, { lens: 'summarize', selector: 'different-compact-spelling', reference: true }, [a.f.module], unavailable);
-  assert.equal(referenceSelection, spelling, 'resolved selectors retain the precise subject, not a spelling');
+  const selection = selectInvestigation(a.f.store, a.f.session, { lens: 'summarize' }, [a.f.module], unavailable);
+  const repeated = selectInvestigation(a.f.store, a.f.session, { lens: 'summarize' }, [a.f.module], unavailable);
+  assert.equal(selection, repeated, 'identical qualified payloads resubmit consistently');
+  const { id: _id, ...payload } = selection;
+  assert.equal(Object.hasOwn(selectionIdentity(payload) as object, 'selector'), false, 'designation is excluded from retained identity');
+  assert.deepEqual(selectionIdentity(selection), selectionIdentity(payload), 'own identity is never part of its key');
 });
 
 test('retention has no revision, proximal-citation, association-page or prose bounds', () => {
@@ -279,8 +271,8 @@ test('retention has no revision, proximal-citation, association-page or prose bo
   const associated = selectAssociatedInspection(store, mechanical.id, [module]);
   assert.deepEqual(associated.associated, Array.from({ length: 27 }, (_, n) => id(`replacement-${n}`)));
   assert.equal(resolveInvestigationContent(store, associated).accounts.filter(item => associated.associated.includes(item.id)).length, 27);
-  const missingMechanical = inspect(store, f.evaluation, 'unknown');
-  const empty = selectAssociatedInspection(store, missingMechanical.id, []);
+  const emptyMechanical = inspect(store, f.evaluation, 'embedded-empty', false, []);
+  const empty = selectAssociatedInspection(store, emptyMechanical.id, []);
   assert.equal(empty.variant, 'associated-inspection'); assert.deepEqual(empty.associated, []);
   assert.equal(store.get(empty.id), empty);
 });
@@ -319,18 +311,18 @@ test('selection validation rejects wrong kinds, sessions and incomplete graphs a
     { ...projection, roots: [] }, { ...projection, relations: projection.relations.slice(0, 1) },
     { ...projection, navigation: [] }, { ...projection, revisions: [] },
     { ...projection, revisions: projection.revisions.map(item => revisionPage(item)) },
-    { ...projection, status: 'missing' },
+    { ...projection, status: 'empty' },
   ];
   for (const [index, value] of variants.entries()) {
     const invalid = { ...value, id: f.id(`invalid-${index}`) };
     assert.throws(() => f.store.put([marker, invalid]));
     assert.equal(f.store.lookup(marker.id), undefined); assert.equal(f.store.lookup(invalid.id), undefined);
   }
-  assert.throws(() => f.store.put([{ ...projection, status: 'missing' }]), /collision/);
+  assert.throws(() => f.store.put([{ ...projection, status: 'empty' }]), /collision/);
   assert.equal(f.store.get(projection.id), projection);
 });
 
-test('binding port cannot allocate outside its typed population, and eager resolution does not reserve colliding spellings', () => {
+test('binding port cannot allocate outside its typed population or partially bind invalid batches', () => {
   const f = fixture(), prefix = '12345678';
   const colliding = (tail: string) => `${f.session}:test:${prefix}${tail.repeat(56)}` as RecordId;
   const a = colliding('a'), b = colliding('b');
@@ -341,16 +333,15 @@ test('binding port cannot allocate outside its typed population, and eager resol
     { ...f.base, id: f.id(`collision-claim-${index}`), kind: 'claim', subject: id, context: f.context,
       information: { type: 'module', name: null, handle: `collision-${index}`, handleStatus: 'generated-navigation-aid', handleProvenance: 'anonymous-fallback', discoveryFacets: [] } },
   ]));
-  const selection = selectInvestigation(f.store, f.session, { lens: 'summarize', selector: 'collision' }, [a, b], null);
-  const content = resolveInvestigationContent(f.store, selection);
-  const port = referenceBinding(f.store, f.session, content.references);
+  const references = [{ id: a, kind: 'module' as const }, { id: b, kind: 'module' as const }];
+  const port = referenceBinding(f.store, f.session, references);
   assert.deepEqual(Object.keys(port), ['bind']);
   assert.throws(() => port.bind([a, f.module], 'module'), /population/);
   assert.throws(() => port.bind([a], 'investigram'), /kind/);
-  assert.equal(port.bind([b], 'module').get(b), `module-${prefix}`, 'neither eager content nor invalid batches allocated a');
+  assert.equal(port.bind([b], 'module').get(b), `module-${prefix}`, 'invalid batches did not allocate a');
   assert.equal(port.bind([a], 'module').get(a), `module-${prefix}a`);
   assert.equal(port.bind([b], 'module').get(b), `module-${prefix}`);
-  assert.throws(() => referenceBinding(f.store, sessionId(), content.references), /population/);
+  assert.throws(() => referenceBinding(f.store, sessionId(), references), /population/);
 });
 
 test('arrangement is self-contained, preserves bounded disclosure and distinguishes presentation from Projection identity', () => {
@@ -366,7 +357,7 @@ test('arrangement is self-contained, preserves bounded disclosure and distinguis
     calls.push({ ids, kind });
     return new Map(ids.map(id => [id, (kind === 'investigram' ? spellings : modules).get(id)!]));
   } };
-  const options = { selector: 'entry-0', presentation: { format: 'json' as const, sourceDetail: false } };
+  const options = { presentation: { format: 'json' as const, sourceDetail: false } };
   const report = { reused: false, attempt: result.attempt };
   const usage = usageSummary([]);
   const plain = arrangeInvestigationView(content, options, report, usage, bindings);
@@ -405,7 +396,7 @@ test('association continuation identity uses precise selected matches in both Vi
   const f = fixture(), { store, module, id } = f;
   f.publish([{ name: 'A' }, { name: 'associated', associations: [id('A'), module] }]);
   const content = resolveInvestigationContent(store, f.historical('A'));
-  const options = { selector: 'A', presentation: { format: 'json' as const, sourceDetail: false } };
+  const options = { presentation: { format: 'json' as const, sourceDetail: false } };
   const bindings = (spelling: string) => ({ bind(ids: readonly RecordId[]) { return new Map(ids.map(id => [id, id === f.id('associated') ? spelling : `ref-${id}`])); } });
   const first = arrangeInvestigationView(content, { ...options, after: 'short' }, null, usageSummary([]), bindings('short'));
   const second = arrangeInvestigationView(content, { ...options, after: 'longer' }, null, usageSummary([]), bindings('longer'));

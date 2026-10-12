@@ -1,6 +1,7 @@
+import { mechanicalAnswerIdentity } from '../answer-identity.js';
 import { completedMaterialization } from '../evaluation-state.js';
-import { identityReference, compare, methods, recordId } from '../identity.js';
-import { selectModules } from '../module-selection.js';
+import { compare, methods, recordId } from '../identity.js';
+import { selectResolvedModules } from '../module-selection.js';
 import { isModuleClaim } from '../records.js';
 import type { EvaluationState, ProgramRecordStore, RecordId } from '../records.js';
 import { deriveDependencyGraph } from './graph.js';
@@ -11,8 +12,8 @@ const complete = (state: EvaluationState) => state.applicability === 'applicable
 
 /** These lenses select materialized relationships, never transitive reach or display bounds. */
 function project(store: ProgramRecordStore, evaluation: DependencyEvaluationRecord,
-  lens: DependencyProjectionRecord['lens'], selector: string | null, reference: boolean,
-  organization: RecordId | null, resolved?: readonly RecordId[]): DependencyProjectionRecord {
+  lens: DependencyProjectionRecord['lens'], resolved: readonly RecordId[] | null,
+  organization: RecordId | null): DependencyProjectionRecord {
   const stored = store.get(evaluation.id);
   if (stored.kind !== 'dependency-evaluation') throw new Error('Expected dependency evaluation');
   evaluation = stored;
@@ -27,8 +28,9 @@ function project(store: ProgramRecordStore, evaluation: DependencyEvaluationReco
   });
   const population = moduleClaims.filter(claim => claim.information.discoveryFacets.includes('project')).map(claim => claim.subject);
   const projectModules = new Set(population);
-  const selected = selector === null ? null : selectModules(store, basis, selector, reference, resolved);
+  const selected = resolved === null ? null : selectResolvedModules(store, basis, resolved);
   const subjects = selected?.modules ?? population;
+  if (resolved !== null && subjects.length === 0) throw new Error('Dependency selection requires resolved subjects');
   const subjectSet = new Set(subjects);
   const allRelationships = evaluation.relationships.map(id => {
     const record = store.get(id);
@@ -75,34 +77,31 @@ function project(store: ProgramRecordStore, evaluation: DependencyEvaluationReco
     if (expansion.kind !== 'dependency-organization-evaluation' || expansion.dependencyEvaluation !== evaluation.id) throw new Error('Expected matching dependency organization expansion');
     expansion.contexts.forEach(id => contexts.add(id));
   }
-  const selectedReference = subjects.find(id => id === selector);
-  // A resolved reference and a literal selector must occupy disjoint key spaces.
-  const selectorKey = selectedReference ? { reference: identityReference(evaluation.session, selectedReference) } : selector;
   const method = methods.dependencyProjection;
-  const projection: DependencyProjectionRecord = {
+  const payload: Omit<DependencyProjectionRecord, 'id'> = {
     kind: 'dependency-projection', method, session: evaluation.session,
-    id: recordId(evaluation.session, 'dependency-projection', { method, evaluation: identityReference(evaluation.session, evaluation.id), lens, selector: selectorKey, reference, subjects: subjects.map(id => identityReference(evaluation.session, id)), organization: identityReference(evaluation.session, organization) }),
-    lens, subject: selector === null ? 'configured-project' : 'selected-modules', parameters: { selector, reference },
+    lens, subject: resolved === null ? 'configured-project' : 'selected-modules', parameters: {},
     evaluation: evaluation.id, subjects, modules: [...included].sort(compare), relationships: relationships.map(edge => edge.id),
     occurrences, nonEdgeRequests, coverage, contexts: [...contexts],
     opaqueSubjects: subjects.filter(id => !projectModules.has(id)),
     graph: lens === 'dependency-structure' ? deriveDependencyGraph(population, relationships, complete(evaluation) && complete(basis)) : null,
     selection: selected?.selection ?? { matches: population.length, population: population.length,
-      populationEstablished: complete(basis), referenceStatus: 'current' },
+      populationEstablished: complete(basis) },
     expansions: { moduleEvaluations: outcomes.map(outcome => outcome.id), moduleClaims: moduleExpansionClaims, organization },
   };
+  const projection = { ...payload, id: recordId(evaluation.session, 'dependency-projection', mechanicalAnswerIdentity(payload)) };
   store.put([projection]);
   return projection;
 }
 
 export function dependencyStructure(store: ProgramRecordStore, evaluation: DependencyEvaluationRecord, organization: RecordId | null = null) {
-  return project(store, evaluation, 'dependency-structure', null, false, organization);
+  return project(store, evaluation, 'dependency-structure', null, organization);
 }
-export function dependencyChildren(store: ProgramRecordStore, evaluation: DependencyEvaluationRecord, selector: string,
-  reference = false, organization: RecordId | null = null, resolved?: readonly RecordId[]) {
-  return project(store, evaluation, 'dependency-children', selector, reference, organization, resolved);
+export function dependencyChildren(store: ProgramRecordStore, evaluation: DependencyEvaluationRecord, subjects: readonly RecordId[],
+  organization: RecordId | null = null) {
+  return project(store, evaluation, 'dependency-children', subjects, organization);
 }
-export function dependencyParents(store: ProgramRecordStore, evaluation: DependencyEvaluationRecord, selector: string,
-  reference = false, organization: RecordId | null = null, resolved?: readonly RecordId[]) {
-  return project(store, evaluation, 'dependency-parents', selector, reference, organization, resolved);
+export function dependencyParents(store: ProgramRecordStore, evaluation: DependencyEvaluationRecord, subjects: readonly RecordId[],
+  organization: RecordId | null = null) {
+  return project(store, evaluation, 'dependency-parents', subjects, organization);
 }

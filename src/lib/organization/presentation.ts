@@ -1,3 +1,5 @@
+import { lookupDescription, resolutionContextIdentity } from '../resolution-context.js';
+import type { ResolutionContext } from '../resolution-context.js';
 import { renderAssociatedInvestigations } from '../investigation/associations.js';
 import type { AssociatedInvestigations } from '../investigation/associations.js';
 import { displayWidth, padDisplay } from '../terminal-layout.js';
@@ -58,6 +60,7 @@ export interface QualifiedOrganizationView {
   readonly investigations?: AssociatedInvestigations;
   readonly schema: 'postcode-organization-view/1-experimental';
   readonly id: RecordId;
+  readonly resolution?: ResolutionContext;
   readonly projection: Pick<OrganizationProjectionRecord, 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
   readonly presentation: Presentation & { readonly expansions: readonly string[] };
   readonly evaluations: {
@@ -95,18 +98,18 @@ export interface QualifiedOrganizationView {
 
 /** Coordinate population bindings before arranging the resolved selection. */
 export function createOrganizationView(store: ProgramRecordStore, projection: OrganizationProjectionRecord,
-  presentation: Presentation): QualifiedOrganizationView {
+  presentation: Presentation, resolution?: ResolutionContext): QualifiedOrganizationView {
   const content = resolveOrganizationProjection(store, projection);
   const population = store.entityIds(content.evaluation.groups, 'group');
   const groups = new Map([...population, ...store.entityIds(projection.groups, 'group')]);
   const modules = store.entityIds(content.moduleEvaluation.modules, 'module');
   const detail = content.moduleDetail ? new Map([...store.entityIds(content.moduleDetail.discovery.modules, 'module'), ...store.entityIds(content.moduleDetail.projection.modules, 'module')]) : new Map<RecordId, string>();
-  return arrangeOrganizationView(content, { groups, modules, detail }, presentation);
+  return arrangeOrganizationView(content, { groups, modules, detail }, presentation, resolution);
 }
 
 export function arrangeOrganizationView(content: OrganizationProjectionContent,
   bindings: { readonly groups: ReadonlyMap<RecordId, string>; readonly modules: ReadonlyMap<RecordId, string>; readonly detail: ReadonlyMap<RecordId, string> },
-  presentation: Presentation): QualifiedOrganizationView {
+  presentation: Presentation, resolution?: ResolutionContext): QualifiedOrganizationView {
   const { projection, evaluation: outcome, repository: captured } = content;
   if (presentation.sourceDetail && projection.lens !== 'inspect') throw new Error('Source detail requires inspection');
   const evidence = captured.capture.status === 'available' ? captured.capture.evidence : null;
@@ -178,7 +181,8 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
   });
   return {
     schema: 'postcode-organization-view/1-experimental',
-    id: recordId(projection.session, 'organization-view', { projection: identityReference(projection.session, projection.id), presentation, method: methods.presentation }),
+    id: recordId(projection.session, 'organization-view', { projection: identityReference(projection.session, projection.id), presentation, resolution: resolutionContextIdentity(projection.session, resolution), method: methods.presentation }),
+    ...(resolution ? { resolution } : {}),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,
       parameters: projection.parameters, selection: projection.selection },
     presentation: { ...presentation, expansions: [...projection.expansions.requested, ...new Set(content.moduleEvaluations.flatMap(outcome => outcome.requirement !== 'modules' ? [outcome.requirement] : []))] },
@@ -218,8 +222,9 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
   const inspection = view.projection.lens === 'inspect';
   const lines = [inspection ? 'Inspect · groups and modules' : `Organization · ${view.projection.subject === 'repository' ? 'repository' : 'configured project'}`,
     `Session ${view.projection.session.replace(/^session:/, '')}`,
-    inspection ? `${view.projection.selection.matches} exact matches for ${view.projection.parameters.reference ? '@' : ''}${inlineText(view.projection.parameters.selector ?? '')}${view.projection.parameters.reference ? ` · ${view.projection.selection.referenceStatus}` : ''}`
+    inspection ? `${view.projection.selection.matches} ${lookupDescription(view.resolution, view.projection.selection.matches) ?? 'selected subjects'}`
       : `${view.display.selectedGroups} selected groups · ${view.repository.groups} repository groups`];
+  lines.push(...(view.resolution?.qualifications ?? []).map(inlineText));
   if (view.projection.selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; their detail is unavailable in this answer.');
   if (!view.projection.selection.populationEstablished) lines.push('Selection population is not fully established.');
   for (const [name, state] of Object.entries(view.evaluations)) {

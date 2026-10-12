@@ -273,7 +273,12 @@ Core construction retains an immutable investigation selection Projection for ea
 qualified answer. It fixes the selected subjects and outcome, original-to-selected
 account relationships, displacement, navigation, associated population and complete
 revision snapshots. Its identity excludes format, display limits, continuation,
-reference lifetime, usage and invocation reporting. Unavailable outcomes retain
+reference lifetime, usage, designation spelling and invocation reporting. A name and
+precise reference selecting the same subject/outcome and revision snapshot share
+this answer. Lookup context is supplied separately to arrangement and enters the
+View identity when exposed. Unresolved or unsupported subjects do not create
+selection records; a valid associated inspection can still have no accounts.
+Unavailable outcomes retain
 kind, code and diagnostic; provider status, body and request ID remain reporting.
 The store validates references and the selection's variant-specific invariants.
 

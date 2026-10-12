@@ -7,7 +7,7 @@ import { test } from 'node:test';
 import { evaluateModules } from '../src/lib/evaluation.js';
 import { recordId } from '../src/lib/identity.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
-import { inspectOrganization, organization } from '../src/lib/organization/projections.js';
+import { inspectOrganization, organization } from './projection-helpers.js';
 import type { GroupPropertiesClaim, ModulePlacementClaim, OrganizationClaims, OrganizationEvaluationRecord } from '../src/lib/organization/records.js';
 import type { EvaluationRecord, ModuleClaim, ProgramRecordStore, RecordId } from '../src/lib/records.js';
 import { discover, inputBasis } from './helpers.js';
@@ -87,15 +87,13 @@ test('explicit references select group IDs and inspect artifact-only groups outs
     const manual = groups(store, outcome).get('manual')!;
     const compact = store.entityIds(outcome.groups, 'group').get(manual)!;
     assert.match(compact, /^group-[a-f0-9]{8,64}$/);
-    assert.equal(inspectOrganization(store, outcome, compact).selection.referenceStatus, 'current');
+    assert.throws(() => inspectOrganization(store, outcome, compact), /request coordination/);
     assert.deepEqual(inspectOrganization(store, outcome, compact, true).groups, [manual]);
-    const stale = inspectOrganization(store, outcome, 'group-00000000', true);
-    assert.equal(stale.selection.referenceStatus, 'unknown-reference');
-    assert.equal(stale.groups.length, 0);
+    assert.throws(() => inspectOrganization(store, outcome, 'group-00000000', true), /request coordination/);
     assert.deepEqual(inspectOrganization(store, outcome, manual).groups, [manual]);
     assert.deepEqual(inspectOrganization(store, outcome, 'manual').groups, [manual]);
-    assert.equal(inspectOrganization(store, outcome, 'data/value.json').selection.matches, 0);
-    assert.equal(inspectOrganization(store, outcome, 'repository').groups.length, 0);
+    assert.throws(() => inspectOrganization(store, outcome, 'data/value.json'), /request coordination/);
+    assert.throws(() => inspectOrganization(store, outcome, 'repository'), /request coordination/);
   });
 });
 
