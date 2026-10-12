@@ -84,6 +84,10 @@ Context: The agent asked whether the completed answer-identity review gate was s
 
 Yes, continue
 
+### 2026-10-12 — Request-attribution review disposition and corrections
+
+The review has been completed; please asses and act as usual
+
 ## Outcome
 
 Intermediate checkpoint, 2026-10-11: implementation commit `a9c8189f042d5fe6cabf27db414b995a5972d0f6` establishes normalized request reporting, shared Lens-to-operation declarations, explicit View/usage/parameter-resolution execution alternatives, parent usage finalization and observation-envelope version 2. Usage no longer has a synthetic Projection/View descriptor. Module matching is shared without the dependency-selection inspection side effect. The local observation convention now specifies version-two batches; user-facing and descriptive documentation records the implemented subset and remaining gaps.
