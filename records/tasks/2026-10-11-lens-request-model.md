@@ -35,6 +35,12 @@ Context: The agent asked whether to investigate the reviewer's earlier intermitt
 
 yes investigate it
 
+### 2026-10-12 — Continue after intermediate review
+
+Context: Following the investigation's conclusion and its recorded uncertainty about the historical failure, the human accepted continuing implementation:
+
+That's fine, continue implementation
+
 ## Outcome
 
 Intermediate checkpoint, 2026-10-11: implementation commit `a9c8189f042d5fe6cabf27db414b995a5972d0f6` establishes normalized request reporting, shared Lens-to-operation declarations, explicit View/usage/parameter-resolution execution alternatives, parent usage finalization and observation-envelope version 2. Usage no longer has a synthetic Projection/View descriptor. Module matching is shared without the dependency-selection inspection side effect. The local observation convention now specifies version-two batches; user-facing and descriptive documentation records the implemented subset and remaining gaps.
