@@ -8,6 +8,15 @@ This document contains human-maintained conventions governing how development wo
 - Prefer explicit HTML anchors, such as `<a id="unexpected-findings"></a>`, for links to sections within repository Markdown documents. Use stable, descriptive lowercase slugs with hyphens, independent of section numbering or exact heading wording, rather than relying on Markdown-generated heading anchors.
 - Preserve an anchor when its section is renamed or reordered while retaining the same meaning. Adding anchors or updating links remains subject to the target document's editing and historical-record rules.
 
+<a id="pull-request-descriptions"></a>
+## Pull Request Descriptions
+
+Write pull request descriptions for a reader who needs to understand why the PR exists and what it accomplishes. Lead with the problem or purpose and the resulting behavior. Briefly state relevant verification and any material limitation, risk, or unexpected scope.
+
+Keep the description proportionate to the change. A small PR may need only a short paragraph; a substantial one may benefit from a few bullets or sections. Summarize the final result rather than recounting implementation and review history.
+
+Link to plans, decisions, validation reports, or review records when their detail is useful. Do not duplicate those records or turn the description into a reviewer prompt unless the human explicitly requests that. Update the description when the scope changes so it continues to describe the PR as a whole.
+
 ## Disposable Scratch Material
 
 - Put repository-specific scratch files and directories under a descriptively named root-level directory beginning with `_`, such as `_analysis/`, `_investigation/`, or `_rendered/`. The root `.gitignore` reserves this namespace for uncommitted working material.

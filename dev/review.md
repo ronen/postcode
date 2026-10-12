@@ -87,7 +87,12 @@ Assemble the retrieved components into a findings record under a clearly marked 
 
 A pull-request review or external review system may be the transport for a review, but it does not replace durable repository evidence. The findings record may link to detailed external comments while preserving enough context and conclusions for the repository record to remain intelligible.
 
+<a id="review-cycle"></a>
 ## Review cycle
+
+When a completed review is available, assess every finding and act on findings whose resolution is clear and within the authorized scope. Record dispositions through the existing review workflow; no repeated instruction from the human is needed.
+
+Obtain human direction before rejecting or materially qualifying a finding, choosing between consequential alternatives, or expanding scope. Investigate reviewer-identified uncertainty only as needed to determine whether a finding has a clear resolution within the authorized scope. Ask for human direction if resolving it requires substantial additional investigation, or before proceeding with affected work while material uncertainty remains unresolved. Continue independent corrections whose resolution is clear.
 
 Keep repeated review and correction under one handoff lightweight while its assignment remains applicable:
 
