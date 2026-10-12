@@ -78,6 +78,12 @@ Yes, I agree with both.
 One boundary detail: an empty selection reaching the ordinary resolved-subject constructor is an **internal invariant violation**. An unsuccessful user lookup should still return a resolution result from coordination, without calling that constructor.
 The useful regression checks are equal payloads/IDs for permutations of the same subjects, deterministic outside-population ordering, rejection of empty ordinary inspection, and preservation of legitimate embedded-empty detail. I see no reason to choose the alternatives.
 
+### 2026-10-12 — Accept answer-identity gate and continue
+
+Context: The agent asked whether the completed answer-identity review gate was sufficient to continue implementation. The human replied:
+
+Yes, continue
+
 ## Outcome
 
 Intermediate checkpoint, 2026-10-11: implementation commit `a9c8189f042d5fe6cabf27db414b995a5972d0f6` establishes normalized request reporting, shared Lens-to-operation declarations, explicit View/usage/parameter-resolution execution alternatives, parent usage finalization and observation-envelope version 2. Usage no longer has a synthetic Projection/View descriptor. Module matching is shared without the dependency-selection inspection side effect. The local observation convention now specifies version-two batches; user-facing and descriptive documentation records the implemented subset and remaining gaps.
