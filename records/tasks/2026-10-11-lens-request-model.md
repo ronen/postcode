@@ -60,6 +60,12 @@ Yes, I agree with both recommendations.
 
 A raw ID and its compact reference should resolve to the same subject and, with otherwise identical effective inputs, the same qualified answer. Their supplied spellings can remain distinct in request reporting.
 
+### 2026-10-12 — Accept subject-resolution gate and continue
+
+Context: The agent asked whether the completed subject-resolution review gate was sufficient to continue implementation. The human replied:
+
+Yes, continue
+
 ## Outcome
 
 Intermediate checkpoint, 2026-10-11: implementation commit `a9c8189f042d5fe6cabf27db414b995a5972d0f6` establishes normalized request reporting, shared Lens-to-operation declarations, explicit View/usage/parameter-resolution execution alternatives, parent usage finalization and observation-envelope version 2. Usage no longer has a synthetic Projection/View descriptor. Module matching is shared without the dependency-selection inspection side effect. The local observation convention now specifies version-two batches; user-facing and descriptive documentation records the implemented subset and remaining gaps.
