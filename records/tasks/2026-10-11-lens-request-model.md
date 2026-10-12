@@ -138,7 +138,13 @@ Request-attribution review corrections, 2026-10-13: both actionable findings are
 
 The [request-attribution disposition](../reviews/lens-request-model/2026-10-13-request-attribution-disposition.md), committed in `6a2d971`, records every finding, the repository-scale corrections and residual limits. It preserves the original handoff and findings. The reviewer recommended a narrow timing/size re-check; implementation remains paused for human gate judgment and any requested re-check under that handoff. The task remains active, with compatibility, catalog/operation definitions, extension demonstrations and final integrated review/acceptance still required. The historical intermittent CLI failure remains unexplained.
 
+Request-attribution round 2, 2026-10-13: the [narrow re-check](../reviews/lens-request-model/2026-10-12-request-attribution-round-2-findings.md) reports no actionable findings and confirms F1 and F2 are resolved at `aafaae226f24b503fbc6f89b14026ef1f950ae9f`. The reviewer recommends continuing. The [disposition](../reviews/lens-request-model/2026-10-13-request-attribution-disposition.md), updated in `b09aeec`, records that assessment, all non-defect observations and residual verification limits without changing the authored findings. No implementation correction is required. The task remains active and broader implementation remains paused pending the human's acceptance of this intermediate gate; the recommendation alone is not acceptance.
+
 ## Verification
+
+### Request-attribution round 2 evidence — 2026-10-13
+
+The independent reviewer passed `npm run check` and all 535 tests, reviewed the correction diff, and repeated repository-scale timing/size and repeated-correlation-ID probes. Timings match the earlier baseline within single-run variation; the 25-query fixture sent 0.59 MB of increments rather than 61 MB of snapshots. The implementer read the full findings, inspected finalization behavior, confirmed the source/test/fixture/package diff from the reviewed target is empty, and checked the record diff. This turn changes only review/task records; no fresh implementation test run or additional scheduling, heap, hosted-investigator or post-finish-defect coverage is claimed.
 
 ### Request-attribution review correction verification — 2026-10-13
 
