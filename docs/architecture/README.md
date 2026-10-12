@@ -59,13 +59,24 @@ request-resolution report. The parent finalizes reports using its authoritative
 usage ledger. Publication uses the actual normalized request for version-two
 observations, including follow-ups, and emits a View event only for a program
 View. Input checks and observation-delivery warnings apply to every alternative.
-Module matching is shared between module and dependency selection without
-constructing an unused inspection answer.
+Subject resolution consumes qualified module/group populations and the Lens's
+applicability/cardinality. Precise references use read-only Session binding lookup
+before any applicability-dependent acquisition; prefixes do not establish existence.
+Unsuccessful lookup returns a resolution report without constructing the requested
+Projection. Reports preserve frozen candidates, criteria, population outcomes and
+qualification; successful observations carry resolution information separately.
+Module/name matching is shared with family selection without constructing an unused
+inspection answer. Compatible bound subjects absent from a supplied mechanical
+evaluation remain identified: construction retains their naming support and records
+that the supplied population omits them. Arrangement exposes unavailable detail
+without inventing population membership or complete empty results.
 
 This is an intermediate implementation of the [request-model plan](../plans/lens-request-model.md).
-Qualified subject resolution, unsuccessful-lookup retention, designation-free
-answer identity, prerequisite/evidence attribution, runtime Presentation
-compatibility and extension demonstrations remain to be integrated. Existing
+The public request path uses shared qualified resolution. Legacy directly callable
+family builders still accept lookup arguments and retain their earlier unsuccessful
+selection forms; their migration accompanies designation-free answer identity.
+Prerequisite/evidence attribution, runtime Presentation compatibility and extension
+demonstrations remain to be integrated. Existing
 family descriptors still retain lookup fields; declaration of prospective result
 contracts does not yet establish runtime compatibility across the toolbox.
 

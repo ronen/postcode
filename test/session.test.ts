@@ -41,13 +41,19 @@ test('published navigation observations distinguish session references from exac
       const code = await publishCommand(session, parsed.request, item.command, configPath, index + 1,
         { stdout: () => {}, stderr: () => {} },
         { async submit(batch) { observed = batch; return { accepted: true }; } });
-      assert.equal(code, 0, item.command);
+      assert.equal(code, item.matches ? 0 : 3, item.command);
       assert.equal(observed!.session, session.id);
       const recorded = observed!.records.find(record => record.kind === 'request')!.value as import('../src/lib/request-reporting.js').RequestContext;
       assert.equal(recorded.request.kind, 'lens');
       if (recorded.request.kind !== 'lens') throw new Error('Expected Lens request');
       assert.equal(recorded.request.designation.kind, item.reference ? 'reference' : 'name', item.command);
       assert.deepEqual(recorded.request.parameters, {});
+      if (!item.matches) {
+        const report = observed!.records.find(record => record.kind === 'resolution-result')!.value as import('../src/lib/request-reporting.js').ResolutionReport;
+        assert.equal(report.resolution.reason, item.reference ? 'unknown-reference' : 'missing');
+        assert.equal(observed!.events.some(event => event.type === 'view-produced'), false);
+        continue;
+      }
       const view = observed!.records.find(record => record.kind === 'qualified-view')!.value as {
         projection: { selection: { matches: number; referenceStatus: string } };
       };
@@ -156,10 +162,11 @@ test('Unicode reference misses preserve reference syntax and status in organizat
   try {
     const exact = (requireView(await opened.session.execute(inspection)));
     assert.equal(exact.view.projection.selection.matches, 1);
-    const miss = (requireView(await opened.session.execute({ ...inspection, reference: true })));
-    assert.equal(miss.view.projection.selection.matches, 0);
-    assert.match(miss.rendered, /0 exact matches for @forward · unknown-reference/);
-    assert.equal(miss.view.schema, 'postcode-organization-view/1-experimental');
+    const miss = await opened.session.execute({ ...inspection, reference: true });
+    assert.equal(miss.kind, 'resolution');
+    assert.equal(miss.report.resolution.reason, 'unknown-reference');
+    assert.match(miss.rendered, /Subject: @forward/);
+    assert.match(miss.rendered, /Reason: unknown-reference/);
     const { inspect } = await import('../src/lib/projections.js');
     const { createView, renderUnicode } = await import('../src/lib/presentation.js');
     const { store, evaluation } = (await discover(configPath));

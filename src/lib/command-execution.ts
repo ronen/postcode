@@ -63,7 +63,7 @@ export async function publishCommand(session: {
     stderr += final; output.stderr(final);
   }
   const produced = published?.kind === 'view' ? observationBatch(published.view, stdout,
-    { configPath, repositoryRoot: published.repositoryRoot, methods: published.methods }, published.context, command) : undefined;
+    { configPath, repositoryRoot: published.repositoryRoot, methods: published.methods }, published.context, command, published.resolution) : undefined;
   await submitObservation(sink, commandObservation(session.id, command, { supplied: context?.request.kind === 'rejected'
     ? { representation: 'omitted', reason: 'Raw invocation omitted; see rejected request input and representation limits.' } : supplied, context: published?.context ?? context, configPath }, status, stdout, stderr, produced, usage,
     published && published.kind !== 'view' ? { kind: published.kind === 'resolution' ? 'resolution-result' : 'usage-report', value: published.report } : undefined, published?.context ?? context), output);

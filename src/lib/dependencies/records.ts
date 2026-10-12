@@ -102,6 +102,8 @@ export interface DependencyProjectionRecord extends RecordContext {
   readonly contexts: readonly RecordId[];
   readonly graph: DependencyGraph | null;
   readonly selection: {
+    /** Established subjects absent from the supplied evaluation; no population membership is asserted. */
+    readonly outsidePopulation?: readonly RecordId[];
     readonly matches: number;
     readonly population: number;
     readonly populationEstablished: boolean;

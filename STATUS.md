@@ -43,8 +43,9 @@ This page summarizes current capabilities and significant limits. The [capabilit
 ## Current limits
 
 - **[Request-model integration](docs/plans/lens-request-model.md):** normalized request
-  reporting and non-View usage are implemented. Shared qualified subject resolution,
-  answer identity and prerequisite attribution remain in progress.
+  reporting, non-View usage and qualified subject resolution are implemented at the
+  request boundary. Unsuccessful lookups return reports with candidates and limits.
+  Answer identity, prerequisite attribution and Presentation compatibility remain in progress.
 
 - **Hosted interpretation:** [formative assessments](records/validation/module-investigation/pass-01/report.md)
   show useful source-qualified summaries alongside omitted qualifications. A

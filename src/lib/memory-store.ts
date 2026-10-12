@@ -93,6 +93,29 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
           throw new Error(`Expected ${kind} reference`);
         }
       };
+      if (record.kind === 'projection' || record.kind === 'organization-projection' || record.kind === 'dependency-projection') {
+        const get = (id: RecordId) => pending.get(id) ?? this.#records.get(id);
+        let subjects: readonly RecordId[], population: readonly RecordId[];
+        if (record.kind === 'projection') {
+          const basis = record.evaluations[0] ? get(record.evaluations[0]) : undefined;
+          if (basis?.kind !== 'evaluation') throw new Error('Expected projection module basis');
+          subjects = record.modules; population = basis.modules;
+        } else if (record.kind === 'dependency-projection') {
+          const evaluation = get(record.evaluation);
+          const basis = evaluation?.kind === 'dependency-evaluation' ? get(evaluation.moduleEvaluation) : undefined;
+          if (basis?.kind !== 'evaluation') throw new Error('Expected dependency module basis');
+          subjects = record.subjects; population = basis.modules;
+        } else {
+          const evaluation = get(record.evaluation);
+          const basis = evaluation?.kind === 'organization-evaluation' ? get(evaluation.moduleEvaluation) : undefined;
+          if (evaluation?.kind !== 'organization-evaluation' || basis?.kind !== 'evaluation') throw new Error('Expected organization basis');
+          subjects = [...record.groups, ...record.modules]; population = [...evaluation.groups, ...basis.modules];
+        }
+        const members = new Set(population);
+        if (canonical(record.selection.outsidePopulation ?? []) !== canonical(subjects.filter(id => !members.has(id)))) {
+          throw new Error('Invalid subject materialization qualification');
+        }
+      }
       switch (record.kind) {
         case 'investigation-selection-projection':
           for (const reference of selectionReferences(record)) {
@@ -434,6 +457,14 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
   }
 
   lookup(id: RecordId): ProgramRecord | undefined { return this.#records.get(id); }
+
+  /** Classification never allocates bindings or guesses a target from a prefix. */
+  boundEntity(session: SessionId, reference: string): RecordId | undefined {
+    const id = this.#bindings.get(session)?.resolve(reference) ?? reference as RecordId;
+    const record = this.#records.get(id);
+    return record?.session === session && (record.kind === 'module' || record.kind === 'group' || record.kind === 'investigram')
+      ? record.id : undefined;
+  }
 
   get(id: RecordId): ProgramRecord {
     const result = this.#records.get(id);

@@ -169,6 +169,7 @@ test('retained snapshots reconstruct without session enumeration after correctio
   assert.deepEqual(associated.associated, [id('A')]); assert.deepEqual(newAssociated.associated, [id('A'), id('B')]);
   const fixedOnly: ProgramRecordStore = { get: id => store.get(id), lookup: () => { throw new Error('No lookup'); },
     put: () => { throw new Error('No publication'); }, investigations: () => { throw new Error('No history enumeration'); },
+    boundEntity: () => { throw new Error('No subject lookup'); },
     evaluations: () => { throw new Error('No evaluation enumeration'); }, entityIds: () => { throw new Error('No allocation'); } };
   assert.deepEqual(resolveInvestigationContent(fixedOnly, before), originalContent);
   assert.deepEqual(resolveInvestigationContent(fixedOnly, historical).projection, historical);

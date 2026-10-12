@@ -1,3 +1,4 @@
+import { resolveSubjects, resolutionExplanation } from './subject-resolution.js';
 import { freezeOwned } from './immutable.js';
 import { randomUUID } from 'node:crypto';
 import { lenses, captureRequest, invalidParameters, invalidDesignation, invalidReportInputs } from './requests.js';
@@ -161,42 +162,35 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
     const lens = context.request.lens;
     const operation = definition.requirements.kind === 'interpretation' ? definition.requirements.operation : null;
     const investigationLens = operation !== null;
-    const followup = investigationLens && definition.subjects.includes('investigram');
-    const interpretationInspection = lens === 'inspect' && request.reference && selector?.startsWith('investigram-');
-    const investigram = request.reference && selector?.startsWith('investigram-')
-      ? [...store.entityIds(store.investigations(session).flatMap(item => item.investigrams), 'investigram')]
-        .find(([, reference]) => reference === selector)?.[0] : undefined;
-    let unsupportedSubject: 'investigram' | 'program-subject' | undefined = investigram && (lens === 'dependency-children' || lens === 'dependency-parents' || lens === 'summarize') ? 'investigram' as const : undefined;
-    if (investigationLens || interpretationInspection || unsupportedSubject) {
+    // Resolve precise references before acquiring any lookup or application information.
+    // Literal lookup evaluates only the populations required to identify applicable subjects.
+    const designation = context.request.designation;
+    const lookupModules = designation.kind === 'name' && definition.subjects.includes('module')
+      ? evaluateModules(store, analysis, investigationLens ? [] : organizationPresentationRequirements.modules) : undefined;
+    const lookupOrganization = lookupModules && definition.subjects.includes('group')
+      ? evaluateOrganization(store, lookupModules, organizationPresentationRequirements.groups) : undefined;
+    const resolution = resolveSubjects(store, session, definition, designation,
+      { ...(lookupModules ? { modules: lookupModules } : {}), ...(lookupOrganization ? { organization: lookupOrganization } : {}) });
+    if (resolution.status !== 'resolved') {
+      const report: ResolutionReport = freezeOwned({ schema: 'postcode-resolution/1-experimental', session, context, usage: usage(),
+        resolution: { ...resolution, reason: resolution.status, explanation: resolutionExplanation(resolution), retainedAnswers: [] } });
+      return { kind: 'resolution' as const, context, report, rendered: renderRequestReport(report), failed: true };
+    }
+    const selected = resolution.candidates.map(candidate => candidate.id);
+    const interpretationInspection = lens === 'inspect' && resolution.candidates[0]?.kind === 'investigram';
+    if (investigationLens || interpretationInspection) {
       const basis = evaluateModules(store, analysis);
-      let selected: RecordId[] = [];
-      if (unsupportedSubject) selected = [investigram!];
-      else if (lens === 'summarize') {
-        const references = store.entityIds(basis.modules, 'module');
-        selected = basis.modules.filter(id => {
-          const module = store.get(id);
-          const claim = module.kind === 'module' ? store.get(module.claim) : null;
-          return request.reference ? references.get(id) === selector : claim?.kind === 'claim' && claim.information.type === 'module'
-            && (claim.information.name === selector || claim.information.handle === selector);
-        });
-      } else if (interpretationInspection || followup) {
-        const ids = store.investigations(session).flatMap(item => item.investigrams);
-        selected = request.reference ? [...store.entityIds(ids, 'investigram')].filter(([, reference]) => reference === selector).map(([id]) => id) : [];
-        if (followup && request.reference && !selected.length) {
-          const organization = evaluateOrganization(store, basis, organizationPresentationRequirements.groups);
-          const known = [...store.entityIds(basis.modules, 'module'), ...store.entityIds(organization.groups, 'group')].find(([, reference]) => reference === selector);
-          if (known) { selected = [known[0]]; unsupportedSubject = 'program-subject'; }
-        }
-      }
-      const result = !unsupportedSubject && investigationLens && selected.length === 1
+      if (definition.subjects.includes('module') && investigationLens) store.entityIds(basis.modules, 'module');
+      else store.entityIds(store.investigations(session).flatMap(item => item.investigrams), 'investigram');
+      const result = investigationLens && selected.length === 1
         ? await integration.evaluate({ operation: operation!, subject: selected[0]!, parameters: {} }) : null;
-      const { view, investigationArrangementKey } = createInvestigationView(store, session, { ...request, ...(unsupportedSubject ? { unsupportedSubject } : {}), lens: lens as 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'dependency-children' | 'dependency-parents' }, selected, result, usage());
+      const { view, investigationArrangementKey } = createInvestigationView(store, session, { ...request, lens: lens as 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'dependency-children' | 'dependency-parents' }, selected, result, usage());
       const sessionContext = store.get(session);
       if (sessionContext.kind !== 'session') throw new Error('Expected session');
       const repository = sessionContext.repository ? store.get(sessionContext.repository) : null;
-      return { kind: 'view' as const, context, view, investigationArrangementKey, rendered: renderInvestigationView(view), repositoryRoot: repository?.kind === 'repository-evidence' && repository.capture.status === 'available' ? repository.capture.evidence.root : null,
+      return { kind: 'view' as const, context, resolution, view, investigationArrangementKey, rendered: renderInvestigationView(view), repositoryRoot: repository?.kind === 'repository-evidence' && repository.capture.status === 'available' ? repository.capture.evidence.root : null,
         methods: [...sessionContext.methods, methods.investigationEvaluation, methods.investigationPresentation],
-        failed: !!unsupportedSubject || !!investigationLens && (selected.length !== 1 || !result?.evaluation || result.evaluation.outcome.kind !== 'accepted') || !!interpretationInspection && selected.length !== 1 || view.investigations?.status === 'unknown-continuation' };
+        failed: !!investigationLens && (selected.length !== 1 || !result?.evaluation || result.evaluation.outcome.kind !== 'accepted') || !!interpretationInspection && selected.length !== 1 || view.investigations?.status === 'unknown-continuation' };
     }
     const dependencyLens = definition.requirements.kind === 'dependencies';
     // Provider/evaluation reuse owns input-basis validity; an outer cache could hide new acquisition.
@@ -208,10 +202,10 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
     const dependencyOrganization = dependencyLens ? evaluateDependencyOrganization(store, dependencyOutcome!, organizationOutcome!) : null;
     const projection = dependencyLens
       ? lens === 'dependency-structure' ? dependencyStructure(store, dependencyOutcome!, dependencyOrganization!.id)
-        : lens === 'dependency-children' ? dependencyChildren(store, dependencyOutcome!, selector!, request.reference ?? false, dependencyOrganization!.id)
-          : dependencyParents(store, dependencyOutcome!, selector!, request.reference ?? false, dependencyOrganization!.id)
+        : lens === 'dependency-children' ? dependencyChildren(store, dependencyOutcome!, selector!, request.reference ?? false, dependencyOrganization!.id, selected)
+          : dependencyParents(store, dependencyOutcome!, selector!, request.reference ?? false, dependencyOrganization!.id, selected)
       : lens === 'modules' ? modules(store, evaluation) : lens === 'inspect'
-        ? inspectOrganization(store, organizationOutcome!, selector!, request.reference ?? false)
+        ? inspectOrganization(store, organizationOutcome!, selector!, request.reference ?? false, selected)
         : organization(store, organizationOutcome!, request.subject === 'repository' ? 'repository' : 'configured-project');
     const moduleProjection = projection.kind === 'organization-projection' && projection.moduleProjection
       ? store.get(projection.moduleProjection) as ProjectionRecord : null;
@@ -229,7 +223,7 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
     if (sessionContext.kind !== 'session') throw new Error('Expected analysis session');
     const captured = sessionContext.repository ? store.get(sessionContext.repository) : null;
     const repositoryRoot = captured?.kind === 'repository-evidence' && captured.capture.status === 'available' ? captured.capture.evidence.root : null;
-    return { kind: 'view' as const, context, view, investigationArrangementKey: null, rendered, repositoryRoot, methods: lens === 'inspect' ? [...sessionContext.methods, methods.investigationPresentation] : sessionContext.methods,
+    return { kind: 'view' as const, context, resolution, view, investigationArrangementKey: null, rendered, repositoryRoot, methods: lens === 'inspect' ? [...sessionContext.methods, methods.investigationPresentation] : sessionContext.methods,
       ...('investigations' in view && view.investigations?.status === 'unknown-continuation' ? { failed: true } : {}) };
   };
 }

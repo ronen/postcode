@@ -12,12 +12,12 @@ function moduleClaim(store: ProgramRecordStore, id: RecordId): ModuleClaim {
 }
 
 /** Construction reads materialized state only; it has no language-provider access. */
-function project(store: ProgramRecordStore, evaluation: EvaluationRecord, selector: string | null, reference = false): ProjectionRecord {
+function project(store: ProgramRecordStore, evaluation: EvaluationRecord, selector: string | null, reference = false, resolved?: readonly RecordId[]): ProjectionRecord {
   const stored = store.get(evaluation.id);
   if (stored.kind !== 'evaluation') throw new Error('Expected stored evaluation');
   evaluation = stored;
   const lens = selector === null ? 'modules' : 'inspect';
-  const { modules, selection } = selectModules(store, evaluation, selector, reference);
+  const { modules, selection } = selectModules(store, evaluation, selector, reference, resolved);
   const claims = modules.map(id => moduleClaim(store, id));
   const expansions = store.evaluations(evaluation.session).filter(outcome => outcome.basis === evaluation.id);
   const relevantExpansions = expansions.filter(outcome => outcome.modules.some(id => modules.includes(id)) || outcome.modules.length === 0);
@@ -41,7 +41,7 @@ function project(store: ProgramRecordStore, evaluation: EvaluationRecord, select
   const method = methods.projection;
   const projection: ProjectionRecord = {
     kind: 'projection', method, session: evaluation.session,
-    id: recordId(evaluation.session, 'projection', { method, lens, selector: selectorKey, reference, evaluation: identityReference(evaluation.session, evaluation.id) }),
+    id: recordId(evaluation.session, 'projection', { method, lens, selector: selectorKey, reference, subjects: modules.map(id => identityReference(evaluation.session, id)), evaluation: identityReference(evaluation.session, evaluation.id) }),
     lens, subject: selector === null ? 'configured-project' : 'selected-modules',
     parameters: { selector, reference }, modules, claims: claims.map(claim => claim.id),
     contexts: [...new Set([...evaluation.contexts, ...claims.map(claim => claim.context)])],
@@ -57,6 +57,6 @@ export function modules(store: ProgramRecordStore, evaluation: EvaluationRecord)
   return project(store, evaluation, null);
 }
 
-export function inspect(store: ProgramRecordStore, evaluation: EvaluationRecord, selector: string, reference = false): ProjectionRecord {
-  return project(store, evaluation, selector, reference);
+export function inspect(store: ProgramRecordStore, evaluation: EvaluationRecord, selector: string, reference = false, resolved?: readonly RecordId[]): ProjectionRecord {
+  return project(store, evaluation, selector, reference, resolved);
 }

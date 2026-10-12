@@ -12,7 +12,7 @@ const complete = (state: EvaluationState) => state.applicability === 'applicable
 /** These lenses select materialized relationships, never transitive reach or display bounds. */
 function project(store: ProgramRecordStore, evaluation: DependencyEvaluationRecord,
   lens: DependencyProjectionRecord['lens'], selector: string | null, reference: boolean,
-  organization: RecordId | null): DependencyProjectionRecord {
+  organization: RecordId | null, resolved?: readonly RecordId[]): DependencyProjectionRecord {
   const stored = store.get(evaluation.id);
   if (stored.kind !== 'dependency-evaluation') throw new Error('Expected dependency evaluation');
   evaluation = stored;
@@ -27,7 +27,7 @@ function project(store: ProgramRecordStore, evaluation: DependencyEvaluationReco
   });
   const population = moduleClaims.filter(claim => claim.information.discoveryFacets.includes('project')).map(claim => claim.subject);
   const projectModules = new Set(population);
-  const selected = selector === null ? null : selectModules(store, basis, selector, reference);
+  const selected = selector === null ? null : selectModules(store, basis, selector, reference, resolved);
   const subjects = selected?.modules ?? population;
   const subjectSet = new Set(subjects);
   const allRelationships = evaluation.relationships.map(id => {
@@ -59,6 +59,13 @@ function project(store: ProgramRecordStore, evaluation: DependencyEvaluationReco
     const context = store.get(id);
     return context.kind === 'claim-context' && context.scope === 'configured-project';
   }), ...moduleClaims.filter(claim => included.has(claim.subject)).map(claim => claim.context), ...outcomes.flatMap(outcome => outcome.contexts)]);
+  for (const id of subjects.filter(id => !basis.modules.includes(id))) {
+    const entity = store.get(id);
+    if (entity.kind !== 'module') throw new Error('Expected resolved module');
+    const claim = store.get(entity.claim);
+    if (!isModuleClaim(claim)) throw new Error('Expected retained naming support');
+    contexts.add(claim.context);
+  }
   for (const id of [...occurrences, ...nonEdgeRequests, ...coverage, ...relationships.map(edge => edge.id), ...moduleExpansionClaims]) {
     const record = store.get(id);
     if (record.kind === 'claim' || record.kind === 'dependency-occurrence' || record.kind === 'dependency-coverage') contexts.add(record.context);
@@ -74,7 +81,7 @@ function project(store: ProgramRecordStore, evaluation: DependencyEvaluationReco
   const method = methods.dependencyProjection;
   const projection: DependencyProjectionRecord = {
     kind: 'dependency-projection', method, session: evaluation.session,
-    id: recordId(evaluation.session, 'dependency-projection', { method, evaluation: identityReference(evaluation.session, evaluation.id), lens, selector: selectorKey, reference, organization: identityReference(evaluation.session, organization) }),
+    id: recordId(evaluation.session, 'dependency-projection', { method, evaluation: identityReference(evaluation.session, evaluation.id), lens, selector: selectorKey, reference, subjects: subjects.map(id => identityReference(evaluation.session, id)), organization: identityReference(evaluation.session, organization) }),
     lens, subject: selector === null ? 'configured-project' : 'selected-modules', parameters: { selector, reference },
     evaluation: evaluation.id, subjects, modules: [...included].sort(compare), relationships: relationships.map(edge => edge.id),
     occurrences, nonEdgeRequests, coverage, contexts: [...contexts],
@@ -92,10 +99,10 @@ export function dependencyStructure(store: ProgramRecordStore, evaluation: Depen
   return project(store, evaluation, 'dependency-structure', null, false, organization);
 }
 export function dependencyChildren(store: ProgramRecordStore, evaluation: DependencyEvaluationRecord, selector: string,
-  reference = false, organization: RecordId | null = null) {
-  return project(store, evaluation, 'dependency-children', selector, reference, organization);
+  reference = false, organization: RecordId | null = null, resolved?: readonly RecordId[]) {
+  return project(store, evaluation, 'dependency-children', selector, reference, organization, resolved);
 }
 export function dependencyParents(store: ProgramRecordStore, evaluation: DependencyEvaluationRecord, selector: string,
-  reference = false, organization: RecordId | null = null) {
-  return project(store, evaluation, 'dependency-parents', selector, reference, organization);
+  reference = false, organization: RecordId | null = null, resolved?: readonly RecordId[]) {
+  return project(store, evaluation, 'dependency-parents', selector, reference, organization, resolved);
 }

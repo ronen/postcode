@@ -64,7 +64,8 @@ export interface QualifiedView {
 /** Coordination preserves population-wide reference allocation independently of display bounds. */
 export function createView(store: ProgramRecordStore, projection: ProjectionRecord, presentation: Presentation): QualifiedView {
   const content = resolveModuleProjection(store, projection);
-  const ids = store.entityIds(content.discovery.modules, 'module');
+  const population = store.entityIds(content.discovery.modules, 'module');
+  const ids = new Map([...population, ...store.entityIds(projection.modules, 'module')]);
   return arrangeModuleView(content, ids, presentation);
 }
 
@@ -192,6 +193,7 @@ export function renderUnicode(view: QualifiedView): string {
     `Session ${view.projection.session.replace(/^session:/, '')}`,
     inventory ? `${selection.population} module${selection.population === 1 ? '' : 's'} found · ${view.modules.length} listed${view.display.collapsedModules ? ` · ${view.display.collapsedModules} external module${view.display.collapsedModules === 1 ? '' : 's'} collapsed` : ''}`
       : `${selection.matches} module${selection.matches === 1 ? '' : 's'} selected from ${selection.population} · ${selection.matches === 0 ? 'no exact match' : selection.matches === 1 ? 'exact match' : 'exact matches'} for ${view.projection.parameters.reference ? '@' : ''}${inlineText(view.projection.parameters.selector ?? '')}${view.projection.parameters.reference ? ` · ${selection.referenceStatus}` : ''}`];
+  if (selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; their detail is unavailable in this answer.');
   if (!selection.populationEstablished) lines.push('Module population is not established.');
   const outcomeGroups = new Map<string, number>();
   for (const outcome of view.evaluations) {
@@ -363,7 +365,7 @@ export function renderUnicode(view: QualifiedView): string {
   if (view.analysis?.provider === 'typescript') {
     const exportsComplete = view.evaluations.filter(outcome => outcome.requirement === 'exports');
     const establishedExports = exportsComplete.length > 0 && exportsComplete.every(outcome => completedMaterialization(outcome) && outcome.availability === 'available' && outcome.applicability === 'applicable');
-    lines.push(selection.populationEstablished && establishedExports
+    lines.push(selection.outsidePopulation?.length ? '  Retained subject information is shown; membership and detail in the supplied evaluation are not established.' : selection.populationEstablished && establishedExports
       ? '  Module membership and effective exports established by TypeScript analysis.'
       : selection.populationEstablished ? exportsComplete.length === 0 ? '  Module membership established by TypeScript analysis.'
         : '  Module membership established by TypeScript analysis; export information is qualified by the capability states above.'

@@ -5,6 +5,7 @@ import { usageLines } from './investigation/presentation.js';
 import type { InvestigationUsageReport } from './investigation/reporting.js';
 import type { NormalizedRequest } from './requests.js';
 import type { RecordId, SessionId } from './records.js';
+import type { LookupSupport, SubjectResolution } from './subject-resolution.js';
 
 export interface RequestContext {
   readonly id: string;
@@ -12,13 +13,14 @@ export interface RequestContext {
   readonly request: NormalizedRequest;
 }
 export interface ResolutionInformation {
-  readonly reason: 'invalid-parameters' | 'invalid-designation' | 'invalid-report-inputs' | 'invalid-request';
+  readonly reason: 'invalid-parameters' | 'invalid-designation' | 'invalid-report-inputs' | 'invalid-request' | Exclude<SubjectResolution['status'], 'resolved'>;
   readonly explanation: string;
   readonly candidates: readonly { readonly id: RecordId; readonly kind: 'module' | 'group' | 'investigram'; readonly reference: string }[];
   readonly criteria: readonly string[];
   readonly qualifications: readonly string[];
   readonly prerequisites: readonly RecordId[];
   readonly retainedAnswers: readonly RecordId[];
+  readonly support?: readonly LookupSupport[];
 }
 export interface ResolutionReport {
   readonly schema: 'postcode-resolution/1-experimental';
@@ -40,8 +42,15 @@ export function renderRequestReport(report: ResolutionReport | UsageReport): str
   if (report.schema === 'postcode-investigation-usage/1-experimental') {
     return ['Investigation usage', ...report.usage.attempts.flatMap(attempt => usageLines(usageSummary([attempt]), `Attempt ${attempt.attempt} (${attempt.termination})`)), ...usageLines(report.usage, 'Session'), ...report.usage.limitations.map(inlineText)].join('\n') + '\n';
   }
-  return ['Request could not be resolved', inlineText(report.resolution.explanation),
+  return ['Request could not be resolved',
+    ...(report.context.request.kind === 'lens' ? [`Lens: ${report.context.request.lens}`,
+      ...('value' in report.context.request.designation ? [`Subject: ${report.context.request.designation.kind === 'reference' ? '@' : ''}${inlineText(report.context.request.designation.value)}`] : [])] : []),
+    `Reason: ${report.resolution.reason}`, inlineText(report.resolution.explanation),
+    ...report.resolution.candidates.map(candidate => `  ${candidate.kind}: ${inlineText(candidate.reference)}`),
+    ...report.resolution.criteria.map(inlineText),
     ...report.resolution.qualifications.map(inlineText),
+    ...(report.resolution.candidates.length ? [report.context.request.referenceLifetime === 'command'
+      ? 'References expire when this command completes.' : 'References remain usable while this Session is valid.'] : []),
     ...usageLines(report.usage, 'Session')].join('\n') + '\n';
 }
 

@@ -11,7 +11,7 @@ const references = new Set([
   'module', 'symbol', 'origin', 'via', 'assertion', 'target', 'owner', 'parent', 'child',
   'groups', 'candidates', 'artifacts', 'containment', 'placements', 'occurrence', 'occurrences',
   'relationships', 'members', 'internalRelationships', 'coverage', 'nonEdgeRequests',
-  'subjects', 'opaqueSubjects', 'projectModules', 'source', 'commonAncestors', 'entries', 'values', 'targetEvidence', 'moduleClaims', 'moduleEvaluations',
+  'population', 'prerequisites', 'outsidePopulation', 'subjects', 'opaqueSubjects', 'projectModules', 'source', 'commonAncestors', 'entries', 'values', 'targetEvidence', 'moduleClaims', 'moduleEvaluations',
 ]);
 
 function producingSession(value: unknown): string | undefined {

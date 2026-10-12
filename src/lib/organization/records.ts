@@ -102,6 +102,8 @@ export interface OrganizationProjectionRecord extends RecordContext {
     readonly groups: readonly RecordId[]; readonly modules: readonly RecordId[]; readonly claims: readonly RecordId[];
     readonly moduleClaims: readonly RecordId[]; readonly moduleEvaluations: readonly RecordId[] };
   readonly selection: {
+    /** Established subjects absent from the supplied evaluation; no population membership is asserted. */
+    readonly outsidePopulation?: readonly RecordId[];
     readonly matches: number;
     readonly population: number;
     readonly populationEstablished: boolean;

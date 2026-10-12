@@ -1,6 +1,6 @@
 import { finalizeRequestReport } from '../src/lib/request-reporting.js';
 import type { UsageReport } from '../src/lib/request-reporting.js';
-import { requireView } from './request-helpers.js';
+import { requireView, requireResolution } from './request-helpers.js';
 import { InvestigatorReferences } from '../src/lib/investigation/openai/references.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
@@ -75,8 +75,8 @@ test('operation retention is independent of presentation and exact inspection pr
   assert.deepEqual(inspected.accounts, first.accounts);
   assert.ok(inspected.sourceDetail!.items.some(item => item.kind === 'source-evidence'));
   assert.equal(agent.inputs.length, 1);
-  const missing = view(await f.session.execute({ lens: 'inspect', selector: 'investigram-unknown', reference: true, presentation: summary.presentation }));
-  assert.equal(missing.projection.selection.status, 'missing');
+  const missing = requireResolution(await f.session.execute({ lens: 'inspect', selector: 'investigram-unknown', reference: true, presentation: summary.presentation }));
+  assert.equal(missing.resolution.reason, 'unknown-reference');
   const direct = await f.session.evaluateInvestigation(first.result!.request);
   assert.equal(direct.reused, true, 'operation reuse does not depend on a lens');
 });
@@ -254,15 +254,15 @@ test('selection failures and cross-session investigram references cannot start g
   const opened = await openSession({ configPath: f.configPath }, { investigation: { agent } });
   assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
   t.after(() => opened.session.close());
-  const ambiguous = view(await opened.session.execute(summary));
-  assert.equal(ambiguous.projection.selection.status, 'ambiguous');
-  assert.equal(ambiguous.candidates.length, 2);
+  const ambiguous = requireResolution(await opened.session.execute(summary));
+  assert.equal(ambiguous.resolution.reason, 'ambiguous');
+  assert.equal(ambiguous.resolution.candidates.length, 2);
   assert.equal(agent.inputs.length, 0);
-  const selected = view(await opened.session.execute({ ...summary, selector: ambiguous.candidates[0]!.reference, reference: true }));
+  const selected = view(await opened.session.execute({ ...summary, selector: ambiguous.resolution.candidates[0]!.reference, reference: true }));
   assert.equal(selected.accounts.length, 2);
   const fresh = await session(t, summaryAgent());
-  const foreign = view(await fresh.session.execute({ lens: 'inspect', selector: selected.references[0]!.reference, reference: true, presentation: summary.presentation }));
-  assert.equal(foreign.projection.selection.status, 'missing');
+  const foreign = requireResolution(await fresh.session.execute({ lens: 'inspect', selector: selected.references[0]!.reference, reference: true, presentation: summary.presentation }));
+  assert.equal(foreign.resolution.reason, 'unknown-reference');
 });
 
 test('session usage keeps unknown and anomalous calls distinct and does not fail on aggregate overflow', async t => {
@@ -429,16 +429,21 @@ test('shell rejects known investigram subjects for mechanical and summary lenses
   const code = await runCli(['shell', '--project', f.configPath], { cwd: f.root, checkout: f.root, input, investigator: agent,
     stdout: text => { output += text; if (!started && text.includes('postcode> ')) { started = true; setImmediate(() => input.write('summarize entry\n')); } }, stderr: () => {},
     sink: { async submit(batch) { batches.push(batch); driver.run(() => {
-      const data = batch.records.find(item => item.kind === 'qualified-view')!.value as InvestigationView;
-      if (batches.length === 1) reference = data.references[0]!.reference;
-      else { assert.equal(data.projection.selection.status, 'unsupported-subject-lens'); assert.equal(data.unsupportedSubject, 'investigram'); assert.equal(data.result, null); assert.equal(data.accounts.length, 0); }
+      if (batches.length === 1) reference = (batch.records.find(item => item.kind === 'qualified-view')!.value as InvestigationView).references[0]!.reference;
+      else {
+        const data = batch.records.find(item => item.kind === 'resolution-result')!.value as import('../src/lib/request-reporting.js').ResolutionReport;
+        assert.equal(data.resolution.reason, 'unsupported-subject');
+        assert.equal(data.resolution.candidates[0]!.kind, 'investigram');
+        assert.deepEqual(data.resolution.retainedAnswers, []);
+        assert.equal(batch.records.some(item => item.kind === 'qualified-view'), false);
+      }
       const command = commands[batches.length - 1];
       if (command) input.write(`${command} @${reference}\n`); else input.end();
     }); return { accepted: true }; } },
   });
   driver.verify(); assert.equal(code, 0); assert.equal(agent.inputs.length, 1);
   assert.equal(batches.length, 4); assert.match(output, /unsupported subject\/lens combination/);
-  assert.ok(batches.slice(1).every(batch => batch.events.at(-1)!.type === 'command-failed'));
+  assert.ok(batches.slice(1).every(batch => batch.events.at(-1)!.type === 'command-refused'));
   assert.doesNotMatch(output, /unknown-reference|Selection: missing/);
 });
 
@@ -666,11 +671,11 @@ test('associated inspection is bounded, navigable and independent of incidental 
   assert.match(humanInvalid.rendered, /without --after/);
   assert.equal(agent.inputs.length, 1);
   for (const lens of ['explain', 'decompose', 'examine'] as const) {
-    const unsupported = view(await f.session.execute({ ...summary, lens, reference: true, selector: generated.candidates[0]!.reference }));
-    assert.equal(unsupported.projection.selection.status, 'unsupported-subject-lens');
-    assert.match(renderInvestigationView({ ...unsupported, presentation: { format: 'unicode', sourceDetail: false } }), /This reference identifies part of the program/);
-    const missing = view(await f.session.execute({ ...summary, lens, reference: true, selector: 'investigram-00000000' }));
-    assert.equal(missing.projection.selection.status, 'missing');
+    const unsupported = requireResolution(await f.session.execute({ ...summary, lens, reference: true, selector: generated.candidates[0]!.reference }));
+    assert.equal(unsupported.resolution.reason, 'unsupported-subject');
+    assert.equal(unsupported.resolution.candidates[0]!.kind, 'module');
+    const missing = requireResolution(await f.session.execute({ ...summary, lens, reference: true, selector: 'investigram-00000000' }));
+    assert.equal(missing.resolution.reason, 'unknown-reference');
   }
   assert.equal(agent.inputs.length, 1);
 });

@@ -202,6 +202,8 @@ export interface ProjectionRecord extends RecordContext {
   readonly evaluations: readonly RecordId[];
   readonly expansions: { readonly requested: readonly ModuleExpansion[]; readonly claims: readonly RecordId[] };
   readonly selection: {
+    /** Established subjects absent from the supplied evaluation; no population membership is asserted. */
+    readonly outsidePopulation?: readonly RecordId[];
     readonly matches: number;
     readonly population: number;
     readonly populationEstablished: boolean;
@@ -221,4 +223,5 @@ export interface ProgramRecordStore {
   evaluations(session: SessionId): readonly EvaluationRecord[];
   investigations(session: SessionId): readonly InvestigationEvaluationRecord[];
   entityIds(ids: readonly RecordId[], kind: 'module' | 'group' | 'investigram'): ReadonlyMap<RecordId, string>;
+  boundEntity(session: SessionId, reference: string): RecordId | undefined;
 }

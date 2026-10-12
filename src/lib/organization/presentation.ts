@@ -26,7 +26,7 @@ export const organizationPresentationRequirements = {
 type Qualification = Omit<ClaimContextRecord, 'kind' | 'evidence' | 'inputs'>;
 interface EntityReference { readonly id: RecordId; readonly entityId: string; readonly name: string | null; readonly label: string }
 interface GroupReference extends EntityReference {
-  readonly documented: boolean;
+  readonly documented: boolean | null;
   readonly modulePresence: GroupPropertiesClaim['information']['modulePresence'];
 }
 interface ModuleReference extends EntityReference {
@@ -41,7 +41,7 @@ interface ModuleReference extends EntityReference {
 }
 interface GroupView extends GroupReference {
   readonly selected: boolean;
-  readonly detail: 'materialized' | 'not-requested';
+  readonly detail: 'materialized' | 'not-requested' | 'unavailable';
   readonly qualification: Qualification;
   readonly parents: readonly GroupReference[];
   readonly subgroups: readonly GroupReference[];
@@ -97,9 +97,10 @@ export interface QualifiedOrganizationView {
 export function createOrganizationView(store: ProgramRecordStore, projection: OrganizationProjectionRecord,
   presentation: Presentation): QualifiedOrganizationView {
   const content = resolveOrganizationProjection(store, projection);
-  const groups = store.entityIds(content.evaluation.groups, 'group');
+  const population = store.entityIds(content.evaluation.groups, 'group');
+  const groups = new Map([...population, ...store.entityIds(projection.groups, 'group')]);
   const modules = store.entityIds(content.moduleEvaluation.modules, 'module');
-  const detail = content.moduleDetail ? store.entityIds(content.moduleDetail.discovery.modules, 'module') : new Map<RecordId, string>();
+  const detail = content.moduleDetail ? new Map([...store.entityIds(content.moduleDetail.discovery.modules, 'module'), ...store.entityIds(content.moduleDetail.projection.modules, 'module')]) : new Map<RecordId, string>();
   return arrangeOrganizationView(content, { groups, modules, detail }, presentation);
 }
 
@@ -114,8 +115,8 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
   const group = (id: RecordId): GroupReference => {
     const { claim, properties } = content.referenceGroups[id]!;
     return { id, entityId: bindings.groups.get(id)!, name: claim.record.information.name,
-      label: claim.record.information.name ?? '[repository root]', documented: properties.record.information.documented,
-      modulePresence: properties.record.information.modulePresence };
+      label: claim.record.information.name ?? '[repository root]', documented: properties?.record.information.documented ?? null,
+      modulePresence: properties?.record.information.modulePresence ?? null };
   };
   const module = (item: OrganizationProjectionContent['modules'][number]): ModuleReference => {
     const claim = item.claim.record;
@@ -195,9 +196,10 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
       repositoryRoot: evidence?.root ?? null,
       groups: groups.filter(group => group.selected).map(group => {
         const region = content.referenceGroups[group.id]!.claim.evidence.find(record => record.kind === 'repository-region');
-        if (region?.kind !== 'repository-region' || !evidence) throw new Error('Expected group region');
+        const root = content.referenceGroups[group.id]!.sourceRoot;
+        if (region?.kind !== 'repository-region' || !root) throw new Error('Expected group region');
         const artifacts = groupContent.get(group.id)!.artifacts.map(item => item.artifact.artifact);
-        return { id: group.id, path: path.resolve(evidence.root, region.path), artifacts,
+        return { id: group.id, path: path.resolve(root, region.path), artifacts,
           links: [...new Set([...(linksByTarget.get(region.path) ?? []), ...artifacts.flatMap(artifact => {
             const link = linksByArtifact.get(artifact.path); return link ? [link] : [];
           })])].sort((a, b) => a.order - b.order).map(item => item.link) };
@@ -218,6 +220,7 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
     `Session ${view.projection.session.replace(/^session:/, '')}`,
     inspection ? `${view.projection.selection.matches} exact matches for ${view.projection.parameters.reference ? '@' : ''}${inlineText(view.projection.parameters.selector ?? '')}${view.projection.parameters.reference ? ` · ${view.projection.selection.referenceStatus}` : ''}`
       : `${view.display.selectedGroups} selected groups · ${view.repository.groups} repository groups`];
+  if (view.projection.selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; their detail is unavailable in this answer.');
   if (!view.projection.selection.populationEstablished) lines.push('Selection population is not fully established.');
   for (const [name, state] of Object.entries(view.evaluations)) {
     lines.push(`${name === 'repository' ? 'Repository layout' : 'Project placement'}: ${state.availability}, ${state.execution}, materialization ${state.materialization}${state.reason ? ` · ${inlineText(state.reason)}` : ''}`);
@@ -229,6 +232,10 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
     lines.push('', 'Groups');
     if (!view.groups.some(group => group.selected)) lines.push('  No exact group match.');
     for (const group of view.groups.filter(group => group.selected)) {
+      if (group.detail === 'unavailable') {
+        lines.push('', `◆ ${label(group)}`, '  Detail is unavailable for this identified group in the supplied evaluation.');
+        continue;
+      }
       lines.push('', `◆ ${label(group)}`, `  ${annotation(group)}`,
         `  Direct documentation: ${group.documentationCount} artifact${group.documentationCount === 1 ? '' : 's'}`);
       for (const [heading, items] of [['Parents', group.parents], ['Subgroups', group.subgroups]] as const) {

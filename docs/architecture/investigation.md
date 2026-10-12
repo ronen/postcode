@@ -262,8 +262,8 @@ reference before starting work. Missing and ambiguous selections expose their
 status and candidates without generation. Summary and exact investigram inspection
 select retained records through core construction. Inspection never invokes investigation.
 Known investigram references supplied to `children`, `parents` or `summarize`
-produce an explicit unsupported subject/lens selection and expected failure
-status, without coercion or generation. Missing references remain distinct.
+produce an unsupported-subject resolution report and refusal status, without
+coercion, requested-application Projection retention or generation. Missing references remain distinct.
 Investigram bindings use the existing append-only session allocator with a distinct
 `investigram-` prefix. Originals, composition children and replacements remain
 addressable. Redisplay selects explicit replacements; exact inspection retains originals. Public follow-up lenses and associated discovery use the same evaluation
@@ -298,14 +298,16 @@ Standard support details distinguish full,
 summary and earlier-interpretation exposure per generating provenance, including
 the provenance of incoming corrections. Explicit source detail reveals captured
 support locations and excerpts, with a source-disclosure observation only when
-source detail is actually presented. Empty support containers for missing,
-unsupported selections or accounts with no disclosed source support produce no source-escape event;
+source detail is actually presented. Missing and unsupported requests produce
+non-View resolution reports without source-escape events. Accounts with no
+disclosed source support also produce no source-escape event;
 the request still records the explicit option. Events distinguish locations from
 nonempty excerpts through the shared format-aware observation classification. Investigator
 source acquisition by itself emits no human source-disclosure event. One-shot views
-disclose that their references expire when the command ends. Summary/configuration
-and selection failures produce an explicit view and expected failure exit status;
-the shell can continue. No automatic mechanical substitute is presented as a summary.
+disclose that their references expire when the command ends. A settled summary with
+configuration unavailability retains an unavailable answer and produces a View with
+an expected failure status. Unsettled subject selection produces a resolution
+report with candidates and qualification; the shell can continue after either. No automatic mechanical substitute is presented as a summary.
 
 ## Worker communication and reporting lifetime
 

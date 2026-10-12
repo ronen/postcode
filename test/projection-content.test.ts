@@ -202,12 +202,12 @@ test('mechanical identities retain their formula and all use the shared presenta
   const presentation = { format: 'json' as const, sourceDetail: false };
   const views = [createView(store, modules(store, evaluation), presentation), createOrganizationView(store, organizationProjection, presentation),
     createDependencyView(store, dependencyProjection, presentation)];
-  assert.equal(methods.presentation, 'postcode/presentation@27');
+  assert.equal(methods.presentation, 'postcode/presentation@28');
   for (const [index, view] of views.entries()) {
     const kind = ['view', 'organization-view', 'dependency-view'][index]!;
     const key = { projection: identityReference(view.projection.session, view.projection.id), presentation, method: methods.presentation };
     assert.equal(view.id, recordId(view.projection.session, kind, key));
-    assert.notEqual(view.id, recordId(view.projection.session, kind, { ...key, method: 'postcode/presentation@26' }));
+    assert.notEqual(view.id, recordId(view.projection.session, kind, { ...key, method: 'postcode/presentation@27' }));
   }
 });
 

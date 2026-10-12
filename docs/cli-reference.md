@@ -358,8 +358,20 @@ invocation is also omitted from rejected-input command observations to avoid try
 to serialize it again. Unexpected failures after validation remain internal defects.
 Usage reports and these resolution reports have no program Projection or View and emit no `view-produced`
 event. Their JSON families are `postcode-investigation-usage/1-experimental` and
-`postcode-resolution/1-experimental`. Other subject-resolution failures still use
-the existing family result paths pending the remaining [request-model work](plans/lens-request-model.md).
+`postcode-resolution/1-experimental`. Missing names, unknown precise references,
+ambiguous single-subject requests and known incompatible targets also return resolution
+reports (exit status 3), with no requested-application Projection. Incomplete or
+unavailable lookup populations are distinguished from an established no-match result.
+Reports retain candidates and usable Session references, selection criteria,
+prerequisite outcome summaries and qualification. One-shot references still expire
+at command completion. A known group passed to `children` or `parents` is unsupported;
+its binding remains available for later inspection. Collections such as `inspect foo`
+continue to include all established applicable matches.
+Successful observation batches include a separate `resolution-information` record.
+Known compatible subjects omitted from a supplied evaluation remain identified and
+produce a qualified answer with explicit unavailable detail; that omission never
+establishes subject absence. Answer identity and prerequisite attribution remain
+part of the ongoing [request-model work](plans/lens-request-model.md).
 Expected analysis failures use outcome `failed` and event `command-failed`;
 unexpected defects use outcome `defect` and event `command-defect`. Neither
 invents a view when no output was published.

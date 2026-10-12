@@ -1,3 +1,4 @@
+import type { SubjectResolution } from './subject-resolution.js';
 import type { RequestContext } from './request-reporting.js';
 import { sourceDisclosure } from './source-disclosure.js';
 import type { SourceDisclosureLevel, SourceDisclosureForm } from './source-disclosure.js';
@@ -15,7 +16,7 @@ export interface ObservationBatch {
   readonly id: string;
   readonly session: string;
   readonly command: number;
-  readonly records: readonly { readonly id: string; readonly kind: 'request' | 'analysis-context' | 'qualified-view' | 'rendered-output' | 'command-outcome' | 'investigation-usage' | 'resolution-result' | 'usage-report'; readonly value: unknown }[];
+  readonly records: readonly { readonly id: string; readonly kind: 'request' | 'analysis-context' | 'qualified-view' | 'rendered-output' | 'command-outcome' | 'investigation-usage' | 'resolution-result' | 'resolution-information' | 'usage-report'; readonly value: unknown }[];
   readonly events: readonly {
     readonly id: string; readonly type: 'view-produced' | 'source-escape' | 'command-completed' | 'command-refused' | 'session-invalidated' | 'command-failed' | 'command-defect' | 'command-interrupted';
     readonly request: string; readonly analysis: string; readonly view?: string; readonly rendered: string;
@@ -31,7 +32,7 @@ export interface ObservationSink {
 /** No UUID registry, historical reads, producer retention policy, or operational-store dependency. */
 export function observationBatch(view: QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | InvestigationView, rendered: string, context: {
   readonly configPath: string; readonly repositoryRoot: string | null; readonly methods: readonly string[];
-}, requestValue: RequestContext, command = 1): ObservationBatch {
+}, requestValue: RequestContext, command = 1, resolution?: SubjectResolution): ObservationBatch {
   if (!Number.isSafeInteger(command) || command < 1) throw new Error('Invalid command order');
   const request = randomUUID();
   const analysis = randomUUID();
@@ -44,6 +45,7 @@ export function observationBatch(view: QualifiedView | QualifiedOrganizationView
     { id: analysis, kind: 'analysis-context', value: { ...context, session: view.projection.session } },
     { id: artifact, kind: 'qualified-view', value: view },
     { id: output, kind: 'rendered-output', value: rendered },
+    ...(resolution ? [{ id: randomUUID(), kind: 'resolution-information' as const, value: resolution }] : []),
   ], events: [
     { id: randomUUID(), type: 'view-produced', ...references },
     ...(disclosed ? [{ id: randomUUID(), type: 'source-escape' as const, ...references, sourceLevel: disclosed.level, sourceForms: disclosed.forms }] : []),

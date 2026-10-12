@@ -150,12 +150,13 @@ test('generic inspection displays every group/module name match, without accepti
     assert.ok(unicode.stdout.includes('Groups\n'));
     assert.ok(unicode.stdout.includes('Modules\n'));
     const group = both.groups.find(group => group.selected)!;
-    const missingScope = viewOf(await invoke(root, ['inspect', group.entityId, '--json']));
-    assert.equal(missingScope.projection.selection.referenceStatus, 'current');
+    const missingScope = await invoke(root, ['inspect', group.entityId, '--json']);
+    assert.equal(missingScope.exit, 3);
+    assert.equal(JSON.parse(missingScope.stdout).resolution.reason, 'missing');
     write('new/artifact.txt', 'new input');
-    const stale = viewOf(await invoke(root, ['inspect', group.entityId, '--json']));
-    assert.equal(stale.projection.selection.referenceStatus, 'current');
-    assert.equal(stale.projection.selection.matches, 0);
+    const stale = await invoke(root, ['inspect', group.entityId, '--json']);
+    assert.equal(stale.exit, 3);
+    assert.equal(JSON.parse(stale.stdout).resolution.reason, 'missing');
     const source = viewOf(await invoke(root, ['inspect', 'src', '--source-detail', '--json']));
     assert.equal(source.sourceDetail!.level, 'organization-and-module-source');
     assert.ok(source.sourceDetail!.modules!.items.length > 0);

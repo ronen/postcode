@@ -377,7 +377,10 @@ test('session reevaluates partial work after new dependency acquisition, then re
       const later = (requireView(await session.execute(request)));
       assert.notEqual(later.view.projection.id, first.view.projection.id);
       requireView(await session.execute({ ...request, lens: 'organization' }));
-      requireView(await session.execute({ ...request, lens: 'inspect', selector: 'missing' }));
+      // The unresolved re-export still supplies the valid generated handle "missing".
+      const inspected = requireView(await session.execute({ ...request, lens: 'inspect', selector: 'missing' }));
+      assert.equal(inspected.view.schema, 'postcode-view/1-experimental');
+      assert.equal(inspected.view.modules[0]!.handle, 'missing');
       assert.deepEqual(programOutput((requireView(await session.execute(request)))), programOutput(later));
       assert.deepEqual(programOutput(first), programOutput(retained));
     } finally { await session.close(); }

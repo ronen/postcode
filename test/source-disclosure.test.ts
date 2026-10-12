@@ -62,22 +62,27 @@ for (const format of ['unicode', 'json'] as const) test(`source observations fol
   });
   driver.verify(); assert.equal(code, 0, stderr); assert.equal(batches.length, commands.length + 1);
   for (let index = 0; index < commands.length; index++) {
-    const command = commands[index]!, batch = batches[index + 1]!, view = dataOf(batch);
+    const command = commands[index]!, batch = batches[index + 1]!;
     const request = batch.records.find(item => item.kind === 'request')!.value as import('../src/lib/request-reporting.js').RequestContext;
     assert.equal(request.request.presentation.sourceDetail, command.includes('--source-detail'), command);
     const rendered = batch.records.find(item => item.kind === 'rendered-output')!.value as string;
     assert.ok(stdout.includes(rendered));
     const actual = escapes(batch);
-    // Missing organization selection still serializes repositoryRoot in JSON;
-    // Unicode renders no path for it. The event must follow that actual output.
-    const rootOnly = index === 5 || index === 6;
-    const disclosed = index >= 7 && index <= 13 || rootOnly && format === 'json';
+    if (index < 7) {
+      assert.deepEqual(actual, [], command);
+      assert.equal(batch.records.some(item => item.kind === 'qualified-view'), false);
+      assert.equal(batch.events.some(item => item.type === 'view-produced'), false);
+      assert.equal(batch.events.at(-1)!.type, 'command-refused');
+      continue;
+    }
+    const view = dataOf(batch);
+    const disclosed = index >= 7 && index <= 13;
     assert.equal(actual.length, disclosed ? 1 : 0, command);
     if (actual.length) {
       assert.ok(actual[0]!.sourceForms!.includes('locations'), command);
-      if (index === 7 || index === 9 || rootOnly) assert.deepEqual(actual[0]!.sourceForms, ['locations'], command);
+      if (index === 7 || index === 9) assert.deepEqual(actual[0]!.sourceForms, ['locations'], command);
       if (index === 8 || index >= 10 && index <= 12) assert.deepEqual(actual[0]!.sourceForms, ['locations', 'excerpts'], command);
-      if (rootOnly || index === 9) assert.equal(actual[0]!.sourceLevel, 'organization-paths');
+      if (index === 9) assert.equal(actual[0]!.sourceLevel, 'organization-paths');
       if (format === 'json') assert.ok(JSON.parse(rendered).sourceDetail);
     }
     if (view.schema === 'postcode-view/1-experimental' && index === 8) {

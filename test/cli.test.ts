@@ -1,3 +1,4 @@
+import type { ResolutionReport } from '../src/lib/request-reporting.js';
 import { invokeCli, temporaryDirectory } from './cli-helpers.js';
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
@@ -110,10 +111,12 @@ test('normal views omit source facets and raw evidence; inspection source escape
   assert.ok(detail.sourceDetail.items.flatMap(claim => claim.evidence).every(evidence => evidence.path.endsWith('/ambient.d.ts')));
   const batch = inspected.batches[0]!;
   assert.deepEqual(batch.events.map(event => event.type), ['view-produced', 'source-escape', 'command-completed']);
-  assert.equal(batch.records.length, 5);
+  assert.equal(batch.records.length, 6);
+  assert.ok(batch.records.some(item => item.kind === 'resolution-information'));
   assert.equal(batch.events[1]!.sourceLevel, 'declaration-locations-and-excerpts');
   const missing = await invoke(['inspect', 'no match', '--project', config, '--json']);
-  assert.equal((JSON.parse(missing.stdout) as QualifiedView).projection.selection.matches, 0);
+  assert.equal(missing.exit, 3);
+  assert.equal((JSON.parse(missing.stdout) as ResolutionReport).resolution.reason, 'missing');
 });
 
 test('delivery rejection and thrown sink failure visibly report the observation gap while preserving the successful view', async () => {
@@ -431,11 +434,10 @@ test('handles repeat current lookups while IDs do not provide cross-invocation n
     const after = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
     assert.equal(after.modules[0]!.handle, module.handle);
     assert.notEqual(after.projection.session, before.projection.session);
-    const stale = JSON.parse((await invoke(['inspect', module.entityId, '--project', config, '--json'])).stdout) as QualifiedView;
-    assert.equal(stale.projection.selection.referenceStatus, 'current');
-    assert.equal(stale.projection.selection.matches, 0);
-    const staleId = JSON.parse((await invoke(['inspect', module.id, '--project', config, '--json'])).stdout) as QualifiedView;
-    assert.equal(staleId.projection.selection.matches, 0);
+    const stale = JSON.parse((await invoke(['inspect', module.entityId, '--project', config, '--json'])).stdout) as ResolutionReport;
+    assert.equal(stale.resolution.reason, 'lookup-unavailable');
+    const staleId = JSON.parse((await invoke(['inspect', module.id, '--project', config, '--json'])).stdout) as ResolutionReport;
+    assert.equal(staleId.resolution.reason, 'lookup-unavailable');
     const current = JSON.parse((await invoke(['inspect', module.handle, '--project', config, '--json'])).stdout) as QualifiedView;
     assert.equal(current.projection.selection.matches, 1);
   } finally { rmSync(root, { recursive: true, force: true }); }
@@ -543,7 +545,8 @@ test('one-shot name and handle collisions retain every match and do not accept c
     assert.deepEqual(new Set(lookedUp.modules.map(module => module.handleProvenance)), new Set(['language-name', 'source-basename']));
     for (const module of inventory.modules) {
       const copied = await invoke(['inspect', module.entityId, '--project', config, '--json']);
-      assert.equal(JSON.parse(copied.stdout).projection.selection.matches, 0);
+      assert.equal(copied.exit, 3);
+      assert.equal(JSON.parse(copied.stdout).resolution.reason, 'lookup-unavailable');
     }
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
@@ -567,16 +570,18 @@ test('basename mnemonic evidence stays distinct from names and precise scoped En
       assert.equal(module.name, null);
       assert.equal(module.handleProvenance, 'source-basename');
       assert.match(module.entityId, /^module-[a-f0-9]{8,64}$/);
-      const unscoped = JSON.parse((await invoke(['inspect', module.entityId, '--project', config, '--json'])).stdout) as QualifiedView;
-      assert.equal(unscoped.projection.selection.referenceStatus, 'current');
+      const unscoped = JSON.parse((await invoke(['inspect', module.entityId, '--project', config, '--json'])).stdout) as ResolutionReport;
+      assert.equal(unscoped.resolution.reason, 'lookup-unavailable');
       const selected = JSON.parse((await invoke(['inspect', module.handle, '--project', config, '--json'])).stdout) as QualifiedView;
       assert.deepEqual(normalizeSession(selected.modules.map(item => item.id), selected.projection.session), normalizeSession(matching.map(item => item.id), view.projection.session));
     }
     const multiple = await invoke(['inspect', 'evaluation', '--project', config]);
     assert.ok(multiple.stdout.includes('2 modules selected from 4 · exact matches for evaluation'));
     const zero = await invoke(['inspect', 'absent', '--project', config]);
-    assert.ok(zero.stdout.includes('0 modules selected from 4 · no exact match for absent'));
-    assert.ok(zero.stdout.includes('Module membership established by TypeScript analysis.'));
+    assert.equal(zero.exit, 3);
+    assert.match(zero.stdout, /Subject: absent/);
+    assert.match(zero.stdout, /Reason: lookup-unavailable/);
+    assert.match(zero.stdout, /lookup information.*unavailable/);
     assert.equal(zero.stdout.includes('export information is qualified'), false);
     const unicode = (await invoke(['--project', config])).stdout;
     assert.ok(unicode.includes(long));

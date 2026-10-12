@@ -92,8 +92,10 @@ test('shell records scanner refusals and then accepts a quoted literal selector'
   assert.match(errors, /ambiguous\. Did you forget/);
   assert.match(errors, /To specify an option argument starting with a dash use '--project=-XYZ'\./);
   assert.doesNotMatch(errors, /\\u000a/);
-  const view = batches[3]!.records.find(item => item.kind === 'qualified-view')!.value as { projection: { selection: { matches: number } } };
-  assert.equal(view.projection.selection.matches, 0);
+  const report = batches[3]!.records.find(item => item.kind === 'resolution-result')!.value as import('../src/lib/request-reporting.js').ResolutionReport;
+  assert.equal(report.resolution.reason, 'missing');
+  assert.ok(report.context.request.kind === 'lens');
+  assert.deepEqual(report.context.request.designation, { kind: 'name', value: '@literal' });
 });
 
 test('follow-ups require a shell reference and inspection continuation stays a presentation option', () => {

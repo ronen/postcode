@@ -56,7 +56,8 @@ const full = (outcome: Outcome) => outcome.applicability === 'applicable' && out
 export function createDependencyView(store: ProgramRecordStore, projection: DependencyProjectionRecord,
   presentation: Presentation): QualifiedDependencyView {
   const content = resolveDependencyProjection(store, projection);
-  const ids = store.entityIds(content.basis.modules, 'module');
+  const population = store.entityIds(content.basis.modules, 'module');
+  const ids = new Map([...population, ...store.entityIds(projection.modules, 'module')]);
   return arrangeDependencyView(content, ids, presentation);
 }
 
@@ -219,6 +220,7 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
     `Display bounds: ${counted(view.display.omittedModules, 'module')} and ${counted(view.display.omittedRelationships, 'relationship')} omitted; ${counted(view.display.prunedComponents, 'further descent')} pruned.`];
   for (const [name, outcome] of Object.entries(view.evaluations)) if (outcome) lines.push(`${name}: ${outcome.availability}, ${outcome.execution}, materialization ${outcome.materialization}${outcome.reason ? ` · ${inlineText(outcome.reason)}` : ''}`);
   if (view.projection.parameters.selector !== null) {
+    if (view.projection.selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; dependency detail is unavailable in this answer.');
     lines.push(`${view.projection.selection.matches} exact ${view.projection.selection.matches === 1 ? 'match' : 'matches'} · ${view.projection.selection.referenceStatus}`);
     for (const subject of view.subjects) lines.push(`Selected: ${label(subject)}`);
   }
@@ -244,13 +246,13 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
     for (const edge of view.relationships) lines.push(`  ${edgeText(edge)}`);
     if (!view.relationships.length) lines.push(view.projection.lens === 'dependency-children' && view.modules.some(module => view.subjects.includes(module.id) && module.opaque)
       ? '  External interiors are opaque; an empty child set is not established.'
-      : !view.subjects.length ? '  No selected module.' : (full(view.evaluations.dependencies) && full(view.evaluations.modules)) ? '  None in the supported project-owned request population.' : '  None materialized; dependency evaluation is incomplete.');
+      : !view.subjects.length ? '  No selected module.' : (!view.projection.selection.outsidePopulation?.length && full(view.evaluations.dependencies) && full(view.evaluations.modules)) ? '  None in the supported project-owned request population.' : '  None materialized; dependency evaluation is incomplete.');
   }
   if (!view.graph) for (const module of view.modules.filter(module => module.composition.claims.length)) lines.push(`Module property: ${label(module.id, false)} · re-exports only`);
   if (view.projection.lens !== 'dependency-parents') {
     lines.push('', 'Source-owned request results without edges');
     for (const [status, count] of Object.entries(view.summary.requestsWithoutEdges)) lines.push(`  ${status}: ${count}`);
-    if (!Object.keys(view.summary.requestsWithoutEdges).length) lines.push((full(view.evaluations.dependencies) && full(view.evaluations.modules)) ? '  None in supported coverage.' : '  None materialized; evaluation is incomplete.');
+    if (!Object.keys(view.summary.requestsWithoutEdges).length) lines.push((!view.projection.selection.outsidePopulation?.length && full(view.evaluations.dependencies) && full(view.evaluations.modules)) ? '  None in supported coverage.' : '  None materialized; evaluation is incomplete.');
     for (const [index, item] of view.requestResults.entries()) lines.push(`  Request ${index + 1}: ${item.mechanism} · ${item.targetStatus}${item.typeOnly ? ' · type-only' : ''}`);
     lines.push('', 'Recognition-coverage outcomes (not recognized occurrences)');
     for (const [outcome, count] of Object.entries(view.summary.recognitionCoverage)) lines.push(`  ${outcome}: ${count}`);

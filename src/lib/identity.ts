@@ -14,12 +14,12 @@ export const methods = {
   evaluation: 'postcode/evaluate-modules@5',
   dependencies: 'postcode/typescript-dependencies@2',
   dependencyEvaluation: 'postcode/evaluate-dependencies@2',
-  dependencyProjection: 'postcode/dependency-projection@3',
+  dependencyProjection: 'postcode/dependency-projection@4',
   composition: 'postcode/typescript-composition@1',
   dependencyOrganization: 'postcode/dependency-organization@1',
-  projection: 'postcode/projection@9',
+  projection: 'postcode/projection@10',
   expansions: 'postcode/typescript-expansions@2',
-  presentation: 'postcode/presentation@27',
+  presentation: 'postcode/presentation@28',
   handles: 'postcode/module-handles@5',
   organization: 'postcode/organization@3',
 } as const;
@@ -59,6 +59,9 @@ export function identityReference(session: SessionId, reference: RecordId | Sess
 export class EntityBindings {
   readonly #bindings = new Map<RecordId, string>();
   readonly #owners = new Map<string, RecordId>();
+
+  /** Read an existing spelling without extending the binding population. */
+  resolve(reference: string): RecordId | undefined { return this.#owners.get(reference); }
 
   allocate(ids: readonly RecordId[], kind: 'module' | 'group' | 'investigram'): ReadonlyMap<RecordId, string> {
     return this.prepare(ids, kind)();

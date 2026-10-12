@@ -10,7 +10,7 @@ type ClassificationOutcome = Pick<EvaluationState, 'applicability' | 'availabili
 export type ArtifactClassification = {
   readonly state: 'complete' | 'not-requested'; readonly reasons: readonly [];
 } | {
-  readonly state: 'incomplete'; readonly reasons: readonly ('repository-incomplete' | 'placement-incomplete')[];
+  readonly state: 'incomplete'; readonly reasons: readonly ('repository-incomplete' | 'placement-incomplete' | 'subject-not-materialized')[];
 };
 
 const outcomeComplete = (state: ClassificationOutcome) => state.applicability === 'applicable'
@@ -20,9 +20,9 @@ const outcomeComplete = (state: ClassificationOutcome) => state.applicability ==
  * Module-population completeness is already incorporated in placement state.
  * Reasons identify the failing basis outcomes; their full qualification stays in the summary basis. */
 export function artifactClassification(repository: ClassificationOutcome, placement: ClassificationOutcome,
-  detail: 'materialized' | 'not-requested'): ArtifactClassification {
+  detail: 'materialized' | 'not-requested' | 'unavailable'): ArtifactClassification {
   if (detail === 'not-requested') return Object.freeze({ state: 'not-requested', reasons: Object.freeze([] as const) });
-  const reasons: ('repository-incomplete' | 'placement-incomplete')[] = [];
+  const reasons: ('repository-incomplete' | 'placement-incomplete' | 'subject-not-materialized')[] = detail === 'unavailable' ? ['subject-not-materialized'] : [];
   if (!outcomeComplete(repository)) reasons.push('repository-incomplete');
   if (!outcomeComplete(placement)) reasons.push('placement-incomplete');
   return reasons.length ? Object.freeze({ state: 'incomplete', reasons: Object.freeze(reasons) })
@@ -31,7 +31,7 @@ export function artifactClassification(repository: ClassificationOutcome, placem
 
 /** Compatibility wording is derivable from the existing public View fields. */
 export function artifactClassificationComplete(repository: ClassificationOutcome, placement: ClassificationOutcome,
-  detail: 'materialized' | 'not-requested'): boolean {
+  detail: 'materialized' | 'not-requested' | 'unavailable'): boolean {
   return artifactClassification(repository, placement, detail).state === 'complete';
 }
 
@@ -47,7 +47,7 @@ export function resolveOrganizationProjection(store: ProgramRecordStore, project
   if (repository.kind !== 'repository-evidence') throw new Error('Expected repository evidence');
   const moduleEvaluation = store.get(evaluation.moduleEvaluation);
   if (moduleEvaluation.kind !== 'evaluation') throw new Error('Expected module evaluation');
-  const claims = evaluation.claims.map(id => store.get(id) as OrganizationClaims);
+  const claims = [...new Set([...evaluation.claims, ...projection.claims])].map(id => store.get(id) as OrganizationClaims);
   const selectedClaims = new Set([...projection.claims, ...projection.expansions.claims]);
   const available = claims.filter(claim => selectedClaims.has(claim.id));
   const primaryGroups = new Map(claims.filter((claim): claim is GroupClaim => claim.information.type === 'group').map(claim => [claim.subject, claim]));
@@ -62,12 +62,16 @@ export function resolveOrganizationProjection(store: ProgramRecordStore, project
     }
   }
   const composition = resolveComposition(store, projection.expansions.moduleClaims, projection.expansions.moduleEvaluations);
-  const referenceGroups: Record<string, { readonly claim: QualifiedRecord<GroupClaim>; readonly properties: QualifiedRecord<GroupPropertiesClaim> }> = {};
+  const referenceGroups: Record<string, { readonly claim: QualifiedRecord<GroupClaim>; readonly properties: QualifiedRecord<GroupPropertiesClaim> | null; readonly sourceRoot: string | null }> = {};
   const group = (id: RecordId) => {
     if (!referenceGroups[id]) {
       const claim = primaryGroups.get(id), property = properties.get(id);
-      if (!claim || !property) throw new Error('Missing group properties');
-      referenceGroups[id] = Object.freeze({ claim: qualifiedRecord(store, claim), properties: qualifiedRecord(store, property) });
+      if (!claim || !property && !projection.selection.outsidePopulation?.includes(id)) throw new Error('Missing group properties');
+      const supported = qualifiedRecord(store, claim);
+      const region = supported.evidence.find(item => item.kind === 'repository-region');
+      const sourceRepository = region?.kind === 'repository-region' ? store.get(region.repository) : null;
+      const sourceRoot = sourceRepository?.kind === 'repository-evidence' && sourceRepository.capture.status === 'available' ? sourceRepository.capture.evidence.root : null;
+      referenceGroups[id] = Object.freeze({ claim: supported, properties: property ? qualifiedRecord(store, property) : null, sourceRoot });
     }
     return id;
   };
@@ -102,7 +106,7 @@ export function resolveOrganizationProjection(store: ProgramRecordStore, project
     const moduleArtifacts = new Set(placements.flatMap(item => item.placement.record.information.artifacts));
     const documentationArtifacts = new Set(documentation.flatMap(claim => claim.information.type === 'group-documentation' ? [claim.information.artifact] : []));
     const other = artifacts.filter(({ artifact }) => !moduleArtifacts.has(artifact.id) && !documentationArtifacts.has(artifact.id));
-    const detail = selected.has(id) ? 'materialized' as const : 'not-requested' as const;
+    const detail = projection.selection.outsidePopulation?.includes(id) ? 'unavailable' as const : selected.has(id) ? 'materialized' as const : 'not-requested' as const;
     return Object.freeze({ id, selected: selected.has(id), detail,
       parents: Object.freeze([...new Set(parents.get(id) ?? [])].map(group)),
       subgroups: Object.freeze([...new Set(ownClaims.flatMap(claim => claim.information.type === 'group-containment' ? [claim.information.child] : []))].map(group)),
