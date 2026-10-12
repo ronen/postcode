@@ -88,6 +88,18 @@ Yes, continue
 
 The review has been completed; please asses and act as usual
 
+### 2026-10-12 — F2 compact JSON and full Session attribution
+
+Context: In response to the recommendation for a compact attribution summary in non-View JSON, with the full self-contained report in the Session result and observations:
+
+Yes—I recommend that split, with a few explicit requirements:
+- Non-View JSON remains self-contained. Keep the actual request, resolution reason, candidates and consequential prerequisite qualifications. The compact attribution summary supplements those fields; counts alone must not replace the explanation of what happened.
+- Distinguish completeness from detail. State separately whether work reporting is complete and whether the output contains only a summary. A complete summary can omit detail without implying that execution was incomplete.
+- The full report travels with the Session result, independently of observation delivery. Its parent table must include every referenced parent’s description, including earlier generating requests; readers must not need a separate Session lookup.
+- Aggregation preserves attribution. Grouping expansion work is fine, provided record identities remain associated with their outcomes, qualifications and generating origins. Different outcomes must not disappear into one total.
+Storing each distinct parent once is a straightforward improvement. It reduces duplication without weakening the contract.
+This also fits the existing distinction between bounded interface output and fuller operational results. I wouldn’t require the CLI’s ordinary JSON to reproduce the entire work report. The size improvements should accompany F1’s recording/progress changes and be checked at the repository’s scale.
+
 ## Outcome
 
 Intermediate checkpoint, 2026-10-11: implementation commit `a9c8189f042d5fe6cabf27db414b995a5972d0f6` establishes normalized request reporting, shared Lens-to-operation declarations, explicit View/usage/parameter-resolution execution alternatives, parent usage finalization and observation-envelope version 2. Usage no longer has a synthetic Projection/View descriptor. Module matching is shared without the dependency-selection inspection side effect. The local observation convention now specifies version-two batches; user-facing and descriptive documentation records the implemented subset and remaining gaps.
