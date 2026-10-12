@@ -1,9 +1,11 @@
+import { captureCatalog, defaultCatalog } from './request-catalog.js';
+import type { RequestCatalog } from './request-catalog.js';
 import { resolutionContext } from './resolution-context.js';
 import { resolveSubjects, resolutionExplanation } from './subject-resolution.js';
 import { freezeOwned } from './immutable.js';
 import { initiation, RequestWork } from './work-attribution.js';
 import type { WorkProgress, WorkReport } from './work-attribution.js';
-import { lenses, captureRequest, invalidParameters, invalidDesignation, invalidReportInputs } from './requests.js';
+import { captureRequest, invalidParameters, invalidDesignation, invalidReportInputs } from './requests.js';
 import type { ViewRequest, CapturedRequest } from './requests.js';
 export type { ViewRequest } from './requests.js';
 import { renderRequestReport, rejectedRequestResult } from './request-reporting.js';
@@ -49,7 +51,8 @@ export interface ExecutionOptions {
 }
 
 /** One configured project and its accumulating transient program records. */
-export async function openSession(options: ProjectOptions, lifetime: { runGit?: RunGit; signal?: AbortSignal; investigation?: InvestigationDependencies; onWork?: (progress: WorkProgress) => void } = {}) {
+export async function openSession(options: ProjectOptions, lifetime: { runGit?: RunGit; signal?: AbortSignal; investigation?: InvestigationDependencies; onWork?: (progress: WorkProgress) => void } = {}, definitions: RequestCatalog = defaultCatalog) {
+  const catalog = captureCatalog(definitions);
   const investigation = { ...lifetime.investigation, ...(lifetime.investigation?.bounds
     ? { bounds: freezeOwned(structuredClone(lifetime.investigation.bounds)) } : {}) };
   const owner = lifetime.runGit ? undefined : new GitExecutionOwner();
@@ -104,8 +107,8 @@ export async function openSession(options: ProjectOptions, lifetime: { runGit?: 
   const integration = investigationEvaluation(store, opened.analysis, id, usage, { ...investigation,
     onReport: report => { reports.set(report.attempt, report); investigation.onReport?.(report); },
     onProgress: report => { reports.set(report.attempt, report); investigation.onProgress?.(report); },
-  }, check, controller.signal);
-  state = { store, execute: requestExecutor(store, opened.analysis, id, integration, usageReport), changed: opened.changed,
+  }, check, controller.signal, catalog.operations);
+  state = { store, execute: requestExecutor(store, opened.analysis, id, integration, usageReport, catalog), changed: opened.changed,
     evaluate: (request, work) => {
       evaluateModules(store, opened.analysis, [], work.scope('Establish the module basis for direct interpretation.'));
       return integration.evaluate(request, work);
@@ -139,7 +142,7 @@ export async function openSession(options: ProjectOptions, lifetime: { runGit?: 
       } catch (error) { failWork(work, error); throw error; }
     }),
     execute: (request: ViewRequest, execution: ExecutionOptions = {}) => {
-      const captured = captureRequest(request);
+      const captured = captureRequest(request, catalog.lenses);
       execution = { ...execution };
       return operation(async () => {
         const context = initiation(captured.normalized, execution.requestId, investigation.bounds);
@@ -176,7 +179,7 @@ export async function openSession(options: ProjectOptions, lifetime: { runGit?: 
 }
 
 function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalysis, session: SessionId,
-  integration: ReturnType<typeof investigationEvaluation>, usage: () => ReturnType<typeof usageSummary>) {
+  integration: ReturnType<typeof investigationEvaluation>, usage: () => ReturnType<typeof usageSummary>, catalog: RequestCatalog) {
   return async (capturedRequest: CapturedRequest, context: RequestContext, work: RequestWork) => {
     const lookupWork = work.scope('Establish qualified populations to resolve the requested subject.', null, 'resolution-prerequisite');
     const answerWork = work.scope('Materialize requirements and declared expansions for the requested answer.');
@@ -191,9 +194,9 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
     if (context.request.kind === 'rejected') return rejectedRequestResult(session, context, usage());
     const request = capturedRequest.input;
     if (!request) throw new Error('Validated request input missing');
-    const parameterError = invalidParameters(context.request);
+    const parameterError = invalidParameters(context.request, catalog.lenses);
     const reportError = invalidReportInputs(context.request);
-    const invalid = parameterError ?? reportError ?? invalidDesignation(context.request, request);
+    const invalid = parameterError ?? reportError ?? invalidDesignation(context.request, request, catalog.lenses);
     if (invalid) {
       const report: ResolutionReport = { schema: 'postcode-resolution/1-experimental', session, context, usage: usage(),
         resolution: { reason: parameterError ? 'invalid-parameters' : reportError ? 'invalid-report-inputs' : 'invalid-designation', explanation: invalid, candidates: [], criteria: [parameterError ? 'Declared Lens parameters' : reportError ? 'Subjectless usage report' : 'Declared Lens subjects and cardinality'], qualifications: [], prerequisites: [], retainedAnswers: [] } };
@@ -203,7 +206,7 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
       const report: UsageReport = { schema: 'postcode-investigation-usage/1-experimental', session, context, usage: usage() };
       return { kind: 'usage' as const, context, report, rendered: renderRequestReport(report), failed: false };
     }
-    const definition = lenses[context.request.lens];
+    const definition = catalog.lenses[context.request.lens]!;
     const { presentation } = request;
     const lens = context.request.lens;
     const operation = definition.requirements.kind === 'interpretation' ? definition.requirements.operation : null;
@@ -233,7 +236,7 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
       const result = investigationLens && selected.length === 1
         ? await integration.evaluate({ operation: operation!, subject: selected[0]!, parameters: {} }, work) : null;
       answerWork.check();
-      const { view, investigationArrangementKey } = createInvestigationView(store, session, { ...request, resolution: displayResolution, lens: lens as 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'dependency-children' | 'dependency-parents' }, selected, result, usage());
+      const { view, investigationArrangementKey } = createInvestigationView(store, session, { ...request, resolution: displayResolution, lens, definition, title: definition.title }, selected, result, usage());
       consumeInterpretation(view.projection.id);
       const sessionContext = store.get(session);
       if (sessionContext.kind !== 'session') throw new Error('Expected session');

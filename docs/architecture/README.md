@@ -42,8 +42,10 @@ The product permits a summary suggestion when no more specific information need 
 
 Session execution normalizes the requested question, subject designation, Lens
 parameters and presentation choices independently of the resulting answer. A
-static Lens declaration supplies the question and consuming operation mapping;
-selection validation shares that mapping and subject applicability. Command spellings
+fixed Session catalog supplies Lens questions, titles, applicability and consuming
+operation mappings. Construction checks those declarations; retained operation
+selections carry the actual operation request and subject kind, so record validation
+and reconstruction do not depend on a global Lens-name mapping. Command spellings
 map to normalized Lens identities; dependency identities agree with retained answers.
 Missing or incompatible designation modes are refused before Evaluation. Usage is
 subjectless and refuses extraneous designation or parameter inputs. Unknown names
@@ -101,7 +103,10 @@ incomplete or unavailable lookup coverage separately from answer qualification.
 This context participates in View identity without
 altering answer identity. Arrangement still has no lookup or Evaluation access.
 The bounded request/work attribution path is implemented as described below. Runtime
-Presentation compatibility and extension demonstrations remain to be integrated. Declaration of prospective result contracts
+Presentation compatibility and the mechanical extension demonstration remain to be
+integrated. A nonpublic module-risks fixture and a second consuming Lens exercise
+normalization, resolution, interpretation, retention and existing interpretation
+Presentation through the fixed catalog. Declaration of prospective result contracts
 does not yet establish runtime compatibility across the toolbox.
 
 <a id="request-work-attribution"></a>

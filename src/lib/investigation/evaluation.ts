@@ -1,3 +1,5 @@
+import { operations, operationMethod, requireOperation } from './operations.js';
+import type { OperationCatalog } from './operations.js';
 import type { RequestWork } from '../work-attribution.js';
 import { revisionPage } from './revision-page.js';
 import { sessionRevisions } from './revisions.js';
@@ -38,7 +40,8 @@ export interface InvestigationDependencies {
 
 /** Operation selection and atomic retention; independent of lenses and projections. */
 export function investigationEvaluation(store: ProgramRecordStore, analysis: ModuleAnalysis, session: SessionId,
-  usage: InvestigationUsage, dependencies: InvestigationDependencies, check: () => Promise<void>, signal: AbortSignal) {
+  usage: InvestigationUsage, dependencies: InvestigationDependencies, check: () => Promise<void>, signal: AbortSignal, catalog: OperationCatalog = operations) {
+  const definitions = freezeOwned(structuredClone(catalog));
   const evidence = evidenceAccess(store, analysis, session);
   let revisionCount = -1, revisions: ReturnType<typeof sessionRevisions>;
   const history: InvestigationHistory = {
@@ -62,7 +65,9 @@ export function investigationEvaluation(store: ProgramRecordStore, analysis: Mod
   return { evidence, history, async evaluate(request: InvestigationRequest, work?: RequestWork): Promise<InvestigationSelection> {
     request = freezeOwned(structuredClone(request));
     await check();
-    const retained = store.investigations(session).find(item => key(item.request) === key(request));
+    const definition = requireOperation(definitions, request.operation);
+    const method = `${methods.investigationEvaluation} ${operationMethod(definition)}`;
+    const retained = store.investigations(session).find(item => item.method === method && key(item.request) === key(request));
     const attribution = work?.scope(`Evaluate interpretation operation: ${request.operation}.`);
     if (retained) {
       attribution?.record('interpretation', 'reused', { records: [retained.id, ...(retained.outcome.kind === 'accepted' ? [retained.attempt] : [])], limitations: [retained.outcome.kind, ...('reason' in retained.outcome ? [retained.outcome.reason] : [])] });
@@ -75,7 +80,7 @@ export function investigationEvaluation(store: ProgramRecordStore, analysis: Mod
         kind: 'configuration-unavailable', code: 'investigator-not-configured', diagnostic: 'Investigation is disabled. See docs/hosted-investigation.md for intentional hosted enablement and credential setup.',
       } };
     }
-    const execution = await investigate({ session, request, evidence, history, usage, agent, check, signal,
+    const execution = await investigate({ session, request, definition, evidence, history, usage, agent, check, signal,
       ...(dependencies.bounds ? { bounds: dependencies.bounds } : {}),
       ...(work ? { work } : {}),
       onReport: dependencies.onReport, onProgress: dependencies.onProgress });
@@ -87,8 +92,8 @@ export function investigationEvaluation(store: ProgramRecordStore, analysis: Mod
     }
     if (outcome.kind !== 'accepted' && !('reason' in outcome)) throw new Error('Unexpected investigation outcome');
     const accepted = outcome.kind === 'accepted' ? outcome.result : null;
-    const evaluation: InvestigationEvaluationRecord = { kind: 'investigation-evaluation', session, method: methods.investigationEvaluation,
-      id: recordId(session, 'investigation-evaluation', [methods.investigationEvaluation, identityReference(session, execution.report.attempt)]),
+    const evaluation: InvestigationEvaluationRecord = { kind: 'investigation-evaluation', session, method,
+      id: recordId(session, 'investigation-evaluation', [method, identityReference(session, execution.report.attempt)]),
       request, attempt: execution.report.attempt, outcome: outcome.kind === 'accepted' ? { kind: 'accepted', root: outcome.result.root } : outcome,
       investigrams: accepted?.investigrams.map(item => item.id) ?? [], corrections: accepted?.corrections.map(item => item.id) ?? [] };
     // After the domain validity check returns, recheck abortion above and publish

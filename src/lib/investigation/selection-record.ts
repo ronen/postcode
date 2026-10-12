@@ -1,9 +1,10 @@
+import type { InvestigationRequest } from './contracts.js';
 import type { ProgramRecord, RecordContext, RecordId, SessionId } from '../records.js';
 import type { InvestigationSelection } from './evaluation.js';
 import type { RevisionSnapshot } from './revisions.js';
 import { identityReference } from '../identity.js';
 
-export type InvestigationLens = 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'dependency-children' | 'dependency-parents';
+export type InvestigationLens = string;
 export interface SelectionRelation { readonly original: RecordId; readonly account: RecordId }
 export interface AccountNavigation {
   readonly account: RecordId;
@@ -24,7 +25,7 @@ interface SelectionContent extends RecordContext {
   readonly revisions: readonly RevisionSnapshot[];
 }
 export type InvestigationSelectionProjection = SelectionContent & (
-  | { readonly variant: 'request';
+  | { readonly variant: 'request'; readonly operation: InvestigationRequest; readonly subjectKind: 'module' | 'investigram';
       readonly outcome: { readonly kind: 'evaluation'; readonly evaluation: RecordId }
         | { readonly kind: 'unavailable'; readonly value: Pick<NonNullable<InvestigationSelection['unavailable']>, 'kind' | 'code' | 'diagnostic'> } }
   | { readonly variant: 'historical-inspection'; readonly lens: 'inspect' }
@@ -52,6 +53,7 @@ function mapReferences(value: SelectionPayload, ref: (id: RecordId, kinds: reado
         cause: row.cause ? { ...row.cause, via: row.cause.via.map(account) } : null })),
       inconsistencies: item.inconsistencies.map(inconsistency => ({ ...inconsistency, reporter: account(inconsistency.reporter),
         targets: inconsistency.targets.map(account), evidence: inconsistency.evidence.map(id => ref(id, null)) })) })),
+    ...(value.variant === 'request' ? { operation: { ...value.operation, subject: ref(value.operation.subject, ['module', 'investigram']) } } : {}),
     ...(value.variant === 'associated-inspection' ? { mechanical: ref(value.mechanical, ['projection', 'organization-projection']) } : {}),
     ...(value.variant === 'request' && value.outcome.kind === 'evaluation'
       ? { outcome: { kind: 'evaluation' as const, evaluation: ref(value.outcome.evaluation, ['investigation-evaluation']) } } : {}),

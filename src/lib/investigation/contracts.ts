@@ -3,7 +3,7 @@ import type { RevisionStatus } from './revisions.js';
 import type { EvidenceQuery, EvidenceResponse } from '../evidence-access.js';
 import type { RecordContext, RecordId, SessionId } from '../records.js';
 
-export type InvestigationOperation = 'functionality' | 'clarification' | 'decomposition' | 'examination';
+export type InvestigationOperation = string;
 export interface InvestigationRequest {
   readonly operation: InvestigationOperation;
   readonly subject: RecordId;

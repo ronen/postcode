@@ -1,4 +1,5 @@
-import { operationForLens, lenses } from '../requests.js';
+import type { LensDefinition } from '../requests.js';
+import { lenses } from '../requests.js';
 import type { Investigram } from './contracts.js';
 import { methods, recordId } from '../identity.js';
 import type { ProgramRecordStore, RecordId, SessionId } from '../records.js';
@@ -9,14 +10,17 @@ import { sessionRevisions } from './revisions.js';
 
 export interface InvestigationSelectionRequest {
   readonly lens: InvestigationLens;
+  readonly definition?: LensDefinition;
 }
 
 /** Selects against accumulated history once. Reconstruction uses only the record. */
 export function selectInvestigation(store: ProgramRecordStore, session: SessionId, request: InvestigationSelectionRequest,
   selected: readonly RecordId[], result: InvestigationSelection | null): InvestigationSelectionProjection {
-  if (selected.length !== 1 || store.get(selected[0]!).session !== session
-    || !lenses[request.lens].subjects.some(kind => kind === store.get(selected[0]!).kind)
-    || request.lens !== 'inspect' && operationForLens(request.lens) === null) throw new Error('Expected one applicable resolved investigation subject');
+  const definition = request.definition ?? (lenses as Readonly<Record<string, LensDefinition>>)[request.lens];
+  const operation = definition?.requirements.kind === 'interpretation' ? definition.requirements.operation : null;
+  if (!definition || definition.id !== request.lens || selected.length !== 1 || store.get(selected[0]!).session !== session
+    || !definition.subjects.some(kind => kind === store.get(selected[0]!).kind)
+    || request.lens !== 'inspect' && operation === null) throw new Error('Expected one applicable resolved investigation subject');
   if (request.lens === 'inspect') {
     if (store.get(selected[0]!).kind !== 'investigram') throw new Error('Exact interpretation inspection requires an investigram');
     if (result !== null) throw new Error('Historical inspection has no generating evaluation');
@@ -25,8 +29,8 @@ export function selectInvestigation(store: ProgramRecordStore, session: SessionI
       status: selectionStatus(selected), ...derive(store, session, selected, selected, true, true) });
   }
   if (result && (selected.length !== 1 || result.request.subject !== selected[0]
-    || operationForLens(request.lens) === null
-    || operationForLens(request.lens)! !== result.request.operation)) {
+    || operation === null
+    || operation! !== result.request.operation)) {
     throw new Error('Investigation outcome must describe the selected subject');
   }
   const evaluation = result?.evaluation ? store.get(result.evaluation.id) : null;
@@ -38,7 +42,7 @@ export function selectInvestigation(store: ProgramRecordStore, session: SessionI
     } };
   const roots = evaluation?.outcome.kind === 'accepted' ? [evaluation.outcome.root] : [];
   return retain(store, { kind: 'investigation-selection-projection', session, method: methods.investigationProjection,
-    variant: 'request', lens: request.lens, subjects: selected, status: selectionStatus(selected),
+    variant: 'request', lens: request.lens, operation: result!.request, subjectKind: store.get(selected[0]!).kind as 'module' | 'investigram', subjects: selected, status: selectionStatus(selected),
     outcome, ...derive(store, session, selected, roots, false, false) });
 }
 

@@ -1,4 +1,3 @@
-import { operationForLens, lenses } from '../requests.js';
 import { canonical } from '../identity.js';
 import type { ProgramRecordStore, RecordId } from '../records.js';
 import type { InvestigationSelectionProjection } from './selection-record.js';
@@ -13,7 +12,7 @@ export function validateInvestigationSelection(record: InvestigationSelectionPro
   if (record.status !== selectionStatus(record.subjects)) throw new Error('Invalid investigation selection status');
   if (record.variant === 'request') {
     if (record.lens === 'inspect') throw new Error('Inspection requires the historical variant');
-    if (record.subjects.length !== 1 || operationForLens(record.lens) === null) throw new Error('Expected one applicable resolved operation subject');
+    if (record.subjects.length !== 1 || !record.operation?.operation || record.operation.subject !== record.subjects[0] || Object.keys(record.operation.parameters).length > 0) throw new Error('Expected one applicable resolved operation subject');
     if (!['evaluation', 'unavailable'].includes(record.outcome.kind)) throw new Error('A selected operation subject requires an outcome');
     if (record.outcome.kind === 'unavailable' && Object.keys(record.outcome.value).some(key => !['kind', 'code', 'diagnostic'].includes(key))) throw new Error('Unavailable selection cannot retain provider reporting');
     if (record.associated.length) throw new Error('Operation selection cannot include associated listing');
@@ -21,16 +20,15 @@ export function validateInvestigationSelection(record: InvestigationSelectionPro
       const evaluation = get(record.outcome.evaluation);
       if (evaluation.kind !== 'investigation-evaluation' || record.subjects.length !== 1
         || record.subjects[0] !== evaluation.request.subject
-        || operationForLens(record.lens) === null || operationForLens(record.lens) !== evaluation.request.operation
+        || canonical(record.operation) !== canonical(evaluation.request)
         || canonical(record.roots) !== canonical(evaluation.outcome.kind === 'accepted' ? [evaluation.outcome.root] : [])) {
         throw new Error('Invalid selected evaluation');
       }
     } else if (record.roots.length) throw new Error('Selection without evaluation cannot have result roots');
     if (record.outcome.kind === 'unavailable' && (record.subjects.length !== 1
-      || operationForLens(record.lens) === null
       || !['configuration-unavailable', 'communication-failure'].includes(record.outcome.value.kind)
       || typeof record.outcome.value.code !== 'string' || typeof record.outcome.value.diagnostic !== 'string')) throw new Error('Invalid unavailable selection');
-    if (record.subjects.some(id => !lenses[record.lens].subjects.some(kind => kind === get(id).kind))) throw new Error('Invalid operation subject kind');
+    if (!['module', 'investigram'].includes(record.subjectKind) || record.subjects.some(id => get(id).kind !== record.subjectKind)) throw new Error('Invalid operation subject kind');
   } else {
     if (record.lens !== 'inspect') throw new Error('Invalid inspection lens');
     if (record.variant === 'historical-inspection' && (record.subjects.length !== 1 || canonical(record.roots) !== canonical(record.subjects)

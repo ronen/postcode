@@ -157,11 +157,28 @@ multiple bounded responses.
 ## Dialogue, acceptance and ownership
 
 An investigation request names an operation, exact subject and semantic parameters,
-independently of its future consuming lens. The four operation objectives are
-functionality, clarification, decomposition and examination; this slice accepts
-no semantic parameters. A functionality request starts with a module reference;
-the other operations start with the exact earlier investigram and correction-aware
-context. Every new operation execution opens a fresh agent dialogue; retained outcomes do not open one. The communication contract
+independently of its future consuming Lens. The production operations remain
+functionality, clarification, decomposition and examination, with no semantic
+parameters. Operation definitions declare their objective, supported subject kind,
+initial context policy and versioned method. The functionality operation starts
+with a module reference; the other production operations start with the exact
+earlier investigram and correction-aware context. The Session captures its Lens
+and operation catalog before opening and does not accept live registration or
+replacement. An internal assembly seam permits nonpublic interpretation fixtures
+using the same definitions and coordination; additional mechanical definitions
+remain unsupported until their construction/Presentation integration is complete.
+
+Reuse compares the operation request and an effective method containing the common
+execution version, authored operation method and a fingerprint of the actual
+operation definition. An objective or context-policy change therefore changes
+compatibility even if an author forgets a version bump. Accepted provenance and
+interpretation records retain that method; evaluation records retain the evaluation
+version with the operation method. Consuming Lens, supplied designation and current
+request occurrence remain outside the reuse key. Retained selections carry the
+actual operation request even when configuration or communication is unavailable.
+Arrangement receives a supplied title and complete selection content; it does not
+reconstruct operations or titles from Lens names. Titles participate in View
+identity, and initial-context delivery follows the declared policy. Every new operation execution opens a fresh agent dialogue; retained outcomes do not open one. The communication contract
 contains provider identity/configuration, context exchanges, explicit submission,
 failure signals, cancellation and usage reporting. No provider SDK types cross it.
 
@@ -306,7 +323,7 @@ that content, applies display and page bounds, and obtains compact references
 through a capability restricted to the supplied reference population. It cannot
 retrieve records or refresh history. Later session work requires a new core
 selection; resolving or arranging an earlier selection preserves its answer.
-The [construction boundary decision](../decisions/qualified-projection-construction.md)
+The [construction boundary decision](../decisions/qualified-construction-under-the-request-model.md)
 also governs future Presentations of these families. Holding captured source in
 core content is not disclosure; each View classifies and records the source it
 actually exposes.

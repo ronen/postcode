@@ -124,7 +124,7 @@ export class InvestigatorReferences {
       case 'investigation-evaluation': fields = this.#fields(['attempt'], ['investigrams', 'corrections'], {
         request: this.#request(), outcome: object(this.#fields(['root'])) }); break;
       case 'investigation-selection-projection': fields = this.#fields(['mechanical'], ['subjects', 'roots', 'displaced', 'associated'], {
-        selector: object(this.#fields(['reference'])), outcome: object(this.#fields(['evaluation'])),
+        operation: this.#request(), outcome: object(this.#fields(['evaluation'])),
         relations: list(object(this.#fields(['original', 'account']))),
         navigation: list(object(this.#fields(['account', 'compositionParent', 'investigationSubject']))),
         revisions: list(object({ ...this.#fields(['original', 'primary', 'familyPrimary']),

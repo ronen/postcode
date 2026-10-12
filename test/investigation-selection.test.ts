@@ -358,7 +358,7 @@ test('arrangement is self-contained, preserves bounded disclosure and distinguis
     calls.push({ ids, kind });
     return new Map(ids.map(id => [id, (kind === 'investigram' ? spellings : modules).get(id)!]));
   } };
-  const options = { presentation: { format: 'json' as const, sourceDetail: false } };
+  const options = { title: 'Investigation test', presentation: { format: 'json' as const, sourceDetail: false } };
   const report = { reused: false, attempt: result.attempt };
   const usage = usageSummary([]);
   const plain = arrangeInvestigationView(content, options, report, usage, bindings);
@@ -397,7 +397,7 @@ test('association continuation identity uses precise selected matches in both Vi
   const f = fixture(), { store, module, id } = f;
   f.publish([{ name: 'A' }, { name: 'associated', associations: [id('A'), module] }]);
   const content = resolveInvestigationContent(store, f.historical('A'));
-  const options = { presentation: { format: 'json' as const, sourceDetail: false } };
+  const options = { title: 'Investigation test', presentation: { format: 'json' as const, sourceDetail: false } };
   const bindings = (spelling: string) => ({ bind(ids: readonly RecordId[]) { return new Map(ids.map(id => [id, id === f.id('associated') ? spelling : `ref-${id}`])); } });
   const first = arrangeInvestigationView(content, { ...options, after: 'short' }, null, usageSummary([]), bindings('short'));
   const second = arrangeInvestigationView(content, { ...options, after: 'longer' }, null, usageSummary([]), bindings('longer'));
