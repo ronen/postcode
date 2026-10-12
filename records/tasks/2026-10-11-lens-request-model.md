@@ -45,6 +45,21 @@ That's fine, continue implementation
 
 The review is complete.  As usual:  Please assess and record a disposition for every finding. Act on findings whose resolution is clear and within the authorized scope. Ask me before rejecting or materially qualifying a finding, choosing between consequential alternatives, expanding scope, or proceeding where the reviewer identifies unresolved uncertainty.
 
+### 2026-10-12 — F1 allocation and F4 precise-reference choices
+
+Yes, I agree with both recommendations.
+
+**F1 — allocate only returned candidates on unsuccessful lookup.** That matches the adopted intent: a missing lookup shouldn’t allocate unrelated references, and an ambiguous lookup needs references for its returned candidates. Preserve allocations required by genuine prerequisite work, existing bindings, and successful-request allocation schedules. “Returned candidates” should mean the full candidate set supplied in the result, not merely those visible on a rendered page.
+
+**F4 — retain and document raw same-Session record IDs.** They are a useful precise designation alongside compact references. Apply the same rules to both:
+
+- Verify the actual retained record, its Session and supported subject kind.
+- Check Lens applicability separately; a known incompatible subject remains “unsupported,” not “unknown.”
+- Accept raw IDs through explicit reference designation, without reinterpreting literal names.
+- Promise no persistence or cross-Session validity.
+
+A raw ID and its compact reference should resolve to the same subject and, with otherwise identical effective inputs, the same qualified answer. Their supplied spellings can remain distinct in request reporting.
+
 ## Outcome
 
 Intermediate checkpoint, 2026-10-11: implementation commit `a9c8189f042d5fe6cabf27db414b995a5972d0f6` establishes normalized request reporting, shared Lens-to-operation declarations, explicit View/usage/parameter-resolution execution alternatives, parent usage finalization and observation-envelope version 2. Usage no longer has a synthetic Projection/View descriptor. Module matching is shared without the dependency-selection inspection side effect. The local observation convention now specifies version-two batches; user-facing and descriptive documentation records the implemented subset and remaining gaps.
