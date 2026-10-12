@@ -179,9 +179,10 @@ as newly verified behavior.
 
 Both actionable findings are accepted and corrected; none is rejected or deferred.
 The original handoff and both authored findings remain unchanged. The narrow re-check
-is complete, and the round-2 reviewer recommends continuing to compatibility and
-extension work. Independent verification and that recommendation do not substitute
-for human acceptance of the intermediate gate. Further plan implementation remains
-paused pending the human's gate judgment under the same handoff.
+is complete, and the round-2 reviewer recommended continuing to compatibility and
+extension work. On 2026-10-13, the human explicitly accepted this intermediate gate
+and authorized continuation ("Yes, you can continue"), recorded in task follow-up
+commit `0499bee`. This assignment's gate is satisfied; its residual limits remain
+as recorded above.
 The task remains active, with final integrated review and explicit acceptance still
 required before closure.
