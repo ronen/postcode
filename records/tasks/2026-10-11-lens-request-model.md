@@ -76,7 +76,13 @@ The [qualified subject-resolution handoff](../reviews/lens-request-model/2026-10
 
 On 2026-10-12, F2 and F3 were corrected in `fd1ddfbe145407cadbaa6baa03fdc550b0d6efa8`: Unicode reports preserve each lookup population's established match outcome and unavailable/incomplete state, and investigram-only Lenses reject direct name designation before Evaluation. The [subject-resolution disposition](../reviews/lens-request-model/2026-10-12-subject-resolution-disposition.md) records every finding. F1's unsuccessful allocation schedule and F4's raw record-ID designation policy await explicit human choices; neither has been changed. Wider implementation remains paused and the task remains active pending those choices and acceptance of the intermediate gate.
 
+On 2026-10-12, the human-directed F1/F4 corrections were completed in `218e00c37498d9c80987e709907f0b29bbea65dd`. Unsuccessful lookup binds only its complete returned candidate set, preserving prerequisite bindings and successful schedules. Explicit raw and compact references validate actual same-Session subjects before applicability, preserve literal-name semantics, and share qualified answers under identical effective inputs while retaining supplied spellings in request context. Responsible methods were advanced. The [accepted reference decision](../../docs/decisions/precise-subject-designations-and-lookup-bindings.md), implementation convention and descriptive documentation record these choices. All four findings now have accepted-and-corrected dispositions. The task remains active; acceptance of this intermediate gate and the remaining full-plan implementation and final review are still required. Broader name/handle/reference identity migration is not claimed complete.
+
 ## Verification
+
+### Completed subject-resolution review corrections
+
+Final `npm run check` and `npm test` passed all 513 tests (about 171 seconds). New coverage verifies missing/incomplete/unavailable allocation behavior, complete ambiguous candidate binding, later collision spelling, preserved successful population order, raw/compact qualified answer equality, unsupported subjects, never-bound retained subjects, foreign Session rejection, literal-name preservation and shell raw-ID syntax. The initial 64/67 focused result identified remaining investigation descriptor spelling and an invalid fixture-name assumption; both were corrected. A subsequent focused run passed 14 tests, and the final full suite includes all corrections. `git diff --check` passed. Repository inputs were stable during testing. No paid inference was used; existing offline authentication tests ran with local loopback permission. Review residual limits remain recorded in the disposition.
 
 ### Subject-resolution review corrections
 
