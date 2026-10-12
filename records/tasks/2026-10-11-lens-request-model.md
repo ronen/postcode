@@ -104,6 +104,12 @@ This also fits the existing distinction between bounded interface output and ful
 
 next review findings are in
 
+### 2026-10-13 — Accept attribution gate and continue
+
+Context: Acceptance of the clean second attribution review and authorization to continue with compatibility and extension work.
+
+Yes, you can continue
+
 ## Outcome
 
 Intermediate checkpoint, 2026-10-11: implementation commit `a9c8189f042d5fe6cabf27db414b995a5972d0f6` establishes normalized request reporting, shared Lens-to-operation declarations, explicit View/usage/parameter-resolution execution alternatives, parent usage finalization and observation-envelope version 2. Usage no longer has a synthetic Projection/View descriptor. Module matching is shared without the dependency-selection inspection side effect. The local observation convention now specifies version-two batches; user-facing and descriptive documentation records the implemented subset and remaining gaps.
