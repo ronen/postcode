@@ -714,7 +714,16 @@ reports distinguish acquired information from information actually delivered to 
 investigator, including response-size omissions and unavailable queries. Forced worker
 termination preserves received facts and labels the report incomplete. These reports
 do not claim fresh inputs, impose a new whole-command allowance, or extend Session
-reference validity. Non-View JSON reports carry `attribution`; successful View JSON
+reference validity. Non-View JSON retains the actual request, resolution reasons,
+candidates and prerequisite qualifications, with a compact `attribution` summary:
+`detail: "summary"`, execution `status`, reporting `completeness`, counts and
+limitations. Detail omission does not make reporting incomplete. Full reports
+(`detail: "full"`) travel with Session results and observations independently of sink
+delivery; each parent description appears once within the report, including earlier
+generating requests. An origin's report-local `parent` reference is 0 for `context`,
+or n for `parents[n - 1]`; caller-supplied correlation IDs need not be unique.
+Expansion groups preserve record identities and origins under
+their shared qualification. Successful View JSON
 remains a View, with the separate execution work report retained in its observation.
 Attempt usage details include their originating parent context.
 Work status describes execution; a later publication check can withhold a completed

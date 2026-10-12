@@ -1,3 +1,4 @@
+import { summarizeWork } from './work-attribution.js';
 import type { InitiationContext, WorkReport } from './work-attribution.js';
 import { usageSummary } from './investigation/reporting.js';
 import { freezeOwned } from './immutable.js';
@@ -40,7 +41,8 @@ export interface UsageReport {
 
 /** Reports carry occurrence context; they have no program answer or content identity. */
 export function renderRequestReport(report: ResolutionReport | UsageReport): string {
-  if (report.context.request.presentation.format === 'json') return `${JSON.stringify(report)}\n`;
+  if (report.context.request.presentation.format === 'json') return `${JSON.stringify({ ...report,
+    ...(report.attribution ? { attribution: summarizeWork(report.attribution) } : {}) })}\n`;
   if (report.schema === 'postcode-investigation-usage/1-experimental') {
     return ['Investigation usage', ...report.usage.attempts.flatMap(attempt => usageLines(usageSummary([attempt]), `Attempt ${attempt.attempt} (${attempt.termination})`)), ...usageLines(report.usage, 'Session'), ...report.usage.limitations.map(inlineText)].join('\n') + '\n';
   }

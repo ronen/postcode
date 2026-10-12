@@ -129,11 +129,16 @@ Expansion reporting groups equal per-expansion qualifications by requirement wit
 each provider/evaluator call. Each group keeps its count, exact record identities and
 their generating origins; different qualifications and reuse dispositions stay
 separate. A report carries its current parent once, plus a table of distinct earlier
-parents. Origin references resolve entirely within that report. Detail still scales
+parents. Report-local origin references resolve entirely within that report even if
+a caller reuses a request correlation ID. Detail still scales
 with supported record identities and evidence queries; no detail is silently capped.
 
 Returned execution envelopes carry immutable work reports separately from Views.
-Non-View JSON reports include them. The Session exposes its latest execution report
+Non-View JSON retains the full resolution explanation and a compact attribution
+summary. Reporting completeness and included detail are separate fields; Session
+results and observations carry full reports independently of sink delivery. This
+follows the [interface attribution decision](../decisions/compact-attribution-and-complete-results.md).
+The Session exposes its latest execution report
 for failure handling, not a request-history catalog. Interpretation attempts carry
 their parent context; retained operation reuse and exact/associated selection record
 current consumption with original attribution. Evidence reporting preserves qualified

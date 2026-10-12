@@ -69,8 +69,8 @@ test('request attribution separates prerequisite work, actual provider reuse and
     assert.equal(first.attribution.work.find(item => item.boundary === boundary)!.disposition, 'established');
     const reused: AttributedWork = repeat.attribution.work.find(item => item.boundary === boundary)!;
     assert.equal(reused.disposition, 'reused');
-    assert.equal(reused.current.parent, repeat.context.id);
-    assert.ok(reused.generating.every(item => item.origin?.parent === first.context.id));
+    assert.deepEqual(parentOf(repeat.attribution, reused.current.parent), repeat.context);
+    assert.ok(reused.generating.every(item => item.origin !== null && parentOf(repeat.attribution, item.origin.parent).id === first.context.id));
   }
   const missing = await opened.session.execute({ ...summary, selector: 'absent-candidate' });
   assert.equal(missing.kind, 'resolution');
@@ -78,12 +78,20 @@ test('request attribution separates prerequisite work, actual provider reuse and
   assert.ok(missing.attribution.work.length > 0);
   assert.ok(missing.attribution.work.every(item => item.current.role === 'resolution-prerequisite' && item.current.initiator === 'PostCode'));
   assert.deepEqual(missing.report.attribution, missing.attribution);
-  assert.deepEqual(JSON.parse(missing.rendered), missing.report);
+  const { attribution: summaryAttribution, ...renderedReport } = JSON.parse(missing.rendered);
+  const { attribution: full, ...expectedReport } = missing.report;
+  assert.deepEqual(renderedReport, expectedReport, 'compact attribution must not replace request, candidates or prerequisite qualifications');
+  assert.equal(summaryAttribution.detail, 'summary');
+  assert.equal(summaryAttribution.completeness, 'complete');
+  assert.equal(summaryAttribution.status, 'refused');
+  assert.equal(summaryAttribution.counts.workEntries, full!.work.length);
+  assert.equal(full!.detail, 'full');
+  assert.equal(summaryAttribution.work, undefined);
   const dependencies = await opened.session.execute({ ...inventory, lens: 'dependencies' });
   const repeated = await opened.session.execute({ ...inventory, lens: 'dependencies' });
   const provider = repeated.attribution.work.find(item => item.boundary === 'provider-dependencies')!;
   assert.equal(provider.disposition, 'reused');
-  assert.ok(provider.generating.every(item => item.origin?.parent === dependencies.context.id));
+  assert.ok(provider.generating.every(item => item.origin !== null && parentOf(repeated.attribution, item.origin.parent).id === dependencies.context.id));
   assert.equal(repeated.attribution.work.find(item => item.boundary === 'dependency-evaluation')!.disposition, 'established', 'the dependency evaluator actually re-derives, even though its record ID is equal');
   assert.equal(JSON.stringify(first), snapshot, 'later consumption cannot mutate the earlier snapshot');
   const refused = await opened.session.execute({ ...inventory, parameters: { wrong: true } });
@@ -114,7 +122,7 @@ test('partial provider outcomes retry without an assurance and retain current ve
   assert.equal(third.id, fourth.id);
   assert.equal(calls, 4, 'no outer cache may hide the provider retry decision');
   assert.deepEqual(contexts.map(report => report.work[0]!.disposition), ['established', 'established', 'established', 'reused']);
-  assert.equal(contexts[3]!.work[0]!.generating[0]!.origin!.parent, contexts[2]!.context.id);
+  assert.equal(parentOf(contexts[3]!, contexts[3]!.work[0]!.generating[0]!.origin!.parent).id, contexts[2]!.context.id);
   assert.equal(contexts[3]!.work[0]!.outcome.state!.reason, 'Controlled incomplete population.');
 });
 
@@ -159,7 +167,7 @@ test('evidence attribution preserves withheld capture, unavailability, reuse and
   assert.deepEqual(second.attribution.evidence, []);
   const reused = second.attribution.work.find(item => item.boundary === 'interpretation')!;
   assert.equal(reused.disposition, 'reused');
-  assert.ok(reused.generating.every(item => item.origin!.parent === first.context.id));
+  assert.ok(reused.generating.every(item => parentOf(second.attribution, item.origin!.parent).id === first.context.id));
   const operation = { ...answer.result!.request };
   const pending = opened.session.evaluateInvestigation(operation);
   operation.subject = 'mutated-after-entry' as RecordId;
@@ -178,7 +186,7 @@ test('evidence attribution preserves withheld capture, unavailability, reuse and
   assert.equal(followup.attribution.work.find(item => item.boundary === 'evidence-retrieval')!.disposition, 'consumed');
   const inspected = await opened.session.execute({ ...summary, lens: 'inspect', selector: answer.accounts[0]!.id, reference: true });
   const consumption = inspected.attribution.work.find(item => item.boundary === 'interpretation' && item.disposition === 'consumed')!;
-  assert.ok(consumption.generating.some(item => item.records.includes(answer.accounts[0]!.id) && item.origin?.parent === first.context.id));
+  assert.ok(consumption.generating.some(item => item.records.includes(answer.accounts[0]!.id) && item.origin !== null && parentOf(inspected.attribution, item.origin.parent).id === first.context.id));
   assert.equal(agent.inputs.length, 2, 'historical inspection starts no inference');
 });
 
@@ -400,7 +408,7 @@ test('hundreds of modules produce boundary-sized expansion reports with complete
   for (const expansion of expansions) {
     assert.equal(expansion.outcome.records.length, expansion.outcome.expansion!.count);
     assert.deepEqual(expansion.generating.flatMap(item => item.records), expansion.outcome.records);
-    assert.ok(expansion.generating.every(item => item.origin?.parent === first.context.id));
+    assert.ok(expansion.generating.every(item => item.origin?.parent === 0));
   }
   const reportBytes = Buffer.byteLength(JSON.stringify(first.attribution));
   assert.ok(events < 32, 'provider/evaluator expansion reports are grouped by requirement and qualification');
@@ -410,5 +418,72 @@ test('hundreds of modules produce boundary-sized expansion reports with complete
   assert.deepEqual(repeat.attribution.parents, [first.context]);
   assert.deepEqual(repeat.kind === 'view' && repeat.view, first.kind === 'view' && first.view);
   assert.ok(repeat.attribution.work.filter(item => item.boundary === 'module-expansion-evaluation')
-    .every(item => item.disposition === 'reused' && item.generating.every(generation => generation.origin?.parent === first.context.id)));
+    .every(item => item.disposition === 'reused' && item.generating.every(generation => generation.origin !== null && parentOf(repeat.attribution, generation.origin.parent).id === first.context.id)));
+});
+
+test('non-View publication keeps full attribution despite sink rejection and summarizes only rendered detail', async t => {
+  const f = fixture(t), opened = await openSession({ configPath: f.configPath });
+  assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
+  const established = await opened.session.execute(inventory);
+  let result: Awaited<ReturnType<typeof opened.session.execute>> | undefined;
+  const batches: ObservationBatch[] = [], output: string[] = [], errors: string[] = [];
+  const code = await publishCommand({ ...opened.session, async execute(request, execution) {
+    result = await opened.session.execute(request, execution); return result;
+  } }, { ...inventory, lens: 'inspect', selector: 'absent-name' }, 'inspect absent-name', f.configPath, 2,
+  { stdout(text) { output.push(text); }, stderr(text) { errors.push(text); } },
+  { async submit(batch) { batches.push(batch); return { accepted: false, reason: 'Controlled sink rejection.' }; } });
+  assert.equal(code, 3);
+  assert.equal(result!.kind, 'resolution');
+  const json = JSON.parse(output.join(''));
+  assert.equal(json.attribution.detail, 'summary');
+  assert.equal(json.attribution.completeness, 'complete');
+  assert.equal(json.resolution.reason, 'lookup-unavailable', 'the temporary project has no repository/group lookup population');
+  assert.ok(json.resolution.prerequisites.length);
+  assert.ok(json.resolution.support.length);
+  assert.equal(json.context.request.designation.value, 'absent-name');
+  assert.equal(result!.attribution.detail, 'full');
+  assert.ok(result!.attribution.parents.some(parent => parent.id === established.context.id));
+  for (const entry of result!.attribution.work) {
+    assert.ok(parentOf(result!.attribution, entry.current.parent));
+    for (const generation of entry.generating) if (generation.origin) assert.ok(parentOf(result!.attribution, generation.origin.parent));
+  }
+  assert.deepEqual(batches[0]!.records.find(item => item.kind === 'request-work')!.value, result!.attribution);
+  assert.ok(errors.join('').includes('Controlled sink rejection.'));
+});
+
+test('a deferred publication invalidation keeps execution completion distinct from command outcome', async t => {
+  const f = fixture(t), opened = await openSession({ configPath: f.configPath });
+  assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
+  const batches: ObservationBatch[] = [], output: string[] = [];
+  const code = await publishCommand({ ...opened.session, async execute(request, execution) {
+    const result = await opened.session.execute(request, execution);
+    writeFileSync(path.join(f.root, 'widget.ts'), 'export const changed = 2;');
+    return result;
+  } }, inventory, 'modules', f.configPath, 1, { stdout(text) { output.push(text); }, stderr() {} },
+  { async submit(batch) { batches.push(batch); return { accepted: true }; } });
+  assert.equal(code, 2);
+  assert.deepEqual(output, []);
+  const report = batches[0]!.records.find(item => item.kind === 'request-work')!.value as WorkReport;
+  assert.equal(report.status, 'completed');
+  assert.equal(report.completeness, 'complete');
+  assert.equal((batches[0]!.records.find(item => item.kind === 'command-outcome')!.value as { status: string }).status, 'invalidated');
+  assert.equal(batches[0]!.events.some(event => event.type === 'view-produced'), false);
+});
+
+
+function parentOf(report: WorkReport, reference: number) {
+  return reference === 0 ? report.context : report.parents[reference - 1]!;
+}
+
+test('reused caller correlation IDs cannot conflate distinct generating parent descriptions', async t => {
+  const opened = await openSession({ configPath: fixture(t).configPath });
+  assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
+  const first = await opened.session.execute(inventory, { requestId: 'repeated-correlation' });
+  const second = await opened.session.execute({ ...inventory, lens: 'dependencies' }, { requestId: 'repeated-correlation' });
+  assert.equal(first.context.id, second.context.id);
+  assert.notEqual(first.context.purpose, second.context.purpose);
+  const reused = second.attribution.work.find(item => item.boundary === 'module-evaluation')!;
+  assert.deepEqual(parentOf(second.attribution, reused.current.parent), second.context);
+  assert.deepEqual(parentOf(second.attribution, reused.generating[0]!.origin!.parent), first.context);
+  assert.deepEqual(second.attribution.parents, [first.context]);
 });

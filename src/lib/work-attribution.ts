@@ -29,8 +29,8 @@ export function initiation<T extends InitiationContext['request']>(request: T, i
 }
 
 export interface WorkOrigin {
-  /** Resolved by this report's context or parents, never an external history lookup. */
-  readonly parent: string;
+  /** Report-local: 0 selects context; n > 0 selects parents[n - 1]. Correlation IDs may repeat. */
+  readonly parent: number;
   readonly initiator: 'caller' | 'PostCode';
   readonly role: 'requested-answer' | 'resolution-prerequisite' | 'interpretation-evidence';
   readonly purpose: string;
@@ -57,6 +57,7 @@ export interface AttributedWork {
   readonly generating: readonly { readonly records: readonly RecordId[]; readonly origin: WorkOrigin | null }[];
 }
 export interface WorkReport {
+  readonly detail: 'full';
   readonly context: InitiationContext;
   /** Distinct earlier parents; the current parent is already present as context. */
   readonly parents: readonly InitiationContext[];
@@ -67,6 +68,16 @@ export interface WorkReport {
   readonly limitations: readonly string[];
 }
 
+/** Interface summary; reporting completeness is independent of omitted detail. */
+export function summarizeWork(report: WorkReport) {
+  return Object.freeze({ detail: 'summary' as const, status: report.status, completeness: report.completeness,
+    counts: Object.freeze({ workEntries: report.work.length, evidenceQueries: report.evidence.length,
+      deliveredQueries: report.evidence.filter(item => item.delivery === 'delivered').length,
+      withheldQueries: report.evidence.filter(item => item.delivery === 'withheld').length,
+      queriesWithoutOutcome: report.evidence.filter(item => item.outcome === null).length }),
+    limitations: report.limitations });
+}
+
 /** Append-only work and indexed evidence replacements; never resend accumulated history. */
 export type WorkProgress = { readonly kind: 'start'; readonly context: InitiationContext }
   | { readonly kind: 'work'; readonly entry: AttributedWork; readonly parents: readonly InitiationContext[] }
@@ -75,7 +86,7 @@ export type WorkProgress = { readonly kind: 'start'; readonly context: Initiatio
 
 /** Owns received facts. Full immutable snapshots are built only when requested. */
 export class WorkReportState {
-  private readonly parents = new Map<string, InitiationContext>();
+  private readonly parents: InitiationContext[] = [];
   private readonly work: AttributedWork[] = [];
   private readonly evidence: EvidenceWork[] = [];
   private status: WorkReport['status'] = 'running';
@@ -86,7 +97,7 @@ export class WorkReportState {
   apply(progress: Exclude<WorkProgress, { kind: 'start' }>): void {
     if (this.status !== 'running') return;
     if (progress.kind === 'work') {
-      for (const parent of progress.parents) this.parents.set(parent.id, parent);
+      this.parents.push(...progress.parents);
       this.work.push(progress.entry);
       this.unknownOrigin ||= progress.entry.generating.some(item => item.origin === null);
     } else if (progress.kind === 'evidence') this.evidence[progress.index] = progress.entry;
@@ -97,7 +108,7 @@ export class WorkReportState {
     const unfinished = this.status !== 'running' && this.evidence.some(item => item.outcome === null);
     // Entries and context are already deeply owned/frozen. Only these new containers
     // need freezing; recursively revisiting old entries makes recording quadratic.
-    return Object.freeze({ context: this.context, parents: Object.freeze([...this.parents.values()]), status: this.status,
+    return Object.freeze({ detail: 'full', context: this.context, parents: Object.freeze([...this.parents]), status: this.status,
       completeness: unfinished || this.incompleteReason ? 'incomplete' : 'complete',
       work: Object.freeze([...this.work]), evidence: Object.freeze([...this.evidence]), limitations: Object.freeze([
         ...(unfinished ? ['An evidence query did not return before execution ended; its acquisition outcome is unknown.'] : []),
@@ -141,13 +152,13 @@ const origins = new WeakMap<ProgramRecordStore, Map<RecordId, { origin: WorkOrig
 
 export class RequestWork {
   private readonly report: WorkReportState;
-  private readonly reportedParents = new Set<string>();
+  private readonly reportedParents = new Map<InitiationContext, number>();
   private readonly evidenceWork: EvidenceWork[] = [];
   private status: WorkReport['status'] = 'running';
   constructor(readonly context: InitiationContext, private readonly store: ProgramRecordStore,
     private readonly progress?: (progress: WorkProgress) => void, private readonly signal?: AbortSignal) {
     this.report = new WorkReportState(context);
-    this.reportedParents.add(context.id);
+    this.reportedParents.set(context, 0);
     progress?.({ kind: 'start', context });
   }
 
@@ -157,7 +168,7 @@ export class RequestWork {
   }
 
   scope(purpose: string, attempt: RecordId | null = null, role: WorkOrigin['role'] = 'requested-answer', trigger: EvidenceWork['query'] | null = null, sequence: number | null = null): WorkScope {
-    const current: WorkOrigin = freezeOwned(structuredClone({ parent: this.context.id, initiator: role === 'requested-answer' ? 'caller' as const : 'PostCode' as const, role, purpose, attempt, trigger, sequence }));
+    const current: WorkOrigin = freezeOwned(structuredClone({ parent: 0, initiator: role === 'requested-answer' ? 'caller' as const : 'PostCode' as const, role, purpose, attempt, trigger, sequence }));
     return { check: () => {
       this.signal?.throwIfAborted();
       if (this.status !== 'running') throw new Error('Request work has ended');
@@ -167,18 +178,25 @@ export class RequestWork {
       if (!retained) { retained = new Map(); origins.set(this.store, retained); }
       if (disposition === 'established') for (const id of firstRetained) if (!retained.has(id)) retained.set(id, { origin: current, parent: this.context });
       const parents: InitiationContext[] = [];
-      const generations = new Map<WorkOrigin | null, RecordId[]>();
+      const generations = new Map<WorkOrigin | null, { origin: WorkOrigin | null; records: RecordId[] }>();
       for (const record of outcome.records) {
         const original = retained.get(record);
-        if (original && !this.reportedParents.has(original.parent.id)) {
-          this.reportedParents.add(original.parent.id); parents.push(original.parent);
+        let group = generations.get(original?.origin ?? null);
+        if (!group) {
+          let origin: WorkOrigin | null = null;
+          if (original) {
+            let parent = this.reportedParents.get(original.parent);
+            if (parent === undefined) {
+              parent = this.reportedParents.size;
+              this.reportedParents.set(original.parent, parent); parents.push(original.parent);
+            }
+            origin = Object.freeze({ ...original.origin, parent });
+          }
+          group = { origin, records: [] }; generations.set(original?.origin ?? null, group);
         }
-        const origin = original?.origin ?? null;
-        let records = generations.get(origin);
-        if (!records) { records = []; generations.set(origin, records); }
-        records.push(record);
+        group.records.push(record);
       }
-      const generating = [...generations].map(([origin, records]) => Object.freeze({ origin, records: Object.freeze(records) }));
+      const generating = [...generations.values()].map(({ origin, records }) => Object.freeze({ origin, records: Object.freeze(records) }));
       const entry = Object.freeze({ boundary, disposition, current, outcome: freezeOwned(structuredClone(outcome)),
         generating: Object.freeze(generating) });
       this.emit({ kind: 'work', entry, parents: Object.freeze(parents) });
@@ -189,7 +207,7 @@ export class RequestWork {
     const purpose = query.kind === 'initial-context' ? 'Supply the selected prior interpretation as initial context.'
       : `Satisfy the investigator's ${query.kind} evidence query.`;
     const index = this.evidenceWork.length;
-    const current: WorkOrigin = { parent: this.context.id, initiator: 'PostCode', role: 'interpretation-evidence', purpose, attempt, trigger: query, sequence: index };
+    const current: WorkOrigin = { parent: 0, initiator: 'PostCode', role: 'interpretation-evidence', purpose, attempt, trigger: query, sequence: index };
     const update = (fields: Partial<EvidenceWork>) => {
       if (this.status !== 'running') return;
       this.evidenceWork[index] = freezeOwned(structuredClone({ ...this.evidenceWork[index]!, ...fields }));

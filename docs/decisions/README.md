@@ -62,6 +62,7 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 <a id="accepted-decisions"></a>
 ## Accepted decisions
 
+- [Compact interface attribution and complete operational results](compact-attribution-and-complete-results.md)
 - [Separate research concepts from application specification](application-specification-boundaries.md)
 
 - [Coordinate Views while preserving qualified results](coordinated-views-and-qualified-results.md)

@@ -8,7 +8,7 @@ import { interactiveSession } from '../src/lib/interactive-session.js';
 import { publishCommand } from '../src/lib/command-execution.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import type { ObservationBatch } from '../src/lib/observations.js';
-import type { RequestContext } from '../src/lib/request-reporting.js';
+import type { ResolutionReport, UsageReport, RequestContext } from '../src/lib/request-reporting.js';
 import { finalizeRequestReport } from '../src/lib/request-reporting.js';
 import { requireView } from './request-helpers.js';
 
@@ -57,7 +57,7 @@ test('direct parameter rejection and subjectless usage perform no Evaluation or 
     assert.deepEqual(result.report.resolution.prerequisites, []);
     assert.deepEqual(result.report.resolution.retainedAnswers, []);
     assert.equal('view' in result, false);
-    assert.deepEqual(JSON.parse(result.rendered), result.report);
+    assertNoWorkReportJSON(result.rendered, result.report);
   }
   const usage = await opened.session.execute({ lens: 'usage', selector: null, presentation });
   assert.equal(usage.kind, 'usage');
@@ -112,7 +112,7 @@ for (const kind of ['usage', 'resolution', 'view'] as const) {
     assert.equal(batch.records.find(item => item.kind === 'rendered-output')!.value, stdout);
     if (kind !== 'view') {
       const artifact = batch.records.find(item => item.kind === (kind === 'usage' ? 'usage-report' : 'resolution-result'))!.value;
-      assert.deepEqual(artifact, JSON.parse(stdout));
+      assertNoWorkReportJSON(stdout, artifact as ResolutionReport | UsageReport);
       assert.equal(batch.records.some(item => item.kind === 'qualified-view'), false);
     }
   });
@@ -215,7 +215,7 @@ test('usage refuses and preserves extraneous designation and parameters without 
     assert.equal(result.context.request.kind, 'report');
     if (result.context.request.kind !== 'report') throw new Error('Expected usage request');
     assert.deepEqual(result.context.request.suppliedInputs, inputs);
-    assert.deepEqual(JSON.parse(result.rendered), result.report);
+    assertNoWorkReportJSON(result.rendered, result.report);
     assert.equal(result.report.usage.calls, 0);
   }
   assert.equal((await opened.session.execute({ lens: 'usage', selector: null, parameters: {}, presentation })).kind, 'usage');
@@ -235,7 +235,7 @@ test('unknown Lens names are preserved as rejected input and never treated as Le
     assert.equal(result.context.request.input.lens, lens);
     assert.equal('lens' in result.context.request, false);
     assert.deepEqual(result.context.request.problems, [{ field: 'lens', reason: 'The supplied name does not identify a registered Lens or report.', representation: 'preserved' }]);
-    assert.deepEqual(JSON.parse(result.rendered), result.report);
+    assertNoWorkReportJSON(result.rendered, result.report);
   }
   assert.equal(put.mock.calls.length, 0);
 });
@@ -329,3 +329,16 @@ test('abnormal final usage uses captured presentation without rereading rejected
   assert.match(stderr, /Final investigation usage/);
   assert.equal(batches[0]!.events.at(-1)!.type, 'session-invalidated');
 });
+
+/** These refusal/usage cases perform no program work; stdout carries only its summary. */
+function assertNoWorkReportJSON(rendered: string, report: ResolutionReport | UsageReport) {
+  assert.ok(report.attribution);
+  assert.equal(report.attribution.detail, 'full');
+  assert.deepEqual(report.attribution.work, []);
+  assert.deepEqual(report.attribution.evidence, []);
+  assert.deepEqual(JSON.parse(rendered), { ...report, attribution: {
+    detail: 'summary', status: report.attribution.status, completeness: 'complete',
+    counts: { workEntries: 0, evidenceQueries: 0, deliveredQueries: 0, withheldQueries: 0, queriesWithoutOutcome: 0 },
+    limitations: [],
+  } });
+}

@@ -28,7 +28,9 @@ This page summarizes current capabilities and significant limits. The [capabilit
 - **[Local observation recording](README.md#observability).**
   Commands record their actual requested question, designation, outcomes and presented
   views, grouped by project and UTC date. Request-scoped work reports distinguish
-  prerequisite analysis, reuse and evidence delivery, preserving received facts on interruption. Usage is reported without a program View. Only complete batches become visible under final filenames; delivery
+  prerequisite analysis, reuse and evidence delivery, preserving received facts on interruption.
+  Non-View JSON summarizes work detail; Session results and observations retain full reports.
+  Usage is reported without a program View. Only complete batches become visible under final filenames; delivery
   and later cleanup warnings remain distinct.
 
 - **[Interpretation integration](docs/cli-reference.md#progressive-investigation-and-usage).**
