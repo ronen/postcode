@@ -4,8 +4,9 @@ Record type: disposition
 Prepared: 2026-10-13
 Task: [Implement explicit Lenses and qualified request resolution](../../tasks/2026-10-11-lens-request-model.md)
 Handoff: [Request attribution checkpoint](2026-10-12-request-attribution-handoff.md)
-Findings: [Round 1](2026-10-12-request-attribution-round-1-findings.md)
+Findings: [Round 1](2026-10-12-request-attribution-round-1-findings.md); [round 2](2026-10-12-request-attribution-round-2-findings.md)
 Reviewed target: `2c26810611230bcb5d28a8f89d75b5213d57a893`
+Rechecked target: `aafaae226f24b503fbc6f89b14026ef1f950ae9f`
 Correction commits: `8fd59ffdedc9ca8aa85bee03c01e6fd137151f1b`; `aafaae226f24b503fbc6f89b14026ef1f950ae9f` (final implementation target)
 
 ## Dispositions
@@ -136,13 +137,51 @@ A separate recording-plus-serialization probe took 15 ms, 28 ms and 52 ms for 1,
 supports proportional cost alongside the deterministic byte/event-count tests; it
 is not a repeated/averaged benchmark or a guarantee for arbitrary query payloads.
 
+## Round 2 assessment — 2026-10-13
+
+Round 2 independently confirms both corrections and reports no actionable findings.
+F1 remains accepted and corrected: measured recording/transport cost is linear,
+repository-scale timings match the earlier baseline within single-run variation, and
+cached repeats are fast again. F2 remains accepted and corrected: parent descriptions
+are self-contained, grouping preserves record/outcome/origin associations, and the
+human-directed summary/full-report split is implemented. Nothing is rejected,
+materially qualified, or deferred as an unresolved actionable finding.
+
+The reviewer independently passed `npm run check` and all 535 tests, inspected the
+complete correction diff, and repeated scale probes against the exact rechecked
+target. A 25-query fixture sent 0.59 MB of increments instead of 61 MB of accumulated
+snapshots. The reviewer also verified distinct parents under repeated caller
+correlation IDs. The implementation remains unchanged from that target; the
+implementer confirmed the source/test/fixture/package diff is empty. This round
+requires only review/task record updates, so no additional test run is claimed.
+
+The four non-defect observations are retained as such:
+
+- Full reports still grow with record identities and evidence queries. The measured
+  2.7 MB repository-scale, 25-query report is consistent with the accepted full-detail
+  contract; stdout is unaffected. Repeated record lists are a documented potential
+  source of future observation growth, not authorization for another optimization.
+- A second `finish` cannot rewrite a final work report. Inspection confirms that a
+  later freezing/rendering defect can coexist with completed work, preserving the
+  execution/publication distinction. Neither reviewer nor implementer exercised
+  that specific post-finish defect path in this round; no broader claim is made.
+- Worker reconstruction and sealing remain supported by code inspection and the
+  existing interruption test, without an exhaustive scheduling claim.
+- The deferred-publication distinction remains documented and covered by its test.
+
+Single-run timing limits, no rerun of the earlier performance baselines, large-expansion
+cancellation timing, heap retention across many requests and hosted-investigator
+coverage remain explicit. The broader plan's compatibility, catalog/operation and
+extension work remains outside this re-check. These limits are not silently treated
+as newly verified behavior.
+
 ## Review gate
 
 Both actionable findings are accepted and corrected; none is rejected or deferred.
-The original handoff and authored findings remain unchanged. The reviewer recommended
-a narrow timing/report-size re-check after correction rather than an automatic full
-new round. The evidence above is implementer verification; it does not substitute for
-human acceptance of the intermediate gate. Further plan implementation remains paused
-pending the human's gate judgment and any requested re-check under the same handoff.
+The original handoff and both authored findings remain unchanged. The narrow re-check
+is complete, and the round-2 reviewer recommends continuing to compatibility and
+extension work. Independent verification and that recommendation do not substitute
+for human acceptance of the intermediate gate. Further plan implementation remains
+paused pending the human's gate judgment under the same handoff.
 The task remains active, with final integrated review and explicit acceptance still
 required before closure.
