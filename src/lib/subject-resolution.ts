@@ -37,7 +37,7 @@ export function resolveSubjects(store: ProgramRecordStore, session: SessionId, d
   if (organization && (organization.kind !== 'organization-evaluation' || organization.session !== session)) throw new Error('Expected same-Session group lookup population');
   populations = { ...(modules ? { modules } : {}), ...(organization ? { organization } : {}) };
   const criteria = [`Applicable subjects: ${definition.subjects.join(', ')}`, `Cardinality: ${definition.cardinality}`,
-    designation.kind === 'reference' ? 'Established Session reference binding' : designation.kind === 'name' ? 'Exact name or generated module handle' : 'Designated population'];
+    designation.kind === 'reference' ? 'Established compact reference or retained same-Session module, group or investigram record ID' : designation.kind === 'name' ? 'Exact name or generated module handle' : 'Designated population'];
   const outcomes = [populations.modules, populations.organization].filter(item => item !== undefined);
   const support: LookupSupport[] = outcomes.map(item => ({ id: item.id, kind: item.kind,
     applicability: item.applicability, availability: item.availability, execution: item.execution,
@@ -68,22 +68,31 @@ export function resolveSubjects(store: ProgramRecordStore, session: SessionId, d
     return finish(definition.subjects.includes(target.kind) ? 'resolved' : 'unsupported-subject', [target]);
   }
   if (designation.kind !== 'name') return finish(definition.cardinality === 'population' ? 'resolved' : 'missing');
-  const matches: ResolvedSubject[] = [];
-  // Preserve the established group-then-module allocation schedule for inspection.
+  const matches: RecordId[] = [];
   if (definition.subjects.includes('group') && populations.organization) {
-    const bindings = store.entityIds(populations.organization.groups, 'group');
     for (const id of populations.organization.groups) {
-      const found = candidate(id, bindings.get(id)!);
-      if (found.name === designation.value) matches.push(found);
+      if (candidate(id, id).name === designation.value) matches.push(id);
     }
   }
   if (definition.subjects.includes('module') && populations.modules) {
-    const bindings = store.entityIds(populations.modules.modules, 'module');
     for (const id of populations.modules.modules) {
-      if (moduleMatches(store, id, designation.value)) matches.push(candidate(id, bindings.get(id)!));
+      if (moduleMatches(store, id, designation.value)) matches.push(id);
     }
   }
-  if (matches.length) return finish(definition.cardinality === 'one' && matches.length !== 1 ? 'ambiguous' : 'resolved', matches);
+  if (matches.length) {
+    const status = definition.cardinality === 'one' && matches.length !== 1 ? 'ambiguous' : 'resolved';
+    const bindings = new Map<RecordId, string>();
+    // Successful applications retain their whole-population, group-then-module schedule.
+    // Unsuccessful applications bind the complete delivered candidate set, before any paging.
+    for (const kind of ['group', 'module'] as const) {
+      if (!definition.subjects.includes(kind)) continue;
+      const population = kind === 'group' ? populations.organization?.groups : populations.modules?.modules;
+      if (!population) continue;
+      const ids = status === 'resolved' ? population : matches.filter(id => store.get(id).kind === kind);
+      for (const [id, reference] of store.entityIds(ids, kind)) bindings.set(id, reference);
+    }
+    return finish(status, matches.map(id => candidate(id, bindings.get(id)!)));
+  }
   return finish(outcomes.some(item => item.availability === 'unavailable') ? 'lookup-unavailable'
     : outcomes.some(item => !completedMaterialization(item)) ? 'lookup-incomplete' : 'missing');
 }
@@ -91,7 +100,7 @@ export function resolveSubjects(store: ProgramRecordStore, session: SessionId, d
 export function resolutionExplanation(resolution: SubjectResolution): string {
   switch (resolution.status) {
     case 'resolved': return 'The subject designation is resolved.';
-    case 'unknown-reference': return 'The supplied reference has no established binding in this Session.';
+    case 'unknown-reference': return 'The supplied reference identifies neither an established compact binding nor a retained supported subject in this Session.';
     case 'unsupported-subject': return `The reference identifies a ${resolution.candidates[0]!.kind}; this is an unsupported subject/lens combination.`;
     case 'ambiguous': return 'This Lens requires one subject, but the designation matches several applicable subjects.';
     case 'lookup-incomplete': return 'No matching subject was established in the incomplete lookup population; absence is not established.';

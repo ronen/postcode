@@ -1,4 +1,5 @@
 import { finalizeRequestReport } from '../src/lib/request-reporting.js';
+import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import type { UsageReport } from '../src/lib/request-reporting.js';
 import { requireView, requireResolution } from './request-helpers.js';
 import { InvestigatorReferences } from '../src/lib/investigation/openai/references.js';
@@ -79,6 +80,34 @@ test('operation retention is independent of presentation and exact inspection pr
   assert.equal(missing.resolution.reason, 'unknown-reference');
   const direct = await f.session.evaluateInvestigation(first.result!.request);
   assert.equal(direct.reused, true, 'operation reuse does not depend on a lens');
+});
+
+test('unbound raw investigrams are classified before applicability and share answers with compact references', async t => {
+  const agent = summaryAgent(), f = await session(t, agent);
+  const inventory = requireView(await f.session.execute({ ...summary, lens: 'modules', selector: null })).view;
+  assert.equal(inventory.schema, 'postcode-view/1-experimental');
+  const result = await f.session.evaluateInvestigation({ operation: 'functionality', subject: inventory.modules[0]!.id, parameters: {} });
+  assert.equal(result.evaluation?.outcome.kind, 'accepted');
+  if (result.evaluation?.outcome.kind !== 'accepted') throw new Error('Expected retained interpretation');
+  const id = result.evaluation.outcome.root;
+  const allocations = t.mock.method(MemoryProgramRecordStore.prototype, 'entityIds');
+  const put = t.mock.method(MemoryProgramRecordStore.prototype, 'put');
+  const refused = requireResolution(await f.session.execute({ ...summary, lens: 'children', selector: id, reference: true }));
+  assert.equal(refused.resolution.reason, 'unsupported-subject');
+  assert.equal(refused.resolution.candidates[0]!.id, id);
+  assert.equal(allocations.mock.calls.length, 0);
+  assert.equal(put.mock.calls.length, 0);
+  const raw = view(await f.session.execute({ ...summary, lens: 'inspect', selector: id, reference: true }));
+  const compact = raw.references.find(item => item.id === id)!.reference;
+  const repeated = view(await f.session.execute({ ...summary, lens: 'inspect', selector: compact, reference: true }));
+  assert.deepEqual(raw.projection, repeated.projection);
+  assert.deepEqual(raw.accounts, repeated.accounts);
+  const incompatible = requireResolution(await f.session.execute({ ...summary, lens: 'children', selector: compact, reference: true }));
+  assert.equal(incompatible.resolution.reason, 'unsupported-subject');
+  const fresh = await session(t);
+  const foreign = requireResolution(await fresh.session.execute({ ...summary, lens: 'inspect', selector: id, reference: true }));
+  assert.equal(foreign.resolution.reason, 'unknown-reference');
+  assert.equal(agent.inputs.length, 1);
 });
 
 test('successive operation evaluations atomically retain corrections and supply earlier retained context', async t => {

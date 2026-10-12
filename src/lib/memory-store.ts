@@ -458,7 +458,7 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
 
   lookup(id: RecordId): ProgramRecord | undefined { return this.#records.get(id); }
 
-  /** Classification never allocates bindings or guesses a target from a prefix. */
+  /** Compact bindings and raw IDs must identify a retained same-Session entity; classification allocates nothing. */
   boundEntity(session: SessionId, reference: string): RecordId | undefined {
     const id = this.#bindings.get(session)?.resolve(reference) ?? reference as RecordId;
     const record = this.#records.get(id);

@@ -36,8 +36,16 @@ For an ambiguous one-shot lookup, open a shell and repeat the lookup. Then use
 `children @module-…` and `parents @module-…` follow direct relationships. Plain
 selectors remain exact name/handle lookups. `--` makes the following selector
 literal, including a name beginning `@` or `--`. Unknown references yield an
-explicit zero-match result. Matching spellings in different sessions do not
+explicit resolution report. Matching spellings in different sessions do not
 restore the earlier investigation.
+
+Explicit references also accept raw IDs of retained modules, groups and investigrams
+from the same Session (`@<record-id>` in the shell, or `reference: true` in direct
+calls). Both spellings identify the actual retained subject before Lens applicability
+is checked; an incompatible subject is reported as unsupported. Raw-looking plain
+selectors remain literal name lookups. Raw IDs provide no persistence or cross-Session
+validity. Raw and compact references select the same qualified answer under identical
+effective inputs; request reports preserve the spelling supplied.
 
 Without arguments, the command is `modules` with `./tsconfig.json` and Unicode
 output. `--json` selects the experimental structured presentation. `--source-detail`
@@ -371,6 +379,10 @@ prerequisite outcome summaries and qualification. One-shot references still expi
 at command completion. A known group passed to `children` or `parents` is unsupported;
 its binding remains available for later inspection. Collections such as `inspect foo`
 continue to include all established applicable matches.
+Missing lookups allocate no unrelated references. Ambiguous lookups bind every returned
+candidate, independently of display limits. Genuine prerequisite allocations, existing
+bindings and successful-request allocation schedules are preserved; later unrelated
+references can therefore have different collision lengths after unsuccessful lookup.
 Successful observation batches include a separate `resolution-information` record.
 Known compatible subjects omitted from a supplied evaluation remain identified and
 produce a qualified answer with explicit unavailable detail; that omission never

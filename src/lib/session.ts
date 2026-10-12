@@ -158,7 +158,7 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
       return { kind: 'usage' as const, context, report, rendered: renderRequestReport(report), failed: false };
     }
     const definition = lenses[context.request.lens];
-    const { selector, presentation } = request;
+    const { presentation } = request;
     const lens = context.request.lens;
     const operation = definition.requirements.kind === 'interpretation' ? definition.requirements.operation : null;
     const investigationLens = operation !== null;
@@ -177,6 +177,8 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
       return { kind: 'resolution' as const, context, report, rendered: renderRequestReport(report), failed: true };
     }
     const selected = resolution.candidates.map(candidate => candidate.id);
+    // Precise spellings identify the same retained answer; keep the supplied spelling in context.
+    const selector = designation.kind === 'reference' ? selected[0]! : request.selector;
     const interpretationInspection = lens === 'inspect' && resolution.candidates[0]?.kind === 'investigram';
     if (investigationLens || interpretationInspection) {
       const basis = evaluateModules(store, analysis);
@@ -184,7 +186,7 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
       else store.entityIds(store.investigations(session).flatMap(item => item.investigrams), 'investigram');
       const result = investigationLens && selected.length === 1
         ? await integration.evaluate({ operation: operation!, subject: selected[0]!, parameters: {} }) : null;
-      const { view, investigationArrangementKey } = createInvestigationView(store, session, { ...request, lens: lens as 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'dependency-children' | 'dependency-parents' }, selected, result, usage());
+      const { view, investigationArrangementKey } = createInvestigationView(store, session, { ...request, selector, lens: lens as 'summarize' | 'explain' | 'decompose' | 'examine' | 'inspect' | 'dependency-children' | 'dependency-parents' }, selected, result, usage());
       const sessionContext = store.get(session);
       if (sessionContext.kind !== 'session') throw new Error('Expected session');
       const repository = sessionContext.repository ? store.get(sessionContext.repository) : null;

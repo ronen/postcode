@@ -60,11 +60,18 @@ usage ledger. Publication uses the actual normalized request for version-two
 observations, including follow-ups, and emits a View event only for a program
 View. Input checks and observation-delivery warnings apply to every alternative.
 Subject resolution consumes qualified module/group populations and the Lens's
-applicability/cardinality. Precise references use read-only Session binding lookup
-before any applicability-dependent acquisition; prefixes do not establish existence.
+applicability/cardinality. Precise references resolve either a compact binding or a
+raw record ID to an actual retained same-Session module, group or investigram before
+any applicability-dependent acquisition; classification allocates no references and
+prefixes do not establish existence. Both spellings supply the resolved record ID to
+answer construction while request context preserves the original spelling.
 Unsuccessful lookup returns a resolution report without constructing the requested
 Projection. Reports preserve frozen candidates, criteria, population outcomes and
 qualification; successful observations carry resolution information separately.
+Missing lookups allocate no unrelated bindings; ambiguous lookups bind the complete
+returned candidate set. Successful applications retain their established population
+allocation schedule. These [reference choices](../decisions/precise-subject-designations-and-lookup-bindings.md)
+preserve existing bindings and genuine prerequisite allocations.
 Module/name matching is shared with family selection without constructing an unused
 inspection answer. Compatible bound subjects absent from a supplied mechanical
 evaluation remain identified: construction retains their naming support and records

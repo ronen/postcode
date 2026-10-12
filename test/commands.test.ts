@@ -99,6 +99,15 @@ test('shell records scanner refusals and then accepts a quoted literal selector'
 });
 
 test('follow-ups require a shell reference and inspection continuation stays a presentation option', () => {
+  const raw = `session:00000000-0000-0000-0000-000000000000:investigram:${'a'.repeat(64)}`;
+  for (const lens of ['inspect', 'explain', 'decompose', 'examine']) {
+    const parsed = parseCommand([lens, `@${raw}`, ...(lens === 'inspect' ? ['--revision-page', '2'] : [])], '.', true);
+    assert.equal(parsed.kind, 'view');
+    if (parsed.kind === 'view') {
+      assert.equal(parsed.request.selector, raw);
+      assert.equal(parsed.request.reference, true);
+    }
+  }
   for (const lens of ['explain', 'decompose', 'examine']) {
     const parsed = parseCommand([lens, '@investigram-12345678'], '.', true);
     assert.equal(parsed.kind, 'view');

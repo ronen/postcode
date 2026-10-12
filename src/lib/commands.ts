@@ -112,7 +112,8 @@ export function parseCommand(args: readonly string[], cwd: string, interactive =
   }
   const selector = focused ? positional[1]! : null;
   const reference = interactive && !literal && selector?.startsWith('@') === true;
-  if (values['revision-page'] !== undefined && (!reference || !selector?.startsWith('@investigram-'))) return error('--revision-page requires an exact investigram reference.');
+  if (values['revision-page'] !== undefined && (!reference || !(selector!.startsWith('@investigram-')
+    || /^@session:[^:]+:investigram:[a-f0-9]{64}$/.test(selector!)))) return error('--revision-page requires an exact investigram reference.');
   if (followup && !reference) return error('follow-up lenses require an exact @investigram reference in the shell.');
   return { kind: 'view', configPath, request: { lens: lens === 'usage' ? 'usage' : commandLenses[lens as CommandLens],
     ...(lens === 'summarize' || lens === 'usage' || lens === 'inspect' || followup ? { referenceLifetime: interactive ? 'session' as const : 'command' as const } : {}),

@@ -20,10 +20,98 @@ import { lenses } from '../src/lib/requests.js';
 import { resolveSubjects } from '../src/lib/subject-resolution.js';
 import { recordId } from '../src/lib/identity.js';
 import { moduleStandardExpansions } from '../src/lib/records.js';
-import type { EvaluationRecord } from '../src/lib/records.js';
+import type { EvaluationRecord, ModuleClaim, RecordId } from '../src/lib/records.js';
 
 const configPath = path.resolve('fixtures/dependency-journey/tsconfig.json');
 const presentation = { format: 'json' as const, sourceDetail: false };
+
+test('failed lookup allocates only the complete returned candidate set and preserves later collisions', async t => {
+  const { store, evaluation: basis } = await discover(configPath);
+  const source = store.get(basis.modules[0]!);
+  assert.equal(source.kind, 'module');
+  const naming = store.get(source.claim) as ModuleClaim;
+  const ids = [1, 2, 3].map(n => `${basis.session}:module:12345678${String(n).repeat(56)}` as RecordId);
+  for (const [index, id] of ids.entries()) {
+    const claim = { ...naming, id: recordId(basis.session, 'claim', ['collision-lookup', index]), subject: id,
+      information: { ...naming.information, name: index ? 'matching' : 'unrelated', handle: `controlled-${index}` } };
+    store.put([{ ...source, id, claim: claim.id }, claim]);
+  }
+  const population = { ...basis, id: recordId(basis.session, 'evaluation', 'collision-lookup'), modules: ids };
+  store.put([population]);
+  const prior = store.entityIds(basis.modules, 'module');
+  const allocations = t.mock.method(store, 'entityIds');
+  for (const state of [
+    { execution: 'completed' as const, availability: 'available' as const, materialization: 'full' as const, status: 'missing' },
+    { execution: 'stopped' as const, availability: 'available' as const, materialization: 'partial' as const, status: 'lookup-incomplete' },
+    { execution: 'deferred' as const, availability: 'unavailable' as const, materialization: 'none' as const, status: 'lookup-unavailable' },
+  ]) {
+    const { status, ...outcome } = state;
+    const lookup = { ...population, ...outcome, id: recordId(basis.session, 'evaluation', status) };
+    store.put([lookup]);
+    assert.equal(resolveSubjects(store, basis.session, lenses.summarize, { kind: 'name', value: 'absent' }, { modules: lookup }).status, status);
+  }
+  assert.equal(allocations.mock.calls.length, 0);
+  const ambiguous = resolveSubjects(store, basis.session, lenses.summarize, { kind: 'name', value: 'matching' }, { modules: population });
+  assert.equal(ambiguous.status, 'ambiguous');
+  assert.deepEqual(allocations.mock.calls.map(call => call.arguments), [[ids.slice(1), 'module']]);
+  assert.deepEqual(ambiguous.candidates.map(item => item.reference), ['module-12345678', 'module-123456783']);
+  for (const candidate of ambiguous.candidates) assert.equal(store.boundEntity(basis.session, candidate.reference), candidate.id);
+  assert.equal(store.entityIds([ids[0]!], 'module').get(ids[0]!), 'module-123456781', 'unreturned subject gets a longer spelling only when later allocated');
+  assert.deepEqual(store.entityIds(basis.modules, 'module'), prior, 'prerequisite bindings remain unchanged');
+  assert.deepEqual(store.entityIds(ids.slice(1), 'module'), new Map(ambiguous.candidates.map(item => [item.id, item.reference])));
+});
+
+test('successful name lookup preserves group-then-module whole-population allocation', async t => {
+  const { store, evaluation: modules } = await discover(configPath);
+  const organization = evaluateOrganization(store, modules);
+  const module = store.get(modules.modules[0]!);
+  assert.equal(module.kind, 'module');
+  const naming = store.get(module.claim);
+  assert.equal(naming.kind, 'claim');
+  assert.equal(naming.information.type, 'module');
+  const allocations = t.mock.method(store, 'entityIds');
+  const resolved = resolveSubjects(store, modules.session, lenses.inspect, { kind: 'name', value: naming.information.handle }, { modules, organization });
+  assert.equal(resolved.status, 'resolved');
+  assert.deepEqual(allocations.mock.calls.map(call => call.arguments), [[organization.groups, 'group'], [modules.modules, 'module']]);
+});
+
+test('raw and compact precise designations share mechanical answers and retain distinct request spellings', async t => {
+  const opened = await openSession({ configPath });
+  if (opened.status !== 'opened') throw new Error('Expected project');
+  t.after(() => opened.session.close());
+  const inventory = requireView(await opened.session.execute({ lens: 'modules', selector: null, presentation })).view;
+  assert.equal(inventory.schema, 'postcode-view/1-experimental');
+  const module = inventory.modules[0]!;
+  const organized = requireView(await opened.session.execute({ lens: 'organization', selector: null, presentation })).view;
+  assert.equal(organized.schema, 'postcode-organization-view/1-experimental');
+  const group = organized.groups.find(item => item.selected)!;
+  for (const [target, applicable] of [[module, ['inspect', 'children', 'parents', 'summarize']], [group, ['inspect']]] as const) {
+    for (const lens of applicable) {
+      const raw = requireView(await opened.session.execute({ lens, selector: target.id, reference: true, presentation }));
+      const compact = requireView(await opened.session.execute({ lens, selector: target.entityId, reference: true, presentation }));
+      assert.equal(raw.resolution.candidates[0]!.id, compact.resolution.candidates[0]!.id);
+      assert.deepEqual(raw.view.projection, compact.view.projection, `${lens} retains the same answer descriptor`);
+      assert.notDeepEqual(raw.context.request, compact.context.request);
+      assert.match(raw.resolution.criteria.join(' '), /retained same-Session/);
+    }
+  }
+  for (const selector of [group.id, group.entityId]) {
+    const refused = requireResolution(await opened.session.execute({ lens: 'children', selector, reference: true, presentation }));
+    assert.equal(refused.resolution.reason, 'unsupported-subject');
+    assert.equal(refused.resolution.candidates[0]!.id, group.id);
+  }
+  const literal = requireResolution(await opened.session.execute({ lens: 'inspect', selector: module.id, presentation }));
+  assert.equal(literal.resolution.reason, 'missing', 'raw-looking literals do not become references');
+  const other = await openSession({ configPath });
+  if (other.status !== 'opened') throw new Error('Expected other project');
+  t.after(() => other.session.close());
+  for (const selector of [module.id, group.id, inventory.projection.id]) {
+    const refused = requireResolution(await other.session.execute({ lens: 'inspect', selector, reference: true, presentation }));
+    assert.equal(refused.resolution.reason, 'unknown-reference');
+  }
+  const nonEntity = requireResolution(await opened.session.execute({ lens: 'inspect', selector: inventory.projection.id, reference: true, presentation }));
+  assert.equal(nonEntity.resolution.reason, 'unknown-reference');
+});
 
 test('bound group survives inspection and dependency refusals without application work or new bindings', async t => {
   const opened = await openSession({ configPath });
@@ -135,11 +223,17 @@ test('known modules omitted from a supplied evaluation remain resolved and retai
   }
 });
 
-test('known group omitted from organization retains naming support with unavailable properties and detail', async () => {
+test('known group omitted from organization retains naming support with unavailable properties and detail', async t => {
   const { store, analysis } = await discover(configPath);
   const modules = evaluateModules(store, analysis, moduleStandardExpansions);
   const basis = evaluateOrganization(store, modules);
-  const subject = basis.groups[0]!, reference = store.entityIds(basis.groups, 'group').get(subject)!;
+  const subject = basis.groups[0]!;
+  const allocations = t.mock.method(store, 'entityIds');
+  const raw = resolveSubjects(store, basis.session, lenses.inspect, { kind: 'reference', value: subject });
+  assert.equal(raw.status, 'resolved', 'retained groups need not already have compact bindings');
+  assert.equal(raw.candidates[0]!.id, subject);
+  assert.equal(allocations.mock.calls.length, 0);
+  const reference = store.entityIds(basis.groups, 'group').get(subject)!;
   const narrow = { ...basis, id: recordId(basis.session, 'organization-evaluation', 'controlled-narrow-organization'), groups: [], claims: [] };
   store.put([narrow]);
   const found = resolveSubjects(store, basis.session, lenses.inspect, { kind: 'reference', value: reference }, { organization: narrow });
