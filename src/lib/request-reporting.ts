@@ -60,9 +60,10 @@ export function renderRequestReport(report: ResolutionReport | UsageReport): str
       return `${kind === 'module' ? 'Modules' : 'Groups'}: ${state}; ${matches ? `${matches} ${matches === 1 ? 'match' : 'matches'}` : established ? 'no match' : 'no match established'}${support.reason ? `; ${inlineText(support.reason)}` : ''}`;
     }),
     ...report.resolution.qualifications.map(inlineText),
-    ...report.resolution.retainedAnswers.map(id => `Retained answer: ${inlineText(id)}`),
-    ...(report.resolution.candidates.length || report.resolution.retainedAnswers.length ? [report.context.request.referenceLifetime === 'command'
-      ? 'References expire when this command completes.' : 'References remain usable while this Session is valid.'] : []),
+    ...report.resolution.retainedAnswers.map(id => `Retained answer ID: ${inlineText(id)}`),
+    ...(report.resolution.retainedAnswers.length ? ['Redisplay using retained answer IDs is not yet supported.'] : []),
+    ...(report.resolution.candidates.length ? [report.context.request.referenceLifetime === 'command'
+      ? 'Candidate references expire when this command completes.' : 'Candidate references remain usable while this Session is valid.'] : []),
     ...usageLines(report.usage, 'Session')].join('\n') + '\n';
 }
 

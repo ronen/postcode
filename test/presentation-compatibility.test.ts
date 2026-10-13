@@ -11,6 +11,7 @@ import { recordId } from '../src/lib/identity.js';
 import { resolveModuleProjection } from '../src/lib/module-content.js';
 import { finalizeInvestigationUsage } from '../src/lib/investigation/presentation.js';
 import { openSession } from '../src/lib/session.js';
+import { renderRequestReport } from '../src/lib/request-reporting.js';
 import { captureCatalog, defaultCatalog } from '../src/lib/request-catalog.js';
 import { presentations, settlePresentation, validatePresentationContent } from '../src/lib/presentation-contracts.js';
 import type { PresentationDefinition } from '../src/lib/presentation-contracts.js';
@@ -61,7 +62,17 @@ test('materialization refusal retains its answer and reports it without a View',
   const report = requireResolution(result);
   assert.equal(report.resolution.reason, 'presentation-unavailable');
   assert.equal(report.resolution.retainedAnswers.length, 1);
-  assert.match(result.rendered, /Retained answer:/);
+  assert.match(result.rendered, /Retained answer ID:/);
+  assert.match(result.rendered, /Redisplay using retained answer IDs is not yet supported\./);
+  assert.match(result.rendered, /Candidate references remain usable while this Session is valid\./);
+  for (const referenceLifetime of ['session', 'command'] as const) {
+    const noCandidates = renderRequestReport({ ...report,
+      context: { ...report.context, request: { ...report.context.request, referenceLifetime } },
+      resolution: { ...report.resolution, candidates: [] } });
+    assert.match(noCandidates, /Retained answer ID:/);
+    assert.match(noCandidates, /Redisplay using retained answer IDs is not yet supported\./);
+    assert.doesNotMatch(noCandidates, /references (remain usable|expire)/i);
+  }
   assert.match(result.rendered, /Interpretation: configuration-unavailable/);
   assert.equal(report.resolution.candidates.length, 1);
   assert.equal(report.attribution!.status, 'refused');
