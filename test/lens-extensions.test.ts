@@ -7,6 +7,10 @@ import { temporaryDirectory } from './cli-helpers.js';
 import { ScriptedInvestigator, syntheticUsage } from './investigator-double.js';
 import { requireResolution, requireView } from './request-helpers.js';
 import { openSession } from '../src/lib/session.js';
+import { interactiveSession } from '../src/lib/interactive-session.js';
+import { publishCommand } from '../src/lib/command-execution.js';
+import type { ObservationBatch } from '../src/lib/observations.js';
+import type { RequestContext } from '../src/lib/request-reporting.js';
 import { captureCatalog, defaultCatalog } from '../src/lib/request-catalog.js';
 import type { RequestCatalog } from '../src/lib/request-catalog.js';
 import { operationMethod } from '../src/lib/investigation/operations.js';
@@ -30,7 +34,7 @@ function catalog(): RequestCatalog {
 
 const invalidDefinitions: readonly { name: string; definition: LensDefinition; reason: RegExp }[] = [
   { name: 'new mechanical implementation', definition: { ...lenses.modules, id: 'other-modules' }, reason: /mechanical Lens definitions/ },
-  { name: 'changed built-in requirements', definition: { ...lenses.modules, requirements: { kind: 'dependencies' }, results: ['dependencies'] }, reason: /mechanical Lens definitions/ },
+  { name: 'changed built-in requirements', definition: { ...lenses.modules, requirements: { kind: 'dependencies', implementation: 'dependency-structure' }, results: ['dependencies'] }, reason: /mechanical Lens definitions/ },
   { name: 'changed built-in applicability', definition: { ...lenses.modules, subjects: ['module'], cardinality: 'collection' }, reason: /mechanical Lens definitions/ },
   { name: 'changed built-in question', definition: { ...lenses.modules, question: 'A different question' }, reason: /mechanical Lens definitions/ },
   { name: 'mechanical implementation under an interpretation identity', definition: { ...lenses.modules, id: 'summarize' }, reason: /mechanical Lens definitions/ },
@@ -222,4 +226,33 @@ test('fixture operation preserves retained failure and retryable communication o
     assert.equal(repeat.view.result!.reused, kind === 'refused');
     assert.equal(investigator.inputs.length, kind === 'refused' ? 1 : 2);
   }
+});
+
+test('fixture interpretation catalogs cross worker publication with actual Lens identity and authoritative reuse usage', async t => {
+  const options = fixture(t), investigator = agent();
+  const remote = interactiveSession(options, { investigator }, catalog());
+  t.after(() => remote.close());
+  const opening = await remote.opening;
+  assert.equal(opening.status, 'opened');
+  const first = requireView(await remote.execute(request));
+  assert.equal(first.view.schema, 'postcode-investigation-view/1-experimental');
+  const batches: ObservationBatch[] = [];
+  let stdout = '', stderr = '';
+  const code = await publishCommand({ id: opening.id, ...remote }, { ...request, lens: 'risk-review', selector: first.view.candidates[0]!.reference, reference: true },
+    'internal risk fixture', options.configPath, 2, { stdout: text => { stdout += text; }, stderr: text => { stderr += text; } },
+    { async submit(batch) { batches.push(batch); return { accepted: true }; } });
+  assert.equal(code, 0);
+  assert.equal(stderr, '');
+  assert.equal(investigator.inputs.length, 1);
+  const view = JSON.parse(stdout) as typeof first.view;
+  assert.equal(view.title, 'Risk review');
+  assert.equal(view.result!.reused, true);
+  assert.equal(view.usage.calls, 1);
+  assert.deepEqual(view.provenance, first.view.provenance);
+  const context = batches[0]!.records.find(item => item.kind === 'request')!.value as RequestContext;
+  assert.equal(context.request.kind, 'lens');
+  assert.equal(context.request.lens, 'risk-review');
+  assert.equal(batches[0]!.formatVersion, 2);
+  assert.deepEqual(batches[0]!.events.map(item => item.type), ['view-produced', 'command-completed']);
+  assert.equal(remote.work()!.completeness, 'complete');
 });

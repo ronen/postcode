@@ -3,6 +3,7 @@ import type { AgentIdentity, AgentReply, InvestigationRequest, InvestigatorAgent
 import type { InvestigationBounds } from './investigation/execute.js';
 import { parentPort, workerData } from 'node:worker_threads';
 import { openSession } from './session.js';
+import type { RequestCatalog } from './request-catalog.js';
 import type { ProjectOptions } from './typescript/project.js';
 import { encodeError, decodeError } from './session-protocol.js';
 import type { WorkerRequest, WorkerReply } from './session-protocol.js';
@@ -23,7 +24,7 @@ let exchangeId = 0;
 const exchanges = new Map<number, { operation: number; resolve(reply: AgentReply): void; reject(error: Error): void }>();
 // Usage belongs to the dialogue, not the shorter pending-reply lifetime.
 const usageCallbacks = new Map<number, { operation: number; usage(value: ReportedUsage): void }>();
-const configuration = workerData as ProjectOptions & { investigatorIdentity?: AgentIdentity; selectInvestigator?: boolean; investigationBounds?: InvestigationBounds };
+const configuration = workerData as ProjectOptions & { catalog?: RequestCatalog; investigatorIdentity?: AgentIdentity; selectInvestigator?: boolean; investigationBounds?: InvestigationBounds };
 const bridge = (identity: AgentIdentity): InvestigatorAgent => ({
   identity,
   open() {
@@ -99,7 +100,7 @@ try {
     }) } : {}), ...(configuration.investigationBounds ? { bounds: configuration.investigationBounds } : {}),
     onProgress: report => send({ type: 'attempt-report', operation, report }),
     onReport: report => send({ type: 'attempt-report', operation, report }),
-  } });
+  } }, configuration.catalog);
   send({ type: 'reply', operation, opening: opened.status === 'opened' ? { status: 'opened', id: opened.session.id } : opened });
   active = false;
   if (opened.status !== 'opened') port.close();

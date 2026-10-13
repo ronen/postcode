@@ -1,6 +1,6 @@
 # Project Status
 
-Last reviewed: 2026-10-12
+Last reviewed: 2026-10-13
 
 PostCode is currently available as a development CLI for investigating one
 configured TypeScript project.
@@ -52,7 +52,9 @@ This page summarizes current capabilities and significant limits. The [capabilit
   context in displayed results. Bounded prerequisite/evidence attribution and
   Presentation compatibility are implemented. Unsupported display choices return
   qualified reports; existing displays retain partial and unavailable answers.
-  Mechanical extension integration remains in progress.
+  Fixed catalogs support the internal interpretation and mechanical extension
+  examples; public commands remain the supported toolbox. There is no dynamic
+  installation, general planner or public Presentation-registration interface.
 
 - **Hosted interpretation:** [formative assessments](records/validation/module-investigation/pass-01/report.md)
   show useful source-qualified summaries alongside omitted qualifications. A

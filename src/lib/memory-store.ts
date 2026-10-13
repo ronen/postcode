@@ -55,6 +55,7 @@ function references(record: ProgramRecord): readonly RecordId[] {
     case 'source-evidence': return record.resolution?.target ? [record.resolution.target] : [];
     case 'evaluation': return [...record.modules, ...record.contexts, ...(record.claims ?? []), ...(record.basis ? [record.basis] : [])];
     case 'projection': return [...record.modules, ...record.claims, ...record.contexts, ...record.evaluations, ...record.expansions.claims];
+    case 'module-exports-projection': return [record.subject, record.evaluation, ...record.evaluations, ...record.exports, ...record.documentation, ...record.contexts];
     case 'organization-evaluation': return [record.repository, record.moduleEvaluation, ...record.groups, ...record.claims, ...record.contexts];
     case 'organization-projection': return [...record.expansions.moduleClaims, ...record.expansions.moduleEvaluations, record.evaluation, ...(record.moduleProjection ? [record.moduleProjection] : []),
       ...record.groups, ...record.modules, ...record.claims, ...record.contexts,
@@ -118,6 +119,32 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
         }
       }
       switch (record.kind) {
+        case 'module-exports-projection': {
+          const get = (id: RecordId) => (pending.get(id) ?? this.#records.get(id))!;
+          requireKind(record.subject, 'module'); requireKind(record.evaluation, 'evaluation');
+          const basis = get(record.evaluation);
+          if (basis.kind !== 'evaluation' || basis.requirement !== 'modules' || record.outsidePopulation !== !basis.modules.includes(record.subject)
+            || !record.lens || Object.keys(record.parameters).length) throw new Error('Invalid exports answer basis');
+          const supplied = new Set<RecordId>();
+          for (const id of record.evaluations) {
+            const outcome = get(id);
+            if (outcome.kind !== 'evaluation' || outcome.basis !== basis.id || !outcome.modules.includes(record.subject)
+              || !['exports', 'documentation'].includes(outcome.requirement)) throw new Error('Invalid exports answer expansion');
+            outcome.claims?.forEach(claim => supplied.add(claim));
+          }
+          const owners = new Set<RecordId>();
+          for (const id of record.exports) {
+            const claim = get(id);
+            if (!supplied.has(id) || claim.kind !== 'claim' || claim.information.type !== 'export' || claim.subject !== record.subject) throw new Error('Invalid selected export');
+            owners.add(id); if (claim.information.symbol) owners.add(claim.information.symbol);
+          }
+          for (const id of record.documentation) {
+            const claim = get(id);
+            if (!supplied.has(id) || claim.kind !== 'claim' || claim.information.type !== 'documentation-association' || !owners.has(claim.subject)) throw new Error('Invalid export documentation');
+          }
+          record.contexts.forEach(id => requireKind(id, 'claim-context'));
+          break;
+        }
         case 'investigation-selection-projection':
           for (const reference of selectionReferences(record)) {
             const target = (pending.get(reference.id) ?? this.#records.get(reference.id))!;

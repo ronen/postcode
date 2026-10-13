@@ -9,7 +9,8 @@ import type { ModuleProjectionContent } from './module-content.js';
 import type { OrganizationProjectionContent } from './organization/content.js';
 import type { DependencyProjectionContent } from './dependencies/content.js';
 import type { InvestigationProjectionContent } from './investigation/content.js';
-import type { NormalizedRequest, ResultContract } from './requests.js';
+import type { ModuleExportsContent } from './exports/content.js';
+import type { LensDefinition, NormalizedRequest, ResultContract } from './requests.js';
 import { inlineText } from './terminal-text.js';
 
 /** These contracts name qualified meanings, not interchangeable graph shapes. */
@@ -17,7 +18,8 @@ export type PresentationContent =
   | { readonly contract: 'modules'; readonly value: ModuleProjectionContent }
   | { readonly contract: 'organization'; readonly value: OrganizationProjectionContent }
   | { readonly contract: 'dependencies'; readonly value: DependencyProjectionContent }
-  | { readonly contract: 'investigation'; readonly value: InvestigationProjectionContent };
+  | { readonly contract: 'investigation'; readonly value: InvestigationProjectionContent }
+  | { readonly contract: 'module-exports'; readonly value: ModuleExportsContent };
 
 export interface PresentationDefinition {
   readonly id: string;
@@ -57,18 +59,18 @@ export function validatePresentations(definitions: readonly PresentationDefiniti
   if (ids.size !== definitions.length) throw new Error('Duplicate Presentation identity');
   const defaults = new Set<ResultContract>();
   for (const definition of definitions) {
-    if (!definition.id || !['modules', 'organization', 'dependencies', 'investigation'].includes(definition.contract)
+    if (!definition.id || !['modules', 'organization', 'dependencies', 'investigation', 'module-exports'].includes(definition.contract)
       || !['qualified', 'complete-materialization'].includes(definition.precondition)
       || !['supported', 'inspection-only', 'none'].includes(definition.source)
       || !definition.formats.length || definition.formats.some(format => !['unicode', 'json'].includes(format))
       || definition.requirements.modules.some(item => !moduleStandardExpansions.includes(item))
       || definition.requirements.groups.some(item => !groupStandardExpansions.includes(item))) throw new Error('Invalid Presentation definition');
     if (definition.contract === 'organization' && !definition.requirements.groups.includes('group-details')
-      || definition.contract === 'modules' && definition.requirements.groups.length
+      || ['modules', 'module-exports'].includes(definition.contract) && definition.requirements.groups.length
       || definition.contract === 'investigation' && (definition.requirements.modules.length || definition.requirements.groups.length)) throw new Error('Unsupported Presentation requirements');
     if (['modules', 'organization'].includes(definition.contract) && definition.source === 'supported'
       || definition.contract !== 'investigation' && definition.revisionPage
-      || definition.contract === 'dependencies' && definition.associationPage) throw new Error('Unsupported Presentation options');
+      || ['dependencies', 'module-exports'].includes(definition.contract) && definition.associationPage) throw new Error('Unsupported Presentation options');
     if (definition.default && defaults.has(definition.contract)) throw new Error('Duplicate default Presentation for a contract');
     if (definition.default) defaults.add(definition.contract);
     const seen = new Set<string>([definition.id]);
@@ -82,24 +84,24 @@ export function validatePresentations(definitions: readonly PresentationDefiniti
 }
 
 type LensRequest = Extract<NormalizedRequest, { kind: 'lens' }>;
-export function compatiblePresentation(definition: PresentationDefinition, request: LensRequest): boolean {
+export function compatiblePresentation(definition: PresentationDefinition, request: LensRequest, lens: LensDefinition): boolean {
   const options = request.presentation;
   return definition.formats.includes(options.format)
-    && (!options.sourceDetail || definition.source === 'supported' || definition.source === 'inspection-only' && request.lens === 'inspect')
-    && (options.after === undefined || definition.associationPage && request.lens === 'inspect')
+    && (!options.sourceDetail || definition.source === 'supported' || definition.source === 'inspection-only' && lens.requirements.kind === 'inspection')
+    && (options.after === undefined || definition.associationPage && lens.requirements.kind === 'inspection')
     && (options.revisionPage === undefined || definition.revisionPage);
 }
 
 /** A bounded default and its declared fallbacks, filtered without changing choices.
  * Their standard expansions are planned together before Evaluation. */
-export function planPresentation(definitions: readonly PresentationDefinition[], contract: ResultContract, request: LensRequest): readonly PresentationDefinition[] {
-  const first = definitions.find(item => item.default && item.contract === contract && compatiblePresentation(item, request));
+export function planPresentation(definitions: readonly PresentationDefinition[], contract: ResultContract, request: LensRequest, lens: LensDefinition): readonly PresentationDefinition[] {
+  const first = definitions.find(item => item.default && item.contract === contract && compatiblePresentation(item, request, lens));
   if (!first) return [];
   const result = [first];
   let next = first;
   while (next.fallback) {
     next = definitions.find(item => item.id === next.fallback)!;
-    if (compatiblePresentation(next, request)) result.push(next);
+    if (compatiblePresentation(next, request, lens)) result.push(next);
   }
   return result;
 }
@@ -111,7 +113,7 @@ const complete = (state: Pick<EvaluationState, 'applicability' | 'availability' 
  * The family resolvers have already checked support records and their kinds. */
 export function validatePresentationContent(content: PresentationContent): void {
   const projection = content.value.projection;
-  const expected = { modules: 'projection', organization: 'organization-projection', dependencies: 'dependency-projection', investigation: 'investigation-selection-projection' };
+  const expected = { modules: 'projection', organization: 'organization-projection', dependencies: 'dependency-projection', investigation: 'investigation-selection-projection', 'module-exports': 'module-exports-projection' };
   if (projection.kind !== expected[content.contract] || !projection.id || !projection.session) throw new Error('Malformed Presentation content contract');
   if (content.contract === 'modules') {
     if (content.value.discovery.kind !== 'evaluation' || content.value.evaluations[0]?.id !== content.value.discovery.id || content.value.session.id !== projection.session
@@ -122,6 +124,14 @@ export function validatePresentationContent(content: PresentationContent): void 
     if (content.value.moduleDetail) validatePresentationContent({ contract: 'modules', value: content.value.moduleDetail });
   } else if (content.contract === 'dependencies') {
     if (content.value.evaluation.kind !== 'dependency-evaluation' || content.value.basis.kind !== 'evaluation') throw new Error('Malformed dependency Presentation content');
+  } else if (content.contract === 'module-exports') {
+    if (content.value.basis.id !== content.value.projection.evaluation || content.value.basis.session !== projection.session
+      || content.value.basis.requirement !== 'modules' || content.value.module.record.subject !== content.value.projection.subject
+      || content.value.evaluations.length !== content.value.projection.evaluations.length
+      || content.value.evaluations.some((item, index) => item.id !== content.value.projection.evaluations[index])
+      || content.value.exports.length !== content.value.projection.exports.length
+      || content.value.exports.some((item, index) => item.claim.record.id !== content.value.projection.exports[index]
+        || item.claim.record.subject !== content.value.projection.subject)) throw new Error('Malformed exports Presentation content');
   } else {
     const { projection: selected, evaluation } = content.value;
     if (selected.variant === 'request' && selected.outcome.kind === 'evaluation' && (!evaluation || evaluation.id !== selected.outcome.evaluation)) throw new Error('Malformed interpretation Presentation content');
@@ -136,6 +146,8 @@ export function materializationLimitations(content: PresentationContent): readon
     : [`${label}: ${value.applicability}, ${value.availability}, ${value.execution}, ${value.materialization}${value.reason ? `; ${value.reason}` : ''}`];
   const outsiders = (ids: readonly string[] | undefined) => ids?.length ? ['Selected subjects are outside the supplied evaluation population.'] : [];
   switch (content.contract) {
+    case 'module-exports': return [...(content.value.complete ? [] : ['A complete export surface is not established.']),
+      ...[content.value.basis, ...content.value.evaluations].flatMap(item => state(`Exports (${item.requirement})`, item))];
     case 'modules': return [...outsiders(content.value.projection.selection.outsidePopulation),
       ...content.value.evaluations.flatMap(item => state(`Modules (${item.requirement})`, item))];
     case 'organization': return [...state('Organization', content.value.evaluation), ...state('Placement', content.value.evaluation.placement),

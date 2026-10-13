@@ -6,6 +6,7 @@ import { canonical } from './identity.js';
 import { operations, requireOperation } from './investigation/operations.js';
 import type { OperationCatalog } from './investigation/operations.js';
 import { freezeOwned } from './immutable.js';
+import { mechanicalImplementation } from './mechanical-implementations.js';
 
 /** Internal assembly seam. Definitions are captured before opening a Session;
  * no registration, discovery or replacement occurs during execution. */
@@ -33,14 +34,9 @@ export function captureCatalog(source: RequestCatalog): CapturedCatalog {
       throw new Error('Lens identity is reserved for a command alias or report');
     }
     const builtin = Object.hasOwn(lenses, id) ? lenses[id as PublicLensId] : undefined;
-    // Mechanical dispatch still uses built-in identities. Until its assembly
-    // boundary exists, neither new policy under those names nor a mechanical
-    // implementation under an interpretation name can be honored.
-    if (lens.requirements.kind !== 'interpretation' || builtin && builtin.requirements.kind !== 'interpretation') {
-      if (!builtin || canonical(lens) !== canonical(builtin)) {
-        throw new Error('Additional or altered mechanical Lens definitions are not yet supported');
-      }
-    }
+    // Built-in question identities cannot be repurposed by an interpretation definition.
+    if (builtin && builtin.requirements.kind !== 'interpretation' && canonical(lens) !== canonical(builtin)) throw new Error('Unsupported mechanical Lens definitions for built-in identity');
+    mechanicalImplementation(lens);
     if (lens.requirements.kind === 'interpretation') {
       if (!lens.parameters || typeof lens.parameters !== 'object' || Array.isArray(lens.parameters)
         || Object.getPrototypeOf(lens.parameters) !== Object.prototype || Object.keys(lens.parameters).length) {

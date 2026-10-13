@@ -11,6 +11,7 @@ import { mkdir, open, link, unlink } from 'node:fs/promises';
 import path from 'node:path';
 import type { QualifiedView } from './presentation.js';
 import type { QualifiedOrganizationView } from './organization/presentation.js';
+import type { ModuleExportsView } from './exports/presentation.js';
 
 export interface ObservationBatch {
   readonly formatVersion: 2;
@@ -31,7 +32,7 @@ export interface ObservationSink {
 }
 
 /** No UUID registry, historical reads, producer retention policy, or operational-store dependency. */
-export function observationBatch(view: QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | InvestigationView, rendered: string, context: {
+export function observationBatch(view: QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | InvestigationView | ModuleExportsView, rendered: string, context: {
   readonly configPath: string; readonly repositoryRoot: string | null; readonly methods: readonly string[];
 }, requestValue: RequestContext, command = 1, resolution?: SubjectResolution): ObservationBatch {
   if (!Number.isSafeInteger(command) || command < 1) throw new Error('Invalid command order');

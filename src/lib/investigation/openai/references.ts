@@ -105,6 +105,7 @@ export class InvestigatorReferences {
       case 'claim-context': fields = { ...this.#support(), ...this.#fields(['inputs']), scope: (v, p) => v === 'configured-project' ? v : this.#encode(v, p) }; break;
       case 'evaluation': fields = this.#fields(['basis'], ['claims', 'modules', 'contexts']); break;
       case 'projection': fields = this.#fields([], ['modules', 'claims', 'contexts', 'evaluations'], { expansions: object(this.#fields([], ['claims'])) }); break;
+      case 'module-exports-projection': fields = this.#fields(['subject', 'evaluation'], ['evaluations', 'exports', 'documentation', 'contexts']); break;
       case 'repository-region': case 'repository-artifact': fields = this.#fields(['repository']); break;
       case 'organization-evaluation': fields = this.#fields(['repository', 'moduleEvaluation'], ['groups', 'claims', 'contexts']); break;
       case 'organization-projection': fields = this.#fields(['evaluation', 'moduleProjection'], ['groups', 'modules', 'claims', 'contexts'], {

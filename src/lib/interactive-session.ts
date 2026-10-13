@@ -1,6 +1,8 @@
 import { initiation, incompleteWork, WorkReportState } from './work-attribution.js';
 import type { WorkReport } from './work-attribution.js';
 import { captureRequest } from './requests.js';
+import { captureCatalog, defaultCatalog } from './request-catalog.js';
+import type { RequestCatalog } from './request-catalog.js';
 import { finalizeRequestReport, renderRequestReport, rejectedRequestResult } from './request-reporting.js';
 import { freezeOwned } from './immutable.js';
 import type { InvestigationRequest, AgentIdentity, InvestigatorAgent, AgentDialogue, AgentReply, AttemptReport, CallUsage } from './investigation/contracts.js';
@@ -23,12 +25,13 @@ type Reply = Extract<WorkerReply, { type: 'reply' }>;
 /** One operation; the parent owns Git and cleanup independently of compiler disposal. */
 export function interactiveSession(options: ProjectOptions, dependencies: {
   worker?: Worker; git?: GitExecutionOwner; cleanupDeadlineMs?: number; investigator?: InvestigatorAgent; selectInvestigator?: (request: InvestigationRequest) => InvestigatorAgent; investigationBounds?: InvestigationBounds;
-} = {}) {
+} = {}, definitions: RequestCatalog = defaultCatalog) {
+  const catalog = captureCatalog(definitions);
   const bounds = dependencies.investigationBounds ? freezeOwned(structuredClone(dependencies.investigationBounds)) : undefined;
   const identity = dependencies.investigator ? freezeOwned(structuredClone(dependencies.investigator.identity)) : undefined;
   // This compiled private worker does not inherit process-only launch flags.
   const worker = dependencies.worker ?? new Worker(new URL('./session-worker.js', import.meta.url), { execArgv: [], workerData: {
-    ...options, investigatorIdentity: identity, selectInvestigator: !!dependencies.selectInvestigator, investigationBounds: bounds, excludedOutputDirectories: [...(options.excludedOutputDirectories ?? [])],
+    ...options, catalog, investigatorIdentity: identity, selectInvestigator: !!dependencies.selectInvestigator, investigationBounds: bounds, excludedOutputDirectories: [...(options.excludedOutputDirectories ?? [])],
   } });
   const usage = new InvestigationUsage();
   const reports = new Map<RecordId, AttemptReport>();
@@ -158,7 +161,7 @@ export function interactiveSession(options: ProjectOptions, dependencies: {
   return {
     opening, usage: usageReport, work: latestWork,
     async execute(request: ViewRequest, execution: ExecutionOptions = {}): Promise<ExecutedRequest> {
-      const captured = captureRequest(request);
+      const captured = captureRequest(request, catalog.lenses);
       execution = { ...execution };
       if (pending && pending.id !== 0) throw new Error('Concurrent session command');
       const context = initiation(captured.normalized, execution.requestId, bounds);

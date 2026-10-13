@@ -128,6 +128,7 @@ test('accumulation preserves complete earlier views and precise references acros
     if (inventory.view.schema !== 'postcode-view/1-experimental') throw new Error('Expected inventory');
     const module = inventory.view.modules.find(item => item.handle === 'forward')!;
     const selected = (requireView(await session.execute({ ...request, lens: 'inspect', selector: module.entityId, reference: true })));
+    assert.equal(selected.view.schema, 'postcode-view/1-experimental');
     assert.equal(selected.view.projection.selection.matches, 1);
     assert.ok(selected.rendered.includes(module.entityId));
     requireView(await session.execute({ ...request, lens: 'organization', subject: 'repository', presentation: { format: 'json', sourceDetail: false } }));
@@ -161,6 +162,7 @@ test('Unicode reference misses preserve reference syntax and status in organizat
   const inspection = { ...request, lens: 'inspect' as const, selector: 'forward', presentation: { format: 'unicode' as const, sourceDetail: false } };
   try {
     const exact = (requireView(await opened.session.execute(inspection)));
+    assert.equal(exact.view.schema, 'postcode-view/1-experimental');
     assert.equal(exact.view.projection.selection.matches, 1);
     const miss = await opened.session.execute({ ...inspection, reference: true });
     assert.equal(miss.kind, 'resolution');

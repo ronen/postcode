@@ -404,8 +404,8 @@ a View. The current default Presentations accept qualified partial and unavailab
 answers. View JSON records the selected Presentation and its compatibility criteria;
 any declared fallback preserves explicit choices and explains its use in JSON and
 Unicode output. Presentation definitions are fixed for the Session; no new public
-Presentation-selection option is provided. The mechanical extension demonstration
-remains part of the ongoing [request-model work](plans/lens-request-model.md).
+Presentation-selection option is provided. The internal risks and exports extension
+examples add no public commands.
 Expected analysis failures use outcome `failed` and event `command-failed`;
 unexpected defects use outcome `defect` and event `command-defect`. Neither
 invents a view when no output was published.

@@ -20,8 +20,8 @@ export function selectInvestigation(store: ProgramRecordStore, session: SessionI
   const operation = definition?.requirements.kind === 'interpretation' ? definition.requirements.operation : null;
   if (!definition || definition.id !== request.lens || selected.length !== 1 || store.get(selected[0]!).session !== session
     || !definition.subjects.some(kind => kind === store.get(selected[0]!).kind)
-    || request.lens !== 'inspect' && operation === null) throw new Error('Expected one applicable resolved investigation subject');
-  if (request.lens === 'inspect') {
+    || definition.requirements.kind !== 'inspection' && operation === null) throw new Error('Expected one applicable resolved investigation subject');
+  if (definition.requirements.kind === 'inspection') {
     if (store.get(selected[0]!).kind !== 'investigram') throw new Error('Exact interpretation inspection requires an investigram');
     if (result !== null) throw new Error('Historical inspection has no generating evaluation');
     return retain(store, { kind: 'investigation-selection-projection', session, method: methods.investigationProjection,

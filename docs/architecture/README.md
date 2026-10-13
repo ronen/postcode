@@ -42,8 +42,8 @@ The product permits a summary suggestion when no more specific information need 
 
 Session execution normalizes the requested question, subject designation, Lens
 parameters and presentation choices independently of the resulting answer. A
-fixed Session catalog supplies Lens questions, titles, applicability and consuming
-operation mappings. Construction checks those declarations; retained operation
+fixed Session catalog supplies Lens questions, titles, applicability, mechanical
+implementation keys and consuming operation mappings. Construction checks those declarations; retained operation
 selections carry the actual operation request and subject kind, so record validation
 and reconstruction do not depend on a global Lens-name mapping. Command spellings
 map to normalized Lens identities; dependency identities agree with retained answers.
@@ -80,8 +80,8 @@ evaluation remain identified: construction retains their naming support and reco
 that the supplied population omits them. Arrangement exposes unavailable detail
 without inventing population membership or complete empty results.
 
-This is an intermediate implementation of the [request-model plan](../plans/lens-request-model.md).
-The public request path uses shared qualified resolution. Family constructors accept
+The request path implements the bounded [request-model plan](../plans/lens-request-model.md)
+using shared qualified resolution. Family constructors accept
 resolved subjects and retain qualified answers without lookup spelling or lookup
 status. All four families key the complete qualified selection, normalizing only
 declared reference positions. Names and precise references therefore share an answer
@@ -105,11 +105,35 @@ altering answer identity. Arrangement still has no lookup or Evaluation access.
 The bounded request/work attribution path is implemented as described below. A
 nonpublic module-risks fixture and a second consuming Lens exercise normalization,
 resolution, interpretation, retention and the existing interpretation Presentation
-through the fixed catalog. The mechanical extension demonstration and replacement
-of remaining mechanical Lens-name dispatch are still pending.
+through the fixed catalog. A nonpublic module-exports Lens exercises a separate
+qualified export-surface record and Presentation through the same request path.
+Both extensions also pass through worker delivery, parent publication and observations;
+neither is a public CLI command.
+
+Mechanical implementation registrations own prerequisite expansions, result-contract
+selection and local Evaluation/construction coordination. The Session coordinator
+does not dispatch mechanical construction by Lens name. Catalog assembly matches
+each mechanical declaration to its registered executable definition, rejecting
+unregistered implementations or declarations that repurpose a registered question.
+This replaces the earlier restriction to built-in mechanical Lenses without allowing
+metadata to promise behavior a constructor cannot supply. Static registration and
+the catalog snapshot are immutable during a Session; the parent transfers the same
+captured definitions to its worker.
+
+The exports constructor selects established export claims, documentation associations,
+their support and relevant Evaluation outcomes without constructing module inspection.
+Its result distinguishes a complete empty surface from incomplete, unavailable or
+unrequested exports, and retains precise subjects omitted from the supplied population.
+The paired Presentation requests the existing export/documentation expansions,
+shares qualified export resolution and documentation/role formatting with inspection,
+and bounds displayed detail while retaining the full core selection. Source evidence
+is exposed only on explicit request and only for displayed exports/documentation.
+Adding this content family uses bounded record, contract, arrangement and disclosure
+registrations; it introduces no analyzer, dynamic plugin system or general planner.
 
 The Session's fixed catalog also declares bounded Presentations for the module,
-organization, dependency and interpretation content contracts. Coordination checks
+organization, dependency and interpretation content contracts, with an internal
+exports pairing available to fixture catalogs. Coordination checks
 prospective compatibility before requested Evaluation and refines the contract after
 subject resolution, including the different inspection subject kinds. Explicit format,
 source and paging choices constrain both the default and declared fallbacks. Required

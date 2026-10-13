@@ -54,6 +54,7 @@ export function normalizeSession<T>(value: T, declaredSession?: string): T {
       return Object.fromEntries(Object.entries(object).map(([key, child]) => [key,
         // Captured input values are opaque evidence, including arbitrary field names.
         (object.kind === 'analysis-inputs' && key === 'value') || ['capture', 'layout', 'artifact', 'link', 'links', 'location', 'dependencyResolution'].includes(key) ? child
+          : object.kind === 'module-exports-projection' && ['exports', 'documentation'].includes(key) ? visit(child, '$references')
           : field === 'designation' && object.kind === 'reference' && key === 'value' && typeof child === 'string' ? reference(child)
           : object.kind === 'rendered-output' && key === 'value' && typeof child === 'string' ? normalizeRendered(child, session) : visit(child, key)]));
     }

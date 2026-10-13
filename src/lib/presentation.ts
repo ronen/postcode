@@ -1,3 +1,6 @@
+import { documentationLabel, documentationLines, documentationNotice, presentDocumentation } from './documentation-view.js';
+import { exportRoles, exportRoutes } from './export-view.js';
+import type { Documentation } from './documentation-view.js';
 import { validatePresentationContent, presentationChanges } from './presentation-contracts.js';
 import type { PresentedOptions } from './presentation-contracts.js';
 import { lookupDescription, lookupQualifications, resolutionContextIdentity } from './resolution-context.js';
@@ -8,7 +11,7 @@ import { presentQualification } from './qualification-view.js';
 import type { QualifiedRecord } from './projection-content.js';
 import { renderAssociatedInvestigations } from './investigation/associations.js';
 import type { AssociatedInvestigations } from './investigation/associations.js';
-import { boundedText, codePointLength, displayWidth, fitText, layoutText, padDisplay } from './terminal-layout.js';
+import { displayWidth, layoutText, padDisplay } from './terminal-layout.js';
 import { moduleLimitations, isCompositionContext } from './qualification-policy.js';
 import { completedMaterialization } from './evaluation-state.js';
 import { compositionView, compositionAnnotation } from './composition-view.js';
@@ -16,7 +19,7 @@ import type { CompositionView } from './composition-view.js';
 import { inlineText, terminalText } from './terminal-text.js';
 import { identityReference, methods, recordId } from './identity.js';
 import { moduleStandardExpansions } from './records.js';
-import type { Claim, ClaimContextRecord, EvaluationRecord, ExportClaim, ModuleClaim, ModuleExpansion, ProgramRecordStore, ProjectionRecord, RecordId, RecordedAssertion, SessionRecord, SourceEvidenceRecord, SymbolClaim } from './records.js';
+import type { Claim, ClaimContextRecord, EvaluationRecord, ExportClaim, ModuleClaim, ModuleExpansion, ProgramRecordStore, ProjectionRecord, RecordId, SessionRecord, SourceEvidenceRecord, SymbolClaim } from './records.js';
 
 export interface Presentation {
   readonly format: 'unicode' | 'json';
@@ -28,12 +31,6 @@ export function presentationRequirements(_presentation: Presentation): readonly 
 }
 
 type Qualification = Omit<ClaimContextRecord, 'kind' | 'evidence' | 'inputs'>;
-type Documentation = Pick<RecordedAssertion, 'id' | 'status' | 'text'> & {
-  omittedTextCharacters: number;
-  tags: readonly { name: string; text: string; omittedTextCharacters: number }[];
-  omittedTags: number;
-  association: 'module' | 'origin-symbol' | 'export-alias'; qualification: Qualification;
-};
 type ExportView = ExportClaim['information'] & {
   id: RecordId; qualification: Qualification;
   originHandle: string | null; originEntityId: string | null;
@@ -87,36 +84,9 @@ export function arrangeModuleView(content: ModuleProjectionContent, entityIds: R
     sourceGroups.set(key, { ...group, claims: [...new Set([...(sourceGroups.get(key)?.claims ?? []), ...claims.map(claim => claim.record.id)])] });
     for (const claim of claims) displayedClaims.set(claim.record.id, claim);
   };
-  const excerpt = (text: string, maximum: number) => boundedText(text, maximum, presentation.format === 'unicode');
-  const documentation = (associations: readonly DocumentationContent[], maximumDocs: number, label: string, module: RecordId, subject: RecordId) => {
-    const shown = associations.slice(0, maximumDocs);
-    const items: Documentation[] = shown.map(({ association, assertion: supported }) => {
-      const claim = association.record, assertion = supported.record;
-      sourceGroup({ label: `Documentation for ${label}`, module, subject, role: 'documentation', association: claim.information.association }, [association]);
-      const maximumTags = projection.lens === 'inspect' ? 20 : 5;
-      // Keep source-oriented examples/links in the assertion record, outside normal conceptual excerpts.
-      const prose = assertion.text.replace(/```[\s\S]*?```/g, '').trim();
-      let proseExcerpt = excerpt(prose, projection.lens === 'inspect' ? 2000 : 400);
-      let remainingLines = presentation.format === 'unicode' ? 8 : Infinity;
-      if (Number.isFinite(remainingLines)) proseExcerpt = excerpt(prose, codePointLength(fitText(proseExcerpt.text, '', remainingLines)));
-      remainingLines -= proseExcerpt.text ? wrapText(proseExcerpt.text, '       ').length : 0;
-      const conceptualTags = assertion.tags.filter(tag => tag.name !== 'example' && tag.name !== 'see');
-      const tags: Documentation['tags'][number][] = [];
-      for (const tag of conceptualTags.slice(0, maximumTags)) {
-        if (remainingLines <= 0) break;
-        const bounded = excerpt(tag.text, 300);
-        const text = Number.isFinite(remainingLines) ? fitText(bounded.text, `@${inlineText(tag.name)} `, remainingLines) : bounded.text;
-        if (Number.isFinite(remainingLines) && wrapText(`@${inlineText(tag.name)} ${text}`, '       ').length > remainingLines) break;
-        tags.push({ name: tag.name, text, omittedTextCharacters: codePointLength(tag.text) - codePointLength(text) });
-        remainingLines -= wrapText(`@${inlineText(tag.name)} ${text}`, '       ').length;
-      }
-      return { id: assertion.id, status: assertion.status,
-        text: proseExcerpt.text, omittedTextCharacters: codePointLength(assertion.text) - codePointLength(proseExcerpt.text),
-        tags, omittedTags: assertion.tags.length - tags.length,
-        association: claim.information.association, qualification: presentQualification(association.context) };
-    });
-    return { documentation: items, omittedDocumentation: associations.length - shown.length };
-  };
+  const documentation = (associations: readonly DocumentationContent[], maximumDocs: number, label: string, module: RecordId, subject: RecordId) =>
+    presentDocumentation(associations, maximumDocs, presentation, projection.lens === 'inspect', association =>
+      sourceGroup({ label: `Documentation for ${label}`, module, subject, role: 'documentation', association: association.record.information.association }, [association]));
   const modules = content.modules.map(module => {
     const { id, claim: supported } = module, claim = supported.record;
     const maximumDocs = compact ? 0 : projection.lens === 'inspect' ? 3 : claim.information.discoveryFacets.includes('project') ? 1 : 0;
@@ -231,31 +201,12 @@ export function renderUnicode(view: QualifiedView): string {
   };
   let documentationDisplayed = false;
   let relationshipsDisplayed = false;
-  const documentationLabel = (association: Documentation['association'], mixed: boolean) =>
-    association === 'export-alias' ? 'Documentation from export alias:'
-      : mixed && association === 'origin-symbol' ? 'Documentation from original symbol:' : 'Documentation:';
   const docs = (items: readonly Documentation[], omitted: number, indent: string) => {
-    const associations = [...new Set(items.map(doc => doc.association))];
-    for (const association of associations) {
-      documentationDisplayed = true;
-      lines.push(`${indent}${documentationLabel(association, associations.length > 1)}`);
-      const contributions = items.filter(doc => doc.association === association);
-      for (const [index, doc] of contributions.entries()) {
-        if (index) lines.push(indent);
-        if (doc.text) lines.push(...wrapText(doc.text, `${indent}  `));
-        if (doc.omittedTextCharacters) lines.push(`${indent}  … ${doc.omittedTextCharacters} assertion character(s) omitted.`);
-        for (const tag of doc.tags) lines.push(...wrapText(`@${inlineText(tag.name)} ${tag.text}${tag.omittedTextCharacters ? ` … (${tag.omittedTextCharacters} characters omitted)` : ''}`, `${indent}  `));
-        if (doc.omittedTags) lines.push(`${indent}  … ${doc.omittedTags} structured tag(s) omitted (including source-oriented examples/links).`);
-      }
-    }
-    if (omitted) lines.push(`${indent}… ${omitted} documentation assertion(s) omitted.`);
+    documentationDisplayed ||= items.length > 0;
+    lines.push(...documentationLines(items, omitted, indent));
   };
-  const roles = (exported: ExportView) => exported.roles
-    ? [exported.roles.type ? 'type' : '', exported.roles.value ? 'value' : ''].filter(Boolean).join('+') || 'no type/value role'
-    : 'roles unavailable';
   const exceptions = (exported: ExportView, moduleId: RecordId): string[] => {
-    const details = [...new Set(exported.routes.filter(route => route.kind !== 'direct' && route.kind !== 'default' || route.aliased || route.typeOnly)
-      .map(route => `${route.kind}${route.typeOnly ? ' (type-only)' : ''}`))];
+    const details = exportRoutes(exported);
     if (details.length || exported.origin !== moduleId) relationshipsDisplayed = true;
     if (!exported.routes.length) details.push('route unavailable');
     if (exported.origin !== moduleId) details.push(exported.origin ? `origin: ${inlineText(exported.originHandle ?? 'anonymous')} (${exported.originEntityId ?? 'identity unavailable'})` : 'origin not established');
@@ -296,7 +247,7 @@ export function renderUnicode(view: QualifiedView): string {
       if (!total) lines.push(established ? '    (none)' : '    Not established; no exports displayed.');
       for (const exported of module.exports) {
         const details = exceptions(exported, module.id);
-        lines.push(`  ├─ ${inlineText(exported.exportedName)} [${roles(exported)}]${details.length ? ` · ${details.join('; ')}` : ''}`);
+        lines.push(`  ├─ ${inlineText(exported.exportedName)} [${exportRoles(exported)}]${details.length ? ` · ${details.join('; ')}` : ''}`);
         if (exported.symbolInformation?.name && exported.symbolInformation.name !== exported.exportedName) lines.push(`  │  Semantic symbol: ${inlineText(exported.symbolInformation.name)}`);
         docs(exported.documentation, exported.omittedDocumentation, '  │  ');
       }
@@ -344,7 +295,7 @@ export function renderUnicode(view: QualifiedView): string {
       lines.push('', '  Exports:');
       if (!module.exports.length) lines.push('    No displayed export source.');
       for (const exported of module.exports) {
-        lines.push(`  ├─ ${inlineText(exported.exportedName)} [${roles(exported)}]`);
+        lines.push(`  ├─ ${inlineText(exported.exportedName)} [${exportRoles(exported)}]`);
         const defining = (itemsBySubject.get(subjectKey(module.id, exported.id)) ?? []).find(item => item.role === 'symbol')?.evidence ?? [];
         const definingKeys = new Set(defining.map(key));
         const forwarding = ((itemsBySubject.get(subjectKey(module.id, exported.id)) ?? []).find(item => item.role === 'export')?.evidence ?? []).filter(evidence => !definingKeys.has(key(evidence)));
@@ -361,7 +312,7 @@ export function renderUnicode(view: QualifiedView): string {
       }
     }
   }
-  if (documentationDisplayed) lines.push('', 'Documentation entries are recorded assertions; truth, currency, and completeness are not established.');
+  if (documentationDisplayed) lines.push('', documentationNotice);
   if (relationshipsDisplayed) lines.push('', 'Export relationships describe aliases and forwarding, not calls or dependencies.');
   const omissions: string[] = [];
   if (view.display.collapsedModules) omissions.push(`${view.display.collapsedModules} external module${view.display.collapsedModules === 1 ? '' : 's'} and their details`);
