@@ -1,3 +1,5 @@
+import { validatePresentationContent, presentationChanges } from '../presentation-contracts.js';
+import type { PresentedOptions } from '../presentation-contracts.js';
 import { lookupDescription, lookupQualifications, resolutionContextIdentity } from '../resolution-context.js';
 import type { ResolutionContext } from '../resolution-context.js';
 import { renderAssociatedInvestigations } from '../investigation/associations.js';
@@ -8,7 +10,7 @@ import type { CompositionView } from '../composition-view.js';
 import path from 'node:path';
 import { identityReference, methods, recordId } from '../identity.js';
 import { arrangeModuleView, renderUnicode } from '../presentation.js';
-import type { Presentation, QualifiedView } from '../presentation.js';
+import type { QualifiedView } from '../presentation.js';
 import type { ClaimContextRecord, EvaluationState, ModuleClaim, ProgramRecordStore, RecordId } from '../records.js';
 import { moduleStandardExpansions } from '../records.js';
 import type { LayoutEvidence, RepositoryArtifact } from '../repository/evidence.js';
@@ -62,7 +64,7 @@ export interface QualifiedOrganizationView {
   readonly id: RecordId;
   readonly resolution?: ResolutionContext;
   readonly projection: Pick<OrganizationProjectionRecord, 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
-  readonly presentation: Presentation & { readonly expansions: readonly string[] };
+  readonly presentation: PresentedOptions & { readonly expansions: readonly string[] };
   readonly evaluations: {
     readonly repository: Omit<EvaluationState, 'cost'> & { readonly id: RecordId; readonly cost: OrganizationEvaluationRecord['cost'] };
     readonly placement: EvaluationState;
@@ -98,8 +100,7 @@ export interface QualifiedOrganizationView {
 
 /** Coordinate population bindings before arranging the resolved selection. */
 export function createOrganizationView(store: ProgramRecordStore, projection: OrganizationProjectionRecord,
-  presentation: Presentation, resolution?: ResolutionContext): QualifiedOrganizationView {
-  const content = resolveOrganizationProjection(store, projection);
+  presentation: PresentedOptions, resolution?: ResolutionContext, content = resolveOrganizationProjection(store, projection)): QualifiedOrganizationView {
   const population = store.entityIds(content.evaluation.groups, 'group');
   const groups = new Map([...population, ...store.entityIds(projection.groups, 'group')]);
   const modules = store.entityIds(content.moduleEvaluation.modules, 'module');
@@ -109,7 +110,8 @@ export function createOrganizationView(store: ProgramRecordStore, projection: Or
 
 export function arrangeOrganizationView(content: OrganizationProjectionContent,
   bindings: { readonly groups: ReadonlyMap<RecordId, string>; readonly modules: ReadonlyMap<RecordId, string>; readonly detail: ReadonlyMap<RecordId, string> },
-  presentation: Presentation, resolution?: ResolutionContext): QualifiedOrganizationView {
+  presentation: PresentedOptions, resolution?: ResolutionContext): QualifiedOrganizationView {
+  validatePresentationContent({ contract: 'organization', value: content });
   const { projection, evaluation: outcome, repository: captured } = content;
   if (presentation.sourceDetail && projection.lens !== 'inspect') throw new Error('Source detail requires inspection');
   const evidence = captured.capture.status === 'available' ? captured.capture.evidence : null;
@@ -224,7 +226,7 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
     `Session ${view.projection.session.replace(/^session:/, '')}`,
     inspection ? `${view.projection.selection.matches} ${lookupDescription(view.resolution, view.projection.selection.matches) ?? 'selected subjects'}`
       : `${view.display.selectedGroups} selected groups · ${view.repository.groups} repository groups`];
-  lines.push(...lookupQualifications(view.resolution));
+  lines.push(...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
   if (view.projection.selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; their detail is unavailable in this answer.');
   if (!view.projection.selection.populationEstablished) lines.push('Selection population is not fully established.');
   for (const [name, state] of Object.entries(view.evaluations)) {

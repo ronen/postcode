@@ -49,8 +49,10 @@ This page summarizes current capabilities and significant limits. The [capabilit
   reporting, non-View usage and qualified subject resolution are implemented at the
   request boundary. Unsuccessful lookups return reports with candidates and limits.
   Equivalent names and references share retained answers while preserving lookup
-  context in displayed results. Bounded prerequisite/evidence attribution is implemented;
-  Presentation compatibility and extension demonstrations remain in progress.
+  context in displayed results. Bounded prerequisite/evidence attribution and
+  Presentation compatibility are implemented. Unsupported display choices return
+  qualified reports; existing displays retain partial and unavailable answers.
+  Mechanical extension integration remains in progress.
 
 - **Hosted interpretation:** [formative assessments](records/validation/module-investigation/pass-01/report.md)
   show useful source-qualified summaries alongside omitted qualifications. A

@@ -14,7 +14,7 @@ export interface RequestContext extends InitiationContext {
   readonly request: NormalizedRequest;
 }
 export interface ResolutionInformation {
-  readonly reason: 'invalid-parameters' | 'invalid-designation' | 'invalid-report-inputs' | 'invalid-request' | Exclude<SubjectResolution['status'], 'resolved'>;
+  readonly reason: 'presentation-unavailable' | 'invalid-parameters' | 'invalid-designation' | 'invalid-report-inputs' | 'invalid-request' | Exclude<SubjectResolution['status'], 'resolved'>;
   readonly explanation: string;
   readonly candidates: readonly { readonly id: RecordId; readonly kind: 'module' | 'group' | 'investigram'; readonly reference: string }[];
   readonly criteria: readonly string[];
@@ -60,7 +60,8 @@ export function renderRequestReport(report: ResolutionReport | UsageReport): str
       return `${kind === 'module' ? 'Modules' : 'Groups'}: ${state}; ${matches ? `${matches} ${matches === 1 ? 'match' : 'matches'}` : established ? 'no match' : 'no match established'}${support.reason ? `; ${inlineText(support.reason)}` : ''}`;
     }),
     ...report.resolution.qualifications.map(inlineText),
-    ...(report.resolution.candidates.length ? [report.context.request.referenceLifetime === 'command'
+    ...report.resolution.retainedAnswers.map(id => `Retained answer: ${inlineText(id)}`),
+    ...(report.resolution.candidates.length || report.resolution.retainedAnswers.length ? [report.context.request.referenceLifetime === 'command'
       ? 'References expire when this command completes.' : 'References remain usable while this Session is valid.'] : []),
     ...usageLines(report.usage, 'Session')].join('\n') + '\n';
 }

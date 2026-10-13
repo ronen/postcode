@@ -1,3 +1,5 @@
+import { validatePresentationContent, presentationChanges } from './presentation-contracts.js';
+import type { PresentedOptions } from './presentation-contracts.js';
 import { lookupDescription, lookupQualifications, resolutionContextIdentity } from './resolution-context.js';
 import type { ResolutionContext } from './resolution-context.js';
 import { resolveModuleProjection } from './module-content.js';
@@ -45,7 +47,7 @@ export interface QualifiedView {
   readonly id: RecordId;
   readonly resolution?: ResolutionContext;
   readonly projection: Pick<ProjectionRecord, 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
-  readonly presentation: Presentation & { readonly expansions: readonly ModuleExpansion[] };
+  readonly presentation: PresentedOptions & { readonly expansions: readonly ModuleExpansion[] };
   readonly analysis: SessionRecord['analysis'] | null;
   readonly qualifications: readonly Qualification[];
   readonly evaluations: readonly Pick<EvaluationRecord, 'id' | 'requirement' | 'modules' | 'applicability' | 'availability' | 'execution' | 'materialization' | 'reason' | 'cost'>[];
@@ -65,15 +67,15 @@ export interface QualifiedView {
 }
 
 /** Coordination preserves population-wide reference allocation independently of display bounds. */
-export function createView(store: ProgramRecordStore, projection: ProjectionRecord, presentation: Presentation, resolution?: ResolutionContext): QualifiedView {
-  const content = resolveModuleProjection(store, projection);
+export function createView(store: ProgramRecordStore, projection: ProjectionRecord, presentation: PresentedOptions, resolution?: ResolutionContext, content = resolveModuleProjection(store, projection)): QualifiedView {
   const population = store.entityIds(content.discovery.modules, 'module');
   const ids = new Map([...population, ...store.entityIds(projection.modules, 'module')]);
   return arrangeModuleView(content, ids, presentation, resolution);
 }
 
 /** Pure presentation of an already selected answer. No store, acquisition or reference allocation. */
-export function arrangeModuleView(content: ModuleProjectionContent, entityIds: ReadonlyMap<RecordId, string>, presentation: Presentation, resolution?: ResolutionContext): QualifiedView {
+export function arrangeModuleView(content: ModuleProjectionContent, entityIds: ReadonlyMap<RecordId, string>, presentation: PresentedOptions, resolution?: ResolutionContext): QualifiedView {
+  validatePresentationContent({ contract: 'modules', value: content });
   const { projection, session } = content;
   if (presentation.sourceDetail && projection.lens !== 'inspect') throw new Error('Source detail requires inspection');
   const compact = presentation.format === 'unicode' && projection.lens === 'modules';
@@ -197,7 +199,7 @@ export function renderUnicode(view: QualifiedView): string {
     `Session ${view.projection.session.replace(/^session:/, '')}`,
     inventory ? `${selection.population} module${selection.population === 1 ? '' : 's'} found · ${view.modules.length} listed${view.display.collapsedModules ? ` · ${view.display.collapsedModules} external module${view.display.collapsedModules === 1 ? '' : 's'} collapsed` : ''}`
       : `${selection.matches} module${selection.matches === 1 ? '' : 's'} selected from ${selection.population}${lookupDescription(view.resolution, selection.matches) ? ` · ${lookupDescription(view.resolution, selection.matches)}` : ''}`];
-  lines.push(...lookupQualifications(view.resolution));
+  lines.push(...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
   if (selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; their detail is unavailable in this answer.');
   if (!selection.populationEstablished) lines.push('Module population is not established.');
   const outcomeGroups = new Map<string, number>();

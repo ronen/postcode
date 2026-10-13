@@ -1,3 +1,5 @@
+import { validatePresentationContent, presentationChanges } from '../presentation-contracts.js';
+import type { PresentedOptions } from '../presentation-contracts.js';
 import { lookupQualifications, resolutionContextIdentity } from '../resolution-context.js';
 import type { ResolutionContext } from '../resolution-context.js';
 import { lenses } from '../requests.js';
@@ -13,7 +15,6 @@ import { identityReference, methods, recordId } from '../identity.js';
 import { freezeOwned } from '../immutable.js';
 import { inlineText, terminalText } from '../terminal-text.js';
 import type { ProgramRecordStore, RecordId, SessionId, ProgramRecord } from '../records.js';
-import type { Presentation } from '../presentation.js';
 import type { Investigram, Correction, InvestigationProvenance } from './contracts.js';
 import type { InvestigationSelection } from './evaluation.js';
 import { usageSummary } from './reporting.js';
@@ -26,7 +27,7 @@ export interface InvestigationViewRequest {
   readonly title?: string;
   readonly after?: string;
   readonly revisionPage?: number;
-  readonly presentation: Presentation;
+  readonly presentation: PresentedOptions;
   readonly referenceLifetime?: 'session' | 'command';
 }
 export interface InvestigationReporting {
@@ -35,8 +36,7 @@ export interface InvestigationReporting {
   readonly provider?: NonNullable<NonNullable<InvestigationSelection['unavailable']>['provider']>;
 }
 export function createInvestigationView(store: ProgramRecordStore, session: SessionId, request: InvestigationViewRequest,
-  selected: readonly RecordId[], result: InvestigationSelection | null, usage: InvestigationUsageReport) {
-  const content = resolveInvestigationContent(store, selectInvestigation(store, session, request, selected, result));
+  selected: readonly RecordId[], result: InvestigationSelection | null, usage: InvestigationUsageReport, content = resolveInvestigationContent(store, selectInvestigation(store, session, request, selected, result))) {
   const reporting = result ? { reused: result.reused, attempt: result.attempt,
     ...(result.unavailable?.provider ? { provider: result.unavailable.provider } : {}) } : null;
   const title = request.title ?? request.definition?.title ?? (lenses as Readonly<Record<string, LensDefinition>>)[request.lens]?.title;
@@ -48,6 +48,7 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
 export function arrangeInvestigationView(content: InvestigationProjectionContent,
   options: Omit<InvestigationViewRequest, 'lens' | 'definition' | 'title'> & { readonly title: string }, reporting: InvestigationReporting | null,
   usage: InvestigationUsageReport, bindings: ReferenceBinding) {
+  validatePresentationContent({ contract: 'investigation', value: content });
   const session = content.projection.session;
   const selection = content.projection;
   const request = options;
@@ -209,7 +210,7 @@ export function renderInvestigationView(view: InvestigationView): string {
   const reference = (id: RecordId) => view.references.find(item => item.id === id)?.reference ?? id;
   const lines = [inlineText(view.title)];
   lines.push(view.referenceLifetime === 'command' ? 'References expire when this command ends. Use the shell for follow-up inspection.' : 'References remain bound for this session.');
-  lines.push(...lookupQualifications(view.resolution));
+  lines.push(...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
   if (view.result) {
     lines.push(view.result.reused ? 'Retained outcome; no new investigation.' : 'New investigation request.');
     const outcome = view.result.evaluation?.outcome ?? view.result.unavailable;

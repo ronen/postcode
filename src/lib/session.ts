@@ -1,12 +1,20 @@
+import { planPresentation, settlePresentation, presentedOptions, materializationLimitations } from './presentation-contracts.js';
+import type { PresentationContent } from './presentation-contracts.js';
+import { resolveModuleProjection } from './module-content.js';
+import { resolveOrganizationProjection } from './organization/content.js';
+import { resolveDependencyProjection } from './dependencies/content.js';
+import { resolveInvestigationContent } from './investigation/content.js';
+import { selectInvestigation } from './investigation/selection.js';
+import type { SubjectResolution } from './subject-resolution.js';
 import { captureCatalog, defaultCatalog } from './request-catalog.js';
-import type { RequestCatalog } from './request-catalog.js';
+import type { RequestCatalog, CapturedCatalog } from './request-catalog.js';
 import { resolutionContext } from './resolution-context.js';
 import { resolveSubjects, resolutionExplanation } from './subject-resolution.js';
 import { freezeOwned } from './immutable.js';
 import { initiation, RequestWork } from './work-attribution.js';
 import type { WorkProgress, WorkReport } from './work-attribution.js';
 import { captureRequest, invalidParameters, invalidDesignation, invalidReportInputs } from './requests.js';
-import type { ViewRequest, CapturedRequest } from './requests.js';
+import type { ViewRequest, CapturedRequest, ResultContract } from './requests.js';
 export type { ViewRequest } from './requests.js';
 import { renderRequestReport, rejectedRequestResult } from './request-reporting.js';
 import type { RequestContext, ResolutionReport, UsageReport } from './request-reporting.js';
@@ -27,9 +35,9 @@ import { evaluateModules } from './evaluation.js';
 import { evaluateDependencies } from './dependencies/evaluate.js';
 import { evaluateDependencyOrganization } from './dependencies/organization.js';
 import { dependencyStructure, dependencyChildren, dependencyParents } from './dependencies/projections.js';
-import { createDependencyView, dependencyPresentationRequirements, renderDependencyView } from './dependencies/presentation.js';
+import { createDependencyView, renderDependencyView } from './dependencies/presentation.js';
 import { MemoryProgramRecordStore } from './memory-store.js';
-import { createView, presentationRequirements, renderView } from './presentation.js';
+import { createView, renderView } from './presentation.js';
 import { modules } from './projections.js';
 import { evaluateOrganization } from './organization/evaluate.js';
 import { inspectOrganization, organization } from './organization/projections.js';
@@ -179,7 +187,7 @@ export async function openSession(options: ProjectOptions, lifetime: { runGit?: 
 }
 
 function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalysis, session: SessionId,
-  integration: ReturnType<typeof investigationEvaluation>, usage: () => ReturnType<typeof usageSummary>, catalog: RequestCatalog) {
+  integration: ReturnType<typeof investigationEvaluation>, usage: () => ReturnType<typeof usageSummary>, catalog: CapturedCatalog) {
   return async (capturedRequest: CapturedRequest, context: RequestContext, work: RequestWork) => {
     const lookupWork = work.scope('Establish qualified populations to resolve the requested subject.', null, 'resolution-prerequisite');
     const answerWork = work.scope('Materialize requirements and declared expansions for the requested answer.');
@@ -207,7 +215,17 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
       return { kind: 'usage' as const, context, report, rendered: renderRequestReport(report), failed: false };
     }
     const definition = catalog.lenses[context.request.lens]!;
-    const { presentation } = request;
+    const presentationFailure = (explanation: string, resolution?: SubjectResolution, retainedAnswers: readonly RecordId[] = [], content?: PresentationContent) => {
+      const report: ResolutionReport = freezeOwned({ schema: 'postcode-resolution/1-experimental', session, context, usage: usage(),
+        resolution: { reason: 'presentation-unavailable', explanation, candidates: resolution?.candidates ?? [],
+          criteria: [...(resolution?.criteria ?? []), 'Compatible qualified result contract and explicit Presentation choices'],
+          qualifications: [...new Set([...(resolution?.qualifications ?? []), ...(content ? materializationLimitations(content) : [])])], prerequisites: resolution?.prerequisites ?? [],
+          support: resolution?.support ?? [], retainedAnswers } });
+      return { kind: 'resolution' as const, context, report, rendered: renderRequestReport(report), failed: true };
+    };
+    const normalizedRequest = context.request;
+    const plans = new Map(definition.results.map(contract => [contract, planPresentation(catalog.presentations, contract, normalizedRequest)]));
+    if (![...plans.values()].some(plan => plan.length)) return presentationFailure('No Presentation accepts the prospective answer contract with the supplied format, source and paging choices.');
     const lens = context.request.lens;
     const operation = definition.requirements.kind === 'interpretation' ? definition.requirements.operation : null;
     const investigationLens = operation !== null;
@@ -228,6 +246,14 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
     const displayResolution = resolutionContext(designation, resolution);
     const selected = resolution.candidates.map(candidate => candidate.id);
     const interpretationInspection = lens === 'inspect' && resolution.candidates[0]?.kind === 'investigram';
+    const contract: ResultContract = investigationLens || interpretationInspection ? 'investigation'
+      : lens === 'inspect' ? resolution.candidates.some(candidate => candidate.kind === 'group') ? 'organization' : 'modules'
+      : definition.results[0]!;
+    const presentationPlan = plans.get(contract) ?? [];
+    if (!presentationPlan.length) return presentationFailure('No compatible Presentation accepts the resolved subject’s answer contract and supplied choices.', resolution);
+    const moduleExpansions = [...new Set(presentationPlan.flatMap(item => item.requirements.modules))];
+    const groupExpansions = [...new Set([...presentationPlan.flatMap(item => item.requirements.groups),
+      ...(definition.requirements.kind === 'inspection' ? organizationPresentationRequirements.groups : [])])];
     if (investigationLens || interpretationInspection) {
       const basis = evaluateModules(store, analysis, [], answerWork);
       answerWork.check();
@@ -236,8 +262,14 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
       const result = investigationLens && selected.length === 1
         ? await integration.evaluate({ operation: operation!, subject: selected[0]!, parameters: {} }, work) : null;
       answerWork.check();
-      const { view, investigationArrangementKey } = createInvestigationView(store, session, { ...request, resolution: displayResolution, lens, definition, title: definition.title }, selected, result, usage());
-      consumeInterpretation(view.projection.id);
+      const viewRequest = { ...request, resolution: displayResolution, lens, definition, title: definition.title };
+      const content = resolveInvestigationContent(store, selectInvestigation(store, session, viewRequest, selected, result));
+      consumeInterpretation(content.projection.id);
+      const decision = settlePresentation(presentationPlan, { contract: 'investigation', value: content });
+      if (!decision) return presentationFailure('The retained interpretation answer does not meet the Presentation materialization precondition; no compatible declared fallback applies.', resolution, [content.projection.id], { contract: 'investigation', value: content });
+      const { view, investigationArrangementKey } = createInvestigationView(store, session,
+        { ...viewRequest, presentation: presentedOptions(request.presentation, decision) }, selected, result, usage(), content);
+
       const sessionContext = store.get(session);
       if (sessionContext.kind !== 'session') throw new Error('Expected session');
       const repository = sessionContext.repository ? store.get(sessionContext.repository) : null;
@@ -247,11 +279,10 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
     }
     const dependencyLens = definition.requirements.kind === 'dependencies';
     // Provider/evaluation reuse owns input-basis validity; an outer cache could hide new acquisition.
-    const dependencyOutcome = dependencyLens ? evaluateDependencies(store, analysis, dependencyPresentationRequirements.modules, answerWork) : null;
-    const expansions = lens === 'modules' ? presentationRequirements(presentation) : organizationPresentationRequirements.modules;
+    const dependencyOutcome = dependencyLens ? evaluateDependencies(store, analysis, moduleExpansions, answerWork) : null;
     const evaluation = dependencyOutcome ? store.get(dependencyOutcome.moduleEvaluation) as EvaluationRecord
-      : evaluateModules(store, analysis, expansions, answerWork);
-    const organizationOutcome = lens === 'modules' ? null : evaluateOrganization(store, evaluation, organizationPresentationRequirements.groups, answerWork);
+      : evaluateModules(store, analysis, moduleExpansions, answerWork);
+    const organizationOutcome = lens === 'modules' ? null : evaluateOrganization(store, evaluation, groupExpansions, answerWork);
     const dependencyOrganization = dependencyLens ? evaluateDependencyOrganization(store, dependencyOutcome!, organizationOutcome!, answerWork) : null;
     answerWork.check();
     const projection = dependencyLens
@@ -265,10 +296,17 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
       ? store.get(projection.moduleProjection) as ProjectionRecord : null;
     const moduleOnly = projection.kind === 'organization-projection' && projection.lens === 'inspect' && projection.groups.length === 0
       && moduleProjection !== null && (moduleProjection.modules.length > 0 || organizationOutcome!.groups.length === 0);
-    const mechanicalView = projection.kind === 'dependency-projection' ? createDependencyView(store, projection, presentation, displayResolution)
-      : projection.kind === 'projection' ? createView(store, projection, presentation, displayResolution)
-      : moduleOnly ? createView(store, moduleProjection!, presentation, displayResolution)
-      : createOrganizationView(store, projection, presentation, displayResolution);
+    const content: PresentationContent = projection.kind === 'dependency-projection' ? { contract: 'dependencies', value: resolveDependencyProjection(store, projection) }
+      : projection.kind === 'projection' ? { contract: 'modules', value: resolveModuleProjection(store, projection) }
+      : moduleOnly ? { contract: 'modules', value: resolveModuleProjection(store, moduleProjection!) }
+      : { contract: 'organization', value: resolveOrganizationProjection(store, projection) };
+    const decision = settlePresentation(presentationPlan, content);
+    if (!decision) return presentationFailure('The retained answer does not meet the Presentation materialization precondition; no compatible declared fallback applies.', resolution,
+      [...new Set([projection.id, ...(moduleProjection ? [moduleProjection.id] : [])])], content);
+    const presentation = presentedOptions(request.presentation, decision);
+    const mechanicalView = content.contract === 'dependencies' ? createDependencyView(store, content.value.projection, presentation, displayResolution, content.value)
+      : content.contract === 'modules' ? createView(store, content.value.projection, presentation, displayResolution, content.value)
+      : createOrganizationView(store, content.value.projection, presentation, displayResolution, content.value);
     const inspectedSubjects = projection.kind === 'organization-projection' ? [...projection.groups, ...(moduleProjection?.modules ?? [])] : projection.kind === 'projection' ? projection.modules : [];
     const view = lens === 'inspect' ? createAssociatedInspectionView(store, mechanicalView, inspectedSubjects, request.after, request.referenceLifetime) : mechanicalView;
     consumeInterpretation(view.projection.id);

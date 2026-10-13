@@ -396,8 +396,16 @@ shared answer. Unicode labels incomplete or unavailable lookup coverage separate
 as `Lookup (modules)` or `Lookup (groups)`; general provider limitations stay in
 JSON resolution context and the answer's own qualification where applicable.
 Repeated compatible interpretations reuse the original work and usage.
-Prerequisite attribution and runtime Presentation compatibility remain part of the
-ongoing [request-model work](plans/lens-request-model.md).
+Presentation selection checks the answer's content contract and the supplied format,
+source and paging choices. A missing compatible choice, or an unmet materialization
+precondition without a permitted fallback, returns `presentation-unavailable` with
+the reason, qualifications and any already-retained answer IDs. This does not create
+a View. The current default Presentations accept qualified partial and unavailable
+answers. View JSON records the selected Presentation and its compatibility criteria;
+any declared fallback preserves explicit choices and explains its use in JSON and
+Unicode output. Presentation definitions are fixed for the Session; no new public
+Presentation-selection option is provided. The mechanical extension demonstration
+remains part of the ongoing [request-model work](plans/lens-request-model.md).
 Expected analysis failures use outcome `failed` and event `command-failed`;
 unexpected defects use outcome `defect` and event `command-defect`. Neither
 invents a view when no output was published.

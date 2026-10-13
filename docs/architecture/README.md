@@ -102,12 +102,34 @@ subjects and population qualifications appear in View JSON; Unicode labels only
 incomplete or unavailable lookup coverage separately from answer qualification.
 This context participates in View identity without
 altering answer identity. Arrangement still has no lookup or Evaluation access.
-The bounded request/work attribution path is implemented as described below. Runtime
-Presentation compatibility and the mechanical extension demonstration remain to be
-integrated. A nonpublic module-risks fixture and a second consuming Lens exercise
-normalization, resolution, interpretation, retention and existing interpretation
-Presentation through the fixed catalog. Declaration of prospective result contracts
-does not yet establish runtime compatibility across the toolbox.
+The bounded request/work attribution path is implemented as described below. A
+nonpublic module-risks fixture and a second consuming Lens exercise normalization,
+resolution, interpretation, retention and the existing interpretation Presentation
+through the fixed catalog. The mechanical extension demonstration and replacement
+of remaining mechanical Lens-name dispatch are still pending.
+
+The Session's fixed catalog also declares bounded Presentations for the module,
+organization, dependency and interpretation content contracts. Coordination checks
+prospective compatibility before requested Evaluation and refines the contract after
+subject resolution, including the different inspection subject kinds. Explicit format,
+source and paging choices constrain both the default and declared fallbacks. Required
+standard expansions for compatible choices are acquired together before construction;
+arrangement cannot acquire missing information. Current production choices accept
+qualified partial, unavailable and established-empty content. Internal assembly can
+declare a complete-materialization precondition and an explicit qualified fallback.
+Operational completeness does not establish the truth or completeness of an
+interpretation's account of the program.
+
+Construction resolves the retained content, then checks its semantic family and
+materialization before arrangement. A missing compatible choice or unmet precondition
+returns a resolution report preserving actual request, prerequisite qualifications,
+unmet outcome states and any already-retained answer IDs. Malformed content remains
+an internal defect. A selected Presentation's criteria and consequential fallback
+are captured in the View, with fallback changes also explained in Unicode output.
+These choices participate in View identity without changing retained answer identity.
+Embedded module detail and associated interpretation inspection remain explicit
+family compositions; their resolved content is validated at arrangement boundaries.
+There is no generic multi-Projection selector or public Presentation registration API.
 
 <a id="request-work-attribution"></a>
 ## Request work attribution

@@ -198,7 +198,7 @@ test('mechanical View identities include resolution context and use the shared p
   const presentation = { format: 'json' as const, sourceDetail: false };
   const views = [createView(store, modules(store, evaluation), presentation), createOrganizationView(store, organizationProjection, presentation),
     createDependencyView(store, dependencyProjection, presentation)];
-  assert.equal(methods.presentation, 'postcode/presentation@30');
+  assert.equal(methods.presentation, 'postcode/presentation@31');
   for (const [index, view] of views.entries()) {
     const kind = ['view', 'organization-view', 'dependency-view'][index]!;
     const key: { projection: string | null; presentation: typeof presentation; resolution: null; method: string } = { projection: identityReference(view.projection.session, view.projection.id), presentation, resolution: null, method: methods.presentation };

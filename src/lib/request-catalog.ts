@@ -1,3 +1,5 @@
+import { presentations, validatePresentations } from './presentation-contracts.js';
+import type { PresentationDefinition } from './presentation-contracts.js';
 import { commandLenses, lenses } from './requests.js';
 import type { CommandLens, LensDefinition, PublicLensId } from './requests.js';
 import { canonical } from './identity.js';
@@ -10,10 +12,13 @@ import { freezeOwned } from './immutable.js';
 export interface RequestCatalog {
   readonly lenses: Readonly<Record<string, LensDefinition>>;
   readonly operations: OperationCatalog;
+  readonly presentations?: readonly PresentationDefinition[];
 }
-export const defaultCatalog: RequestCatalog = freezeOwned({ lenses, operations });
-export function captureCatalog(source: RequestCatalog): RequestCatalog {
-  const catalog = freezeOwned(structuredClone(source));
+export const defaultCatalog: RequestCatalog = freezeOwned({ lenses, operations, presentations });
+export type CapturedCatalog = RequestCatalog & { readonly presentations: readonly PresentationDefinition[] };
+export function captureCatalog(source: RequestCatalog): CapturedCatalog {
+  const catalog = freezeOwned(structuredClone({ ...source, presentations: source.presentations ?? presentations }));
+  validatePresentations(catalog.presentations);
   for (const [id, operation] of Object.entries(catalog.operations)) {
     if (id !== operation.id || !id || !operation.objective.trim() || !operation.method.trim()
       || !['module', 'investigram'].includes(operation.subject)
