@@ -114,6 +114,12 @@ Context: The human supplied the clean narrow operation-definition round-two revi
 
 > Another partial review round is complete.  It has a few small notes that you can address if you think worthwhile.  Then the gate is accepted and you may continue.
 
+### 2026-10-13 — Accept Presentation compatibility gate and continue
+
+Context: The agent reported F1 corrected and verified, then asked whether the human accepted the intermediate gate to permit remaining implementation.
+
+yes, continue
+
 ## Outcome
 
 Intermediate checkpoint, 2026-10-11: implementation commit `a9c8189f042d5fe6cabf27db414b995a5972d0f6` establishes normalized request reporting, shared Lens-to-operation declarations, explicit View/usage/parameter-resolution execution alternatives, parent usage finalization and observation-envelope version 2. Usage no longer has a synthetic Projection/View descriptor. Module matching is shared without the dependency-selection inspection side effect. The local observation convention now specifies version-two batches; user-facing and descriptive documentation records the implemented subset and remaining gaps.
