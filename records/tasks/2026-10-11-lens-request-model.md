@@ -148,6 +148,10 @@ Make the focused corrections and verification, record the dispositions, and repo
 
 > next review round is in.  it has no new findings.  but don't close the task yet; do whatever housekeeping is necessary, then push and open a PR on github
 
+2026-10-13:
+
+> github copilot has create a review; please fetch and preserve it, and address it.
+
 ## Outcome
 
 Intermediate checkpoint, 2026-10-11: implementation commit `a9c8189f042d5fe6cabf27db414b995a5972d0f6` establishes normalized request reporting, shared Lens-to-operation declarations, explicit View/usage/parameter-resolution execution alternatives, parent usage finalization and observation-envelope version 2. Usage no longer has a synthetic Projection/View descriptor. Module matching is shared without the dependency-selection inspection side effect. The local observation convention now specifies version-two batches; user-facing and descriptive documentation records the implemented subset and remaining gaps.
