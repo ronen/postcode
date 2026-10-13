@@ -7,20 +7,23 @@ import type { TestContext } from 'node:test';
 import { evaluateModules } from '../src/lib/evaluation.js';
 import { identityReference, methods, recordId } from '../src/lib/identity.js';
 import { resolveModuleProjection } from '../src/lib/module-content.js';
-import { arrangeModuleView, createView, renderUnicode } from '../src/lib/presentation.js';
-import { inspect, modules } from '../src/lib/projections.js';
+import { arrangeModuleView, createView, renderUnicode, renderView } from '../src/lib/presentation.js';
+import { inspect, modules } from './projection-helpers.js';
 import { moduleStandardExpansions } from '../src/lib/records.js';
-import type { EvaluationRecord } from '../src/lib/records.js';
+import type { EvaluationRecord, RecordId, SessionId } from '../src/lib/records.js';
 import { sourceDisclosure } from '../src/lib/source-disclosure.js';
 import { artifactClassification, artifactClassificationComplete, resolveOrganizationProjection } from '../src/lib/organization/content.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
 import { arrangeOrganizationView, createOrganizationView, renderOrganizationView } from '../src/lib/organization/presentation.js';
-import { inspectOrganization, organization } from '../src/lib/organization/projections.js';
+import { inspectOrganization, organization } from './projection-helpers.js';
 import { resolveDependencyProjection } from '../src/lib/dependencies/content.js';
 import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
 import { evaluateDependencyOrganization } from '../src/lib/dependencies/organization.js';
 import { arrangeDependencyView, createDependencyView, renderDependencyView } from '../src/lib/dependencies/presentation.js';
-import { dependencyChildren, dependencyStructure } from '../src/lib/dependencies/projections.js';
+import { dependencyChildren, dependencyParents, dependencyStructure } from './projection-helpers.js';
+import { compatiblePresentation, presentations, validatePresentationContent } from '../src/lib/presentation-contracts.js';
+import { captureRequest, lenses } from '../src/lib/requests.js';
+import type { LensDefinition } from '../src/lib/requests.js';
 import { temporaryDirectory } from './cli-helpers.js';
 import { discover } from './helpers.js';
 
@@ -40,6 +43,126 @@ function frozen(value: unknown, seen = new Set<object>()): void {
   for (const item of Object.values(value)) frozen(item, seen);
 }
 
+/** Controlled compatible producer: own question/answer identity, unchanged qualified support.
+ * This tests the content/Presentation seam, not registration of a production constructor. */
+function compatibleAnswer<T extends { readonly id: RecordId; readonly session: SessionId; readonly lens: string }>(answer: T) {
+  return { ...answer, lens: 'fixture-compatible-question',
+    id: recordId(answer.session, 'fixture-answer', ['fixture-compatible-question', identityReference(answer.session, answer.id)]) };
+}
+
+test('the shared module Presentation accepts another question with population and selected content', async t => {
+  const root = fixture(t, { 'large.ts': "import 'external';\n" + Array.from({ length: 65 }, (_, index) =>
+    `/** Documented export ${index}. ${'Explanation. '.repeat(80)} */\nexport const item${index} = ${index};`).join('\n'),
+  'node_modules/external/index.d.ts': 'export const opaque: 1;' });
+  const { store, analysis } = await discover(path.join(root, 'tsconfig.json'));
+  const basis = evaluateModules(store, analysis, moduleStandardExpansions);
+  const bindings = store.entityIds(basis.modules, 'module');
+  const definition: LensDefinition = { ...lenses.modules, id: 'fixture-compatible-question', question: 'Fixture qualified module information?',
+    title: 'Fixture information', subjects: ['module'], cardinality: 'collection' };
+  const captured = captureRequest({ lens: definition.id, selector: 'large', presentation: { format: 'json', sourceDetail: true } }, { [definition.id]: definition });
+  assert.equal(captured.normalized.kind, 'lens');
+  assert.ok(compatiblePresentation(presentations.find(item => item.contract === 'modules')!, captured.normalized, definition),
+    'source policy depends on selected subjects, not inspection implementation identity');
+  const population = resolveModuleProjection(store, modules(store, basis));
+  const selection = resolveModuleProjection(store, inspect(store, basis, 'large'));
+  for (const content of [population, selection]) {
+    const compatible = structuredClone({ ...content, projection: compatibleAnswer(content.projection) });
+    validatePresentationContent({ contract: 'modules', value: compatible });
+    for (const format of ['unicode', 'json'] as const) for (const sourceDetail of [false, true]) {
+      const options = { format, sourceDetail };
+      if (sourceDetail && content.projection.subject === 'configured-project') {
+        assert.throws(() => arrangeModuleView(compatible, bindings, options, definition.title), /Source detail requires selected module content/);
+        continue;
+      }
+      const expected = arrangeModuleView(content, bindings, options, content.projection.lens === 'modules' ? 'Modules' : 'Inspect');
+      const actual = arrangeModuleView(compatible, bindings, options, definition.title);
+      assert.equal(actual.projection.lens, definition.id);
+      assert.notEqual(actual.projection.id, expected.projection.id);
+      assert.notEqual(actual.id, expected.id);
+      assert.deepEqual(actual, { ...expected, id: actual.id, title: definition.title, projection: { ...expected.projection, id: actual.projection.id, lens: definition.id } });
+      assert.equal(renderUnicode(actual), renderUnicode(expected).replace(`${expected.title} ·`, `${definition.title} ·`));
+      assert.equal(JSON.parse(renderView({ ...actual, presentation: { ...actual.presentation, format: 'json' } })).title, definition.title);
+      const retitled = arrangeModuleView(compatible, bindings, options, 'Another question label');
+      assert.notEqual(retitled.id, actual.id);
+      assert.deepEqual(retitled, { ...actual, id: retitled.id, title: 'Another question label' });
+      assert.deepEqual(retitled.projection, actual.projection, 'display labels do not change the answer');
+      assert.deepEqual(sourceDisclosure(actual), sourceDisclosure(expected));
+      assert.deepEqual(arrangeModuleView(structuredClone(compatible), bindings, options, definition.title), actual);
+      const large = actual.modules.find(module => module.handle === 'large')!;
+      assert.equal(large.exports.length, content === selection ? 50 : format === 'unicode' ? 3 : 6);
+      assert.equal(large.omittedExports, 65 - large.exports.length);
+      if (content === population && format === 'unicode') assert.ok(actual.display.collapsedModules > 0);
+    }
+  }
+});
+
+test('organization layout and disclosure use supplied subject scope independently of Lens identity', async t => {
+  const root = fixture(t, { 'src/entry.ts': 'export const entry = 1;', 'src/README.md': 'Documentation.' });
+  const { store, analysis } = await discover(path.join(root, 'tsconfig.json'));
+  const basis = evaluateModules(store, analysis, moduleStandardExpansions);
+  const outcome = evaluateOrganization(store, basis);
+  const bindings = { groups: store.entityIds(outcome.groups, 'group'), modules: store.entityIds(basis.modules, 'module'), detail: store.entityIds(basis.modules, 'module') };
+  for (const projection of [organization(store, outcome), organization(store, outcome, 'repository'), inspectOrganization(store, outcome, 'src')]) {
+    const content = resolveOrganizationProjection(store, projection);
+    const compatible = structuredClone({ ...content, projection: compatibleAnswer(projection) });
+    for (const format of ['unicode', 'json'] as const) for (const sourceDetail of [false, true]) {
+      const options = { format, sourceDetail };
+      if (sourceDetail && projection.subject !== 'selected-entities') {
+        assert.throws(() => arrangeOrganizationView(compatible, bindings, options, 'Fixture information'), /Source detail requires selected organization content/);
+        continue;
+      }
+      const expected = arrangeOrganizationView(content, bindings, options, projection.lens === 'organization' ? 'Organization' : 'Inspect');
+      const actual = arrangeOrganizationView(compatible, bindings, options, 'Fixture information');
+      assert.deepEqual(actual, { ...expected, id: actual.id, title: 'Fixture information',
+        projection: { ...expected.projection, id: actual.projection.id, lens: 'fixture-compatible-question' },
+        moduleDetail: expected.moduleDetail ? { ...expected.moduleDetail, id: actual.moduleDetail!.id, title: 'Fixture information' } : null });
+      assert.notEqual(actual.id, expected.id);
+      const retitled = arrangeOrganizationView(compatible, bindings, options, 'Another question label');
+      assert.notEqual(retitled.id, actual.id);
+      assert.deepEqual(retitled, { ...actual, id: retitled.id, title: 'Another question label',
+        moduleDetail: actual.moduleDetail ? { ...actual.moduleDetail, id: retitled.moduleDetail!.id, title: 'Another question label' } : null });
+      assert.deepEqual(retitled.projection, actual.projection, 'display labels do not change the answer');
+      if (actual.moduleDetail) {
+        assert.notEqual(retitled.moduleDetail!.id, actual.moduleDetail.id);
+        assert.deepEqual(retitled.moduleDetail!.projection, actual.moduleDetail.projection);
+      }
+      assert.equal(JSON.parse(renderOrganizationView({ ...actual, presentation: { ...actual.presentation, format: 'json' } })).title, 'Fixture information');
+      assert.equal(renderOrganizationView({ ...actual, presentation: { ...actual.presentation, format: 'unicode' } }),
+        renderOrganizationView({ ...expected, presentation: { ...expected.presentation, format: 'unicode' } }).replaceAll(`${expected.title} ·`, 'Fixture information ·'));
+      assert.deepEqual(arrangeOrganizationView(structuredClone(compatible), bindings, options, 'Fixture information'), actual);
+      assert.deepEqual(sourceDisclosure(actual), sourceDisclosure(expected));
+    }
+  }
+});
+
+test('dependency direction and request coverage remain explicit under another question identity', async () => {
+  const { store, analysis } = await discover(path.resolve('fixtures/dependency-contract/tsconfig.json'));
+  const outcome = evaluateDependencies(store, analysis, moduleStandardExpansions);
+  const projections = [dependencyStructure(store, outcome), dependencyChildren(store, outcome, 'requests'), dependencyParents(store, outcome, 'requests')];
+  const bindings = store.entityIds(projections.flatMap(projection => projection.modules), 'module');
+  assert.deepEqual(projections.map(projection => [projection.subjectRole, projection.coverageScope]),
+    [[null, 'evaluation'], ['parent', 'subject-owners'], ['child', 'unattributable-to-subjects']]);
+  for (const projection of projections) {
+    const content = resolveDependencyProjection(store, projection);
+    const compatible = structuredClone({ ...content, projection: compatibleAnswer(projection) });
+    for (const format of ['unicode', 'json'] as const) for (const sourceDetail of [false, true]) {
+      const options = { format, sourceDetail };
+      const expected = arrangeDependencyView(content, bindings, options);
+      const actual = arrangeDependencyView(compatible, bindings, options);
+      assert.deepEqual(actual, { ...expected, id: actual.id, projection: { ...expected.projection, id: actual.projection.id, lens: 'fixture-compatible-question' } });
+      assert.notEqual(actual.id, expected.id);
+      assert.equal(renderDependencyView({ ...actual, presentation: { ...actual.presentation, format: 'unicode' } }),
+        renderDependencyView({ ...expected, presentation: { ...expected.presentation, format: 'unicode' } }));
+      assert.deepEqual(sourceDisclosure(actual), sourceDisclosure(expected));
+    }
+  }
+  const parent = projections[2]!;
+  assert.throws(() => store.put([{ ...parent, id: recordId(parent.session, 'dependency-projection', 'wrong-direction'), subjectRole: 'parent' }]), /direction or coverage/);
+  const content = resolveDependencyProjection(store, parent);
+  assert.throws(() => validatePresentationContent({ contract: 'dependencies', value: { ...content,
+    projection: { ...content.projection, nonEdgeRequests: projections[1]!.nonEdgeRequests } } }), /direction or coverage/);
+});
+
 test('module content retains full documentation and exports independently of display bounds and source disclosure', async t => {
   const prose = 'Long documented explanation. '.repeat(150);
   const root = fixture(t, { 'large.ts': Array.from({ length: 65 }, (_, i) => `/** ${prose}\n * @example private source example\n */\nexport const item${i} = ${i};`).join('\n') });
@@ -54,17 +177,17 @@ test('module content retains full documentation and exports independently of dis
   assert.ok(content.modules[0]!.exports[64]!.claim.evidence.length);
   assert.ok(content.contexts.every(item => item.context.inputs === item.inputs?.id));
   const bindings = store.entityIds(content.discovery.modules, 'module');
-  const expected = createView(store, projection, { format: 'unicode', sourceDetail: true });
+  const expected = createView(store, projection, { format: 'unicode', sourceDetail: true }, 'Inspect');
   // A transferred value cannot contain a store closure; filesystem changes cannot refresh it.
   rmSync(path.join(root, 'large.ts'));
   const detached = structuredClone(content);
-  const unicode = arrangeModuleView(detached, bindings, { format: 'unicode', sourceDetail: true });
+  const unicode = arrangeModuleView(detached, bindings, { format: 'unicode', sourceDetail: true }, 'Inspect');
   assert.deepEqual(unicode, expected);
   assert.equal(unicode.modules[0]!.exports.length, 50);
   assert.equal(unicode.modules[0]!.omittedExports, 15);
   assert.ok(unicode.modules[0]!.exports[0]!.documentation[0]!.omittedTextCharacters > 0);
   assert.ok(!unicode.sourceDetail!.items.some(item => item.subject === content.modules[0]!.exports[64]!.claim.record.id));
-  const ordinary = arrangeModuleView(detached, bindings, { format: 'json', sourceDetail: false });
+  const ordinary = arrangeModuleView(detached, bindings, { format: 'json', sourceDetail: false }, 'Inspect');
   assert.equal(sourceDisclosure(ordinary), null);
   assert.deepEqual(sourceDisclosure(unicode)?.forms, ['locations', 'excerpts']);
   assert.ok(renderUnicode(unicode).includes('large.ts'));
@@ -80,13 +203,10 @@ test('organization artifact qualification uses supplied completeness with some m
   const { store, evaluation } = await discover(path.join(root, 'tsconfig.json'));
   const complete = evaluateOrganization(store, evaluation);
   const completeProjection = inspectOrganization(store, complete, 'src');
-  const completeView = createOrganizationView(store, completeProjection, { format: 'unicode', sourceDetail: false });
+  const completeView = createOrganizationView(store, completeProjection, { format: 'unicode', sourceDetail: false }, 'Inspect');
   assert.match(renderOrganizationView(completeView), /Other artifacts: 1 unanalyzed/);
   assert.match(renderOrganizationView(completeView), /other artifacts remain unanalyzed/);
-  const completeMiss = createOrganizationView(store, inspectOrganization(store, complete, 'missing'), { format: 'unicode', sourceDetail: false });
-  assert.deepEqual(completeMiss.groups, []);
-  assert.match(renderOrganizationView(completeMiss), /other artifacts remain unanalyzed/);
-  assert.doesNotMatch(renderOrganizationView(completeMiss), /classification is incomplete/);
+  assert.throws(() => inspectOrganization(store, complete, 'missing'), /\(missing\)/);
   const partial: EvaluationRecord = { ...evaluation, id: recordId(evaluation.session, 'evaluation', 'partial-population'),
     modules: evaluation.modules.slice(0, 1), execution: 'stopped', materialization: 'partial', reason: 'Synthetic incomplete population.' };
   store.put([partial]);
@@ -113,8 +233,8 @@ test('organization artifact qualification uses supplied completeness with some m
     assert.ok(selected.modules.length > 0);
     const bindings = { groups: store.entityIds(content.evaluation.groups, 'group'), modules: store.entityIds(content.moduleEvaluation.modules, 'module'),
       detail: store.entityIds(content.moduleDetail!.discovery.modules, 'module') };
-    const view = arrangeOrganizationView(structuredClone(content), bindings, { format: 'unicode', sourceDetail: false });
-    assert.deepEqual(view, createOrganizationView(store, projection, { format: 'unicode', sourceDetail: false }));
+    const view = arrangeOrganizationView(structuredClone(content), bindings, { format: 'unicode', sourceDetail: false }, 'Inspect');
+    assert.deepEqual(view, createOrganizationView(store, projection, { format: 'unicode', sourceDetail: false }, 'Inspect'));
     const group = view.groups.find(group => group.selected)!;
     assert.equal(group.artifacts.unanalyzed, outcome === partialPlacement ? 2 : 1);
     assert.equal(group.documentationCount, 1);
@@ -126,15 +246,14 @@ test('organization artifact qualification uses supplied completeness with some m
     assert.match(text, /Repository layout: available/);
     assert.match(text, /Project placement: available/);
     assert.equal('complete' in group.artifacts, false);
-    const json = createOrganizationView(store, projection, { format: 'json', sourceDetail: false });
+    const json = createOrganizationView(store, projection, { format: 'json', sourceDetail: false }, 'Inspect');
     assert.deepEqual(json.groups, view.groups);
     assert.deepEqual(json.evaluations, view.evaluations);
     assert.deepEqual(JSON.parse(renderOrganizationView(json)).groups, view.groups);
-    const tree = createOrganizationView(store, organization(store, outcome, 'repository'), { format: 'unicode', sourceDetail: false });
+    const tree = createOrganizationView(store, organization(store, outcome, 'repository'), { format: 'unicode', sourceDetail: false }, 'Organization');
     assert.match(renderOrganizationView(tree), /\d other captured artifacts \(classification incomplete\)/);
-    const miss = createOrganizationView(store, inspectOrganization(store, outcome, 'missing'), { format: 'unicode', sourceDetail: false });
-    assert.deepEqual(miss.groups, []);
-    assert.match(renderOrganizationView(JSON.parse(JSON.stringify(miss))), /classification is incomplete\./);
+    assert.throws(() => inspectOrganization(store, outcome, 'missing'), /\(lookup-incomplete\)/);
+    assert.match(renderOrganizationView(JSON.parse(JSON.stringify(tree))), /classification is incomplete\./);
     assert.equal(sourceDisclosure(view), null);
     for (const context of content.groups.filter(group => !group.selected)) {
       assert.equal(context.detail, 'not-requested');
@@ -142,7 +261,7 @@ test('organization artifact qualification uses supplied completeness with some m
     }
   }
   assert.equal(partialArtifacts.placement.materialization, 'full');
-  assert.deepEqual(createOrganizationView(store, completeProjection, { format: 'unicode', sourceDetail: false }), completeView);
+  assert.deepEqual(createOrganizationView(store, completeProjection, { format: 'unicode', sourceDetail: false }, 'Inspect'), completeView);
 });
 
 test('dependency content keeps unbounded occurrences, graph and qualified organization support outside CLI slices', async t => {
@@ -160,10 +279,10 @@ test('dependency content keeps unbounded occurrences, graph and qualified organi
   assert.equal(rootGroup.modules.length, 67);
   assert.equal(rootGroup.summary.moduleAssociated, 67);
   const organizationBindings = { groups: store.entityIds(organizationOutcome.groups, 'group'), modules: store.entityIds(basis.modules, 'module'), detail: new Map() };
-  const tree = arrangeOrganizationView(structuredClone(organized), organizationBindings, { format: 'unicode', sourceDetail: false });
+  const tree = arrangeOrganizationView(structuredClone(organized), organizationBindings, { format: 'unicode', sourceDetail: false }, 'Organization');
   assert.equal(tree.display.omittedModulePlacements, 55);
   assert.equal(tree.groups.find(group => group.id === rootGroup.id)!.modules.length, 67);
-  assert.equal(arrangeOrganizationView(structuredClone(organized), organizationBindings, { format: 'json', sourceDetail: false }).display.omittedModulePlacements, 0);
+  assert.equal(arrangeOrganizationView(structuredClone(organized), organizationBindings, { format: 'json', sourceDetail: false }, 'Organization').display.omittedModulePlacements, 0);
   const expansion = evaluateDependencyOrganization(store, evaluation, organizationOutcome);
   const projection = dependencyChildren(store, evaluation, 'requests', false, expansion.id);
   const content = resolveDependencyProjection(store, projection);
@@ -194,20 +313,21 @@ test('dependency content keeps unbounded occurrences, graph and qualified organi
   assert.equal(structure.relationships.length, 1);
 });
 
-test('mechanical identities retain their formula and all use the shared presentation method bump', async () => {
+test('mechanical View identities include resolution context and use the shared presentation method bump', async () => {
   const { store, analysis } = await discover(path.resolve('fixtures/dependency-journey/tsconfig.json'));
   const evaluation = evaluateModules(store, analysis, moduleStandardExpansions);
   const organizationProjection = organization(store, evaluateOrganization(store, evaluation));
   const dependencyProjection = dependencyStructure(store, evaluateDependencies(store, analysis, moduleStandardExpansions));
   const presentation = { format: 'json' as const, sourceDetail: false };
-  const views = [createView(store, modules(store, evaluation), presentation), createOrganizationView(store, organizationProjection, presentation),
+  const views = [createView(store, modules(store, evaluation), presentation, 'Modules'), createOrganizationView(store, organizationProjection, presentation, 'Organization'),
     createDependencyView(store, dependencyProjection, presentation)];
-  assert.equal(methods.presentation, 'postcode/presentation@27');
+  assert.equal(methods.presentation, 'postcode/presentation@33');
   for (const [index, view] of views.entries()) {
     const kind = ['view', 'organization-view', 'dependency-view'][index]!;
-    const key = { projection: identityReference(view.projection.session, view.projection.id), presentation, method: methods.presentation };
+    const key = { projection: identityReference(view.projection.session, view.projection.id), presentation,
+      ...('title' in view ? { title: view.title } : {}), resolution: null, method: methods.presentation };
     assert.equal(view.id, recordId(view.projection.session, kind, key));
-    assert.notEqual(view.id, recordId(view.projection.session, kind, { ...key, method: 'postcode/presentation@26' }));
+    assert.notEqual(view.id, recordId(view.projection.session, kind, { ...key, method: 'postcode/presentation@29' }));
   }
 });
 
@@ -232,7 +352,8 @@ test('unavailable repository content preserves qualification and a self-containe
   const { store, evaluation } = await discover(path.join(root, 'tsconfig.json'));
   const outcome = evaluateOrganization(store, evaluation);
   assert.equal(outcome.availability, 'unavailable');
-  for (const projection of [organization(store, outcome, 'repository'), inspectOrganization(store, outcome, 'missing')]) {
+  assert.throws(() => inspectOrganization(store, outcome, 'missing'), /\(lookup-unavailable\)/);
+  for (const projection of [organization(store, outcome, 'repository'), organization(store, outcome, 'configured-project')]) {
     const content = resolveOrganizationProjection(store, projection);
     frozen(content);
     assert.deepEqual(content.groups, []);
@@ -240,8 +361,8 @@ test('unavailable repository content preserves qualification and a self-containe
     assert.equal(content.evaluation.placement.availability, 'unavailable');
     const bindings = { groups: store.entityIds(content.evaluation.groups, 'group'), modules: store.entityIds(content.moduleEvaluation.modules, 'module'),
       detail: store.entityIds(content.moduleDetail?.discovery.modules ?? [], 'module') };
-    const view = arrangeOrganizationView(structuredClone(content), bindings, { format: 'unicode', sourceDetail: false });
-    assert.deepEqual(view, createOrganizationView(store, projection, { format: 'unicode', sourceDetail: false }));
+    const view = arrangeOrganizationView(structuredClone(content), bindings, { format: 'unicode', sourceDetail: false }, 'Organization');
+    assert.deepEqual(view, createOrganizationView(store, projection, { format: 'unicode', sourceDetail: false }, 'Organization'));
     const rendered = renderOrganizationView(view);
     assert.equal(renderOrganizationView(JSON.parse(JSON.stringify(view))), rendered);
     assert.match(rendered, /Repository layout: unavailable/);

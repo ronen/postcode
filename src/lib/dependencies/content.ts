@@ -4,8 +4,10 @@ import type { QualifiedRecord } from '../projection-content.js';
 import type { Claim, ModuleClaim, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
 import type { DependencyOrganizationClaim, DependencyProjectionRecord, DependencyRelationshipClaim } from './records.js';
 
+export type DependencyAnswer = Omit<DependencyProjectionRecord, 'lens'> & { readonly lens: string };
+
 /** Resolves all selected relationships and their support before display traversal. */
-export function resolveDependencyProjection(store: ProgramRecordStore, projection: DependencyProjectionRecord) {
+export function resolveDependencyProjection(store: ProgramRecordStore, projection: DependencyAnswer) {
   const retained = store.get(projection.id);
   if (retained.kind !== 'dependency-projection') throw new Error('Expected retained dependency-projection');
   projection = retained;

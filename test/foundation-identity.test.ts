@@ -10,11 +10,11 @@ import { identityReference, recordId, methods } from '../src/lib/identity.js';
 import type { RecordId, SessionId } from '../src/lib/records.js';
 import { isCompositionContext, moduleLimitations } from '../src/lib/qualification-policy.js';
 import { createView, renderUnicode } from '../src/lib/presentation.js';
-import { inspect } from '../src/lib/projections.js';
-import { inspectOrganization } from '../src/lib/organization/projections.js';
+import { inspect } from './projection-helpers.js';
+import { inspectOrganization } from './projection-helpers.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
 import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
-import { dependencyChildren, dependencyParents } from '../src/lib/dependencies/projections.js';
+import { dependencyChildren, dependencyParents } from './projection-helpers.js';
 import { discover } from './helpers.js';
 
 const a = 'session:11111111-1111-1111-1111-111111111111' as SessionId;
@@ -38,16 +38,12 @@ test('identity normalizes only explicitly identified local references and retain
   assert.equal(identityReference(a, `${a}-foreign:key` as RecordId), `${a}-foreign:key`);
 });
 
-test('literal selectors containing the producing session cannot collide with the word session', async () => {
-  const { store, evaluation } = (await discover('fixtures/empty/tsconfig.json'));
-  const literal = inspect(store, evaluation, evaluation.session);
-  const word = inspect(store, evaluation, 'session');
-  assert.notEqual(literal.id, word.id);
-  assert.equal(literal.parameters.selector, evaluation.session);
-  assert.equal(word.parameters.selector, 'session');
+test('unresolved literal selectors cannot manufacture retained answers', async () => {
+  const { store, evaluation } = await discover('fixtures/empty/tsconfig.json');
+  for (const literal of [evaluation.session, 'session']) assert.throws(() => inspect(store, evaluation, literal), /\(missing\)/);
 });
 
-test('resolved internal selectors cannot collide with literal normalized spellings in any projection family', async t => {
+test('distinct subjects selected by resolved ID and literal name retain different answers in every mechanical family', async t => {
   const directory = temporaryDirectory(t, 'postcode-selector-collision-');
   execFileSync('git', ['init', '--quiet', directory]);
   const configPath = path.join(directory, 'tsconfig.json');
@@ -71,8 +67,8 @@ test('resolved internal selectors cannot collide with literal normalized spellin
     assert.notEqual(resolved.id, literal.id);
     assert.deepEqual(resolved.modules, [file]);
     assert.deepEqual(literal.modules, [ambient]);
-    assert.equal(resolved.parameters.selector, file);
-    assert.equal(literal.parameters.selector, spelling);
+    assert.deepEqual(resolved.parameters, {});
+    assert.deepEqual(literal.parameters, {});
   }
 });
 
@@ -98,9 +94,9 @@ for (const family of ['module', 'organization-module', 'organization-group', 'de
       assert.equal(precise.selection.matches, 1);
       assert.deepEqual(precise.modules, internal.modules);
       if ('groups' in internal && 'groups' in precise) assert.deepEqual(precise.groups, internal.groups);
-      assert.equal(internal.parameters.selector, selected);
-      assert.equal(precise.parameters.selector, compact);
-      assert.notEqual(internal.id, precise.id);
+      assert.deepEqual(internal.parameters, {});
+      assert.deepEqual(precise.parameters, {});
+      assert.equal(internal.id, precise.id);
       return { internal, precise };
     });
     assert.notEqual(projections[0]!.internal.session, projections[1]!.internal.session);
@@ -116,7 +112,7 @@ test('qualification classification uses only the exact primary producer and pres
   assert.equal(isCompositionContext({ method: `${methods.composition}-unrelated` }), false);
   assert.equal(isCompositionContext({ method: `${methods.composition}0` }), false);
   const { store, evaluation } = (await discover('fixtures/exports/tsconfig.json'));
-  const view = createView(store, inspect(store, evaluation, 'origin'), { format: 'unicode', sourceDetail: false });
+  const view = createView(store, inspect(store, evaluation, 'origin'), { format: 'unicode', sourceDetail: false }, 'Inspect');
   const module = view.modules[0]!;
   const extra = { ...module.qualification, id: recordId(evaluation.session, 'unrelated-context', 1),
     method: `${methods.composition}-unrelated`, scope: module.id, limitations: ['Independent limitation remains visible.'] };

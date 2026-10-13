@@ -4,6 +4,7 @@ import type { InvestigationSelectionProjection } from './investigation/selection
 import type { DependencyRecords, DependencyRelationshipClaim, DependencyOrganizationClaim, DependencyTargetStatus } from './dependencies/records.js';
 import type { OrganizationClaims, OrganizationRecords } from './organization/records.js';
 import type { CapturedContentRecord } from './evidence-access.js';
+import type { ModuleExportsProjection } from './exports/records.js';
 
 /** Logical records; no compiler objects or storage-native identifiers cross this boundary. */
 export type RecordId = string & { readonly recordId: unique symbol };
@@ -195,23 +196,24 @@ export interface ProjectionRecord extends RecordContext {
   readonly kind: 'projection';
   readonly lens: 'modules' | 'inspect';
   readonly subject: 'configured-project' | 'selected-modules';
-  readonly parameters: { readonly selector: string | null; readonly reference: boolean };
+  readonly parameters: Readonly<Record<string, never>>;
   readonly modules: readonly RecordId[];
   readonly claims: readonly RecordId[];
   readonly contexts: readonly RecordId[];
   readonly evaluations: readonly RecordId[];
   readonly expansions: { readonly requested: readonly ModuleExpansion[]; readonly claims: readonly RecordId[] };
   readonly selection: {
+    /** Established subjects absent from the supplied evaluation; no population membership is asserted. */
+    readonly outsidePopulation?: readonly RecordId[];
     readonly matches: number;
     readonly population: number;
     readonly populationEstablished: boolean;
     readonly subset: boolean;
-    readonly referenceStatus: 'current' | 'unknown-reference';
   };
 }
 
 export type ProgramRecord = SessionRecord | AnalysisInputsRecord | ModuleRecord | SymbolRecord | Claim | RecordedAssertion
-  | SourceEvidenceRecord | ClaimContextRecord | EvaluationRecord | ProjectionRecord | OrganizationRecords | DependencyRecords | CapturedContentRecord | Investigram | Correction | InvestigationProvenance | InvestigationEvaluationRecord | InvestigationSelectionProjection;
+  | SourceEvidenceRecord | ClaimContextRecord | EvaluationRecord | ProjectionRecord | ModuleExportsProjection | OrganizationRecords | DependencyRecords | CapturedContentRecord | Investigram | Correction | InvestigationProvenance | InvestigationEvaluationRecord | InvestigationSelectionProjection;
 
 /** Only the domain operations currently used by discovery and lenses. */
 export interface ProgramRecordStore {
@@ -221,4 +223,5 @@ export interface ProgramRecordStore {
   evaluations(session: SessionId): readonly EvaluationRecord[];
   investigations(session: SessionId): readonly InvestigationEvaluationRecord[];
   entityIds(ids: readonly RecordId[], kind: 'module' | 'group' | 'investigram'): ReadonlyMap<RecordId, string>;
+  boundEntity(session: SessionId, reference: string): RecordId | undefined;
 }

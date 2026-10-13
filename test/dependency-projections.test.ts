@@ -7,7 +7,7 @@ import { test } from 'node:test';
 import { normalizeSession } from './helpers.js';
 import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
 import { evaluateDependencyOrganization } from '../src/lib/dependencies/organization.js';
-import { dependencyChildren, dependencyParents, dependencyStructure } from '../src/lib/dependencies/projections.js';
+import { dependencyChildren, dependencyParents, dependencyStructure } from './projection-helpers.js';
 import type { DependencyOrganizationClaim } from '../src/lib/dependencies/records.js';
 import { recordId } from '../src/lib/identity.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
@@ -86,8 +86,8 @@ test('focused lenses retain only direct edges, nonedges stay with their owner an
     assert.equal(external.relationships.length, 0);
     assert.equal(dependencyParents(store, evaluation, module('t')).relationships.length, 1);
     const compact = store.entityIds(basis.modules, 'module').get(module('a'))!;
-    assert.equal(dependencyChildren(store, evaluation, compact).selection.referenceStatus, 'current');
-    assert.equal(dependencyChildren(store, evaluation, 'module-00000000', true).subjects.length, 0);
+    assert.throws(() => dependencyChildren(store, evaluation, compact), /\(missing\)/);
+    assert.throws(() => dependencyChildren(store, evaluation, 'module-00000000', true), /\(unknown-reference\)/);
     assert.deepEqual(dependencyChildren(store, evaluation, compact, true).subjects, [module('a')]);
     const partial = { ...evaluation, id: recordId(evaluation.session, 'partial', 1), execution: 'stopped' as const, materialization: 'partial' as const };
     store.put([partial]);
@@ -282,5 +282,20 @@ test('store rejects invalid component indices and missing organization occurrenc
     const claim = claims[0]!;
     assert.throws(() => store.put([{ ...claim, id: recordId(evaluation.session, 'invalid-expansion', 1),
       information: { ...claim.information, occurrences: [] } }]), /every supporting occurrence/);
+  });
+});
+
+test('dependency subject lookup never constructs an unused module inspection Projection', async t => {
+  await fixture({ 'a.ts': "import './b'; export {};", 'b.ts': 'export {};' }, async root => {
+    const { store, evaluation, basis, module } = await analyze(root);
+    const retained: string[] = [];
+    const put = store.put.bind(store);
+    t.mock.method(store, 'put', (records: readonly import('../src/lib/records.js').ProgramRecord[]) => { retained.push(...records.map(record => record.kind)); put(records); });
+    const byName = dependencyChildren(store, evaluation, 'a');
+    const binding = store.entityIds(basis.modules, 'module').get(module('a'))!;
+    const byReference = dependencyParents(store, evaluation, binding, true);
+    assert.deepEqual(byName.subjects, [module('a')]);
+    assert.deepEqual(byReference.subjects, [module('a')]);
+    assert.deepEqual(retained, ['dependency-projection', 'dependency-projection']);
   });
 });

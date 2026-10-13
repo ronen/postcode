@@ -36,8 +36,16 @@ For an ambiguous one-shot lookup, open a shell and repeat the lookup. Then use
 `children @module-…` and `parents @module-…` follow direct relationships. Plain
 selectors remain exact name/handle lookups. `--` makes the following selector
 literal, including a name beginning `@` or `--`. Unknown references yield an
-explicit zero-match result. Matching spellings in different sessions do not
+explicit resolution report. Matching spellings in different sessions do not
 restore the earlier investigation.
+
+Explicit references also accept raw IDs of retained modules, groups and investigrams
+from the same Session (`@<record-id>` in the shell, or `reference: true` in direct
+calls). Both spellings identify the actual retained subject before Lens applicability
+is checked; an incompatible subject is reported as unsupported. Raw-looking plain
+selectors remain literal name lookups. Raw IDs provide no persistence or cross-Session
+validity. Raw and compact references select the same qualified answer under identical
+effective inputs; request reports preserve the spelling supplied.
 
 Without arguments, the command is `modules` with `./tsconfig.json` and Unicode
 output. `--json` selects the experimental structured presentation. `--source-detail`
@@ -69,7 +77,10 @@ EOF finishes an already accepted command and its observation submission. Project
 when TypeScript supplies them. Observation delivery failure is a visible warning
 and preserves the view.
 
+<a id="product-model-and-current-cli-scope"></a>
 ## Product model and current CLI scope
+
+The [application specification](app-specification.md) describes intended behavior; the [capability reference](capability-reference.md) describes the current toolbox.
 
 A product View may coordinate multiple independently qualified Projections, and a Projection may concern several captured program states. This CLI exposes a limited single-state implementation through its existing commands and family-specific View schemas. It does not accept arbitrary collections of Projections, analyze several revisions together, follow a live branch or working tree, or save a workspace.
 
@@ -139,9 +150,8 @@ and direct documentation-existence associations; placement state incorporates
 module-population completeness. Unrequested detail remains distinct from an empty
 established result. Rendering uses these existing View fields, with no hidden state
 or additive schema field. The closing qualification also uses repository and
-placement completeness when no groups are selected, including a missing selector
-or unavailable layout; an empty selection does not suppress the incompleteness
-notice about that evaluation basis.
+placement completeness when a valid population answer selects no groups, including
+unavailable layout. Missing selectors instead receive a qualified resolution report.
 
 Direct presence does not deny
 descendant membership. `none` means completed placement found no selected-project
@@ -332,16 +342,77 @@ in the PostCode checkout. The label comes from the configured project directory,
 and the six-character key hashes its normalized absolute configuration path.
 Repeated sessions share the grouping; different configurations are disambiguated.
 One UTC submission time supplies both date and time. The project-specific destination
-is disclosed on stderr. Refusals and failures use the same project grouping. Format-version-1 batches carry `session` and `command` (1 for one-shot),
+is disclosed on stderr. Refusals and failures use the same project grouping. Format-version-2 batches carry `session` and `command` (1 for one-shot),
 with independent batch/event UUIDs. They contain request/context, the qualified view and exact output;
 they may contain repository-derived text and explicitly requested source detail.
+The request record carries the actual normalized Lens or report request, including
+subject designation, true Lens parameters, presentation choices and reference lifetime.
+It is independent of the produced View's descriptor. Current public Lenses declare
+no semantic parameters; direct Session calls supplying undeclared parameters return
+an `invalid-parameters` resolution report before Evaluation. Missing required subject
+designations, incompatible project/repository subjects, and selectors for population
+Lenses return `invalid-designation` before Evaluation. Direct name designations for
+`explain`, `decompose`, and `examine` also return `invalid-designation`: investigrams
+require precise references and have no lookup names. Dependency requests normalize
+the CLI spellings `dependencies`, `children`, and `parents` to `dependency-structure`,
+`dependency-children`, and `dependency-parents`; direct callers can use either spelling.
+Usage calls with a selector, subject, reference designation, or nonempty parameters
+return `invalid-report-inputs` and retain those inputs under `suppliedInputs`.
+Unknown Lens names and unrepresentable input return `invalid-request`. Their request
+context is explicitly `kind: rejected`: it preserves safe supplied fields under
+`input`, including the original Lens name, without identifying it as a valid Lens.
+Each problem identifies the affected field and reason; values that cannot be copied
+or represented in JSON are omitted with an explicit representation limit. The raw
+invocation is also omitted from rejected-input command observations to avoid trying
+to serialize it again. Unexpected failures after validation remain internal defects.
+Usage reports and these resolution reports have no program Projection or View and emit no `view-produced`
+event. Their JSON families are `postcode-investigation-usage/1-experimental` and
+`postcode-resolution/1-experimental`. Missing names, unknown precise references,
+ambiguous single-subject requests and known incompatible targets also return resolution
+reports (exit status 3), with no requested-application Projection. Incomplete or
+unavailable lookup populations are distinguished from an established no-match result.
+Text reports describe each supporting population separately, preserving an established
+module no-match even when group lookup is unavailable.
+Reports retain candidates and usable Session references, selection criteria,
+prerequisite outcome summaries and qualification. One-shot references still expire
+at command completion. A known group passed to `children` or `parents` is unsupported;
+its binding remains available for later inspection. Collections such as `inspect foo`
+continue to include all established applicable matches.
+Missing lookups allocate no unrelated references. Ambiguous lookups bind every returned
+candidate, independently of display limits. Genuine prerequisite allocations, existing
+bindings and successful-request allocation schedules are preserved; later unrelated
+references can therefore have different collision lengths after unsuccessful lookup.
+Successful observation batches include a separate `resolution-information` record.
+Known compatible subjects omitted from a supplied evaluation remain identified and
+produce a qualified answer with explicit unavailable detail; that omission never
+establishes subject absence.
+
+Names, handles and explicit references selecting the same subjects share a retained
+answer when the question, parameters and supporting information are otherwise equal.
+The Projection descriptor contains semantic parameters only (currently empty);
+lookup spelling and population qualification are exposed separately under the View's
+`resolution` field. That context can give Views different IDs without changing their
+shared answer. Unicode labels incomplete or unavailable lookup coverage separately
+as `Lookup (modules)` or `Lookup (groups)`; general provider limitations stay in
+JSON resolution context and the answer's own qualification where applicable.
+Repeated compatible interpretations reuse the original work and usage.
+Presentation selection checks the answer's content contract and the supplied format,
+source and paging choices. A missing compatible choice, or an unmet materialization
+precondition without a permitted fallback, returns `presentation-unavailable` with
+the reason, qualifications and any already-retained answer IDs. This does not create
+a View. The current default Presentations accept qualified partial and unavailable
+answers. View JSON records the selected Presentation and its compatibility criteria;
+any declared fallback preserves explicit choices and explains its use in JSON and
+Unicode output. Presentation definitions are fixed for the Session; no new public
+Presentation-selection option is provided. The internal risks and exports extension
+examples add no public commands.
 Expected analysis failures use outcome `failed` and event `command-failed`;
 unexpected defects use outcome `defect` and event `command-defect`. Neither
 invents a view when no output was published.
 Nothing is sent remotely. Files are created with private permissions and ignored
 by Git. A batch becomes accepted when its complete, closed staging file is linked
 to the final name without replacing any existing file. Delivery failure warns
-without changing a successful view/status. A later staging-cleanup failure reports
+without changing a delivered View/report or its command status. A later staging-cleanup failure reports
 that publication succeeded, separately from non-delivery. Unsupported publication
 fails visibly. This does not guarantee persistence after power loss or cleanup
 after a crash. Existing observation files remain in place; the producer does not
@@ -613,7 +684,7 @@ originals with current revision status. Result redisplay selects replacements;
 inspection preserves the original and exposes alternatives and reconsideration causes.
 
 `usage` and `usage --json` expose per-attempt and session reported usage without
-inference, including failed attempts. Summary views also include their attempt and
+inference, including failed attempts. Usage is a subjectless report, with no Lens or Projection descriptor. Summary views also include their attempt and
 session usage. Provider/model/configuration, units and category subset relationships
 remain distinct, including actual returned model and service tier when reported. Synthetic test usage is labeled separately; unknown and anomalous
 calls are not zero and are excluded from trusted totals. Aggregate numeric overflow
@@ -626,7 +697,7 @@ remain explicit. Usage received after a reply while the dialogue remains active
 is still attributed to that call; late reports from a closed dialogue are ignored.
 CLI views and observations use the parent ledger's snapshot at dialogue closure,
 including reports received after the worker finished but before parent closure.
-Subsequent `usage` views use the same accepted reports, without counting duplicates
+Subsequent `usage` reports use the same accepted reports, without counting duplicates
 or incorporating reports that arrived after closure.
 
 Investigation JSON uses `postcode-investigation-view/1-experimental`, containing
@@ -637,7 +708,34 @@ be cited until inspected. One-shot summaries disclose `referenceLifetime: comman
 their references expire when the command ends. Shell references last only for that
 session and cannot restore work in a later invocation. Abnormal final JSON usage is
 reported on stderr using `postcode-investigation-usage/1-experimental` and retained
-in the command observation, without fabricating a successful result view.
+in the command observation, without fabricating a successful result view. This is
+the same usage-report family as explicit `usage` output: `schema`, `session`, and
+`usage` are always present; `context` is present for an explicit usage request and
+absent for the abnormal final-usage supplement on stderr. The enclosing command
+observation identifies the interrupted or failed request.
+
+Command observations also contain a `request-work` record with the initiating request,
+its purpose and inherited investigation guards, qualified prerequisite outcomes,
+actual provider/evaluation reuse, and current consumption of retained information.
+First-generating attribution remains separate from later requests. Evidence-query
+reports distinguish acquired information from information actually delivered to the
+investigator, including response-size omissions and unavailable queries. Forced worker
+termination preserves received facts and labels the report incomplete. These reports
+do not claim fresh inputs, impose a new whole-command allowance, or extend Session
+reference validity. Non-View JSON retains the actual request, resolution reasons,
+candidates and prerequisite qualifications, with a compact `attribution` summary:
+`detail: "summary"`, execution `status`, reporting `completeness`, counts and
+limitations. Detail omission does not make reporting incomplete. Full reports
+(`detail: "full"`) travel with Session results and observations independently of sink
+delivery; each parent description appears once within the report, including earlier
+generating requests. An origin's report-local `parent` reference is 0 for `context`,
+or n for `parents[n - 1]`; caller-supplied correlation IDs need not be unique.
+Expansion groups preserve record identities and origins under
+their shared qualification. Successful View JSON
+remains a View, with the separate execution work report retained in its observation.
+Attempt usage details include their originating parent context.
+Work status describes execution; a later publication check can withhold a completed
+result, so the separate command outcome can still be `invalidated`.
 
 Correction metadata listings are bounded separately from account bodies: at most
 256 displaced accounts, 256 accompanying correction references and 256 revision

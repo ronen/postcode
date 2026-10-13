@@ -1,3 +1,7 @@
+import { validatePresentationContent, presentationChanges } from '../presentation-contracts.js';
+import type { PresentedOptions } from '../presentation-contracts.js';
+import { lookupDescription, lookupQualifications, resolutionContextIdentity } from '../resolution-context.js';
+import type { ResolutionContext } from '../resolution-context.js';
 import { renderAssociatedInvestigations } from '../investigation/associations.js';
 import type { AssociatedInvestigations } from '../investigation/associations.js';
 import { displayWidth, padDisplay } from '../terminal-layout.js';
@@ -6,7 +10,7 @@ import type { CompositionView } from '../composition-view.js';
 import path from 'node:path';
 import { identityReference, methods, recordId } from '../identity.js';
 import { arrangeModuleView, renderUnicode } from '../presentation.js';
-import type { Presentation, QualifiedView } from '../presentation.js';
+import type { QualifiedView } from '../presentation.js';
 import type { ClaimContextRecord, EvaluationState, ModuleClaim, ProgramRecordStore, RecordId } from '../records.js';
 import { moduleStandardExpansions } from '../records.js';
 import type { LayoutEvidence, RepositoryArtifact } from '../repository/evidence.js';
@@ -26,7 +30,7 @@ export const organizationPresentationRequirements = {
 type Qualification = Omit<ClaimContextRecord, 'kind' | 'evidence' | 'inputs'>;
 interface EntityReference { readonly id: RecordId; readonly entityId: string; readonly name: string | null; readonly label: string }
 interface GroupReference extends EntityReference {
-  readonly documented: boolean;
+  readonly documented: boolean | null;
   readonly modulePresence: GroupPropertiesClaim['information']['modulePresence'];
 }
 interface ModuleReference extends EntityReference {
@@ -41,7 +45,7 @@ interface ModuleReference extends EntityReference {
 }
 interface GroupView extends GroupReference {
   readonly selected: boolean;
-  readonly detail: 'materialized' | 'not-requested';
+  readonly detail: 'materialized' | 'not-requested' | 'unavailable';
   readonly qualification: Qualification;
   readonly parents: readonly GroupReference[];
   readonly subgroups: readonly GroupReference[];
@@ -58,8 +62,10 @@ export interface QualifiedOrganizationView {
   readonly investigations?: AssociatedInvestigations;
   readonly schema: 'postcode-organization-view/1-experimental';
   readonly id: RecordId;
-  readonly projection: Pick<OrganizationProjectionRecord, 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
-  readonly presentation: Presentation & { readonly expansions: readonly string[] };
+  readonly resolution?: ResolutionContext;
+  readonly title: string;
+  readonly projection: Pick<OrganizationProjectionContent['projection'], 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
+  readonly presentation: PresentedOptions & { readonly expansions: readonly string[] };
   readonly evaluations: {
     readonly repository: Omit<EvaluationState, 'cost'> & { readonly id: RecordId; readonly cost: OrganizationEvaluationRecord['cost'] };
     readonly placement: EvaluationState;
@@ -94,28 +100,37 @@ export interface QualifiedOrganizationView {
 }
 
 /** Coordinate population bindings before arranging the resolved selection. */
-export function createOrganizationView(store: ProgramRecordStore, projection: OrganizationProjectionRecord,
-  presentation: Presentation): QualifiedOrganizationView {
-  const content = resolveOrganizationProjection(store, projection);
-  const groups = store.entityIds(content.evaluation.groups, 'group');
+export function createOrganizationView(store: ProgramRecordStore, projection: OrganizationProjectionContent['projection'],
+  presentation: PresentedOptions, title: string, resolution?: ResolutionContext, content = resolveOrganizationProjection(store, projection)): QualifiedOrganizationView {
+  const population = store.entityIds(content.evaluation.groups, 'group');
+  const groups = new Map([...population, ...store.entityIds(projection.groups, 'group')]);
   const modules = store.entityIds(content.moduleEvaluation.modules, 'module');
-  const detail = content.moduleDetail ? store.entityIds(content.moduleDetail.discovery.modules, 'module') : new Map<RecordId, string>();
-  return arrangeOrganizationView(content, { groups, modules, detail }, presentation);
+  const detail = content.moduleDetail ? new Map([...store.entityIds(content.moduleDetail.discovery.modules, 'module'), ...store.entityIds(content.moduleDetail.projection.modules, 'module')]) : new Map<RecordId, string>();
+  return arrangeOrganizationView(content, { groups, modules, detail }, presentation, title, resolution);
+}
+
+/** The family Presentation chooses layout and bounds from the supplied subject scope. */
+function organizationDisplayPolicy(subject: OrganizationProjectionRecord['subject'], presentation: PresentedOptions) {
+  return { layout: subject === 'selected-entities' ? 'cards' : 'tree', source: subject === 'selected-entities',
+    groups: presentation.format === 'unicode' ? 150 : Infinity,
+    depth: presentation.format === 'unicode' ? 6 : Infinity, modules: presentation.format === 'unicode' ? 12 : Infinity };
 }
 
 export function arrangeOrganizationView(content: OrganizationProjectionContent,
   bindings: { readonly groups: ReadonlyMap<RecordId, string>; readonly modules: ReadonlyMap<RecordId, string>; readonly detail: ReadonlyMap<RecordId, string> },
-  presentation: Presentation): QualifiedOrganizationView {
+  presentation: PresentedOptions, title: string, resolution?: ResolutionContext): QualifiedOrganizationView {
+  validatePresentationContent({ contract: 'organization', value: content });
   const { projection, evaluation: outcome, repository: captured } = content;
-  if (presentation.sourceDetail && projection.lens !== 'inspect') throw new Error('Source detail requires inspection');
+  const policy = organizationDisplayPolicy(projection.subject, presentation);
+  if (presentation.sourceDetail && !policy.source) throw new Error('Source detail requires selected organization content');
   const evidence = captured.capture.status === 'available' ? captured.capture.evidence : null;
   const layout = captured.layout;
   const groupContent = new Map(content.groups.map(item => [item.id, item]));
   const group = (id: RecordId): GroupReference => {
     const { claim, properties } = content.referenceGroups[id]!;
     return { id, entityId: bindings.groups.get(id)!, name: claim.record.information.name,
-      label: claim.record.information.name ?? '[repository root]', documented: properties.record.information.documented,
-      modulePresence: properties.record.information.modulePresence };
+      label: claim.record.information.name ?? '[repository root]', documented: properties?.record.information.documented ?? null,
+      modulePresence: properties?.record.information.modulePresence ?? null };
   };
   const module = (item: OrganizationProjectionContent['modules'][number]): ModuleReference => {
     const claim = item.claim.record;
@@ -141,9 +156,9 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
   const byId = new Map(groups.map(group => [group.id, group]));
   const roots = groups.filter(group => group.selected && !group.parents.some(parent => selected.has(parent.id)));
   const pending = roots.map(group => ({ id: group.id, depth: 0 })).reverse();
-  const maximumGroups = presentation.format === 'unicode' ? 150 : Infinity;
-  const maximumDepth = presentation.format === 'unicode' ? 6 : Infinity;
-  while (pending.length > 0 && projection.lens === 'organization') {
+  const maximumGroups = policy.groups;
+  const maximumDepth = policy.depth;
+  while (pending.length > 0 && policy.layout === 'tree') {
     const next = pending.pop()!;
     const item = byId.get(next.id);
     if (!item || seen.size >= maximumGroups && !seen.has(item.id)) continue;
@@ -154,15 +169,15 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
     if (reference) { repeatedGroupReferences++; continue; }
     seen.add(item.id);
     if (pruned) prunedGroups++;
-    const maximumModules = presentation.format === 'unicode' ? 12 : Infinity;
+    const maximumModules = policy.modules;
     for (const member of item.modules.slice(0, maximumModules)) rows.push({ kind: 'module', id: member.id, depth: next.depth + 1, reference: false, pruned: null });
     omittedModulePlacements += Math.max(0, item.modules.length - maximumModules);
     if (!pruned) for (const child of [...item.subgroups].reverse()) pending.push({ id: child.id, depth: next.depth + 1 });
   }
-  if (projection.lens === 'organization') omittedModulePlacements += groups.filter(group => group.selected && !seen.has(group.id))
+  if (policy.layout === 'tree') omittedModulePlacements += groups.filter(group => group.selected && !seen.has(group.id))
     .reduce((sum, group) => sum + group.modules.length, 0);
   const moduleDetail = content.moduleDetail ? arrangeModuleView(content.moduleDetail, bindings.detail,
-    { format: presentation.format, sourceDetail: presentation.sourceDetail }) : null;
+    { format: presentation.format, sourceDetail: presentation.sourceDetail }, title) : null;
   const { applicability, availability, execution, materialization, reason, cost } = outcome;
   const externalModules = content.externalModules.count;
   const linksByTarget = new Map<string, { link: LayoutEvidence['links'][number]; order: number }[]>();
@@ -177,7 +192,9 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
   });
   return {
     schema: 'postcode-organization-view/1-experimental',
-    id: recordId(projection.session, 'organization-view', { projection: identityReference(projection.session, projection.id), presentation, method: methods.presentation }),
+    id: recordId(projection.session, 'organization-view', { projection: identityReference(projection.session, projection.id), presentation, title, resolution: resolutionContextIdentity(projection.session, resolution), method: methods.presentation }),
+    title,
+    ...(resolution ? { resolution } : {}),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,
       parameters: projection.parameters, selection: projection.selection },
     presentation: { ...presentation, expansions: [...projection.expansions.requested, ...new Set(content.moduleEvaluations.flatMap(outcome => outcome.requirement !== 'modules' ? [outcome.requirement] : []))] },
@@ -187,7 +204,7 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
     placementExceptions: content.modules.filter(item => item.placement.record.information.outcome !== 'established' && !item.placement.record.information.reasons.includes('external-module')).map(module),
     moduleDetail,
     display: { rows, selectedGroups: projection.groups.length,
-      omittedSelectedGroups: projection.lens === 'organization' ? projection.groups.filter(id => !seen.has(id)).length : 0,
+      omittedSelectedGroups: policy.layout === 'tree' ? projection.groups.filter(id => !seen.has(id)).length : 0,
       repeatedGroupReferences, prunedGroups, omittedModulePlacements, externalModules },
     ...(presentation.sourceDetail ? { sourceDetail: {
       level: moduleDetail?.modules.length ? 'organization-and-module-source' as const : 'organization-paths' as const,
@@ -195,9 +212,10 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
       repositoryRoot: evidence?.root ?? null,
       groups: groups.filter(group => group.selected).map(group => {
         const region = content.referenceGroups[group.id]!.claim.evidence.find(record => record.kind === 'repository-region');
-        if (region?.kind !== 'repository-region' || !evidence) throw new Error('Expected group region');
+        const root = content.referenceGroups[group.id]!.sourceRoot;
+        if (region?.kind !== 'repository-region' || !root) throw new Error('Expected group region');
         const artifacts = groupContent.get(group.id)!.artifacts.map(item => item.artifact.artifact);
-        return { id: group.id, path: path.resolve(evidence.root, region.path), artifacts,
+        return { id: group.id, path: path.resolve(root, region.path), artifacts,
           links: [...new Set([...(linksByTarget.get(region.path) ?? []), ...artifacts.flatMap(artifact => {
             const link = linksByArtifact.get(artifact.path); return link ? [link] : [];
           })])].sort((a, b) => a.order - b.order).map(item => item.link) };
@@ -213,11 +231,13 @@ const label = (entity: EntityReference) => `${inlineText(entity.label)}  ${entit
 
 export function renderOrganizationView(view: QualifiedOrganizationView): string {
   if (view.presentation.format === 'json') return `${JSON.stringify(view, null, 2)}\n`;
-  const inspection = view.projection.lens === 'inspect';
-  const lines = [inspection ? 'Inspect · groups and modules' : `Organization · ${view.projection.subject === 'repository' ? 'repository' : 'configured project'}`,
+  const inspection = organizationDisplayPolicy(view.projection.subject, view.presentation).layout === 'cards';
+  const lines = [`${inlineText(view.title)} · ${inspection ? 'groups and modules' : view.projection.subject === 'repository' ? 'repository' : 'configured project'}`,
     `Session ${view.projection.session.replace(/^session:/, '')}`,
-    inspection ? `${view.projection.selection.matches} exact matches for ${view.projection.parameters.reference ? '@' : ''}${inlineText(view.projection.parameters.selector ?? '')}${view.projection.parameters.reference ? ` · ${view.projection.selection.referenceStatus}` : ''}`
+    inspection ? `${view.projection.selection.matches} ${lookupDescription(view.resolution, view.projection.selection.matches) ?? 'selected subjects'}`
       : `${view.display.selectedGroups} selected groups · ${view.repository.groups} repository groups`];
+  lines.push(...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
+  if (view.projection.selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; their detail is unavailable in this answer.');
   if (!view.projection.selection.populationEstablished) lines.push('Selection population is not fully established.');
   for (const [name, state] of Object.entries(view.evaluations)) {
     lines.push(`${name === 'repository' ? 'Repository layout' : 'Project placement'}: ${state.availability}, ${state.execution}, materialization ${state.materialization}${state.reason ? ` · ${inlineText(state.reason)}` : ''}`);
@@ -229,6 +249,10 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
     lines.push('', 'Groups');
     if (!view.groups.some(group => group.selected)) lines.push('  No exact group match.');
     for (const group of view.groups.filter(group => group.selected)) {
+      if (group.detail === 'unavailable') {
+        lines.push('', `◆ ${label(group)}`, '  Detail is unavailable for this identified group in the supplied evaluation.');
+        continue;
+      }
       lines.push('', `◆ ${label(group)}`, `  ${annotation(group)}`,
         `  Direct documentation: ${group.documentationCount} artifact${group.documentationCount === 1 ? '' : 's'}`);
       for (const [heading, items] of [['Parents', group.parents], ['Subgroups', group.subgroups]] as const) {

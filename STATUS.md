@@ -1,9 +1,11 @@
 # Project Status
 
-Last reviewed: 2026-10-02
+Last reviewed: 2026-10-13
 
 PostCode is currently available as a development CLI for investigating one
 configured TypeScript project.
+
+This page summarizes current capabilities and significant limits. The [capability reference](docs/capability-reference.md) describes individual supported actions; the [CLI reference](docs/cli-reference.md) supplies syntax and detailed behavior.
 
 ## Implemented capabilities
 
@@ -24,8 +26,11 @@ configured TypeScript project.
   displayed information. Terminal wrapping preserves combining characters and emoji,
   measures display width, and visibly escapes control characters.
 - **[Local observation recording](README.md#observability).**
-  Commands record requests, outcomes and presented views, grouped by project and
-  UTC date. Only complete batches become visible under final filenames; delivery
+  Commands record their actual requested question, designation, outcomes and presented
+  views, grouped by project and UTC date. Request-scoped work reports distinguish
+  prerequisite analysis, reuse and evidence delivery, preserving received facts on interruption.
+  Non-View JSON summarizes work detail; Session results and observations retain full reports.
+  Usage is reported without a program View. Only complete batches become visible under final filenames; delivery
   and later cleanup warnings remain distinct.
 
 - **[Interpretation integration](docs/cli-reference.md#progressive-investigation-and-usage).**
@@ -39,6 +44,17 @@ configured TypeScript project.
   macOS Keychain credentials. Billing routes are selected explicitly.
 
 ## Current limits
+
+- **[Request-model integration](docs/plans/lens-request-model.md):** normalized request
+  reporting, non-View usage and qualified subject resolution are implemented at the
+  request boundary. Unsuccessful lookups return reports with candidates and limits.
+  Equivalent names and references share retained answers while preserving lookup
+  context in displayed results. Bounded prerequisite/evidence attribution and
+  Presentation compatibility are implemented. Unsupported display choices return
+  qualified reports; existing displays retain partial and unavailable answers.
+  Fixed catalogs support the internal interpretation and mechanical extension
+  examples; public commands remain the supported toolbox. There is no dynamic
+  installation, general planner or public Presentation-registration interface.
 
 - **Hosted interpretation:** [formative assessments](records/validation/module-investigation/pass-01/report.md)
   show useful source-qualified summaries alongside omitted qualifications. A

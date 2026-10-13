@@ -1,6 +1,6 @@
 # Core Concepts
 
-This document states PostCode's governing cross-cutting architectural terminology and the relationships necessary to define it. It says what the terms mean now; accepted [decision records](decisions/) preserve why the concepts were adopted or changed. It conforms to the adopted [product design](../foundation/product-design.md), which governs product direction rather than implementation architecture. Binding cross-cutting rules that implementations must follow are stated separately in [architectural constraints](architectural-constraints.md).
+This document states PostCode's governing cross-cutting architectural terminology and the relationships necessary to define it. It says what the terms mean now; accepted [decision records](decisions/) preserve why the concepts were adopted or changed. It conforms to the adopted [product design](../foundation/product-design.md), which establishes research concepts and commitments. The [application specification](app-specification.md) governs intended behavior and high-level application design. Binding cross-cutting rules that implementations must follow are stated separately in [architectural constraints](architectural-constraints.md).
 
 This document is not an exhaustive ontology or an inventory of implementation types. It defines only concepts and distinctions that need to remain stable across plans and slices. Definitions do not prescribe classes, interfaces, schemas, storage, module boundaries, or language-specific representations. Examples illustrate meanings, not a list of implemented capabilities.
 
@@ -94,11 +94,24 @@ A **captured program state** is the program information captured from a designat
 
 A **Projection request** designates program inputs and applicable bindings, a subject, a Lens and Lens parameter values. Execution resolves the inputs to captured states; the resulting [Projection](#projection) identifies the basis actually used. Repeating the request is distinct from presenting an exact retained Projection. These distinctions prescribe neither a storage schema nor a planner. A Session supplies analysis and reference context, not a following or pinned input binding.
 
+### Request resolution
+
+*[decision: [Lens application and request outcomes](decisions/lens-application-and-request-outcomes.md#coordinate-qualified-subject-resolution-outside-lens-implementations)]*
+
+**Subject designation** is how a request identifies its subject, such as a literal name, precise Session reference, configured project or repository. It is distinct from the resolved subject and from Lens parameters. Request coordination uses qualified population information and Lens applicability/cardinality to resolve a valid application; it obtains missing program information through Evaluation and core construction.
+
+A settled plan identifies resolved subjects, Lens and normalized parameters, applicable input context, and information/Presentation requirements and choices. Settlement does not guarantee Evaluation success or complete materialization. Planning has an outcome even when no valid application can be settled. An unsettled planning outcome is delivered as a **resolution result** containing the request, candidates, reasons, consequential choices, qualifications and prerequisite attribution. This returned information can be retained by an interface without a Session-addressable planning object or observation storage. It does not become a Projection merely because it describes why an application cannot proceed. Existing qualified prerequisite results and valid-but-failed/unavailable answer selections retain their own semantics and lifetimes. [[Resolution-result lifetime](decisions/lens-application-and-request-outcomes.md#return-unsettled-applications-as-resolution-results)]
+
+These definitions do not prescribe materialized planning stages, a general planner or a universal output schema. Reference validity remains governed by the Session lifecycle; keeping returned information does not extend it.
+
+<a id="evaluation"></a>
 ### Evaluation
 
 *[decision: [Initial core concepts](decisions/initial-core-concepts-decisions.md#distinguish-claim-content-evidence-qualification-and-evaluation)]*
 
-**Evaluation** is PostCode's attempt to materialize requested information through applicable analyses. The information requirements arise from lenses and any standard expansions requested by presentations. Execution constraints describe the conditions under which the attempt is made, rather than the question the lens asks.
+**Evaluation** is PostCode's attempt to materialize requested information through applicable analyses. Information requirements include those arising from lenses and any standard expansions requested by presentations. Execution constraints describe the conditions under which the attempt is made, rather than the question the lens asks.
+
+Requirements can also arise from system-initiated investigation serving an explicit parent request or authorized autonomous work. [[Investigation initiation](decisions/application-specification-boundaries.md#attribute-system-initiated-investigation-and-constrain-autonomous-work)]
 
 Applicable analyses include interpretation, which produces investigrams and their supporting context. [[Interpretation and evaluation](decisions/investigator-execution-and-evidence-access.md#integrate-interpretation-with-evaluation-and-qualified-evidence-access)]
 
@@ -106,12 +119,22 @@ An **evaluation outcome** describes what occurred in that attempt: applicability
 
 An outcome can exist without a produced claim or entity, and an incomplete attempt can have usable qualified results. An established empty result is therefore different from the absence of a result. Evaluation outcome and Claim context describe different things even when an outcome helps explain a projection's coverage or limitations.
 
+<a id="investigation-initiation"></a>
+### Investigation initiation
+
+*[decision: [Application specification boundaries](decisions/application-specification-boundaries.md#attribute-system-initiated-investigation-and-constrain-autonomous-work)]*
+
+**System-initiated investigation** is additional investigation PostCode initiates without a separate human or external-agent request for that work. It can be **request-scoped**, serving an explicit parent request, or **autonomous**, with no parent request. The initiating actor is distinct from the actor authorizing the parent. Selecting unspecified elements to answer an expressed information need is request interpretation; the selected answer remains explicitly requested work. Obtaining additional qualified information needed to resolve the request can be system-initiated investigation.
+
+Request-scoped work serves its parent; work outside that purpose or continuing after the parent’s satisfaction or cancellation is autonomous. Resource governance and attribution obligations are in the [architectural constraints](architectural-constraints.md#investigation-initiation-and-request-attribution). These meanings do not prescribe a scheduler or separate visible View.
+
 ### Investigator
 
 *[decision: [Investigator execution and evidence access](decisions/investigator-execution-and-evidence-access.md#integrate-interpretation-with-evaluation-and-qualified-evidence-access)]*
 
 An **Investigator** is an AI agent that investigates a subject through a dialogue with PostCode, using supplied context and requesting additional evidence as needed, and submits an interpretation for validation.
 
+<a id="session"></a>
 ### Session
 
 *[decision: [Transient analysis sessions](decisions/transient-analysis-sessions.md#session-as-the-analysis-and-reference-context)]*
@@ -126,6 +149,8 @@ The initial session opens one configured project and assumes its relevant inputs
 
 A transient session ends with its process. References have meaning within the active session. Observations carry a session identifier to correlate commands within the session; this identifier does not establish the evidential basis or consistency of program claims. Persistence and any future validity policy for reopening a session are separate decisions.
 
+Immutability is a property of retained information, distinct from retention duration, disposal, persistence, and availability after restart. It does not imply immutability of focus, layout, or derived current status. See the [retained-information constraints](architectural-constraints.md#session-references-and-retained-information) for the obligations. [[Immutability and retention](decisions/application-specification-boundaries.md#distinguish-immutable-information-from-retention-policy)]
+
 ## Investigation and representation
 
 ### Lens
@@ -135,6 +160,8 @@ A transient session ends with its process. References have meaning within the ac
 A **Lens** describes the aspect of a subject being investigated: the question being asked. Lens parameters refine the information requested, such as direct versus transitive callers. A Lens may use multiple analyses, evidence sources, reusable operation outcomes or qualified Projections to produce its answer. Its method preserves the provenance, qualifications and limitations of those contributions. “Composite Lens” is descriptive language for a method, not a separate architectural category or a requirement to use other Lenses for every analysis contribution.
 
 A Lens is distinct from the operations supplying its information and from the Presentation coordinating its result with other results. Combining several Projections in a View need not produce another Lens answer. A summary Lens produces a qualified account; a summary View may instead coordinate separately qualified answers. [[Summary Views and navigation](decisions/coordinated-views-and-qualified-results.md#allow-summary-views-independently-of-summary-lenses)]
+
+A Lens definition makes its question, applicability/cardinality, parameter meaning, requirements and prospective result contract explicit. The question is a conceptual information need rather than necessarily a user-supplied prose question. Subject-specific implementations can realize one Lens through different work and result contracts. The selected implementation remains attributable through its versioned method and provenance, separately from the Lens identity. Shared authoring declarations may define a Lens and its default operation conveniently; requirements and reusable operation identity remain distinct. [[Explicit Lens meaning](decisions/lens-application-and-request-outcomes.md#represent-lens-meaning-independently-of-lookup-and-implementation)]
 
 ### Projection
 
@@ -147,6 +174,8 @@ A Projection is a program-domain object, addressable within its Session, identif
 A produced Projection retains the information selected for that result. Later accumulation or input changes do not mutate its captured basis, selected content or qualification. For revision-oriented inputs, a following binding resolves a changing input again on subsequent requests; a pinned binding continues to use the same captured program state. A result from newly captured input identifies that new basis without changing earlier results. Pinning the input does not mean redisplaying an exact retained Projection. Reusing or rendering a retained Projection need not establish a different answer. For mechanical analyses, equivalent inputs, methods, requirements and completed evaluation preserve deterministic semantic content. Later evaluation may add information missing from incomplete work without changing the earlier Projection or outcome. Presentation choices describe how supplied information is shown and do not redefine the Lens question. [[Immutable information](decisions/transient-analysis-sessions.md#immutable-information-within-an-accumulating-session)] [[Bindings and refresh](decisions/coordinated-views-and-qualified-results.md#preserve-immutable-results-under-bindings-and-refresh)]
 
 A fresh request for investigation results can select retained investigrams and explicit replacements into a new Projection while preserving earlier Projections. The retained interpretations and correction/association selections supporting an answer are distinct from its captured program-state basis: either can affect the answer, but interpretation history is not thereby a captured program state and does not acquire following or pinned policies. Presenting an exact retained Projection preserves both its basis and its selected answer. [[Retained interpretation selection](decisions/investigrams-and-progressive-investigation.md#associate-investigrams-with-subjects-and-select-retained-results)] [[Presentation continuity](decisions/coordinated-views-and-qualified-results.md#preserve-the-selected-answer-during-presentation-changes)]
+
+Otherwise identical qualified answers have repeatable logical identity within the supported Session, independently of subject designation or lookup route. Equality uses the decision’s [canonical effective-input set](decisions/lens-application-and-request-outcomes.md#give-equivalent-qualified-answers-repeatable-identity), including Session context, method version and meaningful subject order/roles. Invocation-specific resolution information has a separate owner; answer-relevant qualification remains in the Projection. This preserves full immutable payload consistency without requiring physical memoization or cross-session identity. [[Qualified answer identity](decisions/lens-application-and-request-outcomes.md#give-equivalent-qualified-answers-repeatable-identity)]
 
 ### Investigram
 
@@ -162,6 +191,7 @@ An investigram may carry accompanying corrections identifying earlier targets, r
 
 An investigram's citation index records prior investigrams supplied to the investigator during its generating evaluation, without asserting reliance or endorsement. "Needs reconsideration" is a session-derived property indicating corrected context reached through those citations; the investigram and its index remain immutable. [[Citation exposure and reconsideration](decisions/investigrams-and-progressive-investigation.md#record-citation-exposure-and-derive-reconsideration-status)]
 
+<a id="presentation-and-view"></a>
 ### Presentation and View
 
 *[decision: [Coordinate Views while preserving qualified results](decisions/coordinated-views-and-qualified-results.md#generalize-lens-results-and-view-composition)]*
@@ -177,6 +207,24 @@ Adding or removing an underlying Projection changes View composition, rather tha
 Presentation-only actions, including paging and reformatting, preserve the selected answer and its qualifications. If an interaction instead refreshes the answer, its refresh behavior must be apparent and consequential changes in the answer, selection or qualifications disclosed. Disclosed reselection is distinct from the continuity of presenting the exact retained result with different presentation inputs. This does not require a warning for every identifier change or a comparison notice for every independently requested fresh investigation. [[Presentation continuity](decisions/coordinated-views-and-qualified-results.md#preserve-the-selected-answer-during-presentation-changes)]
 
 When the human has not expressed a more specific information need, PostCode may suggest a summary View as an initial View. Summary can also support recursive navigation; it is not a required default. A summary View may coordinate existing qualified results, show a synthesized summary Projection, or combine both. It does not require a summary Lens. [[Summary Views and navigation](decisions/coordinated-views-and-qualified-results.md#allow-summary-views-independently-of-summary-lenses)]
+
+Result/Presentation compatibility is an explicit contract between the qualified content a Lens implementation exposes and the inputs, options, preconditions and standard expansions a Presentation supports. Compatibility includes semantic meaning and qualified partial/unavailable cases, not only data shape or Lens identity. Planning uses it before Evaluation and validates the materialized result before arrangement. A missing compatible Presentation or failed materialization-dependent precondition without a permitted fallback returns a resolution result with a presentation-failure reason and references to any retained answers; it does not make the Lens inapplicable. Further required information returns through request coordination. Usage reports and resolution results are not Views merely because they are rendered. [[Compatibility](decisions/lens-application-and-request-outcomes.md#match-qualified-results-to-presentations-explicitly)] [[Reporting](decisions/lens-application-and-request-outcomes.md#report-actual-requests-and-outcomes)]
+
+<a id="investigation-context"></a>
+### Investigation context
+
+*[decision: [Application specification boundaries](decisions/application-specification-boundaries.md#start-with-a-workspace-as-a-collection-and-arrangement-of-views)]*
+
+An **investigation context** comprises the Views accumulated while following subjects, relationships, and questions, together with their captured bases and relevant lineage. It identifies what each View shows and how it relates to the investigation. It can span Workspace arrangements and does not imply a separately stored context object, common captured state, or persistent Session. The [application specification](app-specification.md#workspaces-and-navigation) states the retained-lineage contract.
+
+<a id="workspace"></a>
+### Workspace
+
+*[decision: [Application specification boundaries](decisions/application-specification-boundaries.md#start-with-a-workspace-as-a-collection-and-arrangement-of-views)]*
+
+A **Workspace** is a collection and arrangement of Views. It is a UX organization, distinct from a Session, a program subject, and a single View coordinating several Projections. Views in a Workspace need not share a subject, captured state, or evidence. Placement is distinct from discovery, derivation, and program relationships.
+
+The initial model does not require a permanent root subject, name, formal task, shared-context object, or persistence. Shared Workspace purpose and defaults remain future UX possibilities, distinct from the investigation context already represented by Views, their bases, and lineage. Ordinary interface focus is sufficient for the initial model.
 
 ### Expansion
 

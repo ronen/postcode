@@ -46,7 +46,7 @@ export async function runShell(options: { configPath: string; json: boolean }, e
     }
     environment.stderr(`Local observations: ${inlineText(localSink.destination)} (may contain repository-derived text and explicitly requested source locations).\n`);
     environment.stdout(`Session ${opened.id.slice('session:'.length)}\nInputs are assumed unchanged. Use help for commands; exit or EOF to finish.\n`);
-    const session = { id: opened.id, execute: remote.execute, check: remote.check, usage: remote.usage };
+    const session = { id: opened.id, execute: remote.execute, check: remote.check, usage: remote.usage, work: remote.work };
     const terminalOutput = new Writable({ write(chunk, _encoding, done) { environment.stdout(String(chunk)); done(); } });
     readline = createInterface({ input, output: terminalOutput, terminal: true, prompt: 'postcode> ', historySize: 0 });
     readline.on('SIGINT', interrupt);

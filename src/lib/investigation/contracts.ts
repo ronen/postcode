@@ -1,8 +1,9 @@
+import type { InitiationContext } from '../work-attribution.js';
 import type { RevisionStatus } from './revisions.js';
 import type { EvidenceQuery, EvidenceResponse } from '../evidence-access.js';
 import type { RecordContext, RecordId, SessionId } from '../records.js';
 
-export type InvestigationOperation = 'functionality' | 'clarification' | 'decomposition' | 'examination';
+export type InvestigationOperation = string;
 export interface InvestigationRequest {
   readonly operation: InvestigationOperation;
   readonly subject: RecordId;
@@ -180,6 +181,7 @@ export interface InvestigatorAgent {
   open(): AgentDialogue;
 }
 export interface AttemptReport {
+  readonly parent?: InitiationContext;
   readonly attempt: RecordId;
   readonly session: SessionId;
   readonly request: InvestigationRequest;

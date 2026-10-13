@@ -62,37 +62,42 @@ for (const format of ['unicode', 'json'] as const) test(`source observations fol
   });
   driver.verify(); assert.equal(code, 0, stderr); assert.equal(batches.length, commands.length + 1);
   for (let index = 0; index < commands.length; index++) {
-    const command = commands[index]!, batch = batches[index + 1]!, view = dataOf(batch);
-    const request = batch.records.find(item => item.kind === 'request')!.value as { presentation: { sourceDetail: boolean } };
-    assert.equal(request.presentation.sourceDetail, command.includes('--source-detail'), command);
+    const command = commands[index]!, batch = batches[index + 1]!;
+    const request = batch.records.find(item => item.kind === 'request')!.value as import('../src/lib/request-reporting.js').RequestContext;
+    assert.equal(request.request.presentation.sourceDetail, command.includes('--source-detail'), command);
     const rendered = batch.records.find(item => item.kind === 'rendered-output')!.value as string;
     assert.ok(stdout.includes(rendered));
     const actual = escapes(batch);
-    // Missing organization selection still serializes repositoryRoot in JSON;
-    // Unicode renders no path for it. The event must follow that actual output.
-    const rootOnly = index === 5 || index === 6;
-    const disclosed = index >= 7 && index <= 13 || rootOnly && format === 'json';
+    if (index < 7) {
+      assert.deepEqual(actual, [], command);
+      assert.equal(batch.records.some(item => item.kind === 'qualified-view'), false);
+      assert.equal(batch.events.some(item => item.type === 'view-produced'), false);
+      assert.equal(batch.events.at(-1)!.type, 'command-refused');
+      continue;
+    }
+    const view = dataOf(batch);
+    const disclosed = index >= 7 && index <= 13;
     assert.equal(actual.length, disclosed ? 1 : 0, command);
     if (actual.length) {
       assert.ok(actual[0]!.sourceForms!.includes('locations'), command);
-      if (index === 7 || index === 9 || rootOnly) assert.deepEqual(actual[0]!.sourceForms, ['locations'], command);
+      if (index === 7 || index === 9) assert.deepEqual(actual[0]!.sourceForms, ['locations'], command);
       if (index === 8 || index >= 10 && index <= 12) assert.deepEqual(actual[0]!.sourceForms, ['locations', 'excerpts'], command);
-      if (rootOnly || index === 9) assert.equal(actual[0]!.sourceLevel, 'organization-paths');
+      if (index === 9) assert.equal(actual[0]!.sourceLevel, 'organization-paths');
       if (format === 'json') assert.ok(JSON.parse(rendered).sourceDetail);
     }
     if (view.schema === 'postcode-view/1-experimental' && index === 8) {
       const noExcerpts = { ...view, sourceDetail: { ...view.sourceDetail!, items: view.sourceDetail!.items.map(item => ({ ...item,
         evidence: item.evidence.map(evidence => evidence.location.association === 'file' ? evidence : { ...evidence,
           location: { ...evidence.location, excerpt: { ...evidence.location.excerpt, text: '' } } }) })) } };
-      const event = escapes(observationBatch(noExcerpts, renderView(noExcerpts), { configPath: config, repositoryRoot: root, methods: [] }))[0]!;
+      const event = escapes(observationBatch(noExcerpts, renderView(noExcerpts), { configPath: config, repositoryRoot: root, methods: [] }, request))[0]!;
       assert.deepEqual(event.sourceForms, ['locations'], 'empty excerpts do not erase genuine locations or claim text disclosure');
       const hidden = { ...view, modules: [] };
-      assert.equal(escapes(observationBatch(hidden, renderView(hidden), { configPath: config, repositoryRoot: root, methods: [] })).length,
+      assert.equal(escapes(observationBatch(hidden, renderView(hidden), { configPath: config, repositoryRoot: root, methods: [] }, request)).length,
         format === 'json' ? 1 : 0, 'Unicode does not render source items for omitted modules; JSON serializes them');
     }
     if (view.schema === 'postcode-dependency-view/1-experimental' && index === 10) {
       const embedded = { ...view, sourceDetail: { ...view.sourceDetail!, items: [], organizationEvidence: view.sourceDetail!.items.map(item => item.evidence) } };
-      assert.equal(escapes(observationBatch(embedded, renderDependencyView(embedded), { configPath: config, repositoryRoot: root, methods: [] })).length,
+      assert.equal(escapes(observationBatch(embedded, renderDependencyView(embedded), { configPath: config, repositoryRoot: root, methods: [] }, request)).length,
         format === 'json' ? 1 : 0, 'organization-support source records are embedded only by JSON');
     }
     // Exercise present-but-empty containers and metadata-only containers through
@@ -108,7 +113,7 @@ for (const format of ['unicode', 'json'] as const) test(`source observations fol
       case 'postcode-investigation-view/1-experimental':
         empty = { ...view, sourceDetail: { level: 'investigation-support', items: [] } }; render = renderInvestigationView; break;
     }
-    if (view.sourceDetail) assert.deepEqual(escapes(observationBatch(empty, render(empty as never), { configPath: config, repositoryRoot: root, methods: [] })), [], `empty ${view.schema}`);
+    if (view.sourceDetail) assert.deepEqual(escapes(observationBatch(empty, render(empty as never), { configPath: config, repositoryRoot: root, methods: [] }, request)), [], `empty ${view.schema}`);
   }
   assert.equal(agent.inputs.length, 1, 'source observation does not invoke investigation');
 });

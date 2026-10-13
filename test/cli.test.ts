@@ -1,3 +1,4 @@
+import type { ResolutionReport } from '../src/lib/request-reporting.js';
 import { invokeCli, temporaryDirectory } from './cli-helpers.js';
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
@@ -43,6 +44,36 @@ function invoke(args: string[], options: { sink?: ObservationSink; checkout?: st
   return invokeCli(args, options);
 }
 
+test('successful Unicode lookup labels only incomplete coverage while JSON retains all limitations', async t => {
+  const root = temporaryDirectory(t, 'postcode-lookup-context-');
+  const project = path.join(root, 'tsconfig.json');
+  writeFileSync(project, '{"compilerOptions":{"noLib":true,"types":[]},"files":["widget.ts"]}');
+  writeFileSync(path.join(root, 'widget.ts'), 'export const value = 1;');
+  execFileSync('git', ['init', '--quiet', root]);
+  const complete = await invoke(['inspect', 'widget', '--project', project]);
+  assert.equal(complete.exit, 0, complete.stderr + complete.stdout);
+  const view = complete.batches[0]!.records.find(item => item.kind === 'qualified-view')!.value as QualifiedView;
+  assert.ok(view.resolution!.qualifications.length > 0);
+  assert.ok(view.resolution!.populations.every(population => population.availability === 'available' && population.materialization === 'full'));
+  assert.doesNotMatch(complete.stdout, /^Lookup /m);
+  for (const limitation of view.resolution!.qualifications) assert.equal(complete.stdout.split('\n').includes(limitation), false);
+
+  // Exercise the CLI renderer with a supplied partial lookup, independently of answer support.
+  const partial = { ...view, resolution: { ...view.resolution!, populations: view.resolution!.populations.map(population =>
+    population.kind === 'evaluation' ? { ...population, execution: 'stopped' as const, materialization: 'partial' as const,
+      reason: 'Other matches may be unknown.\u001b' } : population) } };
+  const rendered = renderUnicode(partial);
+  assert.deepEqual(rendered.split('\n').filter(line => line.startsWith('Lookup ')),
+    ['Lookup (modules): incomplete · Other matches may be unknown.\\u001b']);
+  assert.deepEqual(JSON.parse(JSON.stringify(partial)).resolution.qualifications, view.resolution!.qualifications);
+
+  rmSync(path.join(root, '.git'), { recursive: true });
+  const unavailable = await invoke(['inspect', 'widget', '--project', project]);
+  assert.equal(unavailable.exit, 0, unavailable.stderr + unavailable.stdout);
+  assert.match(unavailable.stdout, /^Lookup \(groups\): unavailable · /m);
+  assert.doesNotMatch(unavailable.stdout, /^Lookup \(modules\):/m);
+});
+
 function copyTestCheckout(checkout: string) {
   cpSync(new URL('../src', import.meta.url), path.join(checkout, '_build/src'), { recursive: true });
   writeFileSync(path.join(checkout, 'package.json'), '{"type":"module"}');
@@ -83,7 +114,7 @@ test('Unicode and experimental JSON use the same qualified projection and automa
   for (const result of [unicode, json]) {
     assert.equal(result.batches.length, 1);
     const batch = result.batches[0]!;
-    assert.equal(batch.formatVersion, 1);
+    assert.equal(batch.formatVersion, 2);
     assert.equal(batch.records.find(record => record.kind === 'rendered-output')!.value, result.stdout);
     const ids = [batch.id, ...batch.records.map(record => record.id), ...batch.events.map(event => event.id)];
     assert.equal(new Set(ids).size, ids.length);
@@ -110,10 +141,14 @@ test('normal views omit source facets and raw evidence; inspection source escape
   assert.ok(detail.sourceDetail.items.flatMap(claim => claim.evidence).every(evidence => evidence.path.endsWith('/ambient.d.ts')));
   const batch = inspected.batches[0]!;
   assert.deepEqual(batch.events.map(event => event.type), ['view-produced', 'source-escape', 'command-completed']);
-  assert.equal(batch.records.length, 5);
+  assert.deepEqual(batch.records.map(item => item.kind).sort(), [
+    'analysis-context', 'command-outcome', 'qualified-view', 'rendered-output', 'request', 'request-work', 'resolution-information',
+  ]);
+  assert.ok(batch.records.some(item => item.kind === 'resolution-information'));
   assert.equal(batch.events[1]!.sourceLevel, 'declaration-locations-and-excerpts');
   const missing = await invoke(['inspect', 'no match', '--project', config, '--json']);
-  assert.equal((JSON.parse(missing.stdout) as QualifiedView).projection.selection.matches, 0);
+  assert.equal(missing.exit, 3);
+  assert.equal((JSON.parse(missing.stdout) as ResolutionReport).resolution.reason, 'missing');
 });
 
 test('delivery rejection and thrown sink failure visibly report the observation gap while preserving the successful view', async () => {
@@ -425,17 +460,16 @@ test('handles repeat current lookups while IDs do not provide cross-invocation n
     const module = before.modules[0]!;
     assert.equal(module.handle, 'run-cli');
     const unscoped = JSON.parse((await invoke(['inspect', module.handle, '--project', config, '--json'])).stdout) as QualifiedView;
-    assert.equal(unscoped.projection.selection.referenceStatus, 'current');
+    assert.deepEqual(unscoped.resolution?.designation, { kind: 'name', value: module.handle });
     assert.equal(unscoped.projection.selection.matches, 1);
     writeFileSync(entry, 'export function runCli() { return 1; }');
     const after = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
     assert.equal(after.modules[0]!.handle, module.handle);
     assert.notEqual(after.projection.session, before.projection.session);
-    const stale = JSON.parse((await invoke(['inspect', module.entityId, '--project', config, '--json'])).stdout) as QualifiedView;
-    assert.equal(stale.projection.selection.referenceStatus, 'current');
-    assert.equal(stale.projection.selection.matches, 0);
-    const staleId = JSON.parse((await invoke(['inspect', module.id, '--project', config, '--json'])).stdout) as QualifiedView;
-    assert.equal(staleId.projection.selection.matches, 0);
+    const stale = JSON.parse((await invoke(['inspect', module.entityId, '--project', config, '--json'])).stdout) as ResolutionReport;
+    assert.equal(stale.resolution.reason, 'lookup-unavailable');
+    const staleId = JSON.parse((await invoke(['inspect', module.id, '--project', config, '--json'])).stdout) as ResolutionReport;
+    assert.equal(staleId.resolution.reason, 'lookup-unavailable');
     const current = JSON.parse((await invoke(['inspect', module.handle, '--project', config, '--json'])).stdout) as QualifiedView;
     assert.equal(current.projection.selection.matches, 1);
   } finally { rmSync(root, { recursive: true, force: true }); }
@@ -543,7 +577,8 @@ test('one-shot name and handle collisions retain every match and do not accept c
     assert.deepEqual(new Set(lookedUp.modules.map(module => module.handleProvenance)), new Set(['language-name', 'source-basename']));
     for (const module of inventory.modules) {
       const copied = await invoke(['inspect', module.entityId, '--project', config, '--json']);
-      assert.equal(JSON.parse(copied.stdout).projection.selection.matches, 0);
+      assert.equal(copied.exit, 3);
+      assert.equal(JSON.parse(copied.stdout).resolution.reason, 'lookup-unavailable');
     }
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
@@ -567,16 +602,21 @@ test('basename mnemonic evidence stays distinct from names and precise scoped En
       assert.equal(module.name, null);
       assert.equal(module.handleProvenance, 'source-basename');
       assert.match(module.entityId, /^module-[a-f0-9]{8,64}$/);
-      const unscoped = JSON.parse((await invoke(['inspect', module.entityId, '--project', config, '--json'])).stdout) as QualifiedView;
-      assert.equal(unscoped.projection.selection.referenceStatus, 'current');
+      const unscoped = JSON.parse((await invoke(['inspect', module.entityId, '--project', config, '--json'])).stdout) as ResolutionReport;
+      assert.equal(unscoped.resolution.reason, 'lookup-unavailable');
       const selected = JSON.parse((await invoke(['inspect', module.handle, '--project', config, '--json'])).stdout) as QualifiedView;
       assert.deepEqual(normalizeSession(selected.modules.map(item => item.id), selected.projection.session), normalizeSession(matching.map(item => item.id), view.projection.session));
     }
     const multiple = await invoke(['inspect', 'evaluation', '--project', config]);
     assert.ok(multiple.stdout.includes('2 modules selected from 4 · exact matches for evaluation'));
     const zero = await invoke(['inspect', 'absent', '--project', config]);
-    assert.ok(zero.stdout.includes('0 modules selected from 4 · no exact match for absent'));
-    assert.ok(zero.stdout.includes('Module membership established by TypeScript analysis.'));
+    assert.equal(zero.exit, 3);
+    assert.match(zero.stdout, /Subject: absent/);
+    assert.match(zero.stdout, /Reason: lookup-unavailable/);
+    assert.match(zero.stdout, /lookup information.*unavailable/);
+    assert.match(zero.stdout, /Modules: fully established; no match/);
+    assert.match(zero.stdout, /Groups: applicable, unavailable, deferred, none; no match established; not-in-worktree: repository discovery/);
+    assert.match(zero.stdout, /Repository layout is unavailable/);
     assert.equal(zero.stdout.includes('export information is qualified'), false);
     const unicode = (await invoke(['--project', config])).stdout;
     assert.ok(unicode.includes(long));
@@ -681,10 +721,13 @@ test('documentation wraps without changing stored text and source excerpts stay 
 });
 
 test('source hierarchy preserves forwarding, defining syntax and mixed documentation before the closing sections', async () => {
-  const inventory = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+  const listed = await invoke(['--project', config, '--json']);
+  assert.equal(listed.exit, 0, listed.stderr);
+  const inventory = JSON.parse(listed.stdout) as QualifiedView;
   for (const handle of ['origin', 'chain']) {
     const module = inventory.modules.find(item => item.handle === handle)!;
     const result = await invoke(['inspect', module.handle, '--project', config, '--source-detail']);
+    assert.equal(result.exit, 0, result.stderr);
     const text = result.stdout;
     const source = text.slice(text.indexOf('SOURCE DETAIL'), text.indexOf('\nStatus\n'));
     assert.ok(text.indexOf('SOURCE DETAIL') < text.indexOf('\nStatus\n'));
@@ -762,8 +805,8 @@ test('Unicode inline names and paths cannot inject structure while JSON and wrap
       // Exercise module-name and selector interpolation independently of compiler naming rules.
       const labelled = structuredClone(json);
       (labelled.modules[0] as { name: string | null }).name = name;
-      const parameters = labelled.projection.parameters as { selector: string | null };
-      parameters.selector = name;
+      assert.ok(labelled.resolution);
+      (labelled.resolution as { designation: { kind: 'name'; value: string } }).designation = { kind: 'name', value: name };
       assert.equal(renderUnicode(labelled).includes(name), false);
       assert.ok(renderUnicode(labelled).includes(escaped));
       if (module === file) {

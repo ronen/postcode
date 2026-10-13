@@ -1,3 +1,4 @@
+import { requireView } from './request-helpers.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { writeFileSync } from 'node:fs';
@@ -218,8 +219,8 @@ test('SDK service failure after evidence retains usage and acquisition, but a la
   assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
   t.after(() => opened.session.close());
   const command = { lens: 'summarize' as const, selector: 'entry', presentation: { format: 'json' as const, sourceDetail: false } };
-  const first = (await opened.session.execute(command)).view as InvestigationView;
-  const second = (await opened.session.execute(command)).view as InvestigationView;
+  const first = requireView(await opened.session.execute(command)).view as InvestigationView;
+  const second = requireView(await opened.session.execute(command)).view as InvestigationView;
   assert.equal(calls, 4); assert.equal(second.accounts.length, 0); assert.equal(second.result!.reused, false);
   assert.equal(first.usage.missingCalls, 1); assert.equal(second.usage.missingCalls, 2);
   assert.equal(second.usage.totals[0]!.categories.find(c => c.category === 'total')!.value, 300);
@@ -268,7 +269,11 @@ for (const route of ['api-key', 'chatgpt-plan']) for (const format of ['unicode'
   driver.verify(); assert.equal(exit, 0); assert.equal(calls, 2); assert.match(stderr, /sent to OpenAI/);
   assert.match(stdout, /Returns seven/);
   const views = batches.flatMap(batch => batch.records.filter(record => record.kind === 'qualified-view').map(record => record.value as InvestigationView));
-  assert.equal(views.length, 3);
+  assert.equal(views.length, 2);
+  const usage = batches[2]!.records.find(record => record.kind === 'usage-report')!.value as import('../src/lib/request-reporting.js').UsageReport;
+  assert.deepEqual(usage.usage, views[1]!.usage);
+  assert.equal('projection' in usage, false);
+  assert.ok(!batches[2]!.events.some(event => event.type === 'view-produced'));
   for (const view of views) { assert.equal(view.usage.calls, 2); assert.equal(view.usage.totals[0]!.categories.find(c => c.category === 'total')!.value, 300); }
   assert.equal(views[1]!.result!.reused, true);
   assert.equal(captures[0]!.request.model, route === 'api-key' ? 'gpt-6-sol' : 'gpt-5.6-sol');

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { evaluateModules } from '../src/lib/evaluation.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
-import { modules } from '../src/lib/projections.js';
+import { modules } from './projection-helpers.js';
 import type { ClaimContextRecord, ModuleClaim, ProgramRecordStore, RecordId } from '../src/lib/records.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
 

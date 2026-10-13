@@ -17,6 +17,7 @@ const array = (value: unknown): unknown[] => Array.isArray(value) ? value : inva
 
 export interface AcceptanceContext {
   readonly session: SessionId;
+  readonly method?: string;
   readonly attempt: RecordId;
   readonly request: InvestigationRequest;
   readonly originatingModule: RecordId;
@@ -31,6 +32,7 @@ export interface AcceptanceContext {
 /** Parses untrusted submissions and allocates identities only after validating the entire forest. */
 export function acceptInvestigation(value: unknown, context: AcceptanceContext): AcceptedInvestigation {
   const { session, attempt, request, exposure } = context;
+  const method = context.method ?? methods.investigation;
   const localIds = new Set<string>(), visited = new Set<object>();
   const delivered = new Set([...context.suppliedEvidence, ...context.summarizedEvidence, ...exposure.citations]);
   const complete = new Set(exposure.completeTargets);
@@ -86,27 +88,27 @@ export function acceptInvestigation(value: unknown, context: AcceptanceContext):
   };
   const tree = parse(value, 0);
   const provenance: InvestigationProvenance = {
-    kind: 'investigation-provenance', id: attempt, session, method: methods.investigation,
+    kind: 'investigation-provenance', id: attempt, session, method,
     request, originatingModule: context.originatingModule, instructions: context.instructions, agent: context.agent,
     citations: exposure.citations, completeTargets: exposure.completeTargets, completeCorrections: exposure.completeCorrections,
     suppliedEvidence: context.suppliedEvidence, summarizedEvidence: context.summarizedEvidence, deliveries: exposure.deliveries,
   };
   const investigrams: Investigram[] = [], corrections: Correction[] = [];
-  const idFor = (item: SubmittedInvestigram) => recordId(session, 'investigram', [methods.investigation, identityReference(session, attempt), item.localId]);
+  const idFor = (item: SubmittedInvestigram) => recordId(session, 'investigram', [method, identityReference(session, attempt), item.localId]);
   const build = (item: SubmittedInvestigram, requiredAssociations: readonly Association[] = []): RecordId => {
     const id = idFor(item);
     const ownCorrections = item.corrections.map((correction, index) => {
       const correctionId = recordId(session, 'investigram-correction', [identityReference(session, id), index]);
       const replacement = build(correction.replacement, correction.correctedSubjects.map(subject => ({ subject,
         role: 'corrected-subject', qualifications: correction.qualifications, evidence: correction.evidence })));
-      corrections.push({ kind: 'investigram-correction', id: correctionId, session, method: methods.investigation,
+      corrections.push({ kind: 'investigram-correction', id: correctionId, session, method,
         reporter: id, target: correction.target, correctedSubjects: correction.correctedSubjects, replacement, reason: correction.reason,
         qualifications: correction.qualifications, evidence: correction.evidence, provenance: attempt });
       return correctionId;
     });
     const associations: Association[] = item.associations.map(item => ({ ...item, role: 'described' }));
     associations.push(...requiredAssociations);
-    investigrams.push({ kind: 'investigram', id, session, method: methods.investigation, status: 'interpretation',
+    investigrams.push({ kind: 'investigram', id, session, method, status: 'interpretation',
       prose: item.prose, referent: item.referent, qualifications: item.qualifications, evidence: item.evidence,
       originatingModule: context.originatingModule, associations, children: item.children.map(child => build(child)),
       corrections: ownCorrections, inconsistencies: item.inconsistencies, provenance: attempt });

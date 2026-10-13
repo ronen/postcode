@@ -1,10 +1,17 @@
+import { documentationLabel, documentationLines, documentationNotice, presentDocumentation } from './documentation-view.js';
+import { exportRoles, exportRoutes } from './export-view.js';
+import type { Documentation } from './documentation-view.js';
+import { validatePresentationContent, presentationChanges } from './presentation-contracts.js';
+import type { PresentedOptions } from './presentation-contracts.js';
+import { lookupDescription, lookupQualifications, resolutionContextIdentity } from './resolution-context.js';
+import type { ResolutionContext } from './resolution-context.js';
 import { resolveModuleProjection } from './module-content.js';
 import type { DocumentationContent, ModuleProjectionContent } from './module-content.js';
 import { presentQualification } from './qualification-view.js';
 import type { QualifiedRecord } from './projection-content.js';
 import { renderAssociatedInvestigations } from './investigation/associations.js';
 import type { AssociatedInvestigations } from './investigation/associations.js';
-import { boundedText, codePointLength, displayWidth, fitText, layoutText, padDisplay } from './terminal-layout.js';
+import { displayWidth, layoutText, padDisplay } from './terminal-layout.js';
 import { moduleLimitations, isCompositionContext } from './qualification-policy.js';
 import { completedMaterialization } from './evaluation-state.js';
 import { compositionView, compositionAnnotation } from './composition-view.js';
@@ -12,7 +19,7 @@ import type { CompositionView } from './composition-view.js';
 import { inlineText, terminalText } from './terminal-text.js';
 import { identityReference, methods, recordId } from './identity.js';
 import { moduleStandardExpansions } from './records.js';
-import type { Claim, ClaimContextRecord, EvaluationRecord, ExportClaim, ModuleClaim, ModuleExpansion, ProgramRecordStore, ProjectionRecord, RecordId, RecordedAssertion, SessionRecord, SourceEvidenceRecord, SymbolClaim } from './records.js';
+import type { Claim, ClaimContextRecord, EvaluationRecord, ExportClaim, ModuleClaim, ModuleExpansion, ProgramRecordStore, RecordId, SessionRecord, SourceEvidenceRecord, SymbolClaim } from './records.js';
 
 export interface Presentation {
   readonly format: 'unicode' | 'json';
@@ -24,12 +31,6 @@ export function presentationRequirements(_presentation: Presentation): readonly 
 }
 
 type Qualification = Omit<ClaimContextRecord, 'kind' | 'evidence' | 'inputs'>;
-type Documentation = Pick<RecordedAssertion, 'id' | 'status' | 'text'> & {
-  omittedTextCharacters: number;
-  tags: readonly { name: string; text: string; omittedTextCharacters: number }[];
-  omittedTags: number;
-  association: 'module' | 'origin-symbol' | 'export-alias'; qualification: Qualification;
-};
 type ExportView = ExportClaim['information'] & {
   id: RecordId; qualification: Qualification;
   originHandle: string | null; originEntityId: string | null;
@@ -41,8 +42,10 @@ export interface QualifiedView {
   readonly investigations?: AssociatedInvestigations;
   readonly schema: 'postcode-view/1-experimental';
   readonly id: RecordId;
-  readonly projection: Pick<ProjectionRecord, 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
-  readonly presentation: Presentation & { readonly expansions: readonly ModuleExpansion[] };
+  readonly resolution?: ResolutionContext;
+  readonly title: string;
+  readonly projection: Pick<ModuleProjectionContent['projection'], 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
+  readonly presentation: PresentedOptions & { readonly expansions: readonly ModuleExpansion[] };
   readonly analysis: SessionRecord['analysis'] | null;
   readonly qualifications: readonly Qualification[];
   readonly evaluations: readonly Pick<EvaluationRecord, 'id' | 'requirement' | 'modules' | 'applicability' | 'availability' | 'execution' | 'materialization' | 'reason' | 'cost'>[];
@@ -62,17 +65,28 @@ export interface QualifiedView {
 }
 
 /** Coordination preserves population-wide reference allocation independently of display bounds. */
-export function createView(store: ProgramRecordStore, projection: ProjectionRecord, presentation: Presentation): QualifiedView {
-  const content = resolveModuleProjection(store, projection);
-  const ids = store.entityIds(content.discovery.modules, 'module');
-  return arrangeModuleView(content, ids, presentation);
+export function createView(store: ProgramRecordStore, projection: ModuleProjectionContent['projection'], presentation: PresentedOptions, title: string, resolution?: ResolutionContext, content = resolveModuleProjection(store, projection)): QualifiedView {
+  const population = store.entityIds(content.discovery.modules, 'module');
+  const ids = new Map([...population, ...store.entityIds(projection.modules, 'module')]);
+  return arrangeModuleView(content, ids, presentation, title, resolution);
+}
+
+/** Fixed family Presentation policy over population versus selected-subject content. */
+function moduleDisplayPolicy(subject: ModuleProjectionContent['projection']['subject'], presentation: Presentation) {
+  const layout = subject === 'configured-project' ? 'table' : 'cards';
+  const compact = presentation.format === 'unicode' && layout === 'table';
+  return { layout, collapseExternal: compact, source: layout === 'cards', detailedDocumentation: layout === 'cards',
+    exports: compact ? 3 : layout === 'cards' ? 50 : 6,
+    projectDocumentation: compact ? 0 : layout === 'cards' ? 3 : 1,
+    externalDocumentation: layout === 'cards' ? 3 : 0 };
 }
 
 /** Pure presentation of an already selected answer. No store, acquisition or reference allocation. */
-export function arrangeModuleView(content: ModuleProjectionContent, entityIds: ReadonlyMap<RecordId, string>, presentation: Presentation): QualifiedView {
+export function arrangeModuleView(content: ModuleProjectionContent, entityIds: ReadonlyMap<RecordId, string>, presentation: PresentedOptions, title: string, resolution?: ResolutionContext): QualifiedView {
+  validatePresentationContent({ contract: 'modules', value: content });
   const { projection, session } = content;
-  if (presentation.sourceDetail && projection.lens !== 'inspect') throw new Error('Source detail requires inspection');
-  const compact = presentation.format === 'unicode' && projection.lens === 'modules';
+  const policy = moduleDisplayPolicy(projection.subject, presentation);
+  if (presentation.sourceDetail && !policy.source) throw new Error('Source detail requires selected module content');
   const displayedClaims = new Map<RecordId, QualifiedRecord<Claim>>();
   type SourceGroup = Omit<NonNullable<QualifiedView['sourceDetail']>['items'][number], 'evidence'>;
   const sourceGroups = new Map<string, SourceGroup>();
@@ -81,46 +95,19 @@ export function arrangeModuleView(content: ModuleProjectionContent, entityIds: R
     sourceGroups.set(key, { ...group, claims: [...new Set([...(sourceGroups.get(key)?.claims ?? []), ...claims.map(claim => claim.record.id)])] });
     for (const claim of claims) displayedClaims.set(claim.record.id, claim);
   };
-  const excerpt = (text: string, maximum: number) => boundedText(text, maximum, presentation.format === 'unicode');
-  const documentation = (associations: readonly DocumentationContent[], maximumDocs: number, label: string, module: RecordId, subject: RecordId) => {
-    const shown = associations.slice(0, maximumDocs);
-    const items: Documentation[] = shown.map(({ association, assertion: supported }) => {
-      const claim = association.record, assertion = supported.record;
-      sourceGroup({ label: `Documentation for ${label}`, module, subject, role: 'documentation', association: claim.information.association }, [association]);
-      const maximumTags = projection.lens === 'inspect' ? 20 : 5;
-      // Keep source-oriented examples/links in the assertion record, outside normal conceptual excerpts.
-      const prose = assertion.text.replace(/```[\s\S]*?```/g, '').trim();
-      let proseExcerpt = excerpt(prose, projection.lens === 'inspect' ? 2000 : 400);
-      let remainingLines = presentation.format === 'unicode' ? 8 : Infinity;
-      if (Number.isFinite(remainingLines)) proseExcerpt = excerpt(prose, codePointLength(fitText(proseExcerpt.text, '', remainingLines)));
-      remainingLines -= proseExcerpt.text ? wrapText(proseExcerpt.text, '       ').length : 0;
-      const conceptualTags = assertion.tags.filter(tag => tag.name !== 'example' && tag.name !== 'see');
-      const tags: Documentation['tags'][number][] = [];
-      for (const tag of conceptualTags.slice(0, maximumTags)) {
-        if (remainingLines <= 0) break;
-        const bounded = excerpt(tag.text, 300);
-        const text = Number.isFinite(remainingLines) ? fitText(bounded.text, `@${inlineText(tag.name)} `, remainingLines) : bounded.text;
-        if (Number.isFinite(remainingLines) && wrapText(`@${inlineText(tag.name)} ${text}`, '       ').length > remainingLines) break;
-        tags.push({ name: tag.name, text, omittedTextCharacters: codePointLength(tag.text) - codePointLength(text) });
-        remainingLines -= wrapText(`@${inlineText(tag.name)} ${text}`, '       ').length;
-      }
-      return { id: assertion.id, status: assertion.status,
-        text: proseExcerpt.text, omittedTextCharacters: codePointLength(assertion.text) - codePointLength(proseExcerpt.text),
-        tags, omittedTags: assertion.tags.length - tags.length,
-        association: claim.information.association, qualification: presentQualification(association.context) };
-    });
-    return { documentation: items, omittedDocumentation: associations.length - shown.length };
-  };
+  const documentation = (associations: readonly DocumentationContent[], maximumDocs: number, label: string, module: RecordId, subject: RecordId) =>
+    presentDocumentation(associations, maximumDocs, presentation, policy.detailedDocumentation, association =>
+      sourceGroup({ label: `Documentation for ${label}`, module, subject, role: 'documentation', association: association.record.information.association }, [association]));
   const modules = content.modules.map(module => {
     const { id, claim: supported } = module, claim = supported.record;
-    const maximumDocs = compact ? 0 : projection.lens === 'inspect' ? 3 : claim.information.discoveryFacets.includes('project') ? 1 : 0;
+    const maximumDocs = claim.information.discoveryFacets.includes('project') ? policy.projectDocumentation : policy.externalDocumentation;
     const sourceLabel = `${claim.information.handle} (${entityIds.get(id)!})`;
     sourceGroup({ label: `Module ${sourceLabel}`, module: id, subject: id, role: 'module' }, [supported]);
     const composition = compositionView(module.composition);
     for (const property of module.composition.claims) {
       sourceGroup({ label: `Composition ${sourceLabel}`, module: id, subject: id, role: 'module' }, [property]);
     }
-    const maximumExports = compact ? 3 : projection.lens === 'inspect' ? 50 : 6;
+    const maximumExports = policy.exports;
     const exports = module.exports.slice(0, maximumExports).map(item => {
       const exported = item.claim.record;
       sourceGroup({ label: `Export ${exported.information.exportedName}`, module: id, subject: exported.id, role: 'export' }, [item.claim]);
@@ -145,10 +132,12 @@ export function arrangeModuleView(content: ModuleProjectionContent, entityIds: R
     const bucket = contextsByScope.get(context.scope) ?? [];
     bucket.push(context); contextsByScope.set(context.scope, bucket);
   }
-  const collapsed = compact ? modules.filter(module => !module.discoveryFacets.includes('project')) : [];
-  const listed = compact ? modules.filter(module => module.discoveryFacets.includes('project')) : modules;
+  const collapsed = policy.collapseExternal ? modules.filter(module => !module.discoveryFacets.includes('project')) : [];
+  const listed = policy.collapseExternal ? modules.filter(module => module.discoveryFacets.includes('project')) : modules;
   return {
-    schema: 'postcode-view/1-experimental', id: recordId(projection.session, 'view', { projection: identityReference(projection.session, projection.id), presentation, method: methods.presentation }),
+    schema: 'postcode-view/1-experimental', id: recordId(projection.session, 'view', { projection: identityReference(projection.session, projection.id), presentation, title, resolution: resolutionContextIdentity(projection.session, resolution), method: methods.presentation }),
+    title,
+    ...(resolution ? { resolution } : {}),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,
       parameters: projection.parameters, selection: projection.selection },
     presentation: { ...presentation, expansions: projection.expansions.requested },
@@ -187,11 +176,13 @@ function wrapText(text: string, indent: string, width = 88, continuation = inden
 
 export function renderUnicode(view: QualifiedView): string {
   const selection = view.projection.selection;
-  const inventory = view.projection.lens === 'modules';
-  const lines = [`${inventory ? 'Modules' : 'Inspect'} · configured TypeScript project`,
+  const inventory = moduleDisplayPolicy(view.projection.subject, view.presentation).layout === 'table';
+  const lines = [`${inlineText(view.title)} · configured TypeScript project`,
     `Session ${view.projection.session.replace(/^session:/, '')}`,
     inventory ? `${selection.population} module${selection.population === 1 ? '' : 's'} found · ${view.modules.length} listed${view.display.collapsedModules ? ` · ${view.display.collapsedModules} external module${view.display.collapsedModules === 1 ? '' : 's'} collapsed` : ''}`
-      : `${selection.matches} module${selection.matches === 1 ? '' : 's'} selected from ${selection.population} · ${selection.matches === 0 ? 'no exact match' : selection.matches === 1 ? 'exact match' : 'exact matches'} for ${view.projection.parameters.reference ? '@' : ''}${inlineText(view.projection.parameters.selector ?? '')}${view.projection.parameters.reference ? ` · ${selection.referenceStatus}` : ''}`];
+      : `${selection.matches} module${selection.matches === 1 ? '' : 's'} selected from ${selection.population}${lookupDescription(view.resolution, selection.matches) ? ` · ${lookupDescription(view.resolution, selection.matches)}` : ''}`];
+  lines.push(...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
+  if (selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; their detail is unavailable in this answer.');
   if (!selection.populationEstablished) lines.push('Module population is not established.');
   const outcomeGroups = new Map<string, number>();
   for (const outcome of view.evaluations) {
@@ -222,31 +213,12 @@ export function renderUnicode(view: QualifiedView): string {
   };
   let documentationDisplayed = false;
   let relationshipsDisplayed = false;
-  const documentationLabel = (association: Documentation['association'], mixed: boolean) =>
-    association === 'export-alias' ? 'Documentation from export alias:'
-      : mixed && association === 'origin-symbol' ? 'Documentation from original symbol:' : 'Documentation:';
   const docs = (items: readonly Documentation[], omitted: number, indent: string) => {
-    const associations = [...new Set(items.map(doc => doc.association))];
-    for (const association of associations) {
-      documentationDisplayed = true;
-      lines.push(`${indent}${documentationLabel(association, associations.length > 1)}`);
-      const contributions = items.filter(doc => doc.association === association);
-      for (const [index, doc] of contributions.entries()) {
-        if (index) lines.push(indent);
-        if (doc.text) lines.push(...wrapText(doc.text, `${indent}  `));
-        if (doc.omittedTextCharacters) lines.push(`${indent}  … ${doc.omittedTextCharacters} assertion character(s) omitted.`);
-        for (const tag of doc.tags) lines.push(...wrapText(`@${inlineText(tag.name)} ${tag.text}${tag.omittedTextCharacters ? ` … (${tag.omittedTextCharacters} characters omitted)` : ''}`, `${indent}  `));
-        if (doc.omittedTags) lines.push(`${indent}  … ${doc.omittedTags} structured tag(s) omitted (including source-oriented examples/links).`);
-      }
-    }
-    if (omitted) lines.push(`${indent}… ${omitted} documentation assertion(s) omitted.`);
+    documentationDisplayed ||= items.length > 0;
+    lines.push(...documentationLines(items, omitted, indent));
   };
-  const roles = (exported: ExportView) => exported.roles
-    ? [exported.roles.type ? 'type' : '', exported.roles.value ? 'value' : ''].filter(Boolean).join('+') || 'no type/value role'
-    : 'roles unavailable';
   const exceptions = (exported: ExportView, moduleId: RecordId): string[] => {
-    const details = [...new Set(exported.routes.filter(route => route.kind !== 'direct' && route.kind !== 'default' || route.aliased || route.typeOnly)
-      .map(route => `${route.kind}${route.typeOnly ? ' (type-only)' : ''}`))];
+    const details = exportRoutes(exported);
     if (details.length || exported.origin !== moduleId) relationshipsDisplayed = true;
     if (!exported.routes.length) details.push('route unavailable');
     if (exported.origin !== moduleId) details.push(exported.origin ? `origin: ${inlineText(exported.originHandle ?? 'anonymous')} (${exported.originEntityId ?? 'identity unavailable'})` : 'origin not established');
@@ -287,7 +259,7 @@ export function renderUnicode(view: QualifiedView): string {
       if (!total) lines.push(established ? '    (none)' : '    Not established; no exports displayed.');
       for (const exported of module.exports) {
         const details = exceptions(exported, module.id);
-        lines.push(`  ├─ ${inlineText(exported.exportedName)} [${roles(exported)}]${details.length ? ` · ${details.join('; ')}` : ''}`);
+        lines.push(`  ├─ ${inlineText(exported.exportedName)} [${exportRoles(exported)}]${details.length ? ` · ${details.join('; ')}` : ''}`);
         if (exported.symbolInformation?.name && exported.symbolInformation.name !== exported.exportedName) lines.push(`  │  Semantic symbol: ${inlineText(exported.symbolInformation.name)}`);
         docs(exported.documentation, exported.omittedDocumentation, '  │  ');
       }
@@ -335,7 +307,7 @@ export function renderUnicode(view: QualifiedView): string {
       lines.push('', '  Exports:');
       if (!module.exports.length) lines.push('    No displayed export source.');
       for (const exported of module.exports) {
-        lines.push(`  ├─ ${inlineText(exported.exportedName)} [${roles(exported)}]`);
+        lines.push(`  ├─ ${inlineText(exported.exportedName)} [${exportRoles(exported)}]`);
         const defining = (itemsBySubject.get(subjectKey(module.id, exported.id)) ?? []).find(item => item.role === 'symbol')?.evidence ?? [];
         const definingKeys = new Set(defining.map(key));
         const forwarding = ((itemsBySubject.get(subjectKey(module.id, exported.id)) ?? []).find(item => item.role === 'export')?.evidence ?? []).filter(evidence => !definingKeys.has(key(evidence)));
@@ -352,7 +324,7 @@ export function renderUnicode(view: QualifiedView): string {
       }
     }
   }
-  if (documentationDisplayed) lines.push('', 'Documentation entries are recorded assertions; truth, currency, and completeness are not established.');
+  if (documentationDisplayed) lines.push('', documentationNotice);
   if (relationshipsDisplayed) lines.push('', 'Export relationships describe aliases and forwarding, not calls or dependencies.');
   const omissions: string[] = [];
   if (view.display.collapsedModules) omissions.push(`${view.display.collapsedModules} external module${view.display.collapsedModules === 1 ? '' : 's'} and their details`);
@@ -363,7 +335,7 @@ export function renderUnicode(view: QualifiedView): string {
   if (view.analysis?.provider === 'typescript') {
     const exportsComplete = view.evaluations.filter(outcome => outcome.requirement === 'exports');
     const establishedExports = exportsComplete.length > 0 && exportsComplete.every(outcome => completedMaterialization(outcome) && outcome.availability === 'available' && outcome.applicability === 'applicable');
-    lines.push(selection.populationEstablished && establishedExports
+    lines.push(selection.outsidePopulation?.length ? '  Retained subject information is shown; membership and detail in the supplied evaluation are not established.' : selection.populationEstablished && establishedExports
       ? '  Module membership and effective exports established by TypeScript analysis.'
       : selection.populationEstablished ? exportsComplete.length === 0 ? '  Module membership established by TypeScript analysis.'
         : '  Module membership established by TypeScript analysis; export information is qualified by the capability states above.'

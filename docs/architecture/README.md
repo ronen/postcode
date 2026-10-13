@@ -17,7 +17,7 @@ users own Git in their calling process and await opening, execution, validation 
 close. The [execution decision](../decisions/execution-ownership-and-cancellation.md)
 governs this lifetime boundary. Other governing choices are the accepted [projection architecture decisions](../decisions/initial-projection-architecture-decisions.md)
 and [module inventory decisions](../decisions/initial-module-inventory-decisions.md).
-The governing cross-cutting terminology is maintained in [core concepts](../core-concepts.md), and binding cross-cutting rules are maintained in [architectural constraints](../architectural-constraints.md); this document describes how the current implementation realizes them.
+The governing cross-cutting terminology is maintained in [core concepts](../core-concepts.md), and binding cross-cutting rules are maintained in [architectural constraints](../architectural-constraints.md); this document describes how the current implementation realizes them. The [application specification](../app-specification.md) describes the broader intended application design; adopting it does not establish conformance or implement its future capabilities.
 
 ## Implemented subset of the product model
 
@@ -36,6 +36,205 @@ Current observation batches retain the presented View, rendered output, session 
 Recorded output remains evidence of what PostCode displayed, but observations do not generally establish the captured program basis supporting it. Correction is explicitly deferred and does not block architectural adoption or interface exploration; it must precede reliance on newly collected observations for assessments requiring attribution to a particular program state. The bounded follow-up concerns adequate basis identification, not full investigation reproducibility or a durable analysis store or repository archive. Neither a commit hash alone nor references into a discarded store can be assumed sufficient.
 
 The product permits a summary suggestion when no more specific information need has been expressed; it does not require a summary-first default. The current no-argument CLI command lists modules, and `summarize` requests the implemented module interpretation. This is compatible with the optional suggestion, although the CLI does not provide a general summary View selector. Adoption of the conceptual model changes neither command behavior nor the current schema and identity contracts.
+
+<a id="request-publication"></a>
+## Request publication
+
+Session execution normalizes the requested question, subject designation, Lens
+parameters and presentation choices independently of the resulting answer. A
+fixed Session catalog supplies Lens questions, titles, applicability, mechanical
+implementation keys and consuming operation mappings. Construction checks those declarations; retained operation
+selections carry the actual operation request and subject kind, so record validation
+and reconstruction do not depend on a global Lens-name mapping. Command spellings
+map to normalized Lens identities; dependency identities agree with retained answers.
+Missing or incompatible designation modes are refused before Evaluation. Usage is
+subjectless and refuses extraneous designation or parameter inputs. Unknown names
+and malformed designation/reference choices produce rejected-input context before
+lookup. Direct and worker requests require a string or null selector; optional
+reference, subject and reference-lifetime choices must have their supported types
+and values. Organization construction takes its scope from the normalized designation.
+Unrepresentable values also produce rejected-input context and a resolution report,
+with explicit omissions where the supplied data cannot safely cross the worker or
+JSON reporting boundary; an absent required field is distinguished from such an omission.
+The parent handles invalid captured input before posting
+it to the worker, using the same refusal renderer and input checks. Invocation
+correlation belongs to the returned request context and does not enter retained
+Projection or reusable operation identity.
+
+The worker result distinguishes a program View, a subjectless usage report and a
+request-resolution report. The parent finalizes reports using its authoritative
+usage ledger. Publication uses the actual normalized request for version-two
+observations, including follow-ups, and emits a View event only for a program
+View. Input checks and observation-delivery warnings apply to every alternative.
+Subject resolution consumes qualified module/group populations and the Lens's
+applicability/cardinality. Precise references resolve either a compact binding or a
+raw record ID to an actual retained same-Session module, group or investigram before
+any applicability-dependent acquisition; classification allocates no references and
+prefixes do not establish existence. Both spellings supply the resolved record ID to
+answer construction while request context preserves the original spelling.
+Unsuccessful lookup returns a resolution report without constructing the requested
+Projection. Reports preserve frozen candidates, criteria, population outcomes and
+qualification; successful observations carry resolution information separately.
+Missing lookups allocate no unrelated bindings; ambiguous lookups bind the complete
+returned candidate set. Successful applications retain their established population
+allocation schedule. These [reference choices](../decisions/precise-subject-designations-and-lookup-bindings.md)
+preserve existing bindings and genuine prerequisite allocations.
+Module/name matching is shared with family selection without constructing an unused
+inspection answer. Compatible bound subjects absent from a supplied mechanical
+evaluation remain identified: construction retains their naming support and records
+that the supplied population omits them. Arrangement exposes unavailable detail
+without inventing population membership or complete empty results.
+
+The request path implements the bounded [request-model plan](../plans/lens-request-model.md)
+using shared qualified resolution. Family constructors accept
+resolved subjects and retain qualified answers without lookup spelling or lookup
+status. All four families key the complete qualified selection, normalizing only
+declared reference positions. Names and precise references therefore share an answer
+when the question, subjects, parameters and support are equal. Failed resolution
+does not construct a requested answer; valid empty populations and embedded details
+remain supported. Current unordered collection constructors canonicalize the full
+payload in evaluation-population order, with outside-population subjects ordered by
+record ID. Binding schedules are independent of this ordering. Ordinary module
+inspection rejects empty resolved input as an invariant violation; group-only
+inspection uses an explicit empty-module-detail constructor. These rules implement
+the [unordered collection decision](../decisions/unordered-collection-inspection.md)
+and do not redefine meaningful order or roles in other Lenses.
+Investigation selections retain frozen revision and association
+snapshots, including valid failed and unavailable outcomes.
+
+Arrangement receives a frozen lookup context separately. Its designation, criteria,
+subjects and population qualifications appear in View JSON; Unicode labels only
+incomplete or unavailable lookup coverage separately from answer qualification.
+This context participates in View identity without
+altering answer identity. Arrangement still has no lookup or Evaluation access.
+The bounded request/work attribution path is implemented as described below. A
+nonpublic module-risks fixture and a second consuming Lens exercise normalization,
+resolution, interpretation, retention and the existing interpretation Presentation
+through the fixed catalog. A nonpublic module-exports Lens exercises a separate
+qualified export-surface record and Presentation through the same request path.
+Both extensions also pass through worker delivery, parent publication and observations;
+neither is a public CLI command.
+
+Mechanical implementation registrations own prerequisite expansions, result-contract
+selection and local Evaluation/construction coordination. The Session coordinator
+does not dispatch mechanical construction by Lens name. Catalog assembly matches
+each mechanical declaration to its registered executable definition, rejecting
+unregistered implementations or declarations that repurpose a registered question.
+This replaces the earlier restriction to built-in mechanical Lenses without allowing
+metadata to promise behavior a constructor cannot supply. Static registration and
+the catalog snapshot are immutable during a Session; the parent transfers the same
+captured definitions to its worker.
+
+The exports constructor selects established export claims, documentation associations,
+their support and relevant Evaluation outcomes without constructing module inspection.
+Its result distinguishes a complete empty surface from incomplete, unavailable or
+unrequested exports, and retains precise subjects omitted from the supplied population.
+The paired Presentation requests the existing export/documentation expansions,
+shares qualified export resolution and documentation/role formatting with inspection,
+and bounds displayed detail while retaining the full core selection. Source evidence
+is exposed only on explicit request and only for displayed exports/documentation.
+Adding this content family uses bounded record, contract, arrangement and disclosure
+registrations; it introduces no analyzer, dynamic plugin system or general planner.
+
+The Session's fixed catalog also declares bounded Presentations for the module,
+organization, dependency and interpretation content contracts, with an internal
+exports pairing available to fixture catalogs. Coordination checks
+prospective compatibility before requested Evaluation and refines the contract after
+subject resolution, including the different inspection subject kinds. Explicit format,
+source and paging choices constrain both the default and declared fallbacks. Required
+standard expansions for compatible choices are acquired together before construction;
+arrangement cannot acquire missing information. Current production choices accept
+qualified partial, unavailable and established-empty content. Internal assembly can
+declare a complete-materialization precondition and an explicit qualified fallback.
+Operational completeness does not establish the truth or completeness of an
+interpretation's account of the program.
+
+Construction resolves the retained content, then checks its semantic family and
+materialization before arrangement. A missing compatible choice or unmet precondition
+returns a resolution report preserving actual request, prerequisite qualifications,
+unmet outcome states and any already-retained answer IDs. Malformed content remains
+an internal defect. A selected Presentation's criteria and consequential fallback
+are captured in the View, with fallback changes also explained in Unicode output.
+These choices participate in View identity without changing retained answer identity.
+Embedded module detail and associated interpretation inspection remain explicit
+family compositions; their resolved content is validated at arrangement boundaries.
+Shared arrangements do not infer layout, detail, direction or coverage from a Lens
+name. Module and organization content already identifies population versus selected
+subjects; each family's fixed Presentation owns the corresponding table/tree or card
+layout, bounds and source-detail policy. Compatible qualified content can carry another
+question identity through those same arrangements. Coordination supplies the question
+label separately from subject scope: module and organization Views retain that label
+in their self-contained payload and identity, while renderers append the scope context.
+A display-label change does not change the underlying Projection. The shared `inspect`
+question is labelled `Inspect`; its interpretation application adds the investigram
+context, preserving the established built-in headings. Dependency answers retain the
+selected subjects' endpoint role and recognition-coverage scope; their constructors
+use those meanings to select relationships and source-owned outcomes. Presentation
+uses the supplied direction and coverage to explain empty and unattributable results.
+Interpretation Views carry the retained selection variant, allowing support disclosure
+to distinguish operation answers from historical or associated selections. Lens names
+remain answer metadata and registration/validation inputs, not rendering dispatch.
+The dependency descriptor's direction/coverage and interpretation descriptor's variant
+are explicit in experimental JSON. Responsible answer and Presentation methods advance
+when these payloads change; designation-independent answer identity, reference allocation
+and bounded source disclosure retain their existing contracts.
+There is no generic multi-Projection selector or public Presentation registration API.
+
+<a id="request-work-attribution"></a>
+## Request work attribution
+
+Every Session request and direct interpretation entry establishes a frozen parent
+context before validation/work: correlation, normalized need, caller role, purpose
+and actual inherited investigation guards. Caller identity is not assumed to be
+human. There is no numeric whole-request budget. Requested-answer work remains
+distinct from PostCode's subject-resolution prerequisites and investigator-triggered
+evidence work. Evidence triggers include the query and its attempt-local occurrence.
+
+Provider, evaluator and pure-derivation boundaries report execution where they know
+it. TypeScript reports reuse per module/expansion/dependency component and captured
+content. The module evaluator separately reports new versus retained qualified
+outcomes, including expansion outcomes; pure organization derivations report their
+own reuse. Dependency outcome construction still derives and validates each time,
+so an equal retained ID is not reported as skipped execution. First-retention
+attribution lives alongside supported records in Session-owned metadata. Re-derived
+equal records do not overwrite it or invent an origin for previously untracked work.
+Unknown origins are explicit. This adds no reusable-work key inputs or retained
+answer fields, and neither reuse nor new materialization claims fresh inputs.
+
+Expansion reporting groups equal per-expansion qualifications by requirement within
+each provider/evaluator call. Each group keeps its count, exact record identities and
+their generating origins; different qualifications and reuse dispositions stay
+separate. A report carries its current parent once, plus a table of distinct earlier
+parents. Report-local origin references resolve entirely within that report even if
+a caller reuses a request correlation ID. Detail still scales
+with supported record identities and evidence queries; no detail is silently capped.
+
+Returned execution envelopes carry immutable work reports separately from Views.
+Non-View JSON retains the full resolution explanation and a compact attribution
+summary. Reporting completeness and included detail are separate fields; Session
+results and observations carry full reports independently of sink delivery. This
+follows the [interface attribution decision](../decisions/compact-attribution-and-complete-results.md).
+The Session exposes its latest execution report
+for failure handling, not a request-history catalog. Interpretation attempts carry
+their parent context; retained operation reuse and exact/associated selection record
+current consumption with original attribution. Evidence reporting preserves qualified
+outcomes, page limits and support separately from delivery: captured-but-withheld,
+acquired-but-not-dispatched and actually dispatched information remain distinguishable.
+Pure retrieval/continuation records consumption without claiming new acquisition.
+Exposure and citation eligibility still depend solely on actual dispatch.
+
+Operation-tagged worker progress sends newly recorded work and indexed evidence
+updates, rather than repeatedly transmitting the accumulated report. Entries are
+frozen once; full immutable report containers are built on demand. The parent
+seals received facts on forced termination and labels the report incomplete; late
+messages cannot replace it. Thrown execution failures preserve completed boundary
+facts while disclosing that work without returned outcomes is unknown. Version-two
+command observations include the work report for successful, refused and abnormal
+requests independently of sink success. Publication validity/outcome remains distinct
+from execution completion: a later input check can suppress a completed result.
+Closing releases core state while already returned report snapshots remain usable.
+This is bounded attribution at existing boundaries, not an autonomous scheduler,
+request store or post-Session export of captured program inputs.
 
 ## Responsibilities and flow
 

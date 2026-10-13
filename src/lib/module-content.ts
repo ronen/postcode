@@ -14,6 +14,20 @@ export interface ExportContent {
   readonly origin: QualifiedRecord<ModuleClaim> | null;
   readonly documentation: readonly DocumentationContent[];
 }
+
+/** Shared qualified export resolution, independent of any containing Lens answer. */
+export function resolveExport(store: ProgramRecordStore, exported: ExportClaim, documentation: readonly DocumentationContent[]): ExportContent {
+  const entity = exported.information.symbol ? store.get(exported.information.symbol) : null;
+  if (entity && entity.kind !== 'symbol') throw new Error('Expected symbol');
+  const symbol = entity ? store.get(entity.claim) : null;
+  if (symbol && (symbol.kind !== 'claim' || symbol.information.type !== 'symbol')) throw new Error('Expected symbol claim');
+  const origin = exported.information.origin ? store.get(exported.information.origin) : null;
+  const originClaim = origin?.kind === 'module' ? store.get(origin.claim) : null;
+  return Object.freeze({ claim: qualifiedRecord(store, exported),
+    symbol: symbol ? qualifiedRecord(store, symbol as SymbolClaim) : null,
+    origin: originClaim?.kind === 'claim' && originClaim.information.type === 'module' ? qualifiedRecord(store, originClaim as ModuleClaim) : null,
+    documentation });
+}
 export interface ModuleContent {
   readonly id: RecordId;
   readonly claim: QualifiedRecord<ModuleClaim>;
@@ -23,7 +37,8 @@ export interface ModuleContent {
   readonly documentationIds: readonly RecordId[];
 }
 export interface ModuleProjectionContent {
-  readonly projection: ProjectionRecord;
+  /** A compatible answer need not use a built-in Lens identity. */
+  readonly projection: Omit<ProjectionRecord, 'lens'> & { readonly lens: string };
   readonly session: SessionRecord;
   readonly discovery: EvaluationRecord;
   readonly evaluations: readonly EvaluationRecord[];
@@ -32,7 +47,7 @@ export interface ModuleProjectionContent {
 }
 
 /** Resolves the selected qualified answer without applying any display or source-disclosure bounds. */
-export function resolveModuleProjection(store: ProgramRecordStore, projection: ProjectionRecord): ModuleProjectionContent {
+export function resolveModuleProjection(store: ProgramRecordStore, projection: ModuleProjectionContent['projection']): ModuleProjectionContent {
   const retained = store.get(projection.id);
   if (retained.kind !== 'projection') throw new Error('Expected retained projection');
   projection = retained;
@@ -73,18 +88,8 @@ export function resolveModuleProjection(store: ProgramRecordStore, projection: P
     const allSubjects = new Set([id, ...allExports.map(item => item.id), ...allExports.flatMap(item => item.information.symbol ? [item.information.symbol] : [])]);
     return Object.freeze({ id, claim: qualifiedRecord(store, claim as ModuleClaim), composition: composition(id), documentation: documentation([id]),
       documentationIds: Object.freeze([...allSubjects].flatMap(subject => docs.get(subject) ?? []).map(item => item.content.assertion.record.id)),
-      exports: Object.freeze(allExports.map(exported => {
-        const entity = exported.information.symbol ? store.get(exported.information.symbol) : null;
-        if (entity && entity.kind !== 'symbol') throw new Error('Expected symbol');
-        const symbol = entity ? store.get(entity.claim) : null;
-        if (symbol && (symbol.kind !== 'claim' || symbol.information.type !== 'symbol')) throw new Error('Expected symbol claim');
-        const origin = exported.information.origin ? store.get(exported.information.origin) : null;
-        const originClaim = origin?.kind === 'module' ? store.get(origin.claim) : null;
-        return Object.freeze({ claim: qualifiedRecord(store, exported),
-          symbol: symbol ? qualifiedRecord(store, symbol as SymbolClaim) : null,
-          origin: originClaim?.kind === 'claim' && originClaim.information.type === 'module' ? qualifiedRecord(store, originClaim as ModuleClaim) : null,
-          documentation: documentation([exported.id, ...(exported.information.symbol ? [exported.information.symbol] : [])]) });
-      })) });
+      exports: Object.freeze(allExports.map(exported => resolveExport(store, exported,
+        documentation([exported.id, ...(exported.information.symbol ? [exported.information.symbol] : [])])))) });
   });
   const selected = new Set(projection.modules);
   const contextIds = new Set(projection.contexts);

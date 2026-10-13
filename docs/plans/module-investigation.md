@@ -1,8 +1,8 @@
 # Module investigation
 
-Status: approved
+Status: completed
 Created: 2026-09-24
-Updated: 2026-09-29
+Updated: 2026-10-11
 Superseded by:
 
 ## Outcome and use narrative
@@ -205,16 +205,9 @@ while preserving the other Property/Facet distinctions. The accompanying
 [constraints](../architectural-constraints.md) carry the cross-cutting
 meaning and invariants.
 
-The adopted [product
-design](../../foundation/product-design.md#32-summary-as-initial-view-and-recursive-navigation)
-establishes qualified summary and recursive investigation. The existing [session
-decisions](../decisions/transient-analysis-sessions.md) supply
-accumulating immutable records, stable references, transient lifetime, input
-invalidation, and command-scoped observations. The [qualification
-decisions](../decisions/adopt-qualification-and-evaluation-constraints.md)
-and [evidence
-boundaries](../decisions/adopt-identity-evidence-and-observation-constraints.md)
-continue to apply. No foundation revision is required.
+The [research product design](../../foundation/product-design.md) supplies the conceptual and epistemological basis. The [application specification](../app-specification.md#initial-views-and-further-investigation) preserves qualified further investigation without prescribing a summary-first default. This slice's explicit module-summary and follow-up capabilities remain its chosen scope; the [capability reference](../capability-reference.md) describes current support.
+
+The existing [session decisions](../decisions/transient-analysis-sessions.md) supply accumulating immutable records, stable references, transient lifetime, input invalidation, and command-scoped observations. The [qualification decisions](../decisions/adopt-qualification-and-evaluation-constraints.md) and [evidence boundaries](../decisions/adopt-identity-evidence-and-observation-constraints.md) continue to apply. The document split does not enlarge this plan's scope or change its lifecycle.
 
 `summarize`, `explain`, `decompose`, and `examine` are lenses. `summarize` selects a module;
 follow-up lenses select an investigram as their subject, using its prose and

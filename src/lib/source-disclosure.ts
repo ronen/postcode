@@ -2,6 +2,7 @@ import type { QualifiedView } from './presentation.js';
 import type { QualifiedOrganizationView } from './organization/presentation.js';
 import type { QualifiedDependencyView } from './dependencies/presentation.js';
 import type { InvestigationView } from './investigation/presentation.js';
+import type { ModuleExportsView } from './exports/presentation.js';
 import type { ProgramRecord, SourceEvidenceRecord } from './records.js';
 
 export type SourceDisclosureLevel = NonNullable<QualifiedView['sourceDetail']>['level']
@@ -13,7 +14,7 @@ export type SourceDisclosureForm = 'locations' | 'excerpts';
 /** Classify the bounded source fields actually rendered by each presentation.
  * Requests, empty containers, evidence IDs and omission counts are not disclosure.
  */
-export function sourceDisclosure(view: QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | InvestigationView): {
+export function sourceDisclosure(view: QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | InvestigationView | ModuleExportsView): {
   level: SourceDisclosureLevel; forms: SourceDisclosureForm[];
 } | null {
   const forms = new Set<SourceDisclosureForm>();
@@ -37,6 +38,8 @@ export function sourceDisclosure(view: QualifiedView | QualifiedOrganizationView
   };
   let level: SourceDisclosureLevel;
   switch (view.schema) {
+    case 'postcode-module-exports-view/1-experimental':
+      view.sourceDetail?.items.forEach(source); level = 'declaration-locations-and-excerpts'; break;
     case 'postcode-view/1-experimental':
       modules(view); level = 'declaration-locations-and-excerpts'; break;
     case 'postcode-organization-view/1-experimental': {

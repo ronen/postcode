@@ -1,3 +1,5 @@
+import { workState } from '../work-attribution.js';
+import type { WorkScope } from '../work-attribution.js';
 import { directedGraph } from '../directed-graph.js';
 import { completedMaterialization } from '../evaluation-state.js';
 import { locate } from './placement.js';
@@ -8,7 +10,8 @@ import { groupStandardExpansions } from './records.js';
 
 /** Materializes organization from captured inputs and a stored module outcome. No I/O. */
 export function evaluateOrganization(store: ProgramRecordStore, moduleEvaluation: EvaluationRecord,
-  requested: readonly GroupExpansion[] = groupStandardExpansions): OrganizationEvaluationRecord {
+  requested: readonly GroupExpansion[] = groupStandardExpansions, work?: WorkScope): OrganizationEvaluationRecord {
+  work?.check();
   const stored = store.get(moduleEvaluation.id);
   if (stored.kind !== 'evaluation' || stored.requirement !== 'modules') throw new Error('Expected module evaluation');
   moduleEvaluation = stored;
@@ -23,6 +26,7 @@ export function evaluateOrganization(store: ProgramRecordStore, moduleEvaluation
   const retained = store.lookup(evaluationId);
   if (retained) {
     if (retained.kind !== 'organization-evaluation') throw new Error('Unexpected derived record kind');
+    work?.record('organization-evaluation', 'reused', { records: [retained.id], state: workState(retained) });
     return retained;
   }
   const records: ProgramRecord[] = [];
@@ -168,5 +172,6 @@ export function evaluateOrganization(store: ProgramRecordStore, moduleEvaluation
   store.put([...records, ...claims, result]);
   const owned = store.get(result.id);
   if (owned.kind !== 'organization-evaluation') throw new Error('Expected retained organization-evaluation');
+  work?.record('organization-evaluation', 'established', { records: [owned.id], state: workState(owned) });
   return owned;
 }

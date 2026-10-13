@@ -92,11 +92,22 @@ test('shell records scanner refusals and then accepts a quoted literal selector'
   assert.match(errors, /ambiguous\. Did you forget/);
   assert.match(errors, /To specify an option argument starting with a dash use '--project=-XYZ'\./);
   assert.doesNotMatch(errors, /\\u000a/);
-  const view = batches[3]!.records.find(item => item.kind === 'qualified-view')!.value as { projection: { selection: { matches: number } } };
-  assert.equal(view.projection.selection.matches, 0);
+  const report = batches[3]!.records.find(item => item.kind === 'resolution-result')!.value as import('../src/lib/request-reporting.js').ResolutionReport;
+  assert.equal(report.resolution.reason, 'missing');
+  assert.ok(report.context.request.kind === 'lens');
+  assert.deepEqual(report.context.request.designation, { kind: 'name', value: '@literal' });
 });
 
 test('follow-ups require a shell reference and inspection continuation stays a presentation option', () => {
+  const raw = `session:00000000-0000-0000-0000-000000000000:investigram:${'a'.repeat(64)}`;
+  for (const lens of ['inspect', 'explain', 'decompose', 'examine']) {
+    const parsed = parseCommand([lens, `@${raw}`, ...(lens === 'inspect' ? ['--revision-page', '2'] : [])], '.', true);
+    assert.equal(parsed.kind, 'view');
+    if (parsed.kind === 'view') {
+      assert.equal(parsed.request.selector, raw);
+      assert.equal(parsed.request.reference, true);
+    }
+  }
   for (const lens of ['explain', 'decompose', 'examine']) {
     const parsed = parseCommand([lens, '@investigram-12345678'], '.', true);
     assert.equal(parsed.kind, 'view');

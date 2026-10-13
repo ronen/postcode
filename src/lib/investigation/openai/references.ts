@@ -105,6 +105,7 @@ export class InvestigatorReferences {
       case 'claim-context': fields = { ...this.#support(), ...this.#fields(['inputs']), scope: (v, p) => v === 'configured-project' ? v : this.#encode(v, p) }; break;
       case 'evaluation': fields = this.#fields(['basis'], ['claims', 'modules', 'contexts']); break;
       case 'projection': fields = this.#fields([], ['modules', 'claims', 'contexts', 'evaluations'], { expansions: object(this.#fields([], ['claims'])) }); break;
+      case 'module-exports-projection': fields = this.#fields(['subject', 'evaluation'], ['evaluations', 'exports', 'documentation', 'contexts']); break;
       case 'repository-region': case 'repository-artifact': fields = this.#fields(['repository']); break;
       case 'organization-evaluation': fields = this.#fields(['repository', 'moduleEvaluation'], ['groups', 'claims', 'contexts']); break;
       case 'organization-projection': fields = this.#fields(['evaluation', 'moduleProjection'], ['groups', 'modules', 'claims', 'contexts'], {
@@ -124,7 +125,7 @@ export class InvestigatorReferences {
       case 'investigation-evaluation': fields = this.#fields(['attempt'], ['investigrams', 'corrections'], {
         request: this.#request(), outcome: object(this.#fields(['root'])) }); break;
       case 'investigation-selection-projection': fields = this.#fields(['mechanical'], ['subjects', 'roots', 'displaced', 'associated'], {
-        selector: object(this.#fields(['reference'])), outcome: object(this.#fields(['evaluation'])),
+        operation: this.#request(), outcome: object(this.#fields(['evaluation'])),
         relations: list(object(this.#fields(['original', 'account']))),
         navigation: list(object(this.#fields(['account', 'compositionParent', 'investigationSubject']))),
         revisions: list(object({ ...this.#fields(['original', 'primary', 'familyPrimary']),

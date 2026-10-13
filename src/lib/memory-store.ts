@@ -55,6 +55,7 @@ function references(record: ProgramRecord): readonly RecordId[] {
     case 'source-evidence': return record.resolution?.target ? [record.resolution.target] : [];
     case 'evaluation': return [...record.modules, ...record.contexts, ...(record.claims ?? []), ...(record.basis ? [record.basis] : [])];
     case 'projection': return [...record.modules, ...record.claims, ...record.contexts, ...record.evaluations, ...record.expansions.claims];
+    case 'module-exports-projection': return [record.subject, record.evaluation, ...record.evaluations, ...record.exports, ...record.documentation, ...record.contexts];
     case 'organization-evaluation': return [record.repository, record.moduleEvaluation, ...record.groups, ...record.claims, ...record.contexts];
     case 'organization-projection': return [...record.expansions.moduleClaims, ...record.expansions.moduleEvaluations, record.evaluation, ...(record.moduleProjection ? [record.moduleProjection] : []),
       ...record.groups, ...record.modules, ...record.claims, ...record.contexts,
@@ -93,7 +94,57 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
           throw new Error(`Expected ${kind} reference`);
         }
       };
+      if (record.kind === 'projection' || record.kind === 'organization-projection' || record.kind === 'dependency-projection') {
+        if (Object.keys(record.parameters).length || 'referenceStatus' in record.selection) throw new Error('Invocation-specific fields cannot be retained in an answer');
+        const get = (id: RecordId) => pending.get(id) ?? this.#records.get(id);
+        let subjects: readonly RecordId[], population: readonly RecordId[];
+        if (record.kind === 'projection') {
+          const basis = record.evaluations[0] ? get(record.evaluations[0]) : undefined;
+          if (basis?.kind !== 'evaluation') throw new Error('Expected projection module basis');
+          subjects = record.modules; population = basis.modules;
+        } else if (record.kind === 'dependency-projection') {
+          const evaluation = get(record.evaluation);
+          const basis = evaluation?.kind === 'dependency-evaluation' ? get(evaluation.moduleEvaluation) : undefined;
+          if (basis?.kind !== 'evaluation') throw new Error('Expected dependency module basis');
+          subjects = record.subjects; population = basis.modules;
+        } else {
+          const evaluation = get(record.evaluation);
+          const basis = evaluation?.kind === 'organization-evaluation' ? get(evaluation.moduleEvaluation) : undefined;
+          if (evaluation?.kind !== 'organization-evaluation' || basis?.kind !== 'evaluation') throw new Error('Expected organization basis');
+          subjects = [...record.groups, ...record.modules]; population = [...evaluation.groups, ...basis.modules];
+        }
+        const members = new Set(population);
+        if (canonical(record.selection.outsidePopulation ?? []) !== canonical(subjects.filter(id => !members.has(id)))) {
+          throw new Error('Invalid subject materialization qualification');
+        }
+      }
       switch (record.kind) {
+        case 'module-exports-projection': {
+          const get = (id: RecordId) => (pending.get(id) ?? this.#records.get(id))!;
+          requireKind(record.subject, 'module'); requireKind(record.evaluation, 'evaluation');
+          const basis = get(record.evaluation);
+          if (basis.kind !== 'evaluation' || basis.requirement !== 'modules' || record.outsidePopulation !== !basis.modules.includes(record.subject)
+            || !record.lens || Object.keys(record.parameters).length) throw new Error('Invalid exports answer basis');
+          const supplied = new Set<RecordId>();
+          for (const id of record.evaluations) {
+            const outcome = get(id);
+            if (outcome.kind !== 'evaluation' || outcome.basis !== basis.id || !outcome.modules.includes(record.subject)
+              || !['exports', 'documentation'].includes(outcome.requirement)) throw new Error('Invalid exports answer expansion');
+            outcome.claims?.forEach(claim => supplied.add(claim));
+          }
+          const owners = new Set<RecordId>();
+          for (const id of record.exports) {
+            const claim = get(id);
+            if (!supplied.has(id) || claim.kind !== 'claim' || claim.information.type !== 'export' || claim.subject !== record.subject) throw new Error('Invalid selected export');
+            owners.add(id); if (claim.information.symbol) owners.add(claim.information.symbol);
+          }
+          for (const id of record.documentation) {
+            const claim = get(id);
+            if (!supplied.has(id) || claim.kind !== 'claim' || claim.information.type !== 'documentation-association' || !owners.has(claim.subject)) throw new Error('Invalid export documentation');
+          }
+          record.contexts.forEach(id => requireKind(id, 'claim-context'));
+          break;
+        }
         case 'investigation-selection-projection':
           for (const reference of selectionReferences(record)) {
             const target = (pending.get(reference.id) ?? this.#records.get(reference.id))!;
@@ -187,6 +238,12 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
           if (record.outcome === 'recognized') throw new Error('Recognized requests are not coverage exclusions');
           break;
         case 'dependency-projection': {
+          const role = record.lens === 'dependency-structure' ? null : record.lens === 'dependency-children' ? 'parent' : 'child';
+          const coverage = role === null ? 'evaluation' : role === 'parent' ? 'subject-owners' : 'unattributable-to-subjects';
+          if (record.subjectRole !== role || record.coverageScope !== coverage
+            || record.subject !== (role === null ? 'configured-project' : 'selected-modules')
+            || (record.graph !== null) !== (role === null)
+            || coverage === 'unattributable-to-subjects' && (record.nonEdgeRequests.length || record.coverage.length)) throw new Error('Invalid dependency answer direction or coverage');
           requireKind(record.evaluation, 'dependency-evaluation');
           [...record.modules, ...record.subjects, ...record.opaqueSubjects].forEach(id => requireKind(id, 'module'));
           record.relationships.forEach(id => {
@@ -434,6 +491,14 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
   }
 
   lookup(id: RecordId): ProgramRecord | undefined { return this.#records.get(id); }
+
+  /** Compact bindings and raw IDs must identify a retained same-Session entity; classification allocates nothing. */
+  boundEntity(session: SessionId, reference: string): RecordId | undefined {
+    const id = this.#bindings.get(session)?.resolve(reference) ?? reference as RecordId;
+    const record = this.#records.get(id);
+    return record?.session === session && (record.kind === 'module' || record.kind === 'group' || record.kind === 'investigram')
+      ? record.id : undefined;
+  }
 
   get(id: RecordId): ProgramRecord {
     const result = this.#records.get(id);

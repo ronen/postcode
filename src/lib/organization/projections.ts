@@ -1,7 +1,9 @@
+import { mechanicalAnswerIdentity } from '../answer-identity.js';
+import { orderCollectionSubjects } from '../collection-selection.js';
 import { directedGraph } from '../directed-graph.js';
 import { completedMaterialization } from '../evaluation-state.js';
-import { identityReference, compare, methods, recordId } from '../identity.js';
-import { inspect as inspectModules } from '../projections.js';
+import { compare, methods, recordId } from '../identity.js';
+import { emptyModuleDetail, inspect as inspectModules } from '../projections.js';
 import type { EvaluationRecord, ProgramRecordStore, RecordId } from '../records.js';
 import type { GroupClaim, OrganizationClaims, OrganizationEvaluationRecord, OrganizationProjectionRecord } from './records.js';
 
@@ -15,7 +17,7 @@ function groupClaim(store: ProgramRecordStore, id: RecordId): GroupClaim {
 
 /** Lenses read stored evaluations only. Selection never rewrites group relationships. */
 function project(store: ProgramRecordStore, evaluation: OrganizationEvaluationRecord,
-  subject: OrganizationProjectionRecord['subject'], selector: string | null, reference: boolean): OrganizationProjectionRecord {
+  subject: OrganizationProjectionRecord['subject'], resolved: readonly RecordId[] | null): OrganizationProjectionRecord {
   const stored = store.get(evaluation.id);
   if (stored.kind !== 'organization-evaluation') throw new Error('Expected organization evaluation');
   evaluation = stored;
@@ -25,28 +27,32 @@ function project(store: ProgramRecordStore, evaluation: OrganizationEvaluationRe
   let selected = new Set(evaluation.groups);
   let moduleProjection: RecordId | null = null;
   let selectedModules: readonly RecordId[] = [];
-  let referenceStatus: OrganizationProjectionRecord['selection']['referenceStatus'] = 'current';
   if (subject === 'configured-project') {
     selected = new Set(placements.flatMap(claim => claim.information.type === 'module-placement' ? claim.information.groups : []));
     selected = directedGraph(evaluation.groups, claims.flatMap(claim => claim.information.type === 'group-containment'
       ? [[claim.subject, claim.information.child] as const] : [])).ancestors(selected);
   } else if (subject === 'selected-entities') {
-    if (selector === null) throw new Error('Inspection requires a selector');
-    const groupIds = store.entityIds(evaluation.groups, 'group');
-    const preciseGroup = evaluation.groups.find(id => selector === id || reference && selector === groupIds.get(id));
-    const namedGroups = reference ? [] : evaluation.groups.filter(id => groupClaim(store, id).information.name === selector);
-    const moduleView = preciseGroup ? null : inspectModules(store, moduleEvaluation, selector, reference);
-    moduleProjection = moduleView?.id ?? null;
-    selected = new Set(preciseGroup ? [preciseGroup] : namedGroups);
-    selectedModules = moduleView?.modules ?? [];
-    referenceStatus = reference && selected.size + selectedModules.length === 0 ? 'unknown-reference' : 'current';
+    if (!resolved?.length) throw new Error('Inspection requires resolved subjects');
+    store.entityIds(evaluation.groups, 'group');
+    const resolvedGroups = resolved.filter(id => store.get(id).kind === 'group');
+    const resolvedModules = resolved.filter(id => store.get(id).kind === 'module');
+    if (resolvedGroups.length + resolvedModules.length !== resolved.length || new Set(resolved).size !== resolved.length
+      || resolved.some(id => store.get(id).session !== evaluation.session)) throw new Error('Invalid inspection subject');
+    // Empty module detail is a genuine embedded part of a settled group inspection.
+    const moduleView = resolvedModules.length ? inspectModules(store, moduleEvaluation, resolvedModules) : emptyModuleDetail(store, moduleEvaluation);
+    moduleProjection = moduleView.id;
+    selected = new Set(orderCollectionSubjects(evaluation.groups, resolvedGroups));
+    selectedModules = moduleView.modules;
   }
-  const groups = evaluation.groups.filter(id => selected.has(id));
+  const groupPopulation = new Set(evaluation.groups), modulePopulation = new Set(moduleEvaluation.modules);
+  const groups = [...evaluation.groups.filter(id => selected.has(id)), ...[...selected].filter(id => !groupPopulation.has(id))];
+  const outsidePopulation = [...groups.filter(id => !groupPopulation.has(id)), ...selectedModules.filter(id => !modulePopulation.has(id))];
   // Investigation retains project modules and their placement exceptions, including outside-repository evidence.
   if (subject !== 'selected-entities') selectedModules = placements.filter(claim => claim.information.type === 'module-placement'
     && !claim.information.reasons.includes('external-module')).map(claim => claim.subject);
   const selectedModuleSet = new Set(selectedModules);
   const selectedClaims = claims.filter(claim => selected.has(claim.subject) || selectedModuleSet.has(claim.subject));
+  for (const id of groups.filter(id => !groupPopulation.has(id))) selectedClaims.push(groupClaim(store, id));
   const expandedGroups = new Set<RecordId>();
   const expandedModules = new Set<RecordId>();
   const expandedClaims = new Set<RecordId>();
@@ -74,36 +80,33 @@ function project(store: ProgramRecordStore, evaluation: OrganizationEvaluationRe
   const moduleSubjects = new Set([...selectedModules, ...expandedModules]);
   const moduleExpansions = store.evaluations(evaluation.session).filter(outcome => outcome.basis === moduleEvaluation.id
     && (outcome.modules.length === 0 || outcome.modules.some(id => moduleSubjects.has(id))));
-  const selectedReference = [...groups, ...selectedModules].find(id => id === selector);
-  // A resolved reference and a literal selector must occupy disjoint key spaces.
-  const selectorKey = selectedReference ? { reference: identityReference(evaluation.session, selectedReference) } : selector;
   const method = `${methods.projection};${methods.organization}`;
   const populationEstablished = completedMaterialization(evaluation)
     && (subject === 'repository' || completedMaterialization(evaluation.placement));
-  const projection: OrganizationProjectionRecord = {
+  const payload: Omit<OrganizationProjectionRecord, 'id'> = {
     kind: 'organization-projection', method, session: evaluation.session,
-    id: recordId(evaluation.session, 'organization-projection', { method, evaluation: identityReference(evaluation.session, evaluation.id), subject, selector: selectorKey, reference }),
-    lens: subject === 'selected-entities' ? 'inspect' : 'organization', subject, parameters: { selector, reference },
+    lens: subject === 'selected-entities' ? 'inspect' : 'organization', subject, parameters: {},
     evaluation: evaluation.id, moduleProjection, groups, modules: selectedModules, claims: selectedClaims.map(claim => claim.id),
     contexts: [...new Set([...evaluation.contexts, ...selectedClaims.map(claim => claim.context),
       ...claims.filter(claim => expandedClaims.has(claim.id)).map(claim => claim.context)])],
     expansions: { requested: evaluation.requested, groups: [...expandedGroups].sort(compare),
       modules: [...expandedModules].sort(compare), claims: [...expandedClaims].sort(compare),
       moduleClaims: moduleExpansions.flatMap(outcome => outcome.claims ?? []), moduleEvaluations: moduleExpansions.map(outcome => outcome.id) },
-    selection: { matches: groups.length + (subject === 'selected-entities' ? selectedModules.length : 0),
+    selection: { ...(outsidePopulation.length ? { outsidePopulation } : {}), matches: groups.length + (subject === 'selected-entities' ? selectedModules.length : 0),
       population: subject === 'selected-entities' ? evaluation.groups.length + moduleEvaluation.modules.length : groups.length,
-      populationEstablished, materialization: populationEstablished ? 'full' : groups.length + selectedModules.length > 0 ? 'partial' : 'none', referenceStatus },
+      populationEstablished, materialization: populationEstablished && !outsidePopulation.length ? 'full' : groups.length + selectedModules.length > 0 ? 'partial' : 'none' },
   };
+  const projection = { ...payload, id: recordId(evaluation.session, 'organization-projection', mechanicalAnswerIdentity(payload)) };
   store.put([projection]);
   return projection;
 }
 
 export function organization(store: ProgramRecordStore, evaluation: OrganizationEvaluationRecord,
   subject: 'repository' | 'configured-project' = 'configured-project'): OrganizationProjectionRecord {
-  return project(store, evaluation, subject, null, false);
+  return project(store, evaluation, subject, null);
 }
 
 export function inspectOrganization(store: ProgramRecordStore, evaluation: OrganizationEvaluationRecord,
-  selector: string, reference = false): OrganizationProjectionRecord {
-  return project(store, evaluation, 'selected-entities', selector, reference);
+  subjects: readonly RecordId[]): OrganizationProjectionRecord {
+  return project(store, evaluation, 'selected-entities', subjects);
 }

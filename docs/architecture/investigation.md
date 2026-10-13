@@ -11,6 +11,24 @@ retains live evidence and its limitations. The governing contracts are
 [investigrams](../decisions/investigrams-and-progressive-investigation.md), and
 [operations and lenses](../decisions/investigation-operations-and-lenses.md).
 
+## Request context and work attribution
+
+Session entry supplies [request-scoped attribution](README.md#request-work-attribution)
+separately from the operation's semantic inputs. The accepted interpretation and its
+reusable key remain unchanged. Original generating context is retained alongside
+Session outcomes; current consumption reports preserve that origin. Attempt reports
+carry the parent context, including actual guards, on success, failure and interruption.
+Direct operation calls establish a parent without needing observation delivery.
+
+Evidence queries and initial prior-account context record their purpose, triggering
+attempt, qualified outcome and delivery state. Provider/evaluator reports distinguish
+actual acquisition/derivation from retained work and pure retrieval. A response omitted
+by the 60,000-character bound retains its acquired record references and reason but
+never enters the exposure sets. Evidence acquired before another guard stops dispatch
+remains marked not delivered. A query that never returns has an unknown outcome;
+a late completion cannot alter the sealed report or authorize more work. Worker
+termination exposes only received facts and explicitly discloses incompleteness.
+
 ## Evaluation and evidence
 
 Existing module, dependency and organization evaluators continue to own mechanical
@@ -139,11 +157,34 @@ multiple bounded responses.
 ## Dialogue, acceptance and ownership
 
 An investigation request names an operation, exact subject and semantic parameters,
-independently of its future consuming lens. The four operation objectives are
-functionality, clarification, decomposition and examination; this slice accepts
-no semantic parameters. A functionality request starts with a module reference;
-the other operations start with the exact earlier investigram and correction-aware
-context. Every new operation execution opens a fresh agent dialogue; retained outcomes do not open one. The communication contract
+independently of its future consuming Lens. The production operations remain
+functionality, clarification, decomposition and examination, with no semantic
+parameters. Operation definitions declare their objective, supported subject kind,
+initial context policy and versioned method. The functionality operation starts
+with a module reference; the other production operations start with the exact
+earlier investigram and correction-aware context. The Session captures its Lens
+and operation catalog before opening and does not accept live registration or
+replacement. An internal assembly seam permits nonpublic interpretation fixtures
+using the same definitions and coordination; additional mechanical definitions
+remain unsupported until their construction/Presentation integration is complete.
+Assembly therefore requires unchanged built-in mechanical definitions, including
+their question and applicability, and rejects mechanical replacements of
+interpretation Lenses or interpretation replacements of mechanical Lenses.
+Command aliases and the `usage` report name cannot be shadowed by Lens entries.
+Interpretation definitions must declare an empty parameter object; parameterized
+operations are not implemented. Invalid assembly fails before project acquisition.
+
+Reuse compares the operation request and an effective method containing the common
+execution version, authored operation method and a fingerprint of the actual
+operation definition. An objective or context-policy change therefore changes
+compatibility even if an author forgets a version bump. Accepted provenance and
+interpretation records retain that method; evaluation records retain the evaluation
+version with the operation method. Consuming Lens, supplied designation and current
+request occurrence remain outside the reuse key. Retained selections carry the
+actual operation request even when configuration or communication is unavailable.
+Arrangement receives a supplied title and complete selection content; it does not
+reconstruct operations or titles from Lens names. Titles participate in View
+identity, and initial-context delivery follows the declared policy. Every new operation execution opens a fresh agent dialogue; retained outcomes do not open one. The communication contract
 contains provider identity/configuration, context exchanges, explicit submission,
 failure signals, cancellation and usage reporting. No provider SDK types cross it.
 
@@ -262,8 +303,8 @@ reference before starting work. Missing and ambiguous selections expose their
 status and candidates without generation. Summary and exact investigram inspection
 select retained records through core construction. Inspection never invokes investigation.
 Known investigram references supplied to `children`, `parents` or `summarize`
-produce an explicit unsupported subject/lens selection and expected failure
-status, without coercion or generation. Missing references remain distinct.
+produce an unsupported-subject resolution report and refusal status, without
+coercion, requested-application Projection retention or generation. Missing references remain distinct.
 Investigram bindings use the existing append-only session allocator with a distinct
 `investigram-` prefix. Originals, composition children and replacements remain
 addressable. Redisplay selects explicit replacements; exact inspection retains originals. Public follow-up lenses and associated discovery use the same evaluation
@@ -273,7 +314,12 @@ Core construction retains an immutable investigation selection Projection for ea
 qualified answer. It fixes the selected subjects and outcome, original-to-selected
 account relationships, displacement, navigation, associated population and complete
 revision snapshots. Its identity excludes format, display limits, continuation,
-reference lifetime, usage and invocation reporting. Unavailable outcomes retain
+reference lifetime, usage, designation spelling and invocation reporting. A name and
+precise reference selecting the same subject/outcome and revision snapshot share
+this answer. Lookup context is supplied separately to arrangement and enters the
+View identity when exposed. Unresolved or unsupported subjects do not create
+selection records; a valid associated inspection can still have no accounts.
+Unavailable outcomes retain
 kind, code and diagnostic; provider status, body and request ID remain reporting.
 The store validates references and the selection's variant-specific invariants.
 
@@ -283,7 +329,7 @@ that content, applies display and page bounds, and obtains compact references
 through a capability restricted to the supplied reference population. It cannot
 retrieve records or refresh history. Later session work requires a new core
 selection; resolving or arranging an earlier selection preserves its answer.
-The [construction boundary decision](../decisions/qualified-projection-construction.md)
+The [construction boundary decision](../decisions/qualified-construction-under-the-request-model.md)
 also governs future Presentations of these families. Holding captured source in
 core content is not disclosure; each View classifies and records the source it
 actually exposes.
@@ -298,14 +344,16 @@ Standard support details distinguish full,
 summary and earlier-interpretation exposure per generating provenance, including
 the provenance of incoming corrections. Explicit source detail reveals captured
 support locations and excerpts, with a source-disclosure observation only when
-source detail is actually presented. Empty support containers for missing,
-unsupported selections or accounts with no disclosed source support produce no source-escape event;
+source detail is actually presented. Missing and unsupported requests produce
+non-View resolution reports without source-escape events. Accounts with no
+disclosed source support also produce no source-escape event;
 the request still records the explicit option. Events distinguish locations from
 nonempty excerpts through the shared format-aware observation classification. Investigator
 source acquisition by itself emits no human source-disclosure event. One-shot views
-disclose that their references expire when the command ends. Summary/configuration
-and selection failures produce an explicit view and expected failure exit status;
-the shell can continue. No automatic mechanical substitute is presented as a summary.
+disclose that their references expire when the command ends. A settled summary with
+configuration unavailability retains an unavailable answer and produces a View with
+an expected failure status. Unsettled subject selection produces a resolution
+report with candidates and qualification; the shell can continue after either. No automatic mechanical substitute is presented as a summary.
 
 ## Worker communication and reporting lifetime
 
@@ -333,7 +381,7 @@ otherwise unknown calls. Duplicate reports still count once.
 
 The worker's close message precedes its result message. On receiving a completed
 investigation view, the parent finalizes its usage and rendering from the sealed
-snapshots. Subsequent usage views and command observations read those same snapshots;
+snapshots. Subsequent usage reports and command observations read those same snapshots;
 worker report updates supply termination/exposure metadata without replacing the
 sealed call reports. View identity includes the finalized usage snapshot separately
 from the interpretation projection identity. The worker envelope carries an
@@ -341,8 +389,10 @@ explicit usage-independent arrangement key, including format, source choices,
 normalized continuation/page, reference lifetime and invocation reporting. The
 parent uses that key without accessing core content or reconstructing inputs from
 bounded View fields. Repeated finalization with the same usage is stable, and
-retained accounts and earlier Views remain unchanged. Subjectless usage has a
-reporting descriptor rather than a retained program Projection. Direct in-process
+retained accounts and earlier Views remain unchanged. Subjectless usage travels as an explicit report alternative with no program
+Projection, View or content identity. The parent replaces its usage from the same
+sealed ledger and re-renders it without core access; parameter-resolution reports
+use that same finalization boundary. Direct in-process
 sessions continue to use their own domain ledger and termination boundary.
 
 The parent retains received usage and the last dispatched-context snapshot

@@ -20,53 +20,6 @@ Describe the need, why it matters, and relevant constraints without designing th
 
 ## Candidates
 
-## Correct lens misreporting in observations and dependency subject status
-
-Added: 2026-10-06
-Origin: [representation audit](../records/audits/2026-10-06-user-model-concept-representations/REPORT.md) findings F1 and F2
-Area: observations and dependency lenses
-
-Two confirmed defects misdescribe requests:
-
-- [F1](../records/audits/2026-10-06-user-model-concept-representations/REPORT.md#f1-observations-describe-follow-up-investigation-requests-as-configured-project-inventory): observation request records describe `explain`, `decompose` and `examine`, and `children`/`parents` on an investigram, as "Configured-project inventory requested." Observations are the research record of PostCode use, so these entries misstate the request and its reference scope. No test covers these descriptions.
-- [F2](../records/audits/2026-10-06-user-model-concept-representations/REPORT.md#f2-a-bound-group-reference-given-to-children-or-parents-is-reported-as-an-unknown-reference): `children` or `parents` on a bound group reference reports `unknown-reference`, when the actual reason is that the lens does not apply to groups. The investigation family reports the equivalent case as an unsupported subject for the lens.
-
-Both could be corrected directly, with tests covering every lens. Changing F2's status may need agreement on the dependency Projection's selection-status vocabulary. A shared lens representation, if adopted (see "Decide how lenses are represented"), would remove the common cause.
-
-Describe the requested information from the actual request and its resolution, not by inferring one Lens from a View-wide descriptor. A coordinating View can have several Projection requests and results; observations, captions and agent context must preserve those associations when that capability is introduced. A bounded correction to current misreporting need not introduce a plural schema or wait for that future work.
-
-## Decide how lenses are represented
-
-Added: 2026-10-06
-Origin: [representation audit](../records/audits/2026-10-06-user-model-concept-representations/REPORT.md#lens)
-Area: lens model and request dispatch
-
-Lens is first-class in the user model but has no representation in code. Its identity exists only as strings that differ between requests, Projection records, Views and observations. Subject applicability, requirements and dispatch are coded inline in the request executor. Several lists of lens names are maintained separately, which caused the defects in "Correct lens misreporting in observations and dependency subject status". A GUI will need to enumerate the questions available for a subject, caption each View with its question, and edit lens parameters.
-
-Open questions:
-
-- Is `inspect` one lens whose meaning depends on subject kind, or several lenses routed from one command? The same question applies to `children`/`parents` across dependency and investigram subjects.
-- Should `usage` remain lens-shaped, or become a separate reporting request?
-- How visible should "lens" be to users? This affects naming more than the need for a representation.
-
-One option the audit proposed is a single typed lens table, giving each lens's identifier, accepted subject kinds, parameters, requirements and constructor. Command parsing, dispatch, the operation mapping and observation descriptions would all derive from it. Other forms remain open.
-
-The [coordinated-Views decision](decisions/coordinated-views-and-qualified-results.md) removes any assumption that a View has exactly one Lens or that coordinating a summary requires a composite summary Lens. Later Lens preparation should distinguish a Lens's question and parameters, its application to a subject and captured state basis, Evaluation's reusable operations, and the Presentation's input collection. Several analyses or qualified contributions can serve one Lens without a separate category. This does not decide a registration mechanism, one `inspect` identity across subject kinds, or an execution framework. The earlier exploratory representation proposals do not settle identifier spellings, a single `inspect` identity, a registry or prompt mechanism, a combined F1–F4 implementation scope, or schema migration. `usage` remains reporting under the accepted qualified-construction decision; its current lens-shaped descriptor is a compatibility issue, not an open question about whether it is a program Lens.
-
-## Decide how a Projection's subject is designated and separated from lens parameters
-
-Added: 2026-10-06
-Origin: representation audit findings [F3](../records/audits/2026-10-06-user-model-concept-representations/REPORT.md#f3-subject-designation-is-stored-and-reported-as-lens-parameters) and [F4](../records/audits/2026-10-06-user-model-concept-representations/REPORT.md#f4-dependency-subject-selection-creates-and-retains-an-unrequested-inspection-projection)
-Area: Projection records and identity
-
-Mechanical Projection records store the subject selector in `parameters`, and observations publish it as `lensParameters`. Each family represents its subject differently. Dependency `children`/`parents` resolve their subject by constructing and retaining a module `inspect` Projection that no request asked for. No lens has real parameters yet, so no answer is currently wrong. The first real parameter, such as direct versus transitive reach, would share a field with subject designation.
-
-Open question: is the subject of a lookup-based Projection the lookup or the resolved entity? Today name and reference lookups of the same module produce distinct Projection IDs with identical content. The answer affects deduplication, pinning and comparison.
-
-One option the audit proposed is a structured subject designation shared across record families, modelled on the investigation family's `SelectionSelector`, with dependency subjects resolved without retaining an `inspect` Projection. This would change Projection record shapes and possibly identity.
-
-The coordinated-Views model does not make internally requested component Projections inherently invalid. F4 concerns construction and retention of an inspection Projection to obtain dependency subject-selection data: its selection is copied, but its qualified inspection answer is not consumed as an attributed contribution, and module-only selection determines the result. Preserve genuinely consumed component answers with attributable meaning, method, basis and qualification; no universal direct component pointer is prescribed. Keep subject designation, selected subjects, program-input designations, binding policies, captured-state attribution and true Lens parameters distinct; a revision designation is not a Lens parameter merely because it occupies a request field. Subject remains open-ended: a module investigated across captured states and an identified qualified change are different possible subjects, with state designation explicit in either case. No change-investigation implementation follows from that distinction. Do not infer a universal identity or deduplication policy from the possibility of several inputs.
-
 ## Decide how GUI Presentations and their parameters are represented
 
 Added: 2026-10-06
@@ -130,8 +83,9 @@ Also assess View-to-View input dependencies and anchors: distinguish discovery l
 
 Before adding live refresh, multi-state analysis, cross-session coordination, workspace persistence or agent-context export, resolve the necessary reference/correspondence, result-selection, captured-result versus repeatable-request references, composition-recording and retention contracts for that capability. For multi-Projection output, assess the singular View descriptors, observation request records and any agent-context format together. Record the actual Projections presented, their composition and captured-state associations, and make composition/basis changes visible. Decide the required observation events and any workspace-state retention separately; recording a change does not inherently require workspace persistence. Expose the choices actually made and their criteria at the time, rather than explanations reconstructed from subsequently changed defaults. Inspectability requires neither a general planner nor a separately stored plan artifact.
 
-This candidate creates no schedule or requirement to implement those capabilities together. Existing defects in request observations, unsupported-subject status and parameter descriptors remain separate candidates and must not be excused as missing future features.
+This candidate creates no schedule or requirement to implement those capabilities together. The [Lens request-model plan](plans/lens-request-model.md) incorporates the existing defects in request observations, unsupported-subject status and parameter descriptors. They remain defects until implementation corrects them and must not be excused as missing future features. Broader coordinated-View/state-scope conformance remains separately scoped here.
 
+<a id="consider-summary-suggestions-and-recursive-navigation"></a>
 ## Consider summary suggestions and recursive navigation
 
 Added: 2026-10-07
@@ -139,6 +93,40 @@ Origin: [Summary Views and navigation](decisions/coordinated-views-and-qualified
 Area: entry experience and navigation
 
 The product permits suggesting a summary View when no more specific information need is expressed; it does not mandate that default. The CLI’s module-inventory default is compatible with that direction, while `summarize` offers the implemented module interpretation. Consider whether summary suggestions and recursive navigation would be useful in future interface work, distinguishing coordination of qualified inputs from synthesis of a new answer. Define useful selection and omission disclosure without requiring a summary Lens for every subject. No change to current commands or immediate GUI work is implied.
+
+<a id="assess-investigation-initiation-and-parent-attribution"></a>
+## Assess investigation initiation and parent attribution
+
+Added: 2026-10-10
+Origin: [Application specification boundaries](decisions/application-specification-boundaries.md#attribute-system-initiated-investigation-and-constrain-autonomous-work)
+Area: request coordination, resource governance, observations
+
+The completed [Lens request-model task](../records/tasks/2026-10-11-lens-request-model.md) implements bounded request, prerequisite and evidence-work attribution across current mechanical resolution, summary/follow-up Evaluation, investigator evidence access and publication. Parent descriptions, generating origins and current consumption travel with qualified outcomes. The [implemented attribution boundary](architecture/README.md#request-work-attribution) describes this support and its limits; do not duplicate that completed work here.
+
+Retain the broader assessment for paths outside that scope and any independently substantial gaps identified by implementation. Establish which parent/trigger, initiator, captured-basis, outcome and resource relationships remain inspectable and attributable in observations, including failure, reuse and cancellation; do not infer conformance from command names or request identifiers. The separate captured-basis export and navigation-origin candidates retain their own scope.
+
+Preserve existing operation reuse, failure retention, cancellation ownership and construction boundaries. Record concrete remaining gaps rather than requiring a general planner or record for every helper. Do not defer a gap that prevents the planned request model from fulfilling its own contract. Complete assessment before relying on observations for comprehensive initiation/resource-policy evaluation, and establish authorization/attribution before adding autonomous execution.
+
+<a id="design-a-bounded-shared-context-interface-for-coding-agents"></a>
+## Design a bounded shared-context interface for coding agents
+
+Added: 2026-10-10
+Origin: [Application specification integration contract](app-specification.md#shared-context-for-external-coding-agents)
+Area: external-agent context and reference lifecycle
+
+Choose a first useful exchange that lets an external coding agent identify the focused/open Views and their qualified information without translating them manually into source coordinates. Distinguish exact retained Projection references from repeatable requests, disclose their lifetime and captured basis, and preserve source mappings, provenance, and relevant derivation. Assess current interfaces before selecting a transport or artifact format. Define which Workspaces/windows are included, how active focus is selected, and how the human can inspect that scope; a most-recently-active-window policy is a candidate, not an inherited requirement.
+
+If using a generated artifact, specify publication, revision, and evidence-exclusion behavior. Do not require richer Workspace purpose/context machinery or persistence just to share existing Views and focus. No particular agent host, file format, or implementation milestone is selected by this candidate.
+<a id="assess-and-preserve-navigation-origin-lineage"></a>
+## Assess and preserve navigation-origin lineage
+
+Added: 2026-10-10
+Origin: [Application specification conformance](decisions/application-specification-boundaries.md#adoption-and-conformance)
+Area: investigation context, navigation provenance, interfaces
+
+The CLI retains selected subjects for investigram follow-ups, but not general origin-View relationships for ordinary navigation. Projections and observation batches do not by themselves reconstruct where the human found a reference. Disclose that limited context rather than claiming full investigation history.
+
+Assess which CLI and future GUI interactions establish discovery, source-navigation, and derivation origins, which existing records preserve them, and where origin is unavailable. Scope bounded retention and inspection support before claiming full navigation-origin history. Do not infer a source View merely because it previously displayed the same reference. Preserve qualified captured bases and distinguish navigation origin from program relationships and evidence dependencies. This does not require persistent Workspaces, a separately stored View object, or a general history service.
 
 ## Qualify evidence that modules are used for testing
 
@@ -295,14 +283,15 @@ citation indexes and correction eligibility. Preserve qualified results and
 operation provenance, and compare interpretive quality with separate dialogues;
 selecting several operations does not itself require grouped execution.
 
+<a id="provide-git-history-as-investigator-evidence"></a>
 ## Provide Git history as investigator evidence
 
 Added: 2026-09-29
 Origin: module investigation scope discussion before implementation
 Area: investigation evidence and historical context
 
-The [product design](../foundation/product-design.md#32-summary-as-initial-view-and-recursive-navigation)
-allows summaries to draw on history, while the initial
+The [research product design](../foundation/product-design.md#sources-of-program-knowledge)
+recognizes repository history as evidence, while the initial
 [module investigation slice](plans/module-investigation.md) excludes it.
 Make relevant history available through the subject-based evidence interface
 to help explain how code acquired its current shape and recorded rationale.
@@ -462,6 +451,7 @@ module populations, and differing project configurations without treating
 repository layout alone as proof of a project's semantic boundary. Preserve the
 scope and evidence behind both project-level and collection-level conclusions.
 
+<a id="review-the-investigation-ui-and-ux-as-a-whole"></a>
 ## Review the investigation UI and UX as a whole
 
 Added: 2026-09-23
@@ -501,6 +491,10 @@ compatible replacement accounts from the structural “conflicting alternatives�
 label, and local exact selection from family primary, but finds the wording demanding.
 Use these captures as further qualitative evidence for the same journey review,
 without implying measured misunderstanding or authorizing current-slice redesign.
+
+For graphical-interface planning, use the [simple Workspace model](app-specification.md#workspaces-and-navigation): a collection and arrangement of Views, displayable in a tab or window. Decide bounded placement, focus, navigation/history, and transient inspection behavior using actual supported core capabilities. Keep exact retained-answer presentation and qualification visible. Shared Workspace purpose/defaults, specialized Workspace kinds, persistence, and a particular initial View are separate future choices, not prerequisites for this review. Opening a repository or subject is an explicit initial-View request when the action communicates that behavior; identify its scope and applicable resource constraints. Autonomous orientation outside that request requires an authorized resource policy before execution.
+
+Decide how visible Lens terminology and identifiers should be to users, and how an interface offers the applicable questions for a selected subject, captions answers and exposes meaningful parameters. The [Lens request-model plan](plans/lens-request-model.md) supplies explicit applicability and question definitions; it does not choose GUI controls or require the interface to use the word “Lens”. Keep these interaction choices in the broader UX review.
 
 ## Investigate analysis parallelism and asynchronous I/O
 

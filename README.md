@@ -8,7 +8,7 @@ Those views preserve the provenance, epistemological status, and limitations of 
 
 As an initial simplification, PostCode's projections and views are read-only. Humans continue to direct program changes by instructing coding agents in prose.
 
-See [`foundation/product-design.md`](foundation/product-design.md) for the full conceptual design.
+See the [research product design](foundation/product-design.md) for conceptual commitments, the [application specification](docs/app-specification.md) for intended application behavior and high-level design, and the [capability reference](docs/capability-reference.md) for the current toolbox.
 
 ## Development
 
@@ -220,7 +220,7 @@ limits, scope, evidence qualifications, and navigation examples.
 ## Observability
 
 Each accepted shell command and each one-shot view request submits an experimental
-version-one observation batch to a timestamped local file under a UTC date
+version-two observation batch to a timestamped local file under a UTC date
 subdirectory of this PostCode checkout's `_observations/` directory. The CLI
 discloses that absolute root destination on stderr.
 The batch carries the session identifier and command order (1 for one-shot use),

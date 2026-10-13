@@ -1,8 +1,14 @@
 # Candidate Capabilities
 
-This non-governing inventory keeps possible future analyses, lenses, presentations, and interactions visible when considering future implementation steps. Entries are possibilities, not requirements, accepted design decisions, roadmap commitments, scheduled work, or authorization to implement. They may be refined, combined, or rejected before implementation.
+This note is a place to remember ideas that have arisen and seem potentially promising, for future consideration rather than current planning. Ideas may be loosely formed or incomplete and have not necessarily been evaluated or reviewed; some explore new possibilities, while others may explore ways to fulfil existing requirements or improve existing capabilities. Consistent headings and detailed prose help preserve the thinking; they do not indicate maturity, validation, or readiness for implementation.
+
+These notes are non-governing, are not an approved roadmap, and do not authorize implementation.
+
+This inventory keeps possible future analyses, lenses, presentations, and interactions visible when considering future implementation steps.
 
 The [backlog](../docs/backlog.md) records broader worthwhile work and concerns; this inventory gives exploratory product capabilities room to retain their questions, evidence distinctions, and open alternatives. Inclusion here assigns no priority. Any selected capability still needs the applicable planning, decision, and task authorization before implementation.
+
+[Candidate UX](candidate-ux.md) explores how someone could initiate, navigate, organize, and continue these investigations. This inventory focuses on what PostCode could help someone discover or establish. Ideas may span both; cross-link their complementary questions rather than duplicate their rationale.
 
 ## Investigation across changing repository states
 

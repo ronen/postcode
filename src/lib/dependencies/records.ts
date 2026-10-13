@@ -90,7 +90,10 @@ export interface DependencyProjectionRecord extends RecordContext {
   readonly kind: 'dependency-projection';
   readonly lens: 'dependency-structure' | 'dependency-children' | 'dependency-parents';
   readonly subject: 'configured-project' | 'selected-modules';
-  readonly parameters: { readonly selector: string | null; readonly reference: boolean };
+  /** Selected subjects occupy this endpoint; null selects the project-owned population. */
+  readonly subjectRole: 'parent' | 'child' | null;
+  readonly coverageScope: 'evaluation' | 'subject-owners' | 'unattributable-to-subjects';
+  readonly parameters: Readonly<Record<string, never>>;
   readonly evaluation: RecordId;
   readonly subjects: readonly RecordId[];
   readonly modules: readonly RecordId[];
@@ -102,10 +105,11 @@ export interface DependencyProjectionRecord extends RecordContext {
   readonly contexts: readonly RecordId[];
   readonly graph: DependencyGraph | null;
   readonly selection: {
+    /** Established subjects absent from the supplied evaluation; no population membership is asserted. */
+    readonly outsidePopulation?: readonly RecordId[];
     readonly matches: number;
     readonly population: number;
     readonly populationEstablished: boolean;
-    readonly referenceStatus: 'current' | 'unknown-reference';
   };
   readonly expansions: {
     readonly moduleEvaluations: readonly RecordId[];

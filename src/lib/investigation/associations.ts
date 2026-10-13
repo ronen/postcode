@@ -1,3 +1,4 @@
+import { validatePresentationContent } from '../presentation-contracts.js';
 import { revisionPage } from './revision-page.js';
 import { resolveInvestigationContent } from './content.js';
 import type { InvestigationProjectionContent } from './content.js';
@@ -10,6 +11,7 @@ import type { ProgramRecordStore, RecordId, SessionId } from '../records.js';
 /** Pure listing arrangement over a retained full association population. */
 export function arrangeAssociatedInvestigations(content: InvestigationProjectionContent, refs: ReadonlyMap<RecordId, string>, after?: string,
   lifetime: 'session' | 'command' = 'session') {
+  validatePresentationContent({ contract: 'investigation', value: content });
   const subjects = content.projection.subjects;
   const accounts = new Map(content.accounts.map(item => [item.id, item]));
   const origins = new Map(content.provenance.map(item => [item.id, item]));

@@ -4,14 +4,13 @@ Plans in this directory describe future work that the human has explicitly appro
 
 Use descriptive, unnumbered filenames, such as `initial-product-slice.md` or `agent-context-exchange.md`. Do not encode priority or sequence in filenames. Express dependencies and ordering in the plan itself or in a current roadmap when one becomes necessary.
 
-## Approved upcoming work
-
-- [Module investigation](module-investigation.md) — approved; implementation has not begun. Depends on the foundation-readiness plan's completed and reviewed boundaries.
-
 ## Completed work
+
+- [Explicit Lenses and qualified request resolution](lens-request-model.md) — completed after integrated and PR review; the [implementation task](../../records/tasks/2026-10-11-lens-request-model.md) closed with human authorization on 2026-10-13.
 
 - [Foundation readiness](foundation-readiness.md) — completed after M5 review and human-authorized closure; two filesystem case-rule defects remain explicitly deferred in the [backlog](../backlog.md).
 - [Transient interactive session shell](transient-session-shell.md) — completed.
+- [Module investigation](module-investigation.md) — completed; the [implementation task](../../records/tasks/2026-09-29-module-investigation.md) closed on 2026-10-02.
 
 ## Lifecycle
 

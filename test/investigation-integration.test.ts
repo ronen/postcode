@@ -1,3 +1,7 @@
+import { finalizeRequestReport } from '../src/lib/request-reporting.js';
+import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
+import type { UsageReport } from '../src/lib/request-reporting.js';
+import { requireView, requireResolution } from './request-helpers.js';
 import { InvestigatorReferences } from '../src/lib/investigation/openai/references.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
@@ -41,7 +45,8 @@ function summaryAgent() {
   ]);
 }
 const summary = { lens: 'summarize' as const, selector: 'entry', presentation: { format: 'json' as const, sourceDetail: false } };
-function view(result: { view: { schema: string } }): InvestigationView {
+function view(executed: import('../src/lib/session-protocol.js').ExecutedRequest): InvestigationView {
+  const result = requireView(executed);
   assert.equal(result.view.schema, 'postcode-investigation-view/1-experimental');
   return result.view as InvestigationView;
 }
@@ -66,15 +71,48 @@ test('operation retention is independent of presentation and exact inspection pr
   assert.deepEqual(repeated.accounts, first.accounts);
   assert.equal(agent.inputs.length, 1);
   assert.equal(repeated.usage.calls, 2);
+  const moduleReference = first.references.find(item => item.id === first.selected[0])!.reference;
+  const byReference = view(await f.session.execute({ ...summary, selector: moduleReference, reference: true }));
+  assert.deepEqual(byReference.projection, first.projection, 'name and reference reuse the same retained answer snapshot');
+  assert.notEqual(byReference.id, first.id, 'exposed resolution and reuse reporting affect the View');
+  assert.equal(agent.inputs.length, 1);
   const reference = first.references.find(item => item.id === first.accounts[0]!.id)!.reference;
   const inspected = view(await f.session.execute({ lens: 'inspect', selector: reference, reference: true, presentation: { format: 'json', sourceDetail: true } }));
   assert.deepEqual(inspected.accounts, first.accounts);
   assert.ok(inspected.sourceDetail!.items.some(item => item.kind === 'source-evidence'));
   assert.equal(agent.inputs.length, 1);
-  const missing = view(await f.session.execute({ lens: 'inspect', selector: 'investigram-unknown', reference: true, presentation: summary.presentation }));
-  assert.equal(missing.projection.selection.status, 'missing');
+  const missing = requireResolution(await f.session.execute({ lens: 'inspect', selector: 'investigram-unknown', reference: true, presentation: summary.presentation }));
+  assert.equal(missing.resolution.reason, 'unknown-reference');
   const direct = await f.session.evaluateInvestigation(first.result!.request);
   assert.equal(direct.reused, true, 'operation reuse does not depend on a lens');
+});
+
+test('unbound raw investigrams are classified before applicability and share answers with compact references', async t => {
+  const agent = summaryAgent(), f = await session(t, agent);
+  const inventory = requireView(await f.session.execute({ ...summary, lens: 'modules', selector: null })).view;
+  assert.equal(inventory.schema, 'postcode-view/1-experimental');
+  const result = await f.session.evaluateInvestigation({ operation: 'functionality', subject: inventory.modules[0]!.id, parameters: {} });
+  assert.equal(result.evaluation?.outcome.kind, 'accepted');
+  if (result.evaluation?.outcome.kind !== 'accepted') throw new Error('Expected retained interpretation');
+  const id = result.evaluation.outcome.root;
+  const allocations = t.mock.method(MemoryProgramRecordStore.prototype, 'entityIds');
+  const put = t.mock.method(MemoryProgramRecordStore.prototype, 'put');
+  const refused = requireResolution(await f.session.execute({ ...summary, lens: 'children', selector: id, reference: true }));
+  assert.equal(refused.resolution.reason, 'unsupported-subject');
+  assert.equal(refused.resolution.candidates[0]!.id, id);
+  assert.equal(allocations.mock.calls.length, 0);
+  assert.equal(put.mock.calls.length, 0);
+  const raw = view(await f.session.execute({ ...summary, lens: 'inspect', selector: id, reference: true }));
+  const compact = raw.references.find(item => item.id === id)!.reference;
+  const repeated = view(await f.session.execute({ ...summary, lens: 'inspect', selector: compact, reference: true }));
+  assert.deepEqual(raw.projection, repeated.projection);
+  assert.deepEqual(raw.accounts, repeated.accounts);
+  const incompatible = requireResolution(await f.session.execute({ ...summary, lens: 'children', selector: compact, reference: true }));
+  assert.equal(incompatible.resolution.reason, 'unsupported-subject');
+  const fresh = await session(t);
+  const foreign = requireResolution(await fresh.session.execute({ ...summary, lens: 'inspect', selector: id, reference: true }));
+  assert.equal(foreign.resolution.reason, 'unknown-reference');
+  assert.equal(agent.inputs.length, 1);
 });
 
 test('successive operation evaluations atomically retain corrections and supply earlier retained context', async t => {
@@ -150,6 +188,7 @@ test('CLI worker summary, reuse, exact child inspection, source traceability and
     sink: { async submit(batch) {
       batches.push(batch);
       driver.run(() => {
+        if (batch.records.some(item => item.kind === 'usage-report')) { input.end(); return; }
         const data = batch.records.find(item => item.kind === 'qualified-view')!.value as InvestigationView;
         if (batches.length === 1) { assert.equal(data.accounts.length, 2); rootReference = data.references.find(item => item.id === data.accounts[0]!.id)!.reference; input.write('summarize entry\n'); }
         else if (batches.length === 2) { assert.equal(data.result!.reused, true); input.write(`inspect @${data.references.find(item => item.id === data.accounts[1]!.id)!.reference}\n`); }
@@ -249,15 +288,15 @@ test('selection failures and cross-session investigram references cannot start g
   const opened = await openSession({ configPath: f.configPath }, { investigation: { agent } });
   assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
   t.after(() => opened.session.close());
-  const ambiguous = view(await opened.session.execute(summary));
-  assert.equal(ambiguous.projection.selection.status, 'ambiguous');
-  assert.equal(ambiguous.candidates.length, 2);
+  const ambiguous = requireResolution(await opened.session.execute(summary));
+  assert.equal(ambiguous.resolution.reason, 'ambiguous');
+  assert.equal(ambiguous.resolution.candidates.length, 2);
   assert.equal(agent.inputs.length, 0);
-  const selected = view(await opened.session.execute({ ...summary, selector: ambiguous.candidates[0]!.reference, reference: true }));
+  const selected = view(await opened.session.execute({ ...summary, selector: ambiguous.resolution.candidates[0]!.reference, reference: true }));
   assert.equal(selected.accounts.length, 2);
   const fresh = await session(t, summaryAgent());
-  const foreign = view(await fresh.session.execute({ lens: 'inspect', selector: selected.references[0]!.reference, reference: true, presentation: summary.presentation }));
-  assert.equal(foreign.projection.selection.status, 'missing');
+  const foreign = requireResolution(await fresh.session.execute({ lens: 'inspect', selector: selected.references[0]!.reference, reference: true, presentation: summary.presentation }));
+  assert.equal(foreign.resolution.reason, 'unknown-reference');
 });
 
 test('session usage keeps unknown and anomalous calls distinct and does not fail on aggregate overflow', async t => {
@@ -406,7 +445,7 @@ for (const shell of [false, true]) test(`usage arriving after a reply remains at
   });
   assert.equal(code, 0);
   for (const batch of batches) {
-    const data = batch.records.find(item => item.kind === 'qualified-view')!.value as InvestigationView;
+    const data = batch.records.find(item => item.kind === 'qualified-view' || item.kind === 'usage-report')!.value as InvestigationView | UsageReport;
     const observed = batch.records.find(item => item.kind === 'investigation-usage')!.value as InvestigationUsageReport;
     assert.equal(data.usage.calls, 2); assert.equal(data.usage.missingCalls, 0);
     assert.deepEqual(data.usage, observed);
@@ -424,16 +463,21 @@ test('shell rejects known investigram subjects for mechanical and summary lenses
   const code = await runCli(['shell', '--project', f.configPath], { cwd: f.root, checkout: f.root, input, investigator: agent,
     stdout: text => { output += text; if (!started && text.includes('postcode> ')) { started = true; setImmediate(() => input.write('summarize entry\n')); } }, stderr: () => {},
     sink: { async submit(batch) { batches.push(batch); driver.run(() => {
-      const data = batch.records.find(item => item.kind === 'qualified-view')!.value as InvestigationView;
-      if (batches.length === 1) reference = data.references[0]!.reference;
-      else { assert.equal(data.projection.selection.status, 'unsupported-subject-lens'); assert.equal(data.unsupportedSubject, 'investigram'); assert.equal(data.result, null); assert.equal(data.accounts.length, 0); }
+      if (batches.length === 1) reference = (batch.records.find(item => item.kind === 'qualified-view')!.value as InvestigationView).references[0]!.reference;
+      else {
+        const data = batch.records.find(item => item.kind === 'resolution-result')!.value as import('../src/lib/request-reporting.js').ResolutionReport;
+        assert.equal(data.resolution.reason, 'unsupported-subject');
+        assert.equal(data.resolution.candidates[0]!.kind, 'investigram');
+        assert.deepEqual(data.resolution.retainedAnswers, []);
+        assert.equal(batch.records.some(item => item.kind === 'qualified-view'), false);
+      }
       const command = commands[batches.length - 1];
       if (command) input.write(`${command} @${reference}\n`); else input.end();
     }); return { accepted: true }; } },
   });
   driver.verify(); assert.equal(code, 0); assert.equal(agent.inputs.length, 1);
   assert.equal(batches.length, 4); assert.match(output, /unsupported subject\/lens combination/);
-  assert.ok(batches.slice(1).every(batch => batch.events.at(-1)!.type === 'command-failed'));
+  assert.ok(batches.slice(1).every(batch => batch.events.at(-1)!.type === 'command-refused'));
   assert.doesNotMatch(output, /unknown-reference|Selection: missing/);
 });
 
@@ -485,9 +529,9 @@ for (const format of ['json', 'unicode'] as const) test(`CLI seals authoritative
       callbacks[0]!(syntheticUsage); // Existing report, not another charged call.
       callbacks[1]!(syntheticUsage); callbacks[1]!(syntheticUsage);
     }
-    if (event === 'message' && message?.type === 'reply' && message.result?.view.schema === 'postcode-investigation-view/1-experimental'
+    if (event === 'message' && message?.type === 'reply' && message.result?.kind === 'view' && message.result.view.schema === 'postcode-investigation-view/1-experimental'
       && message.result.view.projection.lens === 'summarize') workerMissing = message.result.view.usage.missingCalls;
-    if (event === 'message' && message?.type === 'reply' && message.result?.investigationArrangementKey) {
+    if (event === 'message' && message?.type === 'reply' && message.result?.kind === 'view' && message.result.investigationArrangementKey) {
       arrangementKeys.set(message.result.view.projection.id, message.result.investigationArrangementKey);
     }
     const delivered = Reflect.apply(emit, this, [event, ...args]) as boolean;
@@ -508,7 +552,7 @@ for (const format of ['json', 'unicode'] as const) test(`CLI seals authoritative
   assert.equal(batches.length, 2);
   let first: InvestigationUsageReport | undefined;
   for (const batch of batches) {
-    const data = batch.records.find(item => item.kind === 'qualified-view')!.value as InvestigationView;
+    const data = batch.records.find(item => item.kind === 'qualified-view' || item.kind === 'usage-report')!.value as InvestigationView | UsageReport;
     const observed = batch.records.find(item => item.kind === 'investigation-usage')!.value as InvestigationUsageReport;
     const rendered = batch.records.find(item => item.kind === 'rendered-output')!.value as string;
     assert.deepEqual(data.usage, observed);
@@ -516,9 +560,15 @@ for (const format of ['json', 'unicode'] as const) test(`CLI seals authoritative
     assert.equal(data.usage.calls, 3); assert.equal(data.usage.missingCalls, 1); assert.equal(data.usage.anomalousCalls, 0);
     assert.equal(data.usage.totals[0]!.categories.find(item => item.category === 'input')!.value, 40);
     assert.deepEqual(data.usage.attempts[0]!.usage.map(call => call.reports.length), [1, 1, 0]);
-    assert.deepEqual(finalizeInvestigationUsage(data, data.usage, arrangementKeys.get(data.projection.id)!), data, 'finalization is idempotent');
-    const different = finalizeInvestigationUsage(data, { ...data.usage, missingCalls: 2 }, arrangementKeys.get(data.projection.id)!);
-    assert.equal(different.projection.id, data.projection.id); assert.notEqual(different.id, data.id);
+    if (data.schema === 'postcode-investigation-view/1-experimental') {
+      assert.deepEqual(finalizeInvestigationUsage(data, data.usage, arrangementKeys.get(data.projection.id)!), data, 'finalization is idempotent');
+      const different = finalizeInvestigationUsage(data, { ...data.usage, missingCalls: 2 }, arrangementKeys.get(data.projection.id)!);
+      assert.equal(different.projection.id, data.projection.id); assert.notEqual(different.id, data.id);
+    } else {
+      assert.deepEqual(finalizeRequestReport(data, data.usage), data);
+      assert.equal('projection' in data, false);
+      assert.ok(!batch.events.some(item => item.type === 'view-produced'));
+    }
     assert.ok(stdout.includes(rendered));
     if (format === 'json') assert.deepEqual(JSON.parse(rendered).usage, observed);
     else { assert.match(rendered, /Session reported usage: 3 calls; 1 unknown; 0 anomalous/); assert.match(rendered, /input 40 tokens/); }
@@ -562,6 +612,7 @@ for (const format of ['json', 'unicode'] as const) test(`progressive worker lens
     stdout: text => { output += text; if (!started && text.includes('postcode> ')) { started = true; setImmediate(() => input.write('summarize entry\n')); } }, stderr: () => {},
     sink: { async submit(batch) {
       batches.push(batch); driver.run(() => {
+        if (batch.records.some(item => item.kind === 'usage-report')) { input.end(); return; }
         const observedView = batch.records.find(item => item.kind === 'qualified-view');
         assert.ok(observedView, JSON.stringify(batch));
         const data = observedView.value as InvestigationView;
@@ -603,6 +654,18 @@ for (const format of ['json', 'unicode'] as const) test(`progressive worker lens
     refs.close();
   }
   assert.equal(batches.length, 8);
+  const expectedLenses = ['summarize', 'decompose', 'explain', 'examine', 'examine', 'inspect', 'inspect'];
+  for (const [index, lens] of expectedLenses.entries()) {
+    const context = batches[index]!.records.find(item => item.kind === 'request')!.value as import('../src/lib/request-reporting.js').RequestContext;
+    assert.equal(context.request.kind, 'lens');
+    if (context.request.kind !== 'lens') throw new Error('Expected Lens request');
+    assert.equal(context.request.lens, lens);
+    assert.equal(context.request.designation.kind, index === 0 || index === 6 ? 'name' : 'reference');
+    assert.deepEqual(context.request.parameters, {});
+  }
+  const usageRequest = batches[7]!.records.find(item => item.kind === 'request')!.value as import('../src/lib/request-reporting.js').RequestContext;
+  assert.equal(usageRequest.request.kind, 'report');
+  assert.ok(!batches[7]!.events.some(item => item.type === 'view-produced'));
   assert.ok(batches.every((batch, index) => index === 5 || !batch.events.some(item => item.type === 'source-escape')));
   assert.match(output, format === 'unicode' ? /Investigation subject: .*provenance, not composition/ : /"navigation"/);
   const usages = batches.at(-1)!.records.find(item => item.kind === 'investigation-usage')!.value as InvestigationUsageReport;
@@ -614,21 +677,21 @@ test('associated inspection is bounded, navigable and independent of incidental 
     children: Array.from({ length: 30 }, (_, i) => ({ ...draft(item.request.subject, [], `part-${i}`),
       associations: [{ subject: item.request.subject, qualifications: ['Explicitly described.'], evidence: [] }] })) } })]);
   const f = await session(t, agent);
-  const before = await f.session.execute({ ...summary, lens: 'inspect' });
+  const before = requireView(await f.session.execute({ ...summary, lens: 'inspect' }));
   assert.equal('investigations' in before.view && before.view.investigations?.total, 0);
   const original = JSON.stringify(before.view);
   const generated = view(await f.session.execute(summary));
-  const first = await f.session.execute({ ...summary, lens: 'inspect' });
+  const first = requireView(await f.session.execute({ ...summary, lens: 'inspect' }));
   assert.ok('investigations' in first.view && first.view.investigations);
   assert.equal(first.view.investigations.total, 31); assert.equal(first.view.investigations.items.length, 24);
-  const second = await f.session.execute({ ...summary, lens: 'inspect', after: first.view.investigations.next! });
+  const second = requireView(await f.session.execute({ ...summary, lens: 'inspect', after: first.view.investigations.next! }));
   assert.ok('investigations' in second.view && second.view.investigations);
   assert.equal(second.view.investigations.items.length, 7); assert.equal(second.view.investigations.next, null);
   assert.equal(new Set([...first.view.investigations.items, ...second.view.investigations.items].map(item => item.id)).size, 31);
   assert.equal(JSON.stringify(before.view), original); assert.notEqual(before.view.projection.id, first.view.projection.id);
-  const invalid = await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-00000000' });
-  const otherInvalid = await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-11111111' });
-  const invalidAgain = await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-00000000' });
+  const invalid = requireView(await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-00000000' }));
+  const otherInvalid = requireView(await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-11111111' }));
+  const invalidAgain = requireView(await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-00000000' }));
   assert.equal(invalid.failed, true); assert.equal(otherInvalid.failed, true);
   assert.ok('investigations' in invalid.view && invalid.view.investigations);
   assert.equal(invalid.view.investigations.status, 'unknown-continuation');
@@ -637,16 +700,16 @@ test('associated inspection is bounded, navigable and independent of incidental 
   assert.notEqual(invalid.view.id, otherInvalid.view.id);
   assert.equal(invalid.view.projection.id, invalidAgain.view.projection.id);
   assert.equal(invalid.view.id, invalidAgain.view.id);
-  const humanInvalid = await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-00000000', presentation: { format: 'unicode', sourceDetail: false } });
+  const humanInvalid = requireView(await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-00000000', presentation: { format: 'unicode', sourceDetail: false } }));
   assert.match(humanInvalid.rendered, /continuation reference is not in this listing/);
   assert.match(humanInvalid.rendered, /without --after/);
   assert.equal(agent.inputs.length, 1);
   for (const lens of ['explain', 'decompose', 'examine'] as const) {
-    const unsupported = view(await f.session.execute({ ...summary, lens, reference: true, selector: generated.candidates[0]!.reference }));
-    assert.equal(unsupported.projection.selection.status, 'unsupported-subject-lens');
-    assert.match(renderInvestigationView({ ...unsupported, presentation: { format: 'unicode', sourceDetail: false } }), /This reference identifies part of the program/);
-    const missing = view(await f.session.execute({ ...summary, lens, reference: true, selector: 'investigram-00000000' }));
-    assert.equal(missing.projection.selection.status, 'missing');
+    const unsupported = requireResolution(await f.session.execute({ ...summary, lens, reference: true, selector: generated.candidates[0]!.reference }));
+    assert.equal(unsupported.resolution.reason, 'unsupported-subject');
+    assert.equal(unsupported.resolution.candidates[0]!.kind, 'module');
+    const missing = requireResolution(await f.session.execute({ ...summary, lens, reference: true, selector: 'investigram-00000000' }));
+    assert.equal(missing.resolution.reason, 'unknown-reference');
   }
   assert.equal(agent.inputs.length, 1);
 });
