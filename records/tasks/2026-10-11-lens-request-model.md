@@ -303,3 +303,5 @@ Independent reviewer evidence at `e4452fdfcf797ab04222cbea5cd546995ade9366`: typ
 ### Copilot PR-review correction verification — 2026-10-13
 
 Checked the capability-reference paragraph against current status, request-work architecture and the distinct captured-basis backlog limitation. The replacement architecture link and explicit anchor exist. Retrieved review bodies were checked for verbatim inclusion, including original mixed line endings and invisible path characters. `git diff --check` passed. No runtime tests were rerun for this documentation-only correction; the independently reported 589/589 result and its exact implementation target remain recorded above. No GitHub review reply or resolution is claimed.
+
+Publication verification: the correction and review records were pushed to PR #10. The complete commit-range whitespace check flags only CRLF endings in Copilot’s verbatim table; preserving that source is intentional. The same range passes with `core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol`. This qualification is recorded in disposition commit `a7eb32e`; the authored review remains unchanged.
