@@ -1,7 +1,7 @@
 import { canonical } from './identity.js';
 import { freezeOwned } from './immutable.js';
 import { lenses } from './requests.js';
-import type { LensDefinition, ResultContract, ViewRequest } from './requests.js';
+import type { LensDefinition, ResultContract, NormalizedRequest } from './requests.js';
 import type { SubjectResolution } from './subject-resolution.js';
 import type { PresentationContent } from './presentation-contracts.js';
 import type { ProgramRecordStore, RecordId, ModuleExpansion, ProjectionRecord } from './records.js';
@@ -33,7 +33,7 @@ interface Inputs {
   readonly store: ProgramRecordStore;
   readonly analysis: ModuleAnalysis;
   readonly subjects: readonly RecordId[];
-  readonly request: ViewRequest;
+  readonly request: Extract<NormalizedRequest, { kind: 'lens' }>;
   readonly expansions: Expansions;
   readonly work: WorkScope;
 }
@@ -76,10 +76,12 @@ const implementations: Readonly<Record<string, MechanicalImplementation>> = free
     return result({ contract: 'modules', value: resolveModuleProjection(store, modules(store, basis)) });
   } },
   organization: { definition: lenses.organization, lookup, required: none, contract: fixed('organization'), construct: ({ store, analysis, expansions, work, request }) => {
+    const designation = request.designation.kind;
+    if (designation !== 'default' && designation !== 'configured-project' && designation !== 'repository') throw new Error('Expected a resolved organization population designation');
     const basis = evaluateModules(store, analysis, expansions.modules, work);
     const outcome = evaluateOrganization(store, basis, expansions.groups, work); work.check();
     return result({ contract: 'organization', value: resolveOrganizationProjection(store,
-      organization(store, outcome, request.subject === 'repository' ? 'repository' : 'configured-project')) });
+      organization(store, outcome, designation === 'repository' ? 'repository' : 'configured-project')) });
   } },
   inspection: { definition: lenses.inspect, lookup, required: { modules: [], groups: groupStandardExpansions },
     contract: resolution => resolution.candidates[0]?.kind === 'investigram' ? 'investigation'

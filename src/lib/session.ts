@@ -267,7 +267,7 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
         failed: !!investigationLens && (!result?.evaluation || result.evaluation.outcome.kind !== 'accepted') || view.investigations?.status === 'unknown-continuation' };
     }
     if (!mechanical) throw new Error('Missing mechanical implementation');
-    const constructed = mechanical.construct({ store, analysis, subjects: selected, request,
+    const constructed = mechanical.construct({ store, analysis, subjects: selected, request: normalizedRequest,
       expansions: { modules: moduleExpansions, groups: groupExpansions }, work: answerWork });
     const content = constructed.content;
     const decision = settlePresentation(presentationPlan, content);

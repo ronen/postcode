@@ -70,7 +70,7 @@ export type NormalizedRequest = RequestChoices & (
 export interface RejectedInputProblem {
   readonly field: string;
   readonly reason: string;
-  readonly representation: 'preserved' | 'omitted';
+  readonly representation: 'preserved' | 'omitted' | 'absent';
   readonly omittedField?: string;
 }
 export type RejectedRequest = RequestChoices & {
@@ -135,6 +135,19 @@ export function captureRequest(request: ViewRequest, catalog: Readonly<Record<st
   if (typeof effectiveLens !== 'string' || effectiveLens !== 'usage' && !Object.hasOwn(catalog, effectiveLens)) {
     problems.push({ field: 'lens', reason: 'The supplied name does not identify a registered Lens or report.', representation: 'lens' in input ? 'preserved' : 'omitted' });
   }
+  const designationFields = [
+    { field: 'selector', required: true, valid: (value: ParameterValue) => value === null || typeof value === 'string', reason: 'A selector must be supplied as a string or null (no selector).' },
+    { field: 'reference', required: false, valid: (value: ParameterValue) => typeof value === 'boolean', reason: 'Reference designation must be a boolean.' },
+    { field: 'subject', required: false, valid: (value: ParameterValue) => value === 'project' || value === 'repository', reason: 'Subject must be project or repository.' },
+    { field: 'referenceLifetime', required: false, valid: (value: ParameterValue) => value === 'session' || value === 'command', reason: 'Reference lifetime must be session or command.' },
+  ];
+  for (const { field, required, valid, reason } of designationFields) {
+    if (problems.some(problem => problem.omittedField === field)) continue;
+    const supplied = Object.hasOwn(input, field);
+    if (supplied ? !valid(input[field]!) : required) {
+      problems.push({ field, reason, representation: supplied ? 'preserved' : 'absent' });
+    }
+  }
   if (problems.length) {
     const presentation = input.presentation as unknown as Presentation | undefined;
     return { input: null, normalized: freezeOwned({ kind: 'rejected', input, problems,
@@ -169,8 +182,8 @@ function normalizeCapturedRequest(request: ViewRequest, catalog: Readonly<Record
   const definition = Object.hasOwn(catalog, id) ? catalog[id] : undefined;
   if (!definition) throw new Error('Unknown Lens definition');
   const designation: SubjectDesignation = request.selector !== null
-    ? { kind: request.reference ? 'reference' : 'name', value: request.selector }
-    : request.subject ? { kind: request.subject === 'project' ? 'configured-project' : 'repository' }
+    ? { kind: request.reference === true ? 'reference' : 'name', value: request.selector }
+    : request.subject !== undefined ? { kind: request.subject === 'project' ? 'configured-project' : 'repository' }
       : { kind: definition.cardinality === 'population' ? 'default' : 'missing' };
   return freezeOwned(structuredClone({ ...choices, kind: 'lens', lens: definition.id, question: definition.question,
     designation, parameters: request.parameters === undefined ? {} : request.parameters, programInput: 'session-configured-project' }));
