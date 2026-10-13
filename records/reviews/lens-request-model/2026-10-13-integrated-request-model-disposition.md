@@ -4,8 +4,8 @@ Record type: disposition
 Date: 2026-10-13
 Task: [Implement explicit Lenses and qualified request resolution](../../tasks/2026-10-11-lens-request-model.md)
 Handoff: [Integrated Lens request model](2026-10-13-integrated-request-model-handoff.md)
-Findings: [Round 1](2026-10-13-integrated-request-model-round-1-findings.md), [Round 2](2026-10-13-integrated-request-model-round-2-findings.md), [Round 3](2026-10-13-integrated-request-model-round-3-findings.md)
-Correction target: `e4452fdfcf797ab04222cbea5cd546995ade9366`
+Findings: [Round 1](2026-10-13-integrated-request-model-round-1-findings.md), [Round 2](2026-10-13-integrated-request-model-round-2-findings.md), [Round 3](2026-10-13-integrated-request-model-round-3-findings.md), [Round 4 — Copilot](2026-10-13-integrated-request-model-round-4-copilot-findings.md)
+Implementation correction target: `e4452fdfcf797ab04222cbea5cd546995ade9366`
 
 ## Findings and dispositions
 
@@ -117,15 +117,29 @@ The reviewer passed type checking and the full offline suite: **589/589**, zero 
 
 Earlier gates and repository-scale timings were not independently rederived. No hosted inference, heap study, worker-restart testing or catalog fuzzing was added; exports partial/unavailable coverage remains controlled. The real-project CLI comparison excludes interpretation commands and shell sessions. The historical intermittent CLI failure remains unexplained and was not reproduced. The reviewer recommends the final gate as sufficient; that recommendation does not close the task.
 
+## Round-4 Copilot disposition
+
+The human requested retrieval and assessment of the GitHub Copilot review on [PR #10](https://github.com/ronen/postcode/pull/10). The complete review submission and its single inline finding were preserved in `fa50f98` before correction, with review/comment identifiers, target, location and retrieval coverage. All pages of review submissions, inline comments and PR conversation were fetched; there were no replies or issue-conversation comments at retrieval. The reviewed PR target is `33e443a260589530725d8003ad9a6dc5935c7b2a`. Copilot reported one low-severity finding and no executed verification; its change-summary table and service footer are preserved as returned, not treated as new implementation requirements or test evidence.
+
+### C4-F1 — accepted and corrected
+
+[Inline comment 4263518014](https://github.com/ronen/postcode/pull/10#discussion_r4263518014) correctly identifies obsolete capability status. The capability reference still said answer identity and prerequisite attribution were in progress, contradicting the implemented behavior and current status/architecture documentation.
+
+Correction `d2c7684efff9cfcec5b38111f2c7680ea56f9fb5` replaces that sentence with the established equivalent-name/reference answer behavior and bounded request-scoped prerequisite/evidence work reporting. The link to the correction plan is replaced with the implemented request-work attribution description. The separate captured-basis attribution limitation, its backlog link and the warning against assuming complete research instrumentation remain intact.
+
+Verification: inspected the edited paragraph against `STATUS.md`, the architecture's request-work attribution section and the captured-basis backlog entry; verified the replacement link's file/anchor and ran `git diff --check`. This is a documentation-only correction, so no runtime test rerun is claimed. The independent 589-test evidence remains applicable to the unchanged implementation target, with its previously recorded limits. No finding was rejected, materially qualified or deferred, and no additional independent review was arranged. The task remains active under the human's no-closure instruction.
+
 ## Review rounds
 
 - Round 1 reviewed `f7a082eaa92b929a03402164280a6b47dc586f02` over the complete plan scope. Its independent type check and 575-test pass apply to that earlier target.
 - F1/F2 correction: `dd3c9e34551f69c6af54339faa3c09a1a3ae5f9d`.
 - Human-directed arrangement correction and round-2 target: `764eaa0f4a4fb5663846b5f1bfc2efae54482431`. The correction range from the reviewed implementation is `f7a082eaa92b929a03402164280a6b47dc586f02..764eaa0f4a4fb5663846b5f1bfc2efae54482431`.
 - Round 2 independently reviewed `764eaa0f4a4fb5663846b5f1bfc2efae54482431`, confirmed round-1 F1/F2 resolved, and reported R2-F1/R2-F2. Its type check and 585-test pass apply to that target.
-- Round-2 correction and current target: `e4452fdfcf797ab04222cbea5cd546995ade9366`, verified by the implementer as described above.
+- Round-2 correction and round-3 implementation target: `e4452fdfcf797ab04222cbea5cd546995ade9366`, verified by the implementer as described above.
 - Round 3 independently reviewed that same correction target and confirmed both round-2 findings resolved, with no new actionable findings, a 589-test pass and the bounded real-project CLI comparison described above.
+
+- Round 4 retrieved the Copilot review of PR target `33e443a260589530725d8003ad9a6dc5935c7b2a`; its one documentation finding is corrected in `d2c7684efff9cfcec5b38111f2c7680ea56f9fb5`.
 
 ## Gate conclusion
 
-All actionable findings across the three rounds are accepted and corrected; none remains open, rejected or deferred. Round 3 recommends the final gate as sufficient. The human has authorized housekeeping, branch push and a GitHub PR, while explicitly withholding task closure. Publication may proceed under that direction. The task remains active; this disposition does not authorize closure on the human's behalf.
+All actionable findings across the four rounds are accepted and corrected; none remains open, rejected or deferred. Round 3 recommends the final gate as sufficient; the subsequent Copilot documentation finding is now corrected. The human has authorized PR publication and review corrections while explicitly withholding task closure. The correction and its records can be pushed to the existing PR under that direction. The task remains active; this disposition does not authorize closure on the human's behalf.
