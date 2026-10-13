@@ -4,7 +4,7 @@ Record type: disposition
 Date: 2026-10-13
 Task: [Implement explicit Lenses and qualified request resolution](../../tasks/2026-10-11-lens-request-model.md)
 Handoff: [Operation definitions checkpoint](2026-10-13-operation-definitions-handoff.md)
-Findings: [Round 1](2026-10-13-operation-definitions-round-1-findings.md)
+Findings: [Round 1](2026-10-13-operation-definitions-round-1-findings.md); [round 2](2026-10-13-operation-definitions-round-2-findings.md)
 Reviewed target: `300c5a7e4c1d310d8177d24c24590c5c5aad6368`
 Correction commit: `d61bccf00c0ce2777b3e2ccdba000db45a337775`
 
@@ -47,3 +47,10 @@ Round 1 reviewed `300c5a7e4c1d310d8177d24c24590c5c5aad6368`; its authored findin
 ## Gate conclusion
 
 The reviewer's requested narrow re-check has passed. No further independent round is required by its recommendation, although the human may request one against the correction commit. Human acceptance of this intermediate gate is still pending; broader implementation remains paused and the task stays active. Acceptance permits the remaining approved implementation to continue, not task closure or waiver of final integrated review.
+
+
+## Round-two assessment and human acceptance
+
+The narrow second round reviewed `d61bccf00c0ce2777b3e2ccdba000db45a337775`, independently passed all 558 tests, confirmed F1–F3 resolved, and returned no actionable findings. Its non-defect notes preserve the construction/store-validation boundary and require real mechanical assembly support before replacing the temporary equality restriction. The latter is part of the next authorized implementation; no extra store schema or corruption-detection contract is added solely for the optional observation. Remaining unverified areas and the historical intermittent failure remain as recorded by the reviewer.
+
+On 2026-10-13 the human explicitly accepted this gate and authorized continuation after considering the notes. This supersedes the pending-gate conclusion above. The task remains active, and remaining plan work and final integrated review are still required.
