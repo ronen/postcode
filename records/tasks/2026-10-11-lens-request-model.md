@@ -120,6 +120,20 @@ Context: The agent reported F1 corrected and verified, then asked whether the hu
 
 yes, continue
 
+### 2026-10-13 — Remove remaining shared arrangement coupling
+
+Context: The integrated reviewer recorded remaining family-local Lens-ID checks as residual coupling for human judgment. The agent recommended retaining them based on exact registration and the two extension examples. The human directed:
+
+Please address the remaining coupling rather than accepting it collectively.
+Keep legitimate Lens-specific registration, construction and validation. The target is shared arrangement/rendering that infers behavior from Lens identity—for example, using inspect or modules to choose source-detail eligibility, display limits or layout, or dependency Lens names to determine coverage and empty-result explanations.
+Represent the distinctions those checks actually need:
+- Answer meaning, direction and coverage belong in the qualified content contract.
+- Layout, display limits and detail policy belong to the selected Presentation.
+Use the smallest explicit family-specific distinctions needed. Do not merely rename Lens IDs into equivalent dispatch tags, duplicate semantic policy, or introduce a general framework or broader Presentation-options redesign.
+Exact registration prevents misuse but does not establish Presentation reuse. Likewise, the two extension demonstrations do not fully resolve this concern: the mechanical example introduces its own Presentation rather than exercising reuse of the existing module Presentation.
+Preserve existing output, qualifications, source-disclosure behavior and identity guarantees. Add focused evidence that compatible content can use a shared Presentation without borrowing a built-in Lens identity.
+If a particular remaining Lens check expresses an unavoidable dependency on the question itself, explain that case individually, including why an explicit content or Presentation distinction would be less appropriate. Bring any consequential scope expansion back to me before proceeding.
+
 ## Outcome
 
 Intermediate checkpoint, 2026-10-11: implementation commit `a9c8189f042d5fe6cabf27db414b995a5972d0f6` establishes normalized request reporting, shared Lens-to-operation declarations, explicit View/usage/parameter-resolution execution alternatives, parent usage finalization and observation-envelope version 2. Usage no longer has a synthetic Projection/View descriptor. Module matching is shared without the dependency-selection inspection side effect. The local observation convention now specifies version-two batches; user-facing and descriptive documentation records the implemented subset and remaining gaps.
@@ -172,7 +186,11 @@ Final implementation checkpoint, 2026-10-13: following human acceptance of the P
 
 The [final integrated-review handoff](../reviews/lens-request-model/2026-10-13-integrated-request-model-handoff.md), committed in `7d1c2a9`, defines the complete task scope and exact implementation target for human-arranged review. Planned implementation and verification are substantially complete; no further implementation is deliberately deferred within the approved scope. The task remains active and implementation pauses for the required final review, resulting corrections and human judgment that the gate is sufficient. This checkpoint does not close the task, establish complete application-specification conformance, or explain the historical intermittent CLI failure. Residual coverage limits and independently deferred continuity/provenance concerns are explicit in the handoff.
 
+Integrated-review F1/F2 corrections, 2026-10-13: `dd3c9e34551f69c6af54339faa3c09a1a3ae5f9d` rejects malformed selector, reference, subject and reference-lifetime fields before normalization or lookup, preserves serializable rejected values, and distinguishes absent required input from representation limits. Organization construction now consumes the validated normalized designation. Both findings are accepted and corrected. The task remains active; the human directed removal of the separately noted shared-arrangement coupling before final gate acceptance. The final assignment's disposition will include that work and all review observations.
+
 ## Verification
+
+Integrated-review F1/F2 verification, 2026-10-13: the new direct/worker reproducer initially passed 1 test and failed 4 against the reviewed implementation. After correction, all 5 passed. The final focused run passed all 57 tests across request-designation-input, request-model, organization-cli and lens-extensions, including a sixth new accessor/representation-limit check, direct and worker publication, valid scope/answer identity, and post-validation defect preservation. Type checking, build and diff checks passed. Repository inputs and Git state remained stable during tests; temporary process-scoped sleep inhibition ended with execution. No paid inference was used. The reviewer's independent 575-test pass applies to the prior target; no new full-suite pass is claimed for this narrow correction.
 
 Presentation-compatibility review correction verification, 2026-10-13: type checking, build and `git diff --check` passed. All 24 focused compatibility/request-model tests passed, including the updated Unicode candidate/retained-ID assertions, both candidate-free reference lifetimes, and existing worker publication/sink-failure checks. Repository inputs and Git state remained stable during the run; temporary process-scoped sleep inhibition was used. No paid inference was used. The independent reviewer's full 566-test pass applies to the earlier reviewed target; no full-suite rerun is claimed for this bounded wording correction.
 
