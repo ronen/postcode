@@ -4,9 +4,9 @@ Plans in this directory describe future work that the human has explicitly appro
 
 Use descriptive, unnumbered filenames, such as `initial-product-slice.md` or `agent-context-exchange.md`. Do not encode priority or sequence in filenames. Express dependencies and ordering in the plan itself or in a current roadmap when one becomes necessary.
 
-## Approved upcoming work
+## Active work
 
-- [Explicit Lenses and qualified request resolution](lens-request-model.md) — approved; implementation has not begun. Covers the request model across every existing capability, audit F1–F4, outcome lifetime and identity, bounded Presentation compatibility and extension evidence.
+- [Explicit Lenses and qualified request resolution](lens-request-model.md) — implemented and independently reviewed; the [task](../../records/tasks/2026-10-11-lens-request-model.md) remains active pending human-authorized closure. Covers the request model across every existing capability, audit F1–F4, outcome lifetime and identity, bounded Presentation compatibility and extension evidence.
 
 ## Completed work
 

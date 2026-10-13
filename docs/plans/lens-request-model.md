@@ -1,8 +1,8 @@
 # Explicit Lenses and qualified request resolution
 
-Status: approved
+Status: active
 Created: 2026-10-11
-Updated: 2026-10-11
+Updated: 2026-10-13
 Superseded by:
 
 ## Current problem
