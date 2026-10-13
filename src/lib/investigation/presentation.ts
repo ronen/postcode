@@ -39,7 +39,8 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
   selected: readonly RecordId[], result: InvestigationSelection | null, usage: InvestigationUsageReport, content = resolveInvestigationContent(store, selectInvestigation(store, session, request, selected, result))) {
   const reporting = result ? { reused: result.reused, attempt: result.attempt,
     ...(result.unavailable?.provider ? { provider: result.unavailable.provider } : {}) } : null;
-  const title = request.title ?? request.definition?.title ?? (lenses as Readonly<Record<string, LensDefinition>>)[request.lens]?.title;
+  const definition = request.definition ?? (lenses as Readonly<Record<string, LensDefinition>>)[request.lens];
+  const title = request.title ?? (definition?.requirements.kind === 'inspection' ? `${definition.title} · investigram` : definition?.title);
   if (!title) throw new Error('Missing interpretation Presentation title');
   return arrangeInvestigationView(content, { ...request, title }, reporting, usage, referenceBinding(store, session, content.references));
 }

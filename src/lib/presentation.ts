@@ -43,6 +43,7 @@ export interface QualifiedView {
   readonly schema: 'postcode-view/1-experimental';
   readonly id: RecordId;
   readonly resolution?: ResolutionContext;
+  readonly title: string;
   readonly projection: Pick<ModuleProjectionContent['projection'], 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
   readonly presentation: PresentedOptions & { readonly expansions: readonly ModuleExpansion[] };
   readonly analysis: SessionRecord['analysis'] | null;
@@ -64,10 +65,10 @@ export interface QualifiedView {
 }
 
 /** Coordination preserves population-wide reference allocation independently of display bounds. */
-export function createView(store: ProgramRecordStore, projection: ModuleProjectionContent['projection'], presentation: PresentedOptions, resolution?: ResolutionContext, content = resolveModuleProjection(store, projection)): QualifiedView {
+export function createView(store: ProgramRecordStore, projection: ModuleProjectionContent['projection'], presentation: PresentedOptions, title: string, resolution?: ResolutionContext, content = resolveModuleProjection(store, projection)): QualifiedView {
   const population = store.entityIds(content.discovery.modules, 'module');
   const ids = new Map([...population, ...store.entityIds(projection.modules, 'module')]);
-  return arrangeModuleView(content, ids, presentation, resolution);
+  return arrangeModuleView(content, ids, presentation, title, resolution);
 }
 
 /** Fixed family Presentation policy over population versus selected-subject content. */
@@ -81,7 +82,7 @@ function moduleDisplayPolicy(subject: ModuleProjectionContent['projection']['sub
 }
 
 /** Pure presentation of an already selected answer. No store, acquisition or reference allocation. */
-export function arrangeModuleView(content: ModuleProjectionContent, entityIds: ReadonlyMap<RecordId, string>, presentation: PresentedOptions, resolution?: ResolutionContext): QualifiedView {
+export function arrangeModuleView(content: ModuleProjectionContent, entityIds: ReadonlyMap<RecordId, string>, presentation: PresentedOptions, title: string, resolution?: ResolutionContext): QualifiedView {
   validatePresentationContent({ contract: 'modules', value: content });
   const { projection, session } = content;
   const policy = moduleDisplayPolicy(projection.subject, presentation);
@@ -134,7 +135,8 @@ export function arrangeModuleView(content: ModuleProjectionContent, entityIds: R
   const collapsed = policy.collapseExternal ? modules.filter(module => !module.discoveryFacets.includes('project')) : [];
   const listed = policy.collapseExternal ? modules.filter(module => module.discoveryFacets.includes('project')) : modules;
   return {
-    schema: 'postcode-view/1-experimental', id: recordId(projection.session, 'view', { projection: identityReference(projection.session, projection.id), presentation, resolution: resolutionContextIdentity(projection.session, resolution), method: methods.presentation }),
+    schema: 'postcode-view/1-experimental', id: recordId(projection.session, 'view', { projection: identityReference(projection.session, projection.id), presentation, title, resolution: resolutionContextIdentity(projection.session, resolution), method: methods.presentation }),
+    title,
     ...(resolution ? { resolution } : {}),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,
       parameters: projection.parameters, selection: projection.selection },
@@ -175,7 +177,7 @@ function wrapText(text: string, indent: string, width = 88, continuation = inden
 export function renderUnicode(view: QualifiedView): string {
   const selection = view.projection.selection;
   const inventory = moduleDisplayPolicy(view.projection.subject, view.presentation).layout === 'table';
-  const lines = [`${inventory ? 'Modules' : 'Inspect'} · configured TypeScript project`,
+  const lines = [`${inlineText(view.title)} · configured TypeScript project`,
     `Session ${view.projection.session.replace(/^session:/, '')}`,
     inventory ? `${selection.population} module${selection.population === 1 ? '' : 's'} found · ${view.modules.length} listed${view.display.collapsedModules ? ` · ${view.display.collapsedModules} external module${view.display.collapsedModules === 1 ? '' : 's'} collapsed` : ''}`
       : `${selection.matches} module${selection.matches === 1 ? '' : 's'} selected from ${selection.population}${lookupDescription(view.resolution, selection.matches) ? ` · ${lookupDescription(view.resolution, selection.matches)}` : ''}`];

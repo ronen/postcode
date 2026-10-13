@@ -120,7 +120,7 @@ test('requested expansion kinds are unique while qualified evaluation scopes rem
   assert.ok(projection.modules.length > 1);
   for (const selected of [projection, inspect(store, evaluation, projection.modules[0]!), emptyModuleDetail(store, evaluation)]) {
     assert.deepEqual(selected.expansions.requested, ['exports', 'documentation']);
-    const view = createView(store, selected, { format: 'json', sourceDetail: false });
+    const view = createView(store, selected, { format: 'json', sourceDetail: false }, 'Inspect');
     const serialized = JSON.parse(renderView(view)) as typeof view;
     assert.deepEqual(serialized.presentation.expansions, ['exports', 'documentation']);
     assert.equal(new Set(serialized.presentation.expansions).size, serialized.presentation.expansions.length);

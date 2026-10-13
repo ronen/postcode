@@ -162,7 +162,12 @@ Shared arrangements do not infer layout, detail, direction or coverage from a Le
 name. Module and organization content already identifies population versus selected
 subjects; each family's fixed Presentation owns the corresponding table/tree or card
 layout, bounds and source-detail policy. Compatible qualified content can carry another
-question identity through those same arrangements. Dependency answers retain the
+question identity through those same arrangements. Coordination supplies the question
+label separately from subject scope: module and organization Views retain that label
+in their self-contained payload and identity, while renderers append the scope context.
+A display-label change does not change the underlying Projection. The shared `inspect`
+question is labelled `Inspect`; its interpretation application adds the investigram
+context, preserving the established built-in headings. Dependency answers retain the
 selected subjects' endpoint role and recognition-coverage scope; their constructors
 use those meanings to select relationships and source-owned outcomes. Presentation
 uses the supplied direction and coverage to explain empty and unattributable results.

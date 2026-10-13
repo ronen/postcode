@@ -75,10 +75,10 @@ test('partial lookup context stays separate from selected answer support and rem
     parameters: { selector: 'widget' } } as unknown as ProjectionRecord]), /Invocation-specific/);
   const context = resolutionContext(designation, found);
   assert.ok(context.qualifications.includes(partial.reason!));
-  const shown = createView(store, named, presentation, context);
+  const shown = createView(store, named, presentation, 'Inspect', context);
   assert.equal(shown.resolution, context);
-  assert.notEqual(shown.id, createView(store, reconstructed, presentation).id);
-  assert.notEqual(shown.id, createView(store, reconstructed, presentation, { ...context, qualifications: [] }).id,
+  assert.notEqual(shown.id, createView(store, reconstructed, presentation, 'Inspect').id);
+  assert.notEqual(shown.id, createView(store, reconstructed, presentation, 'Inspect', { ...context, qualifications: [] }).id,
     'exposed lookup qualification alone changes View identity');
   assert.ok(Object.isFrozen(context));
   const differentBasis = inspect(store, partial, subjects);

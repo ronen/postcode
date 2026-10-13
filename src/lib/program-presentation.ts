@@ -11,8 +11,8 @@ import type { ResolutionContext } from './resolution-context.js';
  * the underlying arrangements receive only resolved content and Presentation inputs. */
 export function createMechanicalView(store: ProgramRecordStore, content: MechanicalContent, presentation: PresentedOptions, title: string, resolution: ResolutionContext) {
   switch (content.contract) {
-    case 'modules': return createView(store, content.value.projection, presentation, resolution, content.value);
-    case 'organization': return createOrganizationView(store, content.value.projection, presentation, resolution, content.value);
+    case 'modules': return createView(store, content.value.projection, presentation, title, resolution, content.value);
+    case 'organization': return createOrganizationView(store, content.value.projection, presentation, title, resolution, content.value);
     case 'dependencies': return createDependencyView(store, content.value.projection, presentation, resolution, content.value);
     case 'module-exports': {
       store.entityIds(content.value.basis.modules, 'module');

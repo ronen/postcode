@@ -30,7 +30,7 @@ export const lenses: Readonly<Record<PublicLensId, LensDefinition>> = freezeOwne
   'dependency-structure': { id: 'dependency-structure', title: 'Dependencies', question: 'What is the configured project’s direct dependency structure?', subjects: ['configured-project'], cardinality: 'population', parameters: {}, requirements: { kind: 'dependencies', implementation: 'dependency-structure' }, results: ['dependencies'] },
   'dependency-children': { id: 'dependency-children', title: 'Children', question: 'Which modules does the subject directly depend on?', subjects: ['module'], cardinality: 'collection', parameters: {}, requirements: { kind: 'dependencies', implementation: 'dependency-children' }, results: ['dependencies'] },
   'dependency-parents': { id: 'dependency-parents', title: 'Parents', question: 'Which modules directly depend on the subject?', subjects: ['module'], cardinality: 'collection', parameters: {}, requirements: { kind: 'dependencies', implementation: 'dependency-parents' }, results: ['dependencies'] },
-  inspect: { id: 'inspect', title: 'Inspect · investigram', question: 'What qualified information is established about the subject?', subjects: ['module', 'group', 'investigram'], cardinality: 'collection', parameters: {}, requirements: { kind: 'inspection', implementation: 'inspection' }, results: ['modules', 'organization', 'investigation'] },
+  inspect: { id: 'inspect', title: 'Inspect', question: 'What qualified information is established about the subject?', subjects: ['module', 'group', 'investigram'], cardinality: 'collection', parameters: {}, requirements: { kind: 'inspection', implementation: 'inspection' }, results: ['modules', 'organization', 'investigation'] },
   summarize: { id: 'summarize', title: 'Module summary', question: 'What does this module apparently do?', subjects: ['module'], cardinality: 'one', parameters: {}, requirements: { kind: 'interpretation', operation: 'functionality' }, results: ['investigation'] },
   explain: { id: 'explain', title: 'Explain · investigram', question: 'What clarification makes this interpreted aspect more understandable?', subjects: ['investigram'], cardinality: 'one', parameters: {}, requirements: { kind: 'interpretation', operation: 'clarification' }, results: ['investigation'] },
   decompose: { id: 'decompose', title: 'Decompose · investigram', question: 'What smaller aspects make up this interpretation?', subjects: ['investigram'], cardinality: 'one', parameters: {}, requirements: { kind: 'interpretation', operation: 'decomposition' }, results: ['investigation'] },
@@ -132,8 +132,11 @@ export function captureRequest(request: ViewRequest, catalog: Readonly<Record<st
   const input = Object.fromEntries(fields);
   const suppliedLens = input.lens;
   const effectiveLens = typeof suppliedLens === 'string' && Object.hasOwn(commandLenses, suppliedLens) ? commandLenses[suppliedLens as CommandLens] : suppliedLens;
-  if (typeof effectiveLens !== 'string' || effectiveLens !== 'usage' && !Object.hasOwn(catalog, effectiveLens)) {
-    problems.push({ field: 'lens', reason: 'The supplied name does not identify a registered Lens or report.', representation: 'lens' in input ? 'preserved' : 'omitted' });
+  if (!problems.some(problem => problem.omittedField === 'lens')
+    && (typeof effectiveLens !== 'string' || effectiveLens !== 'usage' && !Object.hasOwn(catalog, effectiveLens))) {
+    const supplied = Object.hasOwn(input, 'lens');
+    problems.push({ field: 'lens', reason: supplied ? 'The supplied name does not identify a registered Lens or report.' : 'A Lens or report name must be supplied.',
+      representation: supplied ? 'preserved' : 'absent' });
   }
   const designationFields = [
     { field: 'selector', required: true, valid: (value: ParameterValue) => value === null || typeof value === 'string', reason: 'A selector must be supplied as a string or null (no selector).' },

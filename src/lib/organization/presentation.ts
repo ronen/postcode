@@ -63,6 +63,7 @@ export interface QualifiedOrganizationView {
   readonly schema: 'postcode-organization-view/1-experimental';
   readonly id: RecordId;
   readonly resolution?: ResolutionContext;
+  readonly title: string;
   readonly projection: Pick<OrganizationProjectionContent['projection'], 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
   readonly presentation: PresentedOptions & { readonly expansions: readonly string[] };
   readonly evaluations: {
@@ -100,12 +101,12 @@ export interface QualifiedOrganizationView {
 
 /** Coordinate population bindings before arranging the resolved selection. */
 export function createOrganizationView(store: ProgramRecordStore, projection: OrganizationProjectionContent['projection'],
-  presentation: PresentedOptions, resolution?: ResolutionContext, content = resolveOrganizationProjection(store, projection)): QualifiedOrganizationView {
+  presentation: PresentedOptions, title: string, resolution?: ResolutionContext, content = resolveOrganizationProjection(store, projection)): QualifiedOrganizationView {
   const population = store.entityIds(content.evaluation.groups, 'group');
   const groups = new Map([...population, ...store.entityIds(projection.groups, 'group')]);
   const modules = store.entityIds(content.moduleEvaluation.modules, 'module');
   const detail = content.moduleDetail ? new Map([...store.entityIds(content.moduleDetail.discovery.modules, 'module'), ...store.entityIds(content.moduleDetail.projection.modules, 'module')]) : new Map<RecordId, string>();
-  return arrangeOrganizationView(content, { groups, modules, detail }, presentation, resolution);
+  return arrangeOrganizationView(content, { groups, modules, detail }, presentation, title, resolution);
 }
 
 /** The family Presentation chooses layout and bounds from the supplied subject scope. */
@@ -117,7 +118,7 @@ function organizationDisplayPolicy(subject: OrganizationProjectionRecord['subjec
 
 export function arrangeOrganizationView(content: OrganizationProjectionContent,
   bindings: { readonly groups: ReadonlyMap<RecordId, string>; readonly modules: ReadonlyMap<RecordId, string>; readonly detail: ReadonlyMap<RecordId, string> },
-  presentation: PresentedOptions, resolution?: ResolutionContext): QualifiedOrganizationView {
+  presentation: PresentedOptions, title: string, resolution?: ResolutionContext): QualifiedOrganizationView {
   validatePresentationContent({ contract: 'organization', value: content });
   const { projection, evaluation: outcome, repository: captured } = content;
   const policy = organizationDisplayPolicy(projection.subject, presentation);
@@ -176,7 +177,7 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
   if (policy.layout === 'tree') omittedModulePlacements += groups.filter(group => group.selected && !seen.has(group.id))
     .reduce((sum, group) => sum + group.modules.length, 0);
   const moduleDetail = content.moduleDetail ? arrangeModuleView(content.moduleDetail, bindings.detail,
-    { format: presentation.format, sourceDetail: presentation.sourceDetail }) : null;
+    { format: presentation.format, sourceDetail: presentation.sourceDetail }, title) : null;
   const { applicability, availability, execution, materialization, reason, cost } = outcome;
   const externalModules = content.externalModules.count;
   const linksByTarget = new Map<string, { link: LayoutEvidence['links'][number]; order: number }[]>();
@@ -191,7 +192,8 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
   });
   return {
     schema: 'postcode-organization-view/1-experimental',
-    id: recordId(projection.session, 'organization-view', { projection: identityReference(projection.session, projection.id), presentation, resolution: resolutionContextIdentity(projection.session, resolution), method: methods.presentation }),
+    id: recordId(projection.session, 'organization-view', { projection: identityReference(projection.session, projection.id), presentation, title, resolution: resolutionContextIdentity(projection.session, resolution), method: methods.presentation }),
+    title,
     ...(resolution ? { resolution } : {}),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,
       parameters: projection.parameters, selection: projection.selection },
@@ -230,7 +232,7 @@ const label = (entity: EntityReference) => `${inlineText(entity.label)}  ${entit
 export function renderOrganizationView(view: QualifiedOrganizationView): string {
   if (view.presentation.format === 'json') return `${JSON.stringify(view, null, 2)}\n`;
   const inspection = organizationDisplayPolicy(view.projection.subject, view.presentation).layout === 'cards';
-  const lines = [inspection ? 'Inspect · groups and modules' : `Organization · ${view.projection.subject === 'repository' ? 'repository' : 'configured project'}`,
+  const lines = [`${inlineText(view.title)} · ${inspection ? 'groups and modules' : view.projection.subject === 'repository' ? 'repository' : 'configured project'}`,
     `Session ${view.projection.session.replace(/^session:/, '')}`,
     inspection ? `${view.projection.selection.matches} ${lookupDescription(view.resolution, view.projection.selection.matches) ?? 'selected subjects'}`
       : `${view.display.selectedGroups} selected groups · ${view.repository.groups} repository groups`];

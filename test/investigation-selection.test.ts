@@ -419,7 +419,7 @@ test('association continuation identity uses precise selected matches in both Vi
   const second = arrangeInvestigationView(content, { ...options, after: 'longer' }, null, usageSummary([]), bindings('longer'));
   assert.equal(first.view.id, second.view.id); assert.equal(first.view.investigations!.after, 'short');
   assert.equal(second.view.investigations!.after, 'longer');
-  const projection = inspect(store, f.evaluation, 'entry-0'), mechanical = createView(store, projection, options.presentation);
+  const projection = inspect(store, f.evaluation, 'entry-0'), mechanical = createView(store, projection, options.presentation, 'Inspect');
   const associated = resolveInvestigationContent(store, selectAssociatedInspection(store, projection.id, [module]));
   const one = arrangeAssociatedInspection(mechanical, associated, new Map([[id('associated'), 'short']]), 'short');
   const two = arrangeAssociatedInspection(mechanical, associated, new Map([[id('associated'), 'longer']]), 'longer');
@@ -428,4 +428,17 @@ test('association continuation identity uses precise selected matches in both Vi
   assert.notEqual(one.id, unknown.id); assert.equal(one.projection.id, unknown.projection.id);
   assert.equal(unknown.investigations.status, 'unknown-continuation');
   assert.deepEqual(associationContinuation(f.session, [], new Map(), null), associationContinuation(f.session, [], new Map()));
+});
+
+test('exact investigram inspection retains its contextual heading and explicit title overrides', () => {
+  const f = fixture();
+  f.publish([{ name: 'A' }]);
+  const request = { lens: 'inspect', presentation: { format: 'unicode' as const, sourceDetail: false } };
+  const { view } = createInvestigationView(f.store, f.session, request, [f.id('A')], null, usageSummary([]));
+  assert.equal(view.title, 'Inspect · investigram');
+  assert.equal(renderInvestigationView(view).split('\n')[0], 'Inspect · investigram');
+  const retitled = createInvestigationView(f.store, f.session, { ...request, title: 'Supplied question' }, [f.id('A')], null, usageSummary([])).view;
+  assert.equal(retitled.title, 'Supplied question');
+  assert.equal(retitled.projection.id, view.projection.id);
+  assert.notEqual(retitled.id, view.id);
 });

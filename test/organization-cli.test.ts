@@ -194,12 +194,12 @@ test('partial module evaluation preserves organization views and unknown propert
     const outcome = evaluateOrganization(store, partial, organizationPresentationRequirements.groups);
     const projection = organization(store, outcome, 'repository');
     rmSync(path.join(root, 'src'), { recursive: true });
-    const view = createOrganizationView(store, projection, { format: 'unicode', sourceDetail: false });
+    const view = createOrganizationView(store, projection, { format: 'unicode', sourceDetail: false }, 'Organization');
     assert.equal(view.groups.length, 5);
     assert.ok(view.groups.some(group => group.modulePresence === null));
     assert.ok(renderOrganizationView(view).includes('module presence unknown'));
     assert.ok(renderOrganizationView(view).includes('Project placement: available, stopped, materialization partial'));
-    const source = createOrganizationView(store, inspectOrganization(store, outcome, 'src'), { format: 'json', sourceDetail: true });
+    const source = createOrganizationView(store, inspectOrganization(store, outcome, 'src'), { format: 'json', sourceDetail: true }, 'Inspect');
     assert.ok(source.sourceDetail!.groups[0]!.artifacts.some(item => item.path === 'src/README'));
   });
 });
@@ -293,7 +293,7 @@ test('candidate ambiguity retains partial status and reachable candidate groups 
     store.put([ambiguous, ...properties, next]);
     const projection = inspectOrganization(store, next, store.entityIds(evaluation.modules, 'module').get(ambiguous.subject)!, true);
     assert.ok(ambiguous.information.candidates.every(id => projection.expansions.groups.includes(id)));
-    const view = createOrganizationView(store, projection, { format: 'unicode', sourceDetail: false });
+    const view = createOrganizationView(store, projection, { format: 'unicode', sourceDetail: false }, 'Inspect');
     assert.equal(view.placementExceptions[0]!.placement.outcome, 'ambiguous');
     assert.equal(view.placementExceptions[0]!.placement.materialization, 'partial');
     assert.equal(view.placementExceptions[0]!.locations.length, 0);

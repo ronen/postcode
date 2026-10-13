@@ -206,8 +206,8 @@ test('known modules omitted from a supplied evaluation remain resolved and retai
   assert.deepEqual(narrow.modules, [], 'do not invent evaluation membership');
   assert.throws(() => store.put([{ ...projection, id: recordId(basis.session, 'projection', 'invalid-omission'),
     selection: { ...projection.selection, outsidePopulation: [] } }]), /materialization qualification/);
-  assert.equal(createView(store, projection, presentation).modules[0]!.id, subject);
-  assert.match(renderView(createView(store, projection, { ...presentation, format: 'unicode' })), /outside the supplied evaluation population/);
+  assert.equal(createView(store, projection, presentation, 'Inspect').modules[0]!.id, subject);
+  assert.match(renderView(createView(store, projection, { ...presentation, format: 'unicode' }, 'Inspect')), /outside the supplied evaluation population/);
   const dependencies = evaluateDependencies(store, analysis);
   const missing = { ...dependencies, id: recordId(basis.session, 'dependency-evaluation', 'controlled-narrow-dependencies'),
     moduleEvaluation: narrow.id, projectModules: [], relationships: [], occurrences: [], coverage: [] };
@@ -241,7 +241,7 @@ test('known group omitted from organization retains naming support with unavaila
   const projection = inspectOrganization(store, narrow, reference, true, [subject]);
   assert.deepEqual(projection.groups, [subject]);
   assert.deepEqual(projection.selection.outsidePopulation, [subject]);
-  const shown = createOrganizationView(store, projection, { ...presentation, sourceDetail: true });
+  const shown = createOrganizationView(store, projection, { ...presentation, sourceDetail: true }, 'Inspect');
   assert.equal(shown.groups[0]!.id, subject);
   assert.equal(shown.groups[0]!.documented, null);
   assert.equal(shown.groups[0]!.modulePresence, null);

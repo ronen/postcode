@@ -112,7 +112,7 @@ test('qualification classification uses only the exact primary producer and pres
   assert.equal(isCompositionContext({ method: `${methods.composition}-unrelated` }), false);
   assert.equal(isCompositionContext({ method: `${methods.composition}0` }), false);
   const { store, evaluation } = (await discover('fixtures/exports/tsconfig.json'));
-  const view = createView(store, inspect(store, evaluation, 'origin'), { format: 'unicode', sourceDetail: false });
+  const view = createView(store, inspect(store, evaluation, 'origin'), { format: 'unicode', sourceDetail: false }, 'Inspect');
   const module = view.modules[0]!;
   const extra = { ...module.qualification, id: recordId(evaluation.session, 'unrelated-context', 1),
     method: `${methods.composition}-unrelated`, scope: module.id, limitations: ['Independent limitation remains visible.'] };

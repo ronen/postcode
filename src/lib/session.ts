@@ -251,7 +251,7 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
       const result = investigationLens && selected.length === 1
         ? await integration.evaluate({ operation: operation!, subject: selected[0]!, parameters: {} }, work) : null;
       answerWork.check();
-      const viewRequest = { ...request, resolution: displayResolution, lens, definition, title: definition.title };
+      const viewRequest = { ...request, resolution: displayResolution, lens, definition, title: interpretationInspection ? `${definition.title} · investigram` : definition.title };
       const content = resolveInvestigationContent(store, selectInvestigation(store, session, viewRequest, selected, result));
       consumeInterpretation(content.projection.id);
       const decision = settlePresentation(presentationPlan, { contract: 'investigation', value: content });

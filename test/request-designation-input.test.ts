@@ -63,6 +63,24 @@ for (const worker of [false, true]) {
     assert.notEqual(views[1]!.projection.id, views[2]!.projection.id);
   });
 
+  test(`built-in module and organization question headings survive coordination (${worker ? 'worker' : 'direct'})`, async t => {
+    const { session } = await fixture(t, worker);
+    const cases = [
+      { request: { lens: 'modules', selector: null }, title: 'Modules', context: 'configured TypeScript project' },
+      { request: { lens: 'organization', selector: null }, title: 'Organization', context: 'configured project' },
+      { request: { lens: 'organization', selector: null, subject: 'repository' as const }, title: 'Organization', context: 'repository' },
+      { request: { lens: 'inspect', selector: 'widget' }, title: 'Inspect', context: 'configured TypeScript project' },
+      { request: { lens: 'inspect', selector: 'src' }, title: 'Inspect', context: 'groups and modules' },
+    ];
+    for (const { request, title, context } of cases) {
+      const json = requireView(await session.execute({ ...request, presentation }));
+      assert.equal(JSON.parse(json.rendered).title, title);
+      const unicode = requireView(await session.execute({ ...request, presentation: { ...presentation, format: 'unicode' } }));
+      assert.equal(unicode.rendered.split('\n')[0], `${title} · ${context}`);
+      assert.equal(unicode.view.projection.id, json.view.projection.id);
+    }
+  });
+
   test(`malformed designation fields refuse before lookup and preserve publication (${worker ? 'worker' : 'direct'})`, async t => {
     const { session, configPath } = await fixture(t, worker);
     const cases = [
@@ -71,6 +89,7 @@ for (const worker of [false, true]) {
       ...['yes', 1, 0, null, {}].map(reference => ({ field: 'reference', request: { ...base, lens: 'inspect', selector: 'widget', reference } })),
       ...['forever', '', false, null, []].map(referenceLifetime => ({ field: 'referenceLifetime', request: { ...base, referenceLifetime } })),
       { field: 'subject', request: { ...base, subject: 'bogus' } },
+      { field: 'lens', request: { selector: null, presentation } },
     ];
     for (const { field, request: input } of cases) {
       const request = input as unknown as ViewRequest;
@@ -84,10 +103,11 @@ for (const worker of [false, true]) {
       assert.deepEqual(result.attribution.work, []);
       assert.deepEqual(result.report.resolution.prerequisites, []);
       assert.deepEqual(result.report.resolution.retainedAnswers, []);
-      if (!Object.hasOwn(input, 'selector')) {
+      if (!Object.hasOwn(input, field)) {
         assert.doesNotMatch(result.report.resolution.qualifications.join(' '), /Representation limit/);
-        assert.match(result.report.resolution.qualifications.join(' '), /selector.*supplied/i);
-        assert.equal('selector' in rejected.input, false);
+        assert.match(result.report.resolution.qualifications.join(' '), new RegExp(`${field}.*supplied`, 'i'));
+        assert.equal(field in rejected.input, false);
+        assert.equal(rejected.problems[0]!.representation, 'absent');
       }
       let stdout = '', stderr = '';
       const batches: ObservationBatch[] = [];
@@ -135,4 +155,25 @@ test('designation validation preserves representation limits without reading rej
   assert.equal(missing.kind, 'rejected');
   assert.equal(missing.problems[0]!.representation, 'absent');
   assert.equal('selector' in missing.input, false);
+});
+
+test('missing Lens values are absent while rejected Lens representations remain limited', () => {
+  for (const input of [{ selector: null, presentation }, { ...base, lens: undefined }]) {
+    const result = normalizeRequest(input as unknown as ViewRequest);
+    assert.equal(result.kind, 'rejected');
+    assert.deepEqual(result.problems, [{ field: 'lens', reason: 'A Lens or report name must be supplied.', representation: 'absent' }]);
+    assert.equal('lens' in result.input, false);
+  }
+  let reads = 0;
+  for (const input of [{ ...base, lens: () => {} }, { ...base, get lens(): never { reads++; throw new Error('Must not read caller accessor'); } }]) {
+    const result = normalizeRequest(input as unknown as ViewRequest);
+    assert.equal(result.kind, 'rejected');
+    assert.equal(result.problems.length, 1);
+    assert.equal(result.problems[0]!.field, 'lens');
+    assert.equal(result.problems[0]!.representation, 'omitted');
+    assert.equal(result.problems[0]!.omittedField, 'lens');
+    assert.equal('lens' in result.input, false);
+    assert.doesNotThrow(() => JSON.stringify(result));
+  }
+  assert.equal(reads, 0);
 });

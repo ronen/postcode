@@ -286,7 +286,7 @@ test('output-exclusion qualifications describe only filters actually supplied by
     const store = new MemoryProgramRecordStore();
     const evaluation = evaluateModules(store, opened.analysis, ['exports', 'documentation']);
     const projection = modules(store, evaluation);
-    const view = createView(store, projection, { format: 'json', sourceDetail: false });
+    const view = createView(store, projection, { format: 'json', sourceDetail: false }, 'Modules');
     const expectedCount = excludedOutputDirectories?.length ?? 0;
     assert.equal(view.analysis!.excludedOutputLocations, expectedCount);
     // Check both project and per-module discovery contexts through the public view.
