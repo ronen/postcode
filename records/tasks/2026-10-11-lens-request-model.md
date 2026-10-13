@@ -134,6 +134,16 @@ Exact registration prevents misuse but does not establish Presentation reuse. Li
 Preserve existing output, qualifications, source-disclosure behavior and identity guarantees. Add focused evidence that compatible content can use a shared Presentation without borrowing a built-in Lens identity.
 If a particular remaining Lens check expresses an unavoidable dependency on the question itself, explain that case individually, including why an explicit content or Presentation distinction would be less appropriate. Bring any consequential scope expansion back to me before proceeding.
 
+### 2026-10-13 — Round-2 question labels and absent Lens input
+
+The round-2 review is in `records/reviews/lens-request-model/2026-10-13-integrated-request-model-round-2-findings.md`. Please address both R2-F1 and R2-F2.
+For **R2-F1**, correct the question labelling now. Scope may determine layout and qualification, but it must not stand in for the question’s identity or title.
+Pass the appropriate question title into module and organization arrangement, retain it in the self-contained View and JSON, and include it in View identity. Do not add it to Projection identity merely for display. Preserve existing scope-based layout, bounds, qualifications and source-disclosure behavior.
+Handle the shared `inspect` Lens carefully: its current title is `Inspect · investigram`, which would mislabel module and group inspection if passed through unchanged. Separate the question label from the subject/context description, or supply an appropriate explicit title for the application, without making shared renderers infer the question from scope or Lens names. Preserve existing built-in headings where practical.
+Update the compatible-question tests: they should demonstrate equivalent content, layout and qualification under another question, while correctly displaying its supplied title—not require byte-identical headings. Also verify that changing the displayed title changes View identity without changing the underlying Projection.
+For **R2-F2**, report an absent Lens as missing input, not as a representation limit.
+Make the focused corrections and verification, record the dispositions, and report back for the final gate decision. This does not authorize task closure.
+
 ## Outcome
 
 Intermediate checkpoint, 2026-10-11: implementation commit `a9c8189f042d5fe6cabf27db414b995a5972d0f6` establishes normalized request reporting, shared Lens-to-operation declarations, explicit View/usage/parameter-resolution execution alternatives, parent usage finalization and observation-envelope version 2. Usage no longer has a synthetic Projection/View descriptor. Module matching is shared without the dependency-selection inspection side effect. The local observation convention now specifies version-two batches; user-facing and descriptive documentation records the implemented subset and remaining gaps.
