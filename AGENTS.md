@@ -32,4 +32,4 @@ Read and follow the governing terminology in [`docs/core-concepts.md`](docs/core
 
 ## Development Workflow
 
-Follow [`dev/workflow.md`](dev/workflow.md) when planning, implementing, verifying, documenting, or handing off work. Follow [`dev/worktrees.md`](dev/worktrees.md) for checkout layout, worktree setup, and removal. Use [`docs/README.md`](docs/README.md) to locate plans, architecture documentation, and recorded decisions.
+Follow [`dev/workflow.md`](dev/workflow.md) when planning, implementing, verifying, or documenting work. Follow [`dev/worktrees.md`](dev/worktrees.md) for checkout layout, worktree setup, and removal. Use [`docs/README.md`](docs/README.md) to locate plans, architecture documentation, and recorded decisions.

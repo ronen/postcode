@@ -8,7 +8,7 @@ The [task protocol](task-protocol.md#independent-review) supplies defaults for s
 
 ## Review records
 
-Store durable independent-review records under [`records/reviews/`](../records/reviews/). Group a review series under a directory named for its governing plan when one exists, or for its task otherwise:
+Store durable independent-review records under [`records/reviews/`](../records/reviews/) in the implementation worktree being reviewed. Group a review series under a directory named for its governing plan when one exists, or for its task otherwise:
 
 ```text
 records/reviews/<plan-or-task-slug>/

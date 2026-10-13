@@ -1,6 +1,6 @@
 # Development Workflow
 
-This document describes how humans and coding agents plan, implement, verify, document, and hand off changes to PostCode. The [task protocol](task-protocol.md) defines the lifecycle and durable records of substantive implementation tasks; the [worktree instructions](worktrees.md) define checkout mechanics.
+This document describes how humans and coding agents plan, implement, verify, and document changes to PostCode. The [task protocol](task-protocol.md) defines the lifecycle and durable records of substantive implementation tasks; the [worktree instructions](worktrees.md) define checkout mechanics.
 
 <a id="kinds-of-work"></a>
 ## 1. Kinds of Work

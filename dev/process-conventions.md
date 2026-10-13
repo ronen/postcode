@@ -8,6 +8,11 @@ This document contains human-maintained conventions governing how development wo
 - Prefer explicit HTML anchors, such as `<a id="unexpected-findings"></a>`, for links to sections within repository Markdown documents. Use stable, descriptive lowercase slugs with hyphens, independent of section numbering or exact heading wording, rather than relying on Markdown-generated heading anchors.
 - Preserve an anchor when its section is renamed or reordered while retaining the same meaning. Adding anchors or updating links remains subject to the target document's editing and historical-record rules.
 
+<a id="pull-request-use"></a>
+## When to Use Pull Requests
+
+Substantive implementation follows the [task protocol's pull-request requirements](task-protocol.md#publication-and-cleanup). For other work, use a PR when it provides useful review, collaboration, or a meaningful historical record. Otherwise, changes may be committed and integrated locally under human direction; a PR is not required as a matter of ritual.
+
 <a id="pull-request-descriptions"></a>
 ## Pull Request Descriptions
 

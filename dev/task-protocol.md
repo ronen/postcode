@@ -28,6 +28,8 @@ Implement each task in its own feature branch and worktree unless the human expl
 
 When continuing an active task, locate its existing record and use its existing branch and worktree rather than opening another task merely because the agent started elsewhere. Create or locate the worktree under the [worktree setup instructions](worktrees.md#setup). Perform implementation and task-record commits there; the checks before task-record commits apply to that worktree.
 
+For a new task, if the proposed branch name already exists, choose a distinguishing suffix rather than reusing or resetting that branch.
+
 <a id="finding-active-task"></a>
 ### Finding an active task
 
@@ -196,4 +198,11 @@ Follow the [review workflow](review.md) and [pull request description convention
 
 After a GitHub merge, follow the [main synchronization instructions](worktrees.md#main-synchronization) and verify that the task's final commit is included in the fetched destination history. Report any local synchronization left pending because the checkout is unavailable.
 
-Authorization to merge includes subsequent safe removal of the task worktree under the [worktree removal instructions](worktrees.md#cleanup), unless the human directs otherwise. The agent completing the merge is responsible for that cleanup. If the human merges elsewhere, an agent continuing the task may perform cleanup once the merge is confirmed. If the task is blocked or abandoned, retain its worktree and work until the human directs their disposition.
+Authorization to merge includes the following cleanup unless the human directs otherwise. The agent completing the merge is responsible for it; if the human merges elsewhere, an agent directed to perform post-closure steps may carry it out once the merge is confirmed.
+
+- Remove the task worktree under the [worktree removal instructions](worktrees.md#cleanup).
+- Delete its local branch under those instructions after removing the worktree.
+- If the remote task branch still exists, delete it after verifying that its current tip is included in the remote destination's history; if it contains unmerged commits, preserve it and report them.
+- Report cleanup performed and anything retained for further attention.
+
+If the task is blocked or abandoned, retain its worktree and work until the human directs their disposition.

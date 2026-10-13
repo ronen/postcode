@@ -45,6 +45,8 @@ Read supporting scratch material from its known source location, or copy only th
 
 Worktrees share Git history, so local branches can be merged without pushing and pulling between checkouts. Updating one branch does not itself update worktrees on other branches. Perform integration in the receiving branch's worktree, preserving existing changes and repeating affected verification.
 
+If that checkout is dirty or being used for other work, leave it untouched and report the pending integration.
+
 <a id="main-synchronization"></a>
 ### Synchronizing main
 
@@ -60,4 +62,5 @@ When a worktree is no longer needed and its removal is authorized, perform remov
 - Confirm that commits were published when required and incorporated into the intended destination when integration was required. For a squash merge, verify the incorporated result rather than relying solely on commit ancestry.
 - Inspect tracked changes, untracked files, and ignored material before removal. Preserve useful work and evidence in an appropriate location. Remove expendable material created for the work; ask about material whose ownership or value is unclear. A clean Git status alone is insufficient evidence that all local material is disposable.
 - Remove the worktree with `git worktree remove` once preservation is complete. Do not force removal to bypass unresolved local work.
-- Leave the general-purpose checkout and other active worktrees undisturbed. Branch deletion is separate from worktree removal and requires human direction. Report cleanup performed and anything retained for further attention.
+- When local branch deletion is authorized by the applicable workflow or human direction, delete it after removing the worktree. First verify that all branch commits are incorporated into the intended destination, no remaining worktree uses the branch, and the human has not asked to retain it. Use `git branch -d`; if deletion fails, report it rather than forcing it.
+- Leave the general-purpose checkout and other active worktrees undisturbed. Report cleanup performed and anything retained for further attention.
