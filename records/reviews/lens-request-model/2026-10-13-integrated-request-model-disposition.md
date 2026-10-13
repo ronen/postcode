@@ -142,4 +142,6 @@ Verification: inspected the edited paragraph against `STATUS.md`, the architectu
 
 ## Gate conclusion
 
-All actionable findings across the four rounds are accepted and corrected; none remains open, rejected or deferred. Round 3 recommends the final gate as sufficient; the subsequent Copilot documentation finding is now corrected. The human has authorized PR publication and review corrections while explicitly withholding task closure. The correction and its records can be pushed to the existing PR under that direction. The task remains active; this disposition does not authorize closure on the human's behalf.
+All actionable findings across the four rounds are accepted and corrected; none remains open, rejected or deferred. Round 3 recommends the final gate as sufficient, and the subsequent Copilot documentation finding is corrected and published in PR #10.
+
+On 2026-10-13 the human accepted this result and explicitly authorized task closure and a final push, retaining responsibility for merging the PR. The integrated review gate is satisfied under that authorization. The completed task record preserves the implementation, review history, verification and remaining out-of-scope limits. This closure does not claim the PR has been merged.

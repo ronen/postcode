@@ -20,16 +20,6 @@ Describe the need, why it matters, and relevant constraints without designing th
 
 ## Candidates
 
-## Establish conformance to the Lens request model
-
-Added: 2026-10-11
-Origin: [Lens request-model adoption and conformance](decisions/lens-application-and-request-outcomes.md#adoption-and-conformance)
-Area: request coordination, qualified answers and publication
-
-The Lens request-model contracts are adopted before their conforming implementation. Current gaps include distributed Lens/applicability policy, designation-sensitive answer identity, retained lookup-failure Projections, the usage descriptor, inferred request reporting, incomplete prerequisite attribution and unexercised runtime compatibility contracts. These affect current reporting accuracy and prevent claiming conformance to the new request model.
-
-The existing [Lens request-model plan](plans/lens-request-model.md#milestones-and-verification) contains the remediation and verification; this entry tracks that work rather than proposing another plan or duplicating its scope. Complete it before claiming conformance or relying on these contracts for new interface capabilities. Preserve current limitation disclosures until verification supports their removal. Broader attribution, captured-basis export, exact retained-answer redisplay and navigation-origin work remain separately scoped.
-
 ## Decide how GUI Presentations and their parameters are represented
 
 Added: 2026-10-06
@@ -111,7 +101,7 @@ Added: 2026-10-10
 Origin: [Application specification boundaries](decisions/application-specification-boundaries.md#attribute-system-initiated-investigation-and-constrain-autonomous-work)
 Area: request coordination, resource governance, observations
 
-The [Lens request-model plan](plans/lens-request-model.md#bounded-initiation-and-attribution-assessment) assesses current mechanical resolution, summary/follow-up Evaluation, investigator evidence access and publication. Its source and field-ownership trace identifies qualified support and attempt/exposure records but missing explicit root-request/initiator links. The plan sizes bounded remediation at five existing boundaries, with implementation confirming those seams before broad record changes. Do not treat plan adoption as implementation conformance or duplicate its scoped work here.
+The completed [Lens request-model task](../records/tasks/2026-10-11-lens-request-model.md) implements bounded request, prerequisite and evidence-work attribution across current mechanical resolution, summary/follow-up Evaluation, investigator evidence access and publication. Parent descriptions, generating origins and current consumption travel with qualified outcomes. The [implemented attribution boundary](architecture/README.md#request-work-attribution) describes this support and its limits; do not duplicate that completed work here.
 
 Retain the broader assessment for paths outside that scope and any independently substantial gaps identified by implementation. Establish which parent/trigger, initiator, captured-basis, outcome and resource relationships remain inspectable and attributable in observations, including failure, reuse and cancellation; do not infer conformance from command names or request identifiers. The separate captured-basis export and navigation-origin candidates retain their own scope.
 

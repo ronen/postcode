@@ -1,6 +1,6 @@
 # Explicit Lenses and qualified request resolution
 
-Status: active
+Status: completed
 Created: 2026-10-11
 Updated: 2026-10-13
 Superseded by:
