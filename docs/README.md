@@ -2,7 +2,7 @@
 
 This is the human-readable map of PostCode's canonical project knowledge. It also helps coding agents locate the context governing their work, but the documentation should remain understandable without access to an agent conversation.
 
-Adopted research concepts and baseline development material live under [`foundation/`](../foundation/). This directory contains the human-maintained application specification, governing core concepts and architectural constraints, plans, accepted decisions, supported-capability documentation, and descriptions of the application built from that foundation.
+Adopted research concepts and task-record requirements live under [`foundation/`](../foundation/). Development instructions live under [`dev/`](../dev/). This directory contains the human-maintained application specification, governing core concepts and architectural constraints, plans, accepted decisions, supported-capability documentation, and descriptions of the application built from that foundation.
 
 Coding agents begin with [`AGENTS.md`](../AGENTS.md), which directs them to the applicable task protocol, development workflow, conventions, and project documentation.
 
@@ -60,7 +60,7 @@ Create architecture documentation under `architecture/` when there is implemente
 
 ### Task records
 
-`records/tasks/` contains the durable record of each authorized implementation task, including its request, material follow-ups, outcome, and verification. The governing [task protocol](../foundation/task-protocol.md) creates this directory with the first task; it is not created speculatively.
+[`records/tasks/`](../records/tasks/) contains the durable record of each authorized implementation task, including its request, material follow-ups, outcome, and verification. The [task protocol](../dev/task-protocol.md) governs how these records are created and maintained.
 
 ### Review records
 

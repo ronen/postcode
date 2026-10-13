@@ -1,6 +1,6 @@
 ## Session Startup
 
-Before performing substantive implementation work, read and follow [`foundation/task-protocol.md`](foundation/task-protocol.md).
+Before performing substantive implementation work, read and follow [`dev/task-protocol.md`](dev/task-protocol.md).
 
 - If `_work/TASK.md` exists, begin that task according to the task protocol.
 - If the human asks to continue an existing task, locate and follow the relevant active task record.
@@ -20,7 +20,7 @@ Follow the human-maintained guidance in [`dev/engineering-guidelines.md`](dev/en
 
 ## Development Conventions
 
-Follow the conventions in [`foundation/baseline-conventions.md`](foundation/baseline-conventions.md), [`dev/process-conventions.md`](dev/process-conventions.md), and [`docs/implementation-conventions.md`](docs/implementation-conventions.md).
+Follow the conventions in [`dev/process-conventions.md`](dev/process-conventions.md) and [`docs/implementation-conventions.md`](docs/implementation-conventions.md).
 
 ## Durable Notes
 

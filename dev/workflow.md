@@ -1,6 +1,6 @@
 # Development Workflow
 
-This document describes how humans and coding agents plan, implement, verify, document, and hand off changes to PostCode. It complements the durable implementation history defined by the [task protocol](../foundation/task-protocol.md).
+This document describes how humans and coding agents plan, implement, verify, document, and hand off changes to PostCode. It complements the [task protocol](task-protocol.md).
 
 ## 1. Kinds of Work
 
@@ -19,7 +19,7 @@ Agents performing planning or implementation may report or propose process chang
 
 ### 1.3 Substantive implementation
 
-Substantive implementation follows the [task protocol](../foundation/task-protocol.md). Examples include creating an executable scaffold, adding application dependencies, defining runtime contracts, implementing behavior, and materially changing existing behavior or architecture.
+Substantive implementation follows the [task protocol](task-protocol.md). Examples include creating an executable scaffold, adding application dependencies, defining runtime contracts, implementing behavior, and materially changing existing behavior or architecture.
 
 Before implementation begins, restate the authorized goal and its explicit scope boundaries, then open the task record as prescribed by the protocol.
 

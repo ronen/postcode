@@ -1,6 +1,6 @@
 # Process Conventions
 
-This document contains human-maintained conventions governing how development work is conducted in this repository. It supplements the adopted [baseline conventions](../foundation/baseline-conventions.md) and may be changed only through separate human-directed process maintenance.
+This document contains human-maintained conventions governing how development work is conducted in this repository. It complements the [task protocol](task-protocol.md) and may be changed only through separate human-directed process maintenance.
 
 <a id="documentation-links"></a>
 ## Documentation Links
@@ -20,7 +20,7 @@ Link to plans, decisions, validation reports, or review records when their detai
 ## Disposable Scratch Material
 
 - Put repository-specific scratch files and directories under a descriptively named root-level directory beginning with `_`, such as `_analysis/`, `_investigation/`, or `_rendered/`. The root `.gitignore` reserves this namespace for uncommitted working material.
-- `_work/TASK.md` is a governed task-drafting and handoff artifact, not ordinary scratch material. It is the sole exception to the classification in the next rule and must be handled as prescribed by the [task protocol](../foundation/task-protocol.md).
+- `_work/TASK.md` is a governed task-drafting and handoff artifact, not ordinary scratch material. It is the sole exception to the classification in the next rule and must be handled as prescribed by the [task protocol](task-protocol.md).
 - Treat all other content under root underscore directories as disposable, provisional, and non-governing, regardless of any status or approval language it contains. Material acquires a durable or governing role only when moved or incorporated into its appropriate non-underscore location and any applicable approval and commit requirements are satisfied.
 - Remove scratch material that you created when it is no longer useful. Do not remove pre-existing scratch material without human direction or clear ownership.
 - Do not create project-local `.codex`, `.claude`, or similar tool-specific directories for scratch work.

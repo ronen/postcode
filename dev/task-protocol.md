@@ -2,6 +2,8 @@
 
 This document defines how an approved implementation task becomes a durable record of its instructions, material follow-ups, outcome, and verification.
 
+This protocol must satisfy the adopted [task-record requirements](../foundation/task-records.md). It is human-maintained and may be changed only through separate human-directed process maintenance under the [development workflow](workflow.md#human-directed-process-maintenance).
+
 ## 1. Initiating a Task
 
 The protocol applies to substantive implementation tasks. It does not require every documentation adjustment, exploratory conversation, or incidental cleanup to become a task record.
@@ -11,7 +13,7 @@ A task may begin in either of two ways:
 - The human supplies an approved `_work/TASK.md`.
 - During an interactive conversation, the human explicitly authorizes a substantive implementation request and the agent confirms that it will open a task record before proceeding.
 
-`_work/TASK.md` is a disposable drafting and handoff artifact. It is prepared and revised before implementation by the human, possibly in collaboration with a planning agent. The executing agent treats it as immutable input, does not modify it, and does not commit it.
+The root-level `_work/TASK.md` file is a disposable drafting and handoff artifact, excluded from Git by the root `.gitignore`. It is prepared and revised before implementation by the human, possibly in collaboration with a planning agent. The executing agent treats it as immutable input, does not modify it, and does not commit it.
 
 Before opening the task record, the executing agent must restate the goal and identify any explicit scope boundary.
 

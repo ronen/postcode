@@ -1,6 +1,6 @@
 # Plans
 
-Plans in this directory describe future work that the human has explicitly approved, and the learning or outcome it is intended to produce. Develop proposed plans under [`drafts/`](../../drafts/) or in an ignored underscore workspace. A plan is not authorization to implement; substantive implementation begins only through the [task protocol](../../foundation/task-protocol.md).
+Plans in this directory describe future work that the human has explicitly approved, and the learning or outcome it is intended to produce. Develop proposed plans under [`drafts/`](../../drafts/) or in an ignored underscore workspace. A plan is not authorization to implement; substantive implementation begins only through the [task protocol](../../dev/task-protocol.md).
 
 Use descriptive, unnumbered filenames, such as `initial-product-slice.md` or `agent-context-exchange.md`. Do not encode priority or sequence in filenames. Express dependencies and ordering in the plan itself or in a current roadmap when one becomes necessary.
 
