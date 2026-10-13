@@ -4,7 +4,7 @@ Record type: disposition
 Date: 2026-10-13
 Task: [Implement explicit Lenses and qualified request resolution](../../tasks/2026-10-11-lens-request-model.md)
 Handoff: [Integrated Lens request model](2026-10-13-integrated-request-model-handoff.md)
-Findings: [Round 1](2026-10-13-integrated-request-model-round-1-findings.md), [Round 2](2026-10-13-integrated-request-model-round-2-findings.md)
+Findings: [Round 1](2026-10-13-integrated-request-model-round-1-findings.md), [Round 2](2026-10-13-integrated-request-model-round-2-findings.md), [Round 3](2026-10-13-integrated-request-model-round-3-findings.md)
 Correction target: `e4452fdfcf797ab04222cbea5cd546995ade9366`
 
 ## Findings and dispositions
@@ -103,17 +103,29 @@ Repository inputs and Git state stayed unchanged during the run. Only redundant 
 
 The round-2 residual limits remain recorded as reported: earlier gates and scale measurements were not independently rederived, no hosted inference, heap study, worker-restart testing or catalog fuzzing was added, and exports partial/unavailable coverage remains controlled. No old/new real-project CLI byte comparison is claimed. The new built-in heading checks supplement the reviewer's mapping analysis and existing journey tests. The historical intermittent CLI failure remains unexplained.
 
+## Round-3 assessment
+
+Round 3 independently rechecked `e4452fdfcf797ab04222cbea5cd546995ade9366` and confirms R2-F1 and R2-F2 resolved, with no actionable findings. No implementation correction is required. The human subsequently directed housekeeping and GitHub publication while expressly keeping this task open.
+
+The reviewer passed type checking and the full offline suite: **589/589**, zero failed, cancelled or skipped, approximately 200 seconds, with a clean worktree and no paid inference. The reviewer also compared `764eaa0` and `e4452fd` on this repository in Unicode and JSON for modules, project/repository organization, module/group inspection, dependencies, children and an unresolved inspection. After normalizing Session UUIDs, all eight Unicode results and exit codes matched; JSON changes were limited to supplied titles and View IDs. This supplies the real-project comparison previously unperformed, within the commands and environment tested.
+
+| Non-defect observation | Assessment |
+| --- | --- |
+| External declaration answer IDs depend on installation path | Recorded with the reviewer's evidence: the same older build copied to another path also changed module/dependency Projection IDs while remaining stable at each path. The proposed TypeScript/declaration-resolution explanation remains a likely cause, not an independently established diagnosis. No cross-installation identity guarantee is added; any such requirement needs a separate decision. |
+| Interpretation title context is constructed in two places | Recorded as a maintainability note. Both application paths agree and are tested. No helper refactor is needed for this documentation/publication housekeeping. |
+| Dependency headings describe endpoint direction | Recorded as unchanged and outside the requested module/organization question-title correction. No further title behavior is inferred or introduced. |
+
+Earlier gates and repository-scale timings were not independently rederived. No hosted inference, heap study, worker-restart testing or catalog fuzzing was added; exports partial/unavailable coverage remains controlled. The real-project CLI comparison excludes interpretation commands and shell sessions. The historical intermittent CLI failure remains unexplained and was not reproduced. The reviewer recommends the final gate as sufficient; that recommendation does not close the task.
+
 ## Review rounds
 
 - Round 1 reviewed `f7a082eaa92b929a03402164280a6b47dc586f02` over the complete plan scope. Its independent type check and 575-test pass apply to that earlier target.
 - F1/F2 correction: `dd3c9e34551f69c6af54339faa3c09a1a3ae5f9d`.
 - Human-directed arrangement correction and round-2 target: `764eaa0f4a4fb5663846b5f1bfc2efae54482431`. The correction range from the reviewed implementation is `f7a082eaa92b929a03402164280a6b47dc586f02..764eaa0f4a4fb5663846b5f1bfc2efae54482431`.
-
 - Round 2 independently reviewed `764eaa0f4a4fb5663846b5f1bfc2efae54482431`, confirmed round-1 F1/F2 resolved, and reported R2-F1/R2-F2. Its type check and 585-test pass apply to that target.
 - Round-2 correction and current target: `e4452fdfcf797ab04222cbea5cd546995ade9366`, verified by the implementer as described above.
+- Round 3 independently reviewed that same correction target and confirmed both round-2 findings resolved, with no new actionable findings, a 589-test pass and the bounded real-project CLI comparison described above.
 
 ## Gate conclusion
 
-Both rounds' actionable findings are accepted and corrected. The remaining coupling was individually assessed and corrected under human direction, including the question-label correction. No finding is rejected or deferred.
-
-The further independent round requested after round 1 is complete. The round-2 reviewer considers the final gate sufficient once R2-F1 and R2-F2 have dispositions and permits implementer verification without another independent round. The focused corrections and verification meet that recommendation's stated boundary. Human judgment that the final gate is sufficient is still pending. The task remains active; this disposition does not accept the gate or authorize closure on the human's behalf.
+All actionable findings across the three rounds are accepted and corrected; none remains open, rejected or deferred. Round 3 recommends the final gate as sufficient. The human has authorized housekeeping, branch push and a GitHub PR, while explicitly withholding task closure. Publication may proceed under that direction. The task remains active; this disposition does not authorize closure on the human's behalf.
