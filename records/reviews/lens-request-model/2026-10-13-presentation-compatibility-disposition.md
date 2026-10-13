@@ -35,3 +35,5 @@ Round 1 reviewed `1b853bd61961b4da94b630c9c4e8de91c3be49e6` against `d8ceb60b967
 ## Gate conclusion
 
 The reviewer considers this checkpoint suitable for the remaining work and does not require a separate review round for F1 unless the human prefers one. The correction does not materially invalidate that review. The human has requested disposition and correction, but has not yet explicitly accepted this gate. Under the review workflow, wider implementation remains paused pending that acceptance; the task remains active. Acceptance would permit the remaining mechanical integration, not close the task or replace final integrated review.
+
+On 2026-10-13, the human explicitly accepted this gate and authorized continuation (“yes, continue”), as recorded in the task follow-up. This supersedes the pending-gate conclusion above. Remaining mechanical integration and final integrated review are still required.
