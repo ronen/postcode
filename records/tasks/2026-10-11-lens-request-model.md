@@ -160,7 +160,11 @@ Presentation-compatibility checkpoint, 2026-10-13: after the human accepted the 
 
 This checkpoint pauses for human-arranged intermediate review of the cross-family compatibility boundary before the mechanical extension depends on it. The nonpublic exports constructor/Presentation, replacement of remaining mechanical Lens-name dispatch, final integrated verification and final review/human acceptance remain required. The task stays active; no M4 or full-plan completion is asserted.
 
+Presentation-compatibility review correction, 2026-10-13: the [round-one review](../reviews/lens-request-model/2026-10-13-presentation-compatibility-round-1-findings.md) returned one low-priority wording finding. F1 is accepted and corrected in `1910c9d01c72c53c288d078b24dd917ea842645f`: Unicode refusal reports distinguish retained-answer IDs with unsupported redisplay from usable candidate references, and only candidates receive a reference-lifetime promise. JSON and request/answer semantics are unchanged. The [disposition](../reviews/lens-request-model/2026-10-13-presentation-compatibility-disposition.md), committed in `5ddd495`, records the finding, verification and all residual limits. The reviewer recommends continuing without another round for this correction unless the human prefers one. Human acceptance of the gate remains pending; the task remains active and wider implementation remains paused.
+
 ## Verification
+
+Presentation-compatibility review correction verification, 2026-10-13: type checking, build and `git diff --check` passed. All 24 focused compatibility/request-model tests passed, including the updated Unicode candidate/retained-ID assertions, both candidate-free reference lifetimes, and existing worker publication/sink-failure checks. Repository inputs and Git state remained stable during the run; temporary process-scoped sleep inhibition was used. No paid inference was used. The independent reviewer's full 566-test pass applies to the earlier reviewed target; no full-suite rerun is claimed for this bounded wording correction.
 
 ### Request-attribution round 2 evidence — 2026-10-13
 
