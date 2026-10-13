@@ -4,8 +4,8 @@ Record type: disposition
 Date: 2026-10-13
 Task: [Implement explicit Lenses and qualified request resolution](../../tasks/2026-10-11-lens-request-model.md)
 Handoff: [Integrated Lens request model](2026-10-13-integrated-request-model-handoff.md)
-Findings: [Round 1](2026-10-13-integrated-request-model-round-1-findings.md)
-Correction target: `764eaa0f4a4fb5663846b5f1bfc2efae54482431`
+Findings: [Round 1](2026-10-13-integrated-request-model-round-1-findings.md), [Round 2](2026-10-13-integrated-request-model-round-2-findings.md)
+Correction target: `e4452fdfcf797ab04222cbea5cd546995ade9366`
 
 ## Findings and dispositions
 
@@ -54,7 +54,36 @@ The dependency descriptor adds endpoint role and coverage scope; the interpretat
 | Internal interpretation catalog replacement policy | Acknowledged and retained under the earlier accepted policy. Production uses the default catalog; this work does not broaden replacement of mechanical definitions or register the compatibility fixtures. |
 | Coverage map | Acknowledged as the reviewer's spot-checked coverage assessment. New direct/worker boundary and shared-Presentation compatibility tests supplement it; neither that map nor passing tests imply exhaustive coverage. |
 
+## Round-2 findings and dispositions
+
+The human directed correction of both findings, preserving scope-based layout, bounds, qualifications and source disclosure, and explicitly withheld task-closure authorization. That direction was recorded before implementation in `be592d5`. Both corrections are in `e4452fdfcf797ab04222cbea5cd546995ade9366`.
+
+### R2-F1 — accepted and corrected
+
+Mechanical coordination now passes the supplied question title into both module and organization arrangement, including embedded module detail. Each self-contained View and JSON payload retains `title`; the title participates in View identity. It is not added to Projection content or identity. The shared mechanical Presentation method advances from `@32` to `@33` for the new payload and identity input. The existing scope policies still control table/tree/card layout, limits, qualifications and source eligibility.
+
+The shared `inspect` declaration now supplies the question label `Inspect`. Module and organization renderers append their existing subject/context descriptions to the supplied label. The interpretation application supplies `Inspect · investigram`; its coordination helper retains that contextual default for direct construction as well, while an explicit supplied title takes precedence. This is application title construction before pure arrangement, not question inference by a shared renderer. Existing built-in headings are preserved.
+
+Compatible-question regressions now compare equivalent content, layout and qualifications while requiring the new question's actual title in Unicode and JSON. Separate title-only variations preserve the complete Projection descriptor but change View IDs, including embedded module detail. Detached repetition, source disclosure, export/documentation bounds and external collapsing remain checked. Direct and worker tests verify the built-in inventory, project/repository organization, module-inspection and group-inspection headings. Exact investigram inspection retains its contextual heading and honors an explicit title override.
+
+### R2-F2 — accepted and corrected
+
+An absent or undefined Lens now produces `representation: absent` and explains that a Lens or report name must be supplied. It no longer claims a representation limit. Invalid representable names retain the supplied value. A supplied accessor or nonrepresentable Lens retains its actual representation-limit problem without an additional false missing-input problem, and accessors are not executed. Unexpected failures after validation remain internal defects.
+
+Direct and worker publication regressions cover an omitted Lens: `invalid-request`, no prerequisite or requested work, no retained answer, missing-input qualification without a representation-limit claim, and matching JSON/observation records. Capture regressions separately check undefined, accessor and function-valued Lens inputs, serializable reports and zero accessor reads.
+
+### Round-2 non-defect observations
+
+| Observation | Disposition |
+| --- | --- |
+| Prospective source compatibility versus actual content scope | Recorded as a future registration constraint. Current exact registrations agree; arrangement continues enforcing the actual supplied scope. No registry expansion is part of these corrections. The legitimate inspection requirement-kind check for association paging remains unchanged. |
+| Usage requires explicit `selector: null` | Recorded as existing behavior matching the typed request interface and CLI. This correction does not change usage omission policy or infer new human approval from the reviewer's observation. |
+| Identity effects | Confirmed at the reviewed target. This correction adds the supplied display label to module/organization View identity and advances the shared Presentation method to `@33`; Projection methods and answer identity inputs are unchanged. Old method-version View IDs are not promised unchanged. |
+| Compatible-content test strength and limit | Retained, with the incorrect byte-identical-heading expectation corrected. Tests still compare content and policy under a distinct question identity; this remains a controlled content-boundary demonstration, not another registered end-to-end extension. |
+
 ## Corrections and verification
+
+### Round-1 correction verification
 
 For F1/F2, the initial five-test reproducer passed one and failed four against the reviewed implementation. After correction all five passed. The completed boundary-focused run passed all 57 tests, including the sixth new absence/accessor check, existing request publication, organization journeys, extension registration and post-validation defect checks. Type checking, build and diff checks passed.
 
@@ -66,14 +95,25 @@ The module compatibility fixture supplies a separate question and answer identit
 
 Residual limits remain explicit: no new repository-scale timing/heap study, hosted inference, worker-restart test or malformed-catalog fuzzing was performed. Exports partial/unavailable coverage still uses controlled core inputs. The reviewer's earlier-gate spot checks are not represented as independent rederivations of every race, allocation or revision case. The historical intermittent CLI JSON failure was not reproduced by this passing run and remains unexplained.
 
+### Round-2 correction verification
+
+`npm run check`, `npm run build` and `git diff --check` passed. The focused run used `caffeinate -is node --test` with the projection-content, request-designation-input, request-model, investigation-selection, source-disclosure, organization-cli, answer-identity, subject-resolution, discovery, expansions and foundation-identity suites. All **111/111 tests passed**, with zero failures, cancellations or skips, in approximately 72 seconds. This includes the updated compatible-question/title identity tests, four new title/input tests, ordinary built-in journeys, unchanged reference allocation and resolution behavior, source observations, rejected-input publication and post-validation defect handling.
+
+Repository inputs and Git state stayed unchanged during the run. Only redundant blank-line cleanup followed it before the implementation commit. Temporary process-scoped idle/system-sleep inhibition ended with execution. No paid inference was used. The full suite was not rerun for these focused corrections: the reviewer's independent **585/585** result applies to `764eaa0`, not to the new correction target.
+
+The round-2 residual limits remain recorded as reported: earlier gates and scale measurements were not independently rederived, no hosted inference, heap study, worker-restart testing or catalog fuzzing was added, and exports partial/unavailable coverage remains controlled. No old/new real-project CLI byte comparison is claimed. The new built-in heading checks supplement the reviewer's mapping analysis and existing journey tests. The historical intermittent CLI failure remains unexplained.
+
 ## Review rounds
 
 - Round 1 reviewed `f7a082eaa92b929a03402164280a6b47dc586f02` over the complete plan scope. Its independent type check and 575-test pass apply to that earlier target.
 - F1/F2 correction: `dd3c9e34551f69c6af54339faa3c09a1a3ae5f9d`.
-- Human-directed arrangement correction and current target: `764eaa0f4a4fb5663846b5f1bfc2efae54482431`. The correction range from the reviewed implementation is `f7a082eaa92b929a03402164280a6b47dc586f02..764eaa0f4a4fb5663846b5f1bfc2efae54482431`.
+- Human-directed arrangement correction and round-2 target: `764eaa0f4a4fb5663846b5f1bfc2efae54482431`. The correction range from the reviewed implementation is `f7a082eaa92b929a03402164280a6b47dc586f02..764eaa0f4a4fb5663846b5f1bfc2efae54482431`.
+
+- Round 2 independently reviewed `764eaa0f4a4fb5663846b5f1bfc2efae54482431`, confirmed round-1 F1/F2 resolved, and reported R2-F1/R2-F2. Its type check and 585-test pass apply to that target.
+- Round-2 correction and current target: `e4452fdfcf797ab04222cbea5cd546995ade9366`, verified by the implementer as described above.
 
 ## Gate conclusion
 
-F1 and F2 are accepted and corrected. The remaining coupling was individually assessed and corrected under explicit human direction. No finding is rejected or silently deferred.
+Both rounds' actionable findings are accepted and corrected. The remaining coupling was individually assessed and corrected under human direction, including the question-label correction. No finding is rejected or deferred.
 
-The reviewer proposed a narrow recheck only if changes remained within designation validation and organization registration. The subsequent human-directed work crosses that boundary, so the implementer requests a further independent round under the existing integrated handoff, focused on these corrections and their explicit content/Presentation distinctions. The original assignment still covers this work; its handoff and returned findings remain unchanged. The task is active. Human judgment that the final gate is sufficient remains required before closure.
+The further independent round requested after round 1 is complete. The round-2 reviewer considers the final gate sufficient once R2-F1 and R2-F2 have dispositions and permits implementer verification without another independent round. The focused corrections and verification meet that recommendation's stated boundary. Human judgment that the final gate is sufficient is still pending. The task remains active; this disposition does not accept the gate or authorize closure on the human's behalf.
