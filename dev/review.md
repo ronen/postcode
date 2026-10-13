@@ -1,10 +1,10 @@
 # Independent Review Workflow
 
-This document describes how an implementation agent prepares for a human-arranged independent review and how the resulting review evidence is preserved. For implementation work, it applies when review is required by the development workflow, an approved plan, an authorized task, or explicit human direction. It does not require independent review for every implementation task and does not determine which reviewer or review mechanism the human uses.
+This document describes how an implementation agent prepares for a human-arranged independent review and how the resulting review evidence is preserved. For implementation work, it applies when review is required by the task protocol, an approved plan, an authorized task, or explicit human direction. It does not require independent review for every implementation task and does not determine which reviewer or review mechanism the human uses.
 
 Human-directed process maintenance may use conversational reviews and Git diffs without formal review records. A request to review guidance changes does not by itself invoke this workflow; use its formal records for that work only when the human explicitly requests them.
 
-The development workflow supplies defaults for substantive implementation of an approved plan. An approved plan, authorized task, or explicit human direction may add, alter, or waive review gates. A reviewer's findings are input to the active task; they do not authorize implementation, expand task scope, accept a product result, or conclude the task.
+The [task protocol](task-protocol.md#independent-review) supplies defaults for substantive implementation of an approved plan. An approved plan, authorized task, or explicit human direction may add, alter, or waive review gates. A reviewer's findings are input to the active task; they do not authorize implementation, expand task scope, accept a product result, or conclude the task.
 
 ## Review records
 
@@ -48,6 +48,7 @@ A handoff should identify:
 
 - the active task and the review gate or checkpoint being addressed;
 - the exact implementation commit to review;
+- the implementation worktree path;
 - the baseline or diff range that defines the review scope;
 - the branch and pull request, when useful as conveniences rather than as substitutes for immutable commit identity;
 - the governing plan, accepted decisions, core concepts, architectural constraints, and other material needed to judge the work;

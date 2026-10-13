@@ -1,7 +1,8 @@
 # Development Workflow
 
-This document describes how humans and coding agents plan, implement, verify, document, and hand off changes to PostCode. It complements the [task protocol](task-protocol.md).
+This document describes how humans and coding agents plan, implement, verify, document, and hand off changes to PostCode. The [task protocol](task-protocol.md) defines the lifecycle and durable records of substantive implementation tasks; the [worktree instructions](worktrees.md) define checkout mechanics.
 
+<a id="kinds-of-work"></a>
 ## 1. Kinds of Work
 
 ### 1.1 Exploration and planning
@@ -19,21 +20,19 @@ Agents performing planning or implementation may report or propose process chang
 
 ### 1.3 Substantive implementation
 
-Substantive implementation follows the [task protocol](task-protocol.md). Examples include creating an executable scaffold, adding application dependencies, defining runtime contracts, implementing behavior, and materially changing existing behavior or architecture.
-
-Before implementation begins, restate the authorized goal and its explicit scope boundaries, then open the task record as prescribed by the protocol.
+An authorized unit of substantive implementation work is referred to as a **task** and follows the [task protocol](task-protocol.md). Examples include creating an executable scaffold, adding application dependencies, defining runtime contracts, implementing behavior, and materially changing existing behavior or architecture.
 
 ### 1.4 Incidental changes
 
-Small local corrections may accompany related work when they are obvious, low risk, and do not introduce a separate design decision. Keep unrelated cleanup separate. When classification would materially affect scope or history, ask the human.
+Small documentation adjustments and incidental cleanup do not automatically require a task record. Small local corrections may accompany related work when they are obvious, low risk, support the approved goal, and do not introduce a separate design decision. Keep unrelated cleanup separate. When classification would materially affect scope or history, ask the human.
 
+<a id="before-making-changes"></a>
 ## 2. Before Making Changes
 
 1. Read `AGENTS.md` and the applicable adopted foundation documents.
 2. Read the governing core concepts and architectural constraints, current plan, architecture documentation, accepted decisions, and applicable engineering guidelines and conventions.
 3. Inspect the worktree and preserve existing human or agent changes.
-4. For substantive implementation, locate or open the applicable task record before changing the implementation.
-5. Identify uncertainties that could materially change the goal, architecture, or external behavior. Resolve them with the human rather than embedding an assumption silently.
+4. Identify uncertainties that could materially change the goal, architecture, or external behavior. Resolve them with the human rather than embedding an assumption silently.
 
 <a id="planning"></a>
 ## 3. Planning
@@ -44,7 +43,7 @@ Follow the [planning workflow](planning.md) for plan contents, provisional worki
 
 ## 4. Implementation
 
-- Implement an approved plan on a suitably named feature branch unless the plan or human explicitly directs otherwise.
+- Use the [task branch and worktree established under the task protocol](task-protocol.md#task-branch).
 - Use the applicable [engineering guidelines](engineering-guidelines.md) when exercising implementation judgment, and explain material departures.
 - Follow the applicable [implementation conventions](../docs/implementation-conventions.md).
 - Prefer the smallest coherent change that advances the authorized goal.
@@ -76,6 +75,8 @@ Pre-existing or trivial inconsistencies do not all require investigation. Releva
 ## 6. Documentation
 
 The responsibilities below supplement the plans, task records, review records, validation records, and other artifacts prescribed by their respective workflows. Use the [documentation guide](../docs/README.md) to locate the appropriate repository documentation.
+
+Do not leave durable rationale only in chat, commit messages, or an agent's final response. Put it in the appropriate repository document when later work will depend on it.
 
 <a id="governing-architecture-and-decisions"></a>
 ### Governing architecture and decisions
@@ -133,25 +134,7 @@ Verification should be proportional to the risk and scope of the change. Before 
 6. capture material out-of-scope follow-up work in the backlog when appropriate;
 7. review the final diff for accidental, unrelated, sensitive, or generated content.
 
-Report what was verified, what was not verified, and any residual uncertainty. Never imply that an unperformed check passed.
+Report what was verified, what was not verified, and any residual uncertainty. Never imply that an unperformed check passed. Raise unresolved risks or questions, and identify useful follow-up work outside the current scope.
 
-Unless the approved plan or human explicitly directs otherwise, substantive implementation of an approved plan uses these independent-review defaults:
-
-- <a id="intermediate-review"></a> If the implementation becomes sufficiently complex that intermediate review would materially reduce risk, pause for independent review after appropriate key developments.
-- After implementation and planned verification are substantially complete, prepare and commit a final integrated-review handoff. Pause for one or more final review rounds, and do not close the task until the human says that the review gate is sufficient.
-
-Follow the [independent review workflow](review.md) whenever these defaults, an approved plan, or an authorized task require review. The human arranges the reviewer and review mechanism unless the approved plan expressly assigns that responsibility to the agent or the human explicitly directs the agent to do so.
-
-## 8. Completion and Handoff
-
-For substantive implementation, conclude the task according to the task protocol only when the authorized outcome and appropriate verification are satisfied.
-
-A handoff should leave the repository understandable without access to the conversation that produced it. State:
-
-- the resulting behavior or artifact;
-- material deviations from the plan;
-- verification performed;
-- unresolved risks or questions;
-- any follow-up work that remains outside the completed scope.
-
-Do not leave durable rationale only in chat, commit messages, or an agent's final response. Put it in the appropriate repository document when later work will depend on it.
+<a id="intermediate-review"></a>
+For independent-review defaults, including intermediate review, follow the [task protocol](task-protocol.md#independent-review).

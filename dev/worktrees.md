@@ -1,0 +1,54 @@
+# Worktrees
+
+This document describes the local checkout layout and how agents use it. It is human-maintained under the [development workflow](workflow.md#human-directed-process-maintenance).
+
+To allow independent work to proceed simultaneously, work on separate branches generally uses separate worktrees.
+
+<a id="layout"></a>
+## Layout
+
+Keep the primary checkout for general-purpose work. Put additional worktrees in a sibling directory named `<checkout-name>-worktrees/`, where `<checkout-name>` is the primary checkout's directory name:
+
+```text
+<checkout-name>/
+<checkout-name>-worktrees/
+├── <branch-name>/
+└── <another-branch-name>/
+```
+
+Identify the primary checkout and registered worktrees with `git worktree list --porcelain`; derive the worktree container's location from the primary checkout's parent and directory name, not from the agent's current directory. Create the container when the first worktree is needed.
+
+Planning and process maintenance may use the primary checkout. Read-only inspection may cross checkout boundaries, but account for the revision being inspected. Keep one writer at a time in a checkout. Do not switch, reset, stash, or modify another activity's checkout.
+
+<a id="setup"></a>
+## Setup
+
+Given the selected branch name and, for a new branch, its starting revision, the agent prepares the worktree; the human need not create it or start another agent there.
+
+1. Inspect the registered worktrees. Reuse the worktree for the selected branch when it belongs to the work being continued; do not take over another activity's checkout.
+2. Otherwise, create a worktree for the existing branch, or create the new branch and worktree from the selected starting revision. Derive a readable directory name from the branch name, omitting a prefix such as `codex/` and making it safe for use as a single directory name. Place it under the worktree container. Check existing branches and paths before creating them; do not overwrite or repurpose another activity's worktree.
+3. State the branch, worktree path, and starting commit. Direct subsequent edits, commands, verification, and commits to that worktree, even if the conversation began in the primary checkout. Read the applicable instructions there before proceeding.
+
+An unrelated dirty checkout does not prevent creating a worktree from committed history. Preserve its changes.
+
+<a id="local-files"></a>
+## Local files
+
+A new worktree contains committed files, not the source checkout's uncommitted or ignored material.
+
+Read supporting scratch material from its known source location, or copy only the material needed into an appropriate ignored directory in the working checkout. Preserve the source material and its provisional status; do not treat copying as approval or promotion. Install dependencies and produce build outputs in the working checkout as needed. Do not share mutable dependency or build directories between active worktrees.
+
+<a id="integration"></a>
+## Integration
+
+Worktrees share Git history, so local branches can be merged without pushing and pulling between checkouts. Updating one branch does not itself update worktrees on other branches. Perform integration in the receiving branch's worktree, preserving existing changes and repeating affected verification.
+
+<a id="cleanup"></a>
+## Removal
+
+When a worktree is no longer needed and its removal is authorized, perform removal from outside that worktree.
+
+- Confirm that commits were published when required and incorporated into the intended destination when integration was required. For a squash merge, verify the incorporated result rather than relying solely on commit ancestry.
+- Inspect tracked changes, untracked files, and ignored material before removal. Preserve useful work and evidence in an appropriate location. Remove expendable material created for the work; ask about material whose ownership or value is unclear. A clean Git status alone is insufficient evidence that all local material is disposable.
+- Remove the worktree with `git worktree remove` once preservation is complete. Do not force removal to bypass unresolved local work.
+- Leave the general-purpose checkout and other active worktrees undisturbed. Branch deletion is separate from worktree removal and requires human direction. Report cleanup performed and anything retained for further attention.
