@@ -7,10 +7,11 @@ import { temporaryDirectory } from './cli-helpers.js';
 import { ScriptedInvestigator, syntheticUsage } from './investigator-double.js';
 import { requireResolution, requireView } from './request-helpers.js';
 import { openSession } from '../src/lib/session.js';
-import { defaultCatalog } from '../src/lib/request-catalog.js';
+import { captureCatalog, defaultCatalog } from '../src/lib/request-catalog.js';
 import type { RequestCatalog } from '../src/lib/request-catalog.js';
 import { operationMethod } from '../src/lib/investigation/operations.js';
 import type { OperationDefinition } from '../src/lib/investigation/operations.js';
+import { lenses } from '../src/lib/requests.js';
 import type { LensDefinition } from '../src/lib/requests.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
@@ -26,6 +27,40 @@ function catalog(): RequestCatalog {
   return { lenses: { ...defaultCatalog.lenses, risks: riskLens, 'risk-review': { ...riskLens, id: 'risk-review', title: 'Risk review' } },
     operations: { ...defaultCatalog.operations, risks } };
 }
+
+const invalidDefinitions: readonly { name: string; definition: LensDefinition; reason: RegExp }[] = [
+  { name: 'new mechanical implementation', definition: { ...lenses.modules, id: 'other-modules' }, reason: /mechanical Lens definitions/ },
+  { name: 'changed built-in requirements', definition: { ...lenses.modules, requirements: { kind: 'dependencies' }, results: ['dependencies'] }, reason: /mechanical Lens definitions/ },
+  { name: 'changed built-in applicability', definition: { ...lenses.modules, subjects: ['module'], cardinality: 'collection' }, reason: /mechanical Lens definitions/ },
+  { name: 'changed built-in question', definition: { ...lenses.modules, question: 'A different question' }, reason: /mechanical Lens definitions/ },
+  { name: 'mechanical implementation under an interpretation identity', definition: { ...lenses.modules, id: 'summarize' }, reason: /mechanical Lens definitions/ },
+  { name: 'interpretation replacing built-in inspection', definition: { ...riskLens, id: 'inspect' }, reason: /mechanical Lens definitions/ },
+  ...['dependencies', 'children', 'parents', 'usage'].map(id => ({ name: `shadowed identity ${id}`, definition: { ...riskLens, id }, reason: /reserved/ })),
+  ...[{ depth: 1 }, null, [], 'depth'].map(parameters => ({ name: `unsupported parameter declaration ${JSON.stringify(parameters)}`,
+    definition: { ...riskLens, parameters: parameters as unknown as LensDefinition['parameters'] }, reason: /empty parameter object/ })),
+  { name: 'mechanical parameter declaration', definition: { ...lenses.modules, parameters: { depth: 1 } as unknown as LensDefinition['parameters'] }, reason: /mechanical Lens definitions/ },
+];
+for (const { name, definition, reason } of invalidDefinitions) {
+  test(`catalog rejects ${name} before Session opening`, async () => {
+    const definitions = catalog();
+    const supplied = { ...definitions, lenses: { ...definitions.lenses, [definition.id]: definition } };
+    assert.throws(() => captureCatalog(supplied), reason);
+    // No project is required: unsupported assembly must fail before acquisition,
+    // not become a request, open failure, or mislabelled program answer.
+    await assert.rejects(openSession({ configPath: '/catalog-rejection-must-not-open/tsconfig.json' }, {}, supplied), reason);
+  });
+}
+
+test('catalog accepts unchanged built-ins independent of object key order and supported interpretation additions', () => {
+  const supplied = catalog();
+  const reordered = Object.fromEntries(Object.entries(lenses.modules).reverse()) as unknown as LensDefinition;
+  const captured = captureCatalog({ ...supplied, lenses: { ...supplied.lenses, modules: reordered } });
+  assert.deepEqual(captured.lenses.modules, lenses.modules);
+  assert.deepEqual(captured.lenses.risks, riskLens);
+  assert.deepEqual(captureCatalog(defaultCatalog), defaultCatalog);
+  assert.ok(Object.isFrozen(captured.lenses.risks!.parameters));
+});
+
 const presentation = { format: 'json' as const, sourceDetail: false };
 const request = { lens: 'risks', selector: 'entry', presentation };
 function fixture(t: TestContext) {

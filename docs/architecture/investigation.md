@@ -167,6 +167,12 @@ and operation catalog before opening and does not accept live registration or
 replacement. An internal assembly seam permits nonpublic interpretation fixtures
 using the same definitions and coordination; additional mechanical definitions
 remain unsupported until their construction/Presentation integration is complete.
+Assembly therefore requires unchanged built-in mechanical definitions, including
+their question and applicability, and rejects mechanical replacements of
+interpretation Lenses or interpretation replacements of mechanical Lenses.
+Command aliases and the `usage` report name cannot be shadowed by Lens entries.
+Interpretation definitions must declare an empty parameter object; parameterized
+operations are not implemented. Invalid assembly fails before project acquisition.
 
 Reuse compares the operation request and an effective method containing the common
 execution version, authored operation method and a fingerprint of the actual
