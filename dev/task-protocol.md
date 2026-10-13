@@ -13,7 +13,7 @@ A task may begin in either of two ways:
 - The human supplies an approved `_work/TASK.md`.
 - During an interactive conversation, the human explicitly authorizes a substantive implementation request and the agent confirms that it will open a task record before proceeding.
 
-Begin by restating the authorized goal and its explicit scope boundaries.
+After preparation, restate the authorized goal and its explicit scope boundaries.
 
 The root-level `_work/TASK.md` file is a disposable drafting and handoff artifact, excluded from Git by the root `.gitignore`. It is prepared and revised before implementation by the human, possibly in collaboration with a planning agent. The executing agent treats it as immutable input, does not modify it, and does not commit it.
 
@@ -24,9 +24,14 @@ A request with an independently meaningful goal, or one made after the current t
 <a id="task-branch"></a>
 ### Task branch
 
-Implement each task in its own feature branch and worktree unless the human explicitly directs otherwise. For a new task, select a suitably named branch using `codex/<task-name>` and start from local `main`, unless the approved plan or human specifies another starting revision or branch name. Confirm that the starting revision contains the approved documents and prerequisites needed by the task. If required work is missing or exists only as uncommitted changes elsewhere, resolve the starting point with the human before opening the task record.
+Implement each task in its own feature branch and worktree unless the human explicitly directs otherwise. For a new task, select a suitably named branch using `codex/<task-name>` and start from local `main`, unless the approved plan or human specifies another starting revision or branch name. When starting from `main`, follow the [main synchronization instructions](worktrees.md#main-synchronization) before selecting the starting commit. Confirm that the starting commit contains the approved documents and prerequisites needed by the task. If required work is missing or exists only as uncommitted changes elsewhere, resolve the starting point with the human before opening the task record.
 
 When continuing an active task, locate its existing record and use its existing branch and worktree rather than opening another task merely because the agent started elsewhere. Create or locate the worktree under the [worktree setup instructions](worktrees.md#setup). Perform implementation and task-record commits there; the checks before task-record commits apply to that worktree.
+
+<a id="finding-active-task"></a>
+### Finding an active task
+
+An active record may exist only on its task branch. Inspect `git worktree list --porcelain` and look in `records/tasks/` in the relevant worktrees. If it is not found there, inspect local and remote-tracking branches and their `TASK OPENED:` history, then read the candidate record at the branch tip to confirm its current status. Ask the human if the requested task cannot be identified unambiguously; do not open a duplicate record merely because it is absent from the current checkout.
 
 <a id="opening-task-record"></a>
 ## 2. Opening the Task Record
@@ -99,7 +104,7 @@ The initial commit establishes the historical boundary between the approved requ
 
 After confirming that the opening commit succeeded, the executing agent must delete the original `_work/TASK.md` if it was the source of the task, even when it was read from another checkout. First confirm that it still matches the input preserved in the record; if it has changed, preserve it and ask for human direction. The committed task record then becomes the sole record of the active task once the source has been consumed.
 
-This deletion is an explicit exception to the [rule against modifying another activity's checkout](worktrees.md#layout).
+This deletion is an explicit exception to the [rule against modifying a checkout being used for other work](worktrees.md#layout).
 
 The approved task text is immutable evidence. It must not be rewritten retrospectively for clarity or to match the implementation.
 
@@ -116,8 +121,6 @@ Preserve the prompt verbatim when practical. If surrounding conversation is requ
 Incidental conversation, status questions, tool output, and discussion that does not affect the task need not be recorded.
 
 Previously recorded task text and follow-ups must not be edited when a later prompt supersedes them. The later prompt records the change in direction.
-
-Incorporate needed changes from `main` into the task branch at a deliberate checkpoint, preserving the task's authorized scope and repeating affected verification. Changes to the task's instructions remain subject to this follow-up protocol.
 
 <a id="independent-review"></a>
 ## 4. Independent Review
@@ -147,10 +150,10 @@ Once a task has been concluded and its closing record committed, the record must
 
 Pushing the closed task record, an authorized merge, and cleanup may follow task closure without opening another task. Follow the [publication, merge, and cleanup sequence](#publication-and-cleanup).
 
-<a id="task-handoff"></a>
-### Handoff
+<a id="completion-report"></a>
+### Completion report
 
-A handoff should leave the repository understandable without access to the conversation that produced it. State:
+A completion report should leave the repository understandable without access to the conversation that produced it. State:
 
 - the resulting behavior or artifact;
 - material deviations from the plan;
@@ -158,13 +161,17 @@ A handoff should leave the repository understandable without access to the conve
 - unresolved risks or questions;
 - any follow-up work that remains outside the completed scope.
 
-## 6. Git Chronology and Worktree State
+## 6. Git Chronology and Working-Tree State
 
 Task-record commits preserve the chronology of the approved request, implementation, and conclusion. In particular:
 
 - the initial task record is committed before implementation;
 - each material follow-up is committed before the work it changes;
 - the closing record is committed after implementation and verification.
+
+Preserve the task's commits from `TASK OPENED` onward. Do not rebase, squash, amend, or otherwise rewrite that history. Integrate the task branch using a merge that retains its commits, including a fast-forward when possible; for a GitHub PR, use a merge commit rather than squash or rebase merging.
+
+Incorporate needed changes from `main` into the task branch by merging at a deliberate checkpoint, preserving the task's authorized scope and repeating affected verification. Changes to the task's instructions remain subject to the follow-up protocol.
 
 Before making any task-record commit, the executing agent must inspect the worktree for other uncommitted changes. If any are present, the agent must ask the human whether to:
 
@@ -183,6 +190,10 @@ Unless the human directs otherwise, substantive implementation tasks use a GitHu
 
 When a GitHub pull request is used, push the task branch and create or update the PR while the task is still active, so that external review can take place before task closure. Keep the task active while review and any resulting corrections are in progress. Close the task only after the human confirms that external review is finished and the applicable review gates are satisfied. Then push the final commits, including the closed task record, before merging when authorized.
 
+This human confirmation is required even for an interactively authorized task with no formal independent-review gate. Using a PR does not by itself require the formal review records in the independent review workflow.
+
 Follow the [review workflow](review.md) and [pull request description conventions](process-conventions.md#pull-request-descriptions). A clean reviewer report does not by itself authorize task closure or merging.
 
-The agent completing the authorized merge is responsible for removing the task worktree under the [worktree removal instructions](worktrees.md#cleanup). If the human merges elsewhere, the agent can perform cleanup once the merge is confirmed. If the task is blocked or abandoned, retain its worktree and work until the human directs their disposition.
+After a GitHub merge, follow the [main synchronization instructions](worktrees.md#main-synchronization) and verify that the task's final commit is included in the fetched destination history. Report any local synchronization left pending because the checkout is unavailable.
+
+Authorization to merge includes subsequent safe removal of the task worktree under the [worktree removal instructions](worktrees.md#cleanup), unless the human directs otherwise. The agent completing the merge is responsible for that cleanup. If the human merges elsewhere, an agent continuing the task may perform cleanup once the merge is confirmed. If the task is blocked or abandoned, retain its worktree and work until the human directs their disposition.

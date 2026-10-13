@@ -31,7 +31,7 @@ Small documentation adjustments and incidental cleanup do not automatically requ
 
 1. Read `AGENTS.md` and the applicable adopted foundation documents.
 2. Read the governing core concepts and architectural constraints, current plan, architecture documentation, accepted decisions, and applicable engineering guidelines and conventions.
-3. Inspect the worktree and preserve existing human or agent changes.
+3. Inspect the working-tree state and preserve existing human or agent changes.
 4. Identify uncertainties that could materially change the goal, architecture, or external behavior. Resolve them with the human rather than embedding an assumption silently.
 
 <a id="planning"></a>

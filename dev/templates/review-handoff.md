@@ -7,6 +7,7 @@ Review gate:
 Review target:
 Baseline or diff range:
 Branch:
+Worktree: [Optional for local review; path relative to the primary checkout.]
 Pull request:
 
 ## Review assignment and boundaries

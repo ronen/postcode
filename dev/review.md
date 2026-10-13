@@ -48,7 +48,7 @@ A handoff should identify:
 
 - the active task and the review gate or checkpoint being addressed;
 - the exact implementation commit to review;
-- the implementation worktree path;
+- the implementation worktree location when useful to a local reviewer, expressed relative to the primary checkout rather than as an absolute machine-specific path;
 - the baseline or diff range that defines the review scope;
 - the branch and pull request, when useful as conveniences rather than as substitutes for immutable commit identity;
 - the governing plan, accepted decisions, core concepts, architectural constraints, and other material needed to judge the work;
