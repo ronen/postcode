@@ -90,6 +90,9 @@ export interface DependencyProjectionRecord extends RecordContext {
   readonly kind: 'dependency-projection';
   readonly lens: 'dependency-structure' | 'dependency-children' | 'dependency-parents';
   readonly subject: 'configured-project' | 'selected-modules';
+  /** Selected subjects occupy this endpoint; null selects the project-owned population. */
+  readonly subjectRole: 'parent' | 'child' | null;
+  readonly coverageScope: 'evaluation' | 'subject-owners' | 'unattributable-to-subjects';
   readonly parameters: Readonly<Record<string, never>>;
   readonly evaluation: RecordId;
   readonly subjects: readonly RecordId[];

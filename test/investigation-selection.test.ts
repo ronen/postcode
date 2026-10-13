@@ -345,6 +345,22 @@ test('binding port cannot allocate outside its typed population or partially bin
   assert.throws(() => referenceBinding(f.store, sessionId(), references), /population/);
 });
 
+test('interpretation support display follows retained-selection meaning instead of the Lens spelling', () => {
+  const f = fixture();
+  const result = f.publish([{ name: 'A', evidence: [f.id('module-claim-0')] }], [], { supplied: [f.id('module-claim-0')] });
+  for (const projection of [f.select(result), f.historical('A')]) {
+    const content = resolveInvestigationContent(f.store, projection);
+    const { view } = arrangeInvestigationView(content, { title: 'Qualified accounts', presentation: { format: 'unicode', sourceDetail: false } },
+      projection.variant === 'request' ? { reused: false, attempt: result.attempt } : null,
+      usageSummary([]), referenceBinding(f.store, f.session, content.references));
+    assert.ok(view.support.length);
+    const rendered = renderInvestigationView(view);
+    assert.equal(renderInvestigationView({ ...view, projection: { ...view.projection, lens: 'fixture-account-question' } }), rendered);
+    assert.equal(rendered.includes('Support (exposure identified by provenance)'), projection.variant !== 'request');
+    assert.equal(sourceDisclosure(view), null);
+  }
+});
+
 test('arrangement is self-contained, preserves bounded disclosure and distinguishes presentation from Projection identity', () => {
   const f = fixture(), { id, store } = f;
   const children = Array.from({ length: 270 }, (_, n) => `child-${n}`);

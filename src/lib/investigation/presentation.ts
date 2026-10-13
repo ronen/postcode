@@ -176,7 +176,7 @@ export function arrangeInvestigationView(content: InvestigationProjectionContent
   const investigations = selection.variant === 'historical-inspection'
     ? arrangeAssociatedInvestigations(content as InvestigationProjectionContent, associatedReferences, request.after, request.referenceLifetime) : undefined;
   const projection = { id: content.projection.id,
-    session, lens: selection.lens, subject: 'selected-subjects', parameters: {},
+    session, lens: selection.lens, variant: selection.variant, subject: 'selected-subjects', parameters: {},
     selection: { matches: selected.length, status: selection.status } };
   const arrangementKey = recordId(session, 'investigation-arrangement', [methods.investigationPresentation, identityReference(session, projection.id),
     request.presentation, request.title, associationContinuation(session, selection.associated, associatedReferences, request.after),
@@ -250,7 +250,8 @@ export function renderInvestigationView(view: InvestigationView): string {
     `  Evidence: ${correction.evidence.length ? correction.evidence.map(inlineText).join(', ') : 'none supplied'}`,
     `  Reason: ${inlineText(correction.reason)}`, ...correction.qualifications.map(item => `  Qualification: ${inlineText(item)}`));
   if (view.investigations) lines.push(renderAssociatedInvestigations(view.investigations).trimEnd());
-  if (view.projection.lens === 'inspect') for (const support of view.support) lines.push(`  Support (exposure identified by provenance): ${terminalText(JSON.stringify(support))}`);
+  // Retained-account selections expose their support; operation answers keep it in JSON.
+  if (view.projection.variant !== 'request') for (const support of view.support) lines.push(`  Support (exposure identified by provenance): ${terminalText(JSON.stringify(support))}`);
   // Changes to this section or JSON source fields must stay aligned with
   // src/lib/source-disclosure.ts and test/source-disclosure.test.ts.
   if (view.sourceDetail) lines.push('\nSource support (captured locations and excerpts):', terminalText(JSON.stringify(view.sourceDetail.items, null, 2)));

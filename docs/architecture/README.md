@@ -158,6 +158,21 @@ are captured in the View, with fallback changes also explained in Unicode output
 These choices participate in View identity without changing retained answer identity.
 Embedded module detail and associated interpretation inspection remain explicit
 family compositions; their resolved content is validated at arrangement boundaries.
+Shared arrangements do not infer layout, detail, direction or coverage from a Lens
+name. Module and organization content already identifies population versus selected
+subjects; each family's fixed Presentation owns the corresponding table/tree or card
+layout, bounds and source-detail policy. Compatible qualified content can carry another
+question identity through those same arrangements. Dependency answers retain the
+selected subjects' endpoint role and recognition-coverage scope; their constructors
+use those meanings to select relationships and source-owned outcomes. Presentation
+uses the supplied direction and coverage to explain empty and unattributable results.
+Interpretation Views carry the retained selection variant, allowing support disclosure
+to distinguish operation answers from historical or associated selections. Lens names
+remain answer metadata and registration/validation inputs, not rendering dispatch.
+The dependency descriptor's direction/coverage and interpretation descriptor's variant
+are explicit in experimental JSON. Responsible answer and Presentation methods advance
+when these payloads change; designation-independent answer identity, reference allocation
+and bounded source disclosure retain their existing contracts.
 There is no generic multi-Projection selector or public Presentation registration API.
 
 <a id="request-work-attribution"></a>

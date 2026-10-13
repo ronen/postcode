@@ -10,7 +10,7 @@ import { resolveModuleProjection } from '../src/lib/module-content.js';
 import { arrangeModuleView, createView, renderUnicode } from '../src/lib/presentation.js';
 import { inspect, modules } from './projection-helpers.js';
 import { moduleStandardExpansions } from '../src/lib/records.js';
-import type { EvaluationRecord } from '../src/lib/records.js';
+import type { EvaluationRecord, RecordId, SessionId } from '../src/lib/records.js';
 import { sourceDisclosure } from '../src/lib/source-disclosure.js';
 import { artifactClassification, artifactClassificationComplete, resolveOrganizationProjection } from '../src/lib/organization/content.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
@@ -20,7 +20,10 @@ import { resolveDependencyProjection } from '../src/lib/dependencies/content.js'
 import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
 import { evaluateDependencyOrganization } from '../src/lib/dependencies/organization.js';
 import { arrangeDependencyView, createDependencyView, renderDependencyView } from '../src/lib/dependencies/presentation.js';
-import { dependencyChildren, dependencyStructure } from './projection-helpers.js';
+import { dependencyChildren, dependencyParents, dependencyStructure } from './projection-helpers.js';
+import { compatiblePresentation, presentations, validatePresentationContent } from '../src/lib/presentation-contracts.js';
+import { captureRequest, lenses } from '../src/lib/requests.js';
+import type { LensDefinition } from '../src/lib/requests.js';
 import { temporaryDirectory } from './cli-helpers.js';
 import { discover } from './helpers.js';
 
@@ -39,6 +42,108 @@ function frozen(value: unknown, seen = new Set<object>()): void {
   assert.ok(Object.isFrozen(value));
   for (const item of Object.values(value)) frozen(item, seen);
 }
+
+/** Controlled compatible producer: own question/answer identity, unchanged qualified support.
+ * This tests the content/Presentation seam, not registration of a production constructor. */
+function compatibleAnswer<T extends { readonly id: RecordId; readonly session: SessionId; readonly lens: string }>(answer: T) {
+  return { ...answer, lens: 'fixture-compatible-question',
+    id: recordId(answer.session, 'fixture-answer', ['fixture-compatible-question', identityReference(answer.session, answer.id)]) };
+}
+
+test('the shared module Presentation accepts another question with population and selected content', async t => {
+  const root = fixture(t, { 'large.ts': "import 'external';\n" + Array.from({ length: 65 }, (_, index) =>
+    `/** Documented export ${index}. ${'Explanation. '.repeat(80)} */\nexport const item${index} = ${index};`).join('\n'),
+  'node_modules/external/index.d.ts': 'export const opaque: 1;' });
+  const { store, analysis } = await discover(path.join(root, 'tsconfig.json'));
+  const basis = evaluateModules(store, analysis, moduleStandardExpansions);
+  const bindings = store.entityIds(basis.modules, 'module');
+  const definition: LensDefinition = { ...lenses.modules, id: 'fixture-compatible-question', question: 'Fixture qualified module information?',
+    title: 'Fixture information', subjects: ['module'], cardinality: 'collection' };
+  const captured = captureRequest({ lens: definition.id, selector: 'large', presentation: { format: 'json', sourceDetail: true } }, { [definition.id]: definition });
+  assert.equal(captured.normalized.kind, 'lens');
+  assert.ok(compatiblePresentation(presentations.find(item => item.contract === 'modules')!, captured.normalized, definition),
+    'source policy depends on selected subjects, not inspection implementation identity');
+  const population = resolveModuleProjection(store, modules(store, basis));
+  const selection = resolveModuleProjection(store, inspect(store, basis, 'large'));
+  for (const content of [population, selection]) {
+    const compatible = structuredClone({ ...content, projection: compatibleAnswer(content.projection) });
+    validatePresentationContent({ contract: 'modules', value: compatible });
+    for (const format of ['unicode', 'json'] as const) for (const sourceDetail of [false, true]) {
+      const options = { format, sourceDetail };
+      if (sourceDetail && content.projection.subject === 'configured-project') {
+        assert.throws(() => arrangeModuleView(compatible, bindings, options), /Source detail requires selected module content/);
+        continue;
+      }
+      const expected = arrangeModuleView(content, bindings, options);
+      const actual = arrangeModuleView(compatible, bindings, options);
+      assert.equal(actual.projection.lens, definition.id);
+      assert.notEqual(actual.projection.id, expected.projection.id);
+      assert.notEqual(actual.id, expected.id);
+      assert.deepEqual(actual, { ...expected, id: actual.id, projection: { ...expected.projection, id: actual.projection.id, lens: definition.id } });
+      assert.equal(renderUnicode(actual), renderUnicode(expected));
+      assert.deepEqual(sourceDisclosure(actual), sourceDisclosure(expected));
+      assert.deepEqual(arrangeModuleView(structuredClone(compatible), bindings, options), actual);
+      const large = actual.modules.find(module => module.handle === 'large')!;
+      assert.equal(large.exports.length, content === selection ? 50 : format === 'unicode' ? 3 : 6);
+      assert.equal(large.omittedExports, 65 - large.exports.length);
+      if (content === population && format === 'unicode') assert.ok(actual.display.collapsedModules > 0);
+    }
+  }
+});
+
+test('organization layout and disclosure use supplied subject scope independently of Lens identity', async t => {
+  const root = fixture(t, { 'src/entry.ts': 'export const entry = 1;', 'src/README.md': 'Documentation.' });
+  const { store, analysis } = await discover(path.join(root, 'tsconfig.json'));
+  const basis = evaluateModules(store, analysis, moduleStandardExpansions);
+  const outcome = evaluateOrganization(store, basis);
+  const bindings = { groups: store.entityIds(outcome.groups, 'group'), modules: store.entityIds(basis.modules, 'module'), detail: store.entityIds(basis.modules, 'module') };
+  for (const projection of [organization(store, outcome), inspectOrganization(store, outcome, 'src')]) {
+    const content = resolveOrganizationProjection(store, projection);
+    const compatible = structuredClone({ ...content, projection: compatibleAnswer(projection) });
+    for (const format of ['unicode', 'json'] as const) for (const sourceDetail of [false, true]) {
+      const options = { format, sourceDetail };
+      if (sourceDetail && projection.subject !== 'selected-entities') {
+        assert.throws(() => arrangeOrganizationView(compatible, bindings, options), /Source detail requires selected organization content/);
+        continue;
+      }
+      const expected = arrangeOrganizationView(content, bindings, options);
+      const actual = arrangeOrganizationView(compatible, bindings, options);
+      assert.deepEqual(actual, { ...expected, id: actual.id, projection: { ...expected.projection, id: actual.projection.id, lens: 'fixture-compatible-question' } });
+      assert.notEqual(actual.id, expected.id);
+      assert.equal(renderOrganizationView({ ...actual, presentation: { ...actual.presentation, format: 'unicode' } }),
+        renderOrganizationView({ ...expected, presentation: { ...expected.presentation, format: 'unicode' } }));
+      assert.deepEqual(sourceDisclosure(actual), sourceDisclosure(expected));
+    }
+  }
+});
+
+test('dependency direction and request coverage remain explicit under another question identity', async () => {
+  const { store, analysis } = await discover(path.resolve('fixtures/dependency-contract/tsconfig.json'));
+  const outcome = evaluateDependencies(store, analysis, moduleStandardExpansions);
+  const projections = [dependencyStructure(store, outcome), dependencyChildren(store, outcome, 'requests'), dependencyParents(store, outcome, 'requests')];
+  const bindings = store.entityIds(projections.flatMap(projection => projection.modules), 'module');
+  assert.deepEqual(projections.map(projection => [projection.subjectRole, projection.coverageScope]),
+    [[null, 'evaluation'], ['parent', 'subject-owners'], ['child', 'unattributable-to-subjects']]);
+  for (const projection of projections) {
+    const content = resolveDependencyProjection(store, projection);
+    const compatible = structuredClone({ ...content, projection: compatibleAnswer(projection) });
+    for (const format of ['unicode', 'json'] as const) for (const sourceDetail of [false, true]) {
+      const options = { format, sourceDetail };
+      const expected = arrangeDependencyView(content, bindings, options);
+      const actual = arrangeDependencyView(compatible, bindings, options);
+      assert.deepEqual(actual, { ...expected, id: actual.id, projection: { ...expected.projection, id: actual.projection.id, lens: 'fixture-compatible-question' } });
+      assert.notEqual(actual.id, expected.id);
+      assert.equal(renderDependencyView({ ...actual, presentation: { ...actual.presentation, format: 'unicode' } }),
+        renderDependencyView({ ...expected, presentation: { ...expected.presentation, format: 'unicode' } }));
+      assert.deepEqual(sourceDisclosure(actual), sourceDisclosure(expected));
+    }
+  }
+  const parent = projections[2]!;
+  assert.throws(() => store.put([{ ...parent, id: recordId(parent.session, 'dependency-projection', 'wrong-direction'), subjectRole: 'parent' }]), /direction or coverage/);
+  const content = resolveDependencyProjection(store, parent);
+  assert.throws(() => validatePresentationContent({ contract: 'dependencies', value: { ...content,
+    projection: { ...content.projection, nonEdgeRequests: projections[1]!.nonEdgeRequests } } }), /direction or coverage/);
+});
 
 test('module content retains full documentation and exports independently of display bounds and source disclosure', async t => {
   const prose = 'Long documented explanation. '.repeat(150);
@@ -198,7 +303,7 @@ test('mechanical View identities include resolution context and use the shared p
   const presentation = { format: 'json' as const, sourceDetail: false };
   const views = [createView(store, modules(store, evaluation), presentation), createOrganizationView(store, organizationProjection, presentation),
     createDependencyView(store, dependencyProjection, presentation)];
-  assert.equal(methods.presentation, 'postcode/presentation@31');
+  assert.equal(methods.presentation, 'postcode/presentation@32');
   for (const [index, view] of views.entries()) {
     const kind = ['view', 'organization-view', 'dependency-view'][index]!;
     const key: { projection: string | null; presentation: typeof presentation; resolution: null; method: string } = { projection: identityReference(view.projection.session, view.projection.id), presentation, resolution: null, method: methods.presentation };

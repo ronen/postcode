@@ -238,6 +238,12 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
           if (record.outcome === 'recognized') throw new Error('Recognized requests are not coverage exclusions');
           break;
         case 'dependency-projection': {
+          const role = record.lens === 'dependency-structure' ? null : record.lens === 'dependency-children' ? 'parent' : 'child';
+          const coverage = role === null ? 'evaluation' : role === 'parent' ? 'subject-owners' : 'unattributable-to-subjects';
+          if (record.subjectRole !== role || record.coverageScope !== coverage
+            || record.subject !== (role === null ? 'configured-project' : 'selected-modules')
+            || (record.graph !== null) !== (role === null)
+            || coverage === 'unattributable-to-subjects' && (record.nonEdgeRequests.length || record.coverage.length)) throw new Error('Invalid dependency answer direction or coverage');
           requireKind(record.evaluation, 'dependency-evaluation');
           [...record.modules, ...record.subjects, ...record.opaqueSubjects].forEach(id => requireKind(id, 'module'));
           record.relationships.forEach(id => {

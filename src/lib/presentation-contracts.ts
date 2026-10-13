@@ -26,7 +26,7 @@ export interface PresentationDefinition {
   readonly contract: ResultContract;
   readonly default: boolean;
   readonly formats: readonly Presentation['format'][];
-  readonly source: 'supported' | 'inspection-only' | 'none';
+  readonly source: 'supported' | 'selected-subjects' | 'none';
   readonly associationPage: boolean;
   readonly revisionPage: boolean;
   readonly requirements: { readonly modules: readonly ModuleExpansion[]; readonly groups: readonly GroupExpansion[] };
@@ -44,9 +44,9 @@ export interface PresentationDecision {
 export interface PresentedOptions extends Presentation { readonly decision?: PresentationDecision }
 const standard = { default: true, formats: ['unicode', 'json'] as const, precondition: 'qualified' as const };
 export const presentations: readonly PresentationDefinition[] = freezeOwned([
-  { ...standard, id: 'module', contract: 'modules', source: 'inspection-only', associationPage: true, revisionPage: false,
+  { ...standard, id: 'module', contract: 'modules', source: 'selected-subjects', associationPage: true, revisionPage: false,
     requirements: { modules: moduleStandardExpansions, groups: [] } },
-  { ...standard, id: 'organization', contract: 'organization', source: 'inspection-only', associationPage: true, revisionPage: false,
+  { ...standard, id: 'organization', contract: 'organization', source: 'selected-subjects', associationPage: true, revisionPage: false,
     requirements: { modules: moduleStandardExpansions, groups: groupStandardExpansions } },
   { ...standard, id: 'dependency', contract: 'dependencies', source: 'supported', associationPage: false, revisionPage: false,
     requirements: { modules: moduleStandardExpansions, groups: groupStandardExpansions } },
@@ -61,7 +61,7 @@ export function validatePresentations(definitions: readonly PresentationDefiniti
   for (const definition of definitions) {
     if (!definition.id || !['modules', 'organization', 'dependencies', 'investigation', 'module-exports'].includes(definition.contract)
       || !['qualified', 'complete-materialization'].includes(definition.precondition)
-      || !['supported', 'inspection-only', 'none'].includes(definition.source)
+      || !['supported', 'selected-subjects', 'none'].includes(definition.source)
       || !definition.formats.length || definition.formats.some(format => !['unicode', 'json'].includes(format))
       || definition.requirements.modules.some(item => !moduleStandardExpansions.includes(item))
       || definition.requirements.groups.some(item => !groupStandardExpansions.includes(item))) throw new Error('Invalid Presentation definition');
@@ -87,7 +87,7 @@ type LensRequest = Extract<NormalizedRequest, { kind: 'lens' }>;
 export function compatiblePresentation(definition: PresentationDefinition, request: LensRequest, lens: LensDefinition): boolean {
   const options = request.presentation;
   return definition.formats.includes(options.format)
-    && (!options.sourceDetail || definition.source === 'supported' || definition.source === 'inspection-only' && lens.requirements.kind === 'inspection')
+    && (!options.sourceDetail || definition.source === 'supported' || definition.source === 'selected-subjects' && lens.cardinality !== 'population')
     && (options.after === undefined || definition.associationPage && lens.requirements.kind === 'inspection')
     && (options.revisionPage === undefined || definition.revisionPage);
 }
@@ -116,14 +116,23 @@ export function validatePresentationContent(content: PresentationContent): void 
   const expected = { modules: 'projection', organization: 'organization-projection', dependencies: 'dependency-projection', investigation: 'investigation-selection-projection', 'module-exports': 'module-exports-projection' };
   if (projection.kind !== expected[content.contract] || !projection.id || !projection.session) throw new Error('Malformed Presentation content contract');
   if (content.contract === 'modules') {
-    if (content.value.discovery.kind !== 'evaluation' || content.value.evaluations[0]?.id !== content.value.discovery.id || content.value.session.id !== projection.session
+    if (!['configured-project', 'selected-modules'].includes(content.value.projection.subject)
+      || content.value.discovery.kind !== 'evaluation' || content.value.evaluations[0]?.id !== content.value.discovery.id || content.value.session.id !== projection.session
       || content.value.modules.length !== content.value.projection.modules.length
       || content.value.modules.some((item, index) => item.id !== content.value.projection.modules[index])) throw new Error('Malformed module Presentation content');
   } else if (content.contract === 'organization') {
-    if (content.value.evaluation.kind !== 'organization-evaluation' || content.value.moduleEvaluation.kind !== 'evaluation') throw new Error('Malformed organization Presentation content');
+    if (!['configured-project', 'repository', 'selected-entities'].includes(content.value.projection.subject)
+      || content.value.evaluation.kind !== 'organization-evaluation' || content.value.moduleEvaluation.kind !== 'evaluation') throw new Error('Malformed organization Presentation content');
     if (content.value.moduleDetail) validatePresentationContent({ contract: 'modules', value: content.value.moduleDetail });
   } else if (content.contract === 'dependencies') {
     if (content.value.evaluation.kind !== 'dependency-evaluation' || content.value.basis.kind !== 'evaluation') throw new Error('Malformed dependency Presentation content');
+    const answer = content.value.projection;
+    if (![null, 'parent', 'child'].includes(answer.subjectRole)
+      || !['evaluation', 'subject-owners', 'unattributable-to-subjects'].includes(answer.coverageScope)
+      || !['configured-project', 'selected-modules'].includes(answer.subject)
+      || (answer.subjectRole === null) !== (answer.subject === 'configured-project')
+      || (answer.graph !== null) !== (answer.subjectRole === null)
+      || answer.coverageScope === 'unattributable-to-subjects' && (answer.nonEdgeRequests.length || answer.coverage.length)) throw new Error('Malformed dependency direction or coverage');
   } else if (content.contract === 'module-exports') {
     if (content.value.basis.id !== content.value.projection.evaluation || content.value.basis.session !== projection.session
       || content.value.basis.requirement !== 'modules' || content.value.module.record.subject !== content.value.projection.subject

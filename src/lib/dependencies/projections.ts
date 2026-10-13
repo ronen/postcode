@@ -12,7 +12,7 @@ const complete = (state: EvaluationState) => state.applicability === 'applicable
 
 /** These lenses select materialized relationships, never transitive reach or display bounds. */
 function project(store: ProgramRecordStore, evaluation: DependencyEvaluationRecord,
-  lens: DependencyProjectionRecord['lens'], resolved: readonly RecordId[] | null,
+  lens: DependencyProjectionRecord['lens'], subjectRole: DependencyProjectionRecord['subjectRole'], resolved: readonly RecordId[] | null,
   organization: RecordId | null): DependencyProjectionRecord {
   const stored = store.get(evaluation.id);
   if (stored.kind !== 'dependency-evaluation') throw new Error('Expected dependency evaluation');
@@ -37,11 +37,12 @@ function project(store: ProgramRecordStore, evaluation: DependencyEvaluationReco
     if (record.kind !== 'claim' || record.information.type !== 'dependency') throw new Error('Expected dependency relationship');
     return record as DependencyRelationshipClaim;
   });
-  const relationships = allRelationships.filter(edge => lens === 'dependency-structure' ? projectModules.has(edge.subject)
-    : lens === 'dependency-children' ? subjectSet.has(edge.subject) : subjectSet.has(edge.information.child));
+  const coverageScope = subjectRole === null ? 'evaluation' : subjectRole === 'parent' ? 'subject-owners' : 'unattributable-to-subjects';
+  const relationships = allRelationships.filter(edge => subjectRole === null ? projectModules.has(edge.subject)
+    : subjectRole === 'parent' ? subjectSet.has(edge.subject) : subjectSet.has(edge.information.child));
   const included = new Set([...subjects, ...relationships.flatMap(edge => [edge.subject, edge.information.child])]);
   const occurrences = [...new Set(relationships.flatMap(edge => edge.information.occurrences))];
-  const nonEdgeRequests = lens === 'dependency-parents' ? [] : evaluation.occurrences.filter(id => {
+  const nonEdgeRequests = coverageScope === 'unattributable-to-subjects' ? [] : evaluation.occurrences.filter(id => {
     const occurrence = store.get(id);
     if (occurrence.kind !== 'dependency-occurrence') throw new Error('Expected occurrence');
     return subjectSet.has(occurrence.owner) && occurrence.targetStatus !== 'resolved';
@@ -52,7 +53,7 @@ function project(store: ProgramRecordStore, evaluation: DependencyEvaluationReco
   const coverage = evaluation.coverage.filter(id => {
     const item = store.get(id);
     if (item.kind !== 'dependency-coverage') throw new Error('Expected coverage result');
-    return lens === 'dependency-structure' || lens === 'dependency-children' && item.owner !== null && subjectSet.has(item.owner);
+    return coverageScope === 'evaluation' || coverageScope === 'subject-owners' && item.owner !== null && subjectSet.has(item.owner);
   });
   const outcomes = store.evaluations(evaluation.session).filter(outcome => outcome.basis === basis.id
     && (outcome.modules.length === 0 || outcome.modules.some(id => included.has(id))));
@@ -80,11 +81,11 @@ function project(store: ProgramRecordStore, evaluation: DependencyEvaluationReco
   const method = methods.dependencyProjection;
   const payload: Omit<DependencyProjectionRecord, 'id'> = {
     kind: 'dependency-projection', method, session: evaluation.session,
-    lens, subject: resolved === null ? 'configured-project' : 'selected-modules', parameters: {},
+    lens, subject: resolved === null ? 'configured-project' : 'selected-modules', subjectRole, coverageScope, parameters: {},
     evaluation: evaluation.id, subjects, modules: [...included].sort(compare), relationships: relationships.map(edge => edge.id),
     occurrences, nonEdgeRequests, coverage, contexts: [...contexts],
     opaqueSubjects: subjects.filter(id => !projectModules.has(id)),
-    graph: lens === 'dependency-structure' ? deriveDependencyGraph(population, relationships, complete(evaluation) && complete(basis)) : null,
+    graph: subjectRole === null ? deriveDependencyGraph(population, relationships, complete(evaluation) && complete(basis)) : null,
     selection: selected?.selection ?? { matches: population.length, population: population.length,
       populationEstablished: complete(basis) },
     expansions: { moduleEvaluations: outcomes.map(outcome => outcome.id), moduleClaims: moduleExpansionClaims, organization },
@@ -95,13 +96,13 @@ function project(store: ProgramRecordStore, evaluation: DependencyEvaluationReco
 }
 
 export function dependencyStructure(store: ProgramRecordStore, evaluation: DependencyEvaluationRecord, organization: RecordId | null = null) {
-  return project(store, evaluation, 'dependency-structure', null, organization);
+  return project(store, evaluation, 'dependency-structure', null, null, organization);
 }
 export function dependencyChildren(store: ProgramRecordStore, evaluation: DependencyEvaluationRecord, subjects: readonly RecordId[],
   organization: RecordId | null = null) {
-  return project(store, evaluation, 'dependency-children', subjects, organization);
+  return project(store, evaluation, 'dependency-children', 'parent', subjects, organization);
 }
 export function dependencyParents(store: ProgramRecordStore, evaluation: DependencyEvaluationRecord, subjects: readonly RecordId[],
   organization: RecordId | null = null) {
-  return project(store, evaluation, 'dependency-parents', subjects, organization);
+  return project(store, evaluation, 'dependency-parents', 'child', subjects, organization);
 }

@@ -13,7 +13,7 @@ import { resolveDependencyProjection } from './content.js';
 import type { DependencyProjectionContent } from './content.js';
 import { presentQualification } from '../qualification-view.js';
 import { dependencyLimitations } from './records.js';
-import type { DependencyCoverageRecord, DependencyGraph, DependencyOccurrenceRecord, DependencyOrganizationClaim, DependencyProjectionRecord, DependencyRelationshipClaim } from './records.js';
+import type { DependencyCoverageRecord, DependencyGraph, DependencyOccurrenceRecord, DependencyOrganizationClaim, DependencyRelationshipClaim } from './records.js';
 
 export const dependencyPresentationRequirements = { modules: moduleStandardExpansions, organization: 'repository-layout' } as const;
 type Qualification = Omit<ClaimContextRecord, 'kind' | 'evidence' | 'inputs'>;
@@ -36,7 +36,7 @@ type Row = { readonly component: number; readonly depth: number; readonly refere
 export interface QualifiedDependencyView {
   readonly schema: 'postcode-dependency-view/1-experimental'; readonly id: RecordId;
   readonly resolution?: ResolutionContext;
-  readonly projection: Pick<DependencyProjectionRecord, 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
+  readonly projection: Pick<DependencyProjectionContent['projection'], 'id' | 'session' | 'lens' | 'subject' | 'subjectRole' | 'coverageScope' | 'parameters' | 'selection'>;
   readonly presentation: PresentedOptions & { readonly expansions: readonly string[] };
   readonly evaluations: { readonly modules: Outcome; readonly dependencies: Outcome; readonly organization: Outcome | null };
   readonly limitations: readonly string[]; readonly qualifications: readonly Qualification[];
@@ -57,7 +57,7 @@ const state = ({ applicability, availability, execution, materialization, reason
 const full = (outcome: Outcome) => outcome.applicability === 'applicable' && outcome.availability === 'available' && completedMaterialization(outcome);
 
 /** Bind the established discovery population, then arrange resolved content. */
-export function createDependencyView(store: ProgramRecordStore, projection: DependencyProjectionRecord,
+export function createDependencyView(store: ProgramRecordStore, projection: DependencyProjectionContent['projection'],
   presentation: PresentedOptions, resolution?: ResolutionContext, content = resolveDependencyProjection(store, projection)): QualifiedDependencyView {
   const population = store.entityIds(content.basis.modules, 'module');
   const ids = new Map([...population, ...store.entityIds(projection.modules, 'module')]);
@@ -143,7 +143,7 @@ export function arrangeDependencyView(content: DependencyProjectionContent, ids:
   });
   const maximumResults = presentation.format === 'unicode' ? 20 : 50;
   // Structure summarizes non-edge requests; explicit source escape exposes their bounded records.
-  const requestIds = projection.lens === 'dependency-structure' && !presentation.sourceDetail ? [] : projection.nonEdgeRequests.slice(0, maximumResults);
+  const requestIds = projection.subject === 'configured-project' && !presentation.sourceDetail ? [] : projection.nonEdgeRequests.slice(0, maximumResults);
   const requestResults = requestIds.map(occurrence);
   const recognitionCoverage = content.coverage.slice(0, maximumResults).map(contentItem => {
     const item = contentItem.record;
@@ -180,7 +180,7 @@ export function arrangeDependencyView(content: DependencyProjectionContent, ids:
     'Repository-layout labels compare all applicable occurrence endpoint placements: same-group means equal groups; into-descendants means a strict organization descendant; outward means outside the source group and its descendants.',
     'Variation labels preserve different established answers; unestablished organization is not a policy failure. Repository layout establishes no dependency policy or architectural violation.',
     'Generated handles are navigation cues; exact names and session-local Entity IDs retain their established meanings.'];
-  if (projection.lens === 'dependency-parents') limitations.push('A request without an established child cannot be attributed to the selected module and therefore cannot produce a parent result.');
+  if (projection.coverageScope === 'unattributable-to-subjects') limitations.push('A request without an established child cannot be attributed to the selected module and therefore cannot produce a parent result.');
   const nonEdges = new Set(projection.nonEdgeRequests), coverage = new Set(projection.coverage);
   const sourcePriority = (item: typeof sourceItems[number]) => nonEdges.has(item.subject) ? 0
     : coverage.has(item.subject) ? 1 : item.role === 'target' ? 3 : 2;
@@ -189,7 +189,8 @@ export function arrangeDependencyView(content: DependencyProjectionContent, ids:
     schema: 'postcode-dependency-view/1-experimental',
     id: recordId(projection.session, 'dependency-view', { method: methods.presentation, projection: identityReference(projection.session, projection.id), presentation, resolution: resolutionContextIdentity(projection.session, resolution) }),
     ...(resolution ? { resolution } : {}),
-    projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject, parameters: projection.parameters, selection: projection.selection },
+    projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,
+      subjectRole: projection.subjectRole, coverageScope: projection.coverageScope, parameters: projection.parameters, selection: projection.selection },
     presentation: { ...presentation, expansions: [...new Set(content.moduleEvaluations.flatMap(outcome => outcome.requirement !== 'modules' ? [outcome.requirement] : [])), ...(expanded ? ['repository-layout'] : [])] },
     evaluations: { modules: state(basis), dependencies: state(evaluation), organization: expanded ? state(expanded) : null },
     qualifications: content.contexts.map(item => presentQualification(item.context)), limitations, modules, subjects: projection.subjects, relationships, graph,
@@ -217,7 +218,7 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
     return module ? `${inlineText(module.name ?? module.handle)} (${module.entityId})${module.opaque ? ' · opaque external' : ''}${annotation ? compositionAnnotation(module.composition) : ''}` : '[module omitted]';
   };
   const edgeText = (edge: EdgeView) => `${label(edge.parent, false)} → ${label(edge.child, false)}${edge.typeOnly ? ' · type-only' : ''} · ${edge.mechanisms.join(', ')}${edge.organization ? ` · ${edge.organization.classification ?? 'organization not established'}` : ''}`;
-  const lines = [`Module dependency ${view.projection.lens === 'dependency-structure' ? 'structure' : view.projection.lens === 'dependency-children' ? 'children' : 'parents'}`,
+  const lines = [`Module dependency ${view.projection.subjectRole === null ? 'structure' : view.projection.subjectRole === 'parent' ? 'children' : 'parents'}`,
     `Session ${view.projection.session.replace(/^session:/, '')}`, 'Direction: dependency parent → dependency child (depends directly on).',
     `${counted(view.summary.modules, 'module')} in this projection · ${counted(view.summary.relationships, 'direct relationship')}`,
     `Materialized population: ${counted(view.summary.projectModules, 'project module')}; ${counted(view.summary.discoveredModules, 'discovered module')} available for exact lookup.`,
@@ -250,12 +251,12 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
   } else {
     lines.push('', 'Established direct relationships');
     for (const edge of view.relationships) lines.push(`  ${edgeText(edge)}`);
-    if (!view.relationships.length) lines.push(view.projection.lens === 'dependency-children' && view.modules.some(module => view.subjects.includes(module.id) && module.opaque)
+    if (!view.relationships.length) lines.push(view.projection.subjectRole === 'parent' && view.modules.some(module => view.subjects.includes(module.id) && module.opaque)
       ? '  External interiors are opaque; an empty child set is not established.'
       : !view.subjects.length ? '  No selected module.' : (!view.projection.selection.outsidePopulation?.length && full(view.evaluations.dependencies) && full(view.evaluations.modules)) ? '  None in the supported project-owned request population.' : '  None materialized; dependency evaluation is incomplete.');
   }
   if (!view.graph) for (const module of view.modules.filter(module => module.composition.claims.length)) lines.push(`Module property: ${label(module.id, false)} · re-exports only`);
-  if (view.projection.lens !== 'dependency-parents') {
+  if (view.projection.coverageScope !== 'unattributable-to-subjects') {
     lines.push('', 'Source-owned request results without edges');
     for (const [status, count] of Object.entries(view.summary.requestsWithoutEdges)) lines.push(`  ${status}: ${count}`);
     if (!Object.keys(view.summary.requestsWithoutEdges).length) lines.push((!view.projection.selection.outsidePopulation?.length && full(view.evaluations.dependencies) && full(view.evaluations.modules)) ? '  None in supported coverage.' : '  None materialized; evaluation is incomplete.');

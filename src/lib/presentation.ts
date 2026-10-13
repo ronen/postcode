@@ -19,7 +19,7 @@ import type { CompositionView } from './composition-view.js';
 import { inlineText, terminalText } from './terminal-text.js';
 import { identityReference, methods, recordId } from './identity.js';
 import { moduleStandardExpansions } from './records.js';
-import type { Claim, ClaimContextRecord, EvaluationRecord, ExportClaim, ModuleClaim, ModuleExpansion, ProgramRecordStore, ProjectionRecord, RecordId, SessionRecord, SourceEvidenceRecord, SymbolClaim } from './records.js';
+import type { Claim, ClaimContextRecord, EvaluationRecord, ExportClaim, ModuleClaim, ModuleExpansion, ProgramRecordStore, RecordId, SessionRecord, SourceEvidenceRecord, SymbolClaim } from './records.js';
 
 export interface Presentation {
   readonly format: 'unicode' | 'json';
@@ -43,7 +43,7 @@ export interface QualifiedView {
   readonly schema: 'postcode-view/1-experimental';
   readonly id: RecordId;
   readonly resolution?: ResolutionContext;
-  readonly projection: Pick<ProjectionRecord, 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
+  readonly projection: Pick<ModuleProjectionContent['projection'], 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
   readonly presentation: PresentedOptions & { readonly expansions: readonly ModuleExpansion[] };
   readonly analysis: SessionRecord['analysis'] | null;
   readonly qualifications: readonly Qualification[];
@@ -64,18 +64,28 @@ export interface QualifiedView {
 }
 
 /** Coordination preserves population-wide reference allocation independently of display bounds. */
-export function createView(store: ProgramRecordStore, projection: ProjectionRecord, presentation: PresentedOptions, resolution?: ResolutionContext, content = resolveModuleProjection(store, projection)): QualifiedView {
+export function createView(store: ProgramRecordStore, projection: ModuleProjectionContent['projection'], presentation: PresentedOptions, resolution?: ResolutionContext, content = resolveModuleProjection(store, projection)): QualifiedView {
   const population = store.entityIds(content.discovery.modules, 'module');
   const ids = new Map([...population, ...store.entityIds(projection.modules, 'module')]);
   return arrangeModuleView(content, ids, presentation, resolution);
+}
+
+/** Fixed family Presentation policy over population versus selected-subject content. */
+function moduleDisplayPolicy(subject: ModuleProjectionContent['projection']['subject'], presentation: Presentation) {
+  const layout = subject === 'configured-project' ? 'table' : 'cards';
+  const compact = presentation.format === 'unicode' && layout === 'table';
+  return { layout, collapseExternal: compact, source: layout === 'cards', detailedDocumentation: layout === 'cards',
+    exports: compact ? 3 : layout === 'cards' ? 50 : 6,
+    projectDocumentation: compact ? 0 : layout === 'cards' ? 3 : 1,
+    externalDocumentation: layout === 'cards' ? 3 : 0 };
 }
 
 /** Pure presentation of an already selected answer. No store, acquisition or reference allocation. */
 export function arrangeModuleView(content: ModuleProjectionContent, entityIds: ReadonlyMap<RecordId, string>, presentation: PresentedOptions, resolution?: ResolutionContext): QualifiedView {
   validatePresentationContent({ contract: 'modules', value: content });
   const { projection, session } = content;
-  if (presentation.sourceDetail && projection.lens !== 'inspect') throw new Error('Source detail requires inspection');
-  const compact = presentation.format === 'unicode' && projection.lens === 'modules';
+  const policy = moduleDisplayPolicy(projection.subject, presentation);
+  if (presentation.sourceDetail && !policy.source) throw new Error('Source detail requires selected module content');
   const displayedClaims = new Map<RecordId, QualifiedRecord<Claim>>();
   type SourceGroup = Omit<NonNullable<QualifiedView['sourceDetail']>['items'][number], 'evidence'>;
   const sourceGroups = new Map<string, SourceGroup>();
@@ -85,18 +95,18 @@ export function arrangeModuleView(content: ModuleProjectionContent, entityIds: R
     for (const claim of claims) displayedClaims.set(claim.record.id, claim);
   };
   const documentation = (associations: readonly DocumentationContent[], maximumDocs: number, label: string, module: RecordId, subject: RecordId) =>
-    presentDocumentation(associations, maximumDocs, presentation, projection.lens === 'inspect', association =>
+    presentDocumentation(associations, maximumDocs, presentation, policy.detailedDocumentation, association =>
       sourceGroup({ label: `Documentation for ${label}`, module, subject, role: 'documentation', association: association.record.information.association }, [association]));
   const modules = content.modules.map(module => {
     const { id, claim: supported } = module, claim = supported.record;
-    const maximumDocs = compact ? 0 : projection.lens === 'inspect' ? 3 : claim.information.discoveryFacets.includes('project') ? 1 : 0;
+    const maximumDocs = claim.information.discoveryFacets.includes('project') ? policy.projectDocumentation : policy.externalDocumentation;
     const sourceLabel = `${claim.information.handle} (${entityIds.get(id)!})`;
     sourceGroup({ label: `Module ${sourceLabel}`, module: id, subject: id, role: 'module' }, [supported]);
     const composition = compositionView(module.composition);
     for (const property of module.composition.claims) {
       sourceGroup({ label: `Composition ${sourceLabel}`, module: id, subject: id, role: 'module' }, [property]);
     }
-    const maximumExports = compact ? 3 : projection.lens === 'inspect' ? 50 : 6;
+    const maximumExports = policy.exports;
     const exports = module.exports.slice(0, maximumExports).map(item => {
       const exported = item.claim.record;
       sourceGroup({ label: `Export ${exported.information.exportedName}`, module: id, subject: exported.id, role: 'export' }, [item.claim]);
@@ -121,8 +131,8 @@ export function arrangeModuleView(content: ModuleProjectionContent, entityIds: R
     const bucket = contextsByScope.get(context.scope) ?? [];
     bucket.push(context); contextsByScope.set(context.scope, bucket);
   }
-  const collapsed = compact ? modules.filter(module => !module.discoveryFacets.includes('project')) : [];
-  const listed = compact ? modules.filter(module => module.discoveryFacets.includes('project')) : modules;
+  const collapsed = policy.collapseExternal ? modules.filter(module => !module.discoveryFacets.includes('project')) : [];
+  const listed = policy.collapseExternal ? modules.filter(module => module.discoveryFacets.includes('project')) : modules;
   return {
     schema: 'postcode-view/1-experimental', id: recordId(projection.session, 'view', { projection: identityReference(projection.session, projection.id), presentation, resolution: resolutionContextIdentity(projection.session, resolution), method: methods.presentation }),
     ...(resolution ? { resolution } : {}),
@@ -164,7 +174,7 @@ function wrapText(text: string, indent: string, width = 88, continuation = inden
 
 export function renderUnicode(view: QualifiedView): string {
   const selection = view.projection.selection;
-  const inventory = view.projection.lens === 'modules';
+  const inventory = moduleDisplayPolicy(view.projection.subject, view.presentation).layout === 'table';
   const lines = [`${inventory ? 'Modules' : 'Inspect'} · configured TypeScript project`,
     `Session ${view.projection.session.replace(/^session:/, '')}`,
     inventory ? `${selection.population} module${selection.population === 1 ? '' : 's'} found · ${view.modules.length} listed${view.display.collapsedModules ? ` · ${view.display.collapsedModules} external module${view.display.collapsedModules === 1 ? '' : 's'} collapsed` : ''}`

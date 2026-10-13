@@ -37,7 +37,8 @@ export interface ModuleContent {
   readonly documentationIds: readonly RecordId[];
 }
 export interface ModuleProjectionContent {
-  readonly projection: ProjectionRecord;
+  /** A compatible answer need not use a built-in Lens identity. */
+  readonly projection: Omit<ProjectionRecord, 'lens'> & { readonly lens: string };
   readonly session: SessionRecord;
   readonly discovery: EvaluationRecord;
   readonly evaluations: readonly EvaluationRecord[];
@@ -46,7 +47,7 @@ export interface ModuleProjectionContent {
 }
 
 /** Resolves the selected qualified answer without applying any display or source-disclosure bounds. */
-export function resolveModuleProjection(store: ProgramRecordStore, projection: ProjectionRecord): ModuleProjectionContent {
+export function resolveModuleProjection(store: ProgramRecordStore, projection: ModuleProjectionContent['projection']): ModuleProjectionContent {
   const retained = store.get(projection.id);
   if (retained.kind !== 'projection') throw new Error('Expected retained projection');
   projection = retained;

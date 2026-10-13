@@ -6,6 +6,8 @@ import type { QualifiedRecord } from '../projection-content.js';
 import type { EvaluationState, ModuleClaim, ProgramRecordStore, ProjectionRecord, RecordId } from '../records.js';
 import type { ContainmentClaim, GroupClaim, GroupPropertiesClaim, ModulePlacementClaim, OrganizationClaims, OrganizationProjectionRecord } from './records.js';
 
+export type OrganizationAnswer = Omit<OrganizationProjectionRecord, 'lens'> & { readonly lens: string };
+
 type ClassificationOutcome = Pick<EvaluationState, 'applicability' | 'availability' | 'execution' | 'materialization'>;
 export type ArtifactClassification = {
   readonly state: 'complete' | 'not-requested'; readonly reasons: readonly [];
@@ -36,7 +38,7 @@ export function artifactClassificationComplete(repository: ClassificationOutcome
 }
 
 /** Selects captured support and derives scoped summaries without a display traversal. */
-export function resolveOrganizationProjection(store: ProgramRecordStore, projection: OrganizationProjectionRecord) {
+export function resolveOrganizationProjection(store: ProgramRecordStore, projection: OrganizationAnswer) {
   const retained = store.get(projection.id);
   if (retained.kind !== 'organization-projection') throw new Error('Expected retained organization-projection');
   projection = retained;
