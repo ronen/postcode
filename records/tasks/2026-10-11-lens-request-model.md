@@ -144,6 +144,10 @@ Update the compatible-question tests: they should demonstrate equivalent content
 For **R2-F2**, report an absent Lens as missing input, not as a representation limit.
 Make the focused corrections and verification, record the dispositions, and report back for the final gate decision. This does not authorize task closure.
 
+2026-10-13:
+
+> next review round is in.  it has no new findings.  but don't close the task yet; do whatever housekeeping is necessary, then push and open a PR on github
+
 ## Outcome
 
 Intermediate checkpoint, 2026-10-11: implementation commit `a9c8189f042d5fe6cabf27db414b995a5972d0f6` establishes normalized request reporting, shared Lens-to-operation declarations, explicit View/usage/parameter-resolution execution alternatives, parent usage finalization and observation-envelope version 2. Usage no longer has a synthetic Projection/View descriptor. Module matching is shared without the dependency-selection inspection side effect. The local observation convention now specifies version-two batches; user-facing and descriptive documentation records the implemented subset and remaining gaps.
