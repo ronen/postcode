@@ -1,8 +1,8 @@
 # Implement explicit Lenses and qualified request resolution
 
-Status: active
+Status: completed
 Opened: 2026-10-11
-Closed:
+Closed: 2026-10-13
 
 ## Task
 
@@ -220,6 +220,14 @@ Integrated-review round-3 and publication checkpoint, 2026-10-13: the [round-3 r
 
 Copilot PR-review checkpoint, 2026-10-13: at the human's request, retrieved all pages of [PR #10](https://github.com/ronen/postcode/pull/10) review submissions, inline review comments and conversation comments. The [round-4 Copilot findings](../reviews/lens-request-model/2026-10-13-integrated-request-model-round-4-copilot-findings.md), committed in `fa50f98`, preserve the complete review body and its one inline comment with source identifiers and target; no additional replies or conversation comments were present. The sole finding is accepted and corrected in `d2c7684efff9cfcec5b38111f2c7680ea56f9fb5`: the capability reference describes implemented answer identity and bounded work attribution, links to current architecture rather than pending correction work, and preserves the separate captured-basis limitation. The [integrated disposition](../reviews/lens-request-model/2026-10-13-integrated-request-model-disposition.md), updated in `c0ba26d`, records the assessment and verification. No implementation behavior changed. The correction and records are prepared for publication to the existing PR. The task remains active; closure has not been authorized.
 
+### Final outcome — 2026-10-13
+
+Completed the approved Lens request-model plan under the human's recorded refinements. Existing capabilities now use explicit Lens definitions, qualified subject resolution, designation-independent retained answers, runtime Presentation compatibility and actual-request publication. Session results and observations carry bounded prerequisite/evidence work attribution independently of observation delivery. Mechanical and interpretation extension evidence, reusable shared Presentations, precise same-Session designations, canonical unordered selection and source-disclosure behavior are implemented and documented. Usage and unsuccessful resolution remain qualified non-View results rather than fabricated program answers.
+
+All actionable findings from the intermediate assignments, three integrated review rounds and the Copilot PR review are corrected and dispositioned. The human explicitly accepted closure after reviewing the published result. Closeout documentation in `a501de6` marks the plan completed, records final gate acceptance, removes the resolved task-specific request-model conformance backlog entry, and updates the broader attribution candidate to exclude this completed work. The approved request and follow-up history remain unchanged. The implementation and records are published through [PR #10](https://github.com/ronen/postcode/pull/10); the human will merge it.
+
+Scope refinements and accepted decisions are preserved in this record and the review dispositions. No unapproved implementation expansion or unresolved in-scope finding remains. Captured-basis export, exact retained-Projection redisplay/continuity, navigation-origin history and broader attribution/resource-policy assessment remain separately scoped backlog work. The historical intermittent CLI failure remains unexplained; cross-installation answer-ID independence is not promised. Completion does not imply persistence, a dynamic catalog, general planning, hosted-quality validation or resolution of those broader limits.
+
 ## Verification
 
 Human-directed arrangement correction verification, 2026-10-13: type checking, build and diff checks passed. The final full offline suite passed all 585 tests, with zero failures/cancellations/skips, in approximately 200 seconds. The focused content/compatibility/interpretation run passed 29 tests; the prior 39/40 run exposed only a new fixture's incorrectly classified external module, corrected by importing an external declaration without relaxing its assertion. Tests verify compatible content under a separate question identity, bounds, disclosure, direction/coverage, source eligibility, stable detached arrangement and the existing answer/reference guarantees. Repository inputs and Git state remained stable during tests. Existing loopback authentication tests ran with permission and temporary process-scoped idle/system-sleep inhibition; no paid inference was used. The disposition preserves the controlled content-fixture limits, prior independent evidence, unperformed broader checks and the still-unexplained historical intermittent CLI failure.
@@ -309,3 +317,9 @@ Independent reviewer evidence at `e4452fdfcf797ab04222cbea5cd546995ade9366`: typ
 Checked the capability-reference paragraph against current status, request-work architecture and the distinct captured-basis backlog limitation. The replacement architecture link and explicit anchor exist. Retrieved review bodies were checked for verbatim inclusion, including original mixed line endings and invisible path characters. `git diff --check` passed. No runtime tests were rerun for this documentation-only correction; the independently reported 589/589 result and its exact implementation target remain recorded above. No GitHub review reply or resolution is claimed.
 
 Publication verification: the correction and review records were pushed to PR #10. The complete commit-range whitespace check flags only CRLF endings in Copilot’s verbatim table; preserving that source is intentional. The same range passes with `core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol`. This qualification is recorded in disposition commit `a7eb32e`; the authored review remains unchanged.
+
+### Closure verification — 2026-10-13
+
+The final implementation target remains `e4452fdfcf797ab04222cbea5cd546995ade9366`: independent round-3 type checking and all **589/589 offline tests** passed, as did the eight-command real-project comparison within its stated bounds. The implementer's **111/111** focused correction tests, build/type checking and all earlier milestone evidence remain recorded above. Subsequent changes, including the Copilot correction and closure, affect documentation and records only; no new runtime test run is claimed or required for those edits. The code and test trees are unchanged from the independently verified target.
+
+Inspected closeout changes and confirmed the task/plan lifecycle, completed-plan index, review gate and resolved backlog tracking agree. The full branch diff passes whitespace checks with `cr-at-eol` alongside the default rules, preserving Copilot's verbatim line endings. Only this task record was uncommitted when sealing it. The final closing commit is to be pushed to the existing PR under the human's authorization; merging remains the human's action. No further edits to this concluded task record are authorized by this closure.
