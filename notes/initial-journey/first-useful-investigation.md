@@ -519,7 +519,12 @@ initially finds meaningful transfer and promising visual comparisons. Subsequent
 [human feedback](pictures-result-review.md#human-assessment) reports excessive prose,
 no new understanding at this point, and three representation or wording problems.
 The half-open wording is inherited from the account; the bulkhead WAIT arrow
-introduces a visual problem despite a clearer account and caption. The producing agent
+introduces a visual problem despite a clearer account and caption.
+[Further feedback](pictures-result-review.md#local-pictures-and-orientation)
+clarifies that the page 4 problem was mistaken for normal application behavior,
+and distinguishes mostly reasonable local illustrations on pages 2–4 from page 1,
+whose larger explanation is not immediately illuminating. Local explanatory value
+and overall orientation therefore need separate assessment. The producing agent
 reports that broad PostCode memory was visible, though the original dialogue and
 additional Cockatiel evidence were not retrieved. This qualifies the intended
 clean-agent setup. The output does not yet test revision or use during an ongoing
