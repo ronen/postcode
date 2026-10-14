@@ -39,7 +39,7 @@ Small documentation adjustments and incidental cleanup do not automatically requ
 
 Plans describe intended work, not established system behavior, and do not authorize implementation. Store only human-approved plans under [`docs/plans/`](../docs/plans/). Record consequential accepted choices under [`docs/decisions/`](../docs/decisions/), and change the governing core concepts or architectural constraints only through explicit human agreement and a corresponding accepted decision record.
 
-Follow the [planning workflow](planning.md) for plan contents, provisional working material, review, promotion, disposal, and draft commit conventions.
+Follow the [planning workflow](planning.md) for plan contents, provisional working material, review, promotion, and disposal.
 
 ## 4. Implementation
 

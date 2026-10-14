@@ -33,6 +33,11 @@ An unrelated dirty checkout does not prevent creating a worktree from committed 
 
 If permissions prevent creating or using the sibling worktree, request the needed access rather than falling back to a checkout being used for other work.
 
+<a id="separating-work"></a>
+## Separating work already in progress
+
+Work begun on a branch in the primary checkout can move to its own worktree later. Pause writing, preserve any uncommitted changes (a checkpoint commit is often simplest), switch the primary checkout to an available branch such as `main`, and follow the [setup instructions](#setup) for the existing branch. Transfer needed supporting material according to [Local files](#local-files).
+
 <a id="local-files"></a>
 ## Local files
 

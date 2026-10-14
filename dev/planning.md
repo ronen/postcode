@@ -93,7 +93,3 @@ When promoting an approved package:
 9. Commit the entire promotion atomically, including new canonical documents, merged revisions, corresponding accepted decisions, plan-dependent backlog changes, associated note cleanup, supersession metadata, index and link updates, and removal of the promoted draft artifacts.
 
 An abandoned draft may be deleted without acquiring a lifecycle status; its Git history remains available.
-
-## Draft commits
-
-Any commit that adds, modifies, or deletes draft artifacts under `drafts/` must use a subject beginning `draft: ` followed by a concise description, and must not include changes outside `drafts/`. A promotion commit is an exception: it may add or update approved material at its canonical location while deleting the corresponding draft artifacts, and uses an ordinary descriptive subject. A human-directed reclassification commit is also an exception: it may move shelved exploratory material into `notes/` and update directly affected links and guidance without implying approval. Changes to the directory guidance in `drafts/README.md` are not changes to a draft artifact and follow ordinary commit conventions.

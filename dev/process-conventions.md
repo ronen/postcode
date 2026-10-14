@@ -8,6 +8,20 @@ This document contains human-maintained conventions governing how development wo
 - Prefer explicit HTML anchors, such as `<a id="unexpected-findings"></a>`, for links to sections within repository Markdown documents. Use stable, descriptive lowercase slugs with hyphens, independent of section numbering or exact heading wording, rather than relying on Markdown-generated heading anchors.
 - Preserve an anchor when its section is renamed or reordered while retaining the same meaning. Adding anchors or updating links remains subject to the target document's editing and historical-record rules.
 
+<a id="commits"></a>
+## Commits
+
+Keep each commit focused on a coherent change. Use a concise subject that describes its purpose or result. Follow the [task protocol](task-protocol.md) for prescribed task-record commit subjects.
+
+<a id="branches-and-merges"></a>
+## Branches and Merges
+
+For a coherent piece of work likely to span multiple commits, suggest a dedicated branch if the human has not already chosen where the work should happen. Use a separate worktree when independent work needs to proceed alongside it; planning and process maintenance may start on a branch in the primary checkout and [move to a separate worktree later](worktrees.md#separating-work). Substantive implementation follows the [task protocol's branch and worktree requirements](task-protocol.md#task-branch).
+
+If the work began on `main`, it may be separated retrospectively under human direction: first preserve the current tip on a new branch, then move `main` back to the agreed preceding commit. Do this only when the commits being separated have not been pushed, merged elsewhere, or used as a baseline for other work, and all uncommitted changes have been preserved. This is a deliberate separation of local work, not a way to synchronize `main` with its remote.
+
+Prefer a non-fast-forward merge (`--no-ff`) when integrating a branch, so its commits remain grouped by an explicit merge point.
+
 <a id="pull-request-use"></a>
 ## When to Use Pull Requests
 
