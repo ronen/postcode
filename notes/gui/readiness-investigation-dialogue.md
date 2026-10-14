@@ -1045,6 +1045,36 @@ I’d favor a small, consistent visual vocabulary reused across pages, with cust
 
 That gives the picture-book exercise a stronger constraint: **each illustration must attempt to communicate some of the explanation visually, rather than merely arrange its words.** We can then assess whether those visual choices actually help you understand and ask questions.
 
+<a id="corrections-continuity-model-debrief"></a>
+## Design debrief: corrections, conversational continuity and an explicit working model
+
+**Human:**
+
+> a few other other side thoughts while i'm thinking of them:  observe that you did correct yourself after further analysis -- that provides some confirmation that the effort so far put into representing corrections has some basis ;;   the dialog showed the value of having ongoing conversation rather than only isolated dialogs -- or maybe that's biased because that's what was available to us?  arguably an experiment could try having isolated dialogs, but with access to earlier findings... unfortunately that starts requiring the postcode infrastructure we've put in place, making it a different kind of experiment ;; in our dialog, you create some sort of internal model of the code... arguably it would be good to externalize and record that somehow so that it could be saved and reused, and updated as new understanding came along.
+
+**Assistant:**
+
+**These observations give us a more concrete candidate for PostCode’s value: making an evolving understanding available beyond the conversation that produced it.**
+
+**Corrections:** yes, we encountered the underlying need naturally. Further inspection changed my account of waiting during recovery, and we corrected misleading language about timers. Earlier explanations could still influence later judgments unless those changes remain visible. That supports preserving originals, relating replacements to them, and identifying material that may need reconsideration. It doesn’t establish that every part of the current correction mechanism is necessary or effective—we haven’t exercised it here. Also, changing our preferred design from a query to automatic transitions is a decision change, not itself a correction of a factual error.
+
+**Continuity:** the conversation carried more than code findings. It carried your goal, developing understanding, preferences, rejected alternatives, and unresolved questions. An experiment with separate conversations would need to preserve enough of that context to make the comparison meaningful.
+
+We could try that without first integrating the full PostCode infrastructure: supply a fresh conversation with an explicit investigation brief, selected earlier findings, their evidence and qualifications, and the current open question. Ordinary files could stand in for retained results. That would test whether explicit shared context can sustain the investigation; it wouldn’t test PostCode’s actual retention guarantees. The effort of selecting and maintaining that context would itself be useful evidence.
+
+**An external model:** I agree, with “model” meaning an explicit working account we construct and inspect—not a claim that we can extract a complete, stable internal model from the agent. For this investigation it might contain:
+
+- the relevant objects, responsibilities, and relationships;
+- the execution and recovery behavior we currently understand;
+- supporting evidence, qualifications, and unresolved points;
+- earlier versions and the reasons particular claims changed.
+
+The human’s intentions and design decisions should be retained alongside that account, while remaining distinguishable from claims about existing software. We could render parts pictorially and supply selected parts to subsequent agents. It needn’t begin as a comprehensive model of the entire project.
+
+That connects the picture book to something more substantial: **the pictures could be views of a retained, revisable account**, rather than illustrations generated independently for each answer. Earlier accounts would remain recoverable when understanding changes.
+
+A useful comparison would therefore be ongoing chat versus fresh conversations supported by that explicit account. We could explore the value of continuity, externalization, and pictures separately, rather than assuming they must all arrive together as a complete application.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -1261,6 +1291,15 @@ These observations are provisional design interpretation, separate from the dial
   on metaphors such as a single recovery trial. These are illustration candidates
   and a design constraint for the proposed exercise, not produced assets or a
   selected product-wide visual language.
+- **Corrections, continuity and explicit understanding become separate hypotheses.**
+  The latest debrief treats naturally occurring revisions as support for the
+  correction use case, without claiming the formal mechanism has been validated.
+  It distinguishes factual corrections from changed design preferences, and
+  conversational continuity from explicit shared knowledge. A fresh-conversation
+  experiment could use ordinary files as a manual stand-in for retained findings
+  and investigation context, exposing curation costs but not testing PostCode
+  guarantees. An explicit working account should be constructed and qualified,
+  not claimed as an extraction of complete agent internal state.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
@@ -1298,3 +1337,10 @@ should distinguish project familiarity from development experience and examine
 whether representations or contextual suggestions help the human notice useful
 questions, understand why they matter, and retain control of the investigation.
 No guidance mechanism or experiment has yet been selected.
+
+The latest debrief proposes retaining an explicit evolving account of the relevant
+software, with separate investigation goals and choices, and exploring continuity
+through either ongoing chat or fresh conversations supplied with that account.
+These remain hypotheses and possible experiments; no fresh conversation, new
+model schema, persistence facility or infrastructure integration is authorized
+or performed by recording them.

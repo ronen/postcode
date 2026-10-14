@@ -443,6 +443,47 @@ follow-on could assess explicit cues, including whether the human understands
 their relevance and can reject their framing. No particular guidance design or
 experiment is selected by recording this hypothesis.
 
+<a id="continuity-and-working-account"></a>
+## Corrections, continuity and a retained working account
+
+The [continuity debrief](readiness-investigation-dialogue.md#corrections-continuity-model-debrief)
+adds three related but distinguishable observations and hypotheses.
+
+**Natural corrections support the use case.** Further inspection refined the
+account of waiting during recovery, and imprecise timer language required
+correction. This provides natural examples of earlier accounts becoming
+misleading or incomplete, unlike injected validation fixtures. It does not
+validate the implemented Correction/reconsideration mechanism or every aspect
+of its complexity. Distinguish those changes from the human's decision to favor
+a different design: a changed preference is not automatically a factual correction.
+
+**Continuity may be supplied by a conversation or explicit retained context.**
+The chat carried user intent, developing understanding, alternatives, choices
+and open questions in addition to software findings. Separate conversations
+supplied only with code facts would omit relevant context. A preliminary
+experiment could supply a fresh conversation with a manually maintained brief,
+selected earlier findings and evidence, qualifications, and an open question using
+ordinary files. This would test the value and curation cost of explicit context,
+not PostCode's actual retention, exact-result or correction guarantees. No new
+conversation or such experiment is selected or authorized here.
+
+**An explicit working account could make understanding reusable.** Construct a
+qualified account of relevant objects, responsibilities, relationships and
+behavior, with evidence, uncertainty and reasons for revisions. Do not claim to
+extract a complete stable internal model from an agent. Preserve human goals and
+design choices alongside it without turning them into facts about existing code.
+Its scope can be the investigation's relevant portion rather than the whole
+project. Views could expose selected parts in prose or pictures, and selected
+material could support subsequent investigations. As required by the governing
+model, earlier retained answers remain unchanged; later accounts and correction
+relations preserve revision history. This hypothesis does not introduce a new
+canonical object, global knowledge graph, storage schema or cross-session promise.
+
+The picture-book option might explore recurring views of this evolving account
+instead of unrelated images. A later comparison could separate ongoing-chat
+continuity, explicit retained knowledge and pictorial representation, rather than
+assuming a single full-application experiment is necessary to explore their value.
+
 ## Orientation: what might supply the forest?
 
 Existing organization and dependency results can situate modules within qualified
