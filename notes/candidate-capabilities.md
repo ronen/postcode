@@ -297,6 +297,21 @@ which subjects were examined or how thoroughly. Whether a general audit Lens,
 more specific Lenses, or a composition of existing capabilities is useful
 remains open.
 
+<a id="answering-new-questions-from-existing-interpretations"></a>
+## Answering new questions from existing interpretations
+
+PostCode could explore whether an existing interpretation already contains enough
+information to satisfy a different request. For example, a broad module account
+might answer a narrower question about one responsibility without requiring a
+fresh investigation. This goes beyond reusing the same completed operation.
+
+Reuse would depend on establishing that the earlier result satisfies the new
+question's meaning, scope, input basis, and qualifications; textual similarity
+or an apparently relevant passage would not establish that. The answer would
+retain the earlier interpretation's provenance and limitations. Open questions
+include how to establish sufficiency, whether selection or further synthesis is
+needed, and whether checking costs less than performing the requested work.
+
 ## Human contributions to interpretation and investigation
 
 A human could challenge an explanation, contribute rationale or other program

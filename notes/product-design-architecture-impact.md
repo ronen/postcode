@@ -1,6 +1,6 @@
 # Adopted architecture reconciliation: impact and later Lens preparation
 
-Updated: 2026-10-08
+Updated: 2026-10-14
 Foundation baseline: `337451bd37f91004a14d56149c52b4491bef783a`
 Adopted: 2026-10-08
 Decision: [Coordinate Views while preserving qualified results](../docs/decisions/coordinated-views-and-qualified-results.md)
@@ -63,15 +63,16 @@ This confirms a concrete current gap without claiming that every observation con
 
 The bounded correction concerns identifying the captured basis and its limitations, not retaining everything needed to reproduce an investigation. It must not silently expand into a durable analysis store or repository archive. Neither a commit hash alone nor references into a discarded store can be assumed sufficient attribution. Necessary representation and any bounded retention remain follow-up design choices; full reproducibility is a separate concern.
 
-## Implications for subsequent Lens preparation
+<a id="implications-for-subsequent-lens-preparation"></a>
+## Lens request-model follow-through
 
-The unchanged [Lens representation note](lens-representation-proposal.md) is exploratory context only. It is not an approved plan, and no prescription in it is adopted by reference.
+The [completed Lens request-model plan](../docs/plans/lens-request-model.md) and its accepted decisions now describe the adopted request model. The exploratory Lens representation proposal has been retired; its remaining idea about answering a different question from an existing interpretation is recorded in [candidate capabilities](candidate-capabilities.md#answering-new-questions-from-existing-interpretations).
 
-Retain its useful distinctions: Lens question versus execution operation; designation versus selected subjects versus parameters; applicability versus availability and failure; compatible reuse versus new evaluation; and qualified retained answers versus invocation reporting. A shared semantic vocabulary and easier Lens additions remain candidates to evaluate, not a mandate for one all-purpose table.
+The plan carries forward the distinctions between Lens question and execution operation; designation, selected subjects and parameters; applicability, availability and failure; compatible reuse and new evaluation; and qualified retained answers and invocation reporting. It includes the shared Lens vocabulary and evidence for local Lens additions.
 
 Reassess composition examples according to their intended information. A module summary that coordinates dependency, structure and interpretation Projections can be one Presentation. A Lens producing a new synthesized answer still needs declared analytical requirements and its own qualified result. A legitimate qualified selection can also be a Projection without deriving new facts; shared layout alone need not create an outer Projection. Several contributions to one answer do not require the “composite” category. Summary View selection is not necessarily Lens selection, so a View caption, observation or agent-context descriptor cannot generally infer one Lens from the View as a whole.
 
-Do not import the note's suggested implementation scope (F1–F4 together), one-inspection-Lens recommendation, canonical identifier choices, registration table, prompt mechanism or schema migration as accepted architecture. Existing component records may remain. Preserve the current reporting-only meaning of `usage`; its compatibility representation may be revisited separately. Lens preparation should avoid baking in a one-operation, one-prompt or one-state universal model while remaining free to implement only a bounded current subset.
+Scope, the shared inspection Lens, answer identity, resolution-result lifetime, usage reporting and experimental outputs are settled for this slice by the plan and its linked decisions. General Presentation design, exact retained-answer redisplay and captured-basis observation export remain separately scoped follow-ups.
 
 ## Consequential choices left for later assessment
 
