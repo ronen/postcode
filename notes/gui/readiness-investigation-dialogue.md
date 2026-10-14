@@ -24,6 +24,8 @@ The issue was read on 2026-10-14; its linked live text can change. The
 and [circuit-breaker implementation](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts)
 are pinned. Earlier source inspection supported the opening explanation; later
 responses used the issue and README, including policy and bulkhead sections.
+Exchange 8 also inspected the pinned bulkhead and circuit-breaker implementations
+to compare actual admission paths, including waiting during recovery sampling.
 This is static inspection and documentation-based interpretation. No runtime
 reproduction or fresh PostCode analysis has been performed.
 
@@ -269,6 +271,48 @@ The intended promise is advisory: report whether an attempt would currently be p
 
 Before handing this direction to an implementation agent, I’d investigate one remaining question: **what information does the breaker already expose, and what must be added to answer this query consistently with its execution rules?** That should let us distinguish a small addition from a change to the breaker’s behavior, and identify any cases where the proposed promise needs qualification.
 
+<a id="bulkhead-comparison"></a>
+## 8. Comparing bulkhead capacity with breaker admission
+
+**Human:**
+
+> Also I'd like to understand more about the existing Bulkhead capacity readiness to see to what extent it would/wouldn't make sense to unify that with the circuit-breaker readiness
+
+**Assistant:**
+
+**The bulkhead already supplies the ingredients for a readiness check: two capacity counts.** It reports how many operations can start immediately and how many can join its waiting queue. Reading those counts doesn’t reserve anything. [Bulkhead implementation](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/BulkheadPolicy.ts)
+
+For example, suppose it allows 12 operations running and four waiting:
+
+| Current situation | What a new operation would encounter |
+|---|---|
+| 11 running | It can start immediately. |
+| 12 running, three waiting | It can join the queue. |
+| 12 running, four waiting | It is rejected for lack of capacity. |
+
+Those are snapshots of the policy’s admission conditions, assuming the operation hasn’t been cancelled. Capacity can change between checking and submitting.
+
+**There is a useful overlap with breaker readiness—but “ready” needs to distinguish starting from waiting.** Inspecting the breaker revealed something missing from my earlier three-way account: when its recovery trials are already occupied, another call can wait for their outcome. It then encounters the breaker’s new decision, which may allow execution or reject it. “Half-open” therefore doesn’t always mean “your operation can start a recovery attempt now.” [Breaker implementation](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts)
+
+A possible common vocabulary would be:
+
+| Admission outlook | Bulkhead | Circuit breaker |
+|---|---|---|
+| **Can start now** | Execution capacity available | Normal execution allowed, or a recovery trial available |
+| **Would wait** | Queue space available; wait for capacity | Recovery trials occupied; wait for a decision |
+| **Would reject now** | Execution and queue capacity exhausted | Recovery delay still running, or breaker manually held open |
+
+This is a **proposed interpretation**, not an existing shared facility. The reasons remain important: waiting for capacity and waiting to discover whether execution should be permitted are different commitments. Neither waiting path promises successful completion.
+
+I’d separate two degrees of unification:
+
+- **Consistent meaning:** design the breaker query around distinctions that also make sense for the bulkhead, while retaining policy-specific reasons and details. This looks worthwhile now.
+- **A shared interface:** let callers ask either policy the same question. This becomes worthwhile if a caller actually needs to handle both interchangeably; we haven’t established that need yet.
+
+That leaves room for growth without requiring a general framework. It also exposes the next decision for this job-submission scenario: **would “the call will wait” be sufficient reason to prepare a job, or does the caller only want to prepare work that can start now?**
+
+*Basis: documentation and static inspection at our fixed revision; these paths have not been exercised in a runtime test.*
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -306,14 +350,21 @@ These observations are provisional design interpretation, separate from the dial
   for future growth but no speculative features. This is direction within the
   simulation, not authorization to implement Cockatiel or PostCode changes. The
   earlier broader recommendation remains visible rather than being rewritten.
+- **Comparison refined an earlier answer.** Exchange 8 found that a breaker call
+  can wait when recovery sampling is occupied. The earlier normal/recovery/blocked
+  explanation did not express that distinction. Start/wait/reject is now a candidate
+  shared vocabulary, not an implemented interface or exhaustive verified contract.
+  The human asked to examine unification after choosing conservative scope; this
+  is continued investigation, not approval of a common framework.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
   or new core support remains outstanding.
 
 The current trial direction is a narrowly scoped advisory circuit-breaker readiness
-query. Broader readiness mechanisms are deferred pending demonstrated demand;
-existing facilities remain a consistency reference. Its exact
+query. Broader readiness mechanisms are deferred pending demonstrated demand.
+The human has requested comparison with bulkhead readiness to assess possible
+unification; a shared interface remains undecided. Its exact
 meaning under concurrency, recovery sampling, composition, and delay still needs
 validation. No API, general readiness facility, or implementation slice is selected.
 The human's eventual product role and the journey's meaningful endpoint remain open.
