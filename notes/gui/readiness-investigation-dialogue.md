@@ -750,6 +750,29 @@ That second answer follows the current Cockatiel behavior we inspected. Automati
 
 There is a tradeoff: **several callers could see “trial eligible” and all begin preparation before anyone submits work.** Our non-reserving query permits that. Preventing it would require securing the opportunity, which we previously chose not to include.
 
+<a id="workaround-sufficiency"></a>
+## 24. What the requester said about their workaround
+
+**Human:**
+
+> so our query would still be just "is the breaker closed, or if not, has enough time gone by", which is what the original requestor's workaround did.  did the requestor report that the workaround was sufficient, just ugly?
+
+**Assistant:**
+
+**Yes. Their exact wording is: “This works, but it is clunky.”** They then suggest automatic state transitions as a simpler library-supported solution. [Original issue](https://github.com/connor4312/cockatiel/issues/111)
+
+Their workaround permits preparation when:
+
+- the breaker is **closed**;
+- it is **half-open**, including while recovery is underway; or
+- it is **open and the waiting period has elapsed**.
+
+A manually isolated breaker remains blocked. So your description captures the core idea, with those state distinctions.
+
+For the breaker alone, our query would largely **bring that decision into the library**, where the actual recovery timing is known, instead of making the application track state changes and duplicate timing information. It would not need to initiate trials or reserve opportunities to match the behavior the requester says works.
+
+That anchors the scope: **the reported need is a supported, convenient way to make this check.** The common policy interface, bulkhead support, and richer explanations are design extensions we’ve been considering—not requirements established by the original report.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -893,6 +916,13 @@ These observations are provisional design interpretation, separate from the dial
   that acceptance including waiting remains true while trial capacity is occupied,
   unlike immediate-start availability. Multiple callers can still prepare work
   from the same non-reserving eligibility observation.
+- **The requester explicitly reported the workaround working.** Exchange 24
+  quotes that limited report and checks its closed/half-open/open-after-delay
+  conditions, with isolation excluded. The original need is library-supported
+  checking without external timing bookkeeping, not evidence that reservation,
+  active probes, generic policy queries or richer diagnostics were requested.
+  Those remain separate design choices. This is requester testimony, not runtime
+  verification or proof of complete edge-case coverage.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
