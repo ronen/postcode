@@ -687,6 +687,38 @@ So we have a genuine choice:
 
 Our proposed query is defensible, but it isn’t the only solution forced by the current behavior. Your question exposes a tradeoff we should compare before settling the change.
 
+<a id="half-open-explanation"></a>
+## 22. Explaining half-open in everyday terms
+
+**Human:**
+
+> I don't really know what "half open" means
+
+**Assistant:**
+
+**“Half-open” means the breaker is cautiously testing whether normal work can resume.** I should have defined it before relying on the term.
+
+There are three main phases:
+
+| Technical name | Meaning |
+|---|---|
+| **Closed** | Allow work normally and observe its results. |
+| **Open** | Too many failures have occurred. Pause attempts for a while. |
+| **Half-open** | Allow limited trial work to find out whether the problem has cleared. |
+
+The names come from an electrical circuit: a closed circuit lets current flow; an open circuit interrupts it.
+
+A simple example, using Cockatiel’s default of one recovery trial:
+
+1. Calls to a service keep failing. The breaker pauses attempts.
+2. After the recovery delay, the next call is allowed through as a **trial**.
+3. While that trial is running, other calls through this breaker wait for its outcome.
+4. If the trial succeeds, normal operation resumes. If it fails in a way the breaker is configured to count, attempts are paused again.
+
+So **half-open does not mean the service is known to be healthy. It means recovery is being tested.**
+
+The timing distinction we were discussing is whether the reported phase changes when a trial *becomes eligible*, or only when a trial *actually starts*. Cockatiel currently does the latter.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -816,6 +848,13 @@ These observations are provisional design interpretation, separate from the dial
   inspection is now an explicit narrower alternative to the additional query;
   its compatibility and event implications are unassessed. No direction has been
   reversed by the human yet.
+- **A domain term remained unclear late in the discussion.** Exchange 22 shows
+  that repeated use of "half-open" and descriptions of recovery trials had not
+  established the term's meaning for the human. The agent supplies plain-language
+  state names and an illustrative single-trial sequence. The need is not resolved
+  merely by recording that an explanation was supplied; comprehension remains for
+  the human to assess. Future Presentation exploration should consider making
+  domain concepts accessible where used, without presuming source-code access.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
