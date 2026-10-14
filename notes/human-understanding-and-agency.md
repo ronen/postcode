@@ -23,9 +23,16 @@ perform those tasks should not become PostCode's default organizing purpose.
 
 PostCode gives the human a working surface for exploring the software, questioning
 accounts of it, considering alternatives, and judging proposed changes. Its value
-lies in making that participation informed and effective. Detailed debugging can
-still serve this purpose when it reveals a design problem, tests an assumption,
-or informs a commitment the human needs to make.
+lies in making that participation informed and effective.
+
+When a problem calls for debugging, the expected pattern is for the human to ask
+an agent to investigate and report its findings, evidence, uncertainty, and any
+difficulty making progress. PostCode should help the human understand and question
+that account, resolve choices about intended behavior or acceptable tradeoffs,
+and direct further work. An agent's difficulty is a reason to make the obstacle
+intelligible, not an automatic handoff of implementation-level diagnosis to the
+human. Agent reports remain attributed accounts whose conclusions can be examined
+and challenged.
 
 The appropriate level of detail follows the human's information need. A broad
 account may help establish context; a precise implementation detail may determine
@@ -50,9 +57,11 @@ Scale and abstraction do not determine the value of human participation.
 
 A graphical journey that asks the human to repeat an agent's debugging procedure
 may demonstrate PostCode's machinery without establishing why the human would use
-it. Detailed investigation remains valuable when it serves understanding,
-challenges an explanation, or informs a consequential choice. Neither source
-access nor debugging is excluded by this principle.
+it. Access to detailed evidence remains valuable for questioning an explanation
+or informing a consequential choice. The human should be able to inspect it
+without having to reconstruct the agent's diagnostic procedure. Direct human
+investigation remains possible, but the experience should not depend on the human
+taking over the agent's implementation work.
 
 Use this question when selecting a journey: **What does the human gain from this
 experience that makes their participation worthwhile?** Do not require every
