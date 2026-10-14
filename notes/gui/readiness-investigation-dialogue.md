@@ -873,6 +873,32 @@ This strengthens the case for **improving the existing state-and-event facility*
 
 I’d now treat this as a serious alternative to our shared-query direction. A generic acceptance interface would need its own justification beyond fixing the original breaker problem.
 
+<a id="compatibility-and-timer-contract"></a>
+## 29. Separating compatibility from the automatic-transition contract
+
+**Human:**
+
+> there are two concerns:  backwards compatibility (which could be achieved through making this behavior optional, presuming that there's a backwards-compatible way of adding options), and then as you say the semantics and details of events and timer management
+
+**Assistant:**
+
+**Yes. And the existing API already takes a breaker-options object**, including optional settings. Adding an optional setting whose default preserves current behavior is a plausible compatibility path. We would still verify that omitting it preserves execution, state inspection, notifications, and resource behavior. [Existing options](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts)
+
+That separates two contracts:
+
+**For existing callers:** nothing changes unless they enable automatic transitions.
+
+**For callers enabling it:** the recovery delay ending makes the breaker eligible for trial work and produces the corresponding state-transition notifications. It doesn’t start work or declare recovery successful.
+
+The remaining design questions are bounded:
+
+- **Event meaning and ordering:** half-open means a trial is eligible. State should already reflect that when listeners are notified. A timer and an execution arriving together must not produce duplicate transitions.
+- **Changing circumstances:** a pending timer must not undo manual isolation or act on an obsolete failure episode. A new failure uses the appropriate new recovery delay.
+- **Restored state:** define what happens when a breaker is restored with some or all of its delay already elapsed, including when observers can receive notifications.
+- **Resource lifetime:** decide whether an idle breaker’s timer should keep the application running and how pending timer resources are released when no longer needed.
+
+I’d frame the working proposal as **opt-in automatic transition to trial eligibility, using the existing state and event API, with today’s behavior preserved by default**. That is concrete enough for an implementation agent to assess the mechanics and identify any remaining consequential choices before implementation.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -1043,23 +1069,27 @@ These observations are provisional design interpretation, separate from the dial
   inspection for observers that missed an event. The automatic-transition
   alternative now has a concrete notification rationale; its selection and
   compatibility behavior remain open.
+- **The human separates compatibility and new behavior semantics.** Exchange 29
+  verifies the existing options-object extension point and proposes opt-in automatic
+  transitions with current behavior retained by default. Existing optional fields
+  support plausibility, not verified backwards compatibility. The agent identifies
+  bounded questions around event meaning/order, stale timers, isolation, restored
+  state and resource lifetime, and formulates a working proposal for assessment.
+  No option name, implementation, test result or authorization is established.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
   or new core support remains outstanding.
 
-The current trial direction is an advisory acceptance query on the shared policy
-interface, motivated by breaker, bulkhead and combined-policy use. The human favors
-this direction subject to a reasonable result type. Immediate start is no longer
-the leading question; acceptance may include waiting. The agent has proposed a
-conservative all-components-currently-permit meaning for composition, explicitly
-weaker than predicting actual execution after queueing. That qualification has not
-yet been answered by the human. Exact result shape, behavior across policy types,
-compatibility, concurrency and recovery details remain to be settled and validated.
-Exchange 21 adds a narrower alternative: update existing breaker-state inspection
-to reflect trial eligibility, following a documented comparison with Polly v7.
-In exchange 28 the human argues for timer-driven state transitions and events to
-avoid polling. This puts the earlier shared-query direction under reconsideration;
-no final replacement choice or compatibility behavior has been agreed. External health mechanisms remain outside the chosen direction. No implementation
-is authorized or GUI implementation slice selected. The human's eventual product
-role and the journey's meaningful endpoint remain open.
+The latest discussion favors assessing opt-in automatic transition to trial
+eligibility, using the existing breaker options, state and transition events while
+preserving current behavior by default. The human distinguishes compatibility
+from the new behavior's semantics and timer management; the agent's working
+proposal in exchange 29 awaits further response. Event meaning/order, stale timers,
+isolation, restoration and resource lifetime remain to be settled and validated.
+The earlier shared acceptance-query direction remains an explored alternative,
+including its unresolved return contract and composition semantics; it has not
+been implemented or silently removed from the record. External health mechanisms
+remain outside scope. No implementation is authorized or GUI implementation slice
+selected. The human's eventual product role and the journey's meaningful endpoint
+remain open.
