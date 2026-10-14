@@ -19,11 +19,14 @@ enough value for human participation in agent-mediated development. The emerging
 [human understanding and agency principle](../human-understanding-and-agency.md)
 is the central result so far. **No replacement scenario has yet been selected.**
 
-A candidate direction is assessing a proposed change to a meaningful commitment
-or responsibility boundary. A proposal can give the human something concrete to
-judge while remaining a qualified account to question. This is not a requirement
-that all journeys begin with an agent proposal or end in a decision; open-ended
-understanding and discovery remain valuable.
+The working direction is assessing a concrete extension against one fixed
+repository state: how it fits existing responsibilities and commitments, and
+whether any change is needed. This avoids requiring historical analysis to
+establish a repeated-change pattern. The human agreed this direction; the specific
+extension remains to be selected. An agent proposal can give the human something
+concrete to judge while remaining a qualified account to question. This is not a
+requirement that all journeys begin with a proposal or end in a decision;
+open-ended understanding and discovery remain valuable.
 
 ## Governing and exploratory context
 
@@ -143,6 +146,47 @@ contains originals, replacements, competing alternatives and reconsideration
 causes. Its injected errors are controlled assessment material. Do not manufacture
 a correction in the Cockatiel story or treat those fixtures as evidence of natural
 error frequency.
+
+## Candidate to assess: retries within an overall time budget
+
+The repeated-policy-change example remains useful for explaining the purpose of
+PostCode, but presupposes evidence of history and a pattern across changes. A
+current-state extension should be easier to exercise without inventing that
+history.
+
+A concrete candidate, proposed for discussion rather than selected, is:
+
+> We want callers to request retries within an overall two-second budget,
+> including time between attempts. What can we promise when that budget expires,
+> and can the existing design deliver it?
+
+The human judges the externally visible commitment: stopping the wait, preventing
+further attempts, and ensuring underlying work has stopped are different
+requirements. What should happen to work already underway, and what obligations
+fall on the operation being retried? Two seconds is an illustrative value, not a
+measured or selected limit.
+
+The recorded Cockatiel assessment pins commit
+`80b5ed67966dfcc5410a912285fcb3eeb2dc5e5e`. Its
+[pinned README](https://github.com/connor4312/cockatiel/blob/80b5ed67966dfcc5410a912285fcb3eeb2dc5e5e/readme.md)
+documents retry, timeout, policy composition, and cooperative versus aggressive
+timeout behavior. Those are recorded assertions that give the investigation
+credible starting subjects. They do not establish that the desired combined
+commitment is satisfied. Existing composition, a focused addition, or a revised
+commitment must all remain possible outcomes.
+
+A useful account would explain the responsibilities for retry decisions, waiting,
+deadline handling and cancellation; distinguish documented commitments from
+implementation findings; and show the consequences and limits of a proposed
+arrangement. This account is a requirement to investigate, not an existing
+PostCode result. The earlier executor investigation is supporting exploration,
+not evidence that PostCode has answered this new question.
+
+For this initial candidate check, the pinned README was accessible, but the
+original assessment source checkout was absent at its recorded local path.
+Restoring and verifying the pinned repository is a prerequisite to implementation
+inspection or live PostCode assessment. No code execution, runtime verification,
+or fresh hosted investigation was performed.
 
 ## Orientation: what might supply the forest?
 
