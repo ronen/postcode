@@ -629,6 +629,37 @@ For our proposed query, I’d return an acceptance answer with explanatory infor
 
 *This distinction comes from static inspection; event coverage and behavior have not been runtime-tested here.*
 
+<a id="state-versus-acceptance"></a>
+## 20. Why the existing state query is insufficient
+
+**Human:**
+
+> if the application can already inspect the breaker's current state, then what does our proposed query add / what is the original issue?
+
+**Assistant:**
+
+**The stored state doesn’t tell the whole story: whether execution is allowed also depends on elapsed time.**
+
+Suppose failures cause the breaker to open with a 30-second recovery delay. No further executions occur:
+
+| When checked | Existing state query | What an execution would do |
+|---|---|---|
+| After 10 seconds | “Open” | Reject the attempt. |
+| After 31 seconds | Still “Open” | Move into recovery and allow a trial attempt. |
+
+The state stays “open” because **the transition into recovery happens when execution is attempted**, not automatically when the timer expires. Reading the state doesn’t trigger that transition. [Breaker implementation](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts)
+
+That creates the requester’s circular problem:
+
+> “I won’t prepare a job while the state says open.”
+> → No job reaches execution.
+> → Nothing triggers the recovery transition.
+> → The state keeps saying open.
+
+Our proposed query would answer **whether a submission is acceptable under the current conditions**, considering the recovery delay as well as the stored state. At 31 seconds it could answer “yes, a recovery attempt is eligible” without changing the state or running anything.
+
+The requester already built a workaround that tracks timing outside the breaker. The addition would put that decision inside the breaker, where its actual timing rules are known, so applications don’t have to duplicate them. [Original issue](https://github.com/connor4312/cockatiel/issues/111)
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -742,6 +773,12 @@ These observations are provisional design interpretation, separate from the dial
   error notifications can report `handled: false` despite narrower documentation.
   These are static observations, not runtime-confirmed defects or authorization to
   fix the external project. The response avoids promising universal event delivery.
+- **The original mechanism needed a concrete contrast.** Exchange 20 revisits
+  why state inspection is insufficient, using an illustrative 30-second delay to
+  show the same stored state leading to different admission outcomes over time.
+  This is an explanation grounded in inspected code, not a runtime trace. The
+  human needed this distinction despite earlier descriptions; retain the question
+  and response as evidence about the explanation's progression.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
