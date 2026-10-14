@@ -988,6 +988,33 @@ That is valuable, especially for exposing assumptions specific to Cockatiel. I�
 
 The picture book’s useful output would be **a small set of representations worth carrying into the next live exercise**, plus an honest account of illustrations that added little. It needn’t become a proposed screen layout or establish that every answer in PostCode should be graphical.
 
+<a id="question-framing-debrief"></a>
+## Design debrief: helping the human frame questions
+
+**Human:**
+
+> another thing that PostCode might possibly do, implicitly by its design or explicitly by its actions: help frame the right questions to ask.  i didn't bring any knowledge of cockatiel to the exercise, but i did bring my experience as a developer;  and even so, it's possible that some sort of guidance (through tooling or cueing or graphical display or whatever) could have helped me arrive at understanding sooner
+
+**Assistant:**
+
+**Yes—question-framing is a distinct potential benefit, beyond explaining answers more clearly.** Our exercise relied on your developer experience to uncover which questions mattered. We tested an unfamiliar project with an experienced developer, not whether someone without that experience could direct the same investigation.
+
+You supplied several consequential questions: what the library is for, whether policies compose, what already exists, why the current mechanism behaves that way, and what compatibility requires. I often followed those questions locally instead of helping establish that wider agenda. That contributed to us exploring a general query facility before fully understanding the existing state-and-event mechanism.
+
+PostCode could help in several ways:
+
+- **Make useful questions visible through the representation.** Showing where state lives, which components compose, and what triggers a transition can invite questions about ownership, interaction, and timing.
+- **Offer contextual next questions.** When we considered a common policy interface, a useful cue would have been: “Check what this would mean for the other policy types.” When considering a new facility: “Check whether existing state and events already cover the need.”
+- **Help frame the investigation.** Keep the desired outcome, important unknowns, and competing approaches available, so the next step follows an unresolved issue rather than whichever detail was mentioned most recently.
+
+The suggestions should explain **why the question matters** and remain easy to ignore or challenge. “The right questions” shouldn’t mean a prescribed route to the answer the system already favors. Some of our detours helped you form the understanding needed to judge the final approach.
+
+This gives us another hypothesis:
+
+> PostCode can help a human discover what they need to understand in order to exercise judgment, as well as help them understand the answers.
+
+An ordinary agent can provide this guidance too, so it belongs in the comparison baseline. In the picture-book exercise, we could ask of each illustration both **what it explains** and **what useful question it makes easier to notice**. In the next live investigation, we could test explicit cues as well—and observe whether they support your judgment or merely steer it.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -1189,6 +1216,14 @@ These observations are provisional design interpretation, separate from the dial
   Retrospective illustration is hypothesis generation, not proof of improved
   initial comprehension, and must avoid leaking later discoveries into earlier
   answers.
+- **Developer experience supplied investigation strategy.** In the question-framing
+  debrief the human distinguishes ignorance of Cockatiel from experience in
+  software development. The agent identifies question discovery, contextual cues
+  and visible unresolved issues as an additional value hypothesis. The exercise
+  does not establish accessibility to a person without developer experience.
+  Guidance can be provided by an ordinary agent too; evaluate it against a strong
+  guided-chat baseline. Avoid optimizing solely for a shorter route to a known
+  answer, since exploration can contribute to understanding and judgment.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
@@ -1220,3 +1255,9 @@ understanding of a persistent overall picture. The agent recommends an extreme
 retrospective picture book as preparation for a live overall-budget investigation;
 a different unfamiliar project would test transfer later. These are recorded
 options and a recommendation, not a selected next exercise or GUI commitment.
+
+Question-framing is an additional explicit value hypothesis. Future exercises
+should distinguish project familiarity from development experience and examine
+whether representations or contextual suggestions help the human notice useful
+questions, understand why they matter, and retain control of the investigation.
+No guidance mechanism or experiment has yet been selected.

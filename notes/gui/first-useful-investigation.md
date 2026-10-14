@@ -384,6 +384,42 @@ silently turn into original evidence. Candidate representations from this exerci
 could then be tried prospectively. None of this prescribes the final UI or requires
 every future PostCode answer to have a picture.
 
+<a id="question-framing"></a>
+## Helping the human frame useful questions
+
+The [question-framing debrief](readiness-investigation-dialogue.md#question-framing-debrief)
+identifies a further possible contribution: helping the human discover which
+questions would advance understanding and judgment. The human brought little
+Cockatiel knowledge but substantial developer experience. This trial does not
+establish that the same investigation would be accessible without that experience.
+Source independence, project familiarity and experience in design judgment are
+different dimensions.
+
+The human supplied questions about purpose, ownership and lifetime, composition,
+existing facilities, rationale and compatibility. The agent often responded to
+the local question rather than making the wider investigation agenda explicit.
+A useful proposal could have been situated earlier against existing state and
+events, and a common interface considered alongside the full policy family.
+These are retrospective observations, not proof that a predetermined shorter
+sequence would have produced better understanding.
+
+Candidate support includes representations that make relationships and gaps
+noticeable, contextual suggested questions with an explanation of relevance, and
+an available account of the desired outcome, unresolved uncertainties and
+competing approaches. Suggestions must remain challengeable and optional; a cue
+must not imply an unestablished fact or steer silently toward a favored solution.
+If identifying a gap or relationship requires new program interpretation, that
+work belongs to qualified analysis rather than being invented by Presentation.
+
+The working hypothesis is that PostCode can help a human discover what they need
+to understand to exercise judgment, as well as understand the resulting answers.
+Ordinary agents can offer such guidance, so compare against guided chat rather
+than a deliberately passive baseline. For the picture-book option, consider both
+what each illustration explains and what useful question it invites. A live
+follow-on could assess explicit cues, including whether the human understands
+their relevance and can reject their framing. No particular guidance design or
+experiment is selected by recording this hypothesis.
+
 ## Orientation: what might supply the forest?
 
 Existing organization and dependency results can situate modules within qualified
@@ -456,7 +492,8 @@ must be addressed before relying on new observations for state-specific assessme
 ## Next questions
 
 1. Identify and test a concrete benefit PostCode could add beyond ordinary agent
-   chat with a concise retained note. Do not assume a graphical surface is needed.
+   guided chat with a concise retained note. Include question-framing as well as
+   answer presentation; do not assume a graphical surface is needed.
 2. Frame the repeatable scenario around the worked issue and its informed-direction
    endpoint, including the person's role and reason to care about the library.
 3. Use a minimal interaction sketch to test the selected benefit, retaining freedom
