@@ -795,6 +795,32 @@ The report explicitly identifies the missing **open-to-half-open** transition an
 
 So their proposal changes the state automatically. Ours would leave that transition tied to execution, but expose whether a trial is already eligible. Both can support their pre-preparation check.
 
+<a id="delay-versus-timer"></a>
+## 26. Distinguishing a recovery delay from a scheduled timer
+
+**Human:**
+
+> i thought cockatiel already has a built-in timer delay for breakers?
+
+**Assistant:**
+
+**It does have a built-in recovery delay. But it enforces that delay by checking the clock when execution is attempted, rather than scheduling a timer to change the state.** My earlier use of “timer expires” blurred that distinction.
+
+The current breaker does this:
+
+1. When it opens, record **when it opened** and **how long the delay should be**.
+2. On the next execution request, compare the elapsed time with that delay.
+3. If too little time has passed, reject the request. Otherwise, enter half-open and begin a trial.
+
+If no execution request arrives, nothing wakes up when the delay ends. The stored state simply remains open. [Implementation](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts)
+
+So the alternatives reuse the same delay but act differently:
+
+- **Automatic transition:** schedule something to update the state when the delay ends.
+- **Our query:** check the elapsed time when asked, without changing the state.
+
+The missing piece is therefore not the delay itself; it’s a supported way to recognize eligibility before attempting execution.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -945,6 +971,12 @@ These observations are provisional design interpretation, separate from the dial
   active probes, generic policy queries or richer diagnostics were requested.
   Those remain separate design choices. This is requester testimony, not runtime
   verification or proof of complete edge-case coverage.
+- **Imprecise mechanism language caused another ambiguity.** Exchange 26
+  corrects the agent's earlier use of "timer expires": the inspected breaker
+  records opening time and delay, then compares timestamps during execution; it
+  does not schedule a recovery-transition callback. A configured delay is not
+  the same mechanism as a timer that wakes to mutate state. This clarification
+  preserves the prior wording rather than silently editing the dialogue.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
