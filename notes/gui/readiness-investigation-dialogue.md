@@ -1,7 +1,7 @@
 # Readiness investigation: simulated dialogue
 
 Started: 2026-10-14
-Status: ongoing, exploratory, non-governing
+Status: simulated investigation reached a decision endpoint; exploratory, non-governing
 
 Companion to [First useful graphical investigation](first-useful-investigation.md).
 The human authorized recording the dialogue as it develops. This is a simulation
@@ -899,6 +899,37 @@ The remaining design questions are bounded:
 
 I’d frame the working proposal as **opt-in automatic transition to trial eligibility, using the existing state and event API, with today’s behavior preserved by default**. That is concrete enough for an implementation agent to assess the mechanics and identify any remaining consequential choices before implementation.
 
+<a id="decision-endpoint"></a>
+## 30. Accepting the direction and assessing the journey endpoint
+
+**Human:**
+
+> yes that seems like the best approach.
+>
+> [at this point, are we done with our journey?]
+
+**Assistant:**
+
+**Yes—the simulated investigation has reached a meaningful endpoint: you can give an agent informed direction about the change.**
+
+The resulting handoff is compact:
+
+- **Direction:** add opt-in automatic transition from open to half-open when the recovery delay ends, using the existing state and transition events.
+- **Commitments:** preserve current behavior by default; half-open means trial work is eligible, not that recovery is proven; the transition itself starts no work.
+- **Further assessment:** settle event ordering, timer lifetime, isolation and restoration behavior, and verify compatibility and the original requester’s scenario.
+
+You reached that choice by understanding the operating model, questioning my assumptions, exploring a broader query facility, and returning to a smaller change with a notification benefit. That is the human contribution we wanted the journey to reveal. We don’t need to simulate implementation to establish this endpoint.
+
+**The PostCode design exploration still has work remaining.** We now need to turn the recorded experience into:
+
+- a rough graphical interaction sketch, especially how it supplies orientation and keeps important explanations available;
+- concrete requirements for evidence, qualifications, earlier answers, corrections, and the handoff;
+- a mapping to existing PostCode capabilities, Presentation work, and additional core support.
+
+The agent-produced answers are useful material, but they haven’t demonstrated that current PostCode supplies all of this.
+
+I’d stop the Cockatiel design discussion here and use the dialogue to develop that sketch. It should preserve the useful investigation choices without requiring users to repeat our entire conversation.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -1076,20 +1107,27 @@ These observations are provisional design interpretation, separate from the dial
   bounded questions around event meaning/order, stale timers, isolation, restored
   state and resource lifetime, and formulates a working proposal for assessment.
   No option name, implementation, test result or authorization is established.
+- **The human accepts a bounded direction and asks whether the journey is done.**
+  Exchange 30 confirms the opt-in automatic-transition approach. The agent identifies
+  an informed-direction endpoint and supplies a lightweight handoff, separating
+  remaining implementation assessment from the PostCode interaction-design work.
+  The handoff has not been sent to another agent or external maintainer. This
+  agreement is within the simulation and authorizes no implementation.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
   or new core support remains outstanding.
 
-The latest discussion favors assessing opt-in automatic transition to trial
-eligibility, using the existing breaker options, state and transition events while
-preserving current behavior by default. The human distinguishes compatibility
-from the new behavior's semantics and timer management; the agent's working
-proposal in exchange 29 awaits further response. Event meaning/order, stale timers,
-isolation, restoration and resource lifetime remain to be settled and validated.
-The earlier shared acceptance-query direction remains an explored alternative,
-including its unresolved return contract and composition semantics; it has not
-been implemented or silently removed from the record. External health mechanisms
-remain outside scope. No implementation is authorized or GUI implementation slice
-selected. The human's eventual product role and the journey's meaningful endpoint
-remain open.
+The human has accepted opt-in automatic transition to trial eligibility as the
+preferred change direction within the simulation, using existing breaker options,
+state and events while preserving current behavior by default. The simulated
+investigation has reached an informed-direction endpoint, with the compact handoff
+in exchange 30 recording commitments and outstanding assessment. Event ordering,
+timer lifetime, isolation, restoration and compatibility remain to be settled and
+validated by subsequent design/implementation work, not resolved by this discussion.
+The earlier shared-query direction is retained as an explored alternative, not a
+parallel commitment. External health mechanisms remain outside scope. No actual
+implementation or external handoff is authorized or performed. The PostCode GUI
+sketch, capability mapping, Presentation and exact retained-answer requirements
+remain to be developed from this material. The human's eventual product role in a
+repeatable scenario still needs explicit framing.

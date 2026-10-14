@@ -17,18 +17,21 @@ authorized. The explored journey may span several eventual implementation plans.
 The first debugging-oriented sketch was reconsidered because it did not establish
 enough value for human participation in agent-mediated development. The emerging
 [human understanding and agency principle](../human-understanding-and-agency.md)
-is the central result so far. **Cockatiel issue #111 is now being exercised in an
-agent-mediated simulation; no final GUI scenario or implementation slice is selected.**
-The [ongoing dialogue](readiness-investigation-dialogue.md) preserves the human
+has guided a worked investigation of **Cockatiel issue #111, now at an
+informed-direction endpoint**. The human selected opt-in automatic breaker
+transitions to trial eligibility, preserving existing behavior by default. This
+is a simulated external-project design choice, not implementation authorization.
+The [recorded dialogue](readiness-investigation-dialogue.md) preserves the human
 questions, substantive answers, qualifications and corrections, separately from
-research observations.
+research observations. A final graphical sketch and implementation slice remain
+unselected; the next step is to derive their requirements from the trial.
 
 The working direction is assessing a concrete extension against one fixed
 repository state: how it fits existing responsibilities and commitments, and
 whether any change is needed. This avoids requiring historical analysis to
 establish a repeated-change pattern. The human agreed this direction; the specific
-extension for the final journey remains to be selected. An agent proposal can give the human something
-concrete to judge while remaining a qualified account to question. This is not a
+extension was exercised through the Cockatiel trial. An agent proposal can give
+the human something concrete to judge while remaining a qualified account to question. This is not a
 requirement that all journeys begin with a proposal or end in a decision;
 open-ended understanding and discovery remain valuable.
 
@@ -286,6 +289,40 @@ this does not assume PostCode can ingest issues or already produce a cross-subje
 account of admission, execution and recovery. Those are separate capabilities to
 assess when sketching the actual interaction.
 
+<a id="simulation-endpoint"></a>
+## Worked simulation and its endpoint
+
+The [dialogue](readiness-investigation-dialogue.md) records a human who does not
+know Cockatiel and deliberately does not follow source links. The issue supplies
+a credible lead. The investigation needed purpose and application/library
+boundaries, a concrete account of reusable policies and individual operations,
+policy composition, and plain-language recovery states. Supplying an inventory
+once did not establish lasting orientation. Some agent wording also created or
+preserved misunderstandings, which the record keeps alongside later clarifications.
+
+The human explored an advisory acceptance query, considered placing it on the
+common policy interface, then questioned why existing state inspection was
+insufficient. Examining lazy transitions and existing events revealed a narrower
+alternative with notification benefits. The human ultimately favored opt-in
+automatic transition to half-open when the delay ends, using existing state and
+events and retaining current behavior by default. Half-open would mean trial
+eligibility; a transition starts no work and does not establish successful recovery.
+
+The [endpoint and compact handoff](readiness-investigation-dialogue.md#decision-endpoint)
+identify event ordering, timer lifetime, isolation, restoration and compatibility
+as outstanding assessment. No code change, runtime validation, or external handoff
+was performed. The design choice is the human's outcome within the simulation,
+not a canonical PostCode decision or implementation instruction.
+
+This is enough to end the simulated investigation without designing the external
+change in full. It is not enough to claim a completed graphical journey. The
+answers were agent-produced from repository material and external documentation,
+not fresh PostCode results. Graphical navigation, human evidence inspection,
+exact answer redisplay and formal Corrections have not been exercised. Derive a
+shorter interaction sketch and capability mapping from the useful questions and
+information needs; do not turn the full dialogue into a mandatory sequence. Keep
+actual evidence, illustrative explanations and inferred design rationale distinct.
+
 ## Orientation: what might supply the forest?
 
 Existing organization and dependency results can situate modules within qualified
@@ -357,16 +394,20 @@ must be addressed before relying on new observations for state-specific assessme
 
 ## Next questions
 
-1. Select a scenario whose human benefit is clear: understanding, challenging an
-   assumption, choosing a commitment, assessing a responsibility boundary, or
-   directing a change. Avoid choosing solely because recorded results are handy.
-2. Establish a credible starting situation and the consequential judgment or
-   discovery the human wants to make. An agent proposal is one possible lead.
-3. Sketch concrete answers and interactions, distinguishing recorded results,
-   illustrative results and additional capability assumptions.
-4. Identify exactly what surrounding context is missing before choosing an
-   orientation capability. Test the most consequential result assumption.
-5. Use the complete journey to identify a valuable first slice and later
-   dependencies; leave plan breakdown and broader sequencing open.
-6. Decide separately whether and where to promote the emerging purpose principle
-   into application design or research material.
+1. Frame the repeatable scenario around the worked issue and its informed-direction
+   endpoint, including the person's role and reason to care about the library.
+2. Sketch concrete graphical answers and interactions from the dialogue. Preserve
+   freedom to ask, inspect and reconsider rather than reproducing every turn.
+3. Identify the orientation information actually needed and how it remains
+   available as the investigation changes direction. Do not presume a mandatory
+   project-summary or dependency-landscape capability.
+4. Map each required answer to current PostCode capabilities, Presentation work or
+   new core support; distinguish actual PostCode output from the agent simulation
+   and test the consequential capability assumptions.
+5. Specify evidence access understandable without source fluency, qualification,
+   exact retained-answer presentation, navigation and correction behavior, and
+   the selected material needed for the lightweight handoff.
+6. Identify a useful first implementation slice and later dependencies without
+   settling plan breakdown or reorganizing broader development sequencing.
+7. Decide separately whether and where remaining exploratory purpose material
+   should be promoted; the simulation itself creates no governing requirements.
