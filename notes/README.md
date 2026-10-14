@@ -16,6 +16,7 @@ Use [`drafts/`](../drafts/) for canonical-shaped proposals, an ignored root unde
 - [Architecture reconciliation impact](product-design-architecture-impact.md)
 - [Candidate capabilities](candidate-capabilities.md)
 - [Candidate UX](candidate-ux.md)
+- [Human understanding and agency](human-understanding-and-agency.md)
 - [Dependency landscape](dependency-landscape.md)
 - [Explorative capabilities](explorative-capabilities.md)
-- GUI: [design kickoff](gui/design-kickoff.md), [analysis needs](gui/analysis-needs.md), [visual language](gui/visual-language.md)
+- GUI: [first useful investigation](gui/first-useful-investigation.md), [design kickoff](gui/design-kickoff.md), [analysis needs](gui/analysis-needs.md), [visual language](gui/visual-language.md)
