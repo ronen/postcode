@@ -17,13 +17,17 @@ authorized. The explored journey may span several eventual implementation plans.
 The first debugging-oriented sketch was reconsidered because it did not establish
 enough value for human participation in agent-mediated development. The emerging
 [human understanding and agency principle](../human-understanding-and-agency.md)
-is the central result so far. **No replacement scenario has yet been selected.**
+is the central result so far. **Cockatiel issue #111 is now being exercised in an
+agent-mediated simulation; no final GUI scenario or implementation slice is selected.**
+The [ongoing dialogue](readiness-investigation-dialogue.md) preserves the human
+questions, substantive answers, qualifications and corrections, separately from
+research observations.
 
 The working direction is assessing a concrete extension against one fixed
 repository state: how it fits existing responsibilities and commitments, and
 whether any change is needed. This avoids requiring historical analysis to
 establish a repeated-change pattern. The human agreed this direction; the specific
-extension remains to be selected. An agent proposal can give the human something
+extension for the final journey remains to be selected. An agent proposal can give the human something
 concrete to judge while remaining a qualified account to question. This is not a
 requirement that all journeys begin with a proposal or end in a decision;
 open-ended understanding and discovery remain valuable.
@@ -276,7 +280,8 @@ of those needs is developed separately.
 
 Issue #111 is a promising alternative to historical replay: a real stated need,
 a mature fixed baseline, and consequential choices without reconstructing history.
-It remains a candidate for human selection. The issue supplies the starting lead;
+It is now the subject of the [trial dialogue](readiness-investigation-dialogue.md),
+while remaining a candidate for the final journey. The issue supplies the starting lead;
 this does not assume PostCode can ingest issues or already produce a cross-subject
 account of admission, execution and recovery. Those are separate capabilities to
 assess when sketching the actual interaction.
