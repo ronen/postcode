@@ -56,8 +56,8 @@ Current support is described in [STATUS](../../STATUS.md), the
 began against local main at `a34e620` on 2026-10-14. It used documentation and
 historical result artifacts, not a new live inference run or conformance audit.
 
-Build on the earlier [GUI kickoff](design-kickoff.md),
-[analysis needs](analysis-needs.md), [visual language](visual-language.md),
+Build on the earlier [GUI kickoff](../gui/design-kickoff.md),
+[analysis needs](../gui/analysis-needs.md), [visual language](../gui/visual-language.md),
 [candidate UX](../candidate-ux.md), [candidate capabilities](../candidate-capabilities.md),
 and [dependency-landscape exploration](../dependency-landscape.md). Their
 possibilities are not commitments. Earlier summary-first, persistence,

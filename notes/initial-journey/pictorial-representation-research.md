@@ -3,6 +3,9 @@
 Date: 2026-10-14
 Status: exploratory research; non-governing, not a notation or implementation decision
 
+A [references-only companion](visual-language-references.md) contains the sources
+without this exploration's interpretations or recommendations.
+
 ## Purpose
 
 Following the [preferred direction](readiness-investigation-dialogue.md#retained-account-direction)
@@ -13,7 +16,7 @@ not a reason to exclude it.
 
 This bounded first pass seeks useful precedents, not an exhaustive literature
 review or evidence that our proposed experience works. Relevance judgments below
-are our interpretation. The [existing visual-language notes](visual-language.md)
+are our interpretation. The [existing visual-language notes](../gui/visual-language.md)
 concern interface typography, claim cues and view anatomy; this research concerns
 pictures of the software being investigated. Neither silently replaces the other.
 

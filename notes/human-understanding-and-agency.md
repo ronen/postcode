@@ -117,5 +117,5 @@ for designing and assessing the experience, not claims of current capability.
   design premise and epistemological contract.
 - [Application specification](../docs/app-specification.md), especially working
   through qualified Views and shared context for external coding agents.
-- [First useful graphical investigation](gui/first-useful-investigation.md),
+- [First useful graphical investigation](initial-journey/first-useful-investigation.md),
   including the scenario reconsideration that prompted this principle.

@@ -14,7 +14,8 @@ The numbered exchanges below preserve the substantive human and assistant messag
 verbatim, including uncertainty, proposals, and later corrections. Tool activity
 and progress commentary are omitted; evidence access is described separately.
 Keep subsequent clarifications as new exchanges rather than repairing earlier
-answers. Research observations at the end are editorial interpretation, not part
+answers. Link destinations have been updated for relocation into
+`notes/initial-journey/`; substantive dialogue wording is preserved. Research observations at the end are editorial interpretation, not part
 of the simulated response or agreed product requirements.
 
 The exercise uses [Cockatiel issue #111](https://github.com/connor4312/cockatiel/issues/111)
@@ -1119,7 +1120,7 @@ For Cockatiel, my suggested small comparison would use **the same objects in thr
 
 The test would be whether those pictures help you explain the system and notice useful questions—including whether “ready for a trial” has accidentally become “healthy” in your understanding.
 
-I’ve saved the [research shortlist and implications](/Users/ronen/postcode/app-worktrees/graphical-investigation-journey/notes/gui/pictorial-representation-research.md) and linked it into our exploration notes. These are promising precedents, not yet evidence that pictures improve this journey.
+I’ve saved the [research shortlist and implications](/Users/ronen/postcode/app-worktrees/graphical-investigation-journey/notes/initial-journey/pictorial-representation-research.md) and linked it into our exploration notes. These are promising precedents, not yet evidence that pictures improve this journey.
 
 <a id="working-account-extraction"></a>
 ## Design debrief: carrying understanding into another investigation
@@ -1148,7 +1149,7 @@ second investigation has begun.
 
 Yes—those serve complementary purposes. **The dialogue preserves how we arrived here; an extracted account makes what we currently think easier to inspect and reuse.** The extraction also exposes choices about what to retain, qualify or leave unresolved.
 
-I’ve made a [first working account](/Users/ronen/postcode/app-worktrees/graphical-investigation-journey/notes/gui/cockatiel-working-account.md), covering:
+I’ve made a [first working account](/Users/ronen/postcode/app-worktrees/graphical-investigation-journey/notes/initial-journey/cockatiel-working-account.md), covering:
 
 - Objects, responsibilities, policy composition and behavior.
 - Supporting dialogue passages and the evidence cited there.
@@ -1161,6 +1162,29 @@ For example, it retains both “the breaker permits recovery trials” and the c
 This is a reviewable synthesis, not a declaration that everything in the conversation was correct or understood. Keeping the dialogue alongside it lets us challenge the extraction itself.
 
 One experimental limitation: because we both retain familiarity from the conversation, the next investigation could show whether this account is useful, but wouldn’t cleanly measure how much understanding it supplies on its own.
+
+<a id="independent-reuse-experiments"></a>
+## Design debrief: independent reuse and a separate starting packet
+
+**Retrospective process summary (not a verbatim transcript):** The human proposes
+two experiments with a clean agent: pictures based on the extracted account and
+visual-language references, and a further Cockatiel investigation starting from
+the account and returning its recorded dialogue. The assistant distinguishes a
+new explanatory storyboard from reconstruction of the original conversation,
+which the account alone cannot faithfully supply.
+
+Separate projectless chats with explicit starting packets are suggested to make
+context boundaries clear. The picture exercise would initially use only the
+account and visual references; the new investigation could inspect Cockatiel
+evidence while distinguishing inherited claims from newly checked findings.
+Previous dialogue would initially be withheld but could be requested. These are
+proposals, not created chats or completed tests. The human retains familiarity.
+
+The human requests a references-only file and suggests grouping this exploration
+under `notes/initial-journey/`. The four journey documents are moved there,
+with links updated, and a separate visual-language reference list is created.
+Earlier GUI design material remains under `notes/gui/`; the broader
+human-understanding principle remains at the notes root.
 
 <a id="research-observations"></a>
 ## Research observations
