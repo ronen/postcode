@@ -930,6 +930,33 @@ The agent-produced answers are useful material, but they haven’t demonstrated 
 
 I’d stop the Cockatiel design discussion here and use the dialogue to develop that sketch. It should preserve the useful investigation choices without requiring users to repeat our entire conversation.
 
+<a id="added-value-debrief"></a>
+## Design debrief: what does PostCode add to ordinary agent chat?
+
+This exchange takes place outside the Cockatiel simulation, after its decision endpoint.
+
+**Human:**
+
+> this was a useful exercise... and it raises a real fundamental question:  we went through this whole process, and reached a resonable decision entirely with ordinary prose chat with an agent -- what extra benefit does PostCode have to offer?
+
+**Assistant:**
+
+**We haven’t demonstrated that PostCode adds enough value over ordinary agent chat.** We demonstrated that a human and an agent with repository access can reach a reasonable design direction. That is a strong baseline, and PostCode needs to improve on it in a concrete way.
+
+I see three plausible benefits, grounded in this exercise:
+
+- **Keeping an understandable picture available.** You repeatedly needed the operating model: policy objects, composition, ownership of state, and recovery phases. A small, persistent representation might let you consult and explore those relationships without reconstructing them from successive messages. But some confusion came from my explanations; a diagram would not automatically fix that.
+- **Making the development of an answer inspectable.** We moved from a breaker query to a common interface, then reconsidered automatic transitions. Along the way I corrected omissions and ambiguous language. PostCode could help distinguish current findings, earlier accounts, proposals, your choices, and unresolved questions—and retain the support for each.
+- **Making understanding reusable.** You could return later, share a selected account with another agent, or investigate how a subsequent change affects the explanation. That requires preserving the relevant evidence and qualifications, not merely producing a fresh plausible summary. Support across program changes would be further work, not something this trial demonstrated.
+
+**None of those benefits is exclusive to a new application.** An agent can maintain notes, draw diagrams, and prepare handoffs. We already created a durable record through ordinary tools. Source links and labels also don’t make an agent’s interpretation correct, especially when you deliberately aren’t reading the source.
+
+So I would revise our next step: **test an added-value hypothesis before treating a graphical sketch as the inevitable outcome.** For example, give you a compact operating-model view and a linked decision/evidence view, using the same answers and agent. Compare that with good chat plus a concise investigation note. Assess whether it actually helps you understand a relationship, notice a changed assumption, or resume and direct the work with less effort.
+
+The foundation permits text presentations; PostCode’s contribution could lie partly in the investigation support beneath a conversation. We don’t have to make the human navigate a graphical application to justify the machinery.
+
+For this bounded investigation, chat may already be sufficient. If better prose and a small retained brief meet the need, that should constrain what we build. If a richer working surface materially improves understanding and control, we’ll have evidence for which part of PostCode earns its place.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -1113,6 +1140,14 @@ These observations are provisional design interpretation, separate from the dial
   remaining implementation assessment from the PostCode interaction-design work.
   The handoff has not been sent to another agent or external maintainer. This
   agreement is within the simulation and authorizes no implementation.
+- **The debrief challenges incremental product value.** After the simulation
+  the human observes that ordinary prose chat already reached a reasonable decision.
+  The agent explicitly treats PostCode's added value as unproven, identifies
+  orientation, inspectable answer development and reuse as hypotheses, and notes
+  that good chat plus notes/diagrams can supply some of these benefits. The proposed
+  next step is comparison against that strong baseline before assuming graphical
+  interaction is necessary. This is not a revision of governing foundation material
+  or proof that any proposed view helps.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
@@ -1131,3 +1166,10 @@ implementation or external handoff is authorized or performed. The PostCode GUI
 sketch, capability mapping, Presentation and exact retained-answer requirements
 remain to be developed from this material. The human's eventual product role in a
 repeatable scenario still needs explicit framing.
+
+The subsequent debrief challenges whether PostCode adds sufficient value beyond
+ordinary agent chat. Before assuming the next step is a GUI design, investigate
+a concrete added-value hypothesis against good chat plus a concise retained note.
+The graphical sketch and capability mapping remain potential deliverables, but
+their justification must emerge from demonstrated human benefit, not the existence
+of a projection architecture.

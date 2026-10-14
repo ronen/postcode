@@ -24,7 +24,9 @@ is a simulated external-project design choice, not implementation authorization.
 The [recorded dialogue](readiness-investigation-dialogue.md) preserves the human
 questions, substantive answers, qualifications and corrections, separately from
 research observations. A final graphical sketch and implementation slice remain
-unselected; the next step is to derive their requirements from the trial.
+unselected. The human's subsequent question about what PostCode adds to ordinary
+agent chat makes incremental value the next issue to assess, before assuming
+graphical interaction is the right response.
 
 The working direction is assessing a concrete extension against one fixed
 repository state: how it fits existing responsibilities and commitments, and
@@ -323,6 +325,36 @@ shorter interaction sketch and capability mapping from the useful questions and
 information needs; do not turn the full dialogue into a mandatory sequence. Keep
 actual evidence, illustrative explanations and inferred design rationale distinct.
 
+<a id="added-value"></a>
+## Added value over ordinary agent chat remains unproven
+
+The [post-simulation debrief](readiness-investigation-dialogue.md#added-value-debrief)
+asks a fundamental question: the human reached a reasonable design direction
+entirely through prose chat with a repository-capable agent. The exercise supports
+that baseline; it does not yet demonstrate additional value from PostCode or a GUI.
+The repository dialogue record also shows that ordinary agent tools can retain
+an investigation. Do not count persistence, diagrams or summaries as benefits
+unavailable to the baseline.
+
+Potential benefits to test are keeping an understandable operating model available,
+making findings, proposals, revisions and decisions inspectable with their support,
+and enabling selective reuse or continuation of understanding. Some orientation
+problems arose from the agent's incomplete or imprecise explanations; rendering
+them graphically would not itself correct them. Qualifications and source links
+do not independently verify an interpretation, and the human deliberately did
+not follow those links. Future continuity across program changes is a separate
+capability hypothesis, not demonstrated current support.
+
+A next experiment could compare a small operating-model and decision/evidence
+view against good chat plus a concise retained investigation note, holding the
+underlying answers and agent support comparable. Useful observations would include
+whether the human understands relationships more readily, notices a changed
+assumption, or resumes and directs work with less reconstruction. No such
+comparison has been performed or its particular views selected. If improved
+prose or a lightweight brief suffices, use that result to constrain scope.
+Text presentations are permitted by the foundation; product value need not depend
+on replacing conversation with graphical navigation.
+
 ## Orientation: what might supply the forest?
 
 Existing organization and dependency results can situate modules within qualified
@@ -394,20 +426,22 @@ must be addressed before relying on new observations for state-specific assessme
 
 ## Next questions
 
-1. Frame the repeatable scenario around the worked issue and its informed-direction
+1. Identify and test a concrete benefit PostCode could add beyond ordinary agent
+   chat with a concise retained note. Do not assume a graphical surface is needed.
+2. Frame the repeatable scenario around the worked issue and its informed-direction
    endpoint, including the person's role and reason to care about the library.
-2. Sketch concrete graphical answers and interactions from the dialogue. Preserve
-   freedom to ask, inspect and reconsider rather than reproducing every turn.
-3. Identify the orientation information actually needed and how it remains
+3. Use a minimal interaction sketch to test the selected benefit, retaining freedom
+   to ask, inspect and reconsider rather than reproducing every dialogue turn.
+4. Identify the orientation information actually needed and how it remains
    available as the investigation changes direction. Do not presume a mandatory
    project-summary or dependency-landscape capability.
-4. Map each required answer to current PostCode capabilities, Presentation work or
+5. Map each required answer to current PostCode capabilities, Presentation work or
    new core support; distinguish actual PostCode output from the agent simulation
    and test the consequential capability assumptions.
-5. Specify evidence access understandable without source fluency, qualification,
+6. Specify evidence access understandable without source fluency, qualification,
    exact retained-answer presentation, navigation and correction behavior, and
    the selected material needed for the lightweight handoff.
-6. Identify a useful first implementation slice and later dependencies without
+7. Identify a useful first implementation slice and later dependencies without
    settling plan breakdown or reorganizing broader development sequencing.
-7. Decide separately whether and where remaining exploratory purpose material
+8. Decide separately whether and where remaining exploratory purpose material
    should be promoted; the simulation itself creates no governing requirements.
