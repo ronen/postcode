@@ -821,6 +821,33 @@ So the alternatives reuse the same delay but act differently:
 
 The missing piece is therefore not the delay itself; it’s a supported way to recognize eligibility before attempting execution.
 
+<a id="breaker-transition-events"></a>
+## 27. Existing breaker transition events
+
+**Human:**
+
+> i see.  are there already events for breaker transitions?
+
+**Assistant:**
+
+**Yes. The breaker exposes these event subscriptions:**
+
+| Event | What it reports |
+|---|---|
+| `onBreak` | Attempts have been blocked because of failures or manual isolation. Includes the triggering failure or an isolation indicator. |
+| `onHalfOpen` | The breaker has entered the recovery-trial phase. |
+| `onReset` | Normal operation has resumed, following successful recovery or release from manual isolation. |
+| `onStateChange` | A state transition, reporting the new state. |
+
+They fire when the state actually changes. **Currently, merely reaching the end of the recovery delay produces no event.** The half-open events occur when an execution request initiates that transition. [Implementation](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts)
+
+That reveals another distinction between the proposals:
+
+- **An acceptance query** lets the application ask whether work would be accepted. It doesn’t spontaneously notify anyone when eligibility changes.
+- **An automatic transition**, if it emits the existing transition events, could notify the application that a recovery trial has become eligible even when no execution is attempted.
+
+So automatic transitions could offer a notification benefit as well as making the state query more informative. We would need to decide deliberately whether `onHalfOpen` should mean “a trial is now eligible” or retain its current connection to an execution-triggered transition.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -977,6 +1004,13 @@ These observations are provisional design interpretation, separate from the dial
   does not schedule a recovery-transition callback. A configured delay is not
   the same mechanism as a timer that wakes to mutate state. This clarification
   preserves the prior wording rather than silently editing the dialogue.
+- **Existing transition events reveal a separate notification benefit.**
+  Exchange 27 verifies the four breaker transition subscriptions and their emit
+  sites, including manual isolation/release. Expiry alone emits nothing in the
+  inspected code. Automatic state changes could notify clients of trial
+  eligibility without a query or attempted execution, a different capability
+  from advisory inspection. That benefit is a design inference, not a newly
+  established requester requirement or selected implementation.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
