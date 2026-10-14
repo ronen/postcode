@@ -479,10 +479,17 @@ model, earlier retained answers remain unchanged; later accounts and correction
 relations preserve revision history. This hypothesis does not introduce a new
 canonical object, global knowledge graph, storage schema or cross-session promise.
 
-The picture-book option might explore recurring views of this evolving account
-instead of unrelated images. A later comparison could separate ongoing-chat
-continuity, explicit retained knowledge and pictorial representation, rather than
-assuming a single full-application experiment is necessary to explore their value.
+The human explicitly endorses **pictures as views of a retained revisable
+account** as the preferred direction for the picture-book exploration. Use a
+shared developing account to support overview, focused relationship and temporal
+pictures while preserving the identity and qualification of their underlying
+claims. Extending or correcting understanding produces a later account; earlier
+accounts and pictures remain recoverable. Do not silently enrich earlier pages
+with later discoveries. This agreement selects an exploratory representation
+direction, not a canonical data model, persistence promise or GUI implementation.
+A later comparison could separate ongoing-chat continuity, explicit retained
+knowledge and pictorial representation, rather than assuming a single
+full-application experiment is necessary to explore their value.
 
 ## Orientation: what might supply the forest?
 

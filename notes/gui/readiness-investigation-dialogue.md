@@ -1075,6 +1075,23 @@ That connects the picture book to something more substantial: **the pictures cou
 
 A useful comparison would therefore be ongoing chat versus fresh conversations supported by that explicit account. We could explore the value of continuity, externalization, and pictures separately, rather than assuming they must all arrive together as a complete application.
 
+<a id="retained-account-direction"></a>
+## Design debrief: preferred direction for the pictures
+
+**Human:**
+
+> yes, pictures as views of a retained revisable account sounds very good.
+
+**Assistant:**
+
+Then that’s the direction to carry into the picture-book exploration: **one developing account, shown through different pictures.**
+
+The same breaker could appear in an overview of the application, a picture of policy composition, and a recovery timeline. Each view reveals a different aspect without inventing a separate explanation.
+
+As understanding develops, we extend or correct the account and make the change visible. Earlier accounts and their pictures remain recoverable, rather than silently acquiring the new meaning.
+
+That gives the “forest” continuity while we investigate individual trees—and gives both you and subsequent agents something explicit to revisit and question. I’ve recorded this as the preferred exploration direction.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -1344,3 +1361,8 @@ through either ongoing chat or fresh conversations supplied with that account.
 These remain hypotheses and possible experiments; no fresh conversation, new
 model schema, persistence facility or infrastructure integration is authorized
 or performed by recording them.
+
+The human explicitly endorses pictures as views of a retained revisable account.
+This is now the preferred representation direction for the proposed picture-book
+exploration. It does not authorize GUI implementation, a new canonical data model,
+or cross-session persistence, and does not itself select when to run the exercise.
