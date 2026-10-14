@@ -25,15 +25,6 @@ PostCode gives the human a working surface for exploring the software, questioni
 accounts of it, considering alternatives, and judging proposed changes. Its value
 lies in making that participation informed and effective.
 
-When a problem calls for debugging, the expected pattern is for the human to ask
-an agent to investigate and report its findings, evidence, uncertainty, and any
-difficulty making progress. PostCode should help the human understand and question
-that account, resolve choices about intended behavior or acceptable tradeoffs,
-and direct further work. An agent's difficulty is a reason to make the obstacle
-intelligible, not an automatic handoff of implementation-level diagnosis to the
-human. Agent reports remain attributed accounts whose conclusions can be examined
-and challenged.
-
 The appropriate level of detail follows the human's information need. A broad
 account may help establish context; a precise implementation detail may determine
 an important commitment. People should be able to move between them while
@@ -70,6 +61,20 @@ existing coupling with a clearer understanding of its purpose, or requesting mor
 evidence. The example does not require the human to trace every dependency or
 perform the refactoring, and it does not assume PostCode already supplies the
 necessary history, synthesis, or alternative-design analysis.
+
+## Example: investigating a reported problem
+
+> Investigate this problem and report what you find, what remains uncertain, and
+> anything preventing you from making progress.
+
+When a problem calls for debugging, the expected pattern is for the human to ask
+an agent to investigate and report its findings, evidence, uncertainty, and any
+difficulty making progress. PostCode should help the human understand and question
+that account, resolve choices about intended behavior or acceptable tradeoffs,
+and direct further work. An agent's difficulty is a reason to make the obstacle
+intelligible, not an automatic handoff of implementation-level diagnosis to the
+human. Agent reports remain attributed accounts whose conclusions can be examined
+and challenged.
 
 ## Implications to explore
 
