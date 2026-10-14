@@ -535,6 +535,35 @@ So there are two reasonable application arrangements:
 
 Your question therefore supplies a concrete reason to consider combined-policy support: **keeping callers independent of the particular protections being used.** Direct access is possible; whether it is the right interface for the caller is a design choice.
 
+<a id="shared-interface-direction"></a>
+## 17. Choosing the shared interface, subject to a workable contract
+
+**Human:**
+
+> ok, since "is acceptable" has well-defined meaning for bulkhead, for breaker, and for wrapped in either order, it seems to make sense to put  "is acceptable" on the generic interface; as long as the appropriate return type can be created/queried reasonably
+
+**Assistant:**
+
+**Yes—the shared interface now has a concrete purpose:** callers can ask about acceptance without knowing which protections were assembled. I’d take that as our design direction, subject to a workable result contract.
+
+There’s one qualification to “wrapped in either order” that my earlier answers haven’t made explicit enough. Suppose the bulkhead can queue work, while the breaker is still in its recovery delay. The combined execution could queue the work and reach the breaker after that delay expires. Checking both components now would nevertheless find the breaker blocking.
+
+So I’d define the combined query conservatively:
+
+> Do all the component policies’ current acceptance conditions permit this work?
+
+For the breaker/bulkhead pair, that can be evaluated in either order. But a negative answer would **not prove that submitting through the combination would necessarily fail**; waiting could change the conditions. This is more precise than promising to predict the combined execution’s outcome.
+
+The result could remain straightforward:
+
+- **An acceptance answer** that ordinary callers can query directly.
+- **Reasons for a negative answer**, identifying the relevant policy and carrying its useful details—such as remaining capacity or breaker state.
+- **For a combination, the component explanations**, so callers can inspect the cause without finding and querying those policy objects themselves.
+
+The answer and details should describe the same observation. We don’t need one universal set of fields that makes queue capacity and failure history look interchangeable.
+
+Before settling the interface, we should check its meaning for the remaining policy types and how it affects application-defined policies. That’s a bounded contract check for the chosen direction, rather than a reason to design additional readiness features.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -622,16 +651,27 @@ These observations are provisional design interpretation, separate from the dial
   while the pinned interface and implementation name it `wrapped`. The response
   relies on the implementation for component access; the naming discrepancy is
   recorded here without modifying the external project.
+- **A shared interface is now the human-directed design direction.** In exchange
+  17 the human favors a generic acceptance query, conditional on a reasonable return
+  type. The agent supports that direction but qualifies an earlier assumption about
+  composition: all component checks passing now is a conservative snapshot test,
+  not a prediction of sequential execution after waiting. The proposed combined
+  contract and result structure still need agreement and validation, including
+  remaining and application-defined policy types. This is a simulated Cockatiel
+  design choice, not implementation authorization or a PostCode architecture decision.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
   or new core support remains outstanding.
 
-The current trial direction is a narrowly scoped advisory circuit-breaker readiness
-query. Broader readiness mechanisms are deferred pending demonstrated demand.
-The human has requested comparison with bulkhead readiness to assess possible
-unification; a shared interface remains undecided. Immediate availability versus
-acceptance for possible waiting is now an explicit open choice. Its exact
-meaning under concurrency, recovery sampling, composition, and delay still needs
-validation. No API, general readiness facility, or implementation slice is selected.
-The human's eventual product role and the journey's meaningful endpoint remain open.
+The current trial direction is an advisory acceptance query on the shared policy
+interface, motivated by breaker, bulkhead and combined-policy use. The human favors
+this direction subject to a reasonable result type. Immediate start is no longer
+the leading question; acceptance may include waiting. The agent has proposed a
+conservative all-components-currently-permit meaning for composition, explicitly
+weaker than predicting actual execution after queueing. That qualification has not
+yet been answered by the human. Exact result shape, behavior across policy types,
+compatibility, concurrency and recovery details remain to be settled and validated.
+External health mechanisms remain outside the chosen direction. No implementation
+is authorized or GUI implementation slice selected. The human's eventual product
+role and the journey's meaningful endpoint remain open.
