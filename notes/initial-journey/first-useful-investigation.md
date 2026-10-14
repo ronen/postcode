@@ -515,8 +515,11 @@ full-application experiment is necessary to explore their value.
 
 The human has now returned four pictures produced from the extracted account,
 with source mappings and a production report. The [first review](pictures-result-review.md)
-finds meaningful transfer and promising visual comparisons, while noting heavy
-reliance on prose and no human-comprehension assessment yet. The producing agent
+initially finds meaningful transfer and promising visual comparisons. Subsequent
+[human feedback](pictures-result-review.md#human-assessment) reports excessive prose,
+no new understanding at this point, and three representation or wording problems.
+The half-open wording is inherited from the account; the bulkhead WAIT arrow
+introduces a visual problem despite a clearer account and caption. The producing agent
 reports that broad PostCode memory was visible, though the original dialogue and
 additional Cockatiel evidence were not retrieved. This qualifies the intended
 clean-agent setup. The output does not yet test revision or use during an ongoing

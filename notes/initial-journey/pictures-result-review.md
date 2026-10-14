@@ -1,7 +1,7 @@
 # First review of the returned Cockatiel pictures
 
 Date: 2026-10-14
-Status: initial agent assessment; human assessment pending; non-governing
+Status: initial agent assessment and subsequent human feedback; non-governing
 
 ## Received material and review scope
 
@@ -82,11 +82,61 @@ earlier pictures, or using the pictures during an ongoing investigation.
 Recognizable symbols across pages are a useful start, not proof of those
 capabilities. No first GUI journey or implementation slice is selected by the result.
 
-## Next discussion
+<a id="human-assessment"></a>
+## Human assessment and follow-up diagnosis
 
-Obtain the human's impressions before redesigning: which pictures make a
-relationship or behavior easier to understand, which remain prose to read, and
-whether any could have helped during the original investigation. Retrospective
+The human's first response:
+
+> My thoughts:   I agree it's still very wordy.   It didn't show me anything i didn't know at this point.  Overall it seems to demonstarte the the retained account contained useful things.  there are some issues that it's hard to know if they're due to the account or the image making:  the Bulkhead Wait illustration on page 2 is wrong;  Half-open is labelled as "Allows limited recovery work" which isn't quite right; the reported application loop on page 4 seems just jumbled
+
+This qualifies the positive initial assessment above. The human recognizes useful
+content transfer but reports no new understanding from the pictures at this point.
+That does not establish whether a newcomer, or the same human earlier in the
+investigation, would benefit. The first agent review missed the misleading WAIT
+arrow; its broad statement that the views consistently preserve the distinctions
+was too confident.
+
+The following diagnoses are the reviewing agent's interpretation of the reported
+issues, not yet confirmation of precisely what the human intended:
+
+- **Bulkhead WAIT:** the incoming arrow points toward the occupied execution slot,
+  while the new operation is shown in the queue. The account explicitly says
+  that work waits when execution capacity is full and queue space remains; the
+  caption agrees. The picture's route fails to convey that rule. This is an
+  identifiable representation problem even without new Cockatiel verification.
+  A route into the queue, with any later movement into execution shown separately,
+  would better express the supplied account.
+- **Half-open wording:** “allows limited recovery work” appears in the account
+  itself and was reused as the picture's label. One ambiguity is that “recovery
+  work” sounds like a special kind of repair or maintenance work. The fuller
+  account and original dialogue describe application operations used as trials,
+  with other calls potentially waiting for their outcome. Candidate clearer
+  wording is “permits limited trial executions of ordinary application work;
+  other calls may wait.” This is a candidate clarification to the account as
+  well as the picture, not proof of a new finding about the implementation.
+- **Application loop:** the account contains the causal ingredients, but the
+  graphic combines state inspection, an application choice, absence of execution,
+  and persistence of breaker state into a loop without making those different
+  roles clear. “No call to trigger recovery” also compresses the more precise
+  “no execution to trigger the transition into trial eligibility.” The loop could
+  be read as an actual polling/control-flow cycle rather than a dependency trap
+  across incoming requests. That is a representation/wording diagnosis; the
+  human's specific reason for calling it jumbled remains open.
+
+The original account and received pictures stay unchanged as the experiment's
+inputs and outputs. A later revision should make the account clarification and
+picture repairs separately identifiable.
+
+The useful distinction now is between transfer of content, fidelity of the
+representation, and added value for human understanding. This run supports the
+first in a limited way, exposes problems in the second, and has not demonstrated
+the third for this already-informed human. A picture can repeat a source's
+ambiguity or introduce its own; textual provenance and correct captions alone
+do not establish visual fidelity.
+
+## Possible continuation
+
+Clarify the human's intended diagnoses before redesigning. Retrospective
 impressions from an already-informed reader cannot establish newcomer comprehension,
 but can identify a worthwhile live-use hypothesis.
 
