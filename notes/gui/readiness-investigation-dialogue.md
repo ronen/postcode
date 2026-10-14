@@ -660,6 +660,33 @@ Our proposed query would answer **whether a submission is acceptable under the c
 
 The requester already built a workaround that tracks timing outside the breaker. The addition would put that decision inside the breaker, where its actual timing rules are known, so applications don’t have to duplicate them. [Original issue](https://github.com/connor4312/cockatiel/issues/111)
 
+<a id="lazy-transition-rationale"></a>
+## 21. Questioning the reason for the delayed state transition
+
+**Human:**
+
+> is there a goo reason the breaker stays open until the next atttempt?
+
+**Assistant:**
+
+**There are reasonable advantages to that design, but keeping the publicly reported state “open” isn’t essential to how a circuit breaker works.**
+
+Two things need separating:
+
+- **The delay has expired:** another trial is permitted.
+- **The dependency has recovered:** trial results provide evidence for allowing normal traffic again.
+
+Elapsed time establishes only the first. Cockatiel ties entry into its half-open recovery phase to an actual execution attempt. That keeps recovery activity driven by incoming work and avoids scheduling a background timer just to change each idle breaker’s state. These are advantages inferred from its implementation; I haven’t found an explicit statement of the author’s rationale in the material checked. [Cockatiel implementation](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts)
+
+**But half-open needn’t mean a trial has already started.** It can mean a trial is now permitted. In fact, the Polly v7 documentation that Cockatiel’s README points to says its breaker can transition to half-open when the state is queried after the delay. That also avoids an automatic timer, while making state inspection reflect eligibility. [Polly’s documented behavior](https://github.com/App-vNext/Polly/wiki/Circuit-Breaker#how-the-polly-circuitbreaker-works)
+
+So we have a genuine choice:
+
+- **Preserve Cockatiel’s existing state semantics and add the acceptance query.** Inspection stays separate from state transitions, and the query can cover bulkhead capacity too.
+- **Change the existing state query to reflect recovery eligibility.** This could address the original issue more narrowly, but changes what reading state means and potentially when transition notifications occur.
+
+Our proposed query is defensible, but it isn’t the only solution forced by the current behavior. Your question exposes a tradeoff we should compare before settling the change.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -779,6 +806,16 @@ These observations are provisional design interpretation, separate from the dial
   This is an explanation grounded in inspected code, not a runtime trace. The
   human needed this distinction despite earlier descriptions; retain the question
   and response as evidence about the explanation's progression.
+- **A rationale question reopened the solution comparison.** Exchange 21 checked
+  Cockatiel's README and relevant history subjects, then read its linked Polly v7
+  circuit-breaker documentation. That external documentation describes transition
+  on state inspection after the delay. It is comparative evidence, not evidence
+  of Cockatiel behavior or current Polly v8 semantics. The agent distinguishes
+  inferred benefits of demand-driven transitions from documented author intent,
+  and separates trial eligibility from actual recovery. Changing existing state
+  inspection is now an explicit narrower alternative to the additional query;
+  its compatibility and event implications are unassessed. No direction has been
+  reversed by the human yet.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
@@ -792,6 +829,9 @@ conservative all-components-currently-permit meaning for composition, explicitly
 weaker than predicting actual execution after queueing. That qualification has not
 yet been answered by the human. Exact result shape, behavior across policy types,
 compatibility, concurrency and recovery details remain to be settled and validated.
-External health mechanisms remain outside the chosen direction. No implementation
+Exchange 21 adds a narrower alternative: update existing breaker-state inspection
+to reflect trial eligibility, following a documented comparison with Polly v7.
+The human has not yet responded to that alternative; the shared-interface direction
+has not been revoked. External health mechanisms remain outside the chosen direction. No implementation
 is authorized or GUI implementation slice selected. The human's eventual product
 role and the journey's meaningful endpoint remain open.
