@@ -47,14 +47,7 @@ Follow the [planning workflow](planning.md) for plan contents, provisional worki
 - Use the applicable [engineering guidelines](engineering-guidelines.md) when exercising implementation judgment, and explain material departures.
 - Follow the applicable [implementation conventions](../docs/implementation-conventions.md).
 - Prefer the smallest coherent change that advances the authorized goal.
-- Preserve established boundaries and dependency direction. If they need to change, make that change explicit and document the decision when consequential.
 - Treat documentation as part of the implementation. If a change makes an existing document materially false or incomplete, update it or explicitly record the omission before completing the work. Follow the applicable [documentation requirements](#documentation).
-- Add or update automated tests with behavior where practical.
-- Use fixtures with known expected results for analysis behavior.
-- Validate data at boundaries rather than relying solely on static types or convention.
-- Do not introduce dependencies, generated artifacts, or new repository-wide tooling without making their purpose and lifecycle clear.
-- Avoid speculative abstractions and empty structural scaffolding. Create directories and extension points when they acquire a concrete use.
-- Keep outputs deterministic where practical, particularly schemas, projections, snapshots, and generated agent context.
 
 <a id="unexpected-findings"></a>
 ## 5. Unexpected Findings

@@ -12,7 +12,7 @@ This document may be changed only through separate human-directed process mainte
 ## Repository organization
 
 - Prefer logical internal boundaries under `src/lib/` until there is evidence that a component needs an independently versioned package boundary.
-- Create directories when they receive meaningful content; do not use placeholder files to materialize a speculative structure.
+- Create directories when they receive meaningful content and extension points when they acquire a concrete use; do not use placeholder files to materialize a speculative structure.
 
 <a id="dependencies-and-boundaries"></a>
 ## Dependencies and boundaries
@@ -22,9 +22,11 @@ This document may be changed only through separate human-directed process mainte
 - Expose a component through its intended public boundary; do not expose internal helpers or coordination types merely for consumer convenience.
 - Keep transformations that require no external state independent of external I/O when those concerns are conceptually distinct.
 - Translate external data and failure models at the boundary when they should not become part of domain behavior. Preserve distinctions and information callers need to interpret results or respond appropriately to failures.
+- Validate data at boundaries according to the likelihood and consequences of contract violations and the cost of validation. Rely on established internal contracts when that trust is justified, avoiding redundant checks. Static types alone do not establish that external data satisfies a contract.
 - Preserve language-specific semantics rather than forcing them into a falsely universal model.
 - Before adding helpers or policy rules, look for suitable implementations both in the codebase and in libraries already used by the project. Prefer using them when their behavior fits and doing so respects the intended dependency boundaries. Share logic that expresses the same responsibility and should change together, especially classifications and validation rules. Establish semantic equivalence before consolidating similar code; preserve meaningful differences in behavior and avoid introducing inappropriate coupling merely to remove duplication.
 - Before implementing substantial generic functionality, check whether a suitable established library already exists. Prefer using one when it meaningfully reduces implementation, testing, or maintenance burden. Assess its fitness, maturity, maintenance posture, license, and integration cost. Avoid adding new dependencies solely for trivial functionality, and keep external assumptions from unnecessarily shaping the application’s core concepts.
+- Do not introduce dependencies, generated artifacts, or new repository-wide tooling without making their purpose and lifecycle clear.
 
 <a id="state-and-resource-lifetimes"></a>
 ## State and resource lifetimes
@@ -40,15 +42,16 @@ This document may be changed only through separate human-directed process mainte
 <a id="tests-and-fixtures"></a>
 ## Tests and fixtures
 
-- Focus tests on public behavior and important boundaries, choosing cases that distinguish correct behavior from plausible defects. Derive expected outcomes from requirements or independently understood examples rather than reproducing the implementation's assumptions. Test internal details when they provide useful coverage beyond those behavior checks.
+- When adding or changing behavior, add or update automated tests in proportion to the risk and scope of the change. Focus tests on public behavior and important boundaries, choosing cases that distinguish correct behavior from plausible defects. Derive expected outcomes from requirements or independently understood examples rather than reproducing the implementation's assumptions. Test internal details when they provide useful coverage beyond those behavior checks.
 - Prefer representative data and real objects over mocks when practical. Use controlled substitutes when real collaborators make important failure states difficult to exercise or introduce unnecessary nondeterminism or cost.
 - Before creating fixture or test infrastructure, look for existing assets that express the same concept.
 - Identify sources of nondeterminism, such as clocks, randomness, ordering, and concurrency. Control them in tests where needed for reproducible checks, while preserving necessary production behavior and testing any guarantees about that behavior.
 
-<a id="output-safety"></a>
-## Output safety
+<a id="outputs"></a>
+## Outputs
 
 - Treat repository-derived text, configuration values, invocation input, and other externally supplied strings as untrusted at terminal-output boundaries. Render terminal controls visibly or otherwise neutralize their effects without changing the underlying stored values.
+- Keep outputs deterministic where practical, particularly schemas, projections, snapshots, and generated agent context.
 
 <a id="implementation-anomalies"></a>
 ## Implementation anomalies
