@@ -12,6 +12,8 @@ Use [`drafts/`](../drafts/) for canonical-shaped proposals, an ignored root unde
 
 ## Current notes
 
+- [Upcoming work](upcoming-work.md)
+- [Architecture reconciliation impact](product-design-architecture-impact.md)
 - [Lens representation and subject selection proposal](lens-representation-proposal.md)
 - [Candidate capabilities](candidate-capabilities.md)
 - [Candidate UX](candidate-ux.md)

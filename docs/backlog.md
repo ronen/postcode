@@ -117,6 +117,15 @@ Area: external-agent context and reference lifecycle
 Choose a first useful exchange that lets an external coding agent identify the focused/open Views and their qualified information without translating them manually into source coordinates. Distinguish exact retained Projection references from repeatable requests, disclose their lifetime and captured basis, and preserve source mappings, provenance, and relevant derivation. Assess current interfaces before selecting a transport or artifact format. Define which Workspaces/windows are included, how active focus is selected, and how the human can inspect that scope; a most-recently-active-window policy is a candidate, not an inherited requirement.
 
 If using a generated artifact, specify publication, revision, and evidence-exclusion behavior. Do not require richer Workspace purpose/context machinery or persistence just to share existing Views and focus. No particular agent host, file format, or implementation milestone is selected by this candidate.
+
+Include the feedback path when PostCode output returns through repository comments,
+documentation, commit messages, or agent contributions. Preserve supplied origin
+and provenance through the exchange and subsequent analysis, keeping recorded
+assertions distinct from established truth. Material derived from PostCode output
+does not independently corroborate its originating conclusions. Origin may be
+unavailable; this does not require detecting unknown derivation or preventing
+useful artifact sharing.
+
 <a id="assess-and-preserve-navigation-origin-lineage"></a>
 ## Assess and preserve navigation-origin lineage
 
@@ -493,6 +502,16 @@ Use these captures as further qualitative evidence for the same journey review,
 without implying measured misunderstanding or authorizing current-slice redesign.
 
 For graphical-interface planning, use the [simple Workspace model](app-specification.md#workspaces-and-navigation): a collection and arrangement of Views, displayable in a tab or window. Decide bounded placement, focus, navigation/history, and transient inspection behavior using actual supported core capabilities. Keep exact retained-answer presentation and qualification visible. Shared Workspace purpose/defaults, specialized Workspace kinds, persistence, and a particular initial View are separate future choices, not prerequisites for this review. Opening a repository or subject is an explicit initial-View request when the action communicates that behavior; identify its scope and applicable resource constraints. Autonomous orientation outside that request requires an authorized resource policy before execution.
+
+Reconcile the existing GUI design-kickoff and analysis-needs notes with those
+application boundaries before using them to guide new work. Revisit linked
+Workspaces, saved-workspace/return journeys, summary-first assumptions, agent
+focus across windows, and the N14 persistence and N18 agent-context requirements.
+Use the simple Workspace and existing investigation context as the starting
+point; persistence, a particular initial View, and cross-window focus selection
+remain design choices. Opening a subject requests its initial View when that
+behavior is communicated. Update stale foundation links as part of this
+reconciliation.
 
 Decide how visible Lens terminology and identifiers should be to users, and how an interface offers the applicable questions for a selected subject, captions answers and exposes meaningful parameters. The [Lens request-model plan](plans/lens-request-model.md) supplies explicit applicability and question definitions; it does not choose GUI controls or require the interface to use the word “Lens”. Keep these interaction choices in the broader UX review.
 
