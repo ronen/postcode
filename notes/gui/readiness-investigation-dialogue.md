@@ -26,6 +26,8 @@ are pinned. Earlier source inspection supported the opening explanation; later
 responses used the issue and README, including policy and bulkhead sections.
 Exchange 8 also inspected the pinned bulkhead and circuit-breaker implementations
 to compare actual admission paths, including waiting during recovery sampling.
+Exchange 9 inspected the policy interface, factories and composition implementation,
+alongside the documented execution, cancellation and composition model.
 This is static inspection and documentation-based interpretation. No runtime
 reproduction or fresh PostCode analysis has been performed.
 
@@ -313,6 +315,49 @@ That leaves room for growth without requiring a general framework. It also expos
 
 *Basis: documentation and static inspection at our fixed revision; these paths have not been exercised in a runtime test.*
 
+<a id="operating-model"></a>
+## 9. Understanding the operating model without opening source links
+
+**Human:**
+
+> [aside: you're providing me with links to documentation/implementation but i'm deliberately not following them].  I don't really have full a picture in my head of the overall theory of operation... might be good to get a clear statement of it.  also the overall nature of the API, is it a collection of functions to queue things, or does the client create instances of jobs with their own manageable state, etc?
+
+**Assistant:**
+
+The explanation should stand on its own without you following those links. I’ve described individual mechanisms before making their shared operating model clear.
+
+**Cockatiel’s API centers on reusable policy instances that govern calls to application-supplied operations.** The application creates these policies, configures their rules, and chooses which work passes through them.
+
+For example, an application might create one circuit breaker for calls to its payment service and one bulkhead allowing at most 12 such calls at a time. These instances can serve many successive or overlapping calls.
+
+The basic interaction is:
+
+1. **Create and configure a policy.** For a breaker, specify which failures matter, when to stop allowing attempts, and when to try recovery. For a bulkhead, specify concurrent-work and queue limits.
+2. **Supply an operation to execute.** Conceptually: “Run this payment-service call under these rules.” The application supplies an action Cockatiel can invoke; Cockatiel doesn’t need to understand payments or jobs.
+3. **The policy controls execution.** Depending on the policy, it may run the action, delay it, reject it without running it, or run it again after failure.
+4. **Receive the eventual outcome.** The call returns an asynchronous result—a promise—which eventually delivers a value or an error. That is how the application follows the outcome; it doesn’t receive a Cockatiel job record with a separate management lifecycle. [Policy API](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/Policy.ts)
+
+**There is state, but it has different owners:**
+
+| State | Where it belongs |
+|---|---|
+| Recent failures and recovery progress | The shared circuit-breaker instance |
+| Running-operation count and waiting operations | The shared bulkhead instance |
+| Progress of one execution, such as its retry attempt | That individual execution |
+| Business job identity, status, acknowledgment, and stored results | The application |
+
+The application decides which calls share a policy instance. Sharing one breaker makes those calls contribute to the same failure history; sharing one bulkhead makes them compete for the same capacity. Cockatiel doesn’t automatically group calls by the service they contact.
+
+**Queueing is one policy’s behavior within this model.** If a bulkhead is full but has queue space, it retains the supplied action in memory until it can run. The caller’s result remains pending. This is an in-process waiting queue, not a durable background-job service. The core execution API also accepts cancellation signals; stopping work already underway can depend on the operation cooperating.
+
+Policies can be combined around the same operation. For example, a retry policy can call through a breaker on each attempt. Their order matters because each outer policy controls calls into the next one. [Documented composition](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/readme.md#wrappolicies)
+
+For our issue, the application owns the sequence **accept request → prepare job → launch background work → report its outcome**. It chooses where Cockatiel protects execution—perhaps around a dependency call within that work. The proposed readiness query would let it consult the **same policy instance earlier**, before paying the preparation cost.
+
+That also clarifies the possible unification: breaker readiness and bulkhead capacity are both questions about a reusable policy’s current admission conditions. Neither is a question about the state of a job object.
+
+*This account is grounded in the documented API and inspected implementation at our fixed revision. The payment example is illustrative; no runtime verification has been performed.*
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -356,6 +401,16 @@ These observations are provisional design interpretation, separate from the dial
   shared vocabulary, not an implemented interface or exhaustive verified contract.
   The human asked to examine unification after choosing conservative scope; this
   is continued investigation, not approval of a common framework.
+- **Source links were deliberately not followed.** In exchange 9 the human
+  explicitly reported relying on the explanations. Despite the earlier facility
+  list and responsibility table, they still lacked an overall operating model:
+  what is created, what is shared across calls, what state belongs to a job, and
+  how the API relates to execution. The agent supplied a model organized around
+  reusable policy instances, individual executions and application-owned jobs.
+  Whether this account resolves the need is not yet known. This strengthens the
+  need for intelligible explanations; links alone are not demonstrated evidence
+  access for a human who cannot or does not read implementation material. It does
+  not by itself select a project-summary capability.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
