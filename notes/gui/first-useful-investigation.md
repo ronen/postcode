@@ -188,6 +188,49 @@ Restoring and verifying the pinned repository is a prerequisite to implementatio
 inspection or live PostCode assessment. No code execution, runtime verification,
 or fresh hosted investigation was performed.
 
+## Selecting an exercise from an actual policy addition
+
+A further candidate method is to find a real policy addition in repository history
+and investigate the extension from the commit before that work. History is used
+by the designers to select the exercise; the PostCode journey still investigates
+one fixed program state and needs no historical-analysis capability.
+
+A read-only Git inspection on 2026-10-14 identified these Cockatiel additions:
+
+| Addition | Commit | Pre-addition baseline | Scope observed in commit metadata and file changes |
+| --- | --- | --- | --- |
+| Bulkhead isolation | [351b094](https://github.com/connor4312/cockatiel/commit/351b094fc042e15a94029b148054d3ce210522ea), 2019-11-19 | `2fa5d8508d7d5ff9310102a27b984ec6705b123d` | New bulkhead implementation and tests, Policy addition, small helper and error, documentation; seven changed files. |
+| Timeouts | [ad38b55](https://github.com/connor4312/cockatiel/commit/ad38b5580d69b623638e9e1fa24d367704b55812), 2019-11-19 | `351b094fc042e15a94029b148054d3ce210522ea` | Introduces timeout and cancellation facilities and expands events; nine changed files. |
+| Fallback | [ee47684](https://github.com/connor4312/cockatiel/commit/ee4768448263e8dcc0a0039f7d076084cf0e5f68), 2019-11-21 | `443d055e79eba641b726ae49bd466c109d6a61d0` | Adds fallback together with policy composition and changes several existing policies; fourteen changed files. |
+
+Bulkhead is the most bounded candidate in this initial comparison. A possible
+human-facing brief is: protect a downstream service by limiting how much work can
+be in progress at once; decide what callers should experience when capacity is
+full and how that protection fits existing retry and failure policies. Queueing,
+rejection, fairness, and retry interaction are choices to investigate, not answers
+inherited from the eventual patch.
+
+The pre-bulkhead tree and README were inspected. They contain retry and circuit
+breaker facilities and list bulkhead isolation as unfinished. This supplies a
+credible recorded motivation, although the introductory description already names
+some unfinished features; documentation must retain asserted status. The baseline
+contains 31 TypeScript files including tests and uses TypeScript 3.7-era tooling.
+No build, runtime test, or PostCode analysis of this baseline has been performed.
+Compatibility with the current analyzer needs assessment.
+
+All three additions occur in the project's first week. Small early baselines may
+be useful for a tractable first exercise but insufficient to test orientation in
+a mature system. Timeout is a broader alternative if introducing cancellation
+provides more useful design decisions. No candidate is selected yet.
+
+Prepare the brief in behavioral terms and freeze the baseline before assessment.
+Keep later implementation, tests, and documentation outside the investigated
+inputs. The historical result can later supply a comparison or additional cases,
+but is not the uniquely correct design or the acceptance oracle. Initial selection
+has inspected commit messages, changed-file summaries and pre-addition material;
+it is not a blind evaluation. A later assessment should distinguish designer
+knowledge from information actually supplied to the human and Investigator.
+
 ## Orientation: what might supply the forest?
 
 Existing organization and dependency results can situate modules within qualified
