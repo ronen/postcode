@@ -93,38 +93,23 @@ problem remains unresolved. Agent reports remain attributed accounts whose
 conclusions can be examined and challenged; a readable explanation alone does not
 establish that its conclusion is correct.
 
-## Implications to explore
+## Design implications
 
-"Higher level" is an imperfect description of this purpose. A small behavioral
-distinction can require human judgment, while a large refactoring may be delegated.
-Scale and abstraction do not determine the value of human participation.
+Scale and abstraction do not determine the value of human participation. A small
+behavioral distinction can require human judgment, while a large refactoring may
+be delegated.
 
-A graphical journey that asks the human to repeat an agent's debugging procedure
-may demonstrate PostCode's machinery without establishing why the human would use
-it. Access to detailed evidence remains valuable for questioning an explanation
-or informing a consequential choice, but exposing raw implementation material is
-not sufficient evidence access for a person who cannot interpret it. The experience
-needs intelligible accounts of what the evidence establishes, what it leaves open,
-and how a conclusion could be checked or challenged. These accounts preserve the
-underlying evidence and its qualification; they do not strengthen its guarantees.
+Assess a proposed journey through three questions:
 
-Source access remains available where source exists and is useful to a person or
-agent. It cannot be the fallback on which the human's understanding or ability to
-guide development depends. Direct human investigation through PostCode remains
-part of the purpose, independently of implementation-language expertise.
+- What understanding, choice, or direction does the human gain from participating?
+- Can they gain it without reading the implementation or taking over its debugging?
+- Can they understand what supports the account, what remains uncertain, and how
+  to challenge it or request further investigation?
 
-A useful test of a proposed journey is: **Would it still let the human understand
-and guide the work if they could not read the implementation or take over its
-debugging?** This is a design premise to explore, not a claim that current PostCode
-capabilities already satisfy it or support implementations without source code.
-
-Use this question when selecting a journey: **What does the human gain from this
-experience that makes their participation worthwhile?** Do not require every
-exploration to end in a decision, a change request, or an agent handoff.
-
-The principle may merit incorporation into application design or the research
-project. Its destination and any governing adoption remain for explicit human
-direction.
+Evidence access needs intelligible accounts of what the evidence establishes and
+leaves open, preserving its qualification. Source access can supplement those
+accounts where useful, but cannot be their necessary fallback. These are criteria
+for designing and assessing the experience, not claims of current capability.
 
 ## Related material
 
