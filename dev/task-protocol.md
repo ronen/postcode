@@ -24,11 +24,11 @@ A request with an independently meaningful goal, or one made after the current t
 <a id="task-branch"></a>
 ### Task branch
 
-Implement each task in its own feature branch and worktree unless the human explicitly directs otherwise. For a new task, select a suitably named branch using `codex/<task-name>` and start from local `main`, unless the approved plan or human specifies another starting revision or branch name. When starting from `main`, follow the [main synchronization instructions](worktrees.md#main-synchronization) before selecting the starting commit. Confirm that the starting commit contains the approved documents and prerequisites needed by the task. If required work is missing or exists only as uncommitted changes elsewhere, resolve the starting point with the human before opening the task record.
+Implement each task in its own feature branch and worktree unless the human explicitly directs otherwise.
+
+For a new task, select a suitably named branch using `<agent>/<task-name>`, where `<agent>` identifies the implementing agent, unless the approved plan or human specifies another branch name; if that branch already exists, choose a distinguishing suffix rather than reusing or resetting it. Start from local `main` unless the approved plan or human specifies another starting revision. When starting from `main`, follow the [main synchronization instructions](worktrees.md#main-synchronization) before selecting the starting commit. Confirm that the starting commit contains the approved documents and prerequisites needed by the task. If required work is missing or exists only as uncommitted changes elsewhere, resolve the starting point with the human before opening the task record.
 
 When continuing an active task, locate its existing record and use its existing branch and worktree rather than opening another task merely because the agent started elsewhere. Create or locate the worktree under the [worktree setup instructions](worktrees.md#setup). Perform implementation and task-record commits there; the checks before task-record commits apply to that worktree.
-
-For a new task, if the proposed branch name already exists, choose a distinguishing suffix rather than reusing or resetting that branch.
 
 <a id="finding-active-task"></a>
 ### Finding an active task
