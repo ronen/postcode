@@ -358,6 +358,23 @@ That also clarifies the possible unification: breaker readiness and bulkhead cap
 
 *This account is grounded in the documented API and inspected implementation at our fixed revision. The payment example is illustrative; no runtime verification has been performed.*
 
+<a id="policy-object"></a>
+## 10. Clarifying the policy object
+
+**Human:**
+
+> ok, so is there a "policy" object?
+
+**Assistant:**
+
+**Yes.** The application creates a policy object—for example, a circuit-breaker object or a bulkhead object—and keeps it to use across calls.
+
+Each supports the same basic operation: **“execute this action under your rules.”** Each also has its own configuration, state, and additional controls. A breaker exposes its circuit state; a bulkhead exposes available capacity. Combining policies produces another object supporting that same execution operation.
+
+So our proposed readiness query would be something you ask **that existing policy object**, using the state it already maintains.
+
+There’s a naming wrinkle in the implementation: the common contract for these executable objects is called `IPolicy`. A separate class literally named `Policy` configures which errors or results count as failures. When I’ve said “policy object,” I’ve meant the executable objects, such as the breaker and bulkhead. [API definitions](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/Policy.ts)
+
 <a id="research-observations"></a>
 ## Research observations
 
