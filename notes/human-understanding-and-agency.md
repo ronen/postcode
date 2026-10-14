@@ -4,9 +4,13 @@ Started: 2026-10-14
 Status: emerging design principle; durable, non-governing exploration
 
 This principle emerged while exploring the first useful graphical investigation
-journey. It sharpens the foundation's existing aim of helping humans understand,
-direct, and supervise software. It is not an adopted foundation revision,
-application requirement, implementation plan, or authorization to implement.
+journey. It builds on the foundation's aim of helping humans understand, direct,
+and supervise software and its adopted [design premise](../foundation/product-design.md#design-premise):
+the model must not presuppose knowledge of the implementation language or a program
+representation intended for human reading. This note explores the implications
+for human participation and experience design. Those elaborations remain
+non-governing; this note is not an application requirement, implementation plan,
+or authorization to implement.
 
 ## Principle
 
