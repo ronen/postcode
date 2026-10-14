@@ -433,6 +433,34 @@ That meaning is consistent enough to explore a common query. A combined breaker-
 
 I’d keep the requirement focused on these demonstrated cases rather than assuming every kind of policy can provide a meaningful answer. This is a proposed addition; the existing common policy contract doesn’t currently include it.
 
+<a id="acceptance-query"></a>
+## 13. Considering acceptance rather than immediate execution
+
+**Human:**
+
+> or should the query be "acceptable" without "now", i.e. bulkhead has queue space and circuit breaker allows execution?
+
+**Assistant:**
+
+**For the original use case, acceptance seems a better fit if the application is happy for work to wait.** Requiring immediate execution could unnecessarily discourage preparing jobs that could enter the queue.
+
+I’d phrase the question as:
+
+> Would this policy currently accept a submission, either to start it or to let it wait, rather than reject it?
+
+“Currently” still matters: the answer describes present conditions. What we’re removing is the requirement to **start immediately**.
+
+For the bulkhead, that means an execution slot **or** a queue slot is available. For the breaker, it includes normal execution and an eligible recovery attempt.
+
+There’s one consequential choice: **does waiting for an already-running recovery trial also count as acceptable?** For a consistent “start or wait” meaning, I’d say yes—but the caller must understand that this wait can end in rejection if recovery fails. Acceptance here would mean allowing the submission to enter the policy’s handling, not committing to eventually run its action.
+
+That gives us two distinct questions:
+
+- **Can start:** useful when waiting would defeat the purpose.
+- **Can accept:** useful when waiting is an acceptable part of processing.
+
+We don’t need to introduce both queries. I’d tentatively choose **can accept** for this scenario, retaining the advisory, non-reserving promise. For combined policies, it still cannot promise that a breaker will allow execution by the time a queued operation reaches it.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -492,6 +520,13 @@ These observations are provisional design interpretation, separate from the dial
   generic readiness and retains the advisory, non-reserving intent. No API or
   combination algorithm is selected, and support across all policy types is not
   established.
+- **The proposed question remains under refinement.** In exchange 13 the human
+  asks whether acceptance, including queue capacity, better captures the need than
+  immediate availability. The agent tentatively favors acceptance if waiting is
+  acceptable, and surfaces that waiting for breaker recovery can end in rejection.
+  A common meaning must distinguish entering policy handling from a commitment to
+  run the action. Neither two separate queries nor a final acceptance contract has
+  been selected.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
@@ -500,7 +535,8 @@ These observations are provisional design interpretation, separate from the dial
 The current trial direction is a narrowly scoped advisory circuit-breaker readiness
 query. Broader readiness mechanisms are deferred pending demonstrated demand.
 The human has requested comparison with bulkhead readiness to assess possible
-unification; a shared interface remains undecided. Its exact
+unification; a shared interface remains undecided. Immediate availability versus
+acceptance for possible waiting is now an explicit open choice. Its exact
 meaning under concurrency, recovery sampling, composition, and delay still needs
 validation. No API, general readiness facility, or implementation slice is selected.
 The human's eventual product role and the journey's meaningful endpoint remain open.
