@@ -719,6 +719,37 @@ So **half-open does not mean the service is known to be healthy. It means recove
 
 The timing distinction we were discussing is whether the reported phase changes when a trial *becomes eligible*, or only when a trial *actually starts*. Cockatiel currently does the latter.
 
+<a id="query-versus-trial"></a>
+## 23. Whether querying starts or reserves a recovery trial
+
+**Human:**
+
+> ok, so if we added a query to breaker, it may need to trigger a trial?  then report no on further queries pending the result of the trial?   or would the query just indicate that it's willing to do a trial?
+
+**Assistant:**
+
+**The second: our proposed query would indicate that the breaker is willing to allow a trial. It would not start one.**
+
+The trial is an actual application operation supplied through execution. The query has no work to run, and under our advisory design it neither starts work nor reserves a trial opportunity.
+
+The sequence would be:
+
+1. The recovery delay expires.
+2. A query reports **“a trial is eligible.”** Repeated queries can report the same thing.
+3. The application prepares work and submits it for execution. That execution starts the trial.
+4. Subsequent answers reflect the trial being underway.
+
+Whether step 4 answers “no” depends on which question we choose:
+
+| While the available recovery trials are occupied | Answer |
+|---|---|
+| **Can my work start now?** | No—it must wait. |
+| **Can you accept my work, including waiting?** | Yes—it can wait for the recovery decision, but might then be rejected. |
+
+That second answer follows the current Cockatiel behavior we inspected. Automatically answering “no” while a trial runs would instead express the stricter immediate-start requirement.
+
+There is a tradeoff: **several callers could see “trial eligible” and all begin preparation before anyone submits work.** Our non-reserving query permits that. Preventing it would require securing the opportunity, which we previously chose not to include.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -855,6 +886,13 @@ These observations are provisional design interpretation, separate from the dial
   merely by recording that an explanation was supplied; comprehension remains for
   the human to assess. Future Presentation exploration should consider making
   domain concepts accessible where used, without presuming source-code access.
+- **Querying, reserving and execution needed explicit separation.** Exchange 23
+  asks whether inspection initiates a trial or merely reports willingness. The
+  agent restates the advisory direction and distinguishes repeated eligibility
+  observations from a trial started by supplied application work. It also surfaces
+  that acceptance including waiting remains true while trial capacity is occupied,
+  unlike immediate-start availability. Multiple callers can still prepare work
+  from the same non-reserving eligibility observation.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
