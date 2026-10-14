@@ -78,7 +78,7 @@ Use a stable unit appropriate to the destination, such as a core-concept definit
 
 ## Promotion and disposal
 
-The human directs which provisional artifacts are promoted or discarded. Promotion is a change of project role, not merely a file move. Before removing provisional material, confirm that all context required by the promoted documents has been carried into them. Retain, consolidate, or delete associated notes according to whether they remain independently useful.
+The human directs which provisional artifacts are promoted or discarded. Promotion is a change of project role, not merely a file move. Before removing provisional material, confirm that all context required by the promoted documents has been carried into them.
 
 When promoting an approved package:
 
@@ -88,8 +88,9 @@ When promoting an approved package:
 4. Update any earlier plans or decisions that the promoted documents supersede. Follow the applicable [plan lifecycle](../docs/plans/README.md#lifecycle) and [decision lifecycle](../docs/decisions/README.md#lifecycle), including complete forward and backward decision-supersession mappings.
 5. Update any canonical indexes that list the promoted or superseded documents.
 6. Check and correct links after moving or merging the files, including links that could not resolve within the draft package or that referred to canonical documents outside it. Remove or replace links to notes, carrying any required context into the promoted documents.
-7. Review the promoted documents, governing core concepts or architectural constraints when changed, supersession metadata, indexes, and links as a whole.
-8. Commit the entire promotion atomically, including new canonical documents, merged revisions, corresponding accepted decisions, plan-dependent backlog changes, supersession metadata, index and link updates, and removal of the promoted draft artifacts.
+7. Clean up associated notes under human direction. Normally delete notes, or portions of notes, whose useful content has been incorporated into the promoted documents. Retain only material with continuing independent value, such as unresolved questions, follow-up work, or worthwhile ideas not pursued. Consider whether that remaining material belongs in the backlog or existing candidate notes rather than retaining a separate planning account. Delete notes left without independently useful content; Git preserves their history. Update affected note indexes and links.
+8. Review the promoted documents, governing core concepts or architectural constraints when changed, remaining associated notes, supersession metadata, indexes, and links as a whole.
+9. Commit the entire promotion atomically, including new canonical documents, merged revisions, corresponding accepted decisions, plan-dependent backlog changes, associated note cleanup, supersession metadata, index and link updates, and removal of the promoted draft artifacts.
 
 An abandoned draft may be deleted without acquiring a lifecycle status; its Git history remains available.
 
