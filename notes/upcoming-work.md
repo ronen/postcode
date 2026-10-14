@@ -12,15 +12,52 @@ and [candidate UX](candidate-ux.md) hold the broader inventories.
 was completed on 2026-10-13.
 
 <a id="kinds-of-work"></a>
-## Kinds of work
+<a id="legend"></a>
+## Legend
 
-| Icon | Kind | Main sequencing question |
-| --- | --- | --- |
-| 🐛 | Defect | What does it get wrong, and who or what relies on it? |
-| 🚧 | Limitation | When will its consequences become unacceptable or costly? |
-| ✨ | Missing capability | What useful journey or learning does it enable? |
-| ❓ | Unresolved design | What is the smallest concrete case that would help settle it? |
-| 🧹 | Maintenance / housekeeping | Does leaving it undone cause confusion, friction, or accumulating cost, and is there a convenient point to address it? |
+<style>
+.upcoming-work-legend {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 0.6em;
+  font-size: 0.85em;
+  line-height: 1.15;
+}
+.upcoming-work-legend th, .upcoming-work-legend td {
+  border: 1px solid #cbd5e1;
+  padding: 2px 6px;
+  text-align: left;
+  vertical-align: top;
+}
+.upcoming-work-legend th:first-child, .upcoming-work-legend td:first-child { width: 2em; }
+.upcoming-work-legend th:nth-child(2), .upcoming-work-legend td:nth-child(2) { width: 17em; }
+</style>
+
+<table class="upcoming-work-legend">
+  <thead>
+    <tr><th scope="col">Icon</th><th scope="col">Kind</th><th scope="col">Meaning</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>🐛</td><td>Defect</td><td>Supported behavior is wrong or violates its contract.</td></tr>
+    <tr><td>🚧</td><td>Limitation</td><td>A boundary on what the system supports or guarantees that we may want to remove.</td></tr>
+    <tr><td>✦</td><td>Missing capability</td><td>Something useful the system cannot yet do.</td></tr>
+    <tr><td>⚠️</td><td>Open product / architectural question</td><td>An unresolved choice that could change scope, direction, or dependencies.</td></tr>
+    <tr><td>🧹</td><td>Maintenance / housekeeping</td><td>Upkeep that keeps the repository and development environment accurate and usable.</td></tr>
+  </tbody>
+</table>
+
+<a id="size-markers"></a>
+
+<table class="upcoming-work-legend">
+  <thead>
+    <tr><th scope="col">Icon</th><th scope="col">Size</th><th scope="col">Meaning</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>🐝</td><td>Quick</td><td>Well understood and likely cheaper to finish than carry through more planning.</td></tr>
+    <tr><td>🧱</td><td>Large</td><td>Substantial effort; worth breaking into useful stages.</td></tr>
+    <tr><td></td><td>Ordinary or uncertain</td><td>(No size marker)</td></tr>
+  </tbody>
+</table>
 
 <a id="dependencies-and-decision-points"></a>
 ## Dependencies and decision points
@@ -30,33 +67,27 @@ or useful design input. Codes identify items independently of ordering.
 
 ```mermaid
 flowchart TD
-    EXACT["🚧 ❓ EXACT — Exact-answer presentation"] --> PRESENT["❓ ✨ PRESENT — Presentation and navigation architecture"]
-    JOURNEY["❓ 🧹 JOURNEY — First graphical journey"] --> PRESENT
-    PRESENT --> GUI["✨ GUI — Bounded graphical investigation"]
-    JOURNEY -. If orientation is needed .-> ORIENT["✨ ❓ ORIENT — Bounded orientation capability"]
+    JOURNEY["⚠️ 🧹 JOURNEY — First graphical journey"] --> PRESENT["⚠️ ✦ PRESENT — Presentation and navigation architecture"]
+    PRESENT --> GUI["✦ GUI — Bounded graphical investigation 🧱"]
+    EXACT["🚧 EXACT — Exact-answer presentation"] --> GUI
+    JOURNEY -. If orientation is needed .-> ORIENT["✦ ⚠️ ORIENT — Bounded orientation capability"]
     ORIENT -. If selected for the journey .-> GUI
-    GUI -. Supplies focus and selection experience .-> AGENT["✨ ❓ AGENT — Coding-agent context exchange"]
-    BASIS["🚧 ❓ BASIS — Captured-basis observation export"]
+    GUI -. Supplies focus and selection experience .-> AGENT["✦ ⚠️ AGENT — Coding-agent context exchange"]
 
     classDef default fill:#dbeafe,stroke:#64748b,color:#172554
 ```
-
-BASIS is needed for research assessments requiring recorded program-state
-attribution. AGENT's dependencies on exact answers and basis disclosure depend
-on the chosen exchange. JOURNEY exploration can overlap EXACT and BASIS.
 
 <a id="tentative-ordering"></a>
 ## Tentative ordering
 
 | Position | Item | Why here / what could change it |
 | --- | --- | --- |
-| Next | [EXACT — Exact-answer presentation](#exact) | Improves existing behavior and prevents graphical interactions from inheriting silent answer changes. |
-| Next | [BASIS — Captured-basis observation export](#basis) | Makes state-specific research assessments trustworthy. Could precede EXACT if that research becomes urgent; neither depends on the other. |
-| Likely after that | [JOURNEY — First graphical journey](#journey) | Supplies concrete requirements for Presentation architecture. Exploration can overlap earlier work. |
-| Likely after that | [PRESENT — Presentation and navigation architecture](#present) | Builds on exact-answer semantics and the chosen interaction needs. |
-| Likely after that | [GUI — Bounded graphical investigation](#gui) | Tests the architecture and whether people can understand the project and choose useful next questions. |
-| Conditional | [ORIENT — Bounded orientation capability](#orient) | If JOURNEY establishes the need, could precede or accompany GUI. |
-| Later / movable | [AGENT — Coding-agent context exchange](#agent) | GUI supplies focus and selection experience; a valuable CLI exchange could bring this forward. |
+| Next | [JOURNEY — First graphical journey](#journey) | Choose a concrete scenario and rough interaction sketch using real results, building on earlier exploration. Identify the gaps that matter for a useful first GUI. |
+| Then, alongside PRESENT | [EXACT — Exact-answer presentation](#exact) | Establish answer continuity before GUI interactions build on retained results. Coordinate its design with PRESENT to avoid overlapping redesign. |
+| Then, alongside EXACT | [PRESENT — Presentation and navigation architecture](#present) | Establish the Presentation and navigation boundaries needed by the selected journey; design can proceed alongside EXACT. |
+| After the necessary foundation | [GUI — Bounded graphical investigation](#gui) | Get the journey working and learn from sustained use on real repositories. |
+| Conditional, following JOURNEY | [ORIENT — Bounded orientation capability](#orient) | If the journey needs project-level orientation, try one bounded capability before or alongside GUI implementation. |
+| After the first useful journey / movable | [AGENT — Coding-agent context exchange](#agent) | GUI supplies focus and selection experience; a valuable CLI exchange could bring this forward. Exact-answer and basis-disclosure dependencies depend on the chosen exchange. |
 
 <a id="item-catalog"></a>
 ## Item catalog
@@ -66,7 +97,7 @@ Alphabetical by code.
 <a id="agent"></a>
 ### AGENT — Coding-agent context exchange
 
-- **Kind:** ✨ ❓
+- **Kind:** ✦ ⚠️
 - **Outcome:** an external coding agent can consume selected investigation context
   with clear scope, exact-result versus repeatable-request semantics, reference
   lifetime, captured basis, source mappings, and relevant origin.
@@ -76,19 +107,10 @@ Alphabetical by code.
   context are separate possibilities.
 - **Source:** [backlog: shared coding-agent context and feedback provenance](../docs/backlog.md#design-a-bounded-shared-context-interface-for-coding-agents).
 
-<a id="basis"></a>
-### BASIS — Captured-basis observation export
-
-- **Kind:** 🚧 ❓
-- **Outcome:** exported observations identify the program inputs actually
-  supporting the result, with capture limitations and repository-state provenance.
-- **Scope:** attribution; full reproducibility and archival retention are separate concerns.
-- **Source:** [backlog: captured-basis attribution](../docs/backlog.md#preserve-captured-basis-attribution-in-observations).
-
 <a id="exact"></a>
 ### EXACT — Exact-answer presentation
 
-- **Kind:** 🚧 ❓
+- **Kind:** 🚧
 - **Outcome:** paging and reformatting present the same retained Projection,
   including its selected interpretation and qualifications. Fresh selection is
   a distinct, visible action.
@@ -99,7 +121,9 @@ Alphabetical by code.
 <a id="gui"></a>
 ### GUI — Bounded graphical investigation
 
-- **Kind:** ✨
+- **Kind:** ✦
+- **Size:** 🧱 — a new graphical interface with integrated investigation flows
+  and formative evaluation, even within the bounded first journey.
 - **Outcome:** a useful graphical investigation on real repositories, with evidence,
   qualifications, originals, replacements, conflicts, and reconsideration visible.
   Evaluation includes sustained use and returning to earlier answers.
@@ -110,7 +134,7 @@ Alphabetical by code.
 <a id="journey"></a>
 ### JOURNEY — First graphical journey
 
-- **Kind:** ❓ 🧹
+- **Kind:** ⚠️ 🧹
 - **Outcome:** a bounded journey through orientation, inspection, interpretation,
   follow-up, evidence, and earlier accounts, using real capabilities. Updated GUI
   notes reflecting the adopted simple Workspace and current Session limits.
@@ -123,7 +147,7 @@ Alphabetical by code.
 <a id="orient"></a>
 ### ORIENT — Bounded orientation capability
 
-- **Kind:** ✨ ❓
+- **Kind:** ✦ ⚠️
 - **Outcome:** a project-level orientation capability that helps the human begin
   useful investigation, if JOURNEY establishes the need.
 - **Scope:** one selected capability. Dependency landscape and project summary
@@ -134,7 +158,7 @@ Alphabetical by code.
 <a id="present"></a>
 ### PRESENT — Presentation and navigation architecture
 
-- **Kind:** ❓ ✨
+- **Kind:** ⚠️ ✦
 - **Outcome:** coherent Presentation choices, parameters, display bounds, and
   reference coordination, with qualified answers separate from arrangement.
   Navigation origins are retained where available in the supported interactions.
