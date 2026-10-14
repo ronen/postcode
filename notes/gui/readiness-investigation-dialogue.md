@@ -402,6 +402,37 @@ Reversing the order puts the breaker’s decision first. This matters: with the 
 
 The combined object coordinates those existing policies; their state isn’t merged into a new shared state. That makes **readiness of the combined policy** a further question: knowing that either component alone is ready doesn’t establish that the operation can start through both.
 
+<a id="available-now"></a>
+## 12. Proposing an available-now query
+
+**Human:**
+
+> ok, it seems like "is available now" could be a query supported by a policy?
+
+**Assistant:**
+
+**Yes. “Available now” gives us a useful candidate for a shared policy query:**
+
+> Would this policy let an operation begin now, without waiting?
+
+For the two policies we’ve examined:
+
+| Policy | “Available now” would mean |
+|---|---|
+| Bulkhead | An execution slot is free. Queue space alone doesn’t count. |
+| Circuit breaker | Normal execution is allowed, or a recovery attempt can start now. |
+
+The query would inspect the policy without starting work, reserving capacity, or changing its state. Its answer could become outdated before execution.
+
+Two qualifications matter:
+
+- **“Yes” means permission to begin, not a prediction of success.**
+- **“No” means unable to begin immediately, not necessarily rejected.** Submitting the work might cause it to wait.
+
+That meaning is consistent enough to explore a common query. A combined breaker-and-bulkhead policy would need both components to permit immediate progress; defining how a combined object obtains that answer is part of the design.
+
+I’d keep the requirement focused on these demonstrated cases rather than assuming every kind of policy can provide a meaningful answer. This is a proposed addition; the existing common policy contract doesn’t currently include it.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -455,6 +486,12 @@ These observations are provisional design interpretation, separate from the dial
   need for intelligible explanations; links alone are not demonstrated evidence
   access for a human who cannot or does not read implementation material. It does
   not by itself select a project-summary capability.
+- **The human proposed a shared question after understanding composition.**
+  Exchange 12 introduces "is available now" with a candidate meaning of immediate
+  progress, excluding queue-only availability. This is a narrower question than
+  generic readiness and retains the advisory, non-reserving intent. No API or
+  combination algorithm is selected, and support across all policy types is not
+  established.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
