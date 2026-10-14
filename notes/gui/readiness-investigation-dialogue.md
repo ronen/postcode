@@ -513,6 +513,28 @@ It addresses their objective through an explicit query rather than their suggest
 
 **The breaker query alone addresses this issue.** Bulkhead support and unification would be additional design choices. We still need implementation and a test of this sequence before calling the fix verified.
 
+<a id="access-to-wrapped-breaker"></a>
+## 16. Access to a breaker inside a combined policy
+
+**Human:**
+
+> in a typical application, even if bulkhead and breaker had been wrapped into a single policy, would the caller have direct access to the breaker?
+
+**Assistant:**
+
+**In a straightforward setup, yes—but it depends on what the application gives that caller access to.**
+
+The code assembling the policies can create a breaker, retain its reference, and then wrap it with a bulkhead. Wrapping uses the original objects, so that code can still query the same breaker that participates in execution. The combined object also exposes its wrapped components. [Implementation](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/Policy.ts)
+
+But another part of the application might receive only a general policy object, or a function that executes protected work. That caller wouldn’t necessarily have a direct breaker reference. Requiring it to find the breaker inside the combination would make it depend on how the protection was assembled.
+
+So there are two reasonable application arrangements:
+
+- **The caller knows about the breaker:** it checks the breaker directly, then executes through the combined policy.
+- **The caller only knows about the protected operation:** an acceptance query exposed alongside that operation would preserve that separation. The application could provide it, or a combined-policy query could eventually support it.
+
+Your question therefore supplies a concrete reason to consider combined-policy support: **keeping callers independent of the particular protections being used.** Direct access is possible; whether it is the right interface for the caller is a design choice.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -591,6 +613,15 @@ These observations are provisional design interpretation, separate from the dial
   actual transition to execution. This is a design-level adequacy argument, not a
   reproduced fix or requester validation. Bulkhead support is not necessary to
   address the reported issue.
+- **Composition exposes an application-boundary question.** Exchange 16 checks
+  that wrapping retains original instances and exposes its input components, but
+  distinguishes API access from what an application chooses to expose to a caller.
+  A caller given only a protected operation supplies a plausible motivation for
+  combined-policy queries, without proving a current application needs them.
+  During inspection, the pinned README names the component property `policies`,
+  while the pinned interface and implementation name it `wrapped`. The response
+  relies on the implementation for component access; the naming discrepancy is
+  recorded here without modifying the external project.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
