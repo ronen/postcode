@@ -15,6 +15,12 @@ when the coding is carried out by agents. It should help people develop and
 examine their understanding of the software's purposes, design, externally visible
 commitments, responsibilities, constraints, invariants, tradeoffs, and evolution.
 
+PostCode anticipates a near future in which the human may not know the programming
+language, may not know how to debug the implementation, and may be working with
+software that has no human-readable source code. The experience should be designed
+for that situation. Human understanding and direction must not depend on an
+ability to read, write, or repair the underlying implementation.
+
 This purpose should orient the experience toward questions such as: What design
 is taking shape? Which constraints and invariants matter, and what supports the
 claim that they hold? What would a proposed change preserve or alter? Routine
@@ -27,7 +33,10 @@ lies in making that participation informed and effective.
 
 The appropriate level of detail follows the human's information need. A broad
 account may help establish context; a precise implementation detail may determine
-an important commitment. People should be able to move between them while
+an important commitment. PostCode should make the significance of that detail
+intelligible through appropriate explanations and representations, preserving its
+evidence and limits without requiring fluency in the implementation language.
+People should be able to move between broad context and precise questions while
 retaining the question, evidence, qualifications, and earlier understanding.
 
 A useful PostCode journey should make clear what the human gains from
@@ -71,10 +80,14 @@ When a problem calls for debugging, the expected pattern is for the human to ask
 an agent to investigate and report its findings, evidence, uncertainty, and any
 difficulty making progress. PostCode should help the human understand and question
 that account, resolve choices about intended behavior or acceptable tradeoffs,
-and direct further work. An agent's difficulty is a reason to make the obstacle
-intelligible, not an automatic handoff of implementation-level diagnosis to the
-human. Agent reports remain attributed accounts whose conclusions can be examined
-and challenged.
+and direct further work. The human may have no ability to take over the debugging.
+An agent's difficulty therefore needs to be expressed in terms the human can act
+on: unresolved intended behavior, competing explanations, missing observations,
+or a need for another investigative method. Further diagnosis may require other
+agents or tools, additional evidence, or an explicit acknowledgment that the
+problem remains unresolved. Agent reports remain attributed accounts whose
+conclusions can be examined and challenged; a readable explanation alone does not
+establish that its conclusion is correct.
 
 ## Implications to explore
 
@@ -85,10 +98,21 @@ Scale and abstraction do not determine the value of human participation.
 A graphical journey that asks the human to repeat an agent's debugging procedure
 may demonstrate PostCode's machinery without establishing why the human would use
 it. Access to detailed evidence remains valuable for questioning an explanation
-or informing a consequential choice. The human should be able to inspect it
-without having to reconstruct the agent's diagnostic procedure. Direct human
-investigation remains possible, but the experience should not depend on the human
-taking over the agent's implementation work.
+or informing a consequential choice, but exposing raw implementation material is
+not sufficient evidence access for a person who cannot interpret it. The experience
+needs intelligible accounts of what the evidence establishes, what it leaves open,
+and how a conclusion could be checked or challenged. These accounts preserve the
+underlying evidence and its qualification; they do not strengthen its guarantees.
+
+Source access remains available where source exists and is useful to a person or
+agent. It cannot be the fallback on which the human's understanding or ability to
+guide development depends. Direct human investigation through PostCode remains
+part of the purpose, independently of implementation-language expertise.
+
+A useful test of a proposed journey is: **Would it still let the human understand
+and guide the work if they could not read the implementation or take over its
+debugging?** This is a design premise to explore, not a claim that current PostCode
+capabilities already satisfy it or support implementations without source code.
 
 Use this question when selecting a journey: **What does the human gain from this
 experience that makes their participation worthwhile?** Do not require every
