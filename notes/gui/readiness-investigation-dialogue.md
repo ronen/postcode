@@ -589,6 +589,46 @@ The breaker and bulkhead are particularly natural subjects for an acceptance que
 
 That doesn’t rule out putting the query on the common interface. It means we should establish what its answer means for these other policies—and their combinations—before treating the breaker/bulkhead model as universal.
 
+<a id="failure-reporting"></a>
+## 19. Existing failure and blocking reports
+
+**Human:**
+
+> what mechanism(s) do policies currently use to report failure/blocking?
+
+**Assistant:**
+
+**There are three mechanisms: the execution’s result, event notifications, and queries of policy state.** They serve different purposes.
+
+**1. The execution call delivers a result or an error.**
+
+The caller receives a promise: an eventual value or an error it can catch. Policy refusals use recognizable error types:
+
+| Situation | What the caller receives, unless another enclosing policy handles it |
+|---|---|
+| Bulkhead has no execution or queue capacity | A bulkhead-rejection error |
+| Breaker is withholding attempts during recovery delay | A broken-circuit error |
+| Breaker is manually held open | An isolated-circuit error |
+| The supplied operation throws an error | That error, subject to the policies’ handling rules |
+
+An outer retry policy can handle an inner error by trying again; a fallback can turn it into an alternative result. So an internal failure needn’t become the caller’s final error.
+
+Also, an application can configure certain **returned values** to count as failures. After retrying is exhausted, such a value can still be returned normally. “Failure according to the policy” therefore isn’t synonymous with “an exception reaches the caller.” [Execution and failure handling](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/common/Executor.ts)
+
+**2. Applications can subscribe to events.**
+
+There are common success/failure notifications and specialized events: bulkhead rejection, breaker state changes, retry attempts and giving up, and timeout notifications. These describe activity at the particular policy; they aren’t one universal report of the whole combined operation. In particular, breaker admission refusals don’t pass through its ordinary operation-failure notification path. [Breaker implementation](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts)
+
+**3. Applications can inspect policy-specific state.**
+
+Examples are the bulkhead’s available slots and the breaker’s current state and last recorded failure. These are existing ingredients for the query we’re discussing, but there is no common acceptance query today.
+
+**Waiting itself is not reported as failure:** a queued bulkhead call or a call waiting for a recovery decision remains pending.
+
+For our proposed query, I’d return an acceptance answer with explanatory information. We can reuse existing diagnostic concepts where they fit, but asking the question should not throw an ordinary admission-refusal error or emit failure events as though execution had been attempted.
+
+*This distinction comes from static inspection; event coverage and behavior have not been runtime-tested here.*
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -690,6 +730,18 @@ These observations are provisional design interpretation, separate from the dial
   enough. A future Presentation may need to preserve that relationship in context,
   rather than assuming one explanatory list established lasting orientation.
   This is an observation about this exchange, not evidence of a required UI form.
+- **Existing reporting separates outcomes, activity and state.** Exchange 19
+  inspected the shared executor and retry, fallback and timeout implementations
+  alongside previously read breaker and bulkhead code. It distinguishes policy
+  rejection from operation failure, events from final outcomes, and pending work
+  from rejection. The shared `FailureReason` represents an error or a returned
+  value classified as failure; it is not already an acceptance-result contract.
+  Inspection also found reasons not to infer uniform event coverage from the
+  common interface: bulkhead execution directly invokes the supplied function
+  despite exposing an executor's success/failure subscriptions, and shared executor
+  error notifications can report `handled: false` despite narrower documentation.
+  These are static observations, not runtime-confirmed defects or authorization to
+  fix the external project. The response avoids promising universal event delivery.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
