@@ -848,6 +848,31 @@ That reveals another distinction between the proposals:
 
 So automatic transitions could offer a notification benefit as well as making the state query more informative. We would need to decide deliberately whether `onHalfOpen` should mean “a trial is now eligible” or retain its current connection to an execution-triggered transition.
 
+<a id="event-driven-recovery"></a>
+## 28. Considering automatic transitions to avoid application polling
+
+**Human:**
+
+> an event-based approach is arguably better than the query, since a query could lead to the application needing to do its own polling.   so that would actually argue for adding a bulit-in timer to trigger the state change
+
+**Assistant:**
+
+**Yes—for an application waiting to resume work, that is a strong argument for automatic transitions.** A query alone would leave it responsible for deciding when to check again.
+
+There is one qualification: the original application receives incoming job requests. It could query whenever a request arrives, with no background polling. So polling isn’t an unavoidable consequence of the query, but notification supports a useful additional interaction.
+
+The timer-based design would give a coherent breaker model:
+
+- **The delay ends:** transition to half-open, meaning a recovery trial is eligible, and emit the transition events.
+- **The application observes the state or receives an event:** it can decide whether to prepare and submit work.
+- **Execution supplies the trial:** its outcome determines whether normal operation resumes or the breaker blocks again.
+
+The event still wouldn’t initiate work or guarantee success. And the state query would remain useful: an application starting to observe the breaker after the event has fired needs to discover its current condition.
+
+This strengthens the case for **improving the existing state-and-event facility**, rather than adding a separate acceptance query solely to solve this issue. The remaining tradeoffs are changing the meaning and timing of half-open notifications, and managing the timer correctly when the breaker is isolated, reopened, or restored.
+
+I’d now treat this as a serious alternative to our shared-query direction. A generic acceptance interface would need its own justification beyond fixing the original breaker problem.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -1011,6 +1036,13 @@ These observations are provisional design interpretation, separate from the dial
   eligibility without a query or attempted execution, a different capability
   from advisory inspection. That benefit is a design inference, not a newly
   established requester requirement or selected implementation.
+- **The human challenges the query using notification needs.** Exchange 28
+  argues for a built-in transition timer to avoid application polling. The agent
+  distinguishes reactive checking on incoming requests (no background polling
+  required) from notification-driven resumption, and retains current-state
+  inspection for observers that missed an event. The automatic-transition
+  alternative now has a concrete notification rationale; its selection and
+  compatibility behavior remain open.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
@@ -1026,7 +1058,8 @@ yet been answered by the human. Exact result shape, behavior across policy types
 compatibility, concurrency and recovery details remain to be settled and validated.
 Exchange 21 adds a narrower alternative: update existing breaker-state inspection
 to reflect trial eligibility, following a documented comparison with Polly v7.
-The human has not yet responded to that alternative; the shared-interface direction
-has not been revoked. External health mechanisms remain outside the chosen direction. No implementation
+In exchange 28 the human argues for timer-driven state transitions and events to
+avoid polling. This puts the earlier shared-query direction under reconsideration;
+no final replacement choice or compatibility behavior has been agreed. External health mechanisms remain outside the chosen direction. No implementation
 is authorized or GUI implementation slice selected. The human's eventual product
 role and the journey's meaningful endpoint remain open.
