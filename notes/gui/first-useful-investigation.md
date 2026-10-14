@@ -355,6 +355,35 @@ prose or a lightweight brief suffices, use that result to constrain scope.
 Text presentations are permitted by the foundation; product value need not depend
 on replacing conversation with graphical navigation.
 
+<a id="follow-on-experiments"></a>
+## Gradual orientation and candidate follow-on exercises
+
+The human reports that the earlier explanation of the overall system did not
+become clear until more local exploration had occurred. A persistent overall
+picture might gain meaning gradually as details are encountered. This differs
+from requiring a summary to be understood before investigation starts. It does
+not yet establish what the picture should contain or which capability produces it.
+
+The [follow-on debrief](readiness-investigation-dialogue.md#follow-on-exercises)
+records three options:
+
+| Exercise | What it could help investigate | Important limitation |
+| --- | --- | --- |
+| Retrospective picture book: illustrate every investigation response | Which explanations benefit from images; whether recurring, progressively extended pictures provide orientation alongside local details | The human now knows the outcome; hindsight and later evidence must not be mistaken for information available earlier. |
+| Another Cockatiel investigation, such as an overall time budget | Usefulness with partial project familiarity; reuse and extension of the operating model during new questions | Prior knowledge has changed; this is not a controlled replay of the original learning experience. |
+| A similar investigation of a different unfamiliar project | Transfer of the approach and assumptions beyond Cockatiel | Project differences complicate attributing any improvement to presentation alone. |
+
+The agent recommends the picture book next, then a live overall-budget exercise,
+with a different project later. No exercise or sequence has yet been selected.
+For the picture-book option, retain the original prose and sequence, supply an
+illustration for every investigation response as the deliberately extreme
+constraint, and assess both useful and unhelpful illustrations. A recurring picture
+may be extended or highlighted rather than drawing an unrelated diagram every
+time. New visual claims require qualification; retrospective synthesis must not
+silently turn into original evidence. Candidate representations from this exercise
+could then be tried prospectively. None of this prescribes the final UI or requires
+every future PostCode answer to have a picture.
+
 ## Orientation: what might supply the forest?
 
 Existing organization and dependency results can situate modules within qualified

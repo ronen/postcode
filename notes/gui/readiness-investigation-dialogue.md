@@ -957,6 +957,37 @@ The foundation permits text presentations; PostCode’s contribution could lie p
 
 For this bounded investigation, chat may already be sufficient. If better prose and a small retained brief meet the need, that should constrain what we build. If a richer working surface materially improves understanding and control, we’ll have evidence for which part of PostCode earns its place.
 
+<a id="follow-on-exercises"></a>
+## Design debrief: gradual orientation and possible follow-on exercises
+
+**Human:**
+
+> this particular scenario started from me having ignorance and groping my way around:  we started with a tree and nearby trees, there was some fuller description of the forest early on but i didn't quite grasp it until we had groped around the trees longer.  it's possible that some sort of clearer explanation of the forest could have helped me sooner.  or keeping it visible so i'd gradually understand it.   i can see a few directions to go from here.  one, an extreme visual-oriented exercise:  turn our recorded dialog into a "picture book":  accompany every textual response with an illustration.  (in fact in retrospect it could have been interesting to do that as part of the exercise).  another direction is to do another one exercise, but with a different cockatiel problem, such as the overall budget; this time we'd be starting with a human who has at least some minimal understanding with the project.  a third could be to start over with an exercise like this for a completely different project, and fumble through again
+
+**Assistant:**
+
+**The distinction you’re making is important: an overview might become understandable through exploration, rather than needing to be understood before exploration starts.** Keeping it visible could let each local discovery acquire a place in the larger picture. That is a more specific hypothesis to test than “users need a project summary.”
+
+I’d suggest **the picture book next, followed by the overall-budget investigation**. The three exercises would teach us different things:
+
+**1. The picture book tests what visual explanation could contribute to the conversation we actually had.**
+
+I like the deliberately extreme rule: illustrate every investigation response. It forces us to discover where a picture explains something, where it merely repeats prose, and where it becomes clutter.
+
+I would keep the original text and sequence, and avoid putting later discoveries into earlier illustrations. Some pages could reuse an evolving picture—application, policy objects, execution, dependency—with the current subject highlighted. Others might need a timeline, state diagram, or comparison. We should see whether a recurring picture helps the “forest” accumulate meaning, rather than making every response an unrelated diagram.
+
+The limitation is hindsight: you now understand much more. Finding the illustrated version clearer wouldn’t prove it would have taught you faster originally. It would give us candidate representations to try live.
+
+**2. The budget investigation tests those representations during a new question with partial familiarity.**
+
+You would bring your understanding of policies and composition, while encountering new questions about retries, deadlines, and cancellation. We could see which existing explanations remain useful, where they need extending, and whether a visible operating model helps you direct the investigation. This also tests PostCode beyond the initial encounter with a project.
+
+**3. A different project tests whether the approach transfers to unfamiliar territory.**
+
+That is valuable, especially for exposing assumptions specific to Cockatiel. I’d do it after we have a candidate approach to try; otherwise we risk repeating the original experience without learning much about the effect of changing its presentation.
+
+The picture book’s useful output would be **a small set of representations worth carrying into the next live exercise**, plus an honest account of illustrations that added little. It needn’t become a proposed screen layout or establish that every answer in PostCode should be graphical.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -1148,6 +1179,16 @@ These observations are provisional design interpretation, separate from the dial
   next step is comparison against that strong baseline before assuming graphical
   interaction is necessary. This is not a revision of governing foundation material
   or proof that any proposed view helps.
+- **The human proposes gradual orientation and three further exercises.** The
+  follow-on debrief distinguishes an earlier explanation from a persistent picture
+  whose meaning grows through local exploration. Proposed exercises are an
+  illustration for every recorded investigation response, another Cockatiel
+  problem with partial familiarity, and a fresh unfamiliar project. The agent
+  recommends picture book then overall-budget investigation, with another project
+  later; the human has not selected or authorized execution of that sequence.
+  Retrospective illustration is hypothesis generation, not proof of improved
+  initial comprehension, and must avoid leaking later discoveries into earlier
+  answers.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
@@ -1173,3 +1214,9 @@ a concrete added-value hypothesis against good chat plus a concise retained note
 The graphical sketch and capability mapping remain potential deliverables, but
 their justification must emerge from demonstrated human benefit, not the existence
 of a projection architecture.
+
+The next debrief proposes three further exercises and highlights gradual
+understanding of a persistent overall picture. The agent recommends an extreme
+retrospective picture book as preparation for a live overall-budget investigation;
+a different unfamiliar project would test transfer later. These are recorded
+options and a recommendation, not a selected next exercise or GUI commitment.
