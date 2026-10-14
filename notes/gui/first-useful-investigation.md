@@ -384,6 +384,29 @@ silently turn into original evidence. Candidate representations from this exerci
 could then be tried prospectively. None of this prescribes the final UI or requires
 every future PostCode answer to have a picture.
 
+<a id="pictorial-direction"></a>
+### Pictorial direction for the picture-book option
+
+The human asks that illustrations communicate pictorially, using familiar icons,
+standard shapes or custom imagery tied to object function, rather than relying
+on text, trees or graphs of labeled boxes. A breaker or gang-switch symbol is
+one suggested example. This refines the proposed exercise without selecting its
+execution or committing to a product-wide visual language.
+
+The [visual debrief](readiness-investigation-dialogue.md#pictorial-language-debrief)
+suggests a consistent vocabulary: work tokens, electrical contacts, occupied/free
+capacity with a separate waiting line, retry loops, clocks, and alternative paths.
+Relationships and changes should carry meaning visually, not just add decorative
+icons to prose. Repeated objects should remain recognizable across pages so
+local exploration can build familiarity with an overall picture.
+
+Metaphors need qualification. A single token passing during recovery represents
+the default single-trial example, not all sampling configurations; "half-open"
+must not imply half-capacity traffic. Queue space and execution space must be
+visually distinct. Short labels, legends and qualification remain useful. Assess
+what an illustration actually communicates and what questions it invites rather
+than treating pictorial form as evidence of improved understanding.
+
 <a id="question-framing"></a>
 ## Helping the human frame useful questions
 

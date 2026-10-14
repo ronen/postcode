@@ -1015,6 +1015,36 @@ This gives us another hypothesis:
 
 An ordinary agent can provide this guidance too, so it belongs in the comparison baseline. In the picture-book exercise, we could ask of each illustration both **what it explains** and **what useful question it makes easier to notice**. In the next live investigation, we could test explicit cues as well—and observe whether they support your judgment or merely steer it.
 
+<a id="pictorial-language-debrief"></a>
+## Design debrief: pictorial explanation rather than labeled boxes
+
+**Human:**
+
+> another thought: the pictures ideally really be pictorial somehow, not just text or even trees or graphs with text in the boxes.  if nothing else, some familiar iconography,  standard shapes, etc. maybe even custom icons or images based on the object name or functionality -- e.g. an icon of a circuit breaker (or gang switch) for Breaker, etc.
+
+**Assistant:**
+
+**Yes—the pictures should show recognizable things doing something, with labels helping rather than carrying the whole explanation.** A circuit-breaker symbol could communicate interruption and restored flow much more directly than a box labeled “CircuitBreakerPolicy.”
+
+A candidate visual vocabulary for this exercise could be:
+
+| Concept | Pictorial treatment |
+|---|---|
+| Operation | A small work token moving through the protections |
+| Circuit breaker | Electrical contacts that connect or interrupt the path |
+| Bulkhead | A limited set of occupied/free workspaces, with a visible waiting line |
+| Retry | The work token taking another lap around a loop |
+| Timeout | A clock or countdown associated with the protected work |
+| Fallback | An alternative route leading to a substitute result |
+
+The **relationships and changes** should also be pictorial: tokens waiting, slots filling, a path becoming blocked, or a trial passing through. Adding icons to otherwise unchanged text boxes would miss much of the opportunity.
+
+We should take care with metaphors. “Half-open” shouldn’t look like half the normal traffic is permitted; we might show a single trial token passing while others wait. That would illustrate the default single-trial case, not every breaker configuration. Likewise, available queue space should look different from available execution capacity.
+
+I’d favor a small, consistent visual vocabulary reused across pages, with custom icons where they improve recognition. The same policy object should remain recognizable as we examine different aspects of it, so the pictures gradually become familiar territory.
+
+That gives the picture-book exercise a stronger constraint: **each illustration must attempt to communicate some of the explanation visually, rather than merely arrange its words.** We can then assess whether those visual choices actually help you understand and ask questions.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -1224,6 +1254,13 @@ These observations are provisional design interpretation, separate from the dial
   Guidance can be provided by an ordinary agent too; evaluate it against a strong
   guided-chat baseline. Avoid optimizing solely for a shorter route to a known
   answer, since exploration can contribute to understanding and judgment.
+- **The human specifies a pictorial direction for illustrations.** The visual
+  debrief asks for recognizable iconography, standard shapes and possibly custom
+  images based on objects or functions, rather than text-filled trees or graphs.
+  The agent proposes recurring visual objects and actions, with explicit limits
+  on metaphors such as a single recovery trial. These are illustration candidates
+  and a design constraint for the proposed exercise, not produced assets or a
+  selected product-wide visual language.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
