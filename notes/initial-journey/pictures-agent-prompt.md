@@ -1,8 +1,8 @@
-# Pictures experiment: views of a retained working account
+# Illustrate the supplied account of Cockatiel
 
-You are helping test whether an explicit account of software understanding can
-support useful pictorial explanations for a human. This is a design/research
-exercise, not a request to implement a GUI or modify the software.
+Create a pictorial explanation of Cockatiel from the supplied working account.
+The goal is to help a human understand the software and the proposed change.
+Produce illustrations, not a GUI or changes to the software.
 
 You are receiving two accompanying files:
 
@@ -19,11 +19,11 @@ It is a qualified account produced by an earlier investigation, not verified
 ground truth. Do not supplement it with your own remembered Cockatiel facts.
 
 You may consult the external works listed in the visual-language references
-to inform how you represent information. Do not retrieve the original dialogue,
-other chats, PostCode project files, Cockatiel source or documentation, or the
-linked issue. Links in the working account are provenance pointers, not permission
-to fetch additional context for this exercise. Do not ask another agent to recover
-that context for you.
+to inform how you represent information. Otherwise use only the two supplied
+files. Do not retrieve other chats or local project material, Cockatiel source or
+documentation, or the linked issue. Treat the account's links as provenance
+pointers; do not follow them to gather additional information about the software.
+The same source boundaries apply to any delegated work.
 
 If a reference is inaccessible, record that briefly and continue with what is
 available. If the account lacks information needed for a picture, identify the
@@ -77,12 +77,8 @@ than exhaustive coverage.
 2. A brief companion note mapping each view's substantive claims to headings or
    passages in the supplied account. Keep this traceability outside the main
    pictures unless a qualification needs to be visible there.
-3. A short assessment of the account as starting material: what it supported,
-   what was missing or ambiguous, any assumptions or new inferences, and risks of
-   misleading visual interpretation. Name the visual references actually used.
-4. A few concrete questions we could ask a viewer to test understanding and
-   discover misconceptions, without claiming that the pictures have already
-   demonstrated improved comprehension.
+3. Brief production notes identifying any missing or ambiguous information,
+   assumptions or new inferences, and consequential limitations of the pictures.
+   Name the visual references actually used and the supplied account version.
 
-Record the supplied account version and keep the input files unchanged so we can
-bring your outputs back to the original exploration and assess what transferred.
+Keep the input files unchanged.
