@@ -231,6 +231,56 @@ has inspected commit messages, changed-file summaries and pre-addition material;
 it is not a blind evaluation. A later assessment should distinguish designer
 knowledge from information actually supplied to the human and Investigator.
 
+## Current open-issue candidate: admission before background work
+
+On 2026-10-14, GitHub listed two open Cockatiel issues. The stronger journey
+candidate is [#111, Support gating code from outside the actual exec function](https://github.com/connor4312/cockatiel/issues/111),
+opened 2025-09-05, still open with no discussion comments at inspection. There is
+no recorded maintainer acceptance of the suggested design.
+
+The reporter describes an endpoint that prepares and acknowledges a background
+job whose success depends on an external service. They want to gate preparation
+using the service's circuit breaker. They report that blocking work while the
+breaker is open also prevents the execution that would let the breaker progress
+toward recovery. Their suggested remedy is eager state transitions; the user need
+and this proposed mechanism should remain separate.
+
+A behavioral brief could be:
+
+> Help callers decide whether to accept work before expensive preparation, while
+> preserving protection during dependency failures and allowing recovery attempts.
+> What can an early check promise, and how should it relate to later execution?
+
+The human-facing choices include whether the check supplies advisory information
+or reserves permission for later execution, how recovery attempts are admitted,
+what happens when conditions change between acceptance and execution, and how
+concurrent callers share limited recovery opportunities. The agent investigates
+mechanisms and alternatives; the human judges the commitments and tradeoffs. No
+check should be presented as guaranteeing eventual job success merely from a
+breaker state.
+
+A bounded source inspection at Cockatiel commit
+`f48bea55022ab15ab07eb52a79bfc1e661300fd4` found that `state` returns the stored
+state, while `execute` checks elapsed backoff and moves an open breaker into its
+half-open recovery state. Recovery sampling also tracks in-flight work. This
+supports the relevance of the issue to the current implementation; it is static
+agent inspection, not reproduction of the report, a comprehensive design review,
+or a PostCode-produced answer. The
+[pinned implementation](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts)
+provides a recoverable baseline for further assessment.
+
+The other open issue, [#80, Improve feature parity w/ Polly v8](https://github.com/connor4312/cockatiel/issues/80),
+combines pipelines, telemetry and naming. Its maintainer response invites more
+specific needs and proposals. It is less bounded as a first journey unless one
+of those needs is developed separately.
+
+Issue #111 is a promising alternative to historical replay: a real stated need,
+a mature fixed baseline, and consequential choices without reconstructing history.
+It remains a candidate for human selection. The issue supplies the starting lead;
+this does not assume PostCode can ingest issues or already produce a cross-subject
+account of admission, execution and recovery. Those are separate capabilities to
+assess when sketching the actual interaction.
+
 ## Orientation: what might supply the forest?
 
 Existing organization and dependency results can situate modules within qualified
