@@ -461,6 +461,33 @@ That gives us two distinct questions:
 
 We don’t need to introduce both queries. I’d tentatively choose **can accept** for this scenario, retaining the advisory, non-reserving promise. For combined policies, it still cannot promise that a breaker will allow execution by the time a queued operation reaches it.
 
+<a id="acceptance-explanation"></a>
+## 14. Explaining a negative answer
+
+**Human:**
+
+> should "no" be accompanied by whatevr result information the policy provides explaining the queue state or breaker failure?
+
+**Assistant:**
+
+**Yes. The answer should include why the policy would refuse the submission, with the relevant information it already has.** That would make it useful for deciding what to do next, rather than just testing a boolean.
+
+For example:
+
+| Answer | Explanation and useful context |
+|---|---|
+| Cannot accept: capacity exhausted | No execution or queue slots remain; include the relevant capacity counts. |
+| Cannot accept: recovery delay still running | The breaker is withholding attempts; potentially include the remaining delay and last recorded failure. |
+| Cannot accept: manually blocked | The breaker has been explicitly held open; waiting for the recovery delay is not the remedy. |
+
+These would be proposed query results, not errors produced by attempting execution.
+
+There’s an important distinction in the breaker case: **the current reason for refusing work is its protection state; the last failure explains how it got there.** That earlier failure does not establish that the dependency is still failing now. Similarly, a remaining delay tells us when a recovery attempt may become eligible, not when the service will be healthy.
+
+I’d make the acceptance answer and its explanation describe the **same observation**, so callers don’t have to read the state separately and risk getting an explanation that no longer matches the answer. For a combined policy, the explanation should identify which component is blocking acceptance.
+
+We can keep this modest: a clear reason plus relevant policy-specific detail. It needn’t expose every internal field or invent a general diagnostic framework.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -527,6 +554,12 @@ These observations are provisional design interpretation, separate from the dial
   A common meaning must distinguish entering policy handling from a commitment to
   run the action. Neither two separate queries nor a final acceptance contract has
   been selected.
+- **Explanations become part of the proposed query.** Exchange 14 asks for
+  existing capacity or failure information alongside a negative answer. The agent
+  proposes a reason plus relevant policy-specific detail from the same observation,
+  distinguishing present admission conditions from historical failure evidence.
+  The example result categories and fields are proposals, not verified query output
+  or a settled result schema.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
