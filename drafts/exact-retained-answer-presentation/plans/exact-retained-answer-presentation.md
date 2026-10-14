@@ -1,6 +1,6 @@
 # Exact retained-answer presentation
 
-Status: in preparation
+Status: in review
 Created: 2026-10-14
 Updated: 2026-10-14
 Superseded by:
@@ -14,17 +14,17 @@ Support a request that presents an exact retained Projection with new presentati
 This work delivers continuity within the supported transient Session. It does not promise byte-identical output, current interpretation status, permanent availability or continuity across process restarts.
 
 <a id="review-choices"></a>
-## Review choices
+## Resolved review choices
 
-This package remains non-governing. Resolve the following choices with the human before promotion; the approach below develops the recommendations so their consequences can be reviewed.
+The human agreed to Q1–Q3 on 2026-10-14, with Q2 expressly limited to the current lifecycle. The choices below are settled for this plan. The package remains non-governing pending approval and promotion; this agreement does not authorize implementation.
 
-| Choice | Recommendation | Alternative and consequence |
+| Choice | Agreed behavior | Alternative and consequence |
 | --- | --- | --- |
-| Q1: existing paging syntax | [Needs review] Add shell present and move --after and --revision-page to it. Reject those flags on fresh Lens requests with guidance to present an answer reference. | Preserve old syntax as explicit reselection. This needs conspicuous refresh semantics and consequential-change disclosure; a JSON ID or generic warning does not cure F6. Implicitly looking up the last matching request creates additional history and ambiguity policy. |
-| Q2: invalidated Sessions | [Needs review] Keep current Session validity/publication checks and shutdown behavior. | Historical presentation after invalidation is valuable and conceptually compatible with immutable answers, but requires separating readable retention from investigation cancellation and shell shutdown. Scope and lifecycle decisions must be revised before including it. |
-| Q3: human-facing answer references | [Needs review] Expose a distinct, stable, Session-local compact answer reference alongside the precise Projection ID. The API accepts the precise ID; CLI accepts both. | Raw IDs alone are smaller to implement but cumbersome in human paging. An implicit last-answer alias adds mutable targeting and is not part of this recommendation. |
+| Q1: existing paging syntax | Add shell present and move --after and --revision-page to it. Reject those flags on fresh Lens requests with guidance to present an answer reference. | Keeping old syntax as explicit reselection would need conspicuous refresh semantics and consequential-change disclosure; a JSON ID or generic warning does not cure F6. Implicitly looking up the last matching request creates additional history and ambiguity policy. |
+| Q2: invalidated Sessions | Keep current Session validity/publication checks and shutdown behavior as a bounded lifecycle limitation. Invalidation makes the historical answer unavailable through this lifecycle; it does not make the answer itself invalid. | Historical presentation after invalidation is valuable and conceptually compatible with immutable answers, but requires separating readable retention from investigation cancellation and shell shutdown. Scope and lifecycle decisions must be revised before including it. |
+| Q3: human-facing answer references | Expose a distinct, stable, Session-local compact answer reference alongside the precise Projection ID. The API accepts the precise ID; CLI accepts both. | Raw IDs alone are smaller to implement but cumbersome in human paging. An implicit last-answer alias adds mutable targeting and is not part of this recommendation. |
 
-The command spelling present is a concrete review proposal. Exact internal names and output layout are delegated after the behavioral choices are accepted. Other consequential recommendations, including outcome/report separation, the observation version and default handling below, are part of the decision package for approval rather than implementation assumptions.
+The agreed shell command is present. With no established user base requiring compatibility, reject ambiguous old paging flags with useful guidance rather than retaining aliases. Exact internal names and output layout remain delegated within these choices. Other consequential recommendations, including outcome/report separation, the observation version and default handling below, remain part of the decision package for approval rather than implementation assumptions.
 
 ## Implementation assessment
 
@@ -52,9 +52,9 @@ The [architecture overview](../architecture/README.md), [investigation architect
 
 The [application specification](../app-specification.md), [core concepts](../core-concepts.md) and [architectural constraints](../architectural-constraints.md) already require presentation continuity and distinguish captured basis from interpretation selection. The [coordinated-Views decision](../decisions/coordinated-views-and-qualified-results.md), [qualified construction](../decisions/qualified-construction-under-the-request-model.md), [Lens request outcomes](../decisions/lens-application-and-request-outcomes.md), [transient Sessions](../decisions/transient-analysis-sessions.md), [investigram decisions](../decisions/investigrams-and-progressive-investigation.md) and [reference lifetime disclosure](../decisions/reference-lifetime-disclosure.md) remain governing.
 
-The accompanying [decision](../decisions/exact-retained-answer-presentation.md) specifies the new bounded request, reference and reporting contract. No definition of Projection, Presentation, View or pinned input needs replacement. No foundation or application-specification revision is needed for the recommended scope. The package includes a narrow architectural-constraint addition to make the supported retained-request boundary directly usable; its decision provenance is the companion record. If Q2 changes, reassess governing and lifecycle documents before promotion.
+The accompanying [decision](../decisions/exact-retained-answer-presentation.md) specifies the new bounded request, reference and reporting contract. No definition of Projection, Presentation, View or pinned input needs replacement. No foundation or application-specification revision is needed for the recommended scope. The package includes a narrow architectural-constraint addition to make the supported retained-request boundary directly usable; its decision provenance is the companion record. Separating retained-information lifetime from permission to investigate remains outside this plan.
 
-The accompanying backlog revision transfers F6 into this plan and preserve the unresolved portion of F5. Adoption does not establish implemented conformance. During promotion, replace live F6 backlog links with this plan while retaining truthful current-limit statements. Do not rewrite historical decisions, audits or concluded records. Their references remain interpretable against their historical baselines.
+The accompanying backlog revision transfers F6 into this plan and preserves the unresolved portion of F5. Adoption does not establish implemented conformance. During promotion, replace live F6 backlog links with this plan while retaining truthful current-limit statements. Do not rewrite historical decisions, audits or concluded records. Their references remain interpretable against their historical baselines.
 
 ## Scope
 
@@ -74,7 +74,7 @@ Introduce a discriminated request alternative whose meaning is “present this r
 
 The direct Session boundary accepts a precise Projection ID. Validate that the target is retained in this Session and belongs to a supported answer kind. A retained answer may be empty, partial, unavailable or contain an earlier failed evaluation. An unknown target, foreign Session, wrong record kind or incompatible Presentation returns a qualified non-View refusal, not a replacement answer. Do not claim an unknown ID was previously retained and expired without evidence. Broken retained support is an internal defect, not ordinary unavailability.
 
-The shell surface, subject to Q1/Q3, is:
+The shell surface is:
 
 ~~~text
 present @answer-… --json
@@ -83,7 +83,7 @@ present @answer-… --revision-page 2
 present @answer-… --source-detail
 ~~~
 
-Each produced answer exposes its precise ID and, if Q3 is accepted, its compact answer reference in both human and structured output. Resolution results naming already-retained answers expose usable targets too. No history command or implicit “last” target is required. A display failure does not revoke an already-retained answer.
+Each produced answer exposes its precise ID and compact answer reference in both human and structured output. Resolution results naming already-retained answers expose usable targets too. No history command or implicit “last” target is required. A display failure does not revoke an already-retained answer.
 
 One-shot present is rejected before opening an unrelated Session. One-shot outputs still identify their answer but explicitly disclose that references expire at command end. The reference-lifetime notice covers every family touched by the new output, not just investigrams. It offers no cross-process reconstruction.
 
@@ -97,7 +97,7 @@ Do not add a refresh command that reconstructs a request from a Projection. Desi
 
 Subject navigation remains a new request. For example, inspect @investigram from an older answer preserves the investigram target but may select newer correction context. Help and continuation wording must distinguish this from present @answer, which fixes the complete selection. Avoid promising that all navigation from a retained answer is historically frozen.
 
-Under Q1's recommendation, fresh inspect rejects --after and --revision-page, explaining how to obtain/use the answer reference. Every rendered continuation points to retained presentation. Do not retain silent reselection aliases. A fresh command with --json or --source-detail remains explicitly a fresh selection; reformatting an earlier answer uses present.
+Fresh inspect rejects --after and --revision-page, explaining how to obtain/use the answer reference. Every rendered continuation points to retained presentation. Do not retain silent reselection aliases. A fresh command with --json or --source-detail remains explicitly a fresh selection; reformatting an earlier answer uses present.
 
 ## Presentation separation and content sufficiency
 
@@ -148,15 +148,15 @@ Retained presentation does not have to reproduce the original View ID. Format, p
 
 Current invocation context reports the exact presentation target and effective choices. Original name-lookup prose or an earlier attempt's provider diagnostics are not reconstructed or copied as if they describe this invocation. Preserve all answer-relevant qualification from retained content. Derive a neutral title from the retained Lens meaning and the Session's fixed catalog, rather than requiring the old command spelling.
 
-If compact answer references are adopted, allocate them in a separate target namespace, backed by exact retained Projection IDs. Preserve existing subject bindings and collision behavior; do not extend the arrangement's entity-binding port into arbitrary record lookup. Repeated presentation of the same ID returns the same alias, and a new colliding answer cannot steal an old one. A Projection does not become a program Entity or automatically a Lens subject.
+Allocate compact answer references in a separate target namespace, backed by exact retained Projection IDs. Preserve existing subject bindings and collision behavior; do not extend the arrangement's entity-binding port into arbitrary record lookup. Repeated presentation of the same ID returns the same alias, and a new colliding answer cannot steal an old one. A Projection does not become a program Entity or automatically a Lens subject.
 
-The existing store already retains records for the transient Session, with no eviction. Add no duplicated answer archive, retained View store or full resolved-content cache. A bounded alias map adds retention proportional to exposed answers and ends with the Session. Keeping stdout or observations does not extend references. Presentation after invalidation remains the explicit Q2 decision.
+The existing store already retains records for the transient Session, with no eviction. Add no duplicated answer archive, retained View store or full resolved-content cache. A bounded alias map adds retention proportional to exposed answers and ends with the Session. Keeping stdout or observations does not extend references. Keep current Session validity checks, invalidation and shutdown behavior. Session invalidation does not make a historical answer invalid over its captured basis; the current lifecycle makes it unavailable. Separating retained-information lifetime from permission to continue investigating is conceptually valid but outside this work.
 
 ## Outcomes, reporting and observations
 
 Report current presentation success separately from the retained answer's analysis outcome. Successfully displaying a retained failed/unavailable answer is a completed presentation request; the earlier failure remains visibly qualified. A refused target, option, continuation or incompatible presentation is a current refusal. Fresh Lens execution keeps its existing failure behavior. Out-of-range numeric pages retain explicit bounds/empty-page semantics rather than selecting a different answer; malformed values are rejected.
 
-Retained semantic outcome must be available to the arranger independently of optional current attempt reporting. Do not fake reused=true, generate an attempt ID, replay provider failure metadata as a new event, or charge previous usage again. Current work attribution records consumption of the exact retained answer/support and no evaluation/provider/interpretation work. Normal input-validation probes, when Q2 retains them, are validation rather than new claim acquisition. Existing original generating attribution remains intact.
+Retained semantic outcome must be available to the arranger independently of optional current attempt reporting. Do not fake reused=true, generate an attempt ID, replay provider failure metadata as a new event, or charge previous usage again. Current work attribution records consumption of the exact retained answer/support and no evaluation/provider/interpretation work. Normal input-validation probes remain validation rather than new claim acquisition. Existing original generating attribution remains intact.
 
 Carry the presentation request kind through normalization, direct execution, worker envelopes, parent finalization, publication and observations. A produced View records its exact Projection, effective presentation choices, selection mode and actual rendered output. Preserve the internal investigation arrangement key for idempotent authoritative usage finalization. No core lookup, binding or selection occurs in the parent.
 
@@ -201,17 +201,17 @@ Use real fixtures and the existing controlled investigator double, without hoste
 | Formats and disclosure | Reformat and toggle only supported captured source detail. Compare full content/support, structured Views and actual rendered output, allowing only explicit presentation/report differences. Source classifications match actual exposure. |
 | Compatibility failure | Missing expansion, unsupported variant/option and unmet completeness precondition return qualified non-View refusals referencing the retained answer. Permitted fallback preserves explicit choices. |
 | Identity | Repeated equal effective presentation is stable under equal reporting; changed pages/lifetime/usage do not change Projection identity. Semantic continuation normalization retains literals in a disjoint key space. |
-| Target/reference lifecycle | Unknown, foreign and wrong-kind targets; stale same-spelling foreign Session; answer/subject namespaces; collisions; old bindings unchanged; no use after close. Q2's accepted invalidation policy is tested explicitly. |
+| Target/reference lifecycle | Unknown, foreign and wrong-kind targets; stale same-spelling foreign Session; answer/subject namespaces; collisions; old bindings unchanged; no use after close. Detected input changes preserve the historical answer and its qualifications while further presentation is withheld and the shell shuts down; output describes the lifecycle limitation without declaring the earlier answer invalid. |
 | Separation | No selectors, construction, current-history enumeration or Evaluation on present. Binding sees only supplied populations, including off-page support. Fresh commands still use coordination normally. |
 | Publication | Direct and worker results agree; finalization twice is stable; Session usage may reflect intervening work without charging presentation; observation v3 reports present, not a Lens repeat; sink failure preserves output. |
-| Honest command behavior | All fresh Lens commands report fresh selection; old paging syntax follows Q1; one-shot lifetime is explicit for every family; subject navigation does not claim frozen-answer continuity. |
+| Honest command behavior | All fresh Lens commands report fresh selection; old paging flags on fresh requests are rejected with guidance to present the exact answer; one-shot lifetime is explicit for every family; subject navigation does not claim frozen-answer continuity. |
 | Extension locality | Shared interpretation and module-exports fixtures can present retained answers without new Lens-name branches in coordination/reporting. |
 
 During implementation run focused checks per slice, then npm run check and npm test. Compare semantic content with kind-aware reference normalization; do not erase qualification, omissions, ordering, literal evidence or meaningful identity differences to make tests pass.
 
 ## Risks and decision ownership
 
-The human resolves Q1–Q3 and approves the decision/constraint package before promotion. If the human includes post-invalidation presentation, revise the plan before implementation rather than bypassing validation locally.
+Q1–Q3 are resolved by human agreement. The remaining decision/constraint package requires human approval before promotion. Keep post-invalidation reading and broader lifecycle/interface design outside this plan; any later inclusion requires a separately agreed scope revision rather than a local validation bypass.
 
 The implementer rechecks this baseline against concurrent repository work at task initiation. Particular risks are associated composite dispatch, source support that looks present but lacks the required qualified expansion, retained unavailable outcomes hidden by null current reporting, and accidental population-wide binding from current history. If a retained family cannot reconstruct its qualified content, repair the bounded retention contract through an explicit reviewed scope adjustment; do not silently select a fresh substitute.
 

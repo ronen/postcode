@@ -1,7 +1,7 @@
 # Present exact retained answers independently of fresh selection
 
-Status: in preparation
-Decided: [Needs review]
+Status: in review
+Decided: pending package acceptance
 Arising from: [Exact retained-answer presentation](../plans/exact-retained-answer-presentation.md)
 Scope: retained presentation in the current transient Session API and CLI, qualified content compatibility, references, identity and reporting
 
@@ -11,7 +11,7 @@ Current commands coordinate a fresh Lens application before producing each View.
 
 The [continuity contract](coordinated-views-and-qualified-results.md#preserve-the-selected-answer-during-presentation-changes) distinguishes an exact retained Projection from a repeated request, including a request against pinned program inputs. The [request model](lens-application-and-request-outcomes.md) separates immutable qualified answers from designation, invocation reporting and Presentation choices. This decision makes those distinctions operable for existing families.
 
-The recommendations marked Q1–Q3 remain for human resolution in the accompanying plan. The record is not ready for acceptance while those annotations remain.
+The human agreed on 2026-10-14 to move paging to present, retain current invalidation/shutdown as a bounded lifecycle limitation, and include stable compact answer references. The accompanying plan records that agreement. The complete decision package remains in review pending acceptance and promotion.
 
 ## Decisions
 
@@ -54,8 +54,6 @@ The existing full content and unpaged revision snapshots suffice for the current
 <a id="make-retained-and-fresh-actions-distinct"></a>
 ### Make retained and fresh actions distinct
 
-[Needs review Q1: this heading develops the recommended paging migration.]
-
 Add a shell present command accepting an exact answer reference and supported presentation options. Move association and revision paging from fresh inspect requests to present. Reject the old combination with actionable guidance; generated continuation text names the exact answer. Do not reinterpret a repeated request as the last matching retained answer.
 
 Existing Lens commands remain fresh selections. Human and structured output identify whether the action selected afresh or presented an exact retained answer. Fresh selection can reuse earlier work and return the same answer ID; neither a changed ID nor an equal ID establishes whether inference ran.
@@ -66,14 +64,12 @@ During retained presentation, describe revision and reconsideration state as sel
 
 #### Rationale and alternatives
 
-A separate command is a small explicit distinction that later interfaces can preserve. Keeping old paging syntax would require a different UX and comparison/disclosure policy. A generic “results may change” warning is insufficient. An implicit current-answer slot introduces mutable targeting and ambiguous history selection that are unnecessary for this capability.
+A separate command is a small explicit distinction that later interfaces can preserve. Keeping old paging syntax would require a different UX and comparison/disclosure policy. With no established user base requiring compatibility, useful rejection guidance is preferable to preserving ambiguous paging behavior. A generic “results may change” warning is insufficient. An implicit current-answer slot introduces mutable targeting and ambiguous history selection that are unnecessary for this capability.
 
 <a id="preserve-answer-identity-and-reference-lifetime"></a>
 ### Preserve answer identity and reference lifetime
 
 Presenting a retained answer returns exactly its retained Projection ID and does not publish another Projection. Preserve immutable support and answer formulas; new presentation requests do not enter answer identity.
-
-[Needs review Q3: the following paragraph develops the compact-reference recommendation.]
 
 Expose a stable compact answer reference with the precise ID, including in resolution results that identify retained answers after display failure. The direct API accepts precise IDs; the CLI accepts precise IDs and compact answer references. Bind compact references in a distinct Session-local answer namespace. They identify Projections, not program entities, Lens subjects, request occurrences or Views. Preserve existing subject-reference bindings; answer allocation cannot steal or retarget them. No implicit last-answer alias or persistent lookup service is included.
 
@@ -81,7 +77,7 @@ View identity continues to reflect the retained Projection, responsible Presenta
 
 A presentation request does not recreate original lookup prose, request-specific provider diagnostics or an old usage report. Those are invocation context, not retained answer meaning. Preserve answer-relevant qualification and retained semantic outcome independently. A neutral title can use retained Lens meaning and the fixed Session catalog.
 
-[Needs review Q2: retain current Session validity checks, invalidation and shell shutdown for this slice.]
+Keep current Session validity checks, invalidation and shutdown behavior as a bounded lifecycle limitation. Session invalidation does not make the historical answer itself invalid over its captured basis; the current lifecycle makes it unavailable. Its content and qualifications remain unchanged. Separating the lifetime of retained information from permission to continue investigating is conceptually valid and remains outside this work.
 
 Retained references remain available only within the supported active Session. One-shot output discloses expiry at command end for every affected family; one-shot present is rejected before opening a new Session. Keeping output or observations does not preserve a live target. This work adds no persistence, eviction, reopening or invalidated-Session read mode. Supporting historical presentation after invalidation would require a separate lifetime/ownership decision.
 
@@ -114,4 +110,4 @@ This decision supplements existing accepted contracts; it does not replace a hea
 
 Preserve the [qualified-construction](qualified-construction-under-the-request-model.md) answer/View identity and support rules, the [request model](lens-application-and-request-outcomes.md) non-View and compatibility rules, [compact attribution](compact-attribution-and-complete-results.md), [reference lifetime disclosure](reference-lifetime-disclosure.md), [execution ownership](execution-ownership-and-cancellation.md), and source/observation obligations. New retained requests extend those paths; existing fresh Lens semantics remain in force except the explicitly approved paging surface change.
 
-The CLI currently lacks this operation. Adoption adds no conformance claim; the companion plan must establish it through continuity tests across intervening corrections, association changes and materialization, all supported families, direct/worker publication, refusals, stable references, source disclosure and usage finalization. Resolve Q1–Q3 before acceptance. No foundation or process-document change is included.
+The CLI currently lacks this operation. Adoption adds no conformance claim; the companion plan must establish it through continuity tests across intervening corrections, association changes and materialization, all supported families, direct/worker publication, refusals, stable references, source disclosure and usage finalization. No foundation or process-document change is included.
