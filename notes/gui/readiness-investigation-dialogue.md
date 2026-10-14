@@ -773,6 +773,28 @@ For the breaker alone, our query would largely **bring that decision into the li
 
 That anchors the scope: **the reported need is a supported, convenient way to make this check.** The common policy interface, bulkhead support, and richer explanations are design extensions we’ve been considering—not requirements established by the original report.
 
+<a id="requested-automatic-transition"></a>
+## 25. Which automatic transition the requester suggests
+
+**Human:**
+
+> their suggestion was automated state transitions, meaning that after the timer, the breaker automatically switches back to closed or half-open?
+
+**Assistant:**
+
+**Half-open: willing to allow a recovery trial.** Switching straight to closed would allow normal traffic without evidence that the dependency had recovered.
+
+In context, their suggestion is:
+
+1. Failures cause the breaker to become **open**—attempts are paused.
+2. The recovery delay expires, and it becomes **half-open** without requiring an execution call.
+3. The application reads that state and decides to prepare work.
+4. Subsequent execution supplies the trial. Its outcome determines whether normal operation resumes or attempts are paused again.
+
+The report explicitly identifies the missing **open-to-half-open** transition and asks for an option to make transitions eager. It doesn’t specify a detailed implementation; a timer-driven transition is the natural reading of that suggestion. [Original issue](https://github.com/connor4312/cockatiel/issues/111)
+
+So their proposal changes the state automatically. Ours would leave that transition tied to execution, but expose whether a trial is already eligible. Both can support their pre-preparation check.
+
 <a id="research-observations"></a>
 ## Research observations
 
