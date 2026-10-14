@@ -49,6 +49,28 @@ Open-ended exploration is part of this purpose. The human need not begin with a
 decision or an agent's proposal; discovering what deserves attention can itself be
 a valuable outcome.
 
+## Example: repeated changes when adding a policy
+
+> We keep changing several parts whenever we add a policy. Is that an accidental
+> coupling worth removing, or does it reflect a shared commitment?
+
+This is an illustrative design question, not a finding about Cockatiel or another
+particular project. The reported pattern is a lead to investigate; repeated
+co-change alone establishes neither accidental coupling nor a shared commitment.
+
+An agent could investigate which responsibilities change together, what evidence
+explains those relationships, and what alternative boundaries would preserve or
+alter. PostCode could help the human examine that qualified account, distinguish
+recorded rationale from inferred explanations, and weigh the consequences of
+keeping or changing the design.
+
+The human's contribution is to judge which commitments matter and which tradeoffs
+are acceptable. Possible outcomes include directing a refactoring, retaining the
+existing coupling with a clearer understanding of its purpose, or requesting more
+evidence. The example does not require the human to trace every dependency or
+perform the refactoring, and it does not assume PostCode already supplies the
+necessary history, synthesis, or alternative-design analysis.
+
 ## Implications to explore
 
 "Higher level" is an imperfect description of this purpose. A small behavioral
