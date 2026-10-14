@@ -10,6 +10,45 @@ The [backlog](../docs/backlog.md) records broader worthwhile work and concerns; 
 
 [Candidate UX](candidate-ux.md) explores how someone could initiate, navigate, organize, and continue these investigations. This inventory focuses on what PostCode could help someone discover or establish. Ideas may span both; cross-link their complementary questions rather than duplicate their rationale.
 
+## Investigate a hosted repository without preparing a local checkout
+
+PostCode could investigate a repository hosted on GitHub without requiring the
+human to create or manage a local checkout. This could reduce the preparation
+needed to explore an unfamiliar project. An app-managed checkout, downloaded
+snapshot, or remote content access are possible acquisition mechanisms; the
+capability does not prescribe one. Other hosts, such as GitLab or Bitbucket,
+could also be considered.
+
+The investigation would need to identify the revision and inputs examined,
+disclose unavailable material, and make the availability of those inputs for
+further investigation clear. Retaining acquired source and persisting an
+investigation are separate concerns: temporary acquisition could be useful
+without promising continuity across application restarts. Their relationship,
+along with access, refresh, retention, and cleanup policies, remains open.
+
+## Development discussions and records as evidence
+
+PostCode could use development discussions and records to help explain a
+program: for example, GitHub pull requests and review comments, or corresponding
+material from GitLab or Bitbucket. These sources may record motivating problems,
+rejected alternatives, compatibility constraints, and intended effects that are
+not apparent from the code alone.
+
+This could complement hosted-repository access or enrich investigation of a
+local checkout. Configured remotes could help discover associated sources;
+discovery would not itself establish the relevant repository or authorize
+access. Acquisition would preserve PostCode's evidence boundary rather than
+give an Investigator unrestricted external access.
+
+Discussion material can change independently of the code. Results would need
+to preserve which material was examined and when, its relationship to the
+selected program state, and limitations in coverage. Proposed approaches,
+participants' assertions, implemented behavior, and the continued applicability
+of historical rationale remain distinct. Selection of relevant discussions and
+treatment of edited, missing, or conflicting records are open questions. This
+evidence could support the [historical summary](#historical-summary) as well as
+questions about the current program.
+
 ## Investigation across changing repository states
 
 PostCode could continue an investigation as the repository or worktree changes,
@@ -83,6 +122,25 @@ Formative use of qualified views and investigator reports can show which
 distinctions people find informative, confusing, or missing, and guide any
 broader categories, subjective-confidence scale, or visual marks. There is no
 need to settle a universal vocabulary or iconography in advance.
+
+### Qualification in prose
+
+Investigative prose could also express the qualifications carried in structured
+results, making the basis of an account apparent in the wording itself. For
+example, “It appears that…” could signal interpretation, “According to the
+documentation…” could attribute a recorded assertion, and “In the observed
+runs…” could describe execution evidence. Direct statements such as “This module
+exports…” could express mechanically established facts within the analysis's
+scope. These are illustrative forms, not a fixed vocabulary or confidence scale.
+
+The aim would be wording that matches the evidence and scope of each claim,
+rather than uniform hedging or a single qualification for an entire summary.
+Verification of particular cases would not justify an unrestricted behavioral
+claim. Prose would complement structured qualification and evidence references,
+without replacing them or strengthening their guarantees. Open questions include
+how to encourage this in generated accounts, check consistency with structured
+qualifications, and balance readable prose with enough local qualification when
+an account combines different evidence kinds.
 
 ## Explorative landscape orientation
 
@@ -375,3 +433,21 @@ Historical authorship and change chronology are distinct from the operational us
 Answers could draw on Git, related development records, comparisons of program structure, tests, and runtime observations, qualified by available history, attribution, and correspondence of the entity across revisions. A claimed outcome might be measured or merely recorded; motivation might be documented or interpreted; and a mechanism might be derived from the implementation change. Evidence of the mechanism alone would not establish its effects or motivation. Identifying a change as consequential may itself involve interpretation.
 
 As with the operational summary, these questions need not form a rigid schema or a monolithic analysis. Each answer could be expanded into its supporting evidence, with its method, scope, and limitations visible; inapplicable questions could be omitted and unavailable answers reported explicitly.
+
+### How was this built?
+
+A broader account could explore the origins, development practices, and
+stewardship of a project or part of it. Illustrative questions include how humans
+and coding agents participated, whether material was imported from another
+project and adapted, and how maintenance and decision-making were distributed
+among primary maintainers and a wider contributor community. These are possible
+directions for investigation, not a proposed classification scheme. The account
+could differ across components and change over time.
+
+Such an account could help explain inherited constraints, maintenance
+assumptions, and where design knowledge resides. It could draw on available Git
+history, documentation, and [development discussions and records](#development-discussions-and-records-as-evidence).
+Explicit records of agent involvement are different evidence from stylistic
+resemblance; contribution activity alone does not establish decision authority
+or possession of essential knowledge. Preserve those limitations and unknowns
+without treating a development practice or origin as a judgment of code quality.
