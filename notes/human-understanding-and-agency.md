@@ -10,14 +10,22 @@ application requirement, implementation plan, or authorization to implement.
 
 ## Principle
 
-PostCode should help people develop and examine the understanding they need to
-shape software: its purposes, externally visible commitments, responsibilities,
-tradeoffs, and evolution.
+PostCode's purpose is to help humans understand and guide software development
+when the coding is carried out by agents. It should help people develop and
+examine their understanding of the software's purposes, design, externally visible
+commitments, responsibilities, constraints, invariants, tradeoffs, and evolution.
 
-Agents can undertake substantial investigation and implementation. PostCode gives
-the human a working surface for exploring the software, questioning accounts of
-it, considering alternatives, and judging proposed changes. Its value lies in
-making that participation informed and effective.
+This purpose should orient the experience toward questions such as: What design
+is taking shape? Which constraints and invariants matter, and what supports the
+claim that they hold? What would a proposed change preserve or alter? Routine
+implementation diagnosis and repair can be delegated to agents; helping the human
+perform those tasks should not become PostCode's default organizing purpose.
+
+PostCode gives the human a working surface for exploring the software, questioning
+accounts of it, considering alternatives, and judging proposed changes. Its value
+lies in making that participation informed and effective. Detailed debugging can
+still serve this purpose when it reveals a design problem, tests an assumption,
+or informs a commitment the human needs to make.
 
 The appropriate level of detail follows the human's information need. A broad
 account may help establish context; a precise implementation detail may determine
