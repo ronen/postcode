@@ -564,6 +564,31 @@ The answer and details should describe the same observation. We don’t need one
 
 Before settling the interface, we should check its meaning for the remaining policy types and how it affects application-defined policies. That’s a bounded contract check for the chosen direction, rather than a reason to design additional readiness features.
 
+<a id="policy-family"></a>
+## 18. Seeing the full policy family
+
+**Human:**
+
+> oh, there are other policy types?
+
+**Assistant:**
+
+**Yes. I listed them earlier, but didn’t make clear that they are all policy objects with the same execution interface.**
+
+| Policy | What it does around the supplied operation |
+|---|---|
+| **Circuit breaker** | Withholds attempts after failures, then permits recovery trials. |
+| **Bulkhead** | Limits concurrent work, optionally queues excess work, and rejects when full. |
+| **Retry** | Repeats an operation after selected failures, optionally waiting between attempts. |
+| **Timeout** | Sets a time limit, with cancellation behavior depending on its configuration and the operation’s cooperation. |
+| **Fallback** | Supplies an alternative value or action when a selected failure occurs. |
+
+There is also a **no-op policy**, which simply passes execution through. Combining policies produces another object with that common interface. [Documented policy family](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/readme.md#ipolicy-the-shape-of-a-policy)
+
+The breaker and bulkhead are particularly natural subjects for an acceptance query because they can refuse work based on shared conditions across calls. Retry, timeout, and fallback primarily govern what happens during execution or after an outcome.
+
+That doesn’t rule out putting the query on the common interface. It means we should establish what its answer means for these other policies—and their combinations—before treating the breaker/bulkhead model as universal.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -659,6 +684,12 @@ These observations are provisional design interpretation, separate from the dial
   contract and result structure still need agreement and validation, including
   remaining and application-defined policy types. This is a simulated Cockatiel
   design choice, not implementation authorization or a PostCode architecture decision.
+- **An earlier inventory did not establish the conceptual family.** In exchange
+  18 the human was surprised by other policy types despite the earlier facility
+  list. The agent had not made their shared object/interface relationship salient
+  enough. A future Presentation may need to preserve that relationship in context,
+  rather than assuming one explanatory list established lasting orientation.
+  This is an observation about this exchange, not evidence of a required UI form.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
