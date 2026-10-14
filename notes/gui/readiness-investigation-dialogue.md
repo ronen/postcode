@@ -375,6 +375,33 @@ So our proposed readiness query would be something you ask **that existing polic
 
 There’s a naming wrinkle in the implementation: the common contract for these executable objects is called `IPolicy`. A separate class literally named `Policy` configures which errors or results count as failures. When I’ve said “policy object,” I’ve meant the executable objects, such as the breaker and bulkhead. [API definitions](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/Policy.ts)
 
+<a id="combined-policy"></a>
+## 11. Combining a breaker and a bulkhead
+
+**Human:**
+
+> Cna the application combine a breaker and a bulkhead into a single policy?  or are those two different policies that can be used together?  or only one of them for a given operation request?
+
+**Assistant:**
+
+**Yes—the application can combine a breaker and a bulkhead into one policy object and execute an operation through both.**
+
+Your first two possibilities describe different aspects of the same arrangement:
+
+- The breaker and bulkhead remain **two distinct policy objects**, each with its own configuration and state.
+- Cockatiel’s `wrap` facility creates a **combined policy object** that passes execution through them in a specified order.
+- The application makes one execution call on that combined object and receives one eventual result. [Composition API](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/readme.md#wrappolicies)
+
+For example, with the bulkhead first:
+
+**Execution request → bulkhead → circuit breaker → application’s action**
+
+The bulkhead first allows the request through, queues it, or rejects it for lack of capacity. Once through, the breaker applies its own rules before the action can run.
+
+Reversing the order puts the breaker’s decision first. This matters: with the bulkhead first, a request can occupy a bulkhead execution slot while waiting for the breaker’s recovery decision. With the breaker first, a recovery attempt can be admitted and then wait for bulkhead capacity.
+
+The combined object coordinates those existing policies; their state isn’t merged into a new shared state. That makes **readiness of the combined policy** a further question: knowing that either component alone is ready doesn’t establish that the operation can start through both.
+
 <a id="research-observations"></a>
 ## Research observations
 
