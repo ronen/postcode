@@ -251,8 +251,26 @@ were copied retrospectively from the chat; subsequent substantive exchanges shou
 be appended as the simulation continues. The checkpoint does not conclude the
 simulation or accept the assistant's latest recommendation.
 
+<a id="conservative-scope"></a>
+## 7. Choosing a conservative scope
+
+**Human:**
+
+> [okay, getting back to the dialog]
+> Probably best idea is to be conservative: design something that addresses the immediate need and meshes well with existing capabilities.  Design it so that it could grow if needed, but no point creating features that nobody has asked for yet.
+
+**Assistant:**
+
+That gives us a clear direction: **a circuit-breaker readiness query that helps callers decide whether to begin preparation.**
+
+The intended promise is advisory: report whether an attempt would currently be permitted, including an eligible recovery attempt. It neither reserves permission nor guarantees that later execution will be admitted or succeed.
+
+“Could grow” should mean keeping that promise precise and avoiding unnecessary dependencies—not introducing a general readiness framework in anticipation of future uses. We can use existing capacity queries as a consistency reference without making them part of this change. Health probes and combined readiness can wait for a concrete need.
+
+Before handing this direction to an implementation agent, I’d investigate one remaining question: **what information does the breaker already expose, and what must be added to answer this query consistently with its execution rules?** That should let us distinguish a small addition from a change to the breaker’s behavior, and identify any cases where the proposed promise needs qualification.
+
 <a id="research-observations"></a>
-## Research observations at the checkpoint
+## Research observations
 
 These observations are provisional design interpretation, separate from the dialogue.
 
@@ -283,13 +301,19 @@ These observations are provisional design interpretation, separate from the dial
   options, but this has been a conversational trial. Evidence links were supplied;
   the human has not yet requested an evidence excursion, revisited an earlier answer,
   used graphical navigation, or assembled a handoff. Do not count those as tested.
+- **The human bounded the change after exploring alternatives.** In exchange 7,
+  the human chose the immediate need and fit with existing facilities, with room
+  for future growth but no speculative features. This is direction within the
+  simulation, not authorization to implement Cockatiel or PostCode changes. The
+  earlier broader recommendation remains visible rather than being rewritten.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
   or new core support remains outstanding.
 
-The current trial direction is an advisory readiness query, with broader
-policy-admission inspection being investigated rather than adopted. Its exact
+The current trial direction is a narrowly scoped advisory circuit-breaker readiness
+query. Broader readiness mechanisms are deferred pending demonstrated demand;
+existing facilities remain a consistency reference. Its exact
 meaning under concurrency, recovery sampling, composition, and delay still needs
 validation. No API, general readiness facility, or implementation slice is selected.
 The human's eventual product role and the journey's meaningful endpoint remain open.
