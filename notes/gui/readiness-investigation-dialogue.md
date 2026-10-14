@@ -1121,6 +1121,47 @@ The test would be whether those pictures help you explain the system and notice 
 
 I’ve saved the [research shortlist and implications](/Users/ronen/postcode/app-worktrees/graphical-investigation-journey/notes/gui/pictorial-representation-research.md) and linked it into our exploration notes. These are promising precedents, not yet evidence that pictures improve this journey.
 
+<a id="working-account-extraction"></a>
+## Design debrief: carrying understanding into another investigation
+
+**Retrospective process summary (not a verbatim transcript):** After the research
+shortlist, the human asks whether to compare alternative visual schemes and then
+checks the drift from defining a useful first journey. The discussion reopens
+another Cockatiel investigation as a possible next step, while recognizing that
+useful discoveries can justify departing from the original mandate. Both
+participants would now bring familiarity; the exercise would concern cumulative
+understanding rather than repeat newcomer orientation. No visual comparison or
+second investigation has begun.
+
+**Human:**
+
+> One simple thing would be to just point to the previous dialogue and say "that's what we know so far".  We could also try to extract a statement of our knowledge -- that would be an attempt to do what you described earlier:  "For this investigation it might contain:
+>
+> - the relevant objects, responsibilities, and relationships;
+> - the execution and recovery behavior we currently understand;
+> - supporting evidence, qualifications, and unresolved points;
+> - earlier versions and the reasons particular claims changed.
+>
+> The human’s intentions and design decisions should be retained alongside that account"
+
+**Assistant:**
+
+Yes—those serve complementary purposes. **The dialogue preserves how we arrived here; an extracted account makes what we currently think easier to inspect and reuse.** The extraction also exposes choices about what to retain, qualify or leave unresolved.
+
+I’ve made a [first working account](/Users/ronen/postcode/app-worktrees/graphical-investigation-journey/notes/gui/cockatiel-working-account.md), covering:
+
+- Objects, responsibilities, policy composition and behavior.
+- Supporting dialogue passages and the evidence cited there.
+- Corrections and important qualifications.
+- Your intentions, the selected change direction and outstanding decisions, separately from existing behavior.
+- What remains unknown before a possible execution-budget investigation.
+
+For example, it retains both “the breaker permits recovery trials” and the consequential refinement that **other calls can wait for a trial’s outcome**. It also distinguishes our explored generic acceptance query from the automatic-transition direction we ultimately chose.
+
+This is a reviewable synthesis, not a declaration that everything in the conversation was correct or understood. Keeping the dialogue alongside it lets us challenge the extraction itself.
+
+One experimental limitation: because we both retain familiarity from the conversation, the next investigation could show whether this account is useful, but wouldn’t cleanly measure how much understanding it supplies on its own.
+
 <a id="research-observations"></a>
 ## Research observations
 

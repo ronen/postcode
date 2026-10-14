@@ -486,6 +486,21 @@ model, earlier retained answers remain unchanged; later accounts and correction
 relations preserve revision history. This hypothesis does not introduce a new
 canonical object, global knowledge graph, storage schema or cross-session promise.
 
+A [first extracted Cockatiel account](cockatiel-working-account.md) now supplies
+a concrete experiment in retaining that understanding, alongside the original
+dialogue. It separates software claims, evidence qualifications, revisions,
+human intent and design choices. It was constructed from the completed dialogue,
+not through new source verification or PostCode analysis. It is not a measure of
+what either participant remembers or fully understands.
+
+Subsequent discussion keeps useful exploration open rather than treating the
+original mandate as a rigid boundary. A second Cockatiel investigation is favored
+as a possible next step; no new investigation has begun. Both participants would
+start with prior exposure. Reuse could reveal missing context and needed revisions,
+but our conversational familiarity would confound any claim that the extracted
+account alone supplied the understanding. Visual alternatives remain available
+without becoming a prerequisite for selecting the first journey.
+
 The human explicitly endorses **pictures as views of a retained revisable
 account** as the preferred direction for the picture-book exploration. Use a
 shared developing account to support overview, focused relationship and temporal
