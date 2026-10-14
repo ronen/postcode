@@ -178,6 +178,47 @@ does not automatically provide the “forest”; conversely, failure of the over
 does not invalidate every local illustration. Neither a replacement drawing nor
 a new experiment is commissioned by recording these observations.
 
+<a id="drawing-quality-and-concept"></a>
+## Drawing quality, concept value and timing of explanation
+
+The human explicitly distinguishes defects in particular drawings from whether
+the representation concept works. The assistant agrees that one execution of the
+idea cannot establish or refute the broader product hypothesis. Specific drawing
+quality, the suitability of representation choices, and value during software
+investigation are separate questions.
+
+The human asks whether these pictures might have helped when the concepts were
+first explained. The assistant judges that some plausibly could, especially at
+the questions about half-open, waiting versus starting, composition and recovery
+delay versus timer. This is a retrospective hypothesis, not an observed benefit.
+No new information for an already-informed reader does not imply no value during
+initial explanation or later reference.
+
+The human then sharpens the criticism of page 4:
+
+> getting more criticial, the "current" vs "proposed" timelines on page 4 directly address that, but the diagrams themselves need work... there's no visual indication of the timer in the second one, it doesn't use the open vs half-open icons in the central section; there's no real visual illustration of a trial; overall it relies too much on words
+
+This distinguishes a well-chosen comparison from its visual execution. The
+clock symbols mark elapsed time in both rows, while prose carries the crucial
+difference between elapsed time and a scheduled event that changes state.
+The central state difference is largely in labels rather than recurring state
+symbols. A ticket labeled “trial” names the trial without showing an application
+operation being allowed through and performed.
+
+**Agent interpretation:** the picture needs visual causal relationships, not
+just more icons. Candidate improvements would show the proposed timer triggering
+a state change while the current state stays unchanged at the same moment;
+reuse the breaker state symbols at those moments; and separately show a later
+application operation passing through as a trial, with its outcome still unknown.
+The separation must make clear that the timer does not initiate work. A simple
+single-trial example would retain its illustrative/default qualification.
+
+The assistant's earlier preference for page 4 is therefore a judgment about the
+comparison it organizes, not evidence that its drawing already explains the
+mechanism well. The concept remains worth exploring; this particular drawing
+underuses visual expression. These are recorded design observations, not a
+commission to modify the received artifacts.
+
 ## Possible continuation
 
 Use the distinction between local explanation and overall orientation when
