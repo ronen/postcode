@@ -488,6 +488,31 @@ I’d make the acceptance answer and its explanation describe the **same observa
 
 We can keep this modest: a clear reason plus relevant policy-specific detail. It needn’t expose every internal field or invent a general diagnostic framework.
 
+<a id="original-need-check"></a>
+## 15. Checking the proposal against the original need
+
+**Human:**
+
+> ok.  confirming that this would address the original requestor's issue?
+
+**Assistant:**
+
+**Yes—at the design level, it addresses the reported need, provided the query recognizes when the recovery delay has elapsed.**
+
+The requester wants to check before preparing a job, but reading the stored breaker state keeps telling them “blocked” until execution triggers recovery. Their workaround separately tracks elapsed time. [Original report](https://github.com/connor4312/cockatiel/issues/111)
+
+With our proposed query:
+
+1. **While the recovery delay is running:** it answers “cannot accept,” so the application can skip preparation.
+2. **Once a recovery attempt is eligible:** it answers “can accept,” even though the stored circuit state may still say “open.”
+3. **The application prepares and submits work:** execution performs the actual recovery transition and attempt.
+
+The query itself needn’t change the circuit state or start work. That breaks the circular dependency that was preventing recovery and removes the need for the caller to duplicate the breaker’s timing logic.
+
+It addresses their objective through an explicit query rather than their suggested automatic state transitions. It retains our agreed limitation: conditions can change after checking, so some prepared work may still be rejected or fail.
+
+**The breaker query alone addresses this issue.** Bulkhead support and unification would be additional design choices. We still need implementation and a test of this sequence before calling the fix verified.
+
 <a id="research-observations"></a>
 ## Research observations
 
@@ -560,6 +585,12 @@ These observations are provisional design interpretation, separate from the dial
   distinguishing present admission conditions from historical failure evidence.
   The example result categories and fields are proposals, not verified query output
   or a settled result schema.
+- **The proposal was traced back to the original need.** Exchange 15 re-read
+  issue #111 and mapped the proposed query to blocking preparation during the
+  recovery delay, allowing preparation once a trial is eligible, and leaving the
+  actual transition to execution. This is a design-level adequacy argument, not a
+  reproduced fix or requester validation. Bulkhead support is not necessary to
+  address the reported issue.
 - **Agent performance is not current PostCode capability.** Purpose explanation,
   cross-facility comparison, and scope judgment here were produced by the agent using
   documentation and source. Mapping each to current capabilities, Presentation work,
