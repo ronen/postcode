@@ -8,6 +8,8 @@ This document describes the conceptual product design through which PostCode's r
 
 The goal is a projection-based software-development environment through which a human can understand, direct, and supervise software using task-appropriate, epistemologically qualified representations rather than routinely working through conventional programming-language source.
 
+The conceptual model should not presuppose that the human knows the implementation language or that the program's persistent representation is intended for human reading.
+
 The first design decision is a simplification: PostCode's projections and views are read-only. The human continues to direct program changes by instructing coding agents in prose. This defers questions about semantics, authority, ambiguity, round-tripping, and implementation conformance that need not be answered to investigate the core projection model. Later versions could support bidirectional views without invalidating that model.
 
 The core projection pipeline is:
