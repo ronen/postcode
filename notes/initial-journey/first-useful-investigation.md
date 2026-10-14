@@ -513,6 +513,15 @@ A later comparison could separate ongoing-chat continuity, explicit retained
 knowledge and pictorial representation, rather than assuming a single
 full-application experiment is necessary to explore their value.
 
+The human has now returned four pictures produced from the extracted account,
+with source mappings and a production report. The [first review](pictures-result-review.md)
+finds meaningful transfer and promising visual comparisons, while noting heavy
+reliance on prose and no human-comprehension assessment yet. The producing agent
+reports that broad PostCode memory was visible, though the original dialogue and
+additional Cockatiel evidence were not retrieved. This qualifies the intended
+clean-agent setup. The output does not yet test revision or use during an ongoing
+investigation; the original received artifacts remain unchanged.
+
 ## Orientation: what might supply the forest?
 
 Existing organization and dependency results can situate modules within qualified
