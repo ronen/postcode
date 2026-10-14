@@ -407,6 +407,13 @@ visually distinct. Short labels, legends and qualification remain useful. Assess
 what an illustration actually communicates and what questions it invites rather
 than treating pictorial form as evidence of improved understanding.
 
+A [focused research shortlist](pictorial-representation-research.md) examines
+functional pictograms, shared-model views, visible behavior, spatial metaphors
+and symbol-comprehension research. It recommends a small comparison of overview,
+composition and recovery-time pictures, while keeping UML available as a
+comparison. These precedents do not establish that pictures improve this journey
+or select an exercise or implementation.
+
 <a id="question-framing"></a>
 ## Helping the human frame useful questions
 

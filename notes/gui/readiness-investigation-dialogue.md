@@ -1092,6 +1092,35 @@ As understanding develops, we extend or correct the account and make the change 
 
 That gives the “forest” continuity while we investigate individual trees—and gives both you and subsequent agents something explicit to revisit and question. I’ve recorded this as the preferred exploration direction.
 
+<a id="pictorial-research-debrief"></a>
+## Design debrief: existing work on pictorial representations
+
+**Human:**
+
+> that means its worth looking into existing work on pictorial representations of software architecture and functionality --  i'm not familiar with much other than things like UML diagrams, which personally i've never been super fond of; though we shouldn't let that bias influence things *too* much (maybe just a little :)
+
+**Assistant:**
+
+Yes. I’ve made a first pass, and there are useful precedents beyond UML. **The most promising approach looks like combining ideas from several traditions**, rather than choosing one notation.
+
+- **Enterprise Integration Patterns — pictures of what things do.** Its small pictures represent filtering, splitting, routing and other functions, and combine into larger explanations. This is the closest match I found to your pictorial suggestion. The [Message Filter example](https://www.enterpriseintegrationpatterns.com/patterns/messaging/Filter.html) is a good starting point.
+- **C4 and Structurizr — different views of the same model.** Structurizr’s [dynamic views](https://docs.structurizr.com/dsl/cookbook/dynamic-view/) reuse model elements to explain particular scenarios. That fits our retained-account direction. C4 explicitly [allows different visual notations](https://c4model.com/diagrams/notation), although its usual boxes would not by themselves satisfy our pictorial ambition.
+- **Bret Victor’s work — make behavior visible.** [Learnable Programming](https://worrydream.com/LearnableProgramming/) explores showing state, flow and time so people can inspect and compare them. For us, the interesting adaptation is showing meaningful events—waiting, becoming eligible, attempting work—without requiring the person to follow code.
+- **Software cities — give a system recognizable geography.** [CodeCity](https://www.cs.kent.edu/~jmaletic/cs69995-PC/papers/Wettle07.pdf) represents classes as buildings and packages as districts. It addresses orientation, but I’d give it lower priority: we could end up with “buildings without understanding” just as easily as trees without a forest.
+- **Research on understandable symbols — test the metaphor.** [Moody and colleagues](https://business.uq.edu.au/sites/default/files/events/files/daniel_moody_paper.pdf) investigate whether people unfamiliar with a notation can infer its symbols’ meanings. That is a useful corrective to our preferences: a recognizable electrical switch might still convey the wrong idea about software recovery.
+
+I’d keep UML in the comparison, especially sequence and state diagrams. We can borrow useful ways of expressing order and transitions while testing a more pictorial presentation. Disliking the conventional appearance shouldn’t make us discard useful distinctions.
+
+For Cockatiel, my suggested small comparison would use **the same objects in three pictures**:
+
+1. An overall scene showing the application, its policies and the external dependency.
+2. A closer view showing how breaker and bulkhead affect an attempted operation.
+3. A timeline comparing current recovery behavior with the proposed timer-triggered transition.
+
+The test would be whether those pictures help you explain the system and notice useful questions—including whether “ready for a trial” has accidentally become “healthy” in your understanding.
+
+I’ve saved the [research shortlist and implications](/Users/ronen/postcode/app-worktrees/graphical-investigation-journey/notes/gui/pictorial-representation-research.md) and linked it into our exploration notes. These are promising precedents, not yet evidence that pictures improve this journey.
+
 <a id="research-observations"></a>
 ## Research observations
 

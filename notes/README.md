@@ -19,4 +19,4 @@ Use [`drafts/`](../drafts/) for canonical-shaped proposals, an ignored root unde
 - [Human understanding and agency](human-understanding-and-agency.md)
 - [Dependency landscape](dependency-landscape.md)
 - [Explorative capabilities](explorative-capabilities.md)
-- GUI: [first useful investigation](gui/first-useful-investigation.md), [readiness investigation dialogue](gui/readiness-investigation-dialogue.md), [design kickoff](gui/design-kickoff.md), [analysis needs](gui/analysis-needs.md), [visual language](gui/visual-language.md)
+- GUI: [first useful investigation](gui/first-useful-investigation.md), [readiness investigation dialogue](gui/readiness-investigation-dialogue.md), [design kickoff](gui/design-kickoff.md), [analysis needs](gui/analysis-needs.md), [visual language](gui/visual-language.md), [pictorial representation research](gui/pictorial-representation-research.md)
