@@ -10,6 +10,10 @@ their PNG and editable SVG versions, a rendering script,
 [companion notes](cockatiel-pictures/cockatiel-notes.txt) and a
 [production report](cockatiel-pictures/production-state.txt).
 
+**Run configuration, reported by the human:** `GPT-6 Astra | High`. This records
+the displayed model and reasoning setting supplied by the human after the initial
+review; it is additional provenance, not part of the producing agent's self-report.
+
 This review inspected all four PNGs and both text reports against the
 [working account](cockatiel-working-account.md). It did not execute the supplied
 script, independently render the PDF, verify Cockatiel behavior, or test a
@@ -67,8 +71,10 @@ Cockatiel-specific substantive claims.
 Consequently this was not a fully isolated or blinded run. The reported source
 discipline still makes the output useful evidence about reuse, but that discipline
 is self-reported and does not establish that broader context had no influence.
-The exact model was not exposed according to the report. Do not label this a
-verified cloud-only or context-free experiment.
+The producing agent could not see its exact model configuration; the human
+subsequently identified the displayed setting as `GPT-6 Astra | High`. The
+original production report remains unchanged. Do not label this a verified
+cloud-only or context-free experiment.
 
 The pictures are a static set with manual traceability. They do not exercise
 updating an account, propagating a correction to several views, preserving exact
