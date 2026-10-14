@@ -151,8 +151,12 @@ Alphabetical by code.
 Build a sound foundation for the next useful capability, with enough concrete
 use to test whether the foundation is right.
 
-- **Correct misleading behavior before adding breadth:** especially errors in
-  answers, evidence, scope, or request reporting.
+- **Maintain progress toward a workable system:** balance housekeeping, bug fixes,
+  and foundational work with steps that make PostCode useful end to end. Before
+  regular use, bounded bugs and limitations can wait when they do not undermine
+  current evaluation or create architectural debt in the work that follows.
+- **Give extra weight to misleading behavior:** especially errors in answers,
+  evidence, scope, or request reporting that people or evaluations rely on.
 - **Resolve architectural debt before extending the affected area:** prioritize
   weaknesses that would spread into the next capability or interface.
 - **Use concrete needs to settle uncertain architecture:** small representative
