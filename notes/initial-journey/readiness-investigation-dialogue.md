@@ -8,6 +8,11 @@ The human authorized recording the dialogue as it develops. This is a simulation
 of investigation with an agent, not a run of PostCode or proof that its existing
 capabilities produce these answers. No Cockatiel or GUI implementation is authorized.
 
+A [standalone edited version](cockatiel-dialogue-standalone.md) presents the
+opening and 30 substantive exchanges without research-process material or
+references to these planning documents. This source record remains unchanged
+in its substantive dialogue.
+
 ## Recording convention and basis
 
 The numbered exchanges below preserve the substantive human and assistant messages
