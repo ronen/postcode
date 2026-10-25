@@ -23,7 +23,7 @@ The reporter proposes making the breaker change state automatically. We haven’
 
 *Basis: the issue report and inspection of the fixed source version. The mechanism is supported by that reading; the application’s reported failure has not been reproduced.*
 
-## 1. Purpose and responsibility boundary
+## 1. “...what it's for...”
 
 **Human:**
 
@@ -55,7 +55,7 @@ The reporter wants to use the breaker’s information **earlier**, when deciding
 
 So job submission is one application of Cockatiel. The broader design question concerns a central facility: **how should its circuit breaker support decisions made before the protected work begins?**
 
-## 2. Naming a possible facility
+## 2. “...a new facility: readiness check...”
 
 **Human:**
 
@@ -79,7 +79,7 @@ My starting proposal would be to explore the informational check first, and expl
 
 Would that weaker promise meet your intention for “readiness check”?
 
-## 3. Advisory information and a queueing misconception
+## 3. “...managing queues of background jobs...”
 
 **Human:**
 
@@ -97,7 +97,7 @@ So our working requirement is:
 
 That helps avoid preparation when attempts are currently blocked, while accepting that some prepared jobs may still be rejected later. It also means the check must recognize when a recovery attempt is eligible, even if the stored state still says “open”—otherwise we preserve the original problem.
 
-## 4. Challenging the mechanism assumed by the agent
+## 4. “...the only way to perform a readiness check...”
 
 **Human:**
 
@@ -127,7 +127,7 @@ A successful health probe could answer the first while the breaker still blocks 
 
 So before choosing the mechanism, I’d clarify the scope: are we addressing this issue’s need to anticipate **the breaker’s admission decision**, or exploring a broader facility that helps applications assess **their own readiness conditions**? Both are plausible, but they lead to different responsibilities for Cockatiel.
 
-## 5. Exploring generalization without assuming it
+## 5. “...should we support other mechanisms too...”
 
 **Human:**
 
@@ -153,7 +153,7 @@ That comparison should reveal whether we have a useful shared meaning, whether r
 
 This gives our investigation a substantive next question: **what would callers gain from treating these as one facility, and what distinctions must survive that abstraction?**
 
-## 6. Checking fit against the product's stated purpose
+## 6. “...overall stated purpose and scope...”
 
 **Human:**
 
@@ -181,7 +181,7 @@ I’d therefore investigate **a common way to inspect policy admission condition
 
 That is a scope recommendation inferred from the documentation and existing facilities—not an explicit maintainer policy ruling broader readiness in or out.
 
-## 7. Choosing a conservative scope
+## 7. “...addresses the immediate need and meshes well with existing capabilities...”
 
 **Human:**
 
@@ -197,7 +197,7 @@ The intended promise is advisory: report whether an attempt would currently be p
 
 Before handing this direction to an implementation agent, I’d investigate one remaining question: **what information does the breaker already expose, and what must be added to answer this query consistently with its execution rules?** That should let us distinguish a small addition from a change to the breaker’s behavior, and identify any cases where the proposed promise needs qualification.
 
-## 8. Comparing bulkhead capacity with breaker admission
+## 8. “...to what extent it would/wouldn't make sense to unify...”
 
 **Human:**
 
@@ -238,7 +238,7 @@ That leaves room for growth without requiring a general framework. It also expos
 
 *Basis: documentation and static inspection at our fixed revision; these paths have not been exercised in a runtime test.*
 
-## 9. Understanding the operating model without opening source links
+## 9. “...the overall theory of operation...”
 
 **Human:**
 
@@ -280,7 +280,7 @@ That also clarifies the possible unification: breaker readiness and bulkhead cap
 
 *This account is grounded in the documented API and inspected implementation at our fixed revision. The payment example is illustrative; no runtime verification has been performed.*
 
-## 10. Clarifying the policy object
+## 10. “...is there a "policy" object...”
 
 **Human:**
 
@@ -296,7 +296,7 @@ So our proposed readiness query would be something you ask **that existing polic
 
 There’s a naming wrinkle in the implementation: the common contract for these executable objects is called `IPolicy`. A separate class literally named `Policy` configures which errors or results count as failures. When I’ve said “policy object,” I’ve meant the executable objects, such as the breaker and bulkhead. [API definitions](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/Policy.ts)
 
-## 11. Combining a breaker and a bulkhead
+## 11. “...combine a breaker and a bulkhead into a single policy...”
 
 **Human:**
 
@@ -322,7 +322,7 @@ Reversing the order puts the breaker’s decision first. This matters: with the 
 
 The combined object coordinates those existing policies; their state isn’t merged into a new shared state. That makes **readiness of the combined policy** a further question: knowing that either component alone is ready doesn’t establish that the operation can start through both.
 
-## 12. Proposing an available-now query
+## 12. “..."is available now"...”
 
 **Human:**
 
@@ -352,7 +352,7 @@ That meaning is consistent enough to explore a common query. A combined breaker-
 
 I’d keep the requirement focused on these demonstrated cases rather than assuming every kind of policy can provide a meaningful answer. This is a proposed addition; the existing common policy contract doesn’t currently include it.
 
-## 13. Considering acceptance rather than immediate execution
+## 13. “..."acceptable" without "now"...”
 
 **Human:**
 
@@ -379,7 +379,7 @@ That gives us two distinct questions:
 
 We don’t need to introduce both queries. I’d tentatively choose **can accept** for this scenario, retaining the advisory, non-reserving promise. For combined policies, it still cannot promise that a breaker will allow execution by the time a queued operation reaches it.
 
-## 14. Explaining a negative answer
+## 14. “...explaining the queue state or breaker failure...”
 
 **Human:**
 
@@ -405,7 +405,7 @@ I’d make the acceptance answer and its explanation describe the **same observa
 
 We can keep this modest: a clear reason plus relevant policy-specific detail. It needn’t expose every internal field or invent a general diagnostic framework.
 
-## 15. Checking the proposal against the original need
+## 15. “...address the original requestor's issue...”
 
 **Human:**
 
@@ -429,7 +429,7 @@ It addresses their objective through an explicit query rather than their suggest
 
 **The breaker query alone addresses this issue.** Bulkhead support and unification would be additional design choices. We still need implementation and a test of this sequence before calling the fix verified.
 
-## 16. Access to a breaker inside a combined policy
+## 16. “...would the caller have direct access to the breaker...”
 
 **Human:**
 
@@ -450,7 +450,7 @@ So there are two reasonable application arrangements:
 
 Your question therefore supplies a concrete reason to consider combined-policy support: **keeping callers independent of the particular protections being used.** Direct access is possible; whether it is the right interface for the caller is a design choice.
 
-## 17. Choosing the shared interface, subject to a workable contract
+## 17. “..."is acceptable" on the generic interface...”
 
 **Human:**
 
@@ -478,7 +478,7 @@ The answer and details should describe the same observation. We don’t need one
 
 Before settling the interface, we should check its meaning for the remaining policy types and how it affects application-defined policies. That’s a bounded contract check for the chosen direction, rather than a reason to design additional readiness features.
 
-## 18. Seeing the full policy family
+## 18. “...there are other policy types...”
 
 **Human:**
 
@@ -502,7 +502,7 @@ The breaker and bulkhead are particularly natural subjects for an acceptance que
 
 That doesn’t rule out putting the query on the common interface. It means we should establish what its answer means for these other policies—and their combinations—before treating the breaker/bulkhead model as universal.
 
-## 19. Existing failure and blocking reports
+## 19. “...report failure/blocking...”
 
 **Human:**
 
@@ -541,7 +541,7 @@ For our proposed query, I’d return an acceptance answer with explanatory infor
 
 *This distinction comes from static inspection; event coverage and behavior have not been runtime-tested here.*
 
-## 20. Why the existing state query is insufficient
+## 20. “...what does our proposed query add...”
 
 **Human:**
 
@@ -571,7 +571,7 @@ Our proposed query would answer **whether a submission is acceptable under the c
 
 The requester already built a workaround that tracks timing outside the breaker. The addition would put that decision inside the breaker, where its actual timing rules are known, so applications don’t have to duplicate them. [Original issue](https://github.com/connor4312/cockatiel/issues/111)
 
-## 21. Questioning the reason for the delayed state transition
+## 21. “...the breaker stays open until the next atttempt...”
 
 **Human:**
 
@@ -597,7 +597,7 @@ So we have a genuine choice:
 
 Our proposed query is defensible, but it isn’t the only solution forced by the current behavior. Your question exposes a tradeoff we should compare before settling the change.
 
-## 22. Explaining half-open in everyday terms
+## 22. “...what "half open" means...”
 
 **Human:**
 
@@ -628,7 +628,7 @@ So **half-open does not mean the service is known to be healthy. It means recove
 
 The timing distinction we were discussing is whether the reported phase changes when a trial *becomes eligible*, or only when a trial *actually starts*. Cockatiel currently does the latter.
 
-## 23. Whether querying starts or reserves a recovery trial
+## 23. “...would the query just indicate that it's willing to do a trial...”
 
 **Human:**
 
@@ -658,7 +658,7 @@ That second answer follows the current Cockatiel behavior we inspected. Automati
 
 There is a tradeoff: **several callers could see “trial eligible” and all begin preparation before anyone submits work.** Our non-reserving query permits that. Preventing it would require securing the opportunity, which we previously chose not to include.
 
-## 24. What the requester said about their workaround
+## 24. “...the workaround was sufficient, just ugly...”
 
 **Human:**
 
@@ -680,7 +680,7 @@ For the breaker alone, our query would largely **bring that decision into the li
 
 That anchors the scope: **the reported need is a supported, convenient way to make this check.** The common policy interface, bulkhead support, and richer explanations are design extensions we’ve been considering—not requirements established by the original report.
 
-## 25. Which automatic transition the requester suggests
+## 25. “...automatically switches back to closed or half-open...”
 
 **Human:**
 
@@ -701,7 +701,7 @@ The report explicitly identifies the missing **open-to-half-open** transition an
 
 So their proposal changes the state automatically. Ours would leave that transition tied to execution, but expose whether a trial is already eligible. Both can support their pre-preparation check.
 
-## 26. Distinguishing a recovery delay from a scheduled timer
+## 26. “...already has a built-in timer delay...”
 
 **Human:**
 
@@ -726,7 +726,7 @@ So the alternatives reuse the same delay but act differently:
 
 The missing piece is therefore not the delay itself; it’s a supported way to recognize eligibility before attempting execution.
 
-## 27. Existing breaker transition events
+## 27. “...are there already events for breaker transitions...”
 
 **Human:**
 
@@ -752,7 +752,7 @@ That reveals another distinction between the proposals:
 
 So automatic transitions could offer a notification benefit as well as making the state query more informative. We would need to decide deliberately whether `onHalfOpen` should mean “a trial is now eligible” or retain its current connection to an execution-triggered transition.
 
-## 28. Considering automatic transitions to avoid application polling
+## 28. “...the application needing to do its own polling...”
 
 **Human:**
 
@@ -776,7 +776,7 @@ This strengthens the case for **improving the existing state-and-event facility*
 
 I’d now treat this as a serious alternative to our shared-query direction. A generic acceptance interface would need its own justification beyond fixing the original breaker problem.
 
-## 29. Separating compatibility from the automatic-transition contract
+## 29. “...the semantics and details of events and timer management...”
 
 **Human:**
 
@@ -801,7 +801,7 @@ The remaining design questions are bounded:
 
 I’d frame the working proposal as **opt-in automatic transition to trial eligibility, using the existing state and event API, with today’s behavior preserved by default**. That is concrete enough for an implementation agent to assess the mechanics and identify any remaining consequential choices before implementation.
 
-## 30. Choosing the change
+## 30. “...that seems like the best approach...”
 
 **Human:**
 
