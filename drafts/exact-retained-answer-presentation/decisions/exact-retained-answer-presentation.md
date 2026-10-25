@@ -55,6 +55,8 @@ Source detail and revision paging for retained operation-result answers use alre
 
 Omitted page inputs normalize to the first page/no continuation; source detail defaults off; format follows the interface default, including JSON in a postcode shell --json Session. A Projection reference does not denote a previous View or inherit that View's options. Effective choices are recorded.
 
+Generated shell continuation commands reproduce the View's other effective choices explicitly, changing only the paged input. Preserve source detail and the other paging position; an association restart clears only its continuation. Use canonical effective flags, including --json for JSON Views even where redundant with the shell default, rather than making hint text depend on hidden default context. Unicode hints use the existing Unicode shell default; no new format option is introduced. Omit flags whose normal defaults already express the effective choice. This command generation does not create implicit option inheritance for a manually written request.
+
 #### Rationale and consequences
 
 The existing full content and unpaged revision snapshots suffice for the current controls. There is no need to implement generic GUI parameters, a Presentation plugin language, arbitrary result collections or a new complete-content export. These bounded separations do not forbid future projection-scoped lazy materialization under its own qualified execution contract; this operation presents the already-retained content of the current eager families.
