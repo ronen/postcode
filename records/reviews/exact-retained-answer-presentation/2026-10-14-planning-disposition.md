@@ -4,11 +4,13 @@ Updated: 2026-10-25
 Review: exact retained-answer presentation planning package
 Task: interactive planning only; no implementation task opened
 Handoff: human-arranged planning review; no formal handoff
-Findings: [Round 1](2026-10-14-planning-round-1-findings.md), [Round 2](2026-10-25-planning-round-2-findings.md)
+Findings: [Round 1](2026-10-14-planning-round-1-findings.md), [Round 2](2026-10-25-planning-round-2-findings.md), [Round 3](2026-10-25-planning-round-3-findings.md)
 Round-1 reviewed target: 3f5eced20c1027cb3f7f1853a6beef0ec36cebfa
 Round-1 correction target: 3e069d97c6581fdef96dea69d71d03703754589b
 Round-2 reviewed target: b3c5e3d4f7849f2fbd3f368b3f64dce6616c60cc
 Round-2 correction target: 9de34f0fdd6187a2a9e0422eafddb910f9efa30a
+Round-3 reviewed target: 3677d72e99d51caaa0b623a0364b924738625999
+Round-3 correction target: 0428abe6d89546eeefeff278c3c32f5e3722d40e
 
 # Exact retained-answer presentation planning review: disposition
 
@@ -79,8 +81,34 @@ Verification performed by the planning agent:
 - Checked the correction diff for whitespace errors; it passed.
 - Confirmed no implementation, adopted governing material, foundation, development guidance or notes were changed. No application tests, build or runtime reproduction were run for this planning-only correction.
 
+## Round 3: findings and dispositions
+
+Claude's third review confirms that all round-2 findings are resolved and that the package remains consistent with the accepted contracts. It asks for explicit JSON continuation data before approval and identifies four smaller clarifications.
+
+| Finding | Disposition and resulting treatment |
+| --- | --- |
+| R1: JSON continuations | Accepted the structured-request recommendation. Applicable next association, next revision and association restart entries carry an action and the normalized present request, with precise Projection target and complete applicable effective options. Omit unsupported controls, notably revisionPage on associated mechanical inspection. Retain next/nextPage and omission metadata. Unicode commands derive from the same entries and supplied bindings; one-shot Views offer expiry/reopen guidance instead of executable continuations. Added the shape change to the preservation inventory and structured-request verification. Field names stay delegated. |
+| R2: one-shot answer references and fixtures | Accepted the equivalent-guidance option. Recognize @-prefixed answer aliases/precise Projection IDs before Session creation/name lookup and explain the active-Session lifetime and shell/new-request path. Preserve literal lookup after -- and other @-name behavior. Subject-taking internal extension fixtures use the shared classification boundary; verification covers them. |
+| R3: unknown association token in revision hints | Requires human direction. Recommended faithful preservation, consistent with the explicit N2 agreement that only the requested paging input changes: disclose the continuing invalid association token and offer a separate restart. Asked the human to choose between that and automatic clearing with disclosure. The plan marks this policy question as pending. |
+| R4: N2 agreement in decision Context | Accepted. Context now records the explicit 2026-10-25 N2 agreement. Existing promotion instructions require preserving settled choices while removing draft-only prose. |
+| R5: review-record layout | Requires human direction on the optional formatting change. Confirmed the template/title-first pattern, but dev/review.md explicitly says to begin each file with Record type. Recommended retaining metadata first and adding missing record titles beneath it, without changing development guidance. Asked the human; existing record formatting remains unchanged pending that answer. |
+
+## Round 3: corrections and verification
+
+The third report is preserved verbatim in commit 5108f8f. Corrections at 0428abe6d89546eeefeff278c3c32f5e3722d40e change only the draft plan and decision. R3 remains marked pending; R5 concerns record formatting, not the product design.
+
+Verification performed by the planning agent:
+
+- Checked current JSON rendering, association next and revision nextPage data, and interactive-only reference classification against source.
+- Reconciled structured continuations with the supported-options matrix, canonical target normalization, already agreed hint preservation, self-sufficient parent rendering and one-shot reference lifetime.
+- Checked the stated record-format discrepancy against both review templates and the explicit review-workflow instruction.
+- Validated all 62 package links and anchors at intended canonical destinations and confirmed byte-for-byte preservation of the round-three report.
+- Checked the correction diff for whitespace errors; it passed. No application tests, build or runtime reproduction were run for this planning-only correction.
+
+No source, tests, adopted documentation, foundation, development guidance or notes were changed.
+
 ## Review rounds and conclusion
 
-Round 1 reviewed 3f5eced20c1027cb3f7f1853a6beef0ec36cebfa, with corrections at 3e069d97c6581fdef96dea69d71d03703754589b. Round 2 reviewed b3c5e3d (including the round-1 disposition) and confirmed resolution of that round's findings. All its new findings are addressed at the final round-2 correction target, including the human-confirmed N2 choice. No further independent review is claimed.
+Round 1 reviewed 3f5eced20c1027cb3f7f1853a6beef0ec36cebfa, with corrections at 3e069d97c6581fdef96dea69d71d03703754589b. Round 2 reviewed b3c5e3d and confirmed resolution of round 1; its findings were addressed through 9de34f0. Round 3 reviewed 3677d72 and confirmed resolution of round 2. Its clear corrections are at the round-3 correction target; R3 and optional R5 await human direction. No further independent review is claimed.
 
-The package remains in review under drafts. The human has not declared the full package accepted or a review gate satisfied. There are no outstanding consequential review questions. Approval/promotion and any further independent review remain human decisions. The note-link correction remains a promotion follow-up requiring human direction under the repository's note policy. Implementation remains unauthorized.
+The package remains in review under drafts. The human has not declared the full package accepted or a review gate satisfied. Settle R3 before approval; approval/promotion and any further independent review remain human decisions. The note-link correction remains a promotion follow-up requiring human direction under the repository's note policy. Implementation remains unauthorized.
