@@ -1,15 +1,18 @@
 Record type: disposition
 Date: 2026-10-14
+Updated: 2026-10-25
 Review: exact retained-answer presentation planning package
 Task: interactive planning only; no implementation task opened
 Handoff: human-arranged planning review; no formal handoff
-Findings: [Round 1](2026-10-14-planning-round-1-findings.md)
-Reviewed target: 3f5eced20c1027cb3f7f1853a6beef0ec36cebfa
-Correction target: 3e069d97c6581fdef96dea69d71d03703754589b
+Findings: [Round 1](2026-10-14-planning-round-1-findings.md), [Round 2](2026-10-25-planning-round-2-findings.md)
+Round-1 reviewed target: 3f5eced20c1027cb3f7f1853a6beef0ec36cebfa
+Round-1 correction target: 3e069d97c6581fdef96dea69d71d03703754589b
+Round-2 reviewed target: b3c5e3d4f7849f2fbd3f368b3f64dce6616c60cc
+Round-2 correction target: dcb509b28d8e1eb4e351ad60f0ba90e9adc62bba
 
 # Exact retained-answer presentation planning review: disposition
 
-## Findings and dispositions
+## Round 1: findings and dispositions
 
 The human requested assessment and correction of Claude's review, with disagreements or consequential unresolved choices raised for discussion. All corrections below change the draft package only. They do not promote it, amend adopted decisions, or authorize implementation.
 
@@ -35,7 +38,7 @@ The human requested assessment and correction of Claude's review, with disagreem
 | D: internal consistency and minor points | Accepted. Add Decision subheadings and an explicit review-resolution/delegated-details section. Fix answer- as the prefix; leave neutral-title wording, layout and internal names delegated within identity/safety rules. Architecture revision identifies exact presentation and moved paging as the chosen remedy. Existing constraint wording remains consistent and needs no additional revision. |
 | E: source assessment | Accepted as supporting observations, not runtime verification. The review found no corrective source-assessment defect. Preserve the assessed baseline and explicit absence of freshly run application tests. |
 
-## Corrections and verification
+## Round 1: corrections and verification
 
 The supplied review was preserved verbatim in commit 4d412b9. Corrections are committed at 3e069d97c6581fdef96dea69d71d03703754589b and affect five files within the existing draft package: the plan, decision, backlog revisions, CLI-reference revisions and architecture-overview revisions.
 
@@ -49,8 +52,35 @@ Verification performed by the planning agent:
 
 No application tests, build or runtime reproduction were run for this planning correction. Runtime assertions in the package remain implementation exit criteria.
 
+## Round 2: findings and dispositions
+
+Claude's second review confirms that all round-1 findings were addressed and the original disposition accurately described the changes. It identifies N1/N2 for settlement before approval and N3–N8 as smaller corrections. The human supplied this review on 2026-10-25; its authored date remains unchanged in the preserved report.
+
+| Finding | Disposition and resulting treatment |
+| --- | --- |
+| N1: fresh composite allocation order | Accepted. Select the associated composite from the mechanical Projection ID before base arrangement, allocate its answer alias, then arrange base/listing and final composite output. Selection itself allocates no subject references; mechanical bindings still precede associated-listing bindings with unchanged populations/order/collision behavior. M1/M2 explicitly check that fresh output names the composite alias, not the base's. |
+| N2: effective choices in generated continuations | Requires human direction. Recommended that generated commands preserve source detail, the other paging position and any necessary format override while changing only the requested page. Manually written present requests would still use normal defaults. Asked the human to choose between preserving these choices and disclosing a reset; no response has yet been received. The plan marks N2 locally as pending. No continuation policy or combined-option test has been silently adopted. |
+| N3: method versions and captured input identity | Accepted. Plan and decision name all three responsible Presentation methods for version advancement and explain their captured-registry effect on input references and Projection IDs between builds. This is permitted provenance behavior, separate from within-Session continuity. The exposed mode marker is consequential View context under the existing rule, so no supersession is needed. |
+| N4: dependency title | Accepted. Identity tables now say neutral title only where the family exposes one and explicitly exclude dependency titles. Fresh formulas retain existing title/context inputs alongside the mode marker. |
+| N5: agreement versus authorization | Accepted. Decision acceptance records agreement to consequential visible changes; implementation still requires separate authorization. |
+| N6: terminology | Accepted. Use exact presentation in the assessment table, point to the complete reconciliation inventory, and use “targeted by present” for support-pointer alias allocation. |
+| N7: answer-as-subject guidance | Accepted the shared-boundary recommendation. All subject-taking commands guide answer aliases and well-formed precise Projection IDs to present. Kind recognition does not assert retention/availability. Preserve literal-name handling, malformed-reference behavior and subject bindings; add verification. |
+| N8: lifetime verification coverage | Accepted. The matrix explicitly covers answer, subject and supporting source/navigation references in Unicode and JSON across every affected family, matching the backlog commitment. |
+
+## Round 2: corrections and verification
+
+The second report is preserved verbatim in commit 526b530. Corrections at dcb509b28d8e1eb4e351ad60f0ba90e9adc62bba change only the draft plan and decision; N2 remains marked pending.
+
+Verification performed by the planning agent:
+
+- Checked the fresh mechanical/composite construction order, pure selection versus reference allocation, family title/identity formulas, captured method registry, subject-reference classification, and relevant accepted identity/versioning clauses against source.
+- Validated all 62 package links and fragments at their intended canonical destinations.
+- Confirmed byte-for-byte preservation of the round-two returned report.
+- Checked the correction diff for whitespace errors; it passed.
+- Confirmed no implementation, adopted governing material, foundation, development guidance or notes were changed. No application tests, build or runtime reproduction were run for this planning-only correction.
+
 ## Review rounds and conclusion
 
-Round 1 reviewed 3f5eced20c1027cb3f7f1853a6beef0ec36cebfa; its findings are linked above. This disposition records the response at 3e069d97c6581fdef96dea69d71d03703754589b. No second independent review has been arranged or claimed.
+Round 1 reviewed 3f5eced20c1027cb3f7f1853a6beef0ec36cebfa, with corrections at 3e069d97c6581fdef96dea69d71d03703754589b. Round 2 reviewed b3c5e3d (including the round-1 disposition) and confirmed resolution of that round's findings. Its new findings are addressed at the round-2 correction target except N2, which awaits human direction. No further independent review is claimed.
 
-There are no unresolved consequential review questions after the human's C4 clarification. The package remains in review under drafts. The human has not declared the full package accepted or a review gate satisfied; approval/promotion and any further independent review remain human decisions. The note-link correction is a promotion follow-up requiring human direction under the repository's note policy. Implementation remains unauthorized.
+The package remains in review under drafts. The human has not declared the full package accepted or a review gate satisfied. Settle N2 before approval; approval/promotion and any further independent review remain human decisions. The note-link correction remains a promotion follow-up requiring human direction under the repository's note policy. Implementation remains unauthorized.
