@@ -10,7 +10,7 @@ Round-1 correction target: 3e069d97c6581fdef96dea69d71d03703754589b
 Round-2 reviewed target: b3c5e3d4f7849f2fbd3f368b3f64dce6616c60cc
 Round-2 correction target: 9de34f0fdd6187a2a9e0422eafddb910f9efa30a
 Round-3 reviewed target: 3677d72e99d51caaa0b623a0364b924738625999
-Round-3 correction target: 0428abe6d89546eeefeff278c3c32f5e3722d40e
+Round-3 correction target: 1a0da4203225904d4bce8f7aa46122b725bac429
 
 # Exact retained-answer presentation planning review: disposition
 
@@ -89,26 +89,26 @@ Claude's third review confirms that all round-2 findings are resolved and that t
 | --- | --- |
 | R1: JSON continuations | Accepted the structured-request recommendation. Applicable next association, next revision and association restart entries carry an action and the normalized present request, with precise Projection target and complete applicable effective options. Omit unsupported controls, notably revisionPage on associated mechanical inspection. Retain next/nextPage and omission metadata. Unicode commands derive from the same entries and supplied bindings; one-shot Views offer expiry/reopen guidance instead of executable continuations. Added the shape change to the preservation inventory and structured-request verification. Field names stay delegated. |
 | R2: one-shot answer references and fixtures | Accepted the equivalent-guidance option. Recognize @-prefixed answer aliases/precise Projection IDs before Session creation/name lookup and explain the active-Session lifetime and shell/new-request path. Preserve literal lookup after -- and other @-name behavior. Subject-taking internal extension fixtures use the shared classification boundary; verification covers them. |
-| R3: unknown association token in revision hints | Requires human direction. Recommended faithful preservation, consistent with the explicit N2 agreement that only the requested paging input changes: disclose the continuing invalid association token and offer a separate restart. Asked the human to choose between that and automatic clearing with disclosure. The plan marks this policy question as pending. |
+| R3: unknown association token in revision hints | Resolved by explicit human agreement on 2026-10-25: “Preserve it; offer separate restart (Recommended)”. Revision continuation preserves the well-formed unknown after token and failed status. Structured entries and rendered hints disclose that continuing state; a separate association restart clears only after, preserving the other effective inputs and precise answer target. Plan, decision and combined-options verification now specify this; the pending annotation is removed. |
 | R4: N2 agreement in decision Context | Accepted. Context now records the explicit 2026-10-25 N2 agreement. Existing promotion instructions require preserving settled choices while removing draft-only prose. |
-| R5: review-record layout | Requires human direction on the optional formatting change. Confirmed the template/title-first pattern, but dev/review.md explicitly says to begin each file with Record type. Recommended retaining metadata first and adding missing record titles beneath it, without changing development guidance. Asked the human; existing record formatting remains unchanged pending that answer. |
+| R5: review-record layout | Resolved by explicit human agreement on 2026-10-25: “Keep metadata first; add titles (Recommended)”. All three findings wrappers now put Record type and metadata first, then their repository-authored title. The disposition already had this order. Moved the round-1 wrapper title and added missing round-2/round-3 titles; returned reports remain byte-for-byte unchanged. No development guidance was edited. |
 
 ## Round 3: corrections and verification
 
-The third report is preserved verbatim in commit 5108f8f. Corrections at 0428abe6d89546eeefeff278c3c32f5e3722d40e change only the draft plan and decision. R3 remains marked pending; R5 concerns record formatting, not the product design.
+The third report is preserved verbatim in commit 5108f8f. Corrections at 0428abe6d89546eeefeff278c3c32f5e3722d40e change only the draft plan and decision. The user-confirmed R3 policy, verification and R5 wrapper formatting were completed at 1a0da4203225904d4bce8f7aa46122b725bac429. This adds no implementation or adopted-document changes.
 
 Verification performed by the planning agent:
 
 - Checked current JSON rendering, association next and revision nextPage data, and interactive-only reference classification against source.
 - Reconciled structured continuations with the supported-options matrix, canonical target normalization, already agreed hint preservation, self-sufficient parent rendering and one-shot reference lifetime.
 - Checked the stated record-format discrepancy against both review templates and the explicit review-workflow instruction.
-- Validated all 62 package links and anchors at intended canonical destinations and confirmed byte-for-byte preservation of the round-three report.
+- Revalidated all 62 package links and anchors at intended canonical destinations after the final choices. Confirmed byte-for-byte preservation of all three reports and metadata/title ordering across their wrappers. No pending discussion markers remain in the package.
 - Checked the correction diff for whitespace errors; it passed. No application tests, build or runtime reproduction were run for this planning-only correction.
 
 No source, tests, adopted documentation, foundation, development guidance or notes were changed.
 
 ## Review rounds and conclusion
 
-Round 1 reviewed 3f5eced20c1027cb3f7f1853a6beef0ec36cebfa, with corrections at 3e069d97c6581fdef96dea69d71d03703754589b. Round 2 reviewed b3c5e3d and confirmed resolution of round 1; its findings were addressed through 9de34f0. Round 3 reviewed 3677d72 and confirmed resolution of round 2. Its clear corrections are at the round-3 correction target; R3 and optional R5 await human direction. No further independent review is claimed.
+Round 1 reviewed 3f5eced20c1027cb3f7f1853a6beef0ec36cebfa, with corrections at 3e069d97c6581fdef96dea69d71d03703754589b. Round 2 reviewed b3c5e3d and confirmed resolution of round 1; its findings were addressed through 9de34f0. Round 3 reviewed 3677d72 and confirmed resolution of round 2. All round-3 findings are addressed at the final correction target, including the explicitly agreed R3 and R5 choices. No further independent review is claimed.
 
-The package remains in review under drafts. The human has not declared the full package accepted or a review gate satisfied. Settle R3 before approval; approval/promotion and any further independent review remain human decisions. The note-link correction remains a promotion follow-up requiring human direction under the repository's note policy. Implementation remains unauthorized.
+The package remains in review under drafts. The human has not declared the full package accepted or a review gate satisfied. There are no outstanding review questions. Approval/promotion and any further independent review remain human decisions. The note-link correction remains a promotion follow-up requiring human direction under the repository's note policy. Implementation remains unauthorized.
