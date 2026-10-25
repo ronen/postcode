@@ -8,7 +8,7 @@ Findings: [Round 1](2026-10-14-planning-round-1-findings.md), [Round 2](2026-10-
 Round-1 reviewed target: 3f5eced20c1027cb3f7f1853a6beef0ec36cebfa
 Round-1 correction target: 3e069d97c6581fdef96dea69d71d03703754589b
 Round-2 reviewed target: b3c5e3d4f7849f2fbd3f368b3f64dce6616c60cc
-Round-2 correction target: dcb509b28d8e1eb4e351ad60f0ba90e9adc62bba
+Round-2 correction target: 9de34f0fdd6187a2a9e0422eafddb910f9efa30a
 
 # Exact retained-answer presentation planning review: disposition
 
@@ -59,7 +59,7 @@ Claude's second review confirms that all round-1 findings were addressed and the
 | Finding | Disposition and resulting treatment |
 | --- | --- |
 | N1: fresh composite allocation order | Accepted. Select the associated composite from the mechanical Projection ID before base arrangement, allocate its answer alias, then arrange base/listing and final composite output. Selection itself allocates no subject references; mechanical bindings still precede associated-listing bindings with unchanged populations/order/collision behavior. M1/M2 explicitly check that fresh output names the composite alias, not the base's. |
-| N2: effective choices in generated continuations | Requires human direction. Recommended that generated commands preserve source detail, the other paging position and any necessary format override while changing only the requested page. Manually written present requests would still use normal defaults. Asked the human to choose between preserving these choices and disclosing a reset; no response has yet been received. The plan marks N2 locally as pending. No continuation policy or combined-option test has been silently adopted. |
+| N2: effective choices in generated continuations | Accepted with explicit human agreement on 2026-10-25: “Preserve other choices in paging hints (Recommended)”. Generated commands preserve source detail, the other paging position and effective format while changing only the paged input. Canonical JSON hints include --json even where redundant, so no hidden shell-default input changes hint text. Association restart clears only its continuation. Manually written present requests keep normal defaults. Added combined source/association/revision verification in Unicode and both shell-format contexts; removed the pending annotation. |
 | N3: method versions and captured input identity | Accepted. Plan and decision name all three responsible Presentation methods for version advancement and explain their captured-registry effect on input references and Projection IDs between builds. This is permitted provenance behavior, separate from within-Session continuity. The exposed mode marker is consequential View context under the existing rule, so no supersession is needed. |
 | N4: dependency title | Accepted. Identity tables now say neutral title only where the family exposes one and explicitly exclude dependency titles. Fresh formulas retain existing title/context inputs alongside the mode marker. |
 | N5: agreement versus authorization | Accepted. Decision acceptance records agreement to consequential visible changes; implementation still requires separate authorization. |
@@ -69,7 +69,7 @@ Claude's second review confirms that all round-1 findings were addressed and the
 
 ## Round 2: corrections and verification
 
-The second report is preserved verbatim in commit 526b530. Corrections at dcb509b28d8e1eb4e351ad60f0ba90e9adc62bba change only the draft plan and decision; N2 remains marked pending.
+The second report is preserved verbatim in commit 526b530. Corrections at dcb509b28d8e1eb4e351ad60f0ba90e9adc62bba change only the draft plan and decision. The human-confirmed N2 policy and combined-option verification were completed at 9de34f0fdd6187a2a9e0422eafddb910f9efa30a, also changing only those two drafts.
 
 Verification performed by the planning agent:
 
@@ -81,6 +81,6 @@ Verification performed by the planning agent:
 
 ## Review rounds and conclusion
 
-Round 1 reviewed 3f5eced20c1027cb3f7f1853a6beef0ec36cebfa, with corrections at 3e069d97c6581fdef96dea69d71d03703754589b. Round 2 reviewed b3c5e3d (including the round-1 disposition) and confirmed resolution of that round's findings. Its new findings are addressed at the round-2 correction target except N2, which awaits human direction. No further independent review is claimed.
+Round 1 reviewed 3f5eced20c1027cb3f7f1853a6beef0ec36cebfa, with corrections at 3e069d97c6581fdef96dea69d71d03703754589b. Round 2 reviewed b3c5e3d (including the round-1 disposition) and confirmed resolution of that round's findings. All its new findings are addressed at the final round-2 correction target, including the human-confirmed N2 choice. No further independent review is claimed.
 
-The package remains in review under drafts. The human has not declared the full package accepted or a review gate satisfied. Settle N2 before approval; approval/promotion and any further independent review remain human decisions. The note-link correction remains a promotion follow-up requiring human direction under the repository's note policy. Implementation remains unauthorized.
+The package remains in review under drafts. The human has not declared the full package accepted or a review gate satisfied. There are no outstanding consequential review questions. Approval/promotion and any further independent review remain human decisions. The note-link correction remains a promotion follow-up requiring human direction under the repository's note policy. Implementation remains unauthorized.
