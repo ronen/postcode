@@ -8,6 +8,8 @@ Prior findings: [Round 1](2026-10-14-planning-round-1-findings.md), [Round 2](20
 Prior reviewed target: b3c5e3d4f7849f2fbd3f368b3f64dce6616c60cc
 Scope: exact retained-answer presentation planning package and cumulative disposition
 
+# Exact retained-answer presentation: planning review, round 3
+
 Relative links inside the returned report retain the author's original checkout context. The returned report below is preserved verbatim.
 
 ## Returned findings

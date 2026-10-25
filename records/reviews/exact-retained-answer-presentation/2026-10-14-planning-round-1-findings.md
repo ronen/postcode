@@ -1,5 +1,3 @@
-# Exact retained-answer presentation: planning review, round 1
-
 Record type: findings
 Received: 2026-10-14
 Reviewer: Claude
@@ -7,6 +5,8 @@ Handoff: Human-arranged planning review; no formal handoff record
 Round: 1
 Reviewed target: 3f5eced20c1027cb3f7f1853a6beef0ec36cebfa
 Scope: Planning package introduced by c209d5e and revised by 3f5eced; implementation baseline 296190615e60872bd8db6bf9a40334ca7787a3ed
+
+# Exact retained-answer presentation: planning review, round 1
 
 The human supplied the review and requested assessment, discussion of disagreements or consequential choices, and action on the remainder. This is a planning review, not an implementation review gate or authorization to implement.
 

@@ -8,6 +8,8 @@ Prior findings: [Round 1](2026-10-14-planning-round-1-findings.md)
 Prior reviewed target: 3f5eced20c1027cb3f7f1853a6beef0ec36cebfa
 Scope: exact retained-answer presentation planning package and prior disposition
 
+# Exact retained-answer presentation: planning review, round 2
+
 The report's authored review date is preserved below; the received date records when the human supplied it in this conversation. Relative links inside the returned report retain the author's original checkout context.
 
 ## Returned findings
