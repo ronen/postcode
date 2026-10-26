@@ -26,30 +26,15 @@ Added: 2026-10-06
 Origin: representation audit finding [F5](../records/audits/2026-10-06-user-model-concept-representations/REPORT.md#f5-presentation-choice-presentation-parameters-and-display-bounds-are-fused-into-format)
 Area: presentations and GUI preparation
 
-`Presentation.format` (`unicode` or `json`) selects both the output encoding and every display bound. Paging, continuation and reference lifetime travel outside the `Presentation` record. The type cannot express a GUI presentation or parameters such as sorting, grouping or expansion depth. Population-wide reference coordination happens inside each `create*View` function together with CLI arrangement. A GUI would therefore have to reimplement that coordination or call CLI arrangement.
+The CLI's format choice selects both encoding and existing display bounds. Its options do not provide general GUI sorting, grouping, layout or expansion-depth policy. Population-wide reference coordination also needs deliberate treatment before another interface can reuse it without reproducing CLI arrangement.
 
-This needs a decision before GUI presentation work, not before. Open questions:
+The [exact retained-answer plan](plans/exact-retained-answer-presentation.md) scopes the separation needed to present existing answers: explicit supported presentation inputs, retained-content compatibility, and reference coordination without fresh selection. General GUI Presentation design remains outside that bounded separation.
 
-- How are presentation choice, presentation parameters and display bounds represented?
-- Which inputs count as presentation context, and so leave View identity unchanged? Candidates include available space, reference lifetime and usage reporting.
+Decide presentation choice, parameters, bounds and context for actual GUI capabilities. Determine which available-space, interaction, lifetime and usage differences affect the resulting View identity; do not assume all context is identity-neutral or blindly inherit CLI formulas. Assess interface-independent reference coordination against the implementations resulting from the retained-answer work.
 
-Options the audit proposed include separating presentation selection from bounds, and making reference coordination an interface-independent step called by both CLI and GUI arrangement.
+Assess nonempty multi-Projection input collections, contribution/state attribution, exact correspondence guarantees, and the distinction between coordinating one View and placing independent Views together. Decide how composition changes are recorded and how continuity relates to identity before implementing a managed View lifecycle. Preserve population counts and qualification through arrangement; do not hide new analysis inside cross-Projection coordination. Decide which input orders or roles are meaningful, which are presentation choices, and which do not affect identity. Preserve meaningful before/after roles without imposing ordered identity on every collection.
 
-Assess nonempty multi-Projection input collections, contribution/state attribution, exact correspondence guarantees, and the distinction between coordinating one View and placing independent Views together. Decide how composition changes are recorded and how continuity relates to identity before implementing a managed View lifecycle. Preserve population counts and qualification through arrangement; do not hide new analysis inside cross-Projection coordination. Revisit the audit’s presentation-context question: available space, interaction state, reference lifetime and per-input usage/reporting need explicit treatment rather than inheriting current CLI identity formulas. Decide which input orders or roles are meaningful, which are presentation choices, and which do not affect identity. Preserve meaningful before/after roles without imposing ordered identity on every collection. No multi-Projection GUI implementation is authorized by the conceptual decision.
-
-## Allow a View to be requested for an existing Projection
-
-Added: 2026-10-06
-Origin: representation audit finding [F6](../records/audits/2026-10-06-user-model-concept-representations/REPORT.md#f6-a-retained-projection-cannot-be-presented-again-every-view-request-re-selects)
-Area: session API, Views and investigation selection
-
-The session API accepts only complete View requests, so every page, format or continuation change rebuilds its Projection from current session state. For mechanical lenses this returns the same Projection. An investigation selection, however, takes a new revision snapshot each time. A correction accepted between `inspect @investigram-…` and `--revision-page 2` makes page 2 a page of a different Projection. This shows only through the Projection ID in JSON.
-
-The intended implementation direction is a request form that names an exact retained Projection together with new presentation inputs, so that paging and reformatting keep the same answer. Keep exact-result redisplay distinct from repeating a request with pinned inputs: pinning selects the same captured program state, not necessarily the same retained analysis result. Preserve this distinction in agent-context references and future interface wording.
-
-F6 is a current human-facing continuity/disclosure limitation, with remediation explicitly deferred to separately scoped work. Paging or reformatting is intended to preserve the selected answer and its qualifications, but the current request path may select newer retained interpretation or correction/association snapshots. Separate CLI commands and changed Projection IDs in JSON do not sufficiently disclose refresh to a human paging an answer. Make refresh behavior apparent and disclose consequential changes in answer, selection or qualifications if an interaction refreshes instead; clearly disclosed reselection may be an interim treatment but is not equivalent to exact-result continuity. This does not require a warning for every identifier change or a comparison notice for every independently requested fresh investigation.
-
-Separate presenting a captured result from repeating a request under its input binding: following resolves a changing input again, while pinned continues to use the same captured program state. Retained interpretation and correction/association selections also support the answer, but are not thereby captured program states and acquire no following or pinned policies. Preserve explicit earlier results and reference bindings. Remediation does not depend on live refresh, multi-state analysis or GUI support and must precede any claim that current paging preserves one selected answer. Any new request or schema requires its own compatibility and identity decision; no implementation or session-lifecycle change is authorized here.
+This remaining work needs decisions before GUI Presentation implementation, not before the bounded retained-answer capability. No multi-Projection GUI implementation is authorized here.
 
 ## Preserve captured-basis attribution in observations
 
@@ -63,7 +48,7 @@ Assess and correct the bounded observation export path so that the recorded resu
 
 Scope this work to identifying the captured basis and its limitations, rather than retaining everything necessary to reproduce an investigation. It does not authorize a durable analysis store or repository archive. Do not assume that a commit hash or references into a discarded store are sufficient attribution. Any bounded retention needed for adequate attribution must be justified within the later approved design; full reproducibility is a separate concern.
 
-Include associated-inspection attribution in the assessment: its exported descriptor uses the composite selection ID while retaining mechanical descriptor fields, and omits the explicit mechanical support reference retained in core. Check whether the observation adequately describes the actual qualified answer and its support. A composed Projection does not inherently become a View of two independent Projections; preserve the accepted composition contract without requiring universal direct component pointers.
+Include associated-inspection attribution in the assessment: its current exported descriptor uses the composite selection ID while retaining mechanical descriptor fields, and omits the explicit mechanical support reference retained in core. The [exact retained-answer plan](plans/exact-retained-answer-presentation.md) owns exposing the composite variant and precise mechanical-support reference, with verification and a corresponding update to this description. That bounded correction does not close the general captured-basis export gap. Check whether the observation adequately describes the actual qualified answer and its support after that implementation. A composed Projection does not inherently become a View of two independent Projections; preserve the accepted composition contract without requiring universal direct component pointers.
 
 Correction is explicitly deferred and need not block architectural adoption or interface exploration. Complete it before relying on newly collected observations for assessments requiring attribution to a particular program state. Until then, preserve the distinction between evidence of displayed output and evidence of its captured program basis. Keep this work separate from F1 request-description fixes unless an approved implementation scope deliberately combines them. This candidate authorizes no implementation or rewriting of historical observations.
 
@@ -342,32 +327,13 @@ Added: 2026-09-26
 Origin: module investigation review and reference-lifetime disclosure decision
 Area: presentation and session references
 
-Assess views introduced by earlier slices against the
-[reference-lifetime disclosure requirement](decisions/reference-lifetime-disclosure.md):
-when references expire before they can be used as subjects of a subsequent
-request, their surrounding presentation must make that limitation clear.
-Check one-shot output in particular and bring nonconforming presentations into
-conformance. A shared notice can cover affected references; ordinary follow-up
-references in a continuing session need no repeated caveats.
+Assess output against the [reference-lifetime disclosure requirement](decisions/reference-lifetime-disclosure.md): when references expire before they can be used in a subsequent request, their surrounding presentation must make that limitation clear. Cover human and JSON output. A shared notice can cover affected references; ordinary follow-up references in a continuing Session need no repeated caveats.
 
-The earlier implemented slices to assess are:
+The [exact retained-answer plan](plans/exact-retained-answer-presentation.md) owns disclosure and conformance verification for all references in its affected program Views, including answer aliases, module/group/investigram subjects and supporting source/navigation references. This includes the earlier module inventory/inspection/exports, repository/project organization and group inspection, dependency overview/direct relationships and their source detail, and one-shot versus shell output. Keep that coverage open in the plan until implementation is verified; adopting the plan does not establish conformance.
 
-- [Initial module inventory](plans/initial-module-inventory-plan.md): module lists,
-  module inspection, exports, and forwarding relationships.
-- [Repository organization](plans/repository-organization-plan.md): repository
-  and project organization views, group inspection, and membership references.
-- [Module dependencies](plans/module-dependencies-plan.md): dependency overview,
-  direct dependencies and dependents, and references in supporting source detail.
-- [Transient interactive session shell](plans/transient-session-shell.md): shared
-  presentation and help for one-shot commands versus continuing shell sessions.
+The remaining independent assessment covers references in non-View output, including ambiguous-selection candidates, operational reports and refusals. The retained-answer plan also covers its own presentation-unavailable retainedAnswers and new refusals; use that verified coverage without assuming it establishes conformance of every pre-existing non-View path.
 
-Cover human and JSON output, including ambiguous-selection results, as these
-views currently behave after the shell integration.
-
-Conformance is currently unknown. The potential impact is confusion about which
-displayed references support further navigation, rather than a change to
-reference binding or the underlying program claims. This is a deferred usability
-assessment, not a prerequisite for the module investigation slice.
+Conformance of those remaining paths is currently unknown. The potential impact is confusion about which displayed references support further navigation, rather than a change to reference binding or underlying program claims. This remains a deferred usability assessment; its broader scope does not block the bounded retained-answer implementation.
 
 ## Retry failed or incomplete interpretation without restarting the session
 

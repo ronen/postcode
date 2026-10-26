@@ -111,4 +111,10 @@ No source, tests, adopted documentation, foundation, development guidance or not
 
 Round 1 reviewed 3f5eced20c1027cb3f7f1853a6beef0ec36cebfa, with corrections at 3e069d97c6581fdef96dea69d71d03703754589b. Round 2 reviewed b3c5e3d and confirmed resolution of round 1; its findings were addressed through 9de34f0. Round 3 reviewed 3677d72 and confirmed resolution of round 2. All round-3 findings are addressed at the final correction target, including the explicitly agreed R3 and R5 choices. No further independent review is claimed.
 
-The package remains in review under drafts. The human has not declared the full package accepted or a review gate satisfied. There are no outstanding review questions. Approval/promotion and any further independent review remain human decisions. The note-link correction remains a promotion follow-up requiring human direction under the repository's note policy. Implementation remains unauthorized.
+The human approved the complete package and directed promotion on 2026-10-25 after all three rounds and resolution of the remaining choices. Planning review is concluded by that human acceptance. The plan is approved, the decision is accepted, and implementation remains unauthorized.
+
+## Promotion
+
+The approved plan and accepted decision are promoted to their canonical documentation locations with the reviewed constraint, backlog, index and current-behavior revisions. Draft-only status and promotion instructions are reconciled without changing the adopted behavior. The promotion direction includes the previously identified EXACT source-link update; that one note link now points to the approved plan, with no broader note revision. The promoted draft package is removed. Historical returned reports and earlier review targets remain intact.
+
+Promotion verification passed: all 297 links and anchors across the 11 promoted or updated Markdown files resolve; no live reference remains to the removed F6 backlog entry; incorporated revision units match the approved draft text; the draft package is removed; and no source or development-guidance changes are included. Current behavior documentation continues to state that implementation is outstanding. No application tests or runtime claims are made for this documentation-only promotion.

@@ -116,7 +116,7 @@ Alphabetical by code.
   a distinct, visible action.
 - **Scope:** exact-result requests and the necessary Presentation separation
   within the current Session lifetime.
-- **Source:** [backlog: exact retained-answer presentation, F6](../docs/backlog.md#allow-a-view-to-be-requested-for-an-existing-projection).
+- **Source:** [approved plan: exact retained-answer presentation](../docs/plans/exact-retained-answer-presentation.md).
 
 <a id="gui"></a>
 ### GUI — Bounded graphical investigation

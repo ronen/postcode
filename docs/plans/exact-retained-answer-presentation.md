@@ -1,6 +1,6 @@
 # Exact retained-answer presentation
 
-Status: in review
+Status: approved
 Created: 2026-10-14
 Updated: 2026-10-25
 Superseded by:
@@ -16,15 +16,15 @@ This work delivers continuity within the supported transient Session. It does no
 <a id="review-choices"></a>
 ## Resolved review choices
 
-The human agreed to Q1–Q3 on 2026-10-14, with Q2 expressly limited to the current lifecycle. The choices below are settled for this plan. The package remains non-governing pending approval and promotion; this agreement does not authorize implementation.
+The human agreed to Q1–Q3 on 2026-10-14, with Q2 expressly limited to the current lifecycle. The choices below are settled for this plan. The complete plan was approved on 2026-10-25 after three review rounds. Implementation requires separate authorization.
 
 | Choice | Agreed behavior | Alternative and consequence |
 | --- | --- | --- |
 | Q1: existing paging syntax | Add shell present and move --after and --revision-page to it. Reject those flags on fresh Lens requests with guidance to present an answer reference. | Keeping old syntax as explicit reselection would need conspicuous refresh semantics and consequential-change disclosure; a JSON ID or generic warning does not cure F6. Implicitly looking up the last matching request creates additional history and ambiguity policy. |
 | Q2: invalidated Sessions | Keep current Session validity/publication checks and shutdown behavior as a bounded lifecycle limitation. Invalidation makes the historical answer unavailable through this lifecycle; it does not make the answer itself invalid. | Historical presentation after invalidation is valuable and conceptually compatible with immutable answers, but requires separating readable retention from investigation cancellation and shell shutdown. Scope and lifecycle decisions must be revised before including it. |
-| Q3: human-facing answer references | Expose a distinct, stable, Session-local compact answer reference alongside the precise Projection ID. The API accepts the precise ID; CLI accepts both. | Raw IDs alone are smaller to implement but cumbersome in human paging. An implicit last-answer alias adds mutable targeting and is not part of this recommendation. |
+| Q3: human-facing answer references | Expose a distinct, stable, Session-local compact answer reference alongside the precise Projection ID. The API accepts the precise ID; CLI accepts both. | Raw IDs alone are smaller to implement but cumbersome in human paging. An implicit last-answer alias adds mutable targeting and is not part of this design. |
 
-The agreed shell command is present. With no established user base requiring compatibility, reject ambiguous old paging flags with useful guidance rather than retaining aliases. Exact internal names and output layout remain delegated within these choices. Other consequential recommendations, including outcome/report separation, the observation version and default handling below, remain part of the decision package for approval rather than implementation assumptions.
+The agreed shell command is present. With no established user base requiring compatibility, reject ambiguous old paging flags with useful guidance rather than retaining aliases. Exact internal names and output layout remain delegated within these choices. Outcome/report separation, the observation version and default handling below are covered by the accepted decision.
 
 ## Implementation assessment
 
@@ -52,9 +52,9 @@ The [architecture overview](../architecture/README.md), [investigation architect
 
 The [application specification](../app-specification.md), [core concepts](../core-concepts.md) and [architectural constraints](../architectural-constraints.md) already require presentation continuity and distinguish captured basis from interpretation selection. The [coordinated-Views decision](../decisions/coordinated-views-and-qualified-results.md), [qualified construction](../decisions/qualified-construction-under-the-request-model.md), [Lens request outcomes](../decisions/lens-application-and-request-outcomes.md), [transient Sessions](../decisions/transient-analysis-sessions.md), [investigram decisions](../decisions/investigrams-and-progressive-investigation.md) and [reference lifetime disclosure](../decisions/reference-lifetime-disclosure.md) remain governing.
 
-The accompanying [decision](../decisions/exact-retained-answer-presentation.md) specifies the new bounded request, reference and reporting contract. No definition of Projection, Presentation, View or pinned input needs replacement. No foundation or application-specification revision is needed for the recommended scope. The package includes a narrow architectural-constraint addition to make the supported retained-request boundary directly usable; its decision provenance is the companion record. Separating retained-information lifetime from permission to investigate remains outside this plan.
+The accompanying [decision](../decisions/exact-retained-answer-presentation.md) specifies the new bounded request, reference and reporting contract. No definition of Projection, Presentation, View or pinned input needs replacement. No foundation or application-specification revision is needed for the adopted scope. The architectural constraints state the supported retained-request boundary, with provenance in the companion decision. Separating retained-information lifetime from permission to investigate remains outside this plan.
 
-The accompanying backlog revision transfers F6 into this plan and preserves the unresolved portion of F5. Adoption does not establish implemented conformance. During promotion, replace live F6 backlog links with this plan while retaining truthful current-limit statements. Do not rewrite historical decisions, audits or concluded records. Their references remain interpretable against their historical baselines.
+F6 is transferred from the backlog into this plan; the unresolved portion of F5 remains in the backlog. Adoption does not establish implemented conformance. Current behavior documents link to this plan while retaining the known limitation until implementation is verified. Do not rewrite historical decisions, audits or concluded records. Their references remain interpretable against their historical baselines.
 
 ## Scope
 
@@ -225,7 +225,7 @@ Complete worker and parent transport, usage finalization, version-three observat
 
 Exit evidence: actual worker/parent/sink tests, including failed: false preserved through interactive-session.ts and a completed command outcome/exit 0 in command-execution.ts for successfully presented retained failures; accurate current request and retained outcome; explicit unchanged-answer identity across changed output; all implementation and documentation sites in the reconciliation inventory below agree.
 
-Use the repository's implementation task and independent-review workflow after separate implementation authorization. This planning package opens no task record and authorizes no code changes.
+Use the repository's implementation task and independent-review workflow after separate implementation authorization. Approval of this plan opens no implementation task record and authorizes no code changes.
 
 ## Verification matrix
 
@@ -251,34 +251,32 @@ Use real fixtures and the existing controlled investigator double, without hoste
 
 During implementation run focused checks per slice, then npm run check and npm test. Compare semantic content with kind-aware reference normalization; do not erase qualification, omissions, ordering, literal evidence or meaningful identity differences to make tests pass.
 
-## Implementation reconciliation and promotion
+## Implementation reconciliation
 
-Update current behavior documents only with verified implementation. At promotion, the accompanying revision files keep current limitations truthful and point to this plan; they do not prematurely advertise the command or version-three production.
+Update current behavior documents only with verified implementation. Their current descriptions retain the known limitations and point to this approved plan; they do not advertise the command or version-three production.
 
 | Area | Current sites to reconcile during implementation |
 | --- | --- |
 | Fresh-selection versus exact-presentation terminology | STATUS.md; README.md progressive-investigation text; docs/cli-reference.md interpretation/replacement sections; docs/hosted-investigation.md; docs/architecture/README.md responsibilities; docs/architecture/investigation.md retention and correction sections; src/lib/commands.ts help. Replace current reselection uses of “redisplay” with “fresh selection”. |
 | Exact presentation unavailable message | src/lib/request-reporting.ts currently says retained-ID redisplay is unsupported. Replace it with current usable answer targets and accurate presentation-unavailable reasons. |
 | Retired paging syntax and generated guidance | src/lib/commands.ts help/parser; README.md; docs/cli-reference.md; docs/architecture/investigation.md; src/lib/investigation/associations.ts; src/lib/investigation/presentation.ts. Check ordinary continuation, unknown-continuation restart, answer-wide revisions, distinct subject navigation and one-shot guidance. |
-| Observation version and operative conventions | src/lib/observations.ts and associated tests; README.md observability; docs/cli-reference.md, docs/capability-reference.md and docs/architecture/README.md; docs/implementation-conventions.md local observation sink. Change the convention from version two to version three when the producer changes, not at planning promotion. |
+| Observation version and operative conventions | src/lib/observations.ts and associated tests; README.md observability; docs/cli-reference.md, docs/capability-reference.md and docs/architecture/README.md; docs/implementation-conventions.md local observation sink. Change the convention from version two to version three when the producer changes. |
 | Source classification | src/lib/source-disclosure.ts and test/source-disclosure.test.ts plus observation-publication tests cover the new retained operation-result disclosure route. |
 | Backlog conformance | Update the captured-basis entry's associated-descriptor paragraph after verification of the explicit variant/support reference, without closing broader basis export. Program-View lifetime coverage includes all answer, subject and supporting references under the shared one-shot notice. Keep the remaining non-View reference-lifetime assessment open. |
 
 Historical “redisplay” in the accepted investigrams decision means fresh replacement selection; exact retained presentation never follows later replacement chains. Preserve historical decision bodies and record this interpretation in the companion decision.
 
-Promotion requires a final reconciliation with current canonical documents and explicit human approval. Set canonical plan/decision statuses and acceptance date, and replace draft-only approval/promotion prose in the plan's resolved-choice section and decision Context. Preserve the settled choices and rationale. Include indexes, constraint/backlog revisions and live links atomically.
-
-A human-maintained upcoming-work note also links EXACT to the F6 backlog anchor. Raise that link change for explicit human direction when promoting; do not edit notes as an incidental correction or silently leave a removed anchor. The retained-answer versus repeatable-request distinction for future external-agent references remains in the shared coding-agent context backlog entry. No broader note cleanup is authorized here.
+The retained-answer versus repeatable-request distinction for future external-agent references remains in the shared coding-agent context backlog entry.
 
 ## Review resolution and delegated details
 
-The human resolved C4 in favor of Session-local aliases: local bindings determine meaning, including when a spelling was copied elsewhere. The human resolved round-two N2 on 2026-10-25 in favor of preserving other effective choices explicitly in generated paging commands. Manually written present requests retain normal defaults. The human resolved round-three R3 on 2026-10-25 in favor of preserving an unknown association continuation when paging revision details, disclosing its continuing failed status and offering a separate association restart. There are no outstanding consequential review questions. The complete package still requires approval and promotion; this clarification does not reopen Q1–Q3 or authorize lifecycle expansion.
+The human resolved C4 in favor of Session-local aliases: local bindings determine meaning, including when a spelling was copied elsewhere. The human resolved round-two N2 on 2026-10-25 in favor of preserving other effective choices explicitly in generated paging commands. Manually written present requests retain normal defaults. The human resolved round-three R3 on 2026-10-25 in favor of preserving an unknown association continuation when paging revision details, disclosing its continuing failed status and offering a separate association restart. There are no outstanding consequential review questions. These adopted clarifications do not reopen Q1–Q3 or authorize lifecycle expansion.
 
 Use the answer- prefix illustrated by the agreed command surface. Exact neutral-title wording, normal output layout and internal type/module names remain implementation details subject to the stated semantics, terminal safety and identity inputs. They do not authorize new default inheritance, implicit last-answer behavior or a broader Presentation selector.
 
 ## Risks and decision ownership
 
-Q1–Q3 are resolved by human agreement. The remaining decision/constraint package requires human approval before promotion. Keep post-invalidation reading and broader lifecycle/interface design outside this plan; any later inclusion requires a separately agreed scope revision rather than a local validation bypass.
+Q1–Q3 and the decision/constraint package are approved. Keep post-invalidation reading and broader lifecycle/interface design outside this plan; any later inclusion requires a separately agreed scope revision rather than a local validation bypass.
 
 The implementer rechecks this baseline against concurrent repository work at task initiation. Particular risks are associated composite dispatch, source support that looks present but lacks the required qualified expansion, retained unavailable outcomes hidden by null current reporting, and accidental population-wide binding from current history. If a retained family cannot reconstruct its qualified content, repair the bounded retention contract through an explicit reviewed scope adjustment; do not silently select a fresh substitute.
 

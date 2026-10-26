@@ -1,7 +1,7 @@
 # Present exact retained answers independently of fresh selection
 
-Status: in review
-Decided: pending package acceptance
+Status: accepted
+Decided: 2026-10-25
 Arising from: [Exact retained-answer presentation](../plans/exact-retained-answer-presentation.md)
 Scope: retained presentation in the current transient Session API and CLI, qualified content compatibility, references, identity and reporting
 
@@ -11,7 +11,7 @@ Current commands coordinate a fresh Lens application before producing each View.
 
 The [continuity contract](coordinated-views-and-qualified-results.md#preserve-the-selected-answer-during-presentation-changes) distinguishes an exact retained Projection from a repeated request, including a request against pinned program inputs. The [request model](lens-application-and-request-outcomes.md) separates immutable qualified answers from designation, invocation reporting and Presentation choices. This decision makes those distinctions operable for existing families.
 
-The human agreed on 2026-10-14 to move paging to present, retain current invalidation/shutdown as a bounded lifecycle limitation, and include stable compact answer references. The accompanying plan records that agreement. The human also confirmed Session-local alias resolution in response to review C4: a locally bound spelling denotes its local answer even if copied elsewhere. On 2026-10-25, the human also agreed in response to N2 that generated paging commands preserve the View's other effective choices while changing only the paged input; manually written present requests retain normal defaults. The human confirmed in response to R3 on the same date that revision paging preserves an unknown association token, discloses the continuing failure and offers a separate restart. The complete decision package remains in review pending acceptance and promotion.
+The human agreed on 2026-10-14 to move paging to present, retain current invalidation/shutdown as a bounded lifecycle limitation, and include stable compact answer references. The accompanying plan records that agreement. The human also confirmed Session-local alias resolution in response to review C4: a locally bound spelling denotes its local answer even if copied elsewhere. On 2026-10-25, the human also agreed in response to N2 that generated paging commands preserve the View's other effective choices while changing only the paged input; manually written present requests retain normal defaults. The human confirmed in response to R3 on the same date that revision paging preserves an unknown association token, discloses the continuing failure and offers a separate restart. The complete decision and companion plan were accepted and approved on 2026-10-25; implementation requires separate authorization.
 
 ## Decisions
 
@@ -137,7 +137,7 @@ Accurate presentation observations do not close the independently backlogged cap
 
 ## Governing impact and conformance
 
-This decision supplements existing accepted contracts; it does not replace a headed decision. The application specification and core concepts already define exact retained presentation and its distinction from pinned requests. Their definitions remain unchanged. The accompanying architectural-constraint addition states the supported request boundary for current eager families.
+This decision supplements existing accepted contracts; it does not replace a headed decision. The application specification and core concepts already define exact retained presentation and its distinction from pinned requests. Their definitions remain unchanged. The architectural constraints state the supported request boundary for current eager families.
 
 Preserve the [qualified-construction](qualified-construction-under-the-request-model.md) answer/View identity and support rules, the [request model](lens-application-and-request-outcomes.md) non-View and compatibility rules, [compact attribution](compact-attribution-and-complete-results.md), [reference lifetime disclosure](reference-lifetime-disclosure.md), [execution ownership](execution-ownership-and-cancellation.md), and source/observation obligations. New retained requests extend those paths; existing fresh Lens semantics remain in force except the explicitly adopted surface and disclosure changes inventoried below.
 
