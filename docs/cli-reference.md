@@ -25,7 +25,7 @@ Entity IDs in its output are local to that session and cannot navigate another
 invocation. No generated follow-up commands are emitted.
 
 `shell` opens one project for successive commands in a terminal. Each command uses
-the same lenses and options, except `--project` is fixed at opening. `--json` on
+the same lenses and options, plus `present`; `--project` is fixed at opening. `--json` on
 opening chooses JSON as the command default. Use `help`, `exit` or EOF. Single and
 double quotes group selector words; backslash escapes a character outside single
 quotes. There is no interpolation, command execution, pipe or redirection syntax.
@@ -86,9 +86,58 @@ A product View may coordinate multiple independently qualified Projections, and 
 
 The product may suggest a summary View when the human has not expressed a more specific information need; it does not require a summary-first default, and a summary View need not use a summary Lens. The current no-argument command remains `modules`, and `summarize` requests a module interpretation. No automatic general summary selection is implemented.
 
-Each produced Projection retains its selected information and qualification. Repeating a command requests a selection again: changes to retained interpretation or correction/association selections can yield a different answer, including when requesting another page or format. Those supporting selections are distinct from captured program states. Input changes follow the separate [session invalidation contract](#input-stability-and-retained-work), not a live-refresh policy.
+Each produced Projection retains its selected information and qualification. Repeating a Lens command makes a fresh selection: retained interpretation, correction and association changes can yield a different answer. Those supporting selections are distinct from captured program states. Input changes follow the separate [session invalidation contract](#input-stability-and-retained-work).
 
-Current commands cannot explicitly present a particular retained Projection with new presentation inputs. They preserve earlier stored results but cannot guarantee that successive pages or formats present the same selected answer. Separate commands and changed Projection IDs in JSON do not provide sufficient human-facing refresh disclosure for paging. This known continuity/disclosure limitation (F6) remains deferred for [exact retained-answer implementation](plans/exact-retained-answer-presentation.md).
+### Present an exact retained answer
+
+Within the active shell, use the answer reference displayed by a program View:
+
+```text
+present @answer-… --json
+present @answer-… --source-detail
+present @answer-… --after @investigram-…
+present @answer-… --revision-page 2
+```
+
+`present` accepts the Session-local answer alias or precise Projection ID. It uses
+only that answer and its fixed retained support: it does not select newer corrections
+or associations, perform Evaluation, acquire evidence or retry an investigation.
+It covers mechanical inventories, organization, inspections and dependencies,
+operation results and historical investigation inspection. An associated inspection
+is one composite answer; JSON identifies its `associated-inspection` variant and
+precise `mechanical` support. Presenting that support ID alone shows the mechanical
+answer without its association listing.
+
+Omitted choices use normal defaults: the shell's format, no source detail, no
+association continuation and revision page 1. Choices are never inherited from a
+prior View. Generated continuations preserve every other effective choice, including
+JSON and source disclosure. Structured `continuations` contain complete normalized
+`present` requests with precise targets. Source detail and paging require support
+in the retained answer and its compatible Presentation; an unavailable choice
+returns a qualified refusal with the retained answer ID and alias.
+
+Association paging uses the answer's frozen listing. Revision paging applies to all
+shown statuses; a status with no rows on that page reports exhaustion. An unknown
+association token remains unknown when paging revisions and retains failed status.
+A separately labelled restart clears only the association token. Subject navigation
+such as `inspect @investigram-…` makes a fresh selection with current revision context.
+Fresh Lens requests reject `--after` and `--revision-page` with guidance to `present`.
+
+All program Views expose `selectionMode` (`fresh` or `retained`), `answerReference`,
+the precise Projection ID and a shared `referenceNotice` in Unicode and JSON. Answer
+aliases are separate from subject references; supplying one as a Lens subject guides
+you to `present`. Aliases bind only within their Session. A copied alias that happens
+to be bound locally names that local answer, never another Session's answer.
+One-shot output allocates aliases for correlation but all answer, subject and support
+references expire at command end. It provides no executable present continuation;
+open a shell and request the information there first. One-shot `present` is refused
+before project opening.
+
+Retained failure or unavailable outcomes remain visible as answer semantics.
+Successfully presenting one completes the current command (exit 0), without reporting
+a new investigation attempt or adding provider usage. An unknown continuation remains
+a failed command. Input invalidation, cancellation and Session closure retain their
+existing limits; `present` adds no persistence or post-invalidation access.
 
 ## First use
 
@@ -342,10 +391,10 @@ in the PostCode checkout. The label comes from the configured project directory,
 and the six-character key hashes its normalized absolute configuration path.
 Repeated sessions share the grouping; different configurations are disambiguated.
 One UTC submission time supplies both date and time. The project-specific destination
-is disclosed on stderr. Refusals and failures use the same project grouping. Format-version-2 batches carry `session` and `command` (1 for one-shot),
+is disclosed on stderr. Refusals and failures use the same project grouping. Format-version-3 batches carry `session` and `command` (1 for one-shot),
 with independent batch/event UUIDs. They contain request/context, the qualified view and exact output;
 they may contain repository-derived text and explicitly requested source detail.
-The request record carries the actual normalized Lens or report request, including
+The request record carries the actual normalized Lens, present or report request, including
 subject designation, true Lens parameters, presentation choices and reference lifetime.
 It is independent of the produced View's descriptor. Current public Lenses declare
 no semantic parameters; direct Session calls supplying undeclared parameters return
@@ -399,7 +448,7 @@ Repeated compatible interpretations reuse the original work and usage.
 Presentation selection checks the answer's content contract and the supplied format,
 source and paging choices. A missing compatible choice, or an unmet materialization
 precondition without a permitted fallback, returns `presentation-unavailable` with
-the reason, qualifications and any already-retained answer IDs. This does not create
+the reason, qualifications and any already-retained answer IDs and aliases. This does not create
 a View. The current default Presentations accept qualified partial and unavailable
 answers. View JSON records the selected Presentation and its compatibility criteria;
 any declared fallback preserves explicit choices and explains its use in JSON and
@@ -659,7 +708,7 @@ references in human output. Known investigram references supplied to `children`,
 generation; an absent reference remains a missing selection. `--source-detail` discloses captured support locations and excerpts and
 records that disclosure. Source sent only to the investigator does not count as
 human source disclosure. Inspection does not generate a missing account or redirect
-to a replacement. Redisplay follows explicit replacement chains using acceptance recency, with unresolved conflicts and citation-based reconsideration warnings. Exact inspection and follow-up subjects are never redirected. Use `inspect @investigram --revision-page N` for additional correction and cause details.
+to a replacement. Fresh result selection follows explicit replacement chains using acceptance recency, with unresolved conflicts and citation-based reconsideration warnings. Exact inspection and follow-up subjects are never redirected. Use `present @answer-reference --revision-page N` for additional correction and cause details from the selected answer.
 
 `explain @investigram-…`, `decompose @investigram-…` and `examine @investigram-…`
 require an exact reference in the shell. Explanation clarifies the selected
@@ -674,14 +723,15 @@ one-shot follow-ups are refused because investigrams belong to the active sessio
 Inspection shows composition-parent and investigation-subject links separately.
 `inspect MODULE`, `inspect @group-…` and `inspect @investigram-…` also list explicitly
 associated retained accounts (up to 24 per page). Use the displayed reference to
-inspect complete content, or repeat the inspection with `--after @investigram-…`
-using the continuation shown. Listing prose is bounded to 400 UTF-16 code units;
+inspect complete content, or use `present @answer-reference --after @investigram-…`
+with the continuation shown to page the exact selected listing. Listing prose is bounded to 400 UTF-16 code units;
 qualifications are preserved together or the entire detail is explicitly omitted
-under the 55,000-unit page bound. Listings reflect current retained associations,
+under the 55,000-unit page bound. Fresh listings select current retained associations,
 not all possible functionality or authority. A newly retained account can extend
-them without changing the mechanical inspection. Association listings show exact
-originals with current revision status. Result redisplay selects replacements;
-inspection preserves the original and exposes alternatives and reconsideration causes.
+a subsequent fresh listing without changing the mechanical inspection. Exact
+presentation preserves the earlier listing and its selected revision status. Fresh
+result selection chooses replacements; inspection preserves the original and exposes
+alternatives and reconsideration causes.
 
 `usage` and `usage --json` expose per-attempt and session reported usage without
 inference, including failed attempts. Usage is a subjectless report, with no Lens or Projection descriptor. Summary views also include their attempt and

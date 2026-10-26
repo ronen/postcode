@@ -114,7 +114,7 @@ test('Unicode and experimental JSON use the same qualified projection and automa
   for (const result of [unicode, json]) {
     assert.equal(result.batches.length, 1);
     const batch = result.batches[0]!;
-    assert.equal(batch.formatVersion, 2);
+    assert.equal(batch.formatVersion, 3);
     assert.equal(batch.records.find(record => record.kind === 'rendered-output')!.value, result.stdout);
     const ids = [batch.id, ...batch.records.map(record => record.id), ...batch.events.map(event => event.id)];
     assert.equal(new Set(ids).size, ids.length);

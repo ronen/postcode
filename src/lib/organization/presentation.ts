@@ -1,3 +1,5 @@
+import { answerIdentity, answerDisplay, answerLines, continuationLines } from '../answer-presentation.js';
+import type { AnswerContext, AnswerDisplay } from '../answer-presentation.js';
 import { validatePresentationContent, presentationChanges } from '../presentation-contracts.js';
 import type { PresentedOptions } from '../presentation-contracts.js';
 import { lookupDescription, lookupQualifications, resolutionContextIdentity } from '../resolution-context.js';
@@ -58,7 +60,7 @@ interface TreeRow {
   readonly reference: boolean; readonly pruned: 'outside-project' | 'depth-limit' | null;
 }
 
-export interface QualifiedOrganizationView {
+export interface QualifiedOrganizationView extends AnswerDisplay {
   readonly investigations?: AssociatedInvestigations;
   readonly schema: 'postcode-organization-view/1-experimental';
   readonly id: RecordId;
@@ -101,12 +103,12 @@ export interface QualifiedOrganizationView {
 
 /** Coordinate population bindings before arranging the resolved selection. */
 export function createOrganizationView(store: ProgramRecordStore, projection: OrganizationProjectionContent['projection'],
-  presentation: PresentedOptions, title: string, resolution?: ResolutionContext, content = resolveOrganizationProjection(store, projection)): QualifiedOrganizationView {
+  presentation: PresentedOptions, title: string, resolution?: ResolutionContext, content = resolveOrganizationProjection(store, projection), context: AnswerContext = {}): QualifiedOrganizationView {
   const population = store.entityIds(content.evaluation.groups, 'group');
   const groups = new Map([...population, ...store.entityIds(projection.groups, 'group')]);
   const modules = store.entityIds(content.moduleEvaluation.modules, 'module');
   const detail = content.moduleDetail ? new Map([...store.entityIds(content.moduleDetail.discovery.modules, 'module'), ...store.entityIds(content.moduleDetail.projection.modules, 'module')]) : new Map<RecordId, string>();
-  return arrangeOrganizationView(content, { groups, modules, detail }, presentation, title, resolution);
+  return arrangeOrganizationView(content, { groups, modules, detail }, presentation, title, resolution, { ...context, answerReference: context.answerReference ?? store.answerIds([projection.id]).get(projection.id)! });
 }
 
 /** The family Presentation chooses layout and bounds from the supplied subject scope. */
@@ -118,7 +120,7 @@ function organizationDisplayPolicy(subject: OrganizationProjectionRecord['subjec
 
 export function arrangeOrganizationView(content: OrganizationProjectionContent,
   bindings: { readonly groups: ReadonlyMap<RecordId, string>; readonly modules: ReadonlyMap<RecordId, string>; readonly detail: ReadonlyMap<RecordId, string> },
-  presentation: PresentedOptions, title: string, resolution?: ResolutionContext): QualifiedOrganizationView {
+  presentation: PresentedOptions, title: string, resolution?: ResolutionContext, context: AnswerContext = {}): QualifiedOrganizationView {
   validatePresentationContent({ contract: 'organization', value: content });
   const { projection, evaluation: outcome, repository: captured } = content;
   const policy = organizationDisplayPolicy(projection.subject, presentation);
@@ -177,7 +179,7 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
   if (policy.layout === 'tree') omittedModulePlacements += groups.filter(group => group.selected && !seen.has(group.id))
     .reduce((sum, group) => sum + group.modules.length, 0);
   const moduleDetail = content.moduleDetail ? arrangeModuleView(content.moduleDetail, bindings.detail,
-    { format: presentation.format, sourceDetail: presentation.sourceDetail }, title) : null;
+    { format: presentation.format, sourceDetail: presentation.sourceDetail }, title, undefined, { ...context, answerReference: undefined }) : null;
   const { applicability, availability, execution, materialization, reason, cost } = outcome;
   const externalModules = content.externalModules.count;
   const linksByTarget = new Map<string, { link: LayoutEvidence['links'][number]; order: number }[]>();
@@ -191,8 +193,8 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
     }
   });
   return {
-    schema: 'postcode-organization-view/1-experimental',
-    id: recordId(projection.session, 'organization-view', { projection: identityReference(projection.session, projection.id), presentation, title, resolution: resolutionContextIdentity(projection.session, resolution), method: methods.presentation }),
+    ...answerDisplay(context), schema: 'postcode-organization-view/1-experimental',
+    id: recordId(projection.session, 'organization-view', { projection: identityReference(projection.session, projection.id), presentation, title, resolution: resolutionContextIdentity(projection.session, resolution), method: methods.presentation, ...answerIdentity(context) }),
     title,
     ...(resolution ? { resolution } : {}),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,
@@ -236,7 +238,7 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
     `Session ${view.projection.session.replace(/^session:/, '')}`,
     inspection ? `${view.projection.selection.matches} ${lookupDescription(view.resolution, view.projection.selection.matches) ?? 'selected subjects'}`
       : `${view.display.selectedGroups} selected groups · ${view.repository.groups} repository groups`];
-  lines.push(...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
+  lines.push(...answerLines(view), ...continuationLines(view), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
   if (view.projection.selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; their detail is unavailable in this answer.');
   if (!view.projection.selection.populationEstablished) lines.push('Selection population is not fully established.');
   for (const [name, state] of Object.entries(view.evaluations)) {

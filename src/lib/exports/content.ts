@@ -43,7 +43,7 @@ export interface ModuleExportsContent {
   readonly contexts: readonly QualifiedContext[];
   readonly complete: boolean;
 }
-export function resolveModuleExports(store: ProgramRecordStore, projection: ModuleExportsProjection): ModuleExportsContent {
+export function resolveModuleExports(store: Pick<ProgramRecordStore, 'get'>, projection: ModuleExportsProjection): ModuleExportsContent {
   const retained = store.get(projection.id);
   if (retained.kind !== 'module-exports-projection') throw new Error('Invalid retained exports content');
   projection = retained;

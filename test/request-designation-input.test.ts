@@ -122,7 +122,7 @@ for (const worker of [false, true]) {
     }
     assert.equal((await session.execute({ lens: 'usage', selector: null, presentation })).kind, 'usage');
     const selected = requireView(await session.execute({ lens: 'inspect', selector: 'widget', reference: false, presentation }));
-    const reference = selected.resolution.candidates[0]!.reference;
+    const reference = selected.resolution!.candidates[0]!.reference;
     const precise = requireView(await session.execute({ lens: 'inspect', selector: reference, reference: true, presentation }));
     assert.equal(precise.view.projection.id, selected.view.projection.id);
   });

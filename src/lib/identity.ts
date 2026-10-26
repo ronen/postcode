@@ -7,11 +7,11 @@ export const methods = {
   records: 'postcode/program-records@21',
   content: 'postcode/subject-content@1',
   exportsProjection: 'postcode/module-exports-projection@1',
-  exportsPresentation: 'postcode/module-exports-presentation@1',
+  exportsPresentation: 'postcode/module-exports-presentation@2',
   investigation: 'postcode/investigation@13',
   investigationEvaluation: 'postcode/investigation-evaluation@3',
   investigationProjection: 'postcode/investigation-projection@4',
-  investigationPresentation: 'postcode/investigation-presentation@19',
+  investigationPresentation: 'postcode/investigation-presentation@20',
   discovery: 'postcode/typescript-modules@12',
   evaluation: 'postcode/evaluate-modules@5',
   dependencies: 'postcode/typescript-dependencies@2',
@@ -21,7 +21,7 @@ export const methods = {
   dependencyOrganization: 'postcode/dependency-organization@1',
   projection: 'postcode/projection@13',
   expansions: 'postcode/typescript-expansions@2',
-  presentation: 'postcode/presentation@33',
+  presentation: 'postcode/presentation@34',
   handles: 'postcode/module-handles@5',
   organization: 'postcode/organization@3',
 } as const;
@@ -65,12 +65,12 @@ export class EntityBindings {
   /** Read an existing spelling without extending the binding population. */
   resolve(reference: string): RecordId | undefined { return this.#owners.get(reference); }
 
-  allocate(ids: readonly RecordId[], kind: 'module' | 'group' | 'investigram'): ReadonlyMap<RecordId, string> {
+  allocate(ids: readonly RecordId[], kind: 'module' | 'group' | 'investigram' | 'answer'): ReadonlyMap<RecordId, string> {
     return this.prepare(ids, kind)();
   }
 
   /** Validate a batch without publishing bindings; the store commits all sessions together. */
-  prepare(ids: readonly RecordId[], kind: 'module' | 'group' | 'investigram'): () => ReadonlyMap<RecordId, string> {
+  prepare(ids: readonly RecordId[], kind: 'module' | 'group' | 'investigram' | 'answer'): () => ReadonlyMap<RecordId, string> {
     const additions = new Map<RecordId, string>();
     const owners = new Set<string>();
     for (const id of [...new Set(ids)].sort(compare)) {

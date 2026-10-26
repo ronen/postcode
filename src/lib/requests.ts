@@ -45,7 +45,8 @@ export const commandLenses = freezeOwned({
 } as const satisfies Record<string, LensId>);
 export type CommandLens = keyof typeof commandLenses;
 
-export interface ViewRequest {
+export interface LensViewRequest {
+  readonly kind?: 'lens';
   readonly lens: LensId | CommandLens | 'usage';
   readonly selector: string | null;
   readonly parameters?: Readonly<Record<string, ParameterValue>>;
@@ -56,14 +57,22 @@ export interface ViewRequest {
   readonly subject?: 'project' | 'repository';
   readonly presentation: Presentation;
 }
-interface RequestChoices {
+export interface PresentRequest {
+  readonly kind: 'present';
+  readonly target: string;
+  readonly presentation: Presentation & { readonly after?: string; readonly revisionPage?: number };
+  readonly referenceLifetime?: 'session' | 'command';
+}
+export type ViewRequest = LensViewRequest | PresentRequest;
+export interface RequestChoices {
   readonly presentation: Presentation & { readonly after?: string; readonly revisionPage?: number };
   readonly referenceLifetime: 'session' | 'command';
 }
 export type NormalizedRequest = RequestChoices & (
   | { readonly kind: 'lens'; readonly lens: LensId; readonly question: string; readonly designation: SubjectDesignation;
       readonly parameters: Readonly<Record<string, ParameterValue>>; readonly programInput: 'session-configured-project' }
-  | { readonly kind: 'report'; readonly report: 'usage'; readonly suppliedInputs?: Pick<ViewRequest, 'selector' | 'subject' | 'reference' | 'parameters'> }
+  | { readonly kind: 'report'; readonly report: 'usage'; readonly suppliedInputs?: Pick<LensViewRequest, 'selector' | 'subject' | 'reference' | 'parameters'> }
+  | { readonly kind: 'present'; readonly target: string }
   | RejectedRequest
 );
 
@@ -130,16 +139,37 @@ export function captureRequest(request: ViewRequest, catalog: Readonly<Record<st
     }
   }
   const input = Object.fromEntries(fields);
+  const present = input.kind === 'present';
+  const problem = (field: string, reason: string) => problems.push({ field, reason,
+    representation: Object.hasOwn(input, field) ? 'preserved' : 'absent' });
+  if (input.kind !== undefined && input.kind !== 'lens' && !present) problem('kind', 'Request kind must be lens or present.');
+  if (present) {
+    if (typeof input.target !== 'string' || !input.target) problem('target', 'An exact retained answer target is required.');
+    for (const field of Object.keys(input)) if (!['kind', 'target', 'presentation', 'referenceLifetime'].includes(field)) {
+      problem(field, 'A present request accepts only an exact answer target, presentation choices and reference lifetime; it cannot include Lens or subject inputs.');
+    }
+  } else if (Object.hasOwn(input, 'target')) problem('target', 'An answer target requires a present request.');
+  const choice = input.presentation as Record<string, ParameterValue> | undefined;
+  if (!choice || typeof choice !== 'object' || Array.isArray(choice)) problem('presentation', 'Presentation choices must be an object.');
+  else {
+    const allowed = present ? ['format', 'sourceDetail', 'after', 'revisionPage'] : ['format', 'sourceDetail'];
+    for (const field of Object.keys(choice)) if (!allowed.includes(field)) problem('presentation', `Unsupported presentation choice: ${field}.`);
+    if (choice.format !== undefined && (typeof choice.format !== 'string' || !['unicode', 'json'].includes(choice.format))) problem('presentation', 'Format must be unicode or json.');
+    if (choice.sourceDetail !== undefined && typeof choice.sourceDetail !== 'boolean') problem('presentation', 'Source detail must be a boolean.');
+    if (present && choice.after !== undefined && (typeof choice.after !== 'string' || !/^investigram-[a-f0-9]{8,64}$/.test(choice.after))) problem('presentation', 'Association continuation must be a displayed investigram reference.');
+    if (present && choice.revisionPage !== undefined && (typeof choice.revisionPage !== 'number' || !Number.isSafeInteger(choice.revisionPage) || choice.revisionPage < 1)) problem('presentation', 'Revision page must be a positive safe integer.');
+  }
+  if (!present && (input.after !== undefined || input.revisionPage !== undefined)) problem('presentation', 'Paging requires present with an exact answer reference; fresh Lens requests select an answer anew.');
   const suppliedLens = input.lens;
   const effectiveLens = typeof suppliedLens === 'string' && Object.hasOwn(commandLenses, suppliedLens) ? commandLenses[suppliedLens as CommandLens] : suppliedLens;
-  if (!problems.some(problem => problem.omittedField === 'lens')
+  if (!present && !problems.some(problem => problem.omittedField === 'lens')
     && (typeof effectiveLens !== 'string' || effectiveLens !== 'usage' && !Object.hasOwn(catalog, effectiveLens))) {
     const supplied = Object.hasOwn(input, 'lens');
     problems.push({ field: 'lens', reason: supplied ? 'The supplied name does not identify a registered Lens or report.' : 'A Lens or report name must be supplied.',
       representation: supplied ? 'preserved' : 'absent' });
   }
   const designationFields = [
-    { field: 'selector', required: true, valid: (value: ParameterValue) => value === null || typeof value === 'string', reason: 'A selector must be supplied as a string or null (no selector).' },
+    { field: 'selector', required: !present, valid: (value: ParameterValue) => value === null || typeof value === 'string', reason: 'A selector must be supplied as a string or null (no selector).' },
     { field: 'reference', required: false, valid: (value: ParameterValue) => typeof value === 'boolean', reason: 'Reference designation must be a boolean.' },
     { field: 'subject', required: false, valid: (value: ParameterValue) => value === 'project' || value === 'repository', reason: 'Subject must be project or repository.' },
     { field: 'referenceLifetime', required: false, valid: (value: ParameterValue) => value === 'session' || value === 'command', reason: 'Reference lifetime must be session or command.' },
@@ -157,6 +187,7 @@ export function captureRequest(request: ViewRequest, catalog: Readonly<Record<st
       presentation: { format: presentation?.format === 'json' ? 'json' : 'unicode', sourceDetail: false },
       referenceLifetime: input.referenceLifetime === 'command' ? 'command' : 'session' }) };
   }
+  input.presentation = { ...choice, format: choice!.format ?? 'unicode', sourceDetail: choice!.sourceDetail ?? false };
   const snapshot = freezeOwned(input) as unknown as ViewRequest;
   return { input: snapshot, normalized: normalizeCapturedRequest(snapshot, catalog) };
 }
@@ -167,7 +198,12 @@ export function normalizeRequest(request: ViewRequest): NormalizedRequest {
 }
 
 function normalizeCapturedRequest(request: ViewRequest, catalog: Readonly<Record<string, LensDefinition>>): NormalizedRequest {
-  const choices: RequestChoices = { presentation: { ...request.presentation,
+  const effective = { format: request.presentation.format ?? 'unicode', sourceDetail: request.presentation.sourceDetail ?? false };
+  if (request.kind === 'present') return freezeOwned({ kind: 'present', target: request.target,
+    presentation: { ...effective, ...(request.presentation.after === undefined ? {} : { after: request.presentation.after }),
+      ...(request.presentation.revisionPage === undefined ? {} : { revisionPage: request.presentation.revisionPage }) },
+    referenceLifetime: request.referenceLifetime ?? 'session' });
+  const choices: RequestChoices = { presentation: { ...effective,
     ...(request.after === undefined ? {} : { after: request.after }),
     ...(request.revisionPage === undefined ? {} : { revisionPage: request.revisionPage }) },
     referenceLifetime: request.referenceLifetime ?? 'session' };
@@ -200,7 +236,7 @@ export function invalidParameters(request: NormalizedRequest, catalog: Readonly<
 }
 
 /** Reject designation modes whose incompatibility is known without subject lookup. */
-export function invalidDesignation(request: NormalizedRequest, supplied: ViewRequest, catalog: Readonly<Record<string, LensDefinition>> = lenses): string | null {
+export function invalidDesignation(request: NormalizedRequest, supplied: LensViewRequest, catalog: Readonly<Record<string, LensDefinition>> = lenses): string | null {
   if (request.kind !== 'lens') return null;
   const definition = catalog[request.lens]!;
   if (supplied.subject !== undefined && supplied.selector !== null) return 'Supply either a selector or a project/repository subject, not both.';

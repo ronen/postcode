@@ -1,3 +1,4 @@
+import { isAnswer } from './answer-references.js';
 import type { InvestigationEvaluationRecord } from './investigation/evaluation.js';
 import { selectionReferences } from './investigation/selection-record.js';
 import { validateInvestigationSelection } from './investigation/selection-validation.js';
@@ -466,6 +467,28 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
         index.set(id, record);
       }
     }
+  }
+
+  readonly #answerBindings = new Map<SessionId, EntityBindings>();
+
+  answerIds(ids: readonly RecordId[]): ReadonlyMap<RecordId, string> {
+    const grouped = new Map<SessionId, RecordId[]>();
+    for (const id of ids) {
+      const record = this.get(id);
+      if (!isAnswer(record)) throw new Error('Expected a retained answer');
+      const group = grouped.get(record.session) ?? [];
+      group.push(id); grouped.set(record.session, group);
+    }
+    const result = new Map<RecordId, string>();
+    for (const [session, group] of grouped) {
+      const bindings = this.#answerBindings.get(session) ?? new EntityBindings();
+      for (const [id, reference] of bindings.allocate(group, 'answer')) result.set(id, reference);
+      this.#answerBindings.set(session, bindings);
+    }
+    return result;
+  }
+  boundAnswer(session: SessionId, reference: string): RecordId | undefined {
+    return this.#answerBindings.get(session)?.resolve(reference);
   }
 
   entityIds(ids: readonly RecordId[], kind: 'module' | 'group' | 'investigram'): ReadonlyMap<RecordId, string> {

@@ -171,11 +171,16 @@ ChatGPT and granted plan usage; PostCode never switches routes automatically.
 Credentials use protected macOS storage. Setup and route selection are described
 in the [hosted guide](docs/hosted-investigation.md).
 
-Repeated requests reuse retained outcomes. Redisplay follows accepted corrections
-while preserving unresolved alternatives and reconsideration warnings; warnings do
-not establish that an account is wrong. `inspect @investigram-…` shows the exact
-historical account, and `--revision-page <n>` navigates further correction/cause
-rows. Subject inspection lists associated accounts with continuation where needed.
+Repeated requests reuse retained outcomes and make a fresh answer selection,
+including accepted corrections and current associations. Warnings preserve unresolved
+alternatives and reconsideration causes; they do not establish that an account is
+wrong. `inspect @investigram-…` selects the original historical account with its
+current revision context. In the shell, `present @answer-…` presents the exact selected
+answer again. Add `--revision-page <n>` for further correction/cause rows or the
+shown `--after @investigram-…` continuation for its frozen association listing.
+`--json` and supported `--source-detail` change presentation without selecting anew.
+Every program View identifies fresh or retained selection and the answer's precise
+ID and Session-local alias. One-shot references expire at command end.
 Interpretations and their evidence remain qualified; they are not established
 program truth or runtime observations.
 
@@ -220,7 +225,7 @@ limits, scope, evidence qualifications, and navigation examples.
 ## Observability
 
 Each accepted shell command and each one-shot view request submits an experimental
-version-two observation batch to a timestamped local file under a UTC date
+version-three observation batch to a timestamped local file under a UTC date
 subdirectory of this PostCode checkout's `_observations/` directory. The CLI
 discloses that absolute root destination on stderr.
 The batch carries the session identifier and command order (1 for one-shot use),

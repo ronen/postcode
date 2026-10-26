@@ -62,16 +62,16 @@ test('materialization refusal retains its answer and reports it without a View',
   const report = requireResolution(result);
   assert.equal(report.resolution.reason, 'presentation-unavailable');
   assert.equal(report.resolution.retainedAnswers.length, 1);
-  assert.match(result.rendered, /Retained answer ID:/);
-  assert.match(result.rendered, /Redisplay using retained answer IDs is not yet supported\./);
+  assert.match(result.rendered, /Retained answer: @answer-/);
+  assert.match(result.rendered, /Use present @answer-reference|All references expire/);
   assert.match(result.rendered, /Candidate references remain usable while this Session is valid\./);
   for (const referenceLifetime of ['session', 'command'] as const) {
     const noCandidates = renderRequestReport({ ...report,
       context: { ...report.context, request: { ...report.context.request, referenceLifetime } },
       resolution: { ...report.resolution, candidates: [] } });
-    assert.match(noCandidates, /Retained answer ID:/);
-    assert.match(noCandidates, /Redisplay using retained answer IDs is not yet supported\./);
-    assert.doesNotMatch(noCandidates, /references (remain usable|expire)/i);
+    assert.match(noCandidates, /Retained answer: @answer-/);
+    assert.match(noCandidates, /Use present @answer-reference|All references expire/);
+    assert.match(noCandidates, referenceLifetime === 'command' ? /Open postcode shell/ : /Use present @answer-reference/);
   }
   assert.match(result.rendered, /Interpretation: configuration-unavailable/);
   assert.equal(report.resolution.candidates.length, 1);
@@ -79,6 +79,13 @@ test('materialization refusal retains its answer and reports it without a View',
   const repeat = requireResolution(await active.execute({ lens: 'summarize', selector: report.resolution.candidates[0]!.reference,
     reference: true, presentation: json }));
   assert.deepEqual(repeat.resolution.retainedAnswers, report.resolution.retainedAnswers);
+  const retained = requireResolution(await active.execute({ kind: 'present', target: report.resolution.retainedAnswers[0]!.id, presentation: json }));
+  assert.equal(retained.resolution.reason, 'presentation-unavailable');
+  assert.deepEqual(retained.resolution.retainedAnswers, report.resolution.retainedAnswers);
+  assert.deepEqual(retained.attribution!.work, []);
+  const command = requireResolution(await active.execute({ lens: 'summarize', selector: 'entry', referenceLifetime: 'command', presentation: json }));
+  assert.match(command.referenceNotice!, /All answer, subject and supporting references expire/);
+  assert.match(renderRequestReport(command), /Open postcode shell/);
   assert.deepEqual(JSON.parse(JSON.stringify(report)), structuredClone(report));
 });
 
@@ -95,6 +102,10 @@ test('declared fallback preserves explicit format and source choices and explain
     assert.equal(result.view.presentation.decision!.selected, fallback.id);
     assert.equal(result.view.presentation.decision!.changes.length, 1);
     assert.equal(result.view.presentation.decision!.criteria.precondition, 'qualified');
+    const retained = requireView(await active.execute({ kind: 'present', target: result.view.projection.id, presentation: { format, sourceDetail: true } }));
+    assert.equal(retained.view.projection.id, result.view.projection.id);
+    assert.equal(retained.view.presentation.decision!.selected, fallback.id);
+    assert.equal(retained.failed, false);
     const finalized = finalizeInvestigationUsage(result.view, { ...result.view.usage, missingCalls: 2 }, result.investigationArrangementKey!);
     assert.deepEqual(finalized.presentation, result.view.presentation);
     assert.deepEqual(finalizeInvestigationUsage(finalized, finalized.usage, result.investigationArrangementKey!), finalized);

@@ -307,7 +307,7 @@ produce an unsupported-subject resolution report and refusal status, without
 coercion, requested-application Projection retention or generation. Missing references remain distinct.
 Investigram bindings use the existing append-only session allocator with a distinct
 `investigram-` prefix. Originals, composition children and replacements remain
-addressable. Redisplay selects explicit replacements; exact inspection retains originals. Public follow-up lenses and associated discovery use the same evaluation
+addressable. Fresh selection chooses explicit replacements; exact inspection retains originals. Public follow-up lenses and associated discovery use the same evaluation
 and correction-aware investigator context over earlier retained results.
 
 Core construction retains an immutable investigation selection Projection for each
@@ -610,8 +610,9 @@ of compact spelling. Unknown tokens remain literal View inputs, and reference
 lifetime also distinguishes Views.
 Pages contain at most 24 accounts, 400 prose code units each and 55,000 code units
 of detail with complete qualification. An oversized qualified entry keeps its
-selectable reference and an explicit omission. `--after` continues in append-only
-retention order; newly retained accounts may appear on subsequent inspection.
+selectable reference and an explicit omission. `present @answer-reference --after`
+continues the frozen listing in its retained order; newly retained accounts appear
+only when selected by a subsequent fresh inspection.
 An invalid continuation is explicit. Direct investigram inspection lists later
 results explicitly associated with it, so reverse provenance is also navigable.
 
@@ -664,7 +665,7 @@ links every competing account through paged correction relationships; inspecting
 a reference always supplies that exact original. Family-primary metadata supplies
 navigation across competing branches without redirecting the chosen subject.
 
-Result redisplay follows replacement chains and then the selected replacement’s
+Fresh result selection follows replacement chains and then the selected replacement’s
 own composition, with explicit original-to-displayed placement metadata. Corrected
 children can appear under an unchanged root. Replacing the root displaces its old
 subtree. Corrections targeting it remain in revision context; corrections reported
@@ -697,8 +698,9 @@ clear automatically, invalidate a session or trigger inference.
 Human and investigator revision pages each contain at most 24 correction/cause
 rows and 24 incoming unresolved inconsistencies. Each cause identifies up to eight
 proximal citations, with an omitted count and the complete immutable citation index
-available in provenance. `inspect @investigram --revision-page N` and
-`investigram(subject, revisionPage: N)` expose further pages. Rows preserve cause
+available in provenance. Shell `present @answer-reference --revision-page N` pages
+all shown statuses for the exact answer; `investigram(subject, revisionPage: N)`
+continues to expose further pages to the investigator. Rows preserve cause
 identity, distinguishing direct and transitive exposure without duplicating a cause
 for revised-subject disclosure. Core construction retains the complete relevant
 revision snapshots in Projection identity, including associated-account inspections

@@ -14,7 +14,7 @@ import type { QualifiedOrganizationView } from './organization/presentation.js';
 import type { ModuleExportsView } from './exports/presentation.js';
 
 export interface ObservationBatch {
-  readonly formatVersion: 2;
+  readonly formatVersion: 3;
   readonly id: string;
   readonly session: string;
   readonly command: number;
@@ -42,7 +42,7 @@ export function observationBatch(view: QualifiedView | QualifiedOrganizationView
   const output = randomUUID();
   const references = { request, analysis, view: artifact, rendered: output };
   const disclosed = rendered.length ? sourceDisclosure(view) : null;
-  return { formatVersion: 2, id: randomUUID(), session: view.projection.session, command, records: [
+  return { formatVersion: 3, id: randomUUID(), session: view.projection.session, command, records: [
     { id: request, kind: 'request', value: requestValue },
     { id: analysis, kind: 'analysis-context', value: { ...context, session: view.projection.session } },
     { id: artifact, kind: 'qualified-view', value: view },
@@ -114,6 +114,6 @@ export function commandObservation(session: string, command: number, requestValu
   if (usage?.attempts.length) records.push({ id: randomUUID(), kind: 'investigation-usage', value: usage });
   records.push({ id: randomUUID(), kind: 'command-outcome', value: { status, request: requestValue, stderr } });
   const type = status === 'invalidated' ? 'session-invalidated' : `command-${status}` as const;
-  return { formatVersion: 2, id: produced?.id ?? randomUUID(), session, command, records,
+  return { formatVersion: 3, id: produced?.id ?? randomUUID(), session, command, records,
     events: [...(produced?.events ?? []), { id: randomUUID(), type, request, analysis, rendered }] };
 }

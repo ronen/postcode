@@ -1,3 +1,5 @@
+import { answerIdentity, answerDisplay, answerLines, continuationLines } from './answer-presentation.js';
+import type { AnswerContext, AnswerDisplay } from './answer-presentation.js';
 import { documentationLabel, documentationLines, documentationNotice, presentDocumentation } from './documentation-view.js';
 import { exportRoles, exportRoutes } from './export-view.js';
 import type { Documentation } from './documentation-view.js';
@@ -38,7 +40,7 @@ type ExportView = ExportClaim['information'] & {
   documentation: Documentation[]; omittedDocumentation: number;
 };
 
-export interface QualifiedView {
+export interface QualifiedView extends AnswerDisplay {
   readonly investigations?: AssociatedInvestigations;
   readonly schema: 'postcode-view/1-experimental';
   readonly id: RecordId;
@@ -65,10 +67,10 @@ export interface QualifiedView {
 }
 
 /** Coordination preserves population-wide reference allocation independently of display bounds. */
-export function createView(store: ProgramRecordStore, projection: ModuleProjectionContent['projection'], presentation: PresentedOptions, title: string, resolution?: ResolutionContext, content = resolveModuleProjection(store, projection)): QualifiedView {
+export function createView(store: ProgramRecordStore, projection: ModuleProjectionContent['projection'], presentation: PresentedOptions, title: string, resolution?: ResolutionContext, content = resolveModuleProjection(store, projection), context: AnswerContext = {}): QualifiedView {
   const population = store.entityIds(content.discovery.modules, 'module');
   const ids = new Map([...population, ...store.entityIds(projection.modules, 'module')]);
-  return arrangeModuleView(content, ids, presentation, title, resolution);
+  return arrangeModuleView(content, ids, presentation, title, resolution, { ...context, answerReference: context.answerReference ?? store.answerIds([projection.id]).get(projection.id)! });
 }
 
 /** Fixed family Presentation policy over population versus selected-subject content. */
@@ -82,7 +84,7 @@ function moduleDisplayPolicy(subject: ModuleProjectionContent['projection']['sub
 }
 
 /** Pure presentation of an already selected answer. No store, acquisition or reference allocation. */
-export function arrangeModuleView(content: ModuleProjectionContent, entityIds: ReadonlyMap<RecordId, string>, presentation: PresentedOptions, title: string, resolution?: ResolutionContext): QualifiedView {
+export function arrangeModuleView(content: ModuleProjectionContent, entityIds: ReadonlyMap<RecordId, string>, presentation: PresentedOptions, title: string, resolution?: ResolutionContext, context: AnswerContext = {}): QualifiedView {
   validatePresentationContent({ contract: 'modules', value: content });
   const { projection, session } = content;
   const policy = moduleDisplayPolicy(projection.subject, presentation);
@@ -135,7 +137,7 @@ export function arrangeModuleView(content: ModuleProjectionContent, entityIds: R
   const collapsed = policy.collapseExternal ? modules.filter(module => !module.discoveryFacets.includes('project')) : [];
   const listed = policy.collapseExternal ? modules.filter(module => module.discoveryFacets.includes('project')) : modules;
   return {
-    schema: 'postcode-view/1-experimental', id: recordId(projection.session, 'view', { projection: identityReference(projection.session, projection.id), presentation, title, resolution: resolutionContextIdentity(projection.session, resolution), method: methods.presentation }),
+    ...answerDisplay(context), schema: 'postcode-view/1-experimental', id: recordId(projection.session, 'view', { projection: identityReference(projection.session, projection.id), presentation, title, resolution: resolutionContextIdentity(projection.session, resolution), method: methods.presentation, ...answerIdentity(context) }),
     title,
     ...(resolution ? { resolution } : {}),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,
@@ -181,7 +183,7 @@ export function renderUnicode(view: QualifiedView): string {
     `Session ${view.projection.session.replace(/^session:/, '')}`,
     inventory ? `${selection.population} module${selection.population === 1 ? '' : 's'} found · ${view.modules.length} listed${view.display.collapsedModules ? ` · ${view.display.collapsedModules} external module${view.display.collapsedModules === 1 ? '' : 's'} collapsed` : ''}`
       : `${selection.matches} module${selection.matches === 1 ? '' : 's'} selected from ${selection.population}${lookupDescription(view.resolution, selection.matches) ? ` · ${lookupDescription(view.resolution, selection.matches)}` : ''}`];
-  lines.push(...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
+  lines.push(...answerLines(view), ...continuationLines(view), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
   if (selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; their detail is unavailable in this answer.');
   if (!selection.populationEstablished) lines.push('Module population is not established.');
   const outcomeGroups = new Map<string, number>();

@@ -24,14 +24,14 @@ test('strict option grammar applies before help in both interfaces', () => {
     for (const name of ['--help', '--json', '-h', '@module-literal']) {
       const result = parseCommand(commandWords(`inspect -- '${name}'`), '.', interactive);
       assert.equal(result.kind, 'view');
-      if (result.kind === 'view') { assert.equal(result.request.selector, name); assert.equal(result.request.reference, undefined); }
+      if (result.kind === 'view' && result.request.kind !== 'present') { assert.equal(result.request.selector, name); assert.equal(result.request.reference, undefined); }
     }
   }
   for (const value of ['a b.json', '-config.json']) {
     const args = [`--project=${value}`, 'modules'];
     const result = parseCommand(args, '/tmp');
     assert.equal(result.kind, 'view');
-    if (result.kind === 'view') assert.equal(result.configPath, path.resolve('/tmp', value));
+    if (result.kind === 'view' && result.request.kind !== 'present') assert.equal(result.configPath, path.resolve('/tmp', value));
     assert.equal(parseCommand([...args, '--help'], '/tmp', true).kind, 'error');
   }
   assert.deepEqual(commandWords('inspect "a b"'), ['inspect', 'a b']);
@@ -101,9 +101,9 @@ test('shell records scanner refusals and then accepts a quoted literal selector'
 test('follow-ups require a shell reference and inspection continuation stays a presentation option', () => {
   const raw = `session:00000000-0000-0000-0000-000000000000:investigram:${'a'.repeat(64)}`;
   for (const lens of ['inspect', 'explain', 'decompose', 'examine']) {
-    const parsed = parseCommand([lens, `@${raw}`, ...(lens === 'inspect' ? ['--revision-page', '2'] : [])], '.', true);
+    const parsed = parseCommand([lens, `@${raw}`], '.', true);
     assert.equal(parsed.kind, 'view');
-    if (parsed.kind === 'view') {
+    if (parsed.kind === 'view' && parsed.request.kind !== 'present') {
       assert.equal(parsed.request.selector, raw);
       assert.equal(parsed.request.reference, true);
     }
@@ -111,12 +111,12 @@ test('follow-ups require a shell reference and inspection continuation stays a p
   for (const lens of ['explain', 'decompose', 'examine']) {
     const parsed = parseCommand([lens, '@investigram-12345678'], '.', true);
     assert.equal(parsed.kind, 'view');
-    if (parsed.kind === 'view') { assert.equal(parsed.request.lens, lens); assert.equal(parsed.request.reference, true); }
+    if (parsed.kind === 'view' && parsed.request.kind !== 'present') { assert.equal(parsed.request.lens, lens); assert.equal(parsed.request.reference, true); }
     for (const args of [[lens], [lens, 'name'], [lens, '--', '@investigram-12345678'], [lens, '@investigram-12345678', '--source-detail']]) assert.equal(parseCommand(args, '.', true).kind, 'error');
     assert.equal(parseCommand([lens, '@investigram-12345678'], '.').kind, 'error');
   }
-  const listing = parseCommand(['inspect', 'entry', '--after', '@investigram-12345678'], '.', true);
+  const listing = parseCommand(['present', '@answer-12345678', '--after', '@investigram-12345678'], '.', true);
   assert.equal(listing.kind, 'view');
-  if (listing.kind === 'view') assert.equal(listing.request.after, 'investigram-12345678');
+  if (listing.kind === 'view' && listing.request.kind === 'present') assert.equal(listing.request.presentation.after, 'investigram-12345678');
   for (const args of [['modules', '--after', '@investigram-12345678'], ['inspect', 'entry', '--after='], ['inspect', 'entry', '--after=a', '--after=b', '--help']]) assert.equal(parseCommand(args, '.', true).kind, 'error');
 });

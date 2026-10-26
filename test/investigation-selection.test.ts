@@ -30,9 +30,9 @@ interface AccountSpec {
 }
 interface CorrectionSpec { name: string; reporter: string; target: string; replacement: string }
 
-function fixture(session: SessionId = sessionId()) {
+function fixture(session: SessionId = sessionId(), overrides: Readonly<Record<string, RecordId>> = {}) {
   const store = new MemoryProgramRecordStore(), base = { session, method: 'selection-test@1' };
-  const id = (name: string) => recordId(session, 'test', name);
+  const id = (name: string) => overrides[name] ?? recordId(session, 'test', name);
   const module = id('module'), inputs = id('inputs'), context = id('context'), source = id('source');
   const text = 'export const entry = 7;';
   const evaluation: EvaluationRecord = { ...base, id: id('module-evaluation'), kind: 'evaluation', requirement: 'modules', attempt: 1,
@@ -165,7 +165,7 @@ test('retained snapshots reconstruct without session enumeration after correctio
   assert.deepEqual(associated.associated, [id('A')]); assert.deepEqual(newAssociated.associated, [id('A'), id('B')]);
   const fixedOnly: ProgramRecordStore = { get: id => store.get(id), lookup: () => { throw new Error('No lookup'); },
     put: () => { throw new Error('No publication'); }, investigations: () => { throw new Error('No history enumeration'); },
-    boundEntity: () => { throw new Error('No subject lookup'); },
+    answerIds: () => { throw new Error('Forbidden answer binding'); }, boundAnswer: () => { throw new Error('Forbidden answer lookup'); }, boundEntity: () => { throw new Error('No subject lookup'); },
     evaluations: () => { throw new Error('No evaluation enumeration'); }, entityIds: () => { throw new Error('No allocation'); } };
   assert.deepEqual(resolveInvestigationContent(fixedOnly, before), originalContent);
   assert.deepEqual(resolveInvestigationContent(fixedOnly, historical).projection, historical);
@@ -441,4 +441,166 @@ test('exact investigram inspection retains its contextual heading and explicit t
   assert.equal(retitled.title, 'Supplied question');
   assert.equal(retitled.projection.id, view.projection.id);
   assert.notEqual(retitled.id, view.id);
+});
+
+test('exact retained presentation keeps combined pages and frozen correction/association state across later history', async t => {
+  const { presentRetained, resolveRetainedContent } = await import('../src/lib/retained-presentation.js');
+  const { captureCatalog, defaultCatalog } = await import('../src/lib/request-catalog.js');
+  const { captureRequest } = await import('../src/lib/requests.js');
+  const { continuationCommand } = await import('../src/lib/answer-presentation.js');
+  const { parseCommand, commandWords } = await import('../src/lib/commands.js');
+  const f = fixture(), { store, session, id, module } = f;
+  const initial = f.publish([{ name: 'root', children: ['short'], evidence: [id('capture')] }, { name: 'short' }], [], { supplied: [id('capture')] });
+  const operation = f.select(initial);
+  for (let n = 0; n < 50; n++) f.publish([{ name: `long-${n}`, associations: [id('root')] }],
+    [{ name: `long-correction-${n}`, reporter: `long-${n}`, target: 'root', replacement: `long-${n}` }]);
+  for (let n = 0; n < 26; n++) f.publish([{ name: `short-${n}` }],
+    [{ name: `short-correction-${n}`, reporter: `short-${n}`, target: 'short', replacement: `short-${n}` }]);
+  const frozen = f.historical('root'), content = structuredClone(resolveRetainedContent(store, frozen));
+  const refs = store.entityIds(frozen.associated, 'investigram');
+  const after = refs.get(frozen.associated[23]!)!;
+  f.publish([{ name: 'later', associations: [id('root')], inconsistencies: [{ targets: [id('root')], reason: 'Later disagreement.', evidence: [], qualifications: [] }] }],
+    [{ name: 'later-correction', reporter: 'later', target: 'root', replacement: 'later' }]);
+  const unknown = store.entityIds([id('later')], 'investigram').get(id('later'))!;
+  const newer = f.historical('root');
+  assert.notEqual(newer.id, frozen.id);
+  const catalog = captureCatalog(defaultCatalog), usage = usageSummary([]);
+  const work = { check() {}, record() {} };
+  const run = (target: string, presentation: { format: 'json' | 'unicode'; sourceDetail: boolean; after?: string; revisionPage?: number }, referenceLifetime: 'session' | 'command' = 'session') => {
+    const result = presentRetained(store, session, { kind: 'present', target, presentation, referenceLifetime }, catalog, usage, work);
+    assert.equal(result.kind, 'view');
+    assert.equal(result.view.schema, 'postcode-investigation-view/1-experimental');
+    return { ...result, view: result.view };
+  };
+  for (const method of ['put', 'investigations', 'evaluations', 'boundEntity'] as const) t.mock.method(store, method, () => { throw new Error(`Exact presentation called ${method}`); });
+  assert.deepEqual(resolveRetainedContent({ get: store.get.bind(store), lookup: () => { throw new Error('No lookup'); } }, frozen), content);
+  const retainedOperation = run(operation.id, { format: 'json', sourceDetail: true, revisionPage: 1 });
+  assert.equal(retainedOperation.view.projection.id, operation.id);
+  assert.deepEqual(retainedOperation.view.accounts.map(item => item.id), [id('root'), id('short')]);
+  assert.ok(retainedOperation.view.revisions.every(item => !item.superseded));
+  assert.equal(retainedOperation.view.result, null); assert.equal(retainedOperation.view.outcome?.kind, 'accepted');
+  assert.equal(sourceDisclosure(retainedOperation.view)?.level, 'investigation-support');
+  for (const format of ['json', 'unicode'] as const) {
+    const options = { format, sourceDetail: true, after, revisionPage: 2 };
+    const old = run(frozen.id, options);
+    assert.equal(old.failed, false);
+    assert.equal(old.view.investigations!.total, 50);
+    assert.deepEqual(old.view.revisions.map(item => [item.page, item.rows.length, item.nextPage]), [[2, 24, 3], [2, 2, null]]);
+    assert.equal(old.view.continuations.length, 2);
+    for (const entry of old.view.continuations) {
+      const expected = { ...options, ...(entry.action === 'association-next' ? { after: old.view.investigations!.next! } : { revisionPage: 3 }) };
+      assert.deepEqual(entry.request.presentation, expected);
+      assert.equal(entry.request.target, frozen.id);
+      const structured = run(entry.request.target, entry.request.presentation);
+      for (const defaultJson of format === 'json' ? [false, true] : [false]) {
+        const command = continuationCommand(entry, old.view.answerReference!);
+        if (format === 'json') assert.match(command, /--json/);
+        const parsed = parseCommand(commandWords(command), '.', true, defaultJson);
+        assert.equal(parsed.kind, 'view');
+        const normalized = captureRequest(parsed.request).normalized;
+        assert.equal(normalized.kind, 'present');
+        const shell = run(normalized.target, normalized.presentation);
+        assert.deepEqual(shell.view, structured.view);
+      }
+      assert.equal(structured.view.projection.id, frozen.id);
+      if (entry.action === 'revision-next') {
+        assert.deepEqual(structured.view.revisions.map(item => item.rows.length), [2, 0]);
+        assert.equal(structured.view.investigations!.after, after);
+        if (format === 'unicode') assert.match(structured.rendered, /No further rows on this page/);
+      }
+    }
+    const invalid = run(frozen.id, { ...options, after: unknown });
+    assert.equal(invalid.failed, true); assert.equal(invalid.view.investigations!.omitted, 50);
+    const revision = invalid.view.continuations.find(item => item.action === 'revision-next')!;
+    const restart = invalid.view.continuations.find(item => item.action === 'association-restart')!;
+    assert.equal(revision.qualification, 'unknown-continuation');
+    assert.equal(revision.request.presentation.after, unknown);
+    assert.equal(run(revision.request.target, revision.request.presentation).failed, true);
+    assert.deepEqual(restart.request.presentation, { format, sourceDetail: true, revisionPage: 2 });
+    const restarted = run(restart.request.target, restart.request.presentation);
+    assert.equal(restarted.failed, false); assert.equal(restarted.view.investigations!.items.length, 24);
+    if (format === 'unicode') {
+      assert.match(invalid.rendered, /association continuation remains unknown; this command retains failed status/);
+      assert.equal((invalid.rendered.match(/Continue revision details for this answer/g) ?? []).length, 1);
+    }
+  }
+  const oneShot = run(frozen.id, { format: 'unicode', sourceDetail: true, after, revisionPage: 2 }, 'command');
+  assert.deepEqual(oneShot.view.continuations, []); assert.doesNotMatch(oneShot.rendered, /present @answer-/);
+  assert.match(oneShot.rendered, /Open postcode shell, request the information there/);
+  const defaulted = run(frozen.id, { format: 'json', sourceDetail: false });
+  assert.equal(defaulted.view.investigations!.after, null);
+  assert.equal(defaulted.view.revisions[0]!.page, 1); assert.equal(defaulted.view.sourceDetail, undefined);
+  assert.equal(frozen.subjects[0], id('root')); assert.equal(initial.request.subject, module);
+});
+
+
+test('answer bindings are separate, append-only and local even for copied colliding aliases', () => {
+  const f = fixture(), g = fixture();
+  function answers(basis: ReturnType<typeof fixture>) {
+    const original = inspect(basis.store, basis.evaluation, basis.module);
+    const ids = ['a', 'b'].map(tail => `${basis.session}:projection:12345678${tail.repeat(56)}` as RecordId);
+    basis.store.put(ids.map(id => ({ ...original, id })));
+    return ids;
+  }
+  const [a, b] = answers(f), [local] = answers(g);
+  const subjects = f.store.entityIds([f.module], 'module');
+  assert.throws(() => f.store.answerIds([a!, f.module]), /retained answer/);
+  assert.equal(f.store.answerIds([b!]).get(b!), 'answer-12345678');
+  assert.equal(f.store.answerIds([a!]).get(a!), 'answer-12345678a');
+  assert.equal(f.store.answerIds([b!]).get(b!), 'answer-12345678');
+  assert.deepEqual(f.store.entityIds([f.module], 'module'), subjects);
+  assert.equal(f.store.boundEntity(f.session, 'answer-12345678'), undefined);
+  assert.equal(f.store.boundAnswer(f.session, subjects.get(f.module)!), undefined);
+  assert.equal(g.store.boundAnswer(g.session, 'answer-12345678'), undefined);
+  assert.equal(g.store.answerIds([local!]).get(local!), 'answer-12345678');
+  assert.equal(g.store.boundAnswer(g.session, 'answer-12345678'), local);
+  assert.equal(f.store.boundAnswer(f.session, 'answer-12345678'), b);
+});
+
+
+test('an empty composite remains empty after later associations and refuses their tokens', async () => {
+  const { presentRetained } = await import('../src/lib/retained-presentation.js');
+  const { captureCatalog, defaultCatalog } = await import('../src/lib/request-catalog.js');
+  const f = fixture();
+  const mechanical = inspect(f.store, f.evaluation, f.module);
+  const frozen = selectAssociatedInspection(f.store, mechanical.id, [f.module]);
+  const catalog = captureCatalog({ ...defaultCatalog, presentations: defaultCatalog.presentations!.map(item =>
+    item.contract === 'modules' ? { ...item, requirements: { modules: [], groups: [] } } : item) });
+  const request = { kind: 'present' as const, target: frozen.id, presentation: { format: 'json' as const, sourceDetail: false }, referenceLifetime: 'session' as const };
+  const run = (after?: string) => presentRetained(f.store, f.session,
+    { ...request, presentation: { ...request.presentation, ...(after ? { after } : {}) } }, catalog, usageSummary([]), { check() {}, record() {} });
+  const before = run(); assert.equal(before.kind, 'view');
+  f.publish([{ name: 'later-association', associations: [f.module] }]);
+  const later = f.store.entityIds([f.id('later-association')], 'investigram').get(f.id('later-association'))!;
+  const after = run(); assert.equal(after.kind, 'view');
+  assert.deepEqual(after.view, before.view);
+  assert.ok('investigations' in after.view); assert.equal(after.view.investigations!.total, 0);
+  const invalid = run(later); assert.equal(invalid.kind, 'view'); assert.equal(invalid.failed, true);
+  assert.equal(invalid.view.projection.id, frozen.id);
+  assert.ok('investigations' in invalid.view); assert.equal(invalid.view.investigations!.status, 'unknown-continuation');
+});
+
+
+test('retained off-page support can claim a new subject prefix without changing old bindings', async () => {
+  const { presentRetained } = await import('../src/lib/retained-presentation.js');
+  const { captureCatalog, defaultCatalog } = await import('../src/lib/request-catalog.js');
+  const session = sessionId();
+  const offPage = `${session}:test:12345678${'a'.repeat(56)}` as RecordId;
+  const later = `${session}:test:12345678${'b'.repeat(56)}` as RecordId;
+  const f = fixture(session, { 'off-page': offPage, later });
+  const children = [...Array.from({ length: 270 }, (_, n) => `child-${n}`), 'off-page'];
+  f.publish([{ name: 'root', children }, ...children.map(name => ({ name }))]);
+  const frozen = f.historical('root');
+  f.publish([{ name: 'later' }]);
+  const old = f.store.entityIds([f.module], 'module').get(f.module)!;
+  assert.equal(f.store.boundEntity(session, 'investigram-12345678'), undefined);
+  const result = presentRetained(f.store, session,
+    { kind: 'present', target: frozen.id, presentation: { format: 'json', sourceDetail: false }, referenceLifetime: 'session' },
+    captureCatalog(defaultCatalog), usageSummary([]), { check() {}, record() {} });
+  assert.equal(result.kind, 'view'); assert.equal(result.view.schema, 'postcode-investigation-view/1-experimental');
+  assert.ok(result.view.omittedAccounts.includes(offPage));
+  assert.equal(f.store.boundEntity(session, 'investigram-12345678'), offPage);
+  assert.equal(f.store.entityIds([later], 'investigram').get(later), 'investigram-12345678b');
+  assert.equal(f.store.entityIds([offPage], 'investigram').get(offPage), 'investigram-12345678');
+  assert.equal(f.store.entityIds([f.module], 'module').get(f.module), old);
 });

@@ -16,7 +16,7 @@ export interface ExportContent {
 }
 
 /** Shared qualified export resolution, independent of any containing Lens answer. */
-export function resolveExport(store: ProgramRecordStore, exported: ExportClaim, documentation: readonly DocumentationContent[]): ExportContent {
+export function resolveExport(store: Pick<ProgramRecordStore, 'get'>, exported: ExportClaim, documentation: readonly DocumentationContent[]): ExportContent {
   const entity = exported.information.symbol ? store.get(exported.information.symbol) : null;
   if (entity && entity.kind !== 'symbol') throw new Error('Expected symbol');
   const symbol = entity ? store.get(entity.claim) : null;
@@ -47,7 +47,7 @@ export interface ModuleProjectionContent {
 }
 
 /** Resolves the selected qualified answer without applying any display or source-disclosure bounds. */
-export function resolveModuleProjection(store: ProgramRecordStore, projection: ModuleProjectionContent['projection']): ModuleProjectionContent {
+export function resolveModuleProjection(store: Pick<ProgramRecordStore, 'get'>, projection: ModuleProjectionContent['projection']): ModuleProjectionContent {
   const retained = store.get(projection.id);
   if (retained.kind !== 'projection') throw new Error('Expected retained projection');
   projection = retained;

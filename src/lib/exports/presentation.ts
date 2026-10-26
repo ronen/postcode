@@ -1,3 +1,5 @@
+import { answerIdentity, answerDisplay, answerLines, continuationLines } from '../answer-presentation.js';
+import type { AnswerContext } from '../answer-presentation.js';
 import { documentationLines, documentationNotice, presentDocumentation } from '../documentation-view.js';
 import { exportRoles, exportRoutes } from '../export-view.js';
 import { freezeOwned } from '../immutable.js';
@@ -16,7 +18,7 @@ export const exportsPresentation: PresentationDefinition = freezeOwned({
   id: 'module-exports', contract: 'module-exports', default: true, formats: ['unicode', 'json'], source: 'supported',
   associationPage: false, revisionPage: false, precondition: 'qualified', requirements: { modules: ['exports', 'documentation'], groups: [] },
 });
-export function arrangeModuleExports(content: ModuleExportsContent, reference: string, presentation: PresentedOptions, title: string, resolution?: ResolutionContext) {
+export function arrangeModuleExports(content: ModuleExportsContent, reference: string, presentation: PresentedOptions, title: string, resolution?: ResolutionContext, context: AnswerContext = {}) {
   validatePresentationContent({ contract: 'module-exports', value: content });
   const sources = new Map<RecordId, SourceEvidenceRecord>();
   const collect = (evidence: readonly ProgramRecord[]) => {
@@ -32,7 +34,7 @@ export function arrangeModuleExports(content: ModuleExportsContent, reference: s
       ...presentDocumentation(item.documentation, presentation.format === 'unicode' ? 3 : Infinity, presentation, true, doc => collect(doc.evidence)) };
   });
   const { id, session, lens, subject, parameters } = content.projection;
-  const view = { schema: 'postcode-module-exports-view/1-experimental' as const, projection: { id, session, lens, subject, parameters },
+  const view = { ...answerDisplay(context), schema: 'postcode-module-exports-view/1-experimental' as const, projection: { id, session, lens, subject, parameters },
     title, presentation, ...(resolution ? { resolution } : {}),
     module: { id: subject, reference, name: content.module.record.information.name, handle: content.module.record.information.handle,
       qualification: presentQualification(content.module.context) },
@@ -44,14 +46,14 @@ export function arrangeModuleExports(content: ModuleExportsContent, reference: s
     omittedExports: content.exports.length - exports.length,
     ...(presentation.sourceDetail ? { sourceDetail: { level: 'declaration-locations-and-excerpts' as const, items: [...sources.values()] } } : {}) };
   return freezeOwned({ ...view, id: recordId(session, 'module-exports-view', [methods.exportsPresentation, identityReference(session, id), title,
-    presentation, reference, resolutionContextIdentity(session, resolution)]) });
+    presentation, identityReference(session, subject), answerIdentity(context), resolutionContextIdentity(session, resolution)]) });
 }
 export type ModuleExportsView = ReturnType<typeof arrangeModuleExports>;
 export function renderModuleExports(view: ModuleExportsView): string {
   if (view.presentation.format === 'json') return `${JSON.stringify(view, null, 2)}\n`;
   const lines = [inlineText(view.title), `Session ${view.projection.session.replace(/^session:/, '')}`,
     `${inlineText(view.module.name ?? view.module.handle)} (${inlineText(view.module.reference)})`,
-    ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution),
+    ...answerLines(view), ...continuationLines(view), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution),
     view.completeness === 'complete' ? `${view.exports.length + view.omittedExports} exports established; ${view.exports.length} shown.`
       : 'Export completeness is not established; an empty listing does not establish no exports.',
     ...(view.outsidePopulation ? ['The subject is outside the supplied evaluation population.'] : [])];

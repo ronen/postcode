@@ -1,3 +1,4 @@
+import { referenceNotice } from './answer-presentation.js';
 import { mechanicalImplementation } from './mechanical-implementations.js';
 import { createMechanicalView, renderMechanicalView } from './program-presentation.js';
 import { planPresentation, settlePresentation, presentedOptions, materializationLimitations } from './presentation-contracts.js';
@@ -17,7 +18,9 @@ import type { ViewRequest, CapturedRequest, ResultContract } from './requests.js
 export type { ViewRequest } from './requests.js';
 import { renderRequestReport, rejectedRequestResult } from './request-reporting.js';
 import type { RequestContext, ResolutionReport, UsageReport } from './request-reporting.js';
-import { createAssociatedInspectionView } from './investigation/associations.js';
+import { arrangeAssociatedInspection } from './investigation/associations.js';
+import { selectAssociatedInspection } from './investigation/selection.js';
+import { presentRetained } from './retained-presentation.js';
 import { methods } from './identity.js';
 import { investigationEvaluation } from './investigation/evaluation.js';
 import type { InvestigationDependencies } from './investigation/evaluation.js';
@@ -192,6 +195,26 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
     if (context.request.kind === 'rejected') return rejectedRequestResult(session, context, usage());
     const request = capturedRequest.input;
     if (!request) throw new Error('Validated request input missing');
+    if (context.request.kind === 'present') {
+      const result = presentRetained(store, session, context.request, catalog, usage(),
+        work.scope('Present the exact retained answer and fixed supporting content.'));
+      if (result.kind === 'refusal') {
+        const bindings = store.answerIds(result.retainedAnswers);
+        const report: ResolutionReport = freezeOwned({ schema: 'postcode-resolution/1-experimental', session, context, usage: usage(),
+          referenceNotice: referenceNotice(context.request.referenceLifetime),
+          resolution: { reason: result.reason, explanation: result.explanation, candidates: [],
+            criteria: ['Exact retained target in the active Session', 'Compatible Presentation over fixed support'],
+            qualifications: result.qualifications, prerequisites: [], retainedAnswers: result.retainedAnswers.map(id => ({ id, reference: bindings.get(id)! })) } });
+        return { kind: 'resolution' as const, context, report, rendered: renderRequestReport(report), failed: true };
+      }
+      const sessionContext = store.get(session);
+      if (sessionContext.kind !== 'session') throw new Error('Expected Session');
+      const repository = sessionContext.repository ? store.get(sessionContext.repository) : null;
+      return { ...result, context,
+        repositoryRoot: repository?.kind === 'repository-evidence' && repository.capture.status === 'available' ? repository.capture.evidence.root : null,
+        methods: [...sessionContext.methods, methods.investigationPresentation] };
+    }
+    if (request.kind === 'present') throw new Error('Inconsistent captured request');
     const parameterError = invalidParameters(context.request, catalog.lenses);
     const reportError = invalidReportInputs(context.request);
     const invalid = parameterError ?? reportError ?? invalidDesignation(context.request, request, catalog.lenses);
@@ -207,10 +230,11 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
     const definition = catalog.lenses[context.request.lens]!;
     const presentationFailure = (explanation: string, resolution?: SubjectResolution, retainedAnswers: readonly RecordId[] = [], content?: PresentationContent) => {
       const report: ResolutionReport = freezeOwned({ schema: 'postcode-resolution/1-experimental', session, context, usage: usage(),
+        ...(retainedAnswers.length ? { referenceNotice: referenceNotice(context.request.referenceLifetime) } : {}),
         resolution: { reason: 'presentation-unavailable', explanation, candidates: resolution?.candidates ?? [],
           criteria: [...(resolution?.criteria ?? []), 'Compatible qualified result contract and explicit Presentation choices'],
           qualifications: [...new Set([...(resolution?.qualifications ?? []), ...(content ? materializationLimitations(content) : [])])], prerequisites: resolution?.prerequisites ?? [],
-          support: resolution?.support ?? [], retainedAnswers } });
+          support: resolution?.support ?? [], retainedAnswers: [...store.answerIds(retainedAnswers)].map(([id, reference]) => ({ id, reference })) } });
       return { kind: 'resolution' as const, context, report, rendered: renderRequestReport(report), failed: true };
     };
     const normalizedRequest = context.request;
@@ -251,7 +275,7 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
       const result = investigationLens && selected.length === 1
         ? await integration.evaluate({ operation: operation!, subject: selected[0]!, parameters: {} }, work) : null;
       answerWork.check();
-      const viewRequest = { ...request, resolution: displayResolution, lens, definition, title: interpretationInspection ? `${definition.title} · investigram` : definition.title };
+      const viewRequest = { ...request, selectionMode: 'fresh' as const, resolution: displayResolution, lens, definition, title: interpretationInspection ? `${definition.title} · investigram` : definition.title };
       const content = resolveInvestigationContent(store, selectInvestigation(store, session, viewRequest, selected, result));
       consumeInterpretation(content.projection.id);
       const decision = settlePresentation(presentationPlan, { contract: 'investigation', value: content });
@@ -274,10 +298,16 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
     if (!decision) return presentationFailure('The retained answer does not meet the Presentation materialization precondition; no compatible declared fallback applies.', resolution,
       constructed.retainedAnswers, content);
     const presentation = presentedOptions(request.presentation, decision);
-    let view = createMechanicalView(store, content, presentation, definition.title, displayResolution);
-    if (constructed.associatedSubjects) {
+    // Select the composite before arrangement without changing the subject binding schedule.
+    const associated = constructed.associatedSubjects ? resolveInvestigationContent(store,
+      selectAssociatedInspection(store, content.value.projection.id, constructed.associatedSubjects)) : null;
+    const target = associated?.projection.id ?? content.value.projection.id;
+    const answerContext = { selectionMode: 'fresh' as const, referenceLifetime: request.referenceLifetime ?? 'session',
+      answerReference: store.answerIds([target]).get(target)! };
+    let view = createMechanicalView(store, content, presentation, definition.title, displayResolution, answerContext);
+    if (associated) {
       if (view.schema !== 'postcode-view/1-experimental' && view.schema !== 'postcode-organization-view/1-experimental') throw new Error('Invalid associated-inspection contract');
-      view = createAssociatedInspectionView(store, view, constructed.associatedSubjects, request.after, request.referenceLifetime);
+      view = arrangeAssociatedInspection(view, associated, store.entityIds(associated.projection.associated, 'investigram'), undefined, request.referenceLifetime);
     }
     consumeInterpretation(view.projection.id);
     const rendered = renderMechanicalView(view);

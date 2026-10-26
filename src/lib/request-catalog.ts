@@ -30,7 +30,7 @@ export function captureCatalog(source: RequestCatalog): CapturedCatalog {
   }
   for (const [id, lens] of Object.entries(catalog.lenses)) {
     if (id !== lens.id || !id || !lens.question.trim() || !lens.title.trim()) throw new Error('Invalid Lens definition');
-    if (id === 'usage' || Object.hasOwn(commandLenses, id) && commandLenses[id as CommandLens] !== id) {
+    if (id === 'usage' || id === 'present' || Object.hasOwn(commandLenses, id) && commandLenses[id as CommandLens] !== id) {
       throw new Error('Lens identity is reserved for a command alias or report');
     }
     const builtin = Object.hasOwn(lenses, id) ? lenses[id as PublicLensId] : undefined;
