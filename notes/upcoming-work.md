@@ -1,15 +1,12 @@
 # Upcoming work
 
-Last considered: 2026-10-14
+Last considered: 2026-10-26
 
 A living document for keeping track of upcoming work and deciding what order to
 do it in, updated at each major checkpoint. It is a planning aid, not a governing
 document.
 The [backlog](../docs/backlog.md), [candidate capabilities](candidate-capabilities.md),
 and [candidate UX](candidate-ux.md) hold the broader inventories.
-
-**Starting point:** the [Lens request-model plan](../docs/plans/lens-request-model.md)
-was completed on 2026-10-13.
 
 <a id="kinds-of-work"></a>
 <a id="legend"></a>
@@ -69,7 +66,6 @@ or useful design input. Codes identify items independently of ordering.
 flowchart TD
     JOURNEY["⚠️ 🧹 JOURNEY — First graphical journey"] --> PRESENT["⚠️ ✦ PRESENT — Presentation and navigation architecture"]
     PRESENT --> GUI["✦ GUI — Bounded graphical investigation 🧱"]
-    EXACT["🚧 EXACT — Exact-answer presentation"] --> GUI
     JOURNEY -. If orientation is needed .-> ORIENT["✦ ⚠️ ORIENT — Bounded orientation capability"]
     ORIENT -. If selected for the journey .-> GUI
     GUI -. Supplies focus and selection experience .-> AGENT["✦ ⚠️ AGENT — Coding-agent context exchange"]
@@ -83,11 +79,10 @@ flowchart TD
 | Position | Item | Why here / what could change it |
 | --- | --- | --- |
 | Next | [JOURNEY — First graphical journey](#journey) | Choose a concrete scenario and rough interaction sketch using real results, building on earlier exploration. Identify the gaps that matter for a useful first GUI. |
-| Then, alongside PRESENT | [EXACT — Exact-answer presentation](#exact) | Establish answer continuity before GUI interactions build on retained results. Coordinate its design with PRESENT to avoid overlapping redesign. |
-| Then, alongside EXACT | [PRESENT — Presentation and navigation architecture](#present) | Establish the Presentation and navigation boundaries needed by the selected journey; design can proceed alongside EXACT. |
+| Following JOURNEY | [PRESENT — Presentation and navigation architecture](#present) | Establish the GUI Presentation and navigation boundaries needed by the selected journey, building on the implemented retained-answer separation. |
 | After the necessary foundation | [GUI — Bounded graphical investigation](#gui) | Get the journey working and learn from sustained use on real repositories. |
 | Conditional, following JOURNEY | [ORIENT — Bounded orientation capability](#orient) | If the journey needs project-level orientation, try one bounded capability before or alongside GUI implementation. |
-| After the first useful journey / movable | [AGENT — Coding-agent context exchange](#agent) | GUI supplies focus and selection experience; a valuable CLI exchange could bring this forward. Exact-answer and basis-disclosure dependencies depend on the chosen exchange. |
+| After the first useful journey / movable | [AGENT — Coding-agent context exchange](#agent) | GUI supplies focus and selection experience; a valuable CLI exchange could bring this forward. Session-local exact-answer targeting is available; additional lifetime and basis-disclosure needs depend on the chosen exchange. |
 
 <a id="item-catalog"></a>
 ## Item catalog
@@ -106,17 +101,6 @@ Alphabetical by code.
   not mistaken for independent corroboration. Persistence and richer Workspace
   context are separate possibilities.
 - **Source:** [backlog: shared coding-agent context and feedback provenance](../docs/backlog.md#design-a-bounded-shared-context-interface-for-coding-agents).
-
-<a id="exact"></a>
-### EXACT — Exact-answer presentation
-
-- **Kind:** 🚧
-- **Outcome:** paging and reformatting present the same retained Projection,
-  including its selected interpretation and qualifications. Fresh selection is
-  a distinct, visible action.
-- **Scope:** exact-result requests and the necessary Presentation separation
-  within the current Session lifetime.
-- **Source:** [approved plan: exact retained-answer presentation](../docs/plans/exact-retained-answer-presentation.md).
 
 <a id="gui"></a>
 ### GUI — Bounded graphical investigation
@@ -162,7 +146,9 @@ Alphabetical by code.
 - **Outcome:** coherent Presentation choices, parameters, display bounds, and
   reference coordination, with qualified answers separate from arrangement.
   Navigation origins are retained where available in the supported interactions.
-- **Scope:** the selected journey, informed by current CLI behavior. Multi-Projection
+- **Scope:** the selected journey, building on the implemented retained-answer
+  compatibility and reference coordination. GUI choices, parameters, bounds,
+  context, and View identity remain to be decided. Multi-Projection
   coordination depends on that journey's needs; discovery lineage, continuing
   View dependencies, and program relationships have distinct meanings.
 - **Sources:** [backlog: Presentation representation, F5](../docs/backlog.md#decide-how-gui-presentations-and-their-parameters-are-represented),
