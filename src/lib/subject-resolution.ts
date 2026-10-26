@@ -1,3 +1,4 @@
+import { isAnswerReference, answerSubjectGuidance } from './answer-references.js';
 import { freezeOwned } from './immutable.js';
 import { completedMaterialization } from './evaluation-state.js';
 import { moduleMatches } from './module-selection.js';
@@ -20,7 +21,7 @@ export interface LookupSupport extends Pick<EvaluationState, 'applicability' | '
   readonly population: readonly RecordId[];
 }
 export interface SubjectResolution {
-  readonly status: 'resolved' | 'missing' | 'unknown-reference' | 'unsupported-subject' | 'ambiguous' | 'lookup-incomplete' | 'lookup-unavailable';
+  readonly status: 'resolved' | 'answer-as-subject' | 'missing' | 'unknown-reference' | 'unsupported-subject' | 'ambiguous' | 'lookup-incomplete' | 'lookup-unavailable';
   readonly candidates: readonly ResolvedSubject[];
   readonly criteria: readonly string[];
   readonly qualifications: readonly string[];
@@ -62,6 +63,7 @@ export function resolveSubjects(store: ProgramRecordStore, session: SessionId, d
     return { id, kind: entity.kind, reference, name: claim?.kind === 'claim' && (claim.information.type === 'module' || claim.information.type === 'group') ? claim.information.name : null };
   };
   if (designation.kind === 'reference') {
+    if (isAnswerReference(designation.value)) return finish('answer-as-subject');
     const id = store.boundEntity(session, designation.value);
     if (!id) return finish('unknown-reference');
     const target = candidate(id, designation.value);
@@ -99,6 +101,7 @@ export function resolveSubjects(store: ProgramRecordStore, session: SessionId, d
 
 export function resolutionExplanation(resolution: SubjectResolution): string {
   switch (resolution.status) {
+    case 'answer-as-subject': return answerSubjectGuidance;
     case 'resolved': return 'The subject designation is resolved.';
     case 'unknown-reference': return 'The supplied reference identifies neither an established compact binding nor a retained supported subject in this Session.';
     case 'unsupported-subject': return `The reference identifies a ${resolution.candidates[0]!.kind}; this is an unsupported subject/lens combination.`;

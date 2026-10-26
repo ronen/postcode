@@ -1,3 +1,4 @@
+import { usageSummary } from '../src/lib/investigation/reporting.js';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
@@ -70,6 +71,21 @@ test('exports uses common resolution and retains its own qualified answer withou
   assert.equal(first.view.title, 'Module exports');
   assert.ok(first.methods.includes(methods.exportsProjection));
   assert.ok(first.methods.includes(methods.exportsPresentation));
+  const presented = requireView(await active.execute({ kind: 'present', target: first.view.projection.id, presentation: { ...json, sourceDetail: true } }));
+  assert.equal(presented.view.schema, 'postcode-module-exports-view/1-experimental');
+  assert.equal(presented.view.projection.id, first.view.projection.id);
+  assert.equal(presented.view.title, 'Module exports'); assert.equal(presented.failed, false);
+  assert.deepEqual(presented.view.exports.map(item => item.id), first.view.exports.map(item => item.id));
+  for (const format of ['unicode', 'json'] as const) {
+    const command = requireView(await active.execute({ ...request, referenceLifetime: 'command', presentation: { format, sourceDetail: true } }));
+    assert.equal(command.view.projection.id, first.view.projection.id);
+    assert.match(command.view.referenceNotice, /All answer, subject and supporting references expire/);
+    assert.deepEqual(command.view.continuations, []);
+    assert.match(command.rendered, /Open postcode shell/);
+  }
+  const wrong = requireResolution(await active.execute({ ...request, selector: first.view.answerReference!, reference: true }));
+  assert.equal(wrong.resolution.reason, 'answer-as-subject'); assert.match(wrong.resolution.explanation, /Use present/);
+
   for (const selector of [first.view.module.reference, first.view.module.id]) {
     const same = requireView(await active.execute({ ...request, selector, reference: true }));
     assert.deepEqual(same.view.projection, first.view.projection);
@@ -136,7 +152,7 @@ test('exports refusal uses common candidate and Presentation outcomes before req
   assert.equal(put.mock.calls.flatMap(call => call.arguments[0]).some(item => item.kind === 'module-exports-projection'), false);
   assert.equal(requireResolution(await active.execute({ ...request, selector: 'absent' })).resolution.reason, 'missing');
   assert.equal(requireResolution(await active.execute({ ...request, selector: 'module-00000000', reference: true })).resolution.reason, 'unknown-reference');
-  assert.equal(requireResolution(await active.execute({ ...request, after: 'page' })).resolution.reason, 'presentation-unavailable');
+  assert.equal(requireResolution(await active.execute({ ...request, after: 'page' })).resolution.reason, 'invalid-request');
   const precise = requireView(await active.execute({ ...request, selector: ambiguous.resolution.candidates[0]!.reference, reference: true }));
   assert.equal(precise.view.schema, 'postcode-module-exports-view/1-experimental');
   const noPresentation = await session(t, fixture(t), { ...catalog(), presentations: defaultCatalog.presentations! });
@@ -173,7 +189,23 @@ test('qualified exports preserve partial, unavailable, unrequested and outside-p
     const view = arrangeModuleExports(content, store.entityIds([subject], 'module').get(subject)!, unicode, 'Module exports');
     assert.match(renderModuleExports(view), /empty listing does not establish no exports/);
     assert.match(renderModuleExports(view), new RegExp(`Controlled ${state}`));
+    const { presentRetained } = await import('../src/lib/retained-presentation.js');
+    // A fuller answer already exists in the store. Exact presentation cannot enrich this one.
+    const retained = presentRetained(store, basis.session, { kind: 'present', target: content.projection.id, presentation: json, referenceLifetime: 'session' },
+      captureCatalog(catalog()), usageSummary([]), { check() {}, record() {} });
+    assert.equal(retained.kind, 'view'); assert.equal(retained.view.schema, 'postcode-module-exports-view/1-experimental');
+    assert.equal(retained.view.projection.id, content.projection.id); assert.equal(retained.failed, false);
+    assert.deepEqual(retained.view.exports.map(item => item.id), content.exports.map(item => item.claim.record.id));
+    assert.match(JSON.stringify(retained.view), new RegExp(`Controlled ${state}`));
+
   }
+  const { presentRetained } = await import('../src/lib/retained-presentation.js');
+  const missing = presentRetained(store, discovery.session, { kind: 'present', target: unrequested.projection.id, presentation: json, referenceLifetime: 'session' },
+    captureCatalog(catalog()), usageSummary([]), { check() {}, record() {} });
+  assert.equal(missing.kind, 'refusal'); assert.equal(missing.reason, 'presentation-unavailable');
+  assert.deepEqual(missing.retainedAnswers, [unrequested.projection.id]);
+  assert.match(missing.explanation, /support not selected by this retained answer/);
+  assert.match(missing.explanation, /new information request/);
   const narrowed = { ...complete, id: recordId(complete.session, 'evaluation', 'narrowed'), modules: [] };
   store.put([narrowed]);
   const outsider = resolveModuleExports(store, moduleExports(store, narrowed, [subject], 'exports'));
@@ -244,7 +276,7 @@ test('exports crosses actual worker publication and rejected observation deliver
   assert.match(stderr, /Controlled sink rejection/);
   assert.equal(JSON.parse(stdout).title, 'Module exports');
   const batch = batches[0]!;
-  assert.equal(batch.formatVersion, 2);
+  assert.equal(batch.formatVersion, 3);
   assert.deepEqual(batch.events.map(item => item.type), ['view-produced', 'source-escape', 'command-completed']);
   const context = batch.records.find(item => item.kind === 'request')!.value as RequestContext;
   assert.equal(context.request.kind, 'lens');

@@ -10,7 +10,7 @@ export interface QualifiedContext {
 export interface QualifiedRecord<T extends { readonly context: RecordId }> extends QualifiedContext { readonly record: T }
 
 /** Resolves captured support only; it cannot acquire inputs or establish another claim. */
-export function qualifiedContext(store: ProgramRecordStore, id: RecordId): QualifiedContext {
+export function qualifiedContext(store: Pick<ProgramRecordStore, 'get'>, id: RecordId): QualifiedContext {
   const context = store.get(id);
   if (context.kind !== 'claim-context') throw new Error('Expected Claim context');
   const inputs = context.inputs ? store.get(context.inputs) : null;
@@ -18,6 +18,6 @@ export function qualifiedContext(store: ProgramRecordStore, id: RecordId): Quali
   return Object.freeze({ context, inputs, evidence: Object.freeze(context.evidence.map(id => store.get(id))) });
 }
 
-export function qualifiedRecord<T extends { readonly context: RecordId }>(store: ProgramRecordStore, record: T): QualifiedRecord<T> {
+export function qualifiedRecord<T extends { readonly context: RecordId }>(store: Pick<ProgramRecordStore, 'get'>, record: T): QualifiedRecord<T> {
   return Object.freeze({ record, ...qualifiedContext(store, record.context) });
 }

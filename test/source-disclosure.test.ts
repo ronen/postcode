@@ -46,18 +46,19 @@ for (const format of ['unicode', 'json'] as const) test(`source observations fol
     'inspect empty --source-detail', 'inspect entry --source-detail', 'inspect docs --source-detail',
     'children entry --source-detail', 'parents other --source-detail', 'dependencies --source-detail',
     'inspect @REFERENCE --source-detail', 'inspect entry', 'inspect @EMPTY --source-detail',
+    'present @ANSWER --source-detail', 'present @ANSWER',
   ];
   const input = Object.assign(new PassThrough(), { isTTY: true }), driver = interactionDriver(() => input.end());
   const batches: ObservationBatch[] = [];
-  let started = false, reference = '', emptyReference = '', stdout = '', stderr = '';
+  let started = false, reference = '', emptyReference = '', answerReference = '', stdout = '', stderr = '';
   const code = await runCli(['shell', '--project', config, ...(format === 'json' ? ['--json'] : [])], {
     cwd: root, checkout: root, input, investigator: agent,
     stdout: text => { stdout += text; if (!started && text.includes('postcode> ')) { started = true; setImmediate(() => input.write('summarize entry\n')); } },
     stderr: text => { stderr += text; },
     sink: { async submit(batch) { batches.push(batch); driver.run(() => {
-      if (batches.length === 1) { const data = dataOf(batch) as InvestigationView; reference = data.references.find(item => item.id === data.accounts[0]!.id)!.reference; emptyReference = data.references.find(item => item.id === data.accounts[1]!.id)!.reference; }
+      if (batches.length === 1) { const data = dataOf(batch) as InvestigationView; answerReference = data.answerReference!; reference = data.references.find(item => item.id === data.accounts[0]!.id)!.reference; emptyReference = data.references.find(item => item.id === data.accounts[1]!.id)!.reference; }
       const command = commands[batches.length - 1];
-      if (command) input.write(command.replace('REFERENCE', reference).replace('EMPTY', emptyReference) + '\n'); else input.end();
+      if (command) input.write(command.replace('REFERENCE', reference).replace('EMPTY', emptyReference).replace('ANSWER', answerReference) + '\n'); else input.end();
     }); return { accepted: true }; } },
   });
   driver.verify(); assert.equal(code, 0, stderr); assert.equal(batches.length, commands.length + 1);
@@ -76,7 +77,8 @@ for (const format of ['unicode', 'json'] as const) test(`source observations fol
       continue;
     }
     const view = dataOf(batch);
-    const disclosed = index >= 7 && index <= 13;
+    const disclosed = index >= 7 && index <= 13 || index === 16;
+    if (index >= 16) { assert.equal(request.request.kind, 'present'); assert.equal(view.projection.id, dataOf(batches[0]!).projection.id); }
     assert.equal(actual.length, disclosed ? 1 : 0, command);
     if (actual.length) {
       assert.ok(actual[0]!.sourceForms!.includes('locations'), command);

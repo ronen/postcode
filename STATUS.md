@@ -36,7 +36,7 @@ This page summarizes current capabilities and significant limits. The [capabilit
 - **[Interpretation integration](docs/cli-reference.md#progressive-investigation-and-usage).**
   Summary, explanation, decomposition and examination requests, retained account
   navigation, associated-account inspection and attempt/session usage are
-  integrated with the shell. Redisplay selects current replacement accounts while
+  integrated with the shell. Fresh selection uses current replacement accounts while
   exact inspection preserves originals, composition and provenance. Revision views
   expose unresolved alternatives and citation-based reconsideration warnings.
   An optional OpenAI adapter supports explicit hosted
@@ -49,7 +49,9 @@ This page summarizes current capabilities and significant limits. The [capabilit
   reporting, non-View usage and qualified subject resolution are implemented at the
   request boundary. Unsuccessful lookups return reports with candidates and limits.
   Equivalent names and references share retained answers while preserving lookup
-  context in displayed results. Bounded prerequisite/evidence attribution and
+  context in displayed results. The shell can present an exact retained answer with
+  new format, supported source disclosure or paging, preserving its frozen selection.
+  Views identify fresh or retained selection and disclose reference lifetime. Bounded prerequisite/evidence attribution and
   Presentation compatibility are implemented. Unsupported display choices return
   qualified reports; existing displays retain partial and unavailable answers.
   Fixed catalogs support the internal interpretation and mechanical extension

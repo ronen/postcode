@@ -1,12 +1,13 @@
+import { answerContinuations } from '../answer-presentation.js';
+import type { AnswerDisplay } from '../answer-presentation.js';
+import type { Presentation } from '../presentation.js';
 import { validatePresentationContent } from '../presentation-contracts.js';
 import { revisionPage } from './revision-page.js';
-import { resolveInvestigationContent } from './content.js';
 import type { InvestigationProjectionContent } from './content.js';
-import { selectAssociatedInspection } from './selection.js';
 import { freezeOwned } from '../immutable.js';
 import { identityReference, methods, recordId } from '../identity.js';
 import { inlineText } from '../terminal-text.js';
-import type { ProgramRecordStore, RecordId, SessionId } from '../records.js';
+import type { RecordId, SessionId } from '../records.js';
 
 /** Pure listing arrangement over a retained full association population. */
 export function arrangeAssociatedInvestigations(content: InvestigationProjectionContent, refs: ReadonlyMap<RecordId, string>, after?: string,
@@ -38,7 +39,7 @@ export function arrangeAssociatedInvestigations(content: InvestigationProjection
   return freezeOwned({ subjects, after: after ?? null, status: valid ? 'available' as const : 'unknown-continuation' as const,
     total: matches.length, items, omitted, next: omitted && items.length ? items.at(-1)!.reference : null, referenceLifetime: lifetime,
     limitations: ['Retained interpretations selected through explicit associations; session history can add accounts. Absence of an association does not establish absence of functionality.',
-      'Listing order does not establish authority. Exact originals are shown with current revision status; inspect their references for correction reasons, alternatives, and paged causes.'] });
+      'Listing order does not establish authority. Exact originals are shown with revision status selected for this answer; inspect their references for correction reasons, alternatives, and paged causes.'] });
 }
 export type AssociatedInvestigations = ReturnType<typeof arrangeAssociatedInvestigations>;
 
@@ -49,35 +50,27 @@ export function associationContinuation(session: SessionId, matches: readonly Re
   return matched ? { reference: identityReference(session, matched) } : { literal: after };
 }
 
-/** Coordination preserves the all-match allocation after the mechanical View. */
-export function createAssociatedInspectionView<T extends { readonly id: RecordId; readonly projection: { readonly id: RecordId; readonly session: SessionId } }>(
-  store: ProgramRecordStore, view: T, subjects: readonly RecordId[], after?: string, lifetime: 'session' | 'command' = 'session') {
-  const selection = selectAssociatedInspection(store, view.projection.id, subjects);
-  const content = resolveInvestigationContent(store, selection);
-  const references = store.entityIds(selection.associated, 'investigram');
-  return arrangeAssociatedInspection(view, content, references, after, lifetime);
-}
-
 export function arrangeAssociatedInspection<T extends { readonly id: RecordId; readonly projection: { readonly id: RecordId; readonly session: SessionId } }>(
-  view: T, content: InvestigationProjectionContent, references: ReadonlyMap<RecordId, string>, after?: string, lifetime: 'session' | 'command' = 'session') {
+  view: T & AnswerDisplay & { readonly presentation: Presentation }, content: InvestigationProjectionContent, references: ReadonlyMap<RecordId, string>, after?: string, lifetime: 'session' | 'command' = 'session') {
   const selection = content.projection;
   if (selection.variant !== 'associated-inspection' || selection.mechanical !== view.projection.id) throw new Error('Associated inspection requires its selected mechanical View');
   const session = selection.session;
   const investigations = arrangeAssociatedInvestigations(content, references, after, lifetime);
-  const projection = { ...view.projection, id: selection.id };
+  const projection = { ...view.projection, id: selection.id, variant: 'associated-inspection' as const, mechanical: selection.mechanical };
   return freezeOwned({ ...view, projection, investigations,
+    continuations: answerContinuations(selection.id, { ...view, answerReference: view.answerReference ?? undefined }, view.presentation, { after, next: investigations.next, unknownContinuation: investigations.status === 'unknown-continuation' }),
     id: recordId(session, 'associated-inspection-view', [methods.investigationPresentation, identityReference(session, projection.id),
-      identityReference(session, view.id), associationContinuation(session, selection.associated, references, after), lifetime]) });
+      identityReference(session, view.id), associationContinuation(session, selection.associated, references, after), lifetime, view.selectionMode]) });
 }
 export function renderAssociatedInvestigations(value: AssociatedInvestigations | undefined): string {
   if (!value) return '';
   const lines = ['\nAssociated investigrams (explicit associations)', `Listing: ${value.status}; ${value.items.length} shown of ${value.total}.`,
-    value.referenceLifetime === 'command' ? 'References expire when this command ends.' : 'Use inspect @reference for retained content; no inference.'];
-  if (value.status === 'unknown-continuation') lines.push('The supplied continuation reference is not in this listing. Inspect without --after to start from the first page.');
+    value.referenceLifetime === 'command' ? 'References expire when this command ends.' : 'inspect @reference requests a new inspection and can select newer correction context; no inference.'];
+  if (value.status === 'unknown-continuation') lines.push('The supplied continuation reference is not in this answer’s frozen listing; this presentation retains failed status.');
   for (const item of value.items) {
     lines.push(`@${item.reference} · interpretation`);
     if (item.detail) {
-      lines.push(`  Revision: ${item.detail.revision.superseded ? 'superseded' : 'current original'}; ${item.detail.revision.conflicting ? 'unresolved conflicts; ' : ''}${item.detail.revision.needsReconsideration ? `needs reconsideration (${item.detail.revision.causeCount} causes); ` : ''}inspect this reference for details.`);
+      lines.push(`  Revision: ${item.detail.revision.superseded ? 'superseded' : 'original selected for this answer'}; ${item.detail.revision.conflicting ? 'unresolved conflicts; ' : ''}${item.detail.revision.needsReconsideration ? `needs reconsideration (${item.detail.revision.causeCount} causes); ` : ''}inspect this reference for details.`);
       lines.push(`  ${inlineText(item.detail.prose)}${item.detail.omittedProseCharacters ? ` [${item.detail.omittedProseCharacters} prose characters omitted]` : ''}`,
         `  Operation: ${item.detail.operation}; origin: ${item.detail.origin}; provenance: ${item.detail.provenance}`,
         ...item.detail.qualifications.map(text => `  Qualification: ${inlineText(text)}`),
@@ -85,7 +78,7 @@ export function renderAssociatedInvestigations(value: AssociatedInvestigations |
     }
     lines.push(...item.omissions.map(inlineText));
   }
-  if (value.next) lines.push(`${value.omitted} later accounts omitted. Continue this inspection with --after @${value.next}.`);
+  if (value.next) lines.push(`${value.omitted} later accounts omitted. More associations remain in this answer.`);
   lines.push(...value.limitations);
   return `${lines.join('\n')}\n`;
 }

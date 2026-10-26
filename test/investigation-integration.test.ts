@@ -66,7 +66,7 @@ test('operation retention is independent of presentation and exact inspection pr
   assert.equal(first.accounts.length, 2);
   assert.equal(first.usage.calls, 2);
   assert.deepEqual(first.support[0]!.exposures, [{ provenance: first.accounts[0]!.provenance, forms: ['full'] }]);
-  const repeated = view(await f.session.execute({ ...summary, presentation: { format: 'unicode', sourceDetail: false } }));
+  const repeated = view(await f.session.execute({ ...summary, presentation: { ...summary.presentation, format: 'unicode', sourceDetail: false } }));
   assert.equal(repeated.result!.reused, true);
   assert.deepEqual(repeated.accounts, first.accounts);
   assert.equal(agent.inputs.length, 1);
@@ -139,7 +139,7 @@ test('successive operation evaluations atomically retain corrections and supply 
   const inspected = view(await f.session.execute({ lens: 'inspect', selector: reference, reference: true, presentation: summary.presentation }));
   assert.deepEqual(inspected.accounts, initial.accounts, 'retention cannot rewrite an earlier tree');
   assert.equal(inspected.corrections.length, 1);
-  const human = renderInvestigationView({ ...inspected, presentation: { format: 'unicode', sourceDetail: false } });
+  const human = renderInvestigationView({ ...inspected, presentation: { ...inspected.presentation, format: 'unicode', sourceDetail: false } });
   const correctionText = human.slice(human.indexOf('Correction reported by'), human.indexOf('  Support'));
   assert.ok(correctionText.includes(`Corrected subjects: ${initial.selected[0]}`));
   assert.ok(correctionText.includes(`Evidence: ${root}`));
@@ -217,7 +217,7 @@ test('one-shot summary discloses expiring references, source inspection is escap
   const environment = { cwd: f.root, checkout: f.root, stdout: (text: string) => { stdout += text; }, stderr: (text: string) => { stderr += text; },
     sink: { async submit(batch: ObservationBatch) { batches.push(batch); return { accepted: true as const }; } } };
   assert.equal(await runCli(['summarize', 'entry', '--project', f.configPath], { ...environment, investigator: summaryAgent() }), 0, stderr);
-  assert.match(stdout, /References expire/);
+  assert.match(stdout, /references expire/);
   assert.doesNotMatch(stdout, /\u001b/);
   assert.ok(stdout.includes('synthetic'));
   stdout = '';
@@ -390,7 +390,7 @@ test('shell retains accompanying corrections and makes original and replacement 
           originalReference = data.references.find(item => item.id === root)!.reference; input.write('summarize other\n');
         } else if (views.length === 2) {
           assert.equal(data.corrections.length, 1);
-          const human = renderInvestigationView({ ...data, presentation: { format: 'unicode', sourceDetail: false } });
+          const human = renderInvestigationView({ ...data, presentation: { ...data.presentation, format: 'unicode', sourceDetail: false } });
           assert.ok(human.includes(`Corrected subjects: ${module}`)); assert.ok(human.includes(`Evidence: ${root}`));
           assert.ok(data.provenance.some(item => item.completeTargets.includes(root)));
           input.write(`inspect @${originalReference}\n`);
@@ -684,14 +684,14 @@ test('associated inspection is bounded, navigable and independent of incidental 
   const first = requireView(await f.session.execute({ ...summary, lens: 'inspect' }));
   assert.ok('investigations' in first.view && first.view.investigations);
   assert.equal(first.view.investigations.total, 31); assert.equal(first.view.investigations.items.length, 24);
-  const second = requireView(await f.session.execute({ ...summary, lens: 'inspect', after: first.view.investigations.next! }));
+  const second = requireView(await f.session.execute({ kind: 'present', target: first.view.projection.id, presentation: { ...summary.presentation, after: first.view.investigations.next! } }));
   assert.ok('investigations' in second.view && second.view.investigations);
   assert.equal(second.view.investigations.items.length, 7); assert.equal(second.view.investigations.next, null);
   assert.equal(new Set([...first.view.investigations.items, ...second.view.investigations.items].map(item => item.id)).size, 31);
   assert.equal(JSON.stringify(before.view), original); assert.notEqual(before.view.projection.id, first.view.projection.id);
-  const invalid = requireView(await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-00000000' }));
-  const otherInvalid = requireView(await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-11111111' }));
-  const invalidAgain = requireView(await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-00000000' }));
+  const invalid = requireView(await f.session.execute({ kind: 'present', target: first.view.projection.id, presentation: { ...summary.presentation, after: 'investigram-00000000' } }));
+  const otherInvalid = requireView(await f.session.execute({ kind: 'present', target: first.view.projection.id, presentation: { ...summary.presentation, after: 'investigram-11111111' } }));
+  const invalidAgain = requireView(await f.session.execute({ kind: 'present', target: first.view.projection.id, presentation: { ...summary.presentation, after: 'investigram-00000000' } }));
   assert.equal(invalid.failed, true); assert.equal(otherInvalid.failed, true);
   assert.ok('investigations' in invalid.view && invalid.view.investigations);
   assert.equal(invalid.view.investigations.status, 'unknown-continuation');
@@ -700,9 +700,9 @@ test('associated inspection is bounded, navigable and independent of incidental 
   assert.notEqual(invalid.view.id, otherInvalid.view.id);
   assert.equal(invalid.view.projection.id, invalidAgain.view.projection.id);
   assert.equal(invalid.view.id, invalidAgain.view.id);
-  const humanInvalid = requireView(await f.session.execute({ ...summary, lens: 'inspect', after: 'investigram-00000000', presentation: { format: 'unicode', sourceDetail: false } }));
-  assert.match(humanInvalid.rendered, /continuation reference is not in this listing/);
-  assert.match(humanInvalid.rendered, /without --after/);
+  const humanInvalid = requireView(await f.session.execute({ kind: 'present', target: first.view.projection.id, presentation: { format: 'unicode', sourceDetail: false, after: 'investigram-00000000' } }));
+  assert.match(humanInvalid.rendered, /continuation reference is not in this answer’s frozen listing/);
+  assert.match(humanInvalid.rendered, /Restart associations for this answer with present @answer-/);
   assert.equal(agent.inputs.length, 1);
   for (const lens of ['explain', 'decompose', 'examine'] as const) {
     const unsupported = requireResolution(await f.session.execute({ ...summary, lens, reference: true, selector: generated.candidates[0]!.reference }));
@@ -868,7 +868,7 @@ test('revision lifecycle preserves exact subjects, displaced composition, confli
   assert.equal(yAgain.revisions.find(item => item.original === yId)!.rows.filter(item => item.cause).length, 1, 'revised subject does not duplicate cause');
   const zAgain = view(await f.session.execute({ lens: 'inspect', selector: reference(z, zId), reference: true, presentation: summary.presentation }));
   assert.equal(zAgain.revisions[0]!.rows[0]!.cause!.direct, false);
-  assert.match(renderInvestigationView({ ...zAgain, presentation: { format: 'unicode', sourceDetail: false } }), /Transitive cause/);
+  assert.match(renderInvestigationView({ ...zAgain, presentation: { ...zAgain.presentation, format: 'unicode', sourceDetail: false } }), /Transitive cause/);
   const aware = await execute('examine', yId, y, { ...draft(module), children: [draft(module, [], 'aware-child')] });
   assert.ok(aware.accounts.every(item => !aware.revisions.find(status => status.original === item.id)!.needsReconsideration));
   assert.ok(aware.provenance[0]!.completeCorrections.includes(correcting.corrections.find(item => item.target === a)!.id));
@@ -895,8 +895,18 @@ test('revision lifecycle preserves exact subjects, displaced composition, confli
   assert.equal(displacedCorrection.reporter, reporter);
   assert.ok(!redisplay.display.some(item => item.account === displacedCorrection.replacement), 'no old replacement spliced into the new tree');
   assert.ok(redisplay.references.some(item => item.id === displacedCorrection.replacement));
-  assert.match(renderInvestigationView({ ...redisplay, presentation: { format: 'unicode', sourceDetail: false } }), /Displaced account .* reports correction/);
+  assert.match(renderInvestigationView({ ...redisplay, presentation: { ...redisplay.presentation, format: 'unicode', sourceDetail: false } }), /Displaced account .* reports correction/);
   assert.equal(calls, 8);
+  for (const retained of [initial, y, z, exact]) {
+    const presented = view(await f.session.execute({ kind: 'present', target: retained.projection.id, presentation: summary.presentation }));
+    assert.equal(presented.projection.id, retained.projection.id);
+    assert.deepEqual(presented.accounts, retained.accounts);
+    assert.deepEqual(presented.revisions, retained.revisions);
+    assert.deepEqual(presented.support, retained.support);
+    assert.equal(presented.result, null);
+    assert.equal(presented.usage.calls, view(await f.session.execute({ kind: 'present', target: initial.projection.id, presentation: summary.presentation })).usage.calls);
+  }
+  assert.equal(calls, 8, 'exact presentation never opens an investigator');
 
 });
 
@@ -949,7 +959,7 @@ test('historical inspection pages expose every competing correction without chan
     assert.equal(prior.result!.evaluation!.outcome.kind, 'accepted', `Alternative ${n}: ${JSON.stringify(prior.result!.evaluation!.outcome)}`); subject = prior.accounts[0]!.id;
   }
   const request = { lens: 'inspect' as const, selector: initial.references.find(item => item.id === a)!.reference, reference: true, presentation: summary.presentation };
-  const first = view(await f.session.execute(request)), second = view(await f.session.execute({ ...request, revisionPage: 2 }));
+  const first = view(await f.session.execute(request)), second = view(await f.session.execute({ kind: 'present', target: first.projection.id, presentation: { ...request.presentation, revisionPage: 2 } }));
   assert.equal(first.revisions[0]!.rows.length, 24); assert.equal(first.revisions[0]!.nextPage, 2);
   assert.equal(second.revisions[0]!.rows.length, 2); assert.equal(second.revisions[0]!.nextPage, null);
   assert.equal(first.revisions[0]!.primary, second.revisions[0]!.primary);
@@ -957,7 +967,7 @@ test('historical inspection pages expose every competing correction without chan
   assert.notEqual(first.id, second.id);
   assert.deepEqual(first.accounts, initial.accounts); assert.deepEqual(second.accounts, initial.accounts);
   assert.equal(new Set([...first.revisions[0]!.rows, ...second.revisions[0]!.rows].map(item => item.correction)).size, 26);
-  assert.match(renderInvestigationView({ ...first, presentation: { format: 'unicode', sourceDetail: false } }), /--revision-page 2/);
+  assert.match(renderInvestigationView({ ...first, presentation: { ...first.presentation, format: 'unicode', sourceDetail: false } }), /--revision-page 2/);
   assert.equal(calls, 27);
 });
 
@@ -981,7 +991,7 @@ test('large displaced history has bounded metadata and exact inspection recovers
   assert.equal(repeated.revisions.length, 256);
   assert.equal(repeated.omissions.revisions, 255);
   assert.ok(repeated.displacedCorrections.length <= 256);
-  const human = renderInvestigationView({ ...repeated, presentation: { format: 'unicode', sourceDetail: false } });
+  const human = renderInvestigationView({ ...repeated, presentation: { ...repeated.presentation, format: 'unicode', sourceDetail: false } });
   assert.equal((human.match(/Revision status /g) ?? []).length, 256);
   assert.match(human, /255 revision statuses omitted/);
   const original = view(await f.session.execute({ lens: 'inspect', selector: oldReference, reference: true, presentation: summary.presentation }));
@@ -1063,7 +1073,7 @@ test('displaced account and accompanying correction listings truncate with exact
   assert.equal(repeated.omissions.displaced, 116, 'three old branches plus three displaced 123-account subtrees');
   assert.equal(repeated.displacedCorrections.length, 256);
   assert.equal(repeated.omissions.displacedCorrections, 131, 'three reporters each retain 129 corrections');
-  const human = renderInvestigationView({ ...repeated, presentation: { format: 'unicode', sourceDetail: false } });
+  const human = renderInvestigationView({ ...repeated, presentation: { ...repeated.presentation, format: 'unicode', sourceDetail: false } });
   assert.match(human, /116 displaced accounts, 131 accompanying corrections/);
   const lastReporter = reporters[2]!;
   const exact = view(await f.session.execute({ lens: 'inspect', selector: repeated.references.find(item => item.id === lastReporter)!.reference,

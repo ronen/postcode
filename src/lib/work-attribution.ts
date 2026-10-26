@@ -22,7 +22,7 @@ export interface InitiationContext {
 
 export function initiation<T extends InitiationContext['request']>(request: T, id: string = randomUUID(), bounds = investigationBounds): InitiationContext & { readonly request: T } {
   return freezeOwned(structuredClone({ id, initiator: 'caller' as const, request,
-    purpose: request.kind === 'lens' ? `Answer the ${request.lens} Lens request.` : request.kind === 'operation'
+    purpose: request.kind === 'present' ? 'Present the exact retained answer; selection unchanged.' : request.kind === 'lens' ? `Answer the ${request.lens} Lens request.` : request.kind === 'operation'
       ? `Evaluate the ${request.operation.operation} interpretation operation.` : request.kind === 'report' ? 'Report investigation usage.' : 'Resolve the supplied rejected request.',
     constraints: { wholeRequestBudget: null, investigation: bounds,
       cancellation: 'Session lifetime; investigation inherits cancellation and its own guards' as const } }));

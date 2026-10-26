@@ -27,7 +27,11 @@ The existing construction/arrangement boundary remains applicable to each input.
 
 The CLI does not follow changing inputs, persist workspaces or offer multi-state analysis. It invalidates on detected relevant changes and requires reopening. Retained results remain immutable; later requests can select new interpretation and correction/association snapshots. These selections support the answer but are distinct from its captured program-state basis, and do not acquire following or pinned policies.
 
-There is no public request for presenting a specified retained Projection with new presentation inputs, so current paging and format commands may reselect. This is the known F6 human-facing continuity/disclosure limitation: separate commands and changed Projection IDs in JSON do not adequately disclose refresh to a human paging an answer. Presentation-only actions are intended to preserve the selected answer; an interaction that refreshes must make that behavior apparent and disclose consequential changes in the answer, selection or qualifications. The chosen implementation is exact retained-Projection presentation through present, with paging moved off fresh requests. Clearly disclosed reselection remains conceptually permissible but is not the selected remedy for paging. Remediation is scoped by the [exact retained-answer plan](../plans/exact-retained-answer-presentation.md); conceptual adoption does not implement it.
+The `present` request resolves an exact retained Projection and its fixed support before selecting a compatible Presentation. It has no subject designation, Lens parameters or Evaluation plan. Fixed-reference content resolution uses narrow read capabilities; it does not enumerate current histories, select replacements or construct another Projection. Missing support produces a qualified refusal rather than acquisition. Fresh requests retain their existing planning and selection path; paging belongs only to exact presentation. This implements the bounded continuity remedy in the [exact retained-answer plan](../plans/exact-retained-answer-presentation.md).
+
+Session coordination allocates answer aliases in a separate append-only namespace after exact construction/resolution and before arrangement. Associated inspections select their composite before arranging its mechanical base, preserving mechanical-then-association subject binding order. Their exported descriptor names the composite variant and precise mechanical support. A bare support ID can be presented independently. Aliases are local bindings, never cross-Session lookup keys.
+
+Views include fresh/retained selection mode and reference lifetime in presentation identity, without changing Projection identity. Arrangement consumes explicit inputs and supplied bindings; generated continuations preserve all other choices and target the same precise Projection. Usage finalization keeps the usage-independent arrangement key through worker transport. Retained semantic outcomes remain separate from current invocation reporting, so displaying an earlier failure does not repeat its failed execution or charge usage. All affected program Views share text/JSON reference-lifetime disclosure. These changes do not add View history, persistence or captured-basis export.
 
 Coordinating several Projections from an existing Session does not inherently require multi-state support. Input attribution, composition recording, presentation continuity and interface compatibility must be addressed for that capability; additional captures require their own state, identity and session-scope decisions.
 
@@ -63,7 +67,7 @@ Projection or reusable operation identity.
 
 The worker result distinguishes a program View, a subjectless usage report and a
 request-resolution report. The parent finalizes reports using its authoritative
-usage ledger. Publication uses the actual normalized request for version-two
+usage ledger. Publication uses the actual normalized request for version-three
 observations, including follow-ups, and emits a View event only for a program
 View. Input checks and observation-delivery warnings apply to every alternative.
 Subject resolution consumes qualified module/group populations and the Lens's
@@ -241,7 +245,7 @@ request store or post-Session export of captured program inputs.
 The [investigation execution and session integration](investigation.md) supplies
 subject-based evidence queries, bounded dialogues and atomic retention for summary,
 explanation, decomposition and examination. Stable references support associated
-account inspection and exact historical access. Redisplay selects corrections with
+account inspection and exact historical access. Fresh selection chooses corrections with
 their own composition, preserves conflicts and exposes citation-based reconsideration
 warnings without automatic reassessment. Usage remains attributable across success,
 failure and cancellation.

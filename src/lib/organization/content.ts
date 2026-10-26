@@ -38,7 +38,7 @@ export function artifactClassificationComplete(repository: ClassificationOutcome
 }
 
 /** Selects captured support and derives scoped summaries without a display traversal. */
-export function resolveOrganizationProjection(store: ProgramRecordStore, projection: OrganizationAnswer) {
+export function resolveOrganizationProjection(store: Pick<ProgramRecordStore, 'get'>, projection: OrganizationAnswer) {
   const retained = store.get(projection.id);
   if (retained.kind !== 'organization-projection') throw new Error('Expected retained organization-projection');
   projection = retained;

@@ -1,3 +1,4 @@
+import { referenceNotice } from './answer-presentation.js';
 import { summarizeWork } from './work-attribution.js';
 import type { InitiationContext, WorkReport } from './work-attribution.js';
 import { usageSummary } from './investigation/reporting.js';
@@ -14,13 +15,13 @@ export interface RequestContext extends InitiationContext {
   readonly request: NormalizedRequest;
 }
 export interface ResolutionInformation {
-  readonly reason: 'presentation-unavailable' | 'invalid-parameters' | 'invalid-designation' | 'invalid-report-inputs' | 'invalid-request' | Exclude<SubjectResolution['status'], 'resolved'>;
+  readonly reason: 'unknown-answer' | 'foreign-answer' | 'unsupported-answer' | 'presentation-unavailable' | 'invalid-parameters' | 'invalid-designation' | 'invalid-report-inputs' | 'invalid-request' | Exclude<SubjectResolution['status'], 'resolved'>;
   readonly explanation: string;
   readonly candidates: readonly { readonly id: RecordId; readonly kind: 'module' | 'group' | 'investigram'; readonly reference: string }[];
   readonly criteria: readonly string[];
   readonly qualifications: readonly string[];
   readonly prerequisites: readonly RecordId[];
-  readonly retainedAnswers: readonly RecordId[];
+  readonly retainedAnswers: readonly { readonly id: RecordId; readonly reference: string }[];
   readonly support?: readonly LookupSupport[];
 }
 export interface ResolutionReport {
@@ -28,6 +29,7 @@ export interface ResolutionReport {
   readonly session: SessionId;
   readonly context: RequestContext;
   readonly resolution: ResolutionInformation;
+  readonly referenceNotice?: string;
   readonly usage: InvestigationUsageReport;
   readonly attribution?: WorkReport;
 }
@@ -49,7 +51,9 @@ export function renderRequestReport(report: ResolutionReport | UsageReport): str
   return ['Request could not be resolved',
     ...(report.context.request.kind === 'lens' ? [`Lens: ${report.context.request.lens}`,
       ...('value' in report.context.request.designation ? [`Subject: ${report.context.request.designation.kind === 'reference' ? '@' : ''}${inlineText(report.context.request.designation.value)}`] : [])] : []),
+    ...(report.context.request.kind === 'present' ? [`Retained answer target: ${inlineText(report.context.request.target)}`] : []),
     `Reason: ${report.resolution.reason}`, inlineText(report.resolution.explanation),
+    ...(report.referenceNotice ? [report.referenceNotice] : []),
     ...report.resolution.candidates.map(candidate => `  ${candidate.kind}: ${inlineText(candidate.reference)}`),
     ...report.resolution.criteria.map(inlineText),
     ...(report.resolution.support ?? []).map(support => {
@@ -60,8 +64,8 @@ export function renderRequestReport(report: ResolutionReport | UsageReport): str
       return `${kind === 'module' ? 'Modules' : 'Groups'}: ${state}; ${matches ? `${matches} ${matches === 1 ? 'match' : 'matches'}` : established ? 'no match' : 'no match established'}${support.reason ? `; ${inlineText(support.reason)}` : ''}`;
     }),
     ...report.resolution.qualifications.map(inlineText),
-    ...report.resolution.retainedAnswers.map(id => `Retained answer ID: ${inlineText(id)}`),
-    ...(report.resolution.retainedAnswers.length ? ['Redisplay using retained answer IDs is not yet supported.'] : []),
+    ...report.resolution.retainedAnswers.map(answer => `Retained answer: @${inlineText(answer.reference)} · ${inlineText(answer.id)}`),
+    ...(report.resolution.retainedAnswers.length ? [report.context.request.referenceLifetime === 'command' ? 'All references expire when this command ends. Open postcode shell, request the information there, then use that new Session’s answer reference.' : 'Use present @answer-reference with compatible presentation choices in this Session.'] : []),
     ...(report.resolution.candidates.length ? [report.context.request.referenceLifetime === 'command'
       ? 'Candidate references expire when this command completes.' : 'Candidate references remain usable while this Session is valid.'] : []),
     ...usageLines(report.usage, 'Session')].join('\n') + '\n';
@@ -75,6 +79,7 @@ export function finalizeRequestReport<T extends ResolutionReport | UsageReport>(
 export function rejectedRequestResult(session: SessionId, context: RequestContext, usage: InvestigationUsageReport) {
   if (context.request.kind !== 'rejected') throw new Error('Expected rejected request input');
   const report: ResolutionReport = freezeOwned({ schema: 'postcode-resolution/1-experimental', session, context, usage,
+    ...(context.request.input.kind === 'present' ? { referenceNotice: referenceNotice(context.request.referenceLifetime) } : {}),
     resolution: { reason: 'invalid-request', explanation: 'The supplied request input could not be accepted.',
       candidates: [], criteria: ['Registered Lens or report', 'Serializable request data', 'Supported designation and reference choices'],
       qualifications: context.request.problems.map(problem => `${problem.field}: ${problem.reason} ${problem.representation === 'preserved'

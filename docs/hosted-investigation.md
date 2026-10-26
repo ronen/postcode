@@ -242,8 +242,10 @@ After a summary in the shell, `explain @investigram-…`, `decompose @investigra
 and `examine @investigram-…` use the same explicitly selected model, reasoning and
 billing route. Each missing operation can incur provider usage; repeating a
 retained outcome or inspecting a linked account does not. There is no automatic
-model upgrade or route fallback. Redisplay selects current replacement accounts;
-exact inspection preserves originals. Views expose correction links, unresolved
+model upgrade or route fallback. Fresh selection chooses current replacement accounts;
+exact inspection preserves originals. Shell `present @answer-…` uses the selected
+answer and its fixed support without new provider work, including when presenting
+a retained failed or unavailable outcome. Views expose correction links, unresolved
 alternatives and citation-based reconsideration warnings. Exact references retain
 their original targets; the investigator receives bounded correction and cause
 context with further revision pages available. The

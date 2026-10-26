@@ -8,7 +8,7 @@ export interface CompositionContent {
 }
 
 /** Only the supplied expansion claims/outcomes participate in this immutable content. */
-export function resolveComposition(store: ProgramRecordStore, claimIds: readonly RecordId[], evaluationIds: readonly RecordId[]) {
+export function resolveComposition(store: Pick<ProgramRecordStore, 'get'>, claimIds: readonly RecordId[], evaluationIds: readonly RecordId[]) {
   const claims = new Map<RecordId, QualifiedRecord<ModuleCompositionClaim>[]>();
   const evaluations = new Map<RecordId, EvaluationRecord[]>();
   for (const id of claimIds) {

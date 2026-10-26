@@ -82,7 +82,7 @@ test('one-shot sessions own a project, produce correlated views, and release the
     const batch = observationBatch(a.view, a.rendered, { configPath, repositoryRoot: a.repositoryRoot, methods: a.methods }, a.context, 1);
     assert.equal(batch.session, first.id);
     assert.equal(batch.command, 1);
-    assert.equal(batch.formatVersion, 2);
+    assert.equal(batch.formatVersion, 3);
     assert.deepEqual(batch.events.map(event => event.type), ['view-produced', 'source-escape']);
     assert.equal(batch.records.find(record => record.kind === 'rendered-output')!.value, a.rendered);
     assert.deepEqual(programOutput((requireView(await first.execute(request)))), programOutput(a));

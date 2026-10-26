@@ -191,3 +191,50 @@ export function presentedOptions(options: Presentation, decision: PresentationDe
 export function presentationChanges(options: PresentedOptions): string[] {
   return options.decision?.changes.map(change => `Presentation changed from ${inlineText(change.from)} to ${inlineText(change.to)}: ${inlineText(change.reason)}`) ?? [];
 }
+
+/** Content-based compatibility for exact presentation; no Lens request or planning. */
+export function retainedPresentation(definitions: readonly PresentationDefinition[], content: PresentationContent,
+  options: Extract<NormalizedRequest, { kind: 'present' }>['presentation'], associated = false):
+  { readonly decision: PresentationDecision } | { readonly explanation: string } {
+  validatePresentationContent(content);
+  const selected = content.contract === 'modules' ? content.value.projection.subject === 'selected-modules'
+    : content.contract === 'organization' ? content.value.projection.subject === 'selected-entities' : true;
+  const association = associated || content.contract === 'investigation' && content.value.projection.variant === 'historical-inspection';
+  const revision = content.contract === 'investigation' && content.value.projection.variant !== 'associated-inspection';
+  const unsupportedChoices = (definition: PresentationDefinition): string[] => [
+    ...(!definition.formats.includes(options.format) ? [`format ${options.format}`] : []),
+    ...(options.sourceDetail && !(definition.source === 'supported' || definition.source === 'selected-subjects' && selected) ? ['--source-detail'] : []),
+    ...(options.after !== undefined && !(definition.associationPage && association) ? ['--after'] : []),
+    ...(options.revisionPage !== undefined && !(definition.revisionPage && revision) ? ['--revision-page'] : []),
+  ];
+  const accepts = (definition: PresentationDefinition) => unsupportedChoices(definition).length === 0;
+  const supplied = (definition: PresentationDefinition): boolean => {
+    const requirements = definition.requirements;
+    switch (content.contract) {
+      case 'modules': return requirements.modules.every(item => content.value.projection.expansions.requested.includes(item));
+      case 'organization': return requirements.groups.every(item => content.value.projection.expansions.requested.includes(item))
+        && (!content.value.modules.length || requirements.modules.every(item => content.value.moduleEvaluations.some(outcome => outcome.requirement === item)))
+        && (!content.value.moduleDetail || requirements.modules.every(item => content.value.moduleDetail!.projection.expansions.requested.includes(item)));
+      case 'dependencies': return (!content.value.basis.modules.length || requirements.modules.every(item => content.value.moduleEvaluations.some(outcome => outcome.requirement === item)))
+        && (!requirements.groups.length || content.value.expanded !== null);
+      case 'module-exports': return requirements.modules.every(item => content.value.evaluations.some(outcome => outcome.requirement === item));
+      case 'investigation': return true;
+    }
+  };
+  const initial = definitions.find(item => item.default && item.contract === content.contract);
+  if (!initial) return { explanation: 'No default Presentation is registered for this retained answer’s content contract.' };
+  const unsupported = unsupportedChoices(initial);
+  if (unsupported.length) return { explanation: `Unsupported presentation choices for this retained answer: ${unsupported.join(', ')}. Remove these choices to present the answer.` };
+  const plan: PresentationDefinition[] = [];
+  let next: PresentationDefinition | undefined = initial;
+  while (next) {
+    if (accepts(next) && supplied(next)) plan.push(next);
+    next = next.fallback ? definitions.find(item => item.id === next!.fallback) : undefined;
+  }
+  const settled = settlePresentation(plan, content);
+  if (!settled) return { explanation: plan.length
+    ? 'The retained answer does not meet the Presentation’s materialization precondition, and no compatible declared fallback can present it.'
+    : 'The Presentation requires support not selected by this retained answer, and no compatible declared fallback can use its retained support. Issue a new information request for the additional information.' };
+  return { decision: settled.initial === initial.id ? settled : freezeOwned({ ...settled, initial: initial.id,
+    changes: [{ from: initial.id, to: settled.selected, reason: 'The preferred Presentation requires support absent from this answer; the declared fallback uses only retained support.' }] }) };
+}

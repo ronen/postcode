@@ -223,5 +223,7 @@ export interface ProgramRecordStore {
   evaluations(session: SessionId): readonly EvaluationRecord[];
   investigations(session: SessionId): readonly InvestigationEvaluationRecord[];
   entityIds(ids: readonly RecordId[], kind: 'module' | 'group' | 'investigram'): ReadonlyMap<RecordId, string>;
+  answerIds(ids: readonly RecordId[]): ReadonlyMap<RecordId, string>;
+  boundAnswer(session: SessionId, reference: string): RecordId | undefined;
   boundEntity(session: SessionId, reference: string): RecordId | undefined;
 }

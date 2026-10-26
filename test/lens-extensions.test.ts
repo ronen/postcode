@@ -39,7 +39,7 @@ const invalidDefinitions: readonly { name: string; definition: LensDefinition; r
   { name: 'changed built-in question', definition: { ...lenses.modules, question: 'A different question' }, reason: /mechanical Lens definitions/ },
   { name: 'mechanical implementation under an interpretation identity', definition: { ...lenses.modules, id: 'summarize' }, reason: /mechanical Lens definitions/ },
   { name: 'interpretation replacing built-in inspection', definition: { ...riskLens, id: 'inspect' }, reason: /mechanical Lens definitions/ },
-  ...['dependencies', 'children', 'parents', 'usage'].map(id => ({ name: `shadowed identity ${id}`, definition: { ...riskLens, id }, reason: /reserved/ })),
+  ...['dependencies', 'children', 'parents', 'usage', 'present'].map(id => ({ name: `shadowed identity ${id}`, definition: { ...riskLens, id }, reason: /reserved/ })),
   ...[{ depth: 1 }, null, [], 'depth'].map(parameters => ({ name: `unsupported parameter declaration ${JSON.stringify(parameters)}`,
     definition: { ...riskLens, parameters: parameters as unknown as LensDefinition['parameters'] }, reason: /empty parameter object/ })),
   { name: 'mechanical parameter declaration', definition: { ...lenses.modules, parameters: { depth: 1 } as unknown as LensDefinition['parameters'] }, reason: /mechanical Lens definitions/ },
@@ -113,6 +113,13 @@ test('a nonpublic module Lens shares interpretation machinery and original prove
   const original = requireView(await opened.session.execute({ lens: 'inspect', selector: first.view.accounts[0]!.id, reference: true, presentation }));
   assert.equal(original.view.schema, 'postcode-investigation-view/1-experimental');
   assert.deepEqual(original.view.accounts, first.view.accounts);
+  const retained = requireView(await opened.session.execute({ kind: 'present', target: first.view.projection.id, presentation }));
+  assert.equal(retained.view.schema, 'postcode-investigation-view/1-experimental');
+  assert.equal(retained.view.title, 'Module risks');
+  assert.deepEqual(retained.view.accounts, first.view.accounts); assert.equal(retained.view.result, null);
+  const refused = requireResolution(await opened.session.execute({ ...request, selector: first.view.answerReference!, reference: true }));
+  assert.equal(refused.resolution.reason, 'answer-as-subject'); assert.match(refused.resolution.explanation, /Use present/);
+
 });
 
 test('fixture Lens resolution rejects missing, unknown, unsupported and parameter inputs before inference', async t => {
@@ -252,7 +259,7 @@ test('fixture interpretation catalogs cross worker publication with actual Lens 
   const context = batches[0]!.records.find(item => item.kind === 'request')!.value as RequestContext;
   assert.equal(context.request.kind, 'lens');
   assert.equal(context.request.lens, 'risk-review');
-  assert.equal(batches[0]!.formatVersion, 2);
+  assert.equal(batches[0]!.formatVersion, 3);
   assert.deepEqual(batches[0]!.events.map(item => item.type), ['view-produced', 'command-completed']);
   assert.equal(remote.work()!.completeness, 'complete');
 });

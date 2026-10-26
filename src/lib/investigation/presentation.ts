@@ -1,3 +1,5 @@
+import { answerIdentity, answerDisplay, answerLines, answerContinuations, continuationLines } from '../answer-presentation.js';
+import type { AnswerContext } from '../answer-presentation.js';
 import { validatePresentationContent, presentationChanges } from '../presentation-contracts.js';
 import type { PresentedOptions } from '../presentation-contracts.js';
 import { lookupQualifications, resolutionContextIdentity } from '../resolution-context.js';
@@ -20,7 +22,7 @@ import type { InvestigationSelection } from './evaluation.js';
 import { usageSummary } from './reporting.js';
 import type { InvestigationUsageReport } from './reporting.js';
 
-export interface InvestigationViewRequest {
+export interface InvestigationViewRequest extends AnswerContext {
   readonly resolution?: ResolutionContext;
   readonly lens: string;
   readonly definition?: LensDefinition;
@@ -42,7 +44,7 @@ export function createInvestigationView(store: ProgramRecordStore, session: Sess
   const definition = request.definition ?? (lenses as Readonly<Record<string, LensDefinition>>)[request.lens];
   const title = request.title ?? (definition?.requirements.kind === 'inspection' ? `${definition.title} · investigram` : definition?.title);
   if (!title) throw new Error('Missing interpretation Presentation title');
-  return arrangeInvestigationView(content, { ...request, title }, reporting, usage, referenceBinding(store, session, content.references));
+  return arrangeInvestigationView(content, { ...request, title, answerReference: request.answerReference ?? store.answerIds([content.projection.id]).get(content.projection.id)! }, reporting, usage, referenceBinding(store, session, content.references));
 }
 
 /** Arrangement has complete frozen content and a binding-only capability, never a store. */
@@ -68,6 +70,7 @@ export function arrangeInvestigationView(content: InvestigationProjectionContent
     unavailable: selection.variant === 'request' && selection.outcome.kind === 'unavailable'
       ? { ...(reporting.provider ? { provider: reporting.provider } : {}), ...selection.outcome.value } : null,
   } : null;
+  const outcome = content.evaluation?.outcome ?? (selection.variant === 'request' && selection.outcome.kind === 'unavailable' ? selection.outcome.value : null);
   const accounts = new Map<RecordId, Investigram>(), corrections = new Map<RecordId, Correction>();
   const provenances = new Map<RecordId, InvestigationProvenance>();
   const roots = selection.roots;
@@ -181,11 +184,17 @@ export function arrangeInvestigationView(content: InvestigationProjectionContent
     selection: { matches: selected.length, status: selection.status } };
   const arrangementKey = recordId(session, 'investigation-arrangement', [methods.investigationPresentation, identityReference(session, projection.id),
     request.presentation, request.title, associationContinuation(session, selection.associated, associatedReferences, request.after),
-    request.revisionPage ?? 1, request.referenceLifetime ?? 'session', resolutionContextIdentity(session, request.resolution),
+    request.revisionPage ?? 1, answerIdentity(request), resolutionContextIdentity(session, request.resolution),
     reporting ? { ...reporting, attempt: identityReference(session, reporting.attempt) } : null]);
-  const view = finalizeInvestigationUsage({ schema: 'postcode-investigation-view/1-experimental' as const, id: projection.id, projection,
-    title: request.title, presentation: request.presentation, referenceLifetime: request.referenceLifetime ?? 'session',
-    ...(request.resolution ? { resolution: request.resolution } : {}), result, selected, candidates, references: [...references].map(([id, reference]) => ({ id, reference })),
+  const view = finalizeInvestigationUsage({ ...answerDisplay(request), schema: 'postcode-investigation-view/1-experimental' as const, id: projection.id, projection,
+    title: request.title, presentation: { ...request.presentation, revisionPage: request.revisionPage ?? 1,
+      ...(selection.variant === 'historical-inspection' && request.after !== undefined ? { after: request.after } : {}) }, referenceLifetime: request.referenceLifetime ?? 'session',
+    ...(request.resolution ? { resolution: request.resolution } : {}), result, outcome, selected, candidates, references: [...references].map(([id, reference]) => ({ id, reference })),
+    continuations: answerContinuations(projection.id, request, request.presentation, {
+      ...(selection.variant === 'historical-inspection' && request.after !== undefined ? { after: request.after } : {}),
+      revisionPage: request.revisionPage ?? 1, next: investigations?.next,
+      nextPage: revisions.find(item => item.nextPage !== null)?.nextPage,
+      unknownContinuation: investigations?.status === 'unknown-continuation' }),
     display, revisions, displaced: displacedListing, displacedCorrections: displacedCorrectionListing, omissions,
     omittedAccounts: [...omittedAccounts], inconsistencies,
     navigation, ...(investigations ? { investigations } : {}),
@@ -210,13 +219,13 @@ export function renderInvestigationView(view: InvestigationView): string {
   if (view.presentation.format === 'json') return `${JSON.stringify(view)}\n`;
   const reference = (id: RecordId) => view.references.find(item => item.id === id)?.reference ?? id;
   const lines = [inlineText(view.title)];
-  lines.push(view.referenceLifetime === 'command' ? 'References expire when this command ends. Use the shell for follow-up inspection.' : 'References remain bound for this session.');
+  lines.push(...answerLines(view));
   lines.push(...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
   if (view.result) {
     lines.push(view.result.reused ? 'Retained outcome; no new investigation.' : 'New investigation request.');
-    const outcome = view.result.evaluation?.outcome ?? view.result.unavailable;
-    if (outcome && outcome.kind !== 'accepted') lines.push(`${outcome.kind}: ${inlineText('reason' in outcome ? outcome.reason : outcome.diagnostic)}`);
   }
+  const outcome = view.outcome;
+  if (outcome && outcome.kind !== 'accepted') lines.push(`${outcome.kind}${'code' in outcome ? ` (${inlineText(outcome.code)})` : ''}: ${inlineText('reason' in outcome ? outcome.reason : outcome.diagnostic)}`);
   if (!view.accounts.length) lines.push(`Selection: ${view.projection.selection.status} (${view.projection.selection.matches} matches).`);
   for (const candidate of view.candidates) lines.push(`Module @${candidate.reference}: ${inlineText(candidate.name ?? candidate.handle)}`);
   for (const account of view.accounts) {
@@ -236,11 +245,13 @@ export function renderInvestigationView(view: InvestigationView): string {
     if (account.evidence.length) lines.push(`  Evidence: ${account.evidence.map(inlineText).join(', ')}`);
   }
   for (const revision of view.revisions) {
-    lines.push(`\nRevision status @${reference(revision.original)}: ${revision.superseded ? `superseded; primary @${reference(revision.primary)}` : 'original remains selected'}${revision.conflicting ? `; conflicting alternatives remain (family primary @${reference(revision.familyPrimary)})` : ''}.`);
+    lines.push(`\nRevision status selected for this answer @${reference(revision.original)}: ${revision.superseded ? `superseded; primary @${reference(revision.primary)}` : 'original remains selected'}${revision.conflicting ? `; conflicting alternatives remain (family primary @${reference(revision.familyPrimary)})` : ''}.`);
     if (revision.needsReconsideration) lines.push(`  Needs reconsideration: ${revision.causeCount} correction causes. This does not establish error or trigger inference.`);
     for (const row of revision.rows) if (row.cause) lines.push(`  ${row.cause.direct ? 'Direct' : 'Transitive'} cause ${row.correction}: @${reference(row.target)} → @${reference(row.replacement)}; via ${row.cause.via.map(id => `@${reference(id)}`).join(', ')}${row.cause.omittedVia ? `; ${row.cause.omittedVia} additional proximal citations in provenance` : ''}.`);
-    lines.push(`  Revision page ${revision.page}; ${revision.rows.length} of ${revision.total} relationships/causes.${revision.nextPage ? ` Inspect @${reference(revision.original)} --revision-page ${revision.nextPage} for more.` : ''}`);
+    lines.push(`  Revision page ${revision.page}; ${revision.rows.length} of ${revision.total} relationships/causes.${revision.nextPage ? ' More rows remain.' : ''}${!revision.rows.length && revision.page > 1 ? ' No further rows on this page.' : ''}`);
   }
+  lines.push(...continuationLines(view));
+  if (view.referenceLifetime === 'session' && view.revisions.length) lines.push(`inspect @${reference(view.revisions[0]!.original)} requests a new inspection and can select newer correction context.`);
   if (view.displaced.length) lines.push(`Displaced original composition (not incorporated into replacement): ${view.displaced.map(id => `@${reference(id)}`).join(', ')}`);
   for (const item of view.displacedCorrections) lines.push(`Displaced account @${reference(item.reporter)} reports correction ${item.id}: @${reference(item.target)} → @${reference(item.replacement)}. Inspect the reporter for its reason and qualifications; the replacement is not incorporated here.`);
   if (Object.values(view.omissions).some(count => count > 0)) lines.push(`Metadata listing bounds: ${view.omissions.displaced} displaced accounts, ${view.omissions.displacedCorrections} accompanying corrections and ${view.omissions.revisions} revision statuses omitted. Inspect original, composition or reporter references to navigate their own bounded views.`);

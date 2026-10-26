@@ -1,3 +1,4 @@
+import { isAnswerReference, answerSubjectGuidance } from './answer-references.js';
 import { parseArgs } from 'node:util';
 import path from 'node:path';
 import type { ViewRequest } from './session.js';
@@ -39,15 +40,17 @@ Hosted investigation is disabled by default. POSTCODE_INVESTIGATOR=chatgpt (Chat
 ChatGPT-plan investigation uses gpt-5.6-sol with medium reasoning; API-key investigation uses gpt-6-sol with medium reasoning. Both use macOS Keychain. See docs/hosted-investigation.md before setup.
 Enabled use requires accessible credentials before project opening, including mechanical commands. Unsupported platforms and missing access fail preflight without credential or provider fallback.
 Development tests inject the investigator at the communication boundary, using the production worker/session path.
-Successful, failed-investigation and limit-stop outcomes are retained; repeated display adds no usage.
+Successful, failed-investigation and limit-stop outcomes are retained; exact presentation adds no usage.
 Communication/configuration failures leave no reusable outcome. Recovery from retained failures requires a new session.
 inspect @investigram-… in the shell shows the exact original, its fixed composition, support and correction links.
 usage reports per-attempt and session usage without inference; synthetic usage and unknown/anomalous reports remain explicit.
 Investigation JSON uses postcode-investigation-view/1-experimental. One-shot references expire at command end.
 explain, decompose and examine require an exact @investigram reference in the shell. Each follow-up produces a separate result.
-inspect @investigram --revision-page N continues correction/cause details.
-inspect shows bounded associated accounts; --after @investigram-reference continues that listing.
-Redisplay selects current replacements; exact inspection preserves original accounts. Conflicts and citation-based reconsideration remain explicit; warnings do not establish error or trigger inference.
+present @answer-reference --revision-page N continues all shown correction/cause details for that exact answer.
+present @answer-reference --after @investigram-reference continues its frozen association listing.
+present supports --json and supported --source-detail; omitted options use normal defaults.
+Fresh Lens commands select anew; present preserves the selected answer. Fresh selection can reuse completed work.
+Fresh selection selects current replacements; exact inspection preserves original accounts. Conflicts and citation-based reconsideration remain explicit; warnings do not establish error or trigger inference.
 
 Concepts:
 modules inventories the supported population; inspect selects exact subjects from that population.
@@ -57,7 +60,7 @@ Names are current lookups. Generated handles are navigation cues, not responsibi
 Inputs are assumed unchanged during analysis; capture is first-observed and non-atomic.
 Restart after source or environment changes; references never imply a successor.
 Open postcode shell to resolve ambiguous lookups, then inspect @<displayed-reference>.
-Shell commands use the same lenses and options, plus help and exit. Single/double quotes and backslash escapes are supported.
+Shell commands use the same lenses and options, plus present, help and exit. Paging is available only through present. Single/double quotes and backslash escapes are supported.
 Use -- before a literal selector beginning @. References remain bound; names and handles are lookups.
 The shell requires terminal input. Ctrl-C cancels an idle line; during analysis it ends the session.
 Detection of relevant input changes invalidates the session; restart is required.
@@ -98,10 +101,20 @@ export function parseCommand(args: readonly string[], cwd: string, interactive =
   const literal = tokens.some(token => token.kind === 'option-terminator');
   const lens = positional[0] ?? 'modules';
   if (interactive && ['help', 'exit'].includes(lens) && args.length === 1) return { kind: lens as 'help' | 'exit' };
-  if (!interactive && lens === 'shell' && positional.length === 1 && !sourceDetail) return { kind: 'shell', configPath, json };
+  if (!interactive && lens === 'shell' && positional.length === 1 && !sourceDetail && values.after === undefined && values['revision-page'] === undefined) return { kind: 'shell', configPath, json };
+  if (lens === 'present') {
+    if (!interactive) return error('present requires the active shell Session that retains the answer. References expire with their Session; open postcode shell and request the information there to begin new work.');
+    if (positional.length !== 2) return error('use present @answer-reference [--json] [--source-detail] [--after @investigram-reference] [--revision-page N].');
+    if (values.after !== undefined && !/^@?investigram-[a-f0-9]{8,64}$/.test(values.after)) return error('--after requires a displayed investigram reference.');
+    if (values['revision-page'] !== undefined && (!/^[1-9][0-9]*$/.test(values['revision-page']) || !Number.isSafeInteger(Number(values['revision-page'])) || tokens.filter(token => token.kind === 'option' && token.name === 'revision-page').length > 1)) return error('--revision-page requires one positive page number.');
+    return { kind: 'view', configPath, request: { kind: 'present', target: positional[1]!.replace(/^@/, ''), referenceLifetime: 'session',
+      presentation: { format: json ? 'json' : 'unicode', sourceDetail,
+        ...(values.after === undefined ? {} : { after: values.after.replace(/^@/, '') }),
+        ...(values['revision-page'] === undefined ? {} : { revisionPage: Number(values['revision-page']) }) } } };
+  }
+  if (values.after !== undefined || values['revision-page'] !== undefined) return error('Paging requires present @answer-reference; fresh Lens commands select an answer anew.');
+  if (!literal && positional[1] && (positional[1].startsWith('@') || positional[1].startsWith('session:')) && isAnswerReference(positional[1])) return error(answerSubjectGuidance);
   const followup = ['explain', 'decompose', 'examine'].includes(lens);
-  if (values.after !== undefined && (lens !== 'inspect' || !interactive || !/^@?investigram-[a-f0-9]{8,64}$/.test(values.after))) return error('--after requires shell inspection and a displayed investigram reference.');
-  if (values['revision-page'] !== undefined && (lens !== 'inspect' || !interactive || !/^[1-9][0-9]*$/.test(values['revision-page']) || !Number.isSafeInteger(Number(values['revision-page'])) || tokens.filter(token => token.kind === 'option' && token.name === 'revision-page').length > 1)) return error('--revision-page requires shell inspection and one positive page number.');
   const focused = ['inspect', 'children', 'parents', 'summarize'].includes(lens) || followup;
   const dependency = ['dependencies', 'children', 'parents'].includes(lens);
   if (!['modules', 'inspect', 'organization', 'dependencies', 'children', 'parents', 'summarize', 'explain', 'decompose', 'examine', 'usage'].includes(lens)
@@ -112,13 +125,9 @@ export function parseCommand(args: readonly string[], cwd: string, interactive =
   }
   const selector = focused ? positional[1]! : null;
   const reference = interactive && !literal && selector?.startsWith('@') === true;
-  if (values['revision-page'] !== undefined && (!reference || !(selector!.startsWith('@investigram-')
-    || /^@session:[^:]+:investigram:[a-f0-9]{64}$/.test(selector!)))) return error('--revision-page requires an exact investigram reference.');
   if (followup && !reference) return error('follow-up lenses require an exact @investigram reference in the shell.');
   return { kind: 'view', configPath, request: { lens: lens === 'usage' ? 'usage' : commandLenses[lens as CommandLens],
-    ...(lens === 'summarize' || lens === 'usage' || lens === 'inspect' || followup ? { referenceLifetime: interactive ? 'session' as const : 'command' as const } : {}),
-    ...(values.after === undefined ? {} : { after: values.after.replace(/^@/, '') }),
-    ...(values['revision-page'] === undefined ? {} : { revisionPage: Number(values['revision-page']) }),
+    referenceLifetime: interactive ? 'session' as const : 'command' as const,
     selector: reference ? selector!.slice(1) : selector, ...(reference ? { reference: true } : {}),
     ...(lens === 'organization' ? { subject: positional[1] === 'repository' ? 'repository' as const : 'project' as const } : {}), presentation: { format: json ? 'json' : 'unicode', sourceDetail } } };
 }

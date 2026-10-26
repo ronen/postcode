@@ -19,9 +19,9 @@ test('shell tokenizer has quoting without command execution, and preserves liter
   assert.throws(() => commandWords('inspect "unfinished'), /unfinished/);
   const literal = parseCommand(['inspect', '--', '@module-deadbeef'], '.', true);
   assert.equal(literal.kind, 'view');
-  if (literal.kind === 'view') { assert.equal(literal.request.selector, '@module-deadbeef'); assert.equal(literal.request.reference, undefined); }
+  if (literal.kind === 'view' && literal.request.kind !== 'present') { assert.equal(literal.request.selector, '@module-deadbeef'); assert.equal(literal.request.reference, undefined); }
   const reference = parseCommand(['inspect', '@module-deadbeef'], '.', true);
-  if (reference.kind !== 'view') throw new Error('Expected view');
+  if (reference.kind !== 'view' || reference.request.kind === 'present') throw new Error('Expected view');
   assert.equal(reference.request.reference, true);
   assert.equal(reference.request.selector, 'module-deadbeef');
   assert.equal(parseCommand(['modules', '--project', 'other'], '.', true).kind, 'error');
@@ -78,8 +78,11 @@ test('adaptive shell uses prior references, records syntax refusals, finishes on
     cwd: process.cwd(), checkout: process.cwd(), stdout: () => {}, stderr: () => {},
     sink: { async submit(batch) { oneShot = batch; return { accepted: true }; } },
   });
-  assert.deepEqual(normalizeSession(batches[3]!.records.find(item => item.kind === 'qualified-view')!.value),
-    normalizeSession(oneShot!.records.find(item => item.kind === 'qualified-view')!.value));
+  const shellView = normalizeSession(batches[3]!.records.find(item => item.kind === 'qualified-view')!.value as QualifiedOrganizationView);
+  const commandView = normalizeSession(oneShot!.records.find(item => item.kind === 'qualified-view')!.value as QualifiedOrganizationView);
+  assert.equal(shellView.referenceLifetime, 'session'); assert.equal(commandView.referenceLifetime, 'command');
+  assert.notEqual(shellView.id, commandView.id);
+  assert.deepEqual(shellView, { ...commandView, id: shellView.id, referenceLifetime: 'session', referenceNotice: shellView.referenceNotice });
 });
 
 test('ambiguous one-shot lookup recovers through an in-session lookup and precise group reference', { timeout: 30000 }, async () => {
@@ -116,7 +119,8 @@ test('ambiguous one-shot lookup recovers through an in-session lookup and precis
   assert.equal(oneShot.investigations!.referenceLifetime, 'command');
   assert.equal(inSession.investigations!.referenceLifetime, 'session');
   assert.notEqual(inSession.id, oneShot.id, 'reference lifetime changes the view identity, not its projection');
-  assert.deepEqual(inSession, { ...oneShot, id: inSession.id, investigations: { ...oneShot.investigations, referenceLifetime: 'session' } });
+  assert.deepEqual(inSession, { ...oneShot, id: inSession.id, referenceLifetime: 'session', referenceNotice: inSession.referenceNotice,
+    moduleDetail: oneShot.moduleDetail ? { ...oneShot.moduleDetail, id: inSession.moduleDetail!.id, referenceLifetime: 'session', referenceNotice: inSession.moduleDetail!.referenceNotice } : null, investigations: { ...oneShot.investigations, referenceLifetime: 'session' } });
   assert.equal(views[1]!.projection.selection.matches, 1);
 });
 
@@ -203,13 +207,13 @@ for (const queued of [false, true]) {
   });
 }
 
-test('revision pagination requires one positive page and exact shell investigram inspection', () => {
-  const parsed = parseCommand(['inspect', '@investigram-deadbeef', '--revision-page', '2'], '.', true);
+test('revision pagination requires one positive page and exact retained answer presentation', () => {
+  const parsed = parseCommand(['present', '@answer-deadbeef', '--revision-page', '2'], '.', true);
   assert.equal(parsed.kind, 'view');
-  if (parsed.kind === 'view') assert.equal(parsed.request.revisionPage, 2);
-  for (const page of ['0', '-1', '1.5', '', 'Infinity', '9007199254740992']) assert.equal(parseCommand(['inspect', '@investigram-deadbeef', '--revision-page', page], '.', true).kind, 'error');
+  if (parsed.kind === 'view' && parsed.request.kind === 'present') assert.equal(parsed.request.presentation.revisionPage, 2);
+  for (const page of ['0', '-1', '1.5', '', 'Infinity', '9007199254740992']) assert.equal(parseCommand(['present', '@answer-deadbeef', '--revision-page', page], '.', true).kind, 'error');
   assert.equal(parseCommand(['inspect', '@module-deadbeef', '--revision-page', '2'], '.', true).kind, 'error');
   assert.equal(parseCommand(['explain', '@investigram-deadbeef', '--revision-page', '2'], '.', true).kind, 'error');
-  assert.equal(parseCommand(['inspect', '@investigram-deadbeef', '--revision-page', '2', '--revision-page', '3'], '.', true).kind, 'error');
-  assert.equal(parseCommand(['inspect', '@investigram-deadbeef', '--revision-page', '2'], '.').kind, 'error');
+  assert.equal(parseCommand(['present', '@answer-deadbeef', '--revision-page', '2', '--revision-page', '3'], '.', true).kind, 'error');
+  assert.equal(parseCommand(['present', '@answer-deadbeef', '--revision-page', '2'], '.').kind, 'error');
 });

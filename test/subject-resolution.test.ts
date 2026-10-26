@@ -89,10 +89,10 @@ test('raw and compact precise designations share mechanical answers and retain d
     for (const lens of applicable) {
       const raw = requireView(await opened.session.execute({ lens, selector: target.id, reference: true, presentation }));
       const compact = requireView(await opened.session.execute({ lens, selector: target.entityId, reference: true, presentation }));
-      assert.equal(raw.resolution.candidates[0]!.id, compact.resolution.candidates[0]!.id);
+      assert.equal(raw.resolution!.candidates[0]!.id, compact.resolution!.candidates[0]!.id);
       assert.deepEqual(raw.view.projection, compact.view.projection, `${lens} retains the same answer descriptor`);
       assert.notDeepEqual(raw.context.request, compact.context.request);
-      assert.match(raw.resolution.criteria.join(' '), /retained same-Session/);
+      assert.match(raw.resolution!.criteria.join(' '), /retained same-Session/);
     }
   }
   for (const selector of [group.id, group.entityId]) {
@@ -107,10 +107,10 @@ test('raw and compact precise designations share mechanical answers and retain d
   t.after(() => other.session.close());
   for (const selector of [module.id, group.id, inventory.projection.id]) {
     const refused = requireResolution(await other.session.execute({ lens: 'inspect', selector, reference: true, presentation }));
-    assert.equal(refused.resolution.reason, 'unknown-reference');
+    assert.equal(refused.resolution.reason, selector.includes(':projection:') ? 'answer-as-subject' : 'unknown-reference');
   }
   const nonEntity = requireResolution(await opened.session.execute({ lens: 'inspect', selector: inventory.projection.id, reference: true, presentation }));
-  assert.equal(nonEntity.resolution.reason, 'unknown-reference');
+  assert.equal(nonEntity.resolution.reason, 'answer-as-subject');
 });
 
 test('bound group survives inspection and dependency refusals without application work or new bindings', async t => {
