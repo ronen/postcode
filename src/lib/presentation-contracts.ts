@@ -213,7 +213,7 @@ export function retainedPresentation(definitions: readonly PresentationDefinitio
     switch (content.contract) {
       case 'modules': return requirements.modules.every(item => content.value.projection.expansions.requested.includes(item));
       case 'organization': return requirements.groups.every(item => content.value.projection.expansions.requested.includes(item))
-        && (!content.value.moduleEvaluation.modules.length || requirements.modules.every(item => content.value.moduleEvaluations.some(outcome => outcome.requirement === item)))
+        && (!content.value.modules.length || requirements.modules.every(item => content.value.moduleEvaluations.some(outcome => outcome.requirement === item)))
         && (!content.value.moduleDetail || requirements.modules.every(item => content.value.moduleDetail!.projection.expansions.requested.includes(item)));
       case 'dependencies': return (!content.value.basis.modules.length || requirements.modules.every(item => content.value.moduleEvaluations.some(outcome => outcome.requirement === item)))
         && (!requirements.groups.length || content.value.expanded !== null);

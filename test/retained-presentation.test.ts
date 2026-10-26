@@ -130,6 +130,43 @@ test('exact mechanical presentation covers every family and composite without se
   }
 });
 
+test('documentation-only group presentation uses selected modules rather than the discovery population', async t => {
+  const f = fixture(t), manual = path.join(path.dirname(f.configPath), 'manual');
+  mkdirSync(manual);
+  writeFileSync(path.join(manual, 'README.md'), '# Manual\nDocumentation without TypeScript modules.');
+  const opened = await openSession(f);
+  assert.equal(opened.status, 'opened');
+  const active = opened.session;
+  t.after(() => active.close());
+  const inventory = requireView(await active.execute({ lens: 'modules', selector: null, presentation: json }));
+  assert.equal(inventory.view.schema, 'postcode-view/1-experimental');
+  assert.equal(inventory.view.modules.length, 2, 'unrelated project modules must not require support in the selected group');
+  const fresh = requireView(await active.execute({ lens: 'inspect', selector: 'manual', presentation: json }));
+  assert.equal(fresh.view.schema, 'postcode-organization-view/1-experimental');
+  const selected = fresh.view.groups.filter(group => group.selected);
+  assert.equal(selected.length, 1);
+  assert.equal(selected[0]!.documentationCount, 1);
+  assert.deepEqual(selected[0]!.modules, []);
+  assert.deepEqual(fresh.view.moduleDetail!.modules, []);
+  assert.ok('mechanical' in fresh.view.projection);
+  for (const method of ['put', 'evaluations', 'investigations', 'boundEntity'] as const) t.mock.method(MemoryProgramRecordStore.prototype, method, () => { throw new Error(`present must not call ${method}`); });
+  for (const target of [fresh.view.answerReference!, String(fresh.view.projection.mechanical)]) {
+    for (const format of ['json', 'unicode'] as const) {
+      const retained = requireView(await active.execute({ kind: 'present', target, presentation: { format, sourceDetail: false } }));
+      assert.equal(retained.view.schema, 'postcode-organization-view/1-experimental');
+      assert.equal(retained.view.projection.id, target === fresh.view.answerReference ? fresh.view.projection.id : target);
+      assert.equal(retained.view.selectionMode, 'retained');
+      assert.deepEqual(retained.view.groups, fresh.view.groups);
+      assert.deepEqual(retained.view.moduleDetail!.modules, []);
+      assert.deepEqual(retained.view.qualifications, fresh.view.qualifications);
+      assert.equal(retained.failed, false);
+      assert.deepEqual(retained.attribution.work.map(item => [item.boundary, item.disposition]), [['content', 'consumed']]);
+      if (format === 'unicode') assert.match(retained.rendered, /Retained answer; selection unchanged/);
+      else assert.equal(JSON.parse(retained.rendered).projection.id, retained.view.projection.id);
+    }
+  }
+});
+
 test('malformed and mixed requests are safely refused before work', async t => {
   const { active } = await session(t);
   const bad: unknown[] = [
