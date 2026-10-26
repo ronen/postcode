@@ -269,7 +269,7 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
         ? `  Other artifacts: ${group.artifacts.unanalyzed} unanalyzed · ${group.artifacts.opaqueBoundaries} opaque boundaries`
         : `  Other captured artifacts: ${group.artifacts.unanalyzed} · ${group.artifacts.opaqueBoundaries} opaque boundaries (classification incomplete)`);
     }
-    if (view.moduleDetail?.modules.length) lines.push('', 'Modules', renderUnicode(view.moduleDetail).trimEnd());
+    if (view.moduleDetail?.modules.length) lines.push('', 'Modules', renderUnicode(view.moduleDetail, 'embedded').trimEnd());
   } else {
     lines.push('');
     const width = Math.min(36, Math.max(0, ...view.display.rows.map(row => {

@@ -204,6 +204,8 @@ test('qualified exports preserve partial, unavailable, unrequested and outside-p
     captureCatalog(catalog()), usageSummary([]), { check() {}, record() {} });
   assert.equal(missing.kind, 'refusal'); assert.equal(missing.reason, 'presentation-unavailable');
   assert.deepEqual(missing.retainedAnswers, [unrequested.projection.id]);
+  assert.match(missing.explanation, /support not selected by this retained answer/);
+  assert.match(missing.explanation, /new information request/);
   const narrowed = { ...complete, id: recordId(complete.session, 'evaluation', 'narrowed'), modules: [] };
   store.put([narrowed]);
   const outsider = resolveModuleExports(store, moduleExports(store, narrowed, [subject], 'exports'));

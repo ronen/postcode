@@ -176,14 +176,15 @@ function wrapText(text: string, indent: string, width = 88, continuation = inden
     ? [`${indent}… ${result.omittedCharacters} character(s) omitted because indivisible display text exceeds the available width.`] : [])];
 }
 
-export function renderUnicode(view: QualifiedView): string {
+export function renderUnicode(view: QualifiedView, placement: 'standalone' | 'embedded' = 'standalone'): string {
   const selection = view.projection.selection;
   const inventory = moduleDisplayPolicy(view.projection.subject, view.presentation).layout === 'table';
   const lines = [`${inlineText(view.title)} · configured TypeScript project`,
     `Session ${view.projection.session.replace(/^session:/, '')}`,
     inventory ? `${selection.population} module${selection.population === 1 ? '' : 's'} found · ${view.modules.length} listed${view.display.collapsedModules ? ` · ${view.display.collapsedModules} external module${view.display.collapsedModules === 1 ? '' : 's'} collapsed` : ''}`
       : `${selection.matches} module${selection.matches === 1 ? '' : 's'} selected from ${selection.population}${lookupDescription(view.resolution, selection.matches) ? ` · ${lookupDescription(view.resolution, selection.matches)}` : ''}`];
-  lines.push(...answerLines(view), ...continuationLines(view), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
+  if (placement === 'standalone') lines.push(...answerLines(view), ...continuationLines(view));
+  lines.push(...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
   if (selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; their detail is unavailable in this answer.');
   if (!selection.populationEstablished) lines.push('Module population is not established.');
   const outcomeGroups = new Map<string, number>();

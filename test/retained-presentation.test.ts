@@ -61,7 +61,12 @@ test('exact mechanical presentation covers every family and composite without se
       assert.match(oneShot.view.referenceNotice, /All answer, subject and supporting references expire/);
       assert.deepEqual(oneShot.view.continuations, []);
       assert.doesNotMatch(oneShot.rendered, /present @answer-/);
-      if (format === 'unicode') assert.match(oneShot.rendered, /Open postcode shell/);
+      if (format === 'unicode') {
+        assert.match(oneShot.rendered, /Open postcode shell/);
+        assert.equal(oneShot.rendered.match(/^Answer:/gm)?.length, 1);
+        assert.equal(oneShot.rendered.match(/^Fresh answer selection$/gm)?.length, 1);
+        assert.equal(oneShot.rendered.split(oneShot.view.referenceNotice).length - 1, 1);
+      }
       else assert.equal(JSON.parse(oneShot.rendered).referenceNotice, oneShot.view.referenceNotice);
     }
   }
@@ -88,6 +93,9 @@ test('exact mechanical presentation covers every family and composite without se
     assert.match(text.rendered, /Retained answer; selection unchanged/);
     assert.match(text.rendered, new RegExp(`@${first.view.answerReference}`));
     assert.equal(text.view.projection.id, first.view.projection.id);
+    assert.equal(text.rendered.match(/^Answer:/gm)?.length, 1);
+    assert.equal(text.rendered.match(/^Retained answer; selection unchanged$/gm)?.length, 1);
+    assert.equal(text.rendered.split(text.view.referenceNotice).length - 1, 1);
   }
   const composite = fresh[4]!.view;
   assert.ok('mechanical' in composite.projection);
@@ -99,8 +107,27 @@ test('exact mechanical presentation covers every family and composite without se
   assert.ok('sourceDetail' in bare.view && bare.view.sourceDetail);
   const unsupported = requireResolution(await active.execute({ kind: 'present', target: mechanical, presentation: { ...json, after: 'investigram-00000000' } }));
   assert.equal(unsupported.resolution.reason, 'presentation-unavailable');
+  assert.match(unsupported.resolution.explanation, /Unsupported presentation choices.*--after/);
+  assert.doesNotMatch(unsupported.resolution.explanation, /new information request/i);
   assert.equal(unsupported.resolution.retainedAnswers[0]!.id, mechanical);
   assert.equal(unsupported.resolution.retainedAnswers[0]!.reference, bare.view.answerReference);
+  for (const first of fresh.slice(0, 3)) {
+    const choices = [
+      { presentation: { ...json, sourceDetail: true }, names: ['--source-detail'] },
+      { presentation: { ...json, revisionPage: 2 }, names: ['--revision-page'] },
+      { presentation: { ...json, after: 'investigram-00000000' }, names: ['--after'] },
+      { presentation: { ...json, sourceDetail: true, revisionPage: 2, after: 'investigram-00000000' }, names: ['--source-detail', '--revision-page', '--after'] },
+    ];
+    for (const { presentation, names } of choices) {
+      const refused = requireResolution(await active.execute({ kind: 'present', target: first.view.projection.id, presentation }));
+      assert.equal(refused.resolution.reason, 'presentation-unavailable');
+      assert.match(refused.resolution.explanation, /Unsupported presentation choices/);
+      for (const name of names) assert.ok(refused.resolution.explanation.includes(name));
+      assert.doesNotMatch(refused.resolution.explanation, /new information request/i);
+      assert.equal(refused.resolution.retainedAnswers[0]!.id, first.view.projection.id);
+      assert.equal(refused.resolution.retainedAnswers[0]!.reference, first.view.answerReference);
+    }
+  }
 });
 
 test('malformed and mixed requests are safely refused before work', async t => {

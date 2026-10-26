@@ -381,6 +381,11 @@ test('arrangement is self-contained, preserves bounded disclosure and distinguis
   assert.equal(plain.view.accounts.length, 256); assert.equal(plain.view.omittedAccounts.length, 15);
   assert.equal(sourceDisclosure(plain.view), null, 'held source is not disclosure');
   assert.equal(calls[0]!.kind, 'investigram'); assert.equal(calls[1]!.kind, 'module'); assert.equal(calls[2]!.kind, 'module');
+  const fresh = arrangeInvestigationView(content, { ...options, selectionMode: 'fresh' }, null, usage, bindings);
+  const retained = arrangeInvestigationView(content, { ...options, selectionMode: 'retained' }, null, usage, bindings);
+  assert.notEqual(fresh.investigationArrangementKey, retained.investigationArrangementKey);
+  assert.notEqual(fresh.view.id, retained.view.id);
+  assert.deepEqual({ ...fresh.view, id: retained.view.id, selectionMode: 'retained' }, retained.view);
   const variants = [
     { ...options, presentation: { format: 'unicode' as const, sourceDetail: false } },
     { ...options, presentation: { format: 'json' as const, sourceDetail: true } },

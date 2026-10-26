@@ -81,6 +81,8 @@ test('materialization refusal retains its answer and reports it without a View',
   assert.deepEqual(repeat.resolution.retainedAnswers, report.resolution.retainedAnswers);
   const retained = requireResolution(await active.execute({ kind: 'present', target: report.resolution.retainedAnswers[0]!.id, presentation: json }));
   assert.equal(retained.resolution.reason, 'presentation-unavailable');
+  assert.match(retained.resolution.explanation, /materialization precondition/);
+  assert.doesNotMatch(retained.resolution.explanation, /new information request/i);
   assert.deepEqual(retained.resolution.retainedAnswers, report.resolution.retainedAnswers);
   assert.deepEqual(retained.attribution!.work, []);
   const command = requireResolution(await active.execute({ lens: 'summarize', selector: 'entry', referenceLifetime: 'command', presentation: json }));

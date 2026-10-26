@@ -65,10 +65,10 @@ export function presentRetained(store: ProgramRecordStore, session: SessionId,
   if (base.kind === 'organization-projection' && !base.expansions.requested.includes('group-details')) return refuse('presentation-unavailable', 'This Presentation needs group details not selected by the retained answer. Issue a new information request.', [answer.id]);
   const content = resolveRetainedContent(store, answer);
   const baseContent = mechanical ? resolveRetainedContent(store, mechanical) : content;
-  const decision = retainedPresentation(catalog.presentations, baseContent, request.presentation, associated);
-  if (!decision) return refuse('presentation-unavailable', 'No compatible Presentation supports these choices and this answer’s retained materialization. A new information request is needed for additional information.', [answer.id], materializationLimitations(baseContent));
+  const compatibility = retainedPresentation(catalog.presentations, baseContent, request.presentation, associated);
+  if ('explanation' in compatibility) return refuse('presentation-unavailable', compatibility.explanation, [answer.id], materializationLimitations(baseContent));
   const context = { selectionMode: 'retained' as const, referenceLifetime: request.referenceLifetime, answerReference };
-  const presentation = presentedOptions(request.presentation, decision);
+  const presentation = presentedOptions(request.presentation, compatibility.decision);
   const title = catalog.lenses[answer.lens]?.title;
   if (!title) throw new Error('Retained answer has no meaning in the fixed Session catalog');
   work.record('content', 'consumed', { records: [...new Set([answer.id, ...(mechanical ? [mechanical.id, ...supportingWork(baseContent)] : []), ...supportingWork(content)])],
