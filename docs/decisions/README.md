@@ -62,6 +62,8 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 <a id="accepted-decisions"></a>
 ## Accepted decisions
 
+- [Present exact retained answers independently of fresh selection](exact-retained-answer-presentation.md)
+
 - [Compact interface attribution and complete operational results](compact-attribution-and-complete-results.md)
 - [Separate research concepts from application specification](application-specification-boundaries.md)
 

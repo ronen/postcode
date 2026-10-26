@@ -47,7 +47,7 @@ The application submits observation batches to a separate local sink. New versio
 
 The current CLI retains Projections and records produced Views in observation batches; it does not maintain a general navigable collection of retained Views. Investigram follow-ups retain their selected subject and composition relationships, but ordinary commands do not retain a general origin View for a supplied reference. For example, requesting `children @module-…` after viewing dependencies does not record which View supplied that reference. This is partial investigation context, not complete navigation-origin history. See the [lineage follow-up](backlog.md#assess-and-preserve-navigation-origin-lineage) before relying on the CLI to reconstruct an investigation’s navigation history.
 
-Current commands cannot explicitly present a particular retained Projection again. Repeating a request for another page or format can select newer interpretation history; the human-facing continuity/disclosure limitation remains [open](backlog.md#allow-a-view-to-be-requested-for-an-existing-projection). Detection of relevant input changes invalidates further investigation and requires reopening; this is not live refresh.
+Current commands cannot explicitly present a particular retained Projection again. Repeating a request for another page or format can select newer interpretation history; the human-facing continuity/disclosure limitation remains [open pending implementation of the retained-answer plan](plans/exact-retained-answer-presentation.md). Detection of relevant input changes invalidates further investigation and requires reopening; this is not live refresh.
 
 <a id="scope-of-this-reference"></a>
 ## Scope of this reference

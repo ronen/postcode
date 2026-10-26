@@ -88,7 +88,7 @@ The product may suggest a summary View when the human has not expressed a more s
 
 Each produced Projection retains its selected information and qualification. Repeating a command requests a selection again: changes to retained interpretation or correction/association selections can yield a different answer, including when requesting another page or format. Those supporting selections are distinct from captured program states. Input changes follow the separate [session invalidation contract](#input-stability-and-retained-work), not a live-refresh policy.
 
-Current commands cannot explicitly redisplay a particular retained Projection. They preserve earlier stored results but cannot guarantee that successive pages or formats present the same selected answer. Separate commands and changed Projection IDs in JSON do not provide sufficient human-facing refresh disclosure for paging. This known continuity/disclosure limitation (F6) remains deferred for [separately scoped remediation](backlog.md#allow-a-view-to-be-requested-for-an-existing-projection).
+Current commands cannot explicitly present a particular retained Projection with new presentation inputs. They preserve earlier stored results but cannot guarantee that successive pages or formats present the same selected answer. Separate commands and changed Projection IDs in JSON do not provide sufficient human-facing refresh disclosure for paging. This known continuity/disclosure limitation (F6) remains deferred for [exact retained-answer implementation](plans/exact-retained-answer-presentation.md).
 
 ## First use
 

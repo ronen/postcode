@@ -4,6 +4,10 @@ Plans in this directory describe future work that the human has explicitly appro
 
 Use descriptive, unnumbered filenames, such as `initial-product-slice.md` or `agent-context-exchange.md`. Do not encode priority or sequence in filenames. Express dependencies and ordering in the plan itself or in a current roadmap when one becomes necessary.
 
+## Approved work
+
+- [Exact retained-answer presentation](exact-retained-answer-presentation.md) — preserve an exact retained answer while changing supported presentation inputs; implementation requires separate authorization.
+
 ## Completed work
 
 - [Explicit Lenses and qualified request resolution](lens-request-model.md) — completed after integrated and PR review; the [implementation task](../../records/tasks/2026-10-11-lens-request-model.md) closed with human authorization on 2026-10-13.
