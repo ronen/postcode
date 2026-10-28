@@ -30,6 +30,8 @@ Use [`drafts/`](../drafts/) for complete proposed new canonical documents and st
 
 Use a descriptively named root underscore directory, such as `_initial-product-slice/`, when working material is ephemeral, local to the checkout, and disposable. Each form follows the applicable [durable-note](process-conventions.md#durable-non-governing-notes), [provisional-draft](process-conventions.md#provisional-draft-material), or [disposable-scratch](process-conventions.md#disposable-scratch-material) conventions.
 
+Reviews of draft planning material are working material, not historical review records, unless the human explicitly requests otherwise. Once findings have been addressed or carried into the promoted documents, backlog, or other appropriate location, discard the associated scratch review material during promotion or worktree cleanup. Preserve any independently useful unresolved content, rather than retaining the review merely as evidence that review occurred.
+
 ## Suggested planning sequence
 
 This sequence is a convenience, not a required ceremony. Feel free to vary it or use an entirely different approach to suit the planning work.
