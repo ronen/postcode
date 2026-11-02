@@ -1,0 +1,11 @@
+# Proposed revisions to docs/architecture/README.md
+
+## Add at the start of “Implemented subset of the product model”
+
+The [architectural working premise](../../foundation/product-design.md) requires human understanding independent of programming-language source or syntax. Intelligible source-derived assertions, labels and evidence are permitted with provenance and epistemological status preserved. The CLI's explicit syntax-oriented escape requires reconciliation where it asks humans to decipher implementation rather than providing an architectural account. The presence of free text, source-derived documentation or raw diagnostic delivery does not by itself establish nonconformance; representative content and journeys need semantic assessment. No comprehensive assessment establishes the broader intended contract. The [reconciliation assessment](../plans/product-design-reconciliation.md) identifies the bounded detail-change opportunity and targeted follow-ups; [adoption](../decisions/human-facing-architectural-representations.md#adoption-and-conformance) changes no runtime behavior.
+
+Exact retained-answer presentation is implemented across current families; the [completed task](../../records/tasks/2026-10-26-exact-retained-answer-presentation.md) records its verification. It preserves frozen selection and support, including through paging, without acquiring evidence or invoking interpretation. Useful evidence-detail choices remain compatible with that boundary. This implementation does not add durable investigation history, arbitrary coordinated Views or complete captured-basis export.
+
+The current Investigram implementation carries prose and qualified support, with associations, composition, corrections and exposure-based reconsideration. The [broader definition](../decisions/structured-investigram-content.md) permits structured interpretation without implementing it or selecting account schemas or a working-account architecture. Existing prose is a supported content form; its human usefulness depends on the meaning conveyed, not whether some text originated in source.
+
+Keep factual descriptions of source acquisition, agent access and current human detail paths until implementation changes them. Those descriptions do not establish that reading source syntax satisfies an architectural information need.
