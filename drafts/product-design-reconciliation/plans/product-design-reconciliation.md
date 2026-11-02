@@ -2,7 +2,7 @@
 
 Status: in review
 Created: 2026-10-29
-Updated: 2026-10-30
+Updated: 2026-11-02
 
 ## Purpose and scope
 
@@ -27,7 +27,7 @@ Preserve those mechanisms and historical adoption-time accounts. The plan metada
 | The application offers conventional source as an escape when conceptual capabilities are inadequate. | Replace that fallback with representation-limit disclosure and optional inadequacy feedback. Retain intelligible source-derived assertions, evidence and mappings; a source excursion cannot substitute for an adequate account. |
 | Earlier decisions permit or require syntax-oriented human detail and record source excursions as development feedback. | Narrowly supersede those commitments. Preserve capture, qualification, useful detail, actual-output observations and agent access. Provenance access does not establish inadequacy, and exposure classification does not establish intelligibility. |
 | The specification understates the presumed architectural competence and working vocabulary. | State the audience and architectural purpose. Use established concepts and notations with qualified applicability, without a universal ontology. |
-| Investigram is defined as interpretation “in prose.” | Permit prose, structured content, or both. This enabling generalization remains a consequential choice, distinct from the adopted semantic restriction. |
+| Investigram and related contracts refer specifically to interpretation prose. | Define interpretation content as prose, structured content, or a combination, including embedded prose. Apply the existing qualification, retention, inspection, follow-up, citation and correction contracts to all of it without selecting a schema. |
 | Accumulation lacks an explicit permission for overlapping architectural accounts. | Permit partial, conflicting accounts across investigations without selecting a consolidated model or promising persistence. |
 | Implementation descriptions and conventions reflect source excursions. | Describe the actual baseline and targeted semantic gaps. Do not relabel all source-derived text as defective or claim runtime conformance through promotion. |
 
@@ -75,9 +75,9 @@ Verify that formatting or displaying supplied meaning does not silently add a cl
 
 Structured accounts carried as investigram content are a promising hypothesis. Existing retention, evidence, associations and explicit replacements give it a plausible home. A working account might comprise several selected investigrams, with initial content shapes driven by selected architectural representations. That selection need not be one investigram, a new Entity or a mutable composition tree.
 
-The prose-only definition is an unnecessary restriction; the companion decision removes it. The requirement that investigrams remain interpretive is suitable: structured claims do not become mechanical facts. Mechanically established information can remain separate qualified evidence/Projections. Fixed composition is also suitable: it describes one produced result, not every grouping humans may select later. The existing choice not to require a canonical architecture model does not prohibit partial models or accounts.
+The prose-only definition is an unnecessary restriction; the companion decision defines [interpretation content](../core-concepts.md#interpretation-content) independently of representation and applies the existing contracts to all of that content. The requirement that investigrams remain interpretive is suitable: structured claims do not become mechanical facts. Mechanically established information can remain separate qualified evidence/Projections. Fixed composition is also suitable: it describes one produced result, not every grouping humans may select later. The existing choice not to require a canonical architecture model does not prohibit partial models or accounts.
 
-Other contracts impose useful obligations, not blockers: typed result/Presentation compatibility; immutable references and replacements; evidence exposure and complete correction context; generated-output separation; qualified relationships between interpretations and implementation. A structured content implementation must extend those mechanisms where necessary. Current prose fields, validation, context delivery, paging and rendering are implementation limits, not proof that the domain needs a new account store.
+Other contracts impose useful obligations, not blockers: typed result/Presentation compatibility; immutable references and replacements; evidence exposure and complete correction context; generated-output separation; qualified relationships between interpretations and implementation. Correction eligibility requires complete retained interpretation content, referent information and qualifications. Complete correction-context delivery also covers the replacement's own content and the correction reasons and qualifications; the existing subordinate-tree exemption remains. A structured content implementation must realize these same contracts and extend the mechanisms where necessary. Current prose fields, validation, context delivery, paging and rendering are implementation limits, not proof that the domain needs a new account store.
 
 Leave schemas, selected-account semantics, correspondence, representation choice, editing, independent subclaim identity and cross-session persistence to subsequent work grounded in journeys. A same-Session experiment need not solve cross-state identity. Reuse across changed captures or restarts does require separate lifecycle, basis and correspondence decisions. “Across investigations” does not inherently mean “persist across sessions,” nor does a selected set establish a complete or internally consistent architecture.
 
@@ -91,7 +91,6 @@ Candidate journeys for that later design: understand how an operation is admitte
 | Adequacy when only part of the need can be met | Show independently intelligible qualified information, disclose the unresolved part and allow further investigation. Omission or refusal is targeted, not an automatic response to source origin. | Accepting the behavior contract; consequential UX refinements remain reviewable. |
 | Human versus machine output | Public CLI text/JSON must support human understanding when offered for that use; existing analysis/agent interfaces retain source. No new isolated transport is required solely by this clarification. | Any new source-bearing public agent export or materially different audience contract. |
 | Evidence of semantic adequacy | Evaluate concrete journeys and known failure modes with the intended human competence. Select representative cases and acceptable scope of claims; do not promise a universal syntax detector. | Implementation verification and research use claims. |
-| Broaden Investigram now? | Permit structured content without adopting the working-account strategy. Detailed schema, selection and correspondence remain later journey-informed design. | Promoting the generalization; implementing structured content. |
 | Feedback controls and lifetime | Accept optional reporting and contextual attribution now; choose concrete controls and retention within the supported lifecycle. | Feedback implementation. |
 
 ## Reviewable outcome, promotion and verification

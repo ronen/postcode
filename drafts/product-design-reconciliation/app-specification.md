@@ -144,13 +144,13 @@ Keep result composition, later investigation provenance, correction relationship
 
 Reconsideration indicates that interpretation content supplied to an earlier investigation has been corrected, directly or through cited context under the applicable propagation rules. Exposure does not prove reliance, comprehension, or endorsement. The warning does not establish that the account is wrong, invalidate the Session, or automatically trigger inference. Current derived status can change without rewriting the account or its exposure history.
 
-An **[investigram](core-concepts.md#investigram)** is an immutable, addressable artifact containing a qualified interpretation, with referent information, evidence context and provenance.
+An **[investigram](core-concepts.md#investigram)** is an immutable, addressable artifact containing a qualified interpretation, with referent information, evidence context and provenance. Its **[interpretation content](core-concepts.md#interpretation-content)** may be prose, structured content, or a combination, including prose within a structure. All of that content remains subject to the same qualification, evidence attribution, retention, citation exposure and correction requirements.
 
 PostCode accumulates partial, qualified architectural understanding across investigations. Humans can revisit that understanding and investigate it further; subsequent investigations can reuse, extend or challenge earlier accounts from different architectural perspectives. Accounts can overlap, disagree or remain incomplete; their evidence, qualifications and revision history remain distinguishable. Accumulation does not require a single consolidated, authoritative architecture model.
 
 The UX through which humans work with accumulated architectural understanding, and the architecture supporting that capability, require further design informed by concrete journeys. These are currently unresolved application and architectural choices, not merely delegated implementation details. Retention duration, cross-session availability and correspondence across changed program states remain to be determined.
 
-Investigram content may be prose, structured interpretation, or both. Structured interpretation is an expected ingredient of the accumulated understanding capability, but permitting it does not select account schemas, organization or supporting architecture. Structured form does not make an interpretation mechanically established. [[Structured interpretation](decisions/structured-investigram-content.md#permit-structured-interpretation)]
+Structured interpretation is an expected ingredient of the accumulated understanding capability, but permitting it does not select account schemas, organization or supporting architecture. Structured form does not make an interpretation mechanically established. [[Structured interpretation](decisions/structured-investigram-content.md#permit-structured-interpretation)]
 
 <a id="identity-labels-and-continuity"></a>
 ### Identity, labels, and continuity
