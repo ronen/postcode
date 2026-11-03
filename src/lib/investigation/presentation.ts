@@ -1,4 +1,4 @@
-import { withDiagnosticMeanings } from '../diagnostic-view.js';
+import { diagnosticLines, withDiagnosticMeanings } from '../diagnostic-view.js';
 import { assertionContent } from '../documentation-view.js';
 import { presentQualification } from '../qualification-view.js';
 import { detailRecord } from '../evidence-view.js';
@@ -270,7 +270,15 @@ export function renderInvestigationView(view: InvestigationView): string {
     `  Reason: ${inlineText(correction.reason)}`, ...correction.qualifications.map(item => `  Qualification: ${inlineText(item)}`));
   if (view.investigations) lines.push(renderAssociatedInvestigations(view.investigations).trimEnd());
   // Retained-account selections expose their support; operation answers keep it in JSON.
-  if (view.projection.variant !== 'request') for (const support of view.support) lines.push(`  Support (exposure identified by provenance): ${terminalText(JSON.stringify(support))}`);
+  if (view.projection.variant !== 'request') {
+    for (const support of view.support) {
+      const { qualification, ...content } = support;
+      const { diagnostics: _diagnostics, ...qualified } = qualification ?? {};
+      lines.push(`  Support (exposure identified by provenance): ${terminalText(JSON.stringify({ ...content,
+        ...(qualification ? { qualification: qualified } : {}) }))}`);
+    }
+    lines.push(...diagnosticLines(view.support.flatMap(item => item.qualification ? [item.qualification] : []), '  '));
+  }
   // Changes to this section or JSON source fields must stay aligned with
   // src/lib/source-disclosure.ts and test/source-disclosure.test.ts.
   if (view.moreDetails) lines.push('\nMore details (captured attribution and implementation mappings):', terminalText(JSON.stringify(view.moreDetails.items, null, 2)));

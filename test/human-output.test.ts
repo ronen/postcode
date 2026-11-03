@@ -1,3 +1,5 @@
+import { ScriptedInvestigator } from './investigator-double.js';
+import type { EvidenceResponse } from '../src/lib/evidence-access.js';
 import { withDiagnosticMeanings } from '../src/lib/diagnostic-view.js';
 import type { ViewRequest } from '../src/lib/requests.js';
 import assert from 'node:assert/strict';
@@ -24,7 +26,7 @@ for (const format of ['unicode', 'json'] as const) test(`human detail and diagno
   execFileSync('git', ['init', '--quiet', root]);
   writeFileSync(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
   writeFileSync(path.join(root, 'entry.ts'), `import './missing'; import 'unknown-package/subpath';
-/** Coordinates requests.\n * \`\`\`ts\n * export const SOURCE_ONLY = 1;\n * \`\`\`\n * @see Architecture handbook\n */
+/** Coordinates requests.\n * \`\`\`ts\n * export const SOURCE_ONLY = 1;\n * \`\`\`\n * @see Architecture handbook \`\`\`read(1)\`\`\` reference\n */
 export const namedValue = 1;
 const broken = ;`);
   const opened = await openSession({ configPath: path.join(root, 'tsconfig.json') }, {}, {
@@ -45,7 +47,7 @@ const broken = ;`);
     const retained = requireView(await session.execute({ kind: 'present', target: fresh.view.projection.id, presentation }));
     assert.equal(retained.view.projection.id, fresh.view.projection.id);
     for (const result of [fresh, retained]) {
-      assert.doesNotMatch(result.rendered, /export const SOURCE_ONLY|"excerpt"/);
+      assert.doesNotMatch(result.rendered, /export const SOURCE_ONLY|read\(1\)|"excerpt"/);
       assert.match(result.rendered, /TS1109|"code": 1109/);
       assert.match(result.rendered, /incomplete or unreliable/);
       assert.match(result.rendered, /Expression expected/);
@@ -57,6 +59,8 @@ const broken = ;`);
       }
       if (result.view.schema === 'postcode-view/1-experimental' || result.view.schema === 'postcode-module-exports-view/1-experimental') {
         assert.match(result.rendered, /Coordinates requests/); assert.match(result.rendered, /Architecture handbook/);
+        const docs = result.view.schema === 'postcode-view/1-experimental' ? result.view.modules.flatMap(module => module.exports.flatMap(item => item.documentation)) : result.view.exports.flatMap(item => item.documentation);
+        assert.equal(docs[0]!.tags[0]!.omittedTextCharacters, 13);
         const batch = observationBatch(result.view, result.rendered, { configPath: root, repositoryRoot: root, methods: [] }, result.context);
         assert.ok(batch.events.some(event => event.type === 'representation-limited'), `${request.lens}: ${result.rendered}`);
         assert.ok(batch.records.some(record => record.kind === 'representation-limit'));
@@ -163,4 +167,86 @@ test('single-line fences are omitted without hiding adjacent prose or plain-text
   const represented = assertionContent({ text: '```text\nUseful architecture assertion.\n```', tags: [] });
   assert.equal(represented.text, 'Useful architecture assertion.');
   assert.deepEqual(represented.representationLimits, []);
+});
+
+for (const format of ['unicode', 'json'] as const) test(`investigation support bounds diagnostics and filters retained tag fences (${format})`, async t => {
+  const root = temporaryDirectory(t, 'postcode-support-output-');
+  writeFileSync(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
+  writeFileSync(path.join(root, 'entry.ts'), '/** Coordinates work.\n * @see Architecture ```read(1)``` reference\n */\nexport const entry = 1;\n'
+    + Array.from({ length: 25 }, (_, i) => `const z${i} = ;`).join('\n'));
+  const agent = new ScriptedInvestigator([
+    input => ({ kind: 'tools', requests: [{ kind: 'exports', subject: input.request.subject }, { kind: 'modules' }] }),
+    input => {
+      const response = input.responses[0] as EvidenceResponse;
+      const assertion = response.records.find(item => item.kind === 'recorded-assertion')!;
+      const claim = (input.responses[1] as EvidenceResponse).records.find(item => item.kind === 'claim' && item.information.type === 'module')!;
+      assert.ok(assertion); assert.ok(claim);
+      assert.match(JSON.stringify(assertion), /read\(1\)/, 'machine evidence retains the original tag');
+      return { kind: 'submit', result: { localId: 'root', prose: 'Coordinates work.',
+        referent: { description: 'Entry module.', subjects: [input.request.subject] }, qualifications: ['Interpretation.'],
+        evidence: [assertion.id, claim.id], associations: [], children: [], corrections: [], inconsistencies: [] } };
+    },
+  ]);
+  const opened = await openSession({ configPath: path.join(root, 'tsconfig.json') }, { investigation: { agent } });
+  assert.equal(opened.status, 'opened');
+  t.after(() => opened.session.close());
+  const generated = requireView(await opened.session.execute({ lens: 'summarize', selector: 'entry', presentation: { format, moreDetails: false } }));
+  assert.equal(generated.view.schema, 'postcode-investigation-view/1-experimental');
+  if (generated.view.schema !== 'postcode-investigation-view/1-experimental') throw new Error('Expected investigation');
+  const account = generated.view.accounts[0]!.id;
+  const reference = generated.view.references.find(item => item.id === account)!.reference;
+  const inspected = requireView(await opened.session.execute({ lens: 'inspect', selector: reference, reference: true, presentation: { format, moreDetails: true } }));
+  const retained = requireView(await opened.session.execute({ kind: 'present', target: inspected.view.projection.id, presentation: { format, moreDetails: true } }));
+  for (const result of [inspected, retained]) {
+    assert.equal(result.view.schema, 'postcode-investigation-view/1-experimental');
+    if (result.view.schema !== 'postcode-investigation-view/1-experimental') throw new Error('Expected investigation');
+    assert.doesNotMatch(result.rendered, /read\(1\)/);
+    assert.match(result.rendered, /Architecture  reference/);
+    assert.match(result.rendered, /Representation limit/);
+    assert.match(result.rendered, /incomplete or unreliable/);
+    assert.match(result.rendered, /coding agent/);
+    assert.equal(result.view.support.find(item => item.assertion)?.assertion?.tags[0]?.omittedTextCharacters, 13);
+    if (format === 'unicode') {
+      assert.equal((result.rendered.match(/analyzer message:/g) ?? []).length, 3);
+      assert.match(result.rendered, /22 diagnostic occurrence\(s\) omitted/);
+      assert.doesNotMatch(result.rendered, /"diagnostics":/);
+    } else {
+      assert.equal(Math.max(...result.view.support.map(item => item.qualification?.diagnostics.length ?? 0)), 25);
+      assert.equal((JSON.parse(result.rendered).diagnosticMeanings as unknown[]).length, 1);
+    }
+    const batch = observationBatch(result.view, result.rendered, { configPath: root, repositoryRoot: root, methods: [] }, result.context);
+    assert.ok(batch.events.some(event => event.type === 'attribution-disclosed'));
+  }
+  assert.equal(agent.inputs.length, 1, 'inspection and retained presentation do not generate');
+});
+
+for (const format of ['unicode', 'json'] as const) test(`rejected caller diagnostics are not analyzer provenance (${format})`, async t => {
+  const root = temporaryDirectory(t, 'postcode-rejected-provenance-');
+  writeFileSync(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
+  writeFileSync(path.join(root, 'entry.ts'), 'export const entry = 1;');
+  const opened = await openSession({ configPath: path.join(root, 'tsconfig.json') });
+  assert.equal(opened.status, 'opened');
+  t.after(() => opened.session.close());
+  const callerData = { diagnostics: [{ code: 2307, path: '/not-analyzed.ts' }],
+    qualifications: [{ diagnostics: [{ code: 1005, path: '/also-not-analyzed.ts' }] }] };
+  const rejected = await opened.session.execute({ lens: 'inspect', selector: callerData, presentation: { format, moreDetails: false } } as unknown as ViewRequest);
+  assert.equal(rejected.kind, 'resolution');
+  if (rejected.kind !== 'resolution') throw new Error('Expected rejected input');
+  const batch = commandObservation(opened.session.id, 1, {}, 'refused', rejected.rendered, '', undefined, undefined,
+    { kind: 'resolution-result', value: rejected.report }, rejected.context);
+  assert.ok(!batch.events.some(event => event.type === 'attribution-disclosed' || event.type === 'source-displayed'));
+  assert.ok(!('diagnosticMeanings' in rejected.report), 'caller diagnostics must not receive analyzer meanings');
+  if (format === 'json') assert.match(rejected.rendered, /not-analyzed/);
+});
+
+test('retained tag filtering preserves plain-text assertions and counts original code points', () => {
+  const tags = [{ name: 'see', text: 'Before ```call(😀)``` after' },
+    { name: 'remarks', text: '```plaintext\nArchitectural assertion.\n```' }];
+  const represented = assertionContent({ text: '', tags });
+  assert.equal(represented.tags[0]!.text, 'Before  after');
+  assert.equal(represented.tags[0]!.omittedTextCharacters, 13);
+  assert.equal(represented.tags[1]!.text, 'Architectural assertion.');
+  assert.equal(represented.tags[1]!.omittedTextCharacters, Array.from(tags[1]!.text).length - Array.from('Architectural assertion.').length);
+  assert.equal(represented.representationLimits.length, 1);
+  assert.match(tags[0]!.text, /call/, 'original assertions remain unchanged');
 });

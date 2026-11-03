@@ -348,6 +348,8 @@ TypeScript analysis establishes qualified module/export information; it does not
 execute target code or run unrelated semantic checks merely to collect diagnostics.
 Unicode diagnostic summaries show at most five codes and three distinct occurrences
 per code, with meaning once per code and explicit omitted-code/occurrence counts.
+Investigram support inspection uses the same bounds and explanations instead of
+embedding raw diagnostic arrays in Unicode support records.
 JSON retains complete messages and locations in qualification contexts and a shared
 `diagnosticMeanings` table per View or resolution report.
 Encountered diagnostics and unresolved or unsupported analysis paths qualify
@@ -393,6 +395,8 @@ Other triple-backtick spans (including single-line spans) and example tags remai
 limits: this presentation has no qualified account of their meaning. Those limits
 are distinct from unavailable analysis, and omissions are not evidence of absence.
 Original assertions remain available through machine evidence interfaces.
+The same fence handling applies to retained tag bodies; tag omission counts include
+filtered characters as well as characters omitted by display bounds.
 
 ### Inadequacy feedback
 

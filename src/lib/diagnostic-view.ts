@@ -1,6 +1,32 @@
 import type { ClaimContextRecord } from './records.js';
+import type { QualifiedView } from './presentation.js';
+import type { QualifiedOrganizationView } from './organization/presentation.js';
+import type { QualifiedDependencyView } from './dependencies/presentation.js';
+import type { ModuleExportsView } from './exports/presentation.js';
+import type { InvestigationView } from './investigation/presentation.js';
+import type { ResolutionReport, UsageReport } from './request-reporting.js';
 import { inlineText } from './terminal-text.js';
 type Diagnostic = ClaimContextRecord['diagnostics'][number];
+
+/** Read only owned qualification fields, never preserved request input or arbitrary nested data. */
+export function diagnosticContexts(value: unknown): readonly Pick<ClaimContextRecord, 'diagnostics'>[] {
+  if (!value || typeof value !== 'object') return [];
+  const artifact = value as QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | ModuleExportsView
+    | InvestigationView | ResolutionReport | UsageReport;
+  switch (artifact.schema) {
+    case 'postcode-view/1-experimental':
+    case 'postcode-module-exports-view/1-experimental': return artifact.qualifications;
+    case 'postcode-organization-view/1-experimental':
+      return [...artifact.qualifications, ...diagnosticContexts(artifact.moduleDetail)];
+    case 'postcode-dependency-view/1-experimental':
+      return [...artifact.qualifications, ...(artifact.moreDetails?.organizationEvidence ?? []).flatMap(item => item.kind === 'claim-context' ? [item] : [])];
+    case 'postcode-investigation-view/1-experimental':
+      return artifact.support.flatMap(item => item.qualification ? [item.qualification] : []);
+    case 'postcode-resolution/1-experimental':
+      return (artifact.resolution.support ?? []).flatMap(item => item.qualification);
+    default: return [];
+  }
+}
 
 export function diagnosticMeaning(diagnostic: Diagnostic): string {
   const problem = diagnostic.code === 2307 ? 'The analyzer could not locate a requested module or its interface description.'
@@ -12,16 +38,7 @@ export function diagnosticMeaning(diagnostic: Diagnostic): string {
 /** One meaning per code per View/report; contexts retain complete original occurrences. */
 export function withDiagnosticMeanings<T>(value: T): T & { diagnosticMeanings?: { code: number; explanation: string }[] } {
   const meanings = new Map<number, string>();
-  const visit = (item: unknown): void => {
-    if (!item || typeof item !== 'object') return;
-    if (Array.isArray(item)) { item.forEach(visit); return; }
-    for (const [key, child] of Object.entries(item)) {
-      if (key === 'diagnostics' && Array.isArray(child)) {
-        for (const diagnostic of child) if (diagnostic && typeof diagnostic.code === 'number') meanings.set(diagnostic.code, diagnosticMeaning(diagnostic));
-      } else if (key !== 'diagnosticMeanings') visit(child);
-    }
-  };
-  visit(value);
+  for (const context of diagnosticContexts(value)) for (const diagnostic of context.diagnostics) meanings.set(diagnostic.code, diagnosticMeaning(diagnostic));
   return { ...value, ...(meanings.size ? { diagnosticMeanings: [...meanings].map(([code, explanation]) => ({ code, explanation })) } : {}) };
 }
 

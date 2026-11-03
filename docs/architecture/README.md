@@ -495,6 +495,9 @@ attribution disclosure, explicit representation limits and subjective inadequacy
 reports. Exposure classification describes what was displayed, not comprehension;
 a nonconforming excerpt-bearing payload remains classifiable as source display.
 Diagnostic provenance paths are classified even outside detail fields and in non-View resolution reports.
+Diagnostic meanings and provenance classification read owned qualification/support
+fields. Preserved rejected request data cannot supply analyzer diagnostics or create
+an attribution-disclosure event merely by containing similarly named fields.
 No machine evidence acquisition is recorded as human disclosure merely because the
 investigator received source.
 

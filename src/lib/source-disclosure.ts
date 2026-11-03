@@ -1,4 +1,5 @@
 import { inlineText } from './terminal-text.js';
+import { diagnosticContexts } from './diagnostic-view.js';
 import type { SourceAttribution, DetailRecord } from './evidence-view.js';
 import type { QualifiedView } from './presentation.js';
 import type { QualifiedOrganizationView } from './organization/presentation.js';
@@ -76,9 +77,5 @@ export function sourceDisclosure(view: QualifiedView | QualifiedOrganizationView
 
 /** Diagnostic provenance is an explicit new location-bearing presentation field. */
 export function diagnosticLocations(value: unknown): string[] {
-  if (!value || typeof value !== 'object') return [];
-  if (Array.isArray(value)) return value.flatMap(diagnosticLocations);
-  return Object.entries(value).flatMap(([key, item]) => key === 'diagnostics' && Array.isArray(item)
-    ? item.flatMap(diagnostic => diagnostic && typeof diagnostic === 'object' && typeof diagnostic.path === 'string' ? [diagnostic.path] : [])
-    : diagnosticLocations(item));
+  return diagnosticContexts(value).flatMap(context => context.diagnostics.flatMap(item => item.path ? [item.path] : []));
 }

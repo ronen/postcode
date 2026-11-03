@@ -41,7 +41,7 @@ export function presentDocumentation(associations: readonly DocumentationContent
       const bounded = excerpt(tag.text, 300);
       const text = Number.isFinite(remainingLines) ? fitText(bounded.text, `@${inlineText(tag.name)} `, remainingLines) : bounded.text;
       if (Number.isFinite(remainingLines) && wrapText(`@${inlineText(tag.name)} ${text}`, '       ').length > remainingLines) break;
-      tags.push({ name: tag.name, text, omittedTextCharacters: codePointLength(tag.text) - codePointLength(text) });
+      tags.push({ name: tag.name, text, omittedTextCharacters: tag.omittedTextCharacters + codePointLength(tag.text) - codePointLength(text) });
       remainingLines -= wrapText(`@${inlineText(tag.name)} ${text}`, '       ').length;
     }
     return { id: assertion.id, status: assertion.status,
@@ -80,13 +80,18 @@ export function documentationLines(items: readonly Documentation[], omitted: num
 /** Formatting omissions are explicit representation limits, never inferred program claims. */
 export function assertionContent(assertion: Pick<RecordedAssertion, 'text' | 'tags'>) {
   let omittedBlocks = false;
-  const text = assertion.text.replace(/```([\s\S]*?)```/g, (_block, body: string) => {
+  const filtered = (text: string) => text.replace(/```([\s\S]*?)```/g, (_block, body: string) => {
     const newline = body.indexOf('\n');
     if (newline >= 0 && ['text', 'plaintext'].includes(body.slice(0, newline).trim())) return body.slice(newline + 1);
     omittedBlocks = true; return '';
   }).trim();
+  const text = filtered(assertion.text);
+  const tags = assertion.tags.filter(tag => tag.name !== 'example').map(tag => {
+    const text = filtered(tag.text);
+    return { ...tag, text, omittedTextCharacters: codePointLength(tag.text) - codePointLength(text) };
+  });
   const omittedExamples = assertion.tags.some(tag => tag.name === 'example');
   const omitted = [omittedBlocks ? 'fenced content' : null, omittedExamples ? 'examples' : null].filter(Boolean).join(' and ');
-  return { text, tags: assertion.tags.filter(tag => tag.name !== 'example'), representationLimits: omitted
+  return { text, tags, representationLimits: omitted
     ? [`Representation limit: ${omitted} omitted. Meaning is not established; retained assertions may be incomplete.`] : [] };
 }
