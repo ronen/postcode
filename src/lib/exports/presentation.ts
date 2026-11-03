@@ -1,4 +1,4 @@
-import { diagnosticLines } from '../diagnostic-view.js';
+import { diagnosticLines, withDiagnosticMeanings } from '../diagnostic-view.js';
 import { sourceAttribution } from '../evidence-view.js';
 import { answerIdentity, answerDisplay, answerLines, continuationLines } from '../answer-presentation.js';
 import type { AnswerContext } from '../answer-presentation.js';
@@ -47,8 +47,8 @@ export function arrangeModuleExports(content: ModuleExportsContent, reference: s
     qualifications: content.contexts.map(item => presentQualification(item.context)),
     omittedExports: content.exports.length - exports.length,
     ...(presentation.moreDetails ? { moreDetails: { level: 'declaration-locations' as const, items: [...sources.values()].map(sourceAttribution) } } : {}) };
-  return freezeOwned({ ...view, id: recordId(session, 'module-exports-view', [methods.exportsPresentation, identityReference(session, id), title,
-    presentation, identityReference(session, subject), answerIdentity(context), resolutionContextIdentity(session, resolution)]) });
+  return freezeOwned(withDiagnosticMeanings({ ...view, id: recordId(session, 'module-exports-view', [methods.exportsPresentation, identityReference(session, id), title,
+    presentation, identityReference(session, subject), answerIdentity(context), resolutionContextIdentity(session, resolution)]) }));
 }
 export type ModuleExportsView = ReturnType<typeof arrangeModuleExports>;
 export function renderModuleExports(view: ModuleExportsView): string {

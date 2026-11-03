@@ -1,3 +1,6 @@
+import { publishCommand } from '../src/lib/command-execution.js';
+import { publishFeedback, type DisplayedResult } from '../src/lib/feedback.js';
+import { AnalysisFailure, CommandInterrupted } from '../src/lib/execution-errors.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { PassThrough } from 'node:stream';
@@ -73,4 +76,31 @@ test('removed source option gives guidance and feedback rejects investigation op
     assert.equal(parseCommand(['feedback', '--more-details'], '.', interactive).kind, 'error');
     assert.equal(parseCommand(['feedback', '--project=missing.json'], '.', interactive).kind, 'error');
   }
+});
+
+for (const json of [false, true]) test(`feedback snapshots the latest failure instead of an older answer (${json})`, async () => {
+  let displayed: DisplayedResult = { command: 1, events: [], records: [{ id: 'prior', kind: 'qualified-view', value: { old: true } }] };
+  let calls = 0;
+  for (const error of [new AnalysisFailure('Evidence unavailable'), new CommandInterrupted(), new Error('Controlled defect')]) {
+    const batches: ObservationBatch[] = []; let stderr = '', acknowledgement = '';
+    await publishCommand({ id: 'session:fixture', async execute() { calls++; throw error; }, check() {} },
+      { lens: 'inspect', selector: 'entry', referenceLifetime: 'command', presentation: { format: json ? 'json' : 'unicode', moreDetails: false } }, {}, '/fixture/tsconfig.json', 2,
+      { stdout() {}, stderr(text) { stderr += text; } }, { async submit(batch) { batches.push(batch); return { accepted: false, reason: 'controlled rejection' }; } },
+      snapshot => { displayed = snapshot; });
+    const failure = batches[0]!;
+    assert.deepEqual(displayed, { command: 2, records: failure.records, events: failure.events });
+    assert.ok(!displayed.records.some(record => record.kind === 'qualified-view'));
+    const outcome = displayed.records.find(record => record.kind === 'command-outcome')!.value as { status: string; stderr: string };
+    assert.ok(stderr.includes(outcome.stderr)); assert.match(stderr, /controlled rejection/);
+    if (outcome.status === 'defect') { assert.match(outcome.stderr, /new invocation/); assert.doesNotMatch(outcome.stderr, /reopen the shell/); }
+    for (let command = 3; command <= 4; command++) await publishFeedback({ correlation: 'session:fixture', command, explanation: null, json, displayed },
+      { stdout(text) { acknowledgement += text; }, stderr() {} }, { async submit(batch) {
+        const report = batch.records.find(record => record.kind === 'inadequacy-feedback')!.value as { displayed: DisplayedResult; target: unknown };
+        assert.deepEqual(report.displayed, displayed);
+        assert.deepEqual(report.target, { command: 2, status: outcome.status });
+        return { accepted: true };
+      } });
+    assert.match(acknowledgement, new RegExp(outcome.status));
+  }
+  assert.equal(calls, 3, 'feedback does not execute a request');
 });

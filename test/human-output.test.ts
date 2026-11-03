@@ -1,3 +1,4 @@
+import { withDiagnosticMeanings } from '../src/lib/diagnostic-view.js';
 import type { ViewRequest } from '../src/lib/requests.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
@@ -16,7 +17,7 @@ import { renderDependencyView } from '../src/lib/dependencies/presentation.js';
 import { presentQualification } from '../src/lib/qualification-view.js';
 import { observationBatch, commandObservation } from '../src/lib/observations.js';
 import { investigationInstructions } from '../src/lib/investigation/execute.js';
-import { assertionContent } from '../src/lib/documentation-view.js';
+import { assertionContent, documentationLines } from '../src/lib/documentation-view.js';
 
 for (const format of ['unicode', 'json'] as const) test(`human detail and diagnostic meaning survive fresh and retained family presentations (${format})`, async t => {
   const root = temporaryDirectory(t, 'postcode-human-output-');
@@ -68,7 +69,7 @@ const broken = ;`);
       if (result.view.schema === 'postcode-investigation-view/1-experimental') throw new Error('Unexpected interpretation');
       const context = result.view.qualifications[0]!;
       const qualified = presentQualification({ ...context, scope: 'configured-project', kind: 'claim-context', evidence: [], diagnostics: [{ code: 2307, category: 'error', message: "Cannot find module './missing'." }] });
-      const view = { ...result.view, qualifications: [qualified] };
+      const view = withDiagnosticMeanings({ ...result.view, qualifications: [qualified] });
       const rendered = view.schema === 'postcode-view/1-experimental' ? renderView(view)
         : view.schema === 'postcode-organization-view/1-experimental' ? renderOrganizationView(view)
           : view.schema === 'postcode-dependency-view/1-experimental' ? renderDependencyView(view) : renderModuleExports(view);
@@ -104,4 +105,62 @@ test('plain-text documentation blocks and references remain assertions; omitted 
     assert.match(instructions, /not presumed to read or write/); assert.match(instructions, /correction and inconsistency reasons/);
     assert.match(instructions, /Never hide a material qualification/);
   }
+});
+
+for (const format of ['unicode', 'json'] as const) test(`many diagnostics stay bounded and complete in their appropriate representation (${format})`, async t => {
+  const root = temporaryDirectory(t, 'postcode-diagnostic-bounds-');
+  execFileSync('git', ['init', '--quiet', root]);
+  writeFileSync(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"noLib":true,"types":[]},"files":["errors.ts","other.ts"]}');
+  const prose = Array.from({ length: 12 }, (_, index) => `Useful architectural assertion ${index}.`).join('\n * ');
+  writeFileSync(path.join(root, 'errors.ts'), `/** ${prose}\n * Use it like \`\`\`foo(1)\`\`\` carefully.\n * @example example source content\n */\n` + Array.from({ length: 25 }, (_, i) => `export const z${i} = ;`).join('\n'));
+  writeFileSync(path.join(root, 'other.ts'), 'export const other = 1;');
+  const opened = await openSession({ configPath: path.join(root, 'tsconfig.json') }, {}, {
+    ...defaultCatalog, lenses: { ...defaultCatalog.lenses, exports: exportsLens }, presentations: [...defaultCatalog.presentations!, exportsPresentation],
+  });
+  assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
+  for (const lens of ['modules', 'inspect', 'organization', 'dependencies', 'exports']) {
+    const result = requireView(await opened.session.execute({ lens, selector: ['inspect', 'exports'].includes(lens) ? 'errors' : null,
+      ...(lens === 'organization' ? { subject: 'project' as const } : {}), presentation: { format, moreDetails: false } }));
+    const retained = requireView(await opened.session.execute({ kind: 'present', target: result.view.projection.id, presentation: { format, moreDetails: false } }));
+    for (const shown of [result, retained]) {
+      assert.doesNotMatch(shown.rendered, /foo\(1\)/);
+      if (format === 'unicode') {
+        assert.equal((shown.rendered.match(/Information affected by this diagnostic/g) ?? []).length, 1, lens);
+        assert.equal((shown.rendered.match(/analyzer message:/g) ?? []).length, 3, lens);
+        assert.match(shown.rendered, /22 diagnostic occurrence\(s\) omitted/);
+      } else {
+        assert.equal((shown.rendered.match(/Information affected by this diagnostic/g) ?? []).length, 1, lens);
+        const data = JSON.parse(shown.rendered);
+        assert.equal(data.diagnosticMeanings[0].code, 1109);
+        assert.equal(Math.max(...data.qualifications.map((q: { diagnostics: unknown[] }) => q.diagnostics.length)), 25);
+        assert.ok(data.qualifications.every((q: { diagnostics: object[] }) => q.diagnostics.every(d => !('explanation' in d))));
+      }
+      if (shown.view.schema === 'postcode-view/1-experimental') {
+        const doc = shown.view.modules.flatMap(module => module.exports.flatMap(exported => exported.documentation))[0];
+        if (doc && format === 'unicode') {
+          const lines = documentationLines([doc], 0, '     ');
+          const content = lines.filter(line => line.trim() && !line.trim().startsWith('Documentation:') && !line.trim().startsWith('…'));
+          assert.ok(content.length <= 8, content.join('\n'));
+          assert.ok(content[0]!.includes('Useful architectural assertion'));
+          assert.ok(content.some(line => line.includes('Representation limit:')));
+          assert.ok(lines.findIndex(line => line.includes('Representation limit:')) > lines.findIndex(line => line.includes('Useful architectural assertion')));
+        }
+      }
+    }
+  }
+  const missing = await opened.session.execute({ lens: 'inspect', selector: 'missing', presentation: { format, moreDetails: false } });
+  assert.equal(missing.kind, 'resolution');
+  assert.equal((missing.rendered.match(/Information affected by this diagnostic/g) ?? []).length, 1);
+  if (format === 'unicode') assert.match(missing.rendered, /22 diagnostic occurrence\(s\) omitted/);
+});
+
+test('single-line fences are omitted without hiding adjacent prose or plain-text blocks', () => {
+  for (const text of ['Use it like ```foo(1)``` carefully.', 'Use it like ```ts foo(1)``` carefully.']) {
+    const represented = assertionContent({ text, tags: [] });
+    assert.equal(represented.text, 'Use it like  carefully.');
+    assert.equal(represented.representationLimits.length, 1);
+  }
+  const represented = assertionContent({ text: '```text\nUseful architecture assertion.\n```', tags: [] });
+  assert.equal(represented.text, 'Useful architecture assertion.');
+  assert.deepEqual(represented.representationLimits, []);
 });

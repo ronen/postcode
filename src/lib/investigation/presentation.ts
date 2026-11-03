@@ -1,3 +1,4 @@
+import { withDiagnosticMeanings } from '../diagnostic-view.js';
 import { assertionContent } from '../documentation-view.js';
 import { presentQualification } from '../qualification-view.js';
 import { detailRecord } from '../evidence-view.js';
@@ -217,7 +218,7 @@ export function finalizeInvestigationUsage<T extends { readonly id: RecordId;
   readonly projection: { readonly id: RecordId; readonly session: SessionId }; readonly usage: InvestigationUsageReport }>(view: T, usage: InvestigationUsageReport, arrangementKey: RecordId): T {
   const session = view.projection.session;
   const id = recordId(session, 'investigation-view', [methods.investigationPresentation, identityReference(session, arrangementKey), usage]);
-  return freezeOwned({ ...view, id, usage });
+  return freezeOwned(withDiagnosticMeanings({ ...view, id, usage }));
 }
 export type InvestigationView = ReturnType<typeof arrangeInvestigationView>['view'];
 export function renderInvestigationView(view: InvestigationView): string {

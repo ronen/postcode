@@ -1,4 +1,4 @@
-import { diagnosticLines } from '../diagnostic-view.js';
+import { diagnosticLines, withDiagnosticMeanings } from '../diagnostic-view.js';
 import { sourceAttribution, detailRecord } from '../evidence-view.js';
 import type { SourceAttribution, DetailRecord } from '../evidence-view.js';
 import { answerIdentity, answerDisplay, answerLines, continuationLines } from '../answer-presentation.js';
@@ -214,7 +214,7 @@ export function arrangeDependencyView(content: DependencyProjectionContent, ids:
       organization: boundedOrganization, organizationEvidence: [...organizationEvidence.values()].slice(0, 100).map(detailRecord),
       omittedOrganizationEvidence: Math.max(0, organizationEvidence.size - 100), omittedOrganizationClaims: Math.max(0, sourceOrganization.length - 50) } } : {}),
   };
-  return result;
+  return withDiagnosticMeanings(result);
 }
 
 export function renderDependencyView(view: QualifiedDependencyView): string {

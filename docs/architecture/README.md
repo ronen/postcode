@@ -498,8 +498,9 @@ Diagnostic provenance paths are classified even outside detail fields and in non
 No machine evidence acquisition is recorded as human disclosure merely because the
 investigator received source.
 
-The shell keeps a snapshot of the last published View or resolution result for
-feedback. It does not keep a general View history. Feedback embeds that snapshot,
+The shell keeps a snapshot of the last published View, resolution result or
+command failure for feedback. Failures replace older results and retain the exact
+stderr, request and outcome; acknowledgments identify the target command/status. It does not keep a general View history. Feedback embeds that snapshot,
 including its exact output and already available request/context records, in its
 own self-contained batch. It does not re-render or consult the Session. Usage,
 help and feedback acknowledgments leave the snapshot unchanged. Missing basis

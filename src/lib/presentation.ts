@@ -1,4 +1,4 @@
-import { diagnosticLines } from './diagnostic-view.js';
+import { diagnosticLines, withDiagnosticMeanings } from './diagnostic-view.js';
 import { sourceAttribution } from './evidence-view.js';
 import type { SourceAttribution } from './evidence-view.js';
 import { answerIdentity, answerDisplay, answerLines, continuationLines } from './answer-presentation.js';
@@ -139,7 +139,7 @@ export function arrangeModuleView(content: ModuleProjectionContent, entityIds: R
   }
   const collapsed = policy.collapseExternal ? modules.filter(module => !module.discoveryFacets.includes('project')) : [];
   const listed = policy.collapseExternal ? modules.filter(module => module.discoveryFacets.includes('project')) : modules;
-  return {
+  const result: QualifiedView = {
     ...answerDisplay(context), schema: 'postcode-view/1-experimental', id: recordId(projection.session, 'view', { projection: identityReference(projection.session, projection.id), presentation, title, resolution: resolutionContextIdentity(projection.session, resolution), method: methods.presentation, ...answerIdentity(context) }),
     title,
     ...(resolution ? { resolution } : {}),
@@ -170,6 +170,7 @@ export function arrangeModuleView(content: ModuleProjectionContent, entityIds: R
       }),
     } } : {}),
   };
+  return withDiagnosticMeanings(result);
 }
 
 /** Rendering and fit checks share terminal cell widths and grapheme boundaries. */
@@ -208,12 +209,10 @@ export function renderUnicode(view: QualifiedView, placement: 'standalone' | 'em
     && outcome.availability === 'available' && outcome.applicability === 'applicable' && completedMaterialization(outcome) ? outcome.modules : []));
   const projectContexts = contextsByScope.get('configured-project') ?? [];
   const sharedLimitations = new Set(projectContexts.flatMap(context => context.limitations));
-  const sharedDiagnostics = new Set(projectContexts.flatMap(context => context.diagnostics.map(diagnostic => diagnostic.code)));
   const local = (contexts: readonly Qualification[], indent: string) => {
     for (const limitation of new Set(contexts.flatMap(context => context.limitations))) {
       if (!sharedLimitations.has(limitation)) lines.push(`${indent}Limitation: ${inlineText(limitation)}`);
     }
-    lines.push(...diagnosticLines(contexts.map(context => ({ diagnostics: context.diagnostics.filter(item => !sharedDiagnostics.has(item.code)) })), indent));
   };
   let documentationDisplayed = false;
   let relationshipsDisplayed = false;
@@ -345,7 +344,7 @@ export function renderUnicode(view: QualifiedView, placement: 'standalone' | 'em
         : '  Displayed information is derived by TypeScript analysis; module population is not established.',
       `  ${moduleLimitations.population}`);
   } else for (const guarantee of new Set(projectContexts.map(context => context.guarantee))) lines.push(`  ${inlineText(guarantee)}`);
-  lines.push(...diagnosticLines(projectContexts, '  '));
+  lines.push(...diagnosticLines(view.qualifications, '  '));
   const representedLimitations = view.analysis ? new Set<string>(Object.values(moduleLimitations)) : new Set<string>();
   const extraLimitations = [...sharedLimitations].filter(limitation => !representedLimitations.has(limitation));
   if (view.analysis || extraLimitations.length) {
@@ -355,8 +354,7 @@ export function renderUnicode(view: QualifiedView, placement: 'standalone' | 'em
     for (const limitation of extraLimitations) lines.push(`  ${inlineText(limitation)}`);
   }
   for (const collapsed of view.display.collapsedQualifications) {
-    const exceptional = collapsed.contexts.filter(context => context.limitations.some(limitation => !sharedLimitations.has(limitation))
-      || context.diagnostics.some(diagnostic => !sharedDiagnostics.has(diagnostic.code)));
+    const exceptional = collapsed.contexts.filter(context => context.limitations.some(limitation => !sharedLimitations.has(limitation)));
     if (exceptional.length) { lines.push(`- Collapsed ${inlineText(collapsed.handle)}:`); local(exceptional, '  '); }
   }
   lines.push('', 'Entity references belong to this session. One-shot queries accept exact names or handles.');

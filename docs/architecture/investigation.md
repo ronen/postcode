@@ -731,8 +731,8 @@ of actual exposure, including citation indexes and per-correction completeness.
 ## Inadequacy feedback delivery
 
 The parent CLI publishes optional-explanation `feedback` reports through the existing
-command-completion sink. The shell snapshots the last displayed View or resolution
-report, including exact rendered output and already available context; feedback and
+command-completion sink. The shell snapshots the last displayed View, resolution
+report or command failure, including exact stdout/stderr and already available context; feedback and
 usage acknowledgments do not replace it. Reporting does not call the analysis worker,
 select an answer, rerender, refresh or correct an account. One-shot feedback bypasses
 project opening and investigator configuration, uses its own invocation identifier

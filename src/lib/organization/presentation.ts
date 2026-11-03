@@ -1,4 +1,4 @@
-import { diagnosticLines } from '../diagnostic-view.js';
+import { diagnosticLines, withDiagnosticMeanings } from '../diagnostic-view.js';
 import { answerIdentity, answerDisplay, answerLines, continuationLines } from '../answer-presentation.js';
 import type { AnswerContext, AnswerDisplay } from '../answer-presentation.js';
 import { validatePresentationContent, presentationChanges } from '../presentation-contracts.js';
@@ -193,7 +193,7 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
       bucket.push(item); linksByTarget.set(link.targetRegion, bucket);
     }
   });
-  return {
+  const result: QualifiedOrganizationView = {
     ...answerDisplay(context), schema: 'postcode-organization-view/1-experimental',
     id: recordId(projection.session, 'organization-view', { projection: identityReference(projection.session, projection.id), presentation, title, resolution: resolutionContextIdentity(projection.session, resolution), method: methods.presentation, ...answerIdentity(context) }),
     title,
@@ -225,6 +225,7 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
       }), modules: moduleDetail?.moreDetails ?? null,
     } } : {}),
   };
+  return withDiagnosticMeanings(result);
 }
 
 const annotation = (group: GroupReference) => [group.documented ? 'documented' : null,

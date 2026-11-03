@@ -330,8 +330,9 @@ assertion, character and tag omissions locally, without repeating an aggregate
 item that could imply all module documentation was absent.
 Unicode wraps documentation to 88-character lines including its indentation; the
 stored assertion remains unchanged. Each Unicode assertion has at most eight
-wrapped content lines shared by prose and tags, excluding labels and omission
-notices. Additional characters/tags omitted by this height bound are counted.
+wrapped content lines shared by prose, tags and representation-limit notices,
+excluding labels and numeric omission notices. Representation limits follow the
+retained assertion and reserve space within that budget. Additional characters/tags omitted by this height bound are counted.
 JSON inspection retains up to 2,000 prose characters and 20 tags per assertion,
 with up to 300 characters per tag.
 
@@ -345,6 +346,10 @@ categories and other project configurations are not established by this lens.
 
 TypeScript analysis establishes qualified module/export information; it does not
 execute target code or run unrelated semantic checks merely to collect diagnostics.
+Unicode diagnostic summaries show at most five codes and three distinct occurrences
+per code, with meaning once per code and explicit omitted-code/occurrence counts.
+JSON retains complete messages and locations in qualification contexts and a shared
+`diagnosticMeanings` table per View or resolution report.
 Encountered diagnostics and unresolved or unsupported analysis paths qualify
 affected results. Inputs are memoized as first observed, not captured atomically.
 
@@ -384,7 +389,7 @@ semantic adequacy detector. Historical observation meanings are unchanged.
 
 Documentation remains attributed recorded assertion, not established behavior.
 Plain-text fenced blocks and reference tags are preserved within display bounds.
-Other fenced blocks and example tags remain omitted with explicit representation
+Other triple-backtick spans (including single-line spans) and example tags remain omitted with explicit representation
 limits: this presentation has no qualified account of their meaning. Those limits
 are distinct from unavailable analysis, and omissions are not evidence of absence.
 Original assertions remain available through machine evidence interfaces.
@@ -393,8 +398,12 @@ Original assertions remain available through machine evidence interfaces.
 
 `feedback [optional explanation] [--json]` works in the shell and one-shot CLI.
 It requires neither an explanation nor a prior result. In the shell it concerns
-the last displayed View or request-resolution result, including an exact retained
-answer if that was displayed. Usage/help/feedback do not replace that context.
+the last displayed View, request-resolution result or command failure, including
+an exact retained answer if that was displayed. A failure replaces an older answer
+as the feedback target; its request, stderr and outcome are embedded without a
+fabricated View. The acknowledgment identifies the target command and status.
+An interruption that ends the shell still ends that Session; later one-shot feedback
+is context-free. Usage/help/feedback do not replace that context.
 One-shot feedback opens no project or investigator, accepts no `--project`, and
 records no inferred association to previous work.
 

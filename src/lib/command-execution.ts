@@ -56,7 +56,7 @@ export async function publishCommand(session: {
       : error instanceof AnalysisFailure ? 'failed' : 'defect';
     code = status === 'interrupted' ? 130 : status === 'invalidated' ? 2 : error instanceof AnalysisFailure ? 3 : 1;
     stderr = `${status === 'failed' ? 'Analysis failed: ' : status === 'defect' ? 'Internal failure: ' : ''}${inlineText(error instanceof Error ? error.message : 'unknown defect')}\n`;
-    stderr += status === 'failed' ? 'The requested analysis did not complete. Check the reported service or evidence-access problem and retry; direct a coding agent to repair project issues.\n' : status === 'defect' ? 'PostCode could not complete this command. Preserve the diagnostic and ask a coding agent to investigate; reopen the shell before continuing.\n' : '';
+    stderr += status === 'failed' ? 'The requested analysis did not complete. Check the reported service or evidence-access problem and retry; direct a coding agent to repair project issues.\n' : status === 'defect' ? 'PostCode could not complete this command. Preserve the diagnostic and ask a coding agent to investigate; start a new invocation or shell Session before continuing.\n' : '';
     output.stderr(stderr);
   }
   const usage = session.usage?.();
@@ -74,7 +74,7 @@ export async function publishCommand(session: {
   const batch = commandObservation(session.id, command, { supplied: context?.request.kind === 'rejected'
     ? { representation: 'omitted', reason: 'Raw invocation omitted; see rejected request input and representation limits.' } : supplied, context: published?.context ?? context, configPath }, status, stdout, stderr, produced, usage,
     published && published.kind !== 'view' ? { kind: published.kind === 'resolution' ? 'resolution-result' : 'usage-report', value: published.report } : undefined, published?.context ?? context, work);
-  if (published && published.kind !== 'usage') onDisplayed?.(structuredClone({ command: batch.command, records: batch.records, events: batch.events }));
+  if (published && published.kind !== 'usage' || status !== 'completed' && stderr) onDisplayed?.(structuredClone({ command: batch.command, records: batch.records, events: batch.events }));
   await submitObservation(sink, batch, output);
   return code;
 }

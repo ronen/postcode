@@ -30,7 +30,8 @@ export function presentDocumentation(associations: readonly DocumentationContent
     const represented = assertionContent(assertion);
     const prose = represented.text, representationLimits = represented.representationLimits;
     let proseExcerpt = excerpt(prose, detailed ? 2000 : 400);
-    let remainingLines = presentation.format === 'unicode' ? 8 : Infinity;
+    let remainingLines = presentation.format === 'unicode'
+      ? Math.max(0, 8 - representationLimits.flatMap(limit => wrapText(limit, '       ')).length) : Infinity;
     if (Number.isFinite(remainingLines)) proseExcerpt = excerpt(prose, codePointLength(fitText(proseExcerpt.text, '', remainingLines)));
     remainingLines -= proseExcerpt.text ? wrapText(proseExcerpt.text, '       ').length : 0;
     const conceptualTags = represented.tags;
@@ -65,10 +66,10 @@ export function documentationLines(items: readonly Documentation[], omitted: num
     const contributions = items.filter(doc => doc.association === association);
     for (const [index, doc] of contributions.entries()) {
       if (index) lines.push(indent);
-      lines.push(...doc.representationLimits.flatMap(limit => wrapText(limit, `${indent}  `)));
       if (doc.text) lines.push(...wrapText(doc.text, `${indent}  `));
       if (doc.omittedTextCharacters) lines.push(`${indent}  … ${doc.omittedTextCharacters} assertion character(s) omitted.`);
       for (const tag of doc.tags) lines.push(...wrapText(`@${inlineText(tag.name)} ${tag.text}${tag.omittedTextCharacters ? ` … (${tag.omittedTextCharacters} characters omitted)` : ''}`, `${indent}  `));
+      lines.push(...doc.representationLimits.flatMap(limit => wrapText(limit, `${indent}  `)));
       if (doc.omittedTags) lines.push(`${indent}  … ${doc.omittedTags} structured tag(s) omitted (including unrepresented examples).`);
     }
   }
@@ -79,12 +80,13 @@ export function documentationLines(items: readonly Documentation[], omitted: num
 /** Formatting omissions are explicit representation limits, never inferred program claims. */
 export function assertionContent(assertion: Pick<RecordedAssertion, 'text' | 'tags'>) {
   let omittedBlocks = false;
-  const text = assertion.text.replace(/```([^\n]*)\n([\s\S]*?)```/g, (_block, language: string, content: string) => {
-    if (['text', 'plaintext'].includes(language.trim())) return content;
+  const text = assertion.text.replace(/```([\s\S]*?)```/g, (_block, body: string) => {
+    const newline = body.indexOf('\n');
+    if (newline >= 0 && ['text', 'plaintext'].includes(body.slice(0, newline).trim())) return body.slice(newline + 1);
     omittedBlocks = true; return '';
   }).trim();
-  return { text, tags: assertion.tags.filter(tag => tag.name !== 'example'), representationLimits: [
-    ...(omittedBlocks ? ['Representation limit: documentation blocks not explicitly marked as plain text are omitted; PostCode has not established their architectural meaning. Other recorded assertions remain available, but these excerpts are not a complete account.'] : []),
-    ...(assertion.tags.some(tag => tag.name === 'example') ? ['Representation limit: example tags are omitted because this presentation has no qualified account of their meaning. Examples may contain useful assertions; their omission is not evidence of absence.'] : []),
-  ] };
+  const omittedExamples = assertion.tags.some(tag => tag.name === 'example');
+  const omitted = [omittedBlocks ? 'fenced content' : null, omittedExamples ? 'examples' : null].filter(Boolean).join(' and ');
+  return { text, tags: assertion.tags.filter(tag => tag.name !== 'example'), representationLimits: omitted
+    ? [`Representation limit: ${omitted} omitted. Meaning is not established; retained assertions may be incomplete.`] : [] };
 }

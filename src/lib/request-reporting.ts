@@ -1,4 +1,4 @@
-import { diagnosticLines, diagnosticMeaning } from './diagnostic-view.js';
+import { diagnosticLines, withDiagnosticMeanings } from './diagnostic-view.js';
 import { referenceNotice } from './answer-presentation.js';
 import { summarizeWork } from './work-attribution.js';
 import type { InitiationContext, WorkReport } from './work-attribution.js';
@@ -79,11 +79,8 @@ export function renderRequestReport(report: ResolutionReport | UsageReport): str
 }
 
 export function finalizeRequestReport<T extends ResolutionReport | UsageReport>(report: T, usage: InvestigationUsageReport): T {
-  return freezeOwned({ ...report, usage,
-    ...(report.schema === 'postcode-resolution/1-experimental' ? { resolution: { ...report.resolution, guidance: resolutionGuidance,
-      ...(report.resolution.support ? { support: report.resolution.support.map(support => ({ ...support,
-        qualification: support.qualification.map(context => ({ ...context,
-          diagnostics: context.diagnostics.map(diagnostic => ({ ...diagnostic, explanation: diagnosticMeaning(diagnostic) })) })) })) } : {}) } } : {}) });
+  return freezeOwned(withDiagnosticMeanings({ ...report, usage,
+    ...(report.schema === 'postcode-resolution/1-experimental' ? { resolution: { ...report.resolution, guidance: resolutionGuidance } } : {}) }));
 }
 
 /** Both direct and worker-facing boundaries refuse invalid input without evaluating it. */

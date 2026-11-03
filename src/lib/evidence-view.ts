@@ -1,4 +1,3 @@
-import { diagnosticMeaning } from './diagnostic-view.js';
 import type { ProgramRecord, SourceEvidenceRecord } from './records.js';
 
 /** Attribution from fixed captured evidence. Source text remains available to analysis and agents. */
@@ -14,5 +13,5 @@ export function sourceAttribution(source: SourceEvidenceRecord): SourceAttributi
 }
 export function detailRecord(record: ProgramRecord): DetailRecord {
   return record.kind === 'source-evidence' ? sourceAttribution(record)
-    : record.kind === 'claim-context' ? { ...record, diagnostics: record.diagnostics.map(item => ({ ...item, explanation: diagnosticMeaning(item) })) } : record;
+    : record;
 }
