@@ -12,7 +12,7 @@ node _build/src/cli.js modules --project path/to/tsconfig.json --json
 node _build/src/cli.js organization project --project path/to/tsconfig.json
 node _build/src/cli.js organization repository --project path/to/tsconfig.json --json
 node _build/src/cli.js inspect --project path/to/tsconfig.json -- MODULE_HANDLE
-node _build/src/cli.js inspect --project path/to/tsconfig.json --source-detail -- MODULE_HANDLE
+node _build/src/cli.js inspect --project path/to/tsconfig.json --more-details -- MODULE_HANDLE
 node _build/src/cli.js dependencies --project path/to/tsconfig.json
 node _build/src/cli.js children --project path/to/tsconfig.json -- MODULE_HANDLE
 node _build/src/cli.js parents --project path/to/tsconfig.json -- MODULE_HANDLE
@@ -48,13 +48,13 @@ validity. Raw and compact references select the same qualified answer under iden
 effective inputs; request reports preserve the spelling supplied.
 
 Without arguments, the command is `modules` with `./tsconfig.json` and Unicode
-output. `--json` selects the experimental structured presentation. `--source-detail`
+output. `--json` selects the experimental structured presentation. `--more-details`
 supports inspection and dependency views. The retired `--snapshot` and
 `--dependency-context` options are rejected. `--help` performs no analysis.
 
 `--` ends option parsing: subsequent arguments are literal positional values.
 For a module named `--json`, use `inspect --project path/to/tsconfig.json -- --json`.
-Place all options, including `--json` and `--source-detail`, before the marker.
+Place all options, including `--json` and `--more-details`, before the marker.
 One exact selector is still
 required; the marker does not enable multiple selectors.
 
@@ -94,7 +94,7 @@ Within the active shell, use the answer reference displayed by a program View:
 
 ```text
 present @answer-… --json
-present @answer-… --source-detail
+present @answer-… --more-details
 present @answer-… --after @investigram-…
 present @answer-… --revision-page 2
 ```
@@ -108,11 +108,11 @@ is one composite answer; JSON identifies its `associated-inspection` variant and
 precise `mechanical` support. Presenting that support ID alone shows the mechanical
 answer without its association listing.
 
-Omitted choices use normal defaults: the shell's format, no source detail, no
+Omitted choices use normal defaults: the shell's format, no additional detail, no
 association continuation and revision page 1. Choices are never inherited from a
 prior View. Generated continuations preserve every other effective choice, including
 JSON and source disclosure. Structured `continuations` contain complete normalized
-`present` requests with precise targets. Source detail and paging require support
+`present` requests with precise targets. Additional detail and paging require support
 in the retained answer and its compatible Presentation; an unavailable choice
 returns a qualified refusal with the retained answer ID and alias.
 
@@ -144,7 +144,7 @@ existing limits; `present` adds no persistence or post-invalidation access.
 1. List modules.
 2. Choose an exact name or mnemonic handle.
 3. Run `inspect NAME_OR_HANDLE --project path/to/tsconfig.json`.
-4. Add `--source-detail` before `--` when source evidence is needed.
+4. Add `--more-details` before `--` when additional qualification or implementation attribution is needed.
 
 ## Inventory and inspection
 
@@ -172,7 +172,7 @@ subgroups remain reachable in the project view even when descent is pruned.
 ```sh
 node _build/src/cli.js organization project --project path/to/tsconfig.json --json
 node _build/src/cli.js inspect --project path/to/tsconfig.json -- GROUP_NAME
-node _build/src/cli.js inspect --project path/to/tsconfig.json --source-detail -- GROUP_NAME
+node _build/src/cli.js inspect --project path/to/tsconfig.json --more-details -- GROUP_NAME
 ```
 
 Replace `GROUP_NAME` with an exact group segment name. Inspect a documented
@@ -217,14 +217,14 @@ JSON retains the full selected graph and direct relationships. Its adjacent
 group summaries have `detail: "not-requested"`; their empty detail arrays are not
 claims of absent relationships. Group inspection lists all direct relationships
 and uses aggregate counts for other artifacts. Ordinary output includes names,
-IDs and qualifications; link mechanics and repository paths require source detail.
+IDs and qualifications; link mechanics and repository paths require additional detail.
 
 Organization and group views use `postcode-organization-view/1-experimental`.
 Module-only inspections retain `postcode-view/1-experimental`. Mixed inspection
 embeds the existing qualified module view in `moduleDetail`. Both are experimental
 schemas; observation records retain the exact view and rendered output.
 
-Group source detail identifies the absolute repository root and group paths,
+Group additional detail identifies the absolute repository root and group paths,
 repository-relative artifact paths, artifact kinds, and qualified link evidence.
 Link evidence includes incoming links that establish the group's parents;
 the artifact list retains only artifacts placed directly in the inspected group.
@@ -330,20 +330,28 @@ assertion, character and tag omissions locally, without repeating an aggregate
 item that could imply all module documentation was absent.
 Unicode wraps documentation to 88-character lines including its indentation; the
 stored assertion remains unchanged. Each Unicode assertion has at most eight
-wrapped content lines shared by prose and tags, excluding labels and omission
-notices. Additional characters/tags omitted by this height bound are counted.
+wrapped content lines shared by prose, tags and representation-limit notices,
+excluding labels and numeric omission notices. Representation limits follow the
+retained assertion and reserve space within that budget. Additional characters/tags omitted by this height bound are counted.
 JSON inspection retains up to 2,000 prose characters and 20 tags per assertion,
 with up to 300 characters per tag.
 
 ## Supported TypeScript population and qualifications
 
-The population is external-module SourceFiles and visible named ambient-module
-symbols in the selected configured TypeScript Program. It includes reached
-external declarations; global scripts are not modules. Other compiler module
+The population covers configured files treated as separate modules and visible
+named modules described by declarations, including interfaces to external
+implementations. Files treated as shared global code are not counted as modules.
+The analyzer calls these external-module SourceFiles and named ambient-module symbols. Other compiler module
 categories and other project configurations are not established by this lens.
 
 TypeScript analysis establishes qualified module/export information; it does not
 execute target code or run unrelated semantic checks merely to collect diagnostics.
+Unicode diagnostic summaries show at most five codes and three distinct occurrences
+per code, with meaning once per code and explicit omitted-code/occurrence counts.
+Investigram support inspection uses the same bounds and explanations instead of
+embedding raw diagnostic arrays in Unicode support records.
+JSON retains complete messages and locations in qualification contexts and a shared
+`diagnosticMeanings` table per View or resolution report.
 Encountered diagnostics and unresolved or unsupported analysis paths qualify
 affected results. Inputs are memoized as first observed, not captured atomically.
 
@@ -358,32 +366,63 @@ path. A value role requires a reachable route without a type-only step.
 Ordinary local provenance may be suppressed; meaningful exceptions remain visible
 in inspection.
 
-## Source detail and observations
+<a id="source-detail-and-observations"></a>
+## More details and observations
 
-`--source-detail` is an explicit escape from conceptual information. It displays
-locations and bounded excerpts supporting selected, displayed claims, grouped by
-module and then export, with defining/forwarding source and documentation beneath
-each item. This section precedes qualifications and run limitations.
-Ranges use one-based lines and UTF-16 columns, with exclusive ends. Excerpts
-retain at most four source lines and 300 Unicode characters per evidence span;
-omitted characters are counted. Wrapped
-source lines use `↪` in Unicode. File-level module associations are labeled and
-have no excerpt. Full claim record keys remain in JSON.
+`--more-details` shows additional qualified information and captured attribution,
+grouped by module and export where applicable. It retains implementation names,
+locations, forwarding/definition distinctions, documentation attribution, dependency
+request specifiers and resolution status, and organization metadata. It displays no
+programming-language excerpts or declaration text in either Unicode or JSON.
+`--source-detail` is rejected with guidance to use `--more-details`.
 
-Evidence comes from already captured compiler inputs; rendering never rereads the
-filesystem. Narrow variable, binding and import/export-specifier spans expand to
-their enclosing declaration statement so the snippet includes meaningful syntax.
-Forwarding statements and semantic-symbol definitions remain distinct; shared
-export/symbol spans are shown once within each export. Excerpts remain bounded,
-so they support investigation without replacing the qualified compiler claim.
-This is not full-file rendering or arbitrary source browsing. A source-escape
-event is recorded only when source detail is actually presented. The request
-still records `--source-detail` for empty or unsupported selections. Each event
-identifies the disclosure family and its actual forms (`sourceForms`: locations,
-excerpts or both); locations alone count, but an empty source-detail container,
-evidence IDs and omission counts do not. Human and JSON output are assessed
-separately: for example, organization JSON includes its captured repository root
-even for a missing selection, while human output omits that field.
+This section keeps the existing placement and display bounds. Locations use one-based
+lines and UTF-16 columns, with exclusive ends; references and digests remain available.
+A location is attribution, not an architectural explanation. Presentation consumes
+fixed captured support without rereading files, refreshing selection or interpreting
+source. Captured source remains available to analyses and investigators.
+
+Version-four observations distinguish `additional-detail-requested`,
+`attribution-disclosed`, explicit `representation-limited` disclosures, and
+`inadequacy-reported`. Detail access does not imply failure or human dissatisfaction.
+Actual-exposure classification still distinguishes locations and excerpts, and records
+`source-displayed` if a nonconforming excerpt-bearing payload occurs. It is not a
+semantic adequacy detector. Historical observation meanings are unchanged.
+
+Documentation remains attributed recorded assertion, not established behavior.
+Plain-text fenced blocks and reference tags are preserved within display bounds.
+Other triple-backtick spans (including single-line spans) and example tags remain omitted with explicit representation
+limits: this presentation has no qualified account of their meaning. Those limits
+are distinct from unavailable analysis, and omissions are not evidence of absence.
+Original assertions remain available through machine evidence interfaces.
+The same fence handling applies to retained tag bodies; tag omission counts include
+filtered characters as well as characters omitted by display bounds.
+
+### Inadequacy feedback
+
+`feedback [optional explanation] [--json]` works in the shell and one-shot CLI.
+It requires neither an explanation nor a prior result. In the shell it concerns
+the last displayed View, request-resolution result or command failure, including
+an exact retained answer if that was displayed. A failure replaces an older answer
+as the feedback target; its request, stderr and outcome are embedded without a
+fabricated View. The acknowledgment identifies the target command and status.
+An interruption that ends the shell still ends that Session; later one-shot feedback
+is context-free. Usage/help/feedback do not replace that context.
+One-shot feedback opens no project or investigator, accepts no `--project`, and
+records no inferred association to previous work.
+
+The feedback batch includes the available displayed artifact, exact rendered output,
+request, qualification and already supplied context. Missing captured-basis or
+navigation history stays explicit; no store lookup, capture, reconstruction or
+rendering occurs. Consecutive reports keep their target until another result is
+displayed. Feedback does not select, analyze, correct or modify anything.
+Submission occurs at command completion through the existing local sink; delivery
+failure is visible and subsequent shell commands remain usable.
+
+Context-free one-shot batches use `_observations/context-free/YYYY-MM-DD/` with the
+normal time/UUID filename. Their `session` field is an invocation correlation ID,
+not an analysis Session; command order is 1. No analysis-context or View is fabricated.
+Shell feedback without a displayed result also explicitly reports missing context.
 
 Every view-producing CLI invocation submits one self-contained observation batch
 to `_observations/<project-label>-<project-key>/YYYY-MM-DD/HH-mm-ss.sssZ_<batch-uuid>.json`
@@ -391,9 +430,9 @@ in the PostCode checkout. The label comes from the configured project directory,
 and the six-character key hashes its normalized absolute configuration path.
 Repeated sessions share the grouping; different configurations are disambiguated.
 One UTC submission time supplies both date and time. The project-specific destination
-is disclosed on stderr. Refusals and failures use the same project grouping. Format-version-3 batches carry `session` and `command` (1 for one-shot),
+is disclosed on stderr. Refusals and failures use the same project grouping. Format-version-4 batches carry `session` and `command` (1 for one-shot),
 with independent batch/event UUIDs. They contain request/context, the qualified view and exact output;
-they may contain repository-derived text and explicitly requested source detail.
+they may contain repository-derived text and explicitly requested additional detail.
 The request record carries the actual normalized Lens, present or report request, including
 subject designation, true Lens parameters, presentation choices and reference lifetime.
 It is independent of the produced View's descriptor. Current public Lenses declare
@@ -533,7 +572,7 @@ Unicode expands at most 60 components through depth 6 and displays at most 200
 relationships. JSON retains the complete graph and relationships. Unicode shows up
 to 20 supporting occurrences per displayed edge, JSON up to 50. Request results and
 recognition-coverage details are bounded to 20/50 respectively; structure summarizes
-request results unless source detail is requested. Omission counts describe display,
+request results unless additional detail is requested. Omission counts describe display,
 not analysis. Incomplete dependency evaluations retain known components without
 establishing roots or false empty results.
 
@@ -563,13 +602,13 @@ placements. Results may be same-group, into-descendants, outward, varies-by-plac
 or varies-by-occurrence, or remain unestablished. None establishes architectural
 policy. Missing repository organization weakens only the expansion.
 
-`--source-detail` exposes captured occurrence syntax, locations, target-resolution
+`--more-details` exposes written request specifiers, captured locations, target-resolution
 basis and file evidence, recognition outcomes, and organization placement/containment
 support without rereading files. It bounds source evidence to 100 records and
 organization claims to 50, with per-claim occurrence and evidence omissions explicit.
 Ordinary views omit raw syntax and source paths. The experimental schema is
 `postcode-dependency-view/1-experimental`; observations retain its request, outcomes,
-qualifications, display bounds and rendered output. Source escape uses the
+qualifications, display bounds and rendered output. Attribution disclosure uses the
 `dependency-occurrences-and-organization-evidence` level.
 
 Dependency resolution can observe inputs not needed by ordinary inventory.
@@ -581,11 +620,11 @@ Dependency views define organization-relative labels and distinguish their proje
 population from the full discovered population available to exact lookup. Cycle headers
 list members without implying extra pairwise edges. Request and recognition rows use
 view-local `Request N` and `Coverage N` labels; these are not entity selectors. The
-source-detail command exposes captured support for the selected view, prioritizing
+more-details option exposes captured support for the selected view, prioritizing
 non-edge and recognition evidence within its source bound. Module composition badges
 are separated from relationship mechanism labels.
 
-Every one-shot command evaluates current inputs afresh. Explicit source detail
+Every one-shot command evaluates current inputs afresh. Explicit additional detail
 uses evidence captured for that command. Unknown request ownership and known
 ownership omitted from display remain distinct.
 
@@ -705,7 +744,7 @@ and accompanying correction links. Targets and replacements are separately
 selectable. Each correction lists its corrected subjects and its own evidence
 references in human output. Known investigram references supplied to `children`,
 `parents` or `summarize` report an unsupported subject/lens combination without
-generation; an absent reference remains a missing selection. `--source-detail` discloses captured support locations and excerpts and
+generation; an absent reference remains a missing selection. `--more-details` discloses captured support names, locations and metadata and
 records that disclosure. Source sent only to the investigator does not count as
 human source disclosure. Inspection does not generate a missing account or redirect
 to a replacement. Fresh result selection follows explicit replacement chains using acceptance recency, with unresolved conflicts and citation-based reconsideration warnings. Exact inspection and follow-up subjects are never redirected. Use `present @answer-reference --revision-page N` for additional correction and cause details from the selected answer.

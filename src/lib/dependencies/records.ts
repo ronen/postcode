@@ -69,9 +69,9 @@ export type DependencyRecords = DependencyOccurrenceRecord | DependencyCoverageR
 export const dependencyLimitations = [
   'Source requests only: no value-use, emission, loader availability, execution, bundler, or deployment claims.',
   'Only project-owned requests are analyzed; external module interiors are opaque.',
-  'CommonJS coverage is bare require with exactly one argument, complete lexical evidence, and affirmative captured context; aliases, properties and other APIs are excluded.',
-  'Defined ESM format overrides ambient declarations; preserve requires callable ambient corroboration; absent module options do not infer compiler defaults.',
-  'Nonliteral targets are not evaluated; resolved files outside the discovered population do not add modules.',
+  'CommonJS loading requests are recognized only when a direct call names the standard loader with one argument, local naming is fully checked, and the captured module environment supports that loader. Renamed loaders, object methods and other loading APIs are excluded.',
+  'A file explicitly identified as using the ECMAScript module system is not treated as using the CommonJS loader, even if declarations describe that loader. When configuration preserves the written module system, a declaration must additionally establish that the loader can be called. Missing module configuration does not establish a default.',
+  'Computed requested names are not evaluated. A located file outside the discovered module population does not add a module or establish a dependency edge.',
 ] as const;
 
 export interface DependencyGraph {

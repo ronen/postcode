@@ -70,24 +70,24 @@ test('source-owned request results and recognition outcomes are separate and par
   assert.match(text.stdout, /strict organization descendant/);
   assert.ok(view.recognitionCoverage.length > 0);
   assert.ok(view.recognitionCoverage.some(item => item.outcome === 'alternative-binding'));
-  assert.ok(view.limitations.some(text => text.includes('bare require')));
-  for (const key of ['"path":', '"evidence":', '"writtenSpecifier":', '"resolvedFile":', '"excerpt":']) assert.equal(children.stdout.includes(key), false, key);
-  const escaped = await invoke(config, ['children', requests.handle, '--source-detail', '--json']);
-  const source = viewOf(escaped).sourceDetail!;
+  assert.ok(view.limitations.some(text => text.includes('direct call names the standard loader')));
+  for (const key of ['"path":', '"evidence":', '"resolvedFile":', '"excerpt":']) assert.equal(children.stdout.includes(key), false, key);
+  const escaped = await invoke(config, ['children', requests.handle, '--more-details', '--json']);
+  const source = viewOf(escaped).moreDetails!;
   assert.ok(source.items.some(item => item.evidence.dependencyResolution?.status === 'target-indeterminate'));
   assert.ok(source.items.some(item => item.evidence.dependencyResolution?.status === 'unresolved'));
   assert.ok(source.items.some(item => item.role === 'recognition-coverage'));
   assert.ok(source.items.length <= 100);
   assert.ok(source.organizationEvidence.some(item => item.kind === 'repository-region'));
   const batch = escaped.batches[0]!;
-  assert.equal(batch.events[1]!.sourceLevel, 'dependency-occurrences-and-organization-evidence');
+  assert.equal(batch.events.find(item => item.type === 'attribution-disclosed')!.sourceLevel, 'dependency-occurrences-and-organization-evidence');
   assert.equal(batch.records.find(record => record.kind === 'rendered-output')!.value, escaped.stdout);
   const parents = await invoke(config, ['parents', requests.handle]);
   const parentView = viewOf(parents);
   assert.deepEqual(parentView.requestResults, []);
   assert.deepEqual(parentView.recognitionCoverage, []);
   assert.match(parents.stdout, /without an established child cannot be attributed/);
-  assert.match(parents.stdout, /CommonJS coverage/);
+  assert.match(parents.stdout, /CommonJS loading requests are recognized only/);
 });
 
 test('opaque external endpoints render as leaves and never claim an established empty interior', async t => {
@@ -166,7 +166,7 @@ test('component bounds count disconnected omissions and terminal controls stay i
 
 
 test('dependency rendering pluralizes each independent count including omissions', async () => {
-  const original = viewOf(await invoke(path.resolve('fixtures/dependency-journey/tsconfig.json'), ['dependencies', '--source-detail']));
+  const original = viewOf(await invoke(path.resolve('fixtures/dependency-journey/tsconfig.json'), ['dependencies', '--more-details']));
   for (const count of [0, 1, 2]) {
     const view: QualifiedDependencyView = { ...original,
       summary: { ...original.summary, modules: count, relationships: 2 - count,
@@ -174,7 +174,7 @@ test('dependency rendering pluralizes each independent count including omissions
       display: { ...original.display, omittedModules: count, omittedRelationships: 2 - count,
         prunedComponents: count, omittedOccurrences: count, omittedRequestResults: count,
         omittedCoverageOutcomes: count },
-      sourceDetail: { ...original.sourceDetail!, omittedEvidence: count, omittedOrganizationClaims: count },
+      moreDetails: { ...original.moreDetails!, omittedEvidence: count, omittedOrganizationClaims: count },
     };
     const text = renderDependencyView(view);
     const suffix = count === 1 ? '' : 's';

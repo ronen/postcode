@@ -324,7 +324,7 @@ test('captured request evidence survives later edits and dependency method versi
     const session = result.store.get(result.evaluation.session);
     assert.equal(session.kind, 'session');
     if (session.kind !== 'session') throw new Error('Expected session');
-    assert.ok(session.methods.includes('postcode/typescript-dependencies@2'));
+    assert.ok(session.methods.includes('postcode/typescript-dependencies@3'));
     assert.ok(session.methods.includes('postcode/evaluate-dependencies@2'));
   });
 });
@@ -382,7 +382,8 @@ test('relationship diagnostics count source diagnostics once without collapsing 
       const context = result.store.get(record.context);
       assert.equal(context.kind, 'claim-context');
       if (context.kind !== 'claim-context') throw new Error('Expected context');
-      assert.deepEqual(context.diagnostics, expected);
+      assert.ok(context.diagnostics.every(item => item.message && item.path && item.line && item.column));
+      assert.deepEqual(context.diagnostics.map(({ code, category }) => ({ code, category })), expected);
     }
     assert.equal(result.evaluation.execution, 'completed');
     assert.equal(result.evaluation.materialization, 'full');
@@ -418,12 +419,14 @@ test('merged module relationships retain distinct diagnostics across files witho
       const context = result.store.get(occurrence.context);
       assert.equal(context.kind, 'claim-context');
       if (context.kind !== 'claim-context') throw new Error('Expected context');
-      assert.deepEqual(context.diagnostics, [{ code: 1109, category: 'error' }]);
+      assert.ok(context.diagnostics.every(item => item.message && item.path && item.line && item.column));
+      assert.deepEqual(context.diagnostics.map(({ code, category }) => ({ code, category })), [{ code: 1109, category: 'error' }]);
     }
     const context = result.store.get(relationship.context);
     assert.equal(context.kind, 'claim-context');
     if (context.kind !== 'claim-context') throw new Error('Expected context');
-    assert.deepEqual(context.diagnostics, [
+    assert.ok(context.diagnostics.every(item => item.message && item.path && item.line && item.column));
+      assert.deepEqual(context.diagnostics.map(({ code, category }) => ({ code, category })), [
       { code: 1109, category: 'error' }, { code: 1109, category: 'error' },
     ]);
     assert.equal(result.evaluation.execution, 'completed');

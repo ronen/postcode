@@ -1,0 +1,14 @@
+Module summary
+Fresh answer selection
+Answer: @answer-f56dcba6 · session:56b5a813-64ea-4ada-a40a-77b52fda0fa6:investigation-selection-projection:f56dcba6512438a423dc0a07d3aa5a14eaa525377a65e65ac2aaca9a7608f07c
+Answer, subject and supporting references remain bound for this Session.
+New investigation request.
+configuration-unavailable (invalid_grant): ChatGPT authorization has expired or was revoked. Run PostCode sign-in in your terminal.
+Selection: selected (1 matches).
+Module @module-ef1e10b3: catalog
+Attempt session:56b5a813-64ea-4ada-a40a-77b52fda0fa6:investigation-attempt:c5e1bb619e11dc347c09b96364e7d7fcb7e391b3e91a7453949324f842b6466a (configuration-unavailable) reported usage: 1 calls; 1 unknown; 0 anomalous.
+Session reported usage: 1 calls; 1 unknown; 0 anomalous.
+Generated accounts remain interpretation. Corrections are retained assertions, not established truth.
+Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.
+Reported usage is not confirmed billed usage. Synthetic usage is test data, separate from provider usage. Categories with includedIn are subsets, not additional usage.
+ChatGPT plan usage shares the provider allowance; optional purchased credits apply only under the user’s provider settings. Token reports do not establish actual credit charges; monetary attribution is unavailable, not zero. Controls: https://chatgpt.com/settings/usage

@@ -1,4 +1,4 @@
-import { diagnosticLookup } from './diagnostics.js';
+import { diagnosticLookup, capturedDiagnostic } from './diagnostics.js';
 import ts from 'typescript';
 import { identityReference, methods, recordId } from '../identity.js';
 import type { DiscoveryResult } from '../evaluation.js';
@@ -17,7 +17,7 @@ export function prepareComposition(program: ts.Program, modules: readonly Expans
       else supported = false;
     }
     const relevant = diagnostics(module.declarations.map(node => node.getSourceFile()))
-      .map(diagnostic => ({ code: diagnostic.code, category: ts.DiagnosticCategory[diagnostic.category]!.toLowerCase() }));
+      .map(capturedDiagnostic);
     const substantive = statements.filter(statement => !ts.isEmptyStatement(statement));
     const complete = supported && relevant.length === 0;
     // An empty named re-export (`export {} from './target'`) still has a module
@@ -36,8 +36,8 @@ export function prepareComposition(program: ts.Program, modules: readonly Expans
       records.push({ kind: 'claim-context', id: context, session, method, scope: subject,
         evidence: item.module.declarations.map(node => evidence(node, null)), status: 'mechanically-derived',
         guarantee: 'Composition tests every substantive top-level statement across all captured module declarations.',
-        limitations: ['Only comments and EmptyStatement syntax are ignored. No barrel, facade, API, purity, safe-collapse, or transitive-side-effect claim.',
-          ...(!item.complete ? ['Syntax diagnostics or unsupported declaration shape prevent complete composition evaluation.'] : [])],
+        limitations: ['This assessment ignores comments and empty statements (instructions that do nothing). It does not establish an architectural facade or public interface, absence of effects, safe removal of a module boundary, or effects of indirectly used modules.',
+          ...(!item.complete ? ['Malformed code or a program structure this analyzer does not recognize prevents a complete account of the module’s composition.'] : [])],
         diagnostics: item.diagnostics });
       if (item.positive) records.push({ kind: 'claim', id: claim, session, method, subject, context,
         information: { type: 'module-composition', property: 're-exports-only' } });

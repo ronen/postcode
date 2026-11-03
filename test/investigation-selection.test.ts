@@ -350,7 +350,7 @@ test('interpretation support display follows retained-selection meaning instead 
   const result = f.publish([{ name: 'A', evidence: [f.id('module-claim-0')] }], [], { supplied: [f.id('module-claim-0')] });
   for (const projection of [f.select(result), f.historical('A')]) {
     const content = resolveInvestigationContent(f.store, projection);
-    const { view } = arrangeInvestigationView(content, { title: 'Qualified accounts', presentation: { format: 'unicode', sourceDetail: false } },
+    const { view } = arrangeInvestigationView(content, { title: 'Qualified accounts', presentation: { format: 'unicode', moreDetails: false } },
       projection.variant === 'request' ? { reused: false, attempt: result.attempt } : null,
       usageSummary([]), referenceBinding(f.store, f.session, content.references));
     assert.ok(view.support.length);
@@ -374,7 +374,7 @@ test('arrangement is self-contained, preserves bounded disclosure and distinguis
     calls.push({ ids, kind });
     return new Map(ids.map(id => [id, (kind === 'investigram' ? spellings : modules).get(id)!]));
   } };
-  const options = { title: 'Investigation test', presentation: { format: 'json' as const, sourceDetail: false } };
+  const options = { title: 'Investigation test', presentation: { format: 'json' as const, moreDetails: false } };
   const report = { reused: false, attempt: result.attempt };
   const usage = usageSummary([]);
   const plain = arrangeInvestigationView(content, options, report, usage, bindings);
@@ -387,8 +387,8 @@ test('arrangement is self-contained, preserves bounded disclosure and distinguis
   assert.notEqual(fresh.view.id, retained.view.id);
   assert.deepEqual({ ...fresh.view, id: retained.view.id, selectionMode: 'retained' }, retained.view);
   const variants = [
-    { ...options, presentation: { format: 'unicode' as const, sourceDetail: false } },
-    { ...options, presentation: { format: 'json' as const, sourceDetail: true } },
+    { ...options, presentation: { format: 'unicode' as const, moreDetails: false } },
+    { ...options, presentation: { format: 'json' as const, moreDetails: true } },
     { ...options, revisionPage: 99 }, { ...options, after: 'unknown' }, { ...options, after: 'another-unknown' },
     { ...options, referenceLifetime: 'command' as const },
   ].map(options => arrangeInvestigationView(content, options, report, usage, bindings));
@@ -396,7 +396,7 @@ test('arrangement is self-contained, preserves bounded disclosure and distinguis
   assert.equal(new Set([plain, ...variants].map(item => item.view.id)).size, 7);
   assert.equal(arrangeInvestigationView(content, { ...options, revisionPage: 1 }, report, usage, bindings).view.id, plain.view.id);
   const source = variants[1]!.view;
-  assert.ok(sourceDisclosure(source)); assert.equal(source.sourceDetail!.items.length, 1);
+  assert.ok(sourceDisclosure(source)); assert.equal(source.moreDetails!.items.length, 1);
   assert.equal(renderInvestigationView(JSON.parse(JSON.stringify(source))), renderInvestigationView(source));
   assert.deepEqual(finalizeInvestigationUsage(plain.view, usage, plain.investigationArrangementKey), plain.view);
   const changed = finalizeInvestigationUsage(plain.view, { ...usage, missingCalls: 2 }, plain.investigationArrangementKey);
@@ -418,7 +418,7 @@ test('association continuation identity uses precise selected matches in both Vi
   const f = fixture(), { store, module, id } = f;
   f.publish([{ name: 'A' }, { name: 'associated', associations: [id('A'), module] }]);
   const content = resolveInvestigationContent(store, f.historical('A'));
-  const options = { title: 'Investigation test', presentation: { format: 'json' as const, sourceDetail: false } };
+  const options = { title: 'Investigation test', presentation: { format: 'json' as const, moreDetails: false } };
   const bindings = (spelling: string) => ({ bind(ids: readonly RecordId[]) { return new Map(ids.map(id => [id, id === f.id('associated') ? spelling : `ref-${id}`])); } });
   const first = arrangeInvestigationView(content, { ...options, after: 'short' }, null, usageSummary([]), bindings('short'));
   const second = arrangeInvestigationView(content, { ...options, after: 'longer' }, null, usageSummary([]), bindings('longer'));
@@ -438,7 +438,7 @@ test('association continuation identity uses precise selected matches in both Vi
 test('exact investigram inspection retains its contextual heading and explicit title overrides', () => {
   const f = fixture();
   f.publish([{ name: 'A' }]);
-  const request = { lens: 'inspect', presentation: { format: 'unicode' as const, sourceDetail: false } };
+  const request = { lens: 'inspect', presentation: { format: 'unicode' as const, moreDetails: false } };
   const { view } = createInvestigationView(f.store, f.session, request, [f.id('A')], null, usageSummary([]));
   assert.equal(view.title, 'Inspect · investigram');
   assert.equal(renderInvestigationView(view).split('\n')[0], 'Inspect · investigram');
@@ -471,7 +471,7 @@ test('exact retained presentation keeps combined pages and frozen correction/ass
   assert.notEqual(newer.id, frozen.id);
   const catalog = captureCatalog(defaultCatalog), usage = usageSummary([]);
   const work = { check() {}, record() {} };
-  const run = (target: string, presentation: { format: 'json' | 'unicode'; sourceDetail: boolean; after?: string; revisionPage?: number }, referenceLifetime: 'session' | 'command' = 'session') => {
+  const run = (target: string, presentation: { format: 'json' | 'unicode'; moreDetails: boolean; after?: string; revisionPage?: number }, referenceLifetime: 'session' | 'command' = 'session') => {
     const result = presentRetained(store, session, { kind: 'present', target, presentation, referenceLifetime }, catalog, usage, work);
     assert.equal(result.kind, 'view');
     assert.equal(result.view.schema, 'postcode-investigation-view/1-experimental');
@@ -479,14 +479,14 @@ test('exact retained presentation keeps combined pages and frozen correction/ass
   };
   for (const method of ['put', 'investigations', 'evaluations', 'boundEntity'] as const) t.mock.method(store, method, () => { throw new Error(`Exact presentation called ${method}`); });
   assert.deepEqual(resolveRetainedContent({ get: store.get.bind(store), lookup: () => { throw new Error('No lookup'); } }, frozen), content);
-  const retainedOperation = run(operation.id, { format: 'json', sourceDetail: true, revisionPage: 1 });
+  const retainedOperation = run(operation.id, { format: 'json', moreDetails: true, revisionPage: 1 });
   assert.equal(retainedOperation.view.projection.id, operation.id);
   assert.deepEqual(retainedOperation.view.accounts.map(item => item.id), [id('root'), id('short')]);
   assert.ok(retainedOperation.view.revisions.every(item => !item.superseded));
   assert.equal(retainedOperation.view.result, null); assert.equal(retainedOperation.view.outcome?.kind, 'accepted');
   assert.equal(sourceDisclosure(retainedOperation.view)?.level, 'investigation-support');
   for (const format of ['json', 'unicode'] as const) {
-    const options = { format, sourceDetail: true, after, revisionPage: 2 };
+    const options = { format, moreDetails: true, after, revisionPage: 2 };
     const old = run(frozen.id, options);
     assert.equal(old.failed, false);
     assert.equal(old.view.investigations!.total, 50);
@@ -521,7 +521,7 @@ test('exact retained presentation keeps combined pages and frozen correction/ass
     assert.equal(revision.qualification, 'unknown-continuation');
     assert.equal(revision.request.presentation.after, unknown);
     assert.equal(run(revision.request.target, revision.request.presentation).failed, true);
-    assert.deepEqual(restart.request.presentation, { format, sourceDetail: true, revisionPage: 2 });
+    assert.deepEqual(restart.request.presentation, { format, moreDetails: true, revisionPage: 2 });
     const restarted = run(restart.request.target, restart.request.presentation);
     assert.equal(restarted.failed, false); assert.equal(restarted.view.investigations!.items.length, 24);
     if (format === 'unicode') {
@@ -529,12 +529,12 @@ test('exact retained presentation keeps combined pages and frozen correction/ass
       assert.equal((invalid.rendered.match(/Continue revision details for this answer/g) ?? []).length, 1);
     }
   }
-  const oneShot = run(frozen.id, { format: 'unicode', sourceDetail: true, after, revisionPage: 2 }, 'command');
+  const oneShot = run(frozen.id, { format: 'unicode', moreDetails: true, after, revisionPage: 2 }, 'command');
   assert.deepEqual(oneShot.view.continuations, []); assert.doesNotMatch(oneShot.rendered, /present @answer-/);
   assert.match(oneShot.rendered, /Open postcode shell, request the information there/);
-  const defaulted = run(frozen.id, { format: 'json', sourceDetail: false });
+  const defaulted = run(frozen.id, { format: 'json', moreDetails: false });
   assert.equal(defaulted.view.investigations!.after, null);
-  assert.equal(defaulted.view.revisions[0]!.page, 1); assert.equal(defaulted.view.sourceDetail, undefined);
+  assert.equal(defaulted.view.revisions[0]!.page, 1); assert.equal(defaulted.view.moreDetails, undefined);
   assert.equal(frozen.subjects[0], id('root')); assert.equal(initial.request.subject, module);
 });
 
@@ -571,7 +571,7 @@ test('an empty composite remains empty after later associations and refuses thei
   const frozen = selectAssociatedInspection(f.store, mechanical.id, [f.module]);
   const catalog = captureCatalog({ ...defaultCatalog, presentations: defaultCatalog.presentations!.map(item =>
     item.contract === 'modules' ? { ...item, requirements: { modules: [], groups: [] } } : item) });
-  const request = { kind: 'present' as const, target: frozen.id, presentation: { format: 'json' as const, sourceDetail: false }, referenceLifetime: 'session' as const };
+  const request = { kind: 'present' as const, target: frozen.id, presentation: { format: 'json' as const, moreDetails: false }, referenceLifetime: 'session' as const };
   const run = (after?: string) => presentRetained(f.store, f.session,
     { ...request, presentation: { ...request.presentation, ...(after ? { after } : {}) } }, catalog, usageSummary([]), { check() {}, record() {} });
   const before = run(); assert.equal(before.kind, 'view');
@@ -600,7 +600,7 @@ test('retained off-page support can claim a new subject prefix without changing 
   const old = f.store.entityIds([f.module], 'module').get(f.module)!;
   assert.equal(f.store.boundEntity(session, 'investigram-12345678'), undefined);
   const result = presentRetained(f.store, session,
-    { kind: 'present', target: frozen.id, presentation: { format: 'json', sourceDetail: false }, referenceLifetime: 'session' },
+    { kind: 'present', target: frozen.id, presentation: { format: 'json', moreDetails: false }, referenceLifetime: 'session' },
     captureCatalog(defaultCatalog), usageSummary([]), { check() {}, record() {} });
   assert.equal(result.kind, 'view'); assert.equal(result.view.schema, 'postcode-investigation-view/1-experimental');
   assert.ok(result.view.omittedAccounts.includes(offPage));

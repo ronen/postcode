@@ -15,7 +15,7 @@ import { identityReference, recordId } from '../src/lib/identity.js';
 import type { EvaluationRecord, ProjectionRecord } from '../src/lib/records.js';
 
 const configPath = path.resolve('fixtures/dependency-journey/tsconfig.json');
-const presentation = { format: 'json' as const, sourceDetail: false };
+const presentation = { format: 'json' as const, moreDetails: false };
 
 test('mechanical names and references share answers while exposed resolution changes View identity', async t => {
   const opened = await openSession({ configPath });

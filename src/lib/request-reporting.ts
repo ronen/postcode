@@ -1,3 +1,4 @@
+import { diagnosticLines, withDiagnosticMeanings } from './diagnostic-view.js';
 import { referenceNotice } from './answer-presentation.js';
 import { summarizeWork } from './work-attribution.js';
 import type { InitiationContext, WorkReport } from './work-attribution.js';
@@ -17,12 +18,14 @@ export interface RequestContext extends InitiationContext {
 export interface ResolutionInformation {
   readonly reason: 'unknown-answer' | 'foreign-answer' | 'unsupported-answer' | 'presentation-unavailable' | 'invalid-parameters' | 'invalid-designation' | 'invalid-report-inputs' | 'invalid-request' | Exclude<SubjectResolution['status'], 'resolved'>;
   readonly explanation: string;
+  readonly guidance?: string;
   readonly candidates: readonly { readonly id: RecordId; readonly kind: 'module' | 'group' | 'investigram'; readonly reference: string }[];
   readonly criteria: readonly string[];
   readonly qualifications: readonly string[];
   readonly prerequisites: readonly RecordId[];
   readonly retainedAnswers: readonly { readonly id: RecordId; readonly reference: string }[];
   readonly support?: readonly LookupSupport[];
+  readonly representationLimits?: readonly string[];
 }
 export interface ResolutionReport {
   readonly schema: 'postcode-resolution/1-experimental';
@@ -40,6 +43,8 @@ export interface UsageReport {
   readonly usage: InvestigationUsageReport;
   readonly attribution?: WorkReport;
 }
+
+const resolutionGuidance = 'No answer was produced for this request. Use a listed candidate or a supported designation; ask a coding agent to resolve reported project problems before retrying.';
 
 /** Reports carry occurrence context; they have no program answer or content identity. */
 export function renderRequestReport(report: ResolutionReport | UsageReport): string {
@@ -64,6 +69,8 @@ export function renderRequestReport(report: ResolutionReport | UsageReport): str
       return `${kind === 'module' ? 'Modules' : 'Groups'}: ${state}; ${matches ? `${matches} ${matches === 1 ? 'match' : 'matches'}` : established ? 'no match' : 'no match established'}${support.reason ? `; ${inlineText(support.reason)}` : ''}`;
     }),
     ...report.resolution.qualifications.map(inlineText),
+    ...diagnosticLines((report.resolution.support ?? []).flatMap(support => support.qualification)),
+    report.resolution.guidance ?? resolutionGuidance,
     ...report.resolution.retainedAnswers.map(answer => `Retained answer: @${inlineText(answer.reference)} · ${inlineText(answer.id)}`),
     ...(report.resolution.retainedAnswers.length ? [report.context.request.referenceLifetime === 'command' ? 'All references expire when this command ends. Open postcode shell, request the information there, then use that new Session’s answer reference.' : 'Use present @answer-reference with compatible presentation choices in this Session.'] : []),
     ...(report.resolution.candidates.length ? [report.context.request.referenceLifetime === 'command'
@@ -72,7 +79,8 @@ export function renderRequestReport(report: ResolutionReport | UsageReport): str
 }
 
 export function finalizeRequestReport<T extends ResolutionReport | UsageReport>(report: T, usage: InvestigationUsageReport): T {
-  return freezeOwned({ ...report, usage });
+  return freezeOwned(withDiagnosticMeanings({ ...report, usage,
+    ...(report.schema === 'postcode-resolution/1-experimental' ? { resolution: { ...report.resolution, guidance: resolutionGuidance } } : {}) }));
 }
 
 /** Both direct and worker-facing boundaries refuse invalid input without evaluating it. */
@@ -85,6 +93,9 @@ export function rejectedRequestResult(session: SessionId, context: RequestContex
       qualifications: context.request.problems.map(problem => `${problem.field}: ${problem.reason} ${problem.representation === 'preserved'
         ? 'The supplied value is preserved as rejected input.' : problem.representation === 'absent'
           ? 'No value was supplied.' : `Representation limit: ${problem.omittedField ?? problem.field} is omitted from the report.`}`),
+      representationLimits: context.request.problems.filter(problem => problem.representation === 'omitted')
+        .map(problem => `Representation limit: ${problem.omittedField ?? problem.field} is omitted from the report.`),
       prerequisites: [], retainedAnswers: [] } });
-  return { kind: 'resolution' as const, context, report, rendered: renderRequestReport(report), failed: true };
+  const presented = finalizeRequestReport(report, usage);
+  return { kind: 'resolution' as const, context, report: presented, rendered: renderRequestReport(presented), failed: true };
 }

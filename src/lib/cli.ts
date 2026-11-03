@@ -1,3 +1,5 @@
+import { randomUUID } from 'node:crypto';
+import { publishFeedback } from './feedback.js';
 import { runAuthentication } from './investigation/openai/auth-command.js';
 import type { ChatGPTCredentials } from './investigation/openai/chatgpt-credentials.js';
 import type { InvestigationRequest, InvestigatorAgent } from './investigation/contracts.js';
@@ -37,6 +39,12 @@ export async function runCli(args: readonly string[], environment: CliEnvironmen
   if (parsed.kind === 'help') { environment.stdout(help); return 0; }
   if (parsed.kind === 'error') { environment.stderr(parsed.message); return 2; }
   if (parsed.kind === 'exit') return 0;
+  if (parsed.kind === 'feedback') {
+    const local = localFileObservationSink(path.resolve(environment.checkout, '_observations'), null);
+    environment.stderr(`Local observations: ${inlineText(local.destination)} (context-free feedback).\n`);
+    await publishFeedback({ correlation: `invocation:${randomUUID()}`, command: 1, explanation: parsed.explanation, json: parsed.json }, environment, environment.sink ?? local);
+    return 0;
+  }
   if (!environment.investigator) {
     const configured = await (environment.configureInvestigator ?? configuredInvestigator)(process.env.POSTCODE_INVESTIGATOR);
     if (configured.kind === 'configuration-unavailable') { environment.stderr(`${configured.diagnostic}\n`); return 2; }

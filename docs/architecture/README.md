@@ -35,7 +35,7 @@ Views include fresh/retained selection mode and reference lifetime in presentati
 
 Coordinating several Projections from an existing Session does not inherently require multi-state support. Input attribution, composition recording, presentation continuity and interface compatibility must be addressed for that capability; additional captures require their own state, identity and session-scope decisions.
 
-Current observation batches retain the presented View, rendered output, session identifier, configured paths and method names, but do not generally export the captured program-state basis associated with the Projection. For example, ordinary module inventory omits the retained analysis-input support; source-detail output can include individual evidence digests without establishing a complete captured-state association. Retained core support and exported observation provenance are different guarantees. This is a [known current recording gap](../decisions/coordinated-views-and-qualified-results.md#current-observation-provenance-gap), not only a future multi-state requirement.
+Current observation batches retain the presented View, rendered output, session identifier, configured paths and method names, but do not generally export the captured program-state basis associated with the Projection. For example, ordinary module inventory omits the retained analysis-input support; additional-detail output can include individual evidence digests without establishing a complete captured-state association. Retained core support and exported observation provenance are different guarantees. This is a [known current recording gap](../decisions/coordinated-views-and-qualified-results.md#current-observation-provenance-gap), not only a future multi-state requirement.
 
 Recorded output remains evidence of what PostCode displayed, but observations do not generally establish the captured program basis supporting it. Correction is explicitly deferred and does not block architectural adoption or interface exploration; it must precede reliance on newly collected observations for assessments requiring attribution to a particular program state. The bounded follow-up concerns adequate basis identification, not full investigation reproducibility or a durable analysis store or repository archive. Neither a commit hash alone nor references into a discarded store can be assumed sufficient.
 
@@ -67,7 +67,7 @@ Projection or reusable operation identity.
 
 The worker result distinguishes a program View, a subjectless usage report and a
 request-resolution report. The parent finalizes reports using its authoritative
-usage ledger. Publication uses the actual normalized request for version-three
+usage ledger. Publication uses the actual normalized request for version-four
 observations, including follow-ups, and emits a View event only for a program
 View. Input checks and observation-delivery warnings apply to every alternative.
 Subject resolution consumes qualified module/group populations and the Lens's
@@ -165,7 +165,7 @@ family compositions; their resolved content is validated at arrangement boundari
 Shared arrangements do not infer layout, detail, direction or coverage from a Lens
 name. Module and organization content already identifies population versus selected
 subjects; each family's fixed Presentation owns the corresponding table/tree or card
-layout, bounds and source-detail policy. Compatible qualified content can carry another
+layout, bounds and additional-detail policy. Compatible qualified content can carry another
 question identity through those same arrangements. Coordination supplies the question
 label separately from subject scope: module and organization Views retain that label
 in their self-contained payload and identity, while renderers append the scope context.
@@ -456,7 +456,7 @@ contexts, inputs, evidence and complete selected populations. It does not take a
 format or display limit. Coordination binds the established entity populations;
 arrangement receives the resolved content and those bindings without a store
 handle. Arrangement applies export/documentation limits, tree and graph traversal,
-source-detail selection and omission accounting. This eager strategy is specific
+additional-detail selection and omission accounting. This eager strategy is specific
 to these builders; it does not establish a general restriction on qualified lazy
 materialization or presentation pushdown. Omitted exports, assertions, tags and
 text characters remain counted. Rendering receives a qualified view value and cannot query the
@@ -467,14 +467,15 @@ selection. JSON retains the full selected module list and full identities.
 Detailed inspection exposes exports and recorded assertions; shared qualifications
 appear once while exceptional provenance stays local. JSON has an explicitly
 experimental schema. Normal qualifications omit detailed
-source evidence. Explicit inspection source detail groups locations and bounded excerpts by displayed
-modules and their exports, separating forwarding, defining source and documentation.
-It precedes closing qualifications/navigation, retains claim keys in JSON, and
-never renders full-file content. The compiler
-boundary captures ranges and excerpts from already observed input. Presentation does
-not reread files; file-level module associations have no excerpt. Narrow compiler spans may expand
-to their enclosing declaration statement to expose relevant syntax. Unicode
-documentation has a separate height bound; stored assertions remain unchanged.
+source evidence. Explicit inspection detail groups captured names and locations by displayed
+modules and exports, distinguishing forwarding, definitions and documentation.
+The attribution adapter excludes excerpt text before either text or JSON rendering;
+core evidence and machine access retain captured excerpts. Detail remains bounded
+and keeps its placement before closing qualifications and navigation. Dependency
+non-edge requests name their written specifiers independently of excerpt text.
+Documentation preserves qualified prose and reference tags, with explicit limits for
+unrepresented blocks and examples. Shared diagnostic presentation adds problem,
+consequence and next-action descriptions while preserving analyzer messages and locations.
 
 Successful capability states and common module anonymity/facets are consolidated.
 Analysis status, aggregate display omissions, and run limitations remain separate;
@@ -487,31 +488,32 @@ been removed. One selector can match multiple names/handles without choosing one
 
 ## Observations and runtime boundaries
 
-The [observation decisions](../decisions/initial-observation-recording-decisions.md)
-require a separate `ObservationSink`. Observation batches are never inserted into
-`ProgramRecordStore` or read back as program truth. Each batch has format version
-one, a session identifier, a command ordinal (1 for one-shot), and independent
-batch/event/context UUIDs. Request context, repository/configuration/session
-context, qualified view artifact and exact rendered output each appear once in the
-batch, referenced by the view-produced and optional source-escape events. They
-remain interpretable after the ephemeral store is discarded. Command-outcome
-records preserve actual status stderr and supplied requests. Refusals, failures,
-invalidation and interruption can carry command events without view references;
-only actual produced views have view-produced/source-escape events.
+The observation sink remains separate from the program store. Version-four batches
+carry command correlation, actual normalized requests, outcomes, qualified artifacts
+and exact output. They distinguish View production, additional-detail access,
+attribution disclosure, explicit representation limits and subjective inadequacy
+reports. Exposure classification describes what was displayed, not comprehension;
+a nonconforming excerpt-bearing payload remains classifiable as source display.
+Diagnostic provenance paths are classified even outside detail fields and in non-View resolution reports.
+Diagnostic meanings and provenance classification read owned qualification/support
+fields. Preserved rejected request data cannot supply analyzer diagnostics or create
+an attribution-disclosure event merely by containing similarly named fields.
+Representation-limit classification likewise reads only owned documentation,
+support-assertion and resolution fields; preserved request and attribution data
+cannot introduce recognized limits.
+No machine evidence acquisition is recorded as human disclosure merely because the
+investigator received source.
 
-Source-escape events are classified from the bounded source fields rendered by
-each view family and format, independently of the requested `sourceDetail` option.
-The request retains that option even when no source is presented. Empty containers,
-record references and omission counts alone produce no source-escape event.
-Events preserve the disclosure family in `sourceLevel` and identify actual
-`sourceForms` as locations, excerpts or both. Module file associations and
-repository/group/artifact paths count as locations without requiring excerpt text.
-Organization JSON includes a captured repository root even for a missing selection;
-that is actual location disclosure, whereas its human rendering omits that field.
-Dependency organization-support source records are likewise disclosed in JSON but
-not by the human summary of that collection. Embedded module detail is accounted
-for alongside organization paths. This classification follows existing rendered
-content; it neither reads source nor infers disclosure from prose or arbitrary IDs.
+The shell keeps a snapshot of the last published View, resolution result or
+command failure for feedback. Failures replace older results and retain the exact
+stderr, request and outcome; acknowledgments identify the target command/status. It does not keep a general View history. Feedback embeds that snapshot,
+including its exact output and already available request/context records, in its
+own self-contained batch. It does not re-render or consult the Session. Usage,
+help and feedback acknowledgments leave the snapshot unchanged. Missing basis
+and navigation history remain explicit. One-shot feedback bypasses project and
+investigator opening, uses invocation-only correlation and context-free grouping,
+and fabricates no analysis-context record. Both paths submit at command completion;
+sink failure remains visible and does not invalidate investigation results.
 
 The CLI discloses the project-specific sink destination on stderr. New batches
 are grouped by configured project and UTC date under the checkout’s ignored
@@ -526,7 +528,7 @@ fails without a weaker fallback. Acceptance does not promise power-loss durabili
 crashes can leave staging residue. Existing files remain in place, with no
 historical reader, migration or scavenging. These guarantees implement
 [local observation acceptance](../decisions/local-observation-acceptance.md). No remote/shared
-sink or contemporaneous-note command exists. Privacy and exclusion details are in
+sink exists; the bounded inadequacy-feedback command uses this local destination. Privacy and exclusion details are in
 [implementation conventions](../implementation-conventions.md#local-observation-sink).
 
 Expected usage and project-open failures precede view production. Internal defects
@@ -538,7 +540,7 @@ corrections and the human-arranged rereview gate are tracked by the active
 [continuation](../../records/tasks/2026-09-13-module-inventory-review-continuation.md).
 
 Unicode rendering escapes controls at inline value boundaries before assembling
-layout. Documentation and source excerpts use structured wrapping; JSON and domain
+layout. Documentation uses structured wrapping; JSON and domain
 records retain their original text. Re-export traversal guards module/exported-name pairs along each path, permitting
 renamed routes to revisit a module while bounding actual cycles.
 
@@ -637,10 +639,10 @@ for the meaning of `unanalyzed`.
 Module-only inspection reuses the existing qualified module view; mixed matches
 are sectioned by kind and retain that module view as embedded detail.
 
-Group source escape carries captured group/README/artifact paths and qualified
+Group additional detail carries captured group/README/artifact paths and qualified
 link evidence without contents. Source-level mechanics are absent from ordinary
 organization output. Observations accept either view schema and distinguish group
-paths from module locations/excerpts or mixed disclosure. The analysis context's
+paths from module locations or mixed disclosure. The analysis context's
 repository root comes from stored capture rather than a second live lookup.
 
 The representative fixture and focused ephemeral Git projects exercise the full
@@ -687,8 +689,8 @@ decisions. Dependency CLI views now declare composition and repository-layout ex
 materialize bounded Unicode/JSON displays, and use the established observation sink.
 Project SCCs remain separate from opaque leaves drawn from projection relationships.
 Parent views use reusable bounded-coverage disclosure without inventing source-owned
-coverage records. Explicit source detail materializes captured request and organization
-evidence with separate bounds.
+coverage records. Explicit additional detail materializes captured request names, attribution and organization
+metadata with separate bounds.
 
 Ordinary organization analysis remains independent of dependency evaluation.
 Dependency resolution can acquire additional inputs. Its former

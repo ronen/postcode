@@ -1,3 +1,7 @@
+import { diagnosticLines, withDiagnosticMeanings } from '../diagnostic-view.js';
+import { assertionContent } from '../documentation-view.js';
+import { presentQualification } from '../qualification-view.js';
+import { detailRecord } from '../evidence-view.js';
 import { answerIdentity, answerDisplay, answerLines, answerContinuations, continuationLines } from '../answer-presentation.js';
 import type { AnswerContext } from '../answer-presentation.js';
 import { validatePresentationContent, presentationChanges } from '../presentation-contracts.js';
@@ -71,6 +75,8 @@ export function arrangeInvestigationView(content: InvestigationProjectionContent
       ? { ...(reporting.provider ? { provider: reporting.provider } : {}), ...selection.outcome.value } : null,
   } : null;
   const outcome = content.evaluation?.outcome ?? (selection.variant === 'request' && selection.outcome.kind === 'unavailable' ? selection.outcome.value : null);
+  const outcomeGuidance = outcome && outcome.kind !== 'accepted'
+    ? 'This attempt produced no accepted account. Resolve the reported service, configuration or evidence problem before retrying. Retained failed or limit-stopped attempts require a new Session for another investigation; presenting this answer does not retry.' : null;
   const accounts = new Map<RecordId, Investigram>(), corrections = new Map<RecordId, Correction>();
   const provenances = new Map<RecordId, InvestigationProvenance>();
   const roots = selection.roots;
@@ -166,13 +172,13 @@ export function arrangeInvestigationView(content: InvestigationProjectionContent
     const context = record.kind === 'claim' || record.kind === 'recorded-assertion' ? supplied.qualification?.context : null;
     return { id, kind: record.kind, method: record.method, exposures,
       ...(record.kind === 'claim' ? { information: record.information } : {}),
-      ...(record.kind === 'recorded-assertion' ? { assertion: record.text, tags: record.tags, status: record.status } : {}),
-      ...(context?.kind === 'claim-context' ? { qualification: context } : {}),
+      ...(record.kind === 'recorded-assertion' ? { assertion: assertionContent(record), status: record.status } : {}),
+      ...(context?.kind === 'claim-context' ? { qualification: presentQualification(context) } : {}),
       ...(record.kind === 'captured-content' ? { coverage: record.coverage, contentDigest: record.contentDigest, mapping: record.mapping, limitations: record.limitations } : {}),
     };
   });
   const sources = new Map<RecordId, ProgramRecord>();
-  if (request.presentation.sourceDetail) for (const id of support) {
+  if (request.presentation.moreDetails) for (const id of support) {
     for (const source of coreSupport.get(id)!.sources) sources.set(source.id, source);
   }
   // Association allocation stays after the displayed references, module navigation and candidates.
@@ -189,7 +195,7 @@ export function arrangeInvestigationView(content: InvestigationProjectionContent
   const view = finalizeInvestigationUsage({ ...answerDisplay(request), schema: 'postcode-investigation-view/1-experimental' as const, id: projection.id, projection,
     title: request.title, presentation: { ...request.presentation, revisionPage: request.revisionPage ?? 1,
       ...(selection.variant === 'historical-inspection' && request.after !== undefined ? { after: request.after } : {}) }, referenceLifetime: request.referenceLifetime ?? 'session',
-    ...(request.resolution ? { resolution: request.resolution } : {}), result, outcome, selected, candidates, references: [...references].map(([id, reference]) => ({ id, reference })),
+    ...(request.resolution ? { resolution: request.resolution } : {}), result, outcome, outcomeGuidance, selected, candidates, references: [...references].map(([id, reference]) => ({ id, reference })),
     continuations: answerContinuations(projection.id, request, request.presentation, {
       ...(selection.variant === 'historical-inspection' && request.after !== undefined ? { after: request.after } : {}),
       revisionPage: request.revisionPage ?? 1, next: investigations?.next,
@@ -203,7 +209,7 @@ export function arrangeInvestigationView(content: InvestigationProjectionContent
     limitations: ['Generated accounts remain interpretation. Corrections are retained assertions, not established truth.',
       'Primary replacement selection uses acceptance recency, not credibility; conflicts remain unresolved. Exact inspection preserves originals. Needs reconsideration records corrected context exposure, not established error. Inspect replacement or cause references for qualified content; revision pages retain bounded relationship and cause details.',
     ],
-    ...(request.presentation.sourceDetail ? { sourceDetail: { level: 'investigation-support' as const, items: [...sources.values()] } } : {}),
+    ...(request.presentation.moreDetails ? { moreDetails: { level: 'investigation-support' as const, items: [...sources.values()].map(detailRecord) } } : {}),
   }, usage, arrangementKey);
   return { view, investigationArrangementKey: arrangementKey };
 }
@@ -212,7 +218,7 @@ export function finalizeInvestigationUsage<T extends { readonly id: RecordId;
   readonly projection: { readonly id: RecordId; readonly session: SessionId }; readonly usage: InvestigationUsageReport }>(view: T, usage: InvestigationUsageReport, arrangementKey: RecordId): T {
   const session = view.projection.session;
   const id = recordId(session, 'investigation-view', [methods.investigationPresentation, identityReference(session, arrangementKey), usage]);
-  return freezeOwned({ ...view, id, usage });
+  return freezeOwned(withDiagnosticMeanings({ ...view, id, usage }));
 }
 export type InvestigationView = ReturnType<typeof arrangeInvestigationView>['view'];
 export function renderInvestigationView(view: InvestigationView): string {
@@ -226,6 +232,7 @@ export function renderInvestigationView(view: InvestigationView): string {
   }
   const outcome = view.outcome;
   if (outcome && outcome.kind !== 'accepted') lines.push(`${outcome.kind}${'code' in outcome ? ` (${inlineText(outcome.code)})` : ''}: ${inlineText('reason' in outcome ? outcome.reason : outcome.diagnostic)}`);
+  if (view.outcomeGuidance) lines.push(view.outcomeGuidance);
   if (!view.accounts.length) lines.push(`Selection: ${view.projection.selection.status} (${view.projection.selection.matches} matches).`);
   for (const candidate of view.candidates) lines.push(`Module @${candidate.reference}: ${inlineText(candidate.name ?? candidate.handle)}`);
   for (const account of view.accounts) {
@@ -263,10 +270,18 @@ export function renderInvestigationView(view: InvestigationView): string {
     `  Reason: ${inlineText(correction.reason)}`, ...correction.qualifications.map(item => `  Qualification: ${inlineText(item)}`));
   if (view.investigations) lines.push(renderAssociatedInvestigations(view.investigations).trimEnd());
   // Retained-account selections expose their support; operation answers keep it in JSON.
-  if (view.projection.variant !== 'request') for (const support of view.support) lines.push(`  Support (exposure identified by provenance): ${terminalText(JSON.stringify(support))}`);
+  if (view.projection.variant !== 'request') {
+    for (const support of view.support) {
+      const { qualification, ...content } = support;
+      const { diagnostics: _diagnostics, ...qualified } = qualification ?? {};
+      lines.push(`  Support (exposure identified by provenance): ${terminalText(JSON.stringify({ ...content,
+        ...(qualification ? { qualification: qualified } : {}) }))}`);
+    }
+    lines.push(...diagnosticLines(view.support.flatMap(item => item.qualification ? [item.qualification] : []), '  '));
+  }
   // Changes to this section or JSON source fields must stay aligned with
   // src/lib/source-disclosure.ts and test/source-disclosure.test.ts.
-  if (view.sourceDetail) lines.push('\nSource support (captured locations and excerpts):', terminalText(JSON.stringify(view.sourceDetail.items, null, 2)));
+  if (view.moreDetails) lines.push('\nMore details (captured attribution and implementation mappings):', terminalText(JSON.stringify(view.moreDetails.items, null, 2)));
   const attempt = view.usage.attempts.find(item => item.attempt === view.result?.attempt);
   if (attempt) lines.push(...usageLines(usageSummary([attempt]), `Attempt ${attempt.attempt} (${attempt.termination})`));
   lines.push(...usageLines(view.usage, 'Session'));

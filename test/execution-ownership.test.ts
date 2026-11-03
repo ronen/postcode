@@ -17,7 +17,7 @@ import path from 'node:path';
 
 const limits = { gitDeadlineMs: 2000, terminationGraceMs: 30, cleanupDeadlineMs: 500 };
 const request = { cwd: process.cwd(), args: ['--version'] };
-const command = { lens: 'modules' as const, selector: null, presentation: { format: 'json' as const, sourceDetail: false } };
+const command = { lens: 'modules' as const, selector: null, presentation: { format: 'json' as const, moreDetails: false } };
 
 function childHarness() {
   let ready!: () => void;

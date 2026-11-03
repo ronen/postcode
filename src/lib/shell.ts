@@ -1,3 +1,5 @@
+import { publishFeedback } from './feedback.js';
+import type { DisplayedResult } from './feedback.js';
 import { CleanupIncomplete } from './execution-errors.js';
 import path from 'node:path';
 import { createInterface } from 'node:readline';
@@ -52,6 +54,7 @@ export async function runShell(options: { configPath: string; json: boolean }, e
     readline.on('SIGINT', interrupt);
     readline.on('close', () => { inputClosed = true; });
     let command = 0, code = 0;
+    let displayed: DisplayedResult | undefined;
     busy = false;
     prompt();
     // readline's iterator queues accepted lines; EOF does not cancel a running command.
@@ -63,9 +66,11 @@ export async function runShell(options: { configPath: string; json: boolean }, e
       try { parsed = parseCommand(commandWords(line), environment.cwd, true, options.json); }
       catch (error) { parsed = { kind: 'error' as const, message: error instanceof Error ? error.message : 'Usage error.\n' }; }
       if (parsed.kind === 'view') {
-        code = await publishCommand(session, parsed.request, line, options.configPath, command, environment, sink);
+        code = await publishCommand(session, parsed.request, line, options.configPath, command, environment, sink, result => { displayed = result; });
         if (code !== 0 && code !== 3) break;
         code = 0;
+      } else if (parsed.kind === 'feedback') {
+        await publishFeedback({ correlation: session.id, command, explanation: parsed.explanation, json: parsed.json, ...(displayed ? { displayed } : {}) }, environment, sink);
       } else {
         const stderr = parsed.kind === 'error' ? parsed.message : '';
         const stdout = parsed.kind === 'help' ? help : '';

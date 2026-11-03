@@ -32,7 +32,7 @@ for (const partial of [false, true]) {
     assert.equal(opened.status, 'opened');
     session = opened.session;
     const openingMs = performance.now() - started;
-    const request = { lens: 'modules', selector: null, presentation: { format: 'json', sourceDetail: false } };
+    const request = { lens: 'modules', selector: null, presentation: { format: 'json', moreDetails: false } };
     let inventory = await session.execute(request);
     assert.equal(inventory.view.schema, 'postcode-view/1-experimental');
     assert.equal(inventory.view.evaluations.some(item => item.materialization === 'partial'), partial);

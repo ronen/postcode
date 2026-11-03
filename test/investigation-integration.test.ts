@@ -1,3 +1,5 @@
+import { publishCommand } from '../src/lib/command-execution.js';
+import { publishFeedback, type DisplayedResult } from '../src/lib/feedback.js';
 import { finalizeRequestReport } from '../src/lib/request-reporting.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import type { UsageReport } from '../src/lib/request-reporting.js';
@@ -44,7 +46,7 @@ function summaryAgent() {
       return { kind: 'submit', result: { ...draft(input.request.subject, response.selected), children: [draft(input.request.subject, [], 'child')] } }; },
   ]);
 }
-const summary = { lens: 'summarize' as const, selector: 'entry', presentation: { format: 'json' as const, sourceDetail: false } };
+const summary = { lens: 'summarize' as const, selector: 'entry', presentation: { format: 'json' as const, moreDetails: false } };
 function view(executed: import('../src/lib/session-protocol.js').ExecutedRequest): InvestigationView {
   const result = requireView(executed);
   assert.equal(result.view.schema, 'postcode-investigation-view/1-experimental');
@@ -66,7 +68,7 @@ test('operation retention is independent of presentation and exact inspection pr
   assert.equal(first.accounts.length, 2);
   assert.equal(first.usage.calls, 2);
   assert.deepEqual(first.support[0]!.exposures, [{ provenance: first.accounts[0]!.provenance, forms: ['full'] }]);
-  const repeated = view(await f.session.execute({ ...summary, presentation: { ...summary.presentation, format: 'unicode', sourceDetail: false } }));
+  const repeated = view(await f.session.execute({ ...summary, presentation: { ...summary.presentation, format: 'unicode', moreDetails: false } }));
   assert.equal(repeated.result!.reused, true);
   assert.deepEqual(repeated.accounts, first.accounts);
   assert.equal(agent.inputs.length, 1);
@@ -77,9 +79,9 @@ test('operation retention is independent of presentation and exact inspection pr
   assert.notEqual(byReference.id, first.id, 'exposed resolution and reuse reporting affect the View');
   assert.equal(agent.inputs.length, 1);
   const reference = first.references.find(item => item.id === first.accounts[0]!.id)!.reference;
-  const inspected = view(await f.session.execute({ lens: 'inspect', selector: reference, reference: true, presentation: { format: 'json', sourceDetail: true } }));
+  const inspected = view(await f.session.execute({ lens: 'inspect', selector: reference, reference: true, presentation: { format: 'json', moreDetails: true } }));
   assert.deepEqual(inspected.accounts, first.accounts);
-  assert.ok(inspected.sourceDetail!.items.some(item => item.kind === 'source-evidence'));
+  assert.ok(inspected.moreDetails!.items.some(item => item.kind === 'source-evidence'));
   assert.equal(agent.inputs.length, 1);
   const missing = requireResolution(await f.session.execute({ lens: 'inspect', selector: 'investigram-unknown', reference: true, presentation: summary.presentation }));
   assert.equal(missing.resolution.reason, 'unknown-reference');
@@ -125,13 +127,19 @@ test('successive operation evaluations atomically retain corrections and supply 
       assert.ok(prior && 'accounts' in prior);
       assert.equal(prior.accounts[0]!.id, input.request.subject);
       const module = initial.selected[0]!;
-      return { kind: 'submit', result: { ...draft(module), corrections: [{ target: input.request.subject,
+      return { kind: 'submit', result: { ...draft(module), inconsistencies: [{ targets: [input.request.subject],
+        reason: 'The earlier account leaves the returned value ambiguous; this account identifies the constant result.',
+        qualifications: ['This disagreement concerns wording, not an observed execution failure.'], evidence: [input.request.subject] }], corrections: [{ target: input.request.subject,
         correctedSubjects: [module], reason: 'Clarifies the returned value.', qualifications: ['A more precise interpretation.'], evidence: [input.request.subject],
         replacement: { ...draft(module, [], 'replacement'), prose: 'Returns the number seven.' } }] } };
     }]).open();
   } };
   const f = await session(t, agent);
-  initial = view(await f.session.execute(summary));
+  const initialResult = await f.session.execute(summary);
+  initial = view(initialResult);
+  let displayed: DisplayedResult | undefined;
+  await publishCommand({ id: f.session.id, execute: () => initialResult, check() {} }, summary, {}, f.configPath, 1,
+    { stdout() {}, stderr() {} }, { async submit() { return { accepted: true }; } }, snapshot => { displayed = snapshot; });
   const root = initial.accounts[0]!.id;
   const later = await f.session.evaluateInvestigation({ operation: 'clarification', subject: root, parameters: {} });
   assert.equal(later.evaluation!.outcome.kind, 'accepted');
@@ -139,7 +147,7 @@ test('successive operation evaluations atomically retain corrections and supply 
   const inspected = view(await f.session.execute({ lens: 'inspect', selector: reference, reference: true, presentation: summary.presentation }));
   assert.deepEqual(inspected.accounts, initial.accounts, 'retention cannot rewrite an earlier tree');
   assert.equal(inspected.corrections.length, 1);
-  const human = renderInvestigationView({ ...inspected, presentation: { ...inspected.presentation, format: 'unicode', sourceDetail: false } });
+  const human = renderInvestigationView({ ...inspected, presentation: { ...inspected.presentation, format: 'unicode', moreDetails: false } });
   const correctionText = human.slice(human.indexOf('Correction reported by'), human.indexOf('  Support'));
   assert.ok(correctionText.includes(`Corrected subjects: ${initial.selected[0]}`));
   assert.ok(correctionText.includes(`Evidence: ${root}`));
@@ -154,7 +162,26 @@ test('successive operation evaluations atomically retain corrections and supply 
   assert.equal(repeated.display[0]!.original, root);
   assert.deepEqual(initial.accounts.map(item => item.id), [root, ...initial.accounts[0]!.children]);
   assert.notEqual(repeated.projection.id, initial.projection.id);
-  assert.equal(count, 2);
+  for (const format of ['unicode', 'json'] as const) {
+    const exact = requireView(await f.session.execute({ kind: 'present', target: inspected.projection.id, presentation: { format, moreDetails: true } }));
+    assert.match(exact.rendered, /Clarifies the returned value/);
+    assert.match(exact.rendered, /A more precise interpretation/);
+    const reporter = view(await f.session.execute({ kind: 'present', target: repeated.projection.id, presentation: { format, moreDetails: false } }));
+    const rendered = renderInvestigationView(reporter);
+    assert.match(rendered, /earlier account leaves the returned value ambiguous/);
+    assert.match(rendered, /wording, not an observed execution failure/);
+    assert.deepEqual(reporter.accounts, repeated.accounts, 'rendering cannot rewrite retained interpretation');
+  }
+  assert.ok(displayed);
+  await publishFeedback({ correlation: f.session.id, command: 2, explanation: null, json: false, displayed },
+    { stdout() {}, stderr() {} }, { async submit(batch) {
+      const feedback = batch.records.find(item => item.kind === 'inadequacy-feedback')!.value as { displayed: DisplayedResult };
+      assert.deepEqual(feedback.displayed, displayed, 'feedback retains the last displayed artifact despite newer corrections in the Session');
+      const prior = feedback.displayed.records.find(item => item.kind === 'qualified-view')!.value as InvestigationView;
+      assert.equal(prior.projection.id, initial.projection.id); assert.deepEqual(prior.corrections, []);
+      return { accepted: true };
+    } });
+  assert.equal(count, 2, 'fresh and exact presentations do not invoke the investigator');
 });
 
 for (const kind of ['refused', 'truncated', 'communication-failure', 'configuration-unavailable'] as const) {
@@ -192,7 +219,7 @@ test('CLI worker summary, reuse, exact child inspection, source traceability and
         const data = batch.records.find(item => item.kind === 'qualified-view')!.value as InvestigationView;
         if (batches.length === 1) { assert.equal(data.accounts.length, 2); rootReference = data.references.find(item => item.id === data.accounts[0]!.id)!.reference; input.write('summarize entry\n'); }
         else if (batches.length === 2) { assert.equal(data.result!.reused, true); input.write(`inspect @${data.references.find(item => item.id === data.accounts[1]!.id)!.reference}\n`); }
-        else if (batches.length === 3) { assert.equal(data.accounts.length, 1); input.write(`inspect @${rootReference} --source-detail\n`); }
+        else if (batches.length === 3) { assert.equal(data.accounts.length, 1); input.write(`inspect @${rootReference} --more-details\n`); }
         else if (batches.length === 4) input.write('usage\n');
         else input.end();
       });
@@ -205,8 +232,8 @@ test('CLI worker summary, reuse, exact child inspection, source traceability and
   assert.equal(agent.closes, 1);
   assert.equal(batches.length, 5);
   assert.ok(batches.every(batch => batch.records.some(item => item.kind === 'investigation-usage')));
-  assert.ok(batches.filter((_, index) => index !== 3).every(batch => !batch.events.some(item => item.type === 'source-escape')), 'investigator source reads are not human source disclosure');
-  assert.ok(batches[3]!.events.some(item => item.type === 'source-escape' && item.sourceLevel === 'investigation-support'));
+  assert.ok(batches.filter((_, index) => index !== 3).every(batch => !batch.events.some(item => item.type === 'attribution-disclosed')), 'investigator source reads are not human source disclosure');
+  assert.ok(batches[3]!.events.some(item => item.type === 'attribution-disclosed' && item.sourceLevel === 'investigation-support'));
   assert.ok(output.includes('postcode-investigation-view/1-experimental'));
 });
 
@@ -390,7 +417,7 @@ test('shell retains accompanying corrections and makes original and replacement 
           originalReference = data.references.find(item => item.id === root)!.reference; input.write('summarize other\n');
         } else if (views.length === 2) {
           assert.equal(data.corrections.length, 1);
-          const human = renderInvestigationView({ ...data, presentation: { ...data.presentation, format: 'unicode', sourceDetail: false } });
+          const human = renderInvestigationView({ ...data, presentation: { ...data.presentation, format: 'unicode', moreDetails: false } });
           assert.ok(human.includes(`Corrected subjects: ${module}`)); assert.ok(human.includes(`Evidence: ${root}`));
           assert.ok(data.provenance.some(item => item.completeTargets.includes(root)));
           input.write(`inspect @${originalReference}\n`);
@@ -630,10 +657,10 @@ for (const format of ['json', 'unicode'] as const) test(`progressive worker lens
             last = data; assert.equal(data.corrections.length, 1);
             assert.ok(data.provenance[0]!.completeTargets.includes(initial.accounts[0]!.id));
             input.write(`examine @${ref(data.selected[0]!)}\n`); break;
-          case 5: assert.equal(data.result!.reused, true); assert.deepEqual(data.accounts, last.accounts); input.write(`inspect @${rootReference} --source-detail\n`); break;
+          case 5: assert.equal(data.result!.reused, true); assert.deepEqual(data.accounts, last.accounts); input.write(`inspect @${rootReference} --more-details\n`); break;
           case 6:
             assert.deepEqual(data.accounts, initial.accounts); assert.equal(data.corrections.length, 1);
-            assert.ok(data.sourceDetail!.items.length); input.write('inspect entry\n'); break;
+            assert.ok(data.moreDetails!.items.length); input.write('inspect entry\n'); break;
           case 7: {
             const listing = (data as unknown as { investigations: import('../src/lib/investigation/associations.js').AssociatedInvestigations }).investigations;
             assert.ok(listing.items.some(item => item.id === initial.accounts[0]!.id));
@@ -666,7 +693,7 @@ for (const format of ['json', 'unicode'] as const) test(`progressive worker lens
   const usageRequest = batches[7]!.records.find(item => item.kind === 'request')!.value as import('../src/lib/request-reporting.js').RequestContext;
   assert.equal(usageRequest.request.kind, 'report');
   assert.ok(!batches[7]!.events.some(item => item.type === 'view-produced'));
-  assert.ok(batches.every((batch, index) => index === 5 || !batch.events.some(item => item.type === 'source-escape')));
+  assert.ok(batches.every((batch, index) => index === 5 || !batch.events.some(item => item.type === 'attribution-disclosed')));
   assert.match(output, format === 'unicode' ? /Investigation subject: .*provenance, not composition/ : /"navigation"/);
   const usages = batches.at(-1)!.records.find(item => item.kind === 'investigation-usage')!.value as InvestigationUsageReport;
   assert.deepEqual(usages.attempts.map(item => item.agent.origin), ['scripted', 'hosted', 'hosted', 'hosted']);
@@ -700,7 +727,7 @@ test('associated inspection is bounded, navigable and independent of incidental 
   assert.notEqual(invalid.view.id, otherInvalid.view.id);
   assert.equal(invalid.view.projection.id, invalidAgain.view.projection.id);
   assert.equal(invalid.view.id, invalidAgain.view.id);
-  const humanInvalid = requireView(await f.session.execute({ kind: 'present', target: first.view.projection.id, presentation: { format: 'unicode', sourceDetail: false, after: 'investigram-00000000' } }));
+  const humanInvalid = requireView(await f.session.execute({ kind: 'present', target: first.view.projection.id, presentation: { format: 'unicode', moreDetails: false, after: 'investigram-00000000' } }));
   assert.match(humanInvalid.rendered, /continuation reference is not in this answer’s frozen listing/);
   assert.match(humanInvalid.rendered, /Restart associations for this answer with present @answer-/);
   assert.equal(agent.inputs.length, 1);
@@ -868,7 +895,7 @@ test('revision lifecycle preserves exact subjects, displaced composition, confli
   assert.equal(yAgain.revisions.find(item => item.original === yId)!.rows.filter(item => item.cause).length, 1, 'revised subject does not duplicate cause');
   const zAgain = view(await f.session.execute({ lens: 'inspect', selector: reference(z, zId), reference: true, presentation: summary.presentation }));
   assert.equal(zAgain.revisions[0]!.rows[0]!.cause!.direct, false);
-  assert.match(renderInvestigationView({ ...zAgain, presentation: { ...zAgain.presentation, format: 'unicode', sourceDetail: false } }), /Transitive cause/);
+  assert.match(renderInvestigationView({ ...zAgain, presentation: { ...zAgain.presentation, format: 'unicode', moreDetails: false } }), /Transitive cause/);
   const aware = await execute('examine', yId, y, { ...draft(module), children: [draft(module, [], 'aware-child')] });
   assert.ok(aware.accounts.every(item => !aware.revisions.find(status => status.original === item.id)!.needsReconsideration));
   assert.ok(aware.provenance[0]!.completeCorrections.includes(correcting.corrections.find(item => item.target === a)!.id));
@@ -895,7 +922,7 @@ test('revision lifecycle preserves exact subjects, displaced composition, confli
   assert.equal(displacedCorrection.reporter, reporter);
   assert.ok(!redisplay.display.some(item => item.account === displacedCorrection.replacement), 'no old replacement spliced into the new tree');
   assert.ok(redisplay.references.some(item => item.id === displacedCorrection.replacement));
-  assert.match(renderInvestigationView({ ...redisplay, presentation: { ...redisplay.presentation, format: 'unicode', sourceDetail: false } }), /Displaced account .* reports correction/);
+  assert.match(renderInvestigationView({ ...redisplay, presentation: { ...redisplay.presentation, format: 'unicode', moreDetails: false } }), /Displaced account .* reports correction/);
   assert.equal(calls, 8);
   for (const retained of [initial, y, z, exact]) {
     const presented = view(await f.session.execute({ kind: 'present', target: retained.projection.id, presentation: summary.presentation }));
@@ -941,7 +968,7 @@ for (const stop of ['invalidation', 'interruption'] as const) test(`revision sub
   assert.equal(JSON.stringify(initial!), saved);
   assert.equal(batches.length, 2);
   assert.ok(!batches[1]!.records.some(item => item.kind === 'qualified-view'));
-  assert.ok(!batches[1]!.events.some(item => item.type === 'source-escape'));
+  assert.ok(!batches[1]!.events.some(item => item.type === 'attribution-disclosed'));
 });
 
 test('historical inspection pages expose every competing correction without changing primary selection or invoking inference', async t => {
@@ -967,7 +994,7 @@ test('historical inspection pages expose every competing correction without chan
   assert.notEqual(first.id, second.id);
   assert.deepEqual(first.accounts, initial.accounts); assert.deepEqual(second.accounts, initial.accounts);
   assert.equal(new Set([...first.revisions[0]!.rows, ...second.revisions[0]!.rows].map(item => item.correction)).size, 26);
-  assert.match(renderInvestigationView({ ...first, presentation: { ...first.presentation, format: 'unicode', sourceDetail: false } }), /--revision-page 2/);
+  assert.match(renderInvestigationView({ ...first, presentation: { ...first.presentation, format: 'unicode', moreDetails: false } }), /--revision-page 2/);
   assert.equal(calls, 27);
 });
 
@@ -991,7 +1018,7 @@ test('large displaced history has bounded metadata and exact inspection recovers
   assert.equal(repeated.revisions.length, 256);
   assert.equal(repeated.omissions.revisions, 255);
   assert.ok(repeated.displacedCorrections.length <= 256);
-  const human = renderInvestigationView({ ...repeated, presentation: { ...repeated.presentation, format: 'unicode', sourceDetail: false } });
+  const human = renderInvestigationView({ ...repeated, presentation: { ...repeated.presentation, format: 'unicode', moreDetails: false } });
   assert.equal((human.match(/Revision status /g) ?? []).length, 256);
   assert.match(human, /255 revision statuses omitted/);
   const original = view(await f.session.execute({ lens: 'inspect', selector: oldReference, reference: true, presentation: summary.presentation }));
@@ -1073,7 +1100,7 @@ test('displaced account and accompanying correction listings truncate with exact
   assert.equal(repeated.omissions.displaced, 116, 'three old branches plus three displaced 123-account subtrees');
   assert.equal(repeated.displacedCorrections.length, 256);
   assert.equal(repeated.omissions.displacedCorrections, 131, 'three reporters each retain 129 corrections');
-  const human = renderInvestigationView({ ...repeated, presentation: { ...repeated.presentation, format: 'unicode', sourceDetail: false } });
+  const human = renderInvestigationView({ ...repeated, presentation: { ...repeated.presentation, format: 'unicode', moreDetails: false } });
   assert.match(human, /116 displaced accounts, 131 accompanying corrections/);
   const lastReporter = reporters[2]!;
   const exact = view(await f.session.execute({ lens: 'inspect', selector: repeated.references.find(item => item.id === lastReporter)!.reference,

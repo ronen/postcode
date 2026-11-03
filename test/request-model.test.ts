@@ -13,7 +13,7 @@ import { finalizeRequestReport } from '../src/lib/request-reporting.js';
 import { requireView } from './request-helpers.js';
 
 const configPath = path.resolve('fixtures/dependency-journey/tsconfig.json');
-const presentation = { format: 'json' as const, sourceDetail: false };
+const presentation = { format: 'json' as const, moreDetails: false };
 
 test('all current Lens requests separate question, designation, parameters and presentation', () => {
   const expected: readonly LensId[] = ['modules', 'organization', 'dependency-structure', 'dependency-children', 'dependency-parents', 'inspect', 'summarize', 'explain', 'decompose', 'examine'];
@@ -73,7 +73,7 @@ test('invocation context stays separate from immutable program output and captur
   const opened = await openSession({ configPath });
   if (opened.status !== 'opened') throw new Error('Expected project');
   t.after(() => opened.session.close());
-  const input = { lens: 'modules' as const, selector: null, presentation: { format: 'json' as 'json' | 'unicode', sourceDetail: false }, parameters: {} };
+  const input = { lens: 'modules' as const, selector: null, presentation: { format: 'json' as 'json' | 'unicode', moreDetails: false }, parameters: {} };
   const pending = opened.session.execute(input);
   input.presentation.format = 'unicode';
   const first = requireView(await pending);
@@ -103,9 +103,9 @@ for (const kind of ['usage', 'resolution', 'view'] as const) {
     assert.match(stderr, /observation not recorded.*controlled sink failure/);
     assert.equal(batches.length, 1);
     const batch = batches[0]!;
-    assert.equal(batch.formatVersion, 3);
+    assert.equal(batch.formatVersion, 4);
     assert.equal(batch.events.some(item => item.type === 'view-produced'), kind === 'view');
-    assert.equal(batch.events.some(item => item.type === 'source-escape'), false);
+    assert.equal(batch.events.some(item => item.type === 'attribution-disclosed'), false);
     assert.equal(batch.events.at(-1)!.type, kind === 'resolution' ? 'command-refused' : 'command-completed');
     const context = batch.records.find(item => item.kind === 'request')!.value as RequestContext;
     assert.deepEqual(context.request, normalizeRequest(request));

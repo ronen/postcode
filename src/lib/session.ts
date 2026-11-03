@@ -16,7 +16,7 @@ import type { WorkProgress, WorkReport } from './work-attribution.js';
 import { captureRequest, invalidParameters, invalidDesignation, invalidReportInputs } from './requests.js';
 import type { ViewRequest, CapturedRequest, ResultContract } from './requests.js';
 export type { ViewRequest } from './requests.js';
-import { renderRequestReport, rejectedRequestResult } from './request-reporting.js';
+import { finalizeRequestReport, renderRequestReport, rejectedRequestResult } from './request-reporting.js';
 import type { RequestContext, ResolutionReport, UsageReport } from './request-reporting.js';
 import { arrangeAssociatedInspection } from './investigation/associations.js';
 import { selectAssociatedInspection } from './investigation/selection.js';
@@ -156,7 +156,7 @@ export async function openSession(options: ProjectOptions, lifetime: { runGit?: 
           const attribution = finishWork(work, result.kind === 'resolution' ? 'refused' : 'failed' in result && result.failed ? 'failed' : 'completed');
           if (result.kind === 'view') return { ...result, attribution };
           if (result.kind === 'resolution') {
-            const report = freezeOwned({ ...result.report, attribution });
+            const report = finalizeRequestReport({ ...result.report, attribution }, result.report.usage);
             return { ...result, report, attribution, rendered: renderRequestReport(report) };
           }
           const report = freezeOwned({ ...result.report, attribution });

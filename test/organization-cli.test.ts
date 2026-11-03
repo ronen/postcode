@@ -65,11 +65,11 @@ test('representative organization journey selects, inspects, navigates, and esca
     assert.equal(module.modules.length, 1);
     assert.equal(module.modules[0]!.entityId, childGroup.modules[0]!.entityId);
     assert.ok(module.modules[0]!.exports.some(item => item.exportedName === 'child'));
-    const source = await invoke(root, ['inspect', src.name!, '--source-detail', '--json']);
+    const source = await invoke(root, ['inspect', src.name!, '--more-details', '--json']);
     const sourceView = viewOf(source);
-    assert.equal(sourceView.sourceDetail!.groups.length, 1);
-    assert.ok(sourceView.sourceDetail!.groups[0]!.path.endsWith('/src'));
-    assert.ok(sourceView.sourceDetail!.groups[0]!.artifacts.some(item => item.path === 'src/README'));
+    assert.equal(sourceView.moreDetails!.groups.length, 1);
+    assert.ok(sourceView.moreDetails!.groups[0]!.path.endsWith('/src'));
+    assert.ok(sourceView.moreDetails!.groups[0]!.artifacts.some(item => item.path === 'src/README'));
     assert.equal(source.stdout.includes('Direct documentation for'), false);
     for (const conceptual of [JSON.stringify(full), JSON.stringify(project), JSON.stringify(inspected)]) {
       // Navigation paths are operational context; remove that field before checking source disclosure.
@@ -79,8 +79,8 @@ test('representative organization journey selects, inspects, navigates, and esca
       assert.equal(JSON.stringify(withoutNavigation).includes('src/README'), false);
       assert.equal(JSON.stringify(withoutNavigation).includes('module.ts'), false);
     }
-    assert.deepEqual(source.batches[0]!.events.map(event => event.type), ['view-produced', 'source-escape', 'command-completed']);
-    assert.equal(source.batches[0]!.events[1]!.sourceLevel, 'organization-paths');
+    assert.deepEqual(source.batches[0]!.events.map(event => event.type), ['view-produced', 'additional-detail-requested', 'attribution-disclosed', 'command-completed']);
+    assert.equal(source.batches[0]!.events.find(item => item.type === 'attribution-disclosed')!.sourceLevel, 'organization-paths');
     assert.equal(source.batches[0]!.records.find(record => record.kind === 'rendered-output')!.value, source.stdout);
   });
 });
@@ -113,25 +113,25 @@ test('group source detail retains incoming parent-link evidence without changing
     symlinkSync('../manual', path.join(root, 'unrelated/alias'));
     const ordinary = viewOf(await invoke(root, ['inspect', 'src', '--json']));
     assert.ok(ordinary.groups.find(group => group.selected)!.parents.some(parent => parent.name === 'other'));
-    assert.equal(ordinary.sourceDetail, undefined);
+    assert.equal(ordinary.moreDetails, undefined);
     assert.equal(JSON.stringify(ordinary).includes('other/alias'), false);
-    const source = await invoke(root, ['inspect', 'src', '--source-detail', '--json']);
+    const source = await invoke(root, ['inspect', 'src', '--more-details', '--json']);
     const detailed = viewOf(source);
     assert.notEqual(detailed.projection.session, ordinary.projection.session);
     assert.deepEqual(normalizeSession(detailed.groups), normalizeSession(ordinary.groups));
-    assert.deepEqual(detailed.sourceDetail!.groups[0]!.links, [
+    assert.deepEqual(detailed.moreDetails!.groups[0]!.links, [
       { artifactPath: 'other/alias', outcome: 'additional-parent', targetRegion: 'src' },
       { artifactPath: 'other/second', outcome: 'existing-parent', targetRegion: 'src' },
     ]);
-    assert.deepEqual(detailed.sourceDetail!.groups[0]!.artifacts.map(artifact => artifact.path), ['src/README', 'src/direct.ts']);
+    assert.deepEqual(detailed.moreDetails!.groups[0]!.artifacts.map(artifact => artifact.path), ['src/README', 'src/direct.ts']);
     assert.equal(source.stdout.includes('documentation contents stay private'), false);
     assert.equal(source.stdout.includes('unrelated/alias'), false);
-    assert.equal(source.batches[0]!.events[1]!.sourceLevel, 'organization-paths');
+    assert.equal(source.batches[0]!.events.find(item => item.type === 'attribution-disclosed')!.sourceLevel, 'organization-paths');
     assert.equal(source.batches[0]!.records.find(record => record.kind === 'rendered-output')!.value, source.stdout);
-    const parent = viewOf(await invoke(root, ['inspect', 'other', '--source-detail', '--json']));
-    assert.deepEqual(parent.sourceDetail!.groups[0]!.links, detailed.sourceDetail!.groups[0]!.links);
-    assert.ok(parent.sourceDetail!.groups[0]!.artifacts.some(artifact => artifact.path === 'other/alias'));
-    const unicode = await invoke(root, ['inspect', 'src', '--source-detail']);
+    const parent = viewOf(await invoke(root, ['inspect', 'other', '--more-details', '--json']));
+    assert.deepEqual(parent.moreDetails!.groups[0]!.links, detailed.moreDetails!.groups[0]!.links);
+    assert.ok(parent.moreDetails!.groups[0]!.artifacts.some(artifact => artifact.path === 'other/alias'));
+    const unicode = await invoke(root, ['inspect', 'src', '--more-details']);
     assert.ok(unicode.stdout.includes('Relationship evidence: other/alias · additional-parent'));
     assert.ok(unicode.stdout.includes('Relationship evidence: other/second · existing-parent'));
     assert.equal(unicode.stdout.includes('unrelated/alias'), false);
@@ -157,9 +157,9 @@ test('generic inspection displays every group/module name match, without accepti
     const stale = await invoke(root, ['inspect', group.entityId, '--json']);
     assert.equal(stale.exit, 3);
     assert.equal(JSON.parse(stale.stdout).resolution.reason, 'missing');
-    const source = viewOf(await invoke(root, ['inspect', 'src', '--source-detail', '--json']));
-    assert.equal(source.sourceDetail!.level, 'organization-and-module-source');
-    assert.ok(source.sourceDetail!.modules!.items.length > 0);
+    const source = viewOf(await invoke(root, ['inspect', 'src', '--more-details', '--json']));
+    assert.equal(source.moreDetails!.level, 'organization-and-module-source');
+    assert.ok(source.moreDetails!.modules!.items.length > 0);
   });
 });
 
@@ -172,8 +172,8 @@ test('shared groups expand once; link mechanics stay in source detail and placem
     assert.ok(normal.stdout.includes('reference (already expanded)'));
     assert.equal(normal.stdout.includes('symlink'), false);
     assert.equal(normal.stdout.includes('alias'), false);
-    const source = viewOf(await invoke(root, ['inspect', 'holder', '--source-detail', '--json']));
-    assert.ok(source.sourceDetail!.groups[0]!.links.some(link => link.outcome === 'broken'));
+    const source = viewOf(await invoke(root, ['inspect', 'holder', '--more-details', '--json']));
+    assert.ok(source.moreDetails!.groups[0]!.links.some(link => link.outcome === 'broken'));
     write('hidden/module.ts', 'export const hidden = 1;');
     write('.gitignore', 'hidden/\n');
     write('tsconfig.json', '{"compilerOptions":{"noLib":true,"types":[]},"files":["hidden/module.ts"]}');
@@ -194,13 +194,13 @@ test('partial module evaluation preserves organization views and unknown propert
     const outcome = evaluateOrganization(store, partial, organizationPresentationRequirements.groups);
     const projection = organization(store, outcome, 'repository');
     rmSync(path.join(root, 'src'), { recursive: true });
-    const view = createOrganizationView(store, projection, { format: 'unicode', sourceDetail: false }, 'Organization');
+    const view = createOrganizationView(store, projection, { format: 'unicode', moreDetails: false }, 'Organization');
     assert.equal(view.groups.length, 5);
     assert.ok(view.groups.some(group => group.modulePresence === null));
     assert.ok(renderOrganizationView(view).includes('module presence unknown'));
     assert.ok(renderOrganizationView(view).includes('Project placement: available, stopped, materialization partial'));
-    const source = createOrganizationView(store, inspectOrganization(store, outcome, 'src'), { format: 'json', sourceDetail: true }, 'Inspect');
-    assert.ok(source.sourceDetail!.groups[0]!.artifacts.some(item => item.path === 'src/README'));
+    const source = createOrganizationView(store, inspectOrganization(store, outcome, 'src'), { format: 'json', moreDetails: true }, 'Inspect');
+    assert.ok(source.moreDetails!.groups[0]!.artifacts.some(item => item.path === 'src/README'));
   });
 });
 
@@ -256,7 +256,7 @@ test('organization output reproduces across processes and escapes control charac
     const unicode = await invoke(root, ['organization', 'repository']);
     assert.equal(unicode.stdout.includes(name), false);
     assert.ok(unicode.stdout.includes('group\\u000awith\\u0009controls'));
-    const source = await invoke(root, ['inspect', name, '--source-detail']);
+    const source = await invoke(root, ['inspect', name, '--more-details']);
     assert.equal(source.stdout.includes(name), false);
     assert.ok(source.stdout.includes('group\\u000awith\\u0009controls/README'));
   });
@@ -293,7 +293,7 @@ test('candidate ambiguity retains partial status and reachable candidate groups 
     store.put([ambiguous, ...properties, next]);
     const projection = inspectOrganization(store, next, store.entityIds(evaluation.modules, 'module').get(ambiguous.subject)!, true);
     assert.ok(ambiguous.information.candidates.every(id => projection.expansions.groups.includes(id)));
-    const view = createOrganizationView(store, projection, { format: 'unicode', sourceDetail: false }, 'Inspect');
+    const view = createOrganizationView(store, projection, { format: 'unicode', moreDetails: false }, 'Inspect');
     assert.equal(view.placementExceptions[0]!.placement.outcome, 'ambiguous');
     assert.equal(view.placementExceptions[0]!.placement.materialization, 'partial');
     assert.equal(view.placementExceptions[0]!.locations.length, 0);

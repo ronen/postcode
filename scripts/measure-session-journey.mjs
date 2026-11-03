@@ -18,7 +18,7 @@ let opened = await openSession({ configPath, excludedOutputDirectories: [path.re
 assert.equal(opened.status, 'opened');
 const openingMs = performance.now() - openingStarted;
 const samples = [];
-const presentation = { format: 'json', sourceDetail: false };
+const presentation = { format: 'json', moreDetails: false };
 let first;
 const run = async (lens, selector = null, extra = {}) => {
   const started = performance.now();
@@ -27,7 +27,7 @@ const run = async (lens, selector = null, extra = {}) => {
   const validationStarted = performance.now();
   await opened.session.check();
   const validationCheckMs = performance.now() - validationStarted;
-  samples.push({ lens, selector, sourceDetail: extra.presentation?.sourceDetail ?? false,
+  samples.push({ lens, selector, moreDetails: extra.presentation?.moreDetails ?? false,
     milliseconds, validationCheckMs, memory: process.memoryUsage(), schema: result.view.schema,
     selection: result.view.projection.selection });
   return result;
@@ -43,7 +43,7 @@ try {
   const children = await run('children', subject.entityId, { reference: true });
   const child = children.view.modules.find(item => item.id !== subject.id) ?? subject;
   await run('parents', child.entityId, { reference: true });
-  await run('inspect', selected.entityId, { reference: true, presentation: { ...presentation, sourceDetail: true } });
+  await run('inspect', selected.entityId, { reference: true, presentation: { ...presentation, moreDetails: true } });
   await run('organization', null, { subject: 'project' });
   const organization = await run('organization', null, { subject: 'repository' });
   const group = organization.view.groups.find(item => item.name === 'lib') ?? organization.view.groups[0];
@@ -79,7 +79,7 @@ const shellExit = await runCli(['shell', '--project', configPath, '--json'], {
       else if (batch.command === 2) next = 'dependencies';
       else if (batch.command === 3) next = `children @${shellSubject.entityId}`;
       else if (batch.command === 4) { shellChild = view.modules.find(item => item.id !== shellSubject.id) ?? shellSubject; next = `parents @${shellChild.entityId}`; }
-      else if (batch.command === 5) next = `inspect @${shellSubject.entityId} --source-detail`;
+      else if (batch.command === 5) next = `inspect @${shellSubject.entityId} --more-details`;
       else if (batch.command === 6) next = 'organization project';
       else if (batch.command === 7) next = 'organization repository';
       else if (batch.command === 8) { const group = view.groups.find(item => item.name === 'lib') ?? view.groups[0]; next = `inspect @${group.entityId}`; }

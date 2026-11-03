@@ -108,7 +108,7 @@ test('comparison retains complete mixed group/module inspection and embedded ses
   writeFileSync(path.join(root, 'mixed.ts'), '/** Literal session:11111111-1111-1111-1111-111111111111 */\nexport const value = 1;');
   writeFileSync(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"noLib":true,"types":[]},"files":["mixed.ts"]}');
   for (const format of [[], ['--json']]) {
-    const args = ['inspect', 'mixed', '--source-detail', '--project', path.join(root, 'tsconfig.json'), ...format];
+    const args = ['inspect', 'mixed', '--more-details', '--project', path.join(root, 'tsconfig.json'), ...format];
     const first = await invokeCli(args), second = await invokeCli(args);
     assert.equal(first.exit, 0, first.stderr); assert.equal(second.exit, 0, second.stderr);
     const view = (result: typeof first) => result.batches[0]!.records.find(record => record.kind === 'qualified-view')!.value as {

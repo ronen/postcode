@@ -87,7 +87,7 @@ type LensRequest = Extract<NormalizedRequest, { kind: 'lens' }>;
 export function compatiblePresentation(definition: PresentationDefinition, request: LensRequest, lens: LensDefinition): boolean {
   const options = request.presentation;
   return definition.formats.includes(options.format)
-    && (!options.sourceDetail || definition.source === 'supported' || definition.source === 'selected-subjects' && lens.cardinality !== 'population')
+    && (!options.moreDetails || definition.source === 'supported' || definition.source === 'selected-subjects' && lens.cardinality !== 'population')
     && (options.after === undefined || definition.associationPage && lens.requirements.kind === 'inspection')
     && (options.revisionPage === undefined || definition.revisionPage);
 }
@@ -186,7 +186,7 @@ export function settlePresentation(plan: readonly PresentationDefinition[], cont
 }
 
 export function presentedOptions(options: Presentation, decision: PresentationDecision): PresentedOptions {
-  return freezeOwned({ format: options.format, sourceDetail: options.sourceDetail, decision });
+  return freezeOwned({ format: options.format, moreDetails: options.moreDetails, decision });
 }
 export function presentationChanges(options: PresentedOptions): string[] {
   return options.decision?.changes.map(change => `Presentation changed from ${inlineText(change.from)} to ${inlineText(change.to)}: ${inlineText(change.reason)}`) ?? [];
@@ -203,7 +203,7 @@ export function retainedPresentation(definitions: readonly PresentationDefinitio
   const revision = content.contract === 'investigation' && content.value.projection.variant !== 'associated-inspection';
   const unsupportedChoices = (definition: PresentationDefinition): string[] => [
     ...(!definition.formats.includes(options.format) ? [`format ${options.format}`] : []),
-    ...(options.sourceDetail && !(definition.source === 'supported' || definition.source === 'selected-subjects' && selected) ? ['--source-detail'] : []),
+    ...(options.moreDetails && !(definition.source === 'supported' || definition.source === 'selected-subjects' && selected) ? ['--more-details'] : []),
     ...(options.after !== undefined && !(definition.associationPage && association) ? ['--after'] : []),
     ...(options.revisionPage !== undefined && !(definition.revisionPage && revision) ? ['--revision-page'] : []),
   ];

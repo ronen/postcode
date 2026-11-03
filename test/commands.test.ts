@@ -18,9 +18,9 @@ test('strict option grammar applies before help in both interfaces', () => {
     for (const flag of ['-h', '--help']) {
       assert.equal(parseCommand(['unknown-lens', 'extra', flag], '.', interactive).kind, 'help');
     }
-    const repeated = parseCommand(['inspect', 'name', '--json', '--json', '--source-detail', '--source-detail'], '.', interactive);
+    const repeated = parseCommand(['inspect', 'name', '--json', '--json', '--more-details', '--more-details'], '.', interactive);
     assert.equal(repeated.kind, 'view');
-    if (repeated.kind === 'view') assert.deepEqual(repeated.request.presentation, { format: 'json', sourceDetail: true });
+    if (repeated.kind === 'view') assert.deepEqual(repeated.request.presentation, { format: 'json', moreDetails: true });
     for (const name of ['--help', '--json', '-h', '@module-literal']) {
       const result = parseCommand(commandWords(`inspect -- '${name}'`), '.', interactive);
       assert.equal(result.kind, 'view');
@@ -112,7 +112,7 @@ test('follow-ups require a shell reference and inspection continuation stays a p
     const parsed = parseCommand([lens, '@investigram-12345678'], '.', true);
     assert.equal(parsed.kind, 'view');
     if (parsed.kind === 'view' && parsed.request.kind !== 'present') { assert.equal(parsed.request.lens, lens); assert.equal(parsed.request.reference, true); }
-    for (const args of [[lens], [lens, 'name'], [lens, '--', '@investigram-12345678'], [lens, '@investigram-12345678', '--source-detail']]) assert.equal(parseCommand(args, '.', true).kind, 'error');
+    for (const args of [[lens], [lens, 'name'], [lens, '--', '@investigram-12345678'], [lens, '@investigram-12345678', '--more-details']]) assert.equal(parseCommand(args, '.', true).kind, 'error');
     assert.equal(parseCommand([lens, '@investigram-12345678'], '.').kind, 'error');
   }
   const listing = parseCommand(['present', '@answer-12345678', '--after', '@investigram-12345678'], '.', true);

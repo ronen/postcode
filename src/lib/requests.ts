@@ -152,10 +152,10 @@ export function captureRequest(request: ViewRequest, catalog: Readonly<Record<st
   const choice = input.presentation as Record<string, ParameterValue> | undefined;
   if (!choice || typeof choice !== 'object' || Array.isArray(choice)) problem('presentation', 'Presentation choices must be an object.');
   else {
-    const allowed = present ? ['format', 'sourceDetail', 'after', 'revisionPage'] : ['format', 'sourceDetail'];
+    const allowed = present ? ['format', 'moreDetails', 'after', 'revisionPage'] : ['format', 'moreDetails'];
     for (const field of Object.keys(choice)) if (!allowed.includes(field)) problem('presentation', `Unsupported presentation choice: ${field}.`);
     if (choice.format !== undefined && (typeof choice.format !== 'string' || !['unicode', 'json'].includes(choice.format))) problem('presentation', 'Format must be unicode or json.');
-    if (choice.sourceDetail !== undefined && typeof choice.sourceDetail !== 'boolean') problem('presentation', 'Source detail must be a boolean.');
+    if (choice.moreDetails !== undefined && typeof choice.moreDetails !== 'boolean') problem('presentation', 'More details must be a boolean.');
     if (present && choice.after !== undefined && (typeof choice.after !== 'string' || !/^investigram-[a-f0-9]{8,64}$/.test(choice.after))) problem('presentation', 'Association continuation must be a displayed investigram reference.');
     if (present && choice.revisionPage !== undefined && (typeof choice.revisionPage !== 'number' || !Number.isSafeInteger(choice.revisionPage) || choice.revisionPage < 1)) problem('presentation', 'Revision page must be a positive safe integer.');
   }
@@ -184,10 +184,10 @@ export function captureRequest(request: ViewRequest, catalog: Readonly<Record<st
   if (problems.length) {
     const presentation = input.presentation as unknown as Presentation | undefined;
     return { input: null, normalized: freezeOwned({ kind: 'rejected', input, problems,
-      presentation: { format: presentation?.format === 'json' ? 'json' : 'unicode', sourceDetail: false },
+      presentation: { format: presentation?.format === 'json' ? 'json' : 'unicode', moreDetails: false },
       referenceLifetime: input.referenceLifetime === 'command' ? 'command' : 'session' }) };
   }
-  input.presentation = { ...choice, format: choice!.format ?? 'unicode', sourceDetail: choice!.sourceDetail ?? false };
+  input.presentation = { ...choice, format: choice!.format ?? 'unicode', moreDetails: choice!.moreDetails ?? false };
   const snapshot = freezeOwned(input) as unknown as ViewRequest;
   return { input: snapshot, normalized: normalizeCapturedRequest(snapshot, catalog) };
 }
@@ -198,7 +198,7 @@ export function normalizeRequest(request: ViewRequest): NormalizedRequest {
 }
 
 function normalizeCapturedRequest(request: ViewRequest, catalog: Readonly<Record<string, LensDefinition>>): NormalizedRequest {
-  const effective = { format: request.presentation.format ?? 'unicode', sourceDetail: request.presentation.sourceDetail ?? false };
+  const effective = { format: request.presentation.format ?? 'unicode', moreDetails: request.presentation.moreDetails ?? false };
   if (request.kind === 'present') return freezeOwned({ kind: 'present', target: request.target,
     presentation: { ...effective, ...(request.presentation.after === undefined ? {} : { after: request.presentation.after }),
       ...(request.presentation.revisionPage === undefined ? {} : { revisionPage: request.presentation.revisionPage }) },

@@ -1,3 +1,5 @@
+import { diagnosticLines, withDiagnosticMeanings } from '../diagnostic-view.js';
+import { sourceAttribution } from '../evidence-view.js';
 import { answerIdentity, answerDisplay, answerLines, continuationLines } from '../answer-presentation.js';
 import type { AnswerContext } from '../answer-presentation.js';
 import { documentationLines, documentationNotice, presentDocumentation } from '../documentation-view.js';
@@ -9,7 +11,7 @@ import { lookupQualifications, resolutionContextIdentity } from '../resolution-c
 import type { ResolutionContext } from '../resolution-context.js';
 import { presentationChanges, validatePresentationContent } from '../presentation-contracts.js';
 import type { PresentedOptions, PresentationDefinition } from '../presentation-contracts.js';
-import { inlineText, terminalText } from '../terminal-text.js';
+import { inlineText } from '../terminal-text.js';
 import type { ProgramRecord, RecordId, SourceEvidenceRecord } from '../records.js';
 import type { ModuleExportsContent } from './content.js';
 
@@ -22,7 +24,7 @@ export function arrangeModuleExports(content: ModuleExportsContent, reference: s
   validatePresentationContent({ contract: 'module-exports', value: content });
   const sources = new Map<RecordId, SourceEvidenceRecord>();
   const collect = (evidence: readonly ProgramRecord[]) => {
-    if (presentation.sourceDetail) for (const item of evidence) if (item.kind === 'source-evidence') {
+    if (presentation.moreDetails) for (const item of evidence) if (item.kind === 'source-evidence') {
       sources.set(item.id, item);
     }
   };
@@ -44,9 +46,9 @@ export function arrangeModuleExports(content: ModuleExportsContent, reference: s
       ({ id, requirement, applicability, availability, execution, materialization, reason })),
     qualifications: content.contexts.map(item => presentQualification(item.context)),
     omittedExports: content.exports.length - exports.length,
-    ...(presentation.sourceDetail ? { sourceDetail: { level: 'declaration-locations-and-excerpts' as const, items: [...sources.values()] } } : {}) };
-  return freezeOwned({ ...view, id: recordId(session, 'module-exports-view', [methods.exportsPresentation, identityReference(session, id), title,
-    presentation, identityReference(session, subject), answerIdentity(context), resolutionContextIdentity(session, resolution)]) });
+    ...(presentation.moreDetails ? { moreDetails: { level: 'declaration-locations' as const, items: [...sources.values()].map(sourceAttribution) } } : {}) };
+  return freezeOwned(withDiagnosticMeanings({ ...view, id: recordId(session, 'module-exports-view', [methods.exportsPresentation, identityReference(session, id), title,
+    presentation, identityReference(session, subject), answerIdentity(context), resolutionContextIdentity(session, resolution)]) }));
 }
 export type ModuleExportsView = ReturnType<typeof arrangeModuleExports>;
 export function renderModuleExports(view: ModuleExportsView): string {
@@ -71,12 +73,12 @@ export function renderModuleExports(view: ModuleExportsView): string {
   if (view.omittedExports) lines.push(`${view.omittedExports} exports omitted.`);
   const contexts = [view.module.qualification, ...view.qualifications, ...view.exports.flatMap(item => [item.qualification, ...item.documentation.map(doc => doc.qualification)])];
   for (const limitation of new Set(contexts.flatMap(item => item.limitations))) lines.push(inlineText(limitation));
-  for (const code of new Set(contexts.flatMap(item => item.diagnostics.map(diagnostic => diagnostic.code)))) lines.push(`Encountered TypeScript diagnostic: TS${code}`);
-  if (view.sourceDetail) {
-    lines.push('SOURCE DETAIL — explicit source escape');
-    for (const source of view.sourceDetail.items) {
+  lines.push(...diagnosticLines(contexts));
+  if (view.moreDetails) {
+    lines.push('MORE DETAILS — attribution and implementation mappings');
+    for (const source of view.moreDetails.items) {
       lines.push(inlineText(source.path));
-      if (source.location.association === 'span') lines.push(terminalText(source.location.excerpt.text));
+      if (source.compilerName) lines.push(`Implementation name: ${inlineText(source.compilerName)}`);
     }
   }
   lines.push('Subject references identify retained records only in this Session; they do not persist after it closes.');

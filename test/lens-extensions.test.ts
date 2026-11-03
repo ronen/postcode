@@ -65,7 +65,7 @@ test('catalog accepts unchanged built-ins independent of object key order and su
   assert.ok(Object.isFrozen(captured.lenses.risks!.parameters));
 });
 
-const presentation = { format: 'json' as const, sourceDetail: false };
+const presentation = { format: 'json' as const, moreDetails: false };
 const request = { lens: 'risks', selector: 'entry', presentation };
 function fixture(t: TestContext) {
   const root = temporaryDirectory(t, 'postcode-lens-extensions-');
@@ -101,7 +101,7 @@ test('a nonpublic module Lens shares interpretation machinery and original prove
   const same = requireView(await opened.session.execute({ ...request, selector: reference, reference: true }));
   assert.equal(same.view.projection.id, first.view.projection.id);
   const other = requireView(await opened.session.execute({ ...request, lens: 'risk-review', selector: reference, reference: true,
-    presentation: { format: 'unicode', sourceDetail: false } }));
+    presentation: { format: 'unicode', moreDetails: false } }));
   assert.equal(other.view.schema, 'postcode-investigation-view/1-experimental');
   assert.equal(other.view.result!.reused, true);
   assert.deepEqual(other.view.accounts, first.view.accounts);
@@ -259,7 +259,7 @@ test('fixture interpretation catalogs cross worker publication with actual Lens 
   const context = batches[0]!.records.find(item => item.kind === 'request')!.value as RequestContext;
   assert.equal(context.request.kind, 'lens');
   assert.equal(context.request.lens, 'risk-review');
-  assert.equal(batches[0]!.formatVersion, 3);
+  assert.equal(batches[0]!.formatVersion, 4);
   assert.deepEqual(batches[0]!.events.map(item => item.type), ['view-produced', 'command-completed']);
   assert.equal(remote.work()!.completeness, 'complete');
 });
