@@ -6,6 +6,6 @@ Set `Status: partially superseded`. Preserve the original decision date, context
 
 - [Record the actual source-disclosure level](#record-the-actual-source-disclosure-level) is replaced by [Human-facing architectural representations](human-facing-architectural-representations.md#representation-limits-and-feedback), in full; actual output and useful disclosure metadata remain, while evidence-detail access is not a proxy for inadequacy or permission to rely on source literacy.
 
-“Present source evidence from captured analysis input” remains accepted without supersession: the clarified semantic restriction preserves its capture requirement and permits intelligible evidence from that capture.
+“Present source evidence from captured analysis input” remains accepted without supersession: the human output boundary preserves its capture requirement and permits intelligible evidence from that capture.
 
 These entries identify the affected headed decisions and the exact scope of partial replacement. No historical rationale or adoption-time conformance statement is rewritten.

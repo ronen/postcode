@@ -18,7 +18,7 @@ Supersedes:
 
 ## Context
 
-The earlier application offered source excursions when conceptual representations were insufficient. The adopted design, clarified by `2410a98`, instead supports humans with architectural and computational understanding without the implementation language. Its restriction is semantic, not a ban on text originating in source artifacts. Reading a declaration to reconstruct a contract is not an adequate human representation; reading an intelligible recorded assertion from a comment can be.
+The source-escape interaction offers source excursions when conceptual representations are insufficient. This conflicts with the [adopted product design](../../foundation/product-design.md), which supports humans with architectural and computational understanding without requiring knowledge of the implementation language. Its restriction is semantic, not a ban on text originating in source artifacts. Reading a declaration to reconstruct a contract is not an adequate human representation; reading an intelligible recorded assertion from a comment can be.
 
 Source acquisition, machine evidence delivery and human representation have distinct purposes. Preserving source for analysis and coding agents is necessary; removing useful source-derived meaning from the human surface would undermine the product. Encoding alone establishes neither audience nor intelligibility.
 
