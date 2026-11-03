@@ -38,6 +38,8 @@ Begin each file with `Record type: handoff`, `Record type: findings`, or `Record
 
 A new implementation target produced in response to findings normally remains under the same handoff. Prepare another uniquely named file ending in `-handoff.md` only when the review assignment's scope, focus, governing basis, or intended gate changes materially. Keep the new assignment in the same review-series directory, and do not combine the earlier assignment's disposition with the new handoff.
 
+Changing reviewers or review mechanisms does not by itself require a new handoff. Reuse the existing assignment while its scope, focus, governing basis, and intended gate remain applicable.
+
 These conventions apply to new review records. Preserve existing historical records and links rather than renaming them to match the newer layout.
 
 ## Preparing a handoff
@@ -104,6 +106,8 @@ Keep repeated review and correction under one handoff lightweight while its assi
 5. When needed, create one final disposition for the assignment.
 
 Ordinary rereview does not require another handoff, an intermediate disposition, an update to the original handoff, or a separate durable rereview-request document. A correction already required by the authorized task and governing material does not require a task follow-up merely because a reviewer identified it. Human direction and the task follow-up protocol remain necessary when a finding would change, extend, or redirect the authorized work.
+
+When a review cycle is clean, report that result and await human direction on further review or task closure. Do not present closure as the expected next step merely because one reviewer has no remaining findings. Keep any PR current with the changes under review.
 
 ## Disposition and further review
 
