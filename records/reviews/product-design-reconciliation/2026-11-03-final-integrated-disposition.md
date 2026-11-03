@@ -35,3 +35,17 @@ Residual limits remain those recorded in the findings and original handoff. Diag
 ## Gate conclusion
 
 The returned reviews are clean at implementation target `bad7ef484bc5264e3738a723241a278344f93693`. Human confirmation that the accumulated review is sufficient remains required under the task protocol and handoff. No such confirmation has been recorded at this point; the task remains active and neither closure nor merge is inferred from the reviewer's recommendation.
+
+## Review continuation: Copilot round 3
+
+After the disposition above, the human requested retrieval, preservation and handling of the Copilot PR review. The [round-3 Copilot findings](2026-11-03-final-integrated-round-3-copilot-findings.md) preserve review `5755513563` and all three inline comments verbatim, with retrieval scope and source links. Copilot reviewed `3353e70ad859d34094bdf61aaed9fc317b28b587`, whose implementation was still `bad7ef484bc5264e3738a723241a278344f93693`. It reported three additional defects; these do not retroactively change the earlier reviewers' findings.
+
+All three findings were accepted and corrected in `c4c905451079fc915a110fea5cd8f291d958a05c`:
+
+- **Comment 4457237367 — accepted, resolved.** Retained tag bodies use the same plain-text-aware fence handling as assertion prose. Adjacent assertions and explicitly plain-text blocks remain available; removed original characters contribute to tag omission counts, including further display truncation. Original machine evidence is unchanged.
+- **Comment 4457237425 — accepted, resolved.** Unicode investigation-support inspection omits raw diagnostic arrays from serialized qualifications and uses the shared explanatory formatter, bounded across the displayed support to five codes and three occurrences per code. JSON retains the complete occurrence arrays and shared meanings.
+- **Comment 4457237504 — accepted, resolved.** Diagnostic meanings and disclosure classification read explicit owned qualification/support fields. Preserved rejected caller data cannot manufacture diagnostic attribution events or acquire analyzer explanations through similarly named fields.
+
+Verification by the implementing agent: build, type check and whitespace check passed; the complete two-worker suite under Node v26.11.0 reported **627 passed, zero failed, skipped or cancelled** (approximately 318 seconds). New coverage checks module/export and investigation tag filtering, original code-point counts, bounded Unicode and complete JSON support diagnostics, fresh and exact retained inspection, preserved machine evidence, and rejected caller diagnostics in both formats. No generation instructions or account content changed, and no new real-investigator run was performed.
+
+The earlier clean recommendation applies to its reviewed target. The new correction target has not yet received independent rereview; a lightweight review under the original handoff is recommended. Human confirmation of gate sufficiency is still pending, and the task remains active. This continuation updates the current gate status without changing the original handoff or any returned findings.
