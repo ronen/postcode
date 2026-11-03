@@ -30,14 +30,14 @@ Small documentation adjustments and incidental cleanup do not automatically requ
 ## 2. Before Making Changes
 
 1. Read `AGENTS.md` and the applicable adopted foundation documents.
-2. Read the governing core concepts and architectural constraints, current plan, architecture documentation, accepted decisions, and applicable engineering guidelines and conventions.
+2. Read the application specification, governing core concepts and architectural constraints, current plan, architecture documentation, accepted decisions, and applicable engineering guidelines and conventions.
 3. Inspect the working-tree state and preserve existing human or agent changes.
 4. Identify uncertainties that could materially change the goal, architecture, or external behavior. Resolve them with the human rather than embedding an assumption silently.
 
 <a id="planning"></a>
 ## 3. Planning
 
-Plans describe intended work, not established system behavior, and do not authorize implementation. Store only human-approved plans under [`docs/plans/`](../docs/plans/). Record consequential accepted choices under [`docs/decisions/`](../docs/decisions/), and change the governing core concepts or architectural constraints only through explicit human agreement and a corresponding accepted decision record.
+Plans describe intended work, not established system behavior, and do not authorize implementation. Store only human-approved plans under [`docs/plans/`](../docs/plans/). Record consequential accepted choices under [`docs/decisions/`](../docs/decisions/). Follow the [application specification](#application-specification) and [governing architecture](#governing-architecture-and-decisions) revision requirements when planning changes to those documents.
 
 Follow the [planning workflow](planning.md) for plan contents, provisional working material, review, promotion, and disposal.
 
@@ -70,6 +70,15 @@ Pre-existing or trivial inconsistencies do not all require investigation. Releva
 The responsibilities below supplement the plans, task records, review records, validation records, and other artifacts prescribed by their respective workflows. Use the [documentation guide](../docs/README.md) to locate the appropriate repository documentation.
 
 Do not leave durable rationale only in chat, commit messages, or an agent's final response. Put it in the appropriate repository document when later work will depend on it.
+
+<a id="application-specification"></a>
+### Application specification
+
+[`docs/app-specification.md`](../docs/app-specification.md) is the human-maintained governing statement of intended application behavior and high-level design within the research foundation. Agents may prepare revisions only under explicit human direction during design or planning. Implementing agents report gaps or contradictions rather than changing the specification during implementation.
+
+Adopt consequential changes together with corresponding accepted decisions and coordinated revisions to affected governing documents and plans. Supersede earlier decisions where necessary rather than rewriting their rationale. Editorial corrections that do not change meaning do not require a decision record. Report conflicts among governing documents for explicit human-directed resolution.
+
+Specification revisions may accompany an implementation plan or arise from standalone design work; a formal implementation plan is not required to adopt them. Adoption does not authorize implementation or establish that existing code conforms. Preserve disclosure of known conformance gaps and scope any necessary follow-up work.
 
 <a id="governing-architecture-and-decisions"></a>
 ### Governing architecture and decisions
