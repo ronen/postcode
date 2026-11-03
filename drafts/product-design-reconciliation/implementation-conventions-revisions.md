@@ -7,17 +7,17 @@
 
 ## Insert before that section's existing bullets
 
-`--more-details` exposes the existing additional qualified information, attribution, locations and implementation mappings without source excerpts or declarations. Keep current information placement and display bounds until separately revised. Preserve captured evidence and source mappings for analysis and agent access while applying the [human output boundary](decisions/human-facing-architectural-representations.md#human-output-boundary) to every human delivery path. Existing schema strings and display bounds do not establish semantic adequacy. Preserve intelligible assertions, labels and evidence with provenance and epistemological status; source origin alone is not a reason to suppress content.
+`--more-details` exposes additional qualified information, attribution, locations and implementation mappings under the [human output boundary](decisions/human-facing-architectural-representations.md#human-output-boundary). Keep current information placement and display bounds until separately revised.
 
 ## In “Additional detail and evidence presentation,” replace the bullet beginning “Group source detail includes”
 
-- Group attribution detail can identify captured absolute repository/group paths and repository-relative artifact paths and metadata, without requiring source-language literacy. Intelligible assertions or evidence originating in source can also be presented with their qualifications. Record actual attribution disclosure separately from agent evidence acquisition and human inadequacy feedback.
+- Group attribution detail can identify captured absolute repository/group paths and repository-relative artifact paths and metadata.
 
 ## In “Additional detail and evidence presentation,” replace the three consecutive bullets beginning “Expose source detail only,” “Preserve module and export containment,” and “Expand a narrow compiler span”
 
-- Human expansions may expose intelligible assertions, evidence and implementation mappings with provenance and epistemological status. `--more-details` omits the former source excerpts and declaration text in text, JSON and retained presentations, including embedded views and continuations. Preserve useful non-source information even when it shares a supporting record with source. The [human output boundary](decisions/human-facing-architectural-representations.md#human-output-boundary) governs all human-facing content; existing machine evidence interfaces retain source under their own contracts.
+- `--more-details` omits source excerpts and declaration text in text, JSON and retained presentations, including embedded views and continuations. Preserve intelligible assertions, labels and evidence even when they share a supporting record with source; retain their provenance and qualification. Machine evidence interfaces retain captured source under their own contracts.
 - Preserve module and export containment in evidence organization, and distinguish forwarding declarations from semantic-symbol definitions in the acquired support and mappings.
-- When acquiring evidence, a narrow compiler span can expand to its enclosing statement to make the evidence intelligible to analysis and agents, keeping it bounded and qualified. Acquisition bounds do not establish human intelligibility: display useful meaning with qualification, and disclose a representation limit rather than require code deciphering.
+- When acquiring evidence, a narrow compiler span can expand to its enclosing statement to make the evidence intelligible to analysis and agents, keeping it bounded and qualified.
 
 ## In “Local observation sink,” replace the bullet beginning “Include the session identifier”
 
@@ -41,7 +41,7 @@
 
 ## In “Local observation sink,” add
 
-- Initiate feedback submission when the report is made without making continued investigation wait for delivery. Preserve the distinction between submission, sink acceptance and cleanup. Disclose delivery failure without changing the displayed result or blocking continued use, including truthful reporting when the command or Session ends. Existing local acceptance and privacy rules apply. This does not require a new observation history, persistent retry service or investigation Session. [[Feedback observations](decisions/human-facing-architectural-representations.md#feedback-observations)]
+- Initiate feedback submission when the report is made without making continued investigation wait for delivery. Preserve the distinction between submission, sink acceptance and cleanup. Disclose delivery failure without changing the displayed result or blocking continued use, including truthful reporting when the command or Session ends. Existing local acceptance and privacy rules apply. [[Feedback observations](decisions/human-facing-architectural-representations.md#feedback-observations)]
 
 ## In “Accumulation and interactive execution,” replace the bullet beginning “Run both CLI entry paths”
 
