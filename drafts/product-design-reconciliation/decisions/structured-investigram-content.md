@@ -45,7 +45,7 @@ A common retained unit supports a whole account and its parts without requiring 
 <a id="generalize-interpretation-contracts"></a>
 ### Generalize interpretation contracts without changing their other obligations
 
-The following are successor decisions for the identified headings. Each carries forward the predecessor's requirements in full except for the exact wording replacements below. The unchanged provisions are incorporated by reference, including their qualifications, exceptions and subsequent accepted clarifications. This preserves detailed selection, dialogue, correction and propagation contracts without restating their algorithms here. Historical records remain unchanged.
+The following are successor decisions for the identified headings. Each carries forward the predecessor's requirements in full except for the exact wording replacements below. The unchanged provisions are incorporated by reference, including their qualifications and exceptions. This preserves detailed selection, dialogue, correction and propagation contracts without restating their algorithms here. Historical records remain unchanged.
 
 | Predecessor heading | Wording replaced | Successor wording |
 | --- | --- | --- |
@@ -55,7 +55,7 @@ The following are successor decisions for the identified headings. Each carries 
 | [Record citation exposure and derive reconsideration status](investigrams-and-progressive-investigation.md#record-citation-exposure-and-derive-reconsideration-status) | “complete retained prose, referent information, and qualifications”; “replacement's own prose, referent information, and qualifications” | “complete retained interpretation content, referent information, and qualifications”; “replacement's own interpretation content, referent information, and qualifications”, respectively. |
 | [Start each operation fresh and permit bounded investigator dialogue](investigator-execution-and-evidence-access.md#start-each-operation-fresh-and-permit-bounded-investigator-dialogue) | “the selected investigram's prose, referent information, and context references for a follow-up” | “the selected investigram's interpretation content, referent information, and context references for a follow-up”. The coverage description and investigator-written qualifications retain their existing contracts. |
 
-The resulting content and completeness requirements are:
+The following paragraphs summarize the resulting content and completeness requirements for orientation. The incorporated predecessor text with the specified replacements governs if this summary differs.
 
 Inspection exposes the retained interpretation content together with referent information, evidence, composition, provenance and corrections. Follow-up uses the selected investigram's interpretation content and program context to focus further interpretation; that content is interpretive input, not a mechanically established premise. The minimum initial follow-up request supplies that content, referent information and context references.
 
@@ -64,6 +64,8 @@ An incidental identifier or mention in interpretation content does not acquire r
 Any substantive portion of interpretation content supplied to an investigator, including an excerpt or descriptive listing, creates a citation under the existing exposure rules. Merely discovering a reference without receiving content does not. Exposure is not reliance, endorsement or comprehension.
 
 Correction eligibility requires the target's complete retained interpretation content, referent information and qualifications to have been supplied during the current evaluation. Complete correction-context delivery requires both the target's and replacement's own interpretation content, referent information and qualifications, together with the correction reasons and qualifications. Structured portions and embedded prose within an investigram are all part of its own interpretation content; this preserves the existing exemption from delivering its subordinate investigram tree. References alone, summaries and partial delivery do not establish completeness. Preserve exact-original access, correction notices, bounded-omission disclosures, further retrieval and completeness recording per correction.
+
+#### Application to structured content
 
 A structured-content capability must specify how complete delivery is established and bounded delivery is reported under these contracts before using the correction mechanism. It cannot redefine complete delivery to mean an arbitrary subset of interpretation content. This decision selects no content schema and does not treat shape validation as semantic validation.
 
@@ -74,6 +76,8 @@ A working account comprising several selected investigrams remains a hypothesis 
 Fixed composition continues to identify the parts of one result. A subsequent investigation produces a separate result with provenance; replacements are explicit and originals remain available within the supported lifecycle. Do not silently append to an earlier tree or redirect its references. Associations retain their qualified meaning and do not automatically become ownership, structural containment or semantic identity.
 
 #### Rationale, alternatives and consequences
+
+These substitutions change what content inspection, follow-up, citation and correction contracts must handle, so the affected headings receive explicit successors. The [additional-detail terminology rule](human-facing-architectural-representations.md#additional-detail) instead applies existing selection, compatibility and exposure contracts to the renamed control without changing those contracts.
 
 Keeping prose as a required general content form would unnecessarily constrain representations before learning what architectural journeys need. Replacing investigrams with a new architecture graph/store would choose much more than current evidence supports. Making every structured element a mechanical fact or an independently identified entity would erase important distinctions.
 
