@@ -1,0 +1,17 @@
+{
+  "provider": "openai",
+  "model": "gpt-5.6-sol",
+  "origin": "hosted",
+  "configuration": {
+    "adapter": "postcode/chatgpt-responses@7",
+    "sdk": "openai@7.25.0",
+    "authenticationRoute": "chatgpt-sign-in",
+    "billingRoute": "chatgpt-plan",
+    "reasoningEffort": "medium",
+    "store": false,
+    "streaming": true,
+    "references": "postcode/investigator-references@3",
+    "characterGuard": "canonical-domain-exchanges",
+    "retries": 0
+  }
+}

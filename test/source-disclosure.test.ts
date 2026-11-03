@@ -21,7 +21,7 @@ import { renderDependencyView } from '../src/lib/dependencies/presentation.js';
 
 type View = QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | InvestigationView;
 const dataOf = (batch: ObservationBatch) => batch.records.find(item => item.kind === 'qualified-view')!.value as View;
-const escapes = (batch: ObservationBatch) => batch.events.filter(item => item.type === 'source-escape');
+const escapes = (batch: ObservationBatch) => batch.events.filter(item => item.type === 'attribution-disclosed');
 
 for (const format of ['unicode', 'json'] as const) test(`source observations follow actual supported disclosure in ${format} shell output`, async t => {
   const root = temporaryDirectory(t, 'postcode-disclosure-');
@@ -39,14 +39,14 @@ for (const format of ['unicode', 'json'] as const) test(`source observations fol
       qualifications: ['Interpretation.'], evidence: (item.responses[0] as EvidenceResponse).selected, associations: [], children: [{ localId: 'child', prose: 'An unsupported inference.', referent: { description: 'Entry module.', subjects: [item.request.subject] }, qualifications: ['No source support supplied.'], evidence: [], associations: [], children: [], corrections: [], inconsistencies: [] }], corrections: [], inconsistencies: [] } }),
   ]);
   const commands = [
-    'inspect @investigram-00000000 --source-detail',
-    'children @REFERENCE --source-detail', 'parents @REFERENCE --source-detail',
-    'children @module-00000000 --source-detail', 'parents @module-00000000 --source-detail',
-    'inspect @module-00000000 --source-detail', 'inspect @group-00000000 --source-detail',
-    'inspect empty --source-detail', 'inspect entry --source-detail', 'inspect docs --source-detail',
-    'children entry --source-detail', 'parents other --source-detail', 'dependencies --source-detail',
-    'inspect @REFERENCE --source-detail', 'inspect entry', 'inspect @EMPTY --source-detail',
-    'present @ANSWER --source-detail', 'present @ANSWER',
+    'inspect @investigram-00000000 --more-details',
+    'children @REFERENCE --more-details', 'parents @REFERENCE --more-details',
+    'children @module-00000000 --more-details', 'parents @module-00000000 --more-details',
+    'inspect @module-00000000 --more-details', 'inspect @group-00000000 --more-details',
+    'inspect empty --more-details', 'inspect entry --more-details', 'inspect docs --more-details',
+    'children entry --more-details', 'parents other --more-details', 'dependencies --more-details',
+    'inspect @REFERENCE --more-details', 'inspect entry', 'inspect @EMPTY --more-details',
+    'present @ANSWER --more-details', 'present @ANSWER',
   ];
   const input = Object.assign(new PassThrough(), { isTTY: true }), driver = interactionDriver(() => input.end());
   const batches: ObservationBatch[] = [];
@@ -65,7 +65,7 @@ for (const format of ['unicode', 'json'] as const) test(`source observations fol
   for (let index = 0; index < commands.length; index++) {
     const command = commands[index]!, batch = batches[index + 1]!;
     const request = batch.records.find(item => item.kind === 'request')!.value as import('../src/lib/request-reporting.js').RequestContext;
-    assert.equal(request.request.presentation.sourceDetail, command.includes('--source-detail'), command);
+    assert.equal(request.request.presentation.moreDetails, command.includes('--more-details'), command);
     const rendered = batch.records.find(item => item.kind === 'rendered-output')!.value as string;
     assert.ok(stdout.includes(rendered));
     const actual = escapes(batch);
@@ -83,39 +83,46 @@ for (const format of ['unicode', 'json'] as const) test(`source observations fol
     if (actual.length) {
       assert.ok(actual[0]!.sourceForms!.includes('locations'), command);
       if (index === 7 || index === 9) assert.deepEqual(actual[0]!.sourceForms, ['locations'], command);
-      if (index === 8 || index >= 10 && index <= 12) assert.deepEqual(actual[0]!.sourceForms, ['locations', 'excerpts'], command);
+      if (index === 8 || index >= 10 && index <= 12) assert.deepEqual(actual[0]!.sourceForms, ['locations'], command);
       if (index === 9) assert.equal(actual[0]!.sourceLevel, 'organization-paths');
-      if (format === 'json') assert.ok(JSON.parse(rendered).sourceDetail);
+      if (format === 'json') assert.ok(JSON.parse(rendered).moreDetails);
     }
     if (view.schema === 'postcode-view/1-experimental' && index === 8) {
-      const noExcerpts = { ...view, sourceDetail: { ...view.sourceDetail!, items: view.sourceDetail!.items.map(item => ({ ...item,
-        evidence: item.evidence.map(evidence => evidence.location.association === 'file' ? evidence : { ...evidence,
-          location: { ...evidence.location, excerpt: { ...evidence.location.excerpt, text: '' } } }) })) } };
-      const event = escapes(observationBatch(noExcerpts, renderView(noExcerpts), { configPath: config, repositoryRoot: root, methods: [] }, request))[0]!;
-      assert.deepEqual(event.sourceForms, ['locations'], 'empty excerpts do not erase genuine locations or claim text disclosure');
+      assert.ok(view.moreDetails!.items.flatMap(item => item.evidence).every(item => !('excerpt' in item.location)));
+      const nonconforming = { ...view, moreDetails: { ...view.moreDetails!, items: view.moreDetails!.items.map(item => ({ ...item,
+        evidence: item.evidence.map(evidence => ({ ...evidence, location: { ...evidence.location, excerpt: { text: 'export const unexpected = 1;' } } })) })) } };
+      const unexpectedBatch = observationBatch(nonconforming, renderView(nonconforming), { configPath: config, repositoryRoot: root, methods: [] }, request);
+      assert.equal(unexpectedBatch.events.some(event => event.type === 'source-displayed'), format === 'json',
+        'truthful exposure follows the renderer: JSON serializes an unexpected excerpt, text does not');
       const hidden = { ...view, modules: [] };
       assert.equal(escapes(observationBatch(hidden, renderView(hidden), { configPath: config, repositoryRoot: root, methods: [] }, request)).length,
         format === 'json' ? 1 : 0, 'Unicode does not render source items for omitted modules; JSON serializes them');
     }
     if (view.schema === 'postcode-dependency-view/1-experimental' && index === 10) {
-      const embedded = { ...view, sourceDetail: { ...view.sourceDetail!, items: [], organizationEvidence: view.sourceDetail!.items.map(item => item.evidence) } };
+      const embedded = { ...view, moreDetails: { ...view.moreDetails!, items: [], organizationEvidence: view.moreDetails!.items.map(item => item.evidence) } };
       assert.equal(escapes(observationBatch(embedded, renderDependencyView(embedded), { configPath: config, repositoryRoot: root, methods: [] }, request)).length,
         format === 'json' ? 1 : 0, 'organization-support source records are embedded only by JSON');
+    }
+    if (view.schema === 'postcode-investigation-view/1-experimental' && view.moreDetails?.items.some(item => item.kind === 'source-evidence')) {
+      const nonconforming = { ...view, moreDetails: { ...view.moreDetails, items: view.moreDetails.items.map(item => item.kind === 'source-evidence'
+        ? { ...item, location: { ...item.location, excerpt: { text: 'export const unexpected = 1;' } } } : item) } };
+      const unexpectedBatch = observationBatch(nonconforming, renderInvestigationView(nonconforming), { configPath: config, repositoryRoot: root, methods: [] }, request);
+      assert.ok(unexpectedBatch.events.some(event => event.type === 'source-displayed'), 'investigation text and JSON both serialize supporting detail');
     }
     // Exercise present-but-empty containers and metadata-only containers through
     // the real renderers and shared observation boundary for every view family.
     let empty: View, render: (view: never) => string;
     switch (view.schema) {
       case 'postcode-view/1-experimental':
-        empty = { ...view, sourceDetail: { ...view.sourceDetail!, items: (view.sourceDetail?.items ?? []).map(item => ({ ...item, evidence: [] })) } }; render = renderView; break;
+        empty = { ...view, moreDetails: { ...view.moreDetails!, items: (view.moreDetails?.items ?? []).map(item => ({ ...item, evidence: [] })) } }; render = renderView; break;
       case 'postcode-organization-view/1-experimental':
-        empty = { ...view, moduleDetail: null, sourceDetail: { ...view.sourceDetail!, repositoryRoot: null, groups: [], modules: null } }; render = renderOrganizationView; break;
+        empty = { ...view, moduleDetail: null, moreDetails: { ...view.moreDetails!, repositoryRoot: null, groups: [], modules: null } }; render = renderOrganizationView; break;
       case 'postcode-dependency-view/1-experimental':
-        empty = { ...view, sourceDetail: { ...view.sourceDetail!, items: [], organizationEvidence: (view.sourceDetail?.organizationEvidence ?? []).filter(item => item.kind === 'claim' || item.kind === 'claim-context') } }; render = renderDependencyView; break;
+        empty = { ...view, moreDetails: { ...view.moreDetails!, items: [], organizationEvidence: (view.moreDetails?.organizationEvidence ?? []).filter(item => item.kind === 'claim' || item.kind === 'claim-context') } }; render = renderDependencyView; break;
       case 'postcode-investigation-view/1-experimental':
-        empty = { ...view, sourceDetail: { level: 'investigation-support', items: [] } }; render = renderInvestigationView; break;
+        empty = { ...view, moreDetails: { level: 'investigation-support', items: [] } }; render = renderInvestigationView; break;
     }
-    if (view.sourceDetail) assert.deepEqual(escapes(observationBatch(empty, render(empty as never), { configPath: config, repositoryRoot: root, methods: [] }, request)), [], `empty ${view.schema}`);
+    if (view.moreDetails) assert.deepEqual(escapes(observationBatch(empty, render(empty as never), { configPath: config, repositoryRoot: root, methods: [] }, request)), [], `empty ${view.schema}`);
   }
   assert.equal(agent.inputs.length, 1, 'source observation does not invoke investigation');
 });

@@ -342,14 +342,15 @@ evidence references alongside its reporter, target, replacement, reason and
 qualifications; the shared support list does not replace that attribution.
 Standard support details distinguish full,
 summary and earlier-interpretation exposure per generating provenance, including
-the provenance of incoming corrections. Explicit source detail reveals captured
-support locations and excerpts, with a source-disclosure observation only when
-source detail is actually presented. Missing and unsupported requests produce
-non-View resolution reports without source-escape events. Accounts with no
-disclosed source support also produce no source-escape event;
-the request still records the explicit option. Events distinguish locations from
-nonempty excerpts through the shared format-aware observation classification. Investigator
-source acquisition by itself emits no human source-disclosure event. One-shot views
+the provenance of incoming corrections. `--more-details` reveals captured support
+names, locations and metadata, excluding source excerpts from both text and JSON.
+The attribution adapter preserves captured source for investigator queries. Observation
+format 4 distinguishes detail requests, actual attribution disclosure, explicit
+representation limits and subjective inadequacy reports. A nonconforming excerpt-bearing
+payload is recorded as source display; arbitrary prose is not syntax-classified.
+Diagnostic locations outside detail fields, including non-View resolution reports,
+are classified when actually rendered. Investigator source acquisition alone emits
+no human exposure event. One-shot views
 disclose that their references expire when the command ends. A settled summary with
 configuration unavailability retains an unavailable answer and produces a View with
 an expected failure status. Unsettled subject selection produces a resolution
@@ -595,7 +596,7 @@ Result views distinguish fixed composition from the generating investigation's
 selected subject. Inspection exposes the composition parent and precise
 provenance subject as navigation references; inspecting a linked child or earlier
 subject reaches its original account. Evidence support keeps its original
-qualification and source-detail disclosure remains explicitly requested. Display substitution follows explicit correction chains while retaining each account’s original composition separately. Derived revision status accompanies both original and replacement accounts.
+qualification; additional attribution detail remains explicitly requested. Display substitution follows explicit correction chains while retaining each account’s original composition separately. Derived revision status accompanies both original and replacement accounts.
 
 Subject inspection adds a history-dependent section selected only through
 explicit qualified associations, including the investigation-subject and
@@ -726,3 +727,16 @@ not required. Reference transport maps these new fields structurally; prose is
 unchanged. The existing character guard continues to measure canonical domain
 exchanges before private handle translation. Captured deliveries remain the audit
 of actual exposure, including citation indexes and per-correction completeness.
+
+## Inadequacy feedback delivery
+
+The parent CLI publishes optional-explanation `feedback` reports through the existing
+command-completion sink. The shell snapshots the last displayed View or resolution
+report, including exact rendered output and already available context; feedback and
+usage acknowledgments do not replace it. Reporting does not call the analysis worker,
+select an answer, rerender, refresh or correct an account. One-shot feedback bypasses
+project opening and investigator configuration, uses its own invocation identifier
+and ordinal one, and writes under `_observations/context-free/`. Both forms disclose
+missing context and sink failures. Each feedback batch embeds the available displayed
+artifacts independently of earlier batches. Captured-basis and navigation-history
+gaps are not reconstructed or resolved by feedback.

@@ -1,0 +1,11 @@
+{
+  "fixture": "fixtures/human-output",
+  "commit": "1eaeb9d85dd3293004fba7418c1a66a5b320e8b8",
+  "files": {
+    "README.md": "b2f76e5435a292108f64f8b52f599813c7cc57163a66ff200b56566d691d4a38",
+    "cache.ts": "a79b98269190faa11e6bcd9e68d082a28a16b141e4bdd3b4b6dfbb4cc744a91f",
+    "catalog.ts": "d664b98202aecdd33500e385084b84bd1e21dad349ddc335159f06862ef9783b",
+    "remote.ts": "83d4d3cf18e40a256ba841b766f21306c88c0581cae5154c025f1256c5dde220",
+    "tsconfig.json": "7888474681377bcf4eabfe31ed0d026edf25ba5311e204d97f70d7d3ff84bb4f"
+  }
+}

@@ -26,8 +26,8 @@ import type { EvaluationRecord } from '../src/lib/records.js';
 import type { ObservationBatch } from '../src/lib/observations.js';
 import type { RequestContext } from '../src/lib/request-reporting.js';
 
-const json = { format: 'json' as const, sourceDetail: false };
-const unicode = { format: 'unicode' as const, sourceDetail: false };
+const json = { format: 'json' as const, moreDetails: false };
+const unicode = { format: 'unicode' as const, moreDetails: false };
 const request = { lens: 'exports', selector: 'widget', presentation: json };
 function catalog(): RequestCatalog {
   return { ...defaultCatalog, lenses: { ...defaultCatalog.lenses, exports: exportsLens },
@@ -71,13 +71,13 @@ test('exports uses common resolution and retains its own qualified answer withou
   assert.equal(first.view.title, 'Module exports');
   assert.ok(first.methods.includes(methods.exportsProjection));
   assert.ok(first.methods.includes(methods.exportsPresentation));
-  const presented = requireView(await active.execute({ kind: 'present', target: first.view.projection.id, presentation: { ...json, sourceDetail: true } }));
+  const presented = requireView(await active.execute({ kind: 'present', target: first.view.projection.id, presentation: { ...json, moreDetails: true } }));
   assert.equal(presented.view.schema, 'postcode-module-exports-view/1-experimental');
   assert.equal(presented.view.projection.id, first.view.projection.id);
   assert.equal(presented.view.title, 'Module exports'); assert.equal(presented.failed, false);
   assert.deepEqual(presented.view.exports.map(item => item.id), first.view.exports.map(item => item.id));
   for (const format of ['unicode', 'json'] as const) {
-    const command = requireView(await active.execute({ ...request, referenceLifetime: 'command', presentation: { format, sourceDetail: true } }));
+    const command = requireView(await active.execute({ ...request, referenceLifetime: 'command', presentation: { format, moreDetails: true } }));
     assert.equal(command.view.projection.id, first.view.projection.id);
     assert.match(command.view.referenceNotice, /All answer, subject and supporting references expire/);
     assert.deepEqual(command.view.continuations, []);
@@ -113,10 +113,10 @@ test('exports preserves reexport, type-only and established-empty meaning with e
   assert.match(barrel.rendered, /renamed \[value\].*reexport.*from widget/);
   assert.match(barrel.rendered, /Shape \[type\].*type-only/);
   assert.equal(barrel.view.exports.find(item => item.exportedName === 'renamed')!.symbolInformation!.name, 'item');
-  const source = requireView(await active.execute({ ...request, presentation: { ...json, sourceDetail: true } }));
+  const source = requireView(await active.execute({ ...request, presentation: { ...json, moreDetails: true } }));
   assert.equal(source.view.schema, 'postcode-module-exports-view/1-experimental');
-  assert.deepEqual(sourceDisclosure(source.view)?.forms, ['locations', 'excerpts']);
-  assert.ok(source.view.sourceDetail!.items.some(item => item.path.endsWith('widget.ts')));
+  assert.deepEqual(sourceDisclosure(source.view)?.forms, ['locations']);
+  assert.ok(source.view.moreDetails!.items.some(item => item.path.endsWith('widget.ts')));
   const empty = requireView(await active.execute({ ...request, selector: 'empty', presentation: unicode }));
   assert.equal(empty.view.schema, 'postcode-module-exports-view/1-experimental');
   assert.equal(empty.view.completeness, 'complete');
@@ -230,12 +230,12 @@ test('exports arrangement is detached, bounded and stable after later accumulati
   assert.equal(content.exports.length, 55);
   assert.ok(Object.isFrozen(content.exports[0]!.documentation));
   rmSync(path.join(path.dirname(options.configPath), 'widget.ts'));
-  const shown = arrangeModuleExports(structuredClone(content), reference, { ...unicode, sourceDetail: true }, 'Module exports');
+  const shown = arrangeModuleExports(structuredClone(content), reference, { ...unicode, moreDetails: true }, 'Module exports');
   assert.equal(shown.exports.length, 50);
   assert.equal(shown.omittedExports, 5);
   assert.ok(shown.exports[0]!.documentation[0]!.omittedTextCharacters > 0);
   const hiddenEvidence = new Set(content.exports[54]!.claim.evidence.map(item => item.id));
-  assert.equal(shown.sourceDetail!.items.some(item => hiddenEvidence.has(item.id)), false);
+  assert.equal(shown.moreDetails!.items.some(item => hiddenEvidence.has(item.id)), false);
   const ordinary = arrangeModuleExports(content, reference, json, 'Module exports');
   assert.equal(ordinary.exports.length, 55);
   assert.equal(sourceDisclosure(ordinary), null);
@@ -269,15 +269,15 @@ test('exports crosses actual worker publication and rejected observation deliver
   assert.equal(opening.status, 'opened');
   let stdout = '', stderr = '';
   const batches: ObservationBatch[] = [];
-  const code = await publishCommand({ id: opening.id, ...remote }, { ...request, presentation: { ...json, sourceDetail: true } },
+  const code = await publishCommand({ id: opening.id, ...remote }, { ...request, presentation: { ...json, moreDetails: true } },
     'internal exports fixture', options.configPath, 1, { stdout: text => { stdout += text; }, stderr: text => { stderr += text; } },
     { async submit(batch) { batches.push(batch); return { accepted: false, reason: 'Controlled sink rejection.' }; } });
   assert.equal(code, 0);
   assert.match(stderr, /Controlled sink rejection/);
   assert.equal(JSON.parse(stdout).title, 'Module exports');
   const batch = batches[0]!;
-  assert.equal(batch.formatVersion, 3);
-  assert.deepEqual(batch.events.map(item => item.type), ['view-produced', 'source-escape', 'command-completed']);
+  assert.equal(batch.formatVersion, 4);
+  assert.deepEqual(batch.events.map(item => item.type), ['view-produced', 'representation-limited', 'additional-detail-requested', 'attribution-disclosed', 'command-completed']);
   const context = batch.records.find(item => item.kind === 'request')!.value as RequestContext;
   assert.equal(context.request.kind, 'lens');
   assert.equal(context.request.lens, 'exports');

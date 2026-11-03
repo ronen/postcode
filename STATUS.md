@@ -22,8 +22,9 @@ This page summarizes current capabilities and significant limits. The [capabilit
   Dependency structure, cycles, direct dependencies and dependents are available,
   with unresolved requests and analysis limits distinguished.
 - **[Supporting evidence](docs/cli-reference.md#source-detail-and-observations).**
-  Inspections can expose source locations and bounded excerpts supporting the
-  displayed information. Terminal wrapping preserves combining characters and emoji,
+  Inspections can expose qualified detail, names and captured implementation
+  locations without source excerpts. Inadequacy feedback is available in the shell
+  and as a context-free one-shot command. Terminal wrapping preserves combining characters and emoji,
   measures display width, and visibly escapes control characters.
 - **[Local observation recording](README.md#observability).**
   Commands record their actual requested question, designation, outcomes and presented

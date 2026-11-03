@@ -20,7 +20,7 @@ import type { ObservationBatch } from '../src/lib/observations.js';
 import type { RequestContext } from '../src/lib/request-reporting.js';
 import { SessionClosed, SessionInvalidated } from '../src/lib/execution-errors.js';
 
-const json = { format: 'json' as const, sourceDetail: false };
+const json = { format: 'json' as const, moreDetails: false };
 function fixture(t: TestContext) {
   const root = temporaryDirectory(t, 'postcode-retained-');
   execFileSync('git', ['init', '--quiet', root]);
@@ -89,7 +89,7 @@ test('exact mechanical presentation covers every family and composite without se
     assert.equal(retained.attribution.status, 'completed');
     assert.ok(retained.attribution.work[0]!.generating.some(item => item.origin !== null), 'fixed support keeps its original generating attribution');
     assert.deepEqual(retained.attribution.work.map(item => [item.boundary, item.disposition]), [['content', 'consumed']]);
-    const text = requireView(await active.execute({ kind: 'present', target: first.view.projection.id, presentation: { format: 'unicode', sourceDetail: false } }));
+    const text = requireView(await active.execute({ kind: 'present', target: first.view.projection.id, presentation: { format: 'unicode', moreDetails: false } }));
     assert.match(text.rendered, /Retained answer; selection unchanged/);
     assert.match(text.rendered, new RegExp(`@${first.view.answerReference}`));
     assert.equal(text.view.projection.id, first.view.projection.id);
@@ -100,11 +100,11 @@ test('exact mechanical presentation covers every family and composite without se
   const composite = fresh[4]!.view;
   assert.ok('mechanical' in composite.projection);
   const mechanical = String(composite.projection.mechanical);
-  const bare = requireView(await active.execute({ kind: 'present', target: mechanical, presentation: { ...json, sourceDetail: true } }));
+  const bare = requireView(await active.execute({ kind: 'present', target: mechanical, presentation: { ...json, moreDetails: true } }));
   assert.equal(bare.view.projection.id, mechanical);
   assert.notEqual(bare.view.answerReference, composite.answerReference);
   assert.equal('investigations' in bare.view, false);
-  assert.ok('sourceDetail' in bare.view && bare.view.sourceDetail);
+  assert.ok('moreDetails' in bare.view && bare.view.moreDetails);
   const unsupported = requireResolution(await active.execute({ kind: 'present', target: mechanical, presentation: { ...json, after: 'investigram-00000000' } }));
   assert.equal(unsupported.resolution.reason, 'presentation-unavailable');
   assert.match(unsupported.resolution.explanation, /Unsupported presentation choices.*--after/);
@@ -113,10 +113,10 @@ test('exact mechanical presentation covers every family and composite without se
   assert.equal(unsupported.resolution.retainedAnswers[0]!.reference, bare.view.answerReference);
   for (const first of fresh.slice(0, 3)) {
     const choices = [
-      { presentation: { ...json, sourceDetail: true }, names: ['--source-detail'] },
+      { presentation: { ...json, moreDetails: true }, names: ['--more-details'] },
       { presentation: { ...json, revisionPage: 2 }, names: ['--revision-page'] },
       { presentation: { ...json, after: 'investigram-00000000' }, names: ['--after'] },
-      { presentation: { ...json, sourceDetail: true, revisionPage: 2, after: 'investigram-00000000' }, names: ['--source-detail', '--revision-page', '--after'] },
+      { presentation: { ...json, moreDetails: true, revisionPage: 2, after: 'investigram-00000000' }, names: ['--more-details', '--revision-page', '--after'] },
     ];
     for (const { presentation, names } of choices) {
       const refused = requireResolution(await active.execute({ kind: 'present', target: first.view.projection.id, presentation }));
@@ -152,7 +152,7 @@ test('documentation-only group presentation uses selected modules rather than th
   for (const method of ['put', 'evaluations', 'investigations', 'boundEntity'] as const) t.mock.method(MemoryProgramRecordStore.prototype, method, () => { throw new Error(`present must not call ${method}`); });
   for (const target of [fresh.view.answerReference!, String(fresh.view.projection.mechanical)]) {
     for (const format of ['json', 'unicode'] as const) {
-      const retained = requireView(await active.execute({ kind: 'present', target, presentation: { format, sourceDetail: false } }));
+      const retained = requireView(await active.execute({ kind: 'present', target, presentation: { format, moreDetails: false } }));
       assert.equal(retained.view.schema, 'postcode-organization-view/1-experimental');
       assert.equal(retained.view.projection.id, target === fresh.view.answerReference ? fresh.view.projection.id : target);
       assert.equal(retained.view.selectionMode, 'retained');
@@ -175,7 +175,7 @@ test('malformed and mixed requests are safely refused before work', async t => {
     { kind: 'present', target: 'answer-12345678', after: 'investigram-12345678', presentation: json },
     { kind: 'present', target: '', presentation: json },
     { kind: 'present', target: 7, presentation: json },
-    ...[null, 'json', { format: 'html' }, { format: ['json'] }, { sourceDetail: 'yes' }, { after: 'bad' }, { after: '@investigram-12345678' }, { revisionPage: 0 }, { revisionPage: 1.5 }, { revisionPage: Infinity }, { extra: 1 }]
+    ...[null, 'json', { format: 'html' }, { format: ['json'] }, { moreDetails: 'yes' }, { after: 'bad' }, { after: '@investigram-12345678' }, { revisionPage: 0 }, { revisionPage: 1.5 }, { revisionPage: Infinity }, { extra: 1 }]
       .map(presentation => ({ kind: 'present', target: 'answer-12345678', presentation })),
     { lens: 'inspect', selector: 'entry', after: 'investigram-12345678', presentation: json },
   ];
@@ -187,7 +187,7 @@ test('malformed and mixed requests are safely refused before work', async t => {
     assert.doesNotThrow(() => JSON.stringify(report));
   }
   assert.equal(noPut.mock.calls.length, 0);
-  const captured = captureRequest({ kind: 'present', target: 'x', presentation: { format: 'json', sourceDetail: false } });
+  const captured = captureRequest({ kind: 'present', target: 'x', presentation: { format: 'json', moreDetails: false } });
   assert.equal(captured.normalized.kind, 'present');
 });
 
@@ -249,12 +249,12 @@ for (const outcome of ['configuration-unavailable', 'investigation-failure', 'li
   assert.deepEqual(retained.view.usage, fresh.view.usage);
   assert.equal(retained.view.projection.id, fresh.view.projection.id);
   assert.equal(retained.view.id, finalizeInvestigationUsage(retained.view, retained.view.usage, retained.investigationArrangementKey!).id);
-  const text = requireView(await active.execute({ ...request, presentation: { format: 'unicode', sourceDetail: false } }));
+  const text = requireView(await active.execute({ ...request, presentation: { format: 'unicode', moreDetails: false } }));
   assert.match(text.rendered, new RegExp(outcome));
   assert.equal(agent.inputs.length, outcome === 'configuration-unavailable' ? 0 : 1);
   assert.match(text.rendered, /Retained answer; selection unchanged/);
   const batch = batches[0]!;
-  assert.equal(batch.formatVersion, 3);
+  assert.equal(batch.formatVersion, 4);
   assert.equal((batch.records.find(item => item.kind === 'request')!.value as RequestContext).request.kind, 'present');
   assert.equal(batch.events.at(-1)!.type, 'command-completed');
   assert.ok(batch.events.some(item => item.type === 'view-produced'));

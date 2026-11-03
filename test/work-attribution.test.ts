@@ -27,7 +27,7 @@ import type { AgentInput, SubmittedInvestigram, ContextDelivery } from '../src/l
 import type { EvidenceResponse } from '../src/lib/evidence-access.js';
 import type { InvestigationView } from '../src/lib/investigation/presentation.js';
 
-const presentation = { format: 'json' as const, sourceDetail: false };
+const presentation = { format: 'json' as const, moreDetails: false };
 const inventory = { lens: 'modules' as const, selector: null, presentation };
 const summary = { lens: 'summarize' as const, selector: 'widget', presentation };
 function fixture(t: TestContext, huge = false, many = false) {

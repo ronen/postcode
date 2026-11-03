@@ -1,3 +1,4 @@
+import { diagnosticLines } from '../diagnostic-view.js';
 import { answerIdentity, answerDisplay, answerLines, continuationLines } from '../answer-presentation.js';
 import type { AnswerContext, AnswerDisplay } from '../answer-presentation.js';
 import { validatePresentationContent, presentationChanges } from '../presentation-contracts.js';
@@ -88,7 +89,7 @@ export interface QualifiedOrganizationView extends AnswerDisplay {
     readonly repeatedGroupReferences: number; readonly prunedGroups: number;
     readonly omittedModulePlacements: number; readonly externalModules: number;
   };
-  readonly sourceDetail?: {
+  readonly moreDetails?: {
     readonly level: 'organization-paths' | 'organization-and-module-source';
     readonly notice: string;
     readonly repositoryRoot: string | null;
@@ -97,7 +98,7 @@ export interface QualifiedOrganizationView extends AnswerDisplay {
       readonly artifacts: readonly RepositoryArtifact[];
       readonly links: LayoutEvidence['links'];
     }[];
-    readonly modules: QualifiedView['sourceDetail'] | null;
+    readonly modules: QualifiedView['moreDetails'] | null;
   };
 }
 
@@ -124,7 +125,7 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
   validatePresentationContent({ contract: 'organization', value: content });
   const { projection, evaluation: outcome, repository: captured } = content;
   const policy = organizationDisplayPolicy(projection.subject, presentation);
-  if (presentation.sourceDetail && !policy.source) throw new Error('Source detail requires selected organization content');
+  if (presentation.moreDetails && !policy.source) throw new Error('More details require selected organization content');
   const evidence = captured.capture.status === 'available' ? captured.capture.evidence : null;
   const layout = captured.layout;
   const groupContent = new Map(content.groups.map(item => [item.id, item]));
@@ -179,12 +180,12 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
   if (policy.layout === 'tree') omittedModulePlacements += groups.filter(group => group.selected && !seen.has(group.id))
     .reduce((sum, group) => sum + group.modules.length, 0);
   const moduleDetail = content.moduleDetail ? arrangeModuleView(content.moduleDetail, bindings.detail,
-    { format: presentation.format, sourceDetail: presentation.sourceDetail }, title, undefined, { ...context, answerReference: undefined }) : null;
+    { format: presentation.format, moreDetails: presentation.moreDetails }, title, undefined, { ...context, answerReference: undefined }) : null;
   const { applicability, availability, execution, materialization, reason, cost } = outcome;
   const externalModules = content.externalModules.count;
   const linksByTarget = new Map<string, { link: LayoutEvidence['links'][number]; order: number }[]>();
   const linksByArtifact = new Map<string, { link: LayoutEvidence['links'][number]; order: number }>();
-  if (presentation.sourceDetail) (layout?.links ?? []).forEach((link, order) => {
+  if (presentation.moreDetails) (layout?.links ?? []).forEach((link, order) => {
     const item = { link, order };
     linksByArtifact.set(link.artifactPath, item);
     if (link.targetRegion !== null) {
@@ -208,9 +209,9 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
     display: { rows, selectedGroups: projection.groups.length,
       omittedSelectedGroups: policy.layout === 'tree' ? projection.groups.filter(id => !seen.has(id)).length : 0,
       repeatedGroupReferences, prunedGroups, omittedModulePlacements, externalModules },
-    ...(presentation.sourceDetail ? { sourceDetail: {
+    ...(presentation.moreDetails ? { moreDetails: {
       level: moduleDetail?.modules.length ? 'organization-and-module-source' as const : 'organization-paths' as const,
-      notice: 'Captured group and artifact paths only; group documentation and other artifact contents are not reproduced. Module source detail, when selected, is separately bounded.',
+      notice: 'Captured group and artifact paths only; group documentation and other artifact contents are not reproduced. Module additional detail, when selected, is separately bounded.',
       repositoryRoot: evidence?.root ?? null,
       groups: groups.filter(group => group.selected).map(group => {
         const region = content.referenceGroups[group.id]!.claim.evidence.find(record => record.kind === 'repository-region');
@@ -221,7 +222,7 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
           links: [...new Set([...(linksByTarget.get(region.path) ?? []), ...artifacts.flatMap(artifact => {
             const link = linksByArtifact.get(artifact.path); return link ? [link] : [];
           })])].sort((a, b) => a.order - b.order).map(item => item.link) };
-      }), modules: moduleDetail?.sourceDetail ?? null,
+      }), modules: moduleDetail?.moreDetails ?? null,
     } } : {}),
   };
 }
@@ -297,9 +298,9 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
   }
   // Changes to this section or JSON source fields must stay aligned with
   // src/lib/source-disclosure.ts and test/source-disclosure.test.ts.
-  if (view.sourceDetail) {
-    lines.push('', 'Group source detail', `  ${view.sourceDetail.notice}`);
-    for (const group of view.sourceDetail.groups) {
+  if (view.moreDetails) {
+    lines.push('', 'Group additional detail', `  ${view.moreDetails.notice}`);
+    for (const group of view.moreDetails.groups) {
       lines.push(`  ${label(groups.get(group.id)!)}`, `    ${inlineText(group.path)}`);
       for (const artifact of group.artifacts) lines.push(`    ${inlineText(artifact.path)} · ${artifact.kind}${artifact.link ? ` · ${artifact.link.status} → ${inlineText(artifact.link.target)}` : ''}`);
       for (const link of group.links) lines.push(`    Relationship evidence: ${inlineText(link.artifactPath)} · ${link.outcome}`);
@@ -318,7 +319,6 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
     `  Repository-layout evidence left ${view.repository.unestablishedRelationships} relationships unestablished.`,
     `  Exclusion policies: ${view.repository.exclusions.repository} repository, ${view.repository.exclusions.local} local, ${view.repository.exclusions.global} global; ${view.repository.exclusions.outputLocations} output locations excluded.`,
     '  Inputs are first-observed, not atomic; sparse-checkout completeness remains unresolved.');
-  const diagnostics = new Set(view.qualifications.flatMap(context => context.diagnostics.map(diagnostic => diagnostic.code)));
-  for (const code of diagnostics) lines.push(`  Encountered TypeScript diagnostic: TS${code}`);
+  lines.push(...diagnosticLines(view.qualifications, '  '));
   return `${lines.join('\n')}\n${renderAssociatedInvestigations(view.investigations)}`;
 }

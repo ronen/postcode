@@ -23,7 +23,7 @@ import { moduleStandardExpansions } from '../src/lib/records.js';
 import type { EvaluationRecord, ModuleClaim, RecordId } from '../src/lib/records.js';
 
 const configPath = path.resolve('fixtures/dependency-journey/tsconfig.json');
-const presentation = { format: 'json' as const, sourceDetail: false };
+const presentation = { format: 'json' as const, moreDetails: false };
 
 test('failed lookup allocates only the complete returned candidate set and preserves later collisions', async t => {
   const { store, evaluation: basis } = await discover(configPath);
@@ -241,12 +241,12 @@ test('known group omitted from organization retains naming support with unavaila
   const projection = inspectOrganization(store, narrow, reference, true, [subject]);
   assert.deepEqual(projection.groups, [subject]);
   assert.deepEqual(projection.selection.outsidePopulation, [subject]);
-  const shown = createOrganizationView(store, projection, { ...presentation, sourceDetail: true }, 'Inspect');
+  const shown = createOrganizationView(store, projection, { ...presentation, moreDetails: true }, 'Inspect');
   assert.equal(shown.groups[0]!.id, subject);
   assert.equal(shown.groups[0]!.documented, null);
   assert.equal(shown.groups[0]!.modulePresence, null);
   assert.equal(shown.groups[0]!.detail, 'unavailable');
-  assert.equal(shown.sourceDetail!.groups.length, 1);
+  assert.equal(shown.moreDetails!.groups.length, 1);
   assert.match(renderOrganizationView({ ...shown, presentation: { ...shown.presentation, format: 'unicode' } }), /outside the supplied evaluation population/);
 });
 

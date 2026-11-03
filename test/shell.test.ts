@@ -54,7 +54,7 @@ test('adaptive shell uses prior references, records syntax refusals, finishes on
         else if (batch.command === 2) {
           const view = batch.records.find(item => item.kind === 'qualified-view')!.value as QualifiedView;
           const forward = view.modules.find(item => item.handle === 'forward')!;
-          input.write(`inspect @${forward.entityId} --source-detail\n`);
+          input.write(`inspect @${forward.entityId} --more-details\n`);
         } else if (batch.command === 3) input.write('dependencies\n');
         else input.end();
       });
@@ -70,7 +70,7 @@ test('adaptive shell uses prior references, records syntax refusals, finishes on
   assert.ok(!batches[0]!.records.some(item => item.kind === 'qualified-view'));
   const inspection = batches[2]!.records.find(item => item.kind === 'qualified-view')!.value as QualifiedView;
   assert.equal(inspection.projection.selection.matches, 1);
-  assert.ok(inspection.sourceDetail);
+  assert.ok(inspection.moreDetails);
   const navigation = batches[2]!.records.find(item => item.kind === 'request')!.value as { request: { designation: { kind: string } } };
   assert.equal(navigation.request.designation.kind, 'reference');
   let oneShot: ObservationBatch | undefined;
@@ -161,7 +161,7 @@ test('expected analysis failure, defect and interruption are distinct and never 
     let stderr = '';
     let observed: ObservationBatch | undefined;
     const code = await publishCommand({ id: 'test-session', execute: () => { throw error; }, check: () => {} },
-      { lens: 'modules', selector: null, presentation: { format: 'json', sourceDetail: false } }, 'modules', config, 1,
+      { lens: 'modules', selector: null, presentation: { format: 'json', moreDetails: false } }, 'modules', config, 1,
       { stdout: () => assert.fail('No output'), stderr: text => { stderr += text; } },
       { async submit(batch) {
         observed = batch;

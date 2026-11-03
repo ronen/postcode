@@ -1,3 +1,6 @@
+import { diagnosticLines } from '../diagnostic-view.js';
+import { sourceAttribution, detailRecord } from '../evidence-view.js';
+import type { SourceAttribution, DetailRecord } from '../evidence-view.js';
 import { answerIdentity, answerDisplay, answerLines, continuationLines } from '../answer-presentation.js';
 import type { AnswerContext, AnswerDisplay } from '../answer-presentation.js';
 import { validatePresentationContent, presentationChanges } from '../presentation-contracts.js';
@@ -9,7 +12,7 @@ import { compositionAnnotation, compositionView } from '../composition-view.js';
 import type { CompositionView } from '../composition-view.js';
 import { identityReference, methods, recordId } from '../identity.js';
 import { moduleStandardExpansions } from '../records.js';
-import type { ClaimContextRecord, EvaluationState, ModuleClaim, ProgramRecord, ProgramRecordStore, RecordId, SourceEvidenceRecord } from '../records.js';
+import type { ClaimContextRecord, EvaluationState, ModuleClaim, ProgramRecord, ProgramRecordStore, RecordId } from '../records.js';
 import { inlineText } from '../terminal-text.js';
 import { resolveDependencyProjection } from './content.js';
 import type { DependencyProjectionContent } from './content.js';
@@ -23,7 +26,7 @@ type Outcome = Omit<EvaluationState, 'cost'>;
 type ModuleView = { readonly id: RecordId; readonly entityId: string; readonly name: string | null; readonly handle: string;
   readonly discoveryFacets: ModuleClaim['information']['discoveryFacets']; readonly opaque: boolean;
   readonly composition: CompositionView; readonly qualification: Qualification };
-type OccurrenceView = Pick<DependencyOccurrenceRecord, 'id' | 'owner' | 'target' | 'mechanism' | 'typeOnly' | 'targetStatus' | 'commonjs'> & { readonly qualification: Qualification };
+type OccurrenceView = Pick<DependencyOccurrenceRecord, 'id' | 'owner' | 'target' | 'mechanism' | 'typeOnly' | 'targetStatus' | 'commonjs'> & { readonly writtenSpecifier: string | null; readonly qualification: Qualification };
 type OrganizationView = { readonly scheme: 'repository-layout'; readonly classification: DependencyOrganizationClaim['information']['classification'];
   readonly qualification: Qualification; readonly occurrences: readonly {
     readonly occurrence: RecordId; readonly status: string; readonly classification: string | null;
@@ -49,10 +52,10 @@ export interface QualifiedDependencyView extends AnswerDisplay {
   readonly summary: { readonly modules: number; readonly discoveredModules: number; readonly projectModules: number; readonly relationships: number; readonly requestsWithoutEdges: Readonly<Record<string, number>>; readonly recognitionCoverage: Readonly<Record<string, number>> };
   readonly display: { readonly rows: readonly Row[]; readonly omittedModules: number; readonly omittedRelationships: number;
     readonly omittedOccurrences: number; readonly omittedRequestResults: number; readonly omittedCoverageOutcomes: number; readonly prunedComponents: number };
-  readonly sourceDetail?: { readonly level: 'dependency-occurrences-and-organization-evidence'; readonly notice: string;
-    readonly items: readonly { readonly subject: RecordId; readonly role: 'request' | 'recognition-coverage' | 'target' | 'composition'; readonly evidence: SourceEvidenceRecord }[];
+  readonly moreDetails?: { readonly level: 'dependency-occurrences-and-organization-evidence'; readonly notice: string;
+    readonly items: readonly { readonly subject: RecordId; readonly role: 'request' | 'recognition-coverage' | 'target' | 'composition'; readonly evidence: SourceAttribution }[];
     readonly organization: readonly (DependencyOrganizationClaim & { readonly omittedOccurrences: number })[];
-    readonly organizationEvidence: readonly ProgramRecord[]; readonly omittedOrganizationEvidence: number; readonly omittedOrganizationClaims: number; readonly omittedEvidence: number };
+    readonly organizationEvidence: readonly DetailRecord[]; readonly omittedOrganizationEvidence: number; readonly omittedOrganizationClaims: number; readonly omittedEvidence: number };
 }
 
 const state = ({ applicability, availability, execution, materialization, reason }: Outcome): Outcome => ({ applicability, availability, execution, materialization, reason });
@@ -115,11 +118,11 @@ export function arrangeDependencyView(content: DependencyProjectionContent, ids:
     for (const edge of allEdges.slice(0, maximumEdges)) { selectedEdges.add(edge.id); displayed.add(edge.subject); displayed.add(edge.information.child); }
   }
   const maximumOccurrences = presentation.format === 'unicode' ? 20 : 50;
-  const sourceItems: NonNullable<QualifiedDependencyView['sourceDetail']>['items'][number][] = [];
-  const source = (subject: RecordId, role: NonNullable<QualifiedDependencyView['sourceDetail']>['items'][number]['role'], evidence: ProgramRecord) => {
-    if (!presentation.sourceDetail) return;
+  const sourceItems: NonNullable<QualifiedDependencyView['moreDetails']>['items'][number][] = [];
+  const source = (subject: RecordId, role: NonNullable<QualifiedDependencyView['moreDetails']>['items'][number]['role'], evidence: ProgramRecord) => {
+    if (!presentation.moreDetails) return;
     if (evidence.kind !== 'source-evidence') throw new Error('Expected captured source evidence');
-    sourceItems.push({ subject, role, evidence });
+    sourceItems.push({ subject, role, evidence: sourceAttribution(evidence) });
   };
   const occurrence = (id: RecordId): OccurrenceView => {
     const contentItem = content.occurrences[id]!;
@@ -127,7 +130,7 @@ export function arrangeDependencyView(content: DependencyProjectionContent, ids:
     source(id, 'request', contentItem.source);
     contentItem.targets.forEach(evidence => source(id, 'target', evidence));
     const { owner, target, mechanism, typeOnly, targetStatus, commonjs } = item;
-    return { id, owner, target, mechanism, typeOnly, targetStatus, commonjs, qualification: presentQualification(contentItem.context) };
+    return { id, owner, target, mechanism, typeOnly, targetStatus, commonjs, writtenSpecifier: contentItem.source.dependencyResolution?.writtenSpecifier ?? null, qualification: presentQualification(contentItem.context) };
   };
   const relationships: EdgeView[] = allEdges.filter(edge => selectedEdges.has(edge.id)).map(edge => {
     const organizationContent = organizationByRelationship.get(edge.id);
@@ -144,8 +147,8 @@ export function arrangeDependencyView(content: DependencyProjectionContent, ids:
         omittedOccurrences: Math.max(0, organization.information.occurrences.length - maximumOccurrences) } : null };
   });
   const maximumResults = presentation.format === 'unicode' ? 20 : 50;
-  // Structure summarizes non-edge requests; explicit source escape exposes their bounded records.
-  const requestIds = projection.subject === 'configured-project' && !presentation.sourceDetail ? [] : projection.nonEdgeRequests.slice(0, maximumResults);
+  // Structure summarizes non-edge requests; explicit additional detail exposes their bounded records.
+  const requestIds = projection.subject === 'configured-project' && !presentation.moreDetails ? [] : projection.nonEdgeRequests.slice(0, maximumResults);
   const requestResults = requestIds.map(occurrence);
   const recognitionCoverage = content.coverage.slice(0, maximumResults).map(contentItem => {
     const item = contentItem.record;
@@ -167,7 +170,7 @@ export function arrangeDependencyView(content: DependencyProjectionContent, ids:
     information: { ...claim.information, occurrences: claim.information.occurrences.slice(0, maximumOccurrences) },
     omittedOccurrences: Math.max(0, claim.information.occurrences.length - maximumOccurrences) }));
   const organizationEvidence = new Map<RecordId, ProgramRecord>();
-  if (presentation.sourceDetail) for (const claim of sourceOrganization.slice(0, 50)) for (const item of claim.occurrences.slice(0, maximumOccurrences)) {
+  if (presentation.moreDetails) for (const claim of sourceOrganization.slice(0, 50)) for (const item of claim.occurrences.slice(0, maximumOccurrences)) {
     for (const support of item.support) {
       organizationEvidence.set(support.record.id, support.record);
       organizationEvidence.set(support.context.id, support.context);
@@ -177,8 +180,11 @@ export function arrangeDependencyView(content: DependencyProjectionContent, ids:
     }
   }
   const limitations: string[] = [...dependencyLimitations,
+    'Resolution basis: checker-symbol means the analyzer linked the request to an identified module; configured-file-resolution means configured lookup located a file; exact-ambient-symbol means an exact named module declaration was found; none means no target correspondence was established.',
+    'Resolution modes esm and commonjs identify the configured ECMAScript or CommonJS module lookup rules, not runtime loading. Type-only means the request supplies compile-time descriptions, not an established runtime dependency.',
+    'Target status: resolved identifies a module in the discovered population; unresolved means lookup did not find a target; target-indeterminate means the requested target could not be determined; outside-population means a located target is outside that population.',
     'Dependency direction: a parent depends directly on a child. Roots are structural, not entry points or importance.',
-    'Re-exports only is a syntax property, not a barrel, API, purity, or safe-collapse claim.',
+    'Re-exports only means every substantive top-level instruction forwards exports from a named module. It does not establish an architectural facade, a public interface, absence of effects, or safety of removing the module boundary.',
     'Repository-layout labels compare all applicable occurrence endpoint placements: same-group means equal groups; into-descendants means a strict organization descendant; outward means outside the source group and its descendants.',
     'Variation labels preserve different established answers; unestablished organization is not a policy failure. Repository layout establishes no dependency policy or architectural violation.',
     'Generated handles are navigation cues; exact names and session-local Entity IDs retain their established meanings.'];
@@ -202,10 +208,10 @@ export function arrangeDependencyView(content: DependencyProjectionContent, ids:
       omittedOccurrences: relationships.reduce((sum, edge) => sum + edge.omittedOccurrences, 0),
       omittedRequestResults: projection.nonEdgeRequests.length - requestResults.length,
       omittedCoverageOutcomes: projection.coverage.length - recognitionCoverage.length, prunedComponents: rows.filter(row => row.pruned).length },
-    ...(presentation.sourceDetail ? { sourceDetail: { level: 'dependency-occurrences-and-organization-evidence' as const,
-      notice: 'Explicit source escape: captured source and organization evidence only; files are not reread.',
+    ...(presentation.moreDetails ? { moreDetails: { level: 'dependency-occurrences-and-organization-evidence' as const,
+      notice: 'Captured attribution and organization metadata; files are not reread. Locations do not explain program behavior.',
       items: sourceItems.slice(0, 100), omittedEvidence: Math.max(0, sourceItems.length - 100),
-      organization: boundedOrganization, organizationEvidence: [...organizationEvidence.values()].slice(0, 100),
+      organization: boundedOrganization, organizationEvidence: [...organizationEvidence.values()].slice(0, 100).map(detailRecord),
       omittedOrganizationEvidence: Math.max(0, organizationEvidence.size - 100), omittedOrganizationClaims: Math.max(0, sourceOrganization.length - 50) } } : {}),
   };
   return result;
@@ -262,7 +268,7 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
     lines.push('', 'Source-owned request results without edges');
     for (const [status, count] of Object.entries(view.summary.requestsWithoutEdges)) lines.push(`  ${status}: ${count}`);
     if (!Object.keys(view.summary.requestsWithoutEdges).length) lines.push((!view.projection.selection.outsidePopulation?.length && full(view.evaluations.dependencies) && full(view.evaluations.modules)) ? '  None in supported coverage.' : '  None materialized; evaluation is incomplete.');
-    for (const [index, item] of view.requestResults.entries()) lines.push(`  Request ${index + 1}: ${item.mechanism} · ${item.targetStatus}${item.typeOnly ? ' · type-only' : ''}`);
+    for (const [index, item] of view.requestResults.entries()) lines.push(`  Request ${index + 1}: ${inlineText(item.writtenSpecifier ?? '[requested name unavailable]')} · ${item.mechanism} · ${item.targetStatus}${item.typeOnly ? ' · type-only' : ''}`);
     lines.push('', 'Recognition-coverage outcomes (not recognized occurrences)');
     for (const [outcome, count] of Object.entries(view.summary.recognitionCoverage)) lines.push(`  ${outcome}: ${count}`);
     for (const [index, item] of view.recognitionCoverage.entries()) lines.push(`  Coverage ${index + 1}: ${item.outcome}${item.owner && modules.has(item.owner) ? ` · ${label(item.owner, false)}` : item.owner ? ' · owner omitted from this view' : ' · owner not established'}`);
@@ -270,26 +276,25 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
   }
   // Changes to this section or JSON source fields must stay aligned with
   // src/lib/source-disclosure.ts and test/source-disclosure.test.ts.
-  if (view.sourceDetail) {
-    lines.push('', 'SOURCE DETAIL — explicit source escape', view.sourceDetail.notice);
-    for (const item of view.sourceDetail.items) {
+  if (view.moreDetails) {
+    lines.push('', 'MORE DETAILS — attribution and implementation mappings', view.moreDetails.notice);
+    for (const item of view.moreDetails.items) {
       const source = item.evidence;
       const request = view.requestResults.findIndex(result => result.id === item.subject);
       const coverage = view.recognitionCoverage.findIndex(result => result.id === item.subject);
       lines.push(`  ${request >= 0 ? `Request ${request + 1}` : coverage >= 0 ? `Coverage ${coverage + 1}` : item.role}: ${inlineText(source.path)}${source.location.association === 'span' ? `:${source.location.from.line}:${source.location.from.column}` : ''}`);
-      if (source.location.association === 'span') lines.push(`    ${inlineText(source.location.excerpt.text)}${source.location.excerpt.omittedCharacters ? ` … ${counted(source.location.excerpt.omittedCharacters, 'character')} omitted` : ''}`);
       if (source.dependencyResolution) lines.push(`    ${source.dependencyResolution.status} · ${source.dependencyResolution.targetBasis} · ${source.dependencyResolution.mode} · target file: ${inlineText(source.dependencyResolution.resolvedFile ?? '(none)')}`);
     }
-    for (const claim of view.sourceDetail.organization) lines.push(`  Organization evidence: ${claim.information.classification ?? 'not established'} · ${counted(claim.information.occurrences.length, 'occurrence')} · ${counted(claim.information.occurrences.reduce((sum, item) => sum + item.pairs.length, 0), 'placement comparison')}; bounded captured support in JSON source detail.`);
-    for (const evidence of view.sourceDetail.organizationEvidence) {
+    for (const claim of view.moreDetails.organization) lines.push(`  Organization evidence: ${claim.information.classification ?? 'not established'} · ${counted(claim.information.occurrences.length, 'occurrence')} · ${counted(claim.information.occurrences.reduce((sum, item) => sum + item.pairs.length, 0), 'placement comparison')}; bounded captured support in JSON additional detail.`);
+    for (const evidence of view.moreDetails.organizationEvidence) {
       if (evidence.kind === 'repository-region') lines.push(`  Organization region: ${inlineText(evidence.path || '[repository root]')}`);
       if (evidence.kind === 'repository-artifact') lines.push(`  Organization artifact: ${inlineText(evidence.artifact.path)}`);
     }
-    lines.push(`  Source omissions: ${counted(view.sourceDetail.omittedEvidence, 'evidence record')} · ${counted(view.sourceDetail.omittedOrganizationClaims, 'organization claim')} · ${counted(view.sourceDetail.omittedOrganizationEvidence, 'organization evidence record')} · ${counted(view.sourceDetail.organization.reduce((sum, claim) => sum + claim.omittedOccurrences, 0), 'organization occurrence')}.`);
+    lines.push(`  Source omissions: ${counted(view.moreDetails.omittedEvidence, 'evidence record')} · ${counted(view.moreDetails.omittedOrganizationClaims, 'organization claim')} · ${counted(view.moreDetails.omittedOrganizationEvidence, 'organization evidence record')} · ${counted(view.moreDetails.organization.reduce((sum, claim) => sum + claim.omittedOccurrences, 0), 'organization occurrence')}.`);
   }
   lines.push('', 'Display', `  ${counted(view.display.omittedModules, 'module')} omitted · ${counted(view.display.omittedRelationships, 'relationship')} omitted · ${counted(view.display.prunedComponents, 'descent')} pruned`,
     `  ${counted(view.display.omittedOccurrences, 'supporting occurrence')} omitted · ${counted(view.display.omittedRequestResults, 'request result')} summarized/omitted · ${counted(view.display.omittedCoverageOutcomes, 'recognition outcome')} summarized/omitted`,
     '  Display bounds do not reduce analysis coverage.', '', 'Qualifications', ...view.limitations.map(item => `  ${item}`));
-  for (const code of new Set(view.qualifications.flatMap(context => context.diagnostics.map(item => item.code)))) lines.push(`  Encountered TypeScript diagnostic: TS${code}`);
+  lines.push(...diagnosticLines(view.qualifications, '  '));
   return `${lines.join('\n')}\n`;
 }

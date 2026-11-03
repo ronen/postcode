@@ -179,7 +179,7 @@ export function prepareExpansions(checker: ts.TypeChecker, modules: readonly Exp
         if (!doc) continue;
         const text = ts.getTextOfJSDocComment(doc.comment) ?? '';
         const tags = (doc.tags ?? []).map(tag => ({ name: tag.tagName.text,
-          text: `${ts.isJSDocParameterTag(tag) ? `${tag.name.getText()} ` : ''}${ts.getTextOfJSDocComment(tag.comment) ?? ''}`.trim() }));
+          text: `${ts.isJSDocParameterTag(tag) || ts.isJSDocSeeTag(tag) && tag.name ? `${tag.name!.getText()} ` : ''}${ts.getTextOfJSDocComment(tag.comment) ?? ''}`.trim() }));
         if (text || tags.length) found.set(`${doc.getSourceFile().fileName}:${doc.pos}`, { node: doc, text, tags });
       }
     }

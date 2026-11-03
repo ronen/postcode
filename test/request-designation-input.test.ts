@@ -14,7 +14,7 @@ import type { ViewRequest } from '../src/lib/requests.js';
 import type { ObservationBatch } from '../src/lib/observations.js';
 import type { RequestContext } from '../src/lib/request-reporting.js';
 
-const presentation = { format: 'json' as const, sourceDetail: false };
+const presentation = { format: 'json' as const, moreDetails: false };
 const base = { lens: 'organization', selector: null, presentation };
 async function fixture(t: TestContext, worker: boolean) {
   const root = temporaryDirectory(t, 'postcode-designation-input-');

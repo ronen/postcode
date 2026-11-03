@@ -45,7 +45,7 @@ test('unverifiable explicit boundaries refuse both CLI entry paths and later ret
   assert.equal(refused.operational?.operation, 'resolve generated-output boundary');
   const cli = await invokeCli(['--project', configPath], { checkout: root });
   assert.equal(cli.exit, 2); assert.equal(cli.stdout, ''); assert.deepEqual(cli.batches, []);
-  assert.match(cli.stderr, /Project open failed:\n  resolve generated-output boundary/);
+  assert.match(cli.stderr, /Project open failed:[\s\S]*resolve generated-output boundary/);
   assert.doesNotMatch(cli.stderr, /TS\d/);
   let shellError = '', shellOutput = '';
   const shell = await runCli(['shell', '--project', configPath], { cwd: root, checkout: root,
@@ -53,7 +53,7 @@ test('unverifiable explicit boundaries refuse both CLI entry paths and later ret
     sink: { async submit() { assert.fail('Opening refusal must not produce a view observation'); } },
   });
   assert.equal(shell, 2); assert.equal(shellOutput, '');
-  assert.match(shellError, /Project open failed:\n  resolve generated-output boundary/);
+  assert.match(shellError, /Project open failed:[\s\S]*resolve generated-output boundary/);
   unlinkSync(output); symlinkSync(path.join(root, 'first'), output);
   const options = { configPath, excludedOutputDirectories: [output] };
   const opening = openSession(options); options.excludedOutputDirectories.length = 0;

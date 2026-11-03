@@ -16,7 +16,7 @@ import { captureCatalog, defaultCatalog } from '../src/lib/request-catalog.js';
 import { presentations, settlePresentation, validatePresentationContent } from '../src/lib/presentation-contracts.js';
 import type { PresentationDefinition } from '../src/lib/presentation-contracts.js';
 
-const json = { format: 'json' as const, sourceDetail: false };
+const json = { format: 'json' as const, moreDetails: false };
 const interpretation = presentations.find(item => item.contract === 'investigation')!;
 function fixture(t: TestContext) {
   const root = temporaryDirectory(t, 'postcode-presentation-contracts-');
@@ -96,15 +96,15 @@ test('declared fallback preserves explicit format and source choices and explain
   const fallback = { ...interpretation, id: 'qualified-interpretation', default: false };
   const active = await session(t, [strict, fallback]);
   for (const format of ['json', 'unicode'] as const) {
-    const result = requireView(await active.execute({ lens: 'summarize', selector: 'entry', presentation: { format, sourceDetail: true } }));
+    const result = requireView(await active.execute({ lens: 'summarize', selector: 'entry', presentation: { format, moreDetails: true } }));
     assert.equal(result.view.schema, 'postcode-investigation-view/1-experimental');
     assert.equal(result.view.result!.unavailable!.kind, 'configuration-unavailable');
     assert.equal(result.view.presentation.format, format);
-    assert.equal(result.view.presentation.sourceDetail, true);
+    assert.equal(result.view.presentation.moreDetails, true);
     assert.equal(result.view.presentation.decision!.selected, fallback.id);
     assert.equal(result.view.presentation.decision!.changes.length, 1);
     assert.equal(result.view.presentation.decision!.criteria.precondition, 'qualified');
-    const retained = requireView(await active.execute({ kind: 'present', target: result.view.projection.id, presentation: { format, sourceDetail: true } }));
+    const retained = requireView(await active.execute({ kind: 'present', target: result.view.projection.id, presentation: { format, moreDetails: true } }));
     assert.equal(retained.view.projection.id, result.view.projection.id);
     assert.equal(retained.view.presentation.decision!.selected, fallback.id);
     assert.equal(retained.failed, false);
@@ -132,7 +132,7 @@ test('fallback cannot silently drop explicit format or source requirements', asy
   for (const restriction of [{ formats: ['unicode'] as const }, { source: 'none' as const }]) {
     const active = await session(t, [{ ...interpretation, precondition: 'complete-materialization', fallback: 'limited' },
       { ...interpretation, id: 'limited', default: false, ...restriction }]);
-    const report = requireResolution(await active.execute({ lens: 'summarize', selector: 'entry', presentation: { ...json, sourceDetail: true } }));
+    const report = requireResolution(await active.execute({ lens: 'summarize', selector: 'entry', presentation: { ...json, moreDetails: true } }));
     assert.equal(report.resolution.reason, 'presentation-unavailable');
     assert.equal(report.resolution.retainedAnswers.length, 1);
   }

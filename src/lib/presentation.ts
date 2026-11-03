@@ -1,3 +1,6 @@
+import { diagnosticLines } from './diagnostic-view.js';
+import { sourceAttribution } from './evidence-view.js';
+import type { SourceAttribution } from './evidence-view.js';
 import { answerIdentity, answerDisplay, answerLines, continuationLines } from './answer-presentation.js';
 import type { AnswerContext, AnswerDisplay } from './answer-presentation.js';
 import { documentationLabel, documentationLines, documentationNotice, presentDocumentation } from './documentation-view.js';
@@ -25,7 +28,7 @@ import type { Claim, ClaimContextRecord, EvaluationRecord, ExportClaim, ModuleCl
 
 export interface Presentation {
   readonly format: 'unicode' | 'json';
-  readonly sourceDetail: boolean;
+  readonly moreDetails: boolean;
 }
 
 export function presentationRequirements(_presentation: Presentation): readonly ModuleExpansion[] {
@@ -62,8 +65,8 @@ export interface QualifiedView extends AnswerDisplay {
     readonly modulesWithOmittedDocumentation: number;
     readonly collapsedQualifications: readonly { readonly handle: string; readonly contexts: readonly Qualification[] }[];
   };
-  readonly sourceDetail?: { readonly level: 'declaration-locations-and-excerpts'; readonly notice: string;
-    readonly items: readonly { readonly label: string; readonly module: RecordId; readonly subject: RecordId; readonly role: 'module' | 'export' | 'symbol' | 'documentation'; readonly association?: Documentation['association']; readonly claims: readonly RecordId[]; readonly evidence: readonly SourceEvidenceRecord[] }[] };
+  readonly moreDetails?: { readonly level: 'declaration-locations'; readonly notice: string;
+    readonly items: readonly { readonly label: string; readonly module: RecordId; readonly subject: RecordId; readonly role: 'module' | 'export' | 'symbol' | 'documentation'; readonly association?: Documentation['association']; readonly claims: readonly RecordId[]; readonly evidence: readonly SourceAttribution[] }[] };
 }
 
 /** Coordination preserves population-wide reference allocation independently of display bounds. */
@@ -88,9 +91,9 @@ export function arrangeModuleView(content: ModuleProjectionContent, entityIds: R
   validatePresentationContent({ contract: 'modules', value: content });
   const { projection, session } = content;
   const policy = moduleDisplayPolicy(projection.subject, presentation);
-  if (presentation.sourceDetail && !policy.source) throw new Error('Source detail requires selected module content');
+  if (presentation.moreDetails && !policy.source) throw new Error('More details require selected module content');
   const displayedClaims = new Map<RecordId, QualifiedRecord<Claim>>();
-  type SourceGroup = Omit<NonNullable<QualifiedView['sourceDetail']>['items'][number], 'evidence'>;
+  type SourceGroup = Omit<NonNullable<QualifiedView['moreDetails']>['items'][number], 'evidence'>;
   const sourceGroups = new Map<string, SourceGroup>();
   const sourceGroup = (group: Omit<SourceGroup, 'claims'>, claims: readonly QualifiedRecord<Claim>[]) => {
     const key = JSON.stringify([group.module, group.subject, group.role, group.association]);
@@ -149,9 +152,9 @@ export function arrangeModuleView(content: ModuleProjectionContent, entityIds: R
       omittedExports: listed.reduce((count, module) => count + module.omittedExports, 0),
       modulesWithOmittedDocumentation: listed.filter(module => module.omittedDocumentationInModule).length,
       collapsedQualifications: collapsed.map(module => ({ handle: module.handle, contexts: contextsByScope.get(module.id) ?? [] })) },
-    ...(presentation.sourceDetail ? { sourceDetail: {
-      level: 'declaration-locations-and-excerpts' as const,
-      notice: 'Source locations and bounded excerpts supporting displayed claims only. Module source files are listed without full-file excerpts. Range ends are exclusive; ↪ marks a wrapped source line.',
+    ...(presentation.moreDetails ? { moreDetails: {
+      level: 'declaration-locations' as const,
+      notice: 'Captured names and implementation locations supporting displayed claims. These references provide attribution, not an architectural explanation. Range ends are exclusive.',
       items: [...sourceGroups.values()].map(group => {
         const evidence = new Map<string, SourceEvidenceRecord>();
         for (const id of group.claims) {
@@ -163,7 +166,7 @@ export function arrangeModuleView(content: ModuleProjectionContent, entityIds: R
             evidence.set(JSON.stringify([record.path, record.start, record.length]), record);
           }
         }
-        return { ...group, evidence: [...evidence.values()] };
+        return { ...group, evidence: [...evidence.values()].map(sourceAttribution) };
       }),
     } } : {}),
   };
@@ -210,9 +213,7 @@ export function renderUnicode(view: QualifiedView, placement: 'standalone' | 'em
     for (const limitation of new Set(contexts.flatMap(context => context.limitations))) {
       if (!sharedLimitations.has(limitation)) lines.push(`${indent}Limitation: ${inlineText(limitation)}`);
     }
-    for (const code of new Set(contexts.flatMap(context => context.diagnostics.map(diagnostic => diagnostic.code)))) {
-      if (!sharedDiagnostics.has(code)) lines.push(`${indent}Encountered TypeScript diagnostic: TS${code}`);
-    }
+    lines.push(...diagnosticLines(contexts.map(context => ({ diagnostics: context.diagnostics.filter(item => !sharedDiagnostics.has(item.code)) })), indent));
   };
   let documentationDisplayed = false;
   let relationshipsDisplayed = false;
@@ -274,24 +275,23 @@ export function renderUnicode(view: QualifiedView, placement: 'standalone' | 'em
   }
   // Changes to this section or JSON source fields must stay aligned with
   // src/lib/source-disclosure.ts and test/source-disclosure.test.ts.
-  if (view.sourceDetail) {
-    lines.push('', 'SOURCE DETAIL — explicit source escape', ...wrapText(view.sourceDetail.notice, ''));
-    const items = view.sourceDetail.items;
+  if (view.moreDetails) {
+    lines.push('', 'MORE DETAILS — attribution and implementation mappings', ...wrapText(view.moreDetails.notice, ''));
+    const items = view.moreDetails.items;
     const itemsBySubject = new Map<string, typeof items[number][]>();
     const subjectKey = (module: RecordId, subject: RecordId) => JSON.stringify([module, subject]);
     for (const item of items) {
       const key = subjectKey(item.module, item.subject), bucket = itemsBySubject.get(key) ?? [];
       bucket.push(item); itemsBySubject.set(key, bucket);
     }
-    const key = (evidence: SourceEvidenceRecord) => JSON.stringify([evidence.path, evidence.start, evidence.length]);
-    const showEvidence = (evidence: readonly SourceEvidenceRecord[], indent: string) => {
+    const key = (evidence: SourceAttribution) => JSON.stringify([evidence.path, evidence.start, evidence.length]);
+    const showEvidence = (evidence: readonly SourceAttribution[], indent: string) => {
       for (const record of evidence) {
         const location = record.location;
+        if (record.compilerName) lines.push(`${indent}Implementation name: ${inlineText(record.compilerName)}`);
         if (location.association === 'file') lines.push(`${indent}Source file: ${inlineText(record.path)}`);
         else {
           lines.push(`${indent}${inlineText(record.path)}:${location.from.line}:${location.from.column}–${location.to.line}:${location.to.column}`);
-          lines.push(...wrapText(location.excerpt.text, `${indent}  `, 88, `${indent}  ↪ `));
-          if (location.excerpt.omittedCharacters) lines.push(`${indent}  … ${location.excerpt.omittedCharacters} source character(s) omitted.`);
         }
       }
     };
@@ -343,9 +343,9 @@ export function renderUnicode(view: QualifiedView, placement: 'standalone' | 'em
       : selection.populationEstablished ? exportsComplete.length === 0 ? '  Module membership established by TypeScript analysis.'
         : '  Module membership established by TypeScript analysis; export information is qualified by the capability states above.'
         : '  Displayed information is derived by TypeScript analysis; module population is not established.',
-      '  Coverage: external-module SourceFiles and visible named ambient modules; other compiler module categories are not established.');
+      `  ${moduleLimitations.population}`);
   } else for (const guarantee of new Set(projectContexts.map(context => context.guarantee))) lines.push(`  ${inlineText(guarantee)}`);
-  for (const code of sharedDiagnostics) lines.push(`  Encountered TypeScript diagnostic: TS${code}`);
+  lines.push(...diagnosticLines(projectContexts, '  '));
   const representedLimitations = view.analysis ? new Set<string>(Object.values(moduleLimitations)) : new Set<string>();
   const extraLimitations = [...sharedLimitations].filter(limitation => !representedLimitations.has(limitation));
   if (view.analysis || extraLimitations.length) {

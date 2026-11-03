@@ -1,0 +1,25 @@
+Product-design reconciliation verification — 2026-11-03
+
+Runtime: Node v26.11.0; npm 11.20.0; TypeScript 6.0.3
+
+After the host reboot, archived JSON and fixture SHA-256 hashes were checked successfully. No old test process remained. The unconfirmed interrupted run is not counted as verification.
+
+Commands completed successfully:
+  npm run build
+  npm run check
+  node --test --test-concurrency=2 _build/test/*.test.js
+  git diff --check
+
+Full regression result (two workers to reduce resource pressure):
+ℹ tests 617
+ℹ suites 0
+ℹ pass 617
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 359508.649168
+
+Real investigator: summarize, explain, decompose and examine completed with accepted results, totaling 18 accounts. All three runs, including unavailable and authorization-failure outcomes, are retained beside assessment.md.
+
+Changed-document local link targets were checked; none were missing. No foundation, dev, notes, application specification, core-concepts or architectural-constraints files were changed.

@@ -1,3 +1,4 @@
+import type { DisplayedResult } from './feedback.js';
 import { initiation } from './work-attribution.js';
 import type { WorkReport } from './work-attribution.js';
 import { normalizeRequest } from './requests.js';
@@ -38,7 +39,7 @@ export async function publishCommand(session: {
   check(): void | Promise<void>;
   usage?(): InvestigationUsageReport;
   work?(): WorkReport | undefined;
-}, request: ViewRequest, supplied: unknown, configPath: string, command: number, output: Output, sink: ObservationSink): Promise<number> {
+}, request: ViewRequest, supplied: unknown, configPath: string, command: number, output: Output, sink: ObservationSink, onDisplayed?: (result: DisplayedResult) => void): Promise<number> {
   let published: ExecutedRequest | undefined, stdout = '', stderr = '';
   let context: RequestContext | undefined;
   let status: 'completed' | 'refused' | 'invalidated' | 'failed' | 'defect' | 'interrupted' = 'completed', code = 0;
@@ -55,6 +56,7 @@ export async function publishCommand(session: {
       : error instanceof AnalysisFailure ? 'failed' : 'defect';
     code = status === 'interrupted' ? 130 : status === 'invalidated' ? 2 : error instanceof AnalysisFailure ? 3 : 1;
     stderr = `${status === 'failed' ? 'Analysis failed: ' : status === 'defect' ? 'Internal failure: ' : ''}${inlineText(error instanceof Error ? error.message : 'unknown defect')}\n`;
+    stderr += status === 'failed' ? 'The requested analysis did not complete. Check the reported service or evidence-access problem and retry; direct a coding agent to repair project issues.\n' : status === 'defect' ? 'PostCode could not complete this command. Preserve the diagnostic and ask a coding agent to investigate; reopen the shell before continuing.\n' : '';
     output.stderr(stderr);
   }
   const usage = session.usage?.();
@@ -69,9 +71,11 @@ export async function publishCommand(session: {
   if (work && work.context.request.kind !== 'operation') context = work.context as RequestContext;
   const produced = published?.kind === 'view' ? observationBatch(published.view, stdout,
     { configPath, repositoryRoot: published.repositoryRoot, methods: published.methods }, published.context, command, published.resolution) : undefined;
-  await submitObservation(sink, commandObservation(session.id, command, { supplied: context?.request.kind === 'rejected'
+  const batch = commandObservation(session.id, command, { supplied: context?.request.kind === 'rejected'
     ? { representation: 'omitted', reason: 'Raw invocation omitted; see rejected request input and representation limits.' } : supplied, context: published?.context ?? context, configPath }, status, stdout, stderr, produced, usage,
-    published && published.kind !== 'view' ? { kind: published.kind === 'resolution' ? 'resolution-result' : 'usage-report', value: published.report } : undefined, published?.context ?? context, work), output);
+    published && published.kind !== 'view' ? { kind: published.kind === 'resolution' ? 'resolution-result' : 'usage-report', value: published.report } : undefined, published?.context ?? context, work);
+  if (published && published.kind !== 'usage') onDisplayed?.(structuredClone({ command: batch.command, records: batch.records, events: batch.events }));
+  await submitObservation(sink, batch, output);
   return code;
 }
 
@@ -82,5 +86,5 @@ export function openFailureText(failure: {
   const detail = failure.operational
     ? `  ${inlineText(failure.operational.operation)}: ${inlineText(failure.operational.path)}: ${inlineText(failure.operational.reason)}`
     : failure.diagnostics.map(item => `  TS${item.code}: ${inlineText(item.message)}`).join('\n');
-  return `Project open failed:\n${detail}\n`;
+  return `Project open failed: the configuration could not be read or accepted${failure.diagnostics.some(item => item.code === 1005) ? ' because it is malformed' : ''}. Investigation cannot start. Ask a coding agent to repair the configuration or access problem, then retry with --project.\nAnalyzer/access details:\n${detail}\n`;
 }

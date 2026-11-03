@@ -30,7 +30,7 @@ async function temporary(run: (root: string, configPath: string) => void | Promi
   } finally { rmSync(root, { recursive: true, force: true }); }
 }
 
-const request = { lens: 'modules' as const, selector: null, presentation: { format: 'json' as const, sourceDetail: false } };
+const request = { lens: 'modules' as const, selector: null, presentation: { format: 'json' as const, moreDetails: false } };
 
 test('dependency acquisition adds captured inputs while completed core work and earlier support remain unchanged', async () => {
   await temporary(async (root, configPath) => {
@@ -156,7 +156,7 @@ test('publication observes invalidation before and after output without fabricat
           assert.equal(observed!.records.find(record => record.kind === 'rendered-output')!.value, output);
           assert.ok(observed!.events.some(event => event.type === 'session-invalidated'));
           assert.equal(observed!.events.some(event => event.type === 'view-produced'), after);
-          assert.equal(observed!.events.some(event => event.type === 'source-escape'), false);
+          assert.equal(observed!.events.some(event => event.type === 'attribution-disclosed'), false);
         assert.equal(code, 2);
         assert.match(error, /invalidated/);
         assert.equal(output.length > 0, after);

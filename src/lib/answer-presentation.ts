@@ -41,7 +41,7 @@ export function answerContinuations(target: RecordId, context: AnswerContext, pr
     readonly nextPage?: number | null | undefined; readonly unknownContinuation?: boolean }): readonly AnswerContinuation[] {
   if (context.referenceLifetime === 'command') return [];
   const request: Extract<NormalizedRequest, { kind: 'present' }> = { kind: 'present', target,
-    presentation: { format: presentation.format, sourceDetail: presentation.sourceDetail,
+    presentation: { format: presentation.format, moreDetails: presentation.moreDetails,
       ...(paging.after === undefined ? {} : { after: paging.after }),
       ...(paging.revisionPage === undefined ? {} : { revisionPage: paging.revisionPage }) }, referenceLifetime: 'session' };
   const entries: AnswerContinuation[] = [];
@@ -58,7 +58,7 @@ export function continuationCommand(entry: AnswerContinuation, answerReference: 
   const choices = entry.request.presentation;
   return [`present @${answerReference}`, ...(choices.after ? [`--after @${choices.after}`] : []),
     ...(choices.revisionPage !== undefined && choices.revisionPage !== 1 ? [`--revision-page ${choices.revisionPage}`] : []),
-    ...(choices.sourceDetail ? ['--source-detail'] : []), ...(choices.format === 'json' ? ['--json'] : [])].join(' ');
+    ...(choices.moreDetails ? ['--more-details'] : []), ...(choices.format === 'json' ? ['--json'] : [])].join(' ');
 }
 export function continuationLines(view: AnswerDisplay): string[] {
   if (!view.answerReference) return [];

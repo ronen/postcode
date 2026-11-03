@@ -40,7 +40,7 @@ export function buildIdentity(build) {
 
 export function commands(selector) {
   return [['modules'], ['organization', 'project'], ['organization', 'repository'], ['inspect', selector],
-    ['inspect', selector, '--source-detail'], ['dependencies'], ['dependencies', '--source-detail'],
-    ['children', selector, '--source-detail'], ['parents', selector, '--source-detail']]
+    ['inspect', selector, '--more-details'], ['dependencies'], ['dependencies', '--more-details'],
+    ['children', selector, '--more-details'], ['parents', selector, '--more-details']]
     .flatMap(command => [command, [...command, '--json']]);
 }

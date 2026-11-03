@@ -1,4 +1,4 @@
-import { diagnosticLookup } from './diagnostics.js';
+import { capturedDiagnostic, diagnosticLookup } from './diagnostics.js';
 import ts from 'typescript';
 import { identityReference, compare, methods, recordId } from '../identity.js';
 import type { ClaimContextRecord, ModuleDiscoveryFacet, ProgramRecord, RecordId, SessionId, SourceEvidenceRecord } from '../records.js';
@@ -154,7 +154,7 @@ export function prepareDependencies(program: ts.Program, host: ts.CompilerHost, 
     const context = (key: unknown, scope: RecordId | 'configured-project', sources: readonly RecordId[],
       sourceFiles: readonly ts.SourceFile[]): RecordId => {
       const relevant = selectDiagnostics(sourceFiles)
-        .map(diagnostic => ({ code: diagnostic.code, category: ts.DiagnosticCategory[diagnostic.category]!.toLowerCase() }))
+        .map(capturedDiagnostic)
         .sort((a, b) => a.code - b.code || compare(a.category, b.category));
       const record: ClaimContextRecord = {
         kind: 'claim-context', id: recordId(session, 'dependency-context', key), session, method, scope,
