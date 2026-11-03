@@ -1,6 +1,6 @@
 # Application Specification
 
-> **Draft replacement for `docs/app-specification.md` — not adopted.** This complete document is the working application-specification proposal. Other reconciliation drafts have not yet been updated to reflect the latest discussion. Links use intended canonical destinations.
+> **Draft replacement for `docs/app-specification.md` — not adopted.** This complete document is the working application-specification proposal. Links use intended canonical destinations.
 
 <a id="role-and-scope"></a>
 ## Role and scope
@@ -313,6 +313,6 @@ Repository content derived from PostCode output does not independently corrobora
 <a id="scope-and-future-refinement"></a>
 ## Scope and future refinement
 
-Initial delivery may implement only part of this design. Keep the current [capability reference](capability-reference.md), status, and interface documentation accurate; preserve existing disclosed conformance gaps until separately resolved. Adoption of this specification changes no runtime schema, command, record identity, or existing observation. The human output boundary and inadequacy feedback have [identified conformance gaps](decisions/human-facing-architectural-representations.md#adoption-and-conformance); adoption does not establish implemented conformance.
+Initial delivery may implement only part of this design. Keep the current [capability reference](capability-reference.md), status, and interface documentation accurate; preserve existing disclosed conformance gaps until separately resolved. Adoption of this specification changes no runtime schema, command, record identity, or existing observation. The [reconciliation plan](plans/product-design-reconciliation.md#implementation-specification) includes the implementation and verification required for the supported application to conform to the human output boundary and inadequacy-feedback requirements. These are required reconciliation work, not deferred backlog candidates; adoption alone does not establish implemented conformance.
 
 Accumulated architectural understanding is a required capability of the intended application; its UX and supporting architecture remain unresolved, and this specification does not claim that the capability is implemented. Further UX decisions may select richer workspace context, specialized workspace kinds, or a particular initial View. Continuity across program changes and application restarts needs later requirements and lifecycle design. General multi-state analysis, live refresh, shared-context protocols, resource-policy mechanisms, and new language or Lens families each require appropriately scoped work. Their possible future role is not authorization to construct speculative infrastructure now.

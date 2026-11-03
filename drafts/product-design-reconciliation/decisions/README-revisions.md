@@ -14,4 +14,4 @@ Append “— partially superseded; see the record’s heading mappings.” to t
 - [Investigator execution and evidence access](investigator-execution-and-evidence-access.md)
 - [Qualified construction under the request model](qualified-construction-under-the-request-model.md)
 
-The other affected records already have partial-supersession annotations; preserve them. Do not remove still-accepted records or rewrite the lifecycle guidance.
+The other affected records, including [Initial observation recording decisions](initial-observation-recording-decisions.md), already have partial-supersession annotations; preserve them. Do not remove still-accepted records or rewrite the lifecycle guidance.

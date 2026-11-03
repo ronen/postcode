@@ -14,7 +14,7 @@ Supersedes:
 
 ## Context
 
-The adopted design permits accumulating partial, qualified architectural understanding across investigations. The present prose-only Investigram definition unnecessarily prevents considering structured content as one realization. Existing fixed composition, subject association, immutable retention, evidence and replacement mechanisms are plausible foundations; that does not establish that a particular schema or working-account design will be useful.
+The adopted foundation permits accumulating partial, qualified architectural understanding across investigations, and the application specification requires that capability while leaving its UX and supporting architecture unresolved. The present prose-only Investigram definition unnecessarily prevents considering structured content as one realization. Existing fixed composition, subject association, immutable retention, evidence and replacement mechanisms are plausible foundations; that does not establish that a particular schema or working-account design will be useful.
 
 <a id="permit-structured-interpretation"></a>
 ## Permit structured interpretation without selecting an account model
@@ -51,6 +51,6 @@ The selected generalization permits, but does not require, structured content. E
 
 ## Adoption and conformance
 
-Update the Investigram and interpretation-content definitions, related contracts and application permission together with this decision. The current prose contracts, acceptance, context delivery and renderers remain a conforming subset of the broadened content definition, subject to the semantic requirement that human understanding not depend on source-language literacy. Their lack of structured content is a capability gap, not a newly introduced conformance defect.
+Update the Investigram and interpretation-content definitions and related application contracts together with this decision. The current prose contracts, acceptance, context delivery and renderers remain a conforming subset of the broadened content definition, subject to the semantic requirement that human understanding not depend on source-language literacy. Their lack of structured content is a capability gap, not a newly introduced conformance defect.
 
 Retain current transient Session limits. Retention and follow-up across successive investigations in one Session provide mechanisms for accumulated understanding, not a demonstration that its intended UX and supporting architecture are complete. Restart persistence, changed-program continuity and cross-session account reuse remain unsupported. Those require lifecycle, basis and reference/correspondence decisions before implementation, not as a prerequisite to a bounded same-Session exploration. Follow the [architectural-account exploration candidate](../backlog.md#explore-architectural-accounts-through-journeys). The human-understanding and evidence-boundary obligations apply regardless of the content form eventually chosen.
