@@ -150,3 +150,24 @@ core analysis and retention support. Representative content and manual examples
 can expose those requirements before implementation; mark assumptions separately
 from actual PostCode results. No GUI implementation, universal account schema,
 fixed taxonomy, or implementation-plan breakdown is selected by this note.
+
+## Follow-on sketch assumptions
+
+The subsequent discussion allows a useful partial/tentative initial framing and
+perspectives conceptually available from the start, leaving lazy computation and
+command discovery out of the first sketch. Begin at the issue with surrounding
+context available; a top-level start is not compulsory. Contexts are provisional
+UX places to return to, with perspectives across them; their mapping to existing
+application concepts is unresolved. Surrounding architectural relationships are
+distinct from navigation history, which is supporting UX unless the episode makes
+it consequential.
+
+The human proposed trying architectural operations without unrestricted
+conversation as an exercise. Discover the basic vocabulary through the existing
+dialogue rather than choosing it in advance. Assume the human can issue available
+commands and select offered targets, while remaining unfamiliar with Cockatiel.
+Record unexpressible intentions and capability gaps before inventing new commands.
+The [first operations sketch](cockatiel-conceptual-operations-sketch.md) carries
+this out with concrete illustrative answers and an explicit account of its limits.
+Contextual conversation remains a possible product interaction; this experiment
+does not reject it or establish command-only sufficiency.
