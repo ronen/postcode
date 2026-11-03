@@ -30,11 +30,9 @@ Substantive implementation follows the [task protocol's pull-request requirement
 <a id="pull-request-descriptions"></a>
 ## Pull Request Descriptions
 
-Write pull request descriptions for a reader who needs to understand why the PR exists and what it accomplishes. Lead with the problem or purpose and the resulting behavior. Briefly state relevant verification and any material limitation, risk, or unexpected scope.
+Keep the PR description concise and proportionate to the change. Explain its purpose and what it accomplishes, including material limitations or risks. Describe the resulting change; omit implementation history and workflow status, including review progress and readiness for closure or merge. Update it only when its substantive content changes, not as the workflow advances.
 
-Keep the description proportionate to the change. A small PR may need only a short paragraph; a substantial one may benefit from a few bullets or sections. Summarize the final result rather than recounting implementation and review history.
-
-Link to plans, decisions, validation reports, or review records when their detail is useful. Do not duplicate those records or turn the description into a reviewer prompt unless the human explicitly requests that. Update the description when the scope changes so it continues to describe the PR as a whole.
+Link to plans, decisions, validation reports, or review records when their detail is useful. Do not duplicate those records or turn the description into a reviewer prompt unless the human explicitly requests that.
 
 ## Disposable Scratch Material
 

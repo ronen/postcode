@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
  */
 const namespace = /^session:[a-f0-9-]{36}(?=:|$)/;
 const references = new Set([
-  'id', 'session', 'claim', 'subject', 'context', 'inputs', 'retryBasis', 'scope', 'evidence', 'basis',
+  'mechanical', 'id', 'session', 'claim', 'subject', 'context', 'inputs', 'retryBasis', 'scope', 'evidence', 'basis',
   'modules', 'contexts', 'claims', 'evaluations', 'evaluation', 'moduleEvaluation',
   'dependencyEvaluation', 'organizationEvaluation', 'repository', 'projection', 'moduleProjection',
   'module', 'symbol', 'origin', 'via', 'assertion', 'target', 'owner', 'parent', 'child',
@@ -76,6 +76,7 @@ function normalizeRendered(text: string, session?: string): string {
   // Unicode prints the namespace in unindented session headings (including embedded module detail). Literal
   // evidence in labels/documentation is never substituted, even if it resembles it.
   const producer = session ?? `session:${text.match(/^Session ([a-f0-9-]{36})$/m)?.[1]}`;
-  return text.replace(/^Session ([a-f0-9-]{36})$/gm, (heading, uuid: string) =>
+  const normalizedAnswers = text.replace(/^(Answer: (?:@answer-[a-f0-9]+ · )?)(session:[a-f0-9-]{36})(:[^\n]+)$/gm, (line, label: string, id: string, suffix: string) => id === producer ? `${label}session:normalized${suffix}` : line);
+  return normalizedAnswers.replace(/^Session ([a-f0-9-]{36})$/gm, (heading, uuid: string) =>
     producer === `session:${uuid}` ? 'Session normalized' : heading);
 }

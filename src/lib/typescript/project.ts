@@ -1,6 +1,6 @@
 import { workState, recordExpansionWork } from '../work-attribution.js';
 import type { WorkScope } from '../work-attribution.js';
-import { diagnosticLookup } from './diagnostics.js';
+import { capturedDiagnostic, diagnosticLookup } from './diagnostics.js';
 import { outputBoundary, OutputBoundaryFailure } from '../output-boundary.js';
 import type { RunGit } from '../git-execution.js';
 import { moduleLimitations } from '../qualification-policy.js';
@@ -342,7 +342,7 @@ export async function openTypeScriptProject(options: ProjectOptions, runGit?: Ru
         return detail.id;
       };
       const qualifications = (sourceFiles: readonly ts.SourceFile[], projectWide: boolean) => encountered(sourceFiles, projectWide)
-        .map(diagnostic => ({ code: diagnostic.code, category: ts.DiagnosticCategory[diagnostic.category]!.toLowerCase() }))
+        .map(capturedDiagnostic)
         .sort((a, b) => a.code - b.code || compare(a.category, b.category));
       const makeContext = (scope: 'configured-project' | RecordId, evidenceIds: readonly RecordId[], sourceFiles: readonly ts.SourceFile[]): RecordId => {
         const relevant = qualifications(sourceFiles, scope === 'configured-project');

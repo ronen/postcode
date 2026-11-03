@@ -26,6 +26,10 @@ Follow the conventions in [`dev/process-conventions.md`](dev/process-conventions
 
 Material under [`notes/`](notes/README.md) is durable but non-permanent and non-governing. Use it only as exploratory context, not as authority. Do not add, materially revise, move, or delete notes without explicit human direction.
 
+## Application Specification
+
+Read and follow [`docs/app-specification.md`](docs/app-specification.md) for intended application behavior and high-level design. Prepare changes only under explicit human direction during design or planning; implementing agents report gaps or contradictions rather than modifying it. Consequential changes require accepted decisions. Follow the [specification revision guidance](dev/workflow.md#application-specification).
+
 ## Governing Architecture
 
 Read and follow the governing terminology in [`docs/core-concepts.md`](docs/core-concepts.md), the binding rules in [`docs/architectural-constraints.md`](docs/architectural-constraints.md), and the accepted decisions relevant to the work. Substantive changes to either governing document require explicit human agreement and a corresponding accepted decision record.

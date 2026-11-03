@@ -27,7 +27,7 @@ export interface InvestigationProjectionContent {
 
 /** Resolve fixed references only. Neither later evaluations nor new associations
  * can change this content; source held here is not yet disclosed by a View. */
-export function resolveInvestigationContent(store: ProgramRecordStore, projection: InvestigationSelectionProjection): InvestigationProjectionContent {
+export function resolveInvestigationContent(store: Pick<ProgramRecordStore, 'get'>, projection: InvestigationSelectionProjection): InvestigationProjectionContent {
   const retained = store.get(projection.id);
   if (retained.kind !== 'investigation-selection-projection') throw new Error('Expected retained investigation selection');
   projection = retained;

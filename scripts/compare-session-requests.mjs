@@ -16,12 +16,12 @@ for (const fixture of fixtures) {
       ...['inspect', 'children', 'parents'].map(lens => ({ lens, selector, reference: true, detail: true }))]
       .flatMap(command => ['json', 'unicode'].map(format => ({ lens: command.lens, selector: command.selector ?? null,
         ...(command.reference ? { reference: true } : {}),
-        ...(command.subject ? { subject: command.subject } : {}), presentation: { format, sourceDetail: command.detail ?? false } })));
+        ...(command.subject ? { subject: command.subject } : {}), presentation: { format, moreDetails: command.detail ?? false } })));
     async function execute(session, command) {
       if (command.reference) {
         // Resolve a compact reference in its own producing session. Never carry a
         // spelling from another session, even when the ordinary fixtures agree.
-        const inventory = await session.execute({ lens: 'modules', selector: null, presentation: { format: 'json', sourceDetail: false } });
+        const inventory = await session.execute({ lens: 'modules', selector: null, presentation: { format: 'json', moreDetails: false } });
         const matches = inventory.view.modules.filter(module => module.name === command.selector || module.handle === command.selector);
         assert.equal(matches.length, 1, `${fixture}: reference selection requires one known module`);
         command = { ...command, selector: matches[0].entityId };

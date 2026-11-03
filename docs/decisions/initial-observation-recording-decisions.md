@@ -9,6 +9,8 @@ Superseded in part:
 - [Submit self-contained, invocation-scoped observation batches](#submit-self-contained-invocation-scoped-observation-batches) is replaced by [Command-scoped observations with session correlation](transient-analysis-sessions.md#command-scoped-observations-with-session-correlation).
 - [Record normal view production automatically](#record-normal-view-production-automatically) is replaced by [Command-scoped observations with session correlation](transient-analysis-sessions.md#command-scoped-observations-with-session-correlation).
 
+- [Defer contemporaneous note capture](#defer-contemporaneous-note-capture) is replaced by [Initial feedback interaction](human-facing-architectural-representations.md#initial-feedback-interaction). The replacement includes the [feedback observation contract](human-facing-architectural-representations.md#feedback-observations).
+
 ## Context
 
 The adopted product design requires PostCode to support automatic observation of

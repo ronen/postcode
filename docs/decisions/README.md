@@ -62,6 +62,11 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 <a id="accepted-decisions"></a>
 ## Accepted decisions
 
+- [Human-facing architectural representations](human-facing-architectural-representations.md)
+- [Allow structured investigram content](structured-investigram-content.md)
+
+- [Present exact retained answers independently of fresh selection](exact-retained-answer-presentation.md)
+
 - [Compact interface attribution and complete operational results](compact-attribution-and-complete-results.md)
 - [Separate research concepts from application specification](application-specification-boundaries.md)
 
@@ -70,8 +75,8 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 - [Private investigator reference transport](investigator-reference-transport.md)
 
 - [Investigation operations and lenses](investigation-operations-and-lenses.md)
-- [Investigrams and progressive investigation](investigrams-and-progressive-investigation.md)
-- [Investigator execution and evidence access](investigator-execution-and-evidence-access.md)
+- [Investigrams and progressive investigation](investigrams-and-progressive-investigation.md) — partially superseded; see the record’s heading mappings.
+- [Investigator execution and evidence access](investigator-execution-and-evidence-access.md) — partially superseded; see the record’s heading mappings.
 - [Facets for subjects](facets-for-subjects.md)
 - [Reference lifetime disclosure](reference-lifetime-disclosure.md)
 - [Transient analysis sessions](transient-analysis-sessions.md) — partially superseded; see the record’s heading mappings.

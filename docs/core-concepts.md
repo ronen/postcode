@@ -68,7 +68,7 @@ A conceptual facet describes the subject in terms useful to the investigation. A
 
 **Evidence** is information or material used to support or assess a claim. Sources include program text and structure, recorded documentation and history, tests, and runtime observations. Evidence can also bear against an explanation. Its relevance and what it establishes depend on the claim and the method used to assess it.
 
-Evidence is distinct from the conclusion drawn from it. A source reference identifies supporting material; it is not itself a guarantee that the material establishes the claim. Source evidence includes implementation mappings and locations, which are different from conceptual entity names or labels.
+Evidence is distinct from the conclusion drawn from it. A source reference identifies supporting material; it is not itself a guarantee that the material establishes the claim. Source evidence includes implementation mappings and locations, which are different from conceptual entity names or labels. Source acquisition and agent access are distinct from human presentation. Human-facing attribution, intelligible source-derived assertions and implementation mappings preserve provenance and epistemological status without requiring source-language literacy; captured source can remain available through defined machine evidence interfaces. [[Human output boundary](decisions/human-facing-architectural-representations.md#human-output-boundary)]
 
 ### Claim context
 
@@ -179,11 +179,17 @@ Otherwise identical qualified answers have repeatable logical identity within th
 
 ### Investigram
 
-*[decision: [Investigrams and progressive investigation](decisions/investigrams-and-progressive-investigation.md#represent-retained-interpretation-as-investigrams)]*
+*[decision: [Allow structured investigram content](decisions/structured-investigram-content.md#permit-structured-interpretation)]*
 
-An **Investigram** is an immutable, addressable artifact of program investigation containing a qualified interpretation in prose, with referent information, evidence context, and provenance. Its provenance identifies the operation and selected subject that produced it. It may contain multiple related claims.
+An **Investigram** is an immutable, addressable artifact of program investigation containing a qualified interpretation. It includes the following information:
 
-Referent information describes what the interpretation concerns in its program context and may include references to specific subjects. A referent may span entities or identify captured source. Investigrams can be associated with the subjects they describe for subsequent inspection and investigation. [[Subject associations](decisions/investigrams-and-progressive-investigation.md#associate-investigrams-with-subjects-and-select-retained-results)]
+- <a id="interpretation-content"></a>**Interpretation content** — the substantive content of the interpretation. It may contain multiple related [claims](#claim), expressed in prose, structured content, or a combination, including prose within a structure.
+- **Referent information** — what the interpretation concerns in its program context. It may include references to specific [subjects](#subject); a referent may span entities or identify captured source.
+- **Evidence context** — the supporting [evidence](#evidence) and its relationship to the interpretation's claims.
+- **Provenance** — the operation and selected subject that produced the investigram, together with its originating program context and supporting method.
+- **Qualifications** — the claims' [Claim context](#claim-context), including evidence attribution, provenance and method, scope, epistemological status or guarantee, and limitations. Qualifications remain attributable to the claims or portions they qualify; they need not apply uniformly to all content.
+
+Investigrams can be associated with the subjects they describe for subsequent inspection and investigation. [[Subject associations](decisions/investigrams-and-progressive-investigation.md#associate-investigrams-with-subjects-and-select-retained-results)]
 
 An investigram and its subordinate investigrams form a fixed composition tree, which may have multiple levels. A subsequent investigation produces a separate root whose provenance identifies the investigram selected as its subject. Composition describes the parts of one result; investigation provenance connects separate results through their subjects. Neither describes the program's structure by itself. [[Composition and investigation provenance](decisions/investigrams-and-progressive-investigation.md#distinguish-fixed-composition-from-investigation-provenance)]
 
@@ -232,4 +238,4 @@ The initial model does not require a permanent root subject, name, formal task, 
 
 An **Expansion** exposes additional detail within a presentation. A **standard expansion** is related information defined for a kind of subject that a presentation can include as inline detail without applying another lens. Effective exported-symbol relationships and associated in-source documentation assertions are initial module-entity examples. Module composition and a dependency relationship's organization context are examples added by the module-dependency slice.
 
-Standard expansions concern the subject kind's presentation semantics, independently of the Lens that selected the subject. A source-detail expansion discloses supporting implementation evidence. Exposing another Lens's answer may add its Projection to a coordinating Presentation or embed another View. Requesting that answer goes through Evaluation and core construction; presenting an already supplied result does not require reevaluation. Inline placement alone does not make an additional Lens question a standard expansion. Dependency children and dependency parents, for example, remain separately meaningful Lens questions rather than standard module expansions. [[Coordinated expansion](decisions/coordinated-views-and-qualified-results.md#keep-evaluation-and-qualified-construction-independent-of-presentation)]
+Standard expansions concern the subject kind's presentation semantics, independently of the Lens that selected the subject. Supporting implementation detail can include evidence attribution and mappings, subject to the human output boundary. [[Human output boundary](decisions/human-facing-architectural-representations.md#human-output-boundary)] Exposing another Lens's answer may add its Projection to a coordinating Presentation or embed another View. Requesting that answer goes through Evaluation and core construction; presenting an already supplied result does not require reevaluation. Inline placement alone does not make an additional Lens question a standard expansion. Dependency children and dependency parents, for example, remain separately meaningful Lens questions rather than standard module expansions. [[Coordinated expansion](decisions/coordinated-views-and-qualified-results.md#keep-evaluation-and-qualified-construction-independent-of-presentation)]

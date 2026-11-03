@@ -168,8 +168,8 @@ export interface ClaimContextRecord extends RecordContext {
   readonly status: 'mechanically-derived';
   readonly guarantee: string;
   readonly limitations: readonly string[];
-  /** Codes are conceptual qualification; compiler messages/locations remain source detail. */
-  readonly diagnostics: readonly { readonly code: number; readonly category: string }[];
+  /** Original analyzer messages and locations qualify the established information. */
+  readonly diagnostics: readonly { readonly code: number; readonly category: string; readonly message?: string; readonly path?: string; readonly line?: number; readonly column?: number }[];
 }
 
 export interface EvaluationState {
@@ -223,5 +223,7 @@ export interface ProgramRecordStore {
   evaluations(session: SessionId): readonly EvaluationRecord[];
   investigations(session: SessionId): readonly InvestigationEvaluationRecord[];
   entityIds(ids: readonly RecordId[], kind: 'module' | 'group' | 'investigram'): ReadonlyMap<RecordId, string>;
+  answerIds(ids: readonly RecordId[]): ReadonlyMap<RecordId, string>;
+  boundAnswer(session: SessionId, reference: string): RecordId | undefined;
   boundEntity(session: SessionId, reference: string): RecordId | undefined;
 }

@@ -1,7 +1,8 @@
 import type { WorkReport } from './work-attribution.js';
 import type { SubjectResolution } from './subject-resolution.js';
-import type { RequestContext } from './request-reporting.js';
-import { sourceDisclosure } from './source-disclosure.js';
+import type { RequestContext, ResolutionReport, UsageReport } from './request-reporting.js';
+import { inlineText } from './terminal-text.js';
+import { sourceDisclosure, diagnosticLocations } from './source-disclosure.js';
 import type { SourceDisclosureLevel, SourceDisclosureForm } from './source-disclosure.js';
 import type { InvestigationUsageReport } from './investigation/reporting.js';
 import type { InvestigationView } from './investigation/presentation.js';
@@ -14,14 +15,14 @@ import type { QualifiedOrganizationView } from './organization/presentation.js';
 import type { ModuleExportsView } from './exports/presentation.js';
 
 export interface ObservationBatch {
-  readonly formatVersion: 2;
+  readonly formatVersion: 4;
   readonly id: string;
   readonly session: string;
   readonly command: number;
-  readonly records: readonly { readonly id: string; readonly kind: 'request' | 'analysis-context' | 'qualified-view' | 'rendered-output' | 'command-outcome' | 'investigation-usage' | 'resolution-result' | 'resolution-information' | 'usage-report' | 'request-work'; readonly value: unknown }[];
+  readonly records: readonly { readonly id: string; readonly kind: 'request' | 'analysis-context' | 'qualified-view' | 'rendered-output' | 'command-outcome' | 'investigation-usage' | 'resolution-result' | 'resolution-information' | 'usage-report' | 'request-work' | 'inadequacy-feedback' | 'representation-limit'; readonly value: unknown }[];
   readonly events: readonly {
-    readonly id: string; readonly type: 'view-produced' | 'source-escape' | 'command-completed' | 'command-refused' | 'session-invalidated' | 'command-failed' | 'command-defect' | 'command-interrupted';
-    readonly request: string; readonly analysis: string; readonly view?: string; readonly rendered: string;
+    readonly id: string; readonly type: 'view-produced' | 'attribution-disclosed' | 'command-completed' | 'command-refused' | 'session-invalidated' | 'command-failed' | 'command-defect' | 'command-interrupted' | 'inadequacy-reported' | 'representation-limited' | 'additional-detail-requested' | 'source-displayed';
+    readonly request: string; readonly analysis?: string; readonly feedback?: string; readonly view?: string; readonly rendered: string;
     readonly sourceLevel?: SourceDisclosureLevel;
     readonly sourceForms?: readonly SourceDisclosureForm[];
   }[];
@@ -41,29 +42,35 @@ export function observationBatch(view: QualifiedView | QualifiedOrganizationView
   const artifact = randomUUID();
   const output = randomUUID();
   const references = { request, analysis, view: artifact, rendered: output };
-  const disclosed = rendered.length ? sourceDisclosure(view) : null;
-  return { formatVersion: 2, id: randomUUID(), session: view.projection.session, command, records: [
+  const disclosed = rendered.length ? sourceDisclosure(view, rendered) : null;
+  const limits = representedLimits(view).filter(limit => view.presentation.format === 'json' || rendered.replace(/^[\s│├└─]*/gm, '').replace(/\s+/g, ' ').includes(limit.replace(/\s+/g, ' ')));
+  const limitId = randomUUID();
+  return { formatVersion: 4, id: randomUUID(), session: view.projection.session, command, records: [
     { id: request, kind: 'request', value: requestValue },
     { id: analysis, kind: 'analysis-context', value: { ...context, session: view.projection.session } },
     { id: artifact, kind: 'qualified-view', value: view },
     { id: output, kind: 'rendered-output', value: rendered },
+    ...(limits.length ? [{ id: limitId, kind: 'representation-limit' as const, value: { limits, view: artifact } }] : []),
     ...(resolution ? [{ id: randomUUID(), kind: 'resolution-information' as const, value: resolution }] : []),
   ], events: [
     { id: randomUUID(), type: 'view-produced', ...references },
-    ...(disclosed ? [{ id: randomUUID(), type: 'source-escape' as const, ...references, sourceLevel: disclosed.level, sourceForms: disclosed.forms }] : []),
+    ...(limits.length ? [{ id: randomUUID(), type: 'representation-limited' as const, ...references }] : []),
+    ...(view.presentation.moreDetails ? [{ id: randomUUID(), type: 'additional-detail-requested' as const, ...references }] : []),
+    ...(disclosed?.forms.includes('excerpts') ? [{ id: randomUUID(), type: 'source-displayed' as const, ...references, sourceLevel: disclosed.level, sourceForms: disclosed.forms }] : []),
+    ...(disclosed ? [{ id: randomUUID(), type: 'attribution-disclosed' as const, ...references, sourceLevel: disclosed.level, sourceForms: disclosed.forms }] : []),
   ] };
 }
 
 /** The generic acceptance contract stays unchanged; local publication can additionally report cleanup. */
-export function localFileObservationSink(directory: string, configPath: string, options: {
+export function localFileObservationSink(directory: string, configPath: string | null, options: {
   now?: () => Date;
   io?: { mkdir: typeof mkdir; open: typeof open; link: typeof link; unlink: typeof unlink };
 } = {}) {
-  const absolute = path.resolve(configPath);
-  const label = path.basename(path.dirname(absolute)).normalize('NFKD').replace(/[^a-zA-Z0-9_-]+/g, '-')
+  const absolute = configPath === null ? null : path.resolve(configPath);
+  const label = path.basename(path.dirname(absolute ?? '')).normalize('NFKD').replace(/[^a-zA-Z0-9_-]+/g, '-')
     .replace(/^-+|-+$/g, '').slice(0, 64).toLowerCase() || 'project';
-  const key = createHash('sha256').update(absolute).digest('hex').slice(0, 6);
-  const destination = path.join(path.resolve(directory), `${label}-${key}`);
+  const key = createHash('sha256').update(absolute ?? '').digest('hex').slice(0, 6);
+  const destination = path.join(path.resolve(directory), absolute === null ? 'context-free' : `${label}-${key}`);
   const io = options.io ?? { mkdir, open, link, unlink };
   const reason = (error: unknown) => error instanceof Error ? error.message : String(error);
   return { destination, async submit(batch: ObservationBatch) {
@@ -96,7 +103,7 @@ export function localFileObservationSink(directory: string, configPath: string, 
   } };
 }
 
-/** Refusals and failures have no fabricated view or source-disclosure event. */
+/** Non-View reports disclose only their actually rendered diagnostic provenance; no View is fabricated. */
 export function commandObservation(session: string, command: number, requestValue: unknown,
   status: 'completed' | 'refused' | 'invalidated' | 'failed' | 'defect' | 'interrupted',
   stdout: string, stderr: string, produced?: ObservationBatch, usage?: InvestigationUsageReport, report?: { readonly kind: 'resolution-result' | 'usage-report'; readonly value: unknown }, requestContext?: RequestContext, work?: WorkReport): ObservationBatch {
@@ -113,7 +120,37 @@ export function commandObservation(session: string, command: number, requestValu
   if (report) records.push({ id: randomUUID(), ...report });
   if (usage?.attempts.length) records.push({ id: randomUUID(), kind: 'investigation-usage', value: usage });
   records.push({ id: randomUUID(), kind: 'command-outcome', value: { status, request: requestValue, stderr } });
+  const limits = !produced && report ? representedLimits(report.value).filter(limit =>
+    stdout.includes(limit) || stdout.includes(JSON.stringify(limit))) : [];
+  if (limits.length) records.push({ id: randomUUID(), kind: 'representation-limit', value: { limits } });
   const type = status === 'invalidated' ? 'session-invalidated' : `command-${status}` as const;
-  return { formatVersion: 2, id: produced?.id ?? randomUUID(), session, command, records,
-    events: [...(produced?.events ?? []), { id: randomUUID(), type, request, analysis, rendered }] };
+  return { formatVersion: 4, id: produced?.id ?? randomUUID(), session, command, records,
+    events: [...(produced?.events ?? []),
+      ...(limits.length ? [{ id: randomUUID(), type: 'representation-limited' as const, request, analysis, rendered }] : []),
+      ...(!produced && report && diagnosticLocations(report.value).some(location => stdout.includes(inlineText(location)) || stdout.includes(JSON.stringify(location)))
+        ? [{ id: randomUUID(), type: 'attribution-disclosed' as const, request, analysis, rendered, sourceLevel: 'diagnostic-locations' as const, sourceForms: ['locations' as const] }] : []),
+      { id: randomUUID(), type, request, analysis, rendered }] };
+}
+
+/** Only owned presentation disclosures are recognized; request and attribution data are not limits. */
+function representedLimits(value: unknown): string[] {
+  if (!value || typeof value !== 'object') return [];
+  const artifact = value as QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | InvestigationView
+    | ModuleExportsView | ResolutionReport | UsageReport;
+  let limits: readonly string[];
+  switch (artifact.schema) {
+    case 'postcode-view/1-experimental':
+      limits = artifact.modules.flatMap(module => [...module.documentation, ...module.exports.flatMap(item => item.documentation)])
+        .flatMap(doc => doc.representationLimits); break;
+    case 'postcode-module-exports-view/1-experimental':
+      limits = artifact.exports.flatMap(item => item.documentation.flatMap(doc => doc.representationLimits)); break;
+    case 'postcode-organization-view/1-experimental':
+      limits = representedLimits(artifact.moduleDetail); break;
+    case 'postcode-investigation-view/1-experimental':
+      limits = artifact.support.flatMap(item => item.assertion?.representationLimits ?? []); break;
+    case 'postcode-resolution/1-experimental':
+      limits = artifact.resolution.representationLimits ?? []; break;
+    default: limits = [];
+  }
+  return [...new Set(limits)];
 }

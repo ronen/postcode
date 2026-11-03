@@ -22,8 +22,9 @@ This page summarizes current capabilities and significant limits. The [capabilit
   Dependency structure, cycles, direct dependencies and dependents are available,
   with unresolved requests and analysis limits distinguished.
 - **[Supporting evidence](docs/cli-reference.md#source-detail-and-observations).**
-  Inspections can expose source locations and bounded excerpts supporting the
-  displayed information. Terminal wrapping preserves combining characters and emoji,
+  Inspections can expose qualified detail, names and captured implementation
+  locations without source excerpts. Inadequacy feedback is available in the shell
+  and as a context-free one-shot command. Terminal wrapping preserves combining characters and emoji,
   measures display width, and visibly escapes control characters.
 - **[Local observation recording](README.md#observability).**
   Commands record their actual requested question, designation, outcomes and presented
@@ -36,7 +37,7 @@ This page summarizes current capabilities and significant limits. The [capabilit
 - **[Interpretation integration](docs/cli-reference.md#progressive-investigation-and-usage).**
   Summary, explanation, decomposition and examination requests, retained account
   navigation, associated-account inspection and attempt/session usage are
-  integrated with the shell. Redisplay selects current replacement accounts while
+  integrated with the shell. Fresh selection uses current replacement accounts while
   exact inspection preserves originals, composition and provenance. Revision views
   expose unresolved alternatives and citation-based reconsideration warnings.
   An optional OpenAI adapter supports explicit hosted
@@ -49,7 +50,9 @@ This page summarizes current capabilities and significant limits. The [capabilit
   reporting, non-View usage and qualified subject resolution are implemented at the
   request boundary. Unsuccessful lookups return reports with candidates and limits.
   Equivalent names and references share retained answers while preserving lookup
-  context in displayed results. Bounded prerequisite/evidence attribution and
+  context in displayed results. The shell can present an exact retained answer with
+  new format, supported source disclosure or paging, preserving its frozen selection.
+  Views identify fresh or retained selection and disclose reference lifetime. Bounded prerequisite/evidence attribution and
   Presentation compatibility are implemented. Unsupported display choices return
   qualified reports; existing displays retain partial and unavailable answers.
   Fixed catalogs support the internal interpretation and mechanical extension

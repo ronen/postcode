@@ -2,7 +2,7 @@
 
 This document describes how an implementation agent prepares for a human-arranged independent review and how the resulting review evidence is preserved. For implementation work, it applies when review is required by the task protocol, an approved plan, an authorized task, or explicit human direction. It does not require independent review for every implementation task and does not determine which reviewer or review mechanism the human uses.
 
-Human-directed process maintenance may use conversational reviews and Git diffs without formal review records. A request to review guidance changes does not by itself invoke this workflow; use its formal records for that work only when the human explicitly requests them.
+Reviews of planning material or human-directed guidance changes, including independent reviews by another agent, do not by themselves invoke this workflow. Use its formal records for that work only when the human explicitly requests them.
 
 The [task protocol](task-protocol.md#independent-review) supplies defaults for substantive implementation of an approved plan. An approved plan, authorized task, or explicit human direction may add, alter, or waive review gates. A reviewer's findings are input to the active task; they do not authorize implementation, expand task scope, accept a product result, or conclude the task.
 
@@ -37,6 +37,8 @@ Use and adapt the [handoff](templates/review-handoff.md), [findings](templates/r
 Begin each file with `Record type: handoff`, `Record type: findings`, or `Record type: disposition`. Use the handoff's review name across its findings and disposition files. Distinguish successive findings files by round and, when useful, reviewer.
 
 A new implementation target produced in response to findings normally remains under the same handoff. Prepare another uniquely named file ending in `-handoff.md` only when the review assignment's scope, focus, governing basis, or intended gate changes materially. Keep the new assignment in the same review-series directory, and do not combine the earlier assignment's disposition with the new handoff.
+
+Changing reviewers or review mechanisms does not by itself require a new handoff. Reuse the existing assignment while its scope, focus, governing basis, and intended gate remain applicable.
 
 These conventions apply to new review records. Preserve existing historical records and links rather than renaming them to match the newer layout.
 
@@ -104,6 +106,8 @@ Keep repeated review and correction under one handoff lightweight while its assi
 5. When needed, create one final disposition for the assignment.
 
 Ordinary rereview does not require another handoff, an intermediate disposition, an update to the original handoff, or a separate durable rereview-request document. A correction already required by the authorized task and governing material does not require a task follow-up merely because a reviewer identified it. Human direction and the task follow-up protocol remain necessary when a finding would change, extend, or redirect the authorized work.
+
+When a review cycle is clean, report that result and await human direction on further review or task closure. Do not present closure as the expected next step merely because one reviewer has no remaining findings. Keep any PR current with the changes under review.
 
 ## Disposition and further review
 

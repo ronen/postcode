@@ -117,7 +117,7 @@ test('unsuccessful user lookup returns a resolution result without ordinary or e
   t.after(() => opened.session.close());
   const writes = t.mock.method(MemoryProgramRecordStore.prototype, 'put');
   const result = requireResolution(await opened.session.execute({ lens: 'inspect', selector: 'absent-collection-subject',
-    presentation: { format: 'json', sourceDetail: false } }));
+    presentation: { format: 'json', moreDetails: false } }));
   assert.equal(result.resolution.reason, 'missing');
   assert.equal(writes.mock.calls.flatMap(call => call.arguments[0]).some(record => record.kind.endsWith('projection')), false);
 });

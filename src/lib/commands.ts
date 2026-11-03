@@ -1,3 +1,4 @@
+import { isAnswerReference, answerSubjectGuidance } from './answer-references.js';
 import { parseArgs } from 'node:util';
 import path from 'node:path';
 import type { ViewRequest } from './session.js';
@@ -7,7 +8,10 @@ import { inlineText } from './terminal-text.js';
 
 export const help = `PostCode — modules, organization, dependencies and investigation\n
 Usage: postcode shell [--project <tsconfig.json>] [--json]
-       postcode [modules | organization [project | repository] | inspect <exact-selector> | dependencies | children <exact-selector> | parents <exact-selector> | summarize <module-selector> | explain <investigram-reference> | decompose <investigram-reference> | examine <investigram-reference> | usage] [--project <tsconfig.json>] [--json] [--source-detail]
+       postcode [modules | organization [project | repository] | inspect <exact-selector> | dependencies | children <exact-selector> | parents <exact-selector> | summarize <module-selector> | explain <investigram-reference> | decompose <investigram-reference> | examine <investigram-reference> | usage] [--project <tsconfig.json>] [--json] [--more-details]
+
+feedback [optional explanation] [--json] reports inadequacy without starting investigation.
+Shell feedback concerns the last displayed result; one-shot feedback has no prior-result context.
 
 Defaults: modules(project), ./tsconfig.json, Unicode text.
 organization defaults to the configured project; repository selects the complete enclosing Git worktree organization.
@@ -18,8 +22,8 @@ Use --project=value for inline paths and --project=-value for a dash-prefixed pa
 Value options may appear once; help still reports invalid options and values.
 Exact names and generated handles are current lookups with zero, one, or multiple matches.
 Entity references establish continuity only within their session; matching spellings in another session do not restore earlier work.
---source-detail supports inspect and dependency views and discloses source locations and bounded excerpts supporting displayed claims.
-Group source detail shows captured paths and artifact metadata without documentation or other file contents.
+--more-details supports inspect and dependency views and discloses qualified information, names and captured locations supporting displayed claims, without source excerpts.
+Group additional detail shows captured paths and artifact metadata without documentation or other file contents.
 JSON uses experimental postcode-view/1, postcode-organization-view/1 or postcode-dependency-view/1 schemas. Standard expansions are declared before evaluation.
 Unicode inventory lists project modules with 3 export cues and collapses external modules with counts.
 JSON lists all selected modules with up to 6 exports; inspection shows up to 50. Omissions are explicit.
@@ -29,7 +33,7 @@ Group inspection lists all direct parents, subgroups, modules, and bounded artif
 dependencies shows the project dependency structure; children/parents select exact modules.
 A dependency parent depends directly on a dependency child; only supported project-owned source requests establish edges.
 Dependency Unicode expands 60 components, 6 levels and 200 edges; JSON retains all graph modules and relationships.
-Focused relationships show up to 20 occurrences in Unicode or 50 in JSON; source detail shows up to 100 evidence records.
+Focused relationships show up to 20 occurrences in Unicode or 50 in JSON; additional detail shows up to 100 evidence records.
 External dependencies are opaque leaves. Cycles retain members and internal edges; roots do not imply entry points.
 Normal views automatically submit a local observation batch; the destination is disclosed on stderr.
 
@@ -39,25 +43,27 @@ Hosted investigation is disabled by default. POSTCODE_INVESTIGATOR=chatgpt (Chat
 ChatGPT-plan investigation uses gpt-5.6-sol with medium reasoning; API-key investigation uses gpt-6-sol with medium reasoning. Both use macOS Keychain. See docs/hosted-investigation.md before setup.
 Enabled use requires accessible credentials before project opening, including mechanical commands. Unsupported platforms and missing access fail preflight without credential or provider fallback.
 Development tests inject the investigator at the communication boundary, using the production worker/session path.
-Successful, failed-investigation and limit-stop outcomes are retained; repeated display adds no usage.
+Successful, failed-investigation and limit-stop outcomes are retained; exact presentation adds no usage.
 Communication/configuration failures leave no reusable outcome. Recovery from retained failures requires a new session.
 inspect @investigram-… in the shell shows the exact original, its fixed composition, support and correction links.
 usage reports per-attempt and session usage without inference; synthetic usage and unknown/anomalous reports remain explicit.
 Investigation JSON uses postcode-investigation-view/1-experimental. One-shot references expire at command end.
 explain, decompose and examine require an exact @investigram reference in the shell. Each follow-up produces a separate result.
-inspect @investigram --revision-page N continues correction/cause details.
-inspect shows bounded associated accounts; --after @investigram-reference continues that listing.
-Redisplay selects current replacements; exact inspection preserves original accounts. Conflicts and citation-based reconsideration remain explicit; warnings do not establish error or trigger inference.
+present @answer-reference --revision-page N continues all shown correction/cause details for that exact answer.
+present @answer-reference --after @investigram-reference continues its frozen association listing.
+present supports --json and supported --more-details; omitted options use normal defaults.
+Fresh Lens commands select anew; present preserves the selected answer. Fresh selection can reuse completed work.
+Fresh selection selects current replacements; exact inspection preserves original accounts. Conflicts and citation-based reconsideration remain explicit; warnings do not establish error or trigger inference.
 
 Concepts:
 modules inventories the supported population; inspect selects exact subjects from that population.
 Materialization is analysis coverage; omissions describe display coverage, not missing analysis.
-Population: configured external-module SourceFiles and visible named ambient modules, not every compiler category.
+Population: configured files treated as modules and visible named modules described by declarations; other module categories are not established.
 Names are current lookups. Generated handles are navigation cues, not responsibility claims; precise compact Entity IDs are session-local.
 Inputs are assumed unchanged during analysis; capture is first-observed and non-atomic.
 Restart after source or environment changes; references never imply a successor.
 Open postcode shell to resolve ambiguous lookups, then inspect @<displayed-reference>.
-Shell commands use the same lenses and options, plus help and exit. Single/double quotes and backslash escapes are supported.
+Shell commands use the same lenses and options, plus present, help and exit. Paging is available only through present. Single/double quotes and backslash escapes are supported.
 Use -- before a literal selector beginning @. References remain bound; names and handles are lookups.
 The shell requires terminal input. Ctrl-C cancels an idle line; during analysis it ends the session.
 Detection of relevant input changes invalidates the session; restart is required.
@@ -68,6 +74,7 @@ See docs/cli-reference.md for commands, examples, reference scoping, qualificati
 `;
 
 export type ParsedCommand = { kind: 'help' } | { kind: 'exit' } | { kind: 'error'; message: string }
+  | { kind: 'feedback'; explanation: string | null; json: boolean }
   | { kind: 'shell'; configPath: string; json: boolean }
   | { kind: 'view'; configPath: string; request: ViewRequest };
 
@@ -77,7 +84,7 @@ export function parseCommand(args: readonly string[], cwd: string, interactive =
   try {
     scanned = parseArgs({ args: [...args], strict: true, allowPositionals: true, tokens: true, options: {
       help: { type: 'boolean', short: 'h' }, json: { type: 'boolean' },
-      'source-detail': { type: 'boolean' }, after: { type: 'string' }, 'revision-page': { type: 'string' }, project: { type: 'string' },
+      'more-details': { type: 'boolean' }, 'source-detail': { type: 'boolean' }, after: { type: 'string' }, 'revision-page': { type: 'string' }, project: { type: 'string' },
     } });
   } catch (failure) {
     if (failure instanceof Error && 'code' in failure && String(failure.code).startsWith('ERR_PARSE_ARGS_')) {
@@ -92,35 +99,46 @@ export function parseCommand(args: readonly string[], cwd: string, interactive =
   if (values.project === '') return error('--project requires a nonempty configuration path.');
   if (interactive && projects.length) return error('a shell keeps its opened project; exit to choose another.');
   if (tokens.filter(token => token.kind === 'option' && token.name === 'after').length > 1 || values.after === '') return error('--after requires one nonempty investigram reference.');
+  if (values['source-detail']) return error('--source-detail has been removed; use --more-details for qualified information and implementation mappings without source excerpts.');
   if (values.help) return { kind: 'help' };
   const configPath = values.project === undefined ? path.join(cwd, 'tsconfig.json') : path.resolve(cwd, values.project);
-  const json = values.json ?? defaultJson, sourceDetail = values['source-detail'] ?? false;
+  const json = values.json ?? defaultJson, moreDetails = values['more-details'] ?? false;
   const literal = tokens.some(token => token.kind === 'option-terminator');
   const lens = positional[0] ?? 'modules';
   if (interactive && ['help', 'exit'].includes(lens) && args.length === 1) return { kind: lens as 'help' | 'exit' };
-  if (!interactive && lens === 'shell' && positional.length === 1 && !sourceDetail) return { kind: 'shell', configPath, json };
+  if (!interactive && lens === 'shell' && positional.length === 1 && !moreDetails && values.after === undefined && values['revision-page'] === undefined) return { kind: 'shell', configPath, json };
+  if (lens === 'feedback') {
+    if (projects.length || moreDetails || values.after !== undefined || values['revision-page'] !== undefined) return error('feedback accepts only an optional explanation and --json; no project or presentation detail is needed.');
+    return { kind: 'feedback', explanation: positional.slice(1).join(' ') || null, json };
+  }
+  if (lens === 'present') {
+    if (!interactive) return error('present requires the active shell Session that retains the answer. References expire with their Session; open postcode shell and request the information there to begin new work.');
+    if (positional.length !== 2) return error('use present @answer-reference [--json] [--more-details] [--after @investigram-reference] [--revision-page N].');
+    if (values.after !== undefined && !/^@?investigram-[a-f0-9]{8,64}$/.test(values.after)) return error('--after requires a displayed investigram reference.');
+    if (values['revision-page'] !== undefined && (!/^[1-9][0-9]*$/.test(values['revision-page']) || !Number.isSafeInteger(Number(values['revision-page'])) || tokens.filter(token => token.kind === 'option' && token.name === 'revision-page').length > 1)) return error('--revision-page requires one positive page number.');
+    return { kind: 'view', configPath, request: { kind: 'present', target: positional[1]!.replace(/^@/, ''), referenceLifetime: 'session',
+      presentation: { format: json ? 'json' : 'unicode', moreDetails,
+        ...(values.after === undefined ? {} : { after: values.after.replace(/^@/, '') }),
+        ...(values['revision-page'] === undefined ? {} : { revisionPage: Number(values['revision-page']) }) } } };
+  }
+  if (values.after !== undefined || values['revision-page'] !== undefined) return error('Paging requires present @answer-reference; fresh Lens commands select an answer anew.');
+  if (!literal && positional[1] && (positional[1].startsWith('@') || positional[1].startsWith('session:')) && isAnswerReference(positional[1])) return error(answerSubjectGuidance);
   const followup = ['explain', 'decompose', 'examine'].includes(lens);
-  if (values.after !== undefined && (lens !== 'inspect' || !interactive || !/^@?investigram-[a-f0-9]{8,64}$/.test(values.after))) return error('--after requires shell inspection and a displayed investigram reference.');
-  if (values['revision-page'] !== undefined && (lens !== 'inspect' || !interactive || !/^[1-9][0-9]*$/.test(values['revision-page']) || !Number.isSafeInteger(Number(values['revision-page'])) || tokens.filter(token => token.kind === 'option' && token.name === 'revision-page').length > 1)) return error('--revision-page requires shell inspection and one positive page number.');
   const focused = ['inspect', 'children', 'parents', 'summarize'].includes(lens) || followup;
   const dependency = ['dependencies', 'children', 'parents'].includes(lens);
   if (!['modules', 'inspect', 'organization', 'dependencies', 'children', 'parents', 'summarize', 'explain', 'decompose', 'examine', 'usage'].includes(lens)
     || (['modules', 'dependencies', 'usage'].includes(lens) && positional.length > 1)
     || (lens === 'organization' && (positional.length > 2 || !['project', 'repository'].includes(positional[1] ?? 'project')))
-    || (focused && positional.length !== 2) || (sourceDetail && lens !== 'inspect' && !dependency)) {
-    return error('use modules, organization [project | repository], inspect <selector>, dependencies, children <selector>, parents <selector>, summarize <module>, explain/decompose/examine <investigram-reference>, or usage; --source-detail requires inspect or a dependency view.');
+    || (focused && positional.length !== 2) || (moreDetails && lens !== 'inspect' && !dependency)) {
+    return error('use modules, organization [project | repository], inspect <selector>, dependencies, children <selector>, parents <selector>, summarize <module>, explain/decompose/examine <investigram-reference>, or usage; --more-details requires inspect or a dependency view.');
   }
   const selector = focused ? positional[1]! : null;
   const reference = interactive && !literal && selector?.startsWith('@') === true;
-  if (values['revision-page'] !== undefined && (!reference || !(selector!.startsWith('@investigram-')
-    || /^@session:[^:]+:investigram:[a-f0-9]{64}$/.test(selector!)))) return error('--revision-page requires an exact investigram reference.');
   if (followup && !reference) return error('follow-up lenses require an exact @investigram reference in the shell.');
   return { kind: 'view', configPath, request: { lens: lens === 'usage' ? 'usage' : commandLenses[lens as CommandLens],
-    ...(lens === 'summarize' || lens === 'usage' || lens === 'inspect' || followup ? { referenceLifetime: interactive ? 'session' as const : 'command' as const } : {}),
-    ...(values.after === undefined ? {} : { after: values.after.replace(/^@/, '') }),
-    ...(values['revision-page'] === undefined ? {} : { revisionPage: Number(values['revision-page']) }),
+    referenceLifetime: interactive ? 'session' as const : 'command' as const,
     selector: reference ? selector!.slice(1) : selector, ...(reference ? { reference: true } : {}),
-    ...(lens === 'organization' ? { subject: positional[1] === 'repository' ? 'repository' as const : 'project' as const } : {}), presentation: { format: json ? 'json' : 'unicode', sourceDetail } } };
+    ...(lens === 'organization' ? { subject: positional[1] === 'repository' ? 'repository' as const : 'project' as const } : {}), presentation: { format: json ? 'json' : 'unicode', moreDetails } } };
 }
 
 /** Deliberately a tokenizer, without interpolation, pipes, redirection or execution. */

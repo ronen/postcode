@@ -1,6 +1,8 @@
 # Planning Workflow
 
-This document describes how plans, related decisions, and changes to governing core concepts or architectural constraints may be developed, reviewed, promoted, or discarded. It expands the planning stage of the [development workflow](workflow.md#planning). Planning does not authorize implementation.
+This document describes how plans, related decisions, and changes to the application specification, core concepts, or architectural constraints may be developed, reviewed, promoted, or discarded. It expands the planning stage of the [development workflow](workflow.md#planning). Planning does not authorize implementation.
+
+Application specification revisions may be developed with an implementation plan or through standalone human-directed design work. Follow the [specification revision requirements](workflow.md#application-specification) in either case. A package may contain specification revisions and related decisions without an implementation plan; apply the review and promotion steps relevant to its contents.
 
 ## Plan contents
 
@@ -16,11 +18,11 @@ A useful implementation plan should state:
 - risks, uncertainties, and open questions;
 - accepted decisions relevant to the proposed work;
 - unresolved consequential decisions, including when and by whom they must be resolved; and
-- governing core-concept or architectural-constraint changes associated with the work, if any.
+- application-specification, core-concept, or architectural-constraint changes associated with the work, if any.
 
 When a proposed architectural constraint may affect existing implementation, consider whether conformance must be assessed or established as part of the associated work. Make that determination proportionate to the risk. If known nonconformance may acceptably be deferred, acknowledge it in the corresponding decision and add a backlog entry describing its impact and urgency. If conformance is unknown and immediate assessment is not warranted, the backlog entry may instead call for that assessment. Do not defer assessment or remediation when the uncertainty or nonconformance would make current behavior unsafe or materially undermine current claims.
 
-Keep plans at the level needed to guide work. Do not use planning documents to settle architecture implicitly: record consequential accepted choices under [`docs/decisions/`](../docs/decisions/).
+Keep plans at the level needed to guide work. Do not use planning documents to settle application behavior or architecture implicitly: record consequential accepted choices under [`docs/decisions/`](../docs/decisions/) and update affected governing documents together.
 
 ## Planning material
 
@@ -29,6 +31,8 @@ Use [`notes/`](../notes/) for human-curated exploratory material worth preservin
 Use [`drafts/`](../drafts/) for complete proposed new canonical documents and structured revisions to existing canonical documents being prepared for approval and promotion. Draft artifacts are durable but non-governing; a commit preserves a draft without approving it.
 
 Use a descriptively named root underscore directory, such as `_initial-product-slice/`, when working material is ephemeral, local to the checkout, and disposable. Each form follows the applicable [durable-note](process-conventions.md#durable-non-governing-notes), [provisional-draft](process-conventions.md#provisional-draft-material), or [disposable-scratch](process-conventions.md#disposable-scratch-material) conventions.
+
+Reviews of draft planning material are working material, not historical review records, unless the human explicitly requests otherwise. Once findings have been addressed or carried into the promoted documents, backlog, or other appropriate location, discard the associated scratch review material during promotion or worktree cleanup. Preserve any independently useful unresolved content, rather than retaining the review merely as evidence that review occurred.
 
 ## Suggested planning sequence
 
@@ -47,6 +51,7 @@ Arrange the draft plan, related decisions, and canonical revisions under a track
 drafts/<planning-name>/
 ├── plans/<plan-name>.md
 ├── decisions/<decision-name>.md
+├── app-specification-revisions.md
 ├── core-concepts-revisions.md
 ├── architectural-constraints-revisions.md
 └── backlog-revisions.md
@@ -89,7 +94,7 @@ When promoting an approved package:
 5. Update any canonical indexes that list the promoted or superseded documents.
 6. Check and correct links after moving or merging the files, including links that could not resolve within the draft package or that referred to canonical documents outside it. Remove or replace links to notes, carrying any required context into the promoted documents.
 7. Clean up associated notes under human direction. Normally delete notes, or portions of notes, whose useful content has been incorporated into the promoted documents. Retain only material with continuing independent value, such as unresolved questions, follow-up work, or worthwhile ideas not pursued. Consider whether that remaining material belongs in the backlog or existing candidate notes rather than retaining a separate planning account. Delete notes left without independently useful content; Git preserves their history. Update affected note indexes and links.
-8. Review the promoted documents, governing core concepts or architectural constraints when changed, remaining associated notes, supersession metadata, indexes, and links as a whole.
+8. Review the promoted documents, application specification, core concepts or architectural constraints when changed, remaining associated notes, supersession metadata, indexes, and links as a whole.
 9. Commit the entire promotion atomically, including new canonical documents, merged revisions, corresponding accepted decisions, plan-dependent backlog changes, associated note cleanup, supersession metadata, index and link updates, and removal of the promoted draft artifacts.
 
 An abandoned draft may be deleted without acquiring a lifecycle status; its Git history remains available.

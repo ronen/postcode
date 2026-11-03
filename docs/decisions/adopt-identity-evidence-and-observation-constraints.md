@@ -8,6 +8,8 @@ Superseded in part:
 
 - [Make analysis identity independent of invocation identity](#make-analysis-identity-independent-of-invocation-identity) is replaced by [Session as the analysis and reference context](transient-analysis-sessions.md#session-as-the-analysis-and-reference-context), [Command-scoped observations with session correlation](transient-analysis-sessions.md#command-scoped-observations-with-session-correlation).
 
+- [Record the actual source-disclosure level](#record-the-actual-source-disclosure-level) is replaced by [Actual exposure and inadequacy observations](human-facing-architectural-representations.md#representation-observations).
+
 ## Context
 
 The initial PostCode slice established deterministic analysis identity, an evidence boundary for PostCode-generated output, a separate observation lifecycle, visible non-blocking observation delivery failure, and explicit source-escape evidence. These rules arise from the adopted product design and accepted initial decisions, but later implementation should not have to reconstruct their cross-cutting force from slice-specific records or representations.

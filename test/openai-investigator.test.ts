@@ -218,7 +218,7 @@ test('SDK service failure after evidence retains usage and acquisition, but a la
   const opened = await openSession({ configPath }, { investigation: { agent } });
   assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
   t.after(() => opened.session.close());
-  const command = { lens: 'summarize' as const, selector: 'entry', presentation: { format: 'json' as const, sourceDetail: false } };
+  const command = { lens: 'summarize' as const, selector: 'entry', presentation: { format: 'json' as const, moreDetails: false } };
   const first = requireView(await opened.session.execute(command)).view as InvestigationView;
   const second = requireView(await opened.session.execute(command)).view as InvestigationView;
   assert.equal(calls, 4); assert.equal(second.accounts.length, 0); assert.equal(second.result!.reused, false);

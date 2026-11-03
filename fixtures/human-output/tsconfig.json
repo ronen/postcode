@@ -1,0 +1,1 @@
+{"compilerOptions":{"strict":true,"target":"ES2022","module":"ESNext","moduleResolution":"Bundler","types":[]},"files":["catalog.ts","cache.ts","remote.ts"]}

@@ -45,7 +45,7 @@ for (const failure of ['cycle', 'unreadable'] as const) {
       assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
       t.after(() => opened.session.close());
       await opened.session.check();
-      await opened.session.execute({ lens: 'dependencies', selector: null, presentation: { format: 'json', sourceDetail: false } });
+      await opened.session.execute({ lens: 'dependencies', selector: null, presentation: { format: 'json', moreDetails: false } });
       const cli = await invokeCli(['modules', '--project', configPath, '--json'], { checkout: root });
       assert.equal(cli.exit, 0, cli.stderr); assert.equal(cli.batches.length, 1);
       const input = Object.assign(new PassThrough(), { isTTY: true });

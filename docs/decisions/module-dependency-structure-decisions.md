@@ -9,6 +9,8 @@ Superseded in part:
 - [Include bounded CommonJS-form requests without loader claims](#include-bounded-commonjs-form-requests-without-loader-claims) is replaced by [Bounded CommonJS source evidence](bounded-commonjs-source-evidence-decision.md).
 - [Preserve external, diagnostic, evaluation, and observation boundaries](#preserve-external-diagnostic-evaluation-and-observation-boundaries) is replaced by [Immutable information within an accumulating session](transient-analysis-sessions.md#immutable-information-within-an-accumulating-session), [Retained domain and storage boundaries](transient-analysis-sessions.md#retained-domain-and-storage-boundaries).
 
+- [Provide project structure and focused direct navigation](#provide-project-structure-and-focused-direct-navigation) is replaced by [Dependency navigation with intelligible detail](human-facing-architectural-representations.md#dependency-navigation).
+
 ## Context
 
 The completed module inventory established qualified module identity, TypeScript discovery, deterministic navigation, source escape, and observation recording. This record governs the next slice's direct dependency evidence and graph questions without adding repository-organization interpretations or changing cross-cutting core terminology.

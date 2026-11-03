@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import path from 'node:path';
 import { lenses, normalizeRequest } from '../src/lib/requests.js';
-import type { LensId, ViewRequest } from '../src/lib/requests.js';
+import type { LensId, LensViewRequest as ViewRequest } from '../src/lib/requests.js';
 import { openSession } from '../src/lib/session.js';
 import { interactiveSession } from '../src/lib/interactive-session.js';
 import { publishCommand } from '../src/lib/command-execution.js';
@@ -13,14 +13,14 @@ import { finalizeRequestReport } from '../src/lib/request-reporting.js';
 import { requireView } from './request-helpers.js';
 
 const configPath = path.resolve('fixtures/dependency-journey/tsconfig.json');
-const presentation = { format: 'json' as const, sourceDetail: false };
+const presentation = { format: 'json' as const, moreDetails: false };
 
 test('all current Lens requests separate question, designation, parameters and presentation', () => {
   const expected: readonly LensId[] = ['modules', 'organization', 'dependency-structure', 'dependency-children', 'dependency-parents', 'inspect', 'summarize', 'explain', 'decompose', 'examine'];
   assert.deepEqual(Object.keys(lenses).sort(), [...expected].sort());
   for (const lens of expected) {
     for (const reference of [true, false]) {
-      const input = { lens, selector: 'module-12345678', reference, presentation, after: 'next', revisionPage: 2 };
+      const input = { lens, selector: 'module-12345678', reference, presentation };
       const normalized = normalizeRequest(input);
       assert.equal(normalized.kind, 'lens');
       if (normalized.kind !== 'lens') throw new Error('Expected Lens request');
@@ -28,7 +28,7 @@ test('all current Lens requests separate question, designation, parameters and p
       assert.ok(normalized.question.length > 0);
       assert.deepEqual(normalized.parameters, {});
       assert.deepEqual(normalized.designation, { kind: reference ? 'reference' : 'name', value: input.selector });
-      assert.deepEqual(normalized.presentation, { ...presentation, after: 'next', revisionPage: 2 });
+      assert.deepEqual(normalized.presentation, presentation);
       assert.ok(Object.isFrozen(normalized));
       assert.ok(Object.isFrozen(normalized.designation));
     }
@@ -73,7 +73,7 @@ test('invocation context stays separate from immutable program output and captur
   const opened = await openSession({ configPath });
   if (opened.status !== 'opened') throw new Error('Expected project');
   t.after(() => opened.session.close());
-  const input = { lens: 'modules' as const, selector: null, presentation: { format: 'json' as 'json' | 'unicode', sourceDetail: false }, parameters: {} };
+  const input = { lens: 'modules' as const, selector: null, presentation: { format: 'json' as 'json' | 'unicode', moreDetails: false }, parameters: {} };
   const pending = opened.session.execute(input);
   input.presentation.format = 'unicode';
   const first = requireView(await pending);
@@ -103,9 +103,9 @@ for (const kind of ['usage', 'resolution', 'view'] as const) {
     assert.match(stderr, /observation not recorded.*controlled sink failure/);
     assert.equal(batches.length, 1);
     const batch = batches[0]!;
-    assert.equal(batch.formatVersion, 2);
+    assert.equal(batch.formatVersion, 4);
     assert.equal(batch.events.some(item => item.type === 'view-produced'), kind === 'view');
-    assert.equal(batch.events.some(item => item.type === 'source-escape'), false);
+    assert.equal(batch.events.some(item => item.type === 'attribution-disclosed'), false);
     assert.equal(batch.events.at(-1)!.type, kind === 'resolution' ? 'command-refused' : 'command-completed');
     const context = batch.records.find(item => item.kind === 'request')!.value as RequestContext;
     assert.deepEqual(context.request, normalizeRequest(request));
@@ -148,7 +148,7 @@ test('dependency command spellings normalize to the Lens identity of the retaine
   t.after(() => opened.session.close());
   for (const [spelling, identity] of [['dependencies', 'dependency-structure'], ['children', 'dependency-children'], ['parents', 'dependency-parents']] as const) {
     const parsed = parseCommand([spelling, ...(spelling === 'dependencies' ? [] : ['entry']), '--json'], '.');
-    if (parsed.kind !== 'view') throw new Error('Expected command');
+    if (parsed.kind !== 'view' || parsed.request.kind === 'present') throw new Error('Expected command');
     assert.equal(parsed.request.lens, identity);
     const batches: ObservationBatch[] = [];
     const code = await publishCommand(opened.session, parsed.request, spelling, configPath, 1,

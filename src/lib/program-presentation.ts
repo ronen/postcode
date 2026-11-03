@@ -1,3 +1,4 @@
+import type { AnswerContext } from './answer-presentation.js';
 import { createView, renderView } from './presentation.js';
 import { createOrganizationView, renderOrganizationView } from './organization/presentation.js';
 import { createDependencyView, renderDependencyView } from './dependencies/presentation.js';
@@ -9,15 +10,16 @@ import type { ResolutionContext } from './resolution-context.js';
 
 /** Bounded runtime contract-to-arrangement registration. These wrappers coordinate bindings;
  * the underlying arrangements receive only resolved content and Presentation inputs. */
-export function createMechanicalView(store: ProgramRecordStore, content: MechanicalContent, presentation: PresentedOptions, title: string, resolution: ResolutionContext) {
+export function createMechanicalView(store: ProgramRecordStore, content: MechanicalContent, presentation: PresentedOptions, title: string, resolution?: ResolutionContext, context: AnswerContext = {}) {
+  context = { ...context, answerReference: context.answerReference ?? store.answerIds([content.value.projection.id]).get(content.value.projection.id)! };
   switch (content.contract) {
-    case 'modules': return createView(store, content.value.projection, presentation, title, resolution, content.value);
-    case 'organization': return createOrganizationView(store, content.value.projection, presentation, title, resolution, content.value);
-    case 'dependencies': return createDependencyView(store, content.value.projection, presentation, resolution, content.value);
+    case 'modules': return createView(store, content.value.projection, presentation, title, resolution, content.value, context);
+    case 'organization': return createOrganizationView(store, content.value.projection, presentation, title, resolution, content.value, context);
+    case 'dependencies': return createDependencyView(store, content.value.projection, presentation, resolution, content.value, context);
     case 'module-exports': {
       store.entityIds(content.value.basis.modules, 'module');
       const bindings = store.entityIds([content.value.projection.subject], 'module');
-      return arrangeModuleExports(content.value, bindings.get(content.value.projection.subject)!, presentation, title, resolution);
+      return arrangeModuleExports(content.value, bindings.get(content.value.projection.subject)!, presentation, title, resolution, context);
     }
   }
 }

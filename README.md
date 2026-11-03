@@ -51,7 +51,7 @@ Then enter commands at the PostCode prompt:
 ```text
 modules
 inspect documented
-inspect documented --source-detail
+inspect documented --more-details
 dependencies
 children documented
 parents documented
@@ -106,9 +106,11 @@ or automatic refresh. See the [input-stability reference](docs/cli-reference.md#
 for detection coverage and limits. Use `--` before literal selectors beginning
 with `@` or `--`, for example
 `inspect --project path/to/tsconfig.json -- --json`.
-`--source-detail` is available for inspection and dependency views and shows supporting source
-locations and bounded excerpts grouped by displayed concepts, separately identified
-as source escape. File-level associations have no excerpt; it does not show full files.
+`--more-details` is available for inspection and dependency views. It shows qualified
+information, requested module names, implementation names, captured locations and
+organization metadata. It omits source excerpts in text and JSON. `--source-detail`
+is rejected with guidance to use the new option. Analysis and investigators retain
+captured source through their existing evidence interfaces.
 
 The default Unicode inventory lists project-associated modules with up to three
 export names each. External modules are collapsed with an accurate count; their entries and details are omitted from display, not from analysis.
@@ -138,9 +140,9 @@ assertion, not proof of behavior or currency. Type-only forwarding may expose a
 value symbol for type queries without exposing a runtime value; symbol roles and
 export roles remain separate.
 
-Discovery inventories external-module SourceFiles and visible named ambient
-modules in the configured TypeScript Program, including external dependencies.
-Global scripts are not inventorial modules. Diagnostics and unavailable export
+Discovery inventories configured files treated as separate modules and visible
+named module declarations, including interfaces to external dependencies. Files
+treated as shared global code are not counted as modules. Diagnostics and unavailable export
 routes qualify results; this command does not run a general type check. Exit code
 0 indicates a produced view, which can contain qualified/partial expansions;
 2 indicates usage, project-open failure or invalidation; 3 indicates an expected
@@ -171,11 +173,16 @@ ChatGPT and granted plan usage; PostCode never switches routes automatically.
 Credentials use protected macOS storage. Setup and route selection are described
 in the [hosted guide](docs/hosted-investigation.md).
 
-Repeated requests reuse retained outcomes. Redisplay follows accepted corrections
-while preserving unresolved alternatives and reconsideration warnings; warnings do
-not establish that an account is wrong. `inspect @investigram-…` shows the exact
-historical account, and `--revision-page <n>` navigates further correction/cause
-rows. Subject inspection lists associated accounts with continuation where needed.
+Repeated requests reuse retained outcomes and make a fresh answer selection,
+including accepted corrections and current associations. Warnings preserve unresolved
+alternatives and reconsideration causes; they do not establish that an account is
+wrong. `inspect @investigram-…` selects the original historical account with its
+current revision context. In the shell, `present @answer-…` presents the exact selected
+answer again. Add `--revision-page <n>` for further correction/cause rows or the
+shown `--after @investigram-…` continuation for its frozen association listing.
+`--json` and supported `--more-details` change presentation without selecting anew.
+Every program View identifies fresh or retained selection and the answer's precise
+ID and Session-local alias. One-shot references expire at command end.
 Interpretations and their evidence remain qualified; they are not established
 program truth or runtime observations.
 
@@ -211,7 +218,7 @@ their distinctions. Layout is one organizational account, without architectural
 role inference. A successfully opened project outside Git has unavailable
 repository organization.
 
-Group `--source-detail` shows captured paths and artifact/link metadata without
+Group `--more-details` shows captured paths and artifact/link metadata without
 file contents. Organization and group views use the experimental
 `postcode-organization-view/1` JSON schema. See the
 [command reference](docs/cli-reference.md#organization-and-group-inspection) for
@@ -220,14 +227,14 @@ limits, scope, evidence qualifications, and navigation examples.
 ## Observability
 
 Each accepted shell command and each one-shot view request submits an experimental
-version-two observation batch to a timestamped local file under a UTC date
+version-four observation batch to a timestamped local file under a UTC date
 subdirectory of this PostCode checkout's `_observations/` directory. The CLI
 discloses that absolute root destination on stderr.
 The batch carries the session identifier and command order (1 for one-shot use),
 plus the request, analysis context, command outcome, exact output, and any
-produced view/source-escape event. Refusals, failures, interruption and invalidation
+produced view/attribution-disclosed event. Refusals, failures, interruption and invalidation
 are recorded where possible without inventing a view. It can contain repository-derived documentation and
-explicitly requested source locations and excerpts. Nothing is sent remotely. The local sink
+explicitly requested implementation locations and submitted feedback. Nothing is sent remotely. The local sink
 creates its root and dated directories with mode `0700` and files with mode `0600`.
 
 Observation output is Git-ignored and explicitly excluded from analysis, along
@@ -247,3 +254,14 @@ Contemporaneous subjective-note capture and remote research export remain deferr
 ## License
 
 This project is licensed under the [Apache License 2.0](LICENSE).
+
+### Inadequacy feedback
+
+Use `feedback` with an optional explanation, for example `feedback "The responsibility is unclear"`.
+In the shell it concerns the most recently displayed investigation result; consecutive
+reports retain that target. Help, usage and feedback acknowledgments do not replace it.
+One-shot `node _build/src/cli.js feedback` accepts a context-free report without opening
+a project or enabling an investigator. It uses `_observations/context-free/` under
+the existing local observation root. `--json` changes the acknowledgment format.
+Feedback records experience and starts no analysis, correction or program change.
+Delivery failure is reported without invalidating the result or preventing continued use.
