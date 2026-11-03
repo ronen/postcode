@@ -6,9 +6,11 @@ Use descriptive, unnumbered filenames, such as `initial-product-slice.md` or `ag
 
 ## Approved work
 
-- [Product-design reconciliation](product-design-reconciliation.md) — reconcile the architectural working premise and implement scoped human-output conformance, more details and inadequacy feedback. Account design remains separate.
+No approved plans currently await implementation.
 
 ## Completed work
+
+- [Product-design reconciliation](product-design-reconciliation.md) — implemented and accepted after integrated and Copilot review; the [completed task](../../records/tasks/2026-11-03-product-design-reconciliation.md) closed on 2026-11-03. Account design remains separate.
 
 - [Exact retained-answer presentation](exact-retained-answer-presentation.md) — implemented and accepted; the [completed task](../../records/tasks/2026-10-26-exact-retained-answer-presentation.md) closed on 2026-10-26.
 
