@@ -1,7 +1,7 @@
 # Human-facing architectural representations
 
-Status: in review
-Decided: pending human agreement
+Status: accepted
+Decided: 2026-11-03
 Arising from: [Product-design reconciliation](../plans/product-design-reconciliation.md) and the adopted [product design](../../foundation/product-design.md)
 Scope: source-language-independent human understanding, evidence access, representation limits and research feedback across PostCode
 Supersedes:

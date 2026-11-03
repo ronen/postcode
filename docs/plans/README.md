@@ -6,9 +6,11 @@ Use descriptive, unnumbered filenames, such as `initial-product-slice.md` or `ag
 
 ## Approved work
 
-- [Exact retained-answer presentation](exact-retained-answer-presentation.md) — preserve an exact retained answer while changing supported presentation inputs; implementation requires separate authorization.
+- [Product-design reconciliation](product-design-reconciliation.md) — reconcile the architectural working premise and implement scoped human-output conformance, more details and inadequacy feedback. Account design remains separate.
 
 ## Completed work
+
+- [Exact retained-answer presentation](exact-retained-answer-presentation.md) — implemented and accepted; the [completed task](../../records/tasks/2026-10-26-exact-retained-answer-presentation.md) closed on 2026-10-26.
 
 - [Explicit Lenses and qualified request resolution](lens-request-model.md) — completed after integrated and PR review; the [implementation task](../../records/tasks/2026-10-11-lens-request-model.md) closed with human authorization on 2026-10-13.
 

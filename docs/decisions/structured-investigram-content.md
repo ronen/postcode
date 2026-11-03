@@ -1,7 +1,7 @@
 # Allow structured investigram content
 
-Status: in review
-Decided: pending human agreement
+Status: accepted
+Decided: 2026-11-03
 Arising from: [Product-design reconciliation](../plans/product-design-reconciliation.md)
 Scope: required accumulated architectural understanding, interpretation content and its representation-independent contracts; no account architecture or schema is selected
 Supersedes:

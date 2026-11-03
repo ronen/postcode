@@ -10,6 +10,8 @@ Superseded in part:
 - [Extend snapshot identity only with claim-relevant organization inputs](#extend-snapshot-identity-only-with-claim-relevant-organization-inputs) is replaced by [Stable inputs as the session precondition](transient-analysis-sessions.md#stable-inputs-as-the-session-precondition), [Retained domain and storage boundaries](transient-analysis-sessions.md#retained-domain-and-storage-boundaries).
 - [Keep organization schemes explicit and separate](#keep-organization-schemes-explicit-and-separate) is replaced by [Retained domain and storage boundaries](transient-analysis-sessions.md#retained-domain-and-storage-boundaries).
 
+- [Keep organization conceptual while preserving bounded source detail](#keep-organization-conceptual-while-preserving-bounded-source-detail) is replaced by [Conceptual organization with intelligible detail](human-facing-architectural-representations.md#organization-detail).
+
 ## Context
 
 The initial module inventory established qualified TypeScript module entities,

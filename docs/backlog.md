@@ -20,6 +20,30 @@ Describe the need, why it matters, and relevant constraints without designing th
 
 ## Candidates
 
+<a id="review-more-details-information-placement"></a>
+## Review placement of information exposed by more details
+
+Added: 2026-11-03
+Origin: [Product-design reconciliation](plans/product-design-reconciliation.md#more-details)
+Area: information presentation and progressive disclosure
+
+The previous `--source-detail` interaction bundled source disclosure with other potentially useful information, making that information available only through the source escape hatch. That coupling was a design flaw: access to useful qualified information should not depend on requesting source. The minimal reconciliation replaces source disclosure with `--more-details`, preserving the other qualified information and its current placement. Review that information by purpose: what belongs in the default answer, what merits optional detail, and whether another interaction would serve the human better. Include dependency requests that did not establish edges, supporting explanations, evidence attribution, locations and implementation mappings. Their former inclusion in a source-escape option is not a reason to preserve that organization indefinitely.
+
+Coordinate this bounded placement review with [Review the investigation UI and UX as a whole](#review-the-investigation-ui-and-ux-as-a-whole). Use concrete journeys to assess relevance and discoverability while preserving qualifications and bounded output. This is an improvement to information organization, not deferred conformance work or permission to restore the source escape.
+
+<a id="explore-architectural-accounts-through-journeys"></a>
+## Explore architectural accounts through concrete journeys
+
+Added: 2026-10-29
+Origin: [Allow structured investigram content](decisions/structured-investigram-content.md)
+Area: architectural representations and retained interpretation
+
+The [application requires accumulated understanding](decisions/structured-investigram-content.md#require-accumulated-understanding). Existing retention and follow-up support parts of it, but the intended UX and supporting architecture have not been established. The impact is limited support for revisiting and combining architectural understanding across investigations. This capability design is deferred while the current CLI subset is described accurately; complete design and validation before claiming the broader capability is supported. It is separate from the immediate human-output conformance work.
+
+Explore structured architectural accounts carried as investigram content, potentially with several selected investigrams forming a working account. This is a promising approach, not an architectural decision to adopt it. Begin with concrete journeys and selected representations—such as operation admission/cancellation or responsibility across a boundary—and discover the content each needs. Evaluate usefulness to an architect without source-language literacy, not merely successful rendering or schema validity.
+
+Keep partiality, conflicts, evidence, revision history and interpretive status attributable across all [interpretation content](core-concepts.md#interpretation-content), including structured portions and embedded prose. Apply the existing inspection, follow-up, citation and correction contracts, including complete content delivery where required. Reuse retention, associations and replacement mechanisms where they fit; a selected account set need not be one mutable composition tree or a canonical architecture. Defer account schemas, selection, correspondence and subclaim identity until the journeys establish the need. Before extending beyond an unchanged-input Session, resolve lifecycle, captured-basis and reference/correspondence choices. Use the existing coordinated-View, navigation and coding-agent context candidates rather than building parallel infrastructure by assumption. This capability exploration is distinct from required semantic representation conformance.
+
 ## Decide how GUI Presentations and their parameters are represented
 
 Added: 2026-10-06
@@ -164,25 +188,6 @@ Preserve the effective configuration in investigation provenance and usage
 reports. Define when configuration changes take effect and how they interact
 with retained outcomes, without silently regenerating earlier investigations or
 switching billing routes.
-
-## Assess disclosure classification for paths outside sourceDetail
-
-Added: 2026-09-30
-Origin: [Module investigation milestone-2 round-3 review](../records/reviews/module-investigation/2026-09-29-milestone-2-round-3-findings.md)
-Area: observation semantics and source disclosure
-
-The source-disclosure correction classifies supported explicit source-detail fields
-by presentation and format. The reviewer did not assess paths carried outside
-`sourceDetail`, such as configuration paths in JSON analysis context, against the
-[actual-disclosure decision](decisions/adopt-identity-evidence-and-observation-constraints.md#record-the-actual-source-disclosure-level).
-The human directed recording this as an unassessed follow-up without expanding
-milestone 2. Neither compliance nor nonconformance has been established.
-
-A future assessment should distinguish source locations actually presented from
-operational/context paths retained only in observation records, account for human
-and JSON output, and establish whether any source-escape events are missing.
-This entry does not authorize a classification change or prescribe a redesign.
-
 
 ## Diagnose execution-ownership cancellations in full-suite runs
 
@@ -433,39 +438,11 @@ Added: 2026-09-23
 Origin: human exploratory use of the completed interactive session on another repository
 Area: presentations and interaction
 
-The session works, but repeated use makes the current views difficult to read:
-output is too wordy, important information is hard to find, and presentation
-choices that were tolerable for one-shot commands compound across an
-investigation. Evaluate the full journey across inventory, organization,
-dependencies, inspection, qualifications, source detail, and shell interaction
-before making isolated formatting changes. Identify what deserves immediate
-attention, what should be progressively disclosed, and what belongs in a later
-visual interface. Preserve precise navigation, evidence, qualifications, and
-consequential omission disclosure while improving readability.
+The session works, but repeated use makes the current views difficult to read: output is too wordy, important information is hard to find, and presentation choices that were tolerable for one-shot commands compound across an investigation. Evaluate the full journey across inventory, organization, dependencies, inspection, qualifications, additional detail and shell interaction before making isolated formatting changes. Identify what deserves immediate attention, what should be progressively disclosed, and what belongs in a later visual interface. Preserve precise navigation, evidence attribution, qualifications and consequential omission disclosure while improving readability. Coordinate the [more-details placement review](#review-more-details-information-placement) with this broader work.
 
-The [milestone-4 progressive assessment](../records/validation/module-investigation/pass-04/report.md)
-adds captured examples: repeated full accounts and accounting/evidence metadata
-obscure what changed; investigram source-detail views can supply artifact paths
-and metadata without checkable excerpts or line positions; and standalone captured
-interpretive views omit effective compiler/configuration attribution that is
-available in the surrounding assessment record. Consider readable, bounded
-evidence navigation and concise provenance in the whole-journey review. These
-are formative observations, not measured human usability results or authorization
-for a presentation redesign.
+The [milestone-4 progressive assessment](../records/validation/module-investigation/pass-04/report.md) supplies captured examples of repeated accounts and accounting/evidence metadata obscuring what changed, limited evidence navigation, and standalone interpretive Views omitting effective compiler/configuration attribution available in the surrounding assessment record. Assess whether intelligible evidence attribution and bounded navigation help the human identify and evaluate support under the human output boundary. Missing source excerpts are not by themselves a deficiency. These are formative observations, not measured human usability results.
 
-The [milestone-5 integrated assessment](../records/validation/module-investigation/pass-05/report.md)
-adds original/current account distinctions, causal warning pages and explicit
-conflicts to this journey. Assess whether repeated empty revision status obscures
-important warnings, and how users discover qualifications learned in follow-ups
-when the retained summary has no explicit correction. Preserve exact historical
-selection and avoid implying automatic synthesis or reassessment. These remain
-formative concerns, not a request to tune the current assessment. The
-[focused dependent-account sequence](../records/validation/module-investigation/pass-06/report.md)
-again exposes absent excerpts and dense repeated context. Its evaluator distinguishes
-compatible replacement accounts from the structural “conflicting alternatives”
-label, and local exact selection from family primary, but finds the wording demanding.
-Use these captures as further qualitative evidence for the same journey review,
-without implying measured misunderstanding or authorizing current-slice redesign.
+The [milestone-5 integrated assessment](../records/validation/module-investigation/pass-05/report.md) adds original/current account distinctions, causal warning pages and explicit conflicts to this journey. Assess whether repeated empty revision status obscures important warnings, and how users discover qualifications learned in follow-ups when the retained summary has no explicit correction. Preserve exact historical selection and avoid implying automatic synthesis or reassessment. The [focused dependent-account sequence](../records/validation/module-investigation/pass-06/report.md) supplies further qualitative evidence about dense repeated context and demanding wording around compatible replacement accounts, structural conflicts and local versus family selection. Evaluate support and provenance intelligibility rather than treating absent source excerpts as the problem. These captures do not establish measured human misunderstanding.
 
 For graphical-interface planning, use the [simple Workspace model](app-specification.md#workspaces-and-navigation): a collection and arrangement of Views, displayable in a tab or window. Decide bounded placement, focus, navigation/history, and transient inspection behavior using actual supported core capabilities. Keep exact retained-answer presentation and qualification visible. Shared Workspace purpose/defaults, specialized Workspace kinds, persistence, and a particular initial View are separate future choices, not prerequisites for this review. Opening a repository or subject is an explicit initial-View request when the action communicates that behavior; identify its scope and applicable resource constraints. Autonomous orientation outside that request requires an authorized resource policy before execution.
 

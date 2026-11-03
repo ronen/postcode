@@ -1,9 +1,11 @@
 # Exact retained-answer presentation
 
-Status: approved
+Status: completed
 Created: 2026-10-14
-Updated: 2026-10-25
+Updated: 2026-11-03
 Superseded by:
+
+Implementation concluded with human acceptance on 2026-10-26 in the [completed task](../../records/tasks/2026-10-26-exact-retained-answer-presentation.md). Its verification covers exact retained presentation across current families, fixed selection/support, aliases, paging, observations and refusals. The earlier baseline below describes conditions before implementation. Later human-output conformance work is separately scoped by [Product-design reconciliation](product-design-reconciliation.md) and does not reopen this task or undo retained-answer continuity.
 
 ## Problem and intended outcome
 
