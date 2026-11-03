@@ -2,7 +2,7 @@
 
 ## Lifecycle metadata
 
-Set `Status: completed` and `Updated: 2026-10-29` (use the actual promotion date if later). Preserve `Created`, the plan body and its original baseline assessment. Do not add a supersession link: the plan was implemented, not replaced.
+Set `Status: completed` and `Updated` to the promotion date. Preserve `Created`, the plan body and its original baseline assessment. Do not add a supersession link: the plan was implemented, not replaced.
 
 ## Add immediately after the lifecycle metadata
 
