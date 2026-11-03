@@ -37,6 +37,14 @@ the human something concrete to judge while remaining a qualified account to que
 requirement that all journeys begin with a proposal or end in a decision;
 open-ended understanding and discovery remain valuable.
 
+The 2026-11-03 discussion develops this into
+[persistent architectural perspectives](persistent-architectural-perspectives.md):
+help frame architectural questions, move between perspectives and scopes, and
+return to earlier accounts as understanding develops. That note records the
+current direction for the next sketch and the updated capability position after
+merging main at `b9599a3`. Earlier assessments below retain their exploratory
+context; exact retained-answer presentation is now implemented as noted below.
+
 ## Governing and exploratory context
 
 The [application specification](../../docs/app-specification.md),
@@ -556,8 +564,9 @@ required information remains to be established through the next sketch.
 The completed request model supplies explicit questions and applicability,
 qualified resolution, reusable interpretation operations, result/Presentation
 compatibility, and bounded request-work attribution. It does not by itself deliver
-graphical Presentation design, exact retained-answer redisplay, or general
-navigation-origin retention.
+graphical Presentation design or general navigation-origin retention. Subsequent
+work completed [exact retained-answer presentation](../../docs/plans/exact-retained-answer-presentation.md);
+the shell now supports `present` with frozen answer and support selection.
 
 Earlier inline inspection, open-beside, and layered qualification ideas remain
 useful candidates. Consequential qualification must be visible without hover.
@@ -586,16 +595,17 @@ correction or association information. The journey's intended continuity needs:
   Current reconsideration status can be shown separately without rewriting what
   the earlier answer showed.
 - Navigation records the origin actually established by the interface, including
-  source excursions, and preserves it when a visible panel is closed. Origin is
+  context changes, and preserves it when a visible panel is closed. Origin is
   distinct from placement, evidence dependence and program relationships.
 - Initial retention can be Session-local. Neither an input pin nor an exported
   reference makes an answer durable across restart.
 
-These concerns connect to [exact retained-Projection presentation](../../docs/backlog.md#allow-a-view-to-be-requested-for-an-existing-projection)
-and [navigation lineage](../../docs/backlog.md#assess-and-preserve-navigation-origin-lineage).
-Evidence disclosure needs per-result assessment: some recorded inspections expose
-only locations, not excerpts. Supporting evidence must come from the captured
-basis. A handoff introduces separate [shared-context requirements](../../docs/backlog.md#design-a-bounded-shared-context-interface-for-coding-agents).
+These concerns build on [exact retained-answer presentation](../../docs/plans/exact-retained-answer-presentation.md)
+and connect to [navigation lineage](../../docs/backlog.md#assess-and-preserve-navigation-origin-lineage).
+Evidence disclosure needs per-result assessment under the adopted
+[human representation boundary](../../docs/decisions/human-facing-architectural-representations.md#human-output-boundary):
+locations alone may be insufficient, and source deciphering cannot substitute for
+an intelligible account. Supporting evidence must come from the captured basis. A handoff introduces separate [shared-context requirements](../../docs/backlog.md#design-a-bounded-shared-context-interface-for-coding-agents).
 The [captured-basis observation gap](../../docs/backlog.md#preserve-captured-basis-attribution-in-observations)
 must be addressed before relying on new observations for state-specific assessment.
 
