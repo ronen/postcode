@@ -216,6 +216,7 @@ for (const format of ['unicode', 'json'] as const) test(`investigation support b
     }
     const batch = observationBatch(result.view, result.rendered, { configPath: root, repositoryRoot: root, methods: [] }, result.context);
     assert.ok(batch.events.some(event => event.type === 'attribution-disclosed'));
+    assert.ok(batch.events.some(event => event.type === 'representation-limited'));
   }
   assert.equal(agent.inputs.length, 1, 'inspection and retained presentation do not generate');
 });
@@ -249,4 +250,37 @@ test('retained tag filtering preserves plain-text assertions and counts original
   assert.equal(represented.tags[1]!.omittedTextCharacters, Array.from(tags[1]!.text).length - Array.from('Architectural assertion.').length);
   assert.equal(represented.representationLimits.length, 1);
   assert.match(tags[0]!.text, /call/, 'original assertions remain unchanged');
+});
+
+for (const format of ['unicode', 'json'] as const) test(`caller representation-limit fields are not recognized disclosures (${format})`, async t => {
+  const root = temporaryDirectory(t, 'postcode-rejected-limits-');
+  writeFileSync(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
+  writeFileSync(path.join(root, 'entry.ts'), 'export const entry = 1;');
+  const opened = await openSession({ configPath: path.join(root, 'tsconfig.json') });
+  assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
+  const callerData = { representationLimits: ['caller marker'], resolution: { representationLimits: ['nested caller marker'] } };
+  for (const omit of [false, true]) {
+    const result = await opened.session.execute({ lens: 'inspect', selector: callerData,
+      ...(omit ? { parameters: { unrepresentable: () => {} } } : {}), presentation: { format, moreDetails: false } } as unknown as ViewRequest);
+    assert.equal(result.kind, 'resolution');
+    if (result.kind !== 'resolution') throw new Error('Expected rejected input');
+    const recognized: readonly string[] = result.report.resolution.representationLimits!;
+    assert.equal(recognized.length > 0, omit, 'only omitted unrepresentable input produces a recognized limit');
+    const batch = commandObservation(opened.session.id, 1, {}, 'refused', result.rendered, '', undefined, undefined,
+      { kind: 'resolution-result', value: result.report }, result.context);
+    assert.equal(batch.events.some(event => event.type === 'representation-limited'), omit);
+    assert.deepEqual(batch.records.filter(record => record.kind === 'representation-limit').flatMap(record => (record.value as { limits: string[] }).limits), recognized);
+    if (format === 'json') {
+      assert.match(result.rendered, /caller marker/, 'caller data stays in the rejected request');
+      const attributed = { ...result.report, attribution: { representationLimits: ['attribution marker'] } };
+      const repeated = commandObservation(opened.session.id, 2, {}, 'refused', JSON.stringify(attributed), '', undefined, undefined,
+        { kind: 'resolution-result', value: attributed }, result.context);
+      assert.deepEqual(repeated.records.filter(record => record.kind === 'representation-limit').flatMap(record => (record.value as { limits: string[] }).limits), recognized);
+    }
+  }
+  const result = requireView(await opened.session.execute({ lens: 'modules', selector: null, presentation: { format, moreDetails: false } }));
+  const contaminated = { ...result.view, attribution: callerData };
+  const batch = observationBatch(contaminated, JSON.stringify(contaminated), { configPath: root, repositoryRoot: root, methods: [] }, result.context);
+  assert.ok(!batch.events.some(event => event.type === 'representation-limited'));
+  assert.ok(!batch.records.some(record => record.kind === 'representation-limit'));
 });

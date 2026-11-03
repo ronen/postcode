@@ -498,6 +498,9 @@ Diagnostic provenance paths are classified even outside detail fields and in non
 Diagnostic meanings and provenance classification read owned qualification/support
 fields. Preserved rejected request data cannot supply analyzer diagnostics or create
 an attribution-disclosure event merely by containing similarly named fields.
+Representation-limit classification likewise reads only owned documentation,
+support-assertion and resolution fields; preserved request and attribution data
+cannot introduce recognized limits.
 No machine evidence acquisition is recorded as human disclosure merely because the
 investigator received source.
 

@@ -1,6 +1,6 @@
 import type { WorkReport } from './work-attribution.js';
 import type { SubjectResolution } from './subject-resolution.js';
-import type { RequestContext } from './request-reporting.js';
+import type { RequestContext, ResolutionReport, UsageReport } from './request-reporting.js';
 import { inlineText } from './terminal-text.js';
 import { sourceDisclosure, diagnosticLocations } from './source-disclosure.js';
 import type { SourceDisclosureLevel, SourceDisclosureForm } from './source-disclosure.js';
@@ -132,10 +132,25 @@ export function commandObservation(session: string, command: number, requestValu
       { id: randomUUID(), type, request, analysis, rendered }] };
 }
 
-/** Only explicit presentation disclosures are recognized; this is not a syntax or adequacy detector. */
+/** Only owned presentation disclosures are recognized; request and attribution data are not limits. */
 function representedLimits(value: unknown): string[] {
   if (!value || typeof value !== 'object') return [];
-  if (Array.isArray(value)) return [...new Set(value.flatMap(representedLimits))];
-  return [...new Set(Object.entries(value).flatMap(([key, item]) => key === 'representationLimits' && Array.isArray(item)
-    ? item.filter((value): value is string => typeof value === 'string') : representedLimits(item)))];
+  const artifact = value as QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | InvestigationView
+    | ModuleExportsView | ResolutionReport | UsageReport;
+  let limits: readonly string[];
+  switch (artifact.schema) {
+    case 'postcode-view/1-experimental':
+      limits = artifact.modules.flatMap(module => [...module.documentation, ...module.exports.flatMap(item => item.documentation)])
+        .flatMap(doc => doc.representationLimits); break;
+    case 'postcode-module-exports-view/1-experimental':
+      limits = artifact.exports.flatMap(item => item.documentation.flatMap(doc => doc.representationLimits)); break;
+    case 'postcode-organization-view/1-experimental':
+      limits = representedLimits(artifact.moduleDetail); break;
+    case 'postcode-investigation-view/1-experimental':
+      limits = artifact.support.flatMap(item => item.assertion?.representationLimits ?? []); break;
+    case 'postcode-resolution/1-experimental':
+      limits = artifact.resolution.representationLimits ?? []; break;
+    default: limits = [];
+  }
+  return [...new Set(limits)];
 }
