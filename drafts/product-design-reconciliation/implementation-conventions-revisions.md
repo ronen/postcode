@@ -2,11 +2,11 @@
 
 ## In “Source-detail presentation,” insert before the existing bullets
 
-The current implementation's syntax-oriented escape requires [human-representation reconciliation](backlog.md#establish-source-language-independent-human-representations). Preserve captured evidence and source mappings for analysis and agent access while applying the [human output boundary](decisions/human-facing-architectural-representations.md#human-output-boundary) to every human delivery path. Existing schema strings and display bounds do not establish semantic adequacy. Preserve intelligible assertions, labels and evidence with provenance and epistemological status; source origin alone is not a reason to suppress content.
+The current implementation's syntax-oriented escape is replaced by `--more-details` through [human-representation reconciliation](plans/product-design-reconciliation.md#implementation-specification). Preserve captured evidence and source mappings for analysis and agent access while applying the [human output boundary](decisions/human-facing-architectural-representations.md#human-output-boundary) to every human delivery path. Existing schema strings and display bounds do not establish semantic adequacy. Preserve intelligible assertions, labels and evidence with provenance and epistemological status; source origin alone is not a reason to suppress content.
 
 ## In that section, replace the bullet beginning “Group source detail includes”
 
-- Group attribution detail can identify captured absolute repository/group paths and repository-relative artifact paths and metadata, without requiring source-language literacy. Intelligible assertions or evidence originating in source can also be presented with their qualifications. Record actual permitted attribution disclosure separately from agent evidence acquisition and human inadequacy feedback.
+- Group attribution detail can identify captured absolute repository/group paths and repository-relative artifact paths and metadata, without requiring source-language literacy. Intelligible assertions or evidence originating in source can also be presented with their qualifications. Record actual attribution disclosure separately from agent evidence acquisition and human inadequacy feedback.
 
 ## In that section, replace the three consecutive bullets beginning “Expose source detail only,” “Preserve module and export containment,” and “Expand a narrow compiler span”
 
