@@ -3,6 +3,11 @@
 Recorded: 2026-11-03
 Status: first discussion sketch; non-governing, not an interface or implementation plan
 
+The [2026-11-04 discussion](#design-context-and-hypotheticals) clarifies that this
+walkthrough mixes architectural investigation with collaborative design. Proposal
+handling in the scenes is an exploratory extension, not a prerequisite established
+for PostCode's first useful investigation.
+
 ## What this pass tests
 
 Walk through the [recorded Cockatiel dialogue](readiness-investigation-dialogue.md)
@@ -427,3 +432,97 @@ sketching more concretely. The opening orientation, the waiting correction, and
 the return to ownership after considering notifications are useful checkpoints.
 This pass supplies a sequence to critique; it does not demonstrate an improvement
 over capable chat or command-only adequacy for the whole journey.
+
+<a id="design-context-and-hypotheticals"></a>
+## Discussion: design, shared context, and hypotheticals
+
+Recorded: 2026-11-04
+
+### The dialogue combined understanding and design
+
+The human observed that the original dialogue was interactive design with an
+agent, with Cockatiel explained as needed. Commands such as `focus readiness-query
+proposal` and `compare proposal with reported need` therefore introduce design
+capabilities beyond investigating existing behavior. Their usefulness in this
+sketch does not establish that PostCode must provide them.
+
+PostCode might help the human understand relevant architecture sooner and avoid
+proposing changes on mistaken premises. This does not establish a required
+understand-then-design sequence: proposing a change can itself reveal the questions
+that need investigation. The exercise should retain that productive interplay.
+
+One possibility is that PostCode supplies qualified, revisable understanding of
+the existing software while the human and an external agent formulate alternatives
+and make design judgments. A readiness proposal can prompt investigations of
+admission conditions, transition triggers, notifications, and ownership without
+PostCode representing the proposal. Whether the resulting accounts improve on a
+capable design agent's explanations and notes remains to be tested.
+
+### Shared context reduces the separation cost
+
+The human pointed out that external-agent context is already part of PostCode's
+intended model. The foundation provides for both
+[shared machine-readable context](../../foundation/product-design.md#shared-machine-readable-context)
+and [agent-supplied context](../../foundation/product-design.md#agent-supplied-context).
+We need not assume manual translation between independent conversations.
+
+For the sketch, presume that selected accumulated understanding is made available
+to the external agent and suitable instructions, such as AGENTS.md, explain how
+to use PostCode terminology, references, qualifications, and corrections. Human
+and agent can refer to the same ownership account or recovery interaction.
+Instructions establish interpretation conventions; the exchanged context
+establishes which exact accounts and supporting bases the agent has. Neither
+instructions nor shared terminology alone establishes that a later correction
+has been delivered or seen. This is a sketch assumption, not a claim that the
+context-exchange protocol is implemented.
+
+The resulting loop is architectural investigation, shared context, external design
+discussion, and further investigation where needed. Persistent perspectives can
+serve as recognizable shared referents as well as places for the human to return.
+
+### Supplied hypotheticals as a possible extension
+
+The human then proposed extending PostCode's information inputs to include
+hypotheticals supplied explicitly by a user or through external-agent context.
+PostCode could present them and its own inference agents could reason about them
+alongside existing information. Origination of a design idea and investigation
+of its consequences need not occur in the same tool.
+
+This is closer to the governing model than the earlier discussion's suggestion
+that it necessarily requires broadening Subjects beyond program entities.
+[Subject](../../docs/core-concepts.md) is already an open-ended role, and
+agent-supplied assertions are anticipated. Those foundations do not establish
+conditional-analysis semantics or implemented hypothetical support.
+
+A hypothetical has a different role from a runtime observation: it supplies a
+premise for conditional reasoning rather than evidence that behavior occurred.
+For Cockatiel, distinguish:
+
+| Role | Example |
+| --- | --- |
+| Existing account | Recovery eligibility is checked when execution is attempted. |
+| Supplied hypothetical | Assume an optional timer transitions the breaker to half-open and emits existing transition notifications. |
+| Conditional interpretation | Under that assumption, the application could learn of eligibility without submitting work; event timing and timer lifetime become design concerns. |
+
+A precisely specified hypothetical still describes no established implementation;
+"uncertain" alone is not its status. Consequences must remain attributable to the
+particular assumptions and existing account used. Alternatives must remain
+separate, and supplying an idea must not imply human endorsement. Missing
+commitments, conflicts, or an inability to infer a consequence are useful results;
+rendering a complete diagram must not invent unspecified behavior. Subsequent
+implementation correspondence would require its own investigation.
+
+The same architectural perspectives could inspect the query and automatic-
+transition proposals through contract, interaction, and ownership. This remains
+an extension to explore, not a selected first-slice requirement, adopted schema,
+or authorization to implement proposal editing or hypothetical analysis.
+
+### Consequence for the next sketch discussion
+
+Distinguish the contribution of investigating existing architecture, collaboration
+through shared context, and the possible additional value of investigating
+supplied hypotheticals. The current scenes can help assess all three if their
+assumptions remain explicit. Do not treat the design-related gaps as proof that
+conversation must live inside PostCode, or as proof that existing-system
+investigation is insufficient. No decision about including hypotheticals in the
+first useful slice has been made.

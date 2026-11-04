@@ -171,3 +171,9 @@ The [first operations sketch](cockatiel-conceptual-operations-sketch.md) carries
 this out with concrete illustrative answers and an explicit account of its limits.
 Contextual conversation remains a possible product interaction; this experiment
 does not reject it or establish command-only sufficiency.
+
+The [2026-11-04 follow-up](cockatiel-conceptual-operations-sketch.md#design-context-and-hypotheticals)
+distinguishes existing-system investigation from collaborative design, records
+shared external-agent context as a sketch assumption, and considers supplied
+hypotheticals as a possible further input to architectural investigation. None of
+these discussions selects hypothetical support as a first-slice requirement.
